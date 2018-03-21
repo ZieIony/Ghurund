@@ -1,0 +1,11 @@
+.vs
+*.user
+*.filters
+Debug
+Release
+Editor/bin
+Editor/obj
+Launcher/bin
+Launcher/obj
+ManagedDll/bin
+ManagedDll/obj
