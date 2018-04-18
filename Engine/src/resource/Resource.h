@@ -38,17 +38,14 @@ namespace Ghurund {
         virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0) = 0;
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const = 0;
 
+        virtual void clean() = 0;
+
     public:
 
         Resource() = default;
 
-        /**
-        * ?aduje plik z dysku
-        * @param fileName ?cie?ka do pliku z danymi
-        * @param loader obiekt zawieraj?cy wszystkie informacje niezb?dne do odczytania zasobu
-        * @param flags ustawienia odczytywania
-        * @return kod b??du wykonania
-        */
+        virtual ~Resource() = default;
+
         Status load(ResourceManager &resourceManager, const String *fileName, unsigned int flags = 0) {
             if(this->fileName.Length==0&&fileName==nullptr) {
                 Logger::log(_T("Both resource's file name and the file name passed as parameter are null\n"));
@@ -92,8 +89,10 @@ namespace Ghurund {
                     return Status::WRONG_RESOURCE_VERSION;
                 if(strcmp(stream.readASCII(), getType())!=0)
                     return Status::WRONG_RESOURCE_TYPE;
+                clean();
                 result = loadInternal(resourceManager, ((BYTE*)data)+stream.getBytesRead(), size-stream.getBytesRead(), flags);
             } else {
+                clean();
                 result = loadInternal(resourceManager, data, size, flags);
             }
             valid = result == Status::OK;
@@ -151,28 +150,10 @@ namespace Ghurund {
         }
 
 
-        /**
-        * sprawdza, czy zasób jest prawid³owy (gotowy do u¿ycia)
-        * @return czy zasób prawid³owy
-        */
         virtual bool isValid() {
             return valid;
         }
-
-        /**
-        * zwalnia dane ulotne zasobu, zas?b staje si? nieprawid?owy
-        */
-        virtual void invalidate() {
-            valid = false;
-        }
-
-        /**
-        * ustawia stan zasobu na prawid?owy
-        */
-        inline void reset() {
-            valid = true;
-        }
-
+        
         const String &getFileName() const {
             return fileName;
         }

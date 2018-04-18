@@ -76,7 +76,7 @@ namespace Ghurund.Managed {
             set {
                 Shader_setCompilationTarget(NativePtr, value);
             }
-        }
+        }*/
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
@@ -92,11 +92,11 @@ namespace Ghurund.Managed {
             set {
                 Shader_setSourceCode(NativePtr, value);
             }
-        }*/
+        }
 
         public string DefaultExtension {
             get {
-                throw new NotImplementedException();
+                return "shd";
             }
         }
 

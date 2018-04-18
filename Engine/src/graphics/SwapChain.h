@@ -20,6 +20,9 @@ namespace Ghurund {
         ComPtr<IDXGISwapChain3> swapChain;
         Frame *frames;
         BufferedValue<Frame> frameBuffer;
+        unsigned int frameCount;
+        Window *window;
+        DXGI_FORMAT format;
 
     public:
         ~SwapChain() {
@@ -28,6 +31,10 @@ namespace Ghurund {
         }
 
         Status init(Graphics &graphics, Window &window, unsigned int frameCount);
+
+        Status initBuffers(Graphics &graphics);
+
+        void uninitBuffers();
 
         Status startFrame() {
             return frameBuffer->start();
@@ -47,5 +54,7 @@ namespace Ghurund {
         shared_ptr<CommandList> getCommandList() {
             return frameBuffer->getCommandList();
         }
+
+        void resize(Graphics &graphics, unsigned int width, unsigned int height);
     };
 }

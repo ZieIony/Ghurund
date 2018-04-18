@@ -6,7 +6,7 @@
 
 namespace Ghurund {
 
-    template<class Key, class Value>class Map:public Collection<Key, Value> {//klasa nie dla idiot?w
+    template<class Key, class Value>class Map:public Collection<Key, Value> {
     protected:
         Key *k;
         Value *v;
@@ -18,6 +18,7 @@ namespace Ghurund {
             //memset(k,0,sizeof(Key)*capacity);
             //memset(v,0,sizeof(Value)*capacity);
         }
+
         Map(const Map &t1) {
             capacity = t1.capacity;
             initial = t1.initial;
@@ -27,6 +28,7 @@ namespace Ghurund {
             v = ghnew Value[capacity];
             memcpy(v, t1.v, sizeof(Value)*size);
         }
+
         virtual ~Map() {
             delete[]k;
             delete[]v;
@@ -40,13 +42,14 @@ namespace Ghurund {
 
         inline void resize(size_t c) {
             capacity = c;
+            size_t copy = std::min(size, c);
             Key *k1 = ghnew Key[c];
-            memcpy(k1, k, sizeof(Key)*std::min(size, c));
-            delete[]k;
+            memcpy(k1, k, sizeof(Key)*copy);
+            delete[] k;
             k = k1;
             Value *v1 = ghnew Value[c];
-            memcpy(v1, v, sizeof(Value)*std::min(size, c));
-            delete[]v;
+            memcpy(v1, v, sizeof(Value)*copy);
+            delete[] v;
             v = v1;
         }
 

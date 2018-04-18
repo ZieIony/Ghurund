@@ -15,7 +15,7 @@ namespace Ghurund {
         D3D12_CPU_DESCRIPTOR_HANDLE handle;
 
     public:
-        Status init(Graphics &graphics, Window &window) {
+        Status init(Graphics &graphics, unsigned int width, unsigned int height) {
             D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
             dsvHeapDesc.NumDescriptors = 1;
             dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
@@ -38,7 +38,7 @@ namespace Ghurund {
             if(FAILED(graphics.getDevice()->CreateCommittedResource(
                 &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
                 D3D12_HEAP_FLAG_NONE,
-                &CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, window.Width, window.Height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
+                &CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, width, height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
                 D3D12_RESOURCE_STATE_DEPTH_WRITE,
                 &depthClearValue,
                 IID_PPV_ARGS(&depthStencil)

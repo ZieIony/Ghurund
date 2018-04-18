@@ -10,9 +10,9 @@
 namespace Ghurund {
     class Material:public Resource {
     private:
-        Shader shader;
-        Image image;
-        Texture texture;
+        shared_ptr<Shader> shader;
+        shared_ptr<Image> image;
+        shared_ptr<Texture> texture;
 
     protected:
         virtual bool isVersioned()const {
@@ -23,19 +23,35 @@ namespace Ghurund {
             return 0;
         }
 
-        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
 
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const;
+
+        virtual void clean() {
+            shader.reset();
+            image.reset();
+            texture.reset();
+        }
 
     public:
 
         void set(ID3D12GraphicsCommandList *commandList) {
-            shader.set(commandList);
+            shader->set(commandList);
 
-            ID3D12DescriptorHeap* descriptorHeaps[] = {texture.srvHeap.Get()};
+            ID3D12DescriptorHeap* descriptorHeaps[] = {texture->srvHeap.Get()};
             commandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
 
-            commandList->SetGraphicsRootDescriptorTable(1, texture.srvHeap->GetGPUDescriptorHandleForHeapStart());
+            commandList->SetGraphicsRootDescriptorTable(1, texture->srvHeap->GetGPUDescriptorHandleForHeapStart());
         }
+
+        shared_ptr<Shader> getShader() {
+            return shader;
+        }
+
+        void setShader(shared_ptr<Shader> shader) {
+            this->shader = shader;
+        }
+
+        __declspec(property(get = getShader, put = setShader)) shared_ptr<Shader> Shader;
     };
 }

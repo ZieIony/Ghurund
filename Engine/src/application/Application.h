@@ -129,5 +129,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getLevelManager)) LevelManager &LevelManager;
+
+        inline Renderer &getRenderer() {
+            return renderer;
+        }
+
+        __declspec(property(get = getRenderer)) Renderer &Renderer;
     };
 }

@@ -10,10 +10,10 @@ namespace Ghurund {
     public:
         shared_ptr<Scene> scene;
 
-        void draw(Renderer &renderer) {
+        void draw(Renderer &renderer, ParameterManager &parameterManager) {
             shared_ptr<CommandList> commandList = renderer.startFrame();
             if(scene!=nullptr)
-                scene->draw(commandList);
+                scene->draw(commandList, parameterManager);
             renderer.finishFrame();
         }
     };
@@ -40,8 +40,8 @@ namespace Ghurund {
 
         }
 
-        void draw(Renderer &renderer) {
-            getCurrentLevel()->draw(renderer);
+        void draw(Renderer &renderer, ParameterManager &parameterManager) {
+            getCurrentLevel()->draw(renderer, parameterManager);
         }
     };
 }

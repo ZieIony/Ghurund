@@ -97,23 +97,14 @@ namespace Ghurund {
 
         bool imageConverted = false;
 
-        // load a decoder for the image
-        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromFilename(
-            filename,                        // Image we want to load in
-            nullptr,                            // This is a vendor ID, we do not prefer a specific one so set to null
-            GENERIC_READ,                    // We want to read from this file
-            WICDecodeMetadataCacheOnLoad,    // We will cache the metadata right away, rather than when needed, which might be unknown
-            &wicDecoder                      // the wic decoder to be created
-            ))) {
+        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromFilename(filename,nullptr,GENERIC_READ,WICDecodeMetadataCacheOnLoad,&wicDecoder))) {
             Logger::log(_T("Failed to create decoder for %s\n"), filename);
             return Status::CALL_FAIL;
         }
 
-        // get image from decoder (this will decode the "frame")
         if(FAILED(wicDecoder->GetFrame(0, &wicFrame)))
             return Status::CALL_FAIL;
 
-        // get wic pixel format of image
         WICPixelFormatGUID pixelFormat;
         if(FAILED(wicFrame->GetPixelFormat(&pixelFormat)))
             return Status::CALL_FAIL;

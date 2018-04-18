@@ -8,7 +8,6 @@ namespace Ghurund{
         D3D12_STATIC_SAMPLER_DESC samplerDesc = {};
         
         Sampler(const char *name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility):ShaderConstant(name, bindPoint, visibility) {
-            // create a static sampler
             samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_POINT;
             samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
             samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;

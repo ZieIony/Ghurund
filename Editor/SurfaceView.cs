@@ -31,8 +31,8 @@ namespace Ghurund.Editor {
             if (!this.IsInDesignMode()) {
                 window = new Window();
                 window.init(Handle);
-                graphics = new Graphics();
-                graphics.init();
+                //graphics = new Graphics();
+                //graphics.init();
                 renderer = new Renderer();
                 renderer.init(graphics, window);
             }

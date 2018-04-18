@@ -60,8 +60,10 @@ namespace Ghurund {
         D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
         psoDesc.InputLayout = getInputLayout();
         psoDesc.pRootSignature = rootSignature.Get();
-        psoDesc.VS = programs[0]->getByteCode();
-        psoDesc.PS = programs[1]->getByteCode();
+        psoDesc.VS.pShaderBytecode = programs[0]->byteCode;
+        psoDesc.VS.BytecodeLength = programs[0]->byteCodeLength;
+        psoDesc.PS.pShaderBytecode = programs[1]->byteCode;
+        psoDesc.PS.BytecodeLength = programs[1]->byteCodeLength;
         psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
         psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
         psoDesc.DepthStencilState.DepthEnable = FALSE;
@@ -83,7 +85,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::compile(char **outErrorMessages = nullptr) {
+    Status Shader::compile(char **outErrorMessages) {
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
         ASCIIString errors;
         for(unsigned int i = 0; i<6; i++) {
@@ -102,8 +104,8 @@ namespace Ghurund {
         }
         if(errors.Length>0&&outErrorMessages!=nullptr)
             *outErrorMessages = copyStrA(errors.getData());
-        compiled = errors.Length>0;
-        return compiled ? Status::CALL_FAIL : Status::OK;
+        compiled = errors.Length==0;
+        return compiled ? Status::OK : Status::COMPILATION_ERROR;
     }
 
     Status Shader::ShaderProgram::compile(const char *code, char **outErrorMessages) {
@@ -117,6 +119,7 @@ namespace Ghurund {
         const char *targetText = makeCompilationTarget();
         ID3DBlob *errorBlob;
         Status result;
+        ComPtr<ID3DBlob> shader;
         if(FAILED(D3DCompile(code, strlen(code), nullptr, nullptr, nullptr, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob))) {
             if(errorBlob==nullptr) {
                 Logger::log(_T("Unknown error while compiling shader\n"));
@@ -130,7 +133,9 @@ namespace Ghurund {
             }
             result = Status::COMPILATION_ERROR;
         } else {
-            byteCode = CD3DX12_SHADER_BYTECODE(shader.Get());
+            byteCode = ghnew BYTE[shader->GetBufferSize()];
+            byteCodeLength = shader->GetBufferSize();
+            memcpy(byteCode, shader->GetBufferPointer(), byteCodeLength);
             result = Status::OK;
         }
 
@@ -165,7 +170,7 @@ namespace Ghurund {
 
     D3D12_INPUT_LAYOUT_DESC Shader::ShaderProgram::getInputLayout() {
         ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(shader->GetBufferPointer(), shader->GetBufferSize(), IID_ID3D12ShaderReflection, (void**)&reflector);
+        D3DReflect(byteCode, byteCodeLength, IID_ID3D12ShaderReflection, (void**)&reflector);
         D3D12_SHADER_DESC desc;
         reflector->GetDesc(&desc);
 
@@ -198,7 +203,7 @@ namespace Ghurund {
 
     void Shader::initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program) {
         ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(program.shader->GetBufferPointer(), program.shader->GetBufferSize(), IID_ID3D12ShaderReflection, (void**)&reflector);
+        D3DReflect(program.byteCode, program.byteCodeLength, IID_ID3D12ShaderReflection, (void**)&reflector);
         D3D12_SHADER_DESC desc;
         reflector->GetDesc(&desc);
 
@@ -212,7 +217,7 @@ namespace Ghurund {
                         ID3D12ShaderReflectionConstantBuffer *constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
-                        ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getVisibilty());
+                        ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.type.getVisibility());
                         cb->initParameters(parameterManager);
                         constantBuffers.add(cb);
                     }
@@ -222,14 +227,14 @@ namespace Ghurund {
                         ID3D12ShaderReflectionConstantBuffer *constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
-                        textureBuffers.add(ghnew TextureBufferConstant(constantBuffer, bufferDesc, bindDesc.BindPoint, program.getVisibilty()));
+                        textureBuffers.add(ghnew TextureBufferConstant(constantBuffer, bufferDesc, bindDesc.BindPoint, program.type.getVisibility()));
                     }
                     break;
                 case D3D_SIT_TEXTURE:
-                    textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, program.getVisibilty()));
+                    textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, program.type.getVisibility()));
                     break;
                 case D3D_SIT_SAMPLER:
-                    samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, program.getVisibilty()));
+                    samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, program.type.getVisibility()));
                     break;
             }
         }
@@ -250,10 +255,10 @@ namespace Ghurund {
                     CompilationTarget target = targets[stream.readInt()];
                     programs[i] = ghnew ShaderProgram(types[i], entryPoint, target);
                     size_t length = stream.readUInt();
-                    programs[i]->byteCode.BytecodeLength = length;
+                    programs[i]->byteCodeLength = length;
                     void *byteCode = ghnew BYTE[length];
                     memcpy(byteCode, stream.readBytes(length), length);
-                    programs[i]->byteCode.pShaderBytecode = byteCode;
+                    programs[i]->byteCode = byteCode;
                 }
             }
             Graphics &graphics = resourceManager.Graphics;
@@ -283,9 +288,8 @@ namespace Ghurund {
                     for(size_t j = 0; j<1; j++)
                         if(programs[i]->getCompilationTarget()==targets[j])
                             stream.writeInt(j);
-                    auto byteCode = programs[i]->getByteCode();
-                    stream.writeUInt(byteCode.BytecodeLength);
-                    stream.writeBytes(byteCode.pShaderBytecode, byteCode.BytecodeLength);
+                    stream.writeUInt(programs[i]->byteCodeLength);
+                    stream.writeBytes(programs[i]->byteCode, programs[i]->byteCodeLength);
                 }
             }
         }

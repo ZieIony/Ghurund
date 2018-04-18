@@ -16,26 +16,19 @@ namespace Ghurund {
 
         friend class Parameter;
 
-        inline void lock() {
+        void lock() {
             section.enter();
         }
 
-        inline void unlock() {
+        void unlock() {
             section.leave();
         }
 
     public:
         ParameterManager() {
-            unsigned int emptyUint;
-            XMFLOAT4 emptyColor;
-            float emptyFloat;
+            add(Parameter::PARTY_COLOR, sizeof(float));
 
-            add(Parameter::WINDOW_WIDTH, &emptyUint, sizeof(emptyUint));
-            add(Parameter::WINDOW_HEIGHT, &emptyUint, sizeof(emptyUint));
-
-            add(Parameter::PARTY_COLOR, &emptyColor, sizeof(emptyColor));
-
-            add(Parameter::RANDOM, &emptyFloat, sizeof(emptyFloat));
+            add(Parameter::RANDOM, sizeof(float));
         }
 
         ~ParameterManager() {
@@ -43,8 +36,10 @@ namespace Ghurund {
                 delete parameters.getValue(i);
         }
 
-        Parameter *add(const ASCIIString &name, const void *value, size_t size) {
-            Parameter *parameter = ghnew Parameter(name, value, size);
+        Parameter *add(const ASCIIString &name, size_t size) {
+            if(parameters.contains(name))
+                return parameters.get(name);
+            Parameter *parameter = ghnew Parameter(name, size);
             parameter->manager = this;
             parameter->index = parameters.Size;
             parameters.set(name, parameter);
@@ -63,9 +58,5 @@ namespace Ghurund {
             return parameters.getValue(index);
         }
 
-        /*void flip() {
-            section.enter();
-            section.leave();
-        }*/
     };
 }

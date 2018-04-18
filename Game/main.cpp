@@ -62,10 +62,31 @@ private:
 
 public:
     void init() {
+        Material material;
+        material.FileName = String(_T("material.mtr"));
+        shared_ptr<Shader> shader(ghnew Shader());
+        material.Shader = shader;
+        shader->FileName = _T("shader.shd");
+        File file(_T("shader.vs.hlsl"));
+        file.read();
+        ASCIIString sourceCode;
+        sourceCode.add((const char *)file.Data, file.Size);
+        shader->setSourceCode(sourceCode.getData());
+        shader->compile();
+        shader->save(ResourceManager);
+        material.save(ResourceManager);
+
         XMFLOAT4 value = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-        parameter = ParameterManager.add("globalColor", &value, sizeof(value));
+        parameter = ParameterManager.add("globalColor", sizeof(value));
+        parameter->setValue(&value);
+
+        shared_ptr<Scene> scene(ghnew Ghurund::Scene());
         Level *testLevel = ghnew Level();
-        testLevel->scene = shared_ptr<Ghurund::Scene>(ghnew Ghurund::Scene());
+        testLevel->scene = scene;
+        shared_ptr<Camera> camera(ghnew Camera());
+        camera->initParameters(ParameterManager);
+        scene->addCamera(camera);
+
         model = shared_ptr<Model>(ghnew Model());
         shared_ptr<CommandList> commandList = ResourceManager.getCommandList();
         commandList->reset();
@@ -73,6 +94,7 @@ public:
             testLevel->scene->addModel(model);
         }
         commandList->finish();
+
         LevelManager.changeLevel(testLevel);
     }
 
@@ -82,14 +104,6 @@ public:
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    /*Material material;
-    material.FileName = String(_T("material.mtr"));
-    material.vs.reset(ghnew Shader());
-    material.vs->FileName = String(_T("shader.vs.hlsl"));
-    material.ps.reset(ghnew Shader());
-    material.ps->FileName = String(_T("shader.ps.hlsl"));
-    material.save(shared_ptr<ResourceManager>(nullptr));*/
-
     Logger::init(LogOutput::CUSTOM_CONSOLE);
 
     {

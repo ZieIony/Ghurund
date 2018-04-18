@@ -2,6 +2,7 @@
 
 #include "Ghurund.h"
 #include "Logger.h"
+#include <algorithm>
 
 namespace Ghurund {
     class MemoryStream {

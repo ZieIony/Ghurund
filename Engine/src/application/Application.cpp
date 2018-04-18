@@ -11,6 +11,7 @@ namespace Ghurund {
         resourceManager = ghnew Ghurund::ResourceManager(*graphics, *parameterManager);
 
         window.init(settings, *windowProc);
+        window.initParameters(ParameterManager);
         renderer.init(*graphics, window);
 
         client = ghnew Ghurund::Client(windowProc->FunctionQueue);
@@ -25,7 +26,6 @@ namespace Ghurund {
         delete parameterManager;
         delete resourceManager;
         delete graphics;
-        renderer.uninit();
         window.uninit();
     }
 
@@ -115,7 +115,7 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        levelManager.draw(renderer);
+        levelManager.draw(renderer, *parameterManager);
 
         return true;
     }

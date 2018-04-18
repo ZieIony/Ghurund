@@ -12,8 +12,16 @@ namespace Ghurund {
         SwapChain *swapChain;
 
     public:
-        Status init(Graphics &graphics, Window &window) {
+        Renderer() {
             swapChain = ghnew SwapChain();
+        }
+
+        ~Renderer() {
+            delete swapChain;
+            swapChain = nullptr;
+        }
+
+        Status init(Graphics &graphics, Window &window) {
             Status result = swapChain->init(graphics, window, FRAME_COUNT);
             if(result!=Status::OK)
                 return result;
@@ -31,11 +39,8 @@ namespace Ghurund {
             swapChain->finishFrame();
         }
 
-        Status uninit() {
-            delete swapChain;
-            swapChain = nullptr;
-
-            return Status::OK;
+        void resize(Graphics &graphics, unsigned int width, unsigned int height) {
+            swapChain->resize(graphics, width, height);
         }
     };
 }

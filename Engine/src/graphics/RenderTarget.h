@@ -2,6 +2,7 @@
 
 #include "application/Window.h"
 #include "Frame.h"
+#include "core/NamedObject.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -10,13 +11,19 @@
 using namespace std;
 
 namespace Ghurund {
-    class RenderTarget {
+    class RenderTarget: public NamedObject {
     private:
         ComPtr<ID3D12DescriptorHeap> rtvHeap;
         ComPtr<ID3D12Resource> renderTarget;
         D3D12_CPU_DESCRIPTOR_HANDLE handle;
 
     public:
+        RenderTarget() {
+#ifdef _DEBUG
+            Name = _T("unnamed RenderTarget");
+#endif
+        }
+
         Status init(Graphics &graphics, ComPtr<ID3D12Resource> renderTarget) {
             D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
             rtvHeapDesc.NumDescriptors = 1;
@@ -51,5 +58,9 @@ namespace Ghurund {
             commandList->get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTarget.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
         }
 
+        virtual void setName(const String &name) override {
+            NamedObject::setName(name);
+            renderTarget->SetName(name.getData());
+        }
     };
 }

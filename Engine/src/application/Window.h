@@ -4,9 +4,11 @@
 #include "Settings.h"
 #include "WindowProc.h"
 #include "d3dx12.h"
+#include "game/ParameterProvider.h"
+#include "core/NamedObject.h"
 
 namespace Ghurund {
-    class Window {
+    class Window: public ParameterProvider, public NamedObject {
     private:
         static const tchar *DEFAULT_WINDOW_TITLE;
         static const tchar *WINDOW_CLASS_NAME;
@@ -20,9 +22,23 @@ namespace Ghurund {
         D3D12_RECT scissorRect;
         unsigned int width, height;
 
+        Parameter *widthParameter, *heightParameter;
+
     public:
 
-        Window() = default;
+        Window() {
+            Name = _T("window");
+        }
+
+        virtual void initParameters(ParameterManager &parameterManager) override {
+            widthParameter = parameterManager.add(Name+Parameter::WIDTH, sizeof(width));
+            heightParameter = parameterManager.add(Name+Parameter::HEIGHT, sizeof(height));
+        }
+
+        virtual void fillParameters() override {
+            widthParameter->setValue(&width);
+            heightParameter->setValue(&height);
+        }
 
         void init(HWND handle);
         void init(Settings &settings, WindowProc &windowProc);
@@ -30,7 +46,7 @@ namespace Ghurund {
         void uninit();
 
         /**
-        * Ustawia tekst na pasku tytulu okna. Jesli podana zostanie wartosc null, ustawiony zostanie domyslny tytul 'Application'.
+        * Ustawia tekst na pasku tytulu okna. Jesli podana zostanie wartosc null, ustawiony zostanie domyslny tytul 'Ghurund'.
         * @param title tytul okna
         */
         inline void setTitle(const tchar *title) {
@@ -80,5 +96,9 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getHeight)) unsigned int Height;
+
+        void updateSize();
+
+        void setSize(unsigned int width, unsigned int height);
     };
 }

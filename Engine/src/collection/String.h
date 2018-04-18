@@ -145,10 +145,107 @@ namespace Ghurund {
         bool operator==(const GenericString &string) const {
             return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, size*sizeof(Type))==0;
         }
+
+        GenericString<Type> &operator+(const Type *str) {
+            add(str);
+            return *this;
+        }
+
+        GenericString<Type> &operator+(const GenericString<Type> &string) {
+            add(string.getData());
+            return *this;
+        }
     };
 
-    typedef GenericString<wchar_t> UnicodeString;
-    typedef GenericString<char> ASCIIString;
+    class UnicodeString: public GenericString<wchar_t> {
+    public:
+        using GenericString<wchar_t>::GenericString;
+
+        UnicodeString() {}
+
+        UnicodeString(const char *str) {
+            add(str);
+        }
+
+        UnicodeString(const char *str, size_t length) {
+            add(str, length);
+        }
+
+        UnicodeString(const GenericString<char> &string) {
+            add(string.getData());
+        }
+
+        using GenericString<wchar_t>::add;
+
+        inline void add(const char *str) {
+            wchar_t *wstr = toWideChar(str);
+            add(wstr);
+            delete[] wstr;
+        }
+
+        inline void add(const char *str, size_t len) {
+            wchar_t *wstr = toWideChar(str);
+            add(wstr, len);
+            delete[] wstr;
+        }
+
+        using GenericString<wchar_t>::operator+;
+
+        GenericString<wchar_t> &operator+(const char *str) {
+            add(str);
+            return *this;
+        }
+
+        GenericString<wchar_t> &operator+(const GenericString<char> &string) {
+            add(string.getData());
+            return *this;
+        }
+    };
+
+    class ASCIIString: public GenericString<char> {
+    public:
+        using GenericString<char>::GenericString;
+
+        ASCIIString() {}
+
+        ASCIIString(const wchar_t *str) {
+            add(str);
+        }
+
+        ASCIIString(const wchar_t *str, size_t length) {
+            add(str, length);
+        }
+
+        ASCIIString(const GenericString<wchar_t> &string) {
+            add(string.getData());
+        }
+
+        using GenericString<char>::add;
+
+        inline void add(const wchar_t *str) {
+            char *cstr = toMultiByte(str);
+            add(cstr);
+            delete[] cstr;
+        }
+
+        inline void add(const wchar_t *str, size_t len) {
+            char *cstr = toMultiByte(str);
+            add(cstr, len);
+            delete[] cstr;
+        }
+
+        using GenericString<char>::operator+;
+
+        GenericString<char> &operator+(const wchar_t *str) {
+            add(str);
+            return *this;
+        }
+
+        GenericString<char> &operator+(const GenericString<wchar_t> &string) {
+            add(string.getData());
+            return *this;
+        }
+    };
 
 #ifdef UNICODE
     typedef UnicodeString String;

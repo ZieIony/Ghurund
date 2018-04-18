@@ -6,6 +6,9 @@
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#include "collection/List.h"
+#include "core/Logger.h"
+#include "Adapter.h"
 
 #include <wrl.h>
 
@@ -19,9 +22,36 @@ namespace Ghurund {
         ComPtr<ID3D12CommandQueue> commandQueue;
         ComPtr<IDXGIFactory4> factory;
 
-        bool software = false;
-        
+        List<Adapter*> adapters;
+
+        Status initAdapters() {
+            ComPtr<IDXGIAdapter1> adapter;
+
+            unsigned int adapterIndex = 0;
+            while(true){
+                if(DXGI_ERROR_NOT_FOUND == factory->EnumAdapters1(adapterIndex, &adapter))
+                    break;
+
+                adapters.add(ghnew Adapter(adapter));
+                adapterIndex++;
+            }
+
+            if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)))) {
+                Logger::log(_T("factory->EnumWarpAdapter() failed\n"));
+                return Status::CALL_FAIL;
+            }
+
+            adapters.add(ghnew Adapter(adapter));
+
+            return adapters.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
+        }
+
     public:
+
+        ~Graphics() {
+            for(unsigned int i = 0; i<adapters.Size; i++)
+                delete adapters[i];
+        }
 
         Status init();
 
@@ -35,6 +65,10 @@ namespace Ghurund {
 
         ComPtr<IDXGIFactory4> &getFactory() {
             return factory;
+        }
+
+        List<Adapter*> &getAdapters() {
+            return adapters;
         }
     };
 }

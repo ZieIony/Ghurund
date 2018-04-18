@@ -146,8 +146,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\ParameterManager.cpp" />
+    <ClCompile Include="src\graphics\Adapter.cpp" />
+    <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
+    <ClInclude Include="src\Float3.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -155,6 +159,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="NativeDll.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
+    <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />

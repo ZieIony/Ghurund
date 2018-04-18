@@ -52,6 +52,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Xml.Linq" />
@@ -65,11 +66,85 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control\Outline\EntityTreeNode.cs" />
+    <Compile Include="Control\Outline\OutlinePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\Outline\OutlinePanel.Designer.cs">
+      <DependentUpon>OutlinePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\Outline\SelectionChangedEventArgs.cs" />
+    <Compile Include="Control\SystemButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Control\TextEditor\CaretMoveModification.cs" />
     <Compile Include="Control\TextEditor\DeleteWordModification.cs" />
     <Compile Include="Control\TextEditor\InsertWordModification.cs" />
     <Compile Include="Control\TextEditor\ShaderTextBox.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\TransparentPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\VerticalButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\ChildDockPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\ChildDockPanel.Designer.cs">
+      <DependentUpon>ChildDockPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\CollapsedPagesContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\CollapsedPagesContainer.Designer.cs">
+      <DependentUpon>CollapsedPagesContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\DockableTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockableTabControl.designer.cs">
+      <DependentUpon>DockableTabControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\DockableTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\DockableTabPage.Designer.cs">
+      <DependentUpon>DockableTabPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\DockableWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Docking\DockableWindow.Designer.cs">
+      <DependentUpon>DockableWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\DockSide.cs" />
+    <Compile Include="Docking\DockSpot.cs" />
+    <Compile Include="Docking\HighlightPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Docking\HighlightPanel.Designer.cs">
+      <DependentUpon>HighlightPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\IDockContainer.cs" />
+    <Compile Include="Docking\PeekPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Docking\ResizeGrip.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\RootDockPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\RootDockPanel.Designer.cs">
+      <DependentUpon>RootDockPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Docking\TitleBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Docking\TitleBar.Designer.cs">
+      <DependentUpon>TitleBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Editor\BaseEditor.cs">
       <SubType>UserControl</SubType>
@@ -86,6 +161,12 @@
     </Compile>
     <Compile Include="Editor\Launcher\LauncherEditor.Designer.cs">
       <DependentUpon>LauncherEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GraphicsSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GraphicsSettings.Designer.cs">
+      <DependentUpon>GraphicsSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
@@ -127,12 +208,40 @@
     <Compile Include="SurfaceView.Designer.cs">
       <DependentUpon>SurfaceView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utils\ActiveCollections.cs" />
     <Compile Include="Utils\Extensions.cs" />
+    <EmbeddedResource Include="Control\Outline\OutlinePanel.resx">
+      <DependentUpon>OutlinePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\ChildDockPanel.resx">
+      <DependentUpon>ChildDockPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\CollapsedPagesContainer.resx">
+      <DependentUpon>CollapsedPagesContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\DockableTabPage.resx">
+      <DependentUpon>DockableTabPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\DockableWindow.resx">
+      <DependentUpon>DockableWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\HighlightPanel.resx">
+      <DependentUpon>HighlightPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\RootDockPanel.resx">
+      <DependentUpon>RootDockPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Docking\TitleBar.resx">
+      <DependentUpon>TitleBar.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Editor\EditorWindow.resx">
       <DependentUpon>EditorWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor\Launcher\LauncherEditor.resx">
       <DependentUpon>LauncherEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GraphicsSettings.resx">
+      <DependentUpon>GraphicsSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>

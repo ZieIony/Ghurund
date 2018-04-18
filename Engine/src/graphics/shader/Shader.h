@@ -8,6 +8,7 @@
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
 #include "ShaderType.h"
+#include "resource/ResourceManager.h"
 
 #include <d3d12.h>
 #include <D3Dcompiler.h>
@@ -25,14 +26,13 @@ namespace Ghurund {
     class Shader:public Resource {
     private:
         struct ShaderProgram {
-            ComPtr<ID3DBlob> shader;
-            CD3DX12_SHADER_BYTECODE byteCode;
+            void *byteCode;
+            unsigned int byteCodeLength;
             char *entryPoint = nullptr;
-            ShaderType type;
+            ShaderType &type;
             CompilationTarget target;
 
-            ShaderProgram(ShaderType type, const char *entryPoint = nullptr, CompilationTarget target = CompilationTarget::SHADER_5_0) {
-                this->type = type;
+			ShaderProgram(ShaderType &type, const char *entryPoint = nullptr, CompilationTarget target = CompilationTarget::SHADER_5_0) : type(type) {
                 setEntryPoint(entryPoint);
                 setCompilationTarget(target);
             }
@@ -43,26 +43,8 @@ namespace Ghurund {
 
             Status compile(const char *code, char **outErrorMessages);
 
-            static const char *getDefaultEntryPoint(ShaderType type) {
-                switch(type) {
-                    case ShaderType::VS:
-                        return "vertexMain";
-                    case ShaderType::PS:
-                        return "pixelMain";
-                    case ShaderType::GS:
-                        return "geometryMain";
-                    case ShaderType::HS:
-                        return "hullMain";
-                    case ShaderType::DS:
-                        return "domainMain";
-                        //case ShaderType::CS:
-                    default:
-                        return "computeMain";
-                }
-            }
-
             const char *makeCompilationTarget() {
-                const char *targetText;
+                const char *targetText = nullptr;
                 switch(target) {
                     case CompilationTarget::SHADER_5_0:
                         targetText = "5_0";
@@ -70,31 +52,13 @@ namespace Ghurund {
                 }
                 const char *typeText = type.toString();
                 char *text = ghnew char[10];;
-                sprintf_s(text, 10, "%s_%s", targetText, typeText);
+                sprintf_s(text, 10, "%s_%s", typeText, targetText);
                 return text;
-            }
-
-            D3D12_SHADER_VISIBILITY getVisibilty() {
-                switch(type) {
-                    case ShaderType::VS:
-                        return D3D12_SHADER_VISIBILITY_VERTEX;
-                    case ShaderType::PS:
-                        return D3D12_SHADER_VISIBILITY_PIXEL;
-                    case ShaderType::GS:
-                        return D3D12_SHADER_VISIBILITY_GEOMETRY;
-                    case ShaderType::HS:
-                        return D3D12_SHADER_VISIBILITY_HULL;
-                    case ShaderType::DS:
-                        return D3D12_SHADER_VISIBILITY_DOMAIN;
-                        //case ShaderType::CS:
-                    default:
-                        return D3D12_SHADER_VISIBILITY_ALL;
-                }
             }
 
             void setEntryPoint(const char *entryPoint) {
                 if(entryPoint == nullptr) {
-                    safeCopyStrA(&this->entryPoint, getDefaultEntryPoint(type));
+                    safeCopyStrA(&this->entryPoint, type.getEntryPoint());
                 } else {
                     safeCopyStrA(&this->entryPoint, entryPoint);
                 }
@@ -112,14 +76,18 @@ namespace Ghurund {
                 return target;
             }
 
-            CD3DX12_SHADER_BYTECODE &getByteCode() {
+            void *getByteCode() {
                 return byteCode;
+            }
+
+            unsigned int getByteCodeLength() {
+                return byteCodeLength;
             }
 
             D3D12_INPUT_LAYOUT_DESC getInputLayout();
         };
 
-        ShaderProgram *programs[6];
+        ShaderProgram *programs[6] = {};
         ComPtr<ID3D12RootSignature> rootSignature;
         ComPtr<ID3D12PipelineState> pipelineState;
         List<ConstantBuffer*> constantBuffers;
@@ -127,7 +95,7 @@ namespace Ghurund {
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
         unsigned int compileShaders = ShaderType::VS|ShaderType::PS;
-        char *source;
+        char *source = nullptr;
         bool compiled = false;
 
         Status makeRootSignature(Graphics &graphics);
@@ -141,15 +109,11 @@ namespace Ghurund {
             return 1;
         }
 
-        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
 
-        Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const;
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const;
 
-    public:
-
-        Shader() {}
-
-        ~Shader() {
+        virtual void clean() {
             for(size_t i = 0; i<constantBuffers.Size; i++)
                 delete constantBuffers[i];
             for(size_t i = 0; i<textureBuffers.Size; i++)
@@ -160,9 +124,19 @@ namespace Ghurund {
                 delete samplers[i];
             for(size_t i = 0; i<6; i++)
                 delete programs[i];
+            delete[] source;
+            source = nullptr;
         }
 
-        Status compile(char **outErrorMessages);
+    public:
+
+        Shader() {}
+
+        ~Shader() {
+            clean();
+        }
+
+        Status compile(char **outErrorMessages = nullptr);
 
         Status build(ResourceManager &resourceManager, char **outErrorMessages) {
             Status result;
@@ -194,9 +168,13 @@ namespace Ghurund {
             }
         }
 
-        void setSource(const char *source) {
+        void setSourceCode(const char *source) {
             safeCopyStrA(&this->source, source);
             compiled = false;
+        }
+
+        const char *getSourceCode() {
+            return source;
         }
 
         void set(ID3D12GraphicsCommandList *commandList) {

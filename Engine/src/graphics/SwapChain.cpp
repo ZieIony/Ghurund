@@ -3,11 +3,15 @@
 
 namespace Ghurund {
     Status SwapChain::init(Graphics &graphics, Window &window, unsigned int frameCount) {
+        this->frameCount = frameCount;
+        this->format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        this->window = &window;
+
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.BufferCount = frameCount;
         swapChainDesc.Width = window.Width;
         swapChainDesc.Height = window.Height;
-        swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        swapChainDesc.Format = format;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swapChainDesc.SampleDesc.Count = 1;
@@ -23,6 +27,10 @@ namespace Ghurund {
             return Status::CALL_FAIL;
         }
 
+        return initBuffers(graphics);
+    }
+
+    Status SwapChain::initBuffers(Graphics &graphics){
         frames = ghnew Frame[frameCount];
         for(unsigned int i = 0; i < frameCount; i++) {
             ComPtr<ID3D12Resource> renderTargetBuffer;
@@ -32,13 +40,36 @@ namespace Ghurund {
             renderTarget->init(graphics, renderTargetBuffer);
 
             shared_ptr<DepthBuffer> depthBuffer(ghnew DepthBuffer());
-            depthBuffer->init(graphics, window);
+            depthBuffer->init(graphics, window->Width, window->Height);
 
-            frames[i].init(graphics, window, renderTarget, depthBuffer);
+            frames[i].init(graphics, *window, renderTarget, depthBuffer);
         }
 
         frameBuffer.init(frames, frameCount);
 
         return Status::OK;
     }
+
+    void SwapChain::uninitBuffers() {
+        delete[] frames;
+        frames = nullptr;
+    }
+
+    void SwapChain::resize(Graphics & graphics, unsigned int width, unsigned int height) {
+        if(frameBuffer.Size!=0) {
+            shared_ptr<CommandList> commandList = frameBuffer->getCommandList();
+            if(!commandList->Closed) {
+                commandList->get()->OMSetRenderTargets(0, 0, true, 0);
+                commandList->finish();
+            }
+            for(unsigned int i=0;i<frameCount;i++)
+                frames[i].getCommandList()->wait();
+            uninitBuffers();
+        }
+        if(width>0&&height>0) {
+            swapChain->ResizeBuffers(frameCount, width, height, format, 0);
+            initBuffers(graphics);
+        }
+    }
+
 }

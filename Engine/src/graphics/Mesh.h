@@ -45,10 +45,22 @@ namespace Ghurund {
             return 0;
         }
 
+        virtual void clean() {
+            delete[] vertices;
+            vertices = nullptr;
+            delete[] indices;
+            indices = nullptr;
+            vertexBuffer.Reset();
+            vertexBufferView = {};
+            indexBuffer.Reset();
+            indexBufferView = {};
+            vertexUploadHeap.Reset();
+            indexUploadHeap.Reset();
+        }
+
     public:
         ~Mesh() {
-            delete[] vertices;
-            delete[] indices;
+            clean();
         }
 
         Status init(Graphics &graphics, std::shared_ptr<CommandList> commandList);

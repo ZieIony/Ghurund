@@ -36,18 +36,19 @@ extern "C" __declspec(dllexport) const char *Shader_getCompilationTarget(shared_
 
 extern "C" __declspec(dllexport) void Shader_setCompilationTarget(shared_ptr<Shader> *_this, const char *compilationTarget) {
     (*_this)->setCompilationTarget(compilationTarget);
-}
+}*/
 
-/*extern "C" __declspec(dllexport) char *Shader_getSourceCode(shared_ptr<Shader> *_this) {
+extern "C" __declspec(dllexport) char *Shader_getSourceCode(shared_ptr<Shader> *_this) {
     return copyStrA((*_this)->getSourceCode());
 }
 
 extern "C" __declspec(dllexport) void Shader_setSourceCode(shared_ptr<Shader> *_this, const char *sourceCode) {
     (*_this)->setSourceCode(sourceCode);
-}*/
+}
 
 extern "C" __declspec(dllexport) char *Shader_compile(shared_ptr<Shader> *_this, const char *sourceCode) {
     char *errorMessages = nullptr;
-    (*_this)->compile(sourceCode, strlen(sourceCode), &errorMessages);
+    (*_this)->setSourceCode(sourceCode);
+    (*_this)->compile(&errorMessages);
     return errorMessages;
 }

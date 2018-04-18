@@ -10,6 +10,7 @@ namespace Ghurund {
 
         commandList.reset(ghnew CommandList());
         commandList->init(graphics);
+        commandList->Name = _T("frame command list");
 
         return Status::OK;
     }

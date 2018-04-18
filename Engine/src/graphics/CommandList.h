@@ -3,18 +3,27 @@
 #include "Fence.h"
 #include "core/Logger.h"
 #include "Graphics.h"
+#include "core/NamedObject.h"
 
 namespace Ghurund {
-    class CommandList {
+    class CommandList: public NamedObject {
     private:
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
         ComPtr<ID3D12CommandQueue> commandQueue;
+        bool closed;
 
     public:
+        CommandList() {
+#ifdef _DEBUG
+            Name = _T("unnamed CommandList");
+#endif
+        }
+
         ~CommandList() {
-            fence.wait(commandQueue.Get());
+            if(commandQueue!=nullptr)
+                fence.wait(commandQueue.Get());
         }
 
         Status init(Graphics &graphics) {
@@ -42,6 +51,8 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
 
+            closed = true;
+
             return Status::OK;
         }
 
@@ -60,6 +71,8 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
 
+            closed = false;
+
             return Status::OK;
         }
 
@@ -69,6 +82,8 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
 
+            closed = true;
+
             ID3D12CommandList* ppCommandLists[] = {commandList.Get()};
             commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
@@ -77,6 +92,17 @@ namespace Ghurund {
 
         ID3D12GraphicsCommandList *get() {
             return commandList.Get();
+        }
+
+        bool isClosed() {
+            return closed;
+        }
+
+        __declspec(property(get = isClosed)) bool Closed;
+
+        virtual void setName(const String &name) override {
+            NamedObject::setName(name);
+            commandList->SetName(name.getData());
         }
     };
 }

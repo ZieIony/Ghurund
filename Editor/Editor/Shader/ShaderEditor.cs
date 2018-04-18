@@ -4,7 +4,7 @@ using Ghurund.Managed.Resource;
 
 namespace Ghurund.Editor.Shader {
     public partial class ShaderEditor : UserControl, IEditor {
-        public Ghurund.Managed.Shader Shader { get; private set; }
+        public Managed.Shader Shader { get; private set; }
         public ResourceManager resourceManager;
 
         public event EventHandler DocumentChanged;
@@ -20,7 +20,7 @@ namespace Ghurund.Editor.Shader {
                 return Shader;
             }
             set {
-                Shader = (Ghurund.Managed.Shader)value;
+                Shader = (Managed.Shader)value;
             }
         }
 
@@ -30,7 +30,7 @@ namespace Ghurund.Editor.Shader {
         }
 
         public bool load(string fileName) {
-            Shader = new Ghurund.Managed.Shader();
+            Shader = new Managed.Shader();
             bool result = Shader.load(resourceManager, fileName);
             if (result)
                 shaderSourceCodeTextBox.Text = Shader.SourceCode;
@@ -38,7 +38,7 @@ namespace Ghurund.Editor.Shader {
         }
 
         public void newDocument() {
-            Shader = new Ghurund.Managed.Shader();
+            Shader = new Managed.Shader();
         }
 
         private void newToolStripButton_Click(object sender, EventArgs e) => newDocument();

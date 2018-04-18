@@ -25,6 +25,8 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+            this.collapsedPagesContainer1 = new Ghurund.Editor.Docking.CollapsedPagesContainer();
+            this.outlinePanel1 = new Ghurund.Editor.Control.Outline.OutlinePanel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.materialToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,6 +74,8 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -84,6 +88,8 @@
             // 
             // toolStripContainer1.ContentPanel
             // 
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.collapsedPagesContainer1);
+            this.toolStripContainer1.ContentPanel.Controls.Add(this.outlinePanel1);
             resources.ApplyResources(this.toolStripContainer1.ContentPanel, "toolStripContainer1.ContentPanel");
             resources.ApplyResources(this.toolStripContainer1, "toolStripContainer1");
             this.toolStripContainer1.Name = "toolStripContainer1";
@@ -91,6 +97,16 @@
             // toolStripContainer1.TopToolStripPanel
             // 
             this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.toolStrip1);
+            // 
+            // collapsedPagesContainer1
+            // 
+            resources.ApplyResources(this.collapsedPagesContainer1, "collapsedPagesContainer1");
+            this.collapsedPagesContainer1.Name = "collapsedPagesContainer1";
+            // 
+            // outlinePanel1
+            // 
+            resources.ApplyResources(this.outlinePanel1, "outlinePanel1");
+            this.outlinePanel1.Name = "outlinePanel1";
             // 
             // toolStrip1
             // 
@@ -104,7 +120,8 @@
             this.copyToolStripButton,
             this.pasteToolStripButton,
             this.toolStripSeparator7,
-            this.helpToolStripButton});
+            this.helpToolStripButton,
+            this.toolStripButton1});
             this.toolStrip1.Name = "toolStrip1";
             // 
             // newToolStripButton
@@ -385,6 +402,13 @@
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // MainWindow
             // 
             resources.ApplyResources(this, "$this");
@@ -394,6 +418,7 @@
             this.Controls.Add(this.statusStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainWindow";
+            this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
             this.toolStripContainer1.ResumeLayout(false);
@@ -459,6 +484,9 @@
         private System.Windows.Forms.ToolStripMenuItem launcherToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem launcherToolStripMenuItem1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private Ghurund.Editor.Control.Outline.OutlinePanel outlinePanel1;
+        private Docking.CollapsedPagesContainer collapsedPagesContainer1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
     }
 }
 

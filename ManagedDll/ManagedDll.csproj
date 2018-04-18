@@ -32,9 +32,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,7 +46,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharStrMarshaler.cs" />
-    <Compile Include="game\ResourceManager.cs" />
+    <Compile Include="Float3UITypeEditor.cs" />
+    <Compile Include="Float3UITypeEditorControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Float3UITypeEditorControl.Designer.cs">
+      <DependentUpon>Float3UITypeEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Float3.cs" />
+    <Compile Include="Game\Entity.cs" />
+    <Compile Include="Game\ResourceManager.cs" />
+    <Compile Include="Graphics\Adapter.cs" />
+    <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\Light.cs" />
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="PipelineState.cs" />
@@ -59,6 +73,11 @@
     <Compile Include="Window.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WindowSize.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Float3UITypeEditorControl.resx">
+      <DependentUpon>Float3UITypeEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
