@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Ghurund.Editor.ResourceManagerPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+             xmlns:local="clr-namespace:Ghurund.Editor"
+             mc:Ignorable="d" 
+             d:DesignHeight="188.771" d:DesignWidth="325.343">
+	<DockPanel>
+		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource WorkspacePanel.Primary}">
+			<ToolBarPanel  >
+				<Button Click="Button_Click" Background="{x:Null}" BorderBrush="{x:Null}">
+					<Image Source="./Resources/addFolder32.png" Width="16" Height="16"/>
+				</Button>
+			</ToolBarPanel>
+		</WrapPanel>
+		<workspace:SplitPanel>
+			<workspace:SplitPanel.Panel1>
+				<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" SelectedItemChanged="treeView_SelectedItemChanged">
+					<TreeView.Resources>
+						<HierarchicalDataTemplate DataType="{x:Type local:Library}" ItemsSource="{Binding Items}">
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Name}" />
+							</StackPanel>
+						</HierarchicalDataTemplate>
+						<HierarchicalDataTemplate DataType="{x:Type local:ResourceDirectory}" ItemsSource="{Binding Items}">
+							<StackPanel Orientation="Horizontal">
+								<Image Source="./Resources/folder32.png" Width="16" Height="16" Margin="0,0,4,0" />
+								<TextBlock Text="{Binding Name}" />
+							</StackPanel>
+						</HierarchicalDataTemplate>
+					</TreeView.Resources>
+				</TreeView>
+			</workspace:SplitPanel.Panel1>
+			<workspace:SplitPanel.Panel2>
+				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<Image Source="{Binding Thumbnail}" Margin="0,0,4,0" Width="50" Height="50"/>
+								<StackPanel Orientation="Vertical" Width="100" Margin="0,0,4,0">
+									<TextBlock Text="{Binding Name}" />
+									<TextBlock Text="{Binding Size}" />
+									<TextBlock Text="{Binding Modified}" />
+								</StackPanel>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+					<ListView.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel/>
+						</ItemsPanelTemplate>
+					</ListView.ItemsPanel>
+				</ListView>
+			</workspace:SplitPanel.Panel2>
+		</workspace:SplitPanel>
+	</DockPanel>
+</UserControl>

@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma comment(lib, "Shlwapi.lib")
+
 #include "Ghurund.h"
 #include "resource/ResourceManager.h"
 
@@ -15,11 +17,13 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
-    class Image {
+    class Image: public Resource {
     private:
         DXGI_FORMAT dxgiFormat;
         unsigned int width, height, pixelSize;
         BYTE *imageData = nullptr;
+
+        static const List<ResourceFormat> formats;
 
         DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
@@ -27,9 +31,20 @@ namespace Ghurund {
 
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
+    protected:
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
+
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
+            return Status::NOT_IMPLEMENTED;
+        }
+
+        virtual void clean() {
+            delete[] imageData;
+        }
+
     public:
         ~Image() {
-            delete[] imageData;
+            clean();
         }
 
         BYTE *getData() {
@@ -52,6 +67,12 @@ namespace Ghurund {
             return pixelSize;
         }
 
-        Status loadImageDataFromFile(ResourceManager &resourceManager, LPCWSTR filename);
+        virtual const List<ResourceFormat> &getFormats() const override {
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::JPG;
+        }
     };
 }

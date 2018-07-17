@@ -9,10 +9,8 @@ namespace Ghurund.Managed.Graphics {
 
         protected override void newObject() => NativePtr = Light_new();
 
-        private static int index = 0;
+        public Light() { }
 
-        public Light() {
-            Name = "light" + index++;
-        }
+        public Light(IntPtr ptr) : base(ptr) { }
     }
 }

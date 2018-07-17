@@ -3,24 +3,30 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Material::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags) {
+    const List<ResourceFormat> Material::formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
+
+    Status Material::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
         MemoryInputStream stream = MemoryInputStream(data);
 
         shader.reset(ghnew Ghurund::Shader());
-        Status result = shader->load(resourceManager, &String(stream.readString()));
+        Status result = shader->load(resourceManager, stream.readString());
+        if(result!=Status::OK)
+            return result;
 
-        image.reset(ghnew Image());
-        image->loadImageDataFromFile(resourceManager, _T("cow.jpg"));
-        texture.reset(ghnew Texture());
-        texture->init(resourceManager.getGraphics(), resourceManager.getCommandList()->get(), image.get());
-
-        return result;
+		texture.reset(ghnew Ghurund::Texture());
+        return texture->load(resourceManager, stream.readString());
     }
 
-    Status Material::saveInternal(ResourceManager & resourceManager, void ** data, unsigned long * size, unsigned int flags) const {
+    Status Material::saveInternal(ResourceManager & resourceManager, void ** data, unsigned long * size) const {
         MemoryOutputStream stream = MemoryOutputStream(data);
 
-        stream.writeString(shader->FileName.getData());
+        if(shader==nullptr) {
+            Logger::log(_T("Shader cannot be empty\n"));
+            return Status::INV_STATE;
+        }
+
+        stream.writeString(shader->FileName);
+        stream.writeString(texture->FileName);
 
         *size = stream.getBytesWritten();
 

@@ -6,28 +6,31 @@
 #include "game/ParameterProvider.h"
 #include "game/Parameter.h"
 #include "game/Entity.h"
+#include "game/Target.h"
 
 namespace Ghurund {
 
     class Camera: public Entity {
     private:
-        Entity target;
+        Target target;
         XMFLOAT3 dir, right, up;
-        XMFLOAT4X4 view, proj, facing;
-        float2 screenSize;
-        float aspect, fov, zNear, zFar, dist;
+        XMFLOAT4X4 view, proj, viewProj, facing;
+        XMFLOAT2 screenSize;
+        float fov, zNear, zFar, dist;
         bool pers;
 
-        Parameter *parameterDirection,*parameterTarget;
+        Parameter *parameterDirection;
         Parameter *parameterUp,*parameterRight;
         Parameter *parameterFov;
         Parameter *parameterZNear,*parameterZFar;
-        Parameter *parameterView,*parameterProjection;
+        Parameter *parameterView, *parameterProjection, *parameterViewProjection;
+
+        static const List<ResourceFormat> formats;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const;
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
 
         virtual void clean() {}
 
@@ -35,29 +38,13 @@ namespace Ghurund {
 
         Camera();
 
-        virtual void initParameters(ParameterManager &parameterManager) {
-            parameterDirection = parameterManager.add(Name+Parameter::DIRECTION, sizeof(dir));
-            parameterTarget = parameterManager.add(Name+Parameter::TARGET, sizeof(target));
-            parameterUp = parameterManager.add(Name+Parameter::UP, sizeof(up));
-            parameterRight = parameterManager.add(Name+Parameter::RIGHT, sizeof(right));
-            parameterFov = parameterManager.add(Name+Parameter::FOV, sizeof(fov));
-            parameterZNear = parameterManager.add(Name+Parameter::ZNEAR, sizeof(zNear));
-            parameterZFar = parameterManager.add(Name+Parameter::ZFAR, sizeof(zFar));
-            parameterView = parameterManager.add(Name+Parameter::VIEW, sizeof(view));
-            parameterProjection = parameterManager.add(Name+Parameter::PROJECTION, sizeof(proj));
+        virtual EntityType getType() const override {
+            return EntityType::CAMERA;
         }
 
-        virtual void fillParameters() {
-            parameterDirection->setValue(&dir);
-            parameterTarget->setValue(&target);
-            parameterUp->setValue(&up);
-            parameterRight->setValue(&right);
-            parameterFov->setValue(&fov);
-            parameterZNear->setValue(&zNear);
-            parameterZFar->setValue(&zFar);
-            parameterView->setValue(&view);
-            parameterProjection->setValue(&proj);
-        }
+        virtual void initParameters(ParameterManager &parameterManager);
+
+        virtual void fillParameters();
 
         void rebuild();
 
@@ -83,18 +70,16 @@ namespace Ghurund {
         __declspec(property(get = getDirection)) XMFLOAT3 &Direction;
 
 
-        inline const float2 &getScreenSize()const {
+        inline const XMFLOAT2 &getScreenSize()const {
             return screenSize;
         }
 
-        inline void setScreenSize(const float2 &screenSize) {
+        inline void setScreenSize(const XMFLOAT2 &screenSize) {
             this->screenSize = screenSize;
-            aspect = screenSize.x/screenSize.y;
         }
 
         inline void setScreenSize(unsigned int w, unsigned int h) {
-            screenSize = float2((float)w, (float)h);
-            aspect = (float)w/(float)h;
+            screenSize = XMFLOAT2((float)w, (float)h);
         }
 
         inline unsigned int getWidth() const {
@@ -103,7 +88,6 @@ namespace Ghurund {
 
         inline void setWidth(unsigned int val) {
             screenSize.x = (float)val;
-            aspect = (float)val/(float)screenSize.y;
         }
 
         inline unsigned int getHeight() const {
@@ -112,11 +96,10 @@ namespace Ghurund {
 
         inline void setHeight(unsigned int val) {
             screenSize.y = (float)val;
-            aspect = (float)screenSize.x/(float)val;
         }
 
         inline float getAspect()const {
-            return aspect;
+            return screenSize.x/screenSize.y;
         }
 
         inline const XMFLOAT4X4 *getView()const {
@@ -131,57 +114,13 @@ namespace Ghurund {
             return &facing;
         }
 
-        inline void setPositionTargetUp(XMFLOAT3 &pos, XMFLOAT3 &target, XMFLOAT3 &up) {
-            /*Position = pos;
-            
-            this->target = target;
-            XMVECTOR dv = XMLoadFloat3(&target)-XMLoadFloat3(&pos);
-            
-            XMStoreFloat(&dist, XMVector3Length(dv));
-            XMVECTOR uv = XMLoadFloat3(&up);
-            XMStoreFloat3(&dir, XMVector3Normalize(dv));
-            XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
-            XMStoreFloat3(&right, rv);
-            uv = XMVector3Normalize(XMVector3Cross(rv, dv));
-            XMStoreFloat3(&this->up, uv);*/
-        }
+        void setPositionTargetUp(XMFLOAT3 &pos, XMFLOAT3 &target, XMFLOAT3 &up);
 
-        inline void setPositionDirectionUp(XMFLOAT3 &pos, XMFLOAT3 &dir, XMFLOAT3 &up) {
-            /*Position = pos;
-            
-            XMVECTOR dv = XMLoadFloat3(&dir);
-            XMStoreFloat3(&target, XMLoadFloat3(&pos)+dv);
-            
-            XMStoreFloat(&dist, XMVector3Length(dv));
-            XMVECTOR uv = XMLoadFloat3(&up);
-            XMStoreFloat3(&dir, XMVector3Normalize(dv));
-            XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
-            XMStoreFloat3(&right, rv);
-            uv = XMVector3Normalize(XMVector3Cross(rv, dv));
-            XMStoreFloat3(&this->up, uv);*/
-        }
+        void setPositionDirectionUp(XMFLOAT3 &pos, XMFLOAT3 &dir, XMFLOAT3 &up);
 
-        inline void setViewYawPitchRoll(float yaw, float pitch, float roll) {
-            /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-            XMVECTOR dv = XMVectorSet(0, 0, dist==0?-1:-dist, 0);
-            dv = XMVector3Transform(dv, rotation);
-            XMStoreFloat3(&target, XMLoadFloat3(&Position)+dv);
-			XMStoreFloat3(&dir, XMVector4Normalize(dv));
-            XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-            XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
-        }
+        void setViewYawPitchRoll(float yaw, float pitch, float roll);
 
-        inline void setOrbitYawPitchRoll(float yaw, float pitch, float roll) {
-            /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-            XMVECTOR dv = XMVectorSet(0, 0, dist==0 ? -1 : -dist, 0);
-            dv = XMVector3Transform(dv, rotation);
-            XMFLOAT3 pos;
-            XMStoreFloat3(&pos, XMLoadFloat3(&target)-dv);
-            Position = pos;
-            XMStoreFloat3(&dir, XMVector4Normalize(dv));
-            XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-            XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
-        }
+        void setOrbitYawPitchRoll(float yaw, float pitch, float roll);
 
         /**
         * Testuje sfer? z bry?? widzenia kamery. Kamera musi zosta?
@@ -199,5 +138,17 @@ namespace Ghurund {
         return false;
         return true;
         }*/
+
+        void defaultLookAt(Entity *entity) {
+
+        }
+
+        virtual const List<ResourceFormat> &getFormats() const override {
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::ENTITY;
+        }
     };
 }

@@ -37,7 +37,7 @@
 #define ghnew new
 #endif
 
-typedef TCHAR tchar;	// jakakolwiek interakcja z systemem mo?e wymaga? Unicode
+typedef TCHAR tchar;
 #ifdef _WIN64
 typedef DWORD64 address_t;
 #else
@@ -49,71 +49,13 @@ template<class Type> inline Type lerp(Type val1, Type val2, float fact) {
 }
 
 namespace Ghurund {
-    struct float2 {
-    public:
-        float x, y;
-
-        float2() {}
-        float2(float x, float y) {
-            this->x = x;
-            this->y = y;
-        }
-        float2 operator+(const float2 &val) {
-            return float2(x + val.x, y + val.y);
-        }
-        float2 operator-(const float2 &val) {
-            return float2(x - val.x, y - val.y);
-        }
-        float2 operator*(float f) {
-            return float2(x*f, y*f);
-        }
-    };
-    struct int2 {
-    public:
-        int x, y;
-
-        int2() = default;
-        int2(int x, int y) {
-            this->x = x;
-            this->y = y;
-        }
-        int2 operator+(const int2 &val) {
-            return int2(x + val.x, y + val.y);
-        }
-        int2 operator-(const int2 &val) {
-            return int2(x - val.x, y - val.y);
-        }
-        int2 operator*(int f) {
-            return int2(x*f, y*f);
-        }
-    };
-    struct int3 {
-    public:
-        int x, y, z;
-
-        int3() {}
-        int3(int x, int y, int z) {
-            this->x = x;
-            this->y = y;
-            this->z = z;
-        }
-        int3 operator+(const int3 &val) {
-            return int3(x + val.x, y + val.y, z + val.z);
-        }
-        int3 operator-(const int3 &val) {
-            return int3(x - val.x, y - val.y, z - val.z);
-        }
-        int3 operator*(int f) {
-            return int3(x*f, y*f, z*f);
-        }
-    };
-
     enum class Status {
         OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED,
 
         WRONG_RESOURCE_VERSION,
         WRONG_RESOURCE_TYPE,
         FILE_DOESNT_EXIST,
+        UNKNOWN_FORMAT,
 
         COMPILATION_ERROR,
 
@@ -143,11 +85,16 @@ namespace Ghurund {
         _ASSERTE(_CrtCheckMemory());
     }
 
-    inline tchar *toLowerCase(tchar *str) {
+    inline void toLowerCase(tchar *str) {
         size_t length = _tcslen(str);
         for(size_t i = 0; i < length; i++)
             str[i] = (tchar)_totlower(str[i]);
-        return str;
+    }
+
+    inline void toUpperCase(tchar *str) {
+        size_t length = _tcslen(str);
+        for(size_t i = 0; i < length; i++)
+            str[i] = (tchar)_toupper(str[i]);
     }
 
     inline float random() {
@@ -304,6 +251,14 @@ namespace Ghurund {
     }
 
     template<class Type> inline size_t lengthOf(Type text);
+
+	template<> inline size_t lengthOf<char*>(char *text) {
+		return strlen(text);
+	}
+
+	template<> inline size_t lengthOf<wchar_t*>(wchar_t *text) {
+		return wcslen(text);
+	}
 
     template<> inline size_t lengthOf<const char*>(const char *text) {
         return strlen(text);

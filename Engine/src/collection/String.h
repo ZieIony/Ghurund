@@ -1,12 +1,11 @@
 #pragma once
 
-#include "Collection.h"
-#include "core/Object.h"
+#include "List.h"
 
 namespace Ghurund {
 
     template <class Type> class GenericString {
-    private:
+    protected:
         Type *v;
         int hash;
         size_t initial;
@@ -72,40 +71,46 @@ namespace Ghurund {
             v[size-1] = e;
             size++;
             v[size-1] = 0;
+            computeHash();
         }
         inline void add(const Type *c) {
             size_t len = lengthOf(c)+1;
             fit(size+len);
-            memcpy(v+size-1, c, (len+1)*sizeof(Type));
-            size += len;
+            memcpy(v+size-1, c, len*sizeof(Type));
+            size += len-1;	// null terminator already present
+            computeHash();
         }
         inline void add(const Type *c, size_t len) {
             fit(size+len);
             memcpy(v+size-1, c, len*sizeof(Type));
             size += len;
             v[size-1] = 0;
+            computeHash();
         }
         inline void set(size_t i, Type c) {
             v[i] = c;
+            computeHash();
         }
-        inline Type get(size_t i)const {//possible segmentation fault
+        inline Type get(size_t i)const {
             return v[i];
         }
         inline const Type *getData()const {
             return v;
         }
         inline void setData(const Type *data) {
-            size_t s = lengthOf(data)+1;
+            size_t len = lengthOf(data)+1;
             delete[] v;
-            v = ghnew Type[s];
-            memcpy(this->v, data, s*sizeof(Type));
-            capacity = size = s;
+            v = ghnew Type[len];
+            memcpy(this->v, data, len*sizeof(Type));
+            capacity = size = len;
+            computeHash();
         }
         inline void setData(const Type *data, size_t len) {
             delete[] v;
             v = ghnew Type[len];
             memcpy(this->v, data, len*sizeof(Type));
             capacity = size = len;
+            computeHash();
         }
 
         inline size_t getLength()const {
@@ -127,35 +132,72 @@ namespace Ghurund {
             return v[i];
         }
 
-        GenericString &operator=(const GenericString &string) {
-            size = string.size;
-            initial = string.initial;
-            capacity = string.capacity;
-            delete[] v;
-            v = new Type[capacity];
-            memcpy(v, string.v, size*sizeof(Type));
-            hash = string.hash;
-            return *this;
-        }
-
         void computeHash() {
             hash = hashCode(v, size-1);
         }
 
         bool operator==(const GenericString &string) const {
-            return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, size*sizeof(Type))==0;
+            return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, Length*sizeof(Type))==0;
         }
 
-        GenericString<Type> &operator+(const Type *str) {
-            add(str);
-            return *this;
+        bool operator==(const GenericString &string) {
+            return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, Length*sizeof(Type))==0;
         }
 
-        GenericString<Type> &operator+(const GenericString<Type> &string) {
-            add(string.getData());
-            return *this;
+        bool operator==(const Type *str) const {
+            return memcmp(v, str, Length*sizeof(Type))==0;
         }
+
+        operator const Type *()const {
+            return v;
+        }
+
+        size_t find(const GenericString<Type> &str, size_t start = 0)const {
+            for(size_t i = start; i<=size-str.Size; i++) {
+                for(size_t j = 0; j<str.Length; j++) {
+                    if(v[i+j]!=str[j])
+                        goto strNotFound;
+                }
+                return i;
+            strNotFound:;
+            }
+            return size;
+        }
+
+        bool startsWith(const Type *str)const {
+            size_t i = 0;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool endsWith(const Type *str)const {
+            size_t l = lengthOf(str);
+            if(l>Length)
+                return false;
+            size_t i = Length-l;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool isEmpty()const {
+            return size==1;
+        }
+
+        __declspec(property(get = isEmpty)) bool Empty;
+
     };
+
+
 
     class UnicodeString: public GenericString<wchar_t> {
     public:
@@ -189,18 +231,125 @@ namespace Ghurund {
             delete[] wstr;
         }
 
-        using GenericString<wchar_t>::operator+;
+        using GenericString<wchar_t>::operator==;
+    
+        bool operator==(const char *str) const {
+            wchar_t *wstr = toWideChar(str);
+            bool result = memcmp(v, wstr, Length*sizeof(wchar_t))==0;
+            delete[] wstr;
+            return result;
+        }
 
-        GenericString<wchar_t> &operator+(const char *str) {
-            add(str);
+        UnicodeString &operator=(const UnicodeString &string) {
+            size = string.size;
+            initial = string.initial;
+            capacity = string.capacity;
+            delete[] v;
+            v = new wchar_t[capacity];
+            memcpy(v, string.v, size*sizeof(wchar_t));
+            hash = string.hash;
             return *this;
         }
 
-        GenericString<wchar_t> &operator+(const GenericString<char> &string) {
-            add(string.getData());
-            return *this;
+        UnicodeString operator+(const wchar_t *str) {
+            UnicodeString copy(*this);
+            copy.add(str);
+            return copy;
         }
-    };
+
+        UnicodeString operator+(const UnicodeString &string) {
+            return *this + string.getData();
+        }
+
+        UnicodeString operator+(const char *str) {
+            UnicodeString copy(*this);
+            copy.add(str);
+            return copy;
+        }
+
+        UnicodeString operator+(const GenericString<char> &string) {
+            return *this + string.getData();
+        }
+
+        UnicodeString subString(size_t start)const {
+            return UnicodeString(v+start);
+        }
+
+        UnicodeString subString(size_t start, size_t length)const {
+            return UnicodeString(v+start, length);
+        }
+
+        List<UnicodeString> split(const UnicodeString &d)const {
+            List<UnicodeString> list;
+            size_t index = 0;
+            while(index<Length) {
+                size_t nextIndex = find(d, index);
+                if(nextIndex==index) {
+                } else if(nextIndex==size) {
+                    UnicodeString str = subString(index, size-index-1);
+                    list.add(str);
+                    break;
+                } else {
+                    UnicodeString str = subString(index, nextIndex-index);
+                    list.add(str);
+                }
+                index = nextIndex+d.Length;
+            }
+            return list;
+        }
+
+        using GenericString<wchar_t>::startsWith;
+
+        bool startsWith(const char *str)const {
+            size_t i = 0;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        using GenericString<wchar_t>::endsWith;
+
+        bool endsWith(const char *str)const {
+            size_t l = lengthOf(str);
+            if(l>Length)
+                return false;
+            size_t i = 0;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[Length-l+i])
+                    return false;
+                i++;
+            }
+        }
+
+        UnicodeString toLowerCase() {
+            UnicodeString copy(*this);
+            for(size_t i = 0; i < Length; i++)
+                copy.v[i] = (wchar_t)towlower(copy.v[i]);
+            return copy;
+        }
+
+		UnicodeString toUpperCase() {
+			UnicodeString copy(*this);
+			for (size_t i = 0; i < Length; i++)
+				copy.v[i] = (wchar_t)towupper(copy.v[i]);
+			return copy;
+		}
+
+		UnicodeString trim() {
+			size_t i, j, l = Length;
+			for (i = 0; i < l && iswspace(v[i]); i++);
+			for (j = l - 1; j > i && iswspace(v[j]); j--);
+			return UnicodeString(v + i, j - i + 1);
+		}
+	};
+
+
 
     class ASCIIString: public GenericString<char> {
     public:
@@ -234,18 +383,124 @@ namespace Ghurund {
             delete[] cstr;
         }
 
-        using GenericString<char>::operator+;
+        using GenericString<char>::operator==;
+   
+        bool operator==(const wchar_t *str) const {
+            char *cstr = toMultiByte(str);
+            bool result = memcmp(v, cstr, Length*sizeof(char))==0;
+            delete[] cstr;
+            return result;
+        }
 
-        GenericString<char> &operator+(const wchar_t *str) {
-            add(str);
+        ASCIIString &operator=(const ASCIIString &string) {
+            size = string.size;
+            initial = string.initial;
+            capacity = string.capacity;
+            delete[] v;
+            v = new char[capacity];
+            memcpy(v, string.v, size*sizeof(char));
+            hash = string.hash;
             return *this;
         }
 
-        GenericString<char> &operator+(const GenericString<wchar_t> &string) {
-            add(string.getData());
-            return *this;
+        ASCIIString operator+(const char *str) {
+            UnicodeString copy(*this);
+            copy.add(str);
+            return copy;
         }
-    };
+
+        ASCIIString operator+(const ASCIIString &string) {
+            return *this + string.getData();
+        }
+
+
+        ASCIIString operator+(const wchar_t *str) {
+            ASCIIString copy(*this);
+            copy.add(str);
+            return copy;
+        }
+
+        ASCIIString operator+(const GenericString<wchar_t> &string) {
+            return *this + string.getData();
+        }
+
+        ASCIIString subString(size_t start)const {
+            return ASCIIString(v+start);
+        }
+
+        ASCIIString subString(size_t start, size_t length)const {
+            return ASCIIString(v+start, length);
+        }
+
+        List<ASCIIString> split(const ASCIIString &d)const {
+            List<ASCIIString> list;
+            size_t index = 0;
+            while(index<Length) {
+                size_t nextIndex = find(d, index);
+                if(nextIndex==index) {
+                } else if(nextIndex==size) {
+                    ASCIIString str = subString(index, size-index-1);
+                    list.add(str);
+                    break;
+                } else {
+                    ASCIIString str = subString(index, nextIndex-index);
+                    list.add(str);
+                }
+                index = nextIndex+d.Length;
+            }
+            return list;
+        }
+
+        using GenericString<char>::startsWith;
+
+        bool startsWith(const wchar_t *str)const {
+            size_t i = 0;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        using GenericString<char>::endsWith;
+
+        bool endsWith(const wchar_t *str)const {
+            size_t l = lengthOf(str);
+            if(l>Length)
+                return false;
+            size_t i = 0;
+            while(true) {
+                if(str[i]=='\0')
+                    return true;
+                if(str[i]!=v[Length-l+i])
+                    return false;
+                i++;
+            }
+        }
+
+        ASCIIString toLowerCase() {
+            ASCIIString copy(*this);
+            for(size_t i = 0; i < Length; i++)
+                copy.v[i] = (char)tolower(copy.v[i]);
+            return copy;
+        }
+
+        ASCIIString toUpperCase() {
+            ASCIIString copy(*this);
+            for(size_t i = 0; i < Length; i++)
+                copy.v[i] = (char)toupper(copy.v[i]);
+            return copy;
+        }
+
+		ASCIIString trim() {
+			size_t i, j, l = Length;
+			for (i = 0; i < l && isspace(v[i]); i++);
+			for (j = l - 1; j > i && isspace(v[j]); j--);
+			return ASCIIString(v + i, j - i + 1);
+		}
+	};
 
 #ifdef UNICODE
     typedef UnicodeString String;

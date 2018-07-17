@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
+
+	<Style TargetType="{x:Type local:EditorPanel}">
+		<Setter Property="Focusable" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:EditorPanel}">
+					<DockPanel Background="{TemplateBinding Background}">
+						<local:TitleBar
+							x:Name="titleBar"
+							Title="{TemplateBinding Title}"
+							Icon="{TemplateBinding Icon}"
+							IsEnabled="{TemplateBinding IsEnabled}"
+							DockPanel.Dock="Top"
+							Height="20"/>
+						<Border>
+							<ContentPresenter ContentSource="Content" IsEnabled="{TemplateBinding IsEnabled}"/>
+						</Border>
+					</DockPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+</ResourceDictionary>

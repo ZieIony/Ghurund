@@ -1,0 +1,14 @@
+﻿namespace Ghurund.Managed {
+    public enum Status {
+        OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED,
+
+        WRONG_RESOURCE_VERSION,
+        WRONG_RESOURCE_TYPE,
+        FILE_DOESNT_EXIST,
+        UNKNOWN_FORMAT,
+
+        COMPILATION_ERROR,
+
+        DIRECTX12_NOT_SUPPORTED
+    }
+}

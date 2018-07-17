@@ -22,16 +22,34 @@ namespace Ghurund {
         unsigned int value;
         const char *text;
         const char *entryPoint;
-		D3D12_SHADER_VISIBILITY visibility;
-
-    public:
-        static const ShaderType &VS, &PS, &GS, &HS, &DS, &CS;
+        D3D12_SHADER_VISIBILITY visibility;
 
         ShaderType(unsigned int value, const char *text, const char *entryPoint, D3D12_SHADER_VISIBILITY visibility) {
             this->value = value;
             this->text = text;
             this->entryPoint = entryPoint;
-			this->visibility = visibility;
+            this->visibility = visibility;
+        }
+
+    public:
+        static const ShaderType &VS, &PS, &GS, &HS, &DS, &CS;
+
+        static const ShaderType values[];
+
+        static const ShaderType &fromValue(unsigned int value) {
+            if(value==VS.value) {
+                return VS;
+            } else if(value==PS.value) {
+                return PS;
+            } else if(value==GS.value) {
+                return GS;
+            } else if(value==HS.value) {
+                return HS;
+            } else if(value==DS.value) {
+                return DS;
+            } else {
+                return CS;
+            }
         }
 
         unsigned int getValue() const {
@@ -44,12 +62,12 @@ namespace Ghurund {
             return text;
         }
 
-		const char *getEntryPoint() const {
-			return entryPoint;
-		}
+        const char *getEntryPoint() const {
+            return entryPoint;
+        }
 
-		D3D12_SHADER_VISIBILITY getVisibility() const {
-			return visibility;
-		}
+        D3D12_SHADER_VISIBILITY getVisibility() const {
+            return visibility;
+        }
     };
 }

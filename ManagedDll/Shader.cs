@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
-    public class Shader : NativeClass, IResource {
+    public class Shader : Resource.Resource {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Shader_new();
@@ -13,38 +13,6 @@ namespace Ghurund.Managed {
             FileName = "unnamed shader.hlsl";
         }
 
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool Shader_load(IntPtr _this, IntPtr resourceManager, [MarshalAs(UnmanagedType.LPTStr)] String fileName);
-
-        public bool load(ResourceManager resourceManager, String fileName) {
-            return Shader_load(NativePtr, resourceManager.NativePtr, fileName);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool Shader_save(IntPtr _this, IntPtr resourceManager, [MarshalAs(UnmanagedType.LPTStr)] String fileName);
-
-        public bool save(ResourceManager resourceManager, String fileName) {
-            return Shader_save(NativePtr, resourceManager.NativePtr, fileName);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))]
-        private static extern String Shader_getFileName(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Shader_setFileName(IntPtr _this, [MarshalAs(UnmanagedType.LPTStr)] String fileName);
-
-        public String FileName {
-            get {
-                return Shader_getFileName(NativePtr);
-            }
-            set {
-                Shader_setFileName(NativePtr, value);
-            }
-        }
 
         /*[DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
@@ -94,11 +62,6 @@ namespace Ghurund.Managed {
             }
         }
 
-        public string DefaultExtension {
-            get {
-                return "shd";
-            }
-        }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]

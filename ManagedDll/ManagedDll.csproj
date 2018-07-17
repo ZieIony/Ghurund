@@ -7,7 +7,7 @@
     <ProjectGuid>{8A3C858C-A479-456A-BB2E-ABF2901F0C6A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ManagedDll</RootNamespace>
+    <RootNamespace>Ghurund.Managed</RootNamespace>
     <AssemblyName>ManagedDll</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -55,18 +55,23 @@
     </Compile>
     <Compile Include="Float3.cs" />
     <Compile Include="Game\Entity.cs" />
-    <Compile Include="Game\ResourceManager.cs" />
+    <Compile Include="Game\Parameter.cs" />
+    <Compile Include="Game\ParameterManager.cs" />
+    <Compile Include="Game\Scene.cs" />
     <Compile Include="Graphics\Adapter.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\Light.cs" />
+    <Compile Include="Game\Target.cs" />
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="Material.cs" />
+    <Compile Include="NativeList.cs" />
     <Compile Include="PipelineState.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="NativeClass.cs" />
-    <Compile Include="Resource\IResource.cs" />
+    <Compile Include="Resource\Resource.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
+    <Compile Include="Status.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="ShaderModel.cs" />
     <Compile Include="WCharStrMarshaler.cs" />

@@ -10,7 +10,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms.Design;
 
 namespace Ghurund.Managed {
-    public class LauncherSettings : IResource {
+    public class LauncherSettings : Resource.Resource {
         public class LauncherSettingsData {
             private List<WindowSize> windowSizes = new List<WindowSize>();
 
@@ -43,10 +43,9 @@ namespace Ghurund.Managed {
 
         public LauncherSettingsData Data { get; private set; }
 
-        public string FileName { get; set; }
         public string DefaultExtension { get => "stn"; }
 
-        public bool load(ResourceManager resourceManager, string fileName) {
+        public override Status Load(ResourceManager resourceManager, string fileName) {
             FileName = fileName;
             // Open the file containing the data that you want to deserialize.
             FileStream fs = new FileStream(FileName, FileMode.Open);
@@ -56,16 +55,16 @@ namespace Ghurund.Managed {
                 // Deserialize the hashtable from the file and 
                 // assign the reference to the local variable.
                 Data = (LauncherSettingsData)formatter.Deserialize(fs);
-                return true;
+                return Status.OK;
             } catch (SerializationException) {
-                return false;
+                return Status.CALL_FAIL;
             } finally {
                 fs.Close();
             }
 
         }
 
-        public bool save(ResourceManager resourceManager, string fileName) {
+        public override Status Save(ResourceManager resourceManager, string fileName) {
             FileName = fileName;
             FileStream fs = new FileStream(FileName, FileMode.Create);
 
@@ -73,9 +72,9 @@ namespace Ghurund.Managed {
             BinaryFormatter formatter = new BinaryFormatter();
             try {
                 formatter.Serialize(fs, Data);
-                return true;
+                return Status.OK;
             } catch (SerializationException) {
-                return false;
+                return Status.CALL_FAIL;
             } finally {
                 fs.Close();
             };

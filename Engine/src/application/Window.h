@@ -10,10 +10,9 @@
 namespace Ghurund {
     class Window: public ParameterProvider, public NamedObject {
     private:
-        static const tchar *DEFAULT_WINDOW_TITLE;
         static const tchar *WINDOW_CLASS_NAME;
 
-        tchar *title;
+        String title;
         WNDCLASSEX windowClass;
         HWND handle;
         HINSTANCE hInst;
@@ -31,9 +30,9 @@ namespace Ghurund {
         }
 
         virtual void initParameters(ParameterManager &parameterManager) override {
-            widthParameter = parameterManager.add(Name+Parameter::WIDTH, sizeof(width));
-            heightParameter = parameterManager.add(Name+Parameter::HEIGHT, sizeof(height));
-        }
+            widthParameter = parameterManager.add(Parameter::WIDTH, ParameterType::FLOAT);
+            heightParameter = parameterManager.add(Parameter::HEIGHT, ParameterType::FLOAT);
+		}
 
         virtual void fillParameters() override {
             widthParameter->setValue(&width);
@@ -45,20 +44,16 @@ namespace Ghurund {
 
         void uninit();
 
-        /**
-        * Ustawia tekst na pasku tytulu okna. Jesli podana zostanie wartosc null, ustawiony zostanie domyslny tytul 'Ghurund'.
-        * @param title tytul okna
-        */
-        inline void setTitle(const tchar *title) {
-            safeCopyStr(&this->title, title);
-            SetWindowText(handle, title ? title : DEFAULT_WINDOW_TITLE);
+        inline void setTitle(const String &title) {
+            this->title = title;
+            SetWindowText(handle, title);
         }
 
-        inline const tchar *getTitle() {
+        inline const String &getTitle()const {
             return title;
         }
 
-        __declspec(property(put = setTitle, get = getTitle)) tchar *Title;
+        __declspec(property(put = setTitle, get = getTitle)) String &Title;
 
         inline HWND getHandle() {
             return handle;

@@ -9,6 +9,8 @@
 #include "TextureConstant.h"
 #include "ShaderType.h"
 #include "resource/ResourceManager.h"
+#include "CompilationTarget.h"
+#include "ShaderProgram.h"
 
 #include <d3d12.h>
 #include <D3Dcompiler.h>
@@ -19,84 +21,22 @@
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
-    enum class CompilationTarget {
-        SHADER_5_0
-    };
-
     class Shader:public Resource {
     private:
-        struct ShaderProgram {
-            void *byteCode;
-            unsigned int byteCodeLength;
-            char *entryPoint = nullptr;
-            ShaderType &type;
-            CompilationTarget target;
-
-			ShaderProgram(ShaderType &type, const char *entryPoint = nullptr, CompilationTarget target = CompilationTarget::SHADER_5_0) : type(type) {
-                setEntryPoint(entryPoint);
-                setCompilationTarget(target);
-            }
-
-            ~ShaderProgram() {
-                delete[] entryPoint;
-            }
-
-            Status compile(const char *code, char **outErrorMessages);
-
-            const char *makeCompilationTarget() {
-                const char *targetText = nullptr;
-                switch(target) {
-                    case CompilationTarget::SHADER_5_0:
-                        targetText = "5_0";
-                        break;
-                }
-                const char *typeText = type.toString();
-                char *text = ghnew char[10];;
-                sprintf_s(text, 10, "%s_%s", typeText, targetText);
-                return text;
-            }
-
-            void setEntryPoint(const char *entryPoint) {
-                if(entryPoint == nullptr) {
-                    safeCopyStrA(&this->entryPoint, type.getEntryPoint());
-                } else {
-                    safeCopyStrA(&this->entryPoint, entryPoint);
-                }
-            }
-
-            const char *getEntryPoint()const {
-                return entryPoint;
-            }
-
-            void setCompilationTarget(CompilationTarget target) {
-                this->target = target;
-            }
-
-            CompilationTarget getCompilationTarget()const {
-                return target;
-            }
-
-            void *getByteCode() {
-                return byteCode;
-            }
-
-            unsigned int getByteCodeLength() {
-                return byteCodeLength;
-            }
-
-            D3D12_INPUT_LAYOUT_DESC getInputLayout();
-        };
-
         ShaderProgram *programs[6] = {};
         ComPtr<ID3D12RootSignature> rootSignature;
         ComPtr<ID3D12PipelineState> pipelineState;
-        List<ConstantBuffer*> constantBuffers;
+
+		List<ConstantBuffer*> constantBuffers;
         List<TextureBufferConstant*> textureBuffers;
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
-        unsigned int compileShaders = ShaderType::VS|ShaderType::PS;
+        
+		unsigned int compileShaders = ShaderType::VS|ShaderType::PS;
         char *source = nullptr;
         bool compiled = false;
+
+        static const List<ResourceFormat> formats;
 
         Status makeRootSignature(Graphics &graphics);
         Status makePipelineState(Graphics &graphics);
@@ -104,14 +44,16 @@ namespace Ghurund {
         void initConstants(Graphics &graphics, ParameterManager &parameterManager);
         void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
 
+        Status loadShd(ResourceManager &resourceManager, const void *data, unsigned long size);
+        Status loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size);
+
     protected:
         virtual unsigned int getVersion()const {
             return 1;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0);
-
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const;
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
 
         virtual void clean() {
             for(size_t i = 0; i<constantBuffers.Size; i++)
@@ -138,18 +80,16 @@ namespace Ghurund {
 
         Status compile(char **outErrorMessages = nullptr);
 
-        Status build(ResourceManager &resourceManager, char **outErrorMessages) {
+        Status build(ResourceManager &resourceManager, char **outErrorMessages = nullptr) {
             Status result;
             if((result = compile(outErrorMessages))!=Status::OK)
                 return result;
             Graphics &graphics = resourceManager.Graphics;
             initConstants(graphics, resourceManager.ParameterManager);
-            if((result = makeRootSignature(graphics))!=Status::OK)
+			if((result = makeRootSignature(graphics))!=Status::OK)
                 return result;
             return makePipelineState(graphics);
         }
-
-        static DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
 
         D3D12_INPUT_LAYOUT_DESC getInputLayout();
 
@@ -183,6 +123,14 @@ namespace Ghurund {
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
                 constantBuffers[i]->set(commandList);
+        }
+
+        virtual const List<ResourceFormat> &getFormats() const override {
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::SHADER;
         }
     };
 }

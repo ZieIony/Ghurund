@@ -26,20 +26,20 @@ namespace Ghurund {
 
     public:
         ParameterManager() {
-            add(Parameter::PARTY_COLOR, sizeof(float));
+            add(Parameter::PARTY_COLOR, ParameterType::FLOAT);
 
-            add(Parameter::RANDOM, sizeof(float));
+            add(Parameter::RANDOM, ParameterType::FLOAT);
         }
 
         ~ParameterManager() {
-            for(size_t i = 0; i<parameters.Size; i++)
+			for(size_t i = 0; i<parameters.Size; i++)
                 delete parameters.getValue(i);
-        }
+		}
 
-        Parameter *add(const ASCIIString &name, size_t size) {
+        Parameter *add(const ASCIIString &name, const ParameterType &type) {
             if(parameters.contains(name))
                 return parameters.get(name);
-            Parameter *parameter = ghnew Parameter(name, size);
+            Parameter *parameter = ghnew Parameter(name, type);
             parameter->manager = this;
             parameter->index = parameters.Size;
             parameters.set(name, parameter);

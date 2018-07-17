@@ -3,7 +3,7 @@
 #include "Collection.h"
 
 namespace Ghurund {
-    template<class Value, class Key = size_t>class List:public Collection<Key, Value> {
+    template<class Value, class Key = size_t> class List:public Collection<Key, Value> {
     protected:
         Value *v;
 
@@ -13,7 +13,7 @@ namespace Ghurund {
         }
 
         List(size_t initial) {
-            this->initial = this->capacity = initial;
+            this->initial = capacity = initial;
             v = ghnew Value[capacity];
         }
 
@@ -21,8 +21,17 @@ namespace Ghurund {
             capacity = t1.capacity;
             initial = t1.initial;
             size = t1.size;
-            v = ghnew Value[capacity];
-            memcpy(v, t1.v, sizeof(Value)*size);
+            v = (Value*)(ghnew BYTE[capacity*sizeof(Value)]);
+            for(size_t i = 0; i<size; i++)
+                v[i] = t1.v[i];
+        }
+
+        List(std::initializer_list<Value> list) {
+            size = initial = capacity = list.size();
+            v = (Value*)(ghnew byte[capacity*sizeof(Value)]);
+            int i = 0;
+            for(auto it = list.begin(); it != list.end(); ++it)
+                v[i++] = *it;
         }
 
         ~List() {
@@ -42,18 +51,18 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) Key Size;
 
-        inline Key getCapacity()const {
+        inline size_t getCapacity()const {
             return capacity;
         }
 
-        inline void resize(Key c) {//if c<size some items will be lost, cannot resize to less than 1 item
-            Key c2 = std::max<Key>(c, 1);
+        inline void resize(size_t c) {//if c<size some items will be lost, cannot resize to less than 1 item
+            size_t c2 = std::max<size_t>(c, 1);
             Value *t1 = ghnew Value[c2];
-            memcpy(t1, v, std::min(c, size)*sizeof(Value));
-            //memset(t1+min(c,size),0,(c2-min(c,size))*sizeof(Value));
             capacity = c2;
             size = std::min(size, c);
-            delete[]v;
+            for(size_t i = 0; i<size; i++)
+                t1[i] = v[i];
+            delete[] v;
             v = t1;
         }
 
@@ -62,7 +71,27 @@ namespace Ghurund {
                 resize(capacity+initial);
             v[size] = e;
             size++;
-            return;
+        }
+
+        inline void insert(Key i, const Value &item) {
+#ifdef _DEBUG
+            if(i>=size)
+                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
+#endif
+            if(size==capacity)
+                resize(capacity+initial);
+            v[size] = v[i];
+            v[i] = item;
+            size++;
+        }
+
+        inline void insertKeepOrder(Key i, const Value &item) {
+            if(size==capacity)
+                resize(capacity+initial);
+            if(i!=size-1)
+                memmove(&v[i+1], &v[i], size-1-i);
+            v[i] = item;
+            size++;
         }
 
         inline void set(Key i, const Value &e) {
@@ -81,17 +110,16 @@ namespace Ghurund {
             return v[i];
         }
 
-        inline void remove(Key i) {
+        inline void removeAt(Key i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
 #endif
-            //			if(size>1)	// as fast and dangerous as possible :P
             v[i] = v[size-1];
             size--;
         }
 
-        inline void removeKeepOrder(Key i) {
+        inline void removeAtKeepOrder(Key i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -102,7 +130,7 @@ namespace Ghurund {
         }
 
         inline void remove(const Value &item) {
-            Key i = find(item);
+            Key i = indexOf(item);
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -112,7 +140,7 @@ namespace Ghurund {
         }
 
         inline void removeKeepOrder(const Value &item) {
-            Key i = find(item);
+            Key i = indexOf(item);
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -130,7 +158,7 @@ namespace Ghurund {
             return v+size;
         }
 
-        inline Key find(const Value &item) {
+        inline Key indexOf(const Value &item) {
             for(Key i = 0; i<size; i++)
                 if(v[i]==item)
                     return i;

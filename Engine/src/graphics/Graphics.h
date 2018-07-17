@@ -9,6 +9,7 @@
 #include "collection/List.h"
 #include "core/Logger.h"
 #include "Adapter.h"
+#include "DescriptorHeap.h"
 
 #include <wrl.h>
 
@@ -21,6 +22,8 @@ namespace Ghurund {
         ComPtr<ID3D12Device> device;
         ComPtr<ID3D12CommandQueue> commandQueue;
         ComPtr<IDXGIFactory4> factory;
+
+		DescriptorAllocator allocator;
 
         List<Adapter*> adapters;
 
@@ -49,26 +52,44 @@ namespace Ghurund {
     public:
 
         ~Graphics() {
-            for(unsigned int i = 0; i<adapters.Size; i++)
-                delete adapters[i];
+            uninit();
         }
 
         Status init();
 
-        ComPtr<ID3D12Device> &getDevice() {
+        void uninit() {
+            adapters.deleteItems();
+        }
+
+        ComPtr<ID3D12Device> getDevice() {
             return device;
         }
 
-        ComPtr<ID3D12CommandQueue> &getCommandQueue() {
+        __declspec(property(get = getDevice)) ComPtr<ID3D12Device> Device;
+
+        ComPtr<ID3D12CommandQueue> getCommandQueue() {
             return commandQueue;
         }
 
-        ComPtr<IDXGIFactory4> &getFactory() {
+        __declspec(property(get = getCommandQueue)) ComPtr<ID3D12CommandQueue> CommandQueue;
+
+        ComPtr<IDXGIFactory4> getFactory() {
             return factory;
         }
+
+        __declspec(property(get = getFactory)) ComPtr<IDXGIFactory4> Factory;
 
         List<Adapter*> &getAdapters() {
             return adapters;
         }
+
+        __declspec(property(get = getAdapters)) List<Adapter*> &Adapters;
+
+		DescriptorAllocator &getDescriptorAllocator() {
+			return allocator;
+		}
+
+		__declspec(property(get = getDescriptorAllocator)) DescriptorAllocator &DescriptorAllocator;
+
     };
 }

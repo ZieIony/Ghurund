@@ -146,8 +146,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
+    <ClCompile Include="src\game\Parameter.cpp" />
     <ClCompile Include="src\game\ParameterManager.cpp" />
+    <ClCompile Include="src\game\Scene.cpp" />
     <ClCompile Include="src\graphics\Adapter.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
@@ -163,6 +166,9 @@
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\game\Target.cpp" />
+    <ClCompile Include="src\List.cpp" />
+    <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

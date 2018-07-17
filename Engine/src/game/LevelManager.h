@@ -5,43 +5,35 @@
 
 namespace Ghurund {
     class Level {
-    private:
-
     public:
         shared_ptr<Scene> scene;
 
-        void draw(Renderer &renderer, ParameterManager &parameterManager) {
-            shared_ptr<CommandList> commandList = renderer.startFrame();
+        void draw(shared_ptr<CommandList> commandList) {
             if(scene!=nullptr)
-                scene->draw(commandList, parameterManager);
-            renderer.finishFrame();
+                scene->draw(commandList);
         }
     };
 
     class LevelManager {
     private:
-        List<Level*> levels;
+        Level *level;
 
     public:
-        ~LevelManager() {
-            for(size_t i = 0; i<levels.Size; i++)
-                delete levels[i];
+        void setLevel(Level *level) {
+            this->level = level;
         }
 
-        void changeLevel(Level *level) {
-            levels.add(level);
-        }
-
-        Level *getCurrentLevel() {
-            return levels.get(0);
+        Level *getLevel() {
+            return level;
         }
 
         void onFrame() {
 
         }
 
-        void draw(Renderer &renderer, ParameterManager &parameterManager) {
-            getCurrentLevel()->draw(renderer, parameterManager);
+        void draw(shared_ptr<CommandList> commandList) {
+            if(level!=nullptr)
+                level->draw(commandList);
         }
     };
 }

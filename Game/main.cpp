@@ -9,6 +9,7 @@
 #include "resource/TextResource.h"
 #include "game/Scene.h"
 #include "collection/TypeMap.h"
+#include "graphics/mesh/QuadMesh.h"
 
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>
@@ -58,44 +59,46 @@ class TestApplication:public Application {
 private:
     Level *testLevel;
     shared_ptr<Model> model;
-    Parameter *parameter;
+    shared_ptr<Camera> camera;
+    float rotation = 0;
 
 public:
     void init() {
-        Material material;
-        material.FileName = String(_T("material.mtr"));
-        shared_ptr<Shader> shader(ghnew Shader());
-        material.Shader = shader;
-        shader->FileName = _T("shader.shd");
-        File file(_T("shader.vs.hlsl"));
-        file.read();
-        ASCIIString sourceCode;
-        sourceCode.add((const char *)file.Data, file.Size);
-        shader->setSourceCode(sourceCode.getData());
-        shader->compile();
-        shader->save(ResourceManager);
-        material.save(ResourceManager);
-
-        XMFLOAT4 value = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f);
-        parameter = ParameterManager.add("globalColor", sizeof(value));
-        parameter->setValue(&value);
-
-        shared_ptr<Scene> scene(ghnew Ghurund::Scene());
-        Level *testLevel = ghnew Level();
-        testLevel->scene = scene;
-        shared_ptr<Camera> camera(ghnew Camera());
-        camera->initParameters(ParameterManager);
-        scene->addCamera(camera);
-
-        model = shared_ptr<Model>(ghnew Model());
         shared_ptr<CommandList> commandList = ResourceManager.getCommandList();
         commandList->reset();
-        if(Status::OK==model->init(ResourceManager)) {
-            testLevel->scene->addModel(model);
-        }
+
+        camera.reset(ghnew Camera());
+        camera->initParameters(ParameterManager);
+
+        shared_ptr<Shader> shader(ghnew Shader());
+        shader->load(ResourceManager, "../shaders/basic.hlsl");
+
+        shared_ptr<Texture> texture(ghnew Texture());
+        texture->load(ResourceManager, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+
+        shared_ptr<Scene> scene(ghnew Ghurund::Scene());
+        testLevel = ghnew Level();
+        testLevel->scene = scene;
+        scene->Cameras.add(camera);
+
+        shared_ptr<Mesh> mesh(ghnew ObjMesh());
+        mesh->load(ResourceManager, "obj/lamborghini/Lamborghini_Aventador.obj");
+
+        shared_ptr<Material> material(ghnew Material(shader));
+        material->Texture = texture;
+
+        model = shared_ptr<Model>(ghnew Model(mesh, material));
+        model->initParameters(ParameterManager);
+        testLevel->scene->Models.add(model);
+
         commandList->finish();
 
-        LevelManager.changeLevel(testLevel);
+        LevelManager.setLevel(testLevel);
+    }
+
+    void update() {
+        rotation += 0.005f;
+        camera->setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
     }
 
     void uninit() {
@@ -104,16 +107,14 @@ public:
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    Logger::init(LogOutput::CUSTOM_CONSOLE);
+    Logger::init(LogOutput::SYSTEM_CONSOLE);
 
     {
-        TestApplication application;
+		TestApplication application;
         Proc proc(application);
         Settings settings;
-        tchar *cmdLineCopy = toTchar(cmdLine);
-        settings.parse(String(cmdLineCopy));
-        delete[] cmdLineCopy;
-        application.run(&settings, &proc);
+        settings.parse(cmdLine);
+		application.run(&settings, &proc);
     }
 
     Logger::uninit();
@@ -122,9 +123,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     _____________________checkMemory();
     dumpMemoryLeaks();
     ComPtr<IDXGIDebug> debugInterface;
-    if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface)))) {
+    if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
         debugInterface->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-    }
 #endif
 
     return 0;

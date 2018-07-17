@@ -1,6 +1,9 @@
 #include "Image.h"
+#include <Shlwapi.h>
 
 namespace Ghurund {
+    const List<ResourceFormat> Image::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
+  
     DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID &wicFormatGUID) {
         if(wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         else if(wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
@@ -90,15 +93,16 @@ namespace Ghurund {
         return -1;
     }
     
-    Status Image::loadImageDataFromFile(ResourceManager &resourceManager, LPCWSTR filename) {
+    Status Image::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
         IWICBitmapDecoder *wicDecoder = nullptr;
         IWICBitmapFrameDecode *wicFrame = nullptr;
         IWICFormatConverter *wicConverter = nullptr;
 
         bool imageConverted = false;
 
-        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromFilename(filename,nullptr,GENERIC_READ,WICDecodeMetadataCacheOnLoad,&wicDecoder))) {
-            Logger::log(_T("Failed to create decoder for %s\n"), filename);
+        ComPtr<IStream> stream = SHCreateMemStream((const BYTE *)data,size);
+        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromStream(stream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
+            Logger::log(_T("Failed to create decoder for %s\n"), FileName);
             return Status::CALL_FAIL;
         }
 
@@ -112,43 +116,34 @@ namespace Ghurund {
         if(FAILED(wicFrame->GetSize(&width, &height)))
             return Status::CALL_FAIL;
 
-        // we are not handling sRGB types in this tutorial, so if you need that support, you'll have to figure
-        // out how to implement the support yourself
+        // TODO: implement sRGB
 
-        // convert wic pixel format to dxgi pixel format
         dxgiFormat = getDXGIFormatFromWICFormat(pixelFormat);
 
-        // if the format of the image is not a supported dxgi format, try to convert it
         if(dxgiFormat == DXGI_FORMAT_UNKNOWN) {
-            // get a dxgi compatible wic format from the current image format
             WICPixelFormatGUID convertToPixelFormat = convertToWICFormat(pixelFormat);
 
-            // return if no dxgi compatible format was found
             if(convertToPixelFormat == GUID_WICPixelFormatDontCare)
                 return Status::CALL_FAIL;
 
-            // set the dxgi format
             dxgiFormat = getDXGIFormatFromWICFormat(convertToPixelFormat);
 
             if(FAILED(resourceManager.getImageFactory()->CreateFormatConverter(&wicConverter)))
                 return Status::CALL_FAIL;
 
-            // make sure we can convert to the dxgi compatible format
             BOOL canConvert = FALSE;
             if(FAILED(wicConverter->CanConvert(pixelFormat, convertToPixelFormat, &canConvert)) || !canConvert)
                 return Status::CALL_FAIL;
 
-            // do the conversion (wicConverter will contain the converted image)
             if(FAILED(wicConverter->Initialize(wicFrame, convertToPixelFormat, WICBitmapDitherTypeErrorDiffusion, 0, 0, WICBitmapPaletteTypeCustom)))
                 return Status::CALL_FAIL;
 
-            // this is so we know to get the image data from the wicConverter (otherwise we will get from wicFrame)
             imageConverted = true;
         }
 
-        pixelSize = getDXGIFormatBitsPerPixel(dxgiFormat)/8; // number of bits per pixel
-        int bytesPerRow = width * pixelSize; // number of bytes in each row of the image data
-        int imageSize = bytesPerRow * height; // total image size in bytes
+        pixelSize = getDXGIFormatBitsPerPixel(dxgiFormat)/8;
+        int bytesPerRow = width * pixelSize;
+        int imageSize = bytesPerRow * height;
 
         imageData = ghnew BYTE[imageSize];
 

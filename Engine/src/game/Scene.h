@@ -4,19 +4,24 @@
 #include "graphics/Model.h"
 #include "graphics/CommandList.h"
 #include "graphics/Camera.h"
+#include "graphics/Light.h"
+#include "Entity.h"
 
 namespace Ghurund {
-    class Scene:public Resource {
+    class Scene:public Entity {
     private:
         List<shared_ptr<Model>> models;
         List<shared_ptr<Camera>> cameras;
+        List<shared_ptr<Light>> lights;
+
+        static const List<ResourceFormat> formats;
 
     protected:
         virtual unsigned int getVersion()const {
             return 0;
         }
 
-        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0) {
+        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -35,20 +40,44 @@ namespace Ghurund {
 
     public:
 
-        void draw(shared_ptr<CommandList> commandList, ParameterManager &parameterManager) {
+        Scene() {
+            Name = _T("scene");
+        }
+
+        void draw(shared_ptr<CommandList> commandList) {
             for(size_t i = 0; i<cameras.Size; i++)
                 cameras[i]->fillParameters();
 
-            for(size_t i = 0; i<models.Size; i++)
+            for(size_t i = 0; i<models.Size; i++) {
+                models[i]->fillParameters();
                 models[i]->draw(commandList->get());
+            }
         }
 
-        void addModel(shared_ptr<Model> model) {
-            models.add(model);
+        List<shared_ptr<Model>> &getModels() {
+            return models;
         }
 
-        void addCamera(shared_ptr<Camera> camera) {
-            cameras.add(camera);
+        __declspec(property(get = getModels)) List<shared_ptr<Model>> &Models;
+
+        List<shared_ptr<Camera>> &getCameras() {
+            return cameras;
+        }
+
+        __declspec(property(get = getCameras)) List<shared_ptr<Camera>> &Cameras;
+
+        List<shared_ptr<Light>> &getLights() {
+            return lights;
+        }
+
+        __declspec(property(get = getLights)) List<shared_ptr<Light>> &Lights;
+
+        virtual const List<ResourceFormat> &getFormats() const override {
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::ENTITY;
         }
     };
 }

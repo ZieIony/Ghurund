@@ -7,4 +7,6 @@ namespace Ghurund {
     const ShaderType &ShaderType::HS = ShaderType(8, "hs", "hullMain", D3D12_SHADER_VISIBILITY_HULL);
     const ShaderType &ShaderType::DS = ShaderType(16, "ds", "domainMain", D3D12_SHADER_VISIBILITY_DOMAIN);
     const ShaderType &ShaderType::CS = ShaderType(32, "cs", "computeMain", D3D12_SHADER_VISIBILITY_ALL);
+
+    const ShaderType ShaderType::values[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
 }

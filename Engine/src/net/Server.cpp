@@ -88,7 +88,7 @@ namespace Ghurund {
             recv(sockets.get(i)->getId(), buffer, 256, 0);
             closesocket(sockets.get(i)->getId());
             delete sockets.get(i);
-            sockets.remove(i);
+            sockets.removeAt(i);
         }
         ::shutdown(socket.getId(), 1);
         recv(socket.getId(), buffer, 256, 0);

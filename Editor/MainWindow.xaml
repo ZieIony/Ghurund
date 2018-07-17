@@ -1,0 +1,44 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GhurundEditor"
+	xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace" x:Class="Ghurund.Editor.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+	<DockPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Header="_New" Click="FileNew_Click">
+					<MenuItem.Icon >
+						<Image Source="Resources/file32.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<Separator/>
+				<MenuItem Header="_Exit" Click="Exit_Click"/>
+			</MenuItem>
+			<MenuItem Header="_View">
+				<MenuItem Header="Project E_xplorer" Click="ProjectExplorer_Click">
+					<MenuItem.Icon >
+						<Image Source="Resources/projectExplorer32.png"/>
+					</MenuItem.Icon>
+				</MenuItem>
+				<MenuItem Header="_Welcome Page" Click="WelcomePage_Click"/>
+				<MenuItem Header="_Properties" Click="Properties_Click"/>
+				<MenuItem Header="P_arameters" Click="Parameters_Click"/>
+				<MenuItem Header="_Resource Manager" Click="ResourceManager_Click"/>
+				<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click"/>
+			</MenuItem>
+		</Menu>
+		<StatusBar DockPanel.Dock="Bottom">
+			<StatusBarItem Name="currentTask">
+				<DockPanel>
+					<TextBlock Name="currentTaskName" Text="status"/>
+					<ProgressBar DockPanel.Dock="Right" Width="20" Value="60"/>
+				</DockPanel>
+			</StatusBarItem>
+		</StatusBar>
+		<workspace:WorkspacePanel Name="workspacePanel" Background="{x:Null}"/>
+	</DockPanel>
+</Window>

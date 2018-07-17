@@ -2,6 +2,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
+    const List<ResourceFormat> Shader::formats = {ResourceFormat::AUTO, ResourceFormat::SHADER, ResourceFormat::HLSL};
 
     Status Shader::makeRootSignature(Graphics &graphics) {
         Status result = Status::OK;
@@ -12,19 +13,23 @@ namespace Ghurund {
         unsigned int r = 0;
         for(size_t i = 0; i<constantBuffers.Size; i++, r++) {
             ShaderConstant *constant = constantBuffers.get(i);
+            constant->BindSlot = r;
             ranges[r].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
             rootParameters[r].InitAsDescriptorTable(1, &ranges[r], constant->getVisibility());
         }
 
         for(size_t i = 0; i<textures.Size; i++, r++) {
             ShaderConstant *constant = textures.get(i);
+            constant->BindSlot = r;
             ranges[r].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
             rootParameters[r].InitAsDescriptorTable(1, &ranges[r], constant->getVisibility());
         }
 
         D3D12_STATIC_SAMPLER_DESC *samplerDescs = ghnew D3D12_STATIC_SAMPLER_DESC[samplers.Size];
-        for(size_t i = 0; i<samplers.Size; i++)
+        for(size_t i = 0; i<samplers.Size; i++) {
+            samplers[i]->build();
             samplerDescs[i] = samplers.get(i)->samplerDesc;
+        }
 
         CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
         rootSignatureDesc.Init_1_1(getParametersCount(),
@@ -60,18 +65,18 @@ namespace Ghurund {
         D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
         psoDesc.InputLayout = getInputLayout();
         psoDesc.pRootSignature = rootSignature.Get();
-        psoDesc.VS.pShaderBytecode = programs[0]->byteCode;
-        psoDesc.VS.BytecodeLength = programs[0]->byteCodeLength;
-        psoDesc.PS.pShaderBytecode = programs[1]->byteCode;
-        psoDesc.PS.BytecodeLength = programs[1]->byteCodeLength;
+        psoDesc.VS.pShaderBytecode = programs[0]->getByteCode();
+        psoDesc.VS.BytecodeLength = programs[0]->getByteCodeLength();
+        psoDesc.PS.pShaderBytecode = programs[1]->getByteCode();
+        psoDesc.PS.BytecodeLength = programs[1]->getByteCodeLength();
         psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+        psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
         psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-        psoDesc.DepthStencilState.DepthEnable = FALSE;
-        psoDesc.DepthStencilState.StencilEnable = FALSE;
         psoDesc.SampleMask = UINT_MAX;
         psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
         psoDesc.NumRenderTargets = 1;
         psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+        psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
         psoDesc.SampleDesc.Count = 1;
         if(FAILED(graphics.getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
             Logger::log(_T("device->CreateGraphicsPipelineState() failed\n"));
@@ -108,91 +113,8 @@ namespace Ghurund {
         return compiled ? Status::OK : Status::COMPILATION_ERROR;
     }
 
-    Status Shader::ShaderProgram::compile(const char *code, char **outErrorMessages) {
-        unsigned int compileFlags;
-#ifdef _DEBUG
-        compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-#else
-        compileFlags = 0;
-#endif
-
-        const char *targetText = makeCompilationTarget();
-        ID3DBlob *errorBlob;
-        Status result;
-        ComPtr<ID3DBlob> shader;
-        if(FAILED(D3DCompile(code, strlen(code), nullptr, nullptr, nullptr, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob))) {
-            if(errorBlob==nullptr) {
-                Logger::log(_T("Unknown error while compiling shader\n"));
-            } else {
-                char *errorMessages = ghnew char[errorBlob->GetBufferSize()];
-                memcpy(errorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
-                Logger::log(_T("Error while compiling shader:\n%hs\n"), errorMessages);
-                errorBlob->Release();
-                if(outErrorMessages!=nullptr)
-                    *outErrorMessages = errorMessages;
-            }
-            result = Status::COMPILATION_ERROR;
-        } else {
-            byteCode = ghnew BYTE[shader->GetBufferSize()];
-            byteCodeLength = shader->GetBufferSize();
-            memcpy(byteCode, shader->GetBufferPointer(), byteCodeLength);
-            result = Status::OK;
-        }
-
-        delete[] targetText;
-        return result;
-    }
-
-    DXGI_FORMAT Shader::getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType) {
-        if(mask == 1) {
-            if(componentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32_UINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32_SINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32_FLOAT;
-        } else if(mask <= 3) {
-            if(componentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32_UINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32_SINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32_FLOAT;
-        } else if(mask <= 7) {
-            if(componentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32B32_UINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32B32_SINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32B32_FLOAT;
-        } else if(mask <= 15) {
-            if(componentType == D3D_REGISTER_COMPONENT_UINT32) return DXGI_FORMAT_R32G32B32A32_UINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_SINT32) return DXGI_FORMAT_R32G32B32A32_SINT;
-            else if(componentType == D3D_REGISTER_COMPONENT_FLOAT32) return DXGI_FORMAT_R32G32B32A32_FLOAT;
-        }
-        return DXGI_FORMAT_UNKNOWN;
-    }
-
     D3D12_INPUT_LAYOUT_DESC Shader::getInputLayout() {
         return programs[0]->getInputLayout();
-    }
-
-    D3D12_INPUT_LAYOUT_DESC Shader::ShaderProgram::getInputLayout() {
-        ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(byteCode, byteCodeLength, IID_ID3D12ShaderReflection, (void**)&reflector);
-        D3D12_SHADER_DESC desc;
-        reflector->GetDesc(&desc);
-
-        D3D12_INPUT_LAYOUT_DESC inputLayoutDesc;
-        inputLayoutDesc.NumElements = desc.InputParameters;
-        D3D12_INPUT_ELEMENT_DESC *inputElements = ghnew D3D12_INPUT_ELEMENT_DESC[desc.InputParameters];
-        for(unsigned int i = 0; i<desc.InputParameters; i++) {
-            D3D12_SIGNATURE_PARAMETER_DESC parameterDesc;
-            reflector->GetInputParameterDesc(i, &parameterDesc);
-            inputElements[i].SemanticName = copyStrA(parameterDesc.SemanticName);
-            inputElements[i].SemanticIndex = parameterDesc.SemanticIndex;
-            inputElements[i].Format = getFormat(parameterDesc.Mask, parameterDesc.ComponentType);
-            inputElements[i].InputSlot = 0;
-            inputElements[i].AlignedByteOffset = i==0 ? 0 : D3D12_APPEND_ALIGNED_ELEMENT;
-            inputElements[i].InputSlotClass = D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA;
-            inputElements[i].InstanceDataStepRate = 0;
-        }
-        inputLayoutDesc.pInputElementDescs = inputElements;
-
-        reflector->Release();
-
-        return inputLayoutDesc;
     }
 
     void Shader::initConstants(Graphics &graphics, ParameterManager &parameterManager) {
@@ -203,7 +125,7 @@ namespace Ghurund {
 
     void Shader::initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program) {
         ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(program.byteCode, program.byteCodeLength, IID_ID3D12ShaderReflection, (void**)&reflector);
+        D3DReflect(program.getByteCode(), program.getByteCodeLength(), IID_ID3D12ShaderReflection, (void**)&reflector);
         D3D12_SHADER_DESC desc;
         reflector->GetDesc(&desc);
 
@@ -214,51 +136,71 @@ namespace Ghurund {
             switch(bindDesc.Type) {
                 case D3D_SIT_CBUFFER:
                     {
+                        for(size_t i = 0; i<constantBuffers.Size; i++) {
+                            if(strcmp(bindDesc.Name, constantBuffers[i]->getName())==0) {
+                                constantBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+                                goto bufferMerged;
+                            }
+                        }
                         ID3D12ShaderReflectionConstantBuffer *constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
-                        ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.type.getVisibility());
+                        ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility());
                         cb->initParameters(parameterManager);
                         constantBuffers.add(cb);
                     }
                     break;
                 case D3D_SIT_TBUFFER:
                     {
+                        for(size_t i = 0; i<textureBuffers.Size; i++) {
+                            if(strcmp(bindDesc.Name, textureBuffers[i]->getName())==0) {
+                                textureBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+                                goto bufferMerged;
+                            }
+                        }
                         ID3D12ShaderReflectionConstantBuffer *constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
-                        textureBuffers.add(ghnew TextureBufferConstant(constantBuffer, bufferDesc, bindDesc.BindPoint, program.type.getVisibility()));
+                        textureBuffers.add(ghnew TextureBufferConstant(constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility()));
                     }
                     break;
                 case D3D_SIT_TEXTURE:
-                    textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, program.type.getVisibility()));
+                    for(size_t i = 0; i<textures.Size; i++) {
+                        if(strcmp(bindDesc.Name, textures[i]->getName())==0) {
+                            textures[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+                            goto bufferMerged;
+                        }
+                    }
+                    textures.add(ghnew TextureConstant(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility()));
                     break;
                 case D3D_SIT_SAMPLER:
-                    samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, program.type.getVisibility()));
+                    for(size_t i = 0; i<samplers.Size; i++) {
+                        if(strcmp(bindDesc.Name, samplers[i]->getName())==0) {
+                            samplers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
+                            goto bufferMerged;
+                        }
+                    }
+                    samplers.add(ghnew Sampler(bindDesc.Name, bindDesc.BindPoint, program.getType().getVisibility()));
                     break;
             }
+
+        bufferMerged:;
         }
 
         reflector->Release();
     }
 
-    Status Shader::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags) {
+    Status Shader::loadShd(ResourceManager &resourceManager, const void *data, unsigned long size) {
         Status result;
         MemoryInputStream stream(data);
 
         if(stream.readBoolean()) {
-            ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
-            CompilationTarget targets[] = {CompilationTarget::SHADER_5_0};
             for(size_t i = 0; i<6; i++) {
                 if(stream.readBoolean()) {
                     char *entryPoint = stream.readASCII();
-                    CompilationTarget target = targets[stream.readInt()];
-                    programs[i] = ghnew ShaderProgram(types[i], entryPoint, target);
-                    size_t length = stream.readUInt();
-                    programs[i]->byteCodeLength = length;
-                    void *byteCode = ghnew BYTE[length];
-                    memcpy(byteCode, stream.readBytes(length), length);
-                    programs[i]->byteCode = byteCode;
+                    const CompilationTarget &target = CompilationTarget::fromValue(stream.readInt());
+                    unsigned int length = stream.readUInt();
+                    programs[i] = ghnew ShaderProgram(ShaderType::values[i], stream.readBytes(length), length, entryPoint, target);
                 }
             }
             Graphics &graphics = resourceManager.Graphics;
@@ -275,21 +217,42 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Shader::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags) const {
+    Status Shader::loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        ASCIIString sourceCode((const char *)data, size);
+        setSourceCode(sourceCode.getData());
+        return build(resourceManager);
+    }
+
+    Status Shader::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        if(!FileName.Empty) {
+            if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
+                return loadShd(resourceManager, data, size);
+            } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
+                return loadHlsl(resourceManager, data, size);
+            }
+        }
+
+        Status result = loadShd(resourceManager, data, size);
+        if(result!=Status::OK) {
+            result = loadHlsl(resourceManager, data, size);
+            if(result!=Status::OK)
+                return Status::UNKNOWN_FORMAT;
+        }
+        return Status::OK;
+    }
+
+    Status Shader::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const {
         MemoryOutputStream stream(data);
 
         stream.writeBoolean(compiled);
         if(compiled) {
-            CompilationTarget targets[] = {CompilationTarget::SHADER_5_0};
             for(size_t i = 0; i<6; i++) {
                 stream.writeBoolean(programs[i]!=nullptr);
                 if(programs[i]!=nullptr) {
                     stream.writeASCII(programs[i]->getEntryPoint());
-                    for(size_t j = 0; j<1; j++)
-                        if(programs[i]->getCompilationTarget()==targets[j])
-                            stream.writeInt(j);
-                    stream.writeUInt(programs[i]->byteCodeLength);
-                    stream.writeBytes(programs[i]->byteCode, programs[i]->byteCodeLength);
+                    stream.writeInt(programs[i]->getCompilationTarget().getValue());
+                    stream.writeUInt(programs[i]->getByteCodeLength());
+                    stream.writeBytes(programs[i]->getByteCode(), programs[i]->getByteCodeLength());
                 }
             }
         }

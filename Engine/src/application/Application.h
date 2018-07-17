@@ -40,6 +40,7 @@ namespace Ghurund {
         HANDLE singleInstanceMutex;
 
         void initInternal();
+        void updateInternal();
         void uninitInternal();
 
         void messageLoop();
@@ -50,6 +51,8 @@ namespace Ghurund {
         virtual void init() {};
 
         virtual void uninit() {};
+
+        virtual void update() {};
 
         /*virtual void client(const void *buffer, unsigned int size){
             if(currentFrame)
@@ -69,8 +72,6 @@ namespace Ghurund {
         }
 
         void run(const Settings *val = nullptr, WindowProc *proc = nullptr);
-
-        bool update();
 
         inline void quit() {
             PostQuitMessage(0);

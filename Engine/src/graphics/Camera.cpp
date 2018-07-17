@@ -1,34 +1,26 @@
 #include "Camera.h"
 
 namespace Ghurund {
+    const List<ResourceFormat> Camera::formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
+
     void Camera::rebuild() {
-        XMVECTOR up2, dir2, right2;
-        dir2 = XMVector3Normalize(XMLoadFloat3(&dir));
-        up2 = XMVector3Normalize(XMLoadFloat3(&up));
-        right2 = XMVector3Cross(up2, dir2);
-        right2 = XMVector3Normalize(right2);
-        //up2=XMVector3Cross(dir2,right2);
-        //up2=XMVector3Normalize(up2);
-        //XMStoreFloat3(&up,up2);
-        //XMStoreFloat3(&dir,dir2);
-        XMStoreFloat3(&right, right2);
-        /*XMMATRIX view2, proj2;
-        view2 = XMMatrixLookAtLH(XMLoadFloat3(&position), XMLoadFloat3(&target), up2);
+        XMMATRIX view2, proj2;
+        view2 = XMMatrixLookAtLH(XMLoadFloat3(&Position), XMLoadFloat3(&target.Position), XMLoadFloat3(&up));
         XMStoreFloat4x4(&view, view2);
         if(pers) {
-            proj2 = XMMatrixPerspectiveFovLH(fov, aspect, zNear, zFar);
+            proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
         } else {
             proj2 = XMMatrixOrthographicLH((float)screenSize.x, (float)screenSize.y, zNear, zFar);
         }
-        XMStoreFloat4x4(&proj, proj2);*/
+        XMStoreFloat4x4(&proj, proj2);
+        XMStoreFloat4x4(&viewProj, view2*proj2);
     }
 
     Camera::Camera() {
-        screenSize = float2(640, 480);
-        aspect = 4.0f/3.0f;
+        screenSize = XMFLOAT2(640, 480);
         fov = XM_PI/4;
         zNear = 0.1f;
-        zFar = 1000.0f;
+        zFar = 10000.0f;
         pers = true;
         Position = XMFLOAT3(0, 0, 0);
         up = XMFLOAT3(0, 1, 0);
@@ -39,8 +31,42 @@ namespace Ghurund {
 
         Name = _T("camera");
 
-        target.Name = _T("target");
         subentities.add(&target);
+    }
+
+    void Camera::initParameters(ParameterManager &parameterManager) {
+        Entity::initParameters(parameterManager);
+        parameterDirection = parameterManager.add(Parameter::DIRECTION, ParameterType::FLOAT3);
+        parameters.add(parameterDirection);
+        parameterUp = parameterManager.add(Parameter::UP, ParameterType::FLOAT3);
+        parameters.add(parameterUp);
+        parameterRight = parameterManager.add(Parameter::RIGHT, ParameterType::FLOAT3);
+        parameters.add(parameterRight);
+        parameterFov = parameterManager.add(Parameter::FOV, ParameterType::FLOAT);
+        parameters.add(parameterFov);
+        parameterZNear = parameterManager.add(Parameter::ZNEAR, ParameterType::FLOAT);
+        parameters.add(parameterZNear);
+        parameterZFar = parameterManager.add(Parameter::ZFAR, ParameterType::FLOAT);
+        parameters.add(parameterZFar);
+        parameterView = parameterManager.add(Parameter::VIEW, ParameterType::MATRIX);
+        parameters.add(parameterView);
+        parameterProjection = parameterManager.add(Parameter::PROJECTION, ParameterType::MATRIX);
+        parameters.add(parameterProjection);
+        parameterViewProjection = parameterManager.add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
+        parameters.add(parameterViewProjection);
+    }
+
+    void Camera::fillParameters() {
+        rebuild();
+        parameterDirection->setValue(&dir);
+        parameterUp->setValue(&up);
+        parameterRight->setValue(&right);
+        parameterFov->setValue(&fov);
+        parameterZNear->setValue(&zNear);
+        parameterZFar->setValue(&zFar);
+        parameterView->setValue(&view);
+        parameterProjection->setValue(&proj);
+        parameterViewProjection->setValue(&viewProj);
     }
 
     void Camera::calcMouseRay(XMFLOAT3 *rayPos, XMFLOAT3 *rayDir, int x, int y)const {
@@ -86,7 +112,59 @@ namespace Ghurund {
         */
     }
 
-    Status Camera::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags) {
+    void Camera::setPositionTargetUp(XMFLOAT3 & pos, XMFLOAT3 & target, XMFLOAT3 & up) {
+        Position = pos;
+        this->target.Position = target;
+
+        XMVECTOR dv = XMLoadFloat3(&target)-XMLoadFloat3(&pos);
+
+        XMStoreFloat(&dist, XMVector3Length(dv));
+        XMVECTOR uv = XMLoadFloat3(&up);
+        XMStoreFloat3(&dir, XMVector3Normalize(dv));
+        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
+        XMStoreFloat3(&right, rv);
+        uv = XMVector3Normalize(XMVector3Cross(rv, dv));
+        XMStoreFloat3(&this->up, uv);
+    }
+
+    void Camera::setPositionDirectionUp(XMFLOAT3 & pos, XMFLOAT3 & dir, XMFLOAT3 & up) {
+        /*Position = pos;
+
+        XMVECTOR dv = XMLoadFloat3(&dir);
+        XMStoreFloat3(&target, XMLoadFloat3(&pos)+dv);
+
+        XMStoreFloat(&dist, XMVector3Length(dv));
+        XMVECTOR uv = XMLoadFloat3(&up);
+        XMStoreFloat3(&dir, XMVector3Normalize(dv));
+        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
+        XMStoreFloat3(&right, rv);
+        uv = XMVector3Normalize(XMVector3Cross(rv, dv));
+        XMStoreFloat3(&this->up, uv);*/
+    }
+
+    void Camera::setViewYawPitchRoll(float yaw, float pitch, float roll) {
+        /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+        XMVECTOR dv = XMVectorSet(0, 0, dist==0?-1:-dist, 0);
+        dv = XMVector3Transform(dv, rotation);
+        XMStoreFloat3(&target, XMLoadFloat3(&Position)+dv);
+        XMStoreFloat3(&dir, XMVector4Normalize(dv));
+        XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
+        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
+    }
+
+    void Camera::setOrbitYawPitchRoll(float yaw, float pitch, float roll) {
+        /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+        XMVECTOR dv = XMVectorSet(0, 0, dist==0 ? -1 : -dist, 0);
+        dv = XMVector3Transform(dv, rotation);
+        XMFLOAT3 pos;
+        XMStoreFloat3(&pos, XMLoadFloat3(&target)-dv);
+        Position = pos;
+        XMStoreFloat3(&dir, XMVector4Normalize(dv));
+        XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
+        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
+    }
+
+    Status Camera::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
         MemoryInputStream stream(data);
         //memcpy(&position, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
         memcpy(&target, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
@@ -94,9 +172,9 @@ namespace Ghurund {
         memcpy(&dir, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
         memcpy(&view, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
         memcpy(&proj, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
+        memcpy(&viewProj, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
         memcpy(&facing, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
-        memcpy(&screenSize, stream.readBytes(sizeof(float2)), sizeof(float2));
-        aspect = stream.readFloat();
+        memcpy(&screenSize, stream.readBytes(sizeof(XMFLOAT2)), sizeof(XMFLOAT2));
         fov = stream.readFloat();
         zNear = stream.readFloat();
         zFar = stream.readFloat();
@@ -105,7 +183,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Camera::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags) const {
+    Status Camera::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const {
         MemoryOutputStream stream(data);
         //stream.writeBytes((void*)&position, sizeof(XMFLOAT3));
         stream.writeBytes((void*)&target, sizeof(XMFLOAT3));
@@ -113,9 +191,9 @@ namespace Ghurund {
         stream.writeBytes((void*)&dir, sizeof(XMFLOAT3));
         stream.writeBytes((void*)&view, sizeof(XMFLOAT4X4));
         stream.writeBytes((void*)&proj, sizeof(XMFLOAT4X4));
+        stream.writeBytes((void*)&viewProj, sizeof(XMFLOAT4X4));
         stream.writeBytes((void*)&facing, sizeof(XMFLOAT4X4));
-        stream.writeBytes((void*)&screenSize, sizeof(float2));
-        stream.writeFloat(aspect);
+        stream.writeBytes((void*)&screenSize, sizeof(XMFLOAT2));
         stream.writeFloat(fov);
         stream.writeFloat(zNear);
         stream.writeFloat(zFar);

@@ -23,7 +23,7 @@ namespace Ghurund {
             client->disconnect();
         delete client;
 
-        delete parameterManager;
+		delete parameterManager;
         delete resourceManager;
         delete graphics;
         window.uninit();
@@ -39,7 +39,7 @@ namespace Ghurund {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }
-            update();
+            updateInternal();
         }
     }
 
@@ -101,13 +101,14 @@ namespace Ghurund {
         CloseHandle(singleInstanceMutex);
     }
 
-    bool Application::update() {
+    void Application::updateInternal() {
         ticks_t prevTicks = timer.CurrentTicks;
         timer.tick();
         ticks_t currentTicks = timer.CurrentTicks;
 
         input.dispatchEvents(game);
 
+        update();
         //while()
             //game.Update(deltaTime);
 
@@ -115,9 +116,10 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        levelManager.draw(renderer, *parameterManager);
-
-        return true;
+        shared_ptr<CommandList> commandList = renderer.startFrame();
+		graphics->DescriptorAllocator.set(commandList->get());
+        levelManager.draw(commandList);
+        renderer.finishFrame();
     }
 
     void Application::reset() {

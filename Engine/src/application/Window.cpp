@@ -1,7 +1,6 @@
 #include "Window.h"
 
 namespace Ghurund {
-    const tchar *Window::DEFAULT_WINDOW_TITLE = _T("Ghurund");
     const tchar *Window::WINDOW_CLASS_NAME = _T("Ghurund");
 
     void Window::init(HWND handle) {
@@ -52,7 +51,7 @@ namespace Ghurund {
         GetWindowRect(handle, &rect);
         width = rect.right-rect.left;
         height = rect.bottom-rect.top;
-        viewport = D3D12_VIEWPORT{0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)};
+        viewport = D3D12_VIEWPORT{0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height),0,1};
         scissorRect = D3D12_RECT{0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
     }
 

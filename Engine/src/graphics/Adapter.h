@@ -81,8 +81,7 @@ namespace Ghurund {
         }
 
         ~AdapterOutput() {
-            for(size_t i = 0; displayModes.Size; i++)
-                delete displayModes.get(i);
+            displayModes.deleteItems();
         }
 
         String &getName() {
@@ -105,7 +104,7 @@ namespace Ghurund {
             ComPtr<IDXGIOutput> output;
             unsigned int outputIndex = 0;
             while(true) {
-                if(DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(outputIndex, output.GetAddressOf()))
+                if(DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(outputIndex, &output))
                     break;
 
                 outputs.add(ghnew AdapterOutput(output));
@@ -126,8 +125,7 @@ namespace Ghurund {
         }
 
         ~Adapter() {
-            for(size_t i = 0; outputs.Size; i++)
-                delete outputs.get(i);
+            outputs.deleteItems();
         }
 
         ComPtr<IDXGIAdapter1> get() {

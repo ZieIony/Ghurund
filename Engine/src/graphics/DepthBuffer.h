@@ -20,7 +20,7 @@ namespace Ghurund {
             dsvHeapDesc.NumDescriptors = 1;
             dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
             dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-            if(FAILED(graphics.getDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap)))) {
+            if(FAILED(graphics.Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap)))) {
                 Logger::log(_T("failed to create descriptor heap\n"));
                 return Status::CALL_FAIL;
             }
@@ -35,20 +35,15 @@ namespace Ghurund {
             depthClearValue.DepthStencil.Depth = 1.0f;
             depthClearValue.DepthStencil.Stencil = 0;
 
-            if(FAILED(graphics.getDevice()->CreateCommittedResource(
-                &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-                D3D12_HEAP_FLAG_NONE,
-                &CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, width, height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL),
-                D3D12_RESOURCE_STATE_DEPTH_WRITE,
-                &depthClearValue,
-                IID_PPV_ARGS(&depthStencil)
-                ))) {
+            CD3DX12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+            CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, width, height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+            if(FAILED(graphics.Device->CreateCommittedResource(&heapProperties,D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_DEPTH_WRITE,&depthClearValue,IID_PPV_ARGS(&depthStencil)))) {
                 Logger::log(_T("failed to create depth stencil texture\n"));
                 return Status::CALL_FAIL;
             }
 
             handle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-            graphics.getDevice()->CreateDepthStencilView(depthStencil.Get(), &depthStencilDesc, handle);
+            graphics.Device->CreateDepthStencilView(depthStencil.Get(), &depthStencilDesc, handle);
 
             return Status::OK;
         }

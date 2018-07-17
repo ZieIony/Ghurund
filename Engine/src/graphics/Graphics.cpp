@@ -22,7 +22,8 @@ namespace Ghurund {
         }
 
         initAdapters();
-        if(FAILED(D3D12CreateDevice(adapters[0]->get().Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device)))) {
+        ComPtr<IDXGIAdapter1> adapter = adapters[0]->get();
+        if(FAILED(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device)))) {
             Logger::log(_T("D3D12CreateDevice failed\n"));
             return Status::CALL_FAIL;
         }
@@ -40,6 +41,10 @@ namespace Ghurund {
             Logger::log(_T("factory->MakeWindowAssociation() failed\n"));
             return Status::CALL_FAIL;
         }*/
+
+        // TODO: do it properly
+        allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 
         return Status::OK;
     }

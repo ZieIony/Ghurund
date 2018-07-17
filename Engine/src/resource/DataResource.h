@@ -10,7 +10,7 @@ namespace Ghurund {
         size_t size;
 
     protected:
-        Status loadInternal(shared_ptr<ResourceManager>, const void *data, unsigned long size, unsigned int flags = 0) {
+        Status loadInternal(shared_ptr<ResourceManager>, const void *data, unsigned long size) {
             if(this->data!=nullptr)
                 delete this->data;
             this->data = ghnew char[size];
@@ -44,8 +44,12 @@ namespace Ghurund {
             this->size = size;
         }
 
+        __declspec(property(get = getData)) void *Data;
+        
         size_t getSize() {
             return size;
         }
+      
+        __declspec(property(get = getSize)) size_t Size;
     };
 }

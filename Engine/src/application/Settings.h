@@ -22,38 +22,19 @@ namespace Ghurund {
             windowed = true;
         }
 
-        void parse(const tchar *settings) {
-            tchar *copy = ghnew tchar[_tcslen(settings)+1];
-            _tcscpy_s(copy, _tcslen(settings)+1, settings);
-            tchar *nextToken;
-            tchar *key = _tcstok_s(copy, _T("="), &nextToken);
-            tchar *value;
-
-            Map<String, tchar*> map;
-
-            while(key != nullptr) {
-                value = _tcstok_s(nullptr, _T(" "), &nextToken);
-                map.set(String(key), value);
-                key = _tcstok_s(nullptr, _T("="), &nextToken);
+        void parse(const String &settings) {
+            List<String> commands = settings.split(" ");
+            for(size_t i = 0; i<commands.Size; i++) {
+                List<String> keyVal = commands[i].split("=");
+                if(keyVal.Size!=2)
+                    return;
+                if(keyVal[0]=="width")
+                    width = _ttoi(keyVal[1].getData());
+                if(keyVal[0]=="height")
+                    height = _ttoi(keyVal[1].getData());
+                if(keyVal[0]=="windowed")
+                    windowed = keyVal[1]=="true";
             }
-
-            String widthKey(_T("width"));
-            if(map.contains(widthKey))
-                width = _ttoi(map.get(widthKey));
-
-            String heightKey(_T("height"));
-            if(map.contains(heightKey))
-                height = _ttoi(map.get(heightKey));
-
-            String windowedKey(_T("windowed"));
-            if(map.contains(windowedKey))
-                windowed = map.get(windowedKey);
-
-            delete[] copy;
-        }
-
-        void parse(String &settings) {
-            parse(settings.getData());
         }
 
         Status load(const tchar *fileName) {

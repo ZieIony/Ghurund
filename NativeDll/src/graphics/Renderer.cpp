@@ -18,6 +18,7 @@ extern "C" __declspec(dllexport) void Renderer_finishFrame(Renderer *_this) {
     _this->finishFrame();
 }
 
+// TODO: uninit swapchain and renderer?
 extern "C" __declspec(dllexport) void Renderer_uninit(Renderer *_this) {
-    _this->uninit();
+//    _this->uninit();
 }

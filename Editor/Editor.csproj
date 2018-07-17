@@ -4,13 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3EA4D020-0692-400A-A33B-26DFA8724867}</ProjectGuid>
+    <ProjectGuid>{E37A65DE-3D83-40E6-AC8D-83A35E6157E0}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Editor</RootNamespace>
-    <AssemblyName>Editor</AssemblyName>
+    <RootNamespace>Ghurund.Editor</RootNamespace>
+    <AssemblyName>GhurundEditor</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,262 +29,203 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ghurund.Editor.Program</StartupObject>
+    <StartupObject>GhurundEditor.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.3.3, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Shell.1.1.3.3\lib\net452\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Control\Outline\EntityTreeNode.cs" />
-    <Compile Include="Control\Outline\OutlinePanel.cs">
-      <SubType>UserControl</SubType>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="DockableControlFactory.cs" />
+    <Compile Include="EditorKernel.cs" />
+    <Compile Include="EditorSettings.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="MainWindow.Tasks.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\Outline\OutlinePanel.Designer.cs">
-      <DependentUpon>OutlinePanel.cs</DependentUpon>
+    <Compile Include="ParametersPanel.xaml.cs">
+      <DependentUpon>ParametersPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\Outline\SelectionChangedEventArgs.cs" />
-    <Compile Include="Control\SystemButton.cs">
-      <SubType>Component</SubType>
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectItem.cs" />
+    <Compile Include="PropertiesPanel.xaml.cs">
+      <DependentUpon>PropertiesPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\TextEditor\CaretMoveModification.cs" />
-    <Compile Include="Control\TextEditor\DeleteWordModification.cs" />
-    <Compile Include="Control\TextEditor\InsertWordModification.cs" />
-    <Compile Include="Control\TextEditor\ShaderTextBox.cs">
-      <SubType>Component</SubType>
+    <Compile Include="ResourceManagerPanel.xaml.cs">
+      <DependentUpon>ResourceManagerPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Control\TransparentPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Control\VerticalButton.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Docking\ChildDockPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\ChildDockPanel.Designer.cs">
-      <DependentUpon>ChildDockPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\CollapsedPagesContainer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\CollapsedPagesContainer.Designer.cs">
-      <DependentUpon>CollapsedPagesContainer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\DockableTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Docking\DockableTabControl.designer.cs">
-      <DependentUpon>DockableTabControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\DockableTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Docking\DockableTabPage.Designer.cs">
-      <DependentUpon>DockableTabPage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\DockableWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Docking\DockableWindow.Designer.cs">
-      <DependentUpon>DockableWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\DockSide.cs" />
-    <Compile Include="Docking\DockSpot.cs" />
-    <Compile Include="Docking\HighlightPanel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Docking\HighlightPanel.Designer.cs">
-      <DependentUpon>HighlightPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\IDockContainer.cs" />
-    <Compile Include="Docking\PeekPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Docking\ResizeGrip.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\RootDockPanel.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\RootDockPanel.Designer.cs">
-      <DependentUpon>RootDockPanel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Docking\TitleBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Docking\TitleBar.Designer.cs">
-      <DependentUpon>TitleBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\BaseEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\EditorWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Editor\EditorWindow.Designer.cs">
-      <DependentUpon>EditorWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\IEditor.cs" />
-    <Compile Include="Editor\Launcher\LauncherEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\Launcher\LauncherEditor.Designer.cs">
-      <DependentUpon>LauncherEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GraphicsSettings.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GraphicsSettings.Designer.cs">
-      <DependentUpon>GraphicsSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainWindow.Designer.cs">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\Material\MaterialEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\Material\MaterialEditor.Designer.cs">
-      <DependentUpon>MaterialEditor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Control\TextEditor\CodeTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Control\TextEditor\CodeTextBox.designer.cs">
-      <DependentUpon>CodeTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control\TextEditor\CodeTextBoxStuff.cs" />
-    <Compile Include="Control\TextEditor\Modification.cs" />
-    <Compile Include="Control\TextEditor\MultiUndoRichTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Control\TextEditor\MultiUndoRichTextBox.Designer.cs">
-      <DependentUpon>MultiUndoRichTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Editor\Shader\ShaderEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Editor\Shader\ShaderEditor.Designer.cs">
-      <DependentUpon>ShaderEditor.cs</DependentUpon>
+    <Compile Include="SceneExplorerPanel.xaml.cs">
+      <DependentUpon>SceneExplorerPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="SurfaceView.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="SurfaceView.Designer.cs">
-      <DependentUpon>SurfaceView.cs</DependentUpon>
+    <Compile Include="Task.cs" />
+    <Compile Include="TaskPanel.xaml.cs">
+      <DependentUpon>TaskPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\ActiveCollections.cs" />
-    <Compile Include="Utils\Extensions.cs" />
-    <EmbeddedResource Include="Control\Outline\OutlinePanel.resx">
-      <DependentUpon>OutlinePanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\ChildDockPanel.resx">
-      <DependentUpon>ChildDockPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\CollapsedPagesContainer.resx">
-      <DependentUpon>CollapsedPagesContainer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\DockableTabPage.resx">
-      <DependentUpon>DockableTabPage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\DockableWindow.resx">
-      <DependentUpon>DockableWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\HighlightPanel.resx">
-      <DependentUpon>HighlightPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\RootDockPanel.resx">
-      <DependentUpon>RootDockPanel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Docking\TitleBar.resx">
-      <DependentUpon>TitleBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editor\EditorWindow.resx">
-      <DependentUpon>EditorWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Launcher\LauncherEditor.resx">
-      <DependentUpon>LauncherEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GraphicsSettings.resx">
-      <DependentUpon>GraphicsSettings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainWindow.resx">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Material\MaterialEditor.resx">
-      <DependentUpon>MaterialEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    <Compile Include="WelcomePage.xaml.cs">
+      <DependentUpon>WelcomePage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="ParametersPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ProjectExplorerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertiesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceManagerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SceneExplorerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TaskPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WelcomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ProjectExplorerPanel.xaml.cs">
+      <DependentUpon>ProjectExplorerPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Control\TextEditor\CodeTextBox.resx">
-      <DependentUpon>CodeTextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Editor\Shader\ShaderEditor.resx">
-      <DependentUpon>ShaderEditor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SurfaceView.resx">
-      <DependentUpon>SurfaceView.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{a149407b-bc15-42b5-8c29-d8833ffb78b7}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ManagedDll\ManagedDll.csproj">
+      <Project>{8a3c858c-a479-456a-bb2e-abf2901f0c6a}</Project>
+      <Name>ManagedDll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspace\Workspace.csproj">
+      <Project>{69424092-037b-47a7-b2d2-7154d44af661}</Project>
+      <Name>Workspace</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\projectExplorer32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\file32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\properties32.png" />
+    <Resource Include="Resources\welcomePage32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
@@ -289,10 +233,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ManagedDll\ManagedDll.csproj">
-      <Project>{8a3c858c-a479-456a-bb2e-abf2901f0c6a}</Project>
-      <Name>ManagedDll</Name>
-    </ProjectReference>
+    <Resource Include="Resources\camera16.png" />
+    <Resource Include="Resources\light16.png" />
+    <Resource Include="Resources\target16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\addFolder32.png" />
+    <Resource Include="Resources\folder32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

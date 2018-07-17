@@ -64,7 +64,7 @@ namespace Ghurund {
                 bool consumed = consumer.dispatchKeyEvent(*keyEvents[i]);
                 if(consumed) {
                     delete keyEvents[i];
-                    keyEvents.removeKeepOrder(i);
+                    keyEvents.removeAtKeepOrder(i);
                 } else {
                     i++;
                 }

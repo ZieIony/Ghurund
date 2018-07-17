@@ -3,12 +3,24 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) size_t Entity_getSubentities_Size(Entity *_this) {
-    return _this->getSubentities().Size;
+extern "C" __declspec(dllexport) List<Entity*> *Entity_getSubentities(Entity *_this) {
+    return &_this->getSubentities();
 }
 
-extern "C" __declspec(dllexport) Entity *Entity_getSubentities_get(Entity *_this, size_t index) {
-    return _this->getSubentities().get(index);
+extern "C" __declspec(dllexport) List<Parameter*> *Entity_getParameters(Entity *_this) {
+    return &_this->getParameters();
+}
+
+extern "C" __declspec(dllexport) void Entity_initParameters(Entity *_this, ParameterManager *manager) {
+    _this->initParameters(*manager);
+}
+
+extern "C" __declspec(dllexport) void Entity_fillParameters(Entity *_this) {
+    _this->fillParameters();
+}
+
+extern "C" __declspec(dllexport) EntityType Entity_getType(Entity *_this) {
+    return _this->Type;
 }
 
 extern "C" __declspec(dllexport) tchar *Entity_getName(Entity *_this) {
@@ -20,7 +32,7 @@ extern "C" __declspec(dllexport) void Entity_setName(Entity *_this, const tchar 
 }
 
 extern "C" __declspec(dllexport) const Float3 Entity_getPosition(Entity *_this) {
-    return convertFloat(_this->getPosition());
+    return convertFloat3(_this->getPosition());
 }
 
 extern "C" __declspec(dllexport) void Entity_setPosition(Entity *_this, XMFLOAT3 position) {
@@ -28,7 +40,7 @@ extern "C" __declspec(dllexport) void Entity_setPosition(Entity *_this, XMFLOAT3
 }
 
 extern "C" __declspec(dllexport) const Float3 Entity_getRotation(Entity *_this) {
-    return convertFloat(_this->getRotation());
+    return convertFloat3(_this->getRotation());
 }
 
 extern "C" __declspec(dllexport) void Entity_setRotation(Entity *_this, XMFLOAT3 rotation) {
@@ -36,9 +48,17 @@ extern "C" __declspec(dllexport) void Entity_setRotation(Entity *_this, XMFLOAT3
 }
 
 extern "C" __declspec(dllexport) const Float3 Entity_getScale(Entity *_this) {
-    return convertFloat(_this->getScale());
+    return convertFloat3(_this->getScale());
 }
 
 extern "C" __declspec(dllexport) void Entity_setScale(Entity *_this, XMFLOAT3 scale) {
     _this->setScale(scale);
+}
+
+extern "C" __declspec(dllexport) void Entity_addEntity(Entity *_this, Entity *child) {
+    _this->getSubentities().add(child);
+}
+
+extern "C" __declspec(dllexport) void Entity_removeEntity(Entity *_this, Entity *child) {
+    _this->getSubentities().remove(child);
 }

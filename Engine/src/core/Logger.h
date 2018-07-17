@@ -4,6 +4,8 @@
 #include "Noncopyable.h"
 #include "dbghelp.h"
 #include "CriticalSection.h"
+#include "collection/List.h"
+#include "collection/String.h"
 
 namespace Ghurund {
 	enum class LogOutput {
@@ -19,8 +21,13 @@ namespace Ghurund {
 		static SYMBOL_INFO *symbol;
 		static IMAGEHLP_LINE line;
         static CriticalSection criticalSection;
+		static List<String> *loggedOnce;
 
-        static tchar * getFileLine();
+		static address_t getAddress();
+
+        static String getFileLine(address_t address);
+
+		static void log(const String &str);
 
 	public:
         static void init(LogOutput output = LogOutput::SYSTEM_CONSOLE, const tchar *name = nullptr);
@@ -28,6 +35,8 @@ namespace Ghurund {
         static void uninit();
 
 		static void log(const tchar *format, ...);
+
+		static void logOnce(const tchar *format, ...);
     };
 
 }

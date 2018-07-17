@@ -32,7 +32,7 @@ namespace Ghurund {
         }
         inline Value *begin();
         inline Value *end();
-        inline size_t find(Value item);
+        inline size_t indexOf(Value item);
         inline bool contains(Value item);
         Value &operator[](Key i);
         const Value &operator[](Key i)const;

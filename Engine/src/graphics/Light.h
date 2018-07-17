@@ -1,16 +1,32 @@
 #pragma once
 
-#include "game\Entity.h"
+#include "game/Entity.h"
+#include "game/Target.h"
 
 namespace Ghurund {
     class Light: public Entity {
     private:
-        Entity target;
+        Target target;
+
+        static const List<ResourceFormat> formats;
 
     public:
         Light() {
-            target.Name = _T("target");
+            Name = _T("light");
+
             subentities.add(&target);
+        }
+
+        virtual EntityType getType() const override {
+            return EntityType::LIGHT;
+        }
+
+        virtual const List<ResourceFormat> &getFormats() const override {
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::MATERIAL;
         }
     };
 }

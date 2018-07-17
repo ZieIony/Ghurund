@@ -6,23 +6,32 @@
 #include "collection/List.h"
 #include "resource/Resource.h"
 #include "core/NamedObject.h"
+#include "BoundingBox.h"
 
 namespace Ghurund {
+
+    enum class EntityType {
+        CAMERA, LIGHT, TARGET, UNKNOWN
+    };
+
     class Entity: public Resource, public ParameterProvider, public NamedObject {
     private:
         XMFLOAT3 position = {}, rotation = {}, scale = {1,1,1};
+        BoundingBox localBoundingBox, boundingBox;
         XMFLOAT4X4 world;
 
         Parameter *parameterPosition, *parameterRotation, *parameterScale, *parameterWorld;
 
+        EntityType type;
+
     protected:
         List<Entity*> subentities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned int flags = 0) {
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -31,14 +40,22 @@ namespace Ghurund {
     public:
         virtual ~Entity() = default;
 
-        virtual void initParameters(ParameterManager & parameterManager) override {
-            parameterPosition = parameterManager.add(Name+Parameter::POSITION, sizeof(position));
-            parameterRotation = parameterManager.add(Name+Parameter::ROTATION, sizeof(rotation));
-            parameterScale = parameterManager.add(Name+Parameter::SCALE, sizeof(scale));
-            parameterWorld = parameterManager.add(Name+Parameter::WORLD, sizeof(world));
+        virtual void initParameters(ParameterManager &parameterManager) override {
+            for(Entity *e:subentities)
+                e->initParameters(parameterManager);
+            parameterPosition = parameterManager.add(Parameter::POSITION, ParameterType::FLOAT3);
+            parameters.add(parameterPosition);
+            parameterRotation = parameterManager.add(Parameter::ROTATION, ParameterType::FLOAT3);
+            parameters.add(parameterRotation);
+            parameterScale = parameterManager.add(Parameter::SCALE, ParameterType::FLOAT3);
+            parameters.add(parameterScale);
+            parameterWorld = parameterManager.add(Parameter::WORLD, ParameterType::MATRIX);
+            parameters.add(parameterWorld);
         }
 
         virtual void fillParameters() override {
+            for(Entity *e:subentities)
+                e->fillParameters();
             parameterPosition->setValue(&position);
             parameterRotation->setValue(&rotation);
             parameterScale->setValue(&scale);
@@ -46,12 +63,11 @@ namespace Ghurund {
             parameterWorld->setValue(&world);
         }
 
-        virtual void setName(const String &name) override {
-            NamedObject::setName(name);
-            /*if(parameterPosition!=nullptr) {  // TODO: update parameter names
-                parameterPosition->setName
-            }*/
+        virtual EntityType getType() const {
+            return EntityType::UNKNOWN;
         }
+
+        __declspec(property(get = getType)) EntityType Type;
 
         void setPosition(const XMFLOAT3 &pos) {
             this->position = pos;
@@ -104,5 +120,13 @@ namespace Ghurund {
         List<Entity*> &getSubentities() {
             return subentities;
         }
+
+        __declspec(property(get = getSubentities)) List<Entity*> &Subentities;
+
+        BoundingBox &getBoundingBox() {
+            return boundingBox;
+        }
+
+        __declspec(property(get = getBoundingBox)) BoundingBox &BoundingBox;
     };
 }

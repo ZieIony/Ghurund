@@ -17,7 +17,7 @@ namespace Ghurund {
     class ShaderConstant {
     protected:
         char *name = nullptr;
-        unsigned int bindPoint;
+        unsigned int bindPoint, bindSlot;
         D3D12_SHADER_VISIBILITY visibility;
 
     public:
@@ -31,12 +31,33 @@ namespace Ghurund {
             delete[] name;
         }
 
+        inline const char *getName() {
+            return name;
+        }
+
         inline unsigned int getBindPoint() const {
             return bindPoint;
         }
 
+        inline unsigned int getBindSlot() const {
+            return bindSlot;
+        }
+
+        inline void setBindSlot(unsigned int slot) {
+            bindSlot = slot;
+        }
+
+        __declspec(property(get = getBindSlot, put = setBindSlot)) unsigned int BindSlot;
+
         inline D3D12_SHADER_VISIBILITY getVisibility() const {
             return visibility;
         }
+
+        inline void setVisibility(D3D12_SHADER_VISIBILITY visibility) {
+            this->visibility = visibility;
+        }
+
+        __declspec(property(get = getVisibility, put = setVisibility)) D3D12_SHADER_VISIBILITY Visibility;
+
     };
 }

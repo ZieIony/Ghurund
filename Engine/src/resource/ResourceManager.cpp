@@ -10,13 +10,13 @@ namespace Ghurund {
             case FILE_ACTION_ADDED:
                 break;  // not possible
             case FILE_ACTION_REMOVED:
-                resources.remove<TextResource>(fileName);
+                //resources.remove<TextResource>(fileName);
                 break;
             case FILE_ACTION_MODIFIED:
-                load<TextResource>(fileName);
+                //load<TextResource>(fileName);
                 break;
             case FILE_ACTION_RENAMED_OLD_NAME:
-                resources.remove<TextResource>(fileName);   // tracking fileName changes not supported
+                //resources.remove<TextResource>(fileName);   // tracking fileName changes not supported
                 break;
             case FILE_ACTION_RENAMED_NEW_NAME:
                 break;  // not supported

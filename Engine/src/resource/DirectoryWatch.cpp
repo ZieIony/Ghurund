@@ -51,14 +51,8 @@ namespace Ghurund {
 
         overlapped.hEvent = this;
 
-        dirHandle = ::CreateFile(
-            directory,           // pointer to the file name
-            FILE_LIST_DIRECTORY,    // access (read/write) mode
-            FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,         // share mode
-            NULL, // security descriptor
-            OPEN_EXISTING,         // how to create
-            FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OVERLAPPED, // file attributes
-            NULL);
+        dirHandle = ::CreateFile(directory, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
+                                 OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OVERLAPPED, NULL);
     }
 
     DirectoryWatch::~DirectoryWatch() {
@@ -69,15 +63,9 @@ namespace Ghurund {
     void DirectoryWatch::readChanges() {
         DWORD bytesReturned = 0;
 
-        bool success = 0!=ReadDirectoryChangesW(
-            dirHandle,                                  // handle to directory
-            &buffer,                          // read results buffer
-            sizeof(buffer),                       // length of buffer
-            false,                                 // monitoring option
-            FILE_NOTIFY_CHANGE_CREATION|FILE_NOTIFY_CHANGE_LAST_WRITE|FILE_NOTIFY_CHANGE_FILE_NAME,             // filter conditions
-            &bytesReturned,              // bytes returned
-            &overlapped,                          // overlapped buffer
-            &notificationCompletion);
+        auto filter = FILE_NOTIFY_CHANGE_CREATION|FILE_NOTIFY_CHANGE_LAST_WRITE|FILE_NOTIFY_CHANGE_FILE_NAME;
+        bool success = 0!=ReadDirectoryChangesW(dirHandle, &buffer, sizeof(buffer), false, filter,
+                                                &bytesReturned, &overlapped, &notificationCompletion);
 
         if(!success)
             Logger::log(_T("Failed to watch for file changes\n"));

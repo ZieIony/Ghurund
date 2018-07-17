@@ -27,21 +27,18 @@ namespace Ghurund {
         }
 
         Status init(Graphics &graphics) {
-            commandQueue = graphics.getCommandQueue();
+            commandQueue = graphics.CommandQueue;
 
-            Status result = fence.init(graphics.getDevice().Get());
+            Status result = fence.init(graphics.Device.Get());
             if(result!=Status::OK)
                 return result;
 
-            if(FAILED(graphics.getDevice()->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,
-               IID_PPV_ARGS(&commandAllocator)))) {
+            if(FAILED(graphics.Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT,IID_PPV_ARGS(&commandAllocator)))) {
                 Logger::log(_T("CreateCommandAllocator() failed\n"));
                 return Status::CALL_FAIL;
             }
 
-            if(FAILED(graphics.getDevice()->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
-               commandAllocator.Get(), nullptr,
-               IID_PPV_ARGS(&commandList)))) {
+            if(FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,commandAllocator.Get(), nullptr,IID_PPV_ARGS(&commandList)))) {
                 Logger::log(_T("CreateCommandList() failed\n"));
                 return Status::CALL_FAIL;
             }

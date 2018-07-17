@@ -1,0 +1,105 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
+
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="./Themes/Icons.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+
+	<Style  x:Key="WorkspacePanel.FlatButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+		<Setter Property="Background" Value="{x:Null}"/>
+		<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Primary}"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Padding" Value="1"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Button}">
+					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+						<ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsDefaulted" Value="true">
+						</Trigger>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource WorkspacePanel.Selection}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource WorkspacePanel.Selection}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="TextElement.Foreground" TargetName="contentPresenter" Value="{DynamicResource WorkspacePanel.Text.Disabled}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type local:TitleBar}">
+		<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Background}"/>
+		<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Primary}"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:TitleBar}">
+					<Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+						<DockPanel>
+							<Button x:Name="closeButton" DockPanel.Dock="Right" ToolTip="Close" Style="{StaticResource WorkspacePanel.FlatButtonStyle}">
+								<Rectangle Width="16" Height="16" Fill="{TemplateBinding Foreground}">
+									<Rectangle.OpacityMask>
+										<VisualBrush Visual="{StaticResource WorkspacePanel.Icon.Close}" Stretch="None"/>
+									</Rectangle.OpacityMask>
+								</Rectangle>
+							</Button>
+							<Button x:Name="minimizeButton" DockPanel.Dock="Right" ToolTip="Minimize" Style="{StaticResource WorkspacePanel.FlatButtonStyle}">
+								<Rectangle Width="16" Height="16" Fill="{TemplateBinding Foreground}">
+									<Rectangle.OpacityMask>
+										<ImageBrush ImageSource="Resources/minimize32.png"/>
+									</Rectangle.OpacityMask>
+								</Rectangle>
+							</Button>
+							<Rectangle Margin="2,0,0,0" DockPanel.Dock="Left" Width="16" Height="16" Fill="{TemplateBinding Foreground}">
+								<Rectangle.OpacityMask>
+									<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+								</Rectangle.OpacityMask>
+							</Rectangle>
+							<TextBlock x:Name="title" TextWrapping="NoWrap" Text="{TemplateBinding Title}" VerticalAlignment="Center" Padding="4,0,0,0" Foreground="{TemplateBinding Foreground}" />
+							<DockPanel.ContextMenu>
+								<ContextMenu>
+									<MenuItem Header="_Minimize" />
+									<MenuItem Header="Ma_ximize" />
+									<MenuItem Header="Mimimize _To">
+										<MenuItem Header="_Left" />
+										<MenuItem Header="_Top" />
+										<MenuItem Header="_Right" />
+										<MenuItem Header="_Bottom" />
+									</MenuItem>
+									<Separator />
+									<MenuItem x:Name="undockMenuItem" Header="Undock"/>
+									<MenuItem x:Name="closeMenuItem" Header="Close" />
+								</ContextMenu>
+							</DockPanel.ContextMenu>
+						</DockPanel>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsParentFocused" Value="true">
+							<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Primary}" />
+							<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Primary}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Background}" />
+							<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Disabled}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+
+</ResourceDictionary>

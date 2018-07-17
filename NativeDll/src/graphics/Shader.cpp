@@ -7,11 +7,11 @@ extern "C" __declspec(dllexport) shared_ptr<Shader> *Shader_new() {
 }
 
 extern "C" __declspec(dllexport) bool Shader_load(shared_ptr<Shader> *_this, ResourceManager *resourceManager, tchar *fileName) {
-    return (*_this)->load(*resourceManager, &String(fileName))==Status::OK;
+    return (*_this)->load(*resourceManager, String(fileName))==Status::OK;
 }
 
 extern "C" __declspec(dllexport) bool Shader_save(shared_ptr<Shader> *_this, ResourceManager *resourceManager, tchar *fileName) {
-    return (*_this)->save(*resourceManager, &String(fileName))==Status::OK;
+    return (*_this)->save(*resourceManager, fileName)==Status::OK;
 }
 
 extern "C" __declspec(dllexport) const tchar *Shader_getFileName(shared_ptr<Shader> *_this) {
