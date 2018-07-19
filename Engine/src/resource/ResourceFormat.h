@@ -4,6 +4,7 @@
 #include "File.h"
 #include "core/Object.h"
 #include "core/MemoryStream.h"
+#include "collection/Array.h"
 
 using namespace std;
 
@@ -11,17 +12,17 @@ namespace Ghurund {
     class ResourceFormat {
     private:
         unsigned int value;
-        const char *extension;
+        const tchar *extension = nullptr;
         bool save, load;
+
+        static const Array<const ResourceFormat*> values;
 
     public:
         static const ResourceFormat &AUTO,
             &ENTITY,
             &HLSL, &SHADER,
-            &JPG,
+            &JPG, &JPEG,
             &MATERIAL;
-
-        static const ResourceFormat values[];
 
         static const ResourceFormat &fromValue(unsigned int value) {
             if(value==HLSL.value) {
@@ -33,11 +34,26 @@ namespace Ghurund {
             }
         }
 
-        ResourceFormat(unsigned int value, const char *extension, bool save, bool load) {
+        ResourceFormat(unsigned int value, const tchar *extension, bool save, bool load) {
             this->value = value;
-            this->extension = extension;
+            this->extension = copyStr(extension);
             this->save = save;
             this->load = load;
+        }
+
+        ResourceFormat(const ResourceFormat &format) {
+            this->value = format.value;
+            this->extension = copyStr(format.extension);
+            this->save = format.save;
+            this->load = format.load;
+        }
+
+        ~ResourceFormat() {
+            delete[] extension;
+        }
+
+        static const Array<const ResourceFormat*> &getValues() {
+            return values;
         }
 
         unsigned int getValue() const {
@@ -46,7 +62,7 @@ namespace Ghurund {
 
         operator unsigned int() const { return value; }
 
-        const char *getExtension() const {
+        const tchar *getExtension() const {
             return extension;
         }
 

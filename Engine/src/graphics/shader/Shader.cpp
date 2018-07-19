@@ -2,7 +2,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    const List<ResourceFormat> Shader::formats = {ResourceFormat::AUTO, ResourceFormat::SHADER, ResourceFormat::HLSL};
+    const Array<ResourceFormat> Shader::formats = {ResourceFormat::AUTO, ResourceFormat::SHADER, ResourceFormat::HLSL};
 
     Status Shader::makeRootSignature(Graphics &graphics) {
         Status result = Status::OK;

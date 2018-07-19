@@ -13,7 +13,7 @@ namespace Ghurund {
         shared_ptr<Shader> shader;
         shared_ptr<Ghurund::Texture> texture;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
     protected:
         virtual bool isVersioned()const {
@@ -67,7 +67,7 @@ namespace Ghurund {
 
         __declspec(property(get = getTexture, put = setTexture)) shared_ptr<Texture> Texture;
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 

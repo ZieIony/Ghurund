@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -42,17 +44,17 @@ namespace Ghurund.Editor {
 
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {
         [Inject]
-        public ResourceManager resourceManager { get; set; }
+        public ResourceManager ResourceManager { get; set; }
 
         [Inject]
-        public EditorSettings settings { get; set; }
+        public EditorSettings Settings { get; set; }
 
         public ResourceManagerPanel() {
             InitializeComponent();
 
             EditorKernel.Instance.Inject(this);
 
-            foreach (string library in settings.Libraries)
+            foreach (string library in Settings.Libraries)
                 loadLibrary(library);
         }
 
@@ -74,7 +76,7 @@ namespace Ghurund.Editor {
         }
 
         private void addLibrary(string path) {
-            settings.Libraries.Add(path);
+            Settings.Libraries.Add(path);
             loadLibrary(path);
         }
 
@@ -138,6 +140,10 @@ namespace Ghurund.Editor {
             var expandedDir = (expandedItem.Tag as DirectoryInfo);
 
             foreach (FileInfo file in expandedDir.GetFiles()) {
+                if (file.Extension.StartsWith(".")&&
+                    !ResourceFormat.Values.Where((format) => format.Extension!=null&&format.Extension.Equals(file.Extension.Substring(1))).Any())
+                    continue;
+
                 ResourceFile item = new ResourceFile {
                     Path = file.FullName,
                     Name = file.Name,

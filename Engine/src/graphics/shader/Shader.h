@@ -36,7 +36,7 @@ namespace Ghurund {
         char *source = nullptr;
         bool compiled = false;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
         Status makeRootSignature(Graphics &graphics);
         Status makePipelineState(Graphics &graphics);
@@ -125,7 +125,7 @@ namespace Ghurund {
                 constantBuffers[i]->set(commandList);
         }
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 

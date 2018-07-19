@@ -57,6 +57,7 @@
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\Window.h" />
     <ClInclude Include="src\application\WindowProc.h" />
+    <ClInclude Include="src\collection\Array.h" />
     <ClInclude Include="src\collection\AverageValue.h" />
     <ClInclude Include="src\collection\BufferedValue.h" />
     <ClInclude Include="src\collection\TypeMap.h" />

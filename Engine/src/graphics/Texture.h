@@ -13,7 +13,7 @@ namespace Ghurund {
 
         shared_ptr<Image> image;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
         Status init(Graphics &graphics, ID3D12GraphicsCommandList *commandList, Image *image);
 
@@ -43,7 +43,7 @@ namespace Ghurund {
             clean();
         }
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 

@@ -14,7 +14,7 @@ namespace Ghurund {
         List<shared_ptr<Camera>> cameras;
         List<shared_ptr<Light>> lights;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
     protected:
         virtual unsigned int getVersion()const {
@@ -72,7 +72,7 @@ namespace Ghurund {
 
         __declspec(property(get = getLights)) List<shared_ptr<Light>> &Lights;
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 

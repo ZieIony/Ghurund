@@ -3,7 +3,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    const List<ResourceFormat> Material::formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
+    const Array<ResourceFormat> Material::formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
 
     Status Material::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
         MemoryInputStream stream = MemoryInputStream(data);

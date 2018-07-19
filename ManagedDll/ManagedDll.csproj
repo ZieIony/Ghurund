@@ -64,12 +64,14 @@
     <Compile Include="Game\Target.cs" />
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="Material.cs" />
+    <Compile Include="NativeArray.cs" />
     <Compile Include="NativeList.cs" />
     <Compile Include="PipelineState.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="NativeClass.cs" />
     <Compile Include="Resource\Resource.cs" />
+    <Compile Include="Resource\ResourceFormat.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Shader.cs" />

@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Ghurund.Managed;
-using Ghurund.Managed.Game;
 
 namespace Ghurund.Managed {
     internal static class NativeLists {

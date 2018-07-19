@@ -8,7 +8,7 @@ namespace Ghurund {
     private:
         Target target;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
     public:
         Light() {
@@ -21,7 +21,7 @@ namespace Ghurund {
             return EntityType::LIGHT;
         }
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 

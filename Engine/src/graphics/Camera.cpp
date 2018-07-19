@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 namespace Ghurund {
-    const List<ResourceFormat> Camera::formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
+    const Array<ResourceFormat> Camera::formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
 
     void Camera::rebuild() {
         XMMATRIX view2, proj2;

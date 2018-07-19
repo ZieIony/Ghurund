@@ -5,6 +5,7 @@
 #include "core/Object.h"
 #include "core/MemoryStream.h"
 #include "ResourceFormat.h"
+#include "collection/Array.h"
 
 using namespace std;
 
@@ -79,7 +80,7 @@ namespace Ghurund {
 
         __declspec(property(get = getFileName, put = setFileName)) String &FileName;
 
-        virtual const List<ResourceFormat> &getFormats() const = 0;
+        virtual const Array<ResourceFormat> &getFormats() const = 0;
 
         virtual const ResourceFormat &getDefaultFormat() const = 0;
     };

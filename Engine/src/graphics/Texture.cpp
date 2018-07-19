@@ -1,7 +1,7 @@
 #include "Texture.h"
 
 namespace Ghurund {
-    const List<ResourceFormat> Texture::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
+    const Array<ResourceFormat> Texture::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
   
     Status Texture::init(Graphics &graphics, ID3D12GraphicsCommandList *commandList, Image *image) {
 		descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);

@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\collection\Array.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\Parameter.cpp" />
@@ -167,7 +168,7 @@
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\game\Target.cpp" />
-    <ClCompile Include="src\List.cpp" />
+    <ClCompile Include="src\collection\List.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
     <ClCompile Include="stdafx.cpp">

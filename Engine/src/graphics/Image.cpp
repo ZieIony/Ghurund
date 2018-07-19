@@ -2,7 +2,7 @@
 #include <Shlwapi.h>
 
 namespace Ghurund {
-    const List<ResourceFormat> Image::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
+    const Array<ResourceFormat> Image::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
   
     DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID &wicFormatGUID) {
         if(wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;

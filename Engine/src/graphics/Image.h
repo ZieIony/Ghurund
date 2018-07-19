@@ -23,7 +23,7 @@ namespace Ghurund {
         unsigned int width, height, pixelSize;
         BYTE *imageData = nullptr;
 
-        static const List<ResourceFormat> formats;
+        static const Array<ResourceFormat> formats;
 
         DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
@@ -67,7 +67,7 @@ namespace Ghurund {
             return pixelSize;
         }
 
-        virtual const List<ResourceFormat> &getFormats() const override {
+        virtual const Array<ResourceFormat> &getFormats() const override {
             return formats;
         }
 
