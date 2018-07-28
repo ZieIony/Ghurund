@@ -21,14 +21,14 @@ namespace Ghurund {
             capacity = t1.capacity;
             initial = t1.initial;
             size = t1.size;
-            v = (Value*)(ghnew BYTE[capacity*sizeof(Value)]);
+            v = ghnew Value[capacity];
             for(size_t i = 0; i<size; i++)
                 v[i] = t1.v[i];
         }
 
         List(std::initializer_list<Value> list) {
             size = initial = capacity = list.size();
-            v = (Value*)(ghnew byte[capacity*sizeof(Value)]);
+            v = ghnew Value[capacity];
             int i = 0;
             for(auto it = list.begin(); it != list.end(); ++it)
                 v[i++] = *it;

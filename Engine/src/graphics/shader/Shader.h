@@ -36,23 +36,21 @@ namespace Ghurund {
         char *source = nullptr;
         bool compiled = false;
 
-        static const Array<ResourceFormat> formats;
-
         Status makeRootSignature(Graphics &graphics);
         Status makePipelineState(Graphics &graphics);
 
         void initConstants(Graphics &graphics, ParameterManager &parameterManager);
         void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
 
-        Status loadShd(ResourceManager &resourceManager, const void *data, unsigned long size);
-        Status loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size);
+        Status loadShd(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
+        Status loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
 
     protected:
         virtual unsigned int getVersion()const {
             return 1;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
 
         virtual void clean() {
@@ -126,6 +124,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::SHADER, ResourceFormat::HLSL};
             return formats;
         }
 

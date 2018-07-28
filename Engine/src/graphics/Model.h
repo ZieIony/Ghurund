@@ -4,7 +4,6 @@
 #include "Material.h"
 #include "graphics/mesh/CubeMesh.h"
 #include "graphics/mesh/SphereMesh.h"
-#include "graphics/mesh/ObjMesh.h"
 #include "resource/ResourceManager.h"
 #include "game/Entity.h"
 
@@ -15,15 +14,10 @@ namespace Ghurund {
         shared_ptr<Material> material;
 
     protected:
-        List<Entity*> subentities;
+        List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
-            return Status::NOT_IMPLEMENTED;
-        }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
-            return Status::NOT_IMPLEMENTED;
-        }
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) override;
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const override;
 
     public:
 
@@ -32,6 +26,10 @@ namespace Ghurund {
         Model(shared_ptr<Mesh> mesh, shared_ptr<Material> material) {
             this->mesh = mesh;
             this->material = material;
+        }
+
+        virtual EntityType getType() const override {
+            return EntityType::MODEL;
         }
 
         shared_ptr<Mesh> getMesh() {
@@ -57,6 +55,15 @@ namespace Ghurund {
         void draw(ID3D12GraphicsCommandList *commandList) {
             material->set(commandList);
             mesh->draw(commandList);
+        }
+
+        virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MODEL};
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::MODEL;
         }
     };
 }

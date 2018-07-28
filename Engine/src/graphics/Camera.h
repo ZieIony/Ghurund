@@ -25,11 +25,8 @@ namespace Ghurund {
         Parameter *parameterZNear,*parameterZFar;
         Parameter *parameterView, *parameterProjection, *parameterViewProjection;
 
-        static const Array<ResourceFormat> formats;
-
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
-
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
 
         virtual void clean() {}
@@ -144,6 +141,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
             return formats;
         }
 

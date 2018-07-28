@@ -15,7 +15,7 @@
 				</Button>
 			</ToolBarPanel>
 		</WrapPanel>
-		<workspace:SplitPanel>
+		<workspace:SplitPanel BorderThickness="0,1,0,0" BorderBrush="{DynamicResource WorkspacePanel.Border}"  >
 			<workspace:SplitPanel.Panel1>
 				<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" SelectedItemChanged="treeView_SelectedItemChanged">
 					<TreeView.Resources>
@@ -34,7 +34,7 @@
 				</TreeView>
 			</workspace:SplitPanel.Panel1>
 			<workspace:SplitPanel.Panel2>
-				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0">
+				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0" Background="{x:Null}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">

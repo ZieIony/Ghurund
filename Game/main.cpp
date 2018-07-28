@@ -55,19 +55,20 @@ namespace Ghurund {
         }
     };
 }
+
 class TestApplication:public Application {
 private:
     Level *testLevel;
-    shared_ptr<Model> model;
-    shared_ptr<Camera> camera;
     float rotation = 0;
+    Camera *camera;
+    Model *model;
 
 public:
     void init() {
         shared_ptr<CommandList> commandList = ResourceManager.getCommandList();
         commandList->reset();
 
-        camera.reset(ghnew Camera());
+        camera = ghnew Camera();
         camera->initParameters(ParameterManager);
 
         shared_ptr<Shader> shader(ghnew Shader());
@@ -79,17 +80,17 @@ public:
         shared_ptr<Scene> scene(ghnew Ghurund::Scene());
         testLevel = ghnew Level();
         testLevel->scene = scene;
-        scene->Cameras.add(camera);
+        scene->Entities.add(camera);
 
-        shared_ptr<Mesh> mesh(ghnew ObjMesh());
+        shared_ptr<Mesh> mesh(ghnew Mesh());
         mesh->load(ResourceManager, "obj/lamborghini/Lamborghini_Aventador.obj");
 
         shared_ptr<Material> material(ghnew Material(shader));
-        material->Texture = texture;
+        material->Textures.set("diffuse", texture);
 
-        model = shared_ptr<Model>(ghnew Model(mesh, material));
+        model = ghnew Model(mesh, material);
         model->initParameters(ParameterManager);
-        testLevel->scene->Models.add(model);
+        scene->Entities.add(model);
 
         commandList->finish();
 
@@ -103,6 +104,8 @@ public:
 
     void uninit() {
         delete testLevel;
+        delete model;
+        delete camera;
     }
 };
 

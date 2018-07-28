@@ -40,7 +40,7 @@ namespace Ghurund {
         }
 
         // TODO: why size is of type unsigned long instead of size_t?
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) = 0;
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) = 0;
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const = 0;
 
         virtual void clean() = 0;
@@ -51,10 +51,10 @@ namespace Ghurund {
 
         virtual ~Resource() = default;  // TODO: maybe this destructor should call clean()?
 
-        Status load(ResourceManager &resourceManager);
-        Status load(ResourceManager &resourceManager, const String &fileName);
-        Status load(ResourceManager &resourceManager, File &file);
-        Status load(ResourceManager &resourceManager, const void *data, unsigned long size);
+        Status load(ResourceManager &resourceManager, unsigned long *bytesRead=nullptr);
+        Status load(ResourceManager &resourceManager, const String &fileName, unsigned long *bytesRead = nullptr);
+        Status load(ResourceManager &resourceManager, File &file, unsigned long *bytesRead = nullptr);
+        Status load(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead = nullptr);
 
         Status save(ResourceManager &resourceManager) const;
         Status save(ResourceManager &resourceManager, const String &fileName);

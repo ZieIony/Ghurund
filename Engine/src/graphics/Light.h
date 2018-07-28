@@ -8,13 +8,11 @@ namespace Ghurund {
     private:
         Target target;
 
-        static const Array<ResourceFormat> formats;
-
     public:
         Light() {
             Name = _T("light");
 
-            subentities.add(&target);
+            entities.add(&target);
         }
 
         virtual EntityType getType() const override {
@@ -22,6 +20,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
             return formats;
         }
 

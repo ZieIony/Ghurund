@@ -11,7 +11,7 @@
 namespace Ghurund {
 
     enum class EntityType {
-        CAMERA, LIGHT, TARGET, UNKNOWN
+        CAMERA, LIGHT, TARGET, MODEL, UNKNOWN
     };
 
     class Entity: public Resource, public ParameterProvider, public NamedObject {
@@ -25,14 +25,43 @@ namespace Ghurund {
         EntityType type;
 
     protected:
-        List<Entity*> subentities;
+        List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
-            return Status::NOT_IMPLEMENTED;
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
+            MemoryInputStream stream = MemoryInputStream(data);
+
+            memcpy(&position, stream.readBytes(sizeof(position)), sizeof(position));
+            memcpy(&rotation, stream.readBytes(sizeof(rotation)), sizeof(rotation));
+            memcpy(&scale, stream.readBytes(sizeof(scale)), sizeof(scale));
+            
+            memcpy(&localBoundingBox, stream.readBytes(sizeof(localBoundingBox)), sizeof(localBoundingBox));
+            memcpy(&boundingBox, stream.readBytes(sizeof(boundingBox)), sizeof(boundingBox));
+
+            memcpy(&world, stream.readBytes(sizeof(world)), sizeof(world));
+
+            memcpy(&type, stream.readBytes(sizeof(type)), sizeof(type));
+
+            if(bytesRead!=nullptr)
+                *bytesRead = stream.BytesRead;
+
+            return Status::OK;
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
-            return Status::NOT_IMPLEMENTED;
+            MemoryOutputStream stream = MemoryOutputStream(data);
+
+            stream.writeBytes(&position, sizeof(position));
+            stream.writeBytes(&rotation, sizeof(rotation));
+            stream.writeBytes(&scale, sizeof(scale));
+
+            stream.writeBytes(&localBoundingBox, sizeof(localBoundingBox));
+            stream.writeBytes(&boundingBox, sizeof(boundingBox));
+
+            stream.writeBytes(&world, sizeof(world));
+
+            stream.writeBytes(&type, sizeof(type));
+
+            return Status::OK;
         }
 
         virtual void clean() {}
@@ -41,7 +70,7 @@ namespace Ghurund {
         virtual ~Entity() = default;
 
         virtual void initParameters(ParameterManager &parameterManager) override {
-            for(Entity *e:subentities)
+            for(Entity *e:entities)
                 e->initParameters(parameterManager);
             parameterPosition = parameterManager.add(Parameter::POSITION, ParameterType::FLOAT3);
             parameters.add(parameterPosition);
@@ -54,7 +83,7 @@ namespace Ghurund {
         }
 
         virtual void fillParameters() override {
-            for(Entity *e:subentities)
+            for(Entity *e:entities)
                 e->fillParameters();
             parameterPosition->setValue(&position);
             parameterRotation->setValue(&rotation);
@@ -117,11 +146,11 @@ namespace Ghurund {
 
         __declspec(property(get = getScale, put = setScale)) XMFLOAT3 &Scale;
 
-        List<Entity*> &getSubentities() {
-            return subentities;
+        List<Entity*> &getEntities() {
+            return entities;
         }
 
-        __declspec(property(get = getSubentities)) List<Entity*> &Subentities;
+        __declspec(property(get = getEntities)) List<Entity*> &Entities;
 
         BoundingBox &getBoundingBox() {
             return boundingBox;

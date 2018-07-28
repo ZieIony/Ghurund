@@ -2,8 +2,6 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    const Array<ResourceFormat> Shader::formats = {ResourceFormat::AUTO, ResourceFormat::SHADER, ResourceFormat::HLSL};
-
     Status Shader::makeRootSignature(Graphics &graphics) {
         Status result = Status::OK;
 
@@ -190,7 +188,7 @@ namespace Ghurund {
         reflector->Release();
     }
 
-    Status Shader::loadShd(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Shader::loadShd(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         Status result;
         MemoryInputStream stream(data);
 
@@ -214,30 +212,38 @@ namespace Ghurund {
         if(stream.readBoolean())
             source = copyStrA(stream.readASCII());
 
+        if(bytesRead!=nullptr)
+            *bytesRead = stream.BytesRead;
+
         return Status::OK;
     }
 
-    Status Shader::loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Shader::loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         ASCIIString sourceCode((const char *)data, size);
         setSourceCode(sourceCode.getData());
+
+        if(bytesRead!=nullptr)
+            *bytesRead = size;
+
         return build(resourceManager);
     }
 
-    Status Shader::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Shader::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
-                return loadShd(resourceManager, data, size);
+                return loadShd(resourceManager, data, size, bytesRead);
             } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
-                return loadHlsl(resourceManager, data, size);
+                return loadHlsl(resourceManager, data, size, bytesRead);
             }
         }
 
-        Status result = loadShd(resourceManager, data, size);
+        Status result = loadShd(resourceManager, data, size, bytesRead);
         if(result!=Status::OK) {
-            result = loadHlsl(resourceManager, data, size);
+            result = loadHlsl(resourceManager, data, size, bytesRead);
             if(result!=Status::OK)
                 return Status::UNKNOWN_FORMAT;
         }
+
         return Status::OK;
     }
 

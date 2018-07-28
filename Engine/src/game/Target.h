@@ -4,9 +4,6 @@
 
 namespace Ghurund {
     class Target:public Entity {
-    private:
-        static const Array<ResourceFormat> formats;
-
     public:
         Target() {
             Name = _T("target");
@@ -17,6 +14,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
             return formats;
         }
 

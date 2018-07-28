@@ -3,9 +3,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    const Array<ResourceFormat> Material::formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
-
-    Status Material::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Material::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         MemoryInputStream stream = MemoryInputStream(data);
 
         shader.reset(ghnew Ghurund::Shader());
@@ -13,8 +11,20 @@ namespace Ghurund {
         if(result!=Status::OK)
             return result;
 
-		texture.reset(ghnew Ghurund::Texture());
-        return texture->load(resourceManager, stream.readString());
+        size_t textureCount = stream.read<size_t>();
+        for(size_t i = 0; i<textureCount; i++) {
+            ASCIIString name = stream.readASCII();
+            shared_ptr<Texture> texture(ghnew Ghurund::Texture());
+            result = texture->load(resourceManager, stream.readString());
+            if(result!=Status::OK)
+                return result;
+            textures.set(name, texture);
+        }
+
+        if(bytesRead!=nullptr)
+            *bytesRead = stream.BytesRead;
+
+        return result;
     }
 
     Status Material::saveInternal(ResourceManager & resourceManager, void ** data, unsigned long * size) const {
@@ -26,7 +36,11 @@ namespace Ghurund {
         }
 
         stream.writeString(shader->FileName);
-        stream.writeString(texture->FileName);
+        stream.write(textures.Size);
+        for(size_t i = 0; i<textures.Size; i++) {
+            stream.writeASCII(textures.getKey(i));
+            stream.writeString(textures.getValue(i)->FileName);
+        }
 
         *size = stream.getBytesWritten();
 

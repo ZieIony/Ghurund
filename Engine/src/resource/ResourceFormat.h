@@ -22,7 +22,9 @@ namespace Ghurund {
             &ENTITY,
             &HLSL, &SHADER,
             &JPG, &JPEG,
-            &MATERIAL;
+            &MATERIAL,
+            &MODEL,
+            &MESH, &OBJ;
 
         static const ResourceFormat &fromValue(unsigned int value) {
             if(value==HLSL.value) {
@@ -32,6 +34,10 @@ namespace Ghurund {
             } else {
                 return AUTO;
             }
+        }
+
+        ResourceFormat() {
+            extension = nullptr;
         }
 
         ResourceFormat(unsigned int value, const tchar *extension, bool save, bool load) {

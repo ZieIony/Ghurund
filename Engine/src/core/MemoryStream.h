@@ -7,7 +7,7 @@
 namespace Ghurund {
     class MemoryStream {
     protected:
-        unsigned int pointer = 0;
+        unsigned long pointer = 0;
 
     public:
         inline void reset() {
@@ -23,9 +23,16 @@ namespace Ghurund {
         MemoryInputStream(const void *data) {
             this->data = (BYTE*)data;
         }
-        inline unsigned int getBytesRead() {
+
+        inline void skip(unsigned long bytes) {
+            pointer += bytes;
+        }
+
+        inline unsigned long getBytesRead() {
             return pointer;
         }
+
+        __declspec(property(get = getBytesRead)) unsigned long BytesRead;
 
         inline int readInt() {
             int i = *(int*)(data+pointer);
@@ -87,15 +94,21 @@ namespace Ghurund {
             pointer += length;
             return dataToReturn;
         }
+        template<typename T>
+        T &read() {
+            T *dataToReturn = (T*)(data+pointer);
+            pointer += sizeof(T);
+            return *dataToReturn;
+        }
     };
 
     class MemoryOutputStream:public MemoryStream {
     private:
         BYTE *d;
         BYTE **data;
-        unsigned int capacity, initial;
+        unsigned long capacity, initial;
 
-        inline void resize(unsigned int size) {
+        inline void resize(unsigned long size) {
             if(capacity<pointer+size) {
                 capacity += std::max(initial, size);
                 BYTE *data2 = new BYTE[capacity];
@@ -129,9 +142,11 @@ namespace Ghurund {
             return *data;
         }
 
-        inline unsigned int getBytesWritten() {
+        inline unsigned long getBytesWritten() {
             return pointer;
         }
+
+        __declspec(property(get = getBytesWritten)) unsigned long BytesWritten;
 
         inline void writeInt(int i) {
             resize(sizeof(int));
@@ -194,6 +209,13 @@ namespace Ghurund {
         inline void writeBytes(const void *bytes, unsigned int length) {
             resize(length);
             memcpy((BYTE*)*data+pointer, bytes, length);
+            pointer += length;
+        }
+        template<typename T>
+        void write(T value) {
+            size_t length = sizeof(T);
+            resize(length);
+            memcpy((BYTE*)*data+pointer, &value, length);
             pointer += length;
         }
     };

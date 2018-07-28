@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Resource {
     public abstract class Resource : NativeClass {
+        [Browsable(false)]
         public string FileName { get; set; }
 
         public Resource() {
@@ -32,12 +34,14 @@ namespace Ghurund.Managed.Resource {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Resource_getFormats(IntPtr _this);
 
+        [Browsable(false)]
         public ResourceFormatArray Formats { get; }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Resource_getDefaultFormat(IntPtr _this);
 
+        [Browsable(false)]
         public ResourceFormat DefaultFormat { get => new ResourceFormat(Resource_getDefaultFormat(NativePtr)); }
     }
 }

@@ -3,8 +3,8 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) List<Entity*> *Entity_getSubentities(Entity *_this) {
-    return &_this->getSubentities();
+extern "C" __declspec(dllexport) List<Entity*> *Entity_getEntities(Entity *_this) {
+    return &_this->getEntities();
 }
 
 extern "C" __declspec(dllexport) List<Parameter*> *Entity_getParameters(Entity *_this) {
@@ -56,9 +56,9 @@ extern "C" __declspec(dllexport) void Entity_setScale(Entity *_this, XMFLOAT3 sc
 }
 
 extern "C" __declspec(dllexport) void Entity_addEntity(Entity *_this, Entity *child) {
-    _this->getSubentities().add(child);
+    _this->getEntities().add(child);
 }
 
 extern "C" __declspec(dllexport) void Entity_removeEntity(Entity *_this, Entity *child) {
-    _this->getSubentities().remove(child);
+    _this->getEntities().remove(child);
 }

@@ -6,7 +6,7 @@ namespace Ghurund {
 
     template <class Type> class GenericString {
     protected:
-        Type *v;
+        Type *v = nullptr;
         int hash;
         size_t initial;
         size_t size;
@@ -167,7 +167,7 @@ namespace Ghurund {
         bool startsWith(const Type *str)const {
             size_t i = 0;
             while(true) {
-                if(str[i]=='\0')
+                if(str[i]==(Type)'\0')
                     return true;
                 if(str[i]!=v[i])
                     return false;
@@ -179,11 +179,11 @@ namespace Ghurund {
             size_t l = lengthOf(str);
             if(l>Length)
                 return false;
-            size_t i = Length-l;
+            size_t i = 0;
             while(true) {
-                if(str[i]=='\0')
+                if(str[i]==(Type)'\0')
                     return true;
-                if(str[i]!=v[i])
+                if(str[i]!=v[Length-l+i])
                     return false;
                 i++;
             }
@@ -456,7 +456,7 @@ namespace Ghurund {
         bool startsWith(const wchar_t *str)const {
             size_t i = 0;
             while(true) {
-                if(str[i]=='\0')
+                if(str[i]==L'\0')
                     return true;
                 if(str[i]!=v[i])
                     return false;
@@ -472,7 +472,7 @@ namespace Ghurund {
                 return false;
             size_t i = 0;
             while(true) {
-                if(str[i]=='\0')
+                if(str[i]==L'\0')
                     return true;
                 if(str[i]!=v[Length-l+i])
                     return false;

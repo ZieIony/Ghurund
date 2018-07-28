@@ -13,6 +13,7 @@
 #include <DirectXMath.h>
 #include "d3dx12.h"
 #include "resource/Resource.h"
+#include "resource/ResourceManager.h"
 
 #include <wrl.h>
 
@@ -38,7 +39,13 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> vertexUploadHeap;
         ComPtr<ID3D12Resource> indexUploadHeap;
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
+            return loadObj(resourceManager, data, size, bytesRead);
+        }
+
+        Status loadObj(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
+
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -157,5 +164,14 @@ namespace Ghurund {
 		void generateNormals(float smoothingTreshold);
 		void generateTangents();
 		void invertWinding();
+
+        virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MESH, ResourceFormat::OBJ};
+            return formats;
+        }
+
+        virtual const ResourceFormat &getDefaultFormat() const override {
+            return ResourceFormat::MESH;
+        }
     };
 }

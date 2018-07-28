@@ -15,12 +15,12 @@ namespace Ghurund.Managed.Game {
         public event EntityChangeEventHandler AfterChanged;
 
         public Entity() {
-            Subentities = new EntityList(Entity_getSubentities(NativePtr));
+            Entities = new EntityList(Entity_getEntities(NativePtr));
             Parameters = new ParameterList(Entity_getParameters(NativePtr));
         }
 
         public Entity(IntPtr ptr) : base(ptr) {
-            Subentities = new EntityList(Entity_getSubentities(NativePtr));
+            Entities = new EntityList(Entity_getEntities(NativePtr));
             Parameters = new ParameterList(Entity_getParameters(NativePtr));
         }
 
@@ -118,10 +118,10 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Entity_getSubentities(IntPtr _this);
+        private static extern IntPtr Entity_getEntities(IntPtr _this);
 
         [Browsable(false)]
-        public EntityList Subentities {
+        public EntityList Entities {
             get; internal set;
         }
 
@@ -145,7 +145,7 @@ namespace Ghurund.Managed.Game {
 
         private void syncParameters() {
             Parameters.SyncList();
-            foreach (Entity e in Subentities)
+            foreach (Entity e in Entities)
                 e.syncParameters();
         }
 

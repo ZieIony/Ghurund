@@ -1,8 +1,6 @@
 #include "Camera.h"
 
 namespace Ghurund {
-    const Array<ResourceFormat> Camera::formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
-
     void Camera::rebuild() {
         XMMATRIX view2, proj2;
         view2 = XMMatrixLookAtLH(XMLoadFloat3(&Position), XMLoadFloat3(&target.Position), XMLoadFloat3(&up));
@@ -31,7 +29,7 @@ namespace Ghurund {
 
         Name = _T("camera");
 
-        subentities.add(&target);
+        entities.add(&target);
     }
 
     void Camera::initParameters(ParameterManager &parameterManager) {
@@ -164,40 +162,51 @@ namespace Ghurund {
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
     }
 
-    Status Camera::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Camera::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         MemoryInputStream stream(data);
-        //memcpy(&position, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
-        memcpy(&target, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
-        memcpy(&right, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
-        memcpy(&dir, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
-        memcpy(&view, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
-        memcpy(&proj, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
-        memcpy(&viewProj, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
-        memcpy(&facing, stream.readBytes(sizeof(XMFLOAT4X4)), sizeof(XMFLOAT4X4));
-        memcpy(&screenSize, stream.readBytes(sizeof(XMFLOAT2)), sizeof(XMFLOAT2));
+
+        unsigned long targetBytesRead=0;
+        target.load(resourceManager, data, size, &targetBytesRead);
+        stream.skip(targetBytesRead);
+
+        memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
+        memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
+        memcpy(&view, stream.readBytes(sizeof(view)), sizeof(view));
+        memcpy(&proj, stream.readBytes(sizeof(proj)), sizeof(proj));
+        memcpy(&viewProj, stream.readBytes(sizeof(viewProj)), sizeof(viewProj));
+        memcpy(&facing, stream.readBytes(sizeof(facing)), sizeof(facing));
+        memcpy(&screenSize, stream.readBytes(sizeof(screenSize)), sizeof(screenSize));
         fov = stream.readFloat();
         zNear = stream.readFloat();
         zFar = stream.readFloat();
-        memcpy(&up, stream.readBytes(sizeof(XMFLOAT3)), sizeof(XMFLOAT3));
+        memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
         pers = stream.readBoolean();
+
+        if(bytesRead!=nullptr)
+            *bytesRead = stream.BytesRead;
+
         return Status::OK;
     }
 
     Status Camera::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const {
         MemoryOutputStream stream(data);
-        //stream.writeBytes((void*)&position, sizeof(XMFLOAT3));
-        stream.writeBytes((void*)&target, sizeof(XMFLOAT3));
-        stream.writeBytes((void*)&right, sizeof(XMFLOAT3));
-        stream.writeBytes((void*)&dir, sizeof(XMFLOAT3));
-        stream.writeBytes((void*)&view, sizeof(XMFLOAT4X4));
-        stream.writeBytes((void*)&proj, sizeof(XMFLOAT4X4));
-        stream.writeBytes((void*)&viewProj, sizeof(XMFLOAT4X4));
-        stream.writeBytes((void*)&facing, sizeof(XMFLOAT4X4));
-        stream.writeBytes((void*)&screenSize, sizeof(XMFLOAT2));
+
+        void *targetData;
+        unsigned long targetSize;
+        target.save(resourceManager, &targetData, &targetSize);
+        stream.writeBytes(targetData, targetSize);
+
+        stream.writeBytes(&right, sizeof(right));
+        stream.writeBytes(&dir, sizeof(dir));
+        stream.writeBytes(&view, sizeof(view));
+        stream.writeBytes(&proj, sizeof(proj));
+        stream.writeBytes(&viewProj, sizeof(viewProj));
+        stream.writeBytes(&facing, sizeof(facing));
+        stream.writeBytes(&screenSize, sizeof(screenSize));
         stream.writeFloat(fov);
         stream.writeFloat(zNear);
         stream.writeFloat(zFar);
-        stream.writeBytes((void*)&up, sizeof(XMFLOAT3));
+        stream.writeBytes(&up, sizeof(up));
         stream.writeFloat(pers);
         return Status::OK;
     }

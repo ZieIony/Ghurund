@@ -2,8 +2,6 @@
 #include <Shlwapi.h>
 
 namespace Ghurund {
-    const Array<ResourceFormat> Image::formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
-  
     DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID &wicFormatGUID) {
         if(wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         else if(wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
@@ -93,7 +91,7 @@ namespace Ghurund {
         return -1;
     }
     
-    Status Image::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+    Status Image::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
         IWICBitmapDecoder *wicDecoder = nullptr;
         IWICBitmapFrameDecode *wicFrame = nullptr;
         IWICFormatConverter *wicConverter = nullptr;

@@ -9,7 +9,7 @@ namespace Ghurund {
         return (std::underlying_type<LoadOption>::type)lhs&(std::underlying_type<LoadOption>::type)rhs;
     }
 
-    Status Resource::load(ResourceManager & resourceManager) {
+    Status Resource::load(ResourceManager & resourceManager, unsigned long *bytesRead) {
         File file(fileName);
 		if (!file.Exists) {
 			Logger::log(_T("'%s' doesn't exist\n"), fileName);
@@ -19,10 +19,10 @@ namespace Ghurund {
         Status result = file.read();
 		if (result != Status::OK)
             return result;
-        return load(resourceManager, file.Data, file.Size);
+        return load(resourceManager, file.Data, file.Size, bytesRead);
     }
     
-    Status Resource::load(ResourceManager & resourceManager, const String & fileName) {
+    Status Resource::load(ResourceManager & resourceManager, const String & fileName, unsigned long *bytesRead) {
         if(this->fileName.Length==0&&fileName.Length==0) {
             Logger::log(_T("Both resource's file name and the file name passed as parameter are empty\n"));
             return Status::INV_PARAM;
@@ -30,10 +30,10 @@ namespace Ghurund {
             this->fileName = fileName;
         }
 
-        return load(resourceManager);
+        return load(resourceManager, bytesRead);
     }
     
-    Status Resource::load(ResourceManager & resourceManager, File & file) {
+    Status Resource::load(ResourceManager & resourceManager, File & file, unsigned long *bytesRead) {
         this->fileName = file.Name;
         if(!file.Exists)
             return Status::FILE_DOESNT_EXIST;
@@ -43,12 +43,12 @@ namespace Ghurund {
             if(result!=Status::OK)
                 return result;
         }
-        result = load(resourceManager, file.Data, file.Size);
+        result = load(resourceManager, file.Data, file.Size, bytesRead);
         valid = result == Status::OK;
         return result;
     }
     
-    Status Resource::load(ResourceManager & resourceManager, const void * data, unsigned long size) {
+    Status Resource::load(ResourceManager & resourceManager, const void * data, unsigned long size, unsigned long *bytesRead) {
         Status result;
         if(isVersioned()) {
             MemoryInputStream stream = MemoryInputStream(data);
@@ -57,10 +57,13 @@ namespace Ghurund {
             if(strcmp(stream.readASCII(), typeid(*this).name())!=0)
                 return Status::WRONG_RESOURCE_TYPE;
             clean();
-            result = loadInternal(resourceManager, ((BYTE*)data)+stream.getBytesRead(), size-stream.getBytesRead());
+            unsigned long headerBytesRead = stream.getBytesRead();
+            result = loadInternal(resourceManager, ((BYTE*)data)+stream.getBytesRead(), size-stream.getBytesRead(), bytesRead);
+            if(bytesRead!=nullptr)
+                *bytesRead += headerBytesRead;
         } else {
             clean();
-            result = loadInternal(resourceManager, data, size);
+            result = loadInternal(resourceManager, data, size, bytesRead);
         }
         valid = result == Status::OK;
         return result;

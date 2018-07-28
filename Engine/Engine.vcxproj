@@ -22,17 +22,15 @@
     <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
-    <ClCompile Include="src\game\Scene.cpp" />
-    <ClCompile Include="src\game\Target.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\DescriptorHeap.cpp" />
     <ClCompile Include="src\graphics\Fence.cpp" />
     <ClCompile Include="src\graphics\Frame.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\Image.cpp" />
-    <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
+    <ClCompile Include="src\graphics\Model.cpp" />
     <ClCompile Include="src\graphics\shader\CompilationTarget.cpp" />
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
@@ -91,7 +89,6 @@
     <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\mesh\ConeMesh.h" />
     <ClInclude Include="src\graphics\mesh\CubeMesh.h" />
-    <ClInclude Include="src\graphics\mesh\ObjMesh.h" />
     <ClInclude Include="src\graphics\mesh\QuadMesh.h" />
     <ClInclude Include="src\graphics\RenderTarget.h" />
     <ClInclude Include="src\graphics\shader\CompilationTarget.h" />

@@ -15,14 +15,14 @@ namespace Ghurund {
 
         Array(const Array &t1) {
             size = t1.size;
-            v = (Value*)(ghnew BYTE[size*sizeof(Value)]);
+            v = ghnew Value[size];
             for(size_t i = 0; i<size; i++)
                 v[i] = t1.v[i];
         }
 
         Array(const std::initializer_list<Value> list) {
             size = list.size();
-            v = (Value*)(ghnew BYTE[size*sizeof(Value)]);
+            v = ghnew Value[size];
             int i = 0;
             for(auto it = list.begin(); it != list.end(); ++it)
                 v[i++] = *it;

@@ -23,8 +23,6 @@ namespace Ghurund {
         unsigned int width, height, pixelSize;
         BYTE *imageData = nullptr;
 
-        static const Array<ResourceFormat> formats;
-
         DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
         WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID);
@@ -32,7 +30,7 @@ namespace Ghurund {
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
 
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
             return Status::NOT_IMPLEMENTED;
@@ -68,6 +66,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
             return formats;
         }
 

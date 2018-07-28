@@ -13,12 +13,10 @@ namespace Ghurund {
 
         shared_ptr<Image> image;
 
-        static const Array<ResourceFormat> formats;
-
         Status init(Graphics &graphics, ID3D12GraphicsCommandList *commandList, Image *image);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead=nullptr) {
             image.reset(ghnew Image());
             Status result = image->load(resourceManager, data, size);
             if(result!=Status::OK)
@@ -44,6 +42,7 @@ namespace Ghurund {
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
             return formats;
         }
 

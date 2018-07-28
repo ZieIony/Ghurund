@@ -10,9 +10,9 @@ namespace Ghurund {
     public:
         virtual ~ParameterProvider() = default;
 
-        virtual void initParameters(ParameterManager &parameterManager) = 0;
+        virtual void initParameters(ParameterManager &parameterManager) {}
 
-        virtual void fillParameters() = 0;
+        virtual void fillParameters() {}
 
         List<Parameter*> &getParameters() {
             return parameters;

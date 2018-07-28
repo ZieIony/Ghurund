@@ -8,12 +8,10 @@
 #include "graphics/Texture.h"
 
 namespace Ghurund {
-    class Material:public Resource {
+    class Material:public Resource, ParameterProvider {
     private:
         shared_ptr<Shader> shader;
-        shared_ptr<Ghurund::Texture> texture;
-
-        static const Array<ResourceFormat> formats;
+        Map<ASCIIString, shared_ptr<Ghurund::Texture>> textures;
 
     protected:
         virtual bool isVersioned()const {
@@ -24,27 +22,28 @@ namespace Ghurund {
             return 0;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size);
-
+        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
 
         virtual void clean() {
             shader.reset();
-            texture.reset();
+            for(size_t i = 0; i<textures.Size; i++)
+                textures.getValue(i).reset();
+            textures.clear();
         }
 
     public:
 
         Material() {}
 
-        Material(shared_ptr<Shader> shader){
+        Material(shared_ptr<Shader> shader) {
             this->shader = shader;
         }
 
         void set(ID3D12GraphicsCommandList *commandList) {
             shader->set(commandList);
 
-            commandList->SetGraphicsRootDescriptorTable(2, texture->descHandle.getGpuHandle());
+            commandList->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
         }
 
         shared_ptr<Shader> getShader() {
@@ -57,17 +56,14 @@ namespace Ghurund {
 
         __declspec(property(get = getShader, put = setShader)) shared_ptr<Shader> Shader;
 
-        shared_ptr<Texture> getTexture() {
-            return texture;
+        Map<ASCIIString, shared_ptr<Texture>> &getTextures() {
+            return textures;
         }
 
-        void setTexture(shared_ptr<Texture> texture) {
-            this->texture = texture;
-        }
-
-        __declspec(property(get = getTexture, put = setTexture)) shared_ptr<Texture> Texture;
+        __declspec(property(get = getTextures)) Map<ASCIIString, shared_ptr<Texture>> &Textures;
 
         virtual const Array<ResourceFormat> &getFormats() const override {
+            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
             return formats;
         }
 
