@@ -26,8 +26,7 @@ namespace Ghurund {
 
     public:
         ~SwapChain() {
-            delete[] frames;
-            frames = nullptr;
+            uninitBuffers();
         }
 
         Status init(Graphics &graphics, Window &window, unsigned int frameCount);
@@ -51,7 +50,7 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        shared_ptr<CommandList> getCommandList() {
+        CommandList &getCommandList() {
             return frameBuffer->getCommandList();
         }
 

@@ -30,7 +30,7 @@ namespace Ghurund {
             bufferedValue->setValue(value, size, offset);
         }
 
-        void set(ID3D12GraphicsCommandList *commandList, unsigned int bindSlot) {
+        void set(CommandList &commandList, unsigned int bindSlot) {
             bufferedValue->set(commandList, bindSlot);
             bufferedValue.next();
         }

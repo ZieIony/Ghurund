@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Array.cs" />
     <Compile Include="CharStrMarshaler.cs" />
     <Compile Include="Float3UITypeEditor.cs" />
     <Compile Include="Float3UITypeEditorControl.cs">
@@ -63,9 +64,8 @@
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Game\Target.cs" />
     <Compile Include="LauncherSettings.cs" />
+    <Compile Include="List.cs" />
     <Compile Include="Material.cs" />
-    <Compile Include="NativeArray.cs" />
-    <Compile Include="NativeList.cs" />
     <Compile Include="PipelineState.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />

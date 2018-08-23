@@ -17,11 +17,23 @@ namespace Ghurund.Managed.Resource {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr ResourceFormat_getValues();
 
-        public static ResourceFormatArray Values { get; } = new ResourceFormatArray(ResourceFormat_getValues());
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int ResourceFormat_getValueCount();
+
+        public static ResourceFormatNativeArray Values { get; } = new ResourceFormatNativeArray(ResourceFormat_getValues(), ResourceFormat_getValueCount());
     }
 
-    public class ResourceFormatArray : NativeArray<ResourceFormat> {
+    public class ResourceFormatArray : Array<ResourceFormat> {
         public ResourceFormatArray(IntPtr ptr) : base(ptr) {
+        }
+
+        protected override ResourceFormat MakeItem(IntPtr p) {
+            return new ResourceFormat(p);
+        }
+    }
+
+    public class ResourceFormatNativeArray : NativeArray<ResourceFormat> {
+        public ResourceFormatNativeArray(IntPtr ptr, int size) : base(ptr, size) {
         }
 
         protected override ResourceFormat MakeItem(IntPtr p) {

@@ -46,7 +46,7 @@ namespace Ghurund {
             }
             delete[] variables;
             delete[] parameters;
-            delete[] managerParameters;   // don't delete manager's items
+            delete[] managerParameters;
 #ifdef _DEBUG
 			delete[] reported;
 #endif
@@ -80,7 +80,7 @@ namespace Ghurund {
             return variableCount;
         }
 
-        void set(ID3D12GraphicsCommandList *commandList) {
+        void set(CommandList &commandList, ParameterManager &parameterManager) {
             for(size_t i = 0; i<variableCount; i++) {
                 Parameter *p = parameters[i];
                 if(p==nullptr)
@@ -88,8 +88,12 @@ namespace Ghurund {
 				if (p == nullptr) {
 #ifdef _DEBUG
 					if (!reported[i]) {
-						Logger::log(_T("Parameter for variable '%hs' is missing\n"), variables[i]->name);
-						reported[i] = true;
+                        ShaderVariable *v = variables[i];
+                        p = managerParameters[i] = parameterManager.get(v->name);
+                        if(p == nullptr) {
+                            Logger::log(_T("Parameter for variable '%hs' is missing\n"), variables[i]->name);
+                            reported[i] = true;
+                        }
 					}
 #endif
 					continue;

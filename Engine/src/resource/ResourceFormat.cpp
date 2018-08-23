@@ -18,7 +18,7 @@ namespace Ghurund {
     const ResourceFormat &ResourceFormat::MESH = ResourceFormat(1, _T("mesh"), true, true);
     const ResourceFormat &ResourceFormat::OBJ = ResourceFormat(2, _T("obj"), true, true);
 
-    const Array<const ResourceFormat*> ResourceFormat::values = {
+    const ResourceFormat* ResourceFormat::values[9] = {
         &ResourceFormat::AUTO,
         &ResourceFormat::HLSL,
         &ResourceFormat::SHADER,
@@ -27,6 +27,6 @@ namespace Ghurund {
         &ResourceFormat::MATERIAL,
         &ResourceFormat::MODEL,
         &ResourceFormat::MESH,
-        &ResourceFormat::OBJ
+        &ResourceFormat::OBJ,
     };
 }

@@ -15,7 +15,7 @@ namespace Ghurund {
         const tchar *extension = nullptr;
         bool save, load;
 
-        static const Array<const ResourceFormat*> values;
+        static const ResourceFormat* values[9];
 
     public:
         static const ResourceFormat &AUTO,
@@ -25,6 +25,24 @@ namespace Ghurund {
             &MATERIAL,
             &MODEL,
             &MESH, &OBJ;
+
+        ResourceFormat() {
+            extension = nullptr;
+        }
+
+        ResourceFormat(unsigned int value, const tchar *extension, bool save, bool load) {
+            this->value = value;
+            this->extension = extension;
+            this->save = save;
+            this->load = load;
+        }
+
+        ResourceFormat(const ResourceFormat &format) {
+            this->value = format.value;
+            this->extension = format.extension;
+            this->save = format.save;
+            this->load = format.load;
+        }
 
         static const ResourceFormat &fromValue(unsigned int value) {
             if(value==HLSL.value) {
@@ -36,30 +54,12 @@ namespace Ghurund {
             }
         }
 
-        ResourceFormat() {
-            extension = nullptr;
-        }
-
-        ResourceFormat(unsigned int value, const tchar *extension, bool save, bool load) {
-            this->value = value;
-            this->extension = copyStr(extension);
-            this->save = save;
-            this->load = load;
-        }
-
-        ResourceFormat(const ResourceFormat &format) {
-            this->value = format.value;
-            this->extension = copyStr(format.extension);
-            this->save = format.save;
-            this->load = format.load;
-        }
-
-        ~ResourceFormat() {
-            delete[] extension;
-        }
-
-        static const Array<const ResourceFormat*> &getValues() {
+        static const ResourceFormat** getValues() {
             return values;
+        }
+
+        static const size_t getValueCount() {
+            return sizeof(values)/sizeof(values[0]);
         }
 
         unsigned int getValue() const {

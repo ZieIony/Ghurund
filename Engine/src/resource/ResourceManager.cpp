@@ -27,8 +27,7 @@ namespace Ghurund {
 
     ResourceManager::ResourceManager(Ghurund::Graphics &graphics, Ghurund::ParameterManager &parameterManager):graphics(graphics),parameterManager(parameterManager) {
         this->graphics = graphics;
-        commandList = shared_ptr<CommandList>(ghnew CommandList());
-        commandList->init(graphics);
+        commandList.init(graphics);
 
         CoInitialize(nullptr);
         HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
@@ -41,5 +40,6 @@ namespace Ghurund {
     ResourceManager::~ResourceManager() {
         resourceLoadingThread.finish();
         delete watcher;
+        delete resourceFactory;
     }
 }

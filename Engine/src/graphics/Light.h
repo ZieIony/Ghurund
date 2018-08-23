@@ -1,22 +1,28 @@
 #pragma once
 
 #include "game/Entity.h"
-#include "game/Target.h"
 
 namespace Ghurund {
     class Light: public Entity {
     private:
-        Target target;
+        XMFLOAT3 target;
+
+    protected:
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+            return Status::NOT_IMPLEMENTED;
+        }
+
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+            return Status::NOT_IMPLEMENTED;
+        }
 
     public:
         Light() {
             Name = _T("light");
-
-            entities.add(&target);
         }
 
-        virtual EntityType getType() const override {
-            return EntityType::LIGHT;
+        virtual const Ghurund::Type &getType() const override {
+            return Type::LIGHT;
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
@@ -25,7 +31,9 @@ namespace Ghurund {
         }
 
         virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::MATERIAL;
+            return ResourceFormat::ENTITY;
         }
+
+        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override;
     };
 }

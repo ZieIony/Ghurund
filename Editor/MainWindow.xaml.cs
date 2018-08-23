@@ -45,7 +45,7 @@ namespace Ghurund.Editor {
             var scene = new Scene();
             scene.Entities.Add(new Camera());
             scene.Entities.Add(new Light());
-            scene.initParameters(ParameterManager);
+            //scene.initParameters(ParameterManager);
             SceneExplorer.Scene = scene;
 
             ProjectExplorer.Project = new Project() {
@@ -57,13 +57,13 @@ namespace Ghurund.Editor {
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
             PropertiesPanel.SelectedObject = e.NewValue;
             ParametersPanel.Parameters.Clear();
-            for (int i = 0; i < e.NewValue.Parameters.Count; i++) {
+            /*for (int i = 0; i < e.NewValue.Parameters.Count; i++) {
                 Parameter p = e.NewValue.Parameters[i];
                 ParametersPanel.Parameters.Add(new Controls.Property() {
                     DisplayName = p.Name,
                     Value = p.Value
                 });
-            }
+            }*/
         }
 
         private void WorkspacePanel_Loaded(object sender, RoutedEventArgs e) {

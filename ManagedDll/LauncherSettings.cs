@@ -1,8 +1,6 @@
 ﻿using Ghurund.Managed.Resource;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Drawing.Design;
 using System.IO;
 using System.Runtime.Serialization;
@@ -12,12 +10,10 @@ using System.Windows.Forms.Design;
 namespace Ghurund.Managed {
     public class LauncherSettings : Resource.Resource {
         public class LauncherSettingsData {
-            private List<WindowSize> windowSizes = new List<WindowSize>();
 
             [Category("Graphics")]
             [Description("The list of screen resolutions handled by the application.")]
-            public List<WindowSize> WindowSizes { get => windowSizes; }
-
+            public System.Collections.Generic.List<WindowSize> WindowSizes { get; } = new System.Collections.Generic.List<WindowSize>();
             [Category("Graphics")]
             public bool DefaultWindowed { get; set; }
 

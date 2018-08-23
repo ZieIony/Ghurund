@@ -6,14 +6,12 @@
 #include "game/ParameterProvider.h"
 #include "game/Parameter.h"
 #include "game/Entity.h"
-#include "game/Target.h"
 
 namespace Ghurund {
 
-    class Camera: public Entity {
+    class Camera: public Entity, public ParameterProvider {
     private:
-        Target target;
-        XMFLOAT3 dir, right, up;
+        XMFLOAT3 pos, target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, facing;
         XMFLOAT2 screenSize;
         float fov, zNear, zFar, dist;
@@ -26,17 +24,15 @@ namespace Ghurund {
         Parameter *parameterView, *parameterProjection, *parameterViewProjection;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
-
-        virtual void clean() {}
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 
     public:
 
         Camera();
 
-        virtual EntityType getType() const override {
-            return EntityType::CAMERA;
+        virtual const Ghurund::Type &getType() const override {
+            return Type::CAMERA;
         }
 
         virtual void initParameters(ParameterManager &parameterManager);
@@ -54,11 +50,17 @@ namespace Ghurund {
 		// normalized, sets right
         __declspec(property(get = getUp)) XMFLOAT3 &Up;
 
-        inline const Entity &getTarget()const {
+        inline const XMFLOAT3 &getPosition()const {
+            return pos;
+        }
+
+        __declspec(property(get = getPosition)) XMFLOAT3 &Position;
+
+        inline const XMFLOAT3 &getTarget()const {
             return target;
         }
 
-        __declspec(property(get = getTarget)) Entity &Target;
+        __declspec(property(get = getTarget)) XMFLOAT3 &Target;
 
         inline const XMFLOAT3 &getDirection()const {
             return dir;
@@ -147,6 +149,9 @@ namespace Ghurund {
 
         virtual const ResourceFormat &getDefaultFormat() const override {
             return ResourceFormat::ENTITY;
+        }
+
+        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {
         }
     };
 }

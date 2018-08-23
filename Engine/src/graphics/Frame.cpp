@@ -2,28 +2,27 @@
 #include "Graphics.h"
 
 namespace Ghurund {
-    Status Frame::init(Graphics &graphics, Window &window, shared_ptr<RenderTarget> renderTarget, shared_ptr<DepthBuffer> depthBuffer) {
+    Status Frame::init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer) {
         this->renderTarget = renderTarget;
         this->depthBuffer = depthBuffer;
         viewport = window.getViewport();
         scissorRect = window.getScissorRect();
 
-        commandList.reset(ghnew CommandList());
-        commandList->init(graphics);
-        commandList->Name = _T("frame command list");
+        commandList.init(graphics);
+        commandList.Name = _T("frame command list");
 
         return Status::OK;
     }
 
     Status Frame::start() {
-        commandList->wait();
-        commandList->reset();
+        commandList.wait();
+        commandList.reset();
 
-        commandList->get()->OMSetRenderTargets(1, &renderTarget->getHandle(), FALSE, &depthBuffer->getHandle());
+        commandList.get()->OMSetRenderTargets(1, &renderTarget->getHandle(), FALSE, &depthBuffer->getHandle());
         renderTarget->start(commandList);
 
-        commandList->get()->RSSetViewports(1, &viewport);
-        commandList->get()->RSSetScissorRects(1, &scissorRect);
+        commandList.get()->RSSetViewports(1, &viewport);
+        commandList.get()->RSSetScissorRects(1, &scissorRect);
         
         renderTarget->clear(commandList);
         depthBuffer->clear(commandList);
@@ -33,7 +32,7 @@ namespace Ghurund {
 
     Status Frame::finish() {
         renderTarget->finish(commandList);
-        commandList->finish();
+        commandList.finish();
 
         return Status::OK;
     }

@@ -45,7 +45,7 @@ namespace Ghurund {
         __declspec(property(get = getData)) const void *Data;
 
         void setData(const void *data, size_t size) {
-            if(data!=nullptr)
+            if(this->data!=nullptr)
                 delete[] this->data;
             this->size = size;
             this->data = ghnew BYTE[size];
@@ -80,7 +80,7 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        bool exists() {
+        bool exists() const {
             DWORD attributes = GetFileAttributes(name);
 
             return (attributes != INVALID_FILE_ATTRIBUTES &&

@@ -48,8 +48,8 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        void clear(shared_ptr<CommandList> commandList) {
-            commandList->get()->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+        void clear(CommandList &commandList) {
+            commandList.get()->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
         }
 
         D3D12_CPU_DESCRIPTOR_HANDLE &getHandle() {

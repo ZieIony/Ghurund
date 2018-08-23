@@ -42,46 +42,34 @@ namespace Ghurund {
         void initConstants(Graphics &graphics, ParameterManager &parameterManager);
         void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
 
-        Status loadShd(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
-        Status loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
+        Status loadShd(ResourceManager &resourceManager, MemoryInputStream &stream);
+        Status loadHlsl(ResourceManager &resourceManager, MemoryInputStream &stream);
 
     protected:
-        virtual unsigned int getVersion()const {
-            return 1;
-        }
-
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
-
-        virtual void clean() {
-            for(size_t i = 0; i<constantBuffers.Size; i++)
-                delete constantBuffers[i];
-            for(size_t i = 0; i<textureBuffers.Size; i++)
-                delete textureBuffers[i];
-            for(size_t i = 0; i<textures.Size; i++)
-                delete textures[i];
-            for(size_t i = 0; i<samplers.Size; i++)
-                delete samplers[i];
-            for(size_t i = 0; i<6; i++)
-                delete programs[i];
-            delete[] source;
-            source = nullptr;
-        }
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
 
     public:
 
         Shader() {}
 
         ~Shader() {
-            clean();
+            constantBuffers.deleteItems();
+            textureBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
+            for(size_t i = 0; i<6; i++)
+                delete programs[i];
+            delete[] source;
         }
 
         Status compile(char **outErrorMessages = nullptr);
 
         Status build(ResourceManager &resourceManager, char **outErrorMessages = nullptr) {
             Status result;
-            if((result = compile(outErrorMessages))!=Status::OK)
-                return result;
+            if(!compiled)
+                if((result = compile(outErrorMessages))!=Status::OK)
+                    return result;
             Graphics &graphics = resourceManager.Graphics;
             initConstants(graphics, resourceManager.ParameterManager);
 			if((result = makeRootSignature(graphics))!=Status::OK)
@@ -115,12 +103,16 @@ namespace Ghurund {
             return source;
         }
 
-        void set(ID3D12GraphicsCommandList *commandList) {
-            commandList->SetPipelineState(pipelineState.Get());
-            commandList->SetGraphicsRootSignature(rootSignature.Get());
+        void set(CommandList &commandList, ParameterManager &parameterManager) {
+            commandList.get()->SetPipelineState(pipelineState.Get());
+            commandList.get()->SetGraphicsRootSignature(rootSignature.Get());
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
-                constantBuffers[i]->set(commandList);
+                constantBuffers[i]->set(commandList, parameterManager);
+        }
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::SHADER;
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {

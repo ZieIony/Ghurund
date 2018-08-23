@@ -3,7 +3,7 @@
 namespace Ghurund {
     void Camera::rebuild() {
         XMMATRIX view2, proj2;
-        view2 = XMMatrixLookAtLH(XMLoadFloat3(&Position), XMLoadFloat3(&target.Position), XMLoadFloat3(&up));
+        view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
         XMStoreFloat4x4(&view, view2);
         if(pers) {
             proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
@@ -20,20 +20,17 @@ namespace Ghurund {
         zNear = 0.1f;
         zFar = 10000.0f;
         pers = true;
-        Position = XMFLOAT3(0, 0, 0);
+        pos = XMFLOAT3(0, 0, 0);
         up = XMFLOAT3(0, 1, 0);
-        target.Position = XMFLOAT3(0, 0, 1);
+        target = XMFLOAT3(0, 0, 1);
         dir = XMFLOAT3(0, 0, 1);
         right = XMFLOAT3(1, 0, 0);
         rebuild();
 
         Name = _T("camera");
-
-        entities.add(&target);
     }
 
     void Camera::initParameters(ParameterManager &parameterManager) {
-        Entity::initParameters(parameterManager);
         parameterDirection = parameterManager.add(Parameter::DIRECTION, ParameterType::FLOAT3);
         parameters.add(parameterDirection);
         parameterUp = parameterManager.add(Parameter::UP, ParameterType::FLOAT3);
@@ -111,8 +108,8 @@ namespace Ghurund {
     }
 
     void Camera::setPositionTargetUp(XMFLOAT3 & pos, XMFLOAT3 & target, XMFLOAT3 & up) {
-        Position = pos;
-        this->target.Position = target;
+        this->pos = pos;
+        this->target = target;
 
         XMVECTOR dv = XMLoadFloat3(&target)-XMLoadFloat3(&pos);
 
@@ -162,13 +159,9 @@ namespace Ghurund {
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
     }
 
-    Status Camera::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
-        MemoryInputStream stream(data);
-
-        unsigned long targetBytesRead=0;
-        target.load(resourceManager, data, size, &targetBytesRead);
-        stream.skip(targetBytesRead);
-
+    Status Camera::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+        memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
+        memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
         memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
         memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
         memcpy(&view, stream.readBytes(sizeof(view)), sizeof(view));
@@ -182,20 +175,12 @@ namespace Ghurund {
         memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
         pers = stream.readBoolean();
 
-        if(bytesRead!=nullptr)
-            *bytesRead = stream.BytesRead;
-
         return Status::OK;
     }
 
-    Status Camera::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const {
-        MemoryOutputStream stream(data);
-
-        void *targetData;
-        unsigned long targetSize;
-        target.save(resourceManager, &targetData, &targetSize);
-        stream.writeBytes(targetData, targetSize);
-
+    Status Camera::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+        stream.write<XMFLOAT3>(pos);
+        stream.writeBytes(&target, sizeof(target));
         stream.writeBytes(&right, sizeof(right));
         stream.writeBytes(&dir, sizeof(dir));
         stream.writeBytes(&view, sizeof(view));
@@ -207,7 +192,8 @@ namespace Ghurund {
         stream.writeFloat(zNear);
         stream.writeFloat(zFar);
         stream.writeBytes(&up, sizeof(up));
-        stream.writeFloat(pers);
+        stream.writeBoolean(pers);
+
         return Status::OK;
     }
 }

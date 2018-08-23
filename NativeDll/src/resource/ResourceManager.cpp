@@ -11,9 +11,9 @@ extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new(Graphics *
 }
 
 template<class Type> void load(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
-    _this->load<Type>(fileName, [loadCallback](std::shared_ptr<Type> &resource, Status status) {
+/*    _this->load<Type>(fileName, [loadCallback](std::shared_ptr<Type> &resource, Status status) {
         loadCallback(status);
-    });
+    });*/
 }
 
 extern "C" __declspec(dllexport) void ResourceManager_loadImage(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {

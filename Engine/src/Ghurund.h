@@ -55,6 +55,7 @@ namespace Ghurund {
         WRONG_RESOURCE_VERSION,
         WRONG_RESOURCE_TYPE,
         FILE_DOESNT_EXIST,
+        FILE_EXISTS,
         UNKNOWN_FORMAT,
 
         COMPILATION_ERROR,

@@ -11,34 +11,42 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
 
-        shared_ptr<Image> image;
-
-        Status init(Graphics &graphics, ID3D12GraphicsCommandList *commandList, Image *image);
+        Image *image = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead=nullptr) {
-            image.reset(ghnew Image());
-            Status result = image->load(resourceManager, data, size);
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+            image = ghnew Image();
+            Status result = image->load(resourceManager, stream.readUnicode(), nullptr, options);
             if(result!=Status::OK)
                 return result;
-            return init(resourceManager.Graphics, resourceManager.getCommandList()->get(), image.get());
+            return init(resourceManager, *image);
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
-            return image->save(resourceManager, data, size);
-        }
-
-        virtual void clean() {
-            textureResource.Reset();
-            textureUploadHeap.Reset();
-            image.reset();
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options)const {
+            stream.writeUnicode(image->FileName);
+            return Status::OK;
         }
 
     public:
         DescriptorHandle descHandle;
-   
+
+        Texture() {}
+
+        Texture(ResourceManager &manager, Image &image) {
+            init(manager, image);
+        }
+
         ~Texture() {
-            clean();
+            textureResource.Reset();
+            textureUploadHeap.Reset();
+            if(image!=nullptr)
+                image->release();
+        }
+
+        Status init(ResourceManager &resourceManager, Image &image);
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::TEXTURE;
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {

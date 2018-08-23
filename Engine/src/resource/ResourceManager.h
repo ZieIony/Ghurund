@@ -5,10 +5,10 @@
 #include "FileWatcher.h"
 #include "core/Logger.h"
 #include "Resource.h"
-#include <memory>
 #include "core/Thread.h"
 #include "graphics/CommandList.h"
 #include "game/ParameterManager.h"
+#include "ResourceFactory.h"
 
 #include <wincodec.h>
 
@@ -18,28 +18,28 @@ namespace Ghurund {
         FileWatcher *watcher;
         TypeMap<String> resources;
         CriticalSection section;
-        shared_ptr<CommandList> commandList;
+        CommandList commandList;
         Graphics &graphics;
         IWICImagingFactory *wicFactory;
         ParameterManager &parameterManager;
+        ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
 
         WorkerThread resourceLoadingThread;
 
         void onFileChanged(const String &fileName, DWORD action);
 
-        template<class Type> Status loadInternal(shared_ptr<Type> &resource, const String &fileName) {
-            /*resource.reset(ghnew Type());
-            Status result = resource->load(fileName, 0);
+        template<class Type> Status loadInternal(Type &resource, const String &fileName, LoadOption options) {
+            Status result = resource.load(*this, fileName, nullptr, options);
             if(result!=Status::OK) {
                 Logger::log(_T("failed to load file: %s\n"), fileName.getData());
                 return result;
             }
 
-            Logger::log(_T("file loaded %s\n"), fileName.getData());
-            watcher->addFile(fileName);
+            //watcher->addFile(fileName);
+
             section.enter();
-            add(resource);
-            section.leave();*/
+            //add(&resource);
+            section.leave();
 
             return Status::OK;
         }
@@ -50,41 +50,85 @@ namespace Ghurund {
 
         ~ResourceManager();
 
-        template<class Type> void load(const String &fileName, std::function<void(std::shared_ptr<Type>&, Status)> callback) {
+        template<class Type> void load(const String &fileName, std::function<void(Type&, Status)> callback, LoadOption options = LoadOption::DEFAULT) {
             String *copy = ghnew String(fileName);
 
-            resourceLoadingThread.post([copy, callback, this]() {
-                std::shared_ptr<Type> resource = get<Type>(*copy);
+            resourceLoadingThread.post([copy, callback, this, options]() {
+                Type *resource = get<Type>(*copy);
                 Status result = Status::ALREADY_LOADED;
                 if(resource.get()==nullptr)
-                    result = loadInternal(resource, *copy);
+                    result = loadInternal(*resource, *copy, options);
                 callback(resource, result);
                 delete copy;
             });
         }
 
-        template<class Type> void load(const String &fileName) {
-            resourceLoadingThread.post([&]() {
-                std::shared_ptr<Type> resource = get<Type>(fileName);
-                if(resource.get()==nullptr)
-                    loadInternal(resource, fileName);
-            });
+        template<class Type> Type *load(const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(fileName.Length==0)
+                return nullptr;
+            Type *resource = get<Type>(fileName);
+            if(resource==nullptr)
+                resource = ghnew Type();
+            Status loadResult = loadInternal(*resource, fileName, options);
+            if(result!=nullptr)
+                *result = loadResult;
+            return resource;
         }
 
-        template<class Type> std::shared_ptr<Type> get(const String &fileName) {
+        template<class Type> Type *load(File &file, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(file.Name==nullptr)
+                return nullptr;
+            Type *resource = get<Type>(file.Name);
+            if(resource==nullptr)
+                resource = ghnew Type();
+            Status loadResult = loadInternal(*resource, file.Name, options);
+            if(result!=nullptr)
+                *result = loadResult;
+            return resource;
+        }
+
+        Resource *load(MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            Resource *resource = resourceFactory->makeResource(stream);
+            Status loadResult;
+            if(stream.readBoolean()) {
+                loadResult = resource->load(*this, stream, options);
+            } else {
+                UnicodeString fileName = stream.readUnicode();
+                loadResult = loadInternal(*resource, fileName, options);
+            }
+            if(result!=nullptr)
+                *result = loadResult;
+            return resource;
+        }
+
+        Status save(Resource &resource, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) {
+            resourceFactory->describeResource(resource, stream);
+            if(resource.FileName.Empty) {
+                stream.writeBoolean(true);  // full binary
+                return resource.save(*this, stream, options);
+            } else {
+                stream.writeBoolean(false); // file reference
+                stream.writeUnicode(resource.FileName);
+                return resource.save(*this, resource.FileName, options);
+            }
+        }
+
+        template<class Type> Type *get(const String &fileName) {
             section.enter();
-            std::shared_ptr<Type> resource = resources.get<std::shared_ptr<Type>>(fileName);
+            Type *resource = resources.get<Type*>(fileName);
             section.leave();
             return resource;
         }
 
-        template<class Type> void add(std::shared_ptr<Type> &resource) {
-            resources.set(resource->FileName, resource);
+        template<class Type> void add(Type &resource) {
+            resources.set(resource->FileName, &resource);
         }
 
         template<class Type> void remove(const String &fileName) {
-
+            resources.remove<Type>(fileName);
         }
+
+        void clear() {}
 
         Graphics &getGraphics() {
             return graphics;
@@ -98,7 +142,7 @@ namespace Ghurund {
 
         __declspec(property(get = getParameterManager)) ParameterManager &ParameterManager;
 
-        shared_ptr<CommandList> getCommandList() {
+        CommandList &getCommandList() {
             return commandList;
         }
 

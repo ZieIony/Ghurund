@@ -167,7 +167,6 @@
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
-    <ClCompile Include="src\game\Target.cpp" />
     <ClCompile Include="src\collection\List.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />

@@ -30,39 +30,49 @@ namespace Ghurund {
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
             return Status::NOT_IMPLEMENTED;
-        }
-
-        virtual void clean() {
-            delete[] imageData;
         }
 
     public:
         ~Image() {
-            clean();
+            delete[] imageData;
         }
 
         BYTE *getData() {
             return imageData;
         }
 
+        __declspec(property(get = getData)) BYTE *Data;
+
         DXGI_FORMAT getFormat() {
             return dxgiFormat;
         }
+
+        __declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
         unsigned int getWidth() {
             return width;
         }
 
+        __declspec(property(get = getWidth)) unsigned int Width;
+
         unsigned int getHeight() {
             return height;
         }
 
+        __declspec(property(get = getHeight)) unsigned int Height;
+
         unsigned int getPixelSize() {
             return pixelSize;
+        }
+
+        __declspec(property(get = getPixelSize)) unsigned int PixelSize;
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::IMAGE;
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {

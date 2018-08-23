@@ -22,6 +22,12 @@ namespace Ghurund.Managed {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Array_indexOf(IntPtr _this, IntPtr item);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr getArrayItem(IntPtr array, int index);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void setArrayItem(IntPtr array, int index, IntPtr item);
     }
 
     public class PointerArray : IEnumerable<IntPtr>, IEnumerable {
@@ -62,11 +68,11 @@ namespace Ghurund.Managed {
         }
     }
 
-    public abstract class NativeArray<T> : IEnumerable, IEnumerable<T> where T : NativeClass {
-        List<T> managedItems = new List<T>();
+    public abstract class Array<T> : IEnumerable, IEnumerable<T> where T : NativeClass {
+        System.Collections.Generic.List<T> managedItems = new System.Collections.Generic.List<T>();
         PointerArray pointers;
 
-        public NativeArray(IntPtr ptr) {
+        public Array(IntPtr ptr) {
             pointers = new PointerArray(ptr);
             SyncArray();
         }
@@ -116,4 +122,61 @@ namespace Ghurund.Managed {
             return managedItems.GetEnumerator();
         }
     }
+
+    public abstract class NativeArray<T> : IEnumerable, IEnumerable<T> where T : NativeClass {
+        System.Collections.Generic.List<T> managedItems = new System.Collections.Generic.List<T>();
+
+        private readonly IntPtr array;
+        public int Size { get; }
+
+        public NativeArray(IntPtr array, int size) {
+            this.array = array;
+            Size = size;
+            SyncArray();
+        }
+
+        public void SyncArray() {
+            managedItems.Clear();
+            for (int i = 0; i < Size; i++)
+                managedItems.Add(MakeItem(NativeArrays.getArrayItem(array, i)));
+        }
+
+        protected abstract T MakeItem(IntPtr p);
+
+        public T this[int index] {
+            get => managedItems[index];
+            set {
+                managedItems[index] = value;
+            }
+        }
+
+        public int Count => managedItems.Count;
+
+        public bool IsReadOnly => true;
+
+        public void Clear() {
+            throw new NotImplementedException();
+        }
+
+        public bool Contains(T item) {
+            return managedItems.Contains(item);
+        }
+
+        public void CopyTo(T[] array, int arrayIndex) {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            return managedItems.GetEnumerator();
+        }
+
+        public int IndexOf(T item) {
+            return managedItems.IndexOf(item);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return managedItems.GetEnumerator();
+        }
+    }
+
 }

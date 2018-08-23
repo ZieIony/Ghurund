@@ -22,6 +22,8 @@ namespace Ghurund {
         }
 
         ~CommandList() {
+            if(!closed)
+                commandList->Close();
             if(commandQueue!=nullptr)
                 fence.wait(commandQueue.Get());
         }
@@ -87,11 +89,11 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        ID3D12GraphicsCommandList *get() {
+        inline ID3D12GraphicsCommandList *get() {
             return commandList.Get();
         }
 
-        bool isClosed() {
+        inline bool isClosed() {
             return closed;
         }
 

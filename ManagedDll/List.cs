@@ -90,11 +90,11 @@ namespace Ghurund.Managed {
         }
     }
 
-    public abstract class NativeList<T> : IList<T> where T : NativeClass {
-        List<T> managedItems = new List<T>();
+    public abstract class List<T> : IList<T> where T : NativeClass {
+        System.Collections.Generic.List<T> managedItems = new System.Collections.Generic.List<T>();
         PointerList pointers;
 
-        public NativeList(IntPtr ptr) {
+        public List(IntPtr ptr) {
             pointers = new PointerList(ptr);
             SyncList();
         }

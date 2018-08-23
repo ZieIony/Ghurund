@@ -59,7 +59,7 @@ namespace Ghurund.Managed.Game {
         }
     }
 
-    public class ParameterList : NativeList<Parameter> {
+    public class ParameterList : List<Parameter> {
 
         public ParameterList(IntPtr ptr) : base(ptr) {
         }

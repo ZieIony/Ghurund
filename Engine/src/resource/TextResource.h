@@ -29,14 +29,9 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        virtual void clean() {
-            delete text;
-            text = nullptr;
-        }
-
     public:
         ~TextResource() {
-            clean();
+            delete text;
         }
 
         String &getText() {

@@ -1,18 +1,21 @@
 #include "Texture.h"
 
 namespace Ghurund {
-    Status Texture::init(Graphics &graphics, ID3D12GraphicsCommandList *commandList, Image *image) {
+    Status Texture::init(ResourceManager &resourceManager, Image &image) {
+        Graphics &graphics = resourceManager.Graphics;
+        ID3D12GraphicsCommandList *commandList = resourceManager.getCommandList().get();
 		descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+        setPointer(this->image, &image);
 
         {
             D3D12_RESOURCE_DESC textureDesc = {};
             textureDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
             textureDesc.Alignment = 0;  // let the driver choose
-            textureDesc.Width = image->getWidth();
-            textureDesc.Height = image->getHeight();
+            textureDesc.Width = image.Width;
+            textureDesc.Height = image.Height;
             textureDesc.DepthOrArraySize = 1;
             textureDesc.MipLevels = 1;
-            textureDesc.Format = image->getFormat();
+            textureDesc.Format = image.Format;
             textureDesc.SampleDesc.Count = 1;
             textureDesc.SampleDesc.Quality = 0;
             textureDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;  // let the driver choose
@@ -43,9 +46,9 @@ namespace Ghurund {
             }
 
             D3D12_SUBRESOURCE_DATA textureData = {};
-            textureData.pData = image->getData();
-            textureData.RowPitch = image->getWidth() * image->getPixelSize();
-            textureData.SlicePitch = textureData.RowPitch * image->getHeight();
+            textureData.pData = image.Data;
+            textureData.RowPitch = image.Width * image.PixelSize;
+            textureData.SlicePitch = textureData.RowPitch * image.Height;
 
             UpdateSubresources(commandList, textureResource.Get(), textureUploadHeap.Get(), 0, 0, 1, &textureData);
             commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(textureResource.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));

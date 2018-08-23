@@ -17,7 +17,7 @@ namespace Ghurund {
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if(FAILED(graphics.getFactory()->CreateSwapChainForHwnd(graphics.getCommandQueue().Get(), window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
+        if(FAILED(graphics.getFactory()->CreateSwapChainForHwnd(graphics.CommandQueue.Get(), window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
             Logger::log(_T("factory->CreateSwapChainForHwnd() failed\n"));
             return Status::CALL_FAIL;
         }
@@ -30,16 +30,19 @@ namespace Ghurund {
         return initBuffers(graphics);
     }
 
-    Status SwapChain::initBuffers(Graphics &graphics){
+    Status SwapChain::initBuffers(Graphics &graphics) {
+        if(window->Width==0||window->Height==0)
+            return Status::INV_STATE;
+
         frames = ghnew Frame[frameCount];
         for(unsigned int i = 0; i < frameCount; i++) {
             ComPtr<ID3D12Resource> renderTargetBuffer;
             swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargetBuffer));
 
-            shared_ptr<RenderTarget> renderTarget(ghnew RenderTarget());
+            RenderTarget *renderTarget = ghnew RenderTarget();
             renderTarget->init(graphics, renderTargetBuffer);
 
-            shared_ptr<DepthBuffer> depthBuffer(ghnew DepthBuffer());
+            DepthBuffer *depthBuffer = ghnew DepthBuffer();
             depthBuffer->init(graphics, window->Width, window->Height);
 
             frames[i].init(graphics, *window, renderTarget, depthBuffer);
@@ -51,25 +54,25 @@ namespace Ghurund {
     }
 
     void SwapChain::uninitBuffers() {
+        if(frames==nullptr)
+            return;
+
+        CommandList &commandList = frameBuffer->getCommandList();
+        if(!commandList.Closed) {
+            commandList.get()->OMSetRenderTargets(0, 0, true, 0);
+            commandList.finish();
+        }
+        for(unsigned int i = 0; i<frameCount; i++)
+            frames[i].getCommandList().wait();
         delete[] frames;
         frames = nullptr;
     }
 
     void SwapChain::resize(Graphics & graphics, unsigned int width, unsigned int height) {
-        if(frameBuffer.Size!=0) {
-            shared_ptr<CommandList> commandList = frameBuffer->getCommandList();
-            if(!commandList->Closed) {
-                commandList->get()->OMSetRenderTargets(0, 0, true, 0);
-                commandList->finish();
-            }
-            for(unsigned int i=0;i<frameCount;i++)
-                frames[i].getCommandList()->wait();
-            uninitBuffers();
-        }
-        if(width>0&&height>0) {
+        uninitBuffers();
+        if(width>0&&height>0)
             swapChain->ResizeBuffers(frameCount, width, height, format, 0);
-            initBuffers(graphics);
-        }
+        initBuffers(graphics);
     }
 
 }

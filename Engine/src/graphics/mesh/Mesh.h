@@ -39,31 +39,35 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> vertexUploadHeap;
         ComPtr<ID3D12Resource> indexUploadHeap;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
-            return loadObj(resourceManager, data, size, bytesRead);
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption option) {
+            if(!FileName.Empty) {
+                if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
+                    return loadObj(resourceManager, stream);
+                } else if(FileName.endsWith(ResourceFormat::MESH.getExtension())) {
+                    return loadMesh(resourceManager, stream);
+                }
+            }
+
+            size_t bytesRead = stream.BytesRead;
+            Status result = loadObj(resourceManager, stream);
+            if(result!=Status::OK) {
+                stream.reset();
+                stream.skip(bytesRead);
+                result = loadMesh(resourceManager, stream);
+                if(result!=Status::OK)
+                    return Status::UNKNOWN_FORMAT;
+            }
+
+            return Status::OK;
         }
 
-        Status loadObj(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
+        Status loadObj(ResourceManager &resourceManager, MemoryInputStream &stream);
+        Status loadMesh(ResourceManager &resourceManager, MemoryInputStream &stream);
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const {
-            return Status::NOT_IMPLEMENTED;
-        }
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 0;
-        }
-
-        virtual void clean() {
-            delete[] vertices;
-            vertices = nullptr;
-            delete[] indices;
-            indices = nullptr;
-            vertexBuffer.Reset();
-            vertexBufferView = {};
-            indexBuffer.Reset();
-            indexBufferView = {};
-            vertexUploadHeap.Reset();
-            indexUploadHeap.Reset();
         }
 
         template<class Type> vindex_t findVertex(Type *vertex) {
@@ -76,16 +80,22 @@ namespace Ghurund {
 
     public:
         ~Mesh() {
-            clean();
+            delete[] vertices;
+            delete[] indices;
+            vertexBuffer.Reset();
+            indexBuffer.Reset();
+            vertexUploadHeap.Reset();
+            indexUploadHeap.Reset();
         }
 
-        Status init(Graphics &graphics, std::shared_ptr<CommandList> commandList);
+        Status init(Graphics &graphics, CommandList &commandList);
 
-        void draw(ID3D12GraphicsCommandList *commandList) {
-            commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-            commandList->IASetVertexBuffers(0, 1, &vertexBufferView);
-            commandList->IASetIndexBuffer(&indexBufferView);
-            commandList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+        void draw(CommandList &commandList) {
+            ID3D12GraphicsCommandList *list = commandList.get();
+            list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+            list->IASetVertexBuffers(0, 1, &vertexBufferView);
+            list->IASetIndexBuffer(&indexBufferView);
+            list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
         }
 
         template<class Type> void removeDuplicates() {
@@ -164,6 +174,10 @@ namespace Ghurund {
 		void generateNormals(float smoothingTreshold);
 		void generateTangents();
 		void invertWinding();
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::MESH;
+        }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
             static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MESH, ResourceFormat::OBJ};

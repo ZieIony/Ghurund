@@ -188,9 +188,8 @@ namespace Ghurund {
         reflector->Release();
     }
 
-    Status Shader::loadShd(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
+    Status Shader::loadShd(ResourceManager &resourceManager, MemoryInputStream &stream) {
         Status result;
-        MemoryInputStream stream(data);
 
         if(stream.readBoolean()) {
             for(size_t i = 0; i<6; i++) {
@@ -212,34 +211,31 @@ namespace Ghurund {
         if(stream.readBoolean())
             source = copyStrA(stream.readASCII());
 
-        if(bytesRead!=nullptr)
-            *bytesRead = stream.BytesRead;
-
         return Status::OK;
     }
 
-    Status Shader::loadHlsl(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
-        ASCIIString sourceCode((const char *)data, size);
+    Status Shader::loadHlsl(ResourceManager &resourceManager, MemoryInputStream &stream) {
+        ASCIIString sourceCode((const char *)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
-
-        if(bytesRead!=nullptr)
-            *bytesRead = size;
 
         return build(resourceManager);
     }
 
-    Status Shader::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
+    Status Shader::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
-                return loadShd(resourceManager, data, size, bytesRead);
+                return loadShd(resourceManager, stream);
             } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
-                return loadHlsl(resourceManager, data, size, bytesRead);
+                return loadHlsl(resourceManager, stream);
             }
         }
 
-        Status result = loadShd(resourceManager, data, size, bytesRead);
+        size_t bytesRead = stream.BytesRead;
+        Status result = loadShd(resourceManager, stream);
         if(result!=Status::OK) {
-            result = loadHlsl(resourceManager, data, size, bytesRead);
+            stream.reset();
+            stream.skip(bytesRead);
+            result = loadHlsl(resourceManager, stream);
             if(result!=Status::OK)
                 return Status::UNKNOWN_FORMAT;
         }
@@ -247,9 +243,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Shader::saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const {
-        MemoryOutputStream stream(data);
-
+    Status Shader::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
         stream.writeBoolean(compiled);
         if(compiled) {
             for(size_t i = 0; i<6; i++) {
@@ -265,8 +259,6 @@ namespace Ghurund {
         stream.writeBoolean(source!=nullptr);
         if(source!=nullptr)
             stream.writeASCII(source);
-
-        *size = stream.getBytesWritten();
 
         return Status::OK;
     }

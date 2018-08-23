@@ -6,11 +6,13 @@
 #include "core/MemoryStream.h"
 #include "ResourceFormat.h"
 #include "collection/Array.h"
+#include "core/Pointer.h"
 
 using namespace std;
 
 namespace Ghurund {
     enum class LoadOption {
+        DEFAULT = 0
     };
 
     LoadOption operator |(LoadOption lhs, LoadOption rhs);
@@ -18,50 +20,47 @@ namespace Ghurund {
     bool operator &(LoadOption lhs, LoadOption rhs);
 
     enum class SaveOption {
-        // TODO: use SaveOption in Resource::save()
-        OVERWRITE
+        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2
     };
+
+    SaveOption operator |(SaveOption lhs, SaveOption rhs);
+
+    bool operator &(SaveOption lhs, SaveOption rhs);
 
     class ResourceManager;
 
-    class Resource {
+    class Resource: public Pointer {
     private:
         static const unsigned int NO_VERSION = -1;
         bool valid = false;
         String fileName;
 
     protected:
-        virtual bool isVersioned()const {
-            return false;
-        }
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) = 0;
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const = 0;
 
-        virtual unsigned int getVersion()const {
+        virtual unsigned int getVersion() const {
             return NO_VERSION;
         }
 
-        // TODO: why size is of type unsigned long instead of size_t?
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) = 0;
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const = 0;
-
-        virtual void clean() = 0;
+        Status writeHeader(MemoryOutputStream &stream) const;
+        Status readHeader(MemoryInputStream &stream);
 
     public:
 
         Resource() = default;
 
-        virtual ~Resource() = default;  // TODO: maybe this destructor should call clean()?
+        Status load(ResourceManager &resourceManager, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, const String &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
 
-        Status load(ResourceManager &resourceManager, unsigned long *bytesRead=nullptr);
-        Status load(ResourceManager &resourceManager, const String &fileName, unsigned long *bytesRead = nullptr);
-        Status load(ResourceManager &resourceManager, File &file, unsigned long *bytesRead = nullptr);
-        Status load(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead = nullptr);
-
-        Status save(ResourceManager &resourceManager) const;
-        Status save(ResourceManager &resourceManager, const String &fileName);
+        Status save(ResourceManager &resourceManager, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager &resourceManager, const String &fileName, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(ResourceManager &resourceManager, File &file)const;
-        Status save(ResourceManager &resourceManager, void **data, unsigned long *size)const;
+        Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
 
 
         virtual bool isValid() {
@@ -69,7 +68,7 @@ namespace Ghurund {
         }
 
         __declspec(property(get = isValid)) bool Valid;
-        
+
         const String &getFileName() const {
             return fileName;
         }

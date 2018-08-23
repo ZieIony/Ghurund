@@ -92,6 +92,7 @@ namespace Ghurund {
 
         messageLoop();
 
+        renderer.uninit();
         window.Visible = false;
         uninit();
         uninitInternal();
@@ -116,9 +117,9 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        shared_ptr<CommandList> commandList = renderer.startFrame();
-		graphics->DescriptorAllocator.set(commandList->get());
-        levelManager.draw(commandList);
+        CommandList &commandList = renderer.startFrame();
+		graphics->DescriptorAllocator.set(commandList.get());
+        levelManager.draw(commandList, ParameterManager);
         renderer.finishFrame();
     }
 

@@ -8,18 +8,31 @@
 #include "Entity.h"
 
 namespace Ghurund {
+
     class Scene:public Entity {
     protected:
-        virtual unsigned int getVersion()const {
-            return 0;
+        List<Entity*> entities;
+
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override {
+            size_t size = stream.read<size_t>();
+            for(size_t i = 0; i<size; i++) {
+                Status result;
+                Resource *resource = resourceManager.load(stream, &result);
+                if(resource==nullptr)
+                    return result;
+                entities.add((Entity*)resource);
+            }
+            return Status::OK;
         }
 
-        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
-            return Status::NOT_IMPLEMENTED;
-        }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
-            return Status::NOT_IMPLEMENTED;
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
+            stream.write<size_t>(entities.Size);
+            for(size_t i = 0; i<entities.Size; i++) {
+                Status result = resourceManager.save(*entities[i], stream);
+                if(result!=Status::OK)
+                    return result;
+            }
+            return Status::OK;
         }
 
     public:
@@ -28,26 +41,20 @@ namespace Ghurund {
             Name = _T("scene");
         }
 
-        void draw(shared_ptr<CommandList> commandList) {
-            List<Model*> models;
-            List<Camera*> cameras;
-            List<Light*> lights;
-
-            for(size_t i = 0; i<Entities.Size; i++) {
-                Entity *entity = Entities[i];
-                if(entity->Type==EntityType::MODEL) {
-                    models.add((Model*)entity);
-                } else if(entity->Type==EntityType::CAMERA) {
-                    cameras.add((Camera*)entity);
-                }
-            }
-
-            cameras.get(0)->fillParameters();
-            for(size_t i = 0; i<models.Size; i++) {
-                models[i]->fillParameters();
-                models[i]->draw(commandList->get());
-            }
+        ~Scene() {
+            for(size_t i = 0; i<entities.Size; i++)
+                entities[i]->release();
         }
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::SCENE;
+        }
+
+        List<Entity*> &getEntities() {
+            return entities;
+        }
+
+        __declspec(property(get = getEntities)) List<Entity*> &Entities;
 
         virtual const Array<ResourceFormat> &getFormats() const override {
             static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};
@@ -57,5 +64,13 @@ namespace Ghurund {
         virtual const ResourceFormat &getDefaultFormat() const override {
             return ResourceFormat::ENTITY;
         }
+
+        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {
+            for(size_t i = 0; i<Entities.Size; i++) {
+                Entity *entity = Entities[i];
+                entity->flatten(batch, transformation);
+            }
+        }
+
     };
 }

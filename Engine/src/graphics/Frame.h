@@ -16,18 +16,23 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Frame {
     private:
-        shared_ptr<CommandList> commandList;
+        CommandList commandList;
         D3D12_VIEWPORT viewport;
         D3D12_RECT scissorRect;
-        shared_ptr<RenderTarget> renderTarget;
-        shared_ptr<DepthBuffer> depthBuffer;
+        RenderTarget *renderTarget;
+        DepthBuffer *depthBuffer;
 
     public:
-        Status init(Graphics &graphics, Window &window, shared_ptr<RenderTarget> renderTarget, shared_ptr<DepthBuffer> depthBuffer);
+        ~Frame() {
+            delete renderTarget;
+            delete depthBuffer;
+        }
+
+        Status init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer);
         Status start();
         Status finish();
 
-        shared_ptr<CommandList> getCommandList() {
+        CommandList &getCommandList() {
             return commandList;
         }
     };

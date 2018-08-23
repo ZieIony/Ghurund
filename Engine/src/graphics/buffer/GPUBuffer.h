@@ -2,6 +2,7 @@
 
 #include "graphics/Graphics.h"
 #include "collection/BufferedValue.h"
+#include "graphics/CommandList.h"
 
 namespace Ghurund {
     class GPUBuffer {
@@ -58,10 +59,10 @@ namespace Ghurund {
             memcpy((BYTE*)data+offset, value, size);
         }
 
-        void set(ID3D12GraphicsCommandList *commandList, unsigned int bindSlot) {
+        void set(CommandList &commandList, unsigned int bindSlot) {
             memcpy(gpuAddress, data, size);
 
-            commandList->SetGraphicsRootDescriptorTable(bindSlot, descHandle.getGpuHandle());
+            commandList.get()->SetGraphicsRootDescriptorTable(bindSlot, descHandle.getGpuHandle());
         }
 
     };

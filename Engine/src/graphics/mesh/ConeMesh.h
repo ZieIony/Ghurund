@@ -6,7 +6,7 @@
 namespace Ghurund {
     class ConeMesh: public Mesh {
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream) {
             Vertex triangleVertices[] = {
                 { { -0.5f,  0.5f, -0.5f },{ 0,0,-1 },{ 0,0 } }
             };
@@ -24,7 +24,7 @@ namespace Ghurund {
             return Mesh::init(resourceManager.getGraphics(), resourceManager.getCommandList());
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream) const{
             return Status::NOT_IMPLEMENTED;
         }
 

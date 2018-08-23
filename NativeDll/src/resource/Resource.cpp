@@ -22,8 +22,12 @@ extern "C" __declspec(dllexport) const tchar *ResourceFormat_getExtension(Resour
     return copyStr(_this->getExtension());
 }
 
-extern "C" __declspec(dllexport) const Array<const ResourceFormat*> *ResourceFormat_getValues() {
-    return &ResourceFormat::getValues();
+extern "C" __declspec(dllexport) const ResourceFormat** ResourceFormat_getValues() {
+    return ResourceFormat::getValues();
+}
+
+extern "C" __declspec(dllexport) size_t ResourceFormat_getValueCount() {
+    return ResourceFormat::getValueCount();
 }
 
 extern "C" __declspec(dllexport) bool Resource_canSave(ResourceFormat *_this) {

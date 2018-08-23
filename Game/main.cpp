@@ -34,10 +34,10 @@ namespace Ghurund {
                 return true;
             }
             if(msg==WM_RBUTTONUP) {
-                Application.ResourceManager.load<TextResource>(String(_T("test.txt")), [&](std::shared_ptr<TextResource> &res, Status result) {
+                /*Application.ResourceManager.load<TextResource>(String(_T("test.txt")), [&](std::shared_ptr<TextResource> &res, Status result) {
                     Logger::log(_T("loaded file: %s, result: %i\n"), res->FileName.getData(), result);
                     textRes = res;
-                });
+                });*/
                 return true;
             }
             if(msg==WM_KEYUP&&wParam==KEY_C) {
@@ -61,38 +61,67 @@ private:
     Level *testLevel;
     float rotation = 0;
     Camera *camera;
-    Model *model;
 
 public:
     void init() {
-        shared_ptr<CommandList> commandList = ResourceManager.getCommandList();
-        commandList->reset();
+        CommandList &commandList = ResourceManager.getCommandList();
+        commandList.reset();
 
         camera = ghnew Camera();
         camera->initParameters(ParameterManager);
 
-        shared_ptr<Shader> shader(ghnew Shader());
-        shader->load(ResourceManager, "../shaders/basic.hlsl");
-
-        shared_ptr<Texture> texture(ghnew Texture());
-        texture->load(ResourceManager, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-
-        shared_ptr<Scene> scene(ghnew Ghurund::Scene());
         testLevel = ghnew Level();
-        testLevel->scene = scene;
-        scene->Entities.add(camera);
+        testLevel->camera = camera;
 
-        shared_ptr<Mesh> mesh(ghnew Mesh());
-        mesh->load(ResourceManager, "obj/lamborghini/Lamborghini_Aventador.obj");
+        File sceneFile("test.scene");
+        if(sceneFile.Exists) {
+            Scene *scene = ghnew Scene();
+            scene->load(ResourceManager, sceneFile);
+            testLevel->scene = scene;
+        } else {
+            Shader *shader = ResourceManager.load<Shader>("../shaders/basic.hlsl");
 
-        shared_ptr<Material> material(ghnew Material(shader));
-        material->Textures.set("diffuse", texture);
+            Image *image = ResourceManager.load<Image>("obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            Texture *texture = ghnew Texture(ResourceManager, *image);
 
-        model = ghnew Model(mesh, material);
-        model->initParameters(ParameterManager);
-        scene->Entities.add(model);
+            Scene *scene = ghnew Scene();
+            testLevel->scene = scene;
+            scene->Entities.add(camera);
+            camera->addReference();
 
-        commandList->finish();
+            Mesh *mesh;
+            File file("obj/lamborghini/Lamborghini_Aventador.mesh");
+            if(file.Exists) {
+                mesh = ResourceManager.load<Mesh>(file);
+            } else {
+                mesh = ResourceManager.load<Mesh>("obj/lamborghini/Lamborghini_Aventador.obj");
+                mesh->save(ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+            }
+
+            Material *material = new Material(shader);
+            material->Textures.set("diffuse", texture);
+            texture->addReference();
+
+            Model *model = ghnew Model(mesh, material);
+            model->initParameters(ParameterManager);
+
+            scene->Entities.add(model);
+            model->addReference();
+
+            Status result = scene->save(ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
+            if(result!=Status::OK)
+                Logger::log(_T("failed to save scene\n"));
+
+            shader->release();
+            image->release();
+            texture->release();
+            camera->release();
+            mesh->release();
+            model->release();
+            material->release();
+        }
+
+        commandList.finish();
 
         LevelManager.setLevel(testLevel);
     }
@@ -103,28 +132,29 @@ public:
     }
 
     void uninit() {
+        ResourceManager.clear();
         delete testLevel;
-        delete model;
-        delete camera;
     }
 };
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
     Logger::init(LogOutput::SYSTEM_CONSOLE);
 
     {
-		TestApplication application;
+        TestApplication application;
         Proc proc(application);
         Settings settings;
         settings.parse(cmdLine);
-		application.run(&settings, &proc);
+        application.run(&settings, &proc);
     }
 
     Logger::uninit();
 
 #ifdef _DEBUG
     _____________________checkMemory();
-    dumpMemoryLeaks();
     ComPtr<IDXGIDebug> debugInterface;
     if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
         debugInterface->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);

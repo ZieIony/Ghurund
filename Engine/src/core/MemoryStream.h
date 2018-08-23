@@ -18,21 +18,29 @@ namespace Ghurund {
     class MemoryInputStream:public MemoryStream {
     private:
         const BYTE *data;
+        unsigned long size;
 
     public:
-        MemoryInputStream(const void *data) {
+        MemoryInputStream(const void *data, unsigned long size) {
             this->data = (BYTE*)data;
+            this->size = size;
         }
 
         inline void skip(unsigned long bytes) {
             pointer += bytes;
         }
 
-        inline unsigned long getBytesRead() {
+        inline unsigned long getBytesRead() const {
             return pointer;
         }
 
         __declspec(property(get = getBytesRead)) unsigned long BytesRead;
+
+        inline unsigned long getSize() const {
+            return size;
+        }
+
+        __declspec(property(get = getSize)) unsigned long Size;
 
         inline int readInt() {
             int i = *(int*)(data+pointer);
@@ -100,49 +108,46 @@ namespace Ghurund {
             pointer += sizeof(T);
             return *dataToReturn;
         }
+
+        inline const void *getData() const {
+            return (BYTE*)data;
+        }
+
+        _declspec(property(get = getData)) const void *Data;
     };
 
     class MemoryOutputStream:public MemoryStream {
     private:
-        BYTE *d;
-        BYTE **data;
+        BYTE *data;
         unsigned long capacity, initial;
 
         inline void resize(unsigned long size) {
             if(capacity<pointer+size) {
                 capacity += std::max(initial, size);
                 BYTE *data2 = new BYTE[capacity];
-                memcpy(data2, *data, pointer);
-                delete[] *data;
-                *data = data2;
+                memcpy(data2, data, pointer);
+                delete[] data;
+                data = data2;
             }
         }
 
     public:
         MemoryOutputStream() {
             capacity = initial = 100;
-            d = ghnew BYTE[initial];
-            this->data = &d;
-        }
-
-        MemoryOutputStream(void **data) {
-            this->data = (BYTE**)data;
-            if(*this->data)
-                delete[] *this->data;
-            *this->data = new BYTE[100];
-            capacity = initial = 100;
+            this->data = new BYTE[initial];
         }
 
         ~MemoryOutputStream() {
-            if(d!=nullptr)
-                delete[] d;
+            delete[] data;
         }
 
-        void *getData() {
-            return *data;
+        const void *getData() const {
+            return data;
         }
 
-        inline unsigned long getBytesWritten() {
+        __declspec(property(get = getData)) const void *Data;
+
+        inline unsigned long getBytesWritten() const {
             return pointer;
         }
 
@@ -150,72 +155,66 @@ namespace Ghurund {
 
         inline void writeInt(int i) {
             resize(sizeof(int));
-            *(int*)(*data+pointer) = i;
+            *(int*)(data+pointer) = i;
             pointer += sizeof(int);
         }
         inline void writeUInt(unsigned int i) {
             resize(sizeof(unsigned int));
-            *(unsigned int*)(*data+pointer) = i;
+            *(unsigned int*)(data+pointer) = i;
             pointer += sizeof(unsigned int);
         }
         inline void writeLong(long i) {
             resize(sizeof(long));
-            *(long*)(*data+pointer) = i;
+            *(long*)(data+pointer) = i;
             pointer += sizeof(long);
         }
         inline void writeFloat(float i) {
             resize(sizeof(float));
-            *(float*)(*data+pointer) = i;
+            *(float*)(data+pointer) = i;
             pointer += sizeof(float);
         }
         inline void writeDouble(double i) {
             resize(sizeof(double));
-            *(double*)(*data+pointer) = i;
+            *(double*)(data+pointer) = i;
             pointer += sizeof(double);
         }
         inline void writeBoolean(bool i) {
             resize(sizeof(bool));
-            *(bool*)(*data+pointer) = i;
+            *(bool*)(data+pointer) = i;
             pointer += sizeof(bool);
         }
         inline void writeChar(char i) {
             resize(sizeof(char));
-            *(char*)(*data+pointer) = i;
+            *(char*)(data+pointer) = i;
             pointer += sizeof(char);
         }
         inline void writeUChar(unsigned char i) {
             resize(sizeof(unsigned char));
-            *(unsigned char*)(*data+pointer) = i;
+            *(unsigned char*)(data+pointer) = i;
             pointer += sizeof(unsigned char);
         }
         inline void writeString(const tchar *str) {
             unsigned int length = (_tcslen(str)+1)*sizeof(tchar);
-            resize(length);
-            _tcscpy_s((tchar*)(*data+pointer), length, str);
-            pointer += length;
+            writeBytes(str, length);
         }
         inline void writeASCII(const char *str) {
             unsigned int length = (strlen(str)+1)*sizeof(char);
-            resize(length);
-            strcpy_s((char*)(*data+pointer), length, str);
-            pointer += length;
+            writeBytes(str, length);
         }
         inline void writeUnicode(const wchar_t *str) {
             unsigned int length = (wcslen(str)+1)*sizeof(wchar_t);
-            resize(length);
-            wcscpy_s((wchar_t*)(*data+pointer), length, str);
-            pointer += length;
+            writeBytes(str, length);
         }
         inline void writeBytes(const void *bytes, unsigned int length) {
             resize(length);
-            memcpy((BYTE*)*data+pointer, bytes, length);
+            memcpy((BYTE*)data+pointer, bytes, length);
             pointer += length;
         }
         template<typename T>
         void write(T value) {
             size_t length = sizeof(T);
             resize(length);
-            memcpy((BYTE*)*data+pointer, &value, length);
+            memcpy((BYTE*)data+pointer, &value, length);
             pointer += length;
         }
     };

@@ -91,15 +91,15 @@ namespace Ghurund {
         return -1;
     }
     
-    Status Image::loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) {
+    Status Image::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
         IWICBitmapDecoder *wicDecoder = nullptr;
         IWICBitmapFrameDecode *wicFrame = nullptr;
         IWICFormatConverter *wicConverter = nullptr;
 
         bool imageConverted = false;
 
-        ComPtr<IStream> stream = SHCreateMemStream((const BYTE *)data,size);
-        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromStream(stream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
+        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
+        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromStream(memStream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
             Logger::log(_T("Failed to create decoder for %s\n"), FileName);
             return Status::CALL_FAIL;
         }

@@ -10,8 +10,8 @@
 namespace Ghurund {
     class Material:public Resource, ParameterProvider {
     private:
-        shared_ptr<Shader> shader;
-        Map<ASCIIString, shared_ptr<Ghurund::Texture>> textures;
+        Shader *shader = nullptr;
+        Map<ASCIIString, Texture*> textures;
 
     protected:
         virtual bool isVersioned()const {
@@ -22,45 +22,48 @@ namespace Ghurund {
             return 0;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead);
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size)const;
-
-        virtual void clean() {
-            shader.reset();
-            for(size_t i = 0; i<textures.Size; i++)
-                textures.getValue(i).reset();
-            textures.clear();
-        }
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 
     public:
 
         Material() {}
 
-        Material(shared_ptr<Shader> shader) {
-            this->shader = shader;
+        Material(Shader *shader) {
+            setPointer(this->shader, shader);
         }
 
-        void set(ID3D12GraphicsCommandList *commandList) {
-            shader->set(commandList);
-
-            commandList->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
+        ~Material() {
+            shader->release();
+            for(size_t i = 0; i<textures.Size; i++)
+                textures.getValue(i)->release();
         }
 
-        shared_ptr<Shader> getShader() {
+        void set(CommandList &commandList, ParameterManager &parameterManager) {
+            shader->set(commandList, parameterManager);
+
+            commandList.get()->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
+        }
+
+        Shader *getShader() {
             return shader;
         }
 
-        void setShader(shared_ptr<Shader> shader) {
+        void setShader(Shader *shader) {
             this->shader = shader;
         }
 
-        __declspec(property(get = getShader, put = setShader)) shared_ptr<Shader> Shader;
+        __declspec(property(get = getShader, put = setShader)) Shader *Shader;
 
-        Map<ASCIIString, shared_ptr<Texture>> &getTextures() {
+        Map<ASCIIString, Texture*> &getTextures() {
             return textures;
         }
 
-        __declspec(property(get = getTextures)) Map<ASCIIString, shared_ptr<Texture>> &Textures;
+        __declspec(property(get = getTextures)) Map<ASCIIString, Texture*> &Textures;
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::MATERIAL;
+        }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
             static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};

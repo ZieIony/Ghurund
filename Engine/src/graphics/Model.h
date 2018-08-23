@@ -6,55 +6,61 @@
 #include "graphics/mesh/SphereMesh.h"
 #include "resource/ResourceManager.h"
 #include "game/Entity.h"
+#include "game/ParameterProvider.h"
 
 namespace Ghurund {
-    class Model: public Entity {
+    class Model: public Entity, public ParameterProvider {
     private:
-        shared_ptr<Mesh> mesh;
-        shared_ptr<Material> material;
+        Mesh *mesh = nullptr;
+        Material *material = nullptr;
 
     protected:
         List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size, unsigned long *bytesRead) override;
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size) const override;
+        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
 
     public:
 
         Model(){}
 
-        Model(shared_ptr<Mesh> mesh, shared_ptr<Material> material) {
-            this->mesh = mesh;
-            this->material = material;
+        Model(Mesh *mesh, Material *material) {
+            setPointer(this->mesh, mesh);
+            setPointer(this->material, material);
         }
 
-        virtual EntityType getType() const override {
-            return EntityType::MODEL;
+        ~Model() {
+            mesh->release();
+            material->release();
         }
 
-        shared_ptr<Mesh> getMesh() {
+        Mesh *getMesh() {
             return mesh;
         }
 
-        void setMesh(shared_ptr<Mesh> mesh) {
+        void setMesh(Mesh *mesh) {
             this->mesh = mesh;
         }
 
-        __declspec(property(get = getMesh, put = setMesh)) shared_ptr<Mesh> Mesh;
+        __declspec(property(get = getMesh, put = setMesh)) Mesh *Mesh;
 
-        shared_ptr<Material> getMaterial() {
+        Material *getMaterial() {
             return material;
         }
 
-        void setMaterial(shared_ptr<Material> material) {
+        void setMaterial(Material *material) {
             this->material = material;
         }
 
-        __declspec(property(get = getMaterial, put = setMaterial)) shared_ptr<Material> Material;
+        __declspec(property(get = getMaterial, put = setMaterial)) Material *Material;
 
-        void draw(ID3D12GraphicsCommandList *commandList) {
-            material->set(commandList);
+        void draw(CommandList &commandList, ParameterManager &parameterManager) {
+            material->set(commandList, parameterManager);
             mesh->draw(commandList);
+        }
+
+        virtual const Ghurund::Type &getType() const override {
+            return Type::MODEL;
         }
 
         virtual const Array<ResourceFormat> &getFormats() const override {
@@ -65,5 +71,7 @@ namespace Ghurund {
         virtual const ResourceFormat &getDefaultFormat() const override {
             return ResourceFormat::MODEL;
         }
+
+        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override;
     };
 }

@@ -17,6 +17,7 @@ namespace Ghurund {
         }
 
         ~Renderer() {
+            uninit();
             delete swapChain;
             swapChain = nullptr;
         }
@@ -29,7 +30,13 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        shared_ptr<CommandList> startFrame() {
+        void uninit() {
+            if(swapChain==nullptr)
+                return;
+            swapChain->uninitBuffers();
+        }
+
+        CommandList &startFrame() {
             swapChain->startFrame();
 
             return swapChain->getCommandList();

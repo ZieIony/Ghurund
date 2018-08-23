@@ -1,14 +1,14 @@
 #include "Mesh.h"
 
 namespace Ghurund {
-    Status Mesh::loadObj(ResourceManager & resourceManager, const void * data, unsigned long size, unsigned long * bytesRead) {
+    Status Mesh::loadObj(ResourceManager & resourceManager, MemoryInputStream &stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
         List<Vertex> triangleVertices;
         List<unsigned int> triangleIndices;
 
-        ASCIIString obj((const char*)data, size);
+        ASCIIString obj((char*)stream.Data, stream.Size);
         List<ASCIIString> lines = obj.split("\n");
         for(size_t i = 0; i<lines.Size; i++) {
             ASCIIString &line = lines[i];
@@ -51,16 +51,44 @@ namespace Ghurund {
         memcpy(vertices, triangleVertices.begin(), vertexCount*vertexSize);
 
         indexCount = triangleIndices.Size;
-        indices = ghnew unsigned int[indexCount];
-        memcpy(indices, triangleIndices.begin(), indexCount*sizeof(unsigned int));
-
-        if(bytesRead!=nullptr)
-            *bytesRead = size;
+        indices = ghnew vindex_t[indexCount];
+        memcpy(indices, triangleIndices.begin(), indexCount*sizeof(vindex_t));
 
         return init(resourceManager.getGraphics(), resourceManager.getCommandList());
     }
 
-    Status Mesh::init(Graphics &graphics, shared_ptr<CommandList> commandList) {
+    Status Mesh::loadMesh(ResourceManager & resourceManager, MemoryInputStream &stream) {
+        Status result = readHeader(stream);
+        if(result!=Status::OK)
+            return result;
+
+        vertexSize = sizeof(Vertex);
+        vertexCount = stream.read<vindex_t>();
+        vertices = ghnew BYTE[vertexCount*vertexSize];
+        memcpy(vertices, stream.readBytes(vertexCount*vertexSize), vertexCount*vertexSize);
+
+        indexCount = stream.read<vindex_t>();
+        indices = ghnew vindex_t[indexCount];
+        memcpy(indices, stream.readBytes(indexCount*sizeof(vindex_t)), indexCount*sizeof(vindex_t));
+
+        return init(resourceManager.getGraphics(), resourceManager.getCommandList());
+    }
+
+    Status Mesh::saveInternal(ResourceManager & resourceManager, MemoryOutputStream & stream, SaveOption options) const {
+        Status result = writeHeader(stream);
+        if(result!=Status::OK)
+            return result;
+
+        stream.write<vindex_t>(vertexCount);
+        stream.writeBytes(vertices, vertexCount*vertexSize);
+
+        stream.write<vindex_t>(indexCount);
+        stream.writeBytes(indices, indexCount*sizeof(vindex_t));
+
+        return Status::OK;
+    }
+
+    Status Mesh::init(Graphics &graphics, CommandList &commandList) {
         {
             unsigned int vertexBufferSize = vertexSize*vertexCount;
 
@@ -93,9 +121,9 @@ namespace Ghurund {
 
             // we are now creating a command with the command list to copy the data from
             // the upload heap to the default heap
-            UpdateSubresources(commandList->get(), vertexBuffer.Get(), vertexUploadHeap.Get(), 0, 0, 1, &vertexData);
+            UpdateSubresources(commandList.get(), vertexBuffer.Get(), vertexUploadHeap.Get(), 0, 0, 1, &vertexData);
 
-            commandList->get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
+            commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 
             vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
             vertexBufferView.StrideInBytes = sizeof(Vertex);
@@ -134,9 +162,9 @@ namespace Ghurund {
 
             // we are now creating a command with the command list to copy the data from
             // the upload heap to the default heap
-            UpdateSubresources(commandList->get(), indexBuffer.Get(), indexUploadHeap.Get(), 0, 0, 1, &indexData);
+            UpdateSubresources(commandList.get(), indexBuffer.Get(), indexUploadHeap.Get(), 0, 0, 1, &indexData);
 
-            commandList->get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
+            commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 
             indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
             indexBufferView.Format = DXGI_FORMAT_R32_UINT;
@@ -146,12 +174,9 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void Mesh::generateNormals(float smoothingTreshold){
-	}
+    void Mesh::generateNormals(float smoothingTreshold) {}
 
-	void Mesh::generateTangents(){
-	}
+    void Mesh::generateTangents() {}
 
-	void Mesh::invertWinding() {
-	}
+    void Mesh::invertWinding() {}
 }
