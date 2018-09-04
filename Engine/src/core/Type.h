@@ -10,13 +10,14 @@ namespace Ghurund {
         const tchar *name;
         unsigned int value;
 
-        static const Type* values[9];
+        static const Type* values[10];
 
     public:
         static const Type &LIGHT, &CAMERA,
             &SCENE,
             &SHADER, &TEXTURE, &MATERIAL, &IMAGE,
-            &MODEL, &MESH;
+            &MODEL, &MESH,
+            &SOUND;
 
         Type(std::function<void*()> constructor, const tchar *name, unsigned int value) {
             this->constructor = constructor;

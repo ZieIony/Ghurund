@@ -10,6 +10,7 @@
 #include "game/Scene.h"
 #include "collection/TypeMap.h"
 #include "graphics/mesh/QuadMesh.h"
+#include "audio/Sound.h"
 
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>
@@ -61,6 +62,7 @@ private:
     Level *testLevel;
     float rotation = 0;
     Camera *camera;
+    Sound *sound;
 
 public:
     void init() {
@@ -72,6 +74,8 @@ public:
 
         testLevel = ghnew Level();
         testLevel->camera = camera;
+
+        sound = ResourceManager.load<Sound>("test.wav");
 
         File sceneFile("test.scene");
         if(sceneFile.Exists) {
@@ -129,11 +133,15 @@ public:
     void update() {
         rotation += 0.005f;
         camera->setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+
+        if(frac(rotation)<0.001f)
+            sound->play();
     }
 
     void uninit() {
         ResourceManager.clear();
         delete testLevel;
+        sound->release();
     }
 };
 

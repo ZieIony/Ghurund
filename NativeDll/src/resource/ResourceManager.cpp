@@ -6,8 +6,8 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new(Graphics *graphics, ParameterManager *parameterManager) {
-    return new ResourceManager(*graphics, *parameterManager);
+extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new(Graphics *graphics, Audio *audio, ParameterManager *parameterManager) {
+    return new ResourceManager(*graphics, *audio, *parameterManager);
 }
 
 template<class Type> void load(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {

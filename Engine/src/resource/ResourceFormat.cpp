@@ -18,8 +18,11 @@ namespace Ghurund {
     const ResourceFormat &ResourceFormat::MESH = ResourceFormat(1, _T("mesh"), true, true);
     const ResourceFormat &ResourceFormat::OBJ = ResourceFormat(2, _T("obj"), true, true);
 
-    const ResourceFormat* ResourceFormat::values[9] = {
+    const ResourceFormat &ResourceFormat::WAV = ResourceFormat(1, _T("wav"), true, false);
+
+    const ResourceFormat* ResourceFormat::values[11] = {
         &ResourceFormat::AUTO,
+        &ResourceFormat::ENTITY,
         &ResourceFormat::HLSL,
         &ResourceFormat::SHADER,
         &ResourceFormat::JPG,
@@ -28,5 +31,6 @@ namespace Ghurund {
         &ResourceFormat::MODEL,
         &ResourceFormat::MESH,
         &ResourceFormat::OBJ,
+        &ResourceFormat::WAV
     };
 }

@@ -28,6 +28,7 @@ namespace Ghurund {
         static String getFileLine(address_t address);
 
 		static void log(const String &str);
+        static void logVA(const tchar *format, va_list args);
 
 	public:
         static void init(LogOutput output = LogOutput::SYSTEM_CONSOLE, const tchar *name = nullptr);
@@ -35,6 +36,7 @@ namespace Ghurund {
         static void uninit();
 
 		static void log(const tchar *format, ...);
+        static Status log(Status status, const tchar *format, ...);
 
 		static void logOnce(const tchar *format, ...);
     };

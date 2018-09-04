@@ -16,6 +16,7 @@
 #include "game/ParameterManager.h"
 #include "game/Game.h"
 #include "game/LevelManager.h"
+#include "audio/Audio.h"
 
 namespace Ghurund {
 
@@ -27,6 +28,7 @@ namespace Ghurund {
         Client *client;
         Settings settings;
         Graphics *graphics;
+        Audio *audio;
         ResourceManager *resourceManager;
         ParameterManager *parameterManager;
         Timer timer;
@@ -100,6 +102,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getGraphics)) Graphics &Graphics;
+
+        Audio &getAudio() {
+            return *audio;
+        }
+
+        __declspec(property(get = getAudio)) Audio &Audio;
 
         inline ResourceManager &getResourceManager() {
             return *resourceManager;

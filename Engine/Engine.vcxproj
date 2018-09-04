@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
+    <ClCompile Include="src\audio\Audio.cpp" />
+    <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
@@ -58,6 +60,8 @@
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\Window.h" />
     <ClInclude Include="src\application\WindowProc.h" />
+    <ClInclude Include="src\audio\Audio.h" />
+    <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\collection\Array.h" />
     <ClInclude Include="src\collection\AverageValue.h" />
     <ClInclude Include="src\collection\BufferedValue.h" />

@@ -2,6 +2,7 @@
 #include "graphics/Light.h"
 #include "graphics/Camera.h"
 #include "game/Scene.h"
+#include "audio/Sound.h"
 
 namespace Ghurund {
     const Type &Type::LIGHT = Type([]() {return ghnew Light(); }, _T("light"), 0);
@@ -13,8 +14,9 @@ namespace Ghurund {
     const Type &Type::IMAGE = Type([]() {return ghnew Image(); }, _T("image"), 6);
     const Type &Type::MODEL = Type([]() {return ghnew Model(); }, _T("model"), 7);
     const Type &Type::MESH = Type([]() {return ghnew Mesh(); }, _T("mesh"), 8);
+    const Type &Type::SOUND = Type([]() {return ghnew Sound(); }, _T("sound"), 9);
 
-    const Type* Type::values[9] = {
+    const Type* Type::values[10] = {
         &Type::LIGHT,
         &Type::CAMERA,
         &Type::SCENE,
@@ -23,6 +25,7 @@ namespace Ghurund {
         &Type::MATERIAL,
         &Type::IMAGE,
         &Type::MODEL,
-        &Type::MESH
+        &Type::MESH,
+        &Type::SOUND
     };
 }

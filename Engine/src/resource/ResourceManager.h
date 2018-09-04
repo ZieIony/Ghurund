@@ -9,6 +9,7 @@
 #include "graphics/CommandList.h"
 #include "game/ParameterManager.h"
 #include "ResourceFactory.h"
+#include "audio/Audio.h"
 
 #include <wincodec.h>
 
@@ -20,6 +21,7 @@ namespace Ghurund {
         CriticalSection section;
         CommandList commandList;
         Graphics &graphics;
+        Audio &audio;
         IWICImagingFactory *wicFactory;
         ParameterManager &parameterManager;
         ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
@@ -46,7 +48,7 @@ namespace Ghurund {
 
     public:
 
-        ResourceManager(Ghurund::Graphics &graphics, Ghurund::ParameterManager &parameterManager);
+        ResourceManager(Ghurund::Graphics &graphics, Ghurund::Audio &audio, Ghurund::ParameterManager &parameterManager);
 
         ~ResourceManager();
 
@@ -135,6 +137,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getGraphics)) Graphics &Graphics;
+
+        Audio &getAudio() {
+            return audio;
+        }
+
+        __declspec(property(get = getAudio)) Audio &Audio;
 
         ParameterManager &getParameterManager() {
             return parameterManager;

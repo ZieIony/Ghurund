@@ -64,6 +64,20 @@ namespace Ghurund {
 		criticalSection.leave();
 	}
 
+    void Logger::logVA(const tchar *format, va_list args) {
+        String fileLine = getFileLine(getAddress());
+        tchar *buffer = nullptr;
+
+        if(!printToBuffer(&buffer, format, args))
+            goto cleanUp;
+
+        fileLine.add(buffer);
+        log(fileLine);
+
+    cleanUp:
+        delete[] buffer;
+    }
+
 	void Logger::log(const tchar *format, ...) {
 #ifndef _DEBUG
 		return;
@@ -72,46 +86,54 @@ namespace Ghurund {
 		va_list args;
 		va_start(args, format);
 
-		String fileLine = getFileLine(getAddress());
-		tchar *buffer = nullptr;
+        logVA(format, args);
 
-		if (!printToBuffer(&buffer, format, args))
-			goto cleanUp;
-
-		fileLine.add(buffer);
-		log(fileLine);
-
-	cleanUp:
-		delete[] buffer;
 		va_end(args);
 	}
 
-	void Logger::logOnce(const tchar * format, ...)	{
+    Status Logger::log(Status status, const tchar *format, ...) {
 #ifndef _DEBUG
-		return;
+        return status;
 #endif
 
-		va_list args;
-		va_start(args, format);
+        log(_T("%i "), status);
 
-		String fileLine = getFileLine(getAddress());
-		tchar *buffer = nullptr;
+        va_list args;
+        va_start(args, format);
 
-		if (!printToBuffer(&buffer, format, args))
-			goto cleanUp;
+        logVA(format, args);
 
-		fileLine.add(buffer);
-		if (!loggedOnce->contains(fileLine)) {
-			loggedOnce->add(fileLine);
-			log(fileLine);
-		}
+        va_end(args);
 
-	cleanUp:
-		delete[] buffer;
-		va_end(args);
-	}
+        return status;
+    }
 
-	void Logger::init(LogOutput output, const tchar *name) {
+    void Logger::logOnce(const tchar * format, ...) {
+#ifndef _DEBUG
+        return;
+#endif
+
+        va_list args;
+        va_start(args, format);
+
+        String fileLine = getFileLine(getAddress());
+        tchar *buffer = nullptr;
+
+        if(!printToBuffer(&buffer, format, args))
+            goto cleanUp;
+
+        fileLine.add(buffer);
+        if(!loggedOnce->contains(fileLine)) {
+            loggedOnce->add(fileLine);
+            log(fileLine);
+        }
+
+    cleanUp:
+        delete[] buffer;
+        va_end(args);
+    }
+
+    void Logger::init(LogOutput output, const tchar *name) {
 #ifndef _DEBUG
 		return;
 #endif

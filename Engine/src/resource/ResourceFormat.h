@@ -15,7 +15,7 @@ namespace Ghurund {
         const tchar *extension = nullptr;
         bool save, load;
 
-        static const ResourceFormat* values[9];
+        static const ResourceFormat* values[11];
 
     public:
         static const ResourceFormat &AUTO,
@@ -24,7 +24,8 @@ namespace Ghurund {
             &JPG, &JPEG,
             &MATERIAL,
             &MODEL,
-            &MESH, &OBJ;
+            &MESH, &OBJ,
+            &WAV;
 
         ResourceFormat() {
             extension = nullptr;

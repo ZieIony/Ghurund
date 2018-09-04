@@ -5,10 +5,14 @@
 
 namespace Ghurund {
     void Application::initInternal() {
+        CoInitialize(nullptr);
+    
         parameterManager = ghnew Ghurund::ParameterManager();
         graphics = ghnew Ghurund::Graphics();
         graphics->init();
-        resourceManager = ghnew Ghurund::ResourceManager(*graphics, *parameterManager);
+        audio = ghnew Ghurund::Audio();
+        audio->init();
+        resourceManager = ghnew Ghurund::ResourceManager(*graphics, *audio, *parameterManager);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
@@ -25,8 +29,11 @@ namespace Ghurund {
 
 		delete parameterManager;
         delete resourceManager;
+        delete audio;
         delete graphics;
         window.uninit();
+
+        CoUninitialize();
     }
 
     void Application::messageLoop() {
