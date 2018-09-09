@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Ghurund.Managed.Resource;
 
-namespace Ghurund.Managed {
+namespace Ghurund.Managed.Graphics.Shader {
     public class Shader : Resource.Resource {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -11,6 +10,9 @@ namespace Ghurund.Managed {
         public Shader() {
             NativePtr = Shader_new();
             FileName = "unnamed shader.hlsl";
+        }
+
+        public Shader(IntPtr ptr) : base(ptr) {
         }
 
 
@@ -67,9 +69,7 @@ namespace Ghurund.Managed {
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
         private static extern String Shader_compile(IntPtr _this);
 
-        public String compile() {
-            return Shader_compile(NativePtr);
-        }
+        public String compile() => Shader_compile(NativePtr);
 
     }
 }

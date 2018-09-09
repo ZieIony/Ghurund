@@ -125,7 +125,6 @@ namespace Ghurund {
         input.clearEvents();
 
         CommandList &commandList = renderer.startFrame();
-		graphics->DescriptorAllocator.set(commandList.get());
         levelManager.draw(commandList, ParameterManager);
         renderer.finishFrame();
     }

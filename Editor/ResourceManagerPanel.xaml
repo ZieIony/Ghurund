@@ -34,7 +34,7 @@
 				</TreeView>
 			</workspace:SplitPanel.Panel1>
 			<workspace:SplitPanel.Panel2>
-				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0" Background="{x:Null}">
+				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0" Background="{x:Null}" MouseDoubleClick="treeView_MouseDoubleClick">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">

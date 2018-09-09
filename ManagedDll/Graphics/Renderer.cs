@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Ghurund.Managed {
+namespace Ghurund.Managed.Graphics {
     public class Renderer : NativeClass {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_new();
 
-        public Renderer() {
-            NativePtr = Renderer_new();
-        }
+        protected override void newObject() => NativePtr = Renderer_new();
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_init(IntPtr nativeRenderer, IntPtr graphics, IntPtr window);
 
-        public void init(Graphics.Graphics graphics, Window window) {
+        public void init(Graphics graphics, Window window) {
             Renderer_init(NativePtr, graphics.NativePtr, window.NativePtr);
         }
 
@@ -23,8 +21,8 @@ namespace Ghurund.Managed {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_startFrame(IntPtr nativeRenderer);
 
-        public IntPtr startFrame() {
-            return Renderer_startFrame(NativePtr);
+        public CommandList startFrame() {
+            return new CommandList(Renderer_startFrame(NativePtr));
         }
 
 

@@ -12,5 +12,13 @@ namespace Ghurund.Managed.Graphics {
         public Camera() { }
 
         public Camera(IntPtr ptr) : base(ptr) { }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_initParameters(IntPtr _this, IntPtr parameterManager);
+
+        public void initParameters(ParameterManager parameterManager) {
+            Camera_initParameters(NativePtr, parameterManager.NativePtr);
+        }
     }
 }

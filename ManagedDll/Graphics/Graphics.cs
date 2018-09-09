@@ -26,9 +26,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Graphics_init(IntPtr _this);
 
-        public void init() {
-            Graphics_init(NativePtr);
-        }
+        public void init() => Graphics_init(NativePtr);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

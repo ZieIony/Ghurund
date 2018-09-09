@@ -1,4 +1,4 @@
-﻿namespace Ghurund.Managed {
+﻿namespace Ghurund.Managed.Graphics.Shader {
     public enum ShaderModel {
         Shader_1_0,
         Shader_2_0,

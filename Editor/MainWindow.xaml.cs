@@ -1,9 +1,13 @@
 ﻿using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
+using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Resource;
 using Microsoft.Win32;
 using Ninject;
 
@@ -23,7 +27,7 @@ namespace Ghurund.Editor {
         public IParametersPanel ParametersPanel { get; set; }
 
         [Inject]
-        public IResourceManagerPanel ResourceManager { get; set; }
+        public IResourceManagerPanel ResourceManagerPanel { get; set; }
 
         [Inject]
         public ISceneExplorerPanel SceneExplorer { get; set; }
@@ -32,7 +36,10 @@ namespace Ghurund.Editor {
         public ParameterManager ParameterManager { get; set; }
 
         [Inject]
-        public EditorSettings settings { get; set; }
+        public EditorSettings Settings { get; set; }
+
+        [Inject]
+        public ResourceManager ResourceManager { get; set; }
 
         public MainWindow() {
             InitializeComponent();
@@ -43,15 +50,32 @@ namespace Ghurund.Editor {
             SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
             var scene = new Scene();
-            scene.Entities.Add(new Camera());
-            scene.Entities.Add(new Light());
+            scene.Load(ResourceManager, "test.scene");
+            scene.Entities.SyncList();
+            //scene.Entities.Add(new Camera());
+            //scene.Entities.Add(new Light());
             //scene.initParameters(ParameterManager);
             SceneExplorer.Scene = scene;
+            SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
 
             ProjectExplorer.Project = new Project() {
                 Name = "test project",
                 Directory = new DirectoryInfo(Directory.GetCurrentDirectory())
             };
+
+            ResourceManagerPanel.EditorOpened += SceneExplorer_EditorOpened;
+        }
+
+        private void SceneExplorer_EditorOpened(object sender, RoutedEditorOpenedEventArgs e) {
+            if (e.EditedResource is BitmapImage) {
+                var panel = new ImageEditorPanel();
+                panel.Image = e.EditedResource as BitmapImage;
+                openPanel(sender, panel);
+            } else {
+                var panel = new SceneEditorPanel();
+                panel.Scene = e.EditedResource as Scene;
+                openPanel(sender, panel);
+            }
         }
 
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
@@ -67,7 +91,7 @@ namespace Ghurund.Editor {
         }
 
         private void WorkspacePanel_Loaded(object sender, RoutedEventArgs e) {
-            workspacePanel.Restore(settings.WorkspaceState, new DockableControlFactory());
+            workspacePanel.Restore(Settings.WorkspaceState, new DockableControlFactory());
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e) {
@@ -82,7 +106,7 @@ namespace Ghurund.Editor {
         private void WelcomePage_Click(object sender, RoutedEventArgs e) => openPanel(sender, WelcomePage);
         private void Properties_Click(object sender, RoutedEventArgs e) => openPanel(sender, PropertiesPanel);
         private void Parameters_Click(object sender, RoutedEventArgs e) => openPanel(sender, ParametersPanel);
-        private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, ResourceManager);
+        private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, ResourceManagerPanel);
         private void SceneExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, SceneExplorer);
 
         private void openPanel(object sender, IDockableControl panel) {
@@ -101,8 +125,8 @@ namespace Ghurund.Editor {
         }
 
         private void saveSettings() {
-            settings.WorkspaceState = workspacePanel.Save();
-            settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
+            Settings.WorkspaceState = workspacePanel.Save();
+            Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
         }
     }
 

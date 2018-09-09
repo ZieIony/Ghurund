@@ -56,6 +56,8 @@ namespace Ghurund.Controls.Workspace {
                 state.tabStates[i] = new TabState {
                     className = panel.Content.GetType().AssemblyQualifiedName
                 };
+                if(panel.Content is IStateControl)
+                    state.tabStates[i].controlState = (panel.Content as IStateControl).Save();
             }
         }
 
@@ -65,6 +67,8 @@ namespace Ghurund.Controls.Workspace {
                 IDockableControl control = factory.MakeControl(t);
                 var tab = new EditorTab(control);
                 Items.Add(tab);
+                if (control is IStateControl)
+                    (control as IStateControl).Restore(tabState.controlState);
             }
         }
     }

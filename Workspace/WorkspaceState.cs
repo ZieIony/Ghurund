@@ -31,6 +31,7 @@ namespace Ghurund.Controls.Workspace {
     [Serializable]
     public class TabState {
         public string className;
+        public object controlState;
     }
 
     [Serializable]

@@ -5,10 +5,10 @@ namespace Ghurund.Managed.Resource {
     public class ResourceManager : NativeClass {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ResourceManager_new(IntPtr graphics, IntPtr parameterManager);
+        private static extern IntPtr ResourceManager_new(IntPtr graphics, IntPtr audio, IntPtr parameterManager);
 
-        public ResourceManager(Graphics.Graphics graphics, Game.ParameterManager parameterManager) {
-            NativePtr = ResourceManager_new(graphics.NativePtr, parameterManager.NativePtr);
+        public ResourceManager(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager) {
+            NativePtr = ResourceManager_new(graphics.NativePtr, audio.NativePtr, parameterManager.NativePtr);
         }
 
 

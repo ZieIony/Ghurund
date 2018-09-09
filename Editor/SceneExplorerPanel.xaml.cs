@@ -9,6 +9,8 @@ namespace Ghurund.Editor {
         Scene Scene { get; set; }
 
         event RoutedPropertyChangedEventHandler<Entity> SelectedEntityChanged;
+
+        event RoutedEditorOpenedEventHandler EditorOpened;
     }
 
     public partial class SceneExplorerPanel : UserControl, ISceneExplorerPanel {
@@ -18,6 +20,14 @@ namespace Ghurund.Editor {
         public event RoutedPropertyChangedEventHandler<Entity> SelectedEntityChanged {
             add { AddHandler(SelectedEntityChangedEvent, value); }
             remove { RemoveHandler(SelectedEntityChangedEvent, value); }
+        }
+
+
+        public static readonly RoutedEvent EditorOpenedEvent = EventManager.RegisterRoutedEvent("EditorOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(ISceneExplorerPanel));
+
+        public event RoutedEditorOpenedEventHandler EditorOpened {
+            add { AddHandler(EditorOpenedEvent, value); }
+            remove { RemoveHandler(EditorOpenedEvent, value); }
         }
 
 
@@ -41,6 +51,11 @@ namespace Ghurund.Editor {
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             RaiseEvent(new RoutedPropertyChangedEventArgs<Entity>(e.OldValue as Entity, e.NewValue as Entity, SelectedEntityChangedEvent));
+        }
+
+        private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            if (treeView.SelectedItem != null)
+                RaiseEvent(new RoutedEditorOpenedEventArgs(treeView.SelectedItem, EditorOpenedEvent));
         }
     }
 }

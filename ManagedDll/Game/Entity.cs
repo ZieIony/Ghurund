@@ -5,8 +5,16 @@ using Ghurund.Managed.Graphics;
 
 namespace Ghurund.Managed.Game {
 
-    public enum EntityType {
-        Camera, Light, Target, Unknown
+    public static class ParameterProvider {
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr ParameterProvider_getParameters(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ParameterProvider_initParameters(IntPtr _this, IntPtr parameterManager);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void ParameterProvider_fillParameters(IntPtr _this);
+
     }
 
     public abstract class Entity : Resource.Resource {
@@ -24,19 +32,11 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern EntityType Entity_getType(IntPtr _this);
+        private static extern IntPtr Entity_getType(IntPtr _this);
 
         [Category("Common")]
         [Description("Different types have different functions and can contain different children.")]
-        public EntityType Type {
-            get {
-                return Entity_getType(NativePtr);
-            }
-        }
-
-        public static EntityType getType(IntPtr p) {
-            return Entity_getType(p);
-        }
+        public Core.Type Type => new Core.Type(Entity_getType(NativePtr));
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -44,7 +44,7 @@ namespace Ghurund.Managed.Game {
         private static extern String Entity_getName(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Entity_setName(IntPtr _this, [MarshalAs(UnmanagedType.LPTStr)] String name);
+        private static extern void Entity_setName(IntPtr _this, [MarshalAs(UnmanagedType.LPWStr)] String name);
 
         [Category("Common")]
         [Description("This name will appear in scene explorer and in shaders.")]
@@ -93,14 +93,18 @@ namespace Ghurund.Managed.Game {
         public EntityList(IntPtr ptr) : base(ptr) {
         }
 
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Entity_getType(IntPtr _this);
+
         protected override Entity MakeItem(IntPtr p) {
-            switch (Entity.getType(p)) {
-                case EntityType.Camera:
+            var type = new Core.Type(Entity_getType(p));
+            switch (type.Name.ToLower()) {
+                case "camera":
                     return new Camera(p);
-                case EntityType.Light:
+                case "light":
                     return new Light(p);
-                case EntityType.Target:
-                    return new Target(p);
+                case "model":
+                    return new Model(p);
             }
             return null;    // TODO: should Entity be abstract?
         }

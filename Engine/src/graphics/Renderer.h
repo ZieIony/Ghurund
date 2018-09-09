@@ -10,6 +10,7 @@ namespace Ghurund {
         static const UINT FRAME_COUNT = 2;
   
         SwapChain *swapChain;
+        Graphics *graphics;
 
     public:
         Renderer() {
@@ -23,6 +24,7 @@ namespace Ghurund {
         }
 
         Status init(Graphics &graphics, Window &window) {
+            this->graphics = &graphics;
             Status result = swapChain->init(graphics, window, FRAME_COUNT);
             if(result!=Status::OK)
                 return result;
@@ -38,16 +40,19 @@ namespace Ghurund {
 
         CommandList &startFrame() {
             swapChain->startFrame();
+            
+            CommandList &commandList = swapChain->getCommandList();
+            graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
 
-            return swapChain->getCommandList();
+            return commandList;
         }
 
         void finishFrame(){
             swapChain->finishFrame();
         }
 
-        void resize(Graphics &graphics, unsigned int width, unsigned int height) {
-            swapChain->resize(graphics, width, height);
+        void resize(unsigned int width, unsigned int height) {
+            swapChain->resize(*graphics, width, height);
         }
     };
 }

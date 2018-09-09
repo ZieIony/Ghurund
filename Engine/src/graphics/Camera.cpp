@@ -27,6 +27,9 @@ namespace Ghurund {
         right = XMFLOAT3(1, 0, 0);
         rebuild();
 
+        float rotation = 0.0f;
+        setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+
         Name = _T("camera");
     }
 

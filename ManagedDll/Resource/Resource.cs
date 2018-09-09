@@ -4,9 +4,6 @@ using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Resource {
     public abstract class Resource : NativeClass {
-        [Browsable(false)]
-        public string FileName { get; set; }
-
         public Resource() {
             Formats = new ResourceFormatArray(Resource_getFormats(NativePtr));
         }
@@ -16,7 +13,7 @@ namespace Ghurund.Managed.Resource {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Status Resource_load(IntPtr _this, IntPtr manager, string fileName);
+        private static extern Status Resource_load(IntPtr _this, IntPtr manager, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
         public virtual Status Load(ResourceManager resourceManager, string fileName) {
             return Resource_load(NativePtr, resourceManager.NativePtr, fileName);
@@ -43,5 +40,25 @@ namespace Ghurund.Managed.Resource {
 
         [Browsable(false)]
         public ResourceFormat DefaultFormat { get => new ResourceFormat(Resource_getDefaultFormat(NativePtr)); }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))]
+        private static extern string Resource_getFileName(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Resource_setFileName(IntPtr _this, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
+
+        [Browsable(false)]
+        public string FileName {
+            get => Resource_getFileName(NativePtr);
+            set => Resource_setFileName(NativePtr, value);
+        }
+
+
+        public override string ToString() {
+            return FileName;
+        }
+
     }
 }

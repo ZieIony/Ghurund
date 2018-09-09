@@ -7,15 +7,24 @@
 
 namespace Ghurund {
     class Level {
-    public:
-        Camera *camera;
-        Scene *scene;
+    private:
+        Camera *camera = nullptr;
+        Scene *scene = nullptr;
 
+    public:
         ~Level() {
             if(camera!=nullptr)
                 camera->release();
             if(scene!=nullptr)
                 scene->release();
+        }
+
+        void setCamera(Camera *camera) {
+            setPointer(this->camera, camera);
+        }
+
+        void setScene(Scene *scene) {
+            setPointer(this->scene, scene);
         }
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {

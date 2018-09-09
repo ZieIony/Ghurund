@@ -23,7 +23,7 @@ namespace Ghurund {
 
         void onSizeChange() {
             app.Window.updateSize();
-            app.Renderer.resize(app.Graphics, app.Window.Width, app.Window.Height);
+            app.Renderer.resize(app.Window.Width, app.Window.Height);
             app.Window.fillParameters();
         }
 

@@ -103,9 +103,16 @@
     <Compile Include="PropertiesPanel.xaml.cs">
       <DependentUpon>PropertiesPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceEditor\ImageEditorPanel.xaml.cs">
+      <DependentUpon>ImageEditorPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceEditor\SceneEditorPanel.cs">
+      <DependentUpon>SceneEditorPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResourceManagerPanel.xaml.cs">
       <DependentUpon>ResourceManagerPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RoutedOpenEditorEventArgs.cs" />
     <Compile Include="SceneExplorerPanel.xaml.cs">
       <DependentUpon>SceneExplorerPanel.xaml</DependentUpon>
     </Compile>
@@ -143,11 +150,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResourceEditor\ImageEditorPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResourceManagerPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SceneExplorerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceEditor\SceneEditorPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -235,11 +250,13 @@
   <ItemGroup>
     <Resource Include="Resources\camera16.png" />
     <Resource Include="Resources\light16.png" />
-    <Resource Include="Resources\target16.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\addFolder32.png" />
     <Resource Include="Resources\folder32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\model16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

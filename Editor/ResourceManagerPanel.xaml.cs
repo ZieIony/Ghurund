@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -40,6 +41,7 @@ namespace Ghurund.Editor {
     }
 
     public interface IResourceManagerPanel : IDockableControl {
+        event RoutedEditorOpenedEventHandler EditorOpened;
     }
 
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {
@@ -48,6 +50,14 @@ namespace Ghurund.Editor {
 
         [Inject]
         public EditorSettings Settings { get; set; }
+
+        public static readonly RoutedEvent EditorOpenedEvent = EventManager.RegisterRoutedEvent("EditorOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(IResourceManagerPanel));
+
+        public event RoutedEditorOpenedEventHandler EditorOpened {
+            add { AddHandler(EditorOpenedEvent, value); }
+            remove { RemoveHandler(EditorOpenedEvent, value); }
+        }
+
 
         public ResourceManagerPanel() {
             InitializeComponent();
@@ -132,7 +142,7 @@ namespace Ghurund.Editor {
             }
         }
 
-        private void treeView_SelectedItemChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<object> e) {
+        private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             ResourceDirectory expandedItem = e.NewValue as ResourceDirectory;
 
             resourceGrid.Items.Clear();
@@ -140,8 +150,8 @@ namespace Ghurund.Editor {
             var expandedDir = (expandedItem.Tag as DirectoryInfo);
 
             foreach (FileInfo file in expandedDir.GetFiles()) {
-                if (file.Extension.StartsWith(".")&&
-                    !ResourceFormat.Values.Where((format) => format.Extension!=null&&format.Extension.Equals(file.Extension.Substring(1))).Any())
+                if (file.Extension.StartsWith(".") &&
+                    !ResourceFormat.Values.Where((format) => format.Extension != null && format.Extension.Equals(file.Extension.Substring(1))).Any())
                     continue;
 
                 ResourceFile item = new ResourceFile {
@@ -151,6 +161,16 @@ namespace Ghurund.Editor {
                     Modified = file.LastWriteTime.ToShortDateString()
                 };
                 resourceGrid.Items.Add(item);
+            }
+        }
+
+        private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            if (resourceGrid.SelectedItem != null) {
+                var resourceFile = resourceGrid.SelectedItem as ResourceFile;
+                if (resourceFile.Path.EndsWith("jpg") || resourceFile.Path.EndsWith("jpeg") || resourceFile.Path.EndsWith("png")) {
+                    BitmapImage image = new BitmapImage(new Uri(resourceFile.Path));
+                    RaiseEvent(new RoutedEditorOpenedEventArgs(image, EditorOpenedEvent));
+                }
             }
         }
     }

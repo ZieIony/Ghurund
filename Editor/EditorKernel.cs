@@ -1,5 +1,7 @@
 ﻿using System;
+using Ghurund.Managed.Audio;
 using Ghurund.Managed.Game;
+using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 using Ninject;
 
@@ -46,6 +48,8 @@ namespace Ghurund.Editor {
             kernel.Bind<ISceneExplorerPanel>().ToMethod(context => context.Kernel.Get<SceneExplorerPanel>()).InSingletonScope();
 
 
+            kernel.Bind<Graphics>().ToSelf().InSingletonScope();
+            kernel.Bind<Audio>().ToSelf().InSingletonScope();
             kernel.Bind<ParameterManager>().ToSelf().InSingletonScope();
             kernel.Bind<ResourceManager>().ToSelf().InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {

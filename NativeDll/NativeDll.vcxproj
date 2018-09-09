@@ -146,9 +146,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio\Audio.cpp" />
+    <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\collection\Array.cpp" />
+    <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
+    <ClCompile Include="src\game\LevelManager.cpp" />
     <ClCompile Include="src\game\Parameter.cpp" />
     <ClCompile Include="src\game\ParameterManager.cpp" />
     <ClCompile Include="src\game\Scene.cpp" />
@@ -165,7 +169,8 @@
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
-    <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\graphics\Model.cpp" />
+    <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\collection\List.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />

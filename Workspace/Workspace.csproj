@@ -125,6 +125,7 @@
     <Compile Include="HighlightWindow.xaml.cs">
       <DependentUpon>HighlightWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="IStateControl.cs" />
     <Compile Include="IStateSaver.cs" />
     <Compile Include="PeekButton.cs">
       <DependentUpon>PeekButton.xaml</DependentUpon>

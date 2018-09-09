@@ -10,6 +10,14 @@ extern "C" __declspec(dllexport) Status Resource_save(Resource *_this, ResourceM
     return _this->save(*manager, fileName);
 }
 
+extern "C" __declspec(dllexport) void Resource_setFileName(Resource *_this, const tchar *fileName) {
+    _this->setFileName(fileName);
+}
+
+extern "C" __declspec(dllexport) tchar *Resource_getFileName(Resource *_this) {
+    return copyStr(_this->getFileName());
+}
+
 extern "C" __declspec(dllexport) const Array<ResourceFormat> *Resource_getFormats(Resource *_this) {
     return &_this->getFormats();
 }

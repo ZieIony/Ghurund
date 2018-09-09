@@ -46,7 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Array.cs" />
+    <Compile Include="Audio\Audio.cs" />
     <Compile Include="CharStrMarshaler.cs" />
+    <Compile Include="Core\Type.cs" />
     <Compile Include="Float3UITypeEditor.cs" />
     <Compile Include="Float3UITypeEditorControl.cs">
       <SubType>UserControl</SubType>
@@ -55,27 +57,31 @@
       <DependentUpon>Float3UITypeEditorControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Float3.cs" />
+    <Compile Include="Graphics\CommandList.cs" />
     <Compile Include="Game\Entity.cs" />
+    <Compile Include="Game\Level.cs" />
+    <Compile Include="Game\LevelManager.cs" />
     <Compile Include="Game\Parameter.cs" />
     <Compile Include="Game\ParameterManager.cs" />
     <Compile Include="Game\Scene.cs" />
     <Compile Include="Graphics\Adapter.cs" />
     <Compile Include="Graphics\Camera.cs" />
     <Compile Include="Graphics\Light.cs" />
-    <Compile Include="Game\Target.cs" />
+    <Compile Include="Graphics\Mesh.cs" />
+    <Compile Include="Graphics\Model.cs" />
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="List.cs" />
-    <Compile Include="Material.cs" />
+    <Compile Include="Graphics\Material.cs" />
     <Compile Include="PipelineState.cs" />
-    <Compile Include="Renderer.cs" />
+    <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="NativeClass.cs" />
     <Compile Include="Resource\Resource.cs" />
     <Compile Include="Resource\ResourceFormat.cs" />
     <Compile Include="Resource\ResourceManager.cs" />
     <Compile Include="Status.cs" />
-    <Compile Include="Shader.cs" />
-    <Compile Include="ShaderModel.cs" />
+    <Compile Include="Graphics\Shader\Shader.cs" />
+    <Compile Include="Graphics\Shader\ShaderModel.cs" />
     <Compile Include="WCharStrMarshaler.cs" />
     <Compile Include="Window.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
