@@ -50,11 +50,13 @@ namespace Ghurund.Editor {
             SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
             var scene = new Scene();
+            ResourceManager.StartLoading();
             scene.Load(ResourceManager, "test.scene");
             scene.Entities.SyncList();
             //scene.Entities.Add(new Camera());
             //scene.Entities.Add(new Light());
             //scene.initParameters(ParameterManager);
+            ResourceManager.FinishLoading();
             SceneExplorer.Scene = scene;
             SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
 

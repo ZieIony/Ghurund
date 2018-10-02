@@ -34,7 +34,10 @@ namespace Ghurund.Editor.ResourceEditor {
         public void Restore(object state) {
             if (state != null) {
                 string uri = state as string;
-                Image = new BitmapImage(new System.Uri(uri));
+                Image = new BitmapImage() {
+                    CacheOption = BitmapCacheOption.OnLoad,
+                    UriSource = new System.Uri(uri)
+                };
             }
         }
     }

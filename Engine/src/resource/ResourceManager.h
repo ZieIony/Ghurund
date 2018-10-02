@@ -5,7 +5,7 @@
 #include "FileWatcher.h"
 #include "core/Logger.h"
 #include "Resource.h"
-#include "core/Thread.h"
+#include "core/WorkerThread.h"
 #include "graphics/CommandList.h"
 #include "game/ParameterManager.h"
 #include "ResourceFactory.h"
@@ -19,14 +19,13 @@ namespace Ghurund {
         FileWatcher *watcher;
         TypeMap<String> resources;
         CriticalSection section;
-        CommandList commandList;
-        Graphics &graphics;
-        Audio &audio;
-        IWICImagingFactory *wicFactory;
-        ParameterManager &parameterManager;
         ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
 
-        WorkerThread resourceLoadingThread;
+        Graphics &graphics;
+        Audio &audio;
+        CommandList commandList;
+        IWICImagingFactory *wicFactory;
+        ParameterManager &parameterManager;
 
         void onFileChanged(const String &fileName, DWORD action);
 
@@ -52,19 +51,6 @@ namespace Ghurund {
 
         ~ResourceManager();
 
-        template<class Type> void load(const String &fileName, std::function<void(Type&, Status)> callback, LoadOption options = LoadOption::DEFAULT) {
-            String *copy = ghnew String(fileName);
-
-            resourceLoadingThread.post([copy, callback, this, options]() {
-                Type *resource = get<Type>(*copy);
-                Status result = Status::ALREADY_LOADED;
-                if(resource.get()==nullptr)
-                    result = loadInternal(*resource, *copy, options);
-                callback(resource, result);
-                delete copy;
-            });
-        }
-
         template<class Type> Type *load(const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             if(fileName.Length==0)
                 return nullptr;
@@ -89,8 +75,8 @@ namespace Ghurund {
             return resource;
         }
 
-        Resource *load(MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Resource *resource = resourceFactory->makeResource(stream);
+        template<class Type = Resource> Type *load(MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            Type *resource = (Type*)resourceFactory->makeResource(stream);
             Status loadResult;
             if(stream.readBoolean()) {
                 loadResult = resource->load(*this, stream, options);
@@ -101,6 +87,28 @@ namespace Ghurund {
             if(result!=nullptr)
                 *result = loadResult;
             return resource;
+        }
+
+        Status save(Resource &resource, SaveOption options = SaveOption::DEFAULT) {
+            return resource.save(*this, options);
+        }
+
+        Status save(Resource &resource, const String &fileName, SaveOption options = SaveOption::DEFAULT) {
+            if(resource.FileName.Empty) {
+                Logger::log(_T("The file name is empty\n"));
+                return Status::INV_PARAM;
+            } else {
+                return resource.save(*this, fileName, options);
+            }
+        }
+
+        Status save(Resource &resource, File &file, SaveOption options = SaveOption::DEFAULT) {
+            if(file.Name == nullptr) {
+                Logger::log(_T("The file's name is null\n"));
+                return Status::INV_PARAM;
+            } else {
+                return resource.save(*this, file, options);
+            }
         }
 
         Status save(Resource &resource, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) {
@@ -144,18 +152,32 @@ namespace Ghurund {
 
         __declspec(property(get = getAudio)) Audio &Audio;
 
+        CommandList &getCommandList() {
+            return commandList;
+        }
+
+        __declspec(property(get = getCommandList)) CommandList &CommandList;
+
+        IWICImagingFactory *getImageFactory() {
+            return wicFactory;
+        }
+
+        __declspec(property(get = getImageFactory)) IWICImagingFactory *ImageFactory;
+
         ParameterManager &getParameterManager() {
             return parameterManager;
         }
 
         __declspec(property(get = getParameterManager)) ParameterManager &ParameterManager;
 
-        CommandList &getCommandList() {
-            return commandList;
+        void start() {
+            if(commandList.Closed)
+                commandList.reset();
         }
 
-        IWICImagingFactory *getImageFactory() {
-            return wicFactory;
+        void finish() {
+            if(!commandList.Closed)
+                commandList.finish();
         }
     };
 }

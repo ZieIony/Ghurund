@@ -30,12 +30,6 @@ namespace Ghurund {
     public:
         DescriptorHandle descHandle;
 
-        Texture() {}
-
-        Texture(ResourceManager &manager, Image &image) {
-            init(manager, image);
-        }
-
         ~Texture() {
             textureResource.Reset();
             textureUploadHeap.Reset();

@@ -7,7 +7,7 @@
 
 namespace Ghurund {
     class Level {
-    private:
+    protected:
         Camera *camera = nullptr;
         Scene *scene = nullptr;
 
@@ -23,9 +23,17 @@ namespace Ghurund {
             setPointer(this->camera, camera);
         }
 
+        __declspec(property(put = setCamera)) Camera *Camera;
+
         void setScene(Scene *scene) {
             setPointer(this->scene, scene);
         }
+
+        __declspec(property(put = setScene)) Scene *Scene;
+
+        virtual void init() {}
+        virtual void uninit() {}
+        virtual void update() {}
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {
             if(camera!=nullptr)
@@ -47,7 +55,15 @@ namespace Ghurund {
         Level *level;
 
     public:
+        ~LevelManager() {
+            if(level!=nullptr)
+                level->uninit();
+        }
+
         void setLevel(Level *level) {
+            if(this->level!=nullptr)
+                this->level->uninit();
+            level->init();
             this->level = level;
         }
 
@@ -55,8 +71,9 @@ namespace Ghurund {
             return level;
         }
 
-        void onFrame() {
-
+        void update() {
+            if(level!=nullptr)
+                level->update();
         }
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {

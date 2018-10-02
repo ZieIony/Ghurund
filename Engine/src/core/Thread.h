@@ -5,6 +5,7 @@
 #include "CriticalSection.h"
 #include <queue>
 #include <functional>
+#include "Type.h"
 
 namespace Ghurund {
     class Thread {
@@ -69,47 +70,9 @@ namespace Ghurund {
         }
     };
 
-    class WorkerThread:public Thread {
-    private:
-        std::queue<std::function<void()>> queue;
-        CriticalSection section;
-
-    protected:
-        virtual void wakeUp() {
-            notify();
-        }
-
-    public:
-
-        void post(std::function<void()> function) {
-            section.enter();
-            queue.push(function);
-            section.leave();
-            notify();
-        }
-
-        void run() {
-            while(!isFinishing()) {
-                wait();
-                while(true) {
-                    section.enter();
-                    if(queue.empty()) {
-                        section.leave();
-                        break;
-                    }
-                    std::function<void()> function = queue.front();
-                    queue.pop();
-                    section.leave();
-                    function();
-                }
-            }
-        }
-    };
-
     class APCThread:public Thread {
     private:
-        static void CALLBACK wake(__in  ULONG_PTR arg) {
-        }
+        static void CALLBACK wake(__in  ULONG_PTR arg) {}
 
     protected:
         virtual void wakeUp() {

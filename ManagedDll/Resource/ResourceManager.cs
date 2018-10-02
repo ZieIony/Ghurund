@@ -41,5 +41,21 @@ namespace Ghurund.Managed.Resource {
         public void LoadModel(string fileName, ResourceLoadedCallback callback) {
             ResourceManager_loadModel(NativePtr, fileName, callback);
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr ResourceManager_startLoading(IntPtr _this);
+
+        public void StartLoading() {
+            ResourceManager_startLoading(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr ResourceManager_finishLoading(IntPtr _this);
+
+        public void FinishLoading() {
+            ResourceManager_finishLoading(NativePtr);
+        }
     }
 }

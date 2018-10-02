@@ -57,91 +57,156 @@ namespace Ghurund {
     };
 }
 
-class TestApplication:public Application {
+class ResourceLoader {
 private:
-    Level *testLevel;
-    float rotation = 0;
-    Camera *camera;
-    Sound *sound;
+    WorkerThread resourceLoadingThread;
+    ResourceManager &resourceManager;
 
 public:
+    ResourceLoader(ResourceManager &resourceManager): resourceManager(resourceManager) {
+        resourceLoadingThread.start();
+    }
+
+    ~ResourceLoader() {
+        resourceLoadingThread.finish();
+    }
+
+    void start() {
+        resourceLoadingThread.post("start loading", [&]() {
+            if(resourceManager.CommandList.Closed)
+                resourceManager.CommandList.reset();
+            return Status::OK;
+        });
+    }
+
+    void finish(std::function<void()> onFinished = nullptr) {
+        resourceLoadingThread.post("finish loading", [&, onFinished]() {
+            if(!resourceManager.CommandList.Closed)
+                resourceManager.CommandList.finish();
+            if(onFinished != nullptr)
+                onFinished();
+            return Status::OK;
+        });
+    }
+
+    template<class Type> void load(const String &fileName, std::function<void(Type*, Status)> onLoaded, LoadOption options = LoadOption::DEFAULT) {
+        resourceLoadingThread.post(fileName, [&, fileName, onLoaded, options]() {
+            Status result;
+            Type *resource = resourceManager.load<Type>(fileName, &result, options);
+            if(onLoaded!=nullptr)
+                onLoaded(resource, result);
+            return result;
+        });
+    }
+
+    template<class Type> void load(File &file, std::function<void(Type*, Status)> onLoaded, LoadOption options = LoadOption::DEFAULT) {
+        resourceLoadingThread.post(file.Name, [&, file, onLoaded, options]() {
+            Status result;
+            Type *resource = resourceManager.load<Type>(file, &result, options);
+            if(onLoaded!=nullptr)
+                onLoaded(resource, result);
+            return result;
+        });
+    }
+};
+
+class TestLevel:public Level {
+private:
+    float rotation = 0;
+    ResourceLoader *loader;
+    Application &app;
+
+public:
+    TestLevel(Application &app):app(app) {}
+
     void init() {
-        CommandList &commandList = ResourceManager.getCommandList();
-        commandList.reset();
+        Ghurund::Camera *camera = ghnew Ghurund::Camera();
+        camera->initParameters(app.ParameterManager);
 
-        camera = ghnew Camera();
-        camera->initParameters(ParameterManager);
-
-        testLevel = ghnew Level();
-        testLevel->camera = camera;
-
-        sound = ResourceManager.load<Sound>("test.wav");
+        Camera = camera;
 
         File sceneFile("test.scene");
         if(sceneFile.Exists) {
-            Scene *scene = ghnew Scene();
-            scene->load(ResourceManager, sceneFile);
-            testLevel->scene = scene;
+            loader = ghnew ResourceLoader(app.ResourceManager);
+            loader->start();
+            loader->load<Ghurund::Scene>("test.scene", [&](Ghurund::Scene *resource, Status result) {
+                setScene(resource);
+            });
+            loader->finish();
         } else {
-            Shader *shader = ResourceManager.load<Shader>("../shaders/basic.hlsl");
+            app.ResourceManager.start();
 
-            Image *image = ResourceManager.load<Image>("obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-            Texture *texture = ghnew Texture(ResourceManager, *image);
-
-            Scene *scene = ghnew Scene();
-            testLevel->scene = scene;
+            Ghurund::Scene *scene = ghnew Ghurund::Scene();
+            Scene = scene;
             scene->Entities.add(camera);
             camera->addReference();
+            camera->release();
 
             Mesh *mesh;
             File file("obj/lamborghini/Lamborghini_Aventador.mesh");
             if(file.Exists) {
-                mesh = ResourceManager.load<Mesh>(file);
+                mesh = app.ResourceManager.load<Mesh>(file);
             } else {
-                mesh = ResourceManager.load<Mesh>("obj/lamborghini/Lamborghini_Aventador.obj");
-                mesh->save(ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+                mesh = app.ResourceManager.load<Mesh>("obj/lamborghini/Lamborghini_Aventador.obj");
+                mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
             }
 
+            Image *image = app.ResourceManager.load<Image>("obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            Texture *texture = ghnew Texture();
+            texture->init(app.ResourceManager, *image);
+            image->release();
+
+            Shader *shader = app.ResourceManager.load<Shader>("../shaders/basic.hlsl");
             Material *material = new Material(shader);
             material->Textures.set("diffuse", texture);
             texture->addReference();
+            shader->release();
+            texture->release();
 
             Model *model = ghnew Model(mesh, material);
-            model->initParameters(ParameterManager);
+            model->initParameters(app.ParameterManager);
+            mesh->release();
+            material->release();
 
             scene->Entities.add(model);
             model->addReference();
+            model->release();
 
-            Status result = scene->save(ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
+            Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
                 Logger::log(_T("failed to save scene\n"));
 
-            shader->release();
-            image->release();
-            texture->release();
-            camera->release();
-            mesh->release();
-            model->release();
-            material->release();
+            scene->release();
+
+            app.ResourceManager.finish();
         }
-
-        commandList.finish();
-
-        LevelManager.setLevel(testLevel);
     }
 
     void update() {
         rotation += 0.005f;
         camera->setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
-
-        if(frac(rotation)<0.001f)
-            sound->play();
     }
+
+    void uninit() {
+        camera->release();
+    }
+};
+
+class TestApplication:public Application {
+private:
+    Level *testLevel;
+
+public:
+    void init() {
+        testLevel = ghnew TestLevel(*this);
+        LevelManager.setLevel(testLevel);
+    }
+
+    void update() {}
 
     void uninit() {
         ResourceManager.clear();
         delete testLevel;
-        sound->release();
     }
 };
 

@@ -13,6 +13,7 @@ namespace Ghurund {
         audio = ghnew Ghurund::Audio();
         audio->init();
         resourceManager = ghnew Ghurund::ResourceManager(*graphics, *audio, *parameterManager);
+        resourceContext = ghnew Ghurund::ResourceContext<true>(*resourceManager, *graphics, *audio, *parameterManager);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
@@ -119,6 +120,7 @@ namespace Ghurund {
         update();
         //while()
             //game.Update(deltaTime);
+        levelManager.update();
 
         //input.dispatchEvents(layout);
 

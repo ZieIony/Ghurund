@@ -2,7 +2,7 @@
 #include "RenderingBatch.h"
 
 namespace Ghurund {
-    Status Model::loadInternal(ResourceManager & resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Model::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
         Status result;
         mesh = (Ghurund::Mesh*)resourceManager.load(stream, &result, options);
         if(result!=Status::OK)
@@ -12,7 +12,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Model::saveInternal(ResourceManager & resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+    Status Model::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
         if(mesh==nullptr) {
             Logger::log(_T("Mesh cannot be empty\n"));
             return Status::INV_STATE;

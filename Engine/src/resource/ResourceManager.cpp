@@ -25,18 +25,18 @@ namespace Ghurund {
         }
     }
 
-    ResourceManager::ResourceManager(Ghurund::Graphics &graphics, Ghurund::Audio &audio, Ghurund::ParameterManager &parameterManager):graphics(graphics),audio(audio),parameterManager(parameterManager) {
-        commandList.init(graphics);
-
-        HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
-
+    ResourceManager::ResourceManager(Ghurund::Graphics &graphics, Ghurund::Audio &audio, Ghurund::ParameterManager &parameterManager)
+    : graphics(graphics), audio(audio), parameterManager(parameterManager) {
         std::function<void(const String&, DWORD)> changeListener = std::bind(&ResourceManager::onFileChanged, this, std::placeholders::_1, std::placeholders::_2);
         watcher = ghnew FileWatcher(changeListener);
-        resourceLoadingThread.start();
+
+        commandList.init(graphics);
+        HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
     }
 
     ResourceManager::~ResourceManager() {
-        resourceLoadingThread.finish();
+        wicFactory->Release();
+
         delete watcher;
         delete resourceFactory;
     }

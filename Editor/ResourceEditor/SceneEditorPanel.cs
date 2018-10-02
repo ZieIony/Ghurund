@@ -41,7 +41,9 @@ namespace Ghurund.Editor.ResourceEditor {
             if (state != null) {
                 string fileName = state as string;
                 Scene = new Scene();
+                ResourceManager.StartLoading();
                 Scene.Load(ResourceManager, fileName);
+                ResourceManager.FinishLoading();
             }
         }
     }

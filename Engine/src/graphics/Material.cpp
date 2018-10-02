@@ -21,7 +21,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Material::saveInternal(ResourceManager & resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+    Status Material::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
         if(shader==nullptr) {
             Logger::log(_T("Shader cannot be empty\n"));
             return Status::INV_STATE;

@@ -27,3 +27,11 @@ extern "C" __declspec(dllexport) void ResourceManager_loadTexture(ResourceManage
 extern "C" __declspec(dllexport) void ResourceManager_loadModel(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
     load<Model>(_this, fileName, loadCallback);
 }
+
+extern "C" __declspec(dllexport) void ResourceManager_startLoading(ResourceManager *_this) {
+    _this->start();
+}
+
+extern "C" __declspec(dllexport) void ResourceManager_finishLoading(ResourceManager *_this) {
+    _this->finish();
+}

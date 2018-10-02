@@ -244,10 +244,12 @@ namespace Ghurund {
             size = string.size;
             initial = string.initial;
             capacity = string.capacity;
-            delete[] v;
+            wchar_t *prevV = v;
+            wchar_t *stringV = string.v;
             v = new wchar_t[capacity];
-            memcpy(v, string.v, size*sizeof(wchar_t));
+            memcpy(v, stringV, size*sizeof(wchar_t));
             hash = string.hash;
+            delete[] prevV;
             return *this;
         }
 
@@ -396,10 +398,12 @@ namespace Ghurund {
             size = string.size;
             initial = string.initial;
             capacity = string.capacity;
-            delete[] v;
+            char *prevV = v;
+            char *stringV = string.v;
             v = new char[capacity];
-            memcpy(v, string.v, size*sizeof(char));
+            memcpy(v, stringV, size*sizeof(char));
             hash = string.hash;
+            delete[] prevV;
             return *this;
         }
 

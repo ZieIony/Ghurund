@@ -19,7 +19,7 @@ namespace Ghurund {
 	address_t Logger::getAddress() {
 		constexpr int frames = 1;
 		void *stack;
-		WORD numberOfFrames = CaptureStackBackTrace(2, frames, &stack, NULL);
+		WORD numberOfFrames = CaptureStackBackTrace(3, frames, &stack, NULL);
 
 		return (address_t)stack;
 	}

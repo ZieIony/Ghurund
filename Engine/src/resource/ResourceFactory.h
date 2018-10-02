@@ -19,16 +19,35 @@ namespace Ghurund {
     };
 
     class DefaultResourceFactory: public ResourceFactory {
+    private:
+        List<Type*> types;
+
     public:
+        DefaultResourceFactory() {
+            addType(Type::CAMERA);
+            addType(Type::LIGHT);
+            addType(Type::MESH);
+            addType(Type::MODEL);
+            addType(Type::TEXTURE);
+            addType(Type::MATERIAL);
+            addType(Type::IMAGE);
+            addType(Type::SHADER);
+            addType(Type::SCENE);
+        }
+
+        void addType(const Type &type) {
+            types.add((Type*)&type);
+        }
+
         virtual Resource *makeResource(MemoryInputStream &stream) override {
             unsigned int index = stream.read<unsigned int>();
-            const Type *type = Type::getValues()[index];
+            const Type *type = types[index];
 
             return (Resource*)type->newInstance();
         }
 
         virtual void describeResource(const Resource &resource, MemoryOutputStream &stream) override {
-            stream.write(resource.getType().Value);
+            stream.write(types.indexOf((Type*)&resource.getType()));
         }
 
     };

@@ -54,6 +54,7 @@ namespace Ghurund {
 
         Status read() {
             HANDLE handle = CreateFile(name, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            DWORD derr = GetLastError();
             if(handle==INVALID_HANDLE_VALUE)
                 return Status::IO;
             if(data!=nullptr)

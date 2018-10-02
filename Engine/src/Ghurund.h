@@ -50,7 +50,7 @@ template<class Type> inline Type lerp(Type val1, Type val2, float fact) {
 
 namespace Ghurund {
     enum class Status {
-        OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED,
+        OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED, UNKNOWN,
 
         WRONG_RESOURCE_VERSION,
         WRONG_RESOURCE_TYPE,
@@ -253,13 +253,13 @@ namespace Ghurund {
 
     template<class Type> inline size_t lengthOf(Type text);
 
-	template<> inline size_t lengthOf<char*>(char *text) {
-		return strlen(text);
-	}
+    template<> inline size_t lengthOf<char*>(char *text) {
+        return strlen(text);
+    }
 
-	template<> inline size_t lengthOf<wchar_t*>(wchar_t *text) {
-		return wcslen(text);
-	}
+    template<> inline size_t lengthOf<wchar_t*>(wchar_t *text) {
+        return wcslen(text);
+    }
 
     template<> inline size_t lengthOf<const char*>(const char *text) {
         return strlen(text);

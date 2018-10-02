@@ -79,6 +79,7 @@
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Object.h" />
     <ClInclude Include="src\core\Type.h" />
+    <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\graphics\BoundingBox.h" />
     <ClInclude Include="src\game\Entity.h" />
@@ -127,6 +128,7 @@
     <ClInclude Include="src\input\Mouse.h" />
     <ClInclude Include="src\resource\DataResource.h" />
     <ClInclude Include="src\game\Parameter.h" />
+    <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFactory.h" />
     <ClInclude Include="src\resource\ResourceFormat.h" />
     <ClInclude Include="src\ui\Layout.h" />

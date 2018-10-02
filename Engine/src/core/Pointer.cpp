@@ -34,9 +34,9 @@ namespace Ghurund {
             tchar text[200];
             String name = typeid(*this).name();
             if(referenceCount==1) {
-                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i\n. This deletion could be replaced with Pointer::release() call"), (int)this, name.getData(), referenceCount);
+                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i. This deletion could be replaced with Pointer::release() call"), (int)this, name.getData(), referenceCount);
             } else {
-                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i\n. The object may still be in use. Consider replacing deletion with Pointer::release() call"), (int)this, name.getData(), referenceCount);
+                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i. The object may still be in use. Consider replacing deletion with Pointer::release() call"), (int)this, name.getData(), referenceCount);
             }
             Logger::log(text);
         }

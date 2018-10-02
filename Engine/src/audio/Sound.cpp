@@ -2,7 +2,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Sound::loadInternal(ResourceManager & resourceManager, MemoryInputStream & stream, LoadOption options) {
+    Status Sound::loadInternal(ResourceManager &resourceManager, MemoryInputStream & stream, LoadOption options) {
         Status result = loadData(resourceManager, stream, options);
         if(result!=Status::OK)
             return result;
@@ -82,7 +82,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Sound::loadData(ResourceManager & resourceManager, MemoryInputStream & stream, LoadOption options) {
+    Status Sound::loadData(ResourceManager &resourceManager, MemoryInputStream & stream, LoadOption options) {
         Audio &audio = resourceManager.Audio;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);

@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 namespace Ghurund {
-    Status Mesh::loadObj(ResourceManager & resourceManager, MemoryInputStream &stream) {
+    Status Mesh::loadObj(ResourceManager &resourceManager, MemoryInputStream &stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
@@ -71,10 +71,10 @@ namespace Ghurund {
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, stream.readBytes(indexCount*sizeof(vindex_t)), indexCount*sizeof(vindex_t));
 
-        return init(resourceManager.getGraphics(), resourceManager.getCommandList());
+        return init(resourceManager.Graphics, resourceManager.CommandList);
     }
 
-    Status Mesh::saveInternal(ResourceManager & resourceManager, MemoryOutputStream & stream, SaveOption options) const {
+    Status Mesh::saveInternal(ResourceManager &resourceManager, MemoryOutputStream & stream, SaveOption options) const {
         Status result = writeHeader(stream);
         if(result!=Status::OK)
             return result;

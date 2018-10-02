@@ -8,9 +8,6 @@ namespace Ghurund {
     private:
         std::function<void*()> constructor;
         const tchar *name;
-        unsigned int value;
-
-        static const Type* values[10];
 
     public:
         static const Type &LIGHT, &CAMERA,
@@ -19,10 +16,9 @@ namespace Ghurund {
             &MODEL, &MESH,
             &SOUND;
 
-        Type(std::function<void*()> constructor, const tchar *name, unsigned int value) {
+        Type(std::function<void*()> constructor, const tchar *name) {
             this->constructor = constructor;
             this->name = name;
-            this->value = value;
         }
 
         void *newInstance() const {
@@ -34,19 +30,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getName)) const tchar *Name;
-
-        unsigned int getValue() const {
-            return value;
-        }
- 
-        __declspec(property(get = getValue)) unsigned int Value;
-
-        static const Type** getValues() {
-            return values;
-        }
-
-        static const size_t getValueCount() {
-            return sizeof(values)/sizeof(values[0]);
-        }
     };
 }
