@@ -6,7 +6,7 @@
 namespace Ghurund {
 	class SphereMesh : public Mesh {
 	protected:
-		virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+		virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
 			Vertex triangleVertices[] = {
 				{ { 0.0f,  1.0f, 0.0f },{ 0.0f, 0.0f } },
 				{ { sqrtf(8.0f/9.0f),  -1.0f/3.0f, 0 },{0.0f, 1.0f } },
@@ -33,7 +33,7 @@ namespace Ghurund {
                 spherify();
             }
 
-			return Mesh::init(resourceManager.getGraphics(), resourceManager.getCommandList());
+			return Mesh::init(context.Graphics, context.CommandList);
 		}
 
 		virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {

@@ -14,12 +14,12 @@ namespace Ghurund {
         Image *image = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
             image = ghnew Image();
-            Status result = image->load(resourceManager, stream.readUnicode(), nullptr, options);
+            Status result = image->load(resourceManager, context, stream.readUnicode(), nullptr, options);
             if(result!=Status::OK)
                 return result;
-            return init(resourceManager, *image);
+            return init(context, *image);
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options)const {
@@ -37,7 +37,7 @@ namespace Ghurund {
                 image->release();
         }
 
-        Status init(ResourceManager &resourceManager, Image &image);
+        Status init(ResourceContext &context, Image &image);
 
         virtual const Ghurund::Type &getType() const override {
             return Type::TEXTURE;

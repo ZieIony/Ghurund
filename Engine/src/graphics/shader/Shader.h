@@ -11,6 +11,7 @@
 #include "resource/ResourceManager.h"
 #include "CompilationTarget.h"
 #include "ShaderProgram.h"
+#include "resource/ResourceContext.h"
 
 #include <d3d12.h>
 #include <D3Dcompiler.h>
@@ -42,11 +43,11 @@ namespace Ghurund {
         void initConstants(Graphics &graphics, ParameterManager &parameterManager);
         void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
 
-        Status loadShd(ResourceManager &resourceManager, MemoryInputStream &stream);
-        Status loadHlsl(ResourceManager &resourceManager, MemoryInputStream &stream);
+        Status loadShd(ResourceContext &context, MemoryInputStream &stream);
+        Status loadHlsl(ResourceContext &context, MemoryInputStream &stream);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
 
     public:
@@ -65,13 +66,13 @@ namespace Ghurund {
 
         Status compile(char **outErrorMessages = nullptr);
 
-        Status build(ResourceManager &resourceManager, char **outErrorMessages = nullptr) {
+        Status build(ResourceContext &context, char **outErrorMessages = nullptr) {
             Status result;
             if(!compiled)
                 if((result = compile(outErrorMessages))!=Status::OK)
                     return result;
-            Graphics &graphics = resourceManager.Graphics;
-            initConstants(graphics, resourceManager.ParameterManager);
+            Graphics &graphics = context.Graphics;
+            initConstants(graphics, context.ParameterManager);
 			if((result = makeRootSignature(graphics))!=Status::OK)
                 return result;
             return makePipelineState(graphics);

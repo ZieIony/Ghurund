@@ -6,8 +6,8 @@ extern "C" __declspec(dllexport) Shader *Shader_new() {
     return new Shader();
 }
 
-extern "C" __declspec(dllexport) bool Shader_load(Shader *_this, ResourceManager *resourceManager, tchar *fileName) {
-    return _this->load(*resourceManager, String(fileName))==Status::OK;
+extern "C" __declspec(dllexport) bool Shader_load(Shader *_this, ResourceManager *resourceManager, ResourceContext *context, tchar *fileName) {
+    return _this->load(*resourceManager, *context, String(fileName))==Status::OK;
 }
 
 extern "C" __declspec(dllexport) bool Shader_save(Shader *_this, ResourceManager *resourceManager, tchar *fileName) {

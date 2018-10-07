@@ -33,6 +33,9 @@ namespace Ghurund.Editor {
         public ISceneExplorerPanel SceneExplorer { get; set; }
 
         [Inject]
+        public ILogPanel LogPanel { get; set; }
+
+        [Inject]
         public ParameterManager ParameterManager { get; set; }
 
         [Inject]
@@ -40,6 +43,9 @@ namespace Ghurund.Editor {
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
+
+        [Inject]
+        public ResourceContext ResourceContext { get; set; }
 
         public MainWindow() {
             InitializeComponent();
@@ -50,13 +56,11 @@ namespace Ghurund.Editor {
             SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
             var scene = new Scene();
-            ResourceManager.StartLoading();
-            scene.Load(ResourceManager, "test.scene");
+            scene.Load(ResourceManager, ResourceContext, "test.scene");
             scene.Entities.SyncList();
             //scene.Entities.Add(new Camera());
             //scene.Entities.Add(new Light());
             //scene.initParameters(ParameterManager);
-            ResourceManager.FinishLoading();
             SceneExplorer.Scene = scene;
             SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
 
@@ -110,6 +114,7 @@ namespace Ghurund.Editor {
         private void Parameters_Click(object sender, RoutedEventArgs e) => openPanel(sender, ParametersPanel);
         private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, ResourceManagerPanel);
         private void SceneExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, SceneExplorer);
+        private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
 
         private void openPanel(object sender, IDockableControl panel) {
             new EditorWindow(workspacePanel, panel).Show();

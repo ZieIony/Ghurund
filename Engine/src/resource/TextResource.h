@@ -13,7 +13,7 @@ namespace Ghurund {
             return 0;
         }
 
-        Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
             if(text!=nullptr)
                 delete text;
             text = ghnew String((tchar*)data, size);

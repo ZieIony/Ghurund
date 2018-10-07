@@ -41,7 +41,7 @@ namespace Ghurund.Managed {
 
         public string DefaultExtension { get => "stn"; }
 
-        public override Status Load(ResourceManager resourceManager, string fileName) {
+        public override Status Load(ResourceManager resourceManager, ResourceContext context, string fileName) {
             FileName = fileName;
             // Open the file containing the data that you want to deserialize.
             FileStream fs = new FileStream(FileName, FileMode.Open);

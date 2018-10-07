@@ -162,7 +162,7 @@ namespace Ghurund {
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
     }
 
-    Status Camera::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
         memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
         memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));

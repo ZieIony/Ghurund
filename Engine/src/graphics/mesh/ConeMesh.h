@@ -6,7 +6,7 @@
 namespace Ghurund {
     class ConeMesh: public Mesh {
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream) {
             Vertex triangleVertices[] = {
                 { { -0.5f,  0.5f, -0.5f },{ 0,0,-1 },{ 0,0 } }
             };

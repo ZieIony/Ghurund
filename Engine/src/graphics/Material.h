@@ -22,7 +22,7 @@ namespace Ghurund {
             return 0;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options);
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 
     public:

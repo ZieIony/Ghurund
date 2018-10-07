@@ -37,7 +37,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Resource::load(ResourceManager & resourceManager, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead, LoadOption options) {
         File file(fileName);
         if(!file.Exists) {
             Logger::log(_T("'%s' doesn't exist\n"), fileName);
@@ -48,13 +48,13 @@ namespace Ghurund {
         if(result != Status::OK)
             return result;
         MemoryInputStream stream(file.Data, file.Size);
-        result = load(resourceManager, stream);
+        result = load(resourceManager, context, stream, options);
         if(bytesRead!=nullptr)
             *bytesRead = stream.BytesRead;
         return result;
     }
 
-    Status Resource::load(ResourceManager & resourceManager, const String & fileName, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const String & fileName, unsigned long *bytesRead, LoadOption options) {
         if(this->fileName.Length==0&&fileName.Length==0) {
             Logger::log(_T("Both resource's file name and the file name passed as parameter are empty\n"));
             return Status::INV_PARAM;
@@ -62,10 +62,10 @@ namespace Ghurund {
             this->fileName = fileName;
         }
 
-        return load(resourceManager, bytesRead);
+        return load(resourceManager, context, bytesRead, options);
     }
 
-    Status Resource::load(ResourceManager & resourceManager, File & file, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, File & file, unsigned long *bytesRead, LoadOption options) {
         this->fileName = file.Name;
         if(!file.Exists)
             return Status::FILE_DOESNT_EXIST;
@@ -76,14 +76,14 @@ namespace Ghurund {
                 return result;
         }
         MemoryInputStream stream(file.Data, file.Size);
-        result = load(resourceManager, stream);
+        result = load(resourceManager, context, stream, options);
         if(bytesRead!=nullptr)
             *bytesRead = stream.BytesRead;
         return result;
     }
 
-    Status Resource::load(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
-        Status result = loadInternal(resourceManager, stream, options);
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+        Status result = loadInternal(resourceManager, context, stream, options);
         valid = result == Status::OK;
         return result;
     }

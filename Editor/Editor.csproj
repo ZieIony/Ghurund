@@ -92,6 +92,9 @@
     <Compile Include="EditorKernel.cs" />
     <Compile Include="EditorSettings.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="LogPanel.xaml.cs">
+      <DependentUpon>LogPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.Tasks.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,10 @@
     <Compile Include="WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="LogPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -30,7 +30,7 @@ namespace Ghurund {
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options);
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
             return Status::NOT_IMPLEMENTED;

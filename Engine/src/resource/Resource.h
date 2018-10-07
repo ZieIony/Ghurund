@@ -7,6 +7,7 @@
 #include "ResourceFormat.h"
 #include "collection/Array.h"
 #include "core/Pointer.h"
+#include "ResourceContext.h"
 
 using namespace std;
 
@@ -36,7 +37,7 @@ namespace Ghurund {
         String fileName;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) = 0;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) = 0;
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const = 0;
 
         virtual unsigned int getVersion() const {
@@ -50,10 +51,10 @@ namespace Ghurund {
 
         Resource() = default;
 
-        Status load(ResourceManager &resourceManager, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, const String &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, const String &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
 
         Status save(ResourceManager &resourceManager, SaveOption options = SaveOption::DEFAULT) const;
         Status save(ResourceManager &resourceManager, const String &fileName, SaveOption options = SaveOption::DEFAULT);

@@ -2,10 +2,18 @@
 
 #include "Collection.h"
 
+#ifdef GHURUND_EDITOR
+#include <functional>
+#endif
+
 namespace Ghurund {
     template<class Value, class Key = size_t> class List:public Collection<Key, Value> {
     protected:
         Value *v;
+
+#ifdef GHURUND_EDITOR
+        std::function<void()> onItemAdded, onItemRemoved, onItemChanged;
+#endif
 
     public:
         List() {
@@ -71,6 +79,10 @@ namespace Ghurund {
                 resize(capacity+initial);
             v[size] = e;
             size++;
+#ifdef GHURUND_EDITOR
+            if(onItemAdded!=nullptr)
+                onItemAdded();
+#endif
         }
 
         inline void insert(Key i, const Value &item) {

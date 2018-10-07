@@ -13,15 +13,15 @@ namespace Ghurund.Managed.Resource {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Status Resource_load(IntPtr _this, IntPtr manager, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
+        private static extern Status Resource_load(IntPtr _this, IntPtr manager, IntPtr context, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
-        public virtual Status Load(ResourceManager resourceManager, string fileName) {
-            return Resource_load(NativePtr, resourceManager.NativePtr, fileName);
+        public virtual Status Load(ResourceManager resourceManager, ResourceContext context, string fileName) {
+            return Resource_load(NativePtr, resourceManager.NativePtr, context.NativePtr, fileName);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Status Resource_save(IntPtr _this, IntPtr manager, string fileName);
+        private static extern Status Resource_save(IntPtr _this, IntPtr manager, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
         public virtual Status Save(ResourceManager resourceManager, string fileName) {
             return Resource_save(NativePtr, resourceManager.NativePtr, fileName);

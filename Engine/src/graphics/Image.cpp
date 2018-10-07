@@ -91,7 +91,7 @@ namespace Ghurund {
         return -1;
     }
     
-    Status Image::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Image::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         IWICBitmapDecoder *wicDecoder = nullptr;
         IWICBitmapFrameDecode *wicFrame = nullptr;
         IWICFormatConverter *wicConverter = nullptr;
@@ -99,7 +99,7 @@ namespace Ghurund {
         bool imageConverted = false;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
-        if(FAILED(resourceManager.getImageFactory()->CreateDecoderFromStream(memStream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
+        if(FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
             Logger::log(_T("Failed to create decoder for %s\n"), FileName);
             return Status::CALL_FAIL;
         }
@@ -126,7 +126,7 @@ namespace Ghurund {
 
             dxgiFormat = getDXGIFormatFromWICFormat(convertToPixelFormat);
 
-            if(FAILED(resourceManager.getImageFactory()->CreateFormatConverter(&wicConverter)))
+            if(FAILED(context.ImageFactory->CreateFormatConverter(&wicConverter)))
                 return Status::CALL_FAIL;
 
             BOOL canConvert = FALSE;

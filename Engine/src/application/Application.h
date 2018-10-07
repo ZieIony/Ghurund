@@ -31,7 +31,7 @@ namespace Ghurund {
         Graphics *graphics;
         Audio *audio;
         ResourceManager *resourceManager;
-        ResourceContext<true> *resourceContext;
+        ResourceContext *resourceContext;
         ParameterManager *parameterManager;
         Timer timer;
         Input input;
@@ -117,11 +117,11 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceManager)) ResourceManager &ResourceManager;
 
-        inline ResourceContext<true> &getResourceContext() {
+        inline ResourceContext &getResourceContext() {
             return *resourceContext;
         }
 
-        __declspec(property(get = getResourceContext)) ResourceContext<true> &ResourceContext;
+        __declspec(property(get = getResourceContext)) ResourceContext &ResourceContext;
 
         inline ParameterManager &getParameterManager() {
             return *parameterManager;

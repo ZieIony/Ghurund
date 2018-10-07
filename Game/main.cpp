@@ -57,63 +57,9 @@ namespace Ghurund {
     };
 }
 
-class ResourceLoader {
-private:
-    WorkerThread resourceLoadingThread;
-    ResourceManager &resourceManager;
-
-public:
-    ResourceLoader(ResourceManager &resourceManager): resourceManager(resourceManager) {
-        resourceLoadingThread.start();
-    }
-
-    ~ResourceLoader() {
-        resourceLoadingThread.finish();
-    }
-
-    void start() {
-        resourceLoadingThread.post("start loading", [&]() {
-            if(resourceManager.CommandList.Closed)
-                resourceManager.CommandList.reset();
-            return Status::OK;
-        });
-    }
-
-    void finish(std::function<void()> onFinished = nullptr) {
-        resourceLoadingThread.post("finish loading", [&, onFinished]() {
-            if(!resourceManager.CommandList.Closed)
-                resourceManager.CommandList.finish();
-            if(onFinished != nullptr)
-                onFinished();
-            return Status::OK;
-        });
-    }
-
-    template<class Type> void load(const String &fileName, std::function<void(Type*, Status)> onLoaded, LoadOption options = LoadOption::DEFAULT) {
-        resourceLoadingThread.post(fileName, [&, fileName, onLoaded, options]() {
-            Status result;
-            Type *resource = resourceManager.load<Type>(fileName, &result, options);
-            if(onLoaded!=nullptr)
-                onLoaded(resource, result);
-            return result;
-        });
-    }
-
-    template<class Type> void load(File &file, std::function<void(Type*, Status)> onLoaded, LoadOption options = LoadOption::DEFAULT) {
-        resourceLoadingThread.post(file.Name, [&, file, onLoaded, options]() {
-            Status result;
-            Type *resource = resourceManager.load<Type>(file, &result, options);
-            if(onLoaded!=nullptr)
-                onLoaded(resource, result);
-            return result;
-        });
-    }
-};
-
 class TestLevel:public Level {
 private:
     float rotation = 0;
-    ResourceLoader *loader;
     Application &app;
 
 public:
@@ -127,15 +73,10 @@ public:
 
         File sceneFile("test.scene");
         if(sceneFile.Exists) {
-            loader = ghnew ResourceLoader(app.ResourceManager);
-            loader->start();
-            loader->load<Ghurund::Scene>("test.scene", [&](Ghurund::Scene *resource, Status result) {
+            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *resource, Status result) {
                 setScene(resource);
             });
-            loader->finish();
         } else {
-            app.ResourceManager.start();
-
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
@@ -145,18 +86,18 @@ public:
             Mesh *mesh;
             File file("obj/lamborghini/Lamborghini_Aventador.mesh");
             if(file.Exists) {
-                mesh = app.ResourceManager.load<Mesh>(file);
+                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
             } else {
-                mesh = app.ResourceManager.load<Mesh>("obj/lamborghini/Lamborghini_Aventador.obj");
+                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "obj/lamborghini/Lamborghini_Aventador.obj");
                 mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
             }
 
-            Image *image = app.ResourceManager.load<Image>("obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
             Texture *texture = ghnew Texture();
-            texture->init(app.ResourceManager, *image);
+            texture->init(app.ResourceContext, *image);
             image->release();
 
-            Shader *shader = app.ResourceManager.load<Shader>("../shaders/basic.hlsl");
+            Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
             Material *material = new Material(shader);
             material->Textures.set("diffuse", texture);
             texture->addReference();
@@ -177,8 +118,6 @@ public:
                 Logger::log(_T("failed to save scene\n"));
 
             scene->release();
-
-            app.ResourceManager.finish();
         }
     }
 
@@ -206,6 +145,7 @@ public:
 
     void uninit() {
         ResourceManager.clear();
+        LevelManager.setLevel(nullptr);
         delete testLevel;
     }
 };

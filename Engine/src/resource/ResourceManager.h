@@ -20,17 +20,12 @@ namespace Ghurund {
         TypeMap<String> resources;
         CriticalSection section;
         ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
-
-        Graphics &graphics;
-        Audio &audio;
-        CommandList commandList;
-        IWICImagingFactory *wicFactory;
-        ParameterManager &parameterManager;
+        WorkerThread loadingThread;
 
         void onFileChanged(const String &fileName, DWORD action);
 
-        template<class Type> Status loadInternal(Type &resource, const String &fileName, LoadOption options) {
-            Status result = resource.load(*this, fileName, nullptr, options);
+        template<class Type> Status loadInternal(Type &resource, ResourceContext &context, const String &fileName, LoadOption options) {
+            Status result = resource.load(*this, context, fileName, nullptr, options);
             if(result!=Status::OK) {
                 Logger::log(_T("failed to load file: %s\n"), fileName.getData());
                 return result;
@@ -47,42 +42,80 @@ namespace Ghurund {
 
     public:
 
-        ResourceManager(Ghurund::Graphics &graphics, Ghurund::Audio &audio, Ghurund::ParameterManager &parameterManager);
+        ResourceManager();
 
         ~ResourceManager();
 
-        template<class Type> Type *load(const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            if(fileName.Length==0)
+        template<class Type> Type *load(ResourceContext &context, const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(fileName.Length==0) {
+                Logger::log(_T("file name cannot be empty\n"));
                 return nullptr;
+            }
             Type *resource = get<Type>(fileName);
             if(resource==nullptr)
                 resource = ghnew Type();
-            Status loadResult = loadInternal(*resource, fileName, options);
+            Status loadResult = loadInternal(*resource, context, fileName, options);
             if(result!=nullptr)
                 *result = loadResult;
             return resource;
         }
 
-        template<class Type> Type *load(File &file, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            if(file.Name==nullptr)
+        template<class Type> void loadAsync(ResourceContext &context, const String &fileName, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(fileName.Length==0&&onLoaded!=nullptr) {
+                Logger::log(_T("file name cannot be empty\n"));
+                onLoaded(nullptr, Status::INV_PARAM);
+                return;
+            }
+            loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
+                Type *resource = get<Type>(fileName);
+                if(resource==nullptr)
+                    resource = ghnew Type();
+                Status result = loadInternal(*resource, context, fileName, options);
+                if(onLoaded!=nullptr)
+                    onLoaded(resource, result);
+                return result;
+            });
+        }
+
+        template<class Type> Type *load(ResourceContext &context, File &file, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(file.Name==nullptr) {
+                Logger::log(_T("file name cannot be empty\n"));
                 return nullptr;
+            }
             Type *resource = get<Type>(file.Name);
             if(resource==nullptr)
                 resource = ghnew Type();
-            Status loadResult = loadInternal(*resource, file.Name, options);
+            Status loadResult = loadInternal(*resource, context, file.Name, options);
             if(result!=nullptr)
                 *result = loadResult;
             return resource;
         }
 
-        template<class Type = Resource> Type *load(MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type *loadAsync(ResourceContext &context, File &file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            if(file.Name==nullptr&&onLoaded!=nullptr) {
+                Logger::log(_T("file name cannot be empty\n"));
+                onLoaded(nullptr, Status::INV_PARAM);
+                return;
+            }
+            loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
+                Type *resource = get<Type>(file.Name);
+                if(resource==nullptr)
+                    resource = ghnew Type();
+                Status result = loadInternal(*resource, context, file.Name, options);
+                if(onLoaded!=nullptr)
+                    onLoaded(resource, result);
+                return result;
+            });
+        }
+
+        template<class Type = Resource> Type *load(ResourceContext &context, MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Type *resource = (Type*)resourceFactory->makeResource(stream);
             Status loadResult;
             if(stream.readBoolean()) {
-                loadResult = resource->load(*this, stream, options);
+                loadResult = resource->load(*this, context, stream, options);
             } else {
                 UnicodeString fileName = stream.readUnicode();
-                loadResult = loadInternal(*resource, fileName, options);
+                loadResult = loadInternal(*resource, context, fileName, options);
             }
             if(result!=nullptr)
                 *result = loadResult;
@@ -139,45 +172,5 @@ namespace Ghurund {
         }
 
         void clear() {}
-
-        Graphics &getGraphics() {
-            return graphics;
-        }
-
-        __declspec(property(get = getGraphics)) Graphics &Graphics;
-
-        Audio &getAudio() {
-            return audio;
-        }
-
-        __declspec(property(get = getAudio)) Audio &Audio;
-
-        CommandList &getCommandList() {
-            return commandList;
-        }
-
-        __declspec(property(get = getCommandList)) CommandList &CommandList;
-
-        IWICImagingFactory *getImageFactory() {
-            return wicFactory;
-        }
-
-        __declspec(property(get = getImageFactory)) IWICImagingFactory *ImageFactory;
-
-        ParameterManager &getParameterManager() {
-            return parameterManager;
-        }
-
-        __declspec(property(get = getParameterManager)) ParameterManager &ParameterManager;
-
-        void start() {
-            if(commandList.Closed)
-                commandList.reset();
-        }
-
-        void finish() {
-            if(!commandList.Closed)
-                commandList.finish();
-        }
     };
 }

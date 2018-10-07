@@ -6,32 +6,24 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new(Graphics *graphics, Audio *audio, ParameterManager *parameterManager) {
-    return new ResourceManager(*graphics, *audio, *parameterManager);
+extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new() {
+    return new ResourceManager();
 }
 
-template<class Type> void load(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
+template<class Type> void load(ResourceManager *_this, ResourceContext &context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
 /*    _this->load<Type>(fileName, [loadCallback](std::shared_ptr<Type> &resource, Status status) {
         loadCallback(status);
     });*/
 }
 
-extern "C" __declspec(dllexport) void ResourceManager_loadImage(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
-    load<Image>(_this, fileName, loadCallback);
+extern "C" __declspec(dllexport) void ResourceManager_loadImage(ResourceManager *_this, ResourceContext *context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
+    load<Image>(_this, *context, fileName, loadCallback);
 }
 
-extern "C" __declspec(dllexport) void ResourceManager_loadTexture(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
-    load<Texture>(_this, fileName, loadCallback);
+extern "C" __declspec(dllexport) void ResourceManager_loadTexture(ResourceManager *_this, ResourceContext *context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
+    load<Texture>(_this, *context, fileName, loadCallback);
 }
 
-extern "C" __declspec(dllexport) void ResourceManager_loadModel(ResourceManager *_this, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
-    load<Model>(_this, fileName, loadCallback);
-}
-
-extern "C" __declspec(dllexport) void ResourceManager_startLoading(ResourceManager *_this) {
-    _this->start();
-}
-
-extern "C" __declspec(dllexport) void ResourceManager_finishLoading(ResourceManager *_this) {
-    _this->finish();
+extern "C" __declspec(dllexport) void ResourceManager_loadModel(ResourceManager *_this, ResourceContext *context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
+    load<Model>(_this, *context, fileName, loadCallback);
 }

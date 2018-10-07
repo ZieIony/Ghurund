@@ -47,13 +47,19 @@ namespace Ghurund.Editor {
             kernel.Bind<SceneExplorerPanel>().ToSelf().InSingletonScope();
             kernel.Bind<ISceneExplorerPanel>().ToMethod(context => context.Kernel.Get<SceneExplorerPanel>()).InSingletonScope();
 
+            kernel.Bind<LogPanel>().ToSelf().InSingletonScope();
+            kernel.Bind<ILogPanel>().ToMethod(context => context.Kernel.Get<LogPanel>()).InSingletonScope();
+
 
             kernel.Bind<Graphics>().ToSelf().InSingletonScope();
             kernel.Bind<Audio>().ToSelf().InSingletonScope();
             kernel.Bind<ParameterManager>().ToSelf().InSingletonScope();
             kernel.Bind<ResourceManager>().ToSelf().InSingletonScope();
+            kernel.Bind<ResourceContext>().ToMethod(context => {
+                return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>());
+            }).InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {
-                return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME)??new EditorSettings();
+                return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME) ?? new EditorSettings();
             }).InSingletonScope();
         }
 

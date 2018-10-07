@@ -2,13 +2,13 @@
 #include "RenderingBatch.h"
 
 namespace Ghurund {
-    Status Model::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Model::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         Status result;
-        mesh = (Ghurund::Mesh*)resourceManager.load(stream, &result, options);
+        mesh = (Ghurund::Mesh*)resourceManager.load(context, stream, &result, options);
         if(result!=Status::OK)
             return result;
 
-        material = (Ghurund::Material*)resourceManager.load(stream, &result, options);
+        material = (Ghurund::Material*)resourceManager.load(context, stream, &result, options);
         return result;
     }
 

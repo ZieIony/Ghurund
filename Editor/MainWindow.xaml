@@ -29,6 +29,7 @@
 				<MenuItem Header="P_arameters" Click="Parameters_Click"/>
 				<MenuItem Header="_Resource Manager" Click="ResourceManager_Click"/>
 				<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click"/>
+				<MenuItem Header="_Logs" Click="LogPanel_Click"/>
 			</MenuItem>
 		</Menu>
 		<StatusBar DockPanel.Dock="Bottom">

@@ -1,7 +1,7 @@
 #include "Mesh.h"
 
 namespace Ghurund {
-    Status Mesh::loadObj(ResourceManager &resourceManager, MemoryInputStream &stream) {
+    Status Mesh::loadObj(ResourceContext &context, MemoryInputStream &stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
@@ -54,10 +54,10 @@ namespace Ghurund {
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, triangleIndices.begin(), indexCount*sizeof(vindex_t));
 
-        return init(resourceManager.getGraphics(), resourceManager.getCommandList());
+        return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::loadMesh(ResourceManager & resourceManager, MemoryInputStream &stream) {
+    Status Mesh::loadMesh(ResourceContext &context, MemoryInputStream &stream) {
         Status result = readHeader(stream);
         if(result!=Status::OK)
             return result;
@@ -71,7 +71,7 @@ namespace Ghurund {
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, stream.readBytes(indexCount*sizeof(vindex_t)), indexCount*sizeof(vindex_t));
 
-        return init(resourceManager.Graphics, resourceManager.CommandList);
+        return init(context.Graphics, context.CommandList);
     }
 
     Status Mesh::saveInternal(ResourceManager &resourceManager, MemoryOutputStream & stream, SaveOption options) const {
@@ -89,6 +89,9 @@ namespace Ghurund {
     }
 
     Status Mesh::init(Graphics &graphics, CommandList &commandList) {
+        if(commandList.Closed)
+            commandList.reset();
+
         {
             unsigned int vertexBufferSize = vertexSize*vertexCount;
 
@@ -170,6 +173,8 @@ namespace Ghurund {
             indexBufferView.Format = DXGI_FORMAT_R32_UINT;
             indexBufferView.SizeInBytes = indexBufferSize;
         }
+
+        commandList.finish();
 
         return Status::OK;
     }

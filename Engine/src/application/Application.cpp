@@ -12,8 +12,8 @@ namespace Ghurund {
         graphics->init();
         audio = ghnew Ghurund::Audio();
         audio->init();
-        resourceManager = ghnew Ghurund::ResourceManager(*graphics, *audio, *parameterManager);
-        resourceContext = ghnew Ghurund::ResourceContext<true>(*resourceManager, *graphics, *audio, *parameterManager);
+        resourceManager = ghnew Ghurund::ResourceManager();
+        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);

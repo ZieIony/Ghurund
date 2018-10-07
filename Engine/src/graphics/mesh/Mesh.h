@@ -39,21 +39,21 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> vertexUploadHeap;
         ComPtr<ID3D12Resource> indexUploadHeap;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption option) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption option) {
             if(!FileName.Empty) {
                 if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
-                    return loadObj(resourceManager, stream);
+                    return loadObj(context, stream);
                 } else if(FileName.endsWith(ResourceFormat::MESH.getExtension())) {
-                    return loadMesh(resourceManager, stream);
+                    return loadMesh(context, stream);
                 }
             }
 
             size_t bytesRead = stream.BytesRead;
-            Status result = loadObj(resourceManager, stream);
+            Status result = loadObj(context, stream);
             if(result!=Status::OK) {
                 stream.reset();
                 stream.skip(bytesRead);
-                result = loadMesh(resourceManager, stream);
+                result = loadMesh(context, stream);
                 if(result!=Status::OK)
                     return Status::UNKNOWN_FORMAT;
             }
@@ -61,8 +61,8 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        Status loadObj(ResourceManager &resourceManager, MemoryInputStream &stream);
-        Status loadMesh(ResourceManager &resourceManager, MemoryInputStream &stream);
+        Status loadObj(ResourceContext &context, MemoryInputStream &stream);
+        Status loadMesh(ResourceContext &context, MemoryInputStream &stream);
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 

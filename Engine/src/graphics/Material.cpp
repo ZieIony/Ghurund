@@ -3,16 +3,16 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Material::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Material::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         shader = ghnew Ghurund::Shader();
-        Status result = shader->load(resourceManager, stream.readUnicode(), nullptr, options);
+        Status result = shader->load(resourceManager, context, stream.readUnicode(), nullptr, options);
         if(result!=Status::OK)
             return result;
 
         size_t textureCount = stream.read<size_t>();
         for(size_t i = 0; i<textureCount; i++) {
             ASCIIString name = stream.readASCII();
-            Texture *texture = (Texture*)resourceManager.load(stream, &result, options);
+            Texture *texture = (Texture*)resourceManager.load(context, stream, &result, options);
             if(result!=Status::OK)
                 return result;
             textures.set(name, texture);

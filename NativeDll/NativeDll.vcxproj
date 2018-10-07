@@ -149,6 +149,7 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\collection\Array.cpp" />
+    <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
@@ -174,6 +175,7 @@
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\collection\List.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
+    <ClCompile Include="src\resource\ResourceContext.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -6,7 +6,7 @@
 namespace Ghurund {
     class CubeMesh: public Mesh {
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
             Vertex triangleVertices[] = {
                 {{-0.5f,  0.5f, -0.5f}, {0,0,-1}, {0,0}},
                 {{ 0.5f, -0.5f, -0.5f}, {0,0,-1}, {1,1}},
@@ -76,7 +76,7 @@ namespace Ghurund {
             };
             indexCount = 36;
 
-            return Mesh::init(resourceManager.getGraphics(), resourceManager.getCommandList());
+            return Mesh::init(context.Graphics, context.CommandList);
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {

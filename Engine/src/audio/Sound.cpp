@@ -2,12 +2,12 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Sound::loadInternal(ResourceManager &resourceManager, MemoryInputStream & stream, LoadOption options) {
-        Status result = loadData(resourceManager, stream, options);
+    Status Sound::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream & stream, LoadOption options) {
+        Status result = loadData(context, stream, options);
         if(result!=Status::OK)
             return result;
 
-        if(FAILED(resourceManager.Audio.Device->CreateSourceVoice(&sourceVoice, waveFormat)))
+        if(FAILED(context.Audio.Device->CreateSourceVoice(&sourceVoice, waveFormat)))
             return Logger::log(Status::CALL_FAIL, _T("Unable to create source voice\n"));
 
         memset(&audioBuffer, 0, sizeof(XAUDIO2_BUFFER));
@@ -82,8 +82,8 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Sound::loadData(ResourceManager &resourceManager, MemoryInputStream & stream, LoadOption options) {
-        Audio &audio = resourceManager.Audio;
+    Status Sound::loadData(ResourceContext &context, MemoryInputStream & stream, LoadOption options) {
+        Audio &audio = context.Audio;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
         ComPtr<IMFByteStream> spMFByteStream = nullptr;

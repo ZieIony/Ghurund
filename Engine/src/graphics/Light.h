@@ -8,7 +8,7 @@ namespace Ghurund {
         XMFLOAT3 target;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
             return Status::NOT_IMPLEMENTED;
         }
 

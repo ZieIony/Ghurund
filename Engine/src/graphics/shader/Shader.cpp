@@ -188,7 +188,7 @@ namespace Ghurund {
         reflector->Release();
     }
 
-    Status Shader::loadShd(ResourceManager &resourceManager, MemoryInputStream &stream) {
+    Status Shader::loadShd(ResourceContext &context, MemoryInputStream &stream) {
         Status result;
 
         if(stream.readBoolean()) {
@@ -200,8 +200,8 @@ namespace Ghurund {
                     programs[i] = ghnew ShaderProgram(ShaderType::values[i], stream.readBytes(length), length, entryPoint, target);
                 }
             }
-            Graphics &graphics = resourceManager.Graphics;
-            initConstants(graphics, resourceManager.ParameterManager);
+            Graphics &graphics = context.Graphics;
+            initConstants(graphics, context.ParameterManager);
             if((result = makeRootSignature(graphics))!=Status::OK)
                 return result;
             if((result = makePipelineState(graphics))!=Status::OK)
@@ -214,28 +214,28 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Shader::loadHlsl(ResourceManager &resourceManager, MemoryInputStream &stream) {
+    Status Shader::loadHlsl(ResourceContext &context, MemoryInputStream &stream) {
         ASCIIString sourceCode((const char *)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
 
-        return build(resourceManager);
+        return build(context);
     }
 
-    Status Shader::loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) {
+    Status Shader::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
-                return loadShd(resourceManager, stream);
+                return loadShd(context, stream);
             } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
-                return loadHlsl(resourceManager, stream);
+                return loadHlsl(context, stream);
             }
         }
 
         size_t bytesRead = stream.BytesRead;
-        Status result = loadShd(resourceManager, stream);
+        Status result = loadShd(context, stream);
         if(result!=Status::OK) {
             stream.reset();
             stream.skip(bytesRead);
-            result = loadHlsl(resourceManager, stream);
+            result = loadHlsl(context, stream);
             if(result!=Status::OK)
                 return Status::UNKNOWN_FORMAT;
         }

@@ -13,7 +13,7 @@ namespace Ghurund {
         XMFLOAT4X4 world;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream) {
             memcpy(&position, stream.readBytes(sizeof(position)), sizeof(position));
             memcpy(&rotation, stream.readBytes(sizeof(rotation)), sizeof(rotation));
             memcpy(&scale, stream.readBytes(sizeof(scale)), sizeof(scale));

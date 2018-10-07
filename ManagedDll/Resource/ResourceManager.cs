@@ -5,10 +5,10 @@ namespace Ghurund.Managed.Resource {
     public class ResourceManager : NativeClass {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ResourceManager_new(IntPtr graphics, IntPtr audio, IntPtr parameterManager);
+        private static extern IntPtr ResourceManager_new();
 
-        public ResourceManager(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager) {
-            NativePtr = ResourceManager_new(graphics.NativePtr, audio.NativePtr, parameterManager.NativePtr);
+        public ResourceManager() {
+            NativePtr = ResourceManager_new();
         }
 
 
@@ -17,45 +17,29 @@ namespace Ghurund.Managed.Resource {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceManager_loadImage(IntPtr resourceManager, string fileName,
+        private static extern void ResourceManager_loadImage(IntPtr resourceManager, IntPtr context, string fileName,
             [MarshalAs(UnmanagedType.FunctionPtr)] ResourceLoadedCallback callback);
 
-        public void LoadImage(string fileName, ResourceLoadedCallback callback) {
-            ResourceManager_loadImage(NativePtr, fileName, callback);
+        public void LoadImage(ResourceContext context, string fileName, ResourceLoadedCallback callback) {
+            ResourceManager_loadImage(NativePtr, context.NativePtr, fileName, callback);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceManager_loadTexture(IntPtr resourceManager, string fileName,
+        private static extern void ResourceManager_loadTexture(IntPtr resourceManager, IntPtr context, string fileName,
             [MarshalAs(UnmanagedType.FunctionPtr)] ResourceLoadedCallback callback);
 
-        public void LoadTexture(string fileName, ResourceLoadedCallback callback) {
-            ResourceManager_loadTexture(NativePtr, fileName, callback);
+        public void LoadTexture(ResourceContext context, string fileName, ResourceLoadedCallback callback) {
+            ResourceManager_loadTexture(NativePtr, context.NativePtr, fileName, callback);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceManager_loadModel(IntPtr resourceManager, string fileName,
+        private static extern void ResourceManager_loadModel(IntPtr resourceManager, IntPtr context, string fileName,
             [MarshalAs(UnmanagedType.FunctionPtr)] ResourceLoadedCallback callback);
 
-        public void LoadModel(string fileName, ResourceLoadedCallback callback) {
-            ResourceManager_loadModel(NativePtr, fileName, callback);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ResourceManager_startLoading(IntPtr _this);
-
-        public void StartLoading() {
-            ResourceManager_startLoading(NativePtr);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ResourceManager_finishLoading(IntPtr _this);
-
-        public void FinishLoading() {
-            ResourceManager_finishLoading(NativePtr);
+        public void LoadModel(ResourceContext context, string fileName, ResourceLoadedCallback callback) {
+            ResourceManager_loadModel(NativePtr, context.NativePtr, fileName, callback);
         }
     }
 }

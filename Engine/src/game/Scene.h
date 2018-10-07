@@ -13,11 +13,11 @@ namespace Ghurund {
     protected:
         List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override {
             size_t size = stream.read<size_t>();
             for(size_t i = 0; i<size; i++) {
                 Status result;
-                Resource *resource = resourceManager.load(stream, &result);
+                Resource *resource = resourceManager.load(context, stream, &result, options);
                 if(resource==nullptr)
                     return result;
                 entities.add((Entity*)resource);
@@ -28,7 +28,7 @@ namespace Ghurund {
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
             stream.write<size_t>(entities.Size);
             for(size_t i = 0; i<entities.Size; i++) {
-                Status result = resourceManager.save(*entities[i], stream);
+                Status result = resourceManager.save(*entities[i], stream, options);
                 if(result!=Status::OK)
                     return result;
             }

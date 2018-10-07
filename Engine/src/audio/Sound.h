@@ -16,10 +16,10 @@ namespace Ghurund {
 
         Status setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
         Status readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
-        Status loadData(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options);
+        Status loadData(ResourceContext &context, MemoryInputStream &stream, LoadOption options);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
             return Status::NOT_IMPLEMENTED;

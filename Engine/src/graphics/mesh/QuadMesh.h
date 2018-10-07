@@ -6,7 +6,7 @@
 namespace Ghurund {
     class QuadMesh: public Mesh {
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, const void *data, unsigned long size) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
             ScreenVertex quadVertices[] = {
                 {{0.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},
                 {{0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},
@@ -29,7 +29,7 @@ namespace Ghurund {
 
             indexCount = 6;
 
-            return Mesh::init(resourceManager.getGraphics(), resourceManager.getCommandList());
+            return Mesh::init(context.Graphics, context.CommandList);
         }
     };
 }

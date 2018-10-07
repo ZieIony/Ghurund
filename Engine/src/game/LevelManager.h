@@ -63,7 +63,8 @@ namespace Ghurund {
         void setLevel(Level *level) {
             if(this->level!=nullptr)
                 this->level->uninit();
-            level->init();
+            if(level!=nullptr)
+                level->init();
             this->level = level;
         }
 
