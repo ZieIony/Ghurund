@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
-    <ClInclude Include="src\application\ApplicationWindowProc.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\Window.h" />
     <ClInclude Include="src\application\WindowProc.h" />
@@ -83,7 +82,6 @@
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\graphics\BoundingBox.h" />
     <ClInclude Include="src\game\Entity.h" />
-    <ClInclude Include="src\game\Game.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\game\ParameterProvider.h" />
     <ClInclude Include="src\game\Scene.h" />

@@ -5,7 +5,6 @@
 #include <process.h>
 #include <thread>
 #include "application/Application.h"
-#include "application/ApplicationWindowProc.h"
 #include "resource/TextResource.h"
 #include "game/Scene.h"
 #include "collection/TypeMap.h"
@@ -20,43 +19,6 @@ using namespace DirectX;
 
 #pragma comment(lib, "GhurundEngine.lib")
 
-namespace Ghurund {
-    class Proc:public ApplicationWindowProc {
-    private:
-        std::shared_ptr<TextResource> textRes;
-        static const unsigned int KEY_C = 0x43;
-
-    public:
-        Proc(Ghurund::Application &app):ApplicationWindowProc(app) {}
-
-        bool onMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
-            if(msg==WM_LBUTTONUP) {
-                Logger::log(_T("%s\n"), textRes->getText().getData());
-                return true;
-            }
-            if(msg==WM_RBUTTONUP) {
-                /*Application.ResourceManager.load<TextResource>(String(_T("test.txt")), [&](std::shared_ptr<TextResource> &res, Status result) {
-                    Logger::log(_T("loaded file: %s, result: %i\n"), res->FileName.getData(), result);
-                    textRes = res;
-                });*/
-                return true;
-            }
-            if(msg==WM_KEYUP&&wParam==KEY_C) {
-                /*        class MyListener:public NetworkListener {
-                void onDisconnected() {
-                PostQuitMessage(0);
-                }
-                };
-                client.setNetworkListener(ghnew MyListener());*/
-
-                Application.Client.connect(SocketProtocol::UDP, 59336, _T("127.0.0.1"));
-                Application.Client.send("test", strlen("test")+1);
-            }
-            return ApplicationWindowProc::onMessage(msg, wParam, lParam);
-        }
-    };
-}
-
 class TestLevel:public Level {
 private:
     float rotation = 0;
@@ -64,6 +26,14 @@ private:
 
 public:
     TestLevel(Application &app):app(app) {}
+
+    virtual bool onKeyEvent(KeyEvent &event) override {
+        if(event.getAction()==KeyAction::DOWN&&event.getKey()==VK_ESCAPE) {
+            PostQuitMessage(0);
+            return true;
+        }
+        return false;
+    }
 
     void init() {
         Ghurund::Camera *camera = ghnew Ghurund::Camera();
@@ -124,6 +94,7 @@ public:
     void update() {
         rotation += 0.005f;
         camera->setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+        camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
     void uninit() {
@@ -158,10 +129,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
     {
         TestApplication application;
-        Proc proc(application);
         Settings settings;
         settings.parse(cmdLine);
-        application.run(&settings, &proc);
+        application.run(&settings);
     }
 
     Logger::uninit();

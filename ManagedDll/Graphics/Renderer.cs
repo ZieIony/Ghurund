@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Application;
 
 namespace Ghurund.Managed.Graphics {
     public class Renderer : NativeClass {
@@ -13,7 +14,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_init(IntPtr nativeRenderer, IntPtr graphics, IntPtr window);
 
-        public void init(Graphics graphics, Window window) {
+        public void Init(Graphics graphics, Window window) {
             Renderer_init(NativePtr, graphics.NativePtr, window.NativePtr);
         }
 
@@ -21,7 +22,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_startFrame(IntPtr nativeRenderer);
 
-        public CommandList startFrame() {
+        public CommandList StartFrame() {
             return new CommandList(Renderer_startFrame(NativePtr));
         }
 
@@ -29,7 +30,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_finishFrame(IntPtr nativeRenderer);
 
-        public void finishFrame() {
+        public void FinishFrame() {
             Renderer_finishFrame(NativePtr);
         }
 
@@ -37,8 +38,16 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_uninit(IntPtr nativeRenderer);
 
-        public void uninit() {
+        public void Uninit() {
             Renderer_uninit(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_resize(IntPtr nativeRenderer, uint width, uint height);
+
+        public void Resize(uint width, uint height) {
+            Renderer_resize(NativePtr, width, height);
         }
     }
 }

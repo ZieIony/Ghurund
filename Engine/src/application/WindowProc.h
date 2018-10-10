@@ -27,7 +27,7 @@ namespace Ghurund {
                 functionQueue->take()();
                 return true;
             }
-            return onMessage(msg, wParam, lParam);
+            return false;// onMessage(msg, wParam, lParam);
         }
 
     public:
@@ -49,28 +49,6 @@ namespace Ghurund {
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue &FunctionQueue;
 
-        virtual void onCreate() {}
-
-        virtual void onDestroy() {}
-
-        virtual void onKey(KeyAction action, WPARAM key) {}
-
-        virtual void onMouseButton(MouseButton button, MouseAction action) {}
-
-        virtual void onMouseMove(int x, int y) {}
-
-        virtual void onMouseWheel(MouseWheel wheel, short value) {}
-
-        virtual void onSizeChange() {}
-
-        virtual bool onMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
-            return false;
-        }
-
-        /**
-        * Domyslna funkcja obslugi wiadomosci dla aplikacji
-        * okienkowej w systemie windows
-        */
         static LRESULT CALLBACK messageHandler(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam) {
             WindowProc *windowProc = (WindowProc*)GetWindowLongPtr(handle, GWLP_USERDATA);
 
@@ -79,34 +57,34 @@ namespace Ghurund {
                 windowProc = (WindowProc*)createStruct->lpCreateParams;
                 SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)windowProc);
                 windowProc->init(handle);
-                windowProc->onCreate();
+           /*     windowProc->onCreate();
             } else if(msg==WM_KEYDOWN) {
-                windowProc->onKey(KeyAction::DOWN, wParam);
+                windowProc->onKeyDown(wParam);
             } else if(msg==WM_KEYUP) {
-                windowProc->onKey(KeyAction::UP, wParam);
+                windowProc->onKeyUp(wParam);
             } else if(msg==WM_LBUTTONDOWN) {
-                windowProc->onMouseButton(MouseButton::LEFT, MouseAction::DOWN);
+                windowProc->onMouseDown(MouseButton::LEFT);
             } else if(msg==WM_LBUTTONUP) {
-                windowProc->onMouseButton(MouseButton::LEFT, MouseAction::UP);
+                windowProc->onMouseUp(MouseButton::LEFT);
             } else if(msg==WM_MBUTTONDOWN) {
-                windowProc->onMouseButton(MouseButton::MIDDLE, MouseAction::DOWN);
+                windowProc->onMouseDown(MouseButton::MIDDLE);
             } else if(msg==WM_MBUTTONUP) {
-                windowProc->onMouseButton(MouseButton::MIDDLE, MouseAction::UP);
+                windowProc->onMouseUp(MouseButton::MIDDLE);
             } else if(msg==WM_RBUTTONDOWN) {
-                windowProc->onMouseButton(MouseButton::RIGHT, MouseAction::DOWN);
+                windowProc->onMouseDown(MouseButton::RIGHT);
             } else if(msg==WM_RBUTTONUP) {
-                windowProc->onMouseButton(MouseButton::RIGHT, MouseAction::UP);
+                windowProc->onMouseUp(MouseButton::RIGHT);
             } else if(msg==WM_MOUSEMOVE) {
                 windowProc->onMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
             } else if(msg==WM_MOUSEWHEEL) {
                 windowProc->onMouseWheel(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam));
             } else if(msg==WM_MOUSEHWHEEL) {
-                windowProc->onMouseWheel(MouseWheel::HORIZONTAL, wParam);
+                windowProc->onMouseWheel(MouseWheel::HORIZONTAL, wParam);   // GET_WHEEL_DELTA_WPARAM(wParam) ?
             } else if(msg==WM_SIZE) {
                 windowProc->onSizeChange();
             } else if(msg==WM_DESTROY) {
                 windowProc->onDestroy();
-                PostQuitMessage(0);
+                PostQuitMessage(0);*/
             } else if(windowProc==nullptr||!windowProc->handleMessage(msg, wParam, lParam)) {
                 return DefWindowProc(handle, msg, wParam, lParam);
             }

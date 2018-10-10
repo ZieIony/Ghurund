@@ -14,7 +14,6 @@
 #include "resource/ResourceManager.h"
 #include "input/Input.h"
 #include "game/ParameterManager.h"
-#include "game/Game.h"
 #include "game/LevelManager.h"
 #include "audio/Audio.h"
 #include "resource/ResourceContext.h"
@@ -36,7 +35,6 @@ namespace Ghurund {
         Timer timer;
         Input input;
 
-        Game game;
         Renderer renderer;
         LevelManager levelManager;
 
@@ -67,6 +65,26 @@ namespace Ghurund {
             if(currentFrame)
                 currentFrame->server(socket, buffer, size);
         };*/
+
+        virtual void onCreated() {}
+
+        virtual void onDestroy() {}
+
+        virtual bool onMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
+            return false;
+        }
+
+        virtual void onSizeChanged() {
+            Window.updateSize();
+            Renderer.resize(Window.Width, Window.Height);
+            Window.fillParameters();
+        }
+
+        /*
+        if(event.getAction()==KeyAction::DOWN&&event.getKey()==VK_ESCAPE) {
+            PostQuitMessage(0);
+        }*/
+
 
     public:
 

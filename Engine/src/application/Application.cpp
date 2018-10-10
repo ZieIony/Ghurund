@@ -1,7 +1,6 @@
 #include "Application.h"
 #include <time.h>
 #include "core/FunctionQueue.h"
-#include "ApplicationWindowProc.h"
 
 namespace Ghurund {
     void Application::initInternal() {
@@ -59,21 +58,21 @@ namespace Ghurund {
         } else if(msg.message==WM_LBUTTONDOWN) {
             input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::LEFT, msg.time));
         } else if(msg.message==WM_LBUTTONUP) {
-            //windowProc->onMouseButton(MouseButton::LEFT, MouseAction::UP);
+            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::LEFT, msg.time));
         } else if(msg.message==WM_MBUTTONDOWN) {
-            //windowProc->onMouseButton(MouseButton::MIDDLE, MouseAction::DOWN);
+            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::MIDDLE, msg.time));
         } else if(msg.message==WM_MBUTTONUP) {
-            //windowProc->onMouseButton(MouseButton::MIDDLE, MouseAction::UP);
+            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::MIDDLE, msg.time));
         } else if(msg.message==WM_RBUTTONDOWN) {
-            //windowProc->onMouseButton(MouseButton::RIGHT, MouseAction::DOWN);
+            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::RIGHT, msg.time));
         } else if(msg.message==WM_RBUTTONUP) {
-            //windowProc->onMouseButton(MouseButton::RIGHT, MouseAction::UP);
+            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::RIGHT, msg.time));
         } else if(msg.message==WM_MOUSEMOVE) {
-            //windowProc->onMouseMove(GET_X_LPARAM(msg.lParam), GET_Y_LPARAM(msg.lParam));
+            input.dispatchMouseMotionEvent(MouseMotionEvent(GET_X_LPARAM(msg.lParam), GET_Y_LPARAM(msg.lParam), msg.time));
         } else if(msg.message==WM_MOUSEWHEEL) {
-            //windowProc->onMouseWheel(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(msg.wParam));
+            input.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(msg.wParam), msg.time));
         } else if(msg.message==WM_MOUSEHWHEEL) {
-            //windowProc->onMouseWheel(MouseWheel::HORIZONTAL, msg.wParam);
+            input.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(msg.wParam), msg.time));
         }
     }
 
@@ -81,7 +80,7 @@ namespace Ghurund {
         if(settings)
             this->settings = *settings;
         if(proc == nullptr) {
-            windowProc = ghnew ApplicationWindowProc(*this);
+            windowProc = ghnew WindowProc();
         } else {
             windowProc = proc;
         }
@@ -115,14 +114,12 @@ namespace Ghurund {
         timer.tick();
         ticks_t currentTicks = timer.CurrentTicks;
 
-        input.dispatchEvents(game);
+        input.dispatchEvents(levelManager);
 
         update();
         //while()
             //game.Update(deltaTime);
         levelManager.update();
-
-        //input.dispatchEvents(layout);
 
         input.clearEvents();
 

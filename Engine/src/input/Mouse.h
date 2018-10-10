@@ -41,9 +41,6 @@ namespace Ghurund{
             this->action = action;
             this->button = button;
         }
-
-        ~MouseButtonEvent() {
-        }
     };
 
     class MouseMotionEvent:public MouseEvent {
@@ -55,17 +52,17 @@ namespace Ghurund{
             this->x = x;
             this->y = y;
         }
-
-        ~MouseMotionEvent() {
-        }
     };
 
     class MouseWheelEvent:public MouseEvent {
-    public:
-        MouseWheelEvent(DWORD time):MouseEvent(time) {
-        }
+    private:
+        MouseWheel wheel;
+        int delta;
 
-        ~MouseWheelEvent() {
+    public:
+        MouseWheelEvent(MouseWheel wheel, int delta, DWORD time):MouseEvent(time) {
+            this->wheel = wheel;
+            this->delta = delta;
         }
     };
     

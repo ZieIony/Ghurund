@@ -8,13 +8,21 @@
 namespace Ghurund {
     class EventConsumer {
     public:
-        virtual bool onKeyEvent(KeyEvent &event) = 0;
+        virtual bool onKeyEvent(KeyEvent &event) {
+            return false;
+        }
 
-        virtual bool onMouseButtonEvent(MouseButtonEvent &event) = 0;
+        virtual bool onMouseButtonEvent(MouseButtonEvent &event) {
+            return false;
+        }
 
-        virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) = 0;
+        virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) {
+            return false;
+        }
 
-        virtual bool onMouseWheelEvent(MouseWheelEvent &event) = 0;
+        virtual bool onMouseWheelEvent(MouseWheelEvent &event) {
+            return false;
+        }
 
         virtual bool dispatchKeyEvent(KeyEvent &event) {
             return onKeyEvent(event);

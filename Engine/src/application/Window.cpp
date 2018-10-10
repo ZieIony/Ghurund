@@ -6,12 +6,7 @@ namespace Ghurund {
     void Window::init(HWND handle) {
         this->handle = handle;
 
-        RECT windowRect;
-        GetClientRect(handle, &windowRect);
-        width = windowRect.right - windowRect.left;
-        height = windowRect.bottom - windowRect.top;
-        viewport = D3D12_VIEWPORT{0.0f, 0.0f, static_cast<float>(width), static_cast<float>(height)};
-        scissorRect = D3D12_RECT{0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
+        updateSize();
     }
 
     void Window::init(Settings &settings, WindowProc &windowProc) {

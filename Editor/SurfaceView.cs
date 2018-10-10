@@ -1,5 +1,6 @@
-﻿using System.Windows.Forms;
-using Ghurund.Managed;
+﻿using System;
+using System.Windows.Forms;
+using Ghurund.Managed.Application;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ninject;
@@ -24,7 +25,7 @@ namespace Ghurund.Editor {
                 EditorKernel.Instance.Inject(this);
 
                 camera = new Camera();
-                camera.initParameters(ParameterManager);
+                camera.InitParameters(ParameterManager);
                 level = new Level {
                     Camera = camera
                 };
@@ -32,15 +33,16 @@ namespace Ghurund.Editor {
                     Level = level
                 };
                 window = new Window();
-                window.init(Handle);
+                window.Init(Handle);
+                window.InitParameters(ParameterManager);
                 renderer = new Renderer();
-                renderer.init(Graphics, window);
+                renderer.Init(Graphics, window);
             }
         }
 
         ~SurfaceView() {
             if (!IsInDesignMode(this))
-                window.uninit();
+                window.Uninit();
         }
 
         private Scene scene;
@@ -57,9 +59,9 @@ namespace Ghurund.Editor {
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(System.Drawing.Color.CornflowerBlue);
             } else {
-                CommandList commandList = renderer.startFrame();
+                CommandList commandList = renderer.StartFrame();
                 levelManager.draw(commandList, ParameterManager);
-                renderer.finishFrame();
+                renderer.FinishFrame();
             }
         }
 
@@ -79,6 +81,21 @@ namespace Ghurund.Editor {
                 designMode |= ResolveDesignMode(control.Parent);
 
             return designMode;
+        }
+
+        protected override void OnSizeChanged(EventArgs e) {
+            base.OnSizeChanged(e);
+            camera.SetScreenSize((uint)Width, (uint)Height);
+            window.UpdateSize();
+            renderer.Resize((uint)Width, (uint)Height);
+            window.FillParameters();
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e) {
+            base.OnMouseMove(e);
+            if(e.Button == MouseButtons.Right) {
+                //camera.
+            }
         }
     }
 }
