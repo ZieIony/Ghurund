@@ -3,7 +3,7 @@
 #include "core/FunctionQueue.h"
 
 namespace Ghurund {
-    void Application::initInternal() {
+    void Application::init() {
         CoInitialize(nullptr);
     
         parameterManager = ghnew Ghurund::ParameterManager();
@@ -22,7 +22,7 @@ namespace Ghurund {
         client->init();
     }
 
-    void Application::uninitInternal() {
+    void Application::uninit() {
         if(client->isConnected())
             client->disconnect();
         delete client;
@@ -42,45 +42,36 @@ namespace Ghurund {
             while(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
                 if(msg.message==WM_QUIT)
                     return;
-                handleMessage(msg);
-                TranslateMessage(&msg);
+                //TranslateMessage(&msg);
                 DispatchMessage(&msg);
             }
-            updateInternal();
+            update();
         }
     }
 
-    void Application::handleMessage(MSG &msg) {
-        if(msg.message==WM_KEYDOWN) {
-            input.dispatchKeyEvent(KeyEvent(KeyAction::DOWN, msg.wParam, msg.time));
-        } else if(msg.message==WM_KEYUP) {
-            input.dispatchKeyEvent(KeyEvent(KeyAction::UP, msg.wParam, msg.time));
-        } else if(msg.message==WM_LBUTTONDOWN) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::LEFT, msg.time));
-        } else if(msg.message==WM_LBUTTONUP) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::LEFT, msg.time));
-        } else if(msg.message==WM_MBUTTONDOWN) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::MIDDLE, msg.time));
-        } else if(msg.message==WM_MBUTTONUP) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::MIDDLE, msg.time));
-        } else if(msg.message==WM_RBUTTONDOWN) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::RIGHT, msg.time));
-        } else if(msg.message==WM_RBUTTONUP) {
-            input.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::RIGHT, msg.time));
-        } else if(msg.message==WM_MOUSEMOVE) {
-            input.dispatchMouseMotionEvent(MouseMotionEvent(GET_X_LPARAM(msg.lParam), GET_Y_LPARAM(msg.lParam), msg.time));
-        } else if(msg.message==WM_MOUSEWHEEL) {
-            input.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(msg.wParam), msg.time));
-        } else if(msg.message==WM_MOUSEHWHEEL) {
-            input.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(msg.wParam), msg.time));
-        }
+    bool Application::handleMessage(SystemMessage &message) {
+        if(message.code>=WM_KEYFIRST&&message.code<=WM_KEYLAST||
+           message.code>=WM_MOUSEFIRST&&message.code<=WM_MOUSELAST) {
+			input.dispatchMessage(message);
+		} else if (message.code == WM_SIZE) {
+			onSizeChanged();
+		} else if (message.code == WM_CREATE) {
+			onWindowCreated();
+		} else if (message.code == WM_DESTROY) {
+			onWindowDestroy();
+            PostQuitMessage(0);
+		} else {
+			return onMessage(message);
+		}
+        return true;
     }
 
     void Application::run(const Settings *settings, WindowProc *proc) {
         if(settings)
             this->settings = *settings;
         if(proc == nullptr) {
-            windowProc = ghnew WindowProc();
+            std::function<bool(SystemMessage&)> proc([this](SystemMessage &message) {return handleMessage(message); });
+            windowProc = ghnew WindowProc(proc);
         } else {
             windowProc = proc;
         }
@@ -93,32 +84,30 @@ namespace Ghurund {
             goto cleanUp;
         }
 
-        initInternal();
         init();
+        onInit();
         window.Visible = true;
 
         messageLoop();
 
         renderer.uninit();
         window.Visible = false;
+        onUninit();
         uninit();
-        uninitInternal();
 
 
     cleanUp:
         CloseHandle(singleInstanceMutex);
     }
 
-    void Application::updateInternal() {
+    void Application::update() {
         ticks_t prevTicks = timer.CurrentTicks;
         timer.tick();
         ticks_t currentTicks = timer.CurrentTicks;
 
         input.dispatchEvents(levelManager);
 
-        update();
-        //while()
-            //game.Update(deltaTime);
+        onUpdate();
         levelManager.update();
 
         input.clearEvents();
@@ -129,8 +118,8 @@ namespace Ghurund {
     }
 
     void Application::reset() {
-        uninit();
-        init();
+        onUninit();
+        onInit();
     }
 
 }

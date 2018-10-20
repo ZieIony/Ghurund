@@ -15,7 +15,8 @@ namespace Ghurund.Editor {
         Renderer renderer;
         LevelManager levelManager;
         Level level;
-        Camera camera;
+
+        public Camera Camera { get; }
 
         [Inject]
         public ParameterManager ParameterManager { get; set; }
@@ -24,10 +25,10 @@ namespace Ghurund.Editor {
             if (!IsInDesignMode(this)) {
                 EditorKernel.Instance.Inject(this);
 
-                camera = new Camera();
-                camera.InitParameters(ParameterManager);
+                Camera = new Camera();
+                Camera.InitParameters(ParameterManager);
                 level = new Level {
-                    Camera = camera
+                    Camera = Camera
                 };
                 levelManager = new LevelManager {
                     Level = level
@@ -85,17 +86,10 @@ namespace Ghurund.Editor {
 
         protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
-            camera.SetScreenSize((uint)Width, (uint)Height);
+            Camera.SetScreenSize((uint)Width, (uint)Height);
             window.UpdateSize();
             renderer.Resize((uint)Width, (uint)Height);
             window.FillParameters();
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e) {
-            base.OnMouseMove(e);
-            if(e.Button == MouseButtons.Right) {
-                //camera.
-            }
         }
     }
 }

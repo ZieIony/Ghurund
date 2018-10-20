@@ -1,78 +1,62 @@
 #pragma once
 
+#include "Ghurund.h"
 #include "core/Timer.h"
 #include "Mouse.h"
 #include "collection/List.h"
 #include "Keyboard.h"
+#include "Windowsx.h"
+#include "EventConsumer.h"
+#include "WindowProc.h"
 
 namespace Ghurund {
-    class EventConsumer {
-    public:
-        virtual bool onKeyEvent(KeyEvent &event) {
-            return false;
-        }
-
-        virtual bool onMouseButtonEvent(MouseButtonEvent &event) {
-            return false;
-        }
-
-        virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) {
-            return false;
-        }
-
-        virtual bool onMouseWheelEvent(MouseWheelEvent &event) {
-            return false;
-        }
-
-        virtual bool dispatchKeyEvent(KeyEvent &event) {
-            return onKeyEvent(event);
-        }
-
-        virtual bool dispatchMouseButtonEvent(MouseButtonEvent &event) {
-            return onMouseButtonEvent(event);
-        }
-
-        virtual bool dispatchMouseMotionEvent(MouseMotionEvent &event) {
-            return onMouseMouseMotionEvent(event);
-        }
-
-        virtual bool dispatchMouseWheelEvent(MouseWheelEvent &event) {
-            return onMouseWheelEvent(event);
-        }
-    };
-
     class Input {
     private:
-        List<KeyEvent*> keyEvents;
-        /*List<MouseButtonEvent> mouseButtonEvents;
-        List<MouseMotionEvent> mouseMotionEvents;
-        List<MouseWheelEvent> mouseWheelEvents;*/
+        List<SystemMessage> messages;
+        int x = 0;
+        int y = 0;
+
+        bool dispatchEvent(SystemMessage &message, EventDispatcher &consumer) {
+            if(message.code == WM_KEYDOWN) {
+                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::DOWN, message.wParam, message.time));
+            } else if(message.code == WM_KEYUP) {
+                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::UP, message.wParam, message.time));
+            } else if(message.code == WM_LBUTTONDOWN) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::LEFT, message.time));
+            } else if(message.code == WM_LBUTTONUP) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::LEFT, message.time));
+            } else if(message.code == WM_MBUTTONDOWN) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::MIDDLE, message.time));
+            } else if(message.code == WM_MBUTTONUP) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::MIDDLE, message.time));
+            } else if(message.code == WM_RBUTTONDOWN) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::RIGHT, message.time));
+            } else if(message.code == WM_RBUTTONUP) {
+                return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::UP, MouseButton::RIGHT, message.time));
+            } else if(message.code == WM_MOUSEMOVE) {
+                int x2 = GET_X_LPARAM(message.lParam);
+                int y2 = GET_Y_LPARAM(message.lParam);
+                bool result = consumer.dispatchMouseMotionEvent(MouseMotionEvent(x2-x, y2-y, message.time));
+                x = x2;
+                y = y2;
+                return result;
+            } else if(message.code == WM_MOUSEWHEEL) {
+                return consumer.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(message.wParam), message.time));
+            } else if(message.code == WM_MOUSEHWHEEL) {
+                return consumer.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(message.wParam), message.time));
+            }
+            return false;	// shouldn't ever happen
+        }
 
     public:
-        void dispatchKeyEvent(KeyEvent &event) {
-            keyEvents.add(ghnew KeyEvent(event));
+        void dispatchMessage(SystemMessage &message) {
+            messages.add(message);
         }
 
-        void dispatchMouseButtonEvent(MouseButtonEvent &event) {
-
-        }
-
-        void dispatchMouseMotionEvent(MouseMotionEvent &event) {
-
-        }
-
-        void dispatchMouseWheelEvent(MouseWheelEvent &event) {
-
-        }
-
-        void update(float deltaTime) {}
-
-        void dispatchEvents(EventConsumer &consumer) {
-            for(size_t i = 0; i<keyEvents.Size;) {
-                bool consumed = consumer.dispatchKeyEvent(*keyEvents[i]);
-                if(consumed) {
-                    delete keyEvents[i];
-                    keyEvents.removeAtKeepOrder(i);
+        void dispatchEvents(EventDispatcher &consumer) {
+            for(size_t i = 0; i < messages.Size;) {
+                if(dispatchEvent(messages[i], consumer)) {
+                    messages.removeAtKeepOrder(i);
                 } else {
                     i++;
                 }
@@ -80,10 +64,7 @@ namespace Ghurund {
         }
 
         void clearEvents() {
-            keyEvents.clear();
-     /*       mouseButtonEvents.clear();
-            mouseMotionEvents.clear();
-            mouseWheelEvents.clear();*/
+            messages.clear();
         }
     };
 }

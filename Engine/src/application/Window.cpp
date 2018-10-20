@@ -12,7 +12,7 @@ namespace Ghurund {
     void Window::init(Settings &settings, WindowProc &windowProc) {
         windowClass.cbSize = sizeof(WNDCLASSEX);
         windowClass.style = CS_CLASSDC;
-        windowClass.lpfnWndProc = &windowProc.messageHandler;
+        windowClass.lpfnWndProc = &windowProc.messageProc;
         windowClass.cbClsExtra = 0L;
         windowClass.cbWndExtra = 0L;
         hInst = GetModuleHandle(0);

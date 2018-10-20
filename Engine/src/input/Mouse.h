@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund{
+namespace Ghurund {
     enum class MouseButton {
         LEFT, MIDDLE, RIGHT
     };
@@ -15,10 +15,10 @@ namespace Ghurund{
 
     class Event {
     protected:
-        DWORD time;
+        time_t time;
 
     public:
-        Event(DWORD time) {
+        Event(time_t time) {
             this->time = time;
         }
 
@@ -27,8 +27,7 @@ namespace Ghurund{
 
     class MouseEvent:public Event {
     public:
-        MouseEvent(DWORD time):Event(time) {
-        }
+        MouseEvent(time_t time):Event(time) {}
     };
 
     class MouseButtonEvent:public MouseEvent {
@@ -37,21 +36,45 @@ namespace Ghurund{
         MouseButton button;
 
     public:
-        MouseButtonEvent(MouseAction action, MouseButton button, DWORD time):MouseEvent(time) {
+        MouseButtonEvent(MouseAction action, MouseButton button, time_t time):MouseEvent(time) {
             this->action = action;
             this->button = button;
         }
+
+        MouseAction getAction() {
+            return action;
+        }
+
+        __declspec(property(get = getAction)) MouseAction Action;
+
+        MouseButton getButton() {
+            return button;
+        }
+
+        __declspec(property(get = getButton)) MouseButton Button;
     };
 
     class MouseMotionEvent:public MouseEvent {
     private:
-        int x, y;
+        int dx, dy;
 
     public:
-        MouseMotionEvent(int x, int y, DWORD time):MouseEvent(time) {
-            this->x = x;
-            this->y = y;
+        MouseMotionEvent(int dx, int dy, time_t time):MouseEvent(time) {
+            this->dx = dx;
+            this->dy = dy;
         }
+
+        int getDeltaX() const {
+            return dx;
+        }
+
+        __declspec(property(get = getDeltaX)) int DeltaX;
+
+        int getDeltaY() const {
+            return dy;
+        }
+
+        __declspec(property(get = getDeltaY)) int DeltaY;
     };
 
     class MouseWheelEvent:public MouseEvent {
@@ -60,12 +83,12 @@ namespace Ghurund{
         int delta;
 
     public:
-        MouseWheelEvent(MouseWheel wheel, int delta, DWORD time):MouseEvent(time) {
+        MouseWheelEvent(MouseWheel wheel, int delta, time_t time):MouseEvent(time) {
             this->wheel = wheel;
             this->delta = delta;
         }
     };
-    
+
     struct MouseState {
         ticks_t timeStamp;
         bool buttonPressed[3];

@@ -80,6 +80,7 @@
     <ClInclude Include="src\core\Type.h" />
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
+    <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\graphics\BoundingBox.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="src\graphics\Texture.h" />
     <ClInclude Include="src\graphics\mesh\Vertex.h" />
     <ClInclude Include="src\graphics\TransformedObject.h" />
+    <ClInclude Include="src\input\EventConsumer.h" />
     <ClInclude Include="src\input\Input.h" />
     <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\input\Mouse.h" />

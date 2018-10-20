@@ -11,6 +11,12 @@ namespace Ghurund.Managed {
         public float Y { get => y; set => y = value; }
         public float Z { get => z; set => z = value; }
 
+        public Float3(float x, float y, float z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
         public override string ToString() {
             return x + ", " + y + ", " + z;
         }

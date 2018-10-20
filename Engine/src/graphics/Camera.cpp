@@ -126,40 +126,64 @@ namespace Ghurund {
     }
 
     void Camera::setPositionDirectionUp(XMFLOAT3 & pos, XMFLOAT3 & dir, XMFLOAT3 & up) {
-        /*Position = pos;
+        this->pos = pos;
+        XMStoreFloat3(&target, XMLoadFloat3(&target)-XMLoadFloat3(&pos));
 
         XMVECTOR dv = XMLoadFloat3(&dir);
-        XMStoreFloat3(&target, XMLoadFloat3(&pos)+dv);
 
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&dir, XMVector3Normalize(dv));
+        XMStoreFloat3(&this->dir, XMVector3Normalize(dv));
         XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
         XMStoreFloat3(&right, rv);
         uv = XMVector3Normalize(XMVector3Cross(rv, dv));
-        XMStoreFloat3(&this->up, uv);*/
+        XMStoreFloat3(&this->up, uv);
     }
 
-    void Camera::setViewYawPitchRoll(float yaw, float pitch, float roll) {
-        /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-        XMVECTOR dv = XMVectorSet(0, 0, dist==0?-1:-dist, 0);
+    void Camera::rotate(float yaw, float pitch, float roll) {
+        float currentYaw = atan2(dir.x, dir.z)*180/XM_PI;
+        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z))*180/XM_PI;
+        float currentRoll = atan2f(right.y, 1)*180/XM_PI;
+
+        setRotation(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+    }
+
+    void Camera::orbit(float yaw, float pitch, float roll) {
+        float currentYaw = atan2(dir.x, dir.z)*180/XM_PI;
+        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z))*180/XM_PI;
+        float currentRoll = atan2f(right.y, 1)*180/XM_PI;
+
+        setOrbit(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+    }
+
+    void Camera::pan(XMFLOAT3 &pan) {
+        XMVECTOR rv = XMLoadFloat3(&right);
+        XMVECTOR uv = XMLoadFloat3(&up);
+        XMVECTOR dv = XMLoadFloat3(&dir);
+        XMStoreFloat3(&target, XMLoadFloat3(&target)+rv*pan.x+uv*pan.y+dv*pan.z);
+        XMStoreFloat3(&pos, XMLoadFloat3(&pos)+rv*pan.x+uv*pan.y+dv*pan.z);
+    }
+
+    void Camera::setRotation(float yaw, float pitch, float roll) {
+        XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+        XMVECTOR dv = XMVectorSet(0, 0, dist==0 ? -1 : -dist, 0);
         dv = XMVector3Transform(dv, rotation);
         XMStoreFloat3(&target, XMLoadFloat3(&Position)+dv);
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
+        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
     }
 
-    void Camera::setOrbitYawPitchRoll(float yaw, float pitch, float roll) {
-        /*XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+    void Camera::setOrbit(float yaw, float pitch, float roll) {
+        XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist==0 ? -1 : -dist, 0);
         dv = XMVector3Transform(dv, rotation);
         XMFLOAT3 pos;
         XMStoreFloat3(&pos, XMLoadFloat3(&target)-dv);
-        Position = pos;
+        this->pos = pos;
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));*/
+        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
     }
 
     Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {

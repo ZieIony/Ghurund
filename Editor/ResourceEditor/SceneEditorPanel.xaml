@@ -7,9 +7,14 @@
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
              mc:Ignorable="d" 
              d:DesignHeight="254" d:DesignWidth="511">
-	<Grid>
+	<wpf:DockPanel>
+		<wpf:ToolBar DockPanel.Dock="Top">
+			<wpf:ToggleButton Content="Orbit" Checked="ToggleButton_Checked" IsChecked="True" Name="orbit"/>
+			<wpf:ToggleButton Content="Rotate" Checked="ToggleButton_Checked" Name="rotate"/>
+			<wpf:ToggleButton Content="Pan" Checked="ToggleButton_Checked" Name="pan"/>
+		</wpf:ToolBar>
 		<wpf:WindowsFormsHost>
-			<local:SurfaceView x:Name="surfaceView"/>
+			<local:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
 		</wpf:WindowsFormsHost>
-	</Grid>
+	</wpf:DockPanel>
 </UserControl>

@@ -41,20 +41,20 @@ namespace Ghurund {
         bool multipleInstances;
         HANDLE singleInstanceMutex;
 
-        void initInternal();
-        void updateInternal();
-        void uninitInternal();
+        void init();
+        void update();
+        void uninit();
 
         void messageLoop();
 
-        void handleMessage(MSG & msg);
+        bool handleMessage(SystemMessage &message);
 
     protected:
-        virtual void init() {};
+        virtual void onInit() {};
 
-        virtual void uninit() {};
+        virtual void onUninit() {};
 
-        virtual void update() {};
+        virtual void onUpdate() {};
 
         /*virtual void client(const void *buffer, unsigned int size){
             if(currentFrame)
@@ -66,11 +66,11 @@ namespace Ghurund {
                 currentFrame->server(socket, buffer, size);
         };*/
 
-        virtual void onCreated() {}
+        virtual void onWindowCreated() {}
 
-        virtual void onDestroy() {}
+        virtual void onWindowDestroy() {}
 
-        virtual bool onMessage(UINT msg, WPARAM wParam, LPARAM lParam) {
+        virtual bool onMessage(SystemMessage &message) {
             return false;
         }
 

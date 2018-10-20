@@ -21,14 +21,34 @@ using namespace DirectX;
 
 class TestLevel:public Level {
 private:
-    float rotation = 0;
+    float yaw = 0, pitch = 0;
     Application &app;
+    bool pressed = false;
 
 public:
     TestLevel(Application &app):app(app) {}
 
+    virtual bool onMouseButtonEvent(MouseButtonEvent &event) override {
+        if(event.Action==MouseAction::DOWN&&event.Button==MouseButton::LEFT) {
+            pressed = true;
+            SetCapture(app.Window.Handle);
+        } else if(event.Action==MouseAction::UP&&event.Button==MouseButton::LEFT) {
+            pressed = false;
+            ReleaseCapture();
+        }
+        return true;
+    }
+
+    virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) override {
+        if(pressed) {
+            yaw += event.DeltaX/5.0f;
+            pitch -= event.DeltaY/5.0f;
+        }
+        return true;
+    }
+
     virtual bool onKeyEvent(KeyEvent &event) override {
-        if(event.getAction()==KeyAction::DOWN&&event.getKey()==VK_ESCAPE) {
+        if(event.Action==KeyAction::DOWN&&event.Key==VK_ESCAPE) {
             PostQuitMessage(0);
             return true;
         }
@@ -92,8 +112,8 @@ public:
     }
 
     void update() {
-        rotation += 0.005f;
-        camera->setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+        camera->setPositionTargetUp(XMFLOAT3(0, 50, 500), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+        camera->setOrbit(yaw*XM_PI/180, pitch*XM_PI/180, 0);
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
@@ -107,14 +127,14 @@ private:
     Level *testLevel;
 
 public:
-    void init() {
+    void onInit() {
         testLevel = ghnew TestLevel(*this);
         LevelManager.setLevel(testLevel);
     }
 
-    void update() {}
+    void onUpdate() {}
 
-    void uninit() {
+    void onUninit() {
         ResourceManager.clear();
         LevelManager.setLevel(nullptr);
         delete testLevel;

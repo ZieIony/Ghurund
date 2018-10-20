@@ -117,9 +117,15 @@ namespace Ghurund {
 
         void setPositionDirectionUp(XMFLOAT3 &pos, XMFLOAT3 &dir, XMFLOAT3 &up);
 
-        void setViewYawPitchRoll(float yaw, float pitch, float roll);
+        void rotate(float yaw, float pitch, float roll);
 
-        void setOrbitYawPitchRoll(float yaw, float pitch, float roll);
+        void orbit(float yaw, float pitch, float roll);
+
+        void pan(XMFLOAT3 &pan);
+
+        void setRotation(float yaw, float pitch, float roll);
+
+        void setOrbit(float yaw, float pitch, float roll);
 
         /**
         * Testuje sfer? z bry?? widzenia kamery. Kamera musi zosta?

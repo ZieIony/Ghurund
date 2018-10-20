@@ -20,15 +20,16 @@ namespace Ghurund {
             this->timeStamp = timeStamp;
         }
 
-        ~KeyEvent() {
-        }
-
         KeyAction getAction() {
             return action;
         }
 
+        __declspec(property(get = getAction)) KeyAction Action;
+
         int getKey() {
             return key;
         }
+
+        __declspec(property(get = getKey)) int Key;
     };
 }
