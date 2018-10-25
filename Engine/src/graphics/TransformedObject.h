@@ -33,7 +33,7 @@ namespace Ghurund {
             this->position.z = z;
         }
 
-        inline const XMFLOAT3 &getPosition()const {
+        inline XMFLOAT3 &getPosition() {
             return position;
         }
 
@@ -49,7 +49,7 @@ namespace Ghurund {
             this->rotation.z = roll;
         }
 
-        inline const XMFLOAT3 &getRotation()const {
+        inline XMFLOAT3 &getRotation() {
             return rotation;
         }
 
@@ -65,7 +65,7 @@ namespace Ghurund {
             this->scale.z = z;
         }
 
-        inline const XMFLOAT3 &getScale()const {
+        inline XMFLOAT3 &getScale() {
             return scale;
         }
 

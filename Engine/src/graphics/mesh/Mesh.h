@@ -42,27 +42,7 @@ namespace Ghurund {
 
         BoundingBox boundingBox;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption option) {
-            if(!FileName.Empty) {
-                if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
-                    return loadObj(context, stream);
-                } else if(FileName.endsWith(ResourceFormat::MESH.getExtension())) {
-                    return loadMesh(context, stream);
-                }
-            }
-
-            size_t bytesRead = stream.BytesRead;
-            Status result = loadObj(context, stream);
-            if(result!=Status::OK) {
-                stream.reset();
-                stream.skip(bytesRead);
-                result = loadMesh(context, stream);
-                if(result!=Status::OK)
-                    return Status::UNKNOWN_FORMAT;
-            }
-
-            return Status::OK;
-        }
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption option);
 
         Status loadObj(ResourceContext &context, MemoryInputStream &stream);
         Status loadMesh(ResourceContext &context, MemoryInputStream &stream);

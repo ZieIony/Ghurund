@@ -10,6 +10,8 @@
 #include "collection/TypeMap.h"
 #include "graphics/mesh/QuadMesh.h"
 #include "audio/Sound.h"
+#include "graphics/Models.h"
+#include "graphics/Materials.h"
 
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>
@@ -105,7 +107,7 @@ public:
                 model->addReference();
                 model->release();
             }
-
+/*
             {
                 CubeMesh *cubeMesh = ghnew CubeMesh();
                 cubeMesh->init(app.Graphics, app.ResourceContext.CommandList);
@@ -121,6 +123,18 @@ public:
                 cubeModel->initParameters(app.ParameterManager);
                 cubeMesh->release();
                 material->release();
+
+                scene->Entities.add(transformedModel);
+            }
+            */
+            {
+                Material *material = Materials::loadChecker(app.ResourceManager, app.ResourceContext);
+                TransformedEntity *transformedModel = Models::makePlane(app.ResourceContext, *material);
+                material->release();
+
+                transformedModel->Position = model->Mesh->BoundingBox.Center;
+                transformedModel->Position.y = 0;
+                transformedModel->Scale = model->Mesh->BoundingBox.Extents;
 
                 scene->Entities.add(transformedModel);
             }

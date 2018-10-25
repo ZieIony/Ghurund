@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Graphics.h"
-#include "Fence.h"
+#include "graphics/Graphics.h"
+#include "graphics/Fence.h"
 #include "core/Logger.h"
 #include "Image.h"
 
@@ -35,6 +35,10 @@ namespace Ghurund {
             textureUploadHeap.Reset();
             if(image!=nullptr)
                 image->release();
+        }
+
+        virtual bool isValid() {
+            return image!=nullptr&&image->Valid&&Resource::Valid;
         }
 
         Status init(ResourceContext &context, Image &image);

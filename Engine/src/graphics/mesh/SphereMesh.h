@@ -6,7 +6,7 @@
 namespace Ghurund {
 	class SphereMesh : public Mesh {
 	protected:
-		virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
+        Status init(Graphics &graphics, CommandList &commandList) {
 			Vertex triangleVertices[] = {
 				{ { 0.0f,  1.0f, 0.0f },{ 0.0f, 0.0f } },
 				{ { sqrtf(8.0f/9.0f),  -1.0f/3.0f, 0 },{0.0f, 1.0f } },
@@ -27,18 +27,13 @@ namespace Ghurund {
 			};
 			indexCount = 12;
 
-            if(size<5) {
+            /*if(size<5) {
                 subdivide<Vertex>();
                 removeDuplicates<Vertex>();
                 spherify();
-            }
+            }*/
 
-			return Mesh::init(context.Graphics, context.CommandList);
+			return Mesh::init(graphics, commandList);
 		}
-
-		virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
-			return Status::NOT_IMPLEMENTED;
-		}
-
 	};
 }

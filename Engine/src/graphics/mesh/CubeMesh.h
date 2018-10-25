@@ -5,15 +5,6 @@
 
 namespace Ghurund {
     class CubeMesh: public Mesh {
-    protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
-            return Status::NOT_IMPLEMENTED;
-        }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
-            return Status::NOT_IMPLEMENTED;
-        }
-
     public:
         Status init(Graphics &graphics, CommandList &commandList) {
             Vertex triangleVertices[] = {

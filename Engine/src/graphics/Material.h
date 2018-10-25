@@ -4,8 +4,8 @@
 #include "graphics/shader/Shader.h"
 #include "core/MemoryStream.h"
 #include "graphics/buffer/DynamicBuffer.h"
-#include "graphics/Image.h"
-#include "graphics/Texture.h"
+#include "graphics/texture/Image.h"
+#include "graphics/texture/Texture.h"
 
 namespace Ghurund {
     class Material:public Resource, ParameterProvider {
@@ -37,6 +37,13 @@ namespace Ghurund {
             shader->release();
             for(size_t i = 0; i<textures.Size; i++)
                 textures.getValue(i)->release();
+        }
+
+        virtual bool isValid() {
+            for(size_t i = 0; i<textures.Size; i++)
+                if(!textures.getValue(i)->Valid)
+                    return false;
+            return shader!=nullptr&&shader->Valid&&Resource::Valid;
         }
 
         void set(CommandList &commandList, ParameterManager &parameterManager) {

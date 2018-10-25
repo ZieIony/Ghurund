@@ -1,12 +1,12 @@
 #pragma once
 
-#include "graphics/Mesh.h"
+#include "graphics/mesh/Mesh.h"
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
     class ConeMesh: public Mesh {
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream) {
+        Status init(Graphics &graphics, CommandList &commandList) {
             Vertex triangleVertices[] = {
                 { { -0.5f,  0.5f, -0.5f },{ 0,0,-1 },{ 0,0 } }
             };
@@ -21,7 +21,7 @@ namespace Ghurund {
             };
             indexCount = 36;
 
-            return Mesh::init(resourceManager.getGraphics(), resourceManager.getCommandList());
+            return Mesh::init(graphics, commandList);
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream) const{
