@@ -47,33 +47,25 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_rotate(IntPtr _this, float yaw, float pitch, float roll);
+        private static extern void Camera_setPositionDistanceRotation(IntPtr _this, Float3 pos, float dist, float yaw, float pitch, float roll);
 
-        public void Rotate(float yaw, float pitch, float roll) {
-            Camera_rotate(NativePtr, yaw, pitch, roll);
+        public void SetPositionDistanceRotation(Float3 pos, float dist, float yaw, float pitch, float roll = 0.0f) {
+            Camera_setPositionDistanceRotation(NativePtr, pos, dist, yaw, pitch, roll);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_orbit(IntPtr _this, float yaw, float pitch, float roll);
+        private static extern void Camera_setTargetDistanceOrbit(IntPtr _this, Float3 target, float dist, float yaw, float pitch, float roll);
 
-        public void Orbit(float yaw, float pitch, float roll) {
-            Camera_orbit(NativePtr, yaw, pitch, roll);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_pan(IntPtr _this, Float3 pan);
-
-        public void Pan(Float3 pan) {
-            Camera_pan(NativePtr, pan);
+        public void SetTargetDistanceOrbit(Float3 target, float dist, float yaw, float pitch, float roll = 0.0f) {
+            Camera_setTargetDistanceOrbit(NativePtr, target, dist, yaw, pitch, roll);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setRotation(IntPtr _this, float yaw, float pitch, float roll);
 
-        public void SetRotation(float yaw, float pitch, float roll) {
+        public void SetRotation(float yaw, float pitch, float roll = 0.0f) {
             Camera_setRotation(NativePtr, yaw, pitch, roll);
         }
 
@@ -81,8 +73,40 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setOrbit(IntPtr _this, float yaw, float pitch, float roll);
 
-        public void SetOrbit(float yaw, float pitch, float roll) {
+        public void SetOrbit(float yaw, float pitch, float roll = 0.0f) {
             Camera_setOrbit(NativePtr, yaw, pitch, roll);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_rotate(IntPtr _this, float yaw, float pitch, float roll);
+
+        public void Rotate(float yaw, float pitch, float roll = 0.0f) {
+            Camera_rotate(NativePtr, yaw, pitch, roll);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_orbit(IntPtr _this, float yaw, float pitch, float roll);
+
+        public void Orbit(float yaw, float pitch, float roll = 0.0f) {
+            Camera_orbit(NativePtr, yaw, pitch, roll);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_pan(IntPtr _this, float x, float y);
+
+        public void Pan(float x, float y) {
+            Camera_pan(NativePtr, x, y);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_zoom(IntPtr _this, float z);
+
+        public void Zoom(float z) {
+            Camera_zoom(NativePtr, z);
         }
 
     }

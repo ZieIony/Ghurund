@@ -1,10 +1,7 @@
 #pragma once
 
 #include "Collection.h"
-
-#ifdef GHURUND_EDITOR
 #include <functional>
-#endif
 
 namespace Ghurund {
     template<class Value, class Key = size_t> class List:public Collection<Key, Value> {
@@ -14,6 +11,8 @@ namespace Ghurund {
 #ifdef GHURUND_EDITOR
         std::function<void()> onItemAdded, onItemRemoved, onItemChanged;
 #endif
+
+        static const std::function<int(const void*, const void*)> DEFAULT_COMPARISON_FUNCTION;
 
     public:
         List() {
@@ -204,6 +203,10 @@ namespace Ghurund {
             for(size_t i = 0; i<size; i++)
                 delete v[i];
             size = 0;
+        }
+
+        inline void sort(std::function<int(const void*, const void*)> comparisonFunction = DEFAULT_COMPARISON_FUNCTION) {
+            qsort(v, size, sizeof(Type), comparisonFunction);
         }
     };
 

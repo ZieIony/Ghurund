@@ -67,47 +67,21 @@ namespace Ghurund {
         parameterViewProjection->setValue(&viewProj);
     }
 
-    void Camera::calcMouseRay(XMFLOAT3 *rayPos, XMFLOAT3 *rayDir, int x, int y)const {
-        rayPos; rayDir; x; y;
-        /*XMFLOAT3 pos2=XMFLOAT3((((float)x*2.0f)/(float)screenSize.x-1.0f),
-        -(((float)y*2.0f)/(float)screenSize.y-1.0f),
-        1);
+    void Camera::calcMouseRay(XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir)const {
+        XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 0)),
+                                              0, 0, screenSize.x, screenSize.y, 0, 1,
+                                              XMLoadFloat4x4(&proj),
+                                              XMLoadFloat4x4(&view),
+                                              XMMatrixIdentity());
 
-        if(pers){	//rzut ortogonalny le?y
-        pos2.x/=proj._11;
-        pos2.y/=proj._22;
-        }
-        XMFLOAT4X4 m;
-        MatrixInverse( &m, null, &view );
+        XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 1)),
+                                                 0, 0, screenSize.x, screenSize.y, 0, 1,
+                                                 XMLoadFloat4x4(&proj),
+                                                 XMLoadFloat4x4(&view),
+                                                 XMMatrixIdentity());
 
-        // Transform the screen space pick ray into 3D space
-        rayDir->x  = pos2.x*m._11 + pos2.y*m._21 + pos2.z*m._31;
-        rayDir->y  = pos2.x*m._12 + pos2.y*m._22 + pos2.z*m._32;
-        rayDir->z  = pos2.x*m._13 + pos2.y*m._23 + pos2.z*m._33;
-        D3DXVec3Normalize(rayDir,rayDir);
-        rayPos->x = m._41;
-        rayPos->y = m._42;
-        rayPos->z = m._43;
-
-        // calc origin as intersection with near frustum
-
-        *rayPos+=*rayDir*zNear;
-        / *
-        XMFLOAT3 target2=XMFLOAT3(pos2.x,pos2.y,1);
-        XMFLOAT4X4 viewProjInv=view*proj;
-        MatrixInverse(&viewProjInv,0,&viewProjInv);
-
-        Vector4 pos4,target4;
-        D3DXVec3Transform(&pos4, &pos2, &viewProjInv);
-        D3DXVec3Transform(&target4, &target2, &viewProjInv);
-
-        pos4/=pos4.z;
-        target4/=target4.z;
-
-        *rayPos=XMFLOAT3(pos4.x,pos4.y,pos4.z);
-        *rayDir=XMFLOAT3(target4.x,target4.y,target4.z);
-        * /
-        */
+        XMStoreFloat3(&rayPos, rayPos2);
+        XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
     }
 
     void Camera::setPositionTargetUp(XMFLOAT3 & pos, XMFLOAT3 & target, XMFLOAT3 & up) {
@@ -140,28 +114,16 @@ namespace Ghurund {
         XMStoreFloat3(&this->up, uv);
     }
 
-    void Camera::rotate(float yaw, float pitch, float roll) {
-        float currentYaw = atan2(dir.x, dir.z)*180/XM_PI;
-        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z))*180/XM_PI;
-        float currentRoll = atan2f(right.y, 1)*180/XM_PI;
-
-        setRotation(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+    void Camera::setPositionDistanceRotation(XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll) {
+        this->pos = pos;
+        this->dist = dist;
+        setRotation(yaw, pitch, roll);
     }
 
-    void Camera::orbit(float yaw, float pitch, float roll) {
-        float currentYaw = atan2(dir.x, dir.z)*180/XM_PI;
-        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z))*180/XM_PI;
-        float currentRoll = atan2f(right.y, 1)*180/XM_PI;
-
-        setOrbit(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
-    }
-
-    void Camera::pan(XMFLOAT3 &pan) {
-        XMVECTOR rv = XMLoadFloat3(&right);
-        XMVECTOR uv = XMLoadFloat3(&up);
-        XMVECTOR dv = XMLoadFloat3(&dir);
-        XMStoreFloat3(&target, XMLoadFloat3(&target)+rv*pan.x+uv*pan.y+dv*pan.z);
-        XMStoreFloat3(&pos, XMLoadFloat3(&pos)+rv*pan.x+uv*pan.y+dv*pan.z);
+    void Camera::setTargetDistanceOrbit(XMFLOAT3 &target, float dist, float yaw, float pitch, float roll) {
+        this->target = target;
+        this->dist = dist;
+        setOrbit(yaw, pitch, roll);
     }
 
     void Camera::setRotation(float yaw, float pitch, float roll) {
@@ -184,6 +146,35 @@ namespace Ghurund {
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
+    }
+
+    void Camera::rotate(float yaw, float pitch, float roll) {
+        float currentYaw = atan2(dir.x, dir.z)+XM_PI;
+        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z));
+        float currentRoll = atan2f(right.y, 1);
+
+        setRotation(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+    }
+
+    void Camera::orbit(float yaw, float pitch, float roll) {
+        float currentYaw = atan2f(dir.x, dir.z)+XM_PI;
+        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z));
+        float currentRoll = atan2f(right.y, 1);
+
+        setOrbit(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+    }
+
+    void Camera::pan(float x, float y) {
+        XMVECTOR rv = XMLoadFloat3(&right);
+        XMVECTOR uv = XMLoadFloat3(&up);
+        XMStoreFloat3(&target, XMLoadFloat3(&target)+rv*x+uv*y);
+        XMStoreFloat3(&pos, XMLoadFloat3(&pos)+rv*x+uv*y);
+    }
+
+    void Camera::zoom(float z) {
+        XMVECTOR dv = XMLoadFloat3(&dir);
+        XMStoreFloat3(&target, XMLoadFloat3(&target)+dv*z);
+        XMStoreFloat3(&pos, XMLoadFloat3(&pos)+dv*z);
     }
 
     Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {

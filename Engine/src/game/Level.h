@@ -32,22 +32,24 @@ namespace Ghurund {
 
         __declspec(property(put = setScene)) Scene *Scene;
 
-        virtual void init() {}
-        virtual void uninit() {}
-        virtual void update() {}
+        virtual void onInit() {}
+        virtual void onUninit() {}
+        virtual void onUpdate() {}
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {
-            if(camera!=nullptr)
-                camera->fillParameters();
-            if(scene!=nullptr) {
-                RenderingBatch batch;
-                XMFLOAT4X4 identity;
-                XMStoreFloat4x4(&identity, XMMatrixIdentity());
-                scene->flatten(batch, identity);
-                batch.initParameters(parameterManager);
-                batch.draw(commandList, parameterManager);
-                batch.clear();
-            }
+            if(camera==nullptr||scene==nullptr)
+                return;
+
+            camera->fillParameters();
+            RenderingBatch batch;
+            batch.initParameters(parameterManager);
+            XMFLOAT4X4 identity;
+            XMStoreFloat4x4(&identity, XMMatrixIdentity());
+            scene->flatten(batch, identity);
+            batch.cull(*camera);
+            //batch.pick(*camera, mousePos);
+            batch.draw(commandList, parameterManager);
+            batch.clear();
         }
     };
 }

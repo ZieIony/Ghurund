@@ -14,14 +14,14 @@ namespace Ghurund {
     public:
         ~LevelManager() {
             if(level!=nullptr)
-                level->uninit();
+                level->onUninit();
         }
 
         void setLevel(Level *level) {
             if(this->level!=nullptr)
-                this->level->uninit();
+                this->level->onUninit();
             if(level!=nullptr)
-                level->init();
+                level->onInit();
             this->level = level;
         }
 
@@ -55,7 +55,7 @@ namespace Ghurund {
 
         void update() {
             if(level!=nullptr)
-                level->update();
+                level->onUpdate();
         }
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {

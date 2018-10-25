@@ -15,7 +15,6 @@ namespace Ghurund.Editor.ResourceEditor {
     }
 
     public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
-        private double yaw = 0, pitch = 0;
         private Point prevPos;
         private bool pressed = false;
 
@@ -66,18 +65,14 @@ namespace Ghurund.Editor.ResourceEditor {
         private void surfaceView_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
             if (pressed) {
                 var pos = new Point(e.X, e.Y);
+                var dx = pos.X - prevPos.X;
+                var dy = -(pos.Y - prevPos.Y);
                 if (orbit.IsChecked.GetValueOrDefault(true)) {
-                    yaw += (pos.X - prevPos.X) / 5;
-                    pitch -= (pos.Y - prevPos.Y) / 5;
-
-                    surfaceView.Camera.SetOrbit((float)(yaw * Math.PI / 180), (float)(pitch * Math.PI / 180), 0);
+                    surfaceView.Camera.Orbit((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 } else if (pan.IsChecked.GetValueOrDefault(true)) {
-                    surfaceView.Camera.Pan(new Float3((float)(pos.X - prevPos.X), (float)(pos.Y - prevPos.Y), 0));
+                    surfaceView.Camera.Pan((float)dx, (float)dy);
                 } else {
-                    yaw += (pos.X - prevPos.X) / 5;
-                    pitch -= (pos.Y - prevPos.Y) / 5;
-
-                    surfaceView.Camera.SetRotation((float)(yaw * Math.PI / 180), (float)(pitch * Math.PI / 180), 0);
+                    surfaceView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 }
                 surfaceView.Refresh();
                 prevPos = pos;

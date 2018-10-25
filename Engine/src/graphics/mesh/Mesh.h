@@ -16,6 +16,7 @@
 #include "resource/ResourceManager.h"
 
 #include <wrl.h>
+#include <DirectXCollision.h>
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -38,6 +39,8 @@ namespace Ghurund {
 
         ComPtr<ID3D12Resource> vertexUploadHeap;
         ComPtr<ID3D12Resource> indexUploadHeap;
+
+        BoundingBox boundingBox;
 
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption option) {
             if(!FileName.Empty) {
@@ -67,12 +70,12 @@ namespace Ghurund {
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
-            return 0;
+            return 1;
         }
 
         template<class Type> vindex_t findVertex(Type *vertex) {
             for(vindex_t i = 0; i<vertexCount; i++) {
-                if(vertex->equals(*((Type*)vertices+i),0.01f,0.01f,0.01f))
+                if(vertex->equals(*((Type*)vertices+i), 0.01f, 0.01f, 0.01f))
                     return i;
             }
             return vertexCount;
@@ -171,9 +174,16 @@ namespace Ghurund {
             }
         }
 
-		void generateNormals(float smoothingTreshold);
-		void generateTangents();
-		void invertWinding();
+        void generateNormals(float smoothingTreshold);
+        void generateTangents();
+        void invertWinding();
+        void computeBoundingBox();
+
+        BoundingBox &getBoundingBox() {
+            return boundingBox;
+        }
+
+        __declspec(property(get = getBoundingBox)) BoundingBox &BoundingBox;
 
         virtual const Ghurund::Type &getType() const override {
             return Type::MESH;

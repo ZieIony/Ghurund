@@ -18,9 +18,9 @@ namespace Ghurund {
         bool pers;
 
         Parameter *parameterDirection;
-        Parameter *parameterUp,*parameterRight;
+        Parameter *parameterUp, *parameterRight;
         Parameter *parameterFov;
-        Parameter *parameterZNear,*parameterZFar;
+        Parameter *parameterZNear, *parameterZFar;
         Parameter *parameterView, *parameterProjection, *parameterViewProjection;
 
     protected:
@@ -41,35 +41,35 @@ namespace Ghurund {
 
         void rebuild();
 
-        void calcMouseRay(XMFLOAT3 *rayPos, XMFLOAT3 *rayDir, int x, int y)const;
+        void calcMouseRay(XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir) const;
 
-		inline const XMFLOAT3 &getUp()const {
-			return up;
-		}
+        inline const XMFLOAT3 &getUp() const {
+            return up;
+        }
 
-		// normalized, sets right
+        // normalized, sets right
         __declspec(property(get = getUp)) XMFLOAT3 &Up;
 
-        inline const XMFLOAT3 &getPosition()const {
+        inline const XMFLOAT3 &getPosition() const {
             return pos;
         }
 
         __declspec(property(get = getPosition)) XMFLOAT3 &Position;
 
-        inline const XMFLOAT3 &getTarget()const {
+        inline const XMFLOAT3 &getTarget() const {
             return target;
         }
 
         __declspec(property(get = getTarget)) XMFLOAT3 &Target;
 
-        inline const XMFLOAT3 &getDirection()const {
+        inline const XMFLOAT3 &getDirection() const {
             return dir;
         }
 
         __declspec(property(get = getDirection)) XMFLOAT3 &Direction;
 
 
-        inline const XMFLOAT2 &getScreenSize()const {
+        inline const XMFLOAT2 &getScreenSize() const {
             return screenSize;
         }
 
@@ -97,52 +97,32 @@ namespace Ghurund {
             screenSize.y = (float)val;
         }
 
-        inline float getAspect()const {
+        inline float getAspect() const {
             return screenSize.x/screenSize.y;
         }
 
-        inline const XMFLOAT4X4 *getView()const {
+        inline const XMFLOAT4X4 *getView() const {
             return &view;
         }
 
-        inline const XMFLOAT4X4 *getProj()const {
+        inline const XMFLOAT4X4 *getProj() const {
             return &proj;
         }
 
-        inline const XMFLOAT4X4 *getFacing()const {
+        inline const XMFLOAT4X4 *getFacing() const {
             return &facing;
         }
 
         void setPositionTargetUp(XMFLOAT3 &pos, XMFLOAT3 &target, XMFLOAT3 &up);
-
         void setPositionDirectionUp(XMFLOAT3 &pos, XMFLOAT3 &dir, XMFLOAT3 &up);
-
-        void rotate(float yaw, float pitch, float roll);
-
-        void orbit(float yaw, float pitch, float roll);
-
-        void pan(XMFLOAT3 &pan);
-
-        void setRotation(float yaw, float pitch, float roll);
-
-        void setOrbit(float yaw, float pitch, float roll);
-
-        /**
-        * Testuje sfer? z bry?? widzenia kamery. Kamera musi zosta?
-        * wcze?niej prawid?o zbudowana
-        * @param XMFLOAT3 * center ?rodek testowanej sfery
-        * @param float radius promie? testowanej sfery
-        * @return bool czy sfera jest w bryle widzenia
-        */
-        /*inline bool sphereTest(XMFLOAT3 *center,float radius){
-        XMFLOAT3 out;
-        D3DXVec3TransformCoord(&out,center,&(view*proj));
-        if(out.x-radius>screenSize.x||out.x+radius<0||
-        out.y-radius>screenSize.y||out.y+radius<0||
-        out.z-radius>zFar||out.z+radius<zNear)
-        return false;
-        return true;
-        }*/
+        void setPositionDistanceRotation(XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll = 0.0f);
+        void setTargetDistanceOrbit(XMFLOAT3 &target, float dist, float yaw, float pitch, float roll = 0.0f);
+        void setRotation(float yaw, float pitch, float roll = 0.0f);
+        void setOrbit(float yaw, float pitch, float roll = 0.0f);
+        void rotate(float yaw, float pitch, float roll = 0.0f);
+        void orbit(float yaw, float pitch, float roll = 0.0f);
+        void pan(float x, float y);
+        void zoom(float z);
 
         void defaultLookAt(Entity *entity) {
 
@@ -157,7 +137,6 @@ namespace Ghurund {
             return ResourceFormat::ENTITY;
         }
 
-        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {
-        }
+        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {}
     };
 }

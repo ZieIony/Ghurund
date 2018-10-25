@@ -54,6 +54,8 @@ namespace Ghurund {
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, triangleIndices.begin(), indexCount*sizeof(vindex_t));
 
+        computeBoundingBox();
+
         return init(context.Graphics, context.CommandList);
     }
 
@@ -71,6 +73,10 @@ namespace Ghurund {
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, stream.readBytes(indexCount*sizeof(vindex_t)), indexCount*sizeof(vindex_t));
 
+        XMFLOAT3 center = stream.read<XMFLOAT3>();
+        XMFLOAT3 extents = stream.read<XMFLOAT3>();
+        boundingBox = DirectX::BoundingBox(center, extents);
+
         return init(context.Graphics, context.CommandList);
     }
 
@@ -85,12 +91,17 @@ namespace Ghurund {
         stream.write<vindex_t>(indexCount);
         stream.writeBytes(indices, indexCount*sizeof(vindex_t));
 
+        stream.write<XMFLOAT3>(boundingBox.Center);
+        stream.write<XMFLOAT3>(boundingBox.Extents);
+
         return Status::OK;
     }
 
     Status Mesh::init(Graphics &graphics, CommandList &commandList) {
-        if(commandList.Closed)
+        if(commandList.Closed) {
+            commandList.wait();
             commandList.reset();
+        }
 
         {
             unsigned int vertexBufferSize = vertexSize*vertexCount;
@@ -184,4 +195,25 @@ namespace Ghurund {
     void Mesh::generateTangents() {}
 
     void Mesh::invertWinding() {}
+
+    void Mesh::computeBoundingBox() {
+        XMFLOAT3 min = {}, max = {};
+        if(vertexCount>0) {
+            XMFLOAT3 &pos = ((Vertex*)vertices)[0].position;
+            min = pos;
+            max = pos;
+        }
+        for(size_t i = 1; i<vertexCount; i++) {
+            XMFLOAT3 &pos = ((Vertex*)vertices)[i].position;
+            min.x = std::min(pos.x, min.x);
+            min.y = std::min(pos.y, min.y);
+            min.z = std::min(pos.z, min.z);
+            max.x = std::max(pos.x, max.x);
+            max.y = std::max(pos.y, max.y);
+            max.z = std::max(pos.z, max.z);
+        }
+        XMFLOAT3 center = XMFLOAT3((min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2);
+        XMFLOAT3 extents = XMFLOAT3(center.x-min.x, center.y-min.y, center.z-min.z);
+        boundingBox = DirectX::BoundingBox(center, extents);
+    }
 }

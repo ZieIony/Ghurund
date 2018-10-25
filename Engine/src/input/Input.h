@@ -66,5 +66,11 @@ namespace Ghurund {
         void clearEvents() {
             messages.clear();
         }
+
+        XMINT2 getMousePos() const {
+            return XMINT2(x, y);
+        }
+
+        __declspec(property(get = getMousePos)) XMINT2 MousePos;
     };
 }

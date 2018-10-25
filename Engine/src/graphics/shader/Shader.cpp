@@ -63,10 +63,21 @@ namespace Ghurund {
         D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
         psoDesc.InputLayout = getInputLayout();
         psoDesc.pRootSignature = rootSignature.Get();
-        psoDesc.VS.pShaderBytecode = programs[0]->getByteCode();
-        psoDesc.VS.BytecodeLength = programs[0]->getByteCodeLength();
-        psoDesc.PS.pShaderBytecode = programs[1]->getByteCode();
-        psoDesc.PS.BytecodeLength = programs[1]->getByteCodeLength();
+
+        ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
+        if(programs[0]!=nullptr) {
+            psoDesc.VS.pShaderBytecode = programs[0]->getByteCode();
+            psoDesc.VS.BytecodeLength = programs[0]->getByteCodeLength();
+        }
+        if(programs[1]!=nullptr) {
+            psoDesc.PS.pShaderBytecode = programs[1]->getByteCode();
+            psoDesc.PS.BytecodeLength = programs[1]->getByteCodeLength();
+        }
+        if(programs[2]!=nullptr) {
+            psoDesc.GS.pShaderBytecode = programs[2]->getByteCode();
+            psoDesc.GS.BytecodeLength = programs[2]->getByteCodeLength();
+        }
+
         psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
         psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
         psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
@@ -90,25 +101,29 @@ namespace Ghurund {
 
     Status Shader::compile(char **outErrorMessages) {
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
-        ASCIIString errors;
+        ASCIIString output;
+        Status result = Status::OK;
         for(unsigned int i = 0; i<6; i++) {
-            if(!getCompileShader(types[i]))
-                continue;
             ShaderProgram *program = ghnew ShaderProgram(types[i]);
             char *programErrors;
             Status result = program->compile(source, &programErrors);
             if(result==Status::OK) {
                 programs[i] = program;
-            } else {
-                errors.add(programErrors);
+            } else if(result==Status::ENTRY_POINT_NOT_FOUND) {
+                output.add("'");
+                output.add(types[i].getEntryPoint());
+                output.add("' not found\n");
+            }else{
+                output.add(programErrors);
                 delete[] programErrors;
                 delete program;
+                result = Status::COMPILATION_ERROR;
             }
         }
-        if(errors.Length>0&&outErrorMessages!=nullptr)
-            *outErrorMessages = copyStrA(errors.getData());
-        compiled = errors.Length==0;
-        return compiled ? Status::OK : Status::COMPILATION_ERROR;
+        if(output.Length>0&&outErrorMessages!=nullptr)
+            *outErrorMessages = copyStrA(output.getData());
+        compiled = result == Status::OK;
+        return result;
     }
 
     D3D12_INPUT_LAYOUT_DESC Shader::getInputLayout() {

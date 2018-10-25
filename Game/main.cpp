@@ -42,7 +42,7 @@ public:
     virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) override {
         if(pressed) {
             yaw += event.DeltaX/5.0f;
-            pitch -= event.DeltaY/5.0f;
+            pitch += -event.DeltaY/5.0f;
         }
         return true;
     }
@@ -55,69 +55,90 @@ public:
         return false;
     }
 
-    void init() {
+    virtual void onInit() override {
         Ghurund::Camera *camera = ghnew Ghurund::Camera();
         camera->initParameters(app.ParameterManager);
 
         Camera = camera;
 
         File sceneFile("test.scene");
-        if(sceneFile.Exists) {
+        /*if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *resource, Status result) {
                 setScene(resource);
             });
-        } else {
+        } else {*/
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
             camera->addReference();
             camera->release();
 
-            Mesh *mesh;
-            File file("obj/lamborghini/Lamborghini_Aventador.mesh");
-            if(file.Exists) {
-                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
-            } else {
-                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "obj/lamborghini/Lamborghini_Aventador.obj");
-                mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+            Model *model;
+            {
+                Mesh *mesh;
+                File file("obj/lamborghini/Lamborghini_Aventador.mesh");
+                if(file.Exists) {
+                    mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
+                } else {
+                    mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "obj/lamborghini/Lamborghini_Aventador.obj");
+                    mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+                }
+
+                Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+                Texture *texture = ghnew Texture();
+                texture->init(app.ResourceContext, *image);
+                image->release();
+
+                Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
+                Material *material = new Material(shader);
+                material->Textures.set("diffuse", texture);
+                texture->addReference();
+                shader->release();
+                texture->release();
+
+                model = ghnew Model(mesh, material);
+                model->initParameters(app.ParameterManager);
+                mesh->release();
+                material->release();
+
+                scene->Entities.add(model);
+                model->addReference();
+                model->release();
             }
 
-            Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-            Texture *texture = ghnew Texture();
-            texture->init(app.ResourceContext, *image);
-            image->release();
+            {
+                CubeMesh *cubeMesh = ghnew CubeMesh();
+                cubeMesh->init(app.Graphics, app.ResourceContext.CommandList);
 
-            Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
-            Material *material = new Material(shader);
-            material->Textures.set("diffuse", texture);
-            texture->addReference();
-            shader->release();
-            texture->release();
+                Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/wireframe.hlsl");
+                Material *material = new Material(shader);
+                shader->release();
 
-            Model *model = ghnew Model(mesh, material);
-            model->initParameters(app.ParameterManager);
-            mesh->release();
-            material->release();
+                Model *cubeModel = ghnew Model(cubeMesh, material);
+                TransformedEntity *transformedModel = ghnew TransformedEntity(*cubeModel);
+                transformedModel->Position = model->Mesh->BoundingBox.Center;
+                transformedModel->Scale = model->Mesh->BoundingBox.Extents;
+                cubeModel->initParameters(app.ParameterManager);
+                cubeMesh->release();
+                material->release();
 
-            scene->Entities.add(model);
-            model->addReference();
-            model->release();
+                scene->Entities.add(transformedModel);
+            }
 
-            Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
+            Status result = scene->save(app.ResourceManager, "test.scene");
             if(result!=Status::OK)
                 Logger::log(_T("failed to save scene\n"));
 
             scene->release();
-        }
+        //}
     }
 
-    void update() {
-        camera->setPositionTargetUp(XMFLOAT3(0, 50, 500), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
-        camera->setOrbit(yaw*XM_PI/180, pitch*XM_PI/180, 0);
+    virtual void onUpdate() override {
+        camera->setTargetDistanceOrbit(XMFLOAT3(0, 50, 0), 500, yaw*XM_PI/180, pitch*XM_PI/180);
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
-    void uninit() {
+    virtual void onUninit() override {
         camera->release();
     }
 };

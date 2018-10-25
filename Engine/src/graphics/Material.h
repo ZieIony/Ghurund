@@ -42,7 +42,8 @@ namespace Ghurund {
         void set(CommandList &commandList, ParameterManager &parameterManager) {
             shader->set(commandList, parameterManager);
 
-            commandList.get()->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
+            if(textures.Size>0) // TODO: handle textures properly
+                commandList.get()->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
         }
 
         Shader *getShader() {

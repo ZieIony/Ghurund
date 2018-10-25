@@ -7,41 +7,50 @@ namespace Ghurund {
     class CubeMesh: public Mesh {
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const void *data, unsigned long size) {
+            return Status::NOT_IMPLEMENTED;
+        }
+
+        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
+            return Status::NOT_IMPLEMENTED;
+        }
+
+    public:
+        Status init(Graphics &graphics, CommandList &commandList) {
             Vertex triangleVertices[] = {
-                {{-0.5f,  0.5f, -0.5f}, {0,0,-1}, {0,0}},
-                {{ 0.5f, -0.5f, -0.5f}, {0,0,-1}, {1,1}},
-                {{-0.5f, -0.5f, -0.5f}, {0,0,-1}, {0,1}},
-                {{ 0.5f,  0.5f, -0.5f}, {0,0,-1}, {1,0}},
+                {{-1.0f,  1.0f, -1.0f}, {0,0,-1}, {0,0}},
+                {{ 1.0f, -1.0f, -1.0f}, {0,0,-1}, {1,1}},
+                {{-1.0f, -1.0f, -1.0f}, {0,0,-1}, {0,1}},
+                {{ 1.0f,  1.0f, -1.0f}, {0,0,-1}, {1,0}},
 
                 // right side face
-                {{0.5f, -0.5f, -0.5f}, {1,0,0}, {0,0}},
-                {{0.5f,  0.5f,  0.5f}, {1,0,0}, {1,1}},
-                {{0.5f, -0.5f,  0.5f}, {1,0,0}, {0,1}},
-                {{0.5f,  0.5f, -0.5f}, {1,0,0}, {1,0}},
+                {{1.0f, -1.0f, -1.0f}, {1,0,0}, {0,0}},
+                {{1.0f,  1.0f,  1.0f}, {1,0,0}, {1,1}},
+                {{1.0f, -1.0f,  1.0f}, {1,0,0}, {0,1}},
+                {{1.0f,  1.0f, -1.0f}, {1,0,0}, {1,0}},
 
                 // left side face
-                {{-0.5f,  0.5f,  0.5f}, {-1,0,0}, {0,0}},
-                {{-0.5f, -0.5f, -0.5f}, {-1,0,0}, {1,1}},
-                {{-0.5f, -0.5f,  0.5f}, {-1,0,0}, {0,1}},
-                {{-0.5f,  0.5f, -0.5f}, {-1,0,0}, {1,0}},
+                {{-1.0f,  1.0f,  1.0f}, {-1,0,0}, {0,0}},
+                {{-1.0f, -1.0f, -1.0f}, {-1,0,0}, {1,1}},
+                {{-1.0f, -1.0f,  1.0f}, {-1,0,0}, {0,1}},
+                {{-1.0f,  1.0f, -1.0f}, {-1,0,0}, {1,0}},
 
                 // back face
-                {{0.5f,   0.5f,  0.5f}, {0,0,1}, {0,0}},
-                {{-0.5f, -0.5f,  0.5f}, {0,0,1}, {1,1}},
-                {{0.5f,  -0.5f,  0.5f}, {0,0,1}, {0,1}},
-                {{-0.5f,  0.5f,  0.5f}, {0,0,1}, {1,0}},
+                {{1.0f,   1.0f,  1.0f}, {0,0,1}, {0,0}},
+                {{-1.0f, -1.0f,  1.0f}, {0,0,1}, {1,1}},
+                {{1.0f,  -1.0f,  1.0f}, {0,0,1}, {0,1}},
+                {{-1.0f,  1.0f,  1.0f}, {0,0,1}, {1,0}},
 
                 // top face
-                {{-0.5f, 0.5f, -0.5f}, {0,1,0}, {0,0}},
-                {{0.5f,  0.5f,  0.5f}, {0,1,0}, {1,1}},
-                {{0.5f,  0.5f, -0.5f}, {0,1,0}, {0,1}},
-                {{-0.5f, 0.5f,  0.5f}, {0,1,0}, {1,0}},
+                {{-1.0f, 1.0f, -1.0f}, {0,1,0}, {0,0}},
+                {{1.0f,  1.0f,  1.0f}, {0,1,0}, {1,1}},
+                {{1.0f,  1.0f, -1.0f}, {0,1,0}, {0,1}},
+                {{-1.0f, 1.0f,  1.0f}, {0,1,0}, {1,0}},
 
                 // bottom face
-                {{0.5f,  -0.5f,  0.5f}, {0,-1,0}, {0,0}},
-                {{-0.5f, -0.5f, -0.5f}, {0,-1,0}, {1,1}},
-                {{0.5f,  -0.5f, -0.5f}, {0,-1,0}, {0,1}},
-                {{-0.5f, -0.5f,  0.5f}, {0,-1,0}, {1,0}},
+                {{1.0f,  -1.0f,  1.0f}, {0,-1,0}, {0,0}},
+                {{-1.0f, -1.0f, -1.0f}, {0,-1,0}, {1,1}},
+                {{1.0f,  -1.0f, -1.0f}, {0,-1,0}, {0,1}},
+                {{-1.0f, -1.0f,  1.0f}, {0,-1,0}, {1,0}},
             };
 
             vertexSize = sizeof(Vertex);
@@ -49,7 +58,7 @@ namespace Ghurund {
             vertices = ghnew BYTE[vertexCount*vertexSize];
             memcpy(vertices, triangleVertices, vertexCount*vertexSize);
 
-            indices = ghnew unsigned int[36] {
+            indices = ghnew unsigned int[36]{
                 // ffront face
                 0, 1, 2, // first triangle
                 0, 3, 1, // second triangle
@@ -76,12 +85,7 @@ namespace Ghurund {
             };
             indexCount = 36;
 
-            return Mesh::init(context.Graphics, context.CommandList);
+            return Mesh::init(graphics, commandList);
         }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, void **data, unsigned long *size, unsigned int flags = 0)const {
-            return Status::NOT_IMPLEMENTED;
-        }
-
     };
 }

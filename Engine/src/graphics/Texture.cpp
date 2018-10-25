@@ -4,8 +4,10 @@ namespace Ghurund {
     Status Texture::init(ResourceContext &context, Image &image) {
         Graphics &graphics = context.Graphics;
         CommandList &commandList = context.CommandList;
-        if(commandList.Closed)
+        if(commandList.Closed) {
+            commandList.wait();
             commandList.reset();
+        }
 		descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         setPointer(this->image, &image);
 

@@ -23,6 +23,7 @@
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
+    <ClCompile Include="src\collection\List.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="src\collection\BufferedValue.h" />
     <ClInclude Include="src\collection\TypeList.h" />
     <ClInclude Include="src\collection\TypeMap.h" />
+    <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\MemoryStream.h" />
     <ClInclude Include="src\collection\List.h" />
     <ClInclude Include="src\collection\Map.h" />
@@ -81,7 +83,6 @@
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\game\Level.h" />
-    <ClInclude Include="src\graphics\BoundingBox.h" />
     <ClInclude Include="src\game\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\game\ParameterProvider.h" />
@@ -94,6 +95,7 @@
     <ClInclude Include="src\graphics\DepthBuffer.h" />
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\graphics\DescriptorHeap.h" />
+    <ClInclude Include="src\graphics\GlobalEntity.h" />
     <ClInclude Include="src\graphics\Image.h" />
     <ClInclude Include="src\graphics\Light.h" />
     <ClInclude Include="src\graphics\mesh\ConeMesh.h" />
@@ -126,11 +128,13 @@
     <ClInclude Include="src\input\Input.h" />
     <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\input\Mouse.h" />
+    <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\resource\DataResource.h" />
     <ClInclude Include="src\game\Parameter.h" />
     <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFactory.h" />
     <ClInclude Include="src\resource\ResourceFormat.h" />
+    <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\ui\Layout.h" />
     <ClInclude Include="src\resource\DirectoryWatch.h" />
     <ClInclude Include="src\resource\File.h" />

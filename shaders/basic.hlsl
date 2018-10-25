@@ -27,8 +27,8 @@ PsInput vertexMain(VsInput input) {
     PsInput output;
 
     output.position = mul(mul(float4(input.position, 1), world), viewProjection);
-	output.normal = normalize(mul(input.normal, world));
-	output.tangent = normalize(mul(input.tangent, world));
+	output.normal = normalize(mul(input.normal, world)).xyz;
+	output.tangent = normalize(mul(input.tangent, world)).xyz;
 	output.texCoord = input.texCoord;
 
     return output;

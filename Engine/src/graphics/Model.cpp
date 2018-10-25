@@ -30,6 +30,6 @@ namespace Ghurund {
     }
 
     void Model::flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) {
-        batch.addModel(new GlobalEntity<Model>(*this, transformation));
+        batch.addModel(new GlobalEntity<Model>(*this, mesh->BoundingBox, transformation));
     }
 }

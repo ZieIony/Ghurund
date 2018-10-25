@@ -2,42 +2,15 @@
 
 #include "resource/ResourceManager.h"
 #include "game/ParameterProvider.h"
-#include "BoundingBox.h"
+
+#include <DirectXCollision.h>
 
 namespace Ghurund {
 
     class TransformedObject {
-    private:
-        XMFLOAT3 position = {}, rotation = {}, scale = {1,1,1};
-        BoundingBox boundingBox;
-        XMFLOAT4X4 world;
-
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream) {
-            memcpy(&position, stream.readBytes(sizeof(position)), sizeof(position));
-            memcpy(&rotation, stream.readBytes(sizeof(rotation)), sizeof(rotation));
-            memcpy(&scale, stream.readBytes(sizeof(scale)), sizeof(scale));
-
-            memcpy(&boundingBox, stream.readBytes(sizeof(boundingBox)), sizeof(boundingBox));
-
-            memcpy(&world, stream.readBytes(sizeof(world)), sizeof(world));
-
-            return Status::OK;
-        }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream) const {
-            stream.writeBytes(&position, sizeof(position));
-            stream.writeBytes(&rotation, sizeof(rotation));
-            stream.writeBytes(&scale, sizeof(scale));
-
-            stream.writeBytes(&boundingBox, sizeof(boundingBox));
-
-            stream.writeBytes(&world, sizeof(world));
-
-            return Status::OK;
-        }
-
-        virtual void clean() {}
+        XMFLOAT3 position = {}, rotation = {}, scale = {1,1,1};
+        XMFLOAT4X4 world;
 
     public:
 
@@ -99,11 +72,5 @@ namespace Ghurund {
         __declspec(property(get = getScale, put = setScale)) XMFLOAT3 &Scale;
 
 #pragma endregion
-
-        BoundingBox &getBoundingBox() {
-            return boundingBox;
-        }
-
-        __declspec(property(get = getBoundingBox)) BoundingBox &BoundingBox;
     };
 }

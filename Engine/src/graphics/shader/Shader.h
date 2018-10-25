@@ -33,7 +33,6 @@ namespace Ghurund {
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
         
-		unsigned int compileShaders = ShaderType::VS|ShaderType::PS;
         char *source = nullptr;
         bool compiled = false;
 
@@ -64,12 +63,12 @@ namespace Ghurund {
             delete[] source;
         }
 
-        Status compile(char **outErrorMessages = nullptr);
+        Status compile(char **output = nullptr);
 
-        Status build(ResourceContext &context, char **outErrorMessages = nullptr) {
+        Status build(ResourceContext &context, char **output = nullptr) {
             Status result;
             if(!compiled)
-                if((result = compile(outErrorMessages))!=Status::OK)
+                if((result = compile(output))!=Status::OK)
                     return result;
             Graphics &graphics = context.Graphics;
             initConstants(graphics, context.ParameterManager);
@@ -82,17 +81,6 @@ namespace Ghurund {
 
         size_t getParametersCount() {
             return constantBuffers.Size+textureBuffers.Size+textures.Size;
-        }
-
-        bool getCompileShader(ShaderType type) {
-            return ((unsigned int)compileShaders&(unsigned int)type)!=0;
-        }
-
-        void setCompileShaders(ShaderType types) {
-            if(compileShaders!=types) {
-                compileShaders = types;
-                compiled = false;
-            }
         }
 
         void setSourceCode(const char *source) {
