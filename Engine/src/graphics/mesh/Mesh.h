@@ -26,7 +26,7 @@ namespace Ghurund {
 
     class Mesh:public Resource {
     protected:
-        void *vertices = nullptr;
+        Vertex *vertices = nullptr;
         unsigned int vertexSize;
         vindex_t vertexCount;
         vindex_t *indices = nullptr;
@@ -53,9 +53,9 @@ namespace Ghurund {
             return 1;
         }
 
-        template<class Type> vindex_t findVertex(Type *vertex) {
+        vindex_t findVertex(Vertex &vertex) {
             for(vindex_t i = 0; i<vertexCount; i++) {
-                if(vertex->equals(*((Type*)vertices+i), 0.01f, 0.01f, 0.01f))
+                if(vertex.equals(vertices[i], 0.01f, 0.01f, 0.01f))
                     return i;
             }
             return vertexCount;
@@ -81,14 +81,14 @@ namespace Ghurund {
             list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
         }
 
-        template<class Type> void removeDuplicates() {
-            List<Type> vertexData;
+        void removeDuplicates() {
+            List<Vertex> vertexData;
             List<vindex_t> indexData;
 
             for(vindex_t i = 0; i<indexCount; i++) {
-                vindex_t index = findVertex((Type*)vertices+indices[i]);
+                vindex_t index = findVertex(vertices[indices[i]]);
                 if(index==indices[i])
-                    vertexData.add(*((Type*)vertices+index));
+                    vertexData.add(vertices[index]);
                 indexData.add(index);
             }
 
@@ -98,18 +98,18 @@ namespace Ghurund {
             indexCount = indexData.Size;
         }
 
-        template<class Type> void subdivide() {
-            List<Type> vertexData;
+        void subdivide() {
+            List<Vertex> vertexData;
             List<vindex_t> indexData;
 
             for(vindex_t i = 0, j = 0; i<indexCount; i += 3, j += 6) {
-                Type v0 = *((Type*)vertices+indices[i]);
-                Type v1 = *((Type*)vertices+indices[i+1]);
-                Type v2 = *((Type*)vertices+indices[i+2]);
+                Vertex v0 = vertices[indices[i]];
+                Vertex v1 = vertices[indices[i+1]];
+                Vertex v2 = vertices[indices[i+2]];
 
-                Type v3 = (v0+v1)/2;
-                Type v4 = (v1+v2)/2;
-                Type v5 = (v0+v2)/2;
+                Vertex v3 = (v0+v1)/2;
+                Vertex v4 = (v1+v2)/2;
+                Vertex v5 = (v0+v2)/2;
 
                 vertexData.add(v0);
                 vertexData.add(v1);
@@ -137,7 +137,7 @@ namespace Ghurund {
 
             vertexCount = vertexData.Size;
             delete[] vertices;
-            vertices = ghnew Type[vertexCount];
+            vertices = ghnew Vertex[vertexCount];
             memcpy(vertices, vertexData.begin(), vertexCount*vertexSize);
 
             indexCount = indexData.Size;
@@ -148,9 +148,9 @@ namespace Ghurund {
 
         void spherify() {
             for(vindex_t i = 0; i<vertexCount; i++) {
-                Vertex *v = (Vertex*)vertices+i;
-                XMVECTOR pos = XMLoadFloat3(&v->position);
-                XMStoreFloat3(&v->position, XMVector3Normalize(XMLoadFloat3(&v->position)));
+                Vertex &v = vertices[i];
+                XMVECTOR pos = XMLoadFloat3(&v.position);
+                XMStoreFloat3(&v.position, XMVector3Normalize(XMLoadFloat3(&v.position)));
             }
         }
 
@@ -176,6 +176,20 @@ namespace Ghurund {
 
         virtual const ResourceFormat &getDefaultFormat() const override {
             return ResourceFormat::MESH;
+        }
+
+        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir) {
+            float dist;
+            XMVECTOR pos2 = XMLoadFloat3(&pos);
+            XMVECTOR dir2 = XMLoadFloat3(&dir);
+            for(size_t i = 0; i<indexCount/3; i++) {
+                Vertex &v0 = vertices[indices[i]];
+                Vertex &v1 = vertices[indices[i+1]];
+                Vertex &v2 = vertices[indices[i+2]];
+                if(TriangleTests::Intersects(pos2, dir2, XMLoadFloat3(&v0.position), XMLoadFloat3(&v1.position), XMLoadFloat3(&v2.position), dist))
+                    return true;
+            }
+            return false;
         }
     };
 }

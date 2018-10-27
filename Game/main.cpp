@@ -26,6 +26,7 @@ private:
     float yaw = 0, pitch = 0;
     Application &app;
     bool pressed = false;
+    TransformedEntity *selection;
 
 public:
     TestLevel(Application &app):app(app) {}
@@ -43,8 +44,8 @@ public:
 
     virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) override {
         if(pressed) {
-            yaw += event.DeltaX/5.0f;
-            pitch += -event.DeltaY/5.0f;
+            yaw = event.Delta.x/5.0f;
+            pitch = -event.Delta.y/5.0f;
         }
         return true;
     }
@@ -60,6 +61,7 @@ public:
     virtual void onInit() override {
         Ghurund::Camera *camera = ghnew Ghurund::Camera();
         camera->initParameters(app.ParameterManager);
+        camera->setPositionTargetUp(XMFLOAT3(0, 50, -500), XMFLOAT3(0, 50, 0));
 
         Camera = camera;
 
@@ -107,26 +109,24 @@ public:
                 model->addReference();
                 model->release();
             }
-/*
+
             {
                 CubeMesh *cubeMesh = ghnew CubeMesh();
                 cubeMesh->init(app.Graphics, app.ResourceContext.CommandList);
 
-                Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/wireframe.hlsl");
-                Material *material = new Material(shader);
-                shader->release();
+                Material *material = Materials::loadWireframe(app.ResourceManager, app.ResourceContext);
 
                 Model *cubeModel = ghnew Model(cubeMesh, material);
-                TransformedEntity *transformedModel = ghnew TransformedEntity(*cubeModel);
-                transformedModel->Position = model->Mesh->BoundingBox.Center;
-                transformedModel->Scale = model->Mesh->BoundingBox.Extents;
+                selection = ghnew TransformedEntity(*cubeModel);
+                selection->Position = model->Mesh->BoundingBox.Center;
+                selection->Scale = model->Mesh->BoundingBox.Extents;
                 cubeModel->initParameters(app.ParameterManager);
                 cubeMesh->release();
                 material->release();
 
-                scene->Entities.add(transformedModel);
+                scene->Entities.add(selection);
             }
-            */
+
             {
                 Material *material = Materials::loadChecker(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *transformedModel = Models::makePlane(app.ResourceContext, *material);
@@ -147,8 +147,22 @@ public:
         //}
     }
 
+    virtual void onPreDraw(RenderingBatch &batch) {
+        GlobalEntity<Model> *model = batch.pick(*camera, app.Input.MousePos);
+        if(model!=nullptr) {
+            selection->Position = model->BoundingBox.Center;
+            selection->Scale = model->BoundingBox.Extents;
+        }
+    }
+
     virtual void onUpdate() override {
-        camera->setTargetDistanceOrbit(XMFLOAT3(0, 50, 0), 500, yaw*XM_PI/180, pitch*XM_PI/180);
+        if(app.Input.Keys[VK_CONTROL]) {
+            camera->rotate(yaw*XM_PI/180, pitch*XM_PI/180);
+        } else {
+            camera->orbit(yaw*XM_PI/180, pitch*XM_PI/180);
+        }
+        yaw = 0;
+        pitch = 0;
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 

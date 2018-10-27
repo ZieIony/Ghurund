@@ -35,6 +35,7 @@ namespace Ghurund {
         virtual void onInit() {}
         virtual void onUninit() {}
         virtual void onUpdate() {}
+        virtual void onPreDraw(RenderingBatch &batch) {}
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {
             if(camera==nullptr||scene==nullptr)
@@ -47,7 +48,7 @@ namespace Ghurund {
             XMStoreFloat4x4(&identity, XMMatrixIdentity());
             scene->flatten(batch, identity);
             batch.cull(*camera);
-            //batch.pick(*camera, mousePos);
+            onPreDraw(batch);
             batch.draw(commandList, parameterManager);
             batch.clear();
         }

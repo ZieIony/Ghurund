@@ -56,25 +56,18 @@ namespace Ghurund {
 
     class MouseMotionEvent:public MouseEvent {
     private:
-        int dx, dy;
+        XMINT2 delta;
 
     public:
-        MouseMotionEvent(int dx, int dy, time_t time):MouseEvent(time) {
-            this->dx = dx;
-            this->dy = dy;
+        MouseMotionEvent(XMINT2 &delta, time_t time):MouseEvent(time) {
+            this->delta = delta;
         }
 
-        int getDeltaX() const {
-            return dx;
+        const XMINT2 &getDelta() const {
+            return delta;
         }
 
-        __declspec(property(get = getDeltaX)) int DeltaX;
-
-        int getDeltaY() const {
-            return dy;
-        }
-
-        __declspec(property(get = getDeltaY)) int DeltaY;
+        __declspec(property(get = getDelta)) XMINT2 &Delta;
     };
 
     class MouseWheelEvent:public MouseEvent {

@@ -67,7 +67,7 @@ namespace Ghurund {
         parameterViewProjection->setValue(&viewProj);
     }
 
-    void Camera::calcMouseRay(XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir)const {
+    void Camera::calcMouseRay(const XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir)const {
         XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 0)),
                                               0, 0, screenSize.x, screenSize.y, 0, 1,
                                               XMLoadFloat4x4(&proj),
@@ -84,7 +84,7 @@ namespace Ghurund {
         XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
     }
 
-    void Camera::setPositionTargetUp(XMFLOAT3 & pos, XMFLOAT3 & target, XMFLOAT3 & up) {
+    void Camera::setPositionTargetUp(const XMFLOAT3 & pos, const XMFLOAT3 & target, const XMFLOAT3 & up) {
         this->pos = pos;
         this->target = target;
 
@@ -99,7 +99,7 @@ namespace Ghurund {
         XMStoreFloat3(&this->up, uv);
     }
 
-    void Camera::setPositionDirectionUp(XMFLOAT3 & pos, XMFLOAT3 & dir, XMFLOAT3 & up) {
+    void Camera::setPositionDirectionUp(const XMFLOAT3 & pos, const XMFLOAT3 & dir, const XMFLOAT3 & up) {
         this->pos = pos;
         XMStoreFloat3(&target, XMLoadFloat3(&target)-XMLoadFloat3(&pos));
 
@@ -114,13 +114,13 @@ namespace Ghurund {
         XMStoreFloat3(&this->up, uv);
     }
 
-    void Camera::setPositionDistanceRotation(XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll) {
+    void Camera::setPositionDistanceRotation(const XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll) {
         this->pos = pos;
         this->dist = dist;
         setRotation(yaw, pitch, roll);
     }
 
-    void Camera::setTargetDistanceOrbit(XMFLOAT3 &target, float dist, float yaw, float pitch, float roll) {
+    void Camera::setTargetDistanceOrbit(const XMFLOAT3 &target, float dist, float yaw, float pitch, float roll) {
         this->target = target;
         this->dist = dist;
         setOrbit(yaw, pitch, roll);

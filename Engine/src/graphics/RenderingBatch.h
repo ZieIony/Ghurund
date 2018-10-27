@@ -33,23 +33,23 @@ namespace Ghurund {
                 models[i]->cull(frustum);
         }
 
-        Model *pick(Camera &camera, XMINT2 &mousePos) {
+        GlobalEntity<Model> *pick(Camera &camera, XMINT2 &mousePos) {
             XMFLOAT3 pos, dir;
             camera.calcMouseRay(mousePos, pos, dir);
 
             List<GlobalEntity<Model>*> picked;
             for(size_t i = 0; i<models.Size; i++) {
-                //if(!models[i]->Visible)
-                  //  continue;
-                if(models[i]->checkIntersection(pos, dir));
-                    //picked.add(models[i]);
+                if(!models[i]->Visible)
+                    continue;
+                if(models[i]->intersects(pos, dir))
+                    picked.add(models[i]);
             }
 
             /*picked.sort([](const void *p1, const void *p2) {
                 return ((GlobalEntity<Model>*)p1)
             });*/
             // TODO: get all, sort, pick closest
-            return nullptr;
+            return picked.Size>0 ? picked[0] : nullptr;
         }
 
         virtual void initParameters(ParameterManager &parameterManager) override {

@@ -41,7 +41,7 @@ namespace Ghurund {
 
         void rebuild();
 
-        void calcMouseRay(XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir) const;
+        void calcMouseRay(const XMINT2 &mousePos, XMFLOAT3 &rayPos, XMFLOAT3 &rayDir) const;
 
         inline const XMFLOAT3 &getUp() const {
             return up;
@@ -113,10 +113,10 @@ namespace Ghurund {
             return &facing;
         }
 
-        void setPositionTargetUp(XMFLOAT3 &pos, XMFLOAT3 &target, XMFLOAT3 &up);
-        void setPositionDirectionUp(XMFLOAT3 &pos, XMFLOAT3 &dir, XMFLOAT3 &up);
-        void setPositionDistanceRotation(XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll = 0.0f);
-        void setTargetDistanceOrbit(XMFLOAT3 &target, float dist, float yaw, float pitch, float roll = 0.0f);
+        void setPositionTargetUp(const XMFLOAT3 &pos, const XMFLOAT3 &target, const XMFLOAT3 &up = XMFLOAT3(0, 1, 0));
+        void setPositionDirectionUp(const XMFLOAT3 &pos, const XMFLOAT3 &dir, const XMFLOAT3 &up = XMFLOAT3(0, 1, 0));
+        void setPositionDistanceRotation(const XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll = 0.0f);
+        void setTargetDistanceOrbit(const XMFLOAT3 &target, float dist, float yaw, float pitch, float roll = 0.0f);
         void setRotation(float yaw, float pitch, float roll = 0.0f);
         void setOrbit(float yaw, float pitch, float roll = 0.0f);
         void rotate(float yaw, float pitch, float roll = 0.0f);

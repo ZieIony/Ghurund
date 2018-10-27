@@ -73,5 +73,10 @@ namespace Ghurund {
         }
 
         virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override;
+
+        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir) {
+            return mesh->intersects(pos, dir);
+        }
+
     };
 }

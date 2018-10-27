@@ -13,13 +13,15 @@ namespace Ghurund {
     class Input {
     private:
         List<SystemMessage> messages;
-        int x = 0;
-        int y = 0;
+        XMINT2 mousePos;
+        bool keys[256];
 
         bool dispatchEvent(SystemMessage &message, EventDispatcher &consumer) {
             if(message.code == WM_KEYDOWN) {
+                keys[message.wParam] = true;
                 return consumer.dispatchKeyEvent(KeyEvent(KeyAction::DOWN, message.wParam, message.time));
             } else if(message.code == WM_KEYUP) {
+                keys[message.wParam] = false;
                 return consumer.dispatchKeyEvent(KeyEvent(KeyAction::UP, message.wParam, message.time));
             } else if(message.code == WM_LBUTTONDOWN) {
                 return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::LEFT, message.time));
@@ -36,9 +38,9 @@ namespace Ghurund {
             } else if(message.code == WM_MOUSEMOVE) {
                 int x2 = GET_X_LPARAM(message.lParam);
                 int y2 = GET_Y_LPARAM(message.lParam);
-                bool result = consumer.dispatchMouseMotionEvent(MouseMotionEvent(x2-x, y2-y, message.time));
-                x = x2;
-                y = y2;
+                bool result = consumer.dispatchMouseMotionEvent(MouseMotionEvent(XMINT2(x2-mousePos.x, y2-mousePos.y), message.time));
+                mousePos.x = x2;
+                mousePos.y = y2;
                 return result;
             } else if(message.code == WM_MOUSEWHEEL) {
                 return consumer.dispatchMouseWheelEvent(MouseWheelEvent(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(message.wParam), message.time));
@@ -68,9 +70,15 @@ namespace Ghurund {
         }
 
         XMINT2 getMousePos() const {
-            return XMINT2(x, y);
+            return mousePos;
         }
 
         __declspec(property(get = getMousePos)) XMINT2 MousePos;
+
+        const bool *getKeys() const {
+            return keys;
+        }
+
+        __declspec(property(get = getKeys)) bool *Keys;
     };
 }

@@ -17,6 +17,10 @@ namespace Ghurund {
     class Entity: public Resource, public NamedObject {
     public:
         virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) = 0;
+
+        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir) {
+            return false;
+        }
     };
 
     class TransformedEntity: public TransformedObject, public Entity {

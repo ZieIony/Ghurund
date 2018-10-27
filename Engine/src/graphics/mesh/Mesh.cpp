@@ -69,7 +69,7 @@ namespace Ghurund {
 
         vertexSize = sizeof(Vertex);
         vertexCount = triangleVertices.Size;
-        vertices = ghnew BYTE[vertexCount*vertexSize];
+        vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, triangleVertices.begin(), vertexCount*vertexSize);
 
         indexCount = triangleIndices.Size;
@@ -88,7 +88,7 @@ namespace Ghurund {
 
         vertexSize = sizeof(Vertex);
         vertexCount = stream.read<vindex_t>();
-        vertices = ghnew BYTE[vertexCount*vertexSize];
+        vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, stream.readBytes(vertexCount*vertexSize), vertexCount*vertexSize);
 
         indexCount = stream.read<vindex_t>();

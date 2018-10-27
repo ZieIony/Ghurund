@@ -19,7 +19,7 @@ namespace Ghurund {
 
             vertexSize = sizeof(ScreenVertex);
             vertexCount = sizeof(quadVertices) / vertexSize;
-            vertices = ghnew BYTE[vertexCount*vertexSize];
+            vertices = ghnew Vertex[vertexCount];
             memcpy(vertices, quadVertices, vertexCount*vertexSize);
 
             indices = ghnew unsigned int[6]{

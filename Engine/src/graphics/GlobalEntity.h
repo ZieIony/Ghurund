@@ -6,7 +6,8 @@
 
 namespace Ghurund {
 
-    template <class Type> class GlobalEntity: public ParameterProvider {
+    template <class Type>
+    class GlobalEntity: public ParameterProvider {
     private:
         XMFLOAT4X4 world;
         BoundingOrientedBox boundingBox;
@@ -49,14 +50,16 @@ namespace Ghurund {
             visible = frustum.Contains(boundingBox)!=ContainmentType::DISJOINT;
         }
 
-        bool checkIntersection(XMFLOAT3 &pos, XMFLOAT3 &dir) {
+        bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir) {
             float dist;
-            bool picked = boundingBox.Intersects(XMLoadFloat3(&pos), XMLoadFloat3(&dir), dist);
-            if(picked) {
-                // TODO: test geometry
-                //entity->
+            if(boundingBox.Intersects(XMLoadFloat3(&pos), XMLoadFloat3(&dir), dist)) {
+                XMMATRIX invTransform = XMMatrixInverse(nullptr, XMLoadFloat4x4(&world));
+                XMFLOAT3 pos2, dir2;
+                XMStoreFloat3(&pos2, XMVector3TransformCoord(XMLoadFloat3(&pos), invTransform));
+                XMStoreFloat3(&dir2, XMVector3Normalize(XMVector3TransformNormal(XMLoadFloat3(&dir), invTransform)));
+                return entity.intersects(pos2, dir2);
             }
-            return picked;
+            return false;
         }
     };
 }

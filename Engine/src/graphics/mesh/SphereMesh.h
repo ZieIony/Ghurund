@@ -16,7 +16,7 @@ namespace Ghurund {
 
 			vertexSize = sizeof(Vertex);
 			vertexCount = sizeof(triangleVertices) / vertexSize;
-			vertices = ghnew BYTE[vertexCount*vertexSize];
+			vertices = ghnew Vertex[vertexCount];
 			memcpy(vertices, triangleVertices, vertexCount*vertexSize);
 
 			indices = ghnew unsigned int[12]{
