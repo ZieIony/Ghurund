@@ -119,6 +119,19 @@ namespace Ghurund {
         return Status::OK;
     }
 
+    Mesh::~Mesh() {
+        for(size_t i = 0; i<commandLists.Size; i++)
+            if(commandLists.get(i)->references(*this))
+                commandLists.get(i)->wait();
+
+        delete[] vertices;
+        delete[] indices;
+        vertexBuffer.Reset();
+        indexBuffer.Reset();
+        vertexUploadHeap.Reset();
+        indexUploadHeap.Reset();
+    }
+
     Status Mesh::init(Graphics &graphics, CommandList &commandList) {
         if(commandList.Closed) {
             commandList.wait();
@@ -207,12 +220,144 @@ namespace Ghurund {
             indexBufferView.SizeInBytes = indexBufferSize;
         }
 
+        commandLists.add(&commandList);
+        commandList.addResourceRef(*this);
         commandList.finish();
+        commandList.wait();
+
+        Valid = true;
 
         return Status::OK;
     }
 
-    void Mesh::generateNormals(float smoothingTreshold) {}
+    void Mesh::draw(CommandList & commandList) {
+        ID3D12GraphicsCommandList *list = commandList.get();
+        list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+        list->IASetVertexBuffers(0, 1, &vertexBufferView);
+        list->IASetIndexBuffer(&indexBufferView);
+        list->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+    }
+
+    void Mesh::removeDuplicates() {
+        List<Vertex> vertexData;
+        List<vindex_t> indexData;
+
+        for(vindex_t i = 0; i<indexCount; i++) {
+            Vertex &v = vertices[indices[i]];
+            vindex_t index = vertexData.Size;
+
+            for(vindex_t j = 0; j<vertexData.Size; j++) {
+                if(v.equals(vertexData[j], 0.01f, 0.01f, 0.01f)) {
+                    index = j;
+                    break;
+                }
+            }
+
+            if(index==vertexData.Size)
+                vertexData.add(v);
+            indexData.add(index);
+        }
+
+        delete[] vertices;
+        vertexCount = vertexData.Size;
+        vertices = ghnew Vertex[vertexCount];
+        memcpy(vertices, vertexData.begin(), vertexCount*vertexSize);
+
+        delete[] indices;
+        indexCount = indexData.Size;
+        indices = ghnew vindex_t[indexCount];
+        memcpy(indices, indexData.begin(), sizeof(vindex_t)*indexCount);
+    }
+
+    void Mesh::subdivide() {
+        List<Vertex> vertexData;
+        List<vindex_t> indexData;
+
+        for(vindex_t i = 0, j = 0; i<indexCount; i += 3, j += 6) {
+            Vertex v0 = vertices[indices[i]];
+            Vertex v1 = vertices[indices[i+1]];
+            Vertex v2 = vertices[indices[i+2]];
+
+            Vertex v3 = (v0+v1)/2;
+            Vertex v4 = (v1+v2)/2;
+            Vertex v5 = (v0+v2)/2;
+
+            vertexData.add(v0);
+            vertexData.add(v1);
+            vertexData.add(v2);
+            vertexData.add(v3);
+            vertexData.add(v4);
+            vertexData.add(v5);
+
+            indexData.add(j);
+            indexData.add(j+3);
+            indexData.add(j+5);
+
+            indexData.add(j+1);
+            indexData.add(j+4);
+            indexData.add(j+3);
+
+            indexData.add(j+2);
+            indexData.add(j+5);
+            indexData.add(j+4);
+
+            indexData.add(j+3);
+            indexData.add(j+4);
+            indexData.add(j+5);
+        }
+
+        vertexCount = vertexData.Size;
+        delete[] vertices;
+        vertices = ghnew Vertex[vertexCount];
+        memcpy(vertices, vertexData.begin(), vertexCount*vertexSize);
+
+        indexCount = indexData.Size;
+        delete[] indices;
+        indices = ghnew vindex_t[indexCount];
+        memcpy(indices, indexData.begin(), indexCount*sizeof(vindex_t));
+    }
+
+    void Mesh::spherify() {
+        for(vindex_t i = 0; i<vertexCount; i++) {
+            Vertex &v = vertices[i];
+            XMVECTOR pos = XMLoadFloat3(&v.position);
+            XMStoreFloat3(&v.position, XMVector3Normalize(XMLoadFloat3(&v.position)));
+        }
+    }
+
+    /*
+    * smoothingTreshold maximum smooth angle in radians
+    */
+    void Mesh::generateSmoothing(float smoothingTreshold) {
+        Vertex *newVertices = ghnew Vertex[indexCount*3];
+        for(size_t i = 0; i<indexCount; i++) {
+            newVertices[i] = vertices[indices[i]];
+            indices[i] = i;
+        }
+
+        delete[] vertices;
+        vertexCount = indexCount;
+        vertices = newVertices;
+    }
+
+    void Mesh::generateNormals() {
+        for(size_t i = 0; i<vertexCount; i++)
+            vertices[i].normal = XMFLOAT3(0,0,0);
+        for(size_t i = 0; i<indexCount; i += 3) {
+            Vertex &v1 = vertices[indices[i]];
+            Vertex &v2 = vertices[indices[i+1]];
+            Vertex &v3 = vertices[indices[i+2]];
+            XMVECTOR pos1 = XMLoadFloat3(&v1.position);
+            XMVECTOR pos2 = XMLoadFloat3(&v2.position);
+            XMVECTOR pos3 = XMLoadFloat3(&v3.position);
+            XMVECTOR normal = XMVector3Normalize(XMVector3Cross(pos2-pos1, pos3-pos1));
+            XMStoreFloat3(&v1.normal, XMLoadFloat3(&v1.normal)+normal);
+            XMStoreFloat3(&v2.normal, XMLoadFloat3(&v2.normal)+normal);
+            XMStoreFloat3(&v3.normal, XMLoadFloat3(&v3.normal)+normal);
+        }
+        for(size_t i = 0; i<vertexCount; i++)
+            XMStoreFloat3(&vertices[i].normal, XMVector3Normalize(XMLoadFloat3(&vertices[i].normal)));
+    }
 
     void Mesh::generateTangents() {}
 
@@ -237,5 +382,19 @@ namespace Ghurund {
         XMFLOAT3 center = XMFLOAT3((min.x+max.x)/2, (min.y+max.y)/2, (min.z+max.z)/2);
         XMFLOAT3 extents = XMFLOAT3(center.x-min.x, center.y-min.y, center.z-min.z);
         boundingBox = DirectX::BoundingBox(center, extents);
+    }
+
+    bool Mesh::intersects(XMFLOAT3 & pos, XMFLOAT3 & dir) {
+        float dist;
+        XMVECTOR pos2 = XMLoadFloat3(&pos);
+        XMVECTOR dir2 = XMLoadFloat3(&dir);
+        for(size_t i = 0; i<indexCount/3; i++) {
+            Vertex &v0 = vertices[indices[i]];
+            Vertex &v1 = vertices[indices[i+1]];
+            Vertex &v2 = vertices[indices[i+2]];
+            if(TriangleTests::Intersects(pos2, dir2, XMLoadFloat3(&v0.position), XMLoadFloat3(&v1.position), XMLoadFloat3(&v2.position), dist))
+                return true;
+        }
+        return false;
     }
 }

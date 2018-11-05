@@ -21,7 +21,7 @@ namespace Ghurund{
             samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;
             samplerDesc.MinLOD = 0.0f;
             samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;
-            samplerDesc.ShaderRegister = 0;
+            samplerDesc.ShaderRegister = bindPoint;
             samplerDesc.RegisterSpace = 0;
             samplerDesc.ShaderVisibility = visibility;
         }

@@ -22,22 +22,28 @@
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
-    class Shader:public Resource {
+    class Shader:public Resource, public ParameterProvider {
     private:
         ShaderProgram *programs[6] = {};
         ComPtr<ID3D12RootSignature> rootSignature;
         ComPtr<ID3D12PipelineState> pipelineState;
 
-		List<ConstantBuffer*> constantBuffers;
+        List<ConstantBuffer*> constantBuffers;
         List<TextureBufferConstant*> textureBuffers;
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
-        
+
+        Array<Parameter*> *parameters = nullptr;
+        Graphics *graphics;
+        PointerList<CommandList*> commandLists;
+
         char *source = nullptr;
         bool compiled = false;
 
         Status makeRootSignature(Graphics &graphics);
         Status makePipelineState(Graphics &graphics);
+
+        D3D12_INPUT_LAYOUT_DESC getInputLayout();
 
         void initConstants(Graphics &graphics, ParameterManager &parameterManager);
         void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
@@ -45,42 +51,30 @@ namespace Ghurund {
         Status loadShd(ResourceContext &context, MemoryInputStream &stream);
         Status loadHlsl(ResourceContext &context, MemoryInputStream &stream);
 
+        void finalize();
+
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
 
     public:
+        ~Shader();
 
-        Shader() {}
-
-        ~Shader() {
-            constantBuffers.deleteItems();
-            textureBuffers.deleteItems();
-            textures.deleteItems();
-            samplers.deleteItems();
-            for(size_t i = 0; i<6; i++)
-                delete programs[i];
-            delete[] source;
-        }
+        virtual void invalidate();
 
         Status compile(char **output = nullptr);
 
-        Status build(ResourceContext &context, char **output = nullptr) {
-            Status result;
-            if(!compiled)
-                if((result = compile(output))!=Status::OK)
-                    return result;
-            Graphics &graphics = context.Graphics;
-            initConstants(graphics, context.ParameterManager);
-			if((result = makeRootSignature(graphics))!=Status::OK)
-                return result;
-            return makePipelineState(graphics);
+        Status build(ResourceContext &context, char **output = nullptr);
+
+        virtual void initParameters(ParameterManager &parameterManager) override;
+
+        virtual void updateParameters() override {
+            for(size_t i = 0; i<constantBuffers.Size; i++)
+                constantBuffers[i]->updateParameters();
         }
 
-        D3D12_INPUT_LAYOUT_DESC getInputLayout();
-
-        size_t getParametersCount() {
-            return constantBuffers.Size+textureBuffers.Size+textures.Size;
+        virtual Array<Parameter*> &getParameters() {
+            return *parameters;
         }
 
         void setSourceCode(const char *source) {
@@ -92,12 +86,15 @@ namespace Ghurund {
             return source;
         }
 
-        void set(CommandList &commandList, ParameterManager &parameterManager) {
-            commandList.get()->SetPipelineState(pipelineState.Get());
-            commandList.get()->SetGraphicsRootSignature(rootSignature.Get());
+        void set(CommandList &commandList) {
+            commandLists.add(&commandList);
+            commandList.addResourceRef(*this);
+
+            commandList.setPipelineState(pipelineState.Get());
+            commandList.setGraphicsRootSignature(rootSignature.Get());
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
-                constantBuffers[i]->set(commandList, parameterManager);
+                constantBuffers[i]->set(commandList);
         }
 
         virtual const Ghurund::Type &getType() const override {

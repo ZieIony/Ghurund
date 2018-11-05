@@ -3,7 +3,7 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) List<Parameter*> *ParameterProvider_getParameters(ParameterProvider *_this) {
+extern "C" __declspec(dllexport) Array<Parameter*> *ParameterProvider_getParameters(ParameterProvider *_this) {
     return &_this->getParameters();
 }
 
@@ -11,8 +11,8 @@ extern "C" __declspec(dllexport) void ParameterProvider_initParameters(Parameter
     _this->initParameters(*manager);
 }
 
-extern "C" __declspec(dllexport) void ParameterProvider_fillParameters(ParameterProvider *_this) {
-    _this->fillParameters();
+extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(ParameterProvider *_this) {
+    _this->updateParameters();
 }
 
 extern "C" __declspec(dllexport) const Type *Entity_getType(Entity *_this) {

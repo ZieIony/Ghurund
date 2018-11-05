@@ -6,23 +6,17 @@
 namespace Ghurund {
     class File {
     private:
-        tchar *name = nullptr;
+        String name;
         size_t size = 0;
         void *data = nullptr;
 
     public:
 
-        File(const tchar *name) {
-            safeCopyStr(&this->name, name);
-        }
-
         File(const String &name) {
-            const tchar *text = name.getData();
-            safeCopyStr(&this->name, text);
+            this->name = name;
         }
 
         ~File() {
-            delete[] name;
             delete[] data;
         }
 
@@ -30,13 +24,13 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        const tchar *getName() const { return name; }
+        const String &getName() const { return name; }
 
-        void setName(const tchar *val) {
-            safeCopyStr(&name, val);
+        void setName(const String &val) {
+            this->name = val;
         }
 
-        __declspec(property(get = getName, put = setName)) tchar *Name;
+        __declspec(property(get = getName, put = setName)) String &Name;
 
         const void *getData()const {
             return data;

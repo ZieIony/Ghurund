@@ -26,6 +26,7 @@ namespace Ghurund {
     const char *Parameter::ZFAR = "zFar";
 
     const char *Parameter::WORLD = "world";
+    const char *Parameter::WORLD_IT = "worldIT";
     const char *Parameter::VIEW = "view";
     const char *Parameter::PROJECTION = "projection";
     const char *Parameter::VIEW_PROJECTION = "viewProjection";

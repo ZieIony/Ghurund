@@ -5,19 +5,18 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
              xmlns:local="clr-namespace:Ghurund.Editor"
-             mc:Ignorable="d" 
+			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+			 mc:Ignorable="d" 
              d:DesignHeight="188.771" d:DesignWidth="325.343">
 	<DockPanel>
-		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource WorkspacePanel.Primary}">
-			<ToolBarPanel  >
-				<Button Click="Button_Click" Background="{x:Null}" BorderBrush="{x:Null}">
-					<Image Source="./Resources/addFolder32.png" Width="16" Height="16"/>
-				</Button>
+		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Primary}">
+			<ToolBarPanel Margin="4,0,4,0">
+				<controls:IconButton Icon="./Resources/addFolder32.png" Click="Button_Click" Style="{StaticResource IconButton_Large}"/>
 			</ToolBarPanel>
 		</WrapPanel>
-		<workspace:SplitPanel BorderThickness="0,1,0,0" BorderBrush="{DynamicResource WorkspacePanel.Border}"  >
+		<workspace:SplitPanel BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}">
 			<workspace:SplitPanel.Panel1>
-				<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" SelectedItemChanged="treeView_SelectedItemChanged">
+				<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" SelectedItemChanged="treeView_SelectedItemChanged" Background="{StaticResource Ghurund.Background}">
 					<TreeView.Resources>
 						<HierarchicalDataTemplate DataType="{x:Type local:Library}" ItemsSource="{Binding Items}">
 							<StackPanel Orientation="Horizontal">
@@ -27,7 +26,7 @@
 						<HierarchicalDataTemplate DataType="{x:Type local:ResourceDirectory}" ItemsSource="{Binding Items}">
 							<StackPanel Orientation="Horizontal">
 								<Image Source="./Resources/folder32.png" Width="16" Height="16" Margin="0,0,4,0" />
-								<TextBlock Text="{Binding Name}" />
+								<TextBlock Text="{Binding Name}" Foreground="{StaticResource Ghurund.Text.Primary}"/>
 							</StackPanel>
 						</HierarchicalDataTemplate>
 					</TreeView.Resources>

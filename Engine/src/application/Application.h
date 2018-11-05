@@ -77,7 +77,7 @@ namespace Ghurund {
         virtual void onSizeChanged() {
             Window.updateSize();
             Renderer.resize(Window.Width, Window.Height);
-            Window.fillParameters();
+            Window.updateParameters();
         }
 
         /*

@@ -1,23 +1,19 @@
 #pragma once
 
 #include "ParameterManager.h"
+#include "collection/Array.h"
 
 namespace Ghurund {
     class ParameterProvider {
-    protected:
-        List<Parameter*> parameters;
-
     public:
         virtual ~ParameterProvider() = default;
 
         virtual void initParameters(ParameterManager &parameterManager) {}
 
-        virtual void fillParameters() {}
+        virtual void updateParameters() {}
 
-        List<Parameter*> &getParameters() {
-            return parameters;
-        }
+        virtual Array<Parameter*> &getParameters() = 0;
 
-        __declspec(property(get = getParameters)) List<Parameter*> &Parameters;
+        __declspec(property(get = getParameters)) Array<Parameter*> &Parameters;
     };
 }

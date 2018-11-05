@@ -19,6 +19,7 @@ namespace Ghurund {
         String name;
         std::function<Status()> function;
         Status result = Status::UNKNOWN;
+        time_t time;
 
     public:
         unsigned int getId() const {
@@ -60,18 +61,20 @@ namespace Ghurund {
 
     public:
 
-        void post(const String &name, std::function<Status()> function) {
+        void post(Task &task, long delayMs = 0) {
             section.enter();
-            Task *task = ghnew Task(name, function);
-            queue.push_back(task);
+            time_t timer;
+            time(&timer);
+            task.time = timer + delayMs;
+            queue.push_back(&task);
             section.leave();
             notify();
         }
 
-        void remove(Task *task) {
+        void remove(Task &task) {
             section.enter();
             for(auto it = queue.begin(); it!=queue.end(); ++it) {
-                if((*it)->id==task->id) {
+                if((*it)->id==task.id) {
                     queue.erase(it);
                     break;
                 }
@@ -106,11 +109,25 @@ namespace Ghurund {
                         section.leave();
                         break;
                     }
-                    Task *task = queue.front();
-                    queue.pop_front();
+                    time_t timer;
+                    time(&timer);
+                    Task *task = nullptr;
+                    for(auto it = queue.begin(); it!=queue.end(); ++it) {
+                        if((*it)->time<timer) {
+                            task = *it;
+                            queue.erase(it);
+                            break;
+                        }
+                        if(task==nullptr||(*it)->time<task->time)
+                            task = *it;
+                    }
                     section.leave();
-                    task->run();
-                    task->release();
+                    if(task->time>timer) {
+                        wait((DWORD)(timer-task->time));
+                    } else {
+                        task->run();
+                        task->release();
+                    }
                 }
             }
         }

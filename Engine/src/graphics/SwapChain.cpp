@@ -17,7 +17,7 @@ namespace Ghurund {
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if(FAILED(graphics.getFactory()->CreateSwapChainForHwnd(graphics.CommandQueue.Get(), window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
+        if(FAILED(graphics.getFactory()->CreateSwapChainForHwnd(graphics.DirectQueue.Get(), window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
             Logger::log(_T("factory->CreateSwapChainForHwnd() failed\n"));
             return Status::CALL_FAIL;
         }

@@ -2,10 +2,9 @@
 
 #include "Ghurund.h"
 #include <algorithm>
-#include "core/Object.h"
 
 namespace Ghurund {
-    template<class Key, class Value> class Collection:public Object {
+    class Collection {
     protected:
         size_t initial;
         size_t size;
@@ -18,24 +17,18 @@ namespace Ghurund {
             size = 0;
             capacity = initial = Collection::INITIAL_CAPACITY;
         }
+
         Collection(const Collection& collection) {
             size = collection.size;
             capacity = collection.capacity;
             initial = collection.initial;
         }
+
         virtual ~Collection() {};
 
-        inline void set(Key i, Value e);
-        inline Value get(Key i)const;
         inline void clear() {
             size = 0;
         }
-        inline Value *begin();
-        inline Value *end();
-        inline size_t indexOf(Value item);
-        inline bool contains(Value item);
-        Value &operator[](Key i);
-        const Value &operator[](Key i)const;
 
         inline bool isEmpty()const {
             return size==0;

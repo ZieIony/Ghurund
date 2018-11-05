@@ -27,17 +27,21 @@ namespace Ghurund {
             v = t1;
         }
 
+        void computeHash() {
+            hash = hashCode(v, size-1);
+        }
+
     public:
         GenericString() {
             size = 1;   // with null terminator
-            capacity = initial = Collection<size_t, Type>::INITIAL_CAPACITY;
+            capacity = initial = Collection::INITIAL_CAPACITY;
             v = ghnew Type[capacity];
             v[size-1] = 0;
             hash = 0;
         }
 
         GenericString(const Type *str) {
-            initial = Collection<size_t, Type>::INITIAL_CAPACITY;
+            initial = Collection::INITIAL_CAPACITY;
             capacity = size = lengthOf(str)+1;
             v = ghnew Type[capacity];
             memcpy(v, str, size*sizeof(Type));
@@ -45,7 +49,7 @@ namespace Ghurund {
         }
 
         GenericString(const Type *str, size_t length) {
-            initial = Collection<size_t, Type>::INITIAL_CAPACITY;
+            initial = Collection::INITIAL_CAPACITY;
             capacity = size = length+1;
             v = ghnew Type[capacity];
             memcpy(v, str, length*sizeof(Type));
@@ -54,7 +58,7 @@ namespace Ghurund {
         }
 
         GenericString(const GenericString<Type> &string) {
-            initial = Collection<size_t, Type>::INITIAL_CAPACITY;
+            initial = Collection::INITIAL_CAPACITY;
             capacity = size = string.size;
             v = ghnew Type[capacity];
             memcpy(v, string.v, size*sizeof(Type));
@@ -132,10 +136,6 @@ namespace Ghurund {
             return v[i];
         }
 
-        void computeHash() {
-            hash = hashCode(v, size-1);
-        }
-
         bool operator==(const GenericString &string) const {
             return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, Length*sizeof(Type))==0;
         }
@@ -195,6 +195,11 @@ namespace Ghurund {
 
         __declspec(property(get = isEmpty)) bool Empty;
 
+        int getHash()const {
+            return hash;
+        }
+
+        __declspec(property(get = getHash)) int Hash;
     };
 
 

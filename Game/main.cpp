@@ -1,5 +1,4 @@
 #include "net/Client.h"
-#include "core/Object.h"
 #include "core/Logger.h"
 #include <fcntl.h>
 #include <process.h>
@@ -7,7 +6,6 @@
 #include "application/Application.h"
 #include "resource/TextResource.h"
 #include "game/Scene.h"
-#include "collection/TypeMap.h"
 #include "graphics/mesh/QuadMesh.h"
 #include "audio/Sound.h"
 #include "graphics/Models.h"
@@ -67,14 +65,14 @@ public:
 
         File sceneFile("test.scene");
         /*if(sceneFile.Exists) {
-            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *resource, Status result) {
-                setScene(resource);
+            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
+                setScene(scene);
+                scene->initParameters(app.ParameterManager);
             });
         } else {*/
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
-            camera->addReference();
             camera->release();
 
             Model *model;
@@ -91,58 +89,62 @@ public:
                 Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
                 Texture *texture = ghnew Texture();
                 texture->init(app.ResourceContext, *image);
-                image->release();
 
                 Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
-                Material *material = new Material(shader);
+                Material *material = ghnew Material(shader);
                 material->Textures.set("diffuse", texture);
-                texture->addReference();
-                shader->release();
+                material->Valid = true;
                 texture->release();
 
                 model = ghnew Model(mesh, material);
-                model->initParameters(app.ParameterManager);
-                mesh->release();
+                model->Valid = true;
                 material->release();
 
                 scene->Entities.add(model);
-                model->addReference();
                 model->release();
             }
 
             {
-                CubeMesh *cubeMesh = ghnew CubeMesh();
-                cubeMesh->init(app.Graphics, app.ResourceContext.CommandList);
-
-                Material *material = Materials::loadWireframe(app.ResourceManager, app.ResourceContext);
-
-                Model *cubeModel = ghnew Model(cubeMesh, material);
-                selection = ghnew TransformedEntity(*cubeModel);
-                selection->Position = model->Mesh->BoundingBox.Center;
-                selection->Scale = model->Mesh->BoundingBox.Extents;
-                cubeModel->initParameters(app.ParameterManager);
-                cubeMesh->release();
+                Material *material = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
+                TransformedEntity *transformedModel = Models::makeSphere(app.ResourceContext, *material);
                 material->release();
 
-                scene->Entities.add(selection);
+                transformedModel->Position = XMFLOAT3(100, 100, 100);
+                transformedModel->Scale = XMFLOAT3(50, 50, 50);
+
+                //scene->Entities.add(transformedModel);
+                transformedModel->release();
             }
 
             {
-                Material *material = Materials::loadChecker(app.ResourceManager, app.ResourceContext);
+                Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *transformedModel = Models::makePlane(app.ResourceContext, *material);
                 material->release();
 
-                transformedModel->Position = model->Mesh->BoundingBox.Center;
-                transformedModel->Position.y = 0;
-                transformedModel->Scale = model->Mesh->BoundingBox.Extents;
+                transformedModel->Scale = XMFLOAT3(10000, 1, 10000);
 
-                scene->Entities.add(transformedModel);
+                //scene->Entities.add(transformedModel);
+                transformedModel->release();
             }
 
-            Status result = scene->save(app.ResourceManager, "test.scene");
-            if(result!=Status::OK)
-                Logger::log(_T("failed to save scene\n"));
+            {
+                Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
+                TransformedEntity *selection = Models::makeCube(app.ResourceContext, *material);
+                material->release();
+         
+                selection->Position = model->Mesh->BoundingBox.Center;
+                selection->Scale = model->Mesh->BoundingBox.Extents;
 
+                scene->Entities.add(selection);
+                selection->release();
+            }
+
+            /*Status result = scene->save(app.ResourceManager, "test.scene");
+            if(result!=Status::OK)
+                Logger::log(_T("failed to save scene\n"));*/
+
+     
+            scene->initParameters(app.ParameterManager);
             scene->release();
         //}
     }
@@ -150,8 +152,8 @@ public:
     virtual void onPreDraw(RenderingBatch &batch) {
         GlobalEntity<Model> *model = batch.pick(*camera, app.Input.MousePos);
         if(model!=nullptr) {
-            selection->Position = model->BoundingBox.Center;
-            selection->Scale = model->BoundingBox.Extents;
+  //          selection->Position = model->BoundingBox.Center;
+//            selection->Scale = model->BoundingBox.Extents;
         }
     }
 
@@ -167,7 +169,6 @@ public:
     }
 
     virtual void onUninit() override {
-        camera->release();
     }
 };
 
@@ -184,7 +185,6 @@ public:
     void onUpdate() {}
 
     void onUninit() {
-        ResourceManager.clear();
         LevelManager.setLevel(nullptr);
         delete testLevel;
     }

@@ -9,10 +9,8 @@ namespace Ghurund {
     void dumpPointers() {
 #ifdef _DEBUG
         for(unsigned int i = 0; i<pointers.getSize(); i++) {
-            tchar text[300];
             Pointer *p = pointers[i];
-            _stprintf_s(text, 300, _T("unallocated pointer: \n[%#x] %hs refCount=%i\n"), (int)p, typeid(*p).name(), p->ReferenceCount);
-            Logger::log(text);
+            Logger::log(_T("allocated pointer: [%#x] %hs refCount=%lu\n"), (int)p, typeid(*p).name(), p->ReferenceCount);
         }
 #endif
     }
@@ -31,14 +29,11 @@ namespace Ghurund {
     Pointer::~Pointer() {
 #ifdef _DEBUG
         if(referenceCount) {
-            tchar text[200];
-            String name = typeid(*this).name();
             if(referenceCount==1) {
-                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i. This deletion could be replaced with Pointer::release() call"), (int)this, name.getData(), referenceCount);
+                Logger::log(_T("[%#x] %hs delete refCount=1. This deletion could be replaced with Pointer::release() call"), (int)this, typeid(*this).name());
             } else {
-                _stprintf_s(text, 200, _T("[%#x] %s delete refCount=%i. The object may still be in use. Consider replacing deletion with Pointer::release() call"), (int)this, name.getData(), referenceCount);
+                Logger::log(_T("[%#x] %hs delete refCount=%lu. The object may still be in use. Consider replacing deletion with Pointer::release() call"), (int)this, typeid(*this).name(), referenceCount);
             }
-            Logger::log(text);
         }
         pointers.remove(this);
 #endif

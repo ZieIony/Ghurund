@@ -20,17 +20,25 @@ namespace Ghurund {
                 scene->release();
         }
 
+        Camera *getCamera() {
+            return camera;
+        }
+
         void setCamera(Camera *camera) {
             setPointer(this->camera, camera);
         }
 
-        __declspec(property(put = setCamera)) Camera *Camera;
+        __declspec(property(get = getCamera, put = setCamera)) Camera *Camera;
+
+        Scene *getScene() {
+            return scene;
+        }
 
         void setScene(Scene *scene) {
             setPointer(this->scene, scene);
         }
 
-        __declspec(property(put = setScene)) Scene *Scene;
+        __declspec(property(get = getScene, put = setScene)) Scene *Scene;
 
         virtual void onInit() {}
         virtual void onUninit() {}
@@ -41,7 +49,7 @@ namespace Ghurund {
             if(camera==nullptr||scene==nullptr)
                 return;
 
-            camera->fillParameters();
+            camera->updateParameters();
             RenderingBatch batch;
             batch.initParameters(parameterManager);
             XMFLOAT4X4 identity;

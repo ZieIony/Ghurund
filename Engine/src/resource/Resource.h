@@ -2,12 +2,12 @@
 
 #include "Ghurund.h"
 #include "File.h"
-#include "core/Object.h"
 #include "core/MemoryStream.h"
 #include "ResourceFormat.h"
 #include "collection/Array.h"
 #include "core/Pointer.h"
 #include "ResourceContext.h"
+
 
 using namespace std;
 
@@ -63,12 +63,19 @@ namespace Ghurund {
         Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT) const;
         Status save(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
 
+        virtual void invalidate() {
+            valid = false;
+        }
 
-        virtual bool isValid() {
+        void setValid(bool valid) {
+            this->valid = valid;
+        }
+
+        virtual bool isValid() const {
             return valid;
         }
 
-        __declspec(property(get = isValid)) bool Valid;
+        __declspec(property(get = isValid, put = setValid)) bool Valid;
 
         const String &getFileName() const {
             return fileName;

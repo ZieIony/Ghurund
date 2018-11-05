@@ -32,8 +32,22 @@ namespace Ghurund {
         queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&commandQueue)))) {
-            Logger::log(_T("device->CreateCommandQueue() failed\n"));
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&directQueue)))) {
+            Logger::log(_T("create direct queue failed\n"));
+            return Status::CALL_FAIL;
+        }
+
+        queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
+
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&computeQueue)))) {
+            Logger::log(_T("create compute queue failed\n"));
+            return Status::CALL_FAIL;
+        }
+
+        queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
+
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&copyQueue)))) {
+            Logger::log(_T("create copy queue failed\n"));
             return Status::CALL_FAIL;
         }
 

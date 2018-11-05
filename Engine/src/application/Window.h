@@ -6,6 +6,7 @@
 #include "d3dx12.h"
 #include "game/ParameterProvider.h"
 #include "core/NamedObject.h"
+#include "collection/Array.h"
 
 namespace Ghurund {
     class Window: public ParameterProvider, public NamedObject {
@@ -21,22 +22,30 @@ namespace Ghurund {
         D3D12_RECT scissorRect;
         unsigned int width, height;
 
-        Parameter *widthParameter, *heightParameter;
+        Array<Parameter*> parameters;
+        Parameter *parameterWidth = nullptr, *parameterHeight;
 
     public:
 
-        Window() {
+        Window():parameters(Array<Parameter*>(2)) {
             Name = _T("window");
         }
 
         virtual void initParameters(ParameterManager &parameterManager) override {
-            widthParameter = parameterManager.add(Parameter::WIDTH, ParameterType::FLOAT);
-            heightParameter = parameterManager.add(Parameter::HEIGHT, ParameterType::FLOAT);
-		}
+            if(parameterWidth!=nullptr)
+                return;
 
-        virtual void fillParameters() override {
-            widthParameter->setValue(&width);
-            heightParameter->setValue(&height);
+            parameters[0] = parameterWidth = parameterManager.add(Parameter::WIDTH, ParameterType::FLOAT);
+            parameters[1] = parameterHeight = parameterManager.add(Parameter::HEIGHT, ParameterType::FLOAT);
+        }
+
+        virtual void updateParameters() override {
+            parameterWidth->setValue(&width);
+            parameterHeight->setValue(&height);
+        }
+
+        virtual Array<Parameter*> &getParameters() {
+            return parameters;
         }
 
         void init(HWND handle);

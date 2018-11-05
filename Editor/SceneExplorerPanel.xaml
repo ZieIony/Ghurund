@@ -9,29 +9,52 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="333.792">
 	<DockPanel>
-		<controls:HintTextBox  Height="20"  TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,1,0,1" HintText="Filter" Padding="4,0,4,0" />
-		<TreeView Name="treeView" BorderThickness="0" SelectedItemChanged="treeView_SelectedItemChanged" MouseDoubleClick="treeView_MouseDoubleClick">
+		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Primary}">
+			<ToolBarPanel Margin="4,0,4,0" Orientation="Horizontal">
+				<controls:IconButton Icon="./Resources/light32.png" Style="{StaticResource IconButton_Large}"/>
+				<controls:IconButton Icon="./Resources/camera32.png" Style="{StaticResource IconButton_Large}"/>
+			</ToolBarPanel>
+		</WrapPanel>
+		<controls:HintTextBox  Height="20" TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" />
+		<TreeView Name="treeView"
+				  BorderThickness="0"
+				  Background="{x:Null}"
+				  Foreground="{DynamicResource Ghurund.Text.Primary}"
+				  SelectedItemChanged="treeView_SelectedItemChanged"
+				  MouseDoubleClick="treeView_MouseDoubleClick">
 			<TreeView.Resources>
 				<DataTemplate DataType="{x:Type graphics:Camera}">
 					<StackPanel Orientation="Horizontal">
-						<Image Source="./Resources/camera16.png" Margin="0,0,4,0" />
-						<TextBlock Text="{Binding Name}" />
+						<Rectangle Margin="0,0,4,0" DockPanel.Dock="Left" Width="16" Height="16" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+							<Rectangle.OpacityMask>
+								<ImageBrush ImageSource="./Resources/camera32.png"/>
+							</Rectangle.OpacityMask>
+						</Rectangle>
+						<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}" />
 					</StackPanel>
 				</DataTemplate>
 				<DataTemplate DataType="{x:Type graphics:Light}">
 					<StackPanel Orientation="Horizontal">
-						<Image Source="./Resources/light16.png" Margin="0,0,4,0" />
-						<TextBlock Text="{Binding Name}" />
+						<Rectangle Margin="0,0,4,0" DockPanel.Dock="Left" Width="16" Height="16" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+							<Rectangle.OpacityMask>
+								<ImageBrush ImageSource="./Resources/light32.png"/>
+							</Rectangle.OpacityMask>
+						</Rectangle>
+						<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 					</StackPanel>
 				</DataTemplate>
 				<DataTemplate DataType="{x:Type graphics:Model}">
 					<StackPanel Orientation="Horizontal">
-						<Image Source="./Resources/model16.png" Margin="0,0,4,0" />
-						<TextBlock Text="{Binding Name}" />
+						<Rectangle Margin="0,0,4,0" DockPanel.Dock="Left" Width="16" Height="16" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+							<Rectangle.OpacityMask>
+								<ImageBrush ImageSource="./Resources/model32.png"/>
+							</Rectangle.OpacityMask>
+						</Rectangle>
+						<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 					</StackPanel>
 				</DataTemplate>
 				<HierarchicalDataTemplate DataType="{x:Type game:Scene}" ItemsSource="{Binding Entities}">
-					<TextBlock Text="{Binding Name}" />
+					<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 				</HierarchicalDataTemplate>
 			</TreeView.Resources>
 		</TreeView>

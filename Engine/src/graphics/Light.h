@@ -6,6 +6,7 @@ namespace Ghurund {
     class Light: public Entity {
     private:
         XMFLOAT3 target;
+        Array<Parameter*> parameters;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
@@ -17,8 +18,12 @@ namespace Ghurund {
         }
 
     public:
-        Light() {
+        Light():parameters(Array<Parameter*>(0)) {
             Name = _T("light");
+        }
+
+        virtual Array<Parameter*> &getParameters() override {
+            return parameters;
         }
 
         virtual const Ghurund::Type &getType() const override {

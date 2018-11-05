@@ -7,7 +7,7 @@
 namespace Ghurund {
 
     template <class Type>
-    class GlobalEntity: public ParameterProvider {
+    class GlobalEntity {
     private:
         XMFLOAT4X4 world;
         BoundingOrientedBox boundingBox;

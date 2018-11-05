@@ -17,10 +17,12 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
+    class CommandList;
+
     class Graphics {
     private:
         ComPtr<ID3D12Device> device;
-        ComPtr<ID3D12CommandQueue> commandQueue;
+        ComPtr<ID3D12CommandQueue> directQueue, computeQueue, copyQueue;
         ComPtr<IDXGIFactory4> factory;
 
 		DescriptorAllocator allocator;
@@ -67,11 +69,23 @@ namespace Ghurund {
 
         __declspec(property(get = getDevice)) ComPtr<ID3D12Device> Device;
 
-        ComPtr<ID3D12CommandQueue> getCommandQueue() {
-            return commandQueue;
+        ComPtr<ID3D12CommandQueue> getDirectQueue() {
+            return directQueue;
         }
 
-        __declspec(property(get = getCommandQueue)) ComPtr<ID3D12CommandQueue> CommandQueue;
+        __declspec(property(get = getDirectQueue)) ComPtr<ID3D12CommandQueue> DirectQueue;
+
+        ComPtr<ID3D12CommandQueue> getComputeQueue() {
+            return computeQueue;
+        }
+
+        __declspec(property(get = getComputeQueue)) ComPtr<ID3D12CommandQueue> ComputeQueue;
+
+        ComPtr<ID3D12CommandQueue> getCopyQueue() {
+            return copyQueue;
+        }
+
+        __declspec(property(get = CopyQueue)) ComPtr<ID3D12CommandQueue> CopyQueue;
 
         ComPtr<IDXGIFactory4> getFactory() {
             return factory;
@@ -90,6 +104,5 @@ namespace Ghurund {
 		}
 
 		__declspec(property(get = getDescriptorAllocator)) DescriptorAllocator &DescriptorAllocator;
-
     };
 }

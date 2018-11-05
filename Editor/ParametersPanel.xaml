@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="182.869" d:DesignWidth="153.602">
 	<DockPanel>
-		<controls:HintTextBox  Height="20"  TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,1,0,1" HintText="Filter" Padding="4,0,4,0" />
+		<controls:HintTextBox  Height="20"  TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" />
 		<controls:PropertyGrid Name="propertyGrid"/>
 	</DockPanel>
 </UserControl>

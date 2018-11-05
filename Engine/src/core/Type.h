@@ -14,7 +14,9 @@ namespace Ghurund {
             &SCENE,
             &SHADER, &TEXTURE, &MATERIAL, &IMAGE,
             &MODEL, &MESH,
-            &SOUND;
+            &SOUND,
+            &TRANSFORMED_ENTITY,
+            &COMMAND_LIST;
 
         Type(std::function<void*()> constructor, const tchar *name) {
             this->constructor = constructor;

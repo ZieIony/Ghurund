@@ -7,8 +7,8 @@
 	xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace" x:Class="Ghurund.Editor.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-	<DockPanel Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-		<Menu DockPanel.Dock="Top">
+	<DockPanel Background="{DynamicResource Ghurund.Background}">
+		<Menu DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 			<MenuItem Header="_File">
 				<MenuItem Header="_New" Click="FileNew_Click">
 					<MenuItem.Icon >
@@ -32,7 +32,7 @@
 				<MenuItem Header="_Logs" Click="LogPanel_Click"/>
 			</MenuItem>
 		</Menu>
-		<StatusBar DockPanel.Dock="Bottom">
+		<StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource Ghurund.Background}">
 			<StatusBarItem Name="currentTask">
 				<DockPanel>
 					<TextBlock Name="currentTaskName" Text="status"/>

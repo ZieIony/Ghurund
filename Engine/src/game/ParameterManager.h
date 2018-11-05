@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Ghurund.h"
-#include "collection/TypeMap.h"
 #include "collection/String.h"
 #include "Parameter.h"
 #include "core/CriticalSection.h"
@@ -29,6 +28,10 @@ namespace Ghurund {
             add(Parameter::PARTY_COLOR, ParameterType::FLOAT);
 
             add(Parameter::RANDOM, ParameterType::FLOAT);
+
+            add(Parameter::WORLD, ParameterType::MATRIX);
+            add(Parameter::WORLD_IT, ParameterType::MATRIX);
+            add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
         }
 
         ~ParameterManager() {

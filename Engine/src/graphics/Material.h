@@ -8,10 +8,14 @@
 #include "graphics/texture/Texture.h"
 
 namespace Ghurund {
-    class Material:public Resource, ParameterProvider {
+    class Material:public Resource, public ParameterProvider {
     private:
         Shader *shader = nullptr;
-        Map<ASCIIString, Texture*> textures;
+        PointerMap<ASCIIString, Texture*> textures;
+
+        void finalize() {
+            safeRelease(shader);
+        }
 
     protected:
         virtual bool isVersioned()const {
@@ -34,20 +38,36 @@ namespace Ghurund {
         }
 
         ~Material() {
-            shader->release();
-            for(size_t i = 0; i<textures.Size; i++)
-                textures.getValue(i)->release();
+            finalize();
         }
 
-        virtual bool isValid() {
+        virtual void invalidate() {
+            finalize();
+            textures.clear();
+            __super::invalidate();
+        }
+
+        virtual bool isValid() const override {
             for(size_t i = 0; i<textures.Size; i++)
                 if(!textures.getValue(i)->Valid)
                     return false;
-            return shader!=nullptr&&shader->Valid&&Resource::Valid;
+            return shader!=nullptr&&shader->Valid&&__super::Valid;
         }
 
-        void set(CommandList &commandList, ParameterManager &parameterManager) {
-            shader->set(commandList, parameterManager);
+        virtual void initParameters(ParameterManager &parameterManager) override {
+            shader->initParameters(parameterManager);
+        }
+
+        virtual void updateParameters() override {
+            shader->updateParameters();
+        }
+
+        virtual Array<Parameter*> &getParameters() override {
+            return shader->Parameters;
+        }
+
+        void set(CommandList &commandList) {
+            shader->set(commandList);
 
             if(textures.Size>0) // TODO: handle textures properly
                 commandList.get()->SetGraphicsRootDescriptorTable(2, textures.getValue(0)->descHandle.getGpuHandle());
@@ -58,16 +78,16 @@ namespace Ghurund {
         }
 
         void setShader(Shader *shader) {
-            this->shader = shader;
+            setPointer(this->shader, shader);
         }
 
         __declspec(property(get = getShader, put = setShader)) Shader *Shader;
 
-        Map<ASCIIString, Texture*> &getTextures() {
+        PointerMap<ASCIIString, Texture*> &getTextures() {
             return textures;
         }
 
-        __declspec(property(get = getTextures)) Map<ASCIIString, Texture*> &Textures;
+        __declspec(property(get = getTextures)) PointerMap<ASCIIString, Texture*> &Textures;
 
         virtual const Ghurund::Type &getType() const override {
             return Type::MATERIAL;

@@ -14,8 +14,7 @@
 							Title="{TemplateBinding Title}"
 							Icon="{TemplateBinding Icon}"
 							IsEnabled="{TemplateBinding IsEnabled}"
-							DockPanel.Dock="Top"
-							Height="20"/>
+							DockPanel.Dock="Top"/>
 						<Border>
 							<ContentPresenter ContentSource="Content" IsEnabled="{TemplateBinding IsEnabled}"/>
 						</Border>

@@ -9,7 +9,7 @@
 
 namespace Ghurund {
 
-    class Camera: public Entity, public ParameterProvider {
+    class Camera: public Entity {
     private:
         XMFLOAT3 pos, target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, facing;
@@ -17,11 +17,13 @@ namespace Ghurund {
         float fov, zNear, zFar, dist;
         bool pers;
 
-        Parameter *parameterDirection;
+        Parameter *parameterDirection = nullptr;
         Parameter *parameterUp, *parameterRight;
         Parameter *parameterFov;
         Parameter *parameterZNear, *parameterZFar;
         Parameter *parameterView, *parameterProjection, *parameterViewProjection;
+
+        Array<Parameter*> parameters;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options);
@@ -37,7 +39,11 @@ namespace Ghurund {
 
         virtual void initParameters(ParameterManager &parameterManager);
 
-        virtual void fillParameters();
+        virtual void updateParameters();
+
+        virtual Array<Parameter*> &getParameters() override {
+            return parameters;
+        }
 
         void rebuild();
 

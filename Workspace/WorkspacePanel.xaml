@@ -4,9 +4,9 @@
     xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
 
 	<Style TargetType="{x:Type local:WorkspacePanel}">
-		<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Background}"/>
-		<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Primary}"/>
-		<Setter Property="BorderBrush" Value="{DynamicResource WorkspacePanel.Border}"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>

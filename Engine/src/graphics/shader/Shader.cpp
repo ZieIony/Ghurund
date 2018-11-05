@@ -5,8 +5,9 @@ namespace Ghurund {
     Status Shader::makeRootSignature(Graphics &graphics) {
         Status result = Status::OK;
 
-        CD3DX12_ROOT_PARAMETER1 *rootParameters = ghnew CD3DX12_ROOT_PARAMETER1[getParametersCount()];
-        CD3DX12_DESCRIPTOR_RANGE1 *ranges = ghnew CD3DX12_DESCRIPTOR_RANGE1[getParametersCount()];
+        size_t paramCount = constantBuffers.Size+textureBuffers.Size+textures.Size;
+        CD3DX12_ROOT_PARAMETER1 *rootParameters = ghnew CD3DX12_ROOT_PARAMETER1[paramCount];
+        CD3DX12_DESCRIPTOR_RANGE1 *ranges = ghnew CD3DX12_DESCRIPTOR_RANGE1[paramCount];
 
         unsigned int r = 0;
         for(size_t i = 0; i<constantBuffers.Size; i++, r++) {
@@ -30,7 +31,7 @@ namespace Ghurund {
         }
 
         CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-        rootSignatureDesc.Init_1_1(getParametersCount(),
+        rootSignatureDesc.Init_1_1(paramCount,
                                    rootParameters,
                                    samplers.Size,
                                    samplerDescs,
@@ -99,31 +100,101 @@ namespace Ghurund {
         return result;
     }
 
+    void Shader::finalize() {
+        for(size_t i = 0; i<commandLists.Size; i++)
+            if(commandLists.get(i)->references(*this))
+                commandLists.get(i)->wait();
+
+        rootSignature.Reset();
+        pipelineState.Reset();
+
+        constantBuffers.deleteItems();
+        textureBuffers.deleteItems();
+        textures.deleteItems();
+        samplers.deleteItems();
+        for(size_t i = 0; i<6; i++)
+            delete programs[i];
+        delete[] source;
+
+        delete parameters;
+    }
+
+    Shader::~Shader() {
+        finalize();
+    }
+
+    void Shader::invalidate() {
+        finalize();
+
+        rootSignature = nullptr;
+        pipelineState = nullptr;
+
+        for(size_t i = 0; i<6; i++)
+            programs[i] = nullptr;
+
+        source = nullptr;
+        parameters = nullptr;
+
+        __super::invalidate();
+    }
+
     Status Shader::compile(char **outErrorMessages) {
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
         ASCIIString output;
         Status result = Status::OK;
         for(unsigned int i = 0; i<6; i++) {
             ShaderProgram *program = ghnew ShaderProgram(types[i]);
-            char *programErrors;
-            Status result = program->compile(source, &programErrors);
+            char *programErrors = nullptr;
+            result = program->compile(source, &programErrors);
             if(result==Status::OK) {
                 programs[i] = program;
             } else if(result==Status::ENTRY_POINT_NOT_FOUND) {
                 output.add("'");
                 output.add(types[i].getEntryPoint());
                 output.add("' not found\n");
-            }else{
-                output.add(programErrors);
-                delete[] programErrors;
                 delete program;
-                result = Status::COMPILATION_ERROR;
+                result = Status::OK;
+            } else {
+                if(programErrors!=nullptr) {
+                    output.add(programErrors);
+                    delete[] programErrors;
+                }
+                delete program;
             }
         }
         if(output.Length>0&&outErrorMessages!=nullptr)
             *outErrorMessages = copyStrA(output.getData());
         compiled = result == Status::OK;
         return result;
+    }
+
+    Status Shader::build(ResourceContext & context, char ** output) {
+        Status result;
+        if(!compiled)
+            if((result = compile(output))!=Status::OK)
+                return result;
+        Graphics &graphics = context.Graphics;
+        initConstants(graphics, context.ParameterManager);
+        if((result = makeRootSignature(graphics))!=Status::OK)
+            return result;
+        return makePipelineState(graphics);
+    }
+
+    void Shader::initParameters(ParameterManager & parameterManager) {
+        if(parameters!=nullptr)
+            return;
+
+        size_t paramCount = 0;
+        for(size_t i = 0; i<constantBuffers.Size; i++) {
+            constantBuffers[i]->initParameters(parameterManager);
+            paramCount += constantBuffers[i]->Parameters.Size;
+        }
+        parameters = ghnew Array<Parameter*>(paramCount+textureBuffers.Size+textures.Size);    // TODO: correct number of parameters
+        size_t paramOffset = 0;
+        for(size_t i = 0; i<constantBuffers.Size; i++) {
+            constantBuffers[i]->Parameters.copyTo(*parameters, paramOffset);
+            paramOffset += constantBuffers[i]->Parameters.Size;
+        }
     }
 
     D3D12_INPUT_LAYOUT_DESC Shader::getInputLayout() {
@@ -159,7 +230,6 @@ namespace Ghurund {
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
                         ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility());
-                        cb->initParameters(parameterManager);
                         constantBuffers.add(cb);
                     }
                     break;
@@ -206,6 +276,8 @@ namespace Ghurund {
     Status Shader::loadShd(ResourceContext &context, MemoryInputStream &stream) {
         Status result;
 
+        this->graphics = &context.Graphics;
+
         if(stream.readBoolean()) {
             for(size_t i = 0; i<6; i++) {
                 if(stream.readBoolean()) {
@@ -233,29 +305,37 @@ namespace Ghurund {
         ASCIIString sourceCode((const char *)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
 
+        this->graphics = &context.Graphics;
+
         return build(context);
     }
 
     Status Shader::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+        Status result;
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
-                return loadShd(context, stream);
+                result = loadShd(context, stream);
             } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
-                return loadHlsl(context, stream);
+                result = loadHlsl(context, stream);
+            } else {
+                return Status::UNKNOWN_FORMAT;
+            }
+        } else {
+            size_t bytesRead = stream.BytesRead;
+            Status result = loadShd(context, stream);
+            if(result!=Status::OK) {
+                stream.reset();
+                stream.skip(bytesRead);
+                result = loadHlsl(context, stream);
+                if(result!=Status::OK)
+                    return Status::UNKNOWN_FORMAT;
             }
         }
 
-        size_t bytesRead = stream.BytesRead;
-        Status result = loadShd(context, stream);
-        if(result!=Status::OK) {
-            stream.reset();
-            stream.skip(bytesRead);
-            result = loadHlsl(context, stream);
-            if(result!=Status::OK)
-                return Status::UNKNOWN_FORMAT;
-        }
+        if(result==Status::OK)
+            initParameters(context.ParameterManager);
 
-        return Status::OK;
+        return result;
     }
 
     Status Shader::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {

@@ -5,14 +5,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ghurund.Editor"
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
-             mc:Ignorable="d" 
+			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+			 mc:Ignorable="d" 
              d:DesignHeight="254" d:DesignWidth="511">
 	<wpf:DockPanel>
-		<wpf:ToolBar DockPanel.Dock="Top">
-			<wpf:ToggleButton Content="Orbit" Checked="ToggleButton_Checked" IsChecked="True" Name="orbit"/>
-			<wpf:ToggleButton Content="Rotate" Checked="ToggleButton_Checked" Name="rotate"/>
-			<wpf:ToggleButton Content="Pan" Checked="ToggleButton_Checked" Name="pan"/>
-		</wpf:ToolBar>
+		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Primary}">
+			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
+				<controls:IconRadioButton Icon="../Resources/cameraOrbit32.png" IsChecked="True" Name="orbit" Style="{StaticResource IconRadioButton_Large}"/>
+				<controls:IconRadioButton Icon="../Resources/cameraRotate32.png" Name="rotate" Style="{StaticResource IconRadioButton_Large}"/>
+				<controls:IconRadioButton Icon="../Resources/cameraPan32.png" Name="pan" Style="{StaticResource IconRadioButton_Large}"/>
+				<controls:IconRadioButton Icon="../Resources/cameraZoom32.png" Name="zoom" Style="{StaticResource IconRadioButton_Large}"/>
+			</wpf:ToolBarPanel>
+		</wpf:WrapPanel>
 		<wpf:WindowsFormsHost>
 			<local:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
 		</wpf:WindowsFormsHost>

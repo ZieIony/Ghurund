@@ -9,10 +9,15 @@
 #include "game/ParameterProvider.h"
 
 namespace Ghurund {
-    class Model: public Entity, public ParameterProvider {
+    class Model: public Entity {
     private:
         Mesh *mesh = nullptr;
         Material *material = nullptr;
+
+        void finalize() {
+            safeRelease(mesh);
+            safeRelease(material);
+        }
 
     protected:
         List<Entity*> entities;
@@ -30,8 +35,12 @@ namespace Ghurund {
         }
 
         ~Model() {
-            mesh->release();
-            material->release();
+            finalize();
+        }
+
+        virtual void invalidate() {
+            finalize();
+            __super::invalidate();
         }
 
         Mesh *getMesh() {
@@ -54,8 +63,24 @@ namespace Ghurund {
 
         __declspec(property(get = getMaterial, put = setMaterial)) Material *Material;
 
-        void draw(CommandList &commandList, ParameterManager &parameterManager) {
-            material->set(commandList, parameterManager);
+        virtual void initParameters(ParameterManager &parameterManager) override {
+            material->initParameters(parameterManager);
+        }
+
+        virtual void updateParameters() override {
+            material->updateParameters();
+        }
+
+        virtual Array<Parameter*> &getParameters() {
+            return material->Parameters;
+        }
+
+        virtual bool isValid() const override {
+            return material!=nullptr&&material->Valid&&mesh!=nullptr&&mesh->Valid&&__super::Valid;
+        }
+
+        void draw(CommandList &commandList) {
+            material->set(commandList);
             mesh->draw(commandList);
         }
 

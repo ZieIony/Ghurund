@@ -58,9 +58,6 @@ namespace Ghurund.Editor {
             var scene = new Scene();
             scene.Load(ResourceManager, ResourceContext, "test.scene");
             scene.Entities.SyncList();
-            //scene.Entities.Add(new Camera());
-            //scene.Entities.Add(new Light());
-            //scene.initParameters(ParameterManager);
             SceneExplorer.Scene = scene;
             SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
 

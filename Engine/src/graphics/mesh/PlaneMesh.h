@@ -25,6 +25,10 @@ namespace Ghurund {
             };
             indexCount = 6;
 
+
+            for(size_t i = 0; i<5; i++)
+                subdivide();
+
             return Mesh::init(graphics, commandList);
         }
     };

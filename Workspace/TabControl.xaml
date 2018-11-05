@@ -6,8 +6,8 @@
 	<Style TargetType="{x:Type local:TabControl}" BasedOn="{StaticResource {x:Type TabControl}}">
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
-		<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Background}"/>
-		<Setter Property="BorderBrush" Value="{DynamicResource WorkspacePanel.Border}"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
 		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="TabStripPlacement" Value="Bottom"/>
 		<Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>

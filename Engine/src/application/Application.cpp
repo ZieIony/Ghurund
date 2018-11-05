@@ -28,6 +28,7 @@ namespace Ghurund {
         delete client;
 
 		delete parameterManager;
+        delete resourceContext;
         delete resourceManager;
         delete audio;
         delete graphics;
@@ -95,6 +96,8 @@ namespace Ghurund {
         onUninit();
         uninit();
 
+        delete windowProc;
+
 
     cleanUp:
         CloseHandle(singleInstanceMutex);
@@ -104,6 +107,8 @@ namespace Ghurund {
         ticks_t prevTicks = timer.CurrentTicks;
         timer.tick();
         ticks_t currentTicks = timer.CurrentTicks;
+
+        resourceManager->reload();
 
         input.dispatchEvents(levelManager);
 

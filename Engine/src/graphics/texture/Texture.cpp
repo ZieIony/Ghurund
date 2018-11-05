@@ -67,6 +67,8 @@ namespace Ghurund {
 
         commandList.finish();
 
+        Valid = true;
+
         return Status::OK;
     }
 }

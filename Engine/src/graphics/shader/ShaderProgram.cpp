@@ -19,15 +19,16 @@ namespace Ghurund {
                 Logger::log(_T("Unknown error while compiling shader\n"));
                 result = Status::COMPILATION_ERROR;
             } else {
-                char *errorMessages = ghnew char[errorBlob->GetBufferSize()];
-                memcpy(errorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
-                if(ASCIIString(errorMessages).find("error X3501")<errorBlob->GetBufferSize()) {
+                ASCIIString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
+                if(errorMessages.find("error X3501")<errorBlob->GetBufferSize()) {
                     result = Status::ENTRY_POINT_NOT_FOUND;
                 } else {
-                    Logger::log(_T("Error while compiling shader:\n%hs\n"), errorMessages);
+                    Logger::log(_T("Error while compiling shader:\n%hs\n"), errorMessages.getData());
                     result = Status::COMPILATION_ERROR;
-                    if(outErrorMessages != nullptr)
-                        *outErrorMessages = errorMessages;
+                    if(outErrorMessages != nullptr) {
+                        *outErrorMessages = ghnew char[errorBlob->GetBufferSize()];
+                        memcpy(*outErrorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
+                    }
                 }
                 errorBlob->Release();
             }

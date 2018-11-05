@@ -36,5 +36,9 @@ namespace Ghurund {
             NamedObject::setName(name);
             fence->SetName(name.getData());
         }
+
+        UINT64 getValue() {
+            return fenceValue;
+        }
     };
 }

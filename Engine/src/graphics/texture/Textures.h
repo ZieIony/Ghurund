@@ -8,11 +8,10 @@ namespace Ghurund {
         Textures() = delete;
 
     public:
-        static Texture *loadChecker(ResourceManager &resourceManager, ResourceContext &context) {
+        static Texture *makeChecker(ResourceManager &resourceManager, ResourceContext &context) {
             Image *image = resourceManager.load<Image>(context, "../textures/checker.png");
             Texture *texture = ghnew Texture();
             texture->init(context, *image);
-            image->release();
             return texture;
         }
     };

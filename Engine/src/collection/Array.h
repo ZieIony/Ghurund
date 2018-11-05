@@ -3,7 +3,7 @@
 #include "Collection.h"
 
 namespace Ghurund {
-    template<class Value, class Key = size_t> class Array:public Collection<Key, Value> {
+    template<class Value> class Array:public Collection {
     protected:
         Value *v;
 
@@ -32,13 +32,13 @@ namespace Ghurund {
             delete[] v;
         }
 
-        inline Key getSize()const {
+        inline size_t getSize()const {
             return size;
         }
 
-        __declspec(property(get = getSize)) Key Size;
+        __declspec(property(get = getSize)) size_t Size;
 
-        inline void set(Key i, const Value &e) {
+        inline void set(size_t i, const Value &e) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -46,7 +46,7 @@ namespace Ghurund {
             v[i] = e;
         }
 
-        inline Value &get(Key i)const {
+        inline Value &get(size_t i)const {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -62,21 +62,21 @@ namespace Ghurund {
             return v+size;
         }
 
-        inline Key indexOf(const Value &item) {
-            for(Key i = 0; i<size; i++)
+        inline size_t indexOf(const Value &item) {
+            for(size_t i = 0; i<size; i++)
                 if(v[i]==item)
                     return i;
             return size;
         }
 
         inline bool contains(Value &item) {
-            for(Key i = 0; i<size; i++)
+            for(size_t i = 0; i<size; i++)
                 if(v[i]==item)
                     return true;
             return false;
         }
 
-        Value &operator[](Key i) {
+        Value &operator[](size_t i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -84,7 +84,7 @@ namespace Ghurund {
             return v[i];
         }
 
-        const Value &operator[](Key i)const {
+        const Value &operator[](size_t i)const {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -95,6 +95,11 @@ namespace Ghurund {
         inline void deleteItems() {
             for(size_t i = 0; i<size; i++)
                 delete v[i];
+        }
+
+        inline void copyTo(Array<Value> &dest, size_t offset = 0) {
+            for(size_t i = 0; i<size; i++)
+                dest[i+offset] = v[i];
         }
     };
 

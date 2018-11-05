@@ -68,11 +68,11 @@ namespace Ghurund.Editor {
                 loadLibrary(library);
         }
 
-        public ImageSource Icon { get; }
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/resourceManager32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public string Title { get => "Resource Manager"; }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e) {
+        private void Button_Click(object sender, RoutedEventArgs e) {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
                 addLibrary(dialog.SelectedPath);

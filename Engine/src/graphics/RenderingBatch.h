@@ -11,9 +11,13 @@ namespace Ghurund {
         List<Light*> lights;
         List<GlobalEntity<Model>*> models;
 
-        Parameter *parameterWorld;
+        Parameter *parameterWorld, *parameterWorldIT;
+        Array<Parameter*> parameters;
 
     public:
+
+        RenderingBatch():parameters(Array<Parameter*>(2)) {}
+
         void addLight(Light &light) {
             lights.add(&light);
         }
@@ -53,17 +57,33 @@ namespace Ghurund {
         }
 
         virtual void initParameters(ParameterManager &parameterManager) override {
+            if(parameterWorld!=nullptr)
+                return;
+
             parameterWorld = parameterManager.add(Parameter::WORLD, ParameterType::MATRIX);
-            parameters.add(parameterWorld);
+            parameterWorldIT = parameterManager.add(Parameter::WORLD_IT, ParameterType::MATRIX);
+            parameters[0] = parameterWorld;
+            parameters[1] = parameterWorldIT;
+        }
+
+        virtual Array<Parameter*> &getParameters() override {
+            return parameters;
         }
 
         void draw(CommandList &commandList, ParameterManager &parameterManager) {
             for(size_t i = 0; i<models.Size; i++) {
-                if(!models[i]->Visible)
+                GlobalEntity<Model> *model = models[i];
+                if(!model->Visible||!model->Entity.Valid)
                     continue;
 
-                parameterWorld->setValue(&models[i]->getTransformation());
-                models[i]->Entity.draw(commandList, parameterManager);
+                parameterWorld->setValue(&model->Transformation);
+                XMMATRIX world = XMLoadFloat4x4(&model->Transformation);
+                XMFLOAT4X4 worldIT;
+                XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
+                parameterWorldIT->setValue(&worldIT);
+
+                model->Entity.updateParameters();
+                model->Entity.draw(commandList);
             }
         }
 

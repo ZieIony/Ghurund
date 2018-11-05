@@ -2,7 +2,6 @@
 
 #include "Ghurund.h"
 #include "File.h"
-#include "core/Object.h"
 #include "core/MemoryStream.h"
 #include "collection/Array.h"
 

@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/Noncopyable.h"
-#include "collection/TypeMap.h"
-#include "FileWatcher.h"
+#include "collection/PointerMap.h"
+#include "resource/watcher/FileWatcher.h"
 #include "core/Logger.h"
 #include "Resource.h"
 #include "core/WorkerThread.h"
@@ -10,35 +10,21 @@
 #include "game/ParameterManager.h"
 #include "ResourceFactory.h"
 #include "audio/Audio.h"
+#include "ReloadTask.h"
 
 #include <wincodec.h>
 
 namespace Ghurund {
     class ResourceManager:public Noncopyable {
     private:
-        FileWatcher *watcher;
-        TypeMap<String> resources;
+        FileWatcher watcher;
+        PointerMap<String, Resource*> resources;
         CriticalSection section;
         ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
         WorkerThread loadingThread;
+        List<ReloadTask*> reloadQueue;
 
-        void onFileChanged(const String &fileName, DWORD action);
-
-        template<class Type> Status loadInternal(Type &resource, ResourceContext &context, const String &fileName, LoadOption options) {
-            Status result = resource.load(*this, context, fileName, nullptr, options);
-            if(result!=Status::OK) {
-                Logger::log(_T("failed to load file: %s\n"), fileName.getData());
-                return result;
-            }
-
-            //watcher->addFile(fileName);
-
-            section.enter();
-            //add(&resource);
-            section.leave();
-
-            return Status::OK;
-        }
+        Status loadInternal(Resource &resource, ResourceContext &context, const String &fileName, LoadOption options);
 
     public:
 
@@ -46,18 +32,24 @@ namespace Ghurund {
 
         ~ResourceManager();
 
+        void reload();
+
         template<class Type> Type *load(ResourceContext &context, const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             if(fileName.Length==0) {
                 Logger::log(_T("file name cannot be empty\n"));
                 return nullptr;
             }
-            Type *resource = get<Type>(fileName);
-            if(resource==nullptr)
+            Resource *resource = get(fileName);
+            Status loadResult = Status::ALREADY_LOADED;
+            if(resource==nullptr) {
                 resource = ghnew Type();
-            Status loadResult = loadInternal(*resource, context, fileName, options);
+                loadResult = loadInternal(*resource, context, fileName, options);
+                if(loadResult==Status::OK)
+                    resource->release();    // resource was added to ResourceManager::resources
+            }
             if(result!=nullptr)
                 *result = loadResult;
-            return resource;
+            return (Type*)resource;
         }
 
         template<class Type> void loadAsync(ResourceContext &context, const String &fileName, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
@@ -67,28 +59,34 @@ namespace Ghurund {
                 return;
             }
             loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
-                Type *resource = get<Type>(fileName);
-                if(resource==nullptr)
+                Resource *resource = get(fileName);
+                Status result = Status::ALREADY_LOADED;
+                if(resource==nullptr) {
                     resource = ghnew Type();
-                Status result = loadInternal(*resource, context, fileName, options);
+                    result = loadInternal(*resource, context, fileName, options);
+                }
                 if(onLoaded!=nullptr)
-                    onLoaded(resource, result);
+                    onLoaded((Type*)resource, result);
                 return result;
             });
         }
 
         template<class Type> Type *load(ResourceContext &context, File &file, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            if(file.Name==nullptr) {
+            if(file.Name.Empty) {
                 Logger::log(_T("file name cannot be empty\n"));
                 return nullptr;
             }
-            Type *resource = get<Type>(file.Name);
-            if(resource==nullptr)
+            Resource *resource = get(file.Name);
+            Status loadResult = Status::ALREADY_LOADED;
+            if(resource==nullptr) {
                 resource = ghnew Type();
-            Status loadResult = loadInternal(*resource, context, file.Name, options);
+                loadResult = loadInternal(*resource, context, file.Name, options);
+                if(loadResult==Status::OK)
+                    resource->release();    // resource was added to ResourceManager::resources
+            }
             if(result!=nullptr)
                 *result = loadResult;
-            return resource;
+            return (Type*)resource;
         }
 
         template<class Type> Type *loadAsync(ResourceContext &context, File &file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
@@ -99,9 +97,11 @@ namespace Ghurund {
             }
             loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
                 Type *resource = get<Type>(file.Name);
-                if(resource==nullptr)
+                Status result = Status::ALREADY_LOADED;
+                if(resource==nullptr) {
                     resource = ghnew Type();
-                Status result = loadInternal(*resource, context, file.Name, options);
+                    result = loadInternal(*resource, context, file.Name, options);
+                }
                 if(onLoaded!=nullptr)
                     onLoaded(resource, result);
                 return result;
@@ -122,55 +122,17 @@ namespace Ghurund {
             return resource;
         }
 
-        Status save(Resource &resource, SaveOption options = SaveOption::DEFAULT) {
-            return resource.save(*this, options);
-        }
+        Status save(Resource &resource, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource &resource, const String &fileName, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource &resource, File &file, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource &resource, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT);
 
-        Status save(Resource &resource, const String &fileName, SaveOption options = SaveOption::DEFAULT) {
-            if(resource.FileName.Empty) {
-                Logger::log(_T("The file name is empty\n"));
-                return Status::INV_PARAM;
-            } else {
-                return resource.save(*this, fileName, options);
-            }
-        }
+        Resource *get(const String &fileName);
 
-        Status save(Resource &resource, File &file, SaveOption options = SaveOption::DEFAULT) {
-            if(file.Name == nullptr) {
-                Logger::log(_T("The file's name is null\n"));
-                return Status::INV_PARAM;
-            } else {
-                return resource.save(*this, file, options);
-            }
-        }
+        void add(Resource &resource);
 
-        Status save(Resource &resource, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) {
-            resourceFactory->describeResource(resource, stream);
-            if(resource.FileName.Empty) {
-                stream.writeBoolean(true);  // full binary
-                return resource.save(*this, stream, options);
-            } else {
-                stream.writeBoolean(false); // file reference
-                stream.writeUnicode(resource.FileName);
-                return resource.save(*this, resource.FileName, options);
-            }
-        }
+        void remove(const String &fileName);
 
-        template<class Type> Type *get(const String &fileName) {
-            section.enter();
-            Type *resource = resources.get<Type*>(fileName);
-            section.leave();
-            return resource;
-        }
-
-        template<class Type> void add(Type &resource) {
-            resources.set(resource->FileName, &resource);
-        }
-
-        template<class Type> void remove(const String &fileName) {
-            resources.remove<Type>(fileName);
-        }
-
-        void clear() {}
+        void clear();
     };
 }

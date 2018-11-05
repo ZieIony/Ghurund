@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Game;
 
@@ -35,7 +37,7 @@ namespace Ghurund.Editor {
             InitializeComponent();
         }
 
-        public ImageSource Icon { get; }
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/sceneExplorer32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public string Title { get => "Scene Explorer"; }
 

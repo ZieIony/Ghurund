@@ -37,8 +37,8 @@ namespace Ghurund {
 
         virtual void run() = 0;
 
-        void wait() {
-            WaitForSingleObjectEx(event, INFINITE, true);
+        void wait(DWORD ms = INFINITE) {
+            WaitForSingleObjectEx(event, ms, true);
         }
 
         void notify() {

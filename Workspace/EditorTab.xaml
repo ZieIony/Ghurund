@@ -4,9 +4,9 @@
     xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
 
 	<Style TargetType="{x:Type local:EditorTab}" BasedOn="{StaticResource {x:Type TabItem}}">
-		<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Primary}"/>
-		<Setter Property="Background" Value="{DynamicResource WorkspacePanel.Background}"/>
-		<Setter Property="BorderBrush" Value="{DynamicResource WorkspacePanel.Border}"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
 		<Setter Property="Margin" Value="0"/>
 		<Setter Property="Padding" Value="6,2,6,2"/>
 		<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -39,42 +39,42 @@
 								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Selection}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Selection}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Bottom"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Selection}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Selection}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Right"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Selection}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Selection}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Top"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Selection}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Selection}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Left"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Disabled}"/>
+							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Disabled}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
 								<Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}" Value="false"/>
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Bottom"/>
 							</MultiDataTrigger.Conditions>
-							<Setter Property="Foreground" Value="{DynamicResource WorkspacePanel.Text.Secondary}"/>
+							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Secondary}"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
 							<MultiDataTrigger.Conditions>
@@ -82,8 +82,8 @@
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Right"/>
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Opacity" TargetName="contentPresenter" Value="0.56"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
-							<Setter Property="BorderBrush" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Border}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
+							<Setter Property="BorderBrush" TargetName="mainBorder" Value="{DynamicResource Ghurund.Border}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="0,1,1,1"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
@@ -92,8 +92,8 @@
 								<Condition Binding="{Binding TabStripPlacement, RelativeSource={RelativeSource AncestorType={x:Type TabControl}}}" Value="Top"/>
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Opacity" TargetName="contentPresenter" Value="0.56"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
-							<Setter Property="BorderBrush" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Border}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
+							<Setter Property="BorderBrush" TargetName="mainBorder" Value="{DynamicResource Ghurund.Border}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,0"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
@@ -109,7 +109,7 @@
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Panel.ZIndex" Value="1"/>
 							<Setter Property="Margin" Value="0,0,-1,0"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,0,1"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
@@ -125,7 +125,7 @@
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Panel.ZIndex" Value="1"/>
 							<Setter Property="Margin" Value="0,-1,0,0"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="1,0,1,1"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
@@ -141,7 +141,7 @@
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Panel.ZIndex" Value="1"/>
 							<Setter Property="Margin" Value="-1,0,0,0"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="0,1,1,1"/>
 						</MultiDataTrigger>
 						<MultiDataTrigger>
@@ -157,7 +157,7 @@
 							</MultiDataTrigger.Conditions>
 							<Setter Property="Panel.ZIndex" Value="1"/>
 							<Setter Property="Margin" Value="0,0,0,-1"/>
-							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource WorkspacePanel.Background}"/>
+							<Setter Property="Background" TargetName="mainBorder" Value="{DynamicResource Ghurund.Background}"/>
 							<Setter Property="BorderThickness" TargetName="mainBorder" Value="1,1,1,0"/>
 						</MultiDataTrigger>
 					</ControlTemplate.Triggers>

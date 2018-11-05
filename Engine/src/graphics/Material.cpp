@@ -4,8 +4,8 @@
 
 namespace Ghurund {
     Status Material::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
-        shader = ghnew Ghurund::Shader();
-        Status result = shader->load(resourceManager, context, stream.readUnicode(), nullptr, options);
+        Status result;
+        shader = resourceManager.load<Ghurund::Shader>(context, stream.readUnicode(), &result, options);
         if(result!=Status::OK)
             return result;
 

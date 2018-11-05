@@ -7,9 +7,16 @@
 
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="pack://application:,,,/GhurundWorkspace;component/Themes/Theme.Light.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Theme.Dark.xaml" />
+				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Theme.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+
+			<SolidColorBrush x:Key="Ghurund.Primary">#0097a7</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#006064</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
+		</ResourceDictionary>
+
 
 	</Application.Resources>
+	
 </Application>

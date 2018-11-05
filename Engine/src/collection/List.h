@@ -4,7 +4,7 @@
 #include <functional>
 
 namespace Ghurund {
-    template<class Value, class Key = size_t> class List:public Collection<Key, Value> {
+    template<class Value> class List:public Collection {
     protected:
         Value *v;
 
@@ -52,11 +52,11 @@ namespace Ghurund {
         return table;
         }*/
 
-        inline Key getSize()const {
+        inline size_t getSize()const {
             return size;
         }
 
-        __declspec(property(get = getSize)) Key Size;
+        __declspec(property(get = getSize)) size_t Size;
 
         inline size_t getCapacity()const {
             return capacity;
@@ -84,7 +84,7 @@ namespace Ghurund {
 #endif
         }
 
-        inline void insert(Key i, const Value &item) {
+        inline void insert(size_t i, const Value &item) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -96,7 +96,7 @@ namespace Ghurund {
             size++;
         }
 
-        inline void insertKeepOrder(Key i, const Value &item) {
+        inline void insertKeepOrder(size_t i, const Value &item) {
             if(size==capacity)
                 resize(capacity+initial);
             if(i!=size-1)
@@ -105,7 +105,7 @@ namespace Ghurund {
             size++;
         }
 
-        inline void set(Key i, const Value &e) {
+        inline void set(size_t i, const Value &e) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -113,7 +113,7 @@ namespace Ghurund {
             v[i] = e;
         }
 
-        inline Value &get(Key i)const {
+        inline Value &get(size_t i)const {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -121,7 +121,7 @@ namespace Ghurund {
             return v[i];
         }
 
-        inline void removeAt(Key i) {
+        inline void removeAt(size_t i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -130,7 +130,7 @@ namespace Ghurund {
             size--;
         }
 
-        inline void removeAtKeepOrder(Key i) {
+        inline void removeAtKeepOrder(size_t i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -141,7 +141,7 @@ namespace Ghurund {
         }
 
         inline void remove(const Value &item) {
-            Key i = indexOf(item);
+            size_t i = indexOf(item);
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -151,7 +151,7 @@ namespace Ghurund {
         }
 
         inline void removeKeepOrder(const Value &item) {
-            Key i = indexOf(item);
+            size_t i = indexOf(item);
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -169,21 +169,21 @@ namespace Ghurund {
             return v+size;
         }
 
-        inline Key indexOf(const Value &item) {
-            for(Key i = 0; i<size; i++)
+        inline size_t indexOf(const Value &item) {
+            for(size_t i = 0; i<size; i++)
                 if(v[i]==item)
                     return i;
             return size;
         }
 
-        inline bool contains(Value &item) {
-            for(Key i = 0; i<size; i++)
+        inline bool contains(const Value &item) {
+            for(size_t i = 0; i<size; i++)
                 if(v[i]==item)
                     return true;
             return false;
         }
 
-        Value &operator[](Key i) {
+        inline Value &operator[](size_t i) {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
@@ -191,7 +191,7 @@ namespace Ghurund {
             return v[i];
         }
 
-        const Value &operator[](Key i)const {
+        inline const Value &operator[](size_t i)const {
 #ifdef _DEBUG
             if(i>=size)
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));

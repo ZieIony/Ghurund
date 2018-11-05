@@ -1,6 +1,6 @@
 #pragma once
 
-#include "collection/List.h"
+#include "collection/PointerList.h"
 #include "graphics/Model.h"
 #include "graphics/CommandList.h"
 #include "graphics/Camera.h"
@@ -10,8 +10,11 @@
 namespace Ghurund {
 
     class Scene:public Entity {
+    private:
+        Array<Parameter*> parameters;
+
     protected:
-        List<Entity*> entities;
+        PointerList<Entity*> entities;
 
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override {
             size_t size = stream.read<size_t>();
@@ -37,24 +40,33 @@ namespace Ghurund {
 
     public:
 
-        Scene() {
+        Scene():parameters(Array<Parameter*>(0)) {
             Name = _T("scene");
         }
 
-        ~Scene() {
-            for(size_t i = 0; i<entities.Size; i++)
-                entities[i]->release();
+        virtual void initParameters(ParameterManager &parameterManager) override {
+            for(Entity *e:entities)
+                e->initParameters(parameterManager);
+        }
+
+        virtual void updateParameters() override {
+            for(Entity *e:entities)
+                e->updateParameters();
+        }
+
+        virtual Array<Parameter*> &getParameters() {
+            return parameters;
         }
 
         virtual const Ghurund::Type &getType() const override {
             return Type::SCENE;
         }
 
-        List<Entity*> &getEntities() {
+        PointerList<Entity*> &getEntities() {
             return entities;
         }
 
-        __declspec(property(get = getEntities)) List<Entity*> &Entities;
+        __declspec(property(get = getEntities)) PointerList<Entity*> &Entities;
 
         virtual const Array<ResourceFormat> &getFormats() const override {
             static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::ENTITY};

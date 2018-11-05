@@ -12,19 +12,22 @@ namespace Ghurund {
     protected:
         Graphics &graphics;
         Audio &audio;
-        CommandList commandList;
+        CommandList *commandList;
         IWICImagingFactory *wicFactory;
         ParameterManager &parameterManager;
 
     public:
         ResourceContext(Ghurund::Graphics &graphics, Ghurund::Audio &audio, Ghurund::ParameterManager &parameterManager)
             : graphics(graphics), audio(audio), parameterManager(parameterManager) {
-            commandList.init(graphics);
+            commandList = ghnew Ghurund::CommandList();
+            commandList->init(graphics, graphics.DirectQueue);
+            commandList->Name = _T("loading context's CommandList");
             HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
         }
 
         ~ResourceContext() {
             wicFactory->Release();
+            commandList->release();
         }
 
         Graphics &getGraphics() {
@@ -40,7 +43,7 @@ namespace Ghurund {
         __declspec(property(get = getAudio)) Audio &Audio;
 
         CommandList &getCommandList() {
-            return commandList;
+            return *commandList;
         }
 
         __declspec(property(get = getCommandList)) CommandList &CommandList;

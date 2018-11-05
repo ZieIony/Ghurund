@@ -23,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -75,18 +76,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TabControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Theme.Dark.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Icons.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Theme.Light.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -174,13 +163,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\close.svg">
-      <SubType>Designer</SubType>
-    </Resource>
     <Resource Include="Resources\minimize32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\projectExplorer32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\close32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{a149407b-bc15-42b5-8c29-d8833ffb78b7}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

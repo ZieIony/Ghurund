@@ -70,7 +70,9 @@ namespace Ghurund.Editor.ResourceEditor {
                 if (orbit.IsChecked.GetValueOrDefault(true)) {
                     surfaceView.Camera.Orbit((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 } else if (pan.IsChecked.GetValueOrDefault(true)) {
-                    surfaceView.Camera.Pan((float)dx, (float)dy);
+                    surfaceView.Camera.Pan((float)dx, (float)-dy);
+                } else if (zoom.IsChecked.GetValueOrDefault(true)) {
+                    surfaceView.Camera.Zoom((float)dy);
                 } else {
                     surfaceView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 }
@@ -79,28 +81,10 @@ namespace Ghurund.Editor.ResourceEditor {
             }
         }
 
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e) {
-            if (sender == orbit) {
-                if (pan != null)
-                    pan.IsChecked = false;
-                if (rotate != null)
-                    rotate.IsChecked = false;
-            } else if (sender == pan) {
-                if (orbit != null)
-                    orbit.IsChecked = false;
-                if (rotate != null)
-                    rotate.IsChecked = false;
-            } else {
-                if (orbit != null)
-                    orbit.IsChecked = false;
-                if (pan != null)
-                    pan.IsChecked = false;
-            }
-        }
-
         private void surfaceView_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 pressed = false;
         }
+
     }
 }

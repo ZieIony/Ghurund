@@ -2,6 +2,7 @@
 
 #include "Ghurund.h"
 #include "Type.h"
+#include "Logger.h"
 
 namespace Ghurund {
 
@@ -24,6 +25,10 @@ namespace Ghurund {
         }
 
         inline void release() {
+#ifdef _DEBUG
+            if(referenceCount==0)
+                Logger::log(_T("[%#x] %hs release refCount=%lu. The object may have been deleted or is being released in its destructor\n"), (int)this, typeid(*this).name(), referenceCount);
+#endif
             referenceCount--;
             if(!referenceCount)
                 delete this;
@@ -47,5 +52,13 @@ namespace Ghurund {
         if(pointer!=nullptr)
             pointer->release();
         pointer = pointer2;
+    }
+
+    template<class Type>
+    void safeRelease(Type *&pointer) {
+        if(pointer!=nullptr) {
+            pointer->release();
+            pointer = nullptr;
+        }
     }
 }

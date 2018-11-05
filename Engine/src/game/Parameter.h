@@ -64,6 +64,7 @@ namespace Ghurund {
         static const char *ZFAR;
 
         static const char *WORLD;
+        static const char *WORLD_IT;
         static const char *VIEW;
         static const char *PROJECTION;
         static const char *VIEW_PROJECTION;

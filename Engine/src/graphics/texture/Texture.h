@@ -38,7 +38,7 @@ namespace Ghurund {
         }
 
         virtual bool isValid() {
-            return image!=nullptr&&image->Valid&&Resource::Valid;
+            return image!=nullptr&&image->Valid&&__super::Valid;
         }
 
         Status init(ResourceContext &context, Image &image);

@@ -3,7 +3,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
-using Ghurund.Managed.Graphics;
 
 namespace Ghurund.Editor {
     public interface IPropertiesPanel : IDockableControl {

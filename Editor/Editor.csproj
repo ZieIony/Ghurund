@@ -40,6 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -255,15 +256,30 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\camera16.png" />
-    <Resource Include="Resources\light16.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\addFolder32.png" />
     <Resource Include="Resources\folder32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\model16.png" />
+    <Resource Include="Resources\cameraRotate32.png" />
+    <Resource Include="Resources\cameraPan32.png" />
+    <Resource Include="Resources\cameraOrbit32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cameraZoom32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sceneExplorer32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\resourceManager32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\camera32.png" />
+    <Resource Include="Resources\light32.png" />
+    <Resource Include="Resources\model32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\clearLogs32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

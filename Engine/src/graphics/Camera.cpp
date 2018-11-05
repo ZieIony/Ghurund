@@ -14,7 +14,7 @@ namespace Ghurund {
         XMStoreFloat4x4(&viewProj, view2*proj2);
     }
 
-    Camera::Camera() {
+    Camera::Camera():parameters(Array<Parameter*>(9)) {
         screenSize = XMFLOAT2(640, 480);
         fov = XM_PI/4;
         zNear = 0.1f;
@@ -34,27 +34,22 @@ namespace Ghurund {
     }
 
     void Camera::initParameters(ParameterManager &parameterManager) {
-        parameterDirection = parameterManager.add(Parameter::DIRECTION, ParameterType::FLOAT3);
-        parameters.add(parameterDirection);
-        parameterUp = parameterManager.add(Parameter::UP, ParameterType::FLOAT3);
-        parameters.add(parameterUp);
-        parameterRight = parameterManager.add(Parameter::RIGHT, ParameterType::FLOAT3);
-        parameters.add(parameterRight);
-        parameterFov = parameterManager.add(Parameter::FOV, ParameterType::FLOAT);
-        parameters.add(parameterFov);
-        parameterZNear = parameterManager.add(Parameter::ZNEAR, ParameterType::FLOAT);
-        parameters.add(parameterZNear);
-        parameterZFar = parameterManager.add(Parameter::ZFAR, ParameterType::FLOAT);
-        parameters.add(parameterZFar);
-        parameterView = parameterManager.add(Parameter::VIEW, ParameterType::MATRIX);
-        parameters.add(parameterView);
-        parameterProjection = parameterManager.add(Parameter::PROJECTION, ParameterType::MATRIX);
-        parameters.add(parameterProjection);
-        parameterViewProjection = parameterManager.add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
-        parameters.add(parameterViewProjection);
+        if(parameterDirection!=nullptr)
+            return;
+
+        int i = 0;
+        parameters[i++] = parameterDirection = parameterManager.add(Parameter::DIRECTION, ParameterType::FLOAT3);
+        parameters[i++] = parameterUp = parameterManager.add(Parameter::UP, ParameterType::FLOAT3);
+        parameters[i++] = parameterRight = parameterManager.add(Parameter::RIGHT, ParameterType::FLOAT3);
+        parameters[i++] = parameterFov = parameterManager.add(Parameter::FOV, ParameterType::FLOAT);
+        parameters[i++] = parameterZNear = parameterManager.add(Parameter::ZNEAR, ParameterType::FLOAT);
+        parameters[i++] = parameterZFar = parameterManager.add(Parameter::ZFAR, ParameterType::FLOAT);
+        parameters[i++] = parameterView = parameterManager.add(Parameter::VIEW, ParameterType::MATRIX);
+        parameters[i++] = parameterProjection = parameterManager.add(Parameter::PROJECTION, ParameterType::MATRIX);
+        parameters[i++] = parameterViewProjection = parameterManager.add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
     }
 
-    void Camera::fillParameters() {
+    void Camera::updateParameters() {
         rebuild();
         parameterDirection->setValue(&dir);
         parameterUp->setValue(&up);
@@ -101,9 +96,8 @@ namespace Ghurund {
 
     void Camera::setPositionDirectionUp(const XMFLOAT3 & pos, const XMFLOAT3 & dir, const XMFLOAT3 & up) {
         this->pos = pos;
-        XMStoreFloat3(&target, XMLoadFloat3(&target)-XMLoadFloat3(&pos));
-
         XMVECTOR dv = XMLoadFloat3(&dir);
+        XMStoreFloat3(&target, XMLoadFloat3(&pos)+dv);
 
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
@@ -173,8 +167,9 @@ namespace Ghurund {
 
     void Camera::zoom(float z) {
         XMVECTOR dv = XMLoadFloat3(&dir);
-        XMStoreFloat3(&target, XMLoadFloat3(&target)+dv*z);
-        XMStoreFloat3(&pos, XMLoadFloat3(&pos)+dv*z);
+        XMVECTOR pv = XMLoadFloat3(&pos);
+        XMStoreFloat3(&pos, pv+dv*z);
+        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target)-pv));
     }
 
     Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
