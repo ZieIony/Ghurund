@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Ghurund.h"
-#include "Settings.h"
-#include "WindowProc.h"
-#include "d3dx12.h"
-#include "game/ParameterProvider.h"
-#include "core/NamedObject.h"
+
+#include "application/Settings.h"
+#include "application/WindowProc.h"
 #include "collection/Array.h"
+#include "core/NamedObject.h"
+#include "game/parameter/ParameterProvider.h"
+
+#include "d3dx12.h"
 
 namespace Ghurund {
     class Window: public ParameterProvider, public NamedObject {

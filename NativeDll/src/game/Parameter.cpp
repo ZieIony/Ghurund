@@ -1,4 +1,5 @@
-#include "game/Parameter.h"
+#include "game/parameter/Parameter.h"
+
 #include "../Float3.h"
 
 using namespace Ghurund;

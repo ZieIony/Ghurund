@@ -1,11 +1,11 @@
 #pragma once
 
 #include "collection/List.h"
-#include "Scene.h"
-#include "graphics/RenderingBatch.h"
-#include "ParameterManager.h"
-#include "input/EventConsumer.h"
+#include "game/entity/Scene.h"
+#include "game/parameter/ParameterManager.h"
 #include "graphics/Renderer.h"
+#include "graphics/RenderingBatch.h"
+#include "input/EventConsumer.h"
 
 namespace Ghurund {
     class Level:public EventConsumer {

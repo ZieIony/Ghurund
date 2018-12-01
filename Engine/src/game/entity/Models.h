@@ -3,7 +3,7 @@
 #include "Model.h"
 #include "graphics/mesh/PlaneMesh.h"
 #include "graphics/shader/Shader.h"
-#include "game/TransformedEntity.h"
+#include "game/entity/TransformedEntity.h"
 
 namespace Ghurund {
     class Models {

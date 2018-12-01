@@ -1,22 +1,25 @@
 #pragma once
 
-#include <thread>
 #include "Ghurund.h"
+
 #include "Settings.h"
 #include "Window.h"
 #include "WindowProc.h"
-#include "net/Client.h"
+
+#include "audio/Audio.h"
 #include "core/Noncopyable.h"
 #include "core/Timer.h"
 #include "core/FunctionQueue.h"
+#include "game/parameter/ParameterManager.h"
+#include "game/LevelManager.h"
 #include "graphics/Graphics.h"
 #include "graphics/Renderer.h"
-#include "resource/ResourceManager.h"
 #include "input/Input.h"
-#include "game/ParameterManager.h"
-#include "game/LevelManager.h"
-#include "audio/Audio.h"
+#include "net/Client.h"
 #include "resource/ResourceContext.h"
+#include "resource/ResourceManager.h"
+
+#include <thread>
 
 namespace Ghurund {
 

@@ -1,15 +1,16 @@
-#include "net/Client.h"
 #include "core/Logger.h"
+#include "application/Application.h"
+#include "audio/Sound.h"
+#include "game/entity/Scene.h"
+#include "game/entity/Models.h"
+#include "graphics/mesh/QuadMesh.h"
+#include "graphics/Materials.h"
+#include "net/Client.h"
+#include "resource/TextResource.h"
+
 #include <fcntl.h>
 #include <process.h>
 #include <thread>
-#include "application/Application.h"
-#include "resource/TextResource.h"
-#include "game/Scene.h"
-#include "graphics/mesh/QuadMesh.h"
-#include "audio/Sound.h"
-#include "graphics/Models.h"
-#include "graphics/Materials.h"
 
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>

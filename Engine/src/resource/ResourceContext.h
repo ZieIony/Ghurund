@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/Noncopyable.h"
-#include "graphics/CommandList.h"
-#include "game/ParameterManager.h"
 #include "audio/Audio.h"
+#include "core/Noncopyable.h"
+#include "game/parameter/ParameterManager.h"
+#include "graphics/CommandList.h"
 
 #include <wincodec.h>
 

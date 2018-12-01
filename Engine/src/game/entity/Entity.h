@@ -1,11 +1,11 @@
 #pragma once
 
 #include "collection/String.h"
-#include "ParameterProvider.h"
-#include "ParameterManager.h"
-#include "resource/Resource.h"
 #include "core/NamedObject.h"
-#include "graphics/TransformedObject.h"
+#include "game/entity/TransformedObject.h"
+#include "game/parameter/ParameterProvider.h"
+#include "game/parameter/ParameterManager.h"
+#include "resource/Resource.h"
 
 #include <DirectXCollision.h>
 

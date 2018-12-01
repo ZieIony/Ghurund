@@ -1,11 +1,11 @@
 #pragma once
 
 #include "application/Window.h"
-#include "Fence.h"
-#include "Graphics.h"
-#include "CommandList.h"
-#include "RenderTarget.h"
-#include "DepthBuffer.h"
+#include "graphics/CommandList.h"
+#include "graphics/Fence.h"
+#include "graphics/Graphics.h"
+#include "graphics/buffer/DepthBuffer.h"
+#include "graphics/buffer/RenderTarget.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>

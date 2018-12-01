@@ -2,15 +2,15 @@
 
 #include "Ghurund.h"
 #include "core/CriticalSection.h"
+#include "collection/List.h"
+#include "core/Logger.h"
+#include "graphics/Adapter.h"
+#include "collection/Map.h"
+
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
-#include "collection/List.h"
-#include "core/Logger.h"
-#include "Adapter.h"
-#include "DescriptorHeap.h"
-#include "collection/Map.h"
 
 #include <wrl.h>
 

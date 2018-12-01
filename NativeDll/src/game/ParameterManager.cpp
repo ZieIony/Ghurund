@@ -1,4 +1,4 @@
-#include "game/ParameterManager.h"
+#include "game/parameter/ParameterManager.h"
 
 using namespace Ghurund;
 

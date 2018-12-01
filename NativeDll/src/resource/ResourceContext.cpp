@@ -1,8 +1,8 @@
 #include "resource/ResourceContext.h"
-#include "game/ParameterManager.h"
+#include "game/entity/Model.h"
+#include "game/parameter/ParameterManager.h"
 #include "graphics/texture/Image.h"
 #include "graphics/texture/Texture.h"
-#include "graphics/Model.h"
 
 using namespace Ghurund;
 

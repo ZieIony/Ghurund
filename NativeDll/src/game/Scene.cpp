@@ -1,4 +1,4 @@
-#include "game/Scene.h"
+#include "game/entity/Scene.h"
 
 using namespace Ghurund;
 

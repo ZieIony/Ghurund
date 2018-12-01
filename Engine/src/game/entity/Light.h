@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/Entity.h"
+#include "game/entity/Entity.h"
 
 namespace Ghurund {
     class Light: public Entity {

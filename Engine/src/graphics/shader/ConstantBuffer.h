@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ShaderVariable.h"
-#include "ShaderConstant.h"
-#include "graphics/buffer/DynamicBuffer.h"
 #include "collection/List.h"
-#include "game/ParameterManager.h"
+#include "game/parameter/ParameterManager.h"
+#include "graphics/buffer/DynamicBuffer.h"
+#include "graphics/shader/ShaderVariable.h"
+#include "graphics/shader/ShaderConstant.h"
 
 namespace Ghurund {
     class ConstantBuffer:public ShaderConstant, public ParameterProvider {

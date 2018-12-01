@@ -1,9 +1,10 @@
 #pragma once
 
 #include "collection/List.h"
-#include "Scene.h"
+#include "game/entity/Scene.h"
+#include "game/parameter/ParameterManager.h"
 #include "graphics/RenderingBatch.h"
-#include "ParameterManager.h"
+
 #include "Level.h"
 
 namespace Ghurund {

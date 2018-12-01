@@ -1,5 +1,5 @@
 #include "Light.h"
-#include "RenderingBatch.h"
+#include "graphics/RenderingBatch.h"
 
 namespace Ghurund {
     void Light::flatten(RenderingBatch & batch, XMFLOAT4X4 &transformation) {

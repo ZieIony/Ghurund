@@ -1,10 +1,11 @@
 #pragma once
 
 #include "application/Window.h"
-#include "Frame.h"
-#include "RenderTarget.h"
-#include "DepthBuffer.h"
 #include "collection/BufferedValue.h"
+#include "graphics/buffer/RenderTarget.h"
+#include "graphics/buffer/DepthBuffer.h"
+
+#include "Frame.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>

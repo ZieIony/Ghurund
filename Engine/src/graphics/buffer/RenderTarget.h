@@ -1,8 +1,8 @@
 #pragma once
 
 #include "application/Window.h"
-#include "Frame.h"
 #include "core/NamedObject.h"
+#include "graphics/CommandList.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>

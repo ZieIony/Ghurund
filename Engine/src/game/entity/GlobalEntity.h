@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/ParameterProvider.h"
+#include "game/parameter/ParameterProvider.h"
 
 #include <DirectXCollision.h>
 

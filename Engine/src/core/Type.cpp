@@ -1,9 +1,9 @@
-#include "Type.h"
-#include "graphics/Light.h"
-#include "graphics/Camera.h"
-#include "game/Scene.h"
+#include "core/Type.h"
 #include "audio/Sound.h"
-#include "game/TransformedEntity.h"
+#include "game/entity/Camera.h"
+#include "game/entity/Light.h"
+#include "game/entity/Scene.h"
+#include "game/entity/TransformedEntity.h"
 
 namespace Ghurund {
     const Type &Type::LIGHT = Type([]() {return ghnew Light(); }, _T("light"));

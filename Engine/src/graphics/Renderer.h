@@ -2,7 +2,7 @@
 
 #include "Graphics.h"
 #include "SwapChain.h"
-#include "game/Scene.h"
+#include "game/entity/Scene.h"
 #include "RenderingBatch.h"
 
 namespace Ghurund {

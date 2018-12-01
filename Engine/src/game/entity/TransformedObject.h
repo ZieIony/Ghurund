@@ -1,7 +1,7 @@
 #pragma once
 
+#include "game/parameter/ParameterProvider.h"
 #include "resource/ResourceManager.h"
-#include "game/ParameterProvider.h"
 
 #include <DirectXCollision.h>
 

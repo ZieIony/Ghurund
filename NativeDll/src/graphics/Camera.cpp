@@ -1,4 +1,5 @@
-#include "graphics/Camera.h"
+#include "game/entity/Camera.h"
+
 #include "../Float3.h"
 
 using namespace Ghurund;

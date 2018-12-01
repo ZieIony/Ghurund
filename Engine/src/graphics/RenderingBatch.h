@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Light.h"
-#include "Model.h"
-#include "Camera.h"
-#include "GlobalEntity.h"
+#include "game/entity/Light.h"
+#include "game/entity/Model.h"
+#include "game/entity/Camera.h"
+#include "game/entity/GlobalEntity.h"
 
 namespace Ghurund {
     class RenderingBatch: public ParameterProvider {
@@ -11,7 +11,8 @@ namespace Ghurund {
         List<Light*> lights;
         List<GlobalEntity<Model>*> models;
 
-        Parameter *parameterWorld, *parameterWorldIT;
+        Parameter *parameterWorld = nullptr;
+        Parameter *parameterWorldIT = nullptr;
         Array<Parameter*> parameters;
 
     public:

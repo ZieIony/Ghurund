@@ -1,5 +1,5 @@
 #include "Model.h"
-#include "RenderingBatch.h"
+#include "graphics/RenderingBatch.h"
 
 namespace Ghurund {
     Status Model::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {

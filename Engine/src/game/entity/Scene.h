@@ -1,11 +1,11 @@
 #pragma once
 
 #include "collection/PointerList.h"
-#include "graphics/Model.h"
+#include "game/entity/Entity.h"
+#include "game/entity/Model.h"
+#include "game/entity/Light.h"
+#include "game/entity/Camera.h"
 #include "graphics/CommandList.h"
-#include "graphics/Camera.h"
-#include "graphics/Light.h"
-#include "Entity.h"
 
 namespace Ghurund {
 

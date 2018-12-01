@@ -1,12 +1,12 @@
 #pragma once
 
+#include "game/entity/Entity.h"
+#include "game/parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
-#include "Material.h"
+#include "graphics/Material.h"
 #include "graphics/mesh/CubeMesh.h"
 #include "graphics/mesh/SphereMesh.h"
 #include "resource/ResourceManager.h"
-#include "game/Entity.h"
-#include "game/ParameterProvider.h"
 
 namespace Ghurund {
     class Model: public Entity {

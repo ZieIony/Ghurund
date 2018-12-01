@@ -1,16 +1,16 @@
 #pragma once
 
-#include "core/Noncopyable.h"
-#include "collection/PointerMap.h"
-#include "resource/watcher/FileWatcher.h"
-#include "core/Logger.h"
-#include "Resource.h"
-#include "core/WorkerThread.h"
-#include "graphics/CommandList.h"
-#include "game/ParameterManager.h"
-#include "ResourceFactory.h"
 #include "audio/Audio.h"
-#include "ReloadTask.h"
+#include "collection/PointerMap.h"
+#include "core/Noncopyable.h"
+#include "core/Logger.h"
+#include "core/WorkerThread.h"
+#include "game/parameter/ParameterManager.h"
+#include "graphics/CommandList.h"
+#include "resource/ReloadTask.h"
+#include "resource/Resource.h"
+#include "resource/ResourceFactory.h"
+#include "resource/watcher/FileWatcher.h"
 
 #include <wincodec.h>
 

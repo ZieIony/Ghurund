@@ -2,15 +2,15 @@
 
 #include "Ghurund.h"
 
+#include "collection/List.h"
+#include "core/Logger.h"
+#include "graphics/Adapter.h"
+#include "graphics/buffer/DescriptorHeap.h"
+
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
-#include "collection/List.h"
-#include "core/Logger.h"
-#include "Adapter.h"
-#include "DescriptorHeap.h"
-
 #include <wrl.h>
 
 using namespace DirectX;
@@ -29,27 +29,7 @@ namespace Ghurund {
 
         List<Adapter*> adapters;
 
-        Status initAdapters() {
-            ComPtr<IDXGIAdapter1> adapter;
-
-            unsigned int adapterIndex = 0;
-            while(true){
-                if(DXGI_ERROR_NOT_FOUND == factory->EnumAdapters1(adapterIndex, &adapter))
-                    break;
-
-                adapters.add(ghnew Adapter(adapter));
-                adapterIndex++;
-            }
-
-            if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)))) {
-                Logger::log(_T("factory->EnumWarpAdapter() failed\n"));
-                return Status::CALL_FAIL;
-            }
-
-            adapters.add(ghnew Adapter(adapter));
-
-            return adapters.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
-        }
+        Status initAdapters();
 
     public:
 

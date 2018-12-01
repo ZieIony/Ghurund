@@ -4,6 +4,27 @@
 #include <D3Dcompiler.h>
 
 namespace Ghurund {
+    Status Graphics::initAdapters() {
+        ComPtr<IDXGIAdapter1> adapter;
+
+        unsigned int adapterIndex = 0;
+        while(true) {
+            if(DXGI_ERROR_NOT_FOUND == factory->EnumAdapters1(adapterIndex, &adapter))
+                break;
+
+            adapters.add(ghnew Adapter(adapter));
+            adapterIndex++;
+        }
+
+        if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)))) {
+            Logger::log(_T("factory->EnumWarpAdapter() failed\n"));
+            return Status::CALL_FAIL;
+        }
+
+        adapters.add(ghnew Adapter(adapter));
+
+        return adapters.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
+    }
 
     Status Graphics::init() {
         UINT dxgiFactoryFlags = 0;
