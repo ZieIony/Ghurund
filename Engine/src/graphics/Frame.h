@@ -24,7 +24,7 @@ namespace Ghurund {
 
     public:
         Frame() {
-            commandList = ghnew CommandList();
+            commandList = ghnew Ghurund::CommandList();
         }
 
         ~Frame() {
@@ -40,5 +40,7 @@ namespace Ghurund {
         CommandList &getCommandList() {
             return *commandList;
         }
+
+        __declspec(property(get = getCommandList)) CommandList &CommandList;
     };
 }

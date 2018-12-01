@@ -30,9 +30,9 @@ namespace Ghurund {
 #ifdef _DEBUG
         if(referenceCount) {
             if(referenceCount==1) {
-                Logger::log(_T("[%#x] %hs delete refCount=1. This deletion could be replaced with Pointer::release() call"), (int)this, typeid(*this).name());
+                Logger::log(_T("[%#x] %hs delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (int)this, typeid(*this).name());
             } else {
-                Logger::log(_T("[%#x] %hs delete refCount=%lu. The object may still be in use. Consider replacing deletion with Pointer::release() call"), (int)this, typeid(*this).name(), referenceCount);
+                Logger::log(_T("[%#x] %hs delete refCount=%lu. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (int)this, typeid(*this).name(), referenceCount);
             }
         }
         pointers.remove(this);

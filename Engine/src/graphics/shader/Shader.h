@@ -24,6 +24,8 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Shader:public Resource, public ParameterProvider {
     private:
+        static const char *MAGIC;
+
         ShaderProgram *programs[6] = {};
         ComPtr<ID3D12RootSignature> rootSignature;
         ComPtr<ID3D12PipelineState> pipelineState;

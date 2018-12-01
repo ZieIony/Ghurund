@@ -8,11 +8,6 @@ namespace Ghurund {
     class MemoryStream {
     protected:
         unsigned long pointer = 0;
-
-    public:
-        inline void reset() {
-            pointer = 0;
-        }
     };
 
     class MemoryInputStream:public MemoryStream {
@@ -26,8 +21,8 @@ namespace Ghurund {
             this->size = size;
         }
 
-        inline void skip(unsigned long bytes) {
-            pointer += bytes;
+        inline void set(unsigned long bytes) {
+            pointer = bytes;
         }
 
         inline unsigned long getBytesRead() const {
@@ -211,7 +206,7 @@ namespace Ghurund {
             pointer += length;
         }
         template<typename T>
-        void write(T value) {
+        void write(const T &value) {
             size_t length = sizeof(T);
             resize(length);
             memcpy((BYTE*)data+pointer, &value, length);

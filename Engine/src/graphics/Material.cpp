@@ -6,16 +6,17 @@ namespace Ghurund {
     Status Material::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         Status result;
         shader = resourceManager.load<Ghurund::Shader>(context, stream.readUnicode(), &result, options);
-        if(result!=Status::OK)
+        if(filterStatus(result, options)!=Status::OK)
             return result;
 
         size_t textureCount = stream.read<size_t>();
         for(size_t i = 0; i<textureCount; i++) {
             ASCIIString name = stream.readASCII();
             Texture *texture = (Texture*)resourceManager.load(context, stream, &result, options);
-            if(result!=Status::OK)
+            if(filterStatus(result, options)!=Status::OK)
                 return result;
             textures.set(name, texture);
+            texture->release();
         }
 
         return result;

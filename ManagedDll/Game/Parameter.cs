@@ -59,9 +59,9 @@ namespace Ghurund.Managed.Game {
         }
     }
 
-    public class ParameterList : List<Parameter> {
+    public class ParameterArray : Array<Parameter> {
 
-        public ParameterList(IntPtr ptr) : base(ptr) {
+        public ParameterArray(IntPtr ptr) : base(ptr) {
         }
 
         protected override Parameter MakeItem(IntPtr p) {

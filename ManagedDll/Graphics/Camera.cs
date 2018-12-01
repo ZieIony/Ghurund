@@ -15,14 +15,6 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_initParameters(IntPtr _this, IntPtr parameterManager);
-
-        public void InitParameters(ParameterManager parameterManager) {
-            Camera_initParameters(NativePtr, parameterManager.NativePtr);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setScreenSize(IntPtr _this, uint width, uint height);
 
         public void SetScreenSize(uint width, uint height) {

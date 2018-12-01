@@ -54,6 +54,8 @@ namespace Ghurund {
             return frameBuffer->getCommandList();
         }
 
+        __declspec(property(get = getCommandList)) CommandList &CommandList;
+
         void resize(Graphics &graphics, unsigned int width, unsigned int height);
     };
 }

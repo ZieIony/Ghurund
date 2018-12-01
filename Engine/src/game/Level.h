@@ -5,6 +5,7 @@
 #include "graphics/RenderingBatch.h"
 #include "ParameterManager.h"
 #include "input/EventConsumer.h"
+#include "graphics/Renderer.h"
 
 namespace Ghurund {
     class Level:public EventConsumer {
@@ -45,20 +46,12 @@ namespace Ghurund {
         virtual void onUpdate() {}
         virtual void onPreDraw(RenderingBatch &batch) {}
 
-        void draw(CommandList &commandList, ParameterManager &parameterManager) {
+        void draw(Renderer &renderer, ParameterManager &parameterManager) {
             if(camera==nullptr||scene==nullptr)
                 return;
 
             camera->updateParameters();
-            RenderingBatch batch;
-            batch.initParameters(parameterManager);
-            XMFLOAT4X4 identity;
-            XMStoreFloat4x4(&identity, XMMatrixIdentity());
-            scene->flatten(batch, identity);
-            batch.cull(*camera);
-            onPreDraw(batch);
-            batch.draw(commandList, parameterManager);
-            batch.clear();
+            renderer.draw(*camera, *scene, parameterManager);
         }
     };
 }

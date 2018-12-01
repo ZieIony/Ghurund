@@ -28,6 +28,11 @@ namespace Ghurund {
 
     bool operator &(SaveOption lhs, SaveOption rhs);
 
+
+    Status filterStatus(Status result, LoadOption option);
+    Status filterStatus(Status result, SaveOption option);
+
+
     class ResourceManager;
 
     class Resource: public Pointer {
@@ -35,6 +40,8 @@ namespace Ghurund {
         static const unsigned int NO_VERSION = -1;
         bool valid = false;
         String fileName;
+
+        Status saveInternal(ResourceManager &resourceManager, File &file, SaveOption options) const;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) = 0;
@@ -60,7 +67,7 @@ namespace Ghurund {
         Status save(ResourceManager &resourceManager, const String &fileName, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT);
         Status save(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
 
         virtual void invalidate() {

@@ -12,6 +12,7 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> textureUploadHeap;
 
         Image *image = nullptr;
+        PointerList<CommandList*> commandLists;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
@@ -31,10 +32,24 @@ namespace Ghurund {
         DescriptorHandle descHandle;
 
         ~Texture() {
+            finalize();
+        }
+
+        void finalize() {
+            for(size_t i = 0; i<commandLists.Size; i++)
+                if(commandLists.get(i)->references(*this))
+                    commandLists.get(i)->wait();
+
             textureResource.Reset();
             textureUploadHeap.Reset();
             if(image!=nullptr)
                 image->release();
+        }
+
+        virtual void invalidate() {
+            finalize();
+            image = nullptr;
+            __super::invalidate();
         }
 
         virtual bool isValid() {
@@ -42,6 +57,13 @@ namespace Ghurund {
         }
 
         Status init(ResourceContext &context, Image &image);
+
+        void set(CommandList &commandList) {
+            commandLists.add(&commandList);
+            commandList.addResourceRef(*this);
+
+            commandList.get()->SetGraphicsRootDescriptorTable(2, descHandle.getGpuHandle());
+        }
 
         virtual const Ghurund::Type &getType() const override {
             return Type::TEXTURE;

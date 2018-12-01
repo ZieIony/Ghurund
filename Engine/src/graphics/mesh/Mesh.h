@@ -25,6 +25,9 @@ namespace Ghurund {
     typedef UINT32 vindex_t;
 
     class Mesh:public Resource {
+    private:
+        static const char *MAGIC;
+
     protected:
         Vertex *vertices = nullptr;
         unsigned int vertexSize;

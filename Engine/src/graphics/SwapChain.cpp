@@ -57,7 +57,7 @@ namespace Ghurund {
         if(frames==nullptr)
             return;
 
-        CommandList &commandList = frameBuffer->getCommandList();
+        Ghurund::CommandList &commandList = frameBuffer->CommandList;
         if(!commandList.Closed) {
             commandList.get()->OMSetRenderTargets(0, 0, true, 0);
             commandList.finish();

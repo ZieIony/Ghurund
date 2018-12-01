@@ -10,8 +10,8 @@ extern "C" __declspec(dllexport) void LevelManager_setLevel(LevelManager *_this,
     _this->setLevel(level);
 }
 
-extern "C" __declspec(dllexport) void LevelManager_draw(LevelManager *_this, CommandList *commandList, ParameterManager *parameterManager) {
-    _this->draw(*commandList, *parameterManager);
+extern "C" __declspec(dllexport) void LevelManager_draw(LevelManager *_this, Renderer *renderer, ParameterManager *parameterManager) {
+    _this->draw(*renderer, *parameterManager);
 }
 
 extern "C" __declspec(dllexport) Level *Level_new() {

@@ -13,6 +13,7 @@ namespace Ghurund {
         FILE_DOESNT_EXIST,
         FILE_EXISTS,
         UNKNOWN_FORMAT,
+        INV_FORMAT,
 
         ENTRY_POINT_NOT_FOUND,
         COMPILATION_ERROR,

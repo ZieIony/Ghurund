@@ -58,7 +58,7 @@ namespace Ghurund {
         }
 
         void setMaterial(Material *material) {
-            this->material = material;
+            setPointer(this->material, material);
         }
 
         __declspec(property(get = getMaterial, put = setMaterial)) Material *Material;

@@ -38,18 +38,18 @@ namespace Ghurund.Managed.Application {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Window_initParameters(IntPtr nativeWindow, IntPtr parameterManager);
+        private static extern IntPtr ParameterProvider_initParameters(IntPtr nativeWindow, IntPtr parameterManager);
 
         public void InitParameters(ParameterManager parameterManager) {
-            Window_initParameters(NativePtr, parameterManager.NativePtr);
+            ParameterProvider_initParameters(NativePtr, parameterManager.NativePtr);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Window_fillParameters(IntPtr nativeWindow);
+        private static extern IntPtr ParameterProvider_updateParameters(IntPtr nativeWindow);
 
-        public void FillParameters() {
-            Window_fillParameters(NativePtr);
+        public void UpdateParameters() {
+            ParameterProvider_updateParameters(NativePtr);
         }
     }
 }

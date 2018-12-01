@@ -58,9 +58,9 @@ namespace Ghurund {
                 level->onUpdate();
         }
 
-        void draw(CommandList &commandList, ParameterManager &parameterManager) {
+        void draw(Renderer &renderer, ParameterManager &parameterManager) {
             if(level!=nullptr)
-                level->draw(commandList, parameterManager);
+                level->draw(renderer, parameterManager);
         }
     };
 }

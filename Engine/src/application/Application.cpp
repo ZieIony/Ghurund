@@ -117,8 +117,8 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        CommandList &commandList = renderer.startFrame();
-        levelManager.draw(commandList, ParameterManager);
+        renderer.startFrame();
+        levelManager.draw(renderer, ParameterManager);
         renderer.finishFrame();
     }
 

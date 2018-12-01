@@ -36,9 +36,22 @@ namespace Ghurund {
         loadingThread.finish();
         delete resourceFactory;
 
+#ifdef _DEBUG
+        PointerList<Resource*> unreleasedResources;
+#endif
+
         for(size_t i = 0; i<resources.Size; i++) {
             Resource *resource = resources.getValue(i);
 #ifdef _DEBUG
+            if(resource->ReferenceCount>1)
+                unreleasedResources.add(resource);
+#endif
+            resource->release();
+        }
+
+#ifdef _DEBUG
+        for(size_t i = 0; i<unreleasedResources.Size; i++) {
+            Resource *resource = unreleasedResources[i];
             if(resource->ReferenceCount>1)
                 Logger::log(_T("unreleased ResourceManager resource: [%#x] %hs %s refCount=%lu\n"), (int)resource, typeid(*resource).name(), resource->FileName.getData(), resource->ReferenceCount);
             while(resource->ReferenceCount>1)
@@ -49,7 +62,7 @@ namespace Ghurund {
 
     void ResourceManager::reload() {
         section.enter();
-        for(size_t i = 0; i<reloadQueue.Size;i++) {
+        for(size_t i = 0; i<reloadQueue.Size; i++) {
             ReloadTask *task = reloadQueue.get(i);
             task->execute();    // TODO: try to reload in place
             delete task;
@@ -88,7 +101,10 @@ namespace Ghurund {
         } else {
             stream.writeBoolean(false); // file reference
             stream.writeUnicode(resource.FileName);
-            return resource.save(*this, resource.FileName, options);
+            Status result = resource.save(*this, resource.FileName, options);
+            if(options&SaveOption::SKIP_IF_EXISTS&&result==Status::FILE_EXISTS)
+                return Status::OK;
+            return result;
         }
     }
 

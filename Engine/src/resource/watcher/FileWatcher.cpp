@@ -31,9 +31,9 @@ namespace Ghurund {
         String dir = path.parent_path().string().c_str();
         String fileName = path.filename().string().c_str();
 
-        if(!watches.contains(fileName)) {
+        if(!watches.contains(dir)) {
             DirectoryWatch *watch = ghnew DirectoryWatch(dir);
-            watches.set(fileName, watch);
+            watches.set(dir, watch);
 
             watch->addFile(fileName, fileChangedHandler);
 

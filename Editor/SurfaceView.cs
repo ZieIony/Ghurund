@@ -89,7 +89,7 @@ namespace Ghurund.Editor {
             Camera.SetScreenSize((uint)Width, (uint)Height);
             window.UpdateSize();
             renderer.Resize((uint)Width, (uint)Height);
-            window.FillParameters();
+            window.UpdateParameters();
         }
     }
 }

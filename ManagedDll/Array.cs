@@ -69,41 +69,31 @@ namespace Ghurund.Managed {
     }
 
     public abstract class Array<T> : IEnumerable, IEnumerable<T> where T : NativeClass {
-        System.Collections.Generic.List<T> managedItems = new System.Collections.Generic.List<T>();
         PointerArray pointers;
 
         public Array(IntPtr ptr) {
             pointers = new PointerArray(ptr);
-            SyncArray();
-        }
-
-        public void SyncArray() {
-            managedItems.Clear();
-            for (int i = 0; i < pointers.Count; i++)
-                managedItems.Add(MakeItem(pointers[i]));
         }
 
         protected abstract T MakeItem(IntPtr p);
 
         public T this[int index] {
-            get => managedItems[index];
+            get => MakeItem(pointers[index]);
             set {
-                managedItems[index] = value;
                 pointers[index] = value.NativePtr;
             }
         }
 
-        public int Count => managedItems.Count;
+        public int Count => pointers.Count;
 
         public bool IsReadOnly => pointers.IsReadOnly;
 
         public void Clear() {
-            managedItems.Clear();
             pointers.Clear();
         }
 
         public bool Contains(T item) {
-            return managedItems.Contains(item);
+            return pointers.Contains(item.NativePtr);
         }
 
         public void CopyTo(T[] array, int arrayIndex) {
@@ -111,15 +101,15 @@ namespace Ghurund.Managed {
         }
 
         public IEnumerator<T> GetEnumerator() {
-            return managedItems.GetEnumerator();
+            return null;// managedItems.GetEnumerator();
         }
 
         public int IndexOf(T item) {
-            return managedItems.IndexOf(item);
+            return pointers.IndexOf(item.NativePtr);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return managedItems.GetEnumerator();
+            return null;// managedItems.GetEnumerator();
         }
     }
 

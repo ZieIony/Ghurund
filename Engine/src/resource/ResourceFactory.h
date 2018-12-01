@@ -33,6 +33,7 @@ namespace Ghurund {
             addType(Type::IMAGE);
             addType(Type::SHADER);
             addType(Type::SCENE);
+            addType(Type::TRANSFORMED_ENTITY);
         }
 
         void addType(const Type &type) {
@@ -47,7 +48,8 @@ namespace Ghurund {
         }
 
         virtual void describeResource(const Resource &resource, MemoryOutputStream &stream) override {
-            stream.write(types.indexOf((Type*)&resource.getType()));
+            unsigned int index = types.indexOf((Type*)&resource.getType());
+            stream.write(index);
         }
 
     };

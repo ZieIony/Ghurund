@@ -17,6 +17,18 @@ namespace Ghurund {
         return (std::underlying_type<SaveOption>::type)lhs&(std::underlying_type<SaveOption>::type)rhs;
     }
 
+    Status filterStatus(Status result, LoadOption option) {
+        if(result==Status::ALREADY_LOADED)
+            return Status::OK;
+        return result;
+    }
+
+    Status filterStatus(Status result, SaveOption option) {
+        if(result==Status::FILE_EXISTS&&option&SaveOption::SKIP_IF_EXISTS)
+            return Status::OK;
+        return result;
+    }
+
     Status Resource::writeHeader(MemoryOutputStream & stream) const {
         if(getVersion()==NO_VERSION)
             return Status::WRONG_RESOURCE_VERSION;
@@ -55,13 +67,13 @@ namespace Ghurund {
     }
 
     Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const String & fileName, unsigned long *bytesRead, LoadOption options) {
-        if(this->fileName.Length==0&&fileName.Length==0) {
-            Logger::log(_T("Both resource's file name and the file name passed as parameter are empty\n"));
+        if(fileName.Length==0) {
+            Logger::log(_T("File name is empty\n"));
             return Status::INV_PARAM;
-        } else if(fileName!=nullptr) {
-            this->fileName = fileName;
         }
 
+        this->fileName = fileName;
+  
         return load(resourceManager, context, bytesRead, options);
     }
 
@@ -89,44 +101,47 @@ namespace Ghurund {
     }
 
     Status Resource::save(ResourceManager &resourceManager, SaveOption options) const {
+        if(fileName.Length==0) {
+            Logger::log(_T("File name is empty\n"));
+            return Status::INV_PARAM;
+        }
+
         File file(this->fileName);
-        if(file.Exists&&options&SaveOption::SKIP_IF_EXISTS)
-            return Status::OK;
-        if(file.Exists&&!(options&SaveOption::OVERWRITE))
-            return Status::FILE_EXISTS;
-        MemoryOutputStream stream;
-        Status result = save(resourceManager, stream, options);
+        Status result = saveInternal(resourceManager, file, options);
         if(result!=Status::OK)
             return result;
-        file.setData(stream.Data, stream.BytesWritten);
         return file.write();
     }
 
     Status Resource::save(ResourceManager &resourceManager, const String &fileName, SaveOption options) {
-        if(this->fileName.Length==0&&fileName.Length==0) {
-            Logger::log(_T("Both resource's file name and the file name passed as parameter are null\n"));
+        if(fileName.Length==0) {
+            Logger::log(_T("File name is empty\n"));
             return Status::INV_PARAM;
-        } else if(fileName!=nullptr) {
-            this->fileName = fileName;
         }
 
-        File file(this->fileName);
-        if(file.Exists&&options&SaveOption::SKIP_IF_EXISTS)
-            return Status::OK;
-        if(file.Exists&&!(options&SaveOption::OVERWRITE))
-            return Status::FILE_EXISTS;
+        this->fileName = fileName;
 
-        return save(resourceManager);
+        File file(this->fileName);
+        Status result = saveInternal(resourceManager, file, options);
+        if(result!=Status::OK)
+            return result;
+        return file.write();
     }
 
-    Status Resource::save(ResourceManager &resourceManager, File & file, SaveOption options) const {
+    Status Resource::save(ResourceManager &resourceManager, File & file, SaveOption options) {
+        this->fileName = file.Name;
+
+        return saveInternal(resourceManager, file, options);
+    }
+
+    Status Resource::saveInternal(ResourceManager &resourceManager, File & file, SaveOption options) const {
         if(file.Exists&&options&SaveOption::SKIP_IF_EXISTS)
-            return Status::OK;
+            return Status::FILE_EXISTS;
         if(file.Exists&&!(options&SaveOption::OVERWRITE))
             return Status::FILE_EXISTS;
 
         MemoryOutputStream stream;
-        Status result = save(resourceManager, stream);
+        Status result = save(resourceManager, stream, options);
         if(result!=Status::OK)
             return result;
         file.setData(stream.Data, stream.BytesWritten);

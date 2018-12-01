@@ -24,7 +24,7 @@ private:
     float yaw = 0, pitch = 0;
     Application &app;
     bool pressed = false;
-    TransformedEntity *selection;
+    TransformedEntity *selection = nullptr;
 
 public:
     TestLevel(Application &app):app(app) {}
@@ -49,7 +49,19 @@ public:
     }
 
     virtual bool onKeyEvent(KeyEvent &event) override {
-        if(event.Action==KeyAction::DOWN&&event.Key==VK_ESCAPE) {
+        if(event.Action==KeyAction::DOWN&&event.Key=='W') {
+            Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
+            app.Renderer.Material = material;
+            material->release();
+        } else if(event.Action==KeyAction::UP&&event.Key=='W') {
+            app.Renderer.Material = nullptr;
+        } else if(event.Action==KeyAction::DOWN&&event.Key=='C') {
+            Material *material = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
+            app.Renderer.Material = material;
+            material->release();
+        } else if(event.Action==KeyAction::UP&&event.Key=='C') {
+            app.Renderer.Material = nullptr;
+        } else if(event.Action==KeyAction::DOWN&&event.Key==VK_ESCAPE) {
             PostQuitMessage(0);
             return true;
         }
@@ -68,6 +80,7 @@ public:
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
                 setScene(scene);
                 scene->initParameters(app.ParameterManager);
+                scene->release();
             });
         } else {*/
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
@@ -112,7 +125,7 @@ public:
                 transformedModel->Position = XMFLOAT3(100, 100, 100);
                 transformedModel->Scale = XMFLOAT3(50, 50, 50);
 
-                //scene->Entities.add(transformedModel);
+                scene->Entities.add(transformedModel);
                 transformedModel->release();
             }
 
@@ -123,37 +136,39 @@ public:
 
                 transformedModel->Scale = XMFLOAT3(10000, 1, 10000);
 
-                //scene->Entities.add(transformedModel);
+                scene->Entities.add(transformedModel);
                 transformedModel->release();
-            }
+            }/*
 
             {
                 Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *selection = Models::makeCube(app.ResourceContext, *material);
                 material->release();
-         
+
                 selection->Position = model->Mesh->BoundingBox.Center;
                 selection->Scale = model->Mesh->BoundingBox.Extents;
 
                 scene->Entities.add(selection);
                 selection->release();
-            }
+            }*/
 
-            /*Status result = scene->save(app.ResourceManager, "test.scene");
+            /*Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
                 Logger::log(_T("failed to save scene\n"));*/
 
-     
+
             scene->initParameters(app.ParameterManager);
             scene->release();
         //}
+
+        camera->release();
     }
 
     virtual void onPreDraw(RenderingBatch &batch) {
         GlobalEntity<Model> *model = batch.pick(*camera, app.Input.MousePos);
         if(model!=nullptr) {
-  //          selection->Position = model->BoundingBox.Center;
-//            selection->Scale = model->BoundingBox.Extents;
+            //          selection->Position = model->BoundingBox.Center;
+          //            selection->Scale = model->BoundingBox.Extents;
         }
     }
 
@@ -168,13 +183,12 @@ public:
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
-    virtual void onUninit() override {
-    }
+    virtual void onUninit() override {}
 };
 
 class TestApplication:public Application {
 private:
-    Level *testLevel;
+    Level *testLevel = nullptr;
 
 public:
     void onInit() {

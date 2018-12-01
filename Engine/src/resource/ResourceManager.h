@@ -58,7 +58,7 @@ namespace Ghurund {
                 onLoaded(nullptr, Status::INV_PARAM);
                 return;
             }
-            loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
+            Task *task = ghnew Task(fileName, [this, &context, fileName, onLoaded, options]() {
                 Resource *resource = get(fileName);
                 Status result = Status::ALREADY_LOADED;
                 if(resource==nullptr) {
@@ -69,6 +69,8 @@ namespace Ghurund {
                     onLoaded((Type*)resource, result);
                 return result;
             });
+            loadingThread.post(task);
+            task->release();
         }
 
         template<class Type> Type *load(ResourceContext &context, File &file, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
@@ -95,7 +97,7 @@ namespace Ghurund {
                 onLoaded(nullptr, Status::INV_PARAM);
                 return;
             }
-            loadingThread.post(fileName, [this, &context, fileName, onLoaded, options]() {
+            Task *task = ghnew Task(fileName, [this, &context, file.Name, onLoaded, options]() {
                 Type *resource = get<Type>(file.Name);
                 Status result = Status::ALREADY_LOADED;
                 if(resource==nullptr) {
@@ -106,6 +108,8 @@ namespace Ghurund {
                     onLoaded(resource, result);
                 return result;
             });
+            loadingThread.post(task);
+            task->release();
         }
 
         template<class Type = Resource> Type *load(ResourceContext &context, MemoryInputStream &stream, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {

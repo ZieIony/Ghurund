@@ -1,26 +1,29 @@
 #include "Mesh.h"
 
 namespace Ghurund {
+    const char *Mesh::MAGIC = "MESH";
+
     Status Mesh::loadInternal(ResourceManager & resourceManager, ResourceContext & context, MemoryInputStream & stream, LoadOption option) {
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
             } else if(FileName.endsWith(ResourceFormat::MESH.getExtension())) {
                 return loadMesh(context, stream);
+            } else {
+                return Status::UNKNOWN_FORMAT;
             }
         }
 
         size_t bytesRead = stream.BytesRead;
-        Status result = loadObj(context, stream);
+        Status result = loadMesh(context, stream);
         if(result!=Status::OK) {
-            stream.reset();
-            stream.skip(bytesRead);
-            result = loadMesh(context, stream);
+            stream.set(bytesRead);
+            result = loadObj(context, stream);
             if(result!=Status::OK)
                 return Status::UNKNOWN_FORMAT;
         }
 
-        return Status::OK;
+        return result;
     }
 
     Status Mesh::loadObj(ResourceContext &context, MemoryInputStream &stream) {
@@ -82,9 +85,8 @@ namespace Ghurund {
     }
 
     Status Mesh::loadMesh(ResourceContext &context, MemoryInputStream &stream) {
-        Status result = readHeader(stream);
-        if(result!=Status::OK)
-            return result;
+        if(stream.Size<stream.BytesRead+strlen(MAGIC)||memcmp(stream.readBytes(strlen(MAGIC)), MAGIC, strlen(MAGIC))!=0)
+            return Status::INV_FORMAT;
 
         vertexSize = sizeof(Vertex);
         vertexCount = stream.read<vindex_t>();
@@ -103,9 +105,7 @@ namespace Ghurund {
     }
 
     Status Mesh::saveInternal(ResourceManager &resourceManager, MemoryOutputStream & stream, SaveOption options) const {
-        Status result = writeHeader(stream);
-        if(result!=Status::OK)
-            return result;
+        stream.writeBytes(MAGIC, strlen(MAGIC));
 
         stream.write<vindex_t>(vertexCount);
         stream.writeBytes(vertices, vertexCount*vertexSize);
@@ -342,7 +342,7 @@ namespace Ghurund {
 
     void Mesh::generateNormals() {
         for(size_t i = 0; i<vertexCount; i++)
-            vertices[i].normal = XMFLOAT3(0,0,0);
+            vertices[i].normal = XMFLOAT3(0, 0, 0);
         for(size_t i = 0; i<indexCount; i += 3) {
             Vertex &v1 = vertices[indices[i]];
             Vertex &v2 = vertices[indices[i+1]];

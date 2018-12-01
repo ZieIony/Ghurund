@@ -5,29 +5,17 @@ using Ghurund.Managed.Graphics;
 
 namespace Ghurund.Managed.Game {
 
-    public static class ParameterProvider {
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr ParameterProvider_getParameters(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ParameterProvider_initParameters(IntPtr _this, IntPtr parameterManager);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void ParameterProvider_fillParameters(IntPtr _this);
-
-    }
-
     public abstract class Entity : Resource.Resource {
 
         public delegate void EntityChangeEventHandler(Object sender);
         public event EntityChangeEventHandler AfterChanged;
 
         public Entity() {
-            //Parameters = new ParameterList(Entity_getParameters(NativePtr));
+            Parameters = new ParameterArray(Entity_getParameters(NativePtr));
         }
 
         public Entity(IntPtr ptr) : base(ptr) {
-            //Parameters = new ParameterList(Entity_getParameters(NativePtr));
+            Parameters = new ParameterArray(Entity_getParameters(NativePtr));
         }
 
 
@@ -58,34 +46,28 @@ namespace Ghurund.Managed.Game {
             }
         }
 
-        /*
+
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Entity_getParameters(IntPtr _this);
+        public static extern IntPtr Entity_getParameters(IntPtr _this);
 
         [Browsable(false)]
-        public ParameterList Parameters {
+        public ParameterArray Parameters {
             get; internal set;
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);
+        public static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);
 
-        public void initParameters(ParameterManager manager) {
+        public void InitParameters(ParameterManager manager) {
             Entity_initParameters(NativePtr, manager.NativePtr);
-            Entity_fillParameters(NativePtr);
-            syncParameters();
-        }
-
-        private void syncParameters() {
-            Parameters.SyncList();
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Entity_fillParameters(IntPtr _this);
+        public static extern void Entity_updateParameters(IntPtr _this);
 
-        public void fillParameters() {
-            Entity_fillParameters(NativePtr);
-        }*/
+        public void UpdateParameters() {
+            Entity_updateParameters(NativePtr);
+        }
     }
 
     public class EntityList : List<Entity> {

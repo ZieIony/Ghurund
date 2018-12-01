@@ -90,47 +90,61 @@ namespace Ghurund.Managed {
         }
     }
 
+    public class ListEnumerator<T> : IEnumerator<T> {
+        private readonly IList<T> list;
+        private int index = -1;
+
+        public ListEnumerator(IList<T> list) {
+            this.list = list;
+        }
+
+        public T Current => list[index];
+
+        object IEnumerator.Current => list[index];
+
+        public void Dispose() {
+        }
+
+        public bool MoveNext() {
+            index++;
+            return index < list.Count;
+        }
+
+        public void Reset() {
+            index = -1;
+        }
+    }
+
     public abstract class List<T> : IList<T> where T : NativeClass {
-        System.Collections.Generic.List<T> managedItems = new System.Collections.Generic.List<T>();
         PointerList pointers;
 
         public List(IntPtr ptr) {
             pointers = new PointerList(ptr);
-            SyncList();
-        }
-
-        public void SyncList() {
-            managedItems.Clear();
-            for (int i = 0; i < pointers.Count; i++)
-                managedItems.Add(MakeItem(pointers[i]));
         }
 
         protected abstract T MakeItem(IntPtr p);
 
         public T this[int index] {
-            get => managedItems[index];
+            get => MakeItem(pointers[index]);
             set {
-                managedItems[index] = value;
                 pointers[index] = value.NativePtr;
             }
         }
 
-        public int Count => managedItems.Count;
+        public int Count => pointers.Count;
 
         public bool IsReadOnly => pointers.IsReadOnly;
 
         public void Add(T item) {
-            managedItems.Add(item);
             pointers.Add(item.NativePtr);
         }
 
         public void Clear() {
-            managedItems.Clear();
             pointers.Clear();
         }
 
         public bool Contains(T item) {
-            return managedItems.Contains(item);
+            return pointers.Contains(item.NativePtr);
         }
 
         public void CopyTo(T[] array, int arrayIndex) {
@@ -138,30 +152,27 @@ namespace Ghurund.Managed {
         }
 
         public IEnumerator<T> GetEnumerator() {
-            return managedItems.GetEnumerator();
+            return new ListEnumerator<T>(this);
         }
 
         public int IndexOf(T item) {
-            return managedItems.IndexOf(item);
+            return pointers.IndexOf(item.NativePtr);
         }
 
         public void Insert(int index, T item) {
-            managedItems.Insert(index, item);
             pointers.Insert(index, item.NativePtr);
         }
 
         public bool Remove(T item) {
-            pointers.Remove(item.NativePtr);
-            return managedItems.Remove(item);
+            return pointers.Remove(item.NativePtr);
         }
 
         public void RemoveAt(int index) {
             pointers.RemoveAt(index);
-            managedItems.RemoveAt(index);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return managedItems.GetEnumerator();
+            return new ListEnumerator<T>(this);
         }
     }
 }

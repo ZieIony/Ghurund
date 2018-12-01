@@ -4,9 +4,9 @@
 
 namespace Ghurund {
 
-    class TransformedEntity: public TransformedObject, public Entity {
+    class TransformedEntity: public Entity, public TransformedObject {
     private:
-        Entity *entity;
+        Entity *entity = nullptr;
         Array<Parameter*> parameters;
 
         TransformedEntity():parameters(Array<Parameter*>(0)) {}
@@ -15,11 +15,11 @@ namespace Ghurund {
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override {
-            memcpy(&position, stream.readBytes(sizeof(position)), sizeof(position));
-            memcpy(&rotation, stream.readBytes(sizeof(rotation)), sizeof(rotation));
-            memcpy(&scale, stream.readBytes(sizeof(scale)), sizeof(scale));
+            memcpy(&position, &stream.read<XMFLOAT3>(), sizeof(position));
+            memcpy(&rotation, &stream.read<XMFLOAT3>(), sizeof(rotation));
+            memcpy(&scale, &stream.read<XMFLOAT3>(), sizeof(scale));
 
-            memcpy(&world, stream.readBytes(sizeof(world)), sizeof(world));
+            memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
 
             Status result;
             entity = (Entity*)resourceManager.load(context, stream, &result, options);
@@ -28,13 +28,13 @@ namespace Ghurund {
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
-            stream.writeBytes(&position, sizeof(position));
-            stream.writeBytes(&rotation, sizeof(rotation));
-            stream.writeBytes(&scale, sizeof(scale));
+            stream.write(position);
+            stream.write(rotation);
+            stream.write(scale);
 
-            stream.writeBytes(&world, sizeof(world));
+            stream.write(world);
 
-            return resourceManager.save(*entity, options);
+            return resourceManager.save(*entity, stream, options);
         }
 
         virtual void clean() {}

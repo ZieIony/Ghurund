@@ -50,3 +50,15 @@ extern "C" __declspec(dllexport) const Float3 TransformedObject_getScale(Transfo
 extern "C" __declspec(dllexport) void TransformedObject_setScale(TransformedObject *_this, XMFLOAT3 scale) {
     _this->setScale(scale);
 }
+
+extern "C" __declspec(dllexport) Array<Parameter*> *Entity_getParameters(Entity *_this) {
+    return &_this->getParameters();
+}
+
+extern "C" __declspec(dllexport) void Entity_initParameters(Entity *_this, ParameterManager *manager) {
+    _this->initParameters(*manager);
+}
+
+extern "C" __declspec(dllexport) void Entity_updateParameters(Entity *_this) {
+    _this->updateParameters();
+}

@@ -5,11 +5,11 @@ namespace Ghurund {
     Status Model::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
         Status result;
         mesh = (Ghurund::Mesh*)resourceManager.load(context, stream, &result, options);
-        if(result!=Status::OK)
+        if(filterStatus(result, options)!=Status::OK)
             return result;
 
         material = (Ghurund::Material*)resourceManager.load(context, stream, &result, options);
-        return result;
+        return filterStatus(result, options);
     }
 
     Status Model::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
@@ -23,10 +23,12 @@ namespace Ghurund {
             return Status::INV_STATE;
         }
 
-        resourceManager.save(*mesh, stream, options);
-        resourceManager.save(*material, stream, options);
-
-        return Status::OK;
+        Status result;
+        result = resourceManager.save(*mesh, stream, options);
+        if(filterStatus(result, options)!=Status::OK)
+            return result;
+        result = resourceManager.save(*material, stream, options);
+        return filterStatus(result, options);
     }
 
     void Model::flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) {

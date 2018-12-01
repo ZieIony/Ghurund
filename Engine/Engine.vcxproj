@@ -27,6 +27,8 @@
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
+    <ClCompile Include="src\core\WorkerThread.cpp" />
+    <ClCompile Include="src\game\Scene.cpp" />
     <ClCompile Include="src\graphics\Camera.cpp" />
     <ClCompile Include="src\graphics\CommandList.cpp" />
     <ClCompile Include="src\graphics\DescriptorHeap.cpp" />
@@ -36,6 +38,7 @@
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\graphics\Models.cpp" />
+    <ClCompile Include="src\graphics\RenderingBatch.cpp" />
     <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -82,6 +85,7 @@
     <ClInclude Include="src\core\FunctionQueue.h" />
     <ClInclude Include="src\core\Pointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\Task.h" />
     <ClInclude Include="src\core\Thread.h" />
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Type.h" />

@@ -2,6 +2,8 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
+    const char *Shader::MAGIC = "SHD";
+
     Status Shader::makeRootSignature(Graphics &graphics) {
         Status result = Status::OK;
 
@@ -278,6 +280,9 @@ namespace Ghurund {
 
         this->graphics = &context.Graphics;
 
+        if(stream.Size<stream.BytesRead+strlen(MAGIC)||memcmp(stream.readBytes(strlen(MAGIC)), MAGIC, strlen(MAGIC))!=0)
+            return Status::INV_FORMAT;
+
         if(stream.readBoolean()) {
             for(size_t i = 0; i<6; i++) {
                 if(stream.readBoolean()) {
@@ -322,10 +327,9 @@ namespace Ghurund {
             }
         } else {
             size_t bytesRead = stream.BytesRead;
-            Status result = loadShd(context, stream);
+            result = loadShd(context, stream);
             if(result!=Status::OK) {
-                stream.reset();
-                stream.skip(bytesRead);
+                stream.set(bytesRead);
                 result = loadHlsl(context, stream);
                 if(result!=Status::OK)
                     return Status::UNKNOWN_FORMAT;
@@ -339,6 +343,8 @@ namespace Ghurund {
     }
 
     Status Shader::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+        stream.writeBytes(MAGIC, strlen(MAGIC));
+
         stream.writeBoolean(compiled);
         if(compiled) {
             for(size_t i = 0; i<6; i++) {
