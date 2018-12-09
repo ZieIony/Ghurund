@@ -7,7 +7,8 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Camera_new();
 
-        protected override void newObject() => NativePtr = Camera_new();
+        protected override IntPtr NewObject() => Camera_new();
+
 
         public Camera() { }
 

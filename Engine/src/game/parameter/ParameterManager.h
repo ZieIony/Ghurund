@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Ghurund.h"
-#include "collection/String.h"
 #include "Parameter.h"
+#include "collection/String.h"
 #include "core/CriticalSection.h"
+#include "core/Object.h"
 #include "graphics/Graphics.h"
 
 namespace Ghurund {
 
-    class ParameterManager {
+    class ParameterManager: public Object {
     private:
         Map<ASCIIString, Parameter*> parameters;
         CriticalSection section;
@@ -50,7 +51,12 @@ namespace Ghurund {
         }
 
         Parameter *get(const ASCIIString &name) const {
-            return parameters.get(name);
+            size_t index = parameters.indexOf(name);
+            if(index==parameters.Size) {
+                Logger::log(_T("Parameter of name '%hs' is missing\n"), name);
+                return nullptr;
+            }
+            return parameters.getValue(index);
         }
 
         size_t getParameterCount() const {

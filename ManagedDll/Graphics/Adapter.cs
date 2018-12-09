@@ -6,8 +6,7 @@ using System.Runtime.InteropServices;
 namespace Ghurund.Managed.Graphics {
     public class DisplayMode : NativeClass {
 
-        public DisplayMode(IntPtr ptr) {
-            NativePtr = ptr;
+        public DisplayMode(IntPtr ptr) : base(ptr) {
         }
 
 
@@ -48,8 +47,7 @@ namespace Ghurund.Managed.Graphics {
 
     public class AdapterOutput : NativeClass {
 
-        public AdapterOutput(IntPtr ptr) {
-            NativePtr = ptr;
+        public AdapterOutput(IntPtr ptr) : base(ptr) {
             initDisplayModes();
         }
 
@@ -59,7 +57,7 @@ namespace Ghurund.Managed.Graphics {
                 displayModes[i] = new DisplayMode(AdapterOutput_getDisplayModes_get(NativePtr, i));
             DisplayModes = ImmutableList.Create(displayModes);
         }
-        
+
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))]
@@ -91,8 +89,7 @@ namespace Ghurund.Managed.Graphics {
 
     public class Adapter : NativeClass {
 
-        public Adapter(IntPtr ptr) {
-            NativePtr = ptr;
+        public Adapter(IntPtr ptr) : base(ptr) {
             initDisplayModes();
         }
 

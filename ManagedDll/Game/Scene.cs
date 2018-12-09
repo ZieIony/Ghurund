@@ -7,7 +7,7 @@ namespace Ghurund.Managed.Game {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Scene_new();
 
-        protected override void newObject() => NativePtr = Scene_new();
+        protected override IntPtr NewObject() => Scene_new();
 
 
         public Scene() {

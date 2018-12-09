@@ -33,9 +33,7 @@ namespace Ghurund {
                 errorBlob->Release();
             }
         } else {
-            byteCode = ghnew BYTE[shader->GetBufferSize()];
-            byteCodeLength = shader->GetBufferSize();
-            memcpy(byteCode, shader->GetBufferPointer(), byteCodeLength);
+            byteCode = ghnew Buffer(shader->GetBufferPointer(), shader->GetBufferSize());
             result = Status::OK;
         }
 
@@ -45,7 +43,7 @@ namespace Ghurund {
 
     D3D12_INPUT_LAYOUT_DESC ShaderProgram::getInputLayout() {
         ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(byteCode, byteCodeLength, IID_ID3D12ShaderReflection, (void**)&reflector);
+        D3DReflect(byteCode->Data, byteCode->Size, IID_ID3D12ShaderReflection, (void**)&reflector);
         D3D12_SHADER_DESC desc;
         reflector->GetDesc(&desc);
 

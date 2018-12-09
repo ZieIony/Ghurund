@@ -30,21 +30,19 @@ namespace Ghurund {
     }
 
     Status Resource::writeHeader(MemoryOutputStream & stream) const {
-        if(getVersion()==NO_VERSION)
-            return Status::WRONG_RESOURCE_VERSION;
-        const char *str = typeid(*this).name();
-        stream.writeASCII(str);
-        stream.writeUInt(getVersion());
+        unsigned int hash = hashCode(Type.Name);
+        stream.write(hash);
+        stream.write(getVersion());
         return Status::OK;
     }
 
     Status Resource::readHeader(MemoryInputStream & stream) {
-        const char *str = typeid(*this).name();
-        size_t len = strlen(str);
-        char *str2 = (char*)stream.readBytes(len+1);
-        if(memcmp(str2, str, len+1)!=0)
+        if(stream.Size<stream.BytesRead+sizeof(unsigned int)*2)
+            return Status::UNEXPECTED_EOF;
+        unsigned int hash = hashCode(Type.Name);
+        if(stream.read<unsigned int>()!=hash)
             return Status::WRONG_RESOURCE_TYPE;
-        if(stream.readUInt()!=getVersion()||getVersion()==NO_VERSION)
+        if(stream.read<unsigned int>()!=getVersion())
             return Status::WRONG_RESOURCE_VERSION;
         return Status::OK;
     }
@@ -73,7 +71,7 @@ namespace Ghurund {
         }
 
         this->fileName = fileName;
-  
+
         return load(resourceManager, context, bytesRead, options);
     }
 

@@ -46,8 +46,7 @@ namespace Ghurund {
         ParameterManager *manager;
 
     public:
-        static const char *WIDTH;
-        static const char *HEIGHT;
+        static const char *VIEWPORT_SIZE;
 
         static const char *PARTY_COLOR;
         static const char *RANDOM;

@@ -9,8 +9,10 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Graphics_new();
 
+        protected override IntPtr NewObject() => Graphics_new();
+
+
         public Graphics() {
-            NativePtr = Graphics_new();
             init();
             initAdapters();
         }
@@ -39,6 +41,10 @@ namespace Ghurund.Managed.Graphics {
         public ImmutableList<Adapter> Adapters {
             get; internal set;
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void reportLiveObjects();
 
     }
 }

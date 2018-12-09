@@ -60,5 +60,4 @@ namespace Ghurund {
 
         __declspec(property(get = getParameterManager)) ParameterManager &ParameterManager;
     };
-
 }

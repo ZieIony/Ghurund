@@ -3,10 +3,10 @@
 
 namespace Ghurund {
     CommandList::~CommandList() {
-        if(!closed)
-            commandList->Close();
-        if(commandQueue!=nullptr)
-            fence.wait(commandQueue.Get());
+        if(state==CommandListState::RECORDING)
+            finish();
+        if(state==CommandListState::CLOSED)
+            wait();
     }
 
     Status CommandList::init(Graphics & graphics, ComPtr<ID3D12CommandQueue> &queue) {
@@ -31,23 +31,26 @@ namespace Ghurund {
             return Status::CALL_FAIL;
         }
 
-        closed = true;
+        state = CommandListState::FINISHED;
 
         return Status::OK;
     }
 
     Status CommandList::wait() {
-        if(!closed)
+        if(state!=CommandListState::CLOSED)
             return Status::INV_STATE;
         Status result = fence.wait(commandQueue.Get());
+        for(size_t i = 0; i<resourceRefs.Size; i++)
+            resourceRefs[i]->Release();
         resourceRefs.clear();
         pipelineState = nullptr;
         rootSignature = nullptr;
+        state = CommandListState::FINISHED;
         return result;
     }
 
     Status CommandList::reset() {
-        if(!closed)
+        if(state!=CommandListState::FINISHED)
             return Status::INV_STATE;
 
         if(FAILED(commandAllocator->Reset())) {
@@ -60,13 +63,13 @@ namespace Ghurund {
             return Status::CALL_FAIL;
         }
 
-        closed = false;
+        state = CommandListState::RECORDING;
 
         return Status::OK;
     }
 
     Status CommandList::finish() {
-        if(closed)
+        if(state!=CommandListState::RECORDING)
             return Status::INV_STATE;
 
         if(FAILED(commandList->Close())) {
@@ -74,10 +77,12 @@ namespace Ghurund {
             return Status::CALL_FAIL;
         }
 
-        closed = true;
-
         ID3D12CommandList* ppCommandLists[] = {commandList.Get()};
         commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
+
+        fence.signal(commandQueue.Get());
+
+        state = CommandListState::CLOSED;
 
         return Status::OK;
     }
@@ -89,27 +94,21 @@ namespace Ghurund {
 #endif
         if(this->pipelineState!=pipelineState) {
             this->pipelineState = pipelineState;
+            addResourceRef(pipelineState);
             commandList.Get()->SetPipelineState(pipelineState);
         }
     }
 
-    void CommandList::setGraphicsRootSignature(ID3D12RootSignature * rootSignature) {
+    void CommandList::setGraphicsRootSignature(ID3D12RootSignature *rootSignature) {
 #ifdef _DEBUG
         if(pipelineState==nullptr)
             Logger::log(_T("rootSignature cannot be null\n"));
 #endif
         if(this->rootSignature!=rootSignature) {
             this->rootSignature = rootSignature;
+            addResourceRef(rootSignature);
             commandList.Get()->SetGraphicsRootSignature(rootSignature);
         }
-    }
-
-    void CommandList::addResourceRef(Resource & resource) {
-        resourceRefs.add(&resource);
-    }
-
-    bool CommandList::references(const Resource & resource) {
-        return resourceRefs.contains((Resource*)&resource);
     }
 
 }

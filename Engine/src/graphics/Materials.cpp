@@ -19,4 +19,11 @@ namespace Ghurund {
         material->Valid = true;
         return material;
     }
+
+    Material *Materials::makeNormals(ResourceManager &resourceManager, ResourceContext &context) {
+        Shader *shader = Shaders::loadNormals(resourceManager, context);
+        Material *material = ghnew Material(shader);
+        material->Valid = true;
+        return material;
+    }
 }

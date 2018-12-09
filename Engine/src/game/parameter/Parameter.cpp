@@ -8,8 +8,7 @@ namespace Ghurund {
     const ParameterType &ParameterType::FLOAT3 = ParameterType(ParameterTypeValue::FLOAT3, sizeof(XMFLOAT3));
     const ParameterType &ParameterType::MATRIX = ParameterType(ParameterTypeValue::MATRIX, sizeof(XMFLOAT4X4));
 
-    const char *Parameter::WIDTH = "width";
-    const char *Parameter::HEIGHT = "height";
+    const char *Parameter::VIEWPORT_SIZE = "viewportSize";
 
     const char *Parameter::PARTY_COLOR = "partyColor";
     const char *Parameter::RANDOM = "random";

@@ -8,7 +8,13 @@
 
 namespace Ghurund {
     class Shader;
-    class Resource;
+
+    enum class CommandListState {
+        INVALID,
+        RECORDING,  // can be closed
+        CLOSED, // executing, can be waited for
+        FINISHED    // can be only reset
+    };
 
     class CommandList: public NamedObject, public Pointer {
     private:
@@ -16,12 +22,12 @@ namespace Ghurund {
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
         ComPtr<ID3D12CommandQueue> commandQueue;
-        bool closed = false;
+        CommandListState state = CommandListState::INVALID;
 
         ID3D12PipelineState *pipelineState = nullptr;
         ID3D12RootSignature *rootSignature = nullptr; // no need to ref count or cleanup - it's just a tag
 
-        PointerList<Pointer*> resourceRefs;
+        List<IUnknown*> resourceRefs;
 
     public:
 
@@ -45,11 +51,11 @@ namespace Ghurund {
             return commandList.Get();
         }
 
-        inline bool isClosed() {
-            return closed;
+        inline CommandListState getState() {
+            return state;
         }
 
-        __declspec(property(get = isClosed)) bool Closed;
+        __declspec(property(get = getState)) CommandListState State;
 
         virtual void setName(const String &name) override {
             NamedObject::setName(name);
@@ -60,12 +66,13 @@ namespace Ghurund {
 
         void setGraphicsRootSignature(ID3D12RootSignature *rootSignature);
 
-        void addResourceRef(Resource &resource);
-
-        bool references(const Resource &resource);
-
         virtual const Ghurund::Type &getType() const override {
             return Type::COMMAND_LIST;
+        }
+
+        void addResourceRef(IUnknown *resource) {
+            resource->AddRef();
+            resourceRefs.add(resource);
         }
     };
 }

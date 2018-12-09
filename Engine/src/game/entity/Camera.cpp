@@ -143,19 +143,15 @@ namespace Ghurund {
     }
 
     void Camera::rotate(float yaw, float pitch, float roll) {
-        float currentYaw = atan2(dir.x, dir.z)+XM_PI;
-        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z));
-        float currentRoll = atan2f(right.y, 1);
+        XMFLOAT3 &rotation = getRotation();
 
-        setRotation(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+        setRotation(rotation.x+yaw, rotation.y+pitch, rotation.z+roll);
     }
 
     void Camera::orbit(float yaw, float pitch, float roll) {
-        float currentYaw = atan2f(dir.x, dir.z)+XM_PI;
-        float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z));
-        float currentRoll = atan2f(right.y, 1);
+        XMFLOAT3 &rotation = getRotation();
 
-        setOrbit(currentYaw+yaw, currentPitch+pitch, currentRoll+roll);
+        setOrbit(rotation.x+yaw, rotation.y+pitch, rotation.z+roll);
     }
 
     void Camera::pan(float x, float y) {
@@ -168,8 +164,9 @@ namespace Ghurund {
     void Camera::zoom(float z) {
         XMVECTOR dv = XMLoadFloat3(&dir);
         XMVECTOR pv = XMLoadFloat3(&pos);
-        XMStoreFloat3(&pos, pv+dv*z);
-        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target)-pv));
+        XMVECTOR pv2 = pv+dv*z;
+        XMStoreFloat3(&pos, pv2);
+        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target)-pv2));
     }
 
     Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {

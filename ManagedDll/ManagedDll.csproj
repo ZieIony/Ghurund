@@ -85,6 +85,9 @@
     <Compile Include="Status.cs" />
     <Compile Include="Graphics\Shader\Shader.cs" />
     <Compile Include="Graphics\Shader\ShaderModel.cs" />
+    <Compile Include="SurfaceView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WCharStrMarshaler.cs" />
     <Compile Include="Application\Window.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

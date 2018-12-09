@@ -2,9 +2,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    const char *Shader::MAGIC = "SHD";
-
-    Status Shader::makeRootSignature(Graphics &graphics) {
+    Status Shader::makeRootSignature() {
         Status result = Status::OK;
 
         size_t paramCount = constantBuffers.Size+textureBuffers.Size+textures.Size;
@@ -46,7 +44,7 @@ namespace Ghurund {
             result = Status::CALL_FAIL;
             goto cleanUp;
         }
-        if(FAILED(graphics.getDevice()->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {
+        if(FAILED(graphics->Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {
             Logger::log(_T("device->CreateRootSignature() failed\n"));
             result = Status::CALL_FAIL;
             goto cleanUp;
@@ -60,7 +58,10 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::makePipelineState(Graphics &graphics) {
+    Status Shader::makePipelineState(bool supportsTransparency) {
+        pipelineState.ReleaseAndGetAddressOf();
+
+        this->supportsTransparency = supportsTransparency;
         Status result = Status::OK;
 
         D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
@@ -69,28 +70,42 @@ namespace Ghurund {
 
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
         if(programs[0]!=nullptr) {
-            psoDesc.VS.pShaderBytecode = programs[0]->getByteCode();
-            psoDesc.VS.BytecodeLength = programs[0]->getByteCodeLength();
+            psoDesc.VS.pShaderBytecode = programs[0]->ByteCode->Data;
+            psoDesc.VS.BytecodeLength = programs[0]->ByteCode->Size;
         }
         if(programs[1]!=nullptr) {
-            psoDesc.PS.pShaderBytecode = programs[1]->getByteCode();
-            psoDesc.PS.BytecodeLength = programs[1]->getByteCodeLength();
+            psoDesc.PS.pShaderBytecode = programs[1]->ByteCode->Data;
+            psoDesc.PS.BytecodeLength = programs[1]->ByteCode->Size;
         }
         if(programs[2]!=nullptr) {
-            psoDesc.GS.pShaderBytecode = programs[2]->getByteCode();
-            psoDesc.GS.BytecodeLength = programs[2]->getByteCodeLength();
+            psoDesc.GS.pShaderBytecode = programs[2]->ByteCode->Data;
+            psoDesc.GS.BytecodeLength = programs[2]->ByteCode->Size;
         }
 
         psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-        psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-        psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+
+        if(supportsTransparency) {
+            psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+            psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
+            psoDesc.BlendState.RenderTarget[0].BlendEnable = true;
+            psoDesc.BlendState.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+            psoDesc.BlendState.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+            psoDesc.BlendState.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+            psoDesc.BlendState.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_SRC_ALPHA;
+            psoDesc.BlendState.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_DEST_ALPHA;
+            psoDesc.BlendState.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+            psoDesc.BlendState.RenderTarget[0].RenderTargetWriteMask = 0x0F;
+        } else {
+            psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
+            psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+        }
         psoDesc.SampleMask = UINT_MAX;
         psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
         psoDesc.NumRenderTargets = 1;
         psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
         psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
         psoDesc.SampleDesc.Count = 1;
-        if(FAILED(graphics.getDevice()->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
+        if(FAILED(graphics->Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
             Logger::log(_T("device->CreateGraphicsPipelineState() failed\n"));
             result = Status::CALL_FAIL;
         }
@@ -103,12 +118,8 @@ namespace Ghurund {
     }
 
     void Shader::finalize() {
-        for(size_t i = 0; i<commandLists.Size; i++)
-            if(commandLists.get(i)->references(*this))
-                commandLists.get(i)->wait();
-
-        rootSignature.Reset();
-        pipelineState.Reset();
+        rootSignature.ReleaseAndGetAddressOf();
+        pipelineState.ReleaseAndGetAddressOf();
 
         constantBuffers.deleteItems();
         textureBuffers.deleteItems();
@@ -170,16 +181,16 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::build(ResourceContext & context, char ** output) {
+    Status Shader::build(ResourceContext & context, bool supportsTransparency, char ** output) {
         Status result;
         if(!compiled)
             if((result = compile(output))!=Status::OK)
                 return result;
         Graphics &graphics = context.Graphics;
-        initConstants(graphics, context.ParameterManager);
-        if((result = makeRootSignature(graphics))!=Status::OK)
+        initConstants(context.ParameterManager);
+        if((result = makeRootSignature())!=Status::OK)
             return result;
-        return makePipelineState(graphics);
+        return makePipelineState(supportsTransparency);
     }
 
     void Shader::initParameters(ParameterManager & parameterManager) {
@@ -203,15 +214,15 @@ namespace Ghurund {
         return programs[0]->getInputLayout();
     }
 
-    void Shader::initConstants(Graphics &graphics, ParameterManager &parameterManager) {
+    void Shader::initConstants(ParameterManager &parameterManager) {
         for(unsigned int i = 0; i<6; i++)
             if(programs[i]!=nullptr)
-                initConstants(graphics, parameterManager, *programs[i]);
+                initConstants(parameterManager, *programs[i]);
     }
 
-    void Shader::initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program) {
+    void Shader::initConstants(ParameterManager &parameterManager, ShaderProgram &program) {
         ID3D12ShaderReflection* reflector = nullptr;
-        D3DReflect(program.getByteCode(), program.getByteCodeLength(), IID_ID3D12ShaderReflection, (void**)&reflector);
+        D3DReflect(program.ByteCode->Data, program.ByteCode->Size, IID_ID3D12ShaderReflection, (void**)&reflector);
         D3D12_SHADER_DESC desc;
         reflector->GetDesc(&desc);
 
@@ -231,7 +242,7 @@ namespace Ghurund {
                         ID3D12ShaderReflectionConstantBuffer *constantBuffer = reflector->GetConstantBufferByName(bindDesc.Name);
                         D3D12_SHADER_BUFFER_DESC bufferDesc;
                         constantBuffer->GetDesc(&bufferDesc);
-                        ConstantBuffer *cb = ghnew ConstantBuffer(graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility());
+                        ConstantBuffer *cb = ghnew ConstantBuffer(*graphics, constantBuffer, bufferDesc, bindDesc.BindPoint, program.getType().getVisibility());
                         constantBuffers.add(cb);
                     }
                     break;
@@ -278,10 +289,9 @@ namespace Ghurund {
     Status Shader::loadShd(ResourceContext &context, MemoryInputStream &stream) {
         Status result;
 
-        this->graphics = &context.Graphics;
-
-        if(stream.Size<stream.BytesRead+strlen(MAGIC)||memcmp(stream.readBytes(strlen(MAGIC)), MAGIC, strlen(MAGIC))!=0)
-            return Status::INV_FORMAT;
+        result = readHeader(stream);
+        if(result!=Status::OK)
+            return result;
 
         if(stream.readBoolean()) {
             for(size_t i = 0; i<6; i++) {
@@ -289,19 +299,21 @@ namespace Ghurund {
                     char *entryPoint = stream.readASCII();
                     const CompilationTarget &target = CompilationTarget::fromValue(stream.readInt());
                     unsigned int length = stream.readUInt();
-                    programs[i] = ghnew ShaderProgram(ShaderType::values[i], stream.readBytes(length), length, entryPoint, target);
+                    programs[i] = ghnew ShaderProgram(ShaderType::values[i], Buffer(stream.readBytes(length), length), entryPoint, target);
                 }
             }
-            Graphics &graphics = context.Graphics;
-            initConstants(graphics, context.ParameterManager);
-            if((result = makeRootSignature(graphics))!=Status::OK)
-                return result;
-            if((result = makePipelineState(graphics))!=Status::OK)
-                return result;
         }
 
         if(stream.readBoolean())
             source = copyStrA(stream.readASCII());
+
+        supportsTransparency = stream.readBoolean();
+        Graphics &graphics = context.Graphics;
+        initConstants(context.ParameterManager);
+        if((result = makeRootSignature())!=Status::OK)
+            return result;
+        if((result = makePipelineState(supportsTransparency))!=Status::OK)
+            return result;
 
         return Status::OK;
     }
@@ -316,7 +328,9 @@ namespace Ghurund {
     }
 
     Status Shader::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+        this->graphics = &context.Graphics;
         Status result;
+
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
                 result = loadShd(context, stream);
@@ -343,7 +357,7 @@ namespace Ghurund {
     }
 
     Status Shader::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
-        stream.writeBytes(MAGIC, strlen(MAGIC));
+        writeHeader(stream);
 
         stream.writeBoolean(compiled);
         if(compiled) {
@@ -352,14 +366,16 @@ namespace Ghurund {
                 if(programs[i]!=nullptr) {
                     stream.writeASCII(programs[i]->getEntryPoint());
                     stream.writeInt(programs[i]->getCompilationTarget().getValue());
-                    stream.writeUInt(programs[i]->getByteCodeLength());
-                    stream.writeBytes(programs[i]->getByteCode(), programs[i]->getByteCodeLength());
+                    stream.writeUInt(programs[i]->ByteCode->Size);
+                    stream.writeBytes(programs[i]->ByteCode->Data, programs[i]->ByteCode->Size);
                 }
             }
         }
         stream.writeBoolean(source!=nullptr);
         if(source!=nullptr)
             stream.writeASCII(source);
+
+        stream.writeBoolean(supportsTransparency);
 
         return Status::OK;
     }

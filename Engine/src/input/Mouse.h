@@ -80,6 +80,18 @@ namespace Ghurund {
             this->wheel = wheel;
             this->delta = delta;
         }
+
+        MouseWheel getWheel() {
+            return wheel;
+        }
+
+        __declspec(property(get = getWheel)) MouseWheel Wheel;
+
+        int getDelta() {
+            return delta;
+        }
+
+        __declspec(property(get = getDelta)) int Delta;
     };
 
     struct MouseState {

@@ -2,12 +2,12 @@
 
 #include "ShaderType.h"
 #include "CompilationTarget.h"
+#include "core/Buffer.h"
 
 namespace Ghurund {
 	class ShaderProgram {
 	private:
-		void *byteCode = nullptr;
-		unsigned int byteCodeLength;
+		Buffer *byteCode = nullptr;
 		char *entryPoint = nullptr;
 		ShaderType type;
 		CompilationTarget target;
@@ -27,15 +27,13 @@ namespace Ghurund {
 			setEntryPoint(entryPoint);
 		}
 
-		ShaderProgram(const ShaderType &type, const void *byteCode, unsigned int length, const char *entryPoint = nullptr, CompilationTarget target = CompilationTarget::SHADER_5_0) : type(type), target(target) {
-			this->byteCode = ghnew BYTE[length];
-			memcpy(this->byteCode, byteCode, length);
-            byteCodeLength = length;
+		ShaderProgram(const ShaderType &type, Buffer &byteCode, const char *entryPoint = nullptr, CompilationTarget target = CompilationTarget::SHADER_5_0) : type(type), target(target) {
+			this->byteCode = ghnew Buffer(byteCode);
 			setEntryPoint(entryPoint);
 		}
 
 		~ShaderProgram() {
-			delete[] byteCode;
+			delete byteCode;
 			delete[] entryPoint;
 		}
 
@@ -61,13 +59,11 @@ namespace Ghurund {
 			return target;
 		}
 
-		void *getByteCode() {
+		Buffer *getByteCode() {
 			return byteCode;
 		}
 
-		unsigned int getByteCodeLength() {
-			return byteCodeLength;
-		}
+        __declspec(property(get = getByteCode)) Buffer *ByteCode;
 
 		D3D12_INPUT_LAYOUT_DESC getInputLayout();
 

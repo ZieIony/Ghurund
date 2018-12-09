@@ -8,7 +8,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_new();
 
-        protected override void newObject() => NativePtr = Renderer_new();
+        protected override IntPtr NewObject() => Renderer_new();
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -48,6 +48,14 @@ namespace Ghurund.Managed.Graphics {
 
         public void Resize(uint width, uint height) {
             Renderer_resize(NativePtr, width, height);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_setMaterial(IntPtr nativeRenderer, IntPtr material);
+
+        public void SetMaterial(Material material) {
+            Renderer_setMaterial(NativePtr, material != null ? material.NativePtr : new IntPtr(0));
         }
     }
 }

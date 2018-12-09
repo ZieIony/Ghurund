@@ -10,8 +10,8 @@
 namespace Ghurund {
     class Thread {
     private:
-        HANDLE handle;
-        DWORD threadId;
+        HANDLE handle = INVALID_HANDLE_VALUE;
+        DWORD threadId = 0;
         bool finishing = false;
         CriticalSection section;
         HANDLE event;
@@ -29,6 +29,11 @@ namespace Ghurund {
 
         Thread() {
             event = CreateEvent(nullptr, false, false, nullptr);
+        }
+
+        ~Thread() {
+            if(handle!=INVALID_HANDLE_VALUE)
+                finish();
         }
 
         void start() {
@@ -59,6 +64,7 @@ namespace Ghurund {
             section.leave();
             WaitForSingleObject(handle, INFINITE);
             CloseHandle(handle);
+            handle = INVALID_HANDLE_VALUE;
         }
 
         DWORD getId() {

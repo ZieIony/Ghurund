@@ -4,10 +4,9 @@ namespace Ghurund {
     Status Texture::init(ResourceContext &context, Image &image) {
         Graphics &graphics = context.Graphics;
         CommandList &commandList = context.CommandList;
-        if(commandList.Closed) {
-            commandList.wait();
+        if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
-        }
+
 		descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         setPointer(this->image, &image);
 
@@ -65,7 +64,9 @@ namespace Ghurund {
             graphics.getDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.getCpuHandle());
         }
 
+        commandList.addResourceRef(textureResource.Get());
         commandList.finish();
+        commandList.wait();
 
         Valid = true;
 

@@ -4,6 +4,7 @@ cbuffer perCamera : register(b0) {
 
 cbuffer perObject : register(b1) {
     row_major float4x4 world;
+    float2 viewportSize;
 }
 
 struct VsInput {
@@ -32,17 +33,17 @@ GsInput vertexMain(VsInput input) {
     return output;
 }
 
-static const float4 viewport = float4(640, 480, 0, 0);
 static const uint infoA[] = {0, 0, 0, 0, 1, 1, 2};
 static const uint infoB[] = {1, 1, 2, 0, 2, 1, 2};
 static const uint infoAd[] = {2, 2, 1, 1, 0, 0, 0};
 static const uint infoBd[] = {2, 2, 1, 2, 0, 2, 1};
-static const float lineWidth = 0.0;
+static const float lineWidth = 1.5;
+static const float fadeDistance = 1000;
 static const float4 wireColor = float4(1, 1, 1, 1);
 
 float2 projToWindow(in float4 pos) {
-    return float2(viewport.x*0.5*((pos.x/pos.w) + 1) + viewport.z,
-                  viewport.y*0.5*(1-(pos.y/pos.w)) + viewport.w);
+    return float2(viewportSize.x*0.5*((pos.x/pos.w) + 1),
+                  viewportSize.y*0.5*(1-(pos.y/pos.w)));
 }
 
 [maxvertexcount(3)]
@@ -201,8 +202,10 @@ float4 pixelMain(PsInput input): SV_Target{
     dist *= dist;
     float alpha = exp2(-2*dist);
 
+    float fading = clamp(fadeDistance / input.position.w, 0, 1);
+
     float4 color = wireColor;
-    color.a *= alpha;
+    color.a *= alpha*fading;
 
     return color;
 }

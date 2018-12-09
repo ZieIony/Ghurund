@@ -7,6 +7,12 @@ namespace Ghurund.Managed.Game {
 
     public abstract class Entity : Resource.Resource {
 
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Entity_delete(IntPtr _this);
+
+        protected override void DeleteObject() => Entity_delete(NativePtr);
+
+
         public delegate void EntityChangeEventHandler(Object sender);
         public event EntityChangeEventHandler AfterChanged;
 

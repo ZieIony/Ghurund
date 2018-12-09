@@ -6,12 +6,13 @@
 #include "application/WindowProc.h"
 #include "collection/Array.h"
 #include "core/NamedObject.h"
+#include "core/Object.h"
 #include "game/parameter/ParameterProvider.h"
 
 #include "d3dx12.h"
 
 namespace Ghurund {
-    class Window: public ParameterProvider, public NamedObject {
+    class Window: public ParameterProvider, public NamedObject, public Object {
     private:
         static const tchar *WINDOW_CLASS_NAME;
 
@@ -25,25 +26,27 @@ namespace Ghurund {
         unsigned int width, height;
 
         Array<Parameter*> parameters;
-        Parameter *parameterWidth = nullptr, *parameterHeight;
+        Parameter *parameterViewportSize = nullptr;
 
     public:
 
-        Window():parameters(Array<Parameter*>(2)) {
+        Window():parameters(Array<Parameter*>(1)) {
             Name = _T("window");
         }
 
+        ~Window() {
+            uninit();
+        }
+
         virtual void initParameters(ParameterManager &parameterManager) override {
-            if(parameterWidth!=nullptr)
+            if(parameterViewportSize!=nullptr)
                 return;
 
-            parameters[0] = parameterWidth = parameterManager.add(Parameter::WIDTH, ParameterType::FLOAT);
-            parameters[1] = parameterHeight = parameterManager.add(Parameter::HEIGHT, ParameterType::FLOAT);
+            parameters[0] = parameterViewportSize = parameterManager.add(Parameter::VIEWPORT_SIZE, ParameterType::FLOAT2);
         }
 
         virtual void updateParameters() override {
-            parameterWidth->setValue(&width);
-            parameterHeight->setValue(&height);
+            parameterViewportSize->setValue(&XMFLOAT2((float)width, (float)height));
         }
 
         virtual Array<Parameter*> &getParameters() {

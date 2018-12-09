@@ -13,7 +13,13 @@ namespace Ghurund {
         }
 
         static Shader *loadWireframe(ResourceManager &resourceManager, ResourceContext &context) {
-            return resourceManager.load<Shader>(context, "../shaders/wireframe.hlsl");
+            Shader *shader = resourceManager.load<Shader>(context, "../shaders/wireframe.hlsl");
+            shader->makePipelineState(true);
+            return shader;
+        }
+
+        static Shader *loadNormals(ResourceManager &resourceManager, ResourceContext &context) {
+            return resourceManager.load<Shader>(context, "../shaders/normals.hlsl");
         }
     };
 }

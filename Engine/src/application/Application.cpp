@@ -104,9 +104,7 @@ namespace Ghurund {
     }
 
     void Application::update() {
-        ticks_t prevTicks = timer.CurrentTicks;
         timer.tick();
-        ticks_t currentTicks = timer.CurrentTicks;
 
         resourceManager->reload();
 

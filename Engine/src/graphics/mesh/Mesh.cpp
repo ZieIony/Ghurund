@@ -1,8 +1,6 @@
 #include "Mesh.h"
 
 namespace Ghurund {
-    const char *Mesh::MAGIC = "MESH";
-
     Status Mesh::loadInternal(ResourceManager & resourceManager, ResourceContext & context, MemoryInputStream & stream, LoadOption option) {
         if(!FileName.Empty) {
             if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
@@ -85,8 +83,9 @@ namespace Ghurund {
     }
 
     Status Mesh::loadMesh(ResourceContext &context, MemoryInputStream &stream) {
-        if(stream.Size<stream.BytesRead+strlen(MAGIC)||memcmp(stream.readBytes(strlen(MAGIC)), MAGIC, strlen(MAGIC))!=0)
-            return Status::INV_FORMAT;
+        Status result = readHeader(stream);
+        if(result!=Status::OK)
+            return result;
 
         vertexSize = sizeof(Vertex);
         vertexCount = stream.read<vindex_t>();
@@ -105,7 +104,7 @@ namespace Ghurund {
     }
 
     Status Mesh::saveInternal(ResourceManager &resourceManager, MemoryOutputStream & stream, SaveOption options) const {
-        stream.writeBytes(MAGIC, strlen(MAGIC));
+        writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);
         stream.writeBytes(vertices, vertexCount*vertexSize);
@@ -120,23 +119,19 @@ namespace Ghurund {
     }
 
     Mesh::~Mesh() {
-        for(size_t i = 0; i<commandLists.Size; i++)
-            if(commandLists.get(i)->references(*this))
-                commandLists.get(i)->wait();
+        Valid = false;
 
         delete[] vertices;
         delete[] indices;
-        vertexBuffer.Reset();
-        indexBuffer.Reset();
-        vertexUploadHeap.Reset();
-        indexUploadHeap.Reset();
+        vertexBuffer.ReleaseAndGetAddressOf();
+        indexBuffer.ReleaseAndGetAddressOf();
+        vertexUploadHeap.ReleaseAndGetAddressOf();
+        indexUploadHeap.ReleaseAndGetAddressOf();
     }
 
     Status Mesh::init(Graphics &graphics, CommandList &commandList) {
-        if(commandList.Closed) {
-            commandList.wait();
+        if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
-        }
 
         {
             unsigned int vertexBufferSize = vertexSize*vertexCount;
@@ -179,6 +174,9 @@ namespace Ghurund {
             vertexBufferView.SizeInBytes = vertexBufferSize;
         }
 
+        commandList.addResourceRef(vertexUploadHeap.Get());
+        commandList.addResourceRef(vertexBuffer.Get());
+
         {
             unsigned int indexBufferSize = sizeof(unsigned int)*indexCount;
 
@@ -220,8 +218,8 @@ namespace Ghurund {
             indexBufferView.SizeInBytes = indexBufferSize;
         }
 
-        commandLists.add(&commandList);
-        commandList.addResourceRef(*this);
+        commandList.addResourceRef(indexUploadHeap.Get());
+        commandList.addResourceRef(indexBuffer.Get());
         commandList.finish();
         commandList.wait();
 

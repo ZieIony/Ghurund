@@ -2,8 +2,9 @@
 
 #include "audio/Audio.h"
 #include "collection/PointerMap.h"
-#include "core/Noncopyable.h"
 #include "core/Logger.h"
+#include "core/Noncopyable.h"
+#include "core/Object.h"
 #include "core/WorkerThread.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/CommandList.h"
@@ -15,14 +16,21 @@
 #include <wincodec.h>
 
 namespace Ghurund {
-    class ResourceManager:public Noncopyable {
+    class ResourceManager:public Noncopyable, public Object {
     private:
         FileWatcher watcher;
         PointerMap<String, Resource*> resources;
         CriticalSection section;
         ResourceFactory *resourceFactory = ghnew DefaultResourceFactory();
+
         WorkerThread loadingThread;
         List<ReloadTask*> reloadQueue;
+        bool hotReloadEnabled
+#ifdef _DEBUG
+            = true;
+#else
+            = false;
+#endif
 
         Status loadInternal(Resource &resource, ResourceContext &context, const String &fileName, LoadOption options);
 
@@ -138,5 +146,15 @@ namespace Ghurund {
         void remove(const String &fileName);
 
         void clear();
+
+        void setHotReloadEnabled(bool enabled) {
+            this->hotReloadEnabled = enabled;
+        }
+
+        bool isHotReloadEnabled() {
+            return hotReloadEnabled;
+        }
+
+        __declspec(property(get = isHotReloadEnabled, put = setHotReloadEnabled)) bool HotReloadEnabled;
     };
 }

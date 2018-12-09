@@ -76,6 +76,7 @@
     <ClInclude Include="src\collection\PointerList.h" />
     <ClInclude Include="src\collection\PointerMap.h" />
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\Allocator.h" />
     <ClInclude Include="src\core\Buffer.h" />
     <ClInclude Include="src\core\MemoryStream.h" />
     <ClInclude Include="src\collection\List.h" />
@@ -83,6 +84,7 @@
     <ClInclude Include="src\collection\String.h" />
     <ClInclude Include="src\core\CriticalSection.h" />
     <ClInclude Include="src\core\FunctionQueue.h" />
+    <ClInclude Include="src\core\Object.h" />
     <ClInclude Include="src\core\Pointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
     <ClInclude Include="src\core\Task.h" />
@@ -91,12 +93,12 @@
     <ClInclude Include="src\core\Type.h" />
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
+    <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\game\parameter\ParameterProvider.h" />
     <ClInclude Include="src\game\entity\Scene.h" />
-    <ClInclude Include="src\game\State.h" />
     <ClInclude Include="src\game\entity\TransformedEntity.h" />
     <ClInclude Include="src\graphics\Adapter.h" />
     <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />

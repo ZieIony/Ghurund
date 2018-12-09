@@ -6,7 +6,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Mesh_new();
 
-        protected override void newObject() => NativePtr = Mesh_new();
+        protected override IntPtr NewObject() => Mesh_new();
 
 
         public Mesh() { }

@@ -1,10 +1,8 @@
 #include "Timer.h"
 
 namespace Ghurund {
-    Timer::Timer():fps(AverageValue<float>(100)) {
+    Timer::Timer() {
         QueryPerformanceCounter(&startFrame);
-        startTime = GetTickCount();
-        prevFrame = currentFrame = startFrame;
         QueryPerformanceFrequency(&frequency);
     }
 
@@ -12,14 +10,10 @@ namespace Ghurund {
         if(paused)
             return;
 
-        prevFrame = currentFrame;
         QueryPerformanceCounter(&currentFrame);
-        float frameTime = (float)(currentFrame.QuadPart-prevFrame.QuadPart)/frequency.QuadPart;
-        if(frameTime!=0)
-            fps.set(1.0f/frameTime);
     }
 
-    void Timer::setPaused(bool p)const {
+    void Timer::setPaused(bool p) {
         if(paused==p)
             return;
 

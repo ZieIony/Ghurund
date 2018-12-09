@@ -14,7 +14,7 @@ namespace Ghurund {
     private:
         HANDLE fenceEvent = INVALID_HANDLE_VALUE;
         ComPtr<ID3D12Fence> fence;
-        UINT64 fenceValue = 1;
+        UINT64 fenceValue = 0;
 
     public:
         Fence() {
@@ -29,6 +29,8 @@ namespace Ghurund {
         }
 
         Status init(ID3D12Device *device);
+
+        Status signal(ID3D12CommandQueue *commandQueue);
 
         Status wait(ID3D12CommandQueue *commandQueue);
 

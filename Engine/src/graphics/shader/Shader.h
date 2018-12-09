@@ -24,11 +24,10 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Shader:public Resource, public ParameterProvider {
     private:
-        static const char *MAGIC;
-
         ShaderProgram *programs[6] = {};
         ComPtr<ID3D12RootSignature> rootSignature;
         ComPtr<ID3D12PipelineState> pipelineState;
+        bool supportsTransparency = false;
 
         List<ConstantBuffer*> constantBuffers;
         List<TextureBufferConstant*> textureBuffers;
@@ -37,18 +36,16 @@ namespace Ghurund {
 
         Array<Parameter*> *parameters = nullptr;
         Graphics *graphics;
-        PointerList<CommandList*> commandLists;
 
         char *source = nullptr;
         bool compiled = false;
 
-        Status makeRootSignature(Graphics &graphics);
-        Status makePipelineState(Graphics &graphics);
+        Status makeRootSignature();
 
         D3D12_INPUT_LAYOUT_DESC getInputLayout();
 
-        void initConstants(Graphics &graphics, ParameterManager &parameterManager);
-        void initConstants(Graphics &graphics, ParameterManager &parameterManager, ShaderProgram &program);
+        void initConstants(ParameterManager &parameterManager);
+        void initConstants(ParameterManager &parameterManager, ShaderProgram &program);
 
         Status loadShd(ResourceContext &context, MemoryInputStream &stream);
         Status loadHlsl(ResourceContext &context, MemoryInputStream &stream);
@@ -59,14 +56,22 @@ namespace Ghurund {
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
 
+        virtual unsigned int getVersion() const override {
+            return 0;
+        }
+
     public:
         ~Shader();
 
         virtual void invalidate();
 
+        virtual bool isValid() const {
+            return pipelineState.Get()!=nullptr&&rootSignature.Get()!=nullptr&&compiled&&__super::isValid();
+        }
+
         Status compile(char **output = nullptr);
 
-        Status build(ResourceContext &context, char **output = nullptr);
+        Status build(ResourceContext &context, bool supportsTransparency = false, char **output = nullptr);
 
         virtual void initParameters(ParameterManager &parameterManager) override;
 
@@ -87,17 +92,22 @@ namespace Ghurund {
         const char *getSourceCode() {
             return source;
         }
+        
+        Status makePipelineState(bool supportsTransparency);
 
         void set(CommandList &commandList) {
-            commandLists.add(&commandList);
-            commandList.addResourceRef(*this);
-
             commandList.setPipelineState(pipelineState.Get());
             commandList.setGraphicsRootSignature(rootSignature.Get());
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
                 constantBuffers[i]->set(commandList);
         }
+
+        bool getSupportsTransparency() {
+            return supportsTransparency;
+        }
+
+        __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
         virtual const Ghurund::Type &getType() const override {
             return Type::SHADER;

@@ -1,13 +1,12 @@
 #include "WorkerThread.h"
-#include <time.h>
 
 namespace Ghurund {
     void WorkerThread::post(Task * task, long delayMs) {
         section.enter();
-        time_t timer;
-        time(&timer);
+        timer.tick();
         task->addReference();
-        task->time = timer + delayMs;
+        time_t time = (time_t)(timer.RunTime*1000);
+        task->time = time + delayMs;
         queue.add(task);
         section.leave();
         notify();
@@ -45,12 +44,12 @@ namespace Ghurund {
                     section.leave();
                     break;
                 }
-                time_t timer;
-                time(&timer);
+                timer.tick();
+                time_t time = (time_t)(timer.RunTime*1000);
                 Task *task = queue.get(0);
-                if(task->time>timer) {
+                if(task->time>time) {
                     section.leave();
-                    wait((DWORD)(timer-task->time));
+                    wait((DWORD)(task->time-time));
                 } else {
                     queue.removeAtKeepOrder(0);
                     section.leave();

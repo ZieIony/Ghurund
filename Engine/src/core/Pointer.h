@@ -3,12 +3,13 @@
 #include "Ghurund.h"
 #include "Type.h"
 #include "Logger.h"
+#include "Object.h"
 
 namespace Ghurund {
 
     void dumpPointers();
 
-    class Pointer {
+    class Pointer: public Object {
     private:
         unsigned long referenceCount;
 
@@ -18,7 +19,7 @@ namespace Ghurund {
     public:
         Pointer();
 
-        virtual ~Pointer();
+        virtual ~Pointer() = 0;
 
         inline void addReference() {
             referenceCount++;

@@ -20,17 +20,23 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Fence::wait(ID3D12CommandQueue * commandQueue) {
+    Status Fence::signal(ID3D12CommandQueue * commandQueue) {
         if(FAILED(commandQueue->Signal(fence.Get(), fenceValue))) {
             Logger::log(_T("commandQueue->Signal() failed\n"));
             return Status::CALL_FAIL;
         }
 
-        if(FAILED(fence->SetEventOnCompletion(fenceValue, fenceEvent))) {
-            Logger::log(_T("fence->SetEventOnCompletion() failed\n"));
-            return Status::CALL_FAIL;
+        return Status::OK;
+    }
+
+    Status Fence::wait(ID3D12CommandQueue * commandQueue) {
+        if(fence->GetCompletedValue() < fenceValue) {
+            if(FAILED(fence->SetEventOnCompletion(fenceValue, fenceEvent))) {
+                Logger::log(_T("fence->SetEventOnCompletion() failed\n"));
+                return Status::CALL_FAIL;
+            }
+            WaitForSingleObject(fenceEvent, INFINITE);
         }
-        WaitForSingleObjectEx(fenceEvent, INFINITE, FALSE);
 
         fenceValue++;
 

@@ -51,6 +51,5 @@ namespace Ghurund {
             unsigned int index = types.indexOf((Type*)&resource.getType());
             stream.write(index);
         }
-
     };
 }

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Ghurund.Editor"
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+			 xmlns:engine="clr-namespace:Ghurund.Managed;assembly=ManagedDll"
 			 mc:Ignorable="d" 
              d:DesignHeight="254" d:DesignWidth="511">
 	<wpf:DockPanel>
@@ -15,10 +16,16 @@
 				<controls:IconRadioButton Icon="../Resources/cameraRotate32.png" Name="rotate" Style="{StaticResource IconRadioButton_Large}"/>
 				<controls:IconRadioButton Icon="../Resources/cameraPan32.png" Name="pan" Style="{StaticResource IconRadioButton_Large}"/>
 				<controls:IconRadioButton Icon="../Resources/cameraZoom32.png" Name="zoom" Style="{StaticResource IconRadioButton_Large}"/>
+				<wpf:ComboBox Name="material" SelectionChanged="Material_SelectionChanged">
+					<ComboBoxItem Name="shaded" IsSelected="True">Shaded</ComboBoxItem>
+					<ComboBoxItem Name="wireframe">Wireframe</ComboBoxItem>
+					<ComboBoxItem Name="checker">Checker</ComboBoxItem>
+					<ComboBoxItem Name="normals">Normals</ComboBoxItem>
+				</wpf:ComboBox>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<wpf:WindowsFormsHost>
-			<local:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
+			<engine:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
 		</wpf:WindowsFormsHost>
 	</wpf:DockPanel>
 </UserControl>

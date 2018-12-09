@@ -3,16 +3,24 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed {
-    public abstract class NativeClass {
-        private bool ptrOwner;
+    public abstract class NativeClass : IDisposable {
+        private bool disposed = false;
+        private readonly bool ptrOwner;
 
         [Browsable(false)]
         public IntPtr NativePtr { get; protected set; }
 
-        protected virtual void newObject() { }
+        protected virtual IntPtr NewObject() { return NativePtr; }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Object_delete(IntPtr _this);
+
+        protected virtual void DeleteObject() => Object_delete(NativePtr);
+
 
         public NativeClass() {
-            newObject();
+            NativePtr = NewObject();
             ptrOwner = true;
         }
 
@@ -21,12 +29,23 @@ namespace Ghurund.Managed {
             ptrOwner = false;
         }
 
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void deleteObject(IntPtr obj);
-
         ~NativeClass() {
+            Dispose(false);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
             if (ptrOwner)
-                deleteObject(NativePtr);
+                DeleteObject();
+
+            disposed = true;
         }
     }
 }

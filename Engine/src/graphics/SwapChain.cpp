@@ -58,12 +58,12 @@ namespace Ghurund {
             return;
 
         Ghurund::CommandList &commandList = frameBuffer->CommandList;
-        if(!commandList.Closed) {
+        if(commandList.State==CommandListState::RECORDING) {
             commandList.get()->OMSetRenderTargets(0, 0, true, 0);
             commandList.finish();
         }
-        for(unsigned int i = 0; i<frameCount; i++)
-            frames[i].getCommandList().wait();
+        if(commandList.State==CommandListState::CLOSED)
+            commandList.wait();
         delete[] frames;
         frames = nullptr;
     }

@@ -100,7 +100,7 @@ namespace Ghurund {
             if(size==capacity)
                 resize(capacity+initial);
             if(i!=size-1)
-                memmove(&v[i+1], &v[i], size-1-i);
+                memmove(&v[i+1], &v[i], sizeof(Value)*(size-1-i));
             v[i] = item;
             size++;
         }
@@ -136,7 +136,7 @@ namespace Ghurund {
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
 #endif
             if(i!=size-1)
-                memmove(&v[i], &v[i+1], size-1-i);
+                memmove(&v[i], &v[i+1], sizeof(Value)*(size-1-i));
             size--;
         }
 
@@ -157,7 +157,7 @@ namespace Ghurund {
                 _ASSERT_EXPR(i>=size, _T("index out of bounds"));
 #endif
             if(i!=size-1)
-                memmove(&v[i], &v[i+1], size-1-i);
+                memmove(&v[i], &v[i+1], sizeof(Value)*(size-1-i));
             size--;
         }
 

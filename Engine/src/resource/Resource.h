@@ -13,7 +13,7 @@ using namespace std;
 
 namespace Ghurund {
     enum class LoadOption {
-        DEFAULT = 0
+        DEFAULT = 0, DONT_WATCH = 1
     };
 
     LoadOption operator |(LoadOption lhs, LoadOption rhs);
@@ -37,7 +37,6 @@ namespace Ghurund {
 
     class Resource: public Pointer {
     private:
-        static const unsigned int NO_VERSION = -1;
         bool valid = false;
         String fileName;
 
@@ -48,7 +47,7 @@ namespace Ghurund {
         virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const = 0;
 
         virtual unsigned int getVersion() const {
-            return NO_VERSION;
+            return 0;
         }
 
         Status writeHeader(MemoryOutputStream &stream) const;

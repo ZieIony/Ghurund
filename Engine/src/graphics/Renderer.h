@@ -2,11 +2,12 @@
 
 #include "Graphics.h"
 #include "SwapChain.h"
+#include "core/Object.h"
 #include "game/entity/Scene.h"
 #include "RenderingBatch.h"
 
 namespace Ghurund {
-    class Renderer {
+    class Renderer: public Object {
     private:
         static const UINT FRAME_COUNT = 2;
   

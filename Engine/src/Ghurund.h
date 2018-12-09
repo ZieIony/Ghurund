@@ -14,6 +14,7 @@ namespace Ghurund {
         FILE_EXISTS,
         UNKNOWN_FORMAT,
         INV_FORMAT,
+        UNEXPECTED_EOF,
 
         ENTRY_POINT_NOT_FOUND,
         COMPILATION_ERROR,

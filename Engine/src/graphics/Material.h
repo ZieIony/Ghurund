@@ -12,6 +12,7 @@ namespace Ghurund {
     private:
         Shader *shader = nullptr;
         PointerMap<ASCIIString, Texture*> textures;
+        bool supportsTransparency = false;
 
         void finalize() {
             safeRelease(shader);
@@ -88,6 +89,19 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getTextures)) PointerMap<ASCIIString, Texture*> &Textures;
+
+        bool getSupportsTransparency() {
+            return supportsTransparency;
+        }
+
+        void setSupportsTransparency(bool supportsTransparency) {
+            if(this->supportsTransparency!=supportsTransparency) {
+                this->supportsTransparency = supportsTransparency;
+                shader->makePipelineState(supportsTransparency);
+            }
+        }
+
+        __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
 
         virtual const Ghurund::Type &getType() const override {
             return Type::MATERIAL;

@@ -4,6 +4,15 @@ using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Resource {
     public abstract class Resource : NativeClass {
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Resource_delete(IntPtr _this);
+
+        protected override void DeleteObject() {
+            Resource_delete(NativePtr);
+        }
+
+
         public Resource() {
             Formats = new ResourceFormatArray(Resource_getFormats(NativePtr));
         }

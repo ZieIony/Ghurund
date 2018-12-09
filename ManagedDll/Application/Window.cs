@@ -8,13 +8,14 @@ namespace Ghurund.Managed.Application {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Window_new();
 
+
         public Window() {
             NativePtr = Window_new();
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Window_init(IntPtr nativeWindow, IntPtr handle);
+        private static extern IntPtr Window_init(IntPtr _this, IntPtr handle);
 
         public void Init(IntPtr handle) {
             Window_init(NativePtr, handle);
@@ -22,7 +23,7 @@ namespace Ghurund.Managed.Application {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Window_uninit(IntPtr nativeWindow);
+        private static extern IntPtr Window_uninit(IntPtr _this);
 
         public void Uninit() {
             Window_uninit(NativePtr);
@@ -30,7 +31,7 @@ namespace Ghurund.Managed.Application {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Window_updateSize(IntPtr nativeWindow);
+        private static extern IntPtr Window_updateSize(IntPtr _this);
 
         public void UpdateSize() {
             Window_updateSize(NativePtr);
@@ -38,7 +39,7 @@ namespace Ghurund.Managed.Application {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ParameterProvider_initParameters(IntPtr nativeWindow, IntPtr parameterManager);
+        private static extern IntPtr ParameterProvider_initParameters(IntPtr _this, IntPtr parameterManager);
 
         public void InitParameters(ParameterManager parameterManager) {
             ParameterProvider_initParameters(NativePtr, parameterManager.NativePtr);
@@ -46,7 +47,7 @@ namespace Ghurund.Managed.Application {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ParameterProvider_updateParameters(IntPtr nativeWindow);
+        private static extern IntPtr ParameterProvider_updateParameters(IntPtr _this);
 
         public void UpdateParameters() {
             ParameterProvider_updateParameters(NativePtr);

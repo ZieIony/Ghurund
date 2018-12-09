@@ -1,14 +1,15 @@
 #pragma once
 
-#include "Ghurund.h"
-
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+
+#include "Ghurund.h"
 #include "collection/List.h"
-#include "core/Logger.h"
 #include "collection/String.h"
+#include "core/Object.h"
+#include "core/Logger.h"
 
 #include <wrl.h>
 
@@ -16,7 +17,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
-    class DisplayMode {
+    class DisplayMode: public Object {
     private:
         unsigned int width, height;
         float refreshRate;
@@ -47,7 +48,7 @@ namespace Ghurund {
         }
     };
 
-    class AdapterOutput {
+    class AdapterOutput: public Object {
     private:
         DXGI_OUTPUT_DESC desc;
         String name;
@@ -93,7 +94,7 @@ namespace Ghurund {
         }
     };
 
-    class Adapter {
+    class Adapter: public Object {
     private:
         ComPtr<IDXGIAdapter1> adapter;
         DXGI_ADAPTER_DESC1 desc;

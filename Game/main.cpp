@@ -7,6 +7,7 @@
 #include "graphics/Materials.h"
 #include "net/Client.h"
 #include "resource/TextResource.h"
+#include "game/CameraController.h"
 
 #include <fcntl.h>
 #include <process.h>
@@ -22,31 +23,23 @@ using namespace DirectX;
 
 class TestLevel:public Level {
 private:
-    float yaw = 0, pitch = 0;
+    CameraController *cameraController = nullptr;
     Application &app;
-    bool pressed = false;
     TransformedEntity *selection = nullptr;
 
 public:
     TestLevel(Application &app):app(app) {}
 
     virtual bool onMouseButtonEvent(MouseButtonEvent &event) override {
-        if(event.Action==MouseAction::DOWN&&event.Button==MouseButton::LEFT) {
-            pressed = true;
-            SetCapture(app.Window.Handle);
-        } else if(event.Action==MouseAction::UP&&event.Button==MouseButton::LEFT) {
-            pressed = false;
-            ReleaseCapture();
-        }
-        return true;
+        return cameraController->dispatchMouseButtonEvent(event);
     }
 
     virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) override {
-        if(pressed) {
-            yaw = event.Delta.x/5.0f;
-            pitch = -event.Delta.y/5.0f;
-        }
-        return true;
+        return cameraController->dispatchMouseMotionEvent(event);
+    }
+
+    virtual bool onMouseWheelEvent(MouseWheelEvent &event) override {
+        return cameraController->dispatchMouseWheelEvent(event);
     }
 
     virtual bool onKeyEvent(KeyEvent &event) override {
@@ -75,15 +68,16 @@ public:
         camera->setPositionTargetUp(XMFLOAT3(0, 50, -500), XMFLOAT3(0, 50, 0));
 
         Camera = camera;
+        cameraController = ghnew CameraController(*camera, &app.Window);
 
         File sceneFile("test.scene");
-        /*if(sceneFile.Exists) {
+        if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
                 setScene(scene);
                 scene->initParameters(app.ParameterManager);
                 scene->release();
             });
-        } else {*/
+        } else {
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
@@ -139,7 +133,7 @@ public:
 
                 scene->Entities.add(transformedModel);
                 transformedModel->release();
-            }/*
+            }
 
             {
                 Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
@@ -151,16 +145,16 @@ public:
 
                 scene->Entities.add(selection);
                 selection->release();
-            }*/
+            }
 
-            /*Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
+            Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
-                Logger::log(_T("failed to save scene\n"));*/
+                Logger::log(_T("failed to save scene\n"));
 
 
             scene->initParameters(app.ParameterManager);
             scene->release();
-        //}
+        }
 
         camera->release();
     }
@@ -174,17 +168,12 @@ public:
     }
 
     virtual void onUpdate() override {
-        if(app.Input.Keys[VK_CONTROL]) {
-            camera->rotate(yaw*XM_PI/180, pitch*XM_PI/180);
-        } else {
-            camera->orbit(yaw*XM_PI/180, pitch*XM_PI/180);
-        }
-        yaw = 0;
-        pitch = 0;
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
-    virtual void onUninit() override {}
+    virtual void onUninit() override {
+        delete cameraController;
+    }
 };
 
 class TestApplication:public Application {

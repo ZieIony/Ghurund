@@ -9,13 +9,9 @@ namespace Ghurund {
     class Timer {
     private:
         LARGE_INTEGER frequency;
-        mutable LARGE_INTEGER prevFrame;
         LARGE_INTEGER startFrame;
-        DWORD startTime;
-        mutable LARGE_INTEGER currentFrame;
-        mutable bool paused;
-
-        mutable AverageValue<float> fps;
+        LARGE_INTEGER currentFrame;
+        bool paused = false;
 
     public:
 
@@ -23,31 +19,19 @@ namespace Ghurund {
 
         void tick();
 
-        ticks_t getCurrentTicks()const {
-            LARGE_INTEGER currentTime;
-            QueryPerformanceCounter(&currentTime);
-            return currentTime.QuadPart;
-        }
-
-        __declspec(property(get = getCurrentTicks)) ticks_t CurrentTicks;
-
         ticks_t getRunTicks()const {
-            return startFrame.QuadPart-currentFrame.QuadPart;
+            return currentFrame.QuadPart-startFrame.QuadPart;
         }
+
+        __declspec(property(get = getRunTicks)) ticks_t RunTicks;
 
         float getRunTime()const {
             return (float)getRunTicks()/frequency.QuadPart;
         }
 
-        __declspec(property(get = getRunTicks)) ticks_t RunTicks;
+        __declspec(property(get = getRunTime)) float RunTime;
 
-        float getFps() {
-            return fps.get();
-        }
-
-        __declspec(property(get = getFps)) float Fps;
-
-        void setPaused(bool p = true)const;
+        void setPaused(bool p = true);
 
         bool isPaused() {
             return paused;

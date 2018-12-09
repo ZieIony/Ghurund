@@ -1,4 +1,4 @@
-#include "graphics/Model.h"
+#include "game/entity/Model.h"
 
 using namespace Ghurund;
 

@@ -1,4 +1,4 @@
-#include "game/Entity.h"
+#include "game/entity/Entity.h"
 #include "../Float3.h"
 
 using namespace Ghurund;
@@ -13,6 +13,10 @@ extern "C" __declspec(dllexport) void ParameterProvider_initParameters(Parameter
 
 extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(ParameterProvider *_this) {
     _this->updateParameters();
+}
+
+extern "C" __declspec(dllexport) void Entity_delete(Entity *_this) {
+    _this->release();
 }
 
 extern "C" __declspec(dllexport) const Type *Entity_getType(Entity *_this) {

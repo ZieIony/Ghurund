@@ -6,6 +6,7 @@ using System.Windows.Media;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
+using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 using Ninject;
 
@@ -24,10 +25,26 @@ namespace Ghurund.Editor.ResourceEditor {
         [Inject]
         public ResourceContext ResourceContext { get; set; }
 
+        [Inject]
+        public Graphics Graphics { get; set; }
+
+        [Inject]
+        public ParameterManager ParameterManager { get; set; }
+
+        Material checkerMaterial;
+        Material wireframeMaterial;
+        Material normalsMaterial;
+
         public SceneEditorPanel() {
             InitializeComponent();
 
             EditorKernel.Instance.Inject(this);
+
+            surfaceView.Init(Graphics, ParameterManager);
+
+            checkerMaterial = Materials.makeChecker(ResourceManager, ResourceContext);
+            wireframeMaterial = Materials.makeWireframe(ResourceManager, ResourceContext);
+            normalsMaterial = Materials.makeNormals(ResourceManager, ResourceContext);
         }
 
         private Scene scene;
@@ -51,6 +68,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public void Restore(object state) {
             if (state != null) {
                 string fileName = state as string;
+                surfaceView.Init(Graphics, ParameterManager);
                 Scene = new Scene();
                 Scene.Load(ResourceManager, ResourceContext, fileName);
             }
@@ -86,5 +104,24 @@ namespace Ghurund.Editor.ResourceEditor {
                 pressed = false;
         }
 
+        private void Material_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (surfaceView == null)
+                return;
+            switch ((material.SelectedItem as ComboBoxItem).Name) {
+                case "shaded":
+                    surfaceView.Renderer.SetMaterial(null);
+                    break;
+                case "wireframe":
+                    surfaceView.Renderer.SetMaterial(wireframeMaterial);
+                    break;
+                case "checker":
+                    surfaceView.Renderer.SetMaterial(checkerMaterial);
+                    break;
+                case "normals":
+                    surfaceView.Renderer.SetMaterial(normalsMaterial);
+                    break;
+            }
+            surfaceView.Refresh();
+        }
     }
 }

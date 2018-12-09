@@ -12,7 +12,6 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> textureUploadHeap;
 
         Image *image = nullptr;
-        PointerList<CommandList*> commandLists;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
@@ -36,12 +35,8 @@ namespace Ghurund {
         }
 
         void finalize() {
-            for(size_t i = 0; i<commandLists.Size; i++)
-                if(commandLists.get(i)->references(*this))
-                    commandLists.get(i)->wait();
-
-            textureResource.Reset();
-            textureUploadHeap.Reset();
+            textureResource.ReleaseAndGetAddressOf();
+            textureUploadHeap.ReleaseAndGetAddressOf();
             if(image!=nullptr)
                 image->release();
         }
@@ -59,8 +54,8 @@ namespace Ghurund {
         Status init(ResourceContext &context, Image &image);
 
         void set(CommandList &commandList) {
-            commandLists.add(&commandList);
-            commandList.addResourceRef(*this);
+            commandList.addResourceRef(textureResource.Get());
+            commandList.addResourceRef(textureUploadHeap.Get());
 
             commandList.get()->SetGraphicsRootDescriptorTable(2, descHandle.getGpuHandle());
         }

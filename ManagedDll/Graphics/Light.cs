@@ -7,7 +7,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Light_new();
 
-        protected override void newObject() => NativePtr = Light_new();
+        protected override IntPtr NewObject() => Light_new();
 
         public Light() { }
 

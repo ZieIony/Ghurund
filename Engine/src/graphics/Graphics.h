@@ -4,6 +4,7 @@
 
 #include "collection/List.h"
 #include "core/Logger.h"
+#include "core/Object.h"
 #include "graphics/Adapter.h"
 #include "graphics/buffer/DescriptorHeap.h"
 
@@ -19,7 +20,7 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class CommandList;
 
-    class Graphics {
+    class Graphics: public Object {
     private:
         ComPtr<ID3D12Device> device;
         ComPtr<ID3D12CommandQueue> directQueue, computeQueue, copyQueue;

@@ -7,8 +7,16 @@ namespace Ghurund.Managed.Audio {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Audio_new();
 
+        protected override IntPtr NewObject() => Audio_new();
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Audio_delete(IntPtr _this);
+
+        protected override void DeleteObject() => Audio_delete(NativePtr);
+
+
         public Audio() {
-            NativePtr = Audio_new();
             init();
         }
 
@@ -21,6 +29,7 @@ namespace Ghurund.Managed.Audio {
         private static extern IntPtr Audio_init(IntPtr _this);
 
         public void init() => Audio_init(NativePtr);
+
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Audio_uninit(IntPtr _this);

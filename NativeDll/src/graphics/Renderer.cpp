@@ -18,11 +18,14 @@ extern "C" __declspec(dllexport) void Renderer_finishFrame(Renderer *_this) {
     _this->finishFrame();
 }
 
-// TODO: uninit swapchain and renderer?
 extern "C" __declspec(dllexport) void Renderer_uninit(Renderer *_this) {
-    //    _this->uninit();
+    _this->uninit();
 }
 
 extern "C" __declspec(dllexport) void Renderer_resize(Renderer *_this, unsigned int width, unsigned int height) {
     _this->resize(width, height);
+}
+
+extern "C" __declspec(dllexport) void Renderer_setMaterial(Renderer *_this, Material *material) {
+    _this->setMaterial(material);
 }

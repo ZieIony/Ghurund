@@ -7,7 +7,7 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Model_new();
 
-        protected override void newObject() => NativePtr = Model_new();
+        protected override IntPtr NewObject() => Model_new();
 
 
         public Model() { }

@@ -6,6 +6,10 @@ extern "C" __declspec(dllexport) ParameterManager *ParameterManager_new() {
     return new ParameterManager();
 }
 
+extern "C" __declspec(dllexport) void ParameterManager_delete(ParameterManager *_this) {
+    delete _this;
+}
+
 extern "C" __declspec(dllexport) size_t ParameterManager_getParameterCount(ParameterManager *_this) {
     return _this->getParameterCount();
 }

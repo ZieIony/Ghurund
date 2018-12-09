@@ -120,9 +120,6 @@
     <Compile Include="SceneExplorerPanel.xaml.cs">
       <DependentUpon>SceneExplorerPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SurfaceView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="Task.cs" />
     <Compile Include="TaskPanel.xaml.cs">
       <DependentUpon>TaskPanel.xaml</DependentUpon>

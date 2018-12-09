@@ -139,7 +139,7 @@ namespace Ghurund {
                     return i;
             return size;
         }
-        inline bool contains(const Key &item) {
+        inline bool contains(const Key &item) const {
             for(size_t i = 0; i < size; i++)
                 if(k[i] == item)
                     return true;

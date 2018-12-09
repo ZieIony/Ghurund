@@ -10,8 +10,8 @@ namespace Ghurund {
 		DescriptorHandle descHandle;
         ComPtr<ID3D12Resource> constantBufferUploadHeap; // this is the memory on the gpu where our constant buffer will be placed.
         void *data = nullptr;
-        size_t size;
-		void *gpuAddress;
+        size_t size = 0;
+		void *gpuAddress = nullptr;
 
     public:
         ~GPUBuffer() {
@@ -46,7 +46,7 @@ namespace Ghurund {
 		void uninit() {
 			if (constantBufferUploadHeap) {
 				constantBufferUploadHeap->Unmap(0, nullptr);
-				constantBufferUploadHeap.Reset();
+				constantBufferUploadHeap.ReleaseAndGetAddressOf();
 			}
 			delete[] data;
 		}

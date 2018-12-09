@@ -107,6 +107,10 @@ namespace Ghurund {
             return screenSize.x/screenSize.y;
         }
 
+        inline float getDistance() const {
+            return dist;
+        }
+
         inline const XMFLOAT4X4 *getView() const {
             return &view;
         }
@@ -123,6 +127,15 @@ namespace Ghurund {
         void setPositionDirectionUp(const XMFLOAT3 &pos, const XMFLOAT3 &dir, const XMFLOAT3 &up = XMFLOAT3(0, 1, 0));
         void setPositionDistanceRotation(const XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll = 0.0f);
         void setTargetDistanceOrbit(const XMFLOAT3 &target, float dist, float yaw, float pitch, float roll = 0.0f);
+
+        inline XMFLOAT3 getRotation() const {
+            float currentYaw = atan2(dir.x, dir.z)+XM_PI;
+            float currentPitch = atan2f(dir.y, sqrtf(dir.x*dir.x+dir.z*dir.z));
+            float currentRoll = atan2f(right.y, 1);
+
+            return XMFLOAT3(currentYaw, currentPitch, currentRoll);
+        }
+
         void setRotation(float yaw, float pitch, float roll = 0.0f);
         void setOrbit(float yaw, float pitch, float roll = 0.0f);
         void rotate(float yaw, float pitch, float roll = 0.0f);

@@ -7,7 +7,13 @@ namespace Ghurund.Managed.Game {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr LevelManager_new();
 
-        protected override void newObject() => NativePtr = LevelManager_new();
+        protected override IntPtr NewObject() => LevelManager_new();
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void LevelManager_delete(IntPtr _this);
+
+        protected override void DeleteObject() => LevelManager_delete(NativePtr);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -21,10 +27,10 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void LevelManager_draw(IntPtr _this, IntPtr commandList, IntPtr parameterManager);
+        private static extern void LevelManager_draw(IntPtr _this, IntPtr renderer, IntPtr parameterManager);
 
-        public void draw(CommandList commandList, ParameterManager parameterManager) {
-            LevelManager_draw(NativePtr, commandList.NativePtr, parameterManager.NativePtr);
+        public void Draw(Renderer renderer, ParameterManager parameterManager) {
+            LevelManager_draw(NativePtr, renderer.NativePtr, parameterManager.NativePtr);
         }
     }
 }

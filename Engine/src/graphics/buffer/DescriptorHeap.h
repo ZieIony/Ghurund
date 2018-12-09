@@ -57,8 +57,8 @@ namespace Ghurund {
 	private:
 		ComPtr<ID3D12DescriptorHeap> heap;
 		D3D12_DESCRIPTOR_HEAP_DESC heapDescriptor;
-		unsigned int descriptorSize;
-		unsigned int numFreeDescriptors;
+		unsigned int descriptorSize = 0;
+		unsigned int numFreeDescriptors = 0;
 		DescriptorHandle firstHandle;
 		DescriptorHandle nextFreeHandle;
 

@@ -10,24 +10,30 @@ namespace Ghurund {
             return result;
         }
 
-        watcher.addFile(fileName, [this, &resource, &context](const String &fileName, FileChange fileChange) {
-            if(fileChange==FileChange::MODIFIED) {
-                section.enter();
-                bool found = false;
-                for(size_t i = 0; i<reloadQueue.Size; i++)
-                    if(reloadQueue[i]->Resource.FileName==resource.FileName)
-                        found = true;
-                if(!found) {
-                    resource.Valid = false;
-                    reloadQueue.add(ghnew ReloadTask(*this, context, resource));
+        if(hotReloadEnabled&&!(options&LoadOption::DONT_WATCH)) {
+            watcher.addFile(fileName, [this, &resource, &context](const String &fileName, FileChange fileChange) {
+                if(fileChange==FileChange::MODIFIED) {
+                    section.enter();
+                    bool found = false;
+                    for(size_t i = 0; i<reloadQueue.Size; i++) {
+                        if(reloadQueue[i]->Resource.FileName==resource.FileName) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found) {
+                        resource.Valid = false;
+                        reloadQueue.add(ghnew ReloadTask(*this, context, resource));
+                    }
+                    section.leave();
                 }
-                section.leave();
-            }
-        });
+            });
+        }
         add(resource);
 
         return Status::OK;
     }
+
     ResourceManager::ResourceManager() {
         loadingThread.start();
     }

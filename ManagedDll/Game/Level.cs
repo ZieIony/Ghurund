@@ -7,7 +7,13 @@ namespace Ghurund.Managed.Game {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Level_new();
 
-        protected override void newObject() => NativePtr = Level_new();
+        protected override IntPtr NewObject() => Level_new();
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Level_delete(IntPtr _this);
+
+        protected override void DeleteObject() => Level_delete(NativePtr);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -25,7 +31,7 @@ namespace Ghurund.Managed.Game {
 
         public Scene Scene {
             set {
-                Level_setScene(NativePtr, value.NativePtr);
+                Level_setScene(NativePtr, value != null ? value.NativePtr : IntPtr.Zero);
             }
         }
 

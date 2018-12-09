@@ -5,12 +5,14 @@
 #include "collection/String.h"
 #include "collection/Array.h"
 #include "collection/List.h"
+#include "Timer.h"
 
 namespace Ghurund {
     class WorkerThread:public Thread {
     private:
         List<Task*> queue;
         CriticalSection section;
+        Timer timer;
 
     protected:
         virtual void wakeUp() {
