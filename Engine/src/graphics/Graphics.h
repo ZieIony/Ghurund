@@ -23,7 +23,7 @@ namespace Ghurund {
     class Graphics: public Object {
     private:
         ComPtr<ID3D12Device> device;
-        ComPtr<ID3D12CommandQueue> directQueue, computeQueue, copyQueue;
+        ID3D12CommandQueue *directQueue = nullptr, *computeQueue = nullptr, *copyQueue = nullptr;
         ComPtr<IDXGIFactory4> factory;
 
 		DescriptorAllocator allocator;
@@ -42,6 +42,9 @@ namespace Ghurund {
 
         void uninit() {
             adapters.deleteItems();
+            directQueue->Release();
+            computeQueue->Release();
+            copyQueue->Release();
         }
 
         ComPtr<ID3D12Device> getDevice() {
@@ -50,23 +53,23 @@ namespace Ghurund {
 
         __declspec(property(get = getDevice)) ComPtr<ID3D12Device> Device;
 
-        ComPtr<ID3D12CommandQueue> getDirectQueue() {
+        ID3D12CommandQueue *getDirectQueue() {
             return directQueue;
         }
 
-        __declspec(property(get = getDirectQueue)) ComPtr<ID3D12CommandQueue> DirectQueue;
+        __declspec(property(get = getDirectQueue)) ID3D12CommandQueue *DirectQueue;
 
-        ComPtr<ID3D12CommandQueue> getComputeQueue() {
+        ID3D12CommandQueue *getComputeQueue() {
             return computeQueue;
         }
 
-        __declspec(property(get = getComputeQueue)) ComPtr<ID3D12CommandQueue> ComputeQueue;
+        __declspec(property(get = getComputeQueue)) ID3D12CommandQueue *ComputeQueue;
 
-        ComPtr<ID3D12CommandQueue> getCopyQueue() {
+        ID3D12CommandQueue *getCopyQueue() {
             return copyQueue;
         }
 
-        __declspec(property(get = CopyQueue)) ComPtr<ID3D12CommandQueue> CopyQueue;
+        __declspec(property(get = CopyQueue)) ID3D12CommandQueue *CopyQueue;
 
         ComPtr<IDXGIFactory4> getFactory() {
             return factory;

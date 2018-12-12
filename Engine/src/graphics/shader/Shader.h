@@ -25,8 +25,8 @@ namespace Ghurund {
     class Shader:public Resource, public ParameterProvider {
     private:
         ShaderProgram *programs[6] = {};
-        ComPtr<ID3D12RootSignature> rootSignature;
-        ComPtr<ID3D12PipelineState> pipelineState;
+        ID3D12RootSignature *rootSignature;
+        ID3D12PipelineState *pipelineState;
         bool supportsTransparency = false;
 
         List<ConstantBuffer*> constantBuffers;
@@ -66,7 +66,7 @@ namespace Ghurund {
         virtual void invalidate();
 
         virtual bool isValid() const {
-            return pipelineState.Get()!=nullptr&&rootSignature.Get()!=nullptr&&compiled&&__super::isValid();
+            return pipelineState!=nullptr&&rootSignature!=nullptr&&compiled&&__super::isValid();
         }
 
         Status compile(char **output = nullptr);
@@ -96,8 +96,8 @@ namespace Ghurund {
         Status makePipelineState(bool supportsTransparency);
 
         void set(CommandList &commandList) {
-            commandList.setPipelineState(pipelineState.Get());
-            commandList.setGraphicsRootSignature(rootSignature.Get());
+            commandList.setGraphicsRootSignature(rootSignature);
+            commandList.setPipelineState(pipelineState);
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
                 constantBuffers[i]->set(commandList);

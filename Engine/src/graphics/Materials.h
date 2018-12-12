@@ -15,5 +15,7 @@ namespace Ghurund {
         static Material *makeWireframe(ResourceManager &resourceManager, ResourceContext &context);
 
         static Material *makeNormals(ResourceManager &resourceManager, ResourceContext &context);
+
+        static Material *makeInvalid(ResourceManager &resourceManager, ResourceContext &context);
     };
 }

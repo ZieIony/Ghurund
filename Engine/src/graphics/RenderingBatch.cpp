@@ -41,29 +41,46 @@ namespace Ghurund {
         parameters[1] = parameterWorldIT;
     }
 
-    void RenderingBatch::draw(CommandList & commandList, ParameterManager & parameterManager, Material * material) {
+    void RenderingBatch::draw(CommandList & commandList, ParameterManager & parameterManager, Material * material
+#if defined(_DEBUG) || defined(GHURUND_EDITOR)
+                              , Material *invalidMaterial
+#endif
+    ) {
         for(size_t i = 0; i<models.Size; i++) {
-            GlobalEntity<Model> *model = models[i];
-            if(!model->Visible||!model->Entity.Valid)
+            GlobalEntity<Model> *entity = models[i];
+            if(!entity->Visible)
                 continue;
 
-            parameterWorld->setValue(&model->Transformation);
-            XMMATRIX world = XMLoadFloat4x4(&model->Transformation);
+            Material *overrideMaterial = material;
+#if defined(_DEBUG) || defined(GHURUND_EDITOR)
+            if(!entity->Entity.Valid) {
+                if(entity->Entity.Mesh!=nullptr&&entity->Entity.Mesh->Valid
+                   &&entity->Entity.Material!=nullptr&&!entity->Entity.Material->Valid
+                   &&invalidMaterial!=nullptr) {
+                    overrideMaterial = invalidMaterial;
+                } else {
+                    continue;
+                }
+            }
+#endif
+
+            parameterWorld->setValue(&entity->Transformation);
+            XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
             XMFLOAT4X4 worldIT;
             XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
             parameterWorldIT->setValue(&worldIT);
 
-            if(material!=nullptr) {
-                Material *modelMaterial = model->Entity.Material;
+            if(overrideMaterial!=nullptr) {
+                Material *modelMaterial = entity->Entity.Material;
                 modelMaterial->addReference();
-                model->Entity.Material = material;
-                model->Entity.updateParameters();
-                model->Entity.draw(commandList);
-                model->Entity.Material = modelMaterial;
+                entity->Entity.Material = overrideMaterial;
+                entity->Entity.updateParameters();
+                entity->Entity.draw(commandList);
+                entity->Entity.Material = modelMaterial;
                 modelMaterial->release();
             } else {
-                model->Entity.updateParameters();
-                model->Entity.draw(commandList);
+                entity->Entity.updateParameters();
+                entity->Entity.draw(commandList);
             }
         }
     }

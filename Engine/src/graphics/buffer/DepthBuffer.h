@@ -44,6 +44,11 @@ namespace Ghurund {
             handle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
             graphics.Device->CreateDepthStencilView(depthStencil.Get(), &depthStencilDesc, handle);
 
+#ifdef _DEBUG
+            dsvHeap->SetName(L"dsvHeap");
+            depthStencil->SetName(L"depthStencil");
+#endif
+
             return Status::OK;
         }
 

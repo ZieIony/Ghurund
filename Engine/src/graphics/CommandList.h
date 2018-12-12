@@ -21,13 +21,13 @@ namespace Ghurund {
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
-        ComPtr<ID3D12CommandQueue> commandQueue;
+        ID3D12CommandQueue *commandQueue = nullptr;
         CommandListState state = CommandListState::INVALID;
 
         ID3D12PipelineState *pipelineState = nullptr;
-        ID3D12RootSignature *rootSignature = nullptr; // no need to ref count or cleanup - it's just a tag
+        ID3D12RootSignature *rootSignature = nullptr;
 
-        List<IUnknown*> resourceRefs;
+        List<ID3D12Object*> resourceRefs;
 
     public:
 
@@ -39,7 +39,7 @@ namespace Ghurund {
 
         ~CommandList();
 
-        Status init(Graphics &graphics, ComPtr<ID3D12CommandQueue> &queue);
+        Status init(Graphics &graphics, ID3D12CommandQueue *queue);
 
         Status wait();
 
@@ -70,7 +70,7 @@ namespace Ghurund {
             return Type::COMMAND_LIST;
         }
 
-        void addResourceRef(IUnknown *resource) {
+        void addResourceRef(ID3D12Object *resource) {
             resource->AddRef();
             resourceRefs.add(resource);
         }

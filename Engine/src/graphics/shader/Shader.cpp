@@ -59,14 +59,15 @@ namespace Ghurund {
     }
 
     Status Shader::makePipelineState(bool supportsTransparency) {
-        pipelineState.ReleaseAndGetAddressOf();
+        if(pipelineState!=nullptr)
+            pipelineState->Release();
 
         this->supportsTransparency = supportsTransparency;
         Status result = Status::OK;
 
         D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
         psoDesc.InputLayout = getInputLayout();
-        psoDesc.pRootSignature = rootSignature.Get();
+        psoDesc.pRootSignature = rootSignature;
 
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
         if(programs[0]!=nullptr) {
@@ -118,8 +119,10 @@ namespace Ghurund {
     }
 
     void Shader::finalize() {
-        rootSignature.ReleaseAndGetAddressOf();
-        pipelineState.ReleaseAndGetAddressOf();
+        if(rootSignature!=nullptr)
+            rootSignature->Release();
+        if(pipelineState!=nullptr)
+            pipelineState->Release();
 
         constantBuffers.deleteItems();
         textureBuffers.deleteItems();

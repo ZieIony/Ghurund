@@ -68,7 +68,6 @@ namespace Ghurund.Editor.ResourceEditor {
         public void Restore(object state) {
             if (state != null) {
                 string fileName = state as string;
-                surfaceView.Init(Graphics, ParameterManager);
                 Scene = new Scene();
                 Scene.Load(ResourceManager, ResourceContext, fileName);
             }

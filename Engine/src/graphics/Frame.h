@@ -28,9 +28,9 @@ namespace Ghurund {
         }
 
         ~Frame() {
+            commandList->release();
             delete renderTarget;
             delete depthBuffer;
-            commandList->release();
         }
 
         Status init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer);

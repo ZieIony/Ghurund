@@ -21,5 +21,9 @@ namespace Ghurund {
         static Shader *loadNormals(ResourceManager &resourceManager, ResourceContext &context) {
             return resourceManager.load<Shader>(context, "../shaders/normals.hlsl");
         }
+
+        static Shader *loadInvalid(ResourceManager &resourceManager, ResourceContext &context) {
+            return resourceManager.load<Shader>(context, "../shaders/invalid.hlsl");
+        }
     };
 }

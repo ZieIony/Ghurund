@@ -8,7 +8,7 @@ namespace Ghurund {
     class GPUBuffer {
     private:
 		DescriptorHandle descHandle;
-        ComPtr<ID3D12Resource> constantBufferUploadHeap; // this is the memory on the gpu where our constant buffer will be placed.
+        ID3D12Resource *constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
         void *data = nullptr;
         size_t size = 0;
 		void *gpuAddress = nullptr;
@@ -46,7 +46,7 @@ namespace Ghurund {
 		void uninit() {
 			if (constantBufferUploadHeap) {
 				constantBufferUploadHeap->Unmap(0, nullptr);
-				constantBufferUploadHeap.ReleaseAndGetAddressOf();
+                constantBufferUploadHeap->Release();
 			}
 			delete[] data;
 		}
@@ -62,6 +62,7 @@ namespace Ghurund {
         void set(CommandList &commandList, unsigned int bindSlot) {
             memcpy(gpuAddress, data, size);
 
+            commandList.addResourceRef(constantBufferUploadHeap);
             commandList.get()->SetGraphicsRootDescriptorTable(bindSlot, descHandle.getGpuHandle());
         }
 

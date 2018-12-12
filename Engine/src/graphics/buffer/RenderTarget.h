@@ -38,6 +38,11 @@ namespace Ghurund {
             graphics.getDevice()->CreateRenderTargetView(renderTarget.Get(), nullptr, handle);
             this->renderTarget = renderTarget;
 
+#ifdef _DEBUG
+            rtvHeap->SetName(L"rtvHeap");
+            renderTarget->SetName(L"renderTarget");
+#endif
+
             return Status::OK;
         }
 

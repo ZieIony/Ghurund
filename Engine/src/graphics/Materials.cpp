@@ -26,4 +26,11 @@ namespace Ghurund {
         material->Valid = true;
         return material;
     }
+
+    Material *Materials::makeInvalid(ResourceManager &resourceManager, ResourceContext &context) {
+        Shader *shader = Shaders::loadInvalid(resourceManager, context);
+        Material *material = ghnew Material(shader);
+        material->Valid = true;
+        return material;
+    }
 }

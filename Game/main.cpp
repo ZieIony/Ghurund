@@ -71,13 +71,13 @@ public:
         cameraController = ghnew CameraController(*camera, &app.Window);
 
         File sceneFile("test.scene");
-        if(sceneFile.Exists) {
+        /*if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
                 setScene(scene);
                 scene->initParameters(app.ParameterManager);
                 scene->release();
             });
-        } else {
+        } else {*/
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
@@ -112,7 +112,7 @@ public:
                 model->release();
             }
 
-            {
+            /*{
                 Material *material = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *transformedModel = Models::makeSphere(app.ResourceContext, *material);
                 material->release();
@@ -122,7 +122,7 @@ public:
 
                 scene->Entities.add(transformedModel);
                 transformedModel->release();
-            }
+            }*/
 
             {
                 Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
@@ -135,7 +135,7 @@ public:
                 transformedModel->release();
             }
 
-            {
+            /*{
                 Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *selection = Models::makeCube(app.ResourceContext, *material);
                 material->release();
@@ -149,12 +149,12 @@ public:
 
             Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
-                Logger::log(_T("failed to save scene\n"));
+                Logger::log(_T("failed to save scene\n"));*/
 
 
             scene->initParameters(app.ParameterManager);
             scene->release();
-        }
+        //}
 
         camera->release();
     }

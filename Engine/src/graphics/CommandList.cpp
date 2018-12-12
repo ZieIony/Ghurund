@@ -7,9 +7,15 @@ namespace Ghurund {
             finish();
         if(state==CommandListState::CLOSED)
             wait();
+        if(pipelineState!=nullptr)
+            pipelineState->Release();
+        if(rootSignature!=nullptr)
+            rootSignature->Release();
+        commandQueue->Release();
     }
 
-    Status CommandList::init(Graphics & graphics, ComPtr<ID3D12CommandQueue> &queue) {
+    Status CommandList::init(Graphics & graphics, ID3D12CommandQueue *queue) {
+        queue->AddRef();
         commandQueue = queue;
 
         Status result = fence.init(graphics.Device.Get());
@@ -39,12 +45,12 @@ namespace Ghurund {
     Status CommandList::wait() {
         if(state!=CommandListState::CLOSED)
             return Status::INV_STATE;
-        Status result = fence.wait(commandQueue.Get());
+        Status result = fence.wait(commandQueue);
+        rootSignature = nullptr;
+        pipelineState = nullptr;
         for(size_t i = 0; i<resourceRefs.Size; i++)
             resourceRefs[i]->Release();
         resourceRefs.clear();
-        pipelineState = nullptr;
-        rootSignature = nullptr;
         state = CommandListState::FINISHED;
         return result;
     }
@@ -80,7 +86,7 @@ namespace Ghurund {
         ID3D12CommandList* ppCommandLists[] = {commandList.Get()};
         commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
 
-        fence.signal(commandQueue.Get());
+        fence.signal(commandQueue);
 
         state = CommandListState::CLOSED;
 
@@ -93,21 +99,21 @@ namespace Ghurund {
             Logger::log(_T("pipelineState cannot be null\n"));
 #endif
         if(this->pipelineState!=pipelineState) {
-            this->pipelineState = pipelineState;
             addResourceRef(pipelineState);
             commandList.Get()->SetPipelineState(pipelineState);
+            this->pipelineState = pipelineState;
         }
     }
 
     void CommandList::setGraphicsRootSignature(ID3D12RootSignature *rootSignature) {
 #ifdef _DEBUG
-        if(pipelineState==nullptr)
+        if(rootSignature==nullptr)
             Logger::log(_T("rootSignature cannot be null\n"));
 #endif
         if(this->rootSignature!=rootSignature) {
-            this->rootSignature = rootSignature;
             addResourceRef(rootSignature);
             commandList.Get()->SetGraphicsRootSignature(rootSignature);
+            this->rootSignature = rootSignature;
         }
     }
 
