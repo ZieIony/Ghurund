@@ -23,7 +23,7 @@ namespace Ghurund.Controls.Workspace {
         private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
             rootDockPanel.flatten();
             if (args.Action == WindowAction.Undock) {
-                var window = new EditorWindow(this, args.Controls);
+                var window = new EditorWindow(this, args.DockableControls);
                 var mousePos = PointToScreen(Mouse.GetPosition(this));
                 if (args.Location != null) {
                     var location = args.Location.Value;
@@ -35,7 +35,14 @@ namespace Ghurund.Controls.Workspace {
                     window.Show();
                 }
             } else if (args.Action == WindowAction.Minimize) {
-                peekPanel.Add(args.Controls, PeekSide.Left);
+                if (args.DockableControls == null) {
+                    peekPanel.HideContent();
+                } else {
+                    peekPanel.Add(args.DockableControls, PeekSide.Left);
+                }
+            } else if (args.Action == WindowAction.Close) {
+                if (peekPanel.IsOpen)
+                    peekPanel.ClosePeeked();
             }
 
             args.Handled = true;

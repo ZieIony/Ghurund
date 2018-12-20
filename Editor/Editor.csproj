@@ -113,6 +113,7 @@
     <Compile Include="ResourceEditor\SceneEditorPanel.cs">
       <DependentUpon>SceneEditorPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceFile.cs" />
     <Compile Include="ResourceManagerPanel.xaml.cs">
       <DependentUpon>ResourceManagerPanel.xaml</DependentUpon>
     </Compile>

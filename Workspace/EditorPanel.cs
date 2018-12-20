@@ -6,13 +6,13 @@ using System.Windows.Media;
 namespace Ghurund.Controls.Workspace {
     public class EditorPanel : ContentControl {
 
-        public String Title {
-            get { return (String)GetValue(TitleProperty); }
+        public Title Title {
+            get { return (Title)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(String), typeof(EditorPanel), new PropertyMetadata(null));
+            DependencyProperty.Register("Title", typeof(Title), typeof(EditorPanel), new PropertyMetadata(null));
 
         public ImageSource Icon {
             get { return (ImageSource)GetValue(IconProperty); }
@@ -40,9 +40,9 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public EditorPanel(PeekableControl control) {
-            control.Control.Width = double.NaN;
-            control.Control.Height = double.NaN;
-            Content = control.Control;
+            control.DockableControl.Control.Width = double.NaN;
+            control.DockableControl.Control.Height = double.NaN;
+            Content = control.DockableControl;
             Title = control.Title;
             Icon = control.Icon;
         }

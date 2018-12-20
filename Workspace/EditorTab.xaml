@@ -19,13 +19,13 @@
 						<ContentPresenter x:Name="contentPresenter" ContentSource="Header" Focusable="False" HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
 						<Grid.ContextMenu>
 							<ContextMenu>
-								<MenuItem Header="_Minimize" />
-								<MenuItem Header="Ma_ximize" />
+								<MenuItem x:Name="minimizeMenuItem" Header="_Minimize" />
+								<MenuItem x:Name="maximizeMenuItem" Header="Ma_ximize" />
 								<MenuItem Header="Mimimize _To">
-									<MenuItem Header="_Left" />
-									<MenuItem Header="_Top" />
-									<MenuItem Header="_Right" />
-									<MenuItem Header="_Bottom" />
+									<MenuItem x:Name="minimizeToLeftMenuItem" Header="_Left" />
+									<MenuItem x:Name="minimizeToTopMenuItem" Header="_Top" />
+									<MenuItem x:Name="minimizeToRightMenuItem" Header="_Right" />
+									<MenuItem x:Name="minimizeToBottomMenuItem" Header="_Bottom" />
 								</MenuItem>
 								<Separator />
 								<MenuItem x:Name="undockMenuItem" Header="Undock"/>

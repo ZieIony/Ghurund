@@ -38,11 +38,12 @@ namespace Ghurund.Preview {
             graphics = new Graphics();
             parameterManager = new ParameterManager();
 
-            surfaceView.Init(graphics, parameterManager);
-
-            audio = new Audio();
             resourceContext = new ResourceContext(graphics, audio, parameterManager);
             resourceManager = new ResourceManager();
+            Material invalidMaterial = Materials.makeInvalid(resourceManager, resourceContext);
+            surfaceView.Init(graphics, parameterManager, invalidMaterial);
+
+            audio = new Audio();
             scene = new Scene();
             scene.Load(resourceManager, resourceContext, filePath);
             surfaceView.Scene = scene;

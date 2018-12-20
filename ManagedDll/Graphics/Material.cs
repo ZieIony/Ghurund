@@ -57,5 +57,13 @@ namespace Ghurund.Managed.Graphics {
         public static Material makeNormals(ResourceManager resourceManager, ResourceContext resourceContext) {
             return new Material(Materials_makeNormals(resourceManager.NativePtr, resourceContext.NativePtr));
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Materials_makeInvalid(IntPtr resourceManager, IntPtr resourceContext);
+
+        public static Material makeInvalid(ResourceManager resourceManager, ResourceContext resourceContext) {
+            return new Material(Materials_makeInvalid(resourceManager.NativePtr, resourceContext.NativePtr));
+        }
     }
 }

@@ -33,13 +33,31 @@ namespace Ghurund.Editor {
         }
 
 
+        private bool disposed = false;
+
         public SceneExplorerPanel() {
             InitializeComponent();
         }
 
+        ~SceneExplorerPanel() {
+            Dispose(false);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
+            disposed = true;
+        }
+
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/sceneExplorer32.png", UriKind.Absolute));
         public Control Control { get => this; }
-        public string Title { get => "Scene Explorer"; }
+        public Title Title { get; } = new Title("Scene Explorer");
 
         private Scene scene;
         public Scene Scene {
@@ -57,7 +75,7 @@ namespace Ghurund.Editor {
 
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             if (treeView.SelectedItem != null)
-                RaiseEvent(new RoutedEditorOpenedEventArgs(treeView.SelectedItem, EditorOpenedEvent));
+                RaiseEvent(new RoutedEditorOpenedEventArgs(treeView.SelectedItem as ResourceFile, EditorOpenedEvent));
         }
     }
 }

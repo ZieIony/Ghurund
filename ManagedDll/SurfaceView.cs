@@ -17,6 +17,7 @@ namespace Ghurund.Managed {
         LevelManager levelManager;
         Level level;
         Camera defaultCamera;
+        Material invalidMaterial;
 
         private Camera camera;
         public Camera Camera {
@@ -36,7 +37,7 @@ namespace Ghurund.Managed {
             }
         }
 
-        public void Init(Graphics.Graphics graphics, ParameterManager parameterManager) {
+        public void Init(Graphics.Graphics graphics, ParameterManager parameterManager, Material invalidMaterial) {
             Graphics = graphics;
             ParameterManager = parameterManager;
 
@@ -52,8 +53,10 @@ namespace Ghurund.Managed {
             window = new Window();
             window.Init(Handle);
             window.InitParameters(ParameterManager);
+            this.invalidMaterial = invalidMaterial;
             Renderer = new Renderer();
             Renderer.Init(Graphics, window);
+            Renderer.InvalidMaterial = invalidMaterial;
         }
 
         public void Uninit() {
@@ -61,6 +64,8 @@ namespace Ghurund.Managed {
 
             Renderer.Dispose();
             Renderer = null;
+            invalidMaterial.Dispose();
+            invalidMaterial = null;
             window.Dispose();
             window = null;
             levelManager.Dispose();

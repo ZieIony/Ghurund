@@ -10,7 +10,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Resource;
-using Microsoft.WindowsAPICodePack.Shell;
 using Ninject;
 
 namespace Ghurund.Editor {
@@ -23,23 +22,6 @@ namespace Ghurund.Editor {
     public class Library : ResourceDirectory {
     }
 
-    public class ResourceFile {
-        public string Path { get; set; }
-        public string Name { get; set; }
-        public string Size => Length / 1024 + "kB";
-        public long Length { get; set; }
-        public String Modified { get; set; }
-
-        public BitmapSource Thumbnail {
-            get {
-                if (Path == null)
-                    return null;
-                ShellFile shellFile = ShellFile.FromFilePath(Path);
-                return shellFile.Thumbnail.Bitmap.ToBitmapSource();
-            }
-        }
-    }
-
     public interface IResourceManagerPanel : IDockableControl {
         event RoutedEditorOpenedEventHandler EditorOpened;
     }
@@ -50,6 +32,8 @@ namespace Ghurund.Editor {
 
         [Inject]
         public EditorSettings Settings { get; set; }
+
+        private bool disposed = false;
 
         public static readonly RoutedEvent EditorOpenedEvent = EventManager.RegisterRoutedEvent("EditorOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(IResourceManagerPanel));
 
@@ -68,9 +52,25 @@ namespace Ghurund.Editor {
                 loadLibrary(library);
         }
 
+        ~ResourceManagerPanel() {
+            Dispose(false);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
+            disposed = true;
+        }
+
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/resourceManager32.png", UriKind.Absolute));
         public Control Control { get => this; }
-        public string Title { get => "Resource Manager"; }
+        public Title Title { get; } = new Title("Resource Manager");
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
@@ -154,23 +154,14 @@ namespace Ghurund.Editor {
                     !ResourceFormat.Values.Where((format) => format.Extension != null && format.Extension.Equals(file.Extension.Substring(1))).Any())
                     continue;
 
-                ResourceFile item = new ResourceFile {
-                    Path = file.FullName,
-                    Name = file.Name,
-                    Length = file.Length,
-                    Modified = file.LastWriteTime.ToShortDateString()
-                };
-                resourceGrid.Items.Add(item);
+                resourceGrid.Items.Add(new ResourceFile(file));
             }
         }
 
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             if (resourceGrid.SelectedItem != null) {
                 var resourceFile = resourceGrid.SelectedItem as ResourceFile;
-                if (resourceFile.Path.EndsWith("jpg") || resourceFile.Path.EndsWith("jpeg") || resourceFile.Path.EndsWith("png")) {
-                    BitmapImage image = new BitmapImage(new Uri(resourceFile.Path));
-                    RaiseEvent(new RoutedEditorOpenedEventArgs(image, EditorOpenedEvent));
-                }
+                RaiseEvent(new RoutedEditorOpenedEventArgs(resourceFile, EditorOpenedEvent));
             }
         }
     }

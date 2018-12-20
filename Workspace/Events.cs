@@ -30,20 +30,22 @@ namespace Ghurund.Controls.Workspace {
     public delegate void WindowEventHandler(object sender, WindowEventArgs args);
 
     public enum WindowAction {
-        Close, Minimize, Maximize, Undock
+        Close, Minimize, Maximize, Restore, Undock
     }
 
     public class WindowActionEventArgs : RoutedEventArgs {
 
         public WindowAction Action { get; }
         public bool ActionHandled { get; set; } = false;
-        public DockableControls Controls { get; set; }
+        public DockableControls DockableControls { get; set; }
         public Point? Location { get; }
+        public PeekSide? Side { get; }
 
-        public WindowActionEventArgs(RoutedEvent routedEvent, WindowAction action, Point? location = null, DockableControls controls = null) : base(routedEvent) {
+        public WindowActionEventArgs(RoutedEvent routedEvent, WindowAction action, Point? location = null, DockableControls controls = null, PeekSide? side = null) : base(routedEvent) {
             Action = action;
             Location = location;
-            Controls = controls;
+            DockableControls = controls;
+            Side = side;
         }
 
     }

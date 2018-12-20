@@ -47,17 +47,17 @@ namespace Ghurund.Controls.Workspace {
 
         private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
             if (!args.ActionHandled) {
-                if (args.Controls == null) {
+                if (args.DockableControls == null) {
                     var controls = new IDockableControl[tabControl.Items.Count];
                     for (int i = 0; i < tabControl.Items.Count; i++) {
                         var tab = tabControl.Items[i] as EditorTab;
                         var panel = tab.Content as EditorPanel;
-                        controls[i] = new DockableControl(panel.Content as Control, panel.Title, panel.Icon);
+                        controls[i] = panel.Content as IDockableControl;
                     }
-                    args.Controls = new DockableControls(controls, new Size(tabControl.ActualWidth, tabControl.ActualHeight));
+                    args.DockableControls = new DockableControls(controls, new Size(tabControl.ActualWidth, tabControl.ActualHeight));
                     undockAll();
                 } else {
-                    undock(args.Controls.Controls);
+                    undock(args.DockableControls.Controls);
                 }
                 args.ActionHandled = true;
             }

@@ -9,10 +9,14 @@ namespace Ghurund.Controls.Workspace {
         private Dictionary<PeekSide, StackPanel> panels = new Dictionary<PeekSide, StackPanel>();
         private SplitPanel peekedContent;
         private Dictionary<Button, PeekableControl> dockedControls = new Dictionary<Button, PeekableControl>();
+        private Button peekedControlButton;
         private Label contentHider;
 
         static PeekPanel() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PeekPanel), new FrameworkPropertyMetadata(typeof(PeekPanel)));
+        }
+
+        public PeekPanel() {
         }
 
         public void Add(DockableControls controls, PeekSide side) {
@@ -23,7 +27,7 @@ namespace Ghurund.Controls.Workspace {
         public void Add(IDockableControl control, Size suggestedSize, PeekSide side) {
             StackPanel panel = panels[side];
             var button = new PeekButton {
-                Text = control.Title,
+                Text = control.Title.Short,
                 Icon = control.Icon,
                 Orientation = side == PeekSide.Left || side == PeekSide.Right ? Orientation.Vertical : Orientation.Horizontal
             };
@@ -33,22 +37,26 @@ namespace Ghurund.Controls.Workspace {
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            var peekedControl = dockedControls[sender as Button];
+            if (peekedControlButton == sender) {
+                HideContent();
+                return;
+            }
+
+            peekedControlButton = sender as Button;
+            var peekedControl = dockedControls[peekedControlButton];
             var side = peekedControl.Side;
             peekedContent.Orientation = side == PeekSide.Bottom || side == PeekSide.Top ? Orientation.Vertical : Orientation.Horizontal;
             if (side == PeekSide.Top || side == PeekSide.Left) {
-                peekedContent.Panel1 = new EditorPanel(peekedControl) {
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = BorderBrush
-                };
+                peekedContent.Panel1 = new EditorPanel(peekedControl);
+                peekedContent.Panel1.BorderThickness = new Thickness(1);
+                peekedContent.Panel1.BorderBrush = BorderBrush;
                 peekedContent.Panel1Size = new GridLength(side == PeekSide.Top ? peekedControl.Size.Height : peekedControl.Size.Width);
                 peekedContent.Panel2 = contentHider;
             } else {
                 peekedContent.Panel1 = contentHider;
-                peekedContent.Panel2 = new EditorPanel(peekedControl) {
-                    BorderThickness = new Thickness(1),
-                    BorderBrush = BorderBrush
-                };
+                peekedContent.Panel2 = new EditorPanel(peekedControl);
+                peekedContent.Panel2.BorderThickness = new Thickness(1);
+                peekedContent.Panel2.BorderBrush = BorderBrush;
                 peekedContent.Panel2Size = new GridLength(side == PeekSide.Bottom ? peekedControl.Size.Height : peekedControl.Size.Width);
             }
             peekedContent.Visibility = Visibility.Visible;
@@ -66,20 +74,31 @@ namespace Ghurund.Controls.Workspace {
         }
 
         private void contentHider_PreviewMouseDown(object sender, RoutedEventArgs e) {
-            hideContent();
+            HideContent();
         }
 
-        private void hideContent() {
+        public void HideContent() {
             peekedContent.Visibility = Visibility.Collapsed;
             peekedContent.Panel1 = null;
             peekedContent.Panel2 = null;
+            peekedControlButton = null;
+        }
+
+        public bool IsOpen { get => peekedContent.Visibility != Visibility.Collapsed; }
+
+        public void ClosePeeked() {
+            var control = dockedControls[peekedControlButton];
+            dockedControls.Remove(peekedControlButton);
+            panels[control.Side].Children.Remove(peekedControlButton);
+            // TODO: close panel properly
+            HideContent();
         }
 
         public void Save(PeekState peekState) {
             peekState.peekPanelStates = new PeekPanelState[dockedControls.Count];
             int i = 0;
             foreach (PeekableControl control in dockedControls.Values) {
-                peekState.peekPanelStates[i].className = control.Control.GetType().AssemblyQualifiedName;
+                peekState.peekPanelStates[i].className = control.DockableControl.GetType().AssemblyQualifiedName;
                 peekState.peekPanelStates[i].side = control.Side;
                 peekState.peekPanelStates[i].size = control.Size;
                 i++;
@@ -90,7 +109,7 @@ namespace Ghurund.Controls.Workspace {
             foreach (StackPanel panel in panels.Values)
                 panel.Children.Clear();
             dockedControls.Clear();
-            hideContent();
+            HideContent();
         }
 
         public void Restore(PeekState peekState, IDockableControlFactory factory) {

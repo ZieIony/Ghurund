@@ -19,7 +19,8 @@ namespace Ghurund {
 
 #if defined(_DEBUG) || defined(GHURUND_EDITOR)
         Material *invalidMaterial = Materials::makeInvalid(*resourceManager, *resourceContext);
-        renderer.init(*graphics, window, invalidMaterial);
+        renderer.init(*graphics, window);
+        renderer.InvalidMaterial = invalidMaterial;
         invalidMaterial->release();
 #else
         renderer.init(*graphics, window);

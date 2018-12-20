@@ -74,19 +74,26 @@ namespace Ghurund.Controls.Workspace {
         protected override void OnMouseDown(MouseButtonEventArgs e) {
             base.OnMouseDown(e);
 
-            StartDrag();
+            if (e.ChangedButton != MouseButton.Left)
+                return;
+
+            mouseDown();
 
             e.Handled = true;
         }
 
         public void StartDrag() {
+            mouseDown();
+            dragging = true;
+        }
+
+        private void mouseDown() {
             mousePos = PointToScreen(Mouse.GetPosition(this));
             var window = Window.GetWindow(this);
             left = window.Left;
             top = window.Top;
             CaptureMouse();
             lmbDown = true;
-            dragging = true;
         }
 
         protected override void OnMouseMove(MouseEventArgs e) {

@@ -22,9 +22,25 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public TabControl() {
-            AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
-            AddHandler(GotFocusEvent, new RoutedEventHandler(gotFocus));
-            AddHandler(LostFocusEvent, new RoutedEventHandler(lostFocus));
+            //AddHandler(GotFocusEvent, new RoutedEventHandler(gotFocus));
+            //AddHandler(LostFocusEvent, new RoutedEventHandler(lostFocus));
+            AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
+        }
+
+        private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
+            if (args.Action == WindowAction.Close) {
+                if (args.DockableControls != null) {    // close on a single tab
+                    foreach (object item in Items) {
+                        if (((item as EditorTab).Content as EditorPanel).Content == args.DockableControls.Controls[0].Control) {
+                            Items.Remove(item);
+                            args.Handled = true;
+                            return;
+                        }
+                    }
+                }
+            }else if(args.Action==WindowAction.Undock){
+                
+            }
         }
 
         private void gotFocus(object sender, RoutedEventArgs args) {
@@ -39,15 +55,6 @@ namespace Ghurund.Controls.Workspace {
                 titleBar.IsParentFocused = false;
         }
 
-        private void titleBar_WindowDragged(object sender, WindowEventArgs args) {
-            var controls = new IDockableControl[Items.Count];
-            for (int i = 0; i < Items.Count; i++) {
-                var tab = Items[i] as EditorTab;
-                var panel = tab.Content as EditorPanel;
-                controls[i] = new DockableControl(panel.Content as Control, panel.Title);
-            }
-        }
-
         public void Save(DockState state) {
             state.tabStates = new TabState[Items.Count];
             for (int i = 0; i < Items.Count; i++) {
@@ -56,19 +63,19 @@ namespace Ghurund.Controls.Workspace {
                 state.tabStates[i] = new TabState {
                     className = panel.Content.GetType().AssemblyQualifiedName
                 };
-                if(panel.Content is IStateControl)
+                if (panel.Content is IStateControl)
                     state.tabStates[i].controlState = (panel.Content as IStateControl).Save();
             }
         }
 
         public void Restore(DockState state, IDockableControlFactory factory) {
-            foreach(TabState tabState in state.tabStates) {
+            foreach (TabState tabState in state.tabStates) {
                 Type t = Type.GetType(tabState.className);
                 IDockableControl control = factory.MakeControl(t);
-                var tab = new EditorTab(control);
-                Items.Add(tab);
                 if (control is IStateControl)
                     (control as IStateControl).Restore(tabState.controlState);
+                var tab = new EditorTab(control);
+                Items.Add(tab);
             }
         }
     }

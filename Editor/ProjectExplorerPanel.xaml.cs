@@ -12,13 +12,31 @@ namespace Ghurund.Editor {
     }
 
     public partial class ProjectExplorerPanel : UserControl, IProjectExplorerPanel {
+        private bool disposed = false;
+
         public ProjectExplorerPanel() {
             InitializeComponent();
         }
 
+        ~ProjectExplorerPanel() {
+            Dispose(false);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
+            disposed = true;
+        }
+
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/projectExplorer32.png", UriKind.Absolute));
         public Control Control { get => this; }
-        public string Title { get => "Project Explorer"; }
+        public Title Title { get; } = new Title("Project Explorer");
 
         private Project project;
         public Project Project {

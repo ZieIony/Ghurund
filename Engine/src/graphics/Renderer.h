@@ -32,17 +32,11 @@ namespace Ghurund {
             swapChain = nullptr;
         }
 
-        // invalidMaterial is only for debugging purposes and in release variant is not used
-        Status init(Graphics &graphics, Window &window, Material *invalidMaterial = nullptr) {
+        Status init(Graphics &graphics, Window &window) {
             this->graphics = &graphics;
             Status result = swapChain->init(graphics, window, FRAME_COUNT);
             if(result!=Status::OK)
                 return result;
-
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
-            this->invalidMaterial = invalidMaterial;
-            invalidMaterial->addReference();
-#endif
 
             return Status::OK;
         }
@@ -92,5 +86,13 @@ namespace Ghurund {
         }
 
         __declspec(property(put = setMaterial)) Material *Material;
+
+#if defined(_DEBUG) || defined(GHURUND_EDITOR)
+        void setInvalidMaterial(Ghurund::Material *material) {
+            setPointer(this->invalidMaterial, material);
+        }
+
+        __declspec(property(put = setInvalidMaterial)) Ghurund::Material *InvalidMaterial;
+#endif
     };
 }

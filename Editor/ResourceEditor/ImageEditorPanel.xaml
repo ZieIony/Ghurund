@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Ghurund.Editor.ResourceEditor"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="{DynamicResource Ghurund.BackgroundLight}">
 		<Image Name="imageView"/>
 	</Grid>
 </UserControl>

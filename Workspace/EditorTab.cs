@@ -25,7 +25,7 @@ namespace Ghurund.Controls.Workspace {
 
         public EditorTab(IDockableControl control) {
             Content = new EditorPanel(control);
-            Header = control.Title;
+            Header = control.Title?.Short ?? "";
         }
 
         public override void OnApplyTemplate() {
@@ -33,11 +33,73 @@ namespace Ghurund.Controls.Workspace {
 
             window = Window.GetWindow(this);
 
+            MenuItem minimizeItem = GetTemplateChild("minimizeMenuItem") as MenuItem;
+            minimizeItem.Click += minimize_Click;
+            MenuItem maximizeItem = GetTemplateChild("maximizeMenuItem") as MenuItem;
+            maximizeItem.Click += maximize_Click;
+
+            MenuItem minimizeToLeftItem = GetTemplateChild("minimizeToLeftMenuItem") as MenuItem;
+            minimizeToLeftItem.Click += minimizeToLeft_Click;
+            MenuItem minimizeToTopItem = GetTemplateChild("minimizeToTopMenuItem") as MenuItem;
+            minimizeToTopItem.Click += minimizeToTop_Click;
+            MenuItem minimizeToRightItem = GetTemplateChild("minimizeToRightMenuItem") as MenuItem;
+            minimizeToRightItem.Click += minimizeToRight_Click;
+            MenuItem minimizeToBottomItem = GetTemplateChild("minimizeToBottomMenuItem") as MenuItem;
+            minimizeToBottomItem.Click += minimizeToBottom_Click;
+
             MenuItem closeItem = GetTemplateChild("closeMenuItem") as MenuItem;
             closeItem.Click += close_Click;
             MenuItem undockItem = GetTemplateChild("undockMenuItem") as MenuItem;
             undockItem.Click += undock_Click;
         }
+
+        private void minimize_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Minimize,
+                controls: new DockableControls(Content as EditorPanel)));
+        }
+
+        private void maximize_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Maximize,
+                controls: new DockableControls(Content as EditorPanel)));
+        }
+
+
+        private void minimizeToLeft_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Minimize,
+                controls: new DockableControls(Content as EditorPanel),
+                side: PeekSide.Left));
+        }
+
+        private void minimizeToTop_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Minimize,
+                controls: new DockableControls(Content as EditorPanel),
+                side: PeekSide.Top));
+        }
+
+        private void minimizeToRight_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Minimize,
+                controls: new DockableControls(Content as EditorPanel),
+                side: PeekSide.Right));
+        }
+
+        private void minimizeToBottom_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(
+                TitleBar.WindowActionEvent,
+                WindowAction.Minimize,
+                controls: new DockableControls(Content as EditorPanel),
+                side: PeekSide.Bottom));
+        }
+
 
         private void close_Click(object sender, RoutedEventArgs e) {
             RaiseEvent(new WindowActionEventArgs(
@@ -57,6 +119,8 @@ namespace Ghurund.Controls.Workspace {
             base.OnMouseDown(e);
 
             if (e.Source != this)
+                return;
+            if (e.ChangedButton != MouseButton.Left)
                 return;
 
             mousePos = PointToScreen(e.GetPosition(this));

@@ -110,12 +110,9 @@
       <DependentUpon>EditorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Extensions.cs" />
-    <Compile Include="FixedPanel.cs" />
     <Compile Include="HighlightWindow.xaml.cs">
       <DependentUpon>HighlightWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IStateControl.cs" />
-    <Compile Include="IStateSaver.cs" />
     <Compile Include="PeekButton.cs">
       <DependentUpon>PeekButton.xaml</DependentUpon>
     </Compile>
@@ -166,9 +163,6 @@
     <Resource Include="Resources\minimize32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\projectExplorer32.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\close32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +170,9 @@
       <Project>{a149407b-bc15-42b5-8c29-d8833ffb78b7}</Project>
       <Name>Controls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\restore32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

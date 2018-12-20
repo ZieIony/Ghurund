@@ -8,17 +8,17 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:EditorPanel}">
-					<DockPanel Background="{TemplateBinding Background}">
-						<local:TitleBar
+					<Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+						<DockPanel Background="{TemplateBinding Background}">
+							<local:TitleBar
 							x:Name="titleBar"
-							Title="{TemplateBinding Title}"
+							Title="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title.Long}"
 							Icon="{TemplateBinding Icon}"
 							IsEnabled="{TemplateBinding IsEnabled}"
 							DockPanel.Dock="Top"/>
-						<Border>
 							<ContentPresenter ContentSource="Content" IsEnabled="{TemplateBinding IsEnabled}"/>
-						</Border>
-					</DockPanel>
+						</DockPanel>
+					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

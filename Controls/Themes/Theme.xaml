@@ -5,27 +5,59 @@
 	xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 	<Thickness x:Key="Ghurund.Static.BorderThickness">1</Thickness>
+
+	<system:Double x:Key="Ghurund.Padding">4</system:Double>
+
 	<system:Double x:Key="Ghurund.IconSize.Small">16</system:Double>
 	<system:Double x:Key="Ghurund.IconSize.Large">24</system:Double>
 
 	<Style x:Key="IconButton_Small" TargetType="{x:Type local:IconButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconButton}}">
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Small}"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
 	<Style x:Key="IconButton_Large" TargetType="{x:Type local:IconButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconButton}}">
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Large}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Large}"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
 	<Style x:Key="IconRadioButton_Small" TargetType="{x:Type local:IconRadioButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconRadioButton}}">
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Small}"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
 	<Style x:Key="IconRadioButton_Large" TargetType="{x:Type local:IconRadioButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconRadioButton}}">
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Large}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Large}"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
+	<Style x:Key="Ghurund.ListViewItemStyle" TargetType="{x:Type ListViewItem}">
+		<Setter Property="Margin" Value="0"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type ListViewItem}">
+					<Border SnapsToDevicePixels="True"  
+                                BorderThickness="0"   
+                                Background="{TemplateBinding Background}">
+						<ContentPresenter/>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="Background" Value="{DynamicResource Ghurund.Highlight}" />
+						</Trigger>
+						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="Background" Value="{DynamicResource Ghurund.Selection}" />
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="False">
+							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Disabled}" />
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
 </ResourceDictionary>

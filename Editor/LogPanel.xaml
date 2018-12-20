@@ -14,7 +14,7 @@
 			</ToolBarPanel>
 		</WrapPanel>
 		<controls:HintTextBox  Height="20" TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" />
-		<ScrollViewer>
+		<ScrollViewer Background="{DynamicResource Ghurund.BackgroundLight}">
 			<TextBlock Name="logs" Padding="4" ScrollViewer.HorizontalScrollBarVisibility="Auto"
          ScrollViewer.VerticalScrollBarVisibility="Auto" />
 		</ScrollViewer>

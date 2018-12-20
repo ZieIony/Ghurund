@@ -11,5 +11,8 @@ namespace Ghurund.Editor {
         public WorkspaceState WorkspaceState { get; set; }
 
         public List<string> Libraries { get; } = new List<string>();
+
+        public List<ResourceFile> RecentProjects { get; } = new List<ResourceFile>();
+        public List<ResourceFile> RecentFiles { get; } = new List<ResourceFile>();
     }
 }

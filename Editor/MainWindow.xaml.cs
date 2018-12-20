@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 using Ghurund.Editor.ResourceEditor;
+using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
@@ -55,10 +57,6 @@ namespace Ghurund.Editor {
             workspacePanel.Loaded += WorkspacePanel_Loaded;
             SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
-            var scene = new Scene();
-            scene.Load(ResourceManager, ResourceContext, "test.scene");
-            scene.InitParameters(ParameterManager);
-            SceneExplorer.Scene = scene;
             SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
 
             ProjectExplorer.Project = new Project() {
@@ -70,15 +68,35 @@ namespace Ghurund.Editor {
         }
 
         private void SceneExplorer_EditorOpened(object sender, RoutedEditorOpenedEventArgs e) {
-            if (e.EditedResource is BitmapImage) {
-                var panel = new ImageEditorPanel();
-                panel.Image = e.EditedResource as BitmapImage;
-                openPanel(sender, panel);
+            openResource(e.EditedResource);
+        }
+
+        private void openResource(ResourceFile resourceFile) {
+            IDockableControl panel = null;
+            var path = resourceFile.Path.ToLower();
+
+            if (path.EndsWith("jpg") || path.EndsWith("jpeg") || path.EndsWith("png")) {
+                BitmapImage image = new BitmapImage(new Uri(resourceFile.Path));
+                panel = new ImageEditorPanel {
+                    Image = image
+                };
+            } else if (path.EndsWith("scene")) {
+                var scene = new Scene();
+                if (Status.OK == scene.Load(ResourceManager, ResourceContext, resourceFile.Path)) {
+                    panel = new SceneEditorPanel {
+                        Scene = scene
+                    };
+                } else {
+                    // TODO: show error message
+                    return;
+                }
             } else {
-                var panel = new SceneEditorPanel();
-                panel.Scene = e.EditedResource as Scene;
-                openPanel(sender, panel);
+                // TODO: show error message
+                return;
             }
+
+            Settings.RecentFiles.Add(resourceFile);
+            openPanel(this, panel);
         }
 
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
@@ -120,18 +138,24 @@ namespace Ghurund.Editor {
         protected override void OnClosing(CancelEventArgs e) {
             base.OnClosing(e);
             saveSettings();
+
+            ParameterManager.Dispose();
+            ResourceManager.Dispose();
+            ResourceContext.Dispose();
         }
 
-        private void btnOpenFile_Click(object sender, RoutedEventArgs e) {
+        private void FileOpen_Click(object sender, RoutedEventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            /*if (openFileDialog.ShowDialog() == true)
-                txtEditor.Text = File.ReadAllText(openFileDialog.FileName);*/
+            openFileDialog.Filter = "Images (*.jpg; *.jpeg; *.png)|*.jpg;*.jpeg;*.png|Scenes (*.scene)|*.scene";
+            if (openFileDialog.ShowDialog() == true)
+                openResource(new ResourceFile(new FileInfo(openFileDialog.FileName)));
         }
 
         private void saveSettings() {
             Settings.WorkspaceState = workspacePanel.Save();
             Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
         }
+
     }
 
 }

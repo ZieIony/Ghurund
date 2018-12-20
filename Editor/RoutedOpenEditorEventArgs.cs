@@ -2,9 +2,9 @@
 
 namespace Ghurund.Editor {
     public class RoutedEditorOpenedEventArgs : RoutedEventArgs {
-        public object EditedResource { get; }
+        public ResourceFile EditedResource { get; }
 
-        public RoutedEditorOpenedEventArgs(object editedResource, RoutedEvent editorOpenedEvent) : base(editorOpenedEvent) {
+        public RoutedEditorOpenedEventArgs(ResourceFile editedResource, RoutedEvent editorOpenedEvent) : base(editorOpenedEvent) {
             EditedResource = editedResource;
         }
     }

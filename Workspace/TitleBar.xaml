@@ -16,8 +16,15 @@
                             BorderThickness="{TemplateBinding BorderThickness}">
 						<DockPanel>
 							<ghurund:IconButton x:Name="closeButton" Icon="Resources/close32.png" DockPanel.Dock="Right" ToolTip="Close" Margin="0,0,4,0"/>
+							<ghurund:IconButton x:Name="restoreButton" Icon="Resources/restore32.png" DockPanel.Dock="Right" ToolTip="Restore"/>
 							<ghurund:IconButton x:Name="minimizeButton" Icon="Resources/minimize32.png" DockPanel.Dock="Right" ToolTip="Minimize"/>
-							<TextBlock x:Name="title" TextWrapping="NoWrap" Text="{TemplateBinding Title}" VerticalAlignment="Center" Padding="4,0,0,0" Foreground="{TemplateBinding Foreground}" />
+							<TextBlock x:Name="title"
+									   TextWrapping="NoWrap"
+									   Text="{TemplateBinding Title}"
+									   VerticalAlignment="Center"
+									   Padding="4,0,0,0"
+									   Foreground="{TemplateBinding Foreground}"
+									   Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
 							<DockPanel.ContextMenu>
 								<ContextMenu>
 									<MenuItem Header="_Minimize" />

@@ -54,8 +54,22 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_setMaterial(IntPtr nativeRenderer, IntPtr material);
 
-        public void SetMaterial(Material material) {
-            Renderer_setMaterial(NativePtr, material != null ? material.NativePtr : new IntPtr(0));
+        public Material Material {
+            set {
+                Renderer_setMaterial(NativePtr, value != null ? value.NativePtr : new IntPtr(0));
+            }
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_setInvalidMaterial(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Renderer _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public Material InvalidMaterial {
+            set {
+                Renderer_setInvalidMaterial(this, value);
+            }
         }
     }
 }

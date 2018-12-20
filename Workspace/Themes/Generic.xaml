@@ -4,6 +4,7 @@
     xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
 
 	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/Controls;component/Themes/Theme.xaml"/>
 		<ResourceDictionary Source="/Controls;component/Themes/Theme.Light.xaml"/>
 		<ResourceDictionary Source="/GhurundWorkspace;component/EditorPanel.xaml"/>
 		<ResourceDictionary Source="/GhurundWorkspace;component/EditorTab.xaml"/>

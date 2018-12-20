@@ -3,6 +3,13 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
+
+    public interface IStateControl {
+        object Save();
+
+        void Restore(object state);
+    }
+
     [Serializable]
     public class WorkspaceState {
         public PeekState peekState = new PeekState();

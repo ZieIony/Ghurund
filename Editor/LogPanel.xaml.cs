@@ -12,6 +12,7 @@ namespace Ghurund.Editor {
     public partial class LogPanel : UserControl, ILogPanel {
 
         Logger.LogCallback callback;
+        private bool disposed = false;
 
         public LogPanel() {
             InitializeComponent();
@@ -20,12 +21,28 @@ namespace Ghurund.Editor {
             Logger.Init(callback);
         }
 
+        ~LogPanel() {
+            Dispose(false);
+        }
+
+        public void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
+            disposed = true;
+        }
+
         private void log(string log) {
             logs.Text += DateTime.UtcNow.ToString("HH:mm:ssZ")+"\t"+log;
         }
 
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/properties32.png", UriKind.Absolute));
         public Control Control { get => this; }
-        public string Title { get => "Logs"; }
+        public Title Title { get; } = new Title("Logs");
     }
 }

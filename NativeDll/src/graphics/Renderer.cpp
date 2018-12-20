@@ -29,3 +29,7 @@ extern "C" __declspec(dllexport) void Renderer_resize(Renderer *_this, unsigned 
 extern "C" __declspec(dllexport) void Renderer_setMaterial(Renderer *_this, Material *material) {
     _this->setMaterial(material);
 }
+
+extern "C" __declspec(dllexport) void Renderer_setInvalidMaterial(Renderer *_this, Material *material) {
+    _this->setInvalidMaterial(material);
+}

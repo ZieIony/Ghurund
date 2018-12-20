@@ -6,7 +6,53 @@
              xmlns:local="clr-namespace:Ghurund.Editor"
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
 			 mc:Ignorable="d" 
+			 Background="{DynamicResource Ghurund.Background}"
              d:DesignHeight="450" d:DesignWidth="800">
-	<Grid>
-	</Grid>
+	<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Background="{DynamicResource Ghurund.BackgroundLight}">
+		<TextBlock Text="Welcome" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="16,16,16,0"/>
+		<TextBlock Margin="16,8,16,0">Get your own copy of Ghurund Engine <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink></TextBlock>
+		<TextBlock Margin="16,8,16,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
+		<StackPanel Orientation="Horizontal" >
+			<DockPanel Width="300" Margin="16,0,0,0">
+				<TextBlock Text="Recent Projects" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
+				<ListView Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				  BorderThickness="0" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
+				  Background="{x:Null}" SelectionChanged="RecentProjects_SelectionChanged">
+					<ListView.Resources>
+						<DataTemplate DataType="{x:Type local:ResourceFile}">
+							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
+								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
+								<StackPanel Orientation="Vertical" Margin="8" >
+									<TextBlock Text="{Binding Name}" Style="{DynamicResource Ghurund.TextStyle.Body}"/>
+									<TextBlock Text="{Binding Path}" Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
+									<TextBlock Text="{Binding Modified}" Style="{DynamicResource Ghurund.TextStyle.Caption}" />
+								</StackPanel>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.Resources>
+				</ListView>
+
+			</DockPanel>
+			<DockPanel Width="300" Margin="4,0,16,0">
+				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
+				<ListView Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
+				  BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				  Background="{x:Null}" SelectionChanged="RecentFiles_SelectionChanged">
+					<ListView.Resources>
+						<DataTemplate DataType="{x:Type local:ResourceFile}">
+							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
+								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
+								<StackPanel Orientation="Vertical" Margin="8">
+									<TextBlock Text="{Binding Name}" Style="{DynamicResource Ghurund.TextStyle.Body}"/>
+									<TextBlock Text="{Binding Path}" Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
+									<TextBlock Text="{Binding Modified}" Style="{DynamicResource Ghurund.TextStyle.Caption}"/>
+								</StackPanel>
+							</StackPanel>
+						</DataTemplate>
+					</ListView.Resources>
+				</ListView>
+
+			</DockPanel>
+		</StackPanel>
+	</StackPanel>
 </UserControl>
