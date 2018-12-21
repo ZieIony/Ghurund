@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
 
@@ -154,6 +155,12 @@ namespace Ghurund.Managed.Game {
                 TransformedObject_setScale(NativePtr, value);
             }
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr TransformedEntity_getFormats();
+
+        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(TransformedEntity_getFormats());
 
     }
 }

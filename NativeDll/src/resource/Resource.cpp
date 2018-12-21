@@ -22,14 +22,6 @@ extern "C" __declspec(dllexport) tchar *Resource_getFileName(Resource *_this) {
     return copyStr(_this->getFileName());
 }
 
-extern "C" __declspec(dllexport) const Array<ResourceFormat> *Resource_getFormats(Resource *_this) {
-    return &_this->getFormats();
-}
-
-extern "C" __declspec(dllexport) const ResourceFormat *Resource_getDefaultFormat(Resource *_this) {
-    return &_this->getDefaultFormat();
-}
-
 extern "C" __declspec(dllexport) const tchar *ResourceFormat_getExtension(ResourceFormat *_this) {
     return copyStr(_this->getExtension());
 }
@@ -42,10 +34,10 @@ extern "C" __declspec(dllexport) size_t ResourceFormat_getValueCount() {
     return ResourceFormat::getValueCount();
 }
 
-extern "C" __declspec(dllexport) bool Resource_canSave(ResourceFormat *_this) {
+extern "C" __declspec(dllexport) bool ResourceFormat_canSave(ResourceFormat *_this) {
     return _this->canSave();
 }
 
-extern "C" __declspec(dllexport) bool Resource_canLoad(ResourceFormat *_this) {
+extern "C" __declspec(dllexport) bool ResourceFormat_canLoad(ResourceFormat *_this) {
     return _this->canLoad();
 }

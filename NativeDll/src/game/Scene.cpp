@@ -21,3 +21,7 @@ extern "C" __declspec(dllexport) void Scene_initParameters(ParameterProvider *_t
 extern "C" __declspec(dllexport) void Scene_updateParameters(ParameterProvider *_this) {
     _this->updateParameters();
 }
+
+extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Scene_getFormats() {
+    return &Scene::getFormats();
+}

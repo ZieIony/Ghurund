@@ -7,6 +7,10 @@ extern "C" __declspec(dllexport) Material *Material_new() {
     return new Material();
 }
 
+extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Material_getFormats() {
+    return &Material::getFormats();
+}
+
 extern "C" __declspec(dllexport) Material *Materials_makeChecker(ResourceManager *resourceManager, ResourceContext *context) {
     return Materials::makeChecker(*resourceManager, *context);
 }

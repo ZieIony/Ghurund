@@ -168,6 +168,8 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="NativeDll.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
+    <ClCompile Include="src\graphics\Mesh.cpp" />
+    <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Model.cpp" />

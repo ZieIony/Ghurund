@@ -9,6 +9,8 @@ using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Graphics.Mesh;
+using Ghurund.Managed.Graphics.Shader;
 using Ghurund.Managed.Resource;
 using Microsoft.Win32;
 using Ninject;
@@ -144,9 +146,20 @@ namespace Ghurund.Editor {
             ResourceContext.Dispose();
         }
 
+        private string makeFilter(string name, ResourceFormatArray formats) {
+            string filter = "";
+            foreach (ResourceFormat format in formats) {
+                if (filter.Length > 0)
+                    filter += ";";
+                filter += "*." + format.Extension;
+            }
+            return name + " (" + filter + ")|" + filter;
+        }
+
         private void FileOpen_Click(object sender, RoutedEventArgs e) {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Images (*.jpg; *.jpeg; *.png)|*.jpg;*.jpeg;*.png|Scenes (*.scene)|*.scene";
+
+            openFileDialog.Filter = makeFilter("Images", Managed.Graphics.Texture.Image.Formats) + "|" + makeFilter("Scenes", Scene.Formats) + "|" + makeFilter("Shaders", Shader.Formats) + "|All (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
                 openResource(new ResourceFile(new FileInfo(openFileDialog.FileName)));
         }

@@ -44,13 +44,11 @@ namespace Ghurund {
             return Type::SOUND;
         }
 
-        virtual const Array<ResourceFormat> &getFormats() const override {
-            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::WAV};
+        static const Array<ResourceFormat*> &getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::WAV};
             return formats;
         }
 
-        virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::WAV;
-        }
+        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
     };
 }

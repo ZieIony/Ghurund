@@ -31,6 +31,11 @@ namespace Ghurund.Managed.Graphics {
             get => new Shader.Shader(Material_getShader(NativePtr)); set => Material_setShader(NativePtr, value.NativePtr);
         }
 
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Material_getFormats();
+
+        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Material_getFormats());
     }
 
     public static class Materials {

@@ -107,13 +107,11 @@ namespace Ghurund {
             return Type::MATERIAL;
         }
 
-        virtual const Array<ResourceFormat> &getFormats() const override {
-            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MATERIAL};
+        static const Array<ResourceFormat*> &getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MATERIAL};
             return formats;
         }
 
-        virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::MATERIAL;
-        }
+        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
     };
 }

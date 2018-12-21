@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
     public class Scene : Entity {
@@ -26,6 +27,12 @@ namespace Ghurund.Managed.Game {
         public EntityList Entities {
             get; internal set;
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Scene_getFormats();
+
+        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Scene_getFormats());
 
     }
 }

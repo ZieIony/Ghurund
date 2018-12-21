@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Game;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics {
     public class Camera : Entity {
@@ -101,6 +102,12 @@ namespace Ghurund.Managed.Graphics {
         public void Zoom(float z) {
             Camera_zoom(NativePtr, z);
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Camera_getFormats();
+
+        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Camera_getFormats());
 
     }
 }

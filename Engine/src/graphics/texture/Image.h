@@ -75,13 +75,11 @@ namespace Ghurund {
             return Type::IMAGE;
         }
 
-        virtual const Array<ResourceFormat> &getFormats() const override {
-            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::JPG};
+        static const Array<ResourceFormat*> &getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::JPG, (ResourceFormat*)&ResourceFormat::JPEG, (ResourceFormat*)&ResourceFormat::PNG};
             return formats;
         }
 
-        virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::JPG;
-        }
+        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
     };
 }

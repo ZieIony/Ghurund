@@ -10,17 +10,16 @@ using namespace std;
 namespace Ghurund {
     class ResourceFormat {
     private:
-        unsigned int value;
         const tchar *extension = nullptr;
         bool save, load;
 
-        static const ResourceFormat* values[11];
+        static const ResourceFormat* values[12];
 
     public:
-        static const ResourceFormat &AUTO,
-            &ENTITY,
+        static const ResourceFormat &ENTITY,
+            &SCENE,
             &HLSL, &SHADER,
-            &JPG, &JPEG,
+            &JPG, &JPEG, &PNG,
             &MATERIAL,
             &MODEL,
             &MESH, &OBJ,
@@ -30,28 +29,16 @@ namespace Ghurund {
             extension = nullptr;
         }
 
-        ResourceFormat(unsigned int value, const tchar *extension, bool save, bool load) {
-            this->value = value;
+        ResourceFormat(const tchar *extension, bool save, bool load) {
             this->extension = extension;
             this->save = save;
             this->load = load;
         }
 
         ResourceFormat(const ResourceFormat &format) {
-            this->value = format.value;
             this->extension = format.extension;
             this->save = format.save;
             this->load = format.load;
-        }
-
-        static const ResourceFormat &fromValue(unsigned int value) {
-            if(value==HLSL.value) {
-                return HLSL;
-            } else if(value==SHADER.value) {
-                return SHADER;
-            } else {
-                return AUTO;
-            }
         }
 
         static const ResourceFormat** getValues() {
@@ -61,12 +48,6 @@ namespace Ghurund {
         static const size_t getValueCount() {
             return sizeof(values)/sizeof(values[0]);
         }
-
-        unsigned int getValue() const {
-            return value;
-        }
-
-        operator unsigned int() const { return value; }
 
         const tchar *getExtension() const {
             return extension;

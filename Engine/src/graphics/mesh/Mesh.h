@@ -81,13 +81,11 @@ namespace Ghurund {
             return Type::MESH;
         }
 
-        virtual const Array<ResourceFormat> &getFormats() const override {
-            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MESH, ResourceFormat::OBJ};
+        static const Array<ResourceFormat*> &getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MESH, (ResourceFormat*)&ResourceFormat::OBJ};
             return formats;
         }
 
-        virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::MESH;
-        }
+        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
     };
 }

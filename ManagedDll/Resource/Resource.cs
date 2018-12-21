@@ -14,7 +14,6 @@ namespace Ghurund.Managed.Resource {
 
 
         public Resource() {
-            Formats = new ResourceFormatArray(Resource_getFormats(NativePtr));
         }
 
         public Resource(IntPtr ptr) : base(ptr) {
@@ -35,13 +34,6 @@ namespace Ghurund.Managed.Resource {
         public virtual Status Save(ResourceManager resourceManager, string fileName) {
             return Resource_save(NativePtr, resourceManager.NativePtr, fileName);
         }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Resource_getFormats(IntPtr _this);
-
-        [Browsable(false)]
-        public ResourceFormatArray Formats { get; }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

@@ -88,14 +88,12 @@ namespace Ghurund {
             return Type::MODEL;
         }
 
-        virtual const Array<ResourceFormat> &getFormats() const override {
-            static const Array<ResourceFormat> formats = {ResourceFormat::AUTO, ResourceFormat::MODEL};
+        static const Array<ResourceFormat*> &getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MODEL};
             return formats;
         }
 
-        virtual const ResourceFormat &getDefaultFormat() const override {
-            return ResourceFormat::MODEL;
-        }
+        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
 
         virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override;
 

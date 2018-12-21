@@ -21,3 +21,7 @@ extern "C" __declspec(dllexport) Material *Model_getMaterial(Model *_this) {
 extern "C" __declspec(dllexport) void Model_setMaterial(Model *_this, Material *material) {
     _this->setMaterial(material);
 }
+
+extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Model_getFormats() {
+    return &Model::getFormats();
+}

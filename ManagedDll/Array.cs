@@ -68,6 +68,31 @@ namespace Ghurund.Managed {
         }
     }
 
+    public class ArrayEnumerator<T> : IEnumerator<T> where T : NativeClass {
+        private readonly Array<T> array;
+        private int index = -1;
+
+        public ArrayEnumerator(Array<T> array) {
+            this.array = array;
+        }
+
+        public T Current => array[index];
+
+        object IEnumerator.Current => array[index];
+
+        public void Dispose() {
+        }
+
+        public bool MoveNext() {
+            index++;
+            return index < array.Count;
+        }
+
+        public void Reset() {
+            index = -1;
+        }
+    }
+
     public abstract class Array<T> : IEnumerable, IEnumerable<T> where T : NativeClass {
         PointerArray pointers;
 
@@ -101,7 +126,7 @@ namespace Ghurund.Managed {
         }
 
         public IEnumerator<T> GetEnumerator() {
-            return null;// managedItems.GetEnumerator();
+            return new ArrayEnumerator<T>(this);
         }
 
         public int IndexOf(T item) {
@@ -109,7 +134,7 @@ namespace Ghurund.Managed {
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
-            return null;// managedItems.GetEnumerator();
+            return new ArrayEnumerator<T>(this);
         }
     }
 

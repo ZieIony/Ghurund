@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics.Shader {
     public class Shader : Resource.Resource {
@@ -7,8 +8,10 @@ namespace Ghurund.Managed.Graphics.Shader {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Shader_new();
 
+        protected override IntPtr NewObject() => Shader_new();
+
+
         public Shader() {
-            NativePtr = Shader_new();
             FileName = "unnamed shader.hlsl";
         }
 
@@ -70,6 +73,12 @@ namespace Ghurund.Managed.Graphics.Shader {
         private static extern String Shader_compile(IntPtr _this);
 
         public String compile() => Shader_compile(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Shader_getFormats();
+
+        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Shader_getFormats());
 
     }
 }

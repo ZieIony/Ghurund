@@ -52,3 +52,7 @@ extern "C" __declspec(dllexport) char *Shader_compile(Shader *_this, const char 
     _this->compile(&errorMessages);
     return errorMessages;
 }
+
+extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Shader_getFormats() {
+    return &Shader::getFormats();
+}

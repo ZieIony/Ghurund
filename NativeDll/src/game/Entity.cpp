@@ -1,5 +1,6 @@
 #include "game/entity/Entity.h"
 #include "../Float3.h"
+#include "game/entity/TransformedEntity.h"
 
 using namespace Ghurund;
 
@@ -65,4 +66,8 @@ extern "C" __declspec(dllexport) void Entity_initParameters(Entity *_this, Param
 
 extern "C" __declspec(dllexport) void Entity_updateParameters(Entity *_this) {
     _this->updateParameters();
+}
+
+extern "C" __declspec(dllexport) const Array<ResourceFormat*> *TransformedEntity_getFormats() {
+    return &TransformedEntity::getFormats();
 }
