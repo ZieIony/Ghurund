@@ -17,10 +17,11 @@ namespace Ghurund {
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
 
+        renderer = ghnew Ghurund::Renderer();
 #if defined(_DEBUG) || defined(GHURUND_EDITOR)
         Material *invalidMaterial = Materials::makeInvalid(*resourceManager, *resourceContext);
-        renderer.init(*graphics, window);
-        renderer.InvalidMaterial = invalidMaterial;
+        renderer->init(*graphics, window);
+        renderer->InvalidMaterial = invalidMaterial;
         invalidMaterial->release();
 #else
         renderer.init(*graphics, window);
@@ -34,6 +35,8 @@ namespace Ghurund {
         if(client->isConnected())
             client->disconnect();
         delete client;
+
+        delete renderer;
 
 		delete parameterManager;
         delete resourceContext;
@@ -99,7 +102,6 @@ namespace Ghurund {
 
         messageLoop();
 
-        renderer.uninit();
         window.Visible = false;
         onUninit();
         uninit();
@@ -123,9 +125,9 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        renderer.startFrame();
-        levelManager.draw(renderer, ParameterManager);
-        renderer.finishFrame();
+        renderer->startFrame();
+        levelManager.draw(*renderer, ParameterManager);
+        renderer->finishFrame();
     }
 
     void Application::reset() {

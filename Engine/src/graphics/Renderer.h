@@ -20,16 +20,20 @@ namespace Ghurund {
         Material *invalidMaterial = nullptr;
 #endif
 
+        XMFLOAT4 *clearColor = nullptr;
+
     public:
         Renderer() {
             swapChain = ghnew SwapChain();
         }
 
         ~Renderer() {
-            invalidMaterial->release();
+            if(invalidMaterial!=nullptr)
+                invalidMaterial->release();
             uninit();
             delete swapChain;
             swapChain = nullptr;
+            delete clearColor;
         }
 
         Status init(Graphics &graphics, Window &window) {
@@ -48,7 +52,7 @@ namespace Ghurund {
         }
 
         CommandList &startFrame() {
-            swapChain->startFrame();
+            swapChain->startFrame(clearColor);
 
             CommandList &commandList = swapChain->CommandList;
             graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
@@ -56,22 +60,7 @@ namespace Ghurund {
             return commandList;
         }
 
-        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager) {
-            RenderingBatch batch;
-            batch.initParameters(parameterManager);
-            XMFLOAT4X4 identity;
-            XMStoreFloat4x4(&identity, XMMatrixIdentity());
-            entity.flatten(batch, identity);
-            batch.cull(camera);
-            //onPreDraw(batch);
-            CommandList &commandList = swapChain->CommandList;
-            batch.draw(commandList, parameterManager, material
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
-                       , invalidMaterial
-#endif
-            );
-            batch.clear();
-        }
+        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager);
 
         void finishFrame() {
             swapChain->finishFrame();
@@ -94,5 +83,16 @@ namespace Ghurund {
 
         __declspec(property(put = setInvalidMaterial)) Ghurund::Material *InvalidMaterial;
 #endif
+
+        XMFLOAT4 *getClearColor() {
+            return clearColor;
+        }
+
+        void setClearColor(XMFLOAT4 *color) {
+            delete clearColor;
+            clearColor = color;
+        }
+
+        __declspec(property(get = getClearColor, put = setClearColor)) XMFLOAT4 *ClearColor;
     };
 }

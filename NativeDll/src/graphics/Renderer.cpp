@@ -33,3 +33,7 @@ extern "C" __declspec(dllexport) void Renderer_setMaterial(Renderer *_this, Mate
 extern "C" __declspec(dllexport) void Renderer_setInvalidMaterial(Renderer *_this, Material *material) {
     _this->setInvalidMaterial(material);
 }
+
+extern "C" __declspec(dllexport) void Renderer_setClearColor(Renderer *_this, unsigned int color) {
+    _this->setClearColor(ghnew XMFLOAT4(makeColor(color)));
+}

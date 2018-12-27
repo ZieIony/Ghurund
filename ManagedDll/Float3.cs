@@ -2,6 +2,30 @@
 
 namespace Ghurund.Managed {
     [StructLayout(LayoutKind.Sequential)]
+    public struct Float4 {
+        private float w;
+        private float x;
+        private float y;
+        private float z;
+
+        public float W { get => w; set => w = value; }
+        public float X { get => x; set => x = value; }
+        public float Y { get => y; set => y = value; }
+        public float Z { get => z; set => z = value; }
+
+        public Float4(float w, float x, float y, float z) {
+            this.w = w;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public override string ToString() {
+            return w + ", " + x + ", " + y + ", " + z;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct Float3 {
         private float x;
         private float y;
@@ -58,9 +82,9 @@ namespace Ghurund.Managed {
         private float a33;
 
         public override string ToString() {
-            return a00 + ", " + a01 + ", " + a02 + ", " + a03 + "\n"+
-                a10 + ", " + a11 + ", " + a12 + ", " + a13 + "\n"+
-                a20 + ", " + a21 + ", " + a22 + ", " + a23 + "\n"+
+            return a00 + ", " + a01 + ", " + a02 + ", " + a03 + "\n" +
+                a10 + ", " + a11 + ", " + a12 + ", " + a13 + "\n" +
+                a20 + ", " + a21 + ", " + a22 + ", " + a23 + "\n" +
                 a30 + ", " + a31 + ", " + a32 + ", " + a33;
         }
     }

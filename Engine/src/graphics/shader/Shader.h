@@ -71,7 +71,7 @@ namespace Ghurund {
 
         Status compile(char **output = nullptr);
 
-        Status build(ResourceContext &context, bool supportsTransparency = false, char **output = nullptr);
+        Status build(ResourceContext &context, char **output = nullptr);
 
         virtual void initParameters(ParameterManager &parameterManager) override;
 

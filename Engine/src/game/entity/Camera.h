@@ -95,6 +95,8 @@ namespace Ghurund {
             screenSize.x = (float)val;
         }
 
+        __declspec(property(get = getWidth, put = setWidth)) unsigned int Width;
+
         inline unsigned int getHeight() const {
             return (unsigned int)screenSize.y;
         }
@@ -103,25 +105,47 @@ namespace Ghurund {
             screenSize.y = (float)val;
         }
 
+        __declspec(property(get = getHeight, put = setHeight)) unsigned int Height;
+
         inline float getAspect() const {
             return screenSize.x/screenSize.y;
         }
+
+        __declspec(property(get = getAspect)) float Aspect;
 
         inline float getDistance() const {
             return dist;
         }
 
+        __declspec(property(get = getDistance)) float Distance;
+
         inline const XMFLOAT4X4 *getView() const {
             return &view;
         }
 
-        inline const XMFLOAT4X4 *getProj() const {
+        __declspec(property(get = getView)) XMFLOAT4X4 *View;
+
+        inline const XMFLOAT4X4 *getProjection() const {
             return &proj;
         }
+
+        __declspec(property(get = getProjection)) XMFLOAT4X4 *Projection;
 
         inline const XMFLOAT4X4 *getFacing() const {
             return &facing;
         }
+
+        __declspec(property(get = getFacing)) XMFLOAT4X4 *Facing;
+
+        inline bool getPerspective() const {
+            return pers;
+        }
+
+        inline void setPerspective(bool pers) {
+            this->pers = pers;
+        }
+
+        __declspec(property(get = getPerspective, put = setPerspective)) bool Perspective;
 
         void setPositionTargetUp(const XMFLOAT3 &pos, const XMFLOAT3 &target, const XMFLOAT3 &up = XMFLOAT3(0, 1, 0));
         void setPositionDirectionUp(const XMFLOAT3 &pos, const XMFLOAT3 &dir, const XMFLOAT3 &up = XMFLOAT3(0, 1, 0));

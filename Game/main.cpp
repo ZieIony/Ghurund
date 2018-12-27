@@ -71,13 +71,13 @@ public:
         cameraController = ghnew CameraController(*camera, &app.Window);
 
         File sceneFile("test.scene");
-        /*if(sceneFile.Exists) {
+        if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
                 setScene(scene);
                 scene->initParameters(app.ParameterManager);
                 scene->release();
             });
-        } else {*/
+        } else {
             Ghurund::Scene *scene = ghnew Ghurund::Scene();
             Scene = scene;
             scene->Entities.add(camera);
@@ -145,16 +145,16 @@ public:
 
                 scene->Entities.add(selection);
                 selection->release();
-            }
+            }*/
 
             Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
-                Logger::log(_T("failed to save scene\n"));*/
+                Logger::log(_T("failed to save scene\n"));
 
 
             scene->initParameters(app.ParameterManager);
             scene->release();
-        //}
+        }
 
         camera->release();
     }

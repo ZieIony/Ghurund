@@ -6,6 +6,7 @@
 #include "collection/Map.h"
 #include "FileChange.h"
 #include "core/Buffer.h"
+#include "core/WorkerThread.h"
 
 namespace Ghurund {
     class DirectoryWatch {
@@ -14,6 +15,8 @@ namespace Ghurund {
         OVERLAPPED overlapped;
         String directory;
         Buffer buffer;
+
+        WorkerThread delayThread;
 
         Map<String, std::function<void(const String &fileName, const FileChange)>> files;
 
@@ -27,6 +30,8 @@ namespace Ghurund {
 
             dirHandle = ::CreateFile(directory, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
                                      OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OVERLAPPED, NULL);
+
+            delayThread.start();
         }
 
         ~DirectoryWatch();

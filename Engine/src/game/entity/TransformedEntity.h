@@ -40,6 +40,11 @@ namespace Ghurund {
         virtual void clean() {}
 
     public:
+        TransformedEntity(const TransformedEntity &entity):parameters(Array<Parameter*>(0)) {
+            this->entity = entity.entity;
+            this->entity->addReference();
+        }
+
         TransformedEntity(Entity &entity):TransformedEntity() {
             this->entity = &entity;
             entity.addReference();

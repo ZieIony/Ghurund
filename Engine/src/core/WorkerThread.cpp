@@ -12,6 +12,19 @@ namespace Ghurund {
         notify();
     }
 
+    void WorkerThread::remove(const String &taskName) {
+        section.enter();
+        for(size_t i = 0; i<queue.Size; i++) {
+            if(queue[i]->Name==taskName) {
+                Task *task = queue[i];
+                queue.removeAt(i);
+                task->release();
+                break;
+            }
+        }
+        section.leave();
+    }
+
     void WorkerThread::remove(Task *task) {
         section.enter();
         queue.remove(task);

@@ -36,8 +36,8 @@ namespace Ghurund {
 
         void uninitBuffers();
 
-        Status startFrame() {
-            return frameBuffer->start();
+        Status startFrame(XMFLOAT4 *color) {
+            return frameBuffer->start(color);
         }
 
         Status finishFrame() {

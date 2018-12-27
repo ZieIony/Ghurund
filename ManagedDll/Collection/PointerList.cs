@@ -3,39 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Ghurund.Managed {
+namespace Ghurund.Managed.Collection {
     internal static class NativeLists {
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int List_Size(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void List_add(IntPtr _this, IntPtr item);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void List_insert(IntPtr _this, int index, IntPtr item);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool List_remove(IntPtr _this, IntPtr item);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool List_removeAt(IntPtr _this, int index);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr List_get(IntPtr _this, int index);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void List_set(IntPtr _this, int index, IntPtr item);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void List_clear(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern bool List_contains(IntPtr _this, IntPtr item);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int List_indexOf(IntPtr _this, IntPtr item);
-
-
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern int PointerList_Size(IntPtr _this);
 
@@ -67,29 +36,29 @@ namespace Ghurund.Managed {
         public static extern int PointerList_indexOf(IntPtr _this, IntPtr item);
     }
 
-    public class IntPtrList : IList<IntPtr> {
+    internal class IntPtrList : IList<IntPtr> {
         private readonly IntPtr ptr;
 
         public IntPtrList(IntPtr ptr) {
             this.ptr = ptr;
         }
 
-        public IntPtr this[int index] { get => NativeLists.List_get(ptr, index); set => NativeLists.List_set(ptr, index, value); }
+        public IntPtr this[int index] { get => NativeLists.PointerList_get(ptr, index); set => NativeLists.PointerList_set(ptr, index, value); }
 
-        public int Count => NativeLists.List_Size(ptr);
+        public int Count => NativeLists.PointerList_Size(ptr);
 
         public bool IsReadOnly => false;
 
         public void Add(IntPtr item) {
-            NativeLists.List_add(ptr, item);
+            NativeLists.PointerList_add(ptr, item);
         }
 
         public void Clear() {
-            NativeLists.List_clear(ptr);
+            NativeLists.PointerList_clear(ptr);
         }
 
         public bool Contains(IntPtr item) {
-            return NativeLists.List_contains(ptr, item);
+            return NativeLists.PointerList_contains(ptr, item);
         }
 
         public void CopyTo(IntPtr[] array, int arrayIndex) {
@@ -101,19 +70,19 @@ namespace Ghurund.Managed {
         }
 
         public int IndexOf(IntPtr item) {
-            return NativeLists.List_indexOf(ptr, item);
+            return NativeLists.PointerList_indexOf(ptr, item);
         }
 
         public void Insert(int index, IntPtr item) {
-            NativeLists.List_insert(ptr, index, item);
+            NativeLists.PointerList_insert(ptr, index, item);
         }
 
         public bool Remove(IntPtr item) {
-            return NativeLists.List_remove(ptr, item);
+            return NativeLists.PointerList_remove(ptr, item);
         }
 
         public void RemoveAt(int index) {
-            NativeLists.List_removeAt(ptr, index);
+            NativeLists.PointerList_removeAt(ptr, index);
         }
 
         IEnumerator IEnumerable.GetEnumerator() {
@@ -121,11 +90,11 @@ namespace Ghurund.Managed {
         }
     }
 
-    public class ListEnumerator<T> : IEnumerator<T> {
+    public class PointerListEnumerator<T> : IEnumerator<T> {
         private readonly IList<T> list;
         private int index = -1;
 
-        public ListEnumerator(IList<T> list) {
+        public PointerListEnumerator(IList<T> list) {
             this.list = list;
         }
 
@@ -146,10 +115,10 @@ namespace Ghurund.Managed {
         }
     }
 
-    public abstract class List<T> : IList<T> where T : NativeClass {
+    public abstract class PointerList<T> : IList<T> where T : NativeClass {
         IntPtrList pointers;
 
-        public List(IntPtr ptr) {
+        public PointerList(IntPtr ptr) {
             pointers = new IntPtrList(ptr);
         }
 

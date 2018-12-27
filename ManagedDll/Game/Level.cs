@@ -13,8 +13,10 @@ namespace Ghurund.Managed.Game {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Level_delete(IntPtr _this);
 
-        protected override void DeleteObject() => Level_delete(NativePtr);
-
+        protected override void DeleteObject() {
+            if (ptrOwner)
+                Level_delete(NativePtr);
+        }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Level_setCamera(IntPtr _this, IntPtr camera);

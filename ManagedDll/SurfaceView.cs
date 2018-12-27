@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Ghurund.Managed.Application;
 using Ghurund.Managed.Game;
@@ -17,7 +18,6 @@ namespace Ghurund.Managed {
         LevelManager levelManager;
         Level level;
         Camera defaultCamera;
-        Material invalidMaterial;
 
         private Camera camera;
         public Camera Camera {
@@ -37,7 +37,27 @@ namespace Ghurund.Managed {
             }
         }
 
-        public void Init(Graphics.Graphics graphics, ParameterManager parameterManager, Material invalidMaterial) {
+        private bool disposed = false;
+
+        ~SurfaceView() {
+            Dispose(false);
+        }
+
+        public new void Dispose() {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected new virtual void Dispose(bool disposing) {
+            if (disposed)
+                return;
+
+            Uninit();
+
+            disposed = true;
+        }
+
+        public void Init(Graphics.Graphics graphics, ParameterManager parameterManager) {
             Graphics = graphics;
             ParameterManager = parameterManager;
 
@@ -53,36 +73,40 @@ namespace Ghurund.Managed {
             window = new Window();
             window.Init(Handle);
             window.InitParameters(ParameterManager);
-            this.invalidMaterial = invalidMaterial;
             Renderer = new Renderer();
             Renderer.Init(Graphics, window);
-            Renderer.InvalidMaterial = invalidMaterial;
+            Renderer.ClearColor = (uint)Color.CornflowerBlue.ToArgb();
         }
 
         public void Uninit() {
             scene = null;
 
-            Renderer.Dispose();
+            Renderer?.Dispose();
             Renderer = null;
-            invalidMaterial.Dispose();
-            invalidMaterial = null;
-            window.Dispose();
+            window?.Dispose();
             window = null;
-            levelManager.Dispose();
+            levelManager?.Dispose();
             levelManager = null;
-            level.Dispose();
+            level?.Dispose();
             level = null;
-            Camera.Dispose();
+            defaultCamera?.Dispose();   // TODO: how to properly clean up this camera?
+            defaultCamera = null;
             Camera = null;
 
             ParameterManager = null;
             Graphics = null;
         }
 
+        public Bitmap GrabFrame() {
+            Bitmap bitmap = new Bitmap(Width, Height);
+            DrawToBitmap(bitmap, Bounds);
+            return bitmap;
+        }
+
         protected override void OnPaint(PaintEventArgs e) {
             base.OnPaint(e);
             if (IsInDesignMode(this)) {
-                e.Graphics.Clear(System.Drawing.Color.CornflowerBlue);
+                e.Graphics.Clear(Color.CornflowerBlue);
             } else if (Renderer != null) {
                 CommandList commandList = Renderer.StartFrame();
                 levelManager.Draw(Renderer, ParameterManager);

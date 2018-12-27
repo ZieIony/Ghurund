@@ -109,5 +109,14 @@ namespace Ghurund.Managed.Graphics {
 
         public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Camera_getFormats());
 
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Camera_getPerspective(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Camera_setPerspective(IntPtr _this, bool pers);
+
+        public bool Perspective { get => Camera_getPerspective(NativePtr); set => Camera_setPerspective(NativePtr, value); }
+
     }
 }

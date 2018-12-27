@@ -2,10 +2,10 @@
 
 namespace Ghurund {
     void RenderingBatch::cull(Camera & camera) {
-        XMMATRIX view = XMLoadFloat4x4(camera.getView());
+        XMMATRIX view = XMLoadFloat4x4(camera.View);
         XMVECTOR determinant;
         XMMATRIX viewInv = XMMatrixInverse(&determinant, view);
-        XMMATRIX proj = XMLoadFloat4x4(camera.getProj());
+        XMMATRIX proj = XMLoadFloat4x4(camera.Projection);
         BoundingFrustum frustum(proj);
         frustum.Transform(frustum, viewInv);
         for(size_t i = 0; i<models.Size; i++)

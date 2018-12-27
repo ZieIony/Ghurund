@@ -7,8 +7,10 @@ namespace Ghurund.Managed.Core {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Type_delete(IntPtr _this);
 
-        protected override void DeleteObject() => Type_delete(NativePtr);
-
+        protected override void DeleteObject() {
+            if(ptrOwner)
+                Type_delete(NativePtr);
+        }
 
         public Type(IntPtr ptr) : base(ptr) { }
 

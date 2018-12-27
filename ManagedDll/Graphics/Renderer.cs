@@ -71,5 +71,15 @@ namespace Ghurund.Managed.Graphics {
                 Renderer_setInvalidMaterial(this, value);
             }
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_setClearColor(IntPtr renderer, uint color);
+
+        public uint ClearColor{
+            set {
+                Renderer_setClearColor(NativePtr, value);
+            }
+        }
     }
 }

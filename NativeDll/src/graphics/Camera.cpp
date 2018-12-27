@@ -59,3 +59,11 @@ extern "C" __declspec(dllexport) void Camera_zoom(Camera *_this, float z) {
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Camera_getFormats() {
     return &Camera::getFormats();
 }
+
+extern "C" __declspec(dllexport) BOOL Camera_getPerspective(Camera *_this) {
+    return _this->getPerspective();
+}
+
+extern "C" __declspec(dllexport) void Camera_setPerspective(Camera *_this, BOOL pers) {
+    _this->setPerspective(pers);
+}

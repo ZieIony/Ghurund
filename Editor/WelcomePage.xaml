@@ -8,12 +8,13 @@
 			 mc:Ignorable="d" 
 			 Background="{DynamicResource Ghurund.Background}"
              d:DesignHeight="450" d:DesignWidth="800">
-	<StackPanel Orientation="Vertical" HorizontalAlignment="Center" Background="{DynamicResource Ghurund.BackgroundLight}">
-		<TextBlock Text="Welcome" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="16,16,16,0"/>
-		<TextBlock Margin="16,8,16,0">Get your own copy of Ghurund Engine <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink></TextBlock>
-		<TextBlock Margin="16,8,16,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
-		<StackPanel Orientation="Horizontal" >
-			<DockPanel Width="300" Margin="16,0,0,0">
+	<StackPanel Orientation="Vertical"  HorizontalAlignment="Center" Background="{DynamicResource Ghurund.BackgroundLight}">
+		<TextBlock Text="Welcome" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Heading}" Margin="16,16,16,0"/>
+		<StackPanel Orientation="Horizontal">
+			<StackPanel Width="300" Margin="16,0,0,0">
+				<TextBlock Margin="0,8,0,0">Get your own copy of Ghurund Engine <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink></TextBlock>
+				<TextBlock Margin="0,8,0,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
+
 				<TextBlock Text="Recent Projects" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListView Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				  BorderThickness="0" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
@@ -32,8 +33,11 @@
 					</ListView.Resources>
 				</ListView>
 
-			</DockPanel>
-			<DockPanel Width="300" Margin="4,0,16,0">
+			</StackPanel>
+			<StackPanel Width="300" Margin="4,0,16,0">
+				<TextBlock Margin="0,8,0,0">Start a <Hyperlink RequestNavigate="Hyperlink_RequestNavigate">new project</Hyperlink></TextBlock>
+				<TextBlock Margin="0,8,0,0"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate">Open</Hyperlink> a file</TextBlock>
+
 				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListView Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
 				  BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -52,7 +56,7 @@
 					</ListView.Resources>
 				</ListView>
 
-			</DockPanel>
+			</StackPanel>
 		</StackPanel>
 	</StackPanel>
 </UserControl>

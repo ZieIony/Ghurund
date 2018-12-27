@@ -9,6 +9,7 @@ namespace Ghurund {
         Texture *texture = Textures::makeChecker(resourceManager, context);
         material->Textures.set("diffuse", texture);
         texture->release();
+        shader->release();
         material->Valid = true;
         return material;
     }
@@ -16,6 +17,7 @@ namespace Ghurund {
     Material *Materials::makeWireframe(ResourceManager &resourceManager, ResourceContext &context) {
         Shader *shader = Shaders::loadWireframe(resourceManager, context);
         Material *material = ghnew Material(shader);
+        shader->release();
         material->Valid = true;
         return material;
     }
@@ -23,6 +25,7 @@ namespace Ghurund {
     Material *Materials::makeNormals(ResourceManager &resourceManager, ResourceContext &context) {
         Shader *shader = Shaders::loadNormals(resourceManager, context);
         Material *material = ghnew Material(shader);
+        shader->release();
         material->Valid = true;
         return material;
     }
@@ -30,6 +33,7 @@ namespace Ghurund {
     Material *Materials::makeInvalid(ResourceManager &resourceManager, ResourceContext &context) {
         Shader *shader = Shaders::loadInvalid(resourceManager, context);
         Material *material = ghnew Material(shader);
+        shader->release();
         material->Valid = true;
         return material;
     }

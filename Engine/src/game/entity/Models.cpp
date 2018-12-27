@@ -8,6 +8,7 @@ namespace Ghurund {
         Model *model = ghnew Model(mesh, &material);
         model->Valid = true;
         TransformedEntity *entity = ghnew TransformedEntity(*model);
+        entity->Valid = true;
         model->initParameters(context.ParameterManager);
         mesh->release();
         model->release();
@@ -22,6 +23,7 @@ namespace Ghurund {
         Model *model = ghnew Model(mesh, &material);
         model->Valid = true;
         TransformedEntity *entity = ghnew TransformedEntity(*model);
+        entity->Valid = true;
         model->initParameters(context.ParameterManager);
         mesh->release();
         model->release();
@@ -36,6 +38,7 @@ namespace Ghurund {
         Model *model = ghnew Model(mesh, &material);
         model->Valid = true;
         TransformedEntity *entity = ghnew TransformedEntity(*model);
+        entity->Valid = true;
         model->initParameters(context.ParameterManager);
         mesh->release();
         model->release();

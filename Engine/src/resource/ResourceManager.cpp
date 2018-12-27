@@ -41,29 +41,6 @@ namespace Ghurund {
     ResourceManager::~ResourceManager() {
         loadingThread.finish();
         delete resourceFactory;
-
-#ifdef _DEBUG
-        PointerList<Resource*> unreleasedResources;
-#endif
-
-        for(size_t i = 0; i<resources.Size; i++) {
-            Resource *resource = resources.getValue(i);
-#ifdef _DEBUG
-            if(resource->ReferenceCount>1)
-                unreleasedResources.add(resource);
-#endif
-            resource->release();
-        }
-
-#ifdef _DEBUG
-        for(size_t i = 0; i<unreleasedResources.Size; i++) {
-            Resource *resource = unreleasedResources[i];
-            if(resource->ReferenceCount>1)
-                Logger::log(_T("unreleased ResourceManager resource: [%#x] %hs %s refCount=%lu\n"), (int)resource, typeid(*resource).name(), resource->FileName.getData(), resource->ReferenceCount);
-            while(resource->ReferenceCount>1)
-                resource->release();
-#endif
-        }
     }
 
     void ResourceManager::reload() {

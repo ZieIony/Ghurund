@@ -88,6 +88,7 @@ namespace Ghurund.Editor {
                     panel = new SceneEditorPanel {
                         Scene = scene
                     };
+                    SceneExplorer.Scene = scene;
                 } else {
                     // TODO: show error message
                     return;

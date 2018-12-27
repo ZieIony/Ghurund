@@ -22,10 +22,9 @@
 					<ComboBoxItem Name="checker">Checker</ComboBoxItem>
 					<ComboBoxItem Name="normals">Normals</ComboBoxItem>
 				</wpf:ComboBox>
+				<CheckBox x:Name="cameraPerspective" VerticalAlignment="Center" Content="Perspective" Checked="Perspective_Checked" IsChecked="True"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
-		<wpf:WindowsFormsHost>
-			<engine:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
-		</wpf:WindowsFormsHost>
+		<engine:SceneView x:Name="sceneView"/>
 	</wpf:DockPanel>
 </UserControl>

@@ -1,18 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Collection;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
 
     public abstract class Entity : Resource.Resource {
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Entity_delete(IntPtr _this);
-
-        protected override void DeleteObject() => Entity_delete(NativePtr);
-
 
         public delegate void EntityChangeEventHandler(Object sender);
         public event EntityChangeEventHandler AfterChanged;
@@ -55,7 +50,7 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr Entity_getParameters(IntPtr _this);
+        private static extern IntPtr Entity_getParameters(IntPtr _this);
 
         [Browsable(false)]
         public ParameterArray Parameters {
@@ -63,21 +58,21 @@ namespace Ghurund.Managed.Game {
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);
+        private static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);
 
         public void InitParameters(ParameterManager manager) {
             Entity_initParameters(NativePtr, manager.NativePtr);
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Entity_updateParameters(IntPtr _this);
+        private static extern void Entity_updateParameters(IntPtr _this);
 
         public void UpdateParameters() {
             Entity_updateParameters(NativePtr);
         }
     }
 
-    public class EntityList : List<Entity> {
+    public class EntityList : PointerList<Entity> {
 
         public EntityList(IntPtr ptr) : base(ptr) {
         }
@@ -101,58 +96,64 @@ namespace Ghurund.Managed.Game {
 
     public class TransformedEntity : Entity {
 
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedObject_getPosition(IntPtr _this);
+        public TransformedEntity() {
+        }
+
+        public TransformedEntity(IntPtr ptr) : base(ptr) {
+        }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedObject_setPosition(IntPtr _this, Float3 position);
+        private static extern Float3 TransformedEntity_getPosition(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void TransformedEntity_setPosition(IntPtr _this, Float3 position);
 
         [Category("Transformation")]
         [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public Float3 Position {
             get {
-                return TransformedObject_getPosition(NativePtr);
+                return TransformedEntity_getPosition(NativePtr);
             }
             set {
-                TransformedObject_setPosition(NativePtr, value);
+                TransformedEntity_setPosition(NativePtr, value);
             }
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedObject_getRotation(IntPtr _this);
+        private static extern Float3 TransformedEntity_getRotation(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedObject_setRotation(IntPtr _this, Float3 rotation);
+        private static extern void TransformedEntity_setRotation(IntPtr _this, Float3 rotation);
 
         [Category("Transformation")]
         [Description("Euler angles in radians. Maybe I should use degrees instead?")]
         [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public Float3 Rotation {
             get {
-                return TransformedObject_getRotation(NativePtr);
+                return TransformedEntity_getRotation(NativePtr);
             }
             set {
-                TransformedObject_setRotation(NativePtr, value);
+                TransformedEntity_setRotation(NativePtr, value);
             }
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedObject_getScale(IntPtr _this);
+        private static extern Float3 TransformedEntity_getScale(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedObject_setScale(IntPtr _this, Float3 scale);
+        private static extern void TransformedEntity_setScale(IntPtr _this, Float3 scale);
 
         [Category("Transformation")]
         [Description("Each value has to be > 0. For 100% scale use value = 1.0.")]
         [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
         public Float3 Scale {
             get {
-                return TransformedObject_getScale(NativePtr);
+                return TransformedEntity_getScale(NativePtr);
             }
             set {
-                TransformedObject_setScale(NativePtr, value);
+                TransformedEntity_setScale(NativePtr, value);
             }
         }
 

@@ -150,7 +150,7 @@ namespace Ghurund {
             return get(key);
         }
 
-        inline const Value &operator[](Key &key)const {
+        inline const Value &operator[](const Key &key)const {
             return get(key);
         }
     };

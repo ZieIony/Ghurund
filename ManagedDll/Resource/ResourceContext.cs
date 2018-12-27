@@ -13,8 +13,17 @@ namespace Ghurund.Managed.Resource {
         protected override void DeleteObject() => ResourceContext_delete(NativePtr);
 
 
+        public Graphics.Graphics Graphics { get; set; }
+
+        public Audio.Audio Audio { get; set; }
+
+        public Game.ParameterManager ParameterManager { get; set; }
+
         public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager) {
             NativePtr = ResourceContext_new(graphics.NativePtr, audio.NativePtr, parameterManager.NativePtr);
+            Graphics = graphics;
+            Audio = audio;
+            ParameterManager = parameterManager;
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Core;
 
 namespace Ghurund.Managed.Resource {
-    public abstract class Resource : NativeClass {
+    public abstract class Resource : Pointer {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Resource_delete(IntPtr _this);
+        private static extern void Resource_release(IntPtr _this);
 
         protected override void DeleteObject() {
-            Resource_delete(NativePtr);
+            Resource_release(NativePtr);
         }
 
 
@@ -54,6 +55,19 @@ namespace Ghurund.Managed.Resource {
         public string FileName {
             get => Resource_getFileName(NativePtr);
             set => Resource_setFileName(NativePtr, value);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Resource_isValid(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Resource_setValid(IntPtr _this, bool valid);
+
+        [Browsable(false)]
+        public bool Valid {
+            get => Resource_isValid(NativePtr);
+            set => Resource_setValid(NativePtr, value);
         }
 
 

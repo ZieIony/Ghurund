@@ -34,7 +34,7 @@ namespace Ghurund {
         }
 
         Status init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer);
-        Status start();
+        Status start(XMFLOAT4 *color);
         Status finish();
 
         CommandList &getCommandList() {

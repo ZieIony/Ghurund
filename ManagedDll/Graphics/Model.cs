@@ -44,4 +44,35 @@ namespace Ghurund.Managed.Graphics {
         public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Model_getFormats());
 
     }
+
+    public static class Models {
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Models_makeCube(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public static TransformedEntity MakeCube(ResourceContext context, Material material) {
+            return new TransformedEntity(Models_makeCube(context, material));
+        }
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Models_makePlane(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public static TransformedEntity MakePlane(ResourceContext context, Material material) {
+            return new TransformedEntity(Models_makePlane(context, material));
+        }
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Models_makeSphere(
+                        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public static TransformedEntity MakeSphere(ResourceContext context, Material material) {
+            return new TransformedEntity(Models_makeSphere(context, material));
+        }
+
+    }
 }

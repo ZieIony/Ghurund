@@ -52,8 +52,6 @@ namespace Ghurund {
             if(resource==nullptr) {
                 resource = ghnew Type();
                 loadResult = loadInternal(*resource, context, fileName, options);
-                if(loadResult==Status::OK)
-                    resource->release();    // resource was added to ResourceManager::resources
             }
             if(result!=nullptr)
                 *result = loadResult;

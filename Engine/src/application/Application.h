@@ -38,7 +38,7 @@ namespace Ghurund {
         Timer timer;
         Input input;
 
-        Renderer renderer;
+        Renderer *renderer;
         LevelManager levelManager;
 
         bool multipleInstances;
@@ -169,7 +169,7 @@ namespace Ghurund {
         __declspec(property(get = getLevelManager)) LevelManager &LevelManager;
 
         inline Renderer &getRenderer() {
-            return renderer;
+            return *renderer;
         }
 
         __declspec(property(get = getRenderer)) Renderer &Renderer;

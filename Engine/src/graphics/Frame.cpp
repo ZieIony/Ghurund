@@ -14,7 +14,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Frame::start() {
+    Status Frame::start(XMFLOAT4 *color) {
         commandList->wait();
         commandList->reset();
 
@@ -23,8 +23,9 @@ namespace Ghurund {
 
         commandList->get()->RSSetViewports(1, &viewport);
         commandList->get()->RSSetScissorRects(1, &scissorRect);
-        
-        renderTarget->clear(*commandList);
+
+        if(color!=nullptr)
+            renderTarget->clear(*commandList, *color);
         depthBuffer->clear(*commandList);
 
         return Status::OK;

@@ -38,6 +38,7 @@
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
+    <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\RenderingBatch.cpp" />
     <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\game\entity\Light.cpp" />

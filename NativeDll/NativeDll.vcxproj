@@ -149,7 +149,9 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\collection\Array.cpp" />
+    <ClCompile Include="src\collection\PointerList.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />
+    <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />

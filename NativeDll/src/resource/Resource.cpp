@@ -2,7 +2,7 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) void Resource_delete(Resource *_this) {
+extern "C" __declspec(dllexport) void Resource_release(Resource *_this) {
     _this->release();
 }
 
@@ -40,4 +40,12 @@ extern "C" __declspec(dllexport) bool ResourceFormat_canSave(ResourceFormat *_th
 
 extern "C" __declspec(dllexport) bool ResourceFormat_canLoad(ResourceFormat *_this) {
     return _this->canLoad();
+}
+
+extern "C" __declspec(dllexport) void Resource_setValid(Resource *_this, BOOL valid) {
+    _this->setValid(valid);
+}
+
+extern "C" __declspec(dllexport) BOOL Resource_isValid(Resource *_this) {
+    return _this->isValid();
 }

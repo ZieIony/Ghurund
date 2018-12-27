@@ -1,4 +1,5 @@
 #include "game/entity/Model.h"
+#include "game/entity/Models.h"
 
 using namespace Ghurund;
 
@@ -24,4 +25,16 @@ extern "C" __declspec(dllexport) void Model_setMaterial(Model *_this, Material *
 
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Model_getFormats() {
     return &Model::getFormats();
+}
+
+extern "C" __declspec(dllexport) TransformedEntity * Models_makeCube(ResourceContext *context, Material *material) {
+    return Models::makeCube(*context, *material);
+}
+
+extern "C" __declspec(dllexport) TransformedEntity * Models_makePlane(ResourceContext *context, Material *material) {
+    return Models::makePlane(*context, *material);
+}
+
+extern "C" __declspec(dllexport) TransformedEntity * Models_makeSphere(ResourceContext *context, Material *material) {
+    return Models::makeSphere(*context, *material);
 }

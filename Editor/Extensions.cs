@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace Ghurund.Editor {
     public static class Extensions {

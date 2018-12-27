@@ -41,34 +41,42 @@ namespace Ghurund.Managed.Graphics {
     public static class Materials {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Materials_makeChecker(IntPtr resourceManager, IntPtr resourceContext);
+        private static extern IntPtr Materials_makeChecker(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
         public static Material makeChecker(ResourceManager resourceManager, ResourceContext resourceContext) {
-            return new Material(Materials_makeChecker(resourceManager.NativePtr, resourceContext.NativePtr));
+            return new Material(Materials_makeChecker(resourceManager, resourceContext));
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Materials_makeWireframe(IntPtr resourceManager, IntPtr resourceContext);
+        private static extern IntPtr Materials_makeWireframe(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material makeWireframe(ResourceManager resourceManager, ResourceContext resourceContext) {
-            return new Material(Materials_makeWireframe(resourceManager.NativePtr, resourceContext.NativePtr));
+        public static Material MakeWireframe(ResourceManager resourceManager, ResourceContext resourceContext) {
+            return new Material(Materials_makeWireframe(resourceManager, resourceContext));
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Materials_makeNormals(IntPtr resourceManager, IntPtr resourceContext);
+        private static extern IntPtr Materials_makeNormals(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material makeNormals(ResourceManager resourceManager, ResourceContext resourceContext) {
-            return new Material(Materials_makeNormals(resourceManager.NativePtr, resourceContext.NativePtr));
+        public static Material MakeNormals(ResourceManager resourceManager, ResourceContext resourceContext) {
+            return new Material(Materials_makeNormals(resourceManager, resourceContext));
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Materials_makeInvalid(IntPtr resourceManager, IntPtr resourceContext);
+        private static extern IntPtr Materials_makeInvalid(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material makeInvalid(ResourceManager resourceManager, ResourceContext resourceContext) {
-            return new Material(Materials_makeInvalid(resourceManager.NativePtr, resourceContext.NativePtr));
+        public static Material MakeInvalid(ResourceManager resourceManager, ResourceContext resourceContext) {
+            return new Material(Materials_makeInvalid(resourceManager, resourceContext));
         }
     }
 }

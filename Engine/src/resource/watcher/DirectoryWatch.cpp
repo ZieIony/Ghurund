@@ -9,8 +9,15 @@ namespace Ghurund {
             String fileName(fni.FileName, fni.FileNameLength/sizeof(wchar_t));
 
             if(files.contains(fileName)) {
-                Logger::log(_T("file changed: %s, action: %i\n"), fileName.getData(), fni.Action);
-                files[fileName](fileName, (FileChange)fni.Action);
+                DWORD action = fni.Action;
+                delayThread.remove(fileName);
+                Task *task = ghnew Task(fileName, [fileName, action, this]() {
+                    Logger::log(_T("file changed: %s, action: %i\n"), fileName.getData(), action);
+                    files[fileName](fileName, (FileChange)action);
+                    return Status::OK;
+                });
+                delayThread.post(task, 200);
+                task->release();
             }
 
             if(fni.NextEntryOffset==0)
@@ -35,6 +42,7 @@ namespace Ghurund {
     }
 
     DirectoryWatch::~DirectoryWatch() {
+        delayThread.finish();
         CancelIo(dirHandle);
         CloseHandle(dirHandle);
     }

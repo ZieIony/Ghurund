@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Ghurund.Managed {
     public abstract class NativeClass : IDisposable {
         private bool disposed = false;
-        private readonly bool ptrOwner;
+        protected readonly bool ptrOwner;
 
         [Browsable(false)]
         public IntPtr NativePtr { get; protected set; }
@@ -16,8 +16,10 @@ namespace Ghurund.Managed {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Object_delete(IntPtr _this);
 
-        protected virtual void DeleteObject() => Object_delete(NativePtr);
-
+        protected virtual void DeleteObject() {
+            if (ptrOwner)
+                Object_delete(NativePtr);
+        }
 
         public NativeClass() {
             NativePtr = NewObject();
@@ -42,8 +44,7 @@ namespace Ghurund.Managed {
             if (disposed)
                 return;
 
-            if (ptrOwner)
-                DeleteObject();
+            DeleteObject();
 
             disposed = true;
         }

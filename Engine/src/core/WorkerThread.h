@@ -23,6 +23,8 @@ namespace Ghurund {
 
         void post(Task *task, long delayMs = 0);
 
+        void remove(const String &taskName);
+
         void remove(Task *task);
 
         /**

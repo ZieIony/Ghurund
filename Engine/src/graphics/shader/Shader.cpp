@@ -184,7 +184,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::build(ResourceContext & context, bool supportsTransparency, char ** output) {
+    Status Shader::build(ResourceContext & context, char ** output) {
         Status result;
         if(!compiled)
             if((result = compile(output))!=Status::OK)
@@ -308,7 +308,7 @@ namespace Ghurund {
         }
 
         if(stream.readBoolean())
-            source = copyStrA(stream.readASCII());
+            setSourceCode(stream.readASCII());
 
         supportsTransparency = stream.readBoolean();
         Graphics &graphics = context.Graphics;
@@ -324,6 +324,8 @@ namespace Ghurund {
     Status Shader::loadHlsl(ResourceContext &context, MemoryInputStream &stream) {
         ASCIIString sourceCode((const char *)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
+
+        supportsTransparency = sourceCode.find("supportsTransparency")!=sourceCode.Size;
 
         this->graphics = &context.Graphics;
 

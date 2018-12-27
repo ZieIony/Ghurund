@@ -46,8 +46,8 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        void clear(CommandList &commandList) {
-            const float clearColor[] = {0.0f, 0.2f, 0.4f, 1.0f};
+        void clear(CommandList &commandList, XMFLOAT4 color) {
+            const float clearColor[] = {color.x, color.y, color.z, color.w};
             commandList.get()->ClearRenderTargetView(handle, clearColor, 0, nullptr);
         }
 

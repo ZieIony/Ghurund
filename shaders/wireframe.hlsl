@@ -37,7 +37,7 @@ static const uint infoA[] = {0, 0, 0, 0, 1, 1, 2};
 static const uint infoB[] = {1, 1, 2, 0, 2, 1, 2};
 static const uint infoAd[] = {2, 2, 1, 1, 0, 0, 0};
 static const uint infoBd[] = {2, 2, 1, 2, 0, 2, 1};
-static const float lineWidth = 1.5;
+static const float lineWidth = 1.0;
 static const float fadeDistance = 1000;
 static const float4 wireColor = float4(1, 1, 1, 1);
 
@@ -188,6 +188,7 @@ float evalMinDistanceToEdges(in PsInput input) {
     return dist;
 }
 
+// supportsTransparency
 float4 pixelMain(PsInput input): SV_Target{
     // Compute the shortest distance between the fragment and the edges.
     float dist = evalMinDistanceToEdges(input);
