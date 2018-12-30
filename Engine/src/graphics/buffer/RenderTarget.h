@@ -63,7 +63,7 @@ namespace Ghurund {
             commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(renderTarget.Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
         }
 
-        virtual void setName(const String &name) override {
+        virtual void setName(const UnicodeString &name) override {
             NamedObject::setName(name);
             renderTarget->SetName(name.getData());
         }

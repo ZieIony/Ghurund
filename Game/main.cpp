@@ -93,25 +93,29 @@ public:
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
                 } else {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "obj/lamborghini/Lamborghini_Aventador.obj");
-                    mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+                    if(mesh!=nullptr)
+                        mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
                 }
 
                 Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-                Texture *texture = ghnew Texture();
-                texture->init(app.ResourceContext, *image);
+                if(image!=nullptr&&mesh!=nullptr) {
+                    Texture *texture = ghnew Texture();
+                    texture->init(app.ResourceContext, *image);
 
-                Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
-                Material *material = ghnew Material(shader);
-                material->Textures.set("diffuse", texture);
-                material->Valid = true;
-                texture->release();
+                    Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
+                    Material *material = ghnew Material(shader);
+                    material->Textures.set("diffuse", texture);
+                    material->Valid = true;
+                    texture->release();
 
-                model = ghnew Model(mesh, material);
-                model->Valid = true;
-                material->release();
+                    model = ghnew Model(mesh, material);
+                    model->Valid = true;
+                    mesh->release();
+                    material->release();
 
-                scene->Entities.add(model);
-                model->release();
+                    scene->Entities.add(model);
+                    model->release();
+                }
             }
 
             /*{

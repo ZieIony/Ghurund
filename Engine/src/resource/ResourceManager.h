@@ -32,7 +32,7 @@ namespace Ghurund {
             = false;
 #endif
 
-        Status loadInternal(Resource &resource, ResourceContext &context, const String &fileName, LoadOption options);
+        Status loadInternal(Resource &resource, ResourceContext &context, const UnicodeString &fileName, LoadOption options);
 
     public:
 
@@ -42,7 +42,7 @@ namespace Ghurund {
 
         void reload();
 
-        template<class Type> Type *load(ResourceContext &context, const String &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type *load(ResourceContext &context, const UnicodeString &fileName, Status *result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             if(fileName.Length==0) {
                 Logger::log(_T("file name cannot be empty\n"));
                 return nullptr;
@@ -52,13 +52,17 @@ namespace Ghurund {
             if(resource==nullptr) {
                 resource = ghnew Type();
                 loadResult = loadInternal(*resource, context, fileName, options);
+                if(loadResult!=Status::OK) {
+                    resource->release();
+                    resource = nullptr;
+                }
             }
             if(result!=nullptr)
                 *result = loadResult;
             return (Type*)resource;
         }
 
-        template<class Type> void loadAsync(ResourceContext &context, const String &fileName, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> void loadAsync(ResourceContext &context, const UnicodeString &fileName, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             if(fileName.Length==0&&onLoaded!=nullptr) {
                 Logger::log(_T("file name cannot be empty\n"));
                 onLoaded(nullptr, Status::INV_PARAM);
@@ -66,14 +70,18 @@ namespace Ghurund {
             }
             Task *task = ghnew Task(fileName, [this, &context, fileName, onLoaded, options]() {
                 Resource *resource = get(fileName);
-                Status result = Status::ALREADY_LOADED;
+                Status loadResult = Status::ALREADY_LOADED;
                 if(resource==nullptr) {
                     resource = ghnew Type();
-                    result = loadInternal(*resource, context, fileName, options);
+                    loadResult = loadInternal(*resource, context, fileName, options);
+                    if(loadResult!=Status::OK) {
+                        resource->release();
+                        resource = nullptr;
+                    }
                 }
                 if(onLoaded!=nullptr)
-                    onLoaded((Type*)resource, result);
-                return result;
+                    onLoaded((Type*)resource, loadResult);
+                return loadResult;
             });
             loadingThread.post(task);
             task->release();
@@ -89,8 +97,12 @@ namespace Ghurund {
             if(resource==nullptr) {
                 resource = ghnew Type();
                 loadResult = loadInternal(*resource, context, file.Name, options);
-                if(loadResult==Status::OK)
-                    resource->release();    // resource was added to ResourceManager::resources
+//                if(loadResult==Status::OK)
+  //                  resource->release();    // resource was added to ResourceManager::resources
+                if(loadResult!=Status::OK) {
+                    resource->release();
+                    resource = nullptr;
+                }
             }
             if(result!=nullptr)
                 *result = loadResult;
@@ -109,6 +121,10 @@ namespace Ghurund {
                 if(resource==nullptr) {
                     resource = ghnew Type();
                     result = loadInternal(*resource, context, file.Name, options);
+                    if(loadResult!=Status::OK) {
+                        resource->release();
+                        resource = nullptr;
+                    }
                 }
                 if(onLoaded!=nullptr)
                     onLoaded(resource, result);

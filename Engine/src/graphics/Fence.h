@@ -34,7 +34,7 @@ namespace Ghurund {
 
         Status wait(ID3D12CommandQueue *commandQueue);
 
-        virtual void setName(const String &name) override {
+        virtual void setName(const UnicodeString &name) override {
             NamedObject::setName(name);
             fence->SetName(name.getData());
         }

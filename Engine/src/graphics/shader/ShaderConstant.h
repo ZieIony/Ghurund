@@ -22,7 +22,7 @@ namespace Ghurund {
 
     public:
         ShaderConstant(const char *name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility) {
-            this->name = copyStrA(name);
+            this->name = copyStr(name);
             this->bindPoint = bindPoint;
             this->visibility = visibility;
         }

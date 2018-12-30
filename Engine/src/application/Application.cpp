@@ -24,7 +24,7 @@ namespace Ghurund {
         renderer->InvalidMaterial = invalidMaterial;
         invalidMaterial->release();
 #else
-        renderer.init(*graphics, window);
+        renderer->init(*graphics, window);
 #endif
 
         client = ghnew Ghurund::Client(windowProc->FunctionQueue);

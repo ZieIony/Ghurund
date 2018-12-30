@@ -148,6 +148,10 @@ namespace Ghurund {
             return memcmp(v, str, Length*sizeof(Type))==0;
         }
 
+        bool operator==(const Type *str) {
+            return memcmp(v, str, Length*sizeof(Type))==0;
+        }
+
         operator const Type *()const {
             return v;
         }

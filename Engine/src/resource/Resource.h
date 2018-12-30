@@ -38,7 +38,7 @@ namespace Ghurund {
     class Resource: public Pointer {
     private:
         bool valid = false;
-        String fileName;
+        UnicodeString fileName;
 
         Status saveInternal(ResourceManager &resourceManager, File &file, SaveOption options) const;
 
@@ -58,12 +58,12 @@ namespace Ghurund {
         Resource() = default;
 
         Status load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, const String &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, const UnicodeString &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceManager &resourceManager, ResourceContext &context, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
 
         Status save(ResourceManager &resourceManager, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(ResourceManager &resourceManager, const String &fileName, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager &resourceManager, const UnicodeString &fileName, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
         Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT);
@@ -83,14 +83,14 @@ namespace Ghurund {
 
         __declspec(property(get = isValid, put = setValid)) bool Valid;
 
-        const String &getFileName() const {
+        const UnicodeString &getFileName() const {
             return fileName;
         }
 
-        void setFileName(const String &fileName) {
+        void setFileName(const UnicodeString &fileName) {
             this->fileName = fileName;
         }
 
-        __declspec(property(get = getFileName, put = setFileName)) String &FileName;
+        __declspec(property(get = getFileName, put = setFileName)) UnicodeString &FileName;
     };
 }

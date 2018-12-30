@@ -53,7 +53,7 @@ namespace Ghurund {
         for(unsigned int i = 0; i<desc.InputParameters; i++) {
             D3D12_SIGNATURE_PARAMETER_DESC parameterDesc;
             reflector->GetInputParameterDesc(i, &parameterDesc);
-            inputElements[i].SemanticName = copyStrA(parameterDesc.SemanticName);
+            inputElements[i].SemanticName = copyStr(parameterDesc.SemanticName);
             inputElements[i].SemanticIndex = parameterDesc.SemanticIndex;
             inputElements[i].Format = getFormat(parameterDesc.Mask, parameterDesc.ComponentType);
             inputElements[i].InputSlot = 0;

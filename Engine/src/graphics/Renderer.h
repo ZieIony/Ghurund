@@ -28,8 +28,10 @@ namespace Ghurund {
         }
 
         ~Renderer() {
+#if defined(_DEBUG) || defined(GHURUND_EDITOR)
             if(invalidMaterial!=nullptr)
                 invalidMaterial->release();
+#endif
             uninit();
             delete swapChain;
             swapChain = nullptr;

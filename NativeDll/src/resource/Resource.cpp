@@ -14,11 +14,11 @@ extern "C" __declspec(dllexport) Status Resource_save(Resource *_this, ResourceM
     return _this->save(*manager, fileName);
 }
 
-extern "C" __declspec(dllexport) void Resource_setFileName(Resource *_this, const tchar *fileName) {
+extern "C" __declspec(dllexport) void Resource_setFileName(Resource *_this, const wchar_t *fileName) {
     _this->setFileName(fileName);
 }
 
-extern "C" __declspec(dllexport) tchar *Resource_getFileName(Resource *_this) {
+extern "C" __declspec(dllexport) wchar_t *Resource_getFileName(Resource *_this) {
     return copyStr(_this->getFileName());
 }
 

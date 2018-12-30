@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -54,7 +55,9 @@ namespace Ghurund.Editor.ResourceEditor {
         public void Restore(object state) {
             if (state != null) {
                 string uri = state as string;
-                var bitmapImage = new BitmapImage(new System.Uri(uri));
+                if (!File.Exists(uri))
+                    return; // TODO: error handling
+                var bitmapImage = new BitmapImage(new Uri(uri));
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 Image = bitmapImage;
             }

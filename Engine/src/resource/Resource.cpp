@@ -64,7 +64,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const String & fileName, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const UnicodeString & fileName, unsigned long *bytesRead, LoadOption options) {
         if(fileName.Length==0) {
             Logger::log(_T("File name is empty\n"));
             return Status::INV_PARAM;
@@ -111,7 +111,7 @@ namespace Ghurund {
         return file.write();
     }
 
-    Status Resource::save(ResourceManager &resourceManager, const String &fileName, SaveOption options) {
+    Status Resource::save(ResourceManager &resourceManager, const UnicodeString &fileName, SaveOption options) {
         if(fileName.Length==0) {
             Logger::log(_T("File name is empty\n"));
             return Status::INV_PARAM;

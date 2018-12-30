@@ -57,7 +57,7 @@ namespace Ghurund {
             Logger::log(_T("create direct queue failed\n"));
             return Status::CALL_FAIL;
         }
-        directQueue->SetName(_T("direct queue"));
+        directQueue->SetName(L"direct queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
 
@@ -65,7 +65,7 @@ namespace Ghurund {
             Logger::log(_T("create compute queue failed\n"));
             return Status::CALL_FAIL;
         }
-        computeQueue->SetName(_T("compute queue"));
+        computeQueue->SetName(L"compute queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
 
@@ -73,7 +73,7 @@ namespace Ghurund {
             Logger::log(_T("create copy queue failed\n"));
             return Status::CALL_FAIL;
         }
-        copyQueue->SetName(_T("copy queue"));
+        copyQueue->SetName(L"copy queue");
 
         /*if(FAILED(factory->MakeWindowAssociation(window.Handle, DXGI_MWA_NO_ALT_ENTER))) {
             Logger::log(_T("factory->MakeWindowAssociation() failed\n"));

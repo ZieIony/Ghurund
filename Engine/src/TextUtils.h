@@ -39,7 +39,7 @@ namespace Ghurund {
         return result;
     }
 
-    inline void safeCopyStrA(char **dest, const char *src) {
+    inline void safeCopyStr(char **dest, const char *src) {
         if(src) {
             if(*dest)
                 delete[] * dest;
@@ -52,7 +52,7 @@ namespace Ghurund {
         }
     }
 
-    inline void safeCopyStrW(wchar_t **dest, const wchar_t *src) {
+    inline void safeCopyStr(wchar_t **dest, const wchar_t *src) {
         if(src) {
             if(*dest)
                 delete[] * dest;
@@ -65,13 +65,7 @@ namespace Ghurund {
         }
     }
 
-#ifdef UNICODE
-#define safeCopyStr(a,b) safeCopyStrW(a,b)
-#else
-#define safeCopyStr(a,b) safeCopyStrA(a,b)
-#endif
-
-    inline char *copyStrA(const char *src) {
+    inline char *copyStr(const char *src) {
         if(src==nullptr)
             return nullptr;
         size_t length = strlen(src) + 1;
@@ -81,7 +75,7 @@ namespace Ghurund {
         return dest;
     }
 
-    inline wchar_t *copyStrW(const wchar_t *src) {
+    inline wchar_t *copyStr(const wchar_t *src) {
         if(src==nullptr)
             return nullptr;
         size_t length = wcslen(src) + 1;
@@ -90,12 +84,6 @@ namespace Ghurund {
             memcpy(dest, src, length * sizeof(wchar_t));
         return dest;
     }
-
-#ifdef UNICODE
-#define copyStr(a) copyStrW(a)
-#else
-#define copyStr(a) copyStrA(a)
-#endif
 
     inline char *toMultiByte(const wchar_t *src, unsigned int codePage = CP_ACP) {
         int length = (int)wcslen(src);
@@ -109,7 +97,7 @@ namespace Ghurund {
     }
 
     inline char *toMultiByte(const char *src, unsigned int codePage = CP_ACP) {
-        return copyStrA(src);
+        return copyStr(src);
     }
 
 #ifdef UNICODE
@@ -126,7 +114,7 @@ namespace Ghurund {
     }
 
     inline tchar *toTchar(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        return copyStrW(src);
+        return copyStr(src);
     }
 #else
     inline tchar *toTchar(const wchar_t *src, unsigned int codePage = CP_ACP) {
@@ -140,8 +128,8 @@ namespace Ghurund {
         return dest;
     }
 
-    inline tchar *toMultiByte(const char *src, unsigned int codePage = CP_ACP) {
-        return copyStrA(src);
+    inline tchar *toTchar(const char *src, unsigned int codePage = CP_ACP) {
+        return copyStr(src);
     }
 #endif
 
@@ -158,7 +146,7 @@ namespace Ghurund {
     }
 
     inline wchar_t *toWideChar(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        return copyStrW(src);
+        return copyStr(src);
     }
 
     template<class Type> inline size_t lengthOf(Type text);

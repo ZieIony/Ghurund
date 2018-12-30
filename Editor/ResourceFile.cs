@@ -13,7 +13,7 @@ namespace Ghurund.Editor {
 
         public BitmapSource Thumbnail {
             get {
-                if (Path == null)
+                if (Path == null||!File.Exists(Path))   // TODO: error handling
                     return null;
                 ShellFile shellFile = ShellFile.FromFilePath(Path);
                 return shellFile.Thumbnail.Bitmap.ToBitmapSource();

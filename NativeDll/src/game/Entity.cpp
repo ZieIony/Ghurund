@@ -20,12 +20,12 @@ extern "C" __declspec(dllexport) const Type *Entity_getType(Entity *_this) {
     return &(_this->Type);
 }
 
-extern "C" __declspec(dllexport) tchar *Entity_getName(Entity *_this) {
+extern "C" __declspec(dllexport) wchar_t *Entity_getName(Entity *_this) {
     return copyStr(_this->getName().getData());
 }
 
-extern "C" __declspec(dllexport) void Entity_setName(Entity *_this, const tchar *fileName) {
-    _this->setName(fileName);
+extern "C" __declspec(dllexport) void Entity_setName(Entity *_this, const wchar_t *name) {
+    _this->setName(name);
 }
 
 extern "C" __declspec(dllexport) const Float3 TransformedEntity_getPosition(TransformedEntity *_this) {

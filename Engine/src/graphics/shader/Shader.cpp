@@ -179,7 +179,7 @@ namespace Ghurund {
             }
         }
         if(output.Length>0&&outErrorMessages!=nullptr)
-            *outErrorMessages = copyStrA(output.getData());
+            *outErrorMessages = copyStr(output.getData());
         compiled = result == Status::OK;
         return result;
     }

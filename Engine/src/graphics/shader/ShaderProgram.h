@@ -41,9 +41,9 @@ namespace Ghurund {
 
 		void setEntryPoint(const char *entryPoint) {
 			if (entryPoint == nullptr) {
-				safeCopyStrA(&this->entryPoint, type.getEntryPoint());
+				safeCopyStr(&this->entryPoint, type.getEntryPoint());
 			} else {
-				safeCopyStrA(&this->entryPoint, entryPoint);
+				safeCopyStr(&this->entryPoint, entryPoint);
 			}
 		}
 

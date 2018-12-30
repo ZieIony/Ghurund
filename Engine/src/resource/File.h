@@ -6,13 +6,13 @@
 namespace Ghurund {
     class File {
     private:
-        String name;
+        UnicodeString name;
         size_t size = 0;
         void *data = nullptr;
 
     public:
 
-        File(const String &name) {
+        File(const UnicodeString &name) {
             this->name = name;
         }
 
@@ -24,13 +24,13 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        const String &getName() const { return name; }
+        const UnicodeString &getName() const { return name; }
 
-        void setName(const String &val) {
+        void setName(const UnicodeString &val) {
             this->name = val;
         }
 
-        __declspec(property(get = getName, put = setName)) String &Name;
+        __declspec(property(get = getName, put = setName)) UnicodeString &Name;
 
         const void *getData()const {
             return data;
@@ -47,7 +47,7 @@ namespace Ghurund {
         }
 
         Status read() {
-            HANDLE handle = CreateFile(name, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            HANDLE handle = CreateFileW(name, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
             DWORD derr = GetLastError();
             if(handle==INVALID_HANDLE_VALUE)
                 return Status::IO;
@@ -64,7 +64,7 @@ namespace Ghurund {
         }
 
         Status write() {
-            HANDLE handle = CreateFile(name, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+            HANDLE handle = CreateFileW(name, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
             if(handle==INVALID_HANDLE_VALUE)
                 return Status::IO;
             unsigned long bytes;
@@ -76,7 +76,7 @@ namespace Ghurund {
         }
 
         bool exists() const {
-            DWORD attributes = GetFileAttributes(name);
+            DWORD attributes = GetFileAttributesW(name);
 
             return (attributes != INVALID_FILE_ATTRIBUTES &&
                     !(attributes & FILE_ATTRIBUTE_DIRECTORY));

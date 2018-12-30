@@ -3,7 +3,7 @@
 #include "TextResource.h"
 
 namespace Ghurund {
-    Status ResourceManager::loadInternal(Resource & resource, ResourceContext & context, const String & fileName, LoadOption options) {
+    Status ResourceManager::loadInternal(Resource & resource, ResourceContext & context, const UnicodeString & fileName, LoadOption options) {
         Status result = resource.load(*this, context, fileName, nullptr, options);
         if(result!=Status::OK) {
             Logger::log(_T("failed to load file: %s\n"), fileName.getData());
@@ -11,7 +11,7 @@ namespace Ghurund {
         }
 
         if(hotReloadEnabled&&!(options&LoadOption::DONT_WATCH)) {
-            watcher.addFile(fileName, [this, &resource, &context](const String &fileName, FileChange fileChange) {
+            watcher.addFile(fileName, [this, &resource, &context](const UnicodeString &fileName, FileChange fileChange) {
                 if(fileChange==FileChange::MODIFIED) {
                     section.enter();
                     bool found = false;

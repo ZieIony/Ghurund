@@ -58,7 +58,7 @@ namespace Ghurund {
 
         __declspec(property(get = getState)) CommandListState State;
 
-        virtual void setName(const String &name) override {
+        virtual void setName(const UnicodeString &name) override {
             NamedObject::setName(name);
             commandList->SetName(name);
         }

@@ -85,7 +85,7 @@ namespace Ghurund {
         }
 
         void setSourceCode(const char *source) {
-            safeCopyStrA(&this->source, source);
+            safeCopyStr(&this->source, source);
             compiled = false;
         }
 
