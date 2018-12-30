@@ -28,6 +28,7 @@ namespace Ghurund {
         ID3D12RootSignature *rootSignature = nullptr;
 
         List<ID3D12Object*> resourceRefs;
+        PointerList<Pointer*> pointerRefs;
 
     public:
 
@@ -73,6 +74,10 @@ namespace Ghurund {
         void addResourceRef(ID3D12Object *resource) {
             resource->AddRef();
             resourceRefs.add(resource);
+        }
+
+        void addPointerRef(Pointer *resource) {
+            pointerRefs.add(resource);
         }
     };
 }

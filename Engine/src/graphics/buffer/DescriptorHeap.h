@@ -18,95 +18,90 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 
 namespace Ghurund {
-	class Graphics;
+    class Graphics;
 
-	class DescriptorHandle{
-	private:
-		D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
-		D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
+    class DescriptorHandle {
+    private:
+        D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle;
+        D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
 
-	public:
-		DescriptorHandle() {}	// TODO: this constructor 
+    public:
+        DescriptorHandle() {}	// TODO: this constructor 
 
-		DescriptorHandle(D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle, D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle){
-			this->cpuHandle = cpuHandle;
-			this->gpuHandle = gpuHandle;
-		}
+        DescriptorHandle(SIZE_T cpuAddress, UINT64 gpuAddress) {
+            cpuHandle.ptr = cpuAddress;
+            gpuHandle.ptr = gpuAddress;
+        }
 
-		DescriptorHandle operator+ (int offsetScaledByDescriptorSize) const{
-			DescriptorHandle ret = *this;
-			ret += offsetScaledByDescriptorSize;
-			return ret;
-		}
+        D3D12_CPU_DESCRIPTOR_HANDLE getCpuHandle() const {
+            return cpuHandle;
+        }
 
-		void operator += (int offsetScaledByDescriptorSize){
-			cpuHandle.ptr += offsetScaledByDescriptorSize;
-			gpuHandle.ptr += offsetScaledByDescriptorSize;
-		}
+        __declspec(property(get = getCpuHandle)) D3D12_CPU_DESCRIPTOR_HANDLE CpuHandle;
 
-		D3D12_CPU_DESCRIPTOR_HANDLE getCpuHandle() const {
-			return cpuHandle;
-		}
+        D3D12_GPU_DESCRIPTOR_HANDLE getGpuHandle() const {
+            return gpuHandle;
+        }
 
-		D3D12_GPU_DESCRIPTOR_HANDLE getGpuHandle() const {
-			return gpuHandle;
-		}
-	};
+        __declspec(property(get = getGpuHandle)) D3D12_GPU_DESCRIPTOR_HANDLE GpuHandle;
+    };
 
-	class DescriptorHeap {
-	private:
-		ComPtr<ID3D12DescriptorHeap> heap;
-		D3D12_DESCRIPTOR_HEAP_DESC heapDescriptor;
-		unsigned int descriptorSize = 0;
-		unsigned int numFreeDescriptors = 0;
-		DescriptorHandle firstHandle;
-		DescriptorHandle nextFreeHandle;
+    class DescriptorHeap {
+    private:
+        ID3D12DescriptorHeap *heap = nullptr;
+        D3D12_DESCRIPTOR_HEAP_DESC heapDescriptor;
+        unsigned int descriptorSize = 0;
+        unsigned int numFreeDescriptors = 0;
+        D3D12_CPU_DESCRIPTOR_HANDLE cpuDescriptorHandleForHeapStart;
+        D3D12_GPU_DESCRIPTOR_HANDLE gpuDescriptorHandleForHeapStart;
+        size_t nextFreeHandle = 0;
 
-	public:
-		DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount){
-			heapDescriptor.Type = type;
-			heapDescriptor.NumDescriptors = descriptorCount;
-			heapDescriptor.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-			heapDescriptor.NodeMask = 1;
-		}
+    public:
+        DescriptorHeap(D3D12_DESCRIPTOR_HEAP_TYPE type, uint32_t descriptorCount) {
+            heapDescriptor.Type = type;
+            heapDescriptor.NumDescriptors = descriptorCount;
+            heapDescriptor.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+            heapDescriptor.NodeMask = 1;
+        }
 
-		Status init(Graphics &graphics);
+        ~DescriptorHeap() {
+            if(heap!=nullptr)
+                heap->Release();
+        }
 
-		bool hasAvailableSpace() const { return numFreeDescriptors>0; }
-		DescriptorHandle allocate();
+        Status init(Graphics &graphics);
 
-		DescriptorHandle getHandle(unsigned int index) const { return firstHandle + index * descriptorSize; }
+        bool hasAvailableSpace() const { return numFreeDescriptors>0; }
+        DescriptorHandle allocate();
 
-		bool validateHandle(const DescriptorHandle& handle) const;
+        ID3D12DescriptorHeap* get() const { return heap; }
 
-		ID3D12DescriptorHeap* getHeapPointer() const { return heap.Get(); }
+    };
 
-	};
+    class DescriptorAllocator {
+    private:
+        static const unsigned int numDescriptorsPerHeap = 256;
 
-	class DescriptorAllocator {
-	private:
-		static const unsigned int numDescriptorsPerHeap = 256;
+        Map<D3D12_DESCRIPTOR_HEAP_TYPE, DescriptorHeap*> heapMap;
 
-		Map<D3D12_DESCRIPTOR_HEAP_TYPE, DescriptorHeap*> heapMap;
+    public:
+        ~DescriptorAllocator() {
+            for(size_t i = 0; i < heapMap.Size; i++)
+                delete heapMap.getValue(i);
+        }
 
-	public:
-		~DescriptorAllocator(){
-			for (size_t i = 0; i < heapMap.Size; i++)
-				delete heapMap.getValue(i);
-		}
+        DescriptorHandle allocate(Graphics &graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
+            if(!heapMap.contains(type)) {
+                auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
+                dh->init(graphics);
+                heapMap.set(type, dh);
+            }
+            return heapMap.get(type)->allocate();
+        }
 
-		DescriptorHandle allocate(Graphics &graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
-			if (!heapMap.contains(type)) {
-				auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
-				dh->init(graphics);
-				heapMap.set(type, dh);
-			}
-			return heapMap.get(type)->allocate();
-		}
-
-		void set(ID3D12GraphicsCommandList *commandList) {
-			ID3D12DescriptorHeap *heaps = { heapMap.getValue(0)->getHeapPointer() };
-			commandList->SetDescriptorHeaps(1, &heaps);
-		}
-	};
+        void set(ID3D12GraphicsCommandList *commandList) {
+            ID3D12DescriptorHeap *heaps = {heapMap.getValue(0)->get()};
+            commandList->SetDescriptorHeaps(1, &heaps);
+        }
+    };
 }

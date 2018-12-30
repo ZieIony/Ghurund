@@ -40,6 +40,11 @@ namespace Ghurund {
                 Logger::log(_T("failed to create depth stencil texture\n"));
                 return Status::CALL_FAIL;
             }
+            /*
+            if(FAILED(graphics.Device->CreatePlacedResource(heap, offset, resourceDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &depthClearValue, __uuidof(*depthStencil), &depthStencil))) {
+                Logger::log(_T("failed to create depth stencil texture\n"));
+                return Status::CALL_FAIL;
+            }*/
 
             handle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
             graphics.Device->CreateDepthStencilView(depthStencil.Get(), &depthStencilDesc, handle);

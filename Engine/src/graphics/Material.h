@@ -67,8 +67,8 @@ namespace Ghurund {
             return shader->Parameters;
         }
 
-        void set(CommandList &commandList) {
-            shader->set(commandList);
+        void set(Graphics &graphics, CommandList &commandList) {
+            shader->set(graphics, commandList);
 
             if(textures.Size>0) // TODO: handle textures properly
                 textures.getValue(0)->set(commandList);

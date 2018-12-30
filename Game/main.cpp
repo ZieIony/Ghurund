@@ -9,6 +9,8 @@
 #include "resource/TextResource.h"
 #include "game/CameraController.h"
 
+#include "core/Allocator.h"
+
 #include <fcntl.h>
 #include <process.h>
 #include <thread>
@@ -184,6 +186,8 @@ public:
     void onInit() {
         testLevel = ghnew TestLevel(*this);
         LevelManager.setLevel(testLevel);
+
+        Renderer.ClearColor = ghnew XMFLOAT4(makeColor(0xff000000));
     }
 
     void onUpdate() {}
@@ -215,6 +219,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
         debugInterface->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 #endif
-
     return 0;
 }

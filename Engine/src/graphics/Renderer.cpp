@@ -10,7 +10,7 @@ namespace Ghurund {
         batch.cull(camera);
         //onPreDraw(batch);
         CommandList &commandList = swapChain->CommandList;
-        batch.draw(commandList, parameterManager, material
+        batch.draw(*graphics, commandList, parameterManager, material
 #if defined(_DEBUG) || defined(GHURUND_EDITOR)
                    , invalidMaterial
 #endif

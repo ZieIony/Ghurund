@@ -84,6 +84,8 @@ namespace Ghurund {
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 
+        memoryAllocator = ghnew GPUResourceFactory(*this);
+
         return Status::OK;
     }
 

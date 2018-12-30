@@ -51,6 +51,7 @@ namespace Ghurund {
         for(size_t i = 0; i<resourceRefs.Size; i++)
             resourceRefs[i]->Release();
         resourceRefs.clear();
+        pointerRefs.clear();
         state = CommandListState::FINISHED;
         return result;
     }

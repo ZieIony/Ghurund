@@ -4,15 +4,15 @@
 namespace Ghurund {
 
 	Status DescriptorHeap::init(Graphics &graphics){
-		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(heap.ReleaseAndGetAddressOf())))) {
+		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
 			Logger::log(_T("CreateDescriptorHeap(...) failed\n"));
 			return Status::CALL_FAIL;
 		}
 
 		descriptorSize = graphics.Device->GetDescriptorHandleIncrementSize(heapDescriptor.Type);
 		numFreeDescriptors = heapDescriptor.NumDescriptors;
-		firstHandle = DescriptorHandle(heap->GetCPUDescriptorHandleForHeapStart(), heap->GetGPUDescriptorHandleForHeapStart());
-		nextFreeHandle = firstHandle;
+        cpuDescriptorHandleForHeapStart = heap->GetCPUDescriptorHandleForHeapStart();
+        gpuDescriptorHandleForHeapStart = heap->GetGPUDescriptorHandleForHeapStart();
 
 		return Status::OK;
 	}
@@ -21,20 +21,9 @@ namespace Ghurund {
 		if (!hasAvailableSpace()) {
 			//"Descriptor Heap out of space.  Increase heap size.");
 		}
-		DescriptorHandle ret = nextFreeHandle;
-		nextFreeHandle += descriptorSize;
+		DescriptorHandle ret = DescriptorHandle(cpuDescriptorHandleForHeapStart.ptr + nextFreeHandle * descriptorSize, gpuDescriptorHandleForHeapStart.ptr + nextFreeHandle * descriptorSize);
+		nextFreeHandle ++;
 		return ret;
 	}
 
-	bool DescriptorHeap::validateHandle(const DescriptorHandle& handle) const{
-		if (handle.getCpuHandle().ptr < firstHandle.getCpuHandle().ptr ||
-			handle.getCpuHandle().ptr >= firstHandle.getCpuHandle().ptr + heapDescriptor.NumDescriptors * descriptorSize)
-			return false;
-
-		if (handle.getGpuHandle().ptr - firstHandle.getGpuHandle().ptr !=
-			handle.getCpuHandle().ptr - firstHandle.getCpuHandle().ptr)
-			return false;
-
-		return true;
-	}
 }

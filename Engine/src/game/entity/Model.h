@@ -79,8 +79,8 @@ namespace Ghurund {
             return material!=nullptr&&material->Valid&&mesh!=nullptr&&mesh->Valid&&__super::Valid;
         }
 
-        void draw(CommandList &commandList) {
-            material->set(commandList);
+        void draw(Graphics &graphics, CommandList &commandList) {
+            material->set(graphics, commandList);
             mesh->draw(commandList);
         }
 

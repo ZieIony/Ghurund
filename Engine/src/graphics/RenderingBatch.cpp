@@ -41,7 +41,7 @@ namespace Ghurund {
         parameters[1] = parameterWorldIT;
     }
 
-    void RenderingBatch::draw(CommandList & commandList, ParameterManager & parameterManager, Material * material
+    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager, Material * material
 #if defined(_DEBUG) || defined(GHURUND_EDITOR)
                               , Material *invalidMaterial
 #endif
@@ -75,12 +75,12 @@ namespace Ghurund {
                 modelMaterial->addReference();
                 entity->Entity.Material = overrideMaterial;
                 entity->Entity.updateParameters();
-                entity->Entity.draw(commandList);
+                entity->Entity.draw(graphics, commandList);
                 entity->Entity.Material = modelMaterial;
                 modelMaterial->release();
             } else {
                 entity->Entity.updateParameters();
-                entity->Entity.draw(commandList);
+                entity->Entity.draw(graphics, commandList);
             }
         }
     }

@@ -35,6 +35,7 @@
     <ClCompile Include="src\graphics\Fence.cpp" />
     <ClCompile Include="src\graphics\Frame.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
+    <ClCompile Include="src\graphics\GraphicsMemoryAllocator.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\game\entity\GlobalEntity.h" />
+    <ClInclude Include="src\graphics\GraphicsMemoryAllocator.h" />
     <ClInclude Include="src\graphics\texture\Image.h" />
     <ClInclude Include="src\game\entity\Light.h" />
     <ClInclude Include="src\graphics\Materials.h" />
@@ -231,8 +233,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)src;$(WindowsSDK_IncludePath);$(VC_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
     <TargetName>GhurundEngine</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -259,6 +264,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

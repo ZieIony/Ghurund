@@ -31,7 +31,7 @@ namespace Ghurund {
         }
 
         void set(CommandList &commandList, unsigned int bindSlot) {
-            bufferedValue->set(commandList, bindSlot);
+            //bufferedValue->set(commandList, bindSlot);
             bufferedValue.next();
         }
     };

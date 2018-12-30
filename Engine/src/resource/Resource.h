@@ -92,9 +92,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFileName, put = setFileName)) String &FileName;
-        /*
-        virtual const Array<ResourceFormat> &getFormats() const = 0;
-
-        virtual const ResourceFormat &getDefaultFormat() const = 0;*/
     };
 }

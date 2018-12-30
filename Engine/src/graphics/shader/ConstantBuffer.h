@@ -9,7 +9,7 @@
 namespace Ghurund {
     class ConstantBuffer:public ShaderConstant, public ParameterProvider {
     public:
-        DynamicBuffer buffer;
+        GPUBuffer buffer;
         Array<ShaderVariable*> variables;
         Array<Parameter*> managerParameters;
         Array<Parameter*> parameters;
@@ -81,8 +81,8 @@ namespace Ghurund {
             return parameters;
         }
 
-        void set(CommandList &commandList) {
-            buffer.set(commandList, bindSlot);
+        void set(Graphics &graphics, CommandList &commandList) {
+            buffer.set(graphics, commandList, bindSlot);
         }
     };
 

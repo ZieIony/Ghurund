@@ -95,12 +95,12 @@ namespace Ghurund {
         
         Status makePipelineState(bool supportsTransparency);
 
-        void set(CommandList &commandList) {
+        void set(Graphics &graphics, CommandList &commandList) {
             commandList.setGraphicsRootSignature(rootSignature);
             commandList.setPipelineState(pipelineState);
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
-                constantBuffers[i]->set(commandList);
+                constantBuffers[i]->set(graphics, commandList);
         }
 
         bool getSupportsTransparency() {

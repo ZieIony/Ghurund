@@ -37,7 +37,7 @@ namespace Ghurund {
             return parameters;
         }
 
-        void draw(CommandList &commandList, ParameterManager &parameterManager, Material *material
+        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager, Material *material
 #if defined(_DEBUG) || defined(GHURUND_EDITOR)
                   , Material *invalidMaterial
 #endif

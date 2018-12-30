@@ -61,7 +61,7 @@ namespace Ghurund {
             srvDesc.Format = textureDesc.Format;
             srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
             srvDesc.Texture2D.MipLevels = 1;
-            graphics.getDevice()->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.getCpuHandle());
+            graphics.Device->CreateShaderResourceView(textureResource.Get(), &srvDesc, descHandle.CpuHandle);
         }
 
         commandList.addResourceRef(textureResource.Get());
