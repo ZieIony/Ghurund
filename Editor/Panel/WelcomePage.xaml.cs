@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -24,15 +25,8 @@ namespace Ghurund.Editor {
 
             EditorKernel.Instance.Inject(this);
 
-            List<ResourceFile> projects = new List<ResourceFile>();
-            foreach (string path in Settings.RecentProjects)
-                projects.Add(new ResourceFile(path));
-            recentProjects.ItemsSource = projects;
-
-            List<ResourceFile> files = new List<ResourceFile>();
-            foreach (string path in Settings.RecentFiles)
-                files.Add(new ResourceFile(path));
-            recentFiles.ItemsSource = files;
+            recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path)).ToList();
+            recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path)).ToList();
         }
 
         ~WelcomePage() {
@@ -55,14 +49,28 @@ namespace Ghurund.Editor {
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Welcome Page");
 
-        private void RecentProjects_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void RecentProjects_SelectionChanged(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             var resourceFile = recentProjects.SelectedItem as ResourceFile;
-            RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
+            if (!resourceFile.Exists) {
+                if (MessageBox.Show("The selected project doesn't exist. Do you want to remove it from the recent projects list?", "Project doesn't exist", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                    Settings.RecentProjects.Remove(resourceFile.Path);
+                    recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path)).ToList();
+                }
+            } else {
+                RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
+            }
         }
 
-        private void RecentFiles_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void RecentFiles_SelectionChanged(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             var resourceFile = recentFiles.SelectedItem as ResourceFile;
-            RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
+            if (!resourceFile.Exists) {
+                if (MessageBox.Show("The selected file doesn't exist. Do you want to remove it from the recent files list?", "File doesn't exist", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
+                    Settings.RecentFiles.Remove(resourceFile.Path);
+                    recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path)).ToList();
+                }
+            } else {
+                RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
+            }
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {

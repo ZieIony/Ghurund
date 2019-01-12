@@ -85,7 +85,7 @@ namespace Ghurund.Editor {
                 return;
             }
 
-            Settings.RecentFiles.Add(path);
+            Settings.AddRecentFile(path);
         }
     }
 }

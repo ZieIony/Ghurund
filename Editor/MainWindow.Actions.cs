@@ -37,5 +37,16 @@ namespace Ghurund.Editor {
             Left = args.Left;
             Top = args.Top;
         }
+
+        private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
+            if (args.Action == WindowAction.Close) {
+                Close();
+            } else if (args.Action == WindowAction.Maximize) {
+                WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            } else if (args.Action == WindowAction.Minimize) {
+                WindowState = WindowState.Minimized;
+            }
+            args.Handled = true;
+        }
     }
 }

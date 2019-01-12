@@ -37,7 +37,7 @@
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">
-								<Image Source="{Binding Thumbnail}" Margin="0,0,4,0" Width="50" Height="50"/>
+								<Image Source="{Binding Thumbnail, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,4,0" Width="50" Height="50"/>
 								<StackPanel Orientation="Vertical" Width="100" Margin="0,0,4,0">
 									<TextBlock Text="{Binding Name}" />
 									<TextBlock Text="{Binding Size}" />

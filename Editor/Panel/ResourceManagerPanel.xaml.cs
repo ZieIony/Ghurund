@@ -32,6 +32,8 @@ namespace Ghurund.Editor {
         [Inject]
         public EditorSettings Settings { get; set; }
 
+        string[] supportedExtensions;
+
         private bool disposed = false;
 
 
@@ -39,6 +41,8 @@ namespace Ghurund.Editor {
             InitializeComponent();
 
             EditorKernel.Instance.Inject(this);
+
+            supportedExtensions = ResourceFormat.Values.Select(format => format.Extension).Where(extension => extension != null).ToArray();
 
             foreach (string library in Settings.Libraries)
                 loadLibrary(library);
@@ -142,11 +146,8 @@ namespace Ghurund.Editor {
             var expandedDir = (expandedItem.Tag as DirectoryInfo);
 
             foreach (FileInfo file in expandedDir.GetFiles()) {
-                if (file.Extension.StartsWith(".") &&
-                    !ResourceFormat.Values.Where((format) => format.Extension != null && format.Extension.Equals(file.Extension.Substring(1))).Any())
-                    continue;
-
-                resourceGrid.Items.Add(new ResourceFile(file));
+                if (file.Extension.StartsWith(".") && supportedExtensions.Contains(file.Extension.Substring(1)))
+                    resourceGrid.Items.Add(new ResourceFile(file));
             }
         }
 

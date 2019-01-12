@@ -64,6 +64,7 @@ namespace Ghurund.Editor {
             AddHandler(FileOpenedEvent, new RoutedFileOpenedEventHandler(fileOpenedHandler));
 
             AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
+            AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
         }
 
         private void removeInvalidRecents() {
@@ -81,7 +82,7 @@ namespace Ghurund.Editor {
                     recentProjects.Add(file);
             }
             Settings.RecentProjects.Clear();
-            Settings.RecentFiles.AddRange(recentProjects);
+            Settings.RecentProjects.AddRange(recentProjects);
         }
 
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {

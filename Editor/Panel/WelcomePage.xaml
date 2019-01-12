@@ -18,7 +18,7 @@
 				<TextBlock Text="Recent Projects" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListView Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
 				  BorderThickness="0" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
-				  Background="{x:Null}" SelectionChanged="RecentProjects_SelectionChanged">
+				  Background="{x:Null}" PreviewMouseLeftButtonUp="RecentProjects_SelectionChanged">
 					<ListView.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
@@ -41,7 +41,7 @@
 				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListView Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
 				  BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				  Background="{x:Null}" SelectionChanged="RecentFiles_SelectionChanged">
+				  Background="{x:Null}" PreviewMouseLeftButtonUp="RecentFiles_SelectionChanged">
 					<ListView.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
