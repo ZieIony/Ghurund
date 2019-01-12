@@ -38,7 +38,7 @@ namespace Ghurund.Editor.ResourceEditor {
 
             EditorKernel.Instance.Inject(this);
 
-            checkerMaterial = Materials.makeChecker(ResourceManager, ResourceContext);
+            checkerMaterial = Materials.MakeChecker(ResourceManager, ResourceContext);
             wireframeMaterial = Materials.MakeWireframe(ResourceManager, ResourceContext);
             normalsMaterial = Materials.MakeNormals(ResourceManager, ResourceContext);
 
@@ -86,16 +86,16 @@ namespace Ghurund.Editor.ResourceEditor {
                 return;
             switch ((material.SelectedItem as ComboBoxItem).Name) {
                 case "shaded":
-                    sceneView.Renderer.Material = null;
+                    sceneView.OverrideMaterial = null;
                     break;
                 case "wireframe":
-                    sceneView.Renderer.Material = wireframeMaterial;
+                    sceneView.OverrideMaterial = wireframeMaterial;
                     break;
                 case "checker":
-                    sceneView.Renderer.Material = checkerMaterial;
+                    sceneView.OverrideMaterial = checkerMaterial;
                     break;
                 case "normals":
-                    sceneView.Renderer.Material = normalsMaterial;
+                    sceneView.OverrideMaterial = normalsMaterial;
                     break;
             }
             sceneView.Refresh();

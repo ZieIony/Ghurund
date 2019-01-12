@@ -19,22 +19,20 @@ namespace Ghurund.Managed.Game {
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Level_setCamera(IntPtr _this, IntPtr camera);
+        private static extern void Level_setCamera(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Camera camera);
 
         public Camera Camera {
-            set {
-                Level_setCamera(NativePtr, value.NativePtr);
-            }
+            set => Level_setCamera(NativePtr, value);
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Level_setScene(IntPtr _this, IntPtr scene);
+        private static extern void Level_setScene(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Scene scene);
 
         public Scene Scene {
-            set {
-                Level_setScene(NativePtr, value != null ? value.NativePtr : IntPtr.Zero);
-            }
+            set => Level_setScene(NativePtr, value);
         }
 
     }

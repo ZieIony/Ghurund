@@ -71,6 +71,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeTextBox.cs" />
     <Compile Include="HintTextBox.cs" />
     <Compile Include="IconButton.cs" />
     <Compile Include="IconRadioButton.cs" />

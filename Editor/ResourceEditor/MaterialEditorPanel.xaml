@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="Ghurund.Editor.ResourceEditor.MaterialEditorPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:Ghurund.Editor.ResourceEditor"
+			 xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+			 xmlns:managed="clr-namespace:Ghurund.Managed;assembly=ManagedDll"
+			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+			 xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<UserControl.Resources>
+		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+                            ObjectType="{x:Type system:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="local:SampleModel"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+	</UserControl.Resources>
+	<wpf:DockPanel>
+		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
+				<controls:IconButton Icon="../Resources/build32.png" Name="build" Style="{StaticResource IconButton_Large}" Click="Build_Click"/>
+				<Border Width="16"/>
+				<wpf:ComboBox x:Name="modelPicker" SelectionChanged="Model_SelectionChanged"
+							  ItemsSource="{Binding Source={StaticResource dataFromEnum}}"
+							  SelectedItem="{Binding Path=SampleModel}"/>
+				<Border Width="16"/>
+				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
+				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
+			</wpf:ToolBarPanel>
+		</wpf:WrapPanel>
+		<workspace:SplitPanel Panel1Size="200" Orientation="Vertical">
+			<workspace:SplitPanel.Panel1>
+				<managed:SceneView x:Name="preview"/>
+			</workspace:SplitPanel.Panel1>
+			<workspace:SplitPanel.Panel2>
+				<controls:CodeTextBox x:Name="shaderCode" VerticalScrollBarVisibility="Auto" Padding="4,0,4,0" BorderThickness="0" GotFocus="ShaderCode_GotFocus"/>
+			</workspace:SplitPanel.Panel2>
+		</workspace:SplitPanel>
+	</wpf:DockPanel>
+</UserControl>

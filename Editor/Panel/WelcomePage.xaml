@@ -35,8 +35,8 @@
 
 			</StackPanel>
 			<StackPanel Width="300" Margin="4,0,16,0">
-				<TextBlock Margin="0,8,0,0">Start a <Hyperlink RequestNavigate="Hyperlink_RequestNavigate">new project</Hyperlink></TextBlock>
-				<TextBlock Margin="0,8,0,0"><Hyperlink RequestNavigate="Hyperlink_RequestNavigate">Open</Hyperlink> a file</TextBlock>
+				<TextBlock Margin="0,8,0,0">Start a <Hyperlink RequestNavigate="NewProject_RequestNavigate" NavigateUri="http://newProject">new project</Hyperlink></TextBlock>
+				<TextBlock Margin="0,8,0,0"><Hyperlink RequestNavigate="OpenFile_RequestNavigate" NavigateUri="http://openFile">Open</Hyperlink> a file</TextBlock>
 
 				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListView Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"

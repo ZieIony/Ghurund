@@ -23,7 +23,6 @@ namespace Ghurund.Editor {
     }
 
     public interface IResourceManagerPanel : IDockableControl {
-        event RoutedEditorOpenedEventHandler EditorOpened;
     }
 
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {
@@ -34,13 +33,6 @@ namespace Ghurund.Editor {
         public EditorSettings Settings { get; set; }
 
         private bool disposed = false;
-
-        public static readonly RoutedEvent EditorOpenedEvent = EventManager.RegisterRoutedEvent("EditorOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(IResourceManagerPanel));
-
-        public event RoutedEditorOpenedEventHandler EditorOpened {
-            add { AddHandler(EditorOpenedEvent, value); }
-            remove { RemoveHandler(EditorOpenedEvent, value); }
-        }
 
 
         public ResourceManagerPanel() {
@@ -161,7 +153,7 @@ namespace Ghurund.Editor {
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
             if (resourceGrid.SelectedItem != null) {
                 var resourceFile = resourceGrid.SelectedItem as ResourceFile;
-                RaiseEvent(new RoutedEditorOpenedEventArgs(resourceFile, EditorOpenedEvent));
+                RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
             }
         }
     }

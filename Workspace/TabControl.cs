@@ -23,7 +23,8 @@ namespace Ghurund.Controls.Workspace {
 
         public TabControl() {
             //AddHandler(GotFocusEvent, new RoutedEventHandler(gotFocus));
-            //AddHandler(LostFocusEvent, new RoutedEventHandler(lostFocus));
+            AddHandler(LostFocusEvent, new RoutedEventHandler(lostFocus));
+            AddHandler(MouseDownEvent, new RoutedEventHandler(gotFocus));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
         }
 
@@ -47,6 +48,7 @@ namespace Ghurund.Controls.Workspace {
             TitleBar titleBar = Extensions.FindVisualChildByName<TitleBar>(this, "titleBar");
             if (titleBar != null)
                 titleBar.IsParentFocused = true;
+            Focus();
         }
 
         private void lostFocus(object sender, RoutedEventArgs args) {

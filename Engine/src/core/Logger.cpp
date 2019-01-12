@@ -69,24 +69,30 @@ namespace Ghurund {
     }
 
     void Logger::logVA(const tchar *format, va_list args) {
+#ifdef _DEBUG
         String fileLine = getFileLine(getAddress());
+#endif
         tchar *buffer = nullptr;
 
         if(!printToBuffer(&buffer, format, args))
             goto cleanUp;
 
+#ifdef _DEBUG
         fileLine.add(buffer);
+        if(!fileLine.endsWith("\n"))
+            fileLine.add("\n");
         log(fileLine);
+#else
+        if(!buffer.endsWith("\n"))
+            buffer.add("\n");
+        log(buffer);
+#endif
 
     cleanUp:
         delete[] buffer;
     }
 
     void Logger::log(const tchar *format, ...) {
-#ifndef _DEBUG
-        return;
-#endif
-
         va_list args;
         va_start(args, format);
 
@@ -96,10 +102,6 @@ namespace Ghurund {
     }
 
     Status Logger::log(Status status, const tchar *format, ...) {
-#ifndef _DEBUG
-        return status;
-#endif
-
         log(_T("%i "), status);
 
         va_list args;
@@ -113,10 +115,6 @@ namespace Ghurund {
     }
 
     void Logger::logOnce(const tchar * format, ...) {
-#ifndef _DEBUG
-        return;
-#endif
-
         va_list args;
         va_start(args, format);
 
@@ -138,10 +136,6 @@ namespace Ghurund {
     }
 
     void Logger::init(LogOutput output, const tchar *name, std::function<void(const tchar*)> onLogged) {
-#ifndef _DEBUG
-        return;
-#endif
-
         Logger::output = output;
         loggedOnce = ghnew List<String>();
 
@@ -184,10 +178,6 @@ namespace Ghurund {
     }
 
     void Logger::uninit() {
-#ifndef _DEBUG
-        return;
-#endif
-
         if(symbol != nullptr) {
             delete[] symbol;
             SymCleanup(process);

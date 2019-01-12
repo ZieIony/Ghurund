@@ -2,17 +2,9 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
-using Ghurund.Editor.ResourceEditor;
-using Ghurund.Managed;
 using Ghurund.Managed.Game;
-using Ghurund.Managed.Graphics;
-using Ghurund.Managed.Graphics.Mesh;
-using Ghurund.Managed.Graphics.Shader;
 using Ghurund.Managed.Resource;
-using Microsoft.Win32;
 using Ninject;
 
 namespace Ghurund.Editor {
@@ -56,50 +48,40 @@ namespace Ghurund.Editor {
 
             EditorKernel.Instance.Inject(this);
 
+            removeInvalidRecents();
+
             workspacePanel.Loaded += WorkspacePanel_Loaded;
             SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
-            SceneExplorer.EditorOpened += SceneExplorer_EditorOpened;
-
-            ProjectExplorer.Project = new Project() {
-                Name = "test project",
-                Directory = new DirectoryInfo(Directory.GetCurrentDirectory())
-            };
-
-            ResourceManagerPanel.EditorOpened += SceneExplorer_EditorOpened;
-        }
-
-        private void SceneExplorer_EditorOpened(object sender, RoutedEditorOpenedEventArgs e) {
-            openResource(e.EditedResource);
-        }
-
-        private void openResource(ResourceFile resourceFile) {
-            IDockableControl panel = null;
-            var path = resourceFile.Path.ToLower();
-
-            if (path.EndsWith("jpg") || path.EndsWith("jpeg") || path.EndsWith("png")) {
-                BitmapImage image = new BitmapImage(new Uri(resourceFile.Path));
-                panel = new ImageEditorPanel {
-                    Image = image
-                };
-            } else if (path.EndsWith("scene")) {
-                var scene = new Scene();
-                if (Status.OK == scene.Load(ResourceManager, ResourceContext, resourceFile.Path)) {
-                    panel = new SceneEditorPanel {
-                        Scene = scene
-                    };
-                    SceneExplorer.Scene = scene;
-                } else {
-                    // TODO: show error message
-                    return;
-                }
-            } else {
-                // TODO: show error message
-                return;
+            if (Settings.ReopenMostRecentProject && Settings.RecentProjects.Count > 0) {
+                // TODO: reopen project
+                string path = Settings.RecentProjects[0];
+                Project project = Controls.Workspace.Extensions.ReadFromBinaryFile<Project>(path);
+                ProjectExplorer.Project = project;
             }
 
-            Settings.RecentFiles.Add(resourceFile);
-            openPanel(this, panel);
+            AddHandler(ActionPerformedEvent, new RoutedActionPerformedEventHandler(actionPerformedHandler));
+            AddHandler(FileOpenedEvent, new RoutedFileOpenedEventHandler(fileOpenedHandler));
+
+            AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
+        }
+
+        private void removeInvalidRecents() {
+            System.Collections.Generic.List<string> recentFiles = new System.Collections.Generic.List<string>();
+            foreach (string file in Settings.RecentFiles) {
+                if (File.Exists(file))
+                    recentFiles.Add(file);
+            }
+            Settings.RecentFiles.Clear();
+            Settings.RecentFiles.AddRange(recentFiles);
+
+            System.Collections.Generic.List<string> recentProjects = new System.Collections.Generic.List<string>();
+            foreach (string file in Settings.RecentProjects) {
+                if (File.Exists(file))
+                    recentProjects.Add(file);
+            }
+            Settings.RecentProjects.Clear();
+            Settings.RecentFiles.AddRange(recentProjects);
         }
 
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
@@ -107,10 +89,12 @@ namespace Ghurund.Editor {
             ParametersPanel.Parameters.Clear();
             for (int i = 0; i < e.NewValue.Parameters.Count; i++) {
                 Parameter p = e.NewValue.Parameters[i];
-                ParametersPanel.Parameters.Add(new Controls.Property() {
-                    DisplayName = p.Name,
-                    Value = p.Value
-                });
+                if (p.NativePtr != IntPtr.Zero) {
+                    ParametersPanel.Parameters.Add(new Controls.Property() {
+                        DisplayName = p.Name,
+                        Value = p.Value
+                    });
+                }
             }
         }
 
@@ -120,10 +104,6 @@ namespace Ghurund.Editor {
 
         private void Exit_Click(object sender, RoutedEventArgs e) {
             Application.Current.Shutdown();
-        }
-
-        private void FileNew_Click(object sender, RoutedEventArgs e) {
-            new EditorWindow(workspacePanel, new DockableControls(new IDockableControl[] { new ProjectExplorerPanel(), new ProjectExplorerPanel() })).Show();
         }
 
         private void ProjectExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, ProjectExplorer);
@@ -158,18 +138,13 @@ namespace Ghurund.Editor {
         }
 
         private void FileOpen_Click(object sender, RoutedEventArgs e) {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.Filter = makeFilter("Images", Managed.Graphics.Texture.Image.Formats) + "|" + makeFilter("Scenes", Scene.Formats) + "|" + makeFilter("Shaders", Shader.Formats) + "|All (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-                openResource(new ResourceFile(new FileInfo(openFileDialog.FileName)));
+            openFile();
         }
 
         private void saveSettings() {
             Settings.WorkspaceState = workspacePanel.Save();
             Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
         }
-
     }
 
 }

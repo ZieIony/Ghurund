@@ -1,4 +1,5 @@
 #include "game/entity/Scene.h"
+#include "game/entity/Scenes.h"
 
 using namespace Ghurund;
 
@@ -24,4 +25,8 @@ extern "C" __declspec(dllexport) void Scene_updateParameters(ParameterProvider *
 
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Scene_getFormats() {
     return &Scene::getFormats();
+}
+
+extern "C" __declspec(dllexport) Scene *Scenes_makeEditor(ResourceManager *resourceManager, ResourceContext *context) {
+    return Scenes::makeEditor(*resourceManager, *context);
 }

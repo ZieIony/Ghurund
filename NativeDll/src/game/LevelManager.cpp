@@ -26,11 +26,3 @@ extern "C" __declspec(dllexport) void Level_delete(Level *_this) {
     delete _this;
 }
 
-extern "C" __declspec(dllexport) void Level_setCamera(Level *_this, Camera *camera) {
-    _this->setCamera(camera);
-}
-
-extern "C" __declspec(dllexport) void Level_setScene(Level *_this, Scene *scene) {
-    _this->setScene(scene);
-}
-

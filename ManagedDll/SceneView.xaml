@@ -8,6 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	<wpf:WindowsFormsHost>
-		<local:SurfaceView x:Name="surfaceView" MouseDown="surfaceView_MouseDown" MouseMove="surfaceView_MouseMove" MouseUp="surfaceView_MouseUp"/>
+		<local:RenderView x:Name="renderView" MouseDown="renderView_MouseDown" MouseMove="renderView_MouseMove" MouseUp="renderView_MouseUp"/>
 	</wpf:WindowsFormsHost>
 </UserControl>

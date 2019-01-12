@@ -41,18 +41,30 @@ namespace Ghurund {
         parameters[1] = parameterWorldIT;
     }
 
-    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager, Material * material
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
-                              , Material *invalidMaterial
-#endif
-    ) {
+    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager) {
+        for(size_t i = 0; i<models.Size; i++) {
+            GlobalEntity<Model> *entity = models[i];
+            if(!entity->Visible||!entity->Entity.Valid)
+                continue;
+
+            parameterWorld->setValue(&entity->Transformation);
+            XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
+            XMFLOAT4X4 worldIT;
+            XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
+            parameterWorldIT->setValue(&worldIT);
+
+            entity->Entity.updateParameters();
+            entity->Entity.draw(graphics, commandList);
+        }
+    }
+
+    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager, Material * material, Material *invalidMaterial) {
         for(size_t i = 0; i<models.Size; i++) {
             GlobalEntity<Model> *entity = models[i];
             if(!entity->Visible)
                 continue;
 
             Material *overrideMaterial = material;
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
             if(!entity->Entity.Valid) {
                 if(entity->Entity.Mesh!=nullptr&&entity->Entity.Mesh->Valid
                    &&entity->Entity.Material!=nullptr&&!entity->Entity.Material->Valid
@@ -62,7 +74,6 @@ namespace Ghurund {
                     continue;
                 }
             }
-#endif
 
             parameterWorld->setValue(&entity->Transformation);
             XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);

@@ -35,4 +35,18 @@ namespace Ghurund.Managed.Game {
         public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Scene_getFormats());
 
     }
+
+    public static class Scenes {
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Scenes_makeEditor(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
+
+        public static Scene MakeEditor(ResourceManager resourceManager, ResourceContext resourceContext) {
+            Scene scene = new Scene(Scenes_makeEditor(resourceManager, resourceContext));
+            scene.Release();
+            return scene;
+        }
+    }
 }

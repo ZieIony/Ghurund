@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,8 +24,15 @@ namespace Ghurund.Editor {
 
             EditorKernel.Instance.Inject(this);
 
-            recentProjects.ItemsSource = Settings.RecentProjects;
-            recentFiles.ItemsSource = Settings.RecentFiles;
+            List<ResourceFile> projects = new List<ResourceFile>();
+            foreach (string path in Settings.RecentProjects)
+                projects.Add(new ResourceFile(path));
+            recentProjects.ItemsSource = projects;
+
+            List<ResourceFile> files = new List<ResourceFile>();
+            foreach (string path in Settings.RecentFiles)
+                files.Add(new ResourceFile(path));
+            recentFiles.ItemsSource = files;
         }
 
         ~WelcomePage() {
@@ -47,30 +55,26 @@ namespace Ghurund.Editor {
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Welcome Page");
 
-        public static readonly RoutedEvent RecentProjectOpenedEvent = EventManager.RegisterRoutedEvent("RecentProjectOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(IResourceManagerPanel));
-
-        public event RoutedEditorOpenedEventHandler RecentProjectOpened {
-            add { AddHandler(RecentProjectOpenedEvent, value); }
-            remove { RemoveHandler(RecentProjectOpenedEvent, value); }
-        }
-
         private void RecentProjects_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            RaiseEvent(new RoutedEditorOpenedEventArgs(recentProjects.SelectedItem as ResourceFile, RecentProjectOpenedEvent));
-        }
-
-        public static readonly RoutedEvent RecentFileOpenedEvent = EventManager.RegisterRoutedEvent("RecentFileOpened", RoutingStrategy.Bubble, typeof(RoutedEditorOpenedEventHandler), typeof(IResourceManagerPanel));
-
-        public event RoutedEditorOpenedEventHandler RecentFileOpened {
-            add { AddHandler(RecentFileOpenedEvent, value); }
-            remove { RemoveHandler(RecentFileOpenedEvent, value); }
+            var resourceFile = recentProjects.SelectedItem as ResourceFile;
+            RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
         }
 
         private void RecentFiles_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            RaiseEvent(new RoutedEditorOpenedEventArgs(recentFiles.SelectedItem as ResourceFile, RecentFileOpenedEvent));
+            var resourceFile = recentFiles.SelectedItem as ResourceFile;
+            RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
         }
 
         private void Hyperlink_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
             Process.Start(e.Uri.ToString());
+        }
+
+        private void NewProject_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
+            RaiseEvent(new RoutedActionPerformedEventArgs(EditorAction.NewProject, MainWindow.ActionPerformedEvent));
+        }
+
+        private void OpenFile_RequestNavigate(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
+            RaiseEvent(new RoutedActionPerformedEventArgs(EditorAction.OpenFile, MainWindow.ActionPerformedEvent));
         }
     }
 }

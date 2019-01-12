@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using Ghurund.Controls.Workspace;
 
@@ -12,7 +13,9 @@ namespace Ghurund.Editor {
 
         public List<string> Libraries { get; } = new List<string>();
 
-        public List<ResourceFile> RecentProjects { get; } = new List<ResourceFile>();
-        public List<ResourceFile> RecentFiles { get; } = new List<ResourceFile>();
+        public List<string> RecentProjects { get; } = new List<string>();
+        public List<string> RecentFiles { get; } = new List<string>();
+
+        public bool ReopenMostRecentProject { get; set; } = true;
     }
 }

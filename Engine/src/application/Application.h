@@ -57,7 +57,13 @@ namespace Ghurund {
 
         virtual void onUninit() {};
 
-        virtual void onUpdate() {};
+        virtual void onUpdate() {
+            levelManager.update();
+        };
+
+        virtual void onDraw() {
+            levelManager.draw(*renderer, *parameterManager);
+        };
 
         /*virtual void client(const void *buffer, unsigned int size){
             if(currentFrame)

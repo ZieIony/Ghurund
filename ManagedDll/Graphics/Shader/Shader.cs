@@ -34,9 +34,16 @@ namespace Ghurund.Managed.Graphics.Shader {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
-        private static extern String Shader_compile(IntPtr _this);
+        private static extern string Shader_compile(IntPtr _this);
 
-        public String compile() => Shader_compile(NativePtr);
+        public string Compile() => Shader_compile(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Shader_build(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context);
+
+        public void Build(ResourceContext context) => Shader_build(NativePtr, context);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

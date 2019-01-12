@@ -6,14 +6,6 @@ using Ghurund.Managed.Core;
 namespace Ghurund.Managed.Resource {
     public abstract class Resource : Pointer {
 
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Resource_release(IntPtr _this);
-
-        protected override void DeleteObject() {
-            Resource_release(NativePtr);
-        }
-
-
         public Resource() {
         }
 

@@ -89,46 +89,50 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MainWindow.Actions.cs" />
     <Compile Include="DockableControlFactory.cs" />
     <Compile Include="EditorKernel.cs" />
     <Compile Include="EditorSettings.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="LogPanel.xaml.cs">
+    <Compile Include="Panel\LogPanel.xaml.cs">
       <DependentUpon>LogPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindow.Project.cs" />
     <Compile Include="MainWindow.Tasks.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ParametersPanel.xaml.cs">
+    <Compile Include="MainWindow.Files.cs" />
+    <Compile Include="Panel\ParametersPanel.xaml.cs">
       <DependentUpon>ParametersPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Project.cs" />
-    <Compile Include="ProjectItem.cs" />
-    <Compile Include="PropertiesPanel.xaml.cs">
+    <Compile Include="Panel\PropertiesPanel.xaml.cs">
       <DependentUpon>PropertiesPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResourceEditor\ImageEditorPanel.xaml.cs">
       <DependentUpon>ImageEditorPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceEditor\MaterialEditorPanel.xaml.cs">
+      <DependentUpon>MaterialEditorPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ResourceEditor\SceneEditorPanel.cs">
       <DependentUpon>SceneEditorPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ResourceFile.cs" />
-    <Compile Include="ResourceManagerPanel.xaml.cs">
+    <Compile Include="Panel\ResourceManagerPanel.xaml.cs">
       <DependentUpon>ResourceManagerPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RoutedOpenEditorEventArgs.cs" />
-    <Compile Include="SceneExplorerPanel.xaml.cs">
+    <Compile Include="Panel\SceneExplorerPanel.xaml.cs">
       <DependentUpon>SceneExplorerPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Task.cs" />
     <Compile Include="TaskPanel.xaml.cs">
       <DependentUpon>TaskPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WelcomePage.xaml.cs">
+    <Compile Include="Panel\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
-    <Page Include="LogPanel.xaml">
+    <Page Include="Panel\LogPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,15 +148,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ParametersPanel.xaml">
+    <Page Include="Panel\ParametersPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ProjectExplorerPanel.xaml">
+    <Page Include="Panel\ProjectExplorerPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PropertiesPanel.xaml">
+    <Page Include="Panel\PropertiesPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -160,11 +164,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ResourceManagerPanel.xaml">
+    <Page Include="Panel\ResourceManagerPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SceneExplorerPanel.xaml">
+    <Page Include="Panel\SceneExplorerPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceEditor\MaterialEditorPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -180,13 +188,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WelcomePage.xaml">
+    <Page Include="Panel\WelcomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ProjectExplorerPanel.xaml.cs">
+    <Compile Include="Panel\ProjectExplorerPanel.xaml.cs">
       <DependentUpon>ProjectExplorerPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -278,6 +286,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\clearLogs32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\build32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\reset32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

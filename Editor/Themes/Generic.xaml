@@ -3,4 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:GhurundEditor">
 
+	<SolidColorBrush x:Key="Ghurund.Primary">#ff7043</SolidColorBrush>
+	<SolidColorBrush x:Key="Ghurund.PrimaryDark">#e64a19</SolidColorBrush>
+	<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
+	
 </ResourceDictionary>

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
     public class ControlEventArgs {
@@ -52,4 +53,13 @@ namespace Ghurund.Controls.Workspace {
 
     public delegate void WindowActionEventHandler(object sender, WindowActionEventArgs args);
 
+    public class EditorSelectedEventArgs : RoutedEventArgs {
+        public Control SelectedControl { get; }
+
+        public EditorSelectedEventArgs(RoutedEvent routedEvent, Control control) : base(routedEvent) {
+            SelectedControl = control;
+        }
+    }
+
+    public delegate void EditorSelectedEventHandler(object sender, EditorSelectedEventArgs args);
 }

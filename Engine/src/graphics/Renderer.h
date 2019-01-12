@@ -16,9 +16,7 @@ namespace Ghurund {
         SwapChain *swapChain;
         Graphics *graphics = nullptr;
         Material *material = nullptr;
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
         Material *invalidMaterial = nullptr;
-#endif
 
         XMFLOAT4 *clearColor = nullptr;
 
@@ -28,10 +26,8 @@ namespace Ghurund {
         }
 
         ~Renderer() {
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
             if(invalidMaterial!=nullptr)
                 invalidMaterial->release();
-#endif
             uninit();
             delete swapChain;
             swapChain = nullptr;
@@ -62,6 +58,7 @@ namespace Ghurund {
             return commandList;
         }
 
+        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
         void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager);
 
         void finishFrame() {
@@ -72,19 +69,11 @@ namespace Ghurund {
             swapChain->resize(*graphics, width, height);
         }
 
-        void setMaterial(Material *material) {
-            setPointer(this->material, material);
-        }
-
-        __declspec(property(put = setMaterial)) Material *Material;
-
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
         void setInvalidMaterial(Ghurund::Material *material) {
             setPointer(this->invalidMaterial, material);
         }
 
         __declspec(property(put = setInvalidMaterial)) Ghurund::Material *InvalidMaterial;
-#endif
 
         XMFLOAT4 *getClearColor() {
             return clearColor;

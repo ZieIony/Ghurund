@@ -14,11 +14,14 @@ extern "C" __declspec(dllexport) void Shader_setSourceCode(Shader *_this, const 
     _this->setSourceCode(sourceCode);
 }
 
-extern "C" __declspec(dllexport) char *Shader_compile(Shader *_this, const char *sourceCode) {
+extern "C" __declspec(dllexport) char *Shader_compile(Shader *_this) {
     char *errorMessages = nullptr;
-    _this->setSourceCode(sourceCode);
     _this->compile(&errorMessages);
     return errorMessages;
+}
+
+extern "C" __declspec(dllexport) void Shader_build(Shader *_this, ResourceContext *context) {
+    _this->build(*context);
 }
 
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Shader_getFormats() {

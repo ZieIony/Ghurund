@@ -26,14 +26,10 @@ extern "C" __declspec(dllexport) void Renderer_resize(Renderer *_this, unsigned 
     _this->resize(width, height);
 }
 
-extern "C" __declspec(dllexport) void Renderer_setMaterial(Renderer *_this, Material *material) {
-    _this->setMaterial(material);
-}
-
-extern "C" __declspec(dllexport) void Renderer_setInvalidMaterial(Renderer *_this, Material *material) {
-    _this->setInvalidMaterial(material);
-}
-
 extern "C" __declspec(dllexport) void Renderer_setClearColor(Renderer *_this, unsigned int color) {
     _this->setClearColor(ghnew XMFLOAT4(makeColor(color)));
+}
+
+extern "C" __declspec(dllexport) void Renderer_draw(Renderer *_this, Camera *camera, Entity *entity, ParameterManager *parameterManager, Material *overrideMaterial, Material *invalidMaterial) {
+    _this->draw(*camera, *entity, *parameterManager, overrideMaterial, invalidMaterial);
 }

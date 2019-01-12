@@ -53,7 +53,9 @@ namespace Ghurund.Managed.Graphics {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
         public static TransformedEntity MakeCube(ResourceContext context, Material material) {
-            return new TransformedEntity(Models_makeCube(context, material));
+            var entity = new TransformedEntity(Models_makeCube(context, material));
+            entity.Release();
+            return entity;
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -62,7 +64,9 @@ namespace Ghurund.Managed.Graphics {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
         public static TransformedEntity MakePlane(ResourceContext context, Material material) {
-            return new TransformedEntity(Models_makePlane(context, material));
+            var entity = new TransformedEntity(Models_makePlane(context, material));
+            entity.Release();
+            return entity;
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -71,7 +75,9 @@ namespace Ghurund.Managed.Graphics {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
         public static TransformedEntity MakeSphere(ResourceContext context, Material material) {
-            return new TransformedEntity(Models_makeSphere(context, material));
+            var entity = new TransformedEntity(Models_makeSphere(context, material));
+            entity.Release();
+            return entity;
         }
 
     }

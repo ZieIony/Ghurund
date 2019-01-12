@@ -7,7 +7,7 @@
 		xmlns:engine="clr-namespace:Ghurund.Managed;assembly=ManagedDll"
 		xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
 		mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="GhurundPreview" Height="450" Width="800">
 	<wpf:DockPanel>
 		<engine:SceneView x:Name="sceneView"/>
 	</wpf:DockPanel>

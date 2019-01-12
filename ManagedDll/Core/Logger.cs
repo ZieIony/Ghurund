@@ -13,5 +13,13 @@ namespace Ghurund.Managed.Core {
         public static void Init(LogCallback callback) {
             Logger_init(callback);
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Logger_log([MarshalAs(UnmanagedType.LPWStr)] string log);
+
+        public static void Log(string log) {
+            Logger_log(log);
+        }
     }
 }

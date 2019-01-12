@@ -12,9 +12,10 @@
 				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Typography.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
-		<!--	<SolidColorBrush x:Key="Ghurund.Primary">#0097a7</SolidColorBrush>
-			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#006064</SolidColorBrush>
-			<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>-->
+			<SolidColorBrush x:Key="Ghurund.Primary">#ffa726</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#f57c00</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
+
 		</ResourceDictionary>
 
 

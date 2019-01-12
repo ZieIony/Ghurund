@@ -97,7 +97,7 @@
     <Compile Include="Status.cs" />
     <Compile Include="Graphics\Shader\Shader.cs" />
     <Compile Include="Graphics\Shader\ShaderModel.cs" />
-    <Compile Include="SurfaceView.cs">
+    <Compile Include="RenderView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NativeClassMarshaler.cs" />

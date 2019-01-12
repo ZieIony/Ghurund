@@ -8,6 +8,8 @@
 #include "net/Client.h"
 #include "resource/TextResource.h"
 #include "game/CameraController.h"
+#include "game/LevelManager.h"
+#include "game/entity/Scenes.h"
 
 #include "core/Allocator.h"
 
@@ -25,9 +27,14 @@ using namespace DirectX;
 
 class TestLevel:public Level {
 private:
+    Camera *camera = nullptr;
     CameraController *cameraController = nullptr;
     Application &app;
     TransformedEntity *selection = nullptr;
+    Material *overrideMaterial = nullptr;
+    Scene *scene = nullptr;
+    Scene *editorScene = nullptr;
+    Material *invalidMaterial = nullptr;
 
 public:
     TestLevel(Application &app):app(app) {}
@@ -46,17 +53,21 @@ public:
 
     virtual bool onKeyEvent(KeyEvent &event) override {
         if(event.Action==KeyAction::DOWN&&event.Key=='W') {
-            Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
-            app.Renderer.Material = material;
-            material->release();
+            if(overrideMaterial!=nullptr)
+                overrideMaterial->release();
+            overrideMaterial = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
         } else if(event.Action==KeyAction::UP&&event.Key=='W') {
-            app.Renderer.Material = nullptr;
+            if(overrideMaterial!=nullptr)
+                overrideMaterial->release();
+            overrideMaterial = nullptr;
         } else if(event.Action==KeyAction::DOWN&&event.Key=='C') {
-            Material *material = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
-            app.Renderer.Material = material;
-            material->release();
+            if(overrideMaterial!=nullptr)
+                overrideMaterial->release();
+            overrideMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
         } else if(event.Action==KeyAction::UP&&event.Key=='C') {
-            app.Renderer.Material = nullptr;
+            if(overrideMaterial!=nullptr)
+                overrideMaterial->release();
+            overrideMaterial = nullptr;
         } else if(event.Action==KeyAction::DOWN&&event.Key==VK_ESCAPE) {
             PostQuitMessage(0);
             return true;
@@ -65,25 +76,21 @@ public:
     }
 
     virtual void onInit() override {
-        Ghurund::Camera *camera = ghnew Ghurund::Camera();
+        camera = ghnew Ghurund::Camera();
         camera->initParameters(app.ParameterManager);
         camera->setPositionTargetUp(XMFLOAT3(0, 50, -500), XMFLOAT3(0, 50, 0));
 
-        Camera = camera;
         cameraController = ghnew CameraController(*camera, &app.Window);
 
         File sceneFile("test.scene");
         if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
-                setScene(scene);
                 scene->initParameters(app.ParameterManager);
+                this->scene = scene;
                 scene->release();
             });
         } else {
-            Ghurund::Scene *scene = ghnew Ghurund::Scene();
-            Scene = scene;
-            scene->Entities.add(camera);
-            camera->release();
+            Scene *scene = ghnew Ghurund::Scene();
 
             Model *model;
             {
@@ -130,17 +137,6 @@ public:
                 transformedModel->release();
             }*/
 
-            {
-                Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
-                TransformedEntity *transformedModel = Models::makePlane(app.ResourceContext, *material);
-                material->release();
-
-                transformedModel->Scale = XMFLOAT3(10000, 1, 10000);
-
-                scene->Entities.add(transformedModel);
-                transformedModel->release();
-            }
-
             /*{
                 Material *material = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
                 TransformedEntity *selection = Models::makeCube(app.ResourceContext, *material);
@@ -157,12 +153,13 @@ public:
             if(result!=Status::OK)
                 Logger::log(_T("failed to save scene\n"));
 
-
             scene->initParameters(app.ParameterManager);
             scene->release();
+            this->scene = scene;
         }
 
-        camera->release();
+        invalidMaterial = Materials::makeInvalid(app.ResourceManager, app.ResourceContext);
+        editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
     }
 
     virtual void onPreDraw(RenderingBatch &batch) {
@@ -177,7 +174,18 @@ public:
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
+    virtual void onDraw(Renderer &renderer, ParameterManager &parameterManager) override {
+        camera->updateParameters();
+        if(scene!=nullptr)
+            renderer.draw(*camera, *scene, parameterManager, nullptr, invalidMaterial);
+        renderer.draw(*camera, *editorScene, parameterManager);
+    }
+
     virtual void onUninit() override {
+        camera->release();
+        scene->release();
+        editorScene->release();
+        invalidMaterial->release();
         delete cameraController;
     }
 };
@@ -193,8 +201,6 @@ public:
 
         Renderer.ClearColor = ghnew XMFLOAT4(makeColor(0xff000000));
     }
-
-    void onUpdate() {}
 
     void onUninit() {
         LevelManager.setLevel(nullptr);

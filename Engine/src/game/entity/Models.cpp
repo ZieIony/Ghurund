@@ -1,3 +1,4 @@
+#include "graphics/Materials.h"
 #include "Models.h"
 
 namespace Ghurund {

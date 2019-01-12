@@ -18,14 +18,7 @@ namespace Ghurund {
         window.initParameters(ParameterManager);
 
         renderer = ghnew Ghurund::Renderer();
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
-        Material *invalidMaterial = Materials::makeInvalid(*resourceManager, *resourceContext);
         renderer->init(*graphics, window);
-        renderer->InvalidMaterial = invalidMaterial;
-        invalidMaterial->release();
-#else
-        renderer->init(*graphics, window);
-#endif
 
         client = ghnew Ghurund::Client(windowProc->FunctionQueue);
         client->init();
@@ -121,12 +114,11 @@ namespace Ghurund {
         input.dispatchEvents(levelManager);
 
         onUpdate();
-        levelManager.update();
 
         input.clearEvents();
 
         renderer->startFrame();
-        levelManager.draw(*renderer, ParameterManager);
+        onDraw();
         renderer->finishFrame();
     }
 

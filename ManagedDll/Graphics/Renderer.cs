@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Application;
+using Ghurund.Managed.Game;
 
 namespace Ghurund.Managed.Graphics {
     public class Renderer : NativeClass {
@@ -52,24 +53,16 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_setMaterial(IntPtr nativeRenderer, IntPtr material);
-
-        public Material Material {
-            set {
-                Renderer_setMaterial(NativePtr, value != null ? value.NativePtr : new IntPtr(0));
-            }
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_setInvalidMaterial(
+        private static extern void Renderer_draw(
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Renderer _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Camera camera,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity entity,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ParameterManager parameterManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material overrideMaterial,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material invalidMaterial);
 
-        public Material InvalidMaterial {
-            set {
-                Renderer_setInvalidMaterial(this, value);
-            }
+        public void Draw(Camera camera, Entity entity, ParameterManager parameterManager, Material overrideMaterial, Material invalidMaterial) {
+            Renderer_draw(this, camera, entity, parameterManager, overrideMaterial, invalidMaterial);
         }
 
 

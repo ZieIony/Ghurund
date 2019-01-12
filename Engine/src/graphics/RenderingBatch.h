@@ -37,11 +37,8 @@ namespace Ghurund {
             return parameters;
         }
 
-        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager, Material *material
-#if defined(_DEBUG) || defined(GHURUND_EDITOR)
-                  , Material *invalidMaterial
-#endif
-        );
+        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager);
+        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager, Material *material, Material *invalidMaterial);
 
         void clear() {
             lights.clear();

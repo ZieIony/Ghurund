@@ -49,12 +49,13 @@ namespace Ghurund.Preview {
             }else if (filePath.EndsWith("hlsl")) {
                 Shader shader = new Shader();
                 shader.Load(resourceManager, resourceContext, filePath);
-                Material material = new Material();
-                material.Shader = shader;
-                material.Valid = true;
+                Material material = new Material {
+                    Shader = shader,
+                    Valid = true
+                };
                 shader.Dispose();
                 shader = null;
-                TransformedEntity model = Models.MakeSphere(resourceContext, material);
+                TransformedEntity model = Models.MakeCube(resourceContext, material);
                 model.Scale = new Float3(50, 50, 50);
                 material.Dispose();
                 material = null;

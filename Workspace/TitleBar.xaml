@@ -5,8 +5,8 @@
     xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
 
 	<Style TargetType="{x:Type local:TitleBar}">
-		<Setter Property="Background" Value="{DynamicResource Ghurund.PrimaryDark}"/>
-		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Secondary}"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -45,10 +45,9 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsParentFocused" Value="true">
 							<Setter Property="Background" Value="{DynamicResource Ghurund.PrimaryDark}" />
-							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Background" Value="{DynamicResource Ghurund.PrimaryDark}" />
+							<Setter Property="Background" Value="{DynamicResource Ghurund.Background}" />
 							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Disabled}" />
 						</Trigger>
 					</ControlTemplate.Triggers>

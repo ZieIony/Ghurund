@@ -25,9 +25,7 @@ namespace Ghurund {
             Name = _T("scene");
         }
 
-        ~Scene() {
-            //aa/
-        }
+        ~Scene() {}
 
         virtual void initParameters(ParameterManager &parameterManager) override {
             for(Entity *e:entities)

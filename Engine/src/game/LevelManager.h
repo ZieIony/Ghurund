@@ -61,7 +61,7 @@ namespace Ghurund {
 
         void draw(Renderer &renderer, ParameterManager &parameterManager) {
             if(level!=nullptr)
-                level->draw(renderer, parameterManager);
+                level->onDraw(renderer, parameterManager);
         }
     };
 }

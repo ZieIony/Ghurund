@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ghurund.Editor"
-			 xmlns:wpf="http://schemas.microsoft.com/netfx/2007/xaml/presentation"
+			 xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 xmlns:engine="clr-namespace:Ghurund.Managed;assembly=ManagedDll"
 			 mc:Ignorable="d" 

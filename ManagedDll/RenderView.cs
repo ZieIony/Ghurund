@@ -6,7 +6,10 @@ using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 
 namespace Ghurund.Managed {
-    public class SurfaceView : UserControl, IDisposable {
+    public delegate void RenderCallback(Renderer renderer, ParameterManager parameterManager);
+
+    public class RenderView : UserControl, IDisposable {
+
         Window window;
 
         public Graphics.Graphics Graphics { get; private set; }
@@ -15,31 +18,21 @@ namespace Ghurund.Managed {
 
         public Renderer Renderer { get; private set; }
 
-        LevelManager levelManager;
-        Level level;
-        Camera defaultCamera;
-
         private Camera camera;
         public Camera Camera {
             get => camera;
             set {
-                camera = value ?? defaultCamera;
+                camera = value;
+                if (Camera != null)
+                    Camera.SetScreenSize((uint)Width, (uint)Height);
             }
         }
 
-        private Scene scene;
-
-        public Scene Scene {
-            get => scene;
-            set {
-                scene = value;
-                level.Scene = scene;
-            }
-        }
+        public RenderCallback RenderCallback { private get; set; }
 
         private bool disposed = false;
 
-        ~SurfaceView() {
+        ~RenderView() {
             Dispose(false);
         }
 
@@ -61,36 +54,20 @@ namespace Ghurund.Managed {
             Graphics = graphics;
             ParameterManager = parameterManager;
 
-            defaultCamera = new Camera();
-            defaultCamera.InitParameters(ParameterManager);
-            Camera = defaultCamera;
-            level = new Level {
-                Camera = Camera
-            };
-            levelManager = new LevelManager {
-                Level = level
-            };
             window = new Window();
             window.Init(Handle);
             window.InitParameters(ParameterManager);
             Renderer = new Renderer();
             Renderer.Init(Graphics, window);
-            Renderer.ClearColor = (uint)Color.CornflowerBlue.ToArgb();
+            Renderer.ClearColor = 0xffe0e0e0;
         }
 
         public void Uninit() {
-            scene = null;
-
             Renderer?.Dispose();
             Renderer = null;
             window?.Dispose();
             window = null;
-            levelManager?.Dispose();
-            levelManager = null;
-            level?.Dispose();
-            level = null;
-            defaultCamera?.Dispose();   // TODO: how to properly clean up this camera?
-            defaultCamera = null;
+            Camera?.Dispose();
             Camera = null;
 
             ParameterManager = null;
@@ -108,8 +85,9 @@ namespace Ghurund.Managed {
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(Color.CornflowerBlue);
             } else if (Renderer != null) {
+                camera.UpdateParameters();
                 CommandList commandList = Renderer.StartFrame();
-                levelManager.Draw(Renderer, ParameterManager);
+                RenderCallback?.Invoke(Renderer, ParameterManager);
                 Renderer.FinishFrame();
             }
         }
@@ -136,7 +114,8 @@ namespace Ghurund.Managed {
             base.OnSizeChanged(e);
             if (window == null)
                 return;
-            Camera.SetScreenSize((uint)Width, (uint)Height);
+            if (Camera != null)
+                Camera.SetScreenSize((uint)Width, (uint)Height);
             window.UpdateSize();
             Renderer.Resize((uint)Width, (uint)Height);
             window.UpdateParameters();

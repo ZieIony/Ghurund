@@ -44,12 +44,14 @@ namespace Ghurund.Editor {
             set {
                 project = value;
                 treeView.Items.Clear();
-                TreeViewItem item = new TreeViewItem {
-                    Header = value.Name,
-                    Tag = value.Directory
-                };
-                item.Items.Add("Loading...");
-                treeView.Items.Add(item);
+                if (project != null) {
+                    TreeViewItem item = new TreeViewItem {
+                        Header = value.Name,
+                        Tag = new FileInfo(value.Path).Directory
+                    };
+                    item.Items.Add("Loading...");
+                    treeView.Items.Add(item);
+                }
             }
         }
 
@@ -62,24 +64,34 @@ namespace Ghurund.Editor {
                 if (expandedItem.Tag is DriveInfo)
                     expandedDir = (expandedItem.Tag as DriveInfo).RootDirectory;
                 if (expandedItem.Tag is DirectoryInfo)
-                    expandedDir = (expandedItem.Tag as DirectoryInfo);
+                    expandedDir = expandedItem.Tag as DirectoryInfo;
                 try {
                     foreach (DirectoryInfo subDir in expandedDir.GetDirectories()) {
                         TreeViewItem item = new TreeViewItem {
-                            Header = subDir.ToString(),
+                            Header = subDir.Name,
                             Tag = subDir
                         };
                         item.Items.Add("Loading...");
                         expandedItem.Items.Add(item);
                     }
-                    foreach (FileInfo subDir in expandedDir.GetFiles()) {
+                    foreach (FileInfo fileInfo in expandedDir.GetFiles()) {
                         TreeViewItem item = new TreeViewItem {
-                            Header = subDir.ToString(),
+                            Header = fileInfo.Name,
+                            Tag = fileInfo
                         };
                         expandedItem.Items.Add(item);
                     }
                 } catch { }
             }
+        }
+
+        private void OnItemMouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            TreeViewItem item = treeView.SelectedItem as TreeViewItem;
+            if (!(item.Tag is FileInfo))
+                return;
+
+            FileInfo info = item.Tag as FileInfo;
+            RaiseEvent(new RoutedFileOpenedEventArgs(info.FullName, MainWindow.FileOpenedEvent));
         }
     }
 }

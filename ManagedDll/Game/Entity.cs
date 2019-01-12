@@ -89,6 +89,8 @@ namespace Ghurund.Managed.Game {
                     return new Light(p);
                 case "model":
                     return new Model(p);
+                case "transformed entity":
+                    return new TransformedEntity(p);
             }
             return null;    // TODO: should Entity be abstract?
         }
