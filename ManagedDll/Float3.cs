@@ -60,6 +60,19 @@ namespace Ghurund.Managed {
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public struct Int2 {
+        private int x;
+        private int y;
+
+        public int X { get => x; set => x = value; }
+        public int Y { get => y; set => y = value; }
+
+        public override string ToString() {
+            return x + ", " + y;
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public struct Matrix {
         private float a00;
         private float a01;

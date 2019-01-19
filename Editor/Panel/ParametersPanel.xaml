@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+			 xmlns:propertyGrid="clr-namespace:Ghurund.Controls.PropertyGrid;assembly=Controls"
              mc:Ignorable="d" 
              d:DesignHeight="182.869" d:DesignWidth="153.602">
 	<DockPanel>
-		<controls:HintTextBox  Height="20"  TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" />
-		<controls:PropertyGrid Name="propertyGrid"/>
+		<controls:HintTextBox Name="filterBox" Height="20" DockPanel.Dock="Top" BorderThickness="0,1,0,1" HintText="Filter" Background="{DynamicResource Ghurund.BackgroundLight}" />
+		<propertyGrid:PropertyGrid Name="propertyGrid" Background="{DynamicResource Ghurund.BackgroundLight}" Filter="{Binding ElementName=filterBox, Path=Text}"/>
 	</DockPanel>
 </UserControl>

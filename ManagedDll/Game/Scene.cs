@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Collection;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
@@ -12,11 +13,11 @@ namespace Ghurund.Managed.Game {
 
 
         public Scene() {
-            Entities = new EntityList(Scene_getEntities(NativePtr));
+            Entities = new PointerList<Entity>(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
         }
 
         public Scene(IntPtr ptr) : base(ptr) {
-            Entities = new EntityList(Scene_getEntities(NativePtr));
+            Entities = new PointerList<Entity>(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
         }
 
 
@@ -24,7 +25,7 @@ namespace Ghurund.Managed.Game {
         private static extern IntPtr Scene_getEntities(IntPtr _this);
 
         [Browsable(false)]
-        public EntityList Entities {
+        public PointerList<Entity> Entities {
             get; internal set;
         }
 
@@ -32,7 +33,8 @@ namespace Ghurund.Managed.Game {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Scene_getFormats();
 
-        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Scene_getFormats());
+        [Browsable(false)]
+        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Scene_getFormats(), ptr => new ResourceFormat(ptr));
 
     }
 

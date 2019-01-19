@@ -11,11 +11,17 @@
 	<DockPanel>
 		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 			<ToolBarPanel Margin="4,0,4,0" Orientation="Horizontal">
-				<controls:IconButton Icon="/Resources/light32.png" Style="{StaticResource IconButton_Large}"/>
-				<controls:IconButton Icon="/Resources/camera32.png" Style="{StaticResource IconButton_Large}"/>
+				<controls:IconButton Icon="/Resources/light32.png"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a light"/>
+				<controls:IconButton Icon="/Resources/camera32.png"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a camera"/>
 			</ToolBarPanel>
 		</WrapPanel>
-		<controls:HintTextBox  Height="20" TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" />
+		<Border DockPanel.Dock="Top" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}">
+			<controls:HintTextBox Height="20" BorderThickness="0,0,0,1" HintText="Filter" Background="{DynamicResource Ghurund.BackgroundLight}" />
+		</Border>
 		<TreeView Name="treeView"
 				  BorderThickness="0"
 				  Background="{DynamicResource Ghurund.BackgroundLight}"
@@ -53,16 +59,9 @@
 						<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 					</StackPanel>
 				</DataTemplate>
-				<DataTemplate DataType="{x:Type game:TransformedEntity}">
-					<StackPanel Orientation="Horizontal">
-						<Rectangle Margin="0,0,4,0" DockPanel.Dock="Left" Width="16" Height="16" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-							<Rectangle.OpacityMask>
-								<ImageBrush ImageSource="./../Resources/model32.png"/>
-							</Rectangle.OpacityMask>
-						</Rectangle>
-						<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
-					</StackPanel>
-				</DataTemplate>
+				<HierarchicalDataTemplate DataType="{x:Type game:TransformedEntity}" ItemsSource="{Binding Entity}">
+					<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
+				</HierarchicalDataTemplate>
 				<HierarchicalDataTemplate DataType="{x:Type game:Scene}" ItemsSource="{Binding Entities}">
 					<TextBlock Text="{Binding Name}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 				</HierarchicalDataTemplate>

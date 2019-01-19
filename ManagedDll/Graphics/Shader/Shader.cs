@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Resource;
 
@@ -49,7 +50,8 @@ namespace Ghurund.Managed.Graphics.Shader {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Shader_getFormats();
 
-        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Shader_getFormats());
+        [Browsable(false)]
+        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Shader_getFormats(), ptr => new ResourceFormat(ptr));
 
     }
 }

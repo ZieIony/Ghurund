@@ -16,10 +16,10 @@
 				<TextBlock Margin="0,8,0,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
 
 				<TextBlock Text="Recent Projects" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
-				<ListView Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				  BorderThickness="0" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
-				  Background="{x:Null}" PreviewMouseLeftButtonUp="RecentProjects_SelectionChanged">
-					<ListView.Resources>
+				<ListBox Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+				  BorderThickness="0" ItemContainerStyle="{DynamicResource Ghurund.ListBoxItemStyle}"
+				  Background="{x:Null}" MouseDoubleClick="RecentProjects_SelectionChanged">
+					<ListBox.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
 								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
@@ -30,8 +30,8 @@
 								</StackPanel>
 							</StackPanel>
 						</DataTemplate>
-					</ListView.Resources>
-				</ListView>
+					</ListBox.Resources>
+				</ListBox>
 
 			</StackPanel>
 			<StackPanel Width="300" Margin="4,0,16,0">
@@ -39,10 +39,10 @@
 				<TextBlock Margin="0,8,0,0"><Hyperlink RequestNavigate="OpenFile_RequestNavigate" NavigateUri="http://openFile">Open</Hyperlink> a file</TextBlock>
 
 				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
-				<ListView Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListViewItemStyle}"
+				<ListBox Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListBoxItemStyle}"
 				  BorderThickness="0" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-				  Background="{x:Null}" PreviewMouseLeftButtonUp="RecentFiles_SelectionChanged">
-					<ListView.Resources>
+				  Background="{x:Null}" MouseDoubleClick="RecentFiles_SelectionChanged">
+					<ListBox.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
 								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
@@ -53,8 +53,8 @@
 								</StackPanel>
 							</StackPanel>
 						</DataTemplate>
-					</ListView.Resources>
-				</ListView>
+					</ListBox.Resources>
+				</ListBox>
 
 			</StackPanel>
 		</StackPanel>

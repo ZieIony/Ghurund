@@ -1,9 +1,10 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Ghurund.Controls">
+    xmlns:local="clr-namespace:Ghurund.Controls"
+	xmlns:propertyGrid="clr-namespace:Ghurund.Controls.PropertyGrid">
 
-	<Style TargetType="{x:Type local:PropertyGrid}">
+	<Style TargetType="{x:Type propertyGrid:PropertyGrid}">
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
@@ -15,13 +16,13 @@
 		<Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>
 		<Setter Property="Template">
 			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type local:PropertyGrid}">
+				<ControlTemplate TargetType="{x:Type propertyGrid:PropertyGrid}">
 					<Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
 						<DockPanel>
 
-							<Border DockPanel.Dock="Bottom" DataContext="{TemplateBinding Properties}" Padding="4">
+							<Border DockPanel.Dock="Bottom" Padding="4">
 								<StackPanel HorizontalAlignment="Stretch">
 									<TextBlock FontWeight="Bold" Text="{Binding /DisplayName}" />
 									<TextBlock Text="{Binding /Description}" TextWrapping="Wrap" />
@@ -29,10 +30,9 @@
 							</Border>
 
 							<Border>
-								<ListBox Background="{x:Null}"
+								<ListBox x:Name="listBox" Background="{x:Null}"
 										 Foreground="{TemplateBinding Foreground}"
-										 ItemsSource="{Binding Properties, RelativeSource={RelativeSource TemplatedParent}}"
-										 IsSynchronizedWithCurrentItem="True"
+										 IsSynchronizedWithCurrentItem="True" Grid.IsSharedSizeScope="True"
 										 KeyboardNavigation.TabNavigation="Continue"
 										 HorizontalContentAlignment="Stretch" BorderThickness="0">
 
@@ -53,8 +53,8 @@
 
 									<ListBox.ItemTemplate>
 										<DataTemplate>
-											<DockPanel Margin="4 0 0 0">
-												<TextBlock Name="TitleBlock" Text="{Binding Value}" />
+											<DockPanel Margin="4 0 4 0">
+												<propertyGrid:PropertyEditorContainer x:Name="TitleBlock" Property="{Binding}"/>
 											</DockPanel>
 										</DataTemplate>
 									</ListBox.ItemTemplate>
@@ -69,17 +69,17 @@
 
 														<Grid>
 															<Grid.ColumnDefinitions>
-																<ColumnDefinition Width="*" />
+																<ColumnDefinition Width="Auto"  SharedSizeGroup="Column1"/>
 																<ColumnDefinition Width="*" />
 															</Grid.ColumnDefinitions>
-															<TextBlock Name="TitleBlock" Text="{Binding DisplayName}" />
+															<TextBlock Name="TitleBlock" Text="{Binding DisplayName}"/>
 															<ContentPresenter Grid.Column="1" />
 														</Grid>
 
 														<ControlTemplate.Triggers>
 															<Trigger Property="IsSelected" Value="true">
-																<Setter TargetName="TitleBlock" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-																<Setter TargetName="TitleBlock" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+																<Setter TargetName="TitleBlock" Property="Background" Value="{DynamicResource Ghurund.Highlight}" />
+																<!--<Setter TargetName="TitleBlock" Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />-->
 															</Trigger>
 														</ControlTemplate.Triggers>
 
@@ -104,6 +104,8 @@
 		<Setter Property="HintBrush" Value="{DynamicResource Ghurund.Text.Hint}"/>
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
 		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
+		<Setter Property="Padding" Value="4,0,4,0"/>
+		<Setter Property="TextWrapping" Value="NoWrap"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:HintTextBox}">
@@ -139,7 +141,7 @@
 		</Setter>
 	</Style>
 
-	<Style  x:Key="Ghurund.FlatButtgggonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+	<Style  x:Key="Ghurund.FlatButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
 		<Setter Property="Background" Value="{x:Null}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
 		<Setter Property="BorderThickness" Value="0"/>
@@ -237,6 +239,83 @@
 							<Setter Property="Fill" TargetName="rectangle" Value="{DynamicResource Ghurund.Icon.Disabled}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type local:IconCheckBox}">
+		<Setter Property="Background" Value="{x:Null}"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
+		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Small}"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:IconCheckBox}">
+					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+						<Rectangle Name="rectangle" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+							<Rectangle.OpacityMask>
+								<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+							</Rectangle.OpacityMask>
+						</Rectangle>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Highlight}"/>
+						</Trigger>
+						<Trigger Property="IsPressed" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+						</Trigger>
+						<Trigger Property="IsChecked" Value="true">
+							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter Property="Fill" TargetName="rectangle" Value="{DynamicResource Ghurund.Icon.Disabled}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<Style TargetType="{x:Type local:LogsView}">
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
+		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="Padding" Value="0"/>
+		<Setter Property="SnapsToDevicePixels" Value="True"/>
+		<Setter Property="KeyboardNavigation.TabNavigation" Value="Local"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type local:LogsView}">
+					<Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+
+						<ListBox x:Name="listBox" Background="{x:Null}"
+										 Foreground="{TemplateBinding Foreground}"
+										 IsSynchronizedWithCurrentItem="True" Grid.IsSharedSizeScope="True"
+										 KeyboardNavigation.TabNavigation="Continue"
+								 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+								 ItemContainerStyle="{DynamicResource Ghurund.ListBoxItemStyle}"
+										 HorizontalContentAlignment="Stretch" BorderThickness="0">
+
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<DockPanel Margin="4 0 4 0">
+										<TextBlock Text="{Binding Time}" Width="100"/>
+										<TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+									</DockPanel>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Border>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

@@ -117,5 +117,11 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{A149407B-BC15-42B5-8C29-D8833FFB78B7}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

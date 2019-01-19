@@ -10,19 +10,24 @@
 			 mc:Ignorable="d" 
              d:DesignHeight="254" d:DesignWidth="511">
 	<wpf:DockPanel>
-		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Primary}">
+		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
-				<controls:IconRadioButton Icon="../Resources/cameraOrbit32.png" IsChecked="True" Name="orbit" Style="{StaticResource IconRadioButton_Large}"/>
-				<controls:IconRadioButton Icon="../Resources/cameraRotate32.png" Name="rotate" Style="{StaticResource IconRadioButton_Large}"/>
-				<controls:IconRadioButton Icon="../Resources/cameraPan32.png" Name="pan" Style="{StaticResource IconRadioButton_Large}"/>
-				<controls:IconRadioButton Icon="../Resources/cameraZoom32.png" Name="zoom" Style="{StaticResource IconRadioButton_Large}"/>
+				<controls:IconRadioButton Icon="../Resources/cameraOrbit32.png" IsChecked="True" Name="orbit" Style="{StaticResource IconRadioButton_Large}" Checked="Orbit_Checked"/>
+				<controls:IconRadioButton Icon="../Resources/cameraRotate32.png" Name="rotate" Style="{StaticResource IconRadioButton_Large}" Checked="Rotate_Checked"/>
+				<controls:IconRadioButton Icon="../Resources/cameraPan32.png" Name="pan" Style="{StaticResource IconRadioButton_Large}" Checked="Pan_Checked"/>
+				<controls:IconRadioButton Icon="../Resources/cameraZoom32.png" Name="zoom" Style="{StaticResource IconRadioButton_Large}" Checked="Zoom_Checked"/>
+				<Border Width="16"/>
 				<wpf:ComboBox Name="material" SelectionChanged="Material_SelectionChanged">
 					<ComboBoxItem Name="shaded" IsSelected="True">Shaded</ComboBoxItem>
 					<ComboBoxItem Name="wireframe">Wireframe</ComboBoxItem>
 					<ComboBoxItem Name="checker">Checker</ComboBoxItem>
 					<ComboBoxItem Name="normals">Normals</ComboBoxItem>
 				</wpf:ComboBox>
-				<CheckBox x:Name="cameraPerspective" VerticalAlignment="Center" Content="Perspective" Checked="Perspective_Checked" IsChecked="True"/>
+				<Border Width="16"/>
+				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
+				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
+				<CheckBox x:Name="cameraPerspective" VerticalAlignment="Center" Content="Perspective" Unchecked="Perspective_Checked" Checked="Perspective_Checked" IsChecked="True"/>
+				<Button Click="Button_Click" Content="select camera" Margin="4,0,4,0"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<engine:SceneView x:Name="sceneView"/>

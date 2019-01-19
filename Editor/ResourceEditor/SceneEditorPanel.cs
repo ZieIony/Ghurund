@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ghurund.Controls.Workspace;
+using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
@@ -26,23 +28,33 @@ namespace Ghurund.Editor.ResourceEditor {
 
         public Scene Scene {
             get => sceneView.Scene;
-            set => sceneView.Scene = value;
+            set {
+                sceneView.Scene = value;
+                Title = new Title(value.FileName.Substring(value.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), value.FileName);
+            }
         }
 
         public ImageSource Icon { get; }
         public Control Control { get => this; }
-        public Title Title { get; } = new Title("Scene");
+        public Title Title { get; private set; }
 
         public SceneEditorPanel() {
             InitializeComponent();
 
             EditorKernel.Instance.Inject(this);
 
+            cameraPicker.Items.Add(CameraMode.Default);
+            cameraPicker.Items.Add(CameraMode.Side);
+            cameraPicker.Items.Add(CameraMode.Front);
+            cameraPicker.Items.Add(CameraMode.Top);
+
             checkerMaterial = Materials.MakeChecker(ResourceManager, ResourceContext);
             wireframeMaterial = Materials.MakeWireframe(ResourceManager, ResourceContext);
             normalsMaterial = Materials.MakeNormals(ResourceManager, ResourceContext);
 
             sceneView.Init(ResourceManager, ResourceContext);
+
+            cameraPicker.SelectedValue = CameraMode.Default;
         }
 
         private bool disposed = false;
@@ -101,11 +113,45 @@ namespace Ghurund.Editor.ResourceEditor {
             sceneView.Refresh();
         }
 
-        private void Perspective_Checked(object sender, System.Windows.RoutedEventArgs e) {
+        private void Perspective_Checked(object sender, RoutedEventArgs e) {
             if (sceneView == null)
                 return;
             sceneView.Camera.Perspective = cameraPerspective.IsChecked.Value;
             sceneView.Refresh();
+        }
+
+        private void Orbit_Checked(object sender, RoutedEventArgs e) {
+            if (sceneView == null)
+                return;
+            sceneView.NavigationMode = NavigationMode.Orbit;
+        }
+
+        private void Rotate_Checked(object sender, RoutedEventArgs e) {
+            sceneView.NavigationMode = NavigationMode.Rotate;
+        }
+
+        private void Pan_Checked(object sender, RoutedEventArgs e) {
+            sceneView.NavigationMode = NavigationMode.Pan;
+        }
+
+        private void Zoom_Checked(object sender, RoutedEventArgs e) {
+            sceneView.NavigationMode = NavigationMode.Zoom;
+        }
+
+        private void ResetCamera_Click(object sender, RoutedEventArgs e) {
+            sceneView.ResetCamera();
+            cameraPerspective.IsChecked = sceneView.Camera.Perspective;
+            sceneView.Refresh();
+        }
+
+        private void Camera_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            sceneView.CameraMode = ((CameraMode?)cameraPicker.SelectedValue) ?? CameraMode.Default;
+            cameraPerspective.IsChecked = sceneView.Camera.Perspective;
+            sceneView.Refresh();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new RoutedPropertyChangedEventArgs<Entity>(null, sceneView.Camera, SceneExplorerPanel.SelectedEntityChangedEvent));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using Ghurund.Controls.Workspace;
+using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 using Ninject;
@@ -51,7 +52,6 @@ namespace Ghurund.Editor {
             removeInvalidRecents();
 
             workspacePanel.Loaded += WorkspacePanel_Loaded;
-            SceneExplorer.SelectedEntityChanged += SceneExplorer_SelectedEntityChanged;
 
             if (Settings.ReopenMostRecentProject && Settings.RecentProjects.Count > 0) {
                 // TODO: reopen project
@@ -65,6 +65,8 @@ namespace Ghurund.Editor {
 
             AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
+
+            AddHandler(SceneExplorerPanel.SelectedEntityChangedEvent, new RoutedPropertyChangedEventHandler<Entity>(SceneExplorer_SelectedEntityChanged));
         }
 
         private void removeInvalidRecents() {
@@ -87,16 +89,7 @@ namespace Ghurund.Editor {
 
         private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
             PropertiesPanel.SelectedObject = e.NewValue;
-            ParametersPanel.Parameters.Clear();
-            for (int i = 0; i < e.NewValue.Parameters.Count; i++) {
-                Parameter p = e.NewValue.Parameters[i];
-                if (p.NativePtr != IntPtr.Zero) {
-                    ParametersPanel.Parameters.Add(new Controls.Property() {
-                        DisplayName = p.Name,
-                        Value = p.Value
-                    });
-                }
-            }
+            ParametersPanel.SelectedEntity = e.NewValue;
         }
 
         private void WorkspacePanel_Loaded(object sender, RoutedEventArgs e) {
@@ -128,7 +121,7 @@ namespace Ghurund.Editor {
             ResourceContext.Dispose();
         }
 
-        private string makeFilter(string name, ResourceFormatArray formats) {
+        private string makeFilter(string name, Array<ResourceFormat> formats) {
             string filter = "";
             foreach (ResourceFormat format in formats) {
                 if (filter.Length > 0)

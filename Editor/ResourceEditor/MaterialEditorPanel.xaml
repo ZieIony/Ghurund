@@ -22,7 +22,10 @@
 	<wpf:DockPanel>
 		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
-				<controls:IconButton Icon="../Resources/build32.png" Name="build" Style="{StaticResource IconButton_Large}" Click="Build_Click"/>
+				<controls:IconButton Icon="../Resources/build32.png"
+									 Name="build" ToolTip="Build shader"
+									 Style="{StaticResource IconButton_Large}"
+									 Click="Build_Click"/>
 				<Border Width="16"/>
 				<wpf:ComboBox x:Name="modelPicker" SelectionChanged="Model_SelectionChanged"
 							  ItemsSource="{Binding Source={StaticResource dataFromEnum}}"
@@ -30,6 +33,7 @@
 				<Border Width="16"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
+				<Button Content="Save thumbnail" Click="Button_Click"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<workspace:SplitPanel Panel1Size="200" Orientation="Vertical">

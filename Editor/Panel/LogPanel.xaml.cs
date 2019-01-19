@@ -4,6 +4,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Core;
+using static Ghurund.Controls.LogsView;
 
 namespace Ghurund.Editor {
     public interface ILogPanel : IDockableControl {
@@ -38,11 +39,22 @@ namespace Ghurund.Editor {
         }
 
         private void log(string log) {
-            logs.Text += DateTime.UtcNow.ToString("HH:mm:ssZ")+"\t"+log;
+            logs.Logs.Add(new Log() {
+                Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
+                Message = log.Trim()
+            });
         }
 
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/properties32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Logs");
+
+        private void ClearLogs_Click(object sender, System.Windows.RoutedEventArgs e) {
+            logs.Logs.Clear();
+        }
+
+        private void ScrollToBottom_Click(object sender, System.Windows.RoutedEventArgs e) {
+            logs.ScrollToBottom();
+        }
     }
 }

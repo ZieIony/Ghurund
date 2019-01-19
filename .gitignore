@@ -15,6 +15,7 @@ WpfCustomControlLibrary1/bin
 WpfCustomControlLibrary1/obj
 packages
 test
+WidgetTest
 
 # User-specific files
 *.suo

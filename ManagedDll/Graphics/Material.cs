@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Resource;
 
@@ -36,7 +37,8 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Material_getFormats();
 
-        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Material_getFormats());
+        [Browsable(false)]
+        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Material_getFormats(), ptr => new ResourceFormat(ptr));
     }
 
     public static class Materials {

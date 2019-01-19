@@ -53,14 +53,14 @@ namespace Ghurund.Preview {
                     Shader = shader,
                     Valid = true
                 };
-                shader.Dispose();
+                shader.Release();
                 shader = null;
                 TransformedEntity model = Models.MakeCube(resourceContext, material);
                 model.Scale = new Float3(50, 50, 50);
-                material.Dispose();
+                material.Release();
                 material = null;
                 scene.Entities.Add(model);
-                model.Dispose();
+                model.Release();
                 model = null;
             }
             sceneView.Scene = scene;
@@ -73,7 +73,7 @@ namespace Ghurund.Preview {
         protected override void OnClosed(EventArgs e) {
             base.OnClosed(e);
 
-            scene.Dispose();
+            scene.Release();
 
             sceneView.Dispose();
 

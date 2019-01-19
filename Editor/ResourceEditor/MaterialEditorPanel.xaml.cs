@@ -35,11 +35,15 @@ namespace Ghurund.Editor.ResourceEditor {
         public Material Material {
             get => material;
             set {
+                material?.Release();
                 material = value;
-                Title = new Title(material.FileName.Substring(material.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), material.FileName);
-                shaderCode.Text = material.Shader.SourceCode;
+                if (material != null) {
+                    material.AddReference();
+                    Title = new Title(material.FileName.Substring(material.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), material.FileName);
+                    shaderCode.Text = material.Shader.SourceCode;
 
-                setupScene();
+                    setupScene();
+                }
             }
         }
 
@@ -59,7 +63,6 @@ namespace Ghurund.Editor.ResourceEditor {
             cameraPicker.SelectedValue = CameraMode.Default;
 
             preview.Init(ResourceManager, ResourceContext);
-            preview.Renderer.ClearColor = 0xff7f7f7f;
 
             modelPicker.SelectedValue = SampleModel.Cube;
         }
@@ -87,7 +90,7 @@ namespace Ghurund.Editor.ResourceEditor {
                 if (disposing) {
                     preview.Uninit();
                     if (Material != null)
-                        Material.Dispose();
+                        Material.Release();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -118,6 +121,9 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         private void setupScene() {
+            if (material == null || modelPicker.SelectedValue == null)
+                return;
+
             Scene scene = new Scene();
             TransformedEntity model = null;
             switch (modelPicker.SelectedValue) {
@@ -135,10 +141,10 @@ namespace Ghurund.Editor.ResourceEditor {
             }
             model.Scale = new Float3(50, 50, 50);
             scene.Entities.Add(model);
-            model.Dispose();
+            model.Release();
             model = null;
             preview.Scene = scene;
-            scene.Dispose();
+            scene.Release();
             scene = null;
 
             preview.Refresh();
@@ -168,6 +174,11 @@ namespace Ghurund.Editor.ResourceEditor {
             shader.Build(ResourceContext);
             shader.Dispose();
             preview.Refresh();
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e) {
+            preview.GenerateThumbnail();
+
         }
     }
 }

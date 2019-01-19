@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Audio {
-  public  class Sound : Resource.Resource {
+    public class Sound : Resource.Resource {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Sound_new();
@@ -25,7 +22,8 @@ namespace Ghurund.Managed.Audio {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Sound_getFormats();
 
-        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Sound_getFormats());
+        [Browsable(false)]
+        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Sound_getFormats(), ptr => new ResourceFormat(ptr));
 
     }
 }

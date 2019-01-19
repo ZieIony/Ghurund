@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
@@ -107,7 +109,8 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Camera_getFormats();
 
-        public static ResourceFormatArray Formats { get; } = new ResourceFormatArray(Camera_getFormats());
+        [Browsable(false)]
+        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Camera_getFormats(), ptr => new ResourceFormat(ptr));
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -116,7 +119,14 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setPerspective(IntPtr _this, bool pers);
 
-        public bool Perspective { get => Camera_getPerspective(NativePtr); set => Camera_setPerspective(NativePtr, value); }
+        [Controls.PropertyGrid.Editor(typeof(BooleanPropertyEditor))]
+        public bool Perspective {
+            get => Camera_getPerspective(NativePtr);
+            set {
+                Camera_setPerspective(NativePtr, value);
+                NotifyPropertyChanged();
+            }
+        }
 
     }
 }

@@ -89,19 +89,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="MainWindow.Actions.cs" />
     <Compile Include="DockableControlFactory.cs" />
     <Compile Include="EditorKernel.cs" />
     <Compile Include="EditorSettings.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="MainWindow.Actions.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.Files.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.Project.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\LogPanel.xaml.cs">
       <DependentUpon>LogPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.Project.cs" />
     <Compile Include="MainWindow.Tasks.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.Files.cs" />
     <Compile Include="Panel\ParametersPanel.xaml.cs">
       <DependentUpon>ParametersPanel.xaml</DependentUpon>
     </Compile>
@@ -292,6 +298,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\reset32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\autoScroll32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\scrollDown32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wrap32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

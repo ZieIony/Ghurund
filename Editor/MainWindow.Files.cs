@@ -54,6 +54,7 @@ namespace Ghurund.Editor {
             } else if (path.EndsWith("scene")) {
                 var scene = new Scene();
                 if (Status.OK == scene.Load(ResourceManager, ResourceContext, path)) {
+                    scene.InitParameters(ParameterManager);
                     panel = new SceneEditorPanel {
                         Scene = scene
                     };

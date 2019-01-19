@@ -43,7 +43,8 @@ namespace Ghurund.Managed.Resource {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Resource_setFileName(IntPtr _this, [MarshalAs(UnmanagedType.LPWStr)] string fileName);
 
-        [Browsable(false)]
+        [Category("Common")]
+        [Description("The name of the file this resource was saved to. Inline resources and newly created ones don't have a file name.")]
         public string FileName {
             get => Resource_getFileName(NativePtr);
             set => Resource_setFileName(NativePtr, value);

@@ -5,6 +5,10 @@
 
 using namespace DirectX;
 
+struct Int2 {
+    int x, y;
+};
+
 struct Float2 {
     float x, y;
 };
@@ -19,6 +23,9 @@ struct Matrix {
     float a20, a21, a22, a23;
     float a30, a31, a32, a33;
 };
+
+XMINT2 convertInt2(const Int2 &int2);
+Int2 convertInt2(const XMINT2 &xmInt2);
 
 XMFLOAT2 convertFloat2(const Float2 &float2);
 Float2 convertFloat2(const XMFLOAT2 &xmFloat2);

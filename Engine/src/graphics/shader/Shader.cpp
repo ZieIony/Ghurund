@@ -205,7 +205,7 @@ namespace Ghurund {
             constantBuffers[i]->initParameters(parameterManager);
             paramCount += constantBuffers[i]->Parameters.Size;
         }
-        parameters = ghnew Array<Parameter*>(paramCount+textureBuffers.Size+textures.Size);    // TODO: correct number of parameters
+        parameters = ghnew Array<Parameter*>(paramCount);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
         size_t paramOffset = 0;
         for(size_t i = 0; i<constantBuffers.Size; i++) {
             constantBuffers[i]->Parameters.copyTo(*parameters, paramOffset);

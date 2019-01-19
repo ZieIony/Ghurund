@@ -14,7 +14,7 @@
 	</WindowChrome.WindowChrome>
 	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
 		<DockPanel Background="{DynamicResource Ghurund.Background}">
-			<workspace:TitleBar DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}"/>
+			<workspace:TitleBar DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}" Height="32" Title="GhurundEditor"/>
 			<Menu DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 				<MenuItem Header="_File">
 					<MenuItem Header="_New Project" Click="ProjectNew_Click"/>

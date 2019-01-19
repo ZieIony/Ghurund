@@ -14,7 +14,7 @@
 				<controls:IconButton Icon="/Resources/addFolder32.png" Click="Button_Click" Style="{StaticResource IconButton_Large}"/>
 			</ToolBarPanel>
 		</WrapPanel>
-		<workspace:SplitPanel BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}" Background="{DynamicResource Ghurund.BackgroundLight}">
+		<workspace:SplitPanel BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}" Background="{DynamicResource Ghurund.BackgroundLight}" Panel1Size="200">
 			<workspace:SplitPanel.Panel1>
 				<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" SelectedItemChanged="treeView_SelectedItemChanged" Background="{StaticResource Ghurund.Background}">
 					<TreeView.Resources>

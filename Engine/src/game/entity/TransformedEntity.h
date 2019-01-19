@@ -22,7 +22,7 @@ namespace Ghurund {
             memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
 
             Status result;
-            entity = (Entity*)resourceManager.load(context, stream, &result, options);
+            entity = (Ghurund::Entity*)resourceManager.load(context, stream, &result, options);
 
             return result;
         }
@@ -75,5 +75,11 @@ namespace Ghurund {
         virtual Array<Parameter*>& getParameters() override {
             return parameters;
         }
+
+        Entity *getEntity() {
+            return entity;
+        }
+
+        __declspec(property(get = getEntity)) Entity *Entity;
     };
 }

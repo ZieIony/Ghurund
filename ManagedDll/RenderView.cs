@@ -22,10 +22,21 @@ namespace Ghurund.Managed {
         public Camera Camera {
             get => camera;
             set {
-                camera = value;
-                if (Camera != null)
-                    Camera.SetScreenSize((uint)Width, (uint)Height);
+                value?.AddReference();
+                if (Camera != null) {
+                    camera.Release();
+                    camera.PropertyChanged -= Camera_PropertyChanged;
+                }
+                    camera = value;
+                if (Camera != null) {
+                    camera.SetScreenSize((uint)Width, (uint)Height);
+                    camera.PropertyChanged += Camera_PropertyChanged;
+                }
             }
+        }
+
+        private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            Refresh();
         }
 
         public RenderCallback RenderCallback { private get; set; }
@@ -59,7 +70,7 @@ namespace Ghurund.Managed {
             window.InitParameters(ParameterManager);
             Renderer = new Renderer();
             Renderer.Init(Graphics, window);
-            Renderer.ClearColor = 0xffe0e0e0;
+            Renderer.ClearColor = 0xff7f7f7f;
         }
 
         public void Uninit() {

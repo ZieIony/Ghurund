@@ -61,6 +61,10 @@ namespace Ghurund {
             memcpy((BYTE*)buffer->Data+offset, value, size);
         }
 
+        template<class Type> void setValue(const Type &value, size_t offset) {
+            memcpy((BYTE*)buffer->Data+offset, &value, sizeof(Type));
+        }
+
         void set(Graphics &graphics, CommandList &commandList, unsigned int bindSlot) {
             ID3D12Resource *constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
             Pointer *resourcePointer = graphics.MemoryAllocator.create(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(buffer->Size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);

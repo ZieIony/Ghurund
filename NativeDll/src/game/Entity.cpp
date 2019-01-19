@@ -52,6 +52,10 @@ extern "C" __declspec(dllexport) void TransformedEntity_setScale(TransformedEnti
     _this->setScale(scale);
 }
 
+extern "C" __declspec(dllexport) Entity *TransformedEntity_getEntity(TransformedEntity *_this) {
+    return _this->getEntity();
+}
+
 extern "C" __declspec(dllexport) Array<Parameter*> *Entity_getParameters(Entity *_this) {
     return &_this->getParameters();
 }

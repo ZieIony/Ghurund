@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="EditorWindow" Height="85" Width="137" ShowInTaskbar="False" >
+        Title="EditorWindow" Height="300" Width="378" ShowInTaskbar="False" >
 	<WindowChrome.WindowChrome>
 		<WindowChrome 
         CaptionHeight="0"

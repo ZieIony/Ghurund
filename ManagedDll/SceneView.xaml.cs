@@ -34,7 +34,7 @@ namespace Ghurund.Managed {
                         renderView.Camera = defaultCamera;
                         break;
                     case CameraMode.Front:
-                        renderView.Camera = topCamera;
+                        renderView.Camera = frontCamera;
                         break;
                     case CameraMode.Side:
                         renderView.Camera = sideCamera;
@@ -53,9 +53,9 @@ namespace Ghurund.Managed {
         public Scene Scene {
             get => scene;
             set {
+                value?.AddReference();
                 scene?.Release();
                 scene = value;
-                scene?.AddReference();
             }
         }
 
@@ -63,9 +63,9 @@ namespace Ghurund.Managed {
         public Material OverrideMaterial {
             get => overrideMaterial;
             set {
+                value?.AddReference();
                 overrideMaterial?.Release();
                 overrideMaterial = value;
-                overrideMaterial?.AddReference();
             }
         }
 
@@ -74,9 +74,9 @@ namespace Ghurund.Managed {
         public Camera Camera {
             get => renderView.Camera;
             set {
+                value?.AddReference();
                 customCamera?.Release();
                 customCamera = value;
-                customCamera?.AddReference();
                 CameraMode = CameraMode.Custom;
             }
         }
@@ -158,13 +158,14 @@ namespace Ghurund.Managed {
             defaultCamera = null;
         }
 
-        public void Refresh() {
-            renderView.Refresh();
+        public void Refresh() => renderView.Refresh();
+
+        public System.Drawing.Bitmap GenerateThumbnail() {
+            System.Drawing.Bitmap bitmap = renderView.GrabFrame();
+            return new System.Drawing.Bitmap(bitmap, 100, 100);
         }
 
-        public void ResetCamera() {
-            ResetCamera(CameraMode);
-        }
+        public void ResetCamera() => ResetCamera(CameraMode);
 
         public void ResetCamera(CameraMode cameraMode) {
             switch (cameraMode) {
