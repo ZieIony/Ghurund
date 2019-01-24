@@ -5,6 +5,7 @@
 #include "game/entity/TransformedObject.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ParameterManager.h"
+#include "editor/INotifyPropertyChanged.h"
 #include "resource/Resource.h"
 
 #include <DirectXCollision.h>
@@ -13,7 +14,7 @@ namespace Ghurund {
 
     class RenderingBatch;
 
-    class Entity: public Resource, public NamedObject, public ParameterProvider {
+    class Entity: public Resource, public NamedObject, public ParameterProvider, public ObservableObject {
     public:
         virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) = 0;
 

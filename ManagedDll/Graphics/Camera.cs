@@ -19,6 +19,38 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Camera_getPosition(IntPtr _this);
+
+        public Float3 Position {
+            get => Camera_getPosition(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Camera_getTarget(IntPtr _this);
+
+        public Float3 Target {
+            get => Camera_getTarget(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Camera_getDirection(IntPtr _this);
+
+        public Float3 Direction {
+            get => Camera_getDirection(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Camera_getUp(IntPtr _this);
+
+        public Float3 Up {
+            get => Camera_getUp(NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setScreenSize(IntPtr _this, uint width, uint height);
 
         public void SetScreenSize(uint width, uint height) {
@@ -122,10 +154,7 @@ namespace Ghurund.Managed.Graphics {
         [Controls.PropertyGrid.Editor(typeof(BooleanPropertyEditor))]
         public bool Perspective {
             get => Camera_getPerspective(NativePtr);
-            set {
-                Camera_setPerspective(NativePtr, value);
-                NotifyPropertyChanged();
-            }
+            set => Camera_setPerspective(NativePtr, value);
         }
 
     }

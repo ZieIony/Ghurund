@@ -93,6 +93,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="PropertyGrid\IPropertyEditor.cs" />
+    <Compile Include="PropertyGrid\ObservableNotifyCollection.cs" />
     <Compile Include="PropertyGrid\Property.cs" />
     <Compile Include="PropertyGrid\PropertyEditorContainer.cs" />
     <Compile Include="PropertyGrid\PropertyGrid.cs" />

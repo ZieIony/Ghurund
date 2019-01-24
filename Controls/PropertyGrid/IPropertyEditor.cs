@@ -4,31 +4,31 @@ using System.Windows.Input;
 
 namespace Ghurund.Controls.PropertyGrid {
     public interface IPropertyEditor {
-        FrameworkElement MakeControl(Property property);
+        FrameworkElement MakeControl(Value property);
     }
 
     public class BooleanPropertyEditor : IPropertyEditor {
-        public FrameworkElement MakeControl(Property property) {
+        public FrameworkElement MakeControl(Value property) {
             CheckBox checkBox = new CheckBox();
-            checkBox.IsChecked = (bool)property.ValueGetter.Invoke();
+            checkBox.IsChecked = (bool)property.Getter();
             checkBox.Checked += (object sender, RoutedEventArgs e) => {
-                property.ValueSetter.Invoke(checkBox.IsChecked);
+                property.Setter(checkBox.IsChecked);
             };
             checkBox.Unchecked += (object sender, RoutedEventArgs e) => {
-                property.ValueSetter.Invoke(checkBox.IsChecked);
+                property.Setter(checkBox.IsChecked);
             };
             return checkBox;
         }
     }
 
     public class FloatPropertyEditor : IPropertyEditor {
-        public FrameworkElement MakeControl(Property property) {
+        public FrameworkElement MakeControl(Value property) {
             TextBox textBox = new TextBox();
-            textBox.Text = property.ValueGetter.Invoke().ToString();
+            textBox.Text = property.Getter().ToString();
             textBox.KeyDown += (object sender, KeyEventArgs e) => {
                 if (e.Key == Key.Enter) {
                     float val;
-                    property.ValueSetter.Invoke(float.TryParse(textBox.Text, out val) ? val : property.ValueGetter.Invoke());
+                    property.Setter(float.TryParse(textBox.Text, out val) ? val : property.Getter());
                 }
             };
             return textBox;

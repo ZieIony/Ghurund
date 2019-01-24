@@ -36,5 +36,6 @@ namespace Ghurund {
         manager->lock();
         memcpy(this->value, value, type.Size);
         manager->unlock();
+        notifyObjectChanged();
     }
 }

@@ -31,11 +31,16 @@ namespace Ghurund.Editor {
 
             for (uint i = 0; i < ParameterManager.ParameterCount; i++) {
                 Parameter p = ParameterManager.Get(i);
-                managerParameters.Add(new Property() {
+                var property = new Property(p) {
                     DisplayName = p.Name,
-                    Category = "ParameterManager",
-                    ValueGetter = () => p.Value
-                });
+                    Category = "ParameterManager"
+                };
+                property.Value.Getter = () => p.Value;
+                if (p.Type == ParameterType.Float) {
+                    property.Value.Editor = new FloatPropertyEditor();
+                    property.Value.Setter = v => p.Value = v;
+                }
+                managerParameters.Add(property);
             }
 
             foreach (Property p in managerParameters)
@@ -69,13 +74,7 @@ namespace Ghurund.Editor {
             get => selectedEntity;
             set {
                 value?.AddReference();
-                if (selectedEntity != null) {
-                    selectedEntity.Release();
-                    if (selectedEntity is INotifyPropertyChanged) {
-                        var notificationSource = selectedEntity as INotifyPropertyChanged;
-                        notificationSource.PropertyChanged -= NotificationSource_PropertyChanged;
-                    }
-                }
+                selectedEntity?.Release();
 
                 selectedEntity = value;
                 propertyGrid.Properties.Clear();
@@ -83,27 +82,19 @@ namespace Ghurund.Editor {
                     for (int i = 0; i < selectedEntity.Parameters.Count; i++) {
                         Parameter p = selectedEntity.Parameters[i];
                         if (p.NativePtr != IntPtr.Zero) {
-                            propertyGrid.Properties.Add(new Property() {
+                            var property = new Property(p) {
                                 DisplayName = p.Name,
-                                Category = "Selected object",
-                                ValueGetter = () => p.Value
-                            });
+                                Category = "Selected object"
+                            };
+                            property.Value.Getter = () => p.Value;
+                            propertyGrid.Properties.Add(property);
                         }
-                    }
-
-                    if (selectedEntity is INotifyPropertyChanged) {
-                        var notificationSource = selectedEntity as INotifyPropertyChanged;
-                        notificationSource.PropertyChanged += NotificationSource_PropertyChanged;
                     }
                 }
 
                 foreach (Property p in managerParameters)
                     propertyGrid.Properties.Add(p);
             }
-        }
-
-        private void NotificationSource_PropertyChanged(object sender, PropertyChangedEventArgs e) {
-            propertyGrid.Refresh();
         }
     }
 }

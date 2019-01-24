@@ -68,6 +68,10 @@ extern "C" __declspec(dllexport) void Entity_updateParameters(Entity *_this) {
     _this->updateParameters();
 }
 
+extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity *_this, void(__stdcall *listener)()) {
+    _this->setOnChangedListener(listener);
+}
+
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *TransformedEntity_getFormats() {
     return &TransformedEntity::getFormats();
 }

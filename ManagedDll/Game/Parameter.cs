@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Game {
@@ -8,8 +9,30 @@ namespace Ghurund.Managed.Game {
         Int, Int2, Float, Float2, Float3, Matrix
     }
 
-    public class Parameter : NativeClass {
+    public class Parameter : NativeClass, INotifyPropertyChanged {
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void PropertyChangedListener();
+
+        private PropertyChangedListener propertyChangedCallback;
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Parameter_setPropertyChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // This method is called by the Set accessor of each property.
+        // The CallerMemberName attribute that is applied to the optional propertyName
+        // parameter causes the property name of the caller to be substituted as an argument.
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "") {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
+        }
+
+
         public Parameter(IntPtr ptr) : base(ptr) {
+            propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
+            Parameter_setPropertyChangedListener(NativePtr, propertyChangedCallback);
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

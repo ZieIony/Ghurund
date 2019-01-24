@@ -9,22 +9,35 @@ namespace Ghurund.Managed.Game {
 
     public abstract class Entity : Resource.Resource, INotifyPropertyChanged {
 
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        public delegate void PropertyChangedListener();
+
+        private PropertyChangedListener propertyChangedCallback;
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Entity_setPropertyChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         // This method is called by the Set accessor of each property.
         // The CallerMemberName attribute that is applied to the optional propertyName
         // parameter causes the property name of the caller to be substituted as an argument.
         protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "") {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Property"));
         }
 
 
         public Entity() {
             Parameters = new Array<Parameter>(Entity_getParameters(NativePtr), p => new Parameter(p));
+            propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
+            Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
         }
 
         public Entity(IntPtr ptr) : base(ptr) {
             Parameters = new Array<Parameter>(Entity_getParameters(NativePtr), p => new Parameter(p));
+            propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
+            Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
         }
 
 
@@ -38,10 +51,10 @@ namespace Ghurund.Managed.Game {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))]
-        private static extern String Entity_getName(IntPtr _this);
+        private static extern string Entity_getName(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Entity_setName(IntPtr _this, [MarshalAs(UnmanagedType.LPWStr)] String name);
+        private static extern void Entity_setName(IntPtr _this, [MarshalAs(UnmanagedType.LPWStr)] string name);
 
         [Category("Common")]
         [Description("This name will appear in scene explorer and in shaders.")]
@@ -59,6 +72,7 @@ namespace Ghurund.Managed.Game {
 
         [Browsable(false)]
         public Array<Parameter> Parameters { get; }
+
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);

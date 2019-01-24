@@ -3,11 +3,17 @@ My DirectX 12 playground.
 
 ##### Engine
 
-It's written in C++ and HLSL. Uses DirectX 12 and WinAPI. One day I would also like to add Havok. It's a fourth iteration after one OpenGL engine, one DX9 and one DX11. I have a lot of ideas I would like to code, like support for resource hot reloading, automatic shader parameters, custom UI or keyframe animation system. I'm using a ton of VS features, so you won't be able to compile it with GCC.
+It's written in C++ and HLSL. Uses DirectX 12 and WinAPI. One day I would also like to add a physics engine. It's a fourth iteration after one OpenGL engine, one DX9 and one DX11. I have a lot of ideas I would like to code, like support for resource hot reloading, automatic shader parameters, custom UI or keyframe animation system. I'm using a ton of VS features, so you won't be able to compile it with GCC.
 
 ##### Editor
 
 Written in C# and WPF. Helps me verify my ideas and prepare assets quicker. It's also fun and stuff.
+
+<img src='https://github.com/ZieIony/Ghurund/blob/master/images/editor.png' width=200/>
+
+##### Preview
+
+Made of the same blocks as Editor. Useful for polishing C++/C# interop and previewing resources.
 
 ##### Game
 

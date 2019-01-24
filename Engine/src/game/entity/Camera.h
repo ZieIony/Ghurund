@@ -143,6 +143,7 @@ namespace Ghurund {
 
         inline void setPerspective(bool pers) {
             this->pers = pers;
+            notifyObjectChanged();
         }
 
         __declspec(property(get = getPerspective, put = setPerspective)) bool Perspective;

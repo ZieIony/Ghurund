@@ -31,6 +31,7 @@
     <ClCompile Include="src\core\WorkerThread.cpp" />
     <ClCompile Include="src\game\entity\Scene.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\graphics\CommandList.cpp" />
     <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\graphics\Fence.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="src\core\Type.h" />
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
+    <ClInclude Include="src\editor\INotifyPropertyChanged.h" />
     <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\Level.h" />

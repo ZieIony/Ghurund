@@ -12,6 +12,22 @@ extern "C" __declspec(dllexport) void Camera_initParameters(Camera *_this, Param
     _this->initParameters(*manager);
 }
 
+extern "C" __declspec(dllexport) Float3 Camera_getPosition(Camera *_this) {
+    return convertFloat3(_this->getPosition());
+}
+
+extern "C" __declspec(dllexport) Float3 Camera_getTarget(Camera *_this) {
+    return convertFloat3(_this->getTarget());
+}
+
+extern "C" __declspec(dllexport) Float3 Camera_getDirection(Camera *_this) {
+    return convertFloat3(_this->getDirection());
+}
+
+extern "C" __declspec(dllexport) Float3 Camera_getUp(Camera *_this) {
+    return convertFloat3(_this->getUp());
+}
+
 extern "C" __declspec(dllexport) void Camera_setScreenSize(Camera *_this, unsigned int width, unsigned int height) {
     _this->setScreenSize(width, height);
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +10,7 @@ namespace Ghurund.Controls.PropertyGrid {
 
     public class PropertyGrid : Control {
 
-        public ObservableCollection<Property> Properties { get; } = new ObservableCollection<Property>();
+        public ObservableNotifyCollection<Property> Properties { get; } = new ObservableNotifyCollection<Property>();
 
         private ICollectionView view;
 
@@ -40,17 +38,7 @@ namespace Ghurund.Controls.PropertyGrid {
                         var browsable = info.GetCustomAttribute<BrowsableAttribute>(true);
                         if (browsable != null && !browsable.Browsable)
                             continue;
-                        var description = info.GetCustomAttribute<DescriptionAttribute>(true);
-                        var category = info.GetCustomAttribute<CategoryAttribute>(true);
-                        var editorType = info.GetCustomAttribute<EditorAttribute>(true)?.EditorType;
-                        Properties.Add(new Property() {
-                            DisplayName = info.Name,
-                            ValueGetter = () => info.GetValue(selectedObject),
-                            ValueSetter = (v) => info.SetValue(selectedObject, v),
-                            Category = category?.Category ?? Property.GENERIC_CATEGORY,
-                            Description = description?.Description,
-                            Editor = editorType != null ? Activator.CreateInstance(editorType, true) as IPropertyEditor : null
-                        });
+                        Properties.Add(new Property(selectedObject, info));
                     }
                 }
             }
@@ -82,10 +70,6 @@ namespace Ghurund.Controls.PropertyGrid {
 
         private void DockPanel_MouseDown(object sender, MouseEventArgs e) {
             ((FrameworkElement)sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
-        }
-
-        public void Refresh() {
-            view.Refresh();
         }
 
         public override void OnApplyTemplate() {

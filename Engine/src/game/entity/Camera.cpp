@@ -92,6 +92,7 @@ namespace Ghurund {
         XMStoreFloat3(&right, rv);
         uv = XMVector3Normalize(XMVector3Cross(rv, dv));
         XMStoreFloat3(&this->up, uv);
+        notifyObjectChanged();
     }
 
     void Camera::setPositionDirectionUp(const XMFLOAT3 & pos, const XMFLOAT3 & dir, const XMFLOAT3 & up) {
@@ -106,6 +107,7 @@ namespace Ghurund {
         XMStoreFloat3(&right, rv);
         uv = XMVector3Normalize(XMVector3Cross(rv, dv));
         XMStoreFloat3(&this->up, uv);
+        notifyObjectChanged();
     }
 
     void Camera::setPositionDistanceRotation(const XMFLOAT3 &pos, float dist, float yaw, float pitch, float roll) {
@@ -128,6 +130,7 @@ namespace Ghurund {
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
+        notifyObjectChanged();
     }
 
     void Camera::setOrbit(float yaw, float pitch, float roll) {
@@ -140,6 +143,7 @@ namespace Ghurund {
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
+        notifyObjectChanged();
     }
 
     void Camera::rotate(float yaw, float pitch, float roll) {
@@ -159,6 +163,7 @@ namespace Ghurund {
         XMVECTOR uv = XMLoadFloat3(&up);
         XMStoreFloat3(&target, XMLoadFloat3(&target)+rv*x+uv*y);
         XMStoreFloat3(&pos, XMLoadFloat3(&pos)+rv*x+uv*y);
+        notifyObjectChanged();
     }
 
     void Camera::zoom(float z) {
@@ -167,6 +172,7 @@ namespace Ghurund {
         XMVECTOR pv2 = pv+dv*z;
         XMStoreFloat3(&pos, pv2);
         XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target)-pv2));
+        notifyObjectChanged();
     }
 
     Status Camera::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {

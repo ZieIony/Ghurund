@@ -25,39 +25,13 @@ namespace Ghurund {
         }
 
     public:
-        ParameterManager() {
-            add(Parameter::PARTY_COLOR, ParameterType::FLOAT);
+        ParameterManager();
 
-            add(Parameter::RANDOM, ParameterType::FLOAT);
+        ~ParameterManager();
 
-            add(Parameter::WORLD, ParameterType::MATRIX);
-            add(Parameter::WORLD_IT, ParameterType::MATRIX);
-            add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
-        }
+        Parameter *add(const ASCIIString &name, const ParameterType &type);
 
-        ~ParameterManager() {
-			for(size_t i = 0; i<parameters.Size; i++)
-                delete parameters.getValue(i);
-		}
-
-        Parameter *add(const ASCIIString &name, const ParameterType &type) {
-            if(parameters.contains(name))
-                return parameters.get(name);
-            Parameter *parameter = ghnew Parameter(name, type);
-            parameter->manager = this;
-            parameter->index = parameters.Size;
-            parameters.set(name, parameter);
-            return parameter;
-        }
-
-        Parameter *get(const ASCIIString &name) const {
-            size_t index = parameters.indexOf(name);
-            if(index==parameters.Size) {
-                Logger::log(_T("Parameter of name '%hs' is missing\n"), name);
-                return nullptr;
-            }
-            return parameters.getValue(index);
-        }
+        Parameter *get(const ASCIIString &name) const;
 
         size_t getParameterCount() const {
             return parameters.Size;

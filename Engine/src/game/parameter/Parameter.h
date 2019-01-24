@@ -2,6 +2,7 @@
 
 #include "Ghurund.h"
 #include "collection/String.h"
+#include "editor/INotifyPropertyChanged.h"
 
 namespace Ghurund {
 
@@ -35,7 +36,7 @@ namespace Ghurund {
         __declspec(property(get = getSize)) unsigned int Size;
     };
 
-    class Parameter {
+    class Parameter : public ObservableObject {
     private:
         ASCIIString name;
         const ParameterType &type;

@@ -67,3 +67,7 @@ extern "C" __declspec(dllexport) void Parameter_setValue(Parameter *_this, const
 extern "C" __declspec(dllexport) tchar *Parameter_getName(Parameter *_this) {
     return toTchar(_this->getName().getData());
 }
+
+extern "C" __declspec(dllexport) void Parameter_setPropertyChangedListener(Parameter *_this, void(__stdcall *listener)()) {
+    _this->setOnChangedListener(listener);
+}

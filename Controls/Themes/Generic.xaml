@@ -30,8 +30,8 @@
 							</Border>
 
 							<Border>
-								<ListBox x:Name="listBox" Background="{x:Null}"
-										 Foreground="{TemplateBinding Foreground}"
+								<ListBox x:Name="listBox" Background="{x:Null}" VirtualizingPanel.VirtualizationMode="Recycling"
+										 Foreground="{TemplateBinding Foreground}" VirtualizingPanel.IsVirtualizing="True"
 										 IsSynchronizedWithCurrentItem="True" Grid.IsSharedSizeScope="True"
 										 KeyboardNavigation.TabNavigation="Continue"
 										 HorizontalContentAlignment="Stretch" BorderThickness="0">
@@ -54,7 +54,7 @@
 									<ListBox.ItemTemplate>
 										<DataTemplate>
 											<DockPanel Margin="4 0 4 0">
-												<propertyGrid:PropertyEditorContainer x:Name="TitleBlock" Property="{Binding}"/>
+												<propertyGrid:PropertyEditorContainer x:Name="TitleBlock" Value="{Binding Value}"/>
 											</DockPanel>
 										</DataTemplate>
 									</ListBox.ItemTemplate>
