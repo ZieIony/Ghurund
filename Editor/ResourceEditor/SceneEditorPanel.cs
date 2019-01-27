@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using Ghurund.Controls.Workspace;
+using Ghurund.Editor.Panel;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
@@ -12,15 +14,27 @@ using Ninject;
 namespace Ghurund.Editor.ResourceEditor {
     public interface ISceneEditor : IDockableControl {
         Scene Scene { get; set; }
+
+        event RoutedPropertyChangedEventHandler<object> SelectionChanged;
     }
 
     public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
+
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<object>), typeof(SceneEditorPanel));
+
+        public event RoutedPropertyChangedEventHandler<object> SelectionChanged {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
 
         [Inject]
         public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public StatisticsPanel StatisticsPanel { get; set; }
 
         private Material checkerMaterial;
         private Material wireframeMaterial;
@@ -53,6 +67,7 @@ namespace Ghurund.Editor.ResourceEditor {
             normalsMaterial = Materials.MakeNormals(ResourceManager, ResourceContext);
 
             sceneView.Init(ResourceManager, ResourceContext);
+            StatisticsPanel.SelectedObject = sceneView.Renderer.Statistics;
 
             cameraPicker.SelectedValue = CameraMode.Default;
         }

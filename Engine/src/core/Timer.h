@@ -10,7 +10,7 @@ namespace Ghurund {
     private:
         LARGE_INTEGER frequency;
         LARGE_INTEGER startFrame;
-        LARGE_INTEGER currentFrame;
+        LARGE_INTEGER prevFrame, currentFrame;
         bool paused = false;
 
     public:
@@ -30,6 +30,18 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getRunTime)) float RunTime;
+
+        ticks_t getFrameTicks()const {
+            return currentFrame.QuadPart-prevFrame.QuadPart;
+        }
+
+        __declspec(property(get = getFrameTicks)) ticks_t FrameTicks;
+
+        float getFrameTime()const {
+            return (float)getFrameTicks()/frequency.QuadPart;
+        }
+
+        __declspec(property(get = getFrameTime)) float FrameTime;
 
         void setPaused(bool p = true);
 

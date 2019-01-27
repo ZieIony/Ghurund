@@ -92,15 +92,16 @@ namespace Ghurund {
         const char *getSourceCode() {
             return source;
         }
-        
+
         Status makePipelineState(bool supportsTransparency);
 
-        void set(Graphics &graphics, CommandList &commandList) {
-            commandList.setGraphicsRootSignature(rootSignature);
-            commandList.setPipelineState(pipelineState);
+        bool set(Graphics &graphics, CommandList &commandList) {
+            bool changed = commandList.setGraphicsRootSignature(rootSignature)|commandList.setPipelineState(pipelineState);
 
             for(size_t i = 0; i<constantBuffers.Size; i++)
                 constantBuffers[i]->set(graphics, commandList);
+
+            return changed;
         }
 
         bool getSupportsTransparency() {

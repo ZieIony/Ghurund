@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -7,6 +8,21 @@ namespace Ghurund.Controls.Workspace {
         private HighlightWindow highlightWindow = new HighlightWindow();
         private DockPanel rootDockPanel;
         private PeekPanel peekPanel;
+        private EditorPanel focusedPanel;
+
+        public static readonly RoutedEvent PanelFocusedEvent = EventManager.RegisterRoutedEvent("PanelFocused", RoutingStrategy.Bubble, typeof(PanelActionEventHandler), typeof(WorkspacePanel));
+
+        public event PanelActionEventHandler PanelFocused {
+            add { AddHandler(PanelFocusedEvent, value); }
+            remove { RemoveHandler(PanelFocusedEvent, value); }
+        }
+
+        public static readonly RoutedEvent PanelClosedEvent = EventManager.RegisterRoutedEvent("PanelClosed", RoutingStrategy.Bubble, typeof(PanelActionEventHandler), typeof(WorkspacePanel));
+
+        public event PanelActionEventHandler PanelClosed {
+            add { AddHandler(PanelClosedEvent, value); }
+            remove { RemoveHandler(PanelClosedEvent, value); }
+        }
 
         static WorkspacePanel() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WorkspacePanel), new FrameworkPropertyMetadata(typeof(WorkspacePanel)));
@@ -18,6 +34,18 @@ namespace Ghurund.Controls.Workspace {
             peekPanel = GetTemplateChild("peekPanel") as PeekPanel;
 
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
+            AddHandler(PanelFocusedEvent, new PanelActionEventHandler(panelFocused));
+        }
+
+        private void panelFocused(object sender, PanelActionEventArgs e) {
+            if (focusedPanel == e.Panel) {
+                e.Handled = true;
+            } else {
+                if (focusedPanel != null)
+                    focusedPanel.PanelFocused = false;
+                focusedPanel = e.Panel;
+                focusedPanel.PanelFocused = true;
+            }
         }
 
         private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
@@ -72,7 +100,7 @@ namespace Ghurund.Controls.Workspace {
         internal bool FinishDocking() {
             highlightWindow.Hide();
 
-            return (highlightWindow.SelectedSpot != null);
+            return highlightWindow.SelectedSpot != null;
         }
 
         internal void dock(DockableControls controls) {

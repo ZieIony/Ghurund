@@ -97,7 +97,7 @@
     <ClInclude Include="src\core\Type.h" />
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
-    <ClInclude Include="src\editor\INotifyPropertyChanged.h" />
+    <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\Level.h" />
@@ -115,6 +115,7 @@
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\game\entity\GlobalEntity.h" />
     <ClInclude Include="src\graphics\GraphicsMemoryAllocator.h" />
+    <ClInclude Include="src\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\graphics\texture\Image.h" />
     <ClInclude Include="src\game\entity\Light.h" />
     <ClInclude Include="src\graphics\Materials.h" />

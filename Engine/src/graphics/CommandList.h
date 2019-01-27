@@ -63,9 +63,9 @@ namespace Ghurund {
             commandList->SetName(name);
         }
 
-        void setPipelineState(ID3D12PipelineState *pipelineState);
+        bool setPipelineState(ID3D12PipelineState *pipelineState);
 
-        void setGraphicsRootSignature(ID3D12RootSignature *rootSignature);
+        bool setGraphicsRootSignature(ID3D12RootSignature *rootSignature);
 
         virtual const Ghurund::Type &getType() const override {
             return Type::COMMAND_LIST;

@@ -17,6 +17,7 @@ namespace Ghurund.Managed.Graphics {
 
         public void Init(Graphics graphics, Window window) {
             Renderer_init(NativePtr, graphics.NativePtr, window.NativePtr);
+            Statistics = new RenderingStatistics(Renderer_getStatistics(NativePtr));
         }
 
 
@@ -69,10 +70,16 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Renderer_setClearColor(IntPtr renderer, uint color);
 
-        public uint ClearColor{
+        public uint ClearColor {
             set {
                 Renderer_setClearColor(NativePtr, value);
             }
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_getStatistics(IntPtr renderer);
+
+        public RenderingStatistics Statistics { get; private set; }
     }
 }

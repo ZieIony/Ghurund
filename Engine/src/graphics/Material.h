@@ -67,11 +67,13 @@ namespace Ghurund {
             return shader->Parameters;
         }
 
-        void set(Graphics &graphics, CommandList &commandList) {
-            shader->set(graphics, commandList);
+        bool set(Graphics &graphics, CommandList &commandList) {
+            bool changed = shader->set(graphics, commandList);
 
             if(textures.Size>0) // TODO: handle textures properly
                 textures.getValue(0)->set(commandList);
+
+            return changed;
         }
 
         Shader *getShader() {

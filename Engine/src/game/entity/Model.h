@@ -6,6 +6,7 @@
 #include "graphics/Material.h"
 #include "graphics/mesh/CubeMesh.h"
 #include "graphics/mesh/SphereMesh.h"
+#include "graphics/RenderingStatistics.h"
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
@@ -82,6 +83,14 @@ namespace Ghurund {
         void draw(Graphics &graphics, CommandList &commandList) {
             material->set(graphics, commandList);
             mesh->draw(commandList);
+        }
+
+        void draw(Graphics &graphics, CommandList &commandList, RenderingStatistics &statistics) {
+            if(material->set(graphics, commandList))
+                statistics.materialChanges++;
+            mesh->draw(commandList);
+            statistics.modelsRendered++;
+            statistics.trianglesRendered += mesh->IndexCount/3;
         }
 
         virtual const Ghurund::Type &getType() const override {

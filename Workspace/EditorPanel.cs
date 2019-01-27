@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Ghurund.Controls.Workspace {
@@ -23,6 +24,14 @@ namespace Ghurund.Controls.Workspace {
 
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(ImageSource), typeof(EditorPanel), new PropertyMetadata(null));
+
+        public bool PanelFocused {
+            get => (bool)GetValue(PanelFocusedProperty);
+            set => SetValue(PanelFocusedProperty, value);
+        }
+
+        public static readonly DependencyProperty PanelFocusedProperty =
+            DependencyProperty.Register("PanelFocused", typeof(bool), typeof(EditorPanel), new PropertyMetadata(null));
 
         static EditorPanel() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditorPanel), new FrameworkPropertyMetadata(typeof(EditorPanel)));
@@ -47,5 +56,9 @@ namespace Ghurund.Controls.Workspace {
             Icon = control.Icon;
         }
 
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e) {
+            base.OnPreviewMouseDown(e);
+            RaiseEvent(new PanelActionEventArgs(this, WorkspacePanel.PanelFocusedEvent));
+        }
     }
 }

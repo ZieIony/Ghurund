@@ -58,11 +58,13 @@ namespace Ghurund {
         }
     }
 
-    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager, Material * material, Material *invalidMaterial) {
+    void RenderingBatch::draw(Graphics &graphics, CommandList & commandList, ParameterManager & parameterManager, RenderingStatistics &stats, Material * material, Material *invalidMaterial) {
         for(size_t i = 0; i<models.Size; i++) {
             GlobalEntity<Model> *entity = models[i];
-            if(!entity->Visible)
+            if(!entity->Visible) {
+                stats.modelsCulled++;
                 continue;
+            }
 
             Material *overrideMaterial = material;
             if(!entity->Entity.Valid) {
@@ -86,12 +88,12 @@ namespace Ghurund {
                 modelMaterial->addReference();
                 entity->Entity.Material = overrideMaterial;
                 entity->Entity.updateParameters();
-                entity->Entity.draw(graphics, commandList);
+                entity->Entity.draw(graphics, commandList, stats);
                 entity->Entity.Material = modelMaterial;
                 modelMaterial->release();
             } else {
                 entity->Entity.updateParameters();
-                entity->Entity.draw(graphics, commandList);
+                entity->Entity.draw(graphics, commandList, stats);
             }
         }
     }

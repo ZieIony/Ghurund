@@ -53,13 +53,13 @@ namespace Ghurund.Controls.Workspace {
 
     public delegate void WindowActionEventHandler(object sender, WindowActionEventArgs args);
 
-    public class EditorSelectedEventArgs : RoutedEventArgs {
-        public Control SelectedControl { get; }
+    public class PanelActionEventArgs : RoutedEventArgs {
+        public EditorPanel Panel { get; }
 
-        public EditorSelectedEventArgs(RoutedEvent routedEvent, Control control) : base(routedEvent) {
-            SelectedControl = control;
+        public PanelActionEventArgs(EditorPanel control, RoutedEvent routedEvent) : base(routedEvent) {
+            Panel = control;
         }
     }
 
-    public delegate void EditorSelectedEventHandler(object sender, EditorSelectedEventArgs args);
+    public delegate void PanelActionEventHandler(object sender, PanelActionEventArgs args);
 }

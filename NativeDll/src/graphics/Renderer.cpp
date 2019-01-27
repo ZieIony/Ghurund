@@ -33,3 +33,7 @@ extern "C" __declspec(dllexport) void Renderer_setClearColor(Renderer *_this, un
 extern "C" __declspec(dllexport) void Renderer_draw(Renderer *_this, Camera *camera, Entity *entity, ParameterManager *parameterManager, Material *overrideMaterial, Material *invalidMaterial) {
     _this->draw(*camera, *entity, *parameterManager, overrideMaterial, invalidMaterial);
 }
+
+extern "C" __declspec(dllexport) RenderingStatistics *Renderer_getStatistics(Renderer *_this) {
+    return &_this->Statistics;
+}

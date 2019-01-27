@@ -22,9 +22,6 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public TabControl() {
-            //AddHandler(GotFocusEvent, new RoutedEventHandler(gotFocus));
-            AddHandler(LostFocusEvent, new RoutedEventHandler(lostFocus));
-            AddHandler(MouseDownEvent, new RoutedEventHandler(gotFocus));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
         }
 
@@ -39,22 +36,15 @@ namespace Ghurund.Controls.Workspace {
                         }
                     }
                 }
-            }else if(args.Action==WindowAction.Undock){
-                
+            } else if (args.Action == WindowAction.Undock) {
+
             }
         }
 
-        private void gotFocus(object sender, RoutedEventArgs args) {
-            TitleBar titleBar = Extensions.FindVisualChildByName<TitleBar>(this, "titleBar");
-            if (titleBar != null)
-                titleBar.IsParentFocused = true;
-            Focus();
-        }
-
-        private void lostFocus(object sender, RoutedEventArgs args) {
-            TitleBar titleBar = Extensions.FindVisualChildByName<TitleBar>(this, "titleBar");
-            if (titleBar != null)
-                titleBar.IsParentFocused = false;
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
+            base.OnSelectionChanged(e);
+            if (SelectedItem != null)
+                RaiseEvent(new PanelActionEventArgs((SelectedItem as EditorTab).Content as EditorPanel, WorkspacePanel.PanelFocusedEvent));
         }
 
         public void Save(DockState state) {

@@ -23,13 +23,13 @@ namespace Ghurund.Controls.Workspace {
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(String), typeof(TitleBar), new PropertyMetadata(null));
 
-        public bool IsParentFocused {
-            get { return (bool)GetValue(IsParentFocusedProperty); }
-            set { SetValue(IsParentFocusedProperty, value); }
+        public bool PanelFocused {
+            get { return (bool)GetValue(PanelFocusedProperty); }
+            set { SetValue(PanelFocusedProperty, value); }
         }
 
-        public static readonly DependencyProperty IsParentFocusedProperty =
-            DependencyProperty.Register("IsParentFocused", typeof(bool), typeof(TitleBar), new PropertyMetadata(null));
+        public static readonly DependencyProperty PanelFocusedProperty =
+            DependencyProperty.Register("PanelFocused", typeof(bool), typeof(TitleBar), new PropertyMetadata(null));
 
         [Bindable(true)]
         public ImageSource Icon {
@@ -39,6 +39,14 @@ namespace Ghurund.Controls.Workspace {
 
         public static readonly DependencyProperty IconProperty =
             DependencyProperty.Register("Icon", typeof(ImageSource), typeof(TitleBar), new PropertyMetadata(null));
+
+        public Brush IconColor {
+            get { return (Brush)GetValue(IconColorProperty); }
+            set { SetValue(IconColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty IconColorProperty =
+            DependencyProperty.Register("IconColor", typeof(Brush), typeof(TitleBar), new PropertyMetadata(null));
 
         static TitleBar() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TitleBar), new FrameworkPropertyMetadata(typeof(TitleBar)));

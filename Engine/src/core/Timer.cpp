@@ -10,6 +10,7 @@ namespace Ghurund {
         if(paused)
             return;
 
+        prevFrame = currentFrame;
         QueryPerformanceCounter(&currentFrame);
     }
 

@@ -127,9 +127,10 @@ namespace Ghurund.Managed {
             invalidMaterial = Materials.MakeInvalid(resourceManager, resourceContext);
 
             renderView.RenderCallback = (renderer, parameterManager) => {
+                renderer.Statistics.Reset();
                 if (Scene != null)
                     renderer.Draw(Camera, Scene, parameterManager, overrideMaterial, invalidMaterial);
-                renderer.Draw(Camera, editorScene, parameterManager, overrideMaterial, invalidMaterial);
+                renderer.Draw(Camera, editorScene, parameterManager, null, invalidMaterial);
             };
         }
 

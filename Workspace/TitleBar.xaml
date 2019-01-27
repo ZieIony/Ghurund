@@ -7,6 +7,7 @@
 	<Style TargetType="{x:Type local:TitleBar}">
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="IconColor" Value="{DynamicResource Ghurund.Icon}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -15,9 +16,15 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
 						<DockPanel>
-							<ghurund:IconButton x:Name="closeButton" Icon="Resources/close32.png" DockPanel.Dock="Right" ToolTip="Close" Margin="0,0,4,0"/>
-							<ghurund:IconButton x:Name="restoreButton" Icon="Resources/restore32.png" DockPanel.Dock="Right" ToolTip="Restore"/>
-							<ghurund:IconButton x:Name="minimizeButton" Icon="Resources/minimize32.png" DockPanel.Dock="Right" ToolTip="Minimize"/>
+							<ghurund:IconButton x:Name="closeButton" ToolTip="Close"
+												Icon="Resources/close32.png" Foreground="{TemplateBinding IconColor}"
+												DockPanel.Dock="Right" Margin="0,0,4,0"/>
+							<ghurund:IconButton x:Name="restoreButton" ToolTip="Restore"
+												Icon="Resources/restore32.png" Foreground="{TemplateBinding IconColor}"
+												DockPanel.Dock="Right"/>
+							<ghurund:IconButton x:Name="minimizeButton" ToolTip="Minimize"
+												Icon="Resources/minimize32.png" Foreground="{TemplateBinding IconColor}"
+												DockPanel.Dock="Right"/>
 							<TextBlock x:Name="title"
 									   TextWrapping="NoWrap"
 									   Text="{TemplateBinding Title}"
@@ -43,12 +50,15 @@
 						</DockPanel>
 					</Border>
 					<ControlTemplate.Triggers>
-						<Trigger Property="IsParentFocused" Value="true">
+						<Trigger Property="PanelFocused" Value="true">
+							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary.Inverse}" />
 							<Setter Property="Background" Value="{DynamicResource Ghurund.PrimaryDark}" />
+							<Setter Property="IconColor" Value="{DynamicResource Ghurund.Icon.Inverse}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
 							<Setter Property="Background" Value="{DynamicResource Ghurund.Background}" />
 							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Disabled}" />
+							<Setter Property="IconColor" Value="{DynamicResource Ghurund.Icon.Disabled}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

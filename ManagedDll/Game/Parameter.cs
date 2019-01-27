@@ -17,7 +17,7 @@ namespace Ghurund.Managed.Game {
         private PropertyChangedListener propertyChangedCallback;
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setPropertyChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
+        private static extern void ObservableObject_setOnChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,7 +32,7 @@ namespace Ghurund.Managed.Game {
 
         public Parameter(IntPtr ptr) : base(ptr) {
             propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
-            Parameter_setPropertyChangedListener(NativePtr, propertyChangedCallback);
+            ObservableObject_setOnChangedListener(NativePtr, propertyChangedCallback);
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

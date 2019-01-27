@@ -74,13 +74,21 @@ namespace Ghurund.Controls.Workspace {
                 panel2.Save(statePanel2);
 
                 GridLengthConverter converter = new GridLengthConverter();
+                string panel1Size,panel2Size;
+                if (splitContainer.Panel1Size.GridUnitType == GridUnitType.Star) {
+                    panel1Size = converter.ConvertToString(splitContainer.Panel1Size);
+                    panel2Size = (splitContainer.Orientation == Orientation.Vertical ? splitContainer.Panel2.ActualHeight : splitContainer.Panel2.ActualWidth).ToString();
+                } else {
+                    panel1Size = (splitContainer.Orientation == Orientation.Vertical ? splitContainer.Panel1.ActualHeight : splitContainer.Panel1.ActualWidth).ToString();
+                    panel2Size = converter.ConvertToString(splitContainer.Panel2Size);
+                }
 
                 state.splitState = new SplitState {
                     panel1 = statePanel1,
                     panel2 = statePanel2,
                     orientation = splitContainer.Orientation,
-                    panel1Size = converter.ConvertToString(splitContainer.Panel1Size),
-                    panel2Size = converter.ConvertToString(splitContainer.Panel2Size)
+                    panel1Size = panel1Size,
+                    panel2Size = panel2Size
                 };
             } else if (tabControl != null) {
                 tabControl.Save(state);

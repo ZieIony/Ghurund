@@ -94,7 +94,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void CommandList::setPipelineState(ID3D12PipelineState *pipelineState) {
+    bool CommandList::setPipelineState(ID3D12PipelineState *pipelineState) {
 #ifdef _DEBUG
         if(pipelineState==nullptr)
             Logger::log(_T("pipelineState cannot be null\n"));
@@ -103,10 +103,12 @@ namespace Ghurund {
             addResourceRef(pipelineState);
             commandList.Get()->SetPipelineState(pipelineState);
             this->pipelineState = pipelineState;
+            return true;
         }
+        return false;
     }
 
-    void CommandList::setGraphicsRootSignature(ID3D12RootSignature *rootSignature) {
+    bool CommandList::setGraphicsRootSignature(ID3D12RootSignature *rootSignature) {
 #ifdef _DEBUG
         if(rootSignature==nullptr)
             Logger::log(_T("rootSignature cannot be null\n"));
@@ -115,7 +117,9 @@ namespace Ghurund {
             addResourceRef(rootSignature);
             commandList.Get()->SetGraphicsRootSignature(rootSignature);
             this->rootSignature = rootSignature;
+            return true;
         }
+        return false;
     }
 
 }

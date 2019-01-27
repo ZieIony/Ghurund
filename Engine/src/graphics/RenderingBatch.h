@@ -4,6 +4,7 @@
 #include "game/entity/Model.h"
 #include "game/entity/Camera.h"
 #include "game/entity/GlobalEntity.h"
+#include "graphics/RenderingStatistics.h"
 
 namespace Ghurund {
     class RenderingBatch: public ParameterProvider {
@@ -38,7 +39,7 @@ namespace Ghurund {
         }
 
         void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager);
-        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager, Material *material, Material *invalidMaterial);
+        void draw(Graphics &graphics, CommandList &commandList, ParameterManager &parameterManager, RenderingStatistics &stats, Material *material, Material *invalidMaterial);
 
         void clear() {
             lights.clear();

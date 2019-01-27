@@ -111,6 +111,9 @@
     <Compile Include="Panel\ParametersPanel.xaml.cs">
       <DependentUpon>ParametersPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panel\StatisticsPanel.xaml.cs">
+      <DependentUpon>StatisticsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Project.cs" />
     <Compile Include="Panel\PropertiesPanel.xaml.cs">
       <DependentUpon>PropertiesPanel.xaml</DependentUpon>
@@ -163,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\PropertiesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panel\StatisticsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -307,6 +314,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\wrap32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\statistics32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logs32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\exit32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

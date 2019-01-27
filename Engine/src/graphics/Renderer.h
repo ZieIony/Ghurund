@@ -17,6 +17,7 @@ namespace Ghurund {
         Graphics *graphics = nullptr;
         Material *material = nullptr;
         Material *invalidMaterial = nullptr;
+        RenderingStatistics stats;
 
         XMFLOAT4 *clearColor = nullptr;
 
@@ -58,8 +59,8 @@ namespace Ghurund {
             return commandList;
         }
 
-        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
         void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager);
+        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
 
         void finishFrame() {
             swapChain->finishFrame();
@@ -85,5 +86,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getClearColor, put = setClearColor)) XMFLOAT4 *ClearColor;
+
+        RenderingStatistics &getStatistics() {
+            return stats;
+        }
+
+        __declspec(property(get = getStatistics)) RenderingStatistics &Statistics;
     };
 }

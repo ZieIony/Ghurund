@@ -5,7 +5,7 @@
 #include "game/entity/TransformedObject.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ParameterManager.h"
-#include "editor/INotifyPropertyChanged.h"
+#include "editor/ObservableObject.h"
 #include "resource/Resource.h"
 
 #include <DirectXCollision.h>

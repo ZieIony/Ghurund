@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Ghurund.Editor.Panel;
 using Ghurund.Managed.Audio;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
@@ -47,6 +48,9 @@ namespace Ghurund.Editor {
 
             kernel.Bind<SceneExplorerPanel>().ToSelf().InSingletonScope();
             kernel.Bind<ISceneExplorerPanel>().ToMethod(context => context.Kernel.Get<SceneExplorerPanel>()).InSingletonScope();
+
+            kernel.Bind<StatisticsPanel>().ToSelf().InSingletonScope();
+            kernel.Bind<IStatisticsPanel>().ToMethod(context => context.Kernel.Get<StatisticsPanel>()).InSingletonScope();
 
             kernel.Bind<LogPanel>().ToSelf().InSingletonScope();
             kernel.Bind<ILogPanel>().ToMethod(context => context.Kernel.Get<LogPanel>()).InSingletonScope();

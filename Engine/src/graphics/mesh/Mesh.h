@@ -71,6 +71,18 @@ namespace Ghurund {
 
         virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir);
 
+        vindex_t getVertexCount() const {
+            return vertexCount;
+        }
+
+        __declspec(property(get = getVertexCount)) vindex_t VertexCount;
+
+        vindex_t getIndexCount() const {
+            return indexCount;
+        }
+
+        __declspec(property(get = getIndexCount)) vindex_t IndexCount;
+
         BoundingBox &getBoundingBox() {
             return boundingBox;
         }

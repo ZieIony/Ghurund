@@ -15,6 +15,8 @@ namespace Ghurund {
     }
 
     void Renderer::draw(Camera & camera, Entity & entity, ParameterManager & parameterManager, Material *overrideMaterial, Material *invalidMaterial) {
+        stats.startFrame();
+
         RenderingBatch batch;
         batch.initParameters(parameterManager);
         XMFLOAT4X4 identity;
@@ -23,7 +25,9 @@ namespace Ghurund {
         batch.cull(camera);
         //onPreDraw(batch);
         CommandList &commandList = swapChain->CommandList;
-        batch.draw(*graphics, commandList, parameterManager, overrideMaterial, invalidMaterial);
+        batch.draw(*graphics, commandList, parameterManager, stats, overrideMaterial, invalidMaterial);
         batch.clear();
+
+        stats.finishFrame();
     }
 }

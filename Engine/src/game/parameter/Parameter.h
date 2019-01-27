@@ -2,7 +2,7 @@
 
 #include "Ghurund.h"
 #include "collection/String.h"
-#include "editor/INotifyPropertyChanged.h"
+#include "editor/ObservableObject.h"
 
 namespace Ghurund {
 

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using Ghurund.Controls.Workspace;
+using Ghurund.Editor.Panel;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
@@ -30,6 +31,9 @@ namespace Ghurund.Editor {
         public ISceneExplorerPanel SceneExplorer { get; set; }
 
         [Inject]
+        public IStatisticsPanel StatisticsPanel { get; set; }
+
+        [Inject]
         public ILogPanel LogPanel { get; set; }
 
         [Inject]
@@ -52,6 +56,8 @@ namespace Ghurund.Editor {
             removeInvalidRecents();
 
             workspacePanel.Loaded += WorkspacePanel_Loaded;
+            Width = Settings.WindowSize.X;
+            Height = Settings.WindowSize.Y;
 
             if (Settings.ReopenMostRecentProject && Settings.RecentProjects.Count > 0) {
                 // TODO: reopen project
@@ -106,6 +112,7 @@ namespace Ghurund.Editor {
         private void Parameters_Click(object sender, RoutedEventArgs e) => openPanel(sender, ParametersPanel);
         private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, ResourceManagerPanel);
         private void SceneExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, SceneExplorer);
+        private void StatisticsPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, StatisticsPanel);
         private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
 
         private void openPanel(object sender, IDockableControl panel) {
@@ -136,6 +143,7 @@ namespace Ghurund.Editor {
         }
 
         private void saveSettings() {
+            Settings.WindowSize = new Point(Width, Height);
             Settings.WorkspaceState = workspacePanel.Save();
             Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
         }
