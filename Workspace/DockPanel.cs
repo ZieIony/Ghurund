@@ -48,16 +48,16 @@ namespace Ghurund.Controls.Workspace {
         private void titleBar_WindowAction(object sender, WindowActionEventArgs args) {
             if (!args.ActionHandled) {
                 if (args.DockableControls == null) {
-                    var controls = new IDockableControl[tabControl.Items.Count];
+                    var controls = new IDockablePanel[tabControl.Items.Count];
                     for (int i = 0; i < tabControl.Items.Count; i++) {
                         var tab = tabControl.Items[i] as EditorTab;
                         var panel = tab.Content as EditorPanel;
-                        controls[i] = panel.Content as IDockableControl;
+                        controls[i] = panel.Content as IDockablePanel;
                     }
-                    args.DockableControls = new DockableControls(controls, new Size(tabControl.ActualWidth, tabControl.ActualHeight));
+                    args.DockableControls = new DockableGroup(controls, new Size(tabControl.ActualWidth, tabControl.ActualHeight));
                     undockAll();
                 } else {
-                    undock(args.DockableControls.Controls);
+                    undock(args.DockableControls.Panels);
                 }
                 args.ActionHandled = true;
             }
@@ -83,7 +83,7 @@ namespace Ghurund.Controls.Workspace {
                     panel2Size = converter.ConvertToString(splitContainer.Panel2Size);
                 }
 
-                state.splitState = new SplitState {
+                state.SplitState = new SplitState {
                     panel1 = statePanel1,
                     panel2 = statePanel2,
                     orientation = splitContainer.Orientation,
@@ -102,23 +102,23 @@ namespace Ghurund.Controls.Workspace {
             side = null;
         }
 
-        public void Restore(DockState state, IDockableControlFactory factory) {
+        public void Restore(DockState state, IDockablePanelFactory factory) {
             Clear();
-            if (state.splitState != null) {
+            if (state.SplitState != null) {
                 var panel1 = new DockPanel();
-                panel1.Restore(state.splitState.panel1, factory);
+                panel1.Restore(state.SplitState.panel1, factory);
 
                 var panel2 = new DockPanel();
-                panel2.Restore(state.splitState.panel2, factory);
+                panel2.Restore(state.SplitState.panel2, factory);
 
                 GridLengthConverter converter = new GridLengthConverter();
 
                 splitContainer = new SplitPanel {
                     Panel1 = panel1,
                     Panel2 = panel2,
-                    Orientation = state.splitState.orientation,
-                    Panel1Size = (GridLength)converter.ConvertFromString(state.splitState.panel1Size),
-                    Panel2Size = (GridLength)converter.ConvertFromString(state.splitState.panel2Size),
+                    Orientation = state.SplitState.orientation,
+                    Panel1Size = (GridLength)converter.ConvertFromString(state.SplitState.panel1Size),
+                    Panel2Size = (GridLength)converter.ConvertFromString(state.SplitState.panel2Size),
                 };
 
                 Content = splitContainer;
@@ -129,7 +129,7 @@ namespace Ghurund.Controls.Workspace {
             }
         }
 
-        public void Dock(DockableControls controls, DockSide side) {
+        public void Dock(DockableGroup controls, DockSide side) {
             if (this.side == null) {
                 if (side == DockSide.Center) {
                     dockCenter(controls);
@@ -161,14 +161,14 @@ namespace Ghurund.Controls.Workspace {
             }
         }
 
-        private void dockCenter(DockableControls controls) {
+        private void dockCenter(DockableGroup controls) {
             if (tabControl == null) {
                 tabControl = new TabControl();
                 Content = tabControl;
                 splitContainer = null;
             }
 
-            foreach (IDockableControl control in controls.Controls)
+            foreach (IDockablePanel control in controls.Panels)
                 tabControl.Items.Add(new EditorTab(control));
             side = DockSide.Center;
         }
@@ -180,7 +180,7 @@ namespace Ghurund.Controls.Workspace {
             Content = dockPanel.Content;
         }
 
-        private void dockSide(DockableControls controls, DockSide side) {
+        private void dockSide(DockableGroup controls, DockSide side) {
             SplitPanel splitContainer = this.splitContainer;
             if (splitContainer == null || this.side != side || this is RootDockPanel) {
                 splitContainer = new SplitPanel();
@@ -215,13 +215,13 @@ namespace Ghurund.Controls.Workspace {
             this.side = side;
         }
 
-        private void undock(IDockableControl[] controls) {
+        private void undock(IDockablePanel[] controls) {
             if (tabControl.Items.Count == 0)
                 return;
 
             List<EditorTab> tabsToRemove = new List<EditorTab>();
 
-            foreach (IDockableControl control in controls) {
+            foreach (IDockablePanel control in controls) {
                 foreach (EditorTab tab in tabControl.Items) {
                     var panel = tab.Content as EditorPanel;
                     if (panel.Content == control.Control)

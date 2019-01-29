@@ -23,7 +23,7 @@ namespace Ghurund.Controls.Workspace {
             Header = panel.Title;
         }
 
-        public EditorTab(IDockableControl control) {
+        public EditorTab(IDockablePanel control) {
             Content = new EditorPanel(control);
             Header = control.Title?.Short ?? "";
         }
@@ -57,14 +57,14 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Minimize,
-                controls: new DockableControls(Content as EditorPanel)));
+                controls: new DockableGroup(Content as EditorPanel)));
         }
 
         private void maximize_Click(object sender, RoutedEventArgs e) {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Maximize,
-                controls: new DockableControls(Content as EditorPanel)));
+                controls: new DockableGroup(Content as EditorPanel)));
         }
 
 
@@ -72,7 +72,7 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Minimize,
-                controls: new DockableControls(Content as EditorPanel),
+                controls: new DockableGroup(Content as EditorPanel),
                 side: PeekSide.Left));
         }
 
@@ -80,7 +80,7 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Minimize,
-                controls: new DockableControls(Content as EditorPanel),
+                controls: new DockableGroup(Content as EditorPanel),
                 side: PeekSide.Top));
         }
 
@@ -88,7 +88,7 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Minimize,
-                controls: new DockableControls(Content as EditorPanel),
+                controls: new DockableGroup(Content as EditorPanel),
                 side: PeekSide.Right));
         }
 
@@ -96,7 +96,7 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Minimize,
-                controls: new DockableControls(Content as EditorPanel),
+                controls: new DockableGroup(Content as EditorPanel),
                 side: PeekSide.Bottom));
         }
 
@@ -105,14 +105,14 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Close,
-                controls: new DockableControls(Content as EditorPanel)));
+                controls: new DockableGroup(Content as EditorPanel)));
         }
 
         private void undock_Click(object sender, RoutedEventArgs e) {
             RaiseEvent(new WindowActionEventArgs(
                 TitleBar.WindowActionEvent,
                 WindowAction.Undock,
-                controls: new DockableControls(Content as EditorPanel)));
+                controls: new DockableGroup(Content as EditorPanel)));
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
@@ -144,7 +144,7 @@ namespace Ghurund.Controls.Workspace {
 
                     dragging = true;
                     var panel = Content as EditorPanel;
-                    RaiseEvent(new WindowActionEventArgs(TitleBar.WindowActionEvent, WindowAction.Undock, e.GetPosition(this), new DockableControls(panel.Content as IDockableControl)));
+                    RaiseEvent(new WindowActionEventArgs(TitleBar.WindowActionEvent, WindowAction.Undock, e.GetPosition(this), new DockableGroup(panel.Content as IDockablePanel)));
                 }
 
             } catch (Exception) {

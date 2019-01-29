@@ -2,9 +2,9 @@
 using Ghurund.Controls.Workspace;
 
 namespace Ghurund.Editor {
-    public class DockableControlFactory : IDockableControlFactory {
-        public IDockableControl MakeControl(Type type) {
-            return EditorKernel.Instance.GetService(type) as IDockableControl;
+    public class DockableControlFactory : IDockablePanelFactory {
+        public IDockablePanel MakePanel(Type type) {
+            return EditorKernel.Instance.GetService(type) as IDockablePanel;
         }
     }
 

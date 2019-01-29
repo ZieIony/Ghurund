@@ -7,7 +7,7 @@ using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Game;
 
 namespace Ghurund.Editor {
-    public interface ISceneExplorerPanel : IDockableControl {
+    public interface ISceneExplorerPanel : IDockablePanel {
         Scene Scene { get; set; }
 
         event RoutedPropertyChangedEventHandler<Entity> SelectedEntityChanged;

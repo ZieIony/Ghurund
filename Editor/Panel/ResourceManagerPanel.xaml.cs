@@ -22,7 +22,7 @@ namespace Ghurund.Editor {
     public class Library : ResourceDirectory {
     }
 
-    public interface IResourceManagerPanel : IDockableControl {
+    public interface IResourceManagerPanel : IDockablePanel {
     }
 
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {

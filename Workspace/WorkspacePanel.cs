@@ -103,12 +103,12 @@ namespace Ghurund.Controls.Workspace {
             return highlightWindow.SelectedSpot != null;
         }
 
-        internal void dock(DockableControls controls) {
+        internal void dock(DockableGroup controls) {
             Window.GetWindow(this).Activate();
             highlightWindow.SelectedSpot.DockPanel.Dock(controls, highlightWindow.SelectedSpot.Side);
         }
 
-        public void Dock(DockableControls controls) {
+        public void Dock(DockableGroup controls) {
             rootDockPanel.Dock(controls, DockSide.Center);
         }
 
@@ -119,7 +119,7 @@ namespace Ghurund.Controls.Workspace {
             return state;
         }
 
-        public void Restore(WorkspaceState state, IDockableControlFactory factory) {
+        public void Restore(WorkspaceState state, IDockablePanelFactory factory) {
             if (state == null)
                 return;
             rootDockPanel.Restore(state.dockState, factory);

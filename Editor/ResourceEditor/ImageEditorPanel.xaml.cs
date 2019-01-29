@@ -3,14 +3,15 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
 
 namespace Ghurund.Editor.ResourceEditor {
 
-    public interface IImageEditor : IDockableControl {
+    public interface IImageEditor : IDockablePanel {
     }
 
-    public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl {
+    public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl, IEditorPanel {
 
         private bool disposed = false;
 
@@ -47,20 +48,31 @@ namespace Ghurund.Editor.ResourceEditor {
         public ImageSource Icon { get; }
         public Control Control { get => this; }
         public Title Title { get; private set; }
+        public bool NeedsSaving => false;
 
-        public object Save() {
-            return Image?.UriSource.ToString();
+        public void SaveState(Stream stream) {
+            XmlSerializer serializer = new XmlSerializer(typeof(string));
+            serializer.Serialize(stream, Image?.UriSource.ToString());
         }
 
-        public void Restore(object state) {
-            if (state != null) {
-                string uri = state as string;
-                if (!File.Exists(uri))
-                    return; // TODO: error handling
-                var bitmapImage = new BitmapImage(new Uri(uri));
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                Image = bitmapImage;
-            }
+        public void RestoreState(Stream stream) {
+            XmlSerializer serializer = new XmlSerializer(typeof(string));
+            string uriPath = serializer.Deserialize(stream) as string;
+            Uri uri = new Uri(uriPath);
+            if (!File.Exists(uri.LocalPath))
+                return; // TODO: error handling
+            Load(uri.LocalPath);
+        }
+
+        public bool Save(string fileName = null) {
+            return false;
+        }
+
+        public bool Load(string fileName) {
+            var bitmapImage = new BitmapImage(new Uri(fileName));
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+            Image = bitmapImage;
+            return true;
         }
     }
 }

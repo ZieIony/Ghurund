@@ -10,7 +10,7 @@ namespace Ghurund.Editor {
         private static readonly int MAX_RECENT_FILES = 10;
         private static readonly int MAX_RECENT_PROJECTS = 10;
 
-        public Point WindowSize { get; set; }
+        public Size WindowSize { get; set; }
         public WorkspaceState WorkspaceState { get; set; }
 
         public List<string> Libraries { get; } = new List<string>();

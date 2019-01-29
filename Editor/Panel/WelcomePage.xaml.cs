@@ -10,7 +10,7 @@ using Ghurund.Controls.Workspace;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public interface IWelcomePage : IDockableControl {
+    public interface IWelcomePage : IDockablePanel {
     }
 
     public partial class WelcomePage : UserControl, IWelcomePage {

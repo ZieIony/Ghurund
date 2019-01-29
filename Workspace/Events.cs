@@ -3,15 +3,15 @@ using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
     public class ControlEventArgs {
-        public IDockableControl[] Controls { get; set; }
+        public IDockablePanel[] Controls { get; set; }
     }
 
     public delegate void ControlEventHandler(object sender, ControlEventArgs args);
 
     public class RoutedControlEventArgs : RoutedEventArgs {
-        public IDockableControl[] Controls { get; set; }
+        public IDockablePanel[] Controls { get; set; }
 
-        public RoutedControlEventArgs(RoutedEvent routedEvent, IDockableControl[] controls) : base(routedEvent) {
+        public RoutedControlEventArgs(RoutedEvent routedEvent, IDockablePanel[] controls) : base(routedEvent) {
             Controls = controls;
         }
     }
@@ -38,11 +38,11 @@ namespace Ghurund.Controls.Workspace {
 
         public WindowAction Action { get; }
         public bool ActionHandled { get; set; } = false;
-        public DockableControls DockableControls { get; set; }
+        public DockableGroup DockableControls { get; set; }
         public Point? Location { get; }
         public PeekSide? Side { get; }
 
-        public WindowActionEventArgs(RoutedEvent routedEvent, WindowAction action, Point? location = null, DockableControls controls = null, PeekSide? side = null) : base(routedEvent) {
+        public WindowActionEventArgs(RoutedEvent routedEvent, WindowAction action, Point? location = null, DockableGroup controls = null, PeekSide? side = null) : base(routedEvent) {
             Action = action;
             Location = location;
             DockableControls = controls;

@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed;
 using Ghurund.Managed.Core;
@@ -10,10 +11,11 @@ using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Graphics.Shader;
 using Ghurund.Managed.Resource;
+using Microsoft.Win32;
 using Ninject;
 
 namespace Ghurund.Editor.ResourceEditor {
-    public interface IMaterialEditor : IDockableControl {
+    public interface IMaterialEditor : IDockablePanel {
         Material Material { get; set; }
     }
 
@@ -21,7 +23,7 @@ namespace Ghurund.Editor.ResourceEditor {
         Cube, Sphere, Plane, Custom
     }
 
-    public partial class MaterialEditorPanel : UserControl, IMaterialEditor, IStateControl {
+    public partial class MaterialEditorPanel : UserControl, IMaterialEditor, IStateControl, IEditorPanel {
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -50,6 +52,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public ImageSource Icon { get; }
         public Control Control { get => this; }
         public Title Title { get; private set; }
+        public bool NeedsSaving => false;
 
         public MaterialEditorPanel() {
             InitializeComponent();
@@ -67,19 +70,50 @@ namespace Ghurund.Editor.ResourceEditor {
             modelPicker.SelectedValue = SampleModel.Cube;
         }
 
-        public object Save() {
-            return material.FileName;
+        public bool Save(string fileName = null) {
+            if (fileName == null && material.FileName == null) {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                var result = saveFileDialog.ShowDialog();
+                if (!result.GetValueOrDefault(false))
+                    return false;
+                fileName = saveFileDialog.FileName;
+            }
+            return material.Save(ResourceManager, fileName) == Status.OK;
         }
 
-        public void Restore(object state) {
-            if (state != null) {
-                string uri = state as string;
-                if (!File.Exists(uri))
-                    return; // TODO: error handling
-                /*var bitmapImage = new BitmapImage(new Uri(uri));
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                Image = bitmapImage;*/
-            }
+        public bool Load(string fileName) {
+            /*var material = new Material();
+            var shader = new Shader();
+            if (Status.OK == shader.Load(ResourceManager, ResourceContext, path)) {
+                material.Shader = shader;
+                material.Valid = true;
+                panel = new MaterialEditorPanel() {
+                    Material = material
+                };
+            } else {
+                MessageBox.Show(this, "There was an error while reading the file. Please make sure that the file is correct, all dependencies are available and its format matches the extension. More information can be found in the logs.", "Error while reading the file", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }*/
+
+            Material m = new Material();
+            if (m.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
+                return false;
+            Material = m;
+            m.Release();
+            return true;
+        }
+
+        public void SaveState(Stream stream) {
+            XmlSerializer serializer = new XmlSerializer(typeof(string));
+            serializer.Serialize(stream, material.FileName);
+        }
+
+        public void RestoreState(Stream stream) {
+            XmlSerializer serializer = new XmlSerializer(typeof(string));
+            string fileName = serializer.Deserialize(stream) as string;
+            if (!File.Exists(fileName))
+                return; // TODO: error handling
+            Load(fileName);
         }
 
         #region IDisposable Support

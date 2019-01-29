@@ -5,7 +5,7 @@ using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 
 namespace Ghurund.Editor {
-    public interface IPropertiesPanel : IDockableControl {
+    public interface IPropertiesPanel : IDockablePanel {
         object SelectedObject { get; set; }
     }
 

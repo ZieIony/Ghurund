@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,7 +31,7 @@ namespace Ghurund.Controls.Workspace {
             if (args.Action == WindowAction.Close) {
                 if (args.DockableControls != null) {    // close on a single tab
                     foreach (object item in Items) {
-                        if (((item as EditorTab).Content as EditorPanel).Content == args.DockableControls.Controls[0].Control) {
+                        if (((item as EditorTab).Content as EditorPanel).Content == args.DockableControls.Panels[0].Control) {
                             Items.Remove(item);
                             args.Handled = true;
                             return;
@@ -53,19 +55,25 @@ namespace Ghurund.Controls.Workspace {
                 var tab = Items[i] as EditorTab;
                 var panel = tab.Content as EditorPanel;
                 state.tabStates[i] = new TabState {
-                    className = panel.Content.GetType().AssemblyQualifiedName
+                    ClassName = panel.Content.GetType().AssemblyQualifiedName
                 };
-                if (panel.Content is IStateControl)
-                    state.tabStates[i].controlState = (panel.Content as IStateControl).Save();
+                if (panel.Content is IStateControl) {
+                    using (MemoryStream stream = new MemoryStream()) {
+                        (panel.Content as IStateControl).SaveState(stream);
+                        state.tabStates[i].ControlState = Encoding.UTF8.GetString(stream.ToArray());
+                    }
+                }
             }
         }
 
-        public void Restore(DockState state, IDockableControlFactory factory) {
+        public void Restore(DockState state, IDockablePanelFactory factory) {
             foreach (TabState tabState in state.tabStates) {
-                Type t = Type.GetType(tabState.className);
-                IDockableControl control = factory.MakeControl(t);
-                if (control is IStateControl)
-                    (control as IStateControl).Restore(tabState.controlState);
+                Type t = Type.GetType(tabState.ClassName);
+                IDockablePanel control = factory.MakePanel(t);
+                if (control is IStateControl) {
+                    using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(tabState.ControlState)))
+                        (control as IStateControl).RestoreState(stream);
+                }
                 var tab = new EditorTab(control);
                 Items.Add(tab);
             }

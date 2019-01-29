@@ -7,7 +7,7 @@ using Ghurund.Controls.Workspace;
 
 namespace Ghurund.Editor {
 
-    public interface IProjectExplorerPanel : IDockableControl {
+    public interface IProjectExplorerPanel : IDockablePanel {
         Project Project { get; set; }
     }
 

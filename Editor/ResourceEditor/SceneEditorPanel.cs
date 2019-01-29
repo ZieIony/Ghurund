@@ -1,24 +1,32 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
 using Ghurund.Editor.Panel;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
+using Microsoft.Win32;
 using Ninject;
 
 namespace Ghurund.Editor.ResourceEditor {
-    public interface ISceneEditor : IDockableControl {
+    [Serializable]
+    public class SceneEditorState {
+        public string FileName { get; set; }
+    }
+
+    public interface ISceneEditor : IDockablePanel {
         Scene Scene { get; set; }
 
         event RoutedPropertyChangedEventHandler<object> SelectionChanged;
     }
 
-    public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
+    public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl, IEditorPanel {
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<object>), typeof(SceneEditorPanel));
 
@@ -32,6 +40,9 @@ namespace Ghurund.Editor.ResourceEditor {
 
         [Inject]
         public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public ParameterManager ParameterManager { get; set; }
 
         [Inject]
         public StatisticsPanel StatisticsPanel { get; set; }
@@ -51,6 +62,8 @@ namespace Ghurund.Editor.ResourceEditor {
         public ImageSource Icon { get; }
         public Control Control { get => this; }
         public Title Title { get; private set; }
+
+        public bool NeedsSaving => false;
 
         public SceneEditorPanel() {
             InitializeComponent();
@@ -96,16 +109,37 @@ namespace Ghurund.Editor.ResourceEditor {
             disposed = true;
         }
 
-        public object Save() {
-            return Scene?.FileName;
+        public bool Save(string fileName = null) {
+            if (fileName == null && Scene.FileName == null) {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                var result = saveFileDialog.ShowDialog();
+                if (!result.GetValueOrDefault(false))
+                    return false;
+                fileName = saveFileDialog.FileName;
+            }
+            return Scene.Save(ResourceManager, fileName) == Status.OK;
         }
 
-        public void Restore(object state) {
-            if (state != null) {
-                string fileName = state as string;
-                Scene = new Scene();
-                Scene.Load(ResourceManager, ResourceContext, fileName);
-            }
+        public bool Load(string fileName) {
+            Scene = new Scene();
+            if (Scene.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
+                return false;
+            Scene.InitParameters(ParameterManager);
+            return true;
+        }
+
+        public void SaveState(Stream stream) {
+            SceneEditorState state = new SceneEditorState {
+                FileName = Scene.FileName
+            };
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneEditorState));
+            serializer.Serialize(stream, state);
+        }
+
+        public void RestoreState(Stream stream) {
+            XmlSerializer serializer = new XmlSerializer(typeof(SceneEditorState));
+            SceneEditorState state = serializer.Deserialize(stream) as SceneEditorState;
+            Load(state.FileName);
         }
 
         private void Material_SelectionChanged(object sender, SelectionChangedEventArgs e) {

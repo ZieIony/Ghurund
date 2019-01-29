@@ -1,13 +1,14 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
 
     public interface IStateControl {
-        object Save();
+        void SaveState(Stream stream);
 
-        void Restore(object state);
+        void RestoreState(Stream stream);
     }
 
     [Serializable]
@@ -37,13 +38,13 @@ namespace Ghurund.Controls.Workspace {
 
     [Serializable]
     public class TabState {
-        public string className;
-        public object controlState;
+        public string ClassName;
+        public string ControlState;
     }
 
     [Serializable]
     public class DockState {
-        public SplitState splitState;
+        public SplitState SplitState;
         public TabState[] tabStates;
     }
 }

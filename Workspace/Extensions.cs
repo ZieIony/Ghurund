@@ -30,14 +30,14 @@ namespace Ghurund.Controls.Workspace {
             }
         }
 
-        public static T ReadFromBinaryFile<T>(string filePath) {
+        public static T ReadFromBinaryFile<T>(string filePath, Type[] extraTypes = null) {
             try {
                 using (Stream stream = File.Open(filePath, FileMode.Open)) {
-                    var binaryFormatter = new XmlSerializer(typeof(T));
+                    var binaryFormatter = new XmlSerializer(typeof(T), extraTypes);
                     return (T)binaryFormatter.Deserialize(stream);
                 }
             }catch(Exception) {
-                return default(T);
+                return default;
             }
         }
     }

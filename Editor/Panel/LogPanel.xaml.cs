@@ -7,7 +7,7 @@ using Ghurund.Managed.Core;
 using static Ghurund.Controls.LogsView;
 
 namespace Ghurund.Editor {
-    public interface ILogPanel : IDockableControl {
+    public interface ILogPanel : IDockablePanel {
     }
 
     public partial class LogPanel : UserControl, ILogPanel {

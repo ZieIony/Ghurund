@@ -3,20 +3,20 @@
 namespace Ghurund.Controls.Workspace {
     public partial class EditorWindow : Window {
         private readonly WorkspacePanel workspacePanel;
-        private readonly IDockableControl[] controls;
+        private readonly IDockablePanel[] controls;
 
         public EditorWindow() {
             InitializeComponent();
         }
 
-        public EditorWindow(WorkspacePanel workspacePanel, IDockableControl control) : this(workspacePanel, new DockableControls(control)) { }
+        public EditorWindow(WorkspacePanel workspacePanel, IDockablePanel control) : this(workspacePanel, new DockableGroup(control)) { }
 
-        public EditorWindow(WorkspacePanel workspacePanel, DockableControls controls) : this() {
-            foreach (IDockableControl control in controls.Controls)
+        public EditorWindow(WorkspacePanel workspacePanel, DockableGroup controls) : this() {
+            foreach (IDockablePanel control in controls.Panels)
                 tabControl.Items.Add(new EditorTab(control));
 
             this.workspacePanel = workspacePanel;
-            this.controls = controls.Controls;
+            this.controls = controls.Panels;
             Owner = GetWindow(workspacePanel);
 
             Width = controls.SuggestedSize.Width;
@@ -38,7 +38,7 @@ namespace Ghurund.Controls.Workspace {
             if (workspacePanel.FinishDocking()) {
                 Close();
                 tabControl.Items.Clear();
-                workspacePanel.dock(new DockableControls(controls, new Size(ActualWidth, ActualHeight)));
+                workspacePanel.dock(new DockableGroup(controls, new Size(ActualWidth, ActualHeight)));
             }
         }
 

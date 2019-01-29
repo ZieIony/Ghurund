@@ -12,7 +12,7 @@ using Ghurund.Managed.Game;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public interface IParametersPanel : IDockableControl {
+    public interface IParametersPanel : IDockablePanel {
         Entity SelectedEntity { get; set; }
     }
 

@@ -35,14 +35,20 @@
 					</MenuItem>
 				</MenuItem>
 				<MenuItem Header="_View">
+					<MenuItem Header="_Welcome Page" Click="WelcomePage_Click">
+						<MenuItem.Icon>
+							<Image Source="Resources/welcomePage32.png"/>
+						</MenuItem.Icon>
+					</MenuItem>
+					<Separator/>
 					<MenuItem Header="Project E_xplorer" Click="ProjectExplorer_Click">
 						<MenuItem.Icon >
 							<Image Source="Resources/projectExplorer32.png"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem Header="_Welcome Page" Click="WelcomePage_Click">
+					<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click">
 						<MenuItem.Icon>
-							<Image Source="Resources/welcomePage32.png"/>
+							<Image Source="Resources/sceneExplorer32.png"/>
 						</MenuItem.Icon>
 					</MenuItem>
 					<MenuItem Header="_Properties" Click="Properties_Click">
@@ -60,11 +66,7 @@
 							<Image Source="Resources/resourceManager32.png"/>
 						</MenuItem.Icon>
 					</MenuItem>
-					<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/sceneExplorer32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
+					<Separator/>
 					<MenuItem Header="S_tatistics" Click="StatisticsPanel_Click">
 						<MenuItem.Icon>
 							<Image Source="Resources/statistics32.png"/>

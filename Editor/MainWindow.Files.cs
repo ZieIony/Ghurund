@@ -43,48 +43,29 @@ namespace Ghurund.Editor {
         }
 
         private void openFile(string path) {
-            IDockableControl panel = null;
+            IEditorPanel editorPanel = null;
 
             if (path.EndsWith("jpg") || path.EndsWith("jpeg") || path.EndsWith("png")) {
-                BitmapImage image = new BitmapImage(new Uri(path));
-                panel = new ImageEditorPanel {
-                    Image = image
-                };
-                openPanel(this, panel);
+                editorPanel = new ImageEditorPanel();
             } else if (path.EndsWith("scene")) {
-                var scene = new Scene();
-                if (Status.OK == scene.Load(ResourceManager, ResourceContext, path)) {
-                    scene.InitParameters(ParameterManager);
-                    panel = new SceneEditorPanel {
-                        Scene = scene
-                    };
-                    SceneExplorer.Scene = scene;
-                    openPanel(this, panel);
-                } else {
-                    MessageBox.Show(this, "There was an error while reading the file. Please make sure that the file is correct, all dependencies are available and its format matches the extension. More information can be found in the logs.", "Error while reading the file", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                editorPanel = new SceneEditorPanel();
+            } else if (path.EndsWith("hlsl") || path.EndsWith("material")) {
+                editorPanel = new MaterialEditorPanel();
             } else if (path.EndsWith("project")) {
                 closeProject();
                 openProject(path);
-            } else if (path.EndsWith("hlsl")) {
-                var material = new Material();
-                var shader = new Shader();
-                if (Status.OK == shader.Load(ResourceManager, ResourceContext, path)) {
-                    material.Shader = shader;
-                    material.Valid = true;
-                    panel = new MaterialEditorPanel() {
-                        Material = material
-                    };
-                    openPanel(this, panel);
-                } else {
-                    MessageBox.Show(this, "There was an error while reading the file. Please make sure that the file is correct, all dependencies are available and its format matches the extension. More information can be found in the logs.", "Error while reading the file", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
+                Settings.AddRecentProject(path);
+                return;
             } else {
                 MessageBox.Show(this, "GhurundEngine is unable to open files of that type.", "Unknown format", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
+
+            if (!editorPanel.Load(path)) {
+                MessageBox.Show(this, "There was an error while reading the file. Please make sure that the file is correct, all dependencies are available and its format matches the extension. More information can be found in the logs.", "Error while reading the file", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            openPanel(this, editorPanel);
 
             Settings.AddRecentFile(path);
         }

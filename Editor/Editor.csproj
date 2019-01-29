@@ -118,6 +118,7 @@
     <Compile Include="Panel\PropertiesPanel.xaml.cs">
       <DependentUpon>PropertiesPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ResourceEditor\IEditorPanel.cs" />
     <Compile Include="ResourceEditor\ImageEditorPanel.xaml.cs">
       <DependentUpon>ImageEditorPanel.xaml</DependentUpon>
     </Compile>

@@ -40,18 +40,10 @@ namespace Ghurund.Controls.Workspace {
         public EditorPanel() {
         }
 
-        public EditorPanel(IDockableControl control) {
+        public EditorPanel(IDockablePanel control) {
             control.Control.Width = double.NaN;
             control.Control.Height = double.NaN;
             Content = control.Control;
-            Title = control.Title;
-            Icon = control.Icon;
-        }
-
-        public EditorPanel(PeekableControl control) {
-            control.DockableControl.Control.Width = double.NaN;
-            control.DockableControl.Control.Height = double.NaN;
-            Content = control.DockableControl;
             Title = control.Title;
             Icon = control.Icon;
         }

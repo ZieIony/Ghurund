@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Ghurund.Editor.Panel;
+using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed.Audio;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
@@ -64,7 +65,7 @@ namespace Ghurund.Editor {
                 return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>());
             }).InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {
-                return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME) ?? new EditorSettings();
+                return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME, new Type[] { typeof(SceneEditorState) }) ?? new EditorSettings();
             }).InSingletonScope();
         }
 

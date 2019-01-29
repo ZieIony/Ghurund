@@ -30,26 +30,6 @@ namespace Ghurund.Controls.Workspace {
         }
     }
 
-    public class PeekableControl {
-        public ImageSource Icon { get; private set; }
-
-        public IDockableControl DockableControl { get; private set; }
-
-        public Title Title { get; private set; }
-
-        public PeekSide Side { get; private set; }
-
-        public Size Size { get; }
-
-        public PeekableControl(IDockableControl control, PeekSide side, Size suggestedSize) {
-            DockableControl = control;
-            Title = control.Title;
-            Icon = control.Icon;
-            Side = side;
-            Size = suggestedSize;
-        }
-    }
-
     public class Title {
         public string Short { get; set; }
         public string Long { get; set; }
@@ -65,35 +45,35 @@ namespace Ghurund.Controls.Workspace {
         }
     }
 
-    public interface IDockableControl : IDisposable {
+    public interface IDockablePanel : IDisposable {
         ImageSource Icon { get; }
         Control Control { get; }
         Title Title { get; }
     }
 
-    public interface IDockableControlFactory {
-        IDockableControl MakeControl(Type type);
+    public interface IDockablePanelFactory {
+        IDockablePanel MakePanel(Type type);
     }
 
-    public class DockableControls {
-        public IDockableControl[] Controls { get; }
+    public class DockableGroup {
+        public IDockablePanel[] Panels { get; }
         public Size SuggestedSize { get; }
 
-        public DockableControls(IDockableControl control, Size? suggestedSize = null) : this(new IDockableControl[] { control }, suggestedSize) {
+        public DockableGroup(IDockablePanel panel, Size? suggestedSize = null) : this(new IDockablePanel[] { panel }, suggestedSize) {
         }
 
-        public DockableControls(IDockableControl[] controls, Size? suggestedSize = null) {
-            Controls = controls;
+        public DockableGroup(IDockablePanel[] panels, Size? suggestedSize = null) {
+            Panels = panels;
             SuggestedSize = suggestedSize ?? new Size(200, 400);
         }
 
-        public DockableControls(IDockableControl control) {
-            Controls = new IDockableControl[] { control };
-            SuggestedSize = new Size(control.Control.ActualWidth, control.Control.ActualHeight);
+        public DockableGroup(IDockablePanel panel) {
+            Panels = new IDockablePanel[] { panel };
+            SuggestedSize = new Size(panel.Control.ActualWidth, panel.Control.ActualHeight);
         }
 
-        public DockableControls(EditorPanel panel) {
-            Controls = new IDockableControl[] { panel.Content as IDockableControl };
+        public DockableGroup(EditorPanel panel) {
+            Panels = new IDockablePanel[] { panel.Content as IDockablePanel };
             SuggestedSize = new Size(panel.ActualWidth, panel.ActualHeight);
         }
     }

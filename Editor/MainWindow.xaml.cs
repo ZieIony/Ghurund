@@ -56,8 +56,8 @@ namespace Ghurund.Editor {
             removeInvalidRecents();
 
             workspacePanel.Loaded += WorkspacePanel_Loaded;
-            Width = Settings.WindowSize.X;
-            Height = Settings.WindowSize.Y;
+            Width = Settings.WindowSize.Width != 0 ? Settings.WindowSize.Width : 800;
+            Height = Settings.WindowSize.Height != 0 ? Settings.WindowSize.Height : 600;
 
             if (Settings.ReopenMostRecentProject && Settings.RecentProjects.Count > 0) {
                 // TODO: reopen project
@@ -115,7 +115,7 @@ namespace Ghurund.Editor {
         private void StatisticsPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, StatisticsPanel);
         private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
 
-        private void openPanel(object sender, IDockableControl panel) {
+        private void openPanel(object sender, IDockablePanel panel) {
             new EditorWindow(workspacePanel, panel).Show();
         }
 
@@ -143,7 +143,7 @@ namespace Ghurund.Editor {
         }
 
         private void saveSettings() {
-            Settings.WindowSize = new Point(Width, Height);
+            Settings.WindowSize = new Size(Width, Height);
             Settings.WorkspaceState = workspacePanel.Save();
             Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
         }
