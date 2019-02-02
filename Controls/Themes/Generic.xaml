@@ -4,6 +4,10 @@
     xmlns:local="clr-namespace:Ghurund.Controls"
 	xmlns:propertyGrid="clr-namespace:Ghurund.Controls.PropertyGrid">
 
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="/Controls;component/HintTextBox.xaml"/>
+	</ResourceDictionary.MergedDictionaries>
+	
 	<Style TargetType="{x:Type propertyGrid:PropertyGrid}">
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -23,7 +27,7 @@
 						<DockPanel>
 
 							<Border DockPanel.Dock="Bottom" Padding="4">
-								<StackPanel HorizontalAlignment="Stretch">
+								<StackPanel x:Name="descriptionPanel" HorizontalAlignment="Stretch">
 									<TextBlock FontWeight="Bold" Text="{Binding /DisplayName}" />
 									<TextBlock Text="{Binding /Description}" TextWrapping="Wrap" />
 								</StackPanel>
@@ -94,48 +98,6 @@
 
 						</DockPanel>
 					</Border>
-				</ControlTemplate>
-			</Setter.Value>
-		</Setter>
-	</Style>
-
-	<Style TargetType="{x:Type local:HintTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
-		<Setter Property="HintText" Value="aa"/>
-		<Setter Property="HintBrush" Value="{DynamicResource Ghurund.Text.Hint}"/>
-		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
-		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
-		<Setter Property="Padding" Value="4,0,4,0"/>
-		<Setter Property="TextWrapping" Value="NoWrap"/>
-		<Setter Property="Template">
-			<Setter.Value>
-				<ControlTemplate TargetType="{x:Type local:HintTextBox}">
-					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-						<Canvas>
-							<TextBlock x:Name="PART_Hint" Text="{TemplateBinding HintText}" Foreground="{TemplateBinding HintBrush}" Visibility="Hidden" Focusable="False" Padding="{TemplateBinding Padding}"/>
-							<ScrollViewer x:Name="PART_ContentHost" Focusable="False" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Padding="{TemplateBinding Padding}"/>
-						</Canvas>
-					</Border>
-					<ControlTemplate.Triggers>
-						<Trigger Property="IsEnabled" Value="False">
-							<Setter Property="Opacity" TargetName="border" Value="0.56"/>
-						</Trigger>
-						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" TargetName="PART_ContentHost" Value="{DynamicResource Ghurund.Highlight}"/>
-							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
-						</Trigger>
-						<Trigger Property="IsKeyboardFocused" Value="True">
-							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
-						</Trigger>
-						<MultiTrigger>
-							<MultiTrigger.Conditions>
-								<Condition Property="Text" Value=""/>
-								<Condition Property="IsFocused" Value="False"/>
-							</MultiTrigger.Conditions>
-							<MultiTrigger.Setters>
-								<Setter Property="Visibility" TargetName="PART_Hint" Value="Visible"/>
-							</MultiTrigger.Setters>
-						</MultiTrigger>
-					</ControlTemplate.Triggers>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -7,19 +8,33 @@ using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Game;
 
 namespace Ghurund.Editor {
-    public interface ISceneExplorerPanel : IDockablePanel {
+    public interface ISceneExplorerPanel : IToolPanel {
         Scene Scene { get; set; }
-
-        event RoutedPropertyChangedEventHandler<Entity> SelectedEntityChanged;
     }
 
     public partial class SceneExplorerPanel : UserControl, ISceneExplorerPanel {
 
-        public static readonly RoutedEvent SelectedEntityChangedEvent = EventManager.RegisterRoutedEvent("SelectedEntityChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<Entity>), typeof(ISceneExplorerPanel));
+        private List<object> selectedItems = new List<object>();
+        public List<object> SelectedItems {
+            get => selectedItems;
+            set {
+                if (selectedItems == value)
+                    return;
+                selectedItems = value;
+                if (selectedItems == null)
+                    return;
+                foreach(var item in selectedItems) {
+                    if (item is Scene)
+                        Scene = item as Scene;
+                }
+            }
+        }
 
-        public event RoutedPropertyChangedEventHandler<Entity> SelectedEntityChanged {
-            add { AddHandler(SelectedEntityChangedEvent, value); }
-            remove { RemoveHandler(SelectedEntityChangedEvent, value); }
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<List<object>>), typeof(ISceneExplorerPanel));
+
+        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
 
@@ -27,6 +42,9 @@ namespace Ghurund.Editor {
 
         public SceneExplorerPanel() {
             InitializeComponent();
+
+            content.Visibility = Visibility.Collapsed;
+            hint.Visibility = Visibility.Visible;
         }
 
         ~SceneExplorerPanel() {
@@ -50,17 +68,32 @@ namespace Ghurund.Editor {
         public Title Title { get; } = new Title("Scene Explorer");
 
         private Scene scene;
+
         public Scene Scene {
             get => scene;
             set {
+                if (scene == value)
+                    return;
+
+                scene?.Release();
                 scene = value;
                 treeView.Items.Clear();
-                treeView.Items.Add(scene);
+                if (scene != null) {
+                    scene.AddReference();
+                    content.Visibility = Visibility.Visible;
+                    hint.Visibility = Visibility.Collapsed;
+                    treeView.Items.Add(scene);
+                } else {
+                    content.Visibility = Visibility.Collapsed;
+                    hint.Visibility = Visibility.Visible;
+                }
             }
         }
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
-            RaiseEvent(new RoutedPropertyChangedEventArgs<Entity>(e.OldValue as Entity, e.NewValue as Entity, SelectedEntityChangedEvent));
+            SelectedItems.Clear();
+            SelectedItems.Add(e.NewValue);
+            RaiseEvent(new RoutedPropertyChangedEventArgs<List<object>>(null, SelectedItems, SelectionChangedEvent));
         }
 
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {

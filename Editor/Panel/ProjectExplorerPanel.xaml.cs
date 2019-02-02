@@ -16,6 +16,9 @@ namespace Ghurund.Editor {
 
         public ProjectExplorerPanel() {
             InitializeComponent();
+
+            hint.Visibility = System.Windows.Visibility.Visible;
+            content.Visibility = System.Windows.Visibility.Collapsed;
         }
 
         ~ProjectExplorerPanel() {
@@ -45,12 +48,17 @@ namespace Ghurund.Editor {
                 project = value;
                 treeView.Items.Clear();
                 if (project != null) {
+                    content.Visibility = System.Windows.Visibility.Visible;
+                    hint.Visibility = System.Windows.Visibility.Collapsed;
                     TreeViewItem item = new TreeViewItem {
                         Header = value.Name,
                         Tag = new FileInfo(value.Path).Directory
                     };
                     item.Items.Add("Loading...");
                     treeView.Items.Add(item);
+                } else {
+                    content.Visibility = System.Windows.Visibility.Collapsed;
+                    hint.Visibility = System.Windows.Visibility.Visible;
                 }
             }
         }

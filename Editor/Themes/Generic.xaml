@@ -1,10 +1,62 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:GhurundEditor">
+	xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls">
 
 	<SolidColorBrush x:Key="Ghurund.Primary">#ff7043</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.PrimaryDark">#e64a19</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
+
+	<Style x:Key="FilterBoxStyle" TargetType="{x:Type controls:HintTextBox}" BasedOn="{StaticResource {x:Type controls:HintTextBox}}">
+		<Setter Property="HintText" Value="Filter"/>
+		<Setter Property="Background" Value="{DynamicResource Ghurund.BackgroundLight}"/>
+		<Setter Property="Margin" Value="2,2,2,2"/>
+		<Setter Property="MinWidth" Value="100"/>
+	</Style>
+
+	<Style x:Key="NoContentHint" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Secondary}"/>
+		<Setter Property="HorizontalAlignment" Value="Center"/>
+		<Setter Property="VerticalAlignment" Value="Center"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+		<Setter Property="TextAlignment" Value="Center"/>
+		<Setter Property="Margin" Value="4,4,4,4"/>
+	</Style>
 	
+    <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Background" Value="{DynamicResource Ghurund.BackgroundLight}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
+		<Setter Property="SelectionBrush" Value="{DynamicResource Ghurund.Selection}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
+                        </Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                    <Condition Property="IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="{DynamicResource Ghurund.Selection}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -12,11 +13,37 @@ using Ghurund.Managed.Game;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public interface IParametersPanel : IDockablePanel {
+    public interface IParametersPanel : IToolPanel {
         Entity SelectedEntity { get; set; }
     }
 
     public partial class ParametersPanel : UserControl, IParametersPanel {
+
+        private List<object> selectedItems = new List<object>();
+        public List<object> SelectedItems {
+            get => selectedItems;
+            set {
+                selectedItems = value;
+                if (selectedItems == null)
+                    return;
+                for (int i = selectedItems.Count - 1; i >= 0; i--) {
+                    var item = selectedItems[i];
+                    if (item is Entity) {
+                        SelectedEntity = item as Entity;
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<List<object>>), typeof(IParametersPanel));
+
+        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
+
         [Inject]
         public ParameterManager ParameterManager { get; set; }
 
@@ -73,6 +100,9 @@ namespace Ghurund.Editor {
         public Entity SelectedEntity {
             get => selectedEntity;
             set {
+                if (selectedEntity == value)
+                    return;
+
                 value?.AddReference();
                 selectedEntity?.Release();
 
@@ -81,7 +111,7 @@ namespace Ghurund.Editor {
                 if (selectedEntity != null) {
                     for (int i = 0; i < selectedEntity.Parameters.Count; i++) {
                         Parameter p = selectedEntity.Parameters[i];
-                        if (p.NativePtr != IntPtr.Zero) {
+                        if (p != null) {
                             var property = new Property(p) {
                                 DisplayName = p.Name,
                                 Category = "Selected object"

@@ -8,7 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="182.869" d:DesignWidth="153.602">
 	<DockPanel>
-		<controls:HintTextBox Name="filterBox" Height="20" DockPanel.Dock="Top" BorderThickness="0,1,0,1" HintText="Filter" Background="{DynamicResource Ghurund.BackgroundLight}" />
-		<propertyGrid:PropertyGrid Name="propertyGrid" Background="{DynamicResource Ghurund.BackgroundLight}" Filter="{Binding ElementName=filterBox, Path=Text}"/>
+		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+			<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}" />
+		</WrapPanel>
+		<propertyGrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
 	</DockPanel>
 </UserControl>

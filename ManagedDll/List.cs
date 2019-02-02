@@ -65,12 +65,19 @@ namespace Ghurund.Managed {
 
         private MakeNativeObjectDelegate<T> makeNativeObjectDelegate;
 
+        public List() {
+        }
+
         public List(IntPtr ptr, MakeNativeObjectDelegate<T> makeNativeObjectDelegate) : base(ptr) {
             this.makeNativeObjectDelegate = makeNativeObjectDelegate;
         }
 
         public T this[int index] {
-            get => makeNativeObjectDelegate.Invoke(NativeLists.List_get(NativePtr, index));
+            get {
+                var itemPtr = NativeLists.List_get(NativePtr, index);
+                return itemPtr == IntPtr.Zero ? null : makeNativeObjectDelegate.Invoke(itemPtr);
+            }
+
             set => NativeLists.List_set(NativePtr, index, value.NativePtr);
         }
 

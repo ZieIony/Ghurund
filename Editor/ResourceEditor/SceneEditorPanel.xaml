@@ -27,7 +27,6 @@
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
 				<CheckBox x:Name="cameraPerspective" VerticalAlignment="Center" Content="Perspective" Unchecked="Perspective_Checked" Checked="Perspective_Checked" IsChecked="True"/>
-				<Button Click="Button_Click" Content="select camera" Margin="4,0,4,0"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<engine:SceneView x:Name="sceneView"/>

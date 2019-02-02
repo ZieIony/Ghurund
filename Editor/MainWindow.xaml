@@ -14,71 +14,73 @@
 	</WindowChrome.WindowChrome>
 	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
 		<DockPanel Background="{DynamicResource Ghurund.Background}">
-			<workspace:TitleBar DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}" Height="32" Title="GhurundEditor"/>
-			<Menu DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-				<MenuItem Header="_File">
-					<MenuItem Header="_New Project" Click="ProjectNew_Click"/>
-					<MenuItem Header="Open _Project" Click="ProjectOpen_Click"/>
-					<MenuItem Header="_Close Project" Click="ProjectClose_Click"/>
-					<Separator/>
-					<MenuItem Header="New">
-						<MenuItem.Icon>
-							<Image Source="Resources/file32.png"/>
-						</MenuItem.Icon>
+			<DockPanel DockPanel.Dock="Top" Margin="0,4,0,0">
+				<Menu Background="{DynamicResource Ghurund.Background}">
+					<MenuItem Header="_File">
+						<MenuItem Header="_New Project" Click="ProjectNew_Click"/>
+						<MenuItem Header="Open _Project" Click="ProjectOpen_Click"/>
+						<MenuItem Header="_Close Project" Click="ProjectClose_Click"/>
+						<Separator/>
+						<MenuItem Header="New">
+							<MenuItem.Icon>
+								<Image Source="Resources/file32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Open" Click="FileOpen_Click"/>
+						<Separator/>
+						<MenuItem Header="_Exit" Click="Exit_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/exit32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
 					</MenuItem>
-					<MenuItem Header="_Open" Click="FileOpen_Click"/>
-					<Separator/>
-					<MenuItem Header="_Exit" Click="Exit_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/exit32.png"/>
-						</MenuItem.Icon>
+					<MenuItem Header="_View">
+						<MenuItem Header="_Welcome Page" Click="WelcomePage_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/welcomePage32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<Separator/>
+						<MenuItem Header="Project E_xplorer" Click="ProjectExplorer_Click">
+							<MenuItem.Icon >
+								<Image Source="Resources/projectExplorer32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/sceneExplorer32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Properties" Click="Properties_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/properties32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="P_arameters" Click="Parameters_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/properties32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Resource Manager" Click="ResourceManager_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/resourceManager32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<Separator/>
+						<MenuItem Header="S_tatistics" Click="StatisticsPanel_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/statistics32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Header="_Logs" Click="LogPanel_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/logs32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
 					</MenuItem>
-				</MenuItem>
-				<MenuItem Header="_View">
-					<MenuItem Header="_Welcome Page" Click="WelcomePage_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/welcomePage32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<Separator/>
-					<MenuItem Header="Project E_xplorer" Click="ProjectExplorer_Click">
-						<MenuItem.Icon >
-							<Image Source="Resources/projectExplorer32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/sceneExplorer32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<MenuItem Header="_Properties" Click="Properties_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/properties32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<MenuItem Header="P_arameters" Click="Parameters_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/properties32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<MenuItem Header="_Resource Manager" Click="ResourceManager_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/resourceManager32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<Separator/>
-					<MenuItem Header="S_tatistics" Click="StatisticsPanel_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/statistics32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-					<MenuItem Header="_Logs" Click="LogPanel_Click">
-						<MenuItem.Icon>
-							<Image Source="Resources/logs32.png"/>
-						</MenuItem.Icon>
-					</MenuItem>
-				</MenuItem>
-			</Menu>
+				</Menu>
+				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}"/>
+			</DockPanel>
 			<StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource Ghurund.Background}">
 				<StatusBarItem Name="currentTask">
 					<DockPanel>

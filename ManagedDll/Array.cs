@@ -63,7 +63,11 @@ namespace Ghurund.Managed {
         }
 
         public T this[int index] {
-            get => makeNativeObjectDelegate.Invoke(NativeArrays.Array_get(NativePtr, index));
+            get {
+                var itemPtr = NativeArrays.Array_get(NativePtr, index);
+                return itemPtr == IntPtr.Zero ? null : makeNativeObjectDelegate.Invoke(itemPtr);
+            }
+
             set => NativeArrays.Array_set(NativePtr, index, value.NativePtr);
         }
 

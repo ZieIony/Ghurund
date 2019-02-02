@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -8,10 +10,21 @@ using Ghurund.Controls.Workspace;
 
 namespace Ghurund.Editor.ResourceEditor {
 
-    public interface IImageEditor : IDockablePanel {
+    public interface IImageEditor : IDocumentPanel {
     }
 
-    public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl, IEditorPanel {
+    public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl {
+
+        public object Document { get; set; }
+
+        public List<object> SelectedItems {
+            get => null;
+            set {
+                // nothing, this editor doesn't support selection change
+            }
+        }
+
+        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged;
 
         private bool disposed = false;
 
@@ -36,6 +49,7 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         private BitmapImage image;
+
         public BitmapImage Image {
             get => image;
             set {

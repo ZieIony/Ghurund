@@ -55,9 +55,11 @@ namespace Ghurund.Controls.Workspace {
 
     public class PanelActionEventArgs : RoutedEventArgs {
         public EditorPanel Panel { get; }
+        public TabControl TabControl { get; }
 
-        public PanelActionEventArgs(EditorPanel control, RoutedEvent routedEvent) : base(routedEvent) {
+        public PanelActionEventArgs(EditorPanel control, TabControl tabControl, RoutedEvent routedEvent) : base(routedEvent) {
             Panel = control;
+            TabControl = tabControl;
         }
     }
 

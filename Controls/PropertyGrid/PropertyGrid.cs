@@ -87,6 +87,9 @@ namespace Ghurund.Controls.PropertyGrid {
 
             var listBox = GetTemplateChild("listBox") as ListBox;
             listBox.ItemsSource = view;
+
+            var descriptionPanel = GetTemplateChild("descriptionPanel") as StackPanel;
+            descriptionPanel.DataContext = view;
         }
     }
 }

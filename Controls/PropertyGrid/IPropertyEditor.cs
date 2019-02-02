@@ -34,4 +34,17 @@ namespace Ghurund.Controls.PropertyGrid {
             return textBox;
         }
     }
+
+    public class TextPropertyEditor : IPropertyEditor {
+        public FrameworkElement MakeControl(Value property) {
+            TextBox textBox = new TextBox();
+            textBox.Text = property.Getter() as string;
+            textBox.KeyDown += (object sender, KeyEventArgs e) => {
+                if (e.Key == Key.Enter) {
+                    property.Setter(textBox.Text);
+                }
+            };
+            return textBox;
+        }
+    }
 }

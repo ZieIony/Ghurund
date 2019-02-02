@@ -50,7 +50,7 @@ namespace Ghurund.Controls.Workspace {
 
         protected override void OnPreviewMouseDown(MouseButtonEventArgs e) {
             base.OnPreviewMouseDown(e);
-            RaiseEvent(new PanelActionEventArgs(this, WorkspacePanel.PanelFocusedEvent));
+            RaiseEvent(new PanelActionEventArgs(this, (Parent as EditorTab).Parent as TabControl, WorkspacePanel.PanelFocusedEvent));
         }
     }
 }

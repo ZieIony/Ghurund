@@ -50,6 +50,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="HintTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -73,10 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeTextBox.cs" />
+    <Compile Include="HintTextBox.cs">
+      <DependentUpon>HintTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IconCheckBox.cs" />
     <Compile Include="LogsView.cs" />
     <Compile Include="PropertyGrid\EditorAttribute.cs" />
-    <Compile Include="HintTextBox.cs" />
     <Compile Include="IconButton.cs" />
     <Compile Include="IconRadioButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

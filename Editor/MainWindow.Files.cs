@@ -43,7 +43,7 @@ namespace Ghurund.Editor {
         }
 
         private void openFile(string path) {
-            IEditorPanel editorPanel = null;
+            IDocumentPanel editorPanel = null;
 
             if (path.EndsWith("jpg") || path.EndsWith("jpeg") || path.EndsWith("png")) {
                 editorPanel = new ImageEditorPanel();

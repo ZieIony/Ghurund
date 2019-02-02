@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,17 +21,17 @@ namespace Ghurund.Editor.ResourceEditor {
         public string FileName { get; set; }
     }
 
-    public interface ISceneEditor : IDockablePanel {
+    public interface ISceneEditor : IDocumentPanel {
         Scene Scene { get; set; }
-
-        event RoutedPropertyChangedEventHandler<object> SelectionChanged;
     }
 
-    public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl, IEditorPanel {
+    public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
 
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<object>), typeof(SceneEditorPanel));
+        public object Document { get; set; }
 
-        public event RoutedPropertyChangedEventHandler<object> SelectionChanged {
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>>), typeof(ISceneEditor));
+
+        public event RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>> SelectionChanged {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
@@ -64,6 +65,21 @@ namespace Ghurund.Editor.ResourceEditor {
         public Title Title { get; private set; }
 
         public bool NeedsSaving => false;
+
+        System.Collections.Generic.List<object> selectedItems = new System.Collections.Generic.List<object>();
+        public System.Collections.Generic.List<object> SelectedItems {
+            get => selectedItems;
+            set {
+                selectedItems = value;
+                sceneView.SelectedEntities = new System.Collections.Generic.List<Entity>();
+                if (selectedItems != null) {
+                    foreach(object o in selectedItems) {
+                        if (o != Scene&&o is Entity)
+                            sceneView.SelectedEntities.Add(o as Entity);
+                    }
+                }
+            }
+        }
 
         public SceneEditorPanel() {
             InitializeComponent();
@@ -121,10 +137,11 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         public bool Load(string fileName) {
-            Scene = new Scene();
-            if (Scene.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
+            var scene = new Scene();
+            if (scene.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
                 return false;
-            Scene.InitParameters(ParameterManager);
+            scene.InitParameters(ParameterManager);
+            Scene = scene;
             return true;
         }
 
@@ -197,10 +214,6 @@ namespace Ghurund.Editor.ResourceEditor {
             sceneView.CameraMode = ((CameraMode?)cameraPicker.SelectedValue) ?? CameraMode.Default;
             cameraPerspective.IsChecked = sceneView.Camera.Perspective;
             sceneView.Refresh();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            RaiseEvent(new RoutedPropertyChangedEventArgs<Entity>(null, sceneView.Camera, SceneExplorerPanel.SelectedEntityChangedEvent));
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
@@ -15,7 +15,7 @@ using Microsoft.Win32;
 using Ninject;
 
 namespace Ghurund.Editor.ResourceEditor {
-    public interface IMaterialEditor : IDockablePanel {
+    public interface IMaterialEditor : IDocumentPanel {
         Material Material { get; set; }
     }
 
@@ -23,7 +23,18 @@ namespace Ghurund.Editor.ResourceEditor {
         Cube, Sphere, Plane, Custom
     }
 
-    public partial class MaterialEditorPanel : UserControl, IMaterialEditor, IStateControl, IEditorPanel {
+    public partial class MaterialEditorPanel : UserControl, IMaterialEditor, IStateControl {
+
+        public object Document { get; set; }
+
+        public System.Collections.Generic.List<object> SelectedItems {
+            get => null;
+            set {
+                // nothing, this editor doesn't support selection change
+            }
+        }
+
+        public event RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>> SelectionChanged;
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -37,6 +48,9 @@ namespace Ghurund.Editor.ResourceEditor {
         public Material Material {
             get => material;
             set {
+                if (material == value)
+                    return;
+
                 material?.Release();
                 material = value;
                 if (material != null) {
@@ -82,24 +96,27 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         public bool Load(string fileName) {
-            /*var material = new Material();
-            var shader = new Shader();
-            if (Status.OK == shader.Load(ResourceManager, ResourceContext, path)) {
+            var material = new Material();
+            if (Shader.Formats.Any(format => fileName.EndsWith(format.Extension))) {
+                var shader = new Shader();
+                if (shader.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
+                    material.Release();
+                    shader.Release();
+                    return false;
+                }
                 material.Shader = shader;
                 material.Valid = true;
-                panel = new MaterialEditorPanel() {
-                    Material = material
-                };
+                Material = material;
+                material.Release();
+                shader.Release();
             } else {
-                MessageBox.Show(this, "There was an error while reading the file. Please make sure that the file is correct, all dependencies are available and its format matches the extension. More information can be found in the logs.", "Error while reading the file", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }*/
-
-            Material m = new Material();
-            if (m.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
-                return false;
-            Material = m;
-            m.Release();
+                if (material.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
+                    material.Release();
+                    return false;
+                }
+                Material = material;
+                material.Release();
+            }
             return true;
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -30,6 +32,21 @@ namespace Ghurund.Editor {
                 bitmapImage.EndInit();
             }
             return bitmapImage;
+        }
+
+        public static IEnumerable<T> Filter<T>(this IEnumerable<T> source, Func<T, bool> predicate) => source.Where(predicate);
+        public static IEnumerable<T2> Map<T, T2>(this IEnumerable<T> source, Func<T, T2> predicate) => source.Select(predicate);
+
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action) {
+            foreach (T item in source)
+                action(item);
+        }
+
+        public static bool Any<T>(this IEnumerable<T> source, Func<T, bool> predicate) {
+            foreach (T item in source)
+                if (predicate(item))
+                    return true;
+            return false;
         }
     }
 }

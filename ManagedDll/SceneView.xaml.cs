@@ -81,6 +81,11 @@ namespace Ghurund.Managed {
             }
         }
 
+        public System.Collections.Generic.List<Entity> SelectedEntities {
+            get;
+            set;
+        }
+
         public SceneView() {
             InitializeComponent();
         }

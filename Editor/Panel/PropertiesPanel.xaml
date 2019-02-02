@@ -6,9 +6,16 @@
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 xmlns:propertyGrid="clr-namespace:Ghurund.Controls.PropertyGrid;assembly=Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="208.611" d:DesignWidth="254.661">
-	<DockPanel>
-		<controls:HintTextBox Name="filterBox" Height="20"  TextWrapping="NoWrap" DockPanel.Dock="Top" BorderThickness="0,0,0,1" HintText="Filter" Padding="4,0,4,0" Background="{DynamicResource Ghurund.BackgroundLight}" />
-		<propertyGrid:PropertyGrid Name="propertyGrid" Background="{DynamicResource Ghurund.BackgroundLight}" Filter="{Binding ElementName=filterBox, Path=Text}"/>
-	</DockPanel>
+             d:DesignHeight="208.611" d:DesignWidth="142.732">
+	<Grid>
+		<DockPanel x:Name="content">
+			<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+				<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}"/>
+			</WrapPanel>
+			<propertyGrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
+		</DockPanel>
+		<Grid Name="hint" Background="{DynamicResource Ghurund.Background}" Visibility="Collapsed">
+			<TextBlock Style="{StaticResource NoContentHint}">Select an object to see its properties</TextBlock>
+		</Grid>
+	</Grid>
 </UserControl>

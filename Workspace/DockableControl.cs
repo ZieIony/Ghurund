@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -49,6 +50,18 @@ namespace Ghurund.Controls.Workspace {
         ImageSource Icon { get; }
         Control Control { get; }
         Title Title { get; }
+    }
+
+    public interface IToolPanel : IDockablePanel {
+        List<object> SelectedItems { get; set; }
+        event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged;
+    }
+
+    public interface IDocumentPanel : IToolPanel {
+        object Document { get; set; }
+        bool NeedsSaving { get; }
+        bool Save(string fileName = null);
+        bool Load(string fileName);
     }
 
     public interface IDockablePanelFactory {

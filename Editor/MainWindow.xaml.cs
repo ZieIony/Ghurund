@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using Ghurund.Controls.Workspace;
 using Ghurund.Editor.Panel;
+using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
@@ -48,6 +49,8 @@ namespace Ghurund.Editor {
         [Inject]
         public ResourceContext ResourceContext { get; set; }
 
+        private System.Collections.Generic.List<IDocumentPanel> documentPanels = new System.Collections.Generic.List<IDocumentPanel>();
+
         public MainWindow() {
             InitializeComponent();
 
@@ -72,7 +75,36 @@ namespace Ghurund.Editor {
             AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
 
-            AddHandler(SceneExplorerPanel.SelectedEntityChangedEvent, new RoutedPropertyChangedEventHandler<Entity>(SceneExplorer_SelectedEntityChanged));
+            AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>>(selectionChangedHandler));
+            AddHandler(WorkspacePanel.PanelFocusedEvent, new PanelActionEventHandler(panelFocused));
+        }
+
+        IDocumentPanel mostRecentDocumentPanel;
+        IToolPanel mostRecentToolPanel;
+        TabControl mostRecentDocumentTabControl, mostRecentToolTabControl;
+
+        private void panelFocused(object sender, PanelActionEventArgs args) {
+            if (args.Panel.Content is IDocumentPanel || args.Panel.Content is WelcomePage) {
+                mostRecentDocumentPanel = args.Panel.Content as IDocumentPanel;
+                mostRecentDocumentTabControl = args.TabControl;
+            } else if (args.Panel.Content is IToolPanel) {
+                mostRecentToolPanel = args.Panel.Content as IToolPanel;
+                mostRecentToolTabControl = args.TabControl;
+            }
+
+            if(args.Panel.Content is ISceneEditor) {
+                var editor = args.Panel.Content as ISceneEditor;
+                SceneExplorer.Scene = editor.Scene;
+            }
+        }
+
+        private void selectionChangedHandler(object sender, RoutedPropertyChangedEventArgs<System.Collections.Generic.List<object>> e) {
+            foreach (var documentPanel in documentPanels)
+                documentPanel.SelectedItems = e.NewValue;
+            SceneExplorer.SelectedItems = e.NewValue;
+            PropertiesPanel.SelectedItems = e.NewValue;
+            ParametersPanel.SelectedItems = e.NewValue;
+            //ProjectExplorer.SelectedItems = e.NewValue;
         }
 
         private void removeInvalidRecents() {
@@ -93,11 +125,6 @@ namespace Ghurund.Editor {
             Settings.RecentProjects.AddRange(recentProjects);
         }
 
-        private void SceneExplorer_SelectedEntityChanged(object sender, RoutedPropertyChangedEventArgs<Entity> e) {
-            PropertiesPanel.SelectedObject = e.NewValue;
-            ParametersPanel.SelectedEntity = e.NewValue;
-        }
-
         private void WorkspacePanel_Loaded(object sender, RoutedEventArgs e) {
             workspacePanel.Restore(Settings.WorkspaceState, new DockableControlFactory());
         }
@@ -116,7 +143,18 @@ namespace Ghurund.Editor {
         private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
 
         private void openPanel(object sender, IDockablePanel panel) {
-            new EditorWindow(workspacePanel, panel).Show();
+            // TODO: what if panel is no longer visible?
+            if (mostRecentDocumentTabControl != null && panel is IDocumentPanel) {
+                var item = new EditorTab(panel);
+                mostRecentDocumentTabControl.Items.Add(item);
+                mostRecentDocumentTabControl.SelectedItem = item;
+            } else if (mostRecentToolTabControl != null && panel is IToolPanel) {
+                var item = new EditorTab(panel);
+                mostRecentToolTabControl.Items.Add(item);
+                mostRecentToolTabControl.SelectedItem = item;
+            } else {
+                new EditorWindow(workspacePanel, panel).Show();
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e) {

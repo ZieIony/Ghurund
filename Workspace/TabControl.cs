@@ -46,7 +46,7 @@ namespace Ghurund.Controls.Workspace {
         protected override void OnSelectionChanged(SelectionChangedEventArgs e) {
             base.OnSelectionChanged(e);
             if (SelectedItem != null)
-                RaiseEvent(new PanelActionEventArgs((SelectedItem as EditorTab).Content as EditorPanel, WorkspacePanel.PanelFocusedEvent));
+                RaiseEvent(new PanelActionEventArgs((SelectedItem as EditorTab).Content as EditorPanel, this, WorkspacePanel.PanelFocusedEvent));
         }
 
         public void Save(DockState state) {

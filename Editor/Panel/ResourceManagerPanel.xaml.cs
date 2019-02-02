@@ -42,7 +42,7 @@ namespace Ghurund.Editor {
 
             EditorKernel.Instance.Inject(this);
 
-            supportedExtensions = ResourceFormat.Values.Select(format => format.Extension).Where(extension => extension != null).ToArray();
+            supportedExtensions = ResourceFormat.Values.Map(format => format.Extension).Filter(extension => extension != null).ToArray();
 
             foreach (string library in Settings.Libraries)
                 loadLibrary(library);

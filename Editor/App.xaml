@@ -10,6 +10,7 @@
 				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Theme.Light.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Theme.xaml" />
 				<ResourceDictionary Source="pack://application:,,,/Controls;component/Themes/Typography.xaml" />
+				<ResourceDictionary Source="Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<SolidColorBrush x:Key="Ghurund.Primary">#ffa726</SolidColorBrush>

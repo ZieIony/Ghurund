@@ -48,5 +48,13 @@ namespace Ghurund.Managed {
 
             disposed = true;
         }
+
+        public override bool Equals(object obj) {
+            return obj != null && obj.GetType() == GetType() && NativePtr == (obj as NativeClass).NativePtr;
+        }
+
+        public override int GetHashCode() {
+            return NativePtr.GetHashCode();
+        }
     }
 }
