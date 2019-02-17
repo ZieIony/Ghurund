@@ -36,7 +36,7 @@ namespace Ghurund {
 
         frames = ghnew Frame[frameCount];
         for(unsigned int i = 0; i < frameCount; i++) {
-            ComPtr<ID3D12Resource> renderTargetBuffer;
+            ID3D12Resource *renderTargetBuffer;
             swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargetBuffer));
 
             RenderTarget *renderTarget = ghnew RenderTarget();

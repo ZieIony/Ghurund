@@ -22,17 +22,17 @@ namespace Ghurund {
             windowed = true;
         }
 
-        void parse(const String &settings);
+        void parse(const String& settings);
 
-        Status load(const tchar *fileName) {
-            File file(fileName);
+        Status load(const FilePath& path) {
+            File file(path);
             file.read();
             *this = *(Settings*)file.Data;
             return Status::OK;
         }
 
-        Status save(const tchar *fileName)const {
-            File file(fileName);
+        Status save(const FilePath& path)const {
+            File file(path);
             file.setData(this, sizeof(Settings));
             file.write();
             return Status::OK;

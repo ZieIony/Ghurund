@@ -37,4 +37,12 @@ namespace Ghurund {
         material->Valid = true;
         return material;
     }
+
+    Material *Materials::makeLightPass(ResourceManager &resourceManager, ResourceContext &context) {
+        Shader *shader = Shaders::loadLightPass(resourceManager, context);
+        Material *material = ghnew Material(shader);
+        shader->release();
+        material->Valid = true;
+        return material;
+    }
 }

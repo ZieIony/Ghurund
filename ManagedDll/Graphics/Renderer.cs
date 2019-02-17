@@ -1,7 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Application;
+using Ghurund.Managed.Collection;
 using Ghurund.Managed.Game;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics {
     public class Renderer : NativeClass {
@@ -12,28 +15,30 @@ namespace Ghurund.Managed.Graphics {
         protected override IntPtr NewObject() => Renderer_new();
 
 
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_init(IntPtr nativeRenderer, IntPtr graphics, IntPtr window);
+        public Renderer() {
+            Steps = new PointerList<RenderStep>(Renderer_getSteps(NativePtr), p => new RenderStep(p));
+        }
 
-        public void Init(Graphics graphics, Window window) {
-            Renderer_init(NativePtr, graphics.NativePtr, window.NativePtr);
+        public Renderer(IntPtr ptr) : base(ptr) {
+            Steps = new PointerList<RenderStep>(Renderer_getSteps(NativePtr), p => new RenderStep(p));
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_getSteps(IntPtr _this);
+
+        [Browsable(false)]
+        public PointerList<RenderStep> Steps {
+            get; internal set;
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Renderer_init(IntPtr nativeRenderer, IntPtr window, IntPtr resourceManager, IntPtr resourceContext);
+
+        public void Init(Window window, ResourceManager resourceManager, ResourceContext resourceContext) {
+            Renderer_init(NativePtr, window.NativePtr, resourceManager.NativePtr, resourceContext.NativePtr);
             Statistics = new RenderingStatistics(Renderer_getStatistics(NativePtr));
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_startFrame(IntPtr nativeRenderer);
-
-        public CommandList StartFrame() {
-            return new CommandList(Renderer_startFrame(NativePtr));
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_finishFrame(IntPtr nativeRenderer);
-
-        public void FinishFrame() {
-            Renderer_finishFrame(NativePtr);
         }
 
 
@@ -51,19 +56,13 @@ namespace Ghurund.Managed.Graphics {
         public void Resize(uint width, uint height) {
             Renderer_resize(NativePtr, width, height);
         }
-
+        
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Renderer_draw(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Renderer _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Camera camera,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity entity,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ParameterManager parameterManager,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material overrideMaterial,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material invalidMaterial);
+        private static extern void Renderer_render(IntPtr nativeRenderer);
 
-        public void Draw(Camera camera, Entity entity, ParameterManager parameterManager, Material overrideMaterial, Material invalidMaterial) {
-            Renderer_draw(this, camera, entity, parameterManager, overrideMaterial, invalidMaterial);
+        public void Render() {
+            Renderer_render(NativePtr);
         }
 
 

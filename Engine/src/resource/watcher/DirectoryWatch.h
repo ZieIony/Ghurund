@@ -7,25 +7,26 @@
 #include "FileChange.h"
 #include "core/Buffer.h"
 #include "core/WorkerThread.h"
+#include "resource/FilePath.h"
 
 namespace Ghurund {
     class DirectoryWatch {
     private:
         HANDLE dirHandle;
         OVERLAPPED overlapped;
-        String directory;
+        DirectoryPath directory;
         Buffer buffer;
 
         WorkerThread delayThread;
 
-        Map<String, std::function<void(const String &fileName, const FileChange)>> files;
+        Map<UnicodeString, std::function<void(const FilePath &path, const FileChange)>> files;
 
         void fileChanged(Buffer &buffer);
 
         static void CALLBACK notificationCompletion(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped);
 
     public:
-        DirectoryWatch(String &dir):directory(dir), buffer(Buffer(10*1024)) {
+        DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10*1024)) {
             overlapped.hEvent = this;
 
             dirHandle = ::CreateFile(directory, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
@@ -36,12 +37,12 @@ namespace Ghurund {
 
         ~DirectoryWatch();
 
-        void addFile(const String &file, std::function<void(const String &fileName, const FileChange)> fileChangedHandler) {
-            files.set(file, fileChangedHandler);
+        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler) {
+            files.set(path, fileChangedHandler);
         }
 
-        void removeFile(const String &file) {
-            files.remove(file);
+        void removeFile(const FilePath &path) {
+            files.remove(path);
         }
 
         size_t getFileCount() {
@@ -52,10 +53,10 @@ namespace Ghurund {
 
         void readChanges();
 
-        const String &getDirectory() {
+        const DirectoryPath &getDirectory() {
             return directory;
         }
 
-        __declspec(property(get = getDirectory)) String &Directory;
+        __declspec(property(get = getDirectory)) DirectoryPath &Directory;
     };
 }

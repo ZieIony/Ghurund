@@ -1,3 +1,4 @@
+#include "FileUtils.h"
 #include "core/Logger.h"
 #include "application/Application.h"
 #include "audio/Sound.h"
@@ -82,9 +83,9 @@ public:
 
         cameraController = ghnew CameraController(*camera, &app.Window);
 
-        File sceneFile("test.scene");
+        File sceneFile("test/test.scene");
         if(sceneFile.Exists) {
-            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test.scene", [&](Ghurund::Scene *scene, Status result) {
+            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test/test.scene", [&](Ghurund::Scene *scene, Status result) {
                 scene->initParameters(app.ParameterManager);
                 this->scene = scene;
                 scene->release();
@@ -95,21 +96,21 @@ public:
             Model *model;
             {
                 Mesh *mesh;
-                File file("obj/lamborghini/Lamborghini_Aventador.mesh");
+                File file("test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 if(file.Exists) {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
                 } else {
-                    mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "obj/lamborghini/Lamborghini_Aventador.obj");
+                    mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/lamborghini/Lamborghini_Aventador.obj");
                     if(mesh!=nullptr)
-                        mesh->save(app.ResourceManager, "obj/lamborghini/Lamborghini_Aventador.mesh");
+                        mesh->save(app.ResourceManager, "test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 }
 
-                Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+                Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
                 if(image!=nullptr&&mesh!=nullptr) {
                     Texture *texture = ghnew Texture();
                     texture->init(app.ResourceContext, *image);
 
-                    Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "../shaders/basic.hlsl");
+                    Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "shaders/basic.hlsl");
                     Material *material = ghnew Material(shader);
                     material->Textures.set("diffuse", texture);
                     material->Valid = true;
@@ -149,7 +150,7 @@ public:
                 selection->release();
             }*/
 
-            Status result = scene->save(app.ResourceManager, "test.scene", SaveOption::SKIP_IF_EXISTS);
+            Status result = scene->save(app.ResourceManager, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if(result!=Status::OK)
                 Logger::log(_T("failed to save scene\n"));
 
@@ -162,8 +163,8 @@ public:
         editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
     }
 
-    virtual void onPreDraw(RenderingBatch &batch) {
-        GlobalEntity<Model> *model = batch.pick(*camera, app.Input.MousePos);
+    virtual void onPreDraw(RenderStep &step) {
+        GlobalEntity<Model> *model = step.pick(app.Input.MousePos);
         if(model!=nullptr) {
             //          selection->Position = model->BoundingBox.Center;
           //            selection->Scale = model->BoundingBox.Extents;
@@ -175,10 +176,9 @@ public:
     }
 
     virtual void onDraw(Renderer &renderer, ParameterManager &parameterManager) override {
-        camera->updateParameters();
         if(scene!=nullptr)
             renderer.draw(*camera, *scene, parameterManager, nullptr, invalidMaterial);
-        renderer.draw(*camera, *editorScene, parameterManager);
+        renderer.draw(*camera, *editorScene, parameterManager, nullptr, invalidMaterial);
     }
 
     virtual void onUninit() override {

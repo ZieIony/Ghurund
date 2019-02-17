@@ -25,10 +25,13 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\collection\List.cpp" />
+    <ClCompile Include="src\collection\ASCIIString.cpp" />
+    <ClCompile Include="src\collection\UnicodeString.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\core\WorkerThread.cpp" />
+    <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\game\entity\Scene.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
@@ -42,7 +45,7 @@
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
-    <ClCompile Include="src\graphics\RenderingBatch.cpp" />
+    <ClCompile Include="src\graphics\RenderStep.cpp" />
     <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\game\entity\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -74,11 +77,14 @@
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\collection\Array.h" />
+    <ClInclude Include="src\collection\ASCIIString.h" />
     <ClInclude Include="src\collection\AverageValue.h" />
     <ClInclude Include="src\collection\BufferedValue.h" />
+    <ClInclude Include="src\collection\GenericString.h" />
     <ClInclude Include="src\collection\HashMap.h" />
     <ClInclude Include="src\collection\PointerList.h" />
     <ClInclude Include="src\collection\PointerMap.h" />
+    <ClInclude Include="src\collection\UnicodeString.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\Allocator.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -98,6 +104,7 @@
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
+    <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\Level.h" />
@@ -115,7 +122,9 @@
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\game\entity\GlobalEntity.h" />
     <ClInclude Include="src\graphics\GraphicsMemoryAllocator.h" />
+    <ClInclude Include="src\graphics\Postprocess.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
+    <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
     <ClInclude Include="src\graphics\texture\Image.h" />
     <ClInclude Include="src\game\entity\Light.h" />
     <ClInclude Include="src\graphics\Materials.h" />
@@ -124,7 +133,7 @@
     <ClInclude Include="src\graphics\mesh\PlaneMesh.h" />
     <ClInclude Include="src\graphics\mesh\QuadMesh.h" />
     <ClInclude Include="src\game\entity\Models.h" />
-    <ClInclude Include="src\graphics\RenderingBatch.h" />
+    <ClInclude Include="src\graphics\RenderStep.h" />
     <ClInclude Include="src\graphics\buffer\RenderTarget.h" />
     <ClInclude Include="src\graphics\shader\CompilationTarget.h" />
     <ClInclude Include="src\graphics\shader\ConstantBuffer.h" />
@@ -156,6 +165,10 @@
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\resource\DataResource.h" />
     <ClInclude Include="src\game\parameter\Parameter.h" />
+    <ClInclude Include="src\resource\DirectoryPath.h" />
+    <ClInclude Include="src\resource\FilePath.h" />
+    <ClInclude Include="src\resource\LibraryList.h" />
+    <ClInclude Include="src\resource\Path.h" />
     <ClInclude Include="src\resource\ReloadTask.h" />
     <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFactory.h" />
@@ -189,33 +202,33 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC}</ProjectGuid>
     <RootNamespace>Engine12</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>Engine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>

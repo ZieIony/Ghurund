@@ -1,11 +1,11 @@
 #include "Scene.h"
 
 namespace Ghurund {
-    Status Scene::loadInternal(ResourceManager & resourceManager, ResourceContext & context, MemoryInputStream & stream, LoadOption options) {
+    Status Scene::loadInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
         size_t size = stream.read<size_t>();
         for(size_t i = 0; i<size; i++) {
             Status result;
-            Resource *resource = resourceManager.load(context, stream, &result, options);
+            Resource *resource = resourceManager.load(context, workingDir, stream, &result, options);
             if(resource==nullptr)
                 return result;
             entities.add((Entity*)resource);
@@ -14,10 +14,10 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Scene::saveInternal(ResourceManager & resourceManager, MemoryOutputStream & stream, SaveOption options) const {
+    Status Scene::saveInternal(ResourceManager & resourceManager, const DirectoryPath &workingDir, MemoryOutputStream & stream, SaveOption options) const {
         stream.write(entities.Size);
         for(size_t i = 0; i<entities.Size; i++) {
-            Status result = resourceManager.save(*entities[i], stream, options);
+            Status result = resourceManager.save(*entities[i], workingDir, stream, options);
             if(filterStatus(result, options)!=Status::OK)
                 return result;
         }

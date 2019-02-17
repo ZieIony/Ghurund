@@ -9,6 +9,8 @@ namespace Ghurund {
         std::function<void*()> constructor;
         const tchar *name;
 
+        Type() = default;
+
     public:
         static const Type &LIGHT, &CAMERA,
             &SCENE,
@@ -32,5 +34,13 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getName)) const tchar *Name;
+
+        bool operator==(const Type &type) const {
+            return this==&type;
+        }
+
+        bool operator==(const Type &type) {
+            return this==&type;
+        }
     };
 }

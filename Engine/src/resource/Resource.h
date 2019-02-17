@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ghurund.h"
+#include "FileUtils.h"
 #include "File.h"
 #include "core/MemoryStream.h"
 #include "ResourceFormat.h"
@@ -38,13 +39,13 @@ namespace Ghurund {
     class Resource: public Pointer {
     private:
         bool valid = false;
-        UnicodeString fileName;
+        FilePath *path = nullptr;
 
         Status saveInternal(ResourceManager &resourceManager, File &file, SaveOption options) const;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) = 0;
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const = 0;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) = 0;
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const = 0;
 
         virtual unsigned int getVersion() const {
             return 0;
@@ -57,17 +58,21 @@ namespace Ghurund {
 
         Resource() = default;
 
+        ~Resource() {
+            delete path;
+        }
+
         Status load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, const UnicodeString &fileName, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, const FilePath &path, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceManager &resourceManager, ResourceContext &context, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
 
         Status save(ResourceManager &resourceManager, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(ResourceManager &resourceManager, const UnicodeString &fileName, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager &resourceManager, const FilePath &path, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
         Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT);
-        Status save(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
 
         virtual void invalidate() {
             valid = false;
@@ -83,14 +88,15 @@ namespace Ghurund {
 
         __declspec(property(get = isValid, put = setValid)) bool Valid;
 
-        const UnicodeString &getFileName() const {
-            return fileName;
+        const FilePath *getPath() const {
+            return path;
         }
 
-        void setFileName(const UnicodeString &fileName) {
-            this->fileName = fileName;
+        void setPath(const FilePath *path) {
+            delete path;
+            this->path = ghnew FilePath(*path);
         }
 
-        __declspec(property(get = getFileName, put = setFileName)) UnicodeString &FileName;
+        __declspec(property(get = getPath, put = setPath)) FilePath *Path;
     };
 }

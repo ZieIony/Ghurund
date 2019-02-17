@@ -7,28 +7,23 @@
 #include "DirectoryWatch.h"
 #include "core/Thread.h"
 #include "FileChange.h"
-#include <experimental/filesystem>
-
-namespace fs = std::experimental::filesystem;
 
 namespace Ghurund {
     class FileWatcher {
     private:
         APCThread thread;
-        Map<String, DirectoryWatch*> watches;
+        Map<UnicodeString, DirectoryWatch*> watches;
 
         static void CALLBACK readChangesProc(__in  ULONG_PTR arg);
-
-        fs::path getPath(const String &file);
 
     public:
         FileWatcher();
 
         ~FileWatcher();
 
-        void addFile(const String &fileName, std::function<void(const String &fileName, const FileChange)> fileChangedHandler);
+        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler);
 
-        void removeFile(const String &fileName);
+        void removeFile(const FilePath &path);
 
     };
 }

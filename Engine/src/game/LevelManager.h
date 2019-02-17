@@ -3,7 +3,7 @@
 #include "collection/List.h"
 #include "game/entity/Scene.h"
 #include "game/parameter/ParameterManager.h"
-#include "graphics/RenderingBatch.h"
+#include "graphics/RenderStep.h"
 
 #include "Level.h"
 

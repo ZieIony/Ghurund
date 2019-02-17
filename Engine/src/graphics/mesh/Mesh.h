@@ -42,12 +42,12 @@ namespace Ghurund {
 
         BoundingBox boundingBox;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption option);
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption option);
 
         Status loadObj(ResourceContext &context, MemoryInputStream &stream);
         Status loadMesh(ResourceContext &context, MemoryInputStream &stream);
 
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;
@@ -69,7 +69,7 @@ namespace Ghurund {
         void invertWinding();
         void computeBoundingBox();
 
-        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir);
+        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir, float &dist);
 
         vindex_t getVertexCount() const {
             return vertexCount;

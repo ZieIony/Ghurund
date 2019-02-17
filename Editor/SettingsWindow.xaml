@@ -1,0 +1,33 @@
+﻿<Window x:Class="Ghurund.Editor.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GhurundEditor"
+		xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+		xmlns:propertygrid="clr-namespace:Ghurund.Controls.PropertyGrid;assembly=Controls"
+		xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
+		mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="347.14">
+	<WindowChrome.WindowChrome>
+		<WindowChrome 
+        CaptionHeight="0"
+			GlassFrameThickness="1" />
+	</WindowChrome.WindowChrome>
+	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
+		<DockPanel Background="{DynamicResource Ghurund.Background}">
+			<DockPanel DockPanel.Dock="Top" Margin="0,4,0,0">
+				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top" Title="Settings"/>
+				<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+					<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
+				</WrapPanel>
+				<WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+					<Button Content="Save" Margin="4"/>
+					<Button Content="Cancel" Margin="4"/>
+				</WrapPanel>
+				<Border BorderThickness="0,1,0,0" DockPanel.Dock="Bottom" BorderBrush="{DynamicResource Ghurund.Border}"/>
+				<propertygrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
+			</DockPanel>
+		</DockPanel>
+	</Border>
+</Window>

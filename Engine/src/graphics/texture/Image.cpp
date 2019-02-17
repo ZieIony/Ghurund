@@ -22,7 +22,7 @@ namespace Ghurund {
 
         else return DXGI_FORMAT_UNKNOWN;
     }
-    
+
     WICPixelFormatGUID Image::convertToWICFormat(WICPixelFormatGUID & wicFormatGUID) {
         if(wicFormatGUID == GUID_WICPixelFormatBlackWhite) return GUID_WICPixelFormat8bppGray;
         else if(wicFormatGUID == GUID_WICPixelFormat1bppIndexed) return GUID_WICPixelFormat32bppRGBA;
@@ -69,7 +69,7 @@ namespace Ghurund {
 
         else return GUID_WICPixelFormatDontCare;
     }
-    
+
     int Image::getDXGIFormatBitsPerPixel(DXGI_FORMAT & dxgiFormat) {
         if(dxgiFormat == DXGI_FORMAT_R32G32B32A32_FLOAT) return 128;
         else if(dxgiFormat == DXGI_FORMAT_R16G16B16A16_FLOAT) return 64;
@@ -90,8 +90,8 @@ namespace Ghurund {
 
         return -1;
     }
-    
-    Status Image::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+
+    Status Image::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
         IWICBitmapDecoder *wicDecoder = nullptr;
         IWICBitmapFrameDecode *wicFrame = nullptr;
         IWICFormatConverter *wicConverter = nullptr;
@@ -99,8 +99,8 @@ namespace Ghurund {
         bool imageConverted = false;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
-        if(FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(),nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
-            Logger::log(_T("Failed to create decoder for %s\n"), FileName);
+        if(FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
+            Logger::log(_T("Failed to create decoder\n"));
             return Status::CALL_FAIL;
         }
 

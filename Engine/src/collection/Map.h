@@ -124,9 +124,6 @@ namespace Ghurund {
                 }
             }
         }
-        inline void clear(size_t vvalue = 0, size_t kvalue = 0) {
-            size = 0;
-        }
         inline Value *begin() {
             return v;
         }

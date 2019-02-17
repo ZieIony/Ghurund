@@ -100,9 +100,11 @@ namespace Ghurund.Editor.ResourceEditor {
             if (Shader.Formats.Any(format => fileName.EndsWith(format.Extension))) {
                 var shader = new Shader();
                 if (shader.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
-                    material.Release();
-                    shader.Release();
-                    return false;
+                    if (fileName.EndsWith("shader")) {  // TODO: pass only if it's a compilation error
+                        material.Release();
+                        shader.Release();
+                        return false;
+                    }
                 }
                 material.Shader = shader;
                 material.Valid = true;
@@ -201,10 +203,10 @@ namespace Ghurund.Editor.ResourceEditor {
             preview.Refresh();
         }
 
-        private void ShaderCode_GotFocus(object sender, System.Windows.RoutedEventArgs e) {
+        private void ShaderCode_GotFocus(object sender, RoutedEventArgs e) {
         }
 
-        private void ResetCamera_Click(object sender, System.Windows.RoutedEventArgs e) {
+        private void ResetCamera_Click(object sender, RoutedEventArgs e) {
             preview.ResetCamera();
             preview.Refresh();
         }
@@ -214,7 +216,7 @@ namespace Ghurund.Editor.ResourceEditor {
             preview.Refresh();
         }
 
-        private void Build_Click(object sender, System.Windows.RoutedEventArgs e) {
+        private void Build_Click(object sender, RoutedEventArgs e) {
             Shader shader = Material.Shader;
             shader.SourceCode = shaderCode.Text;
             string output = shader.Compile();
@@ -227,9 +229,16 @@ namespace Ghurund.Editor.ResourceEditor {
             preview.Refresh();
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e) {
+        private void Button_Click(object sender, RoutedEventArgs e) {
             preview.GenerateThumbnail();
 
+        }
+
+        private void ShaderCode_SelectionChanged(object sender, RoutedEventArgs e) {
+            shaderCode.CaretPosition.GetLineStartPosition(-int.MaxValue, out int lineNumber);
+            int columnNumber = shaderCode.CaretPosition.GetLineStartPosition(0).GetOffsetToPosition(shaderCode.CaretPosition);
+
+            status.Text = "["+(-lineNumber+1)+":"+(columnNumber+1)+"]";
         }
     }
 }

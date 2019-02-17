@@ -19,9 +19,9 @@ namespace Ghurund {
         Status loadData(ResourceContext &context, MemoryInputStream &stream, LoadOption options);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) override;
 
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const override {
             return Status::NOT_IMPLEMENTED;
         }
 

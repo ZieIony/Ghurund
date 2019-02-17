@@ -14,7 +14,7 @@ namespace Ghurund {
         friend class Type;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) override {
             memcpy(&position, &stream.read<XMFLOAT3>(), sizeof(position));
             memcpy(&rotation, &stream.read<XMFLOAT3>(), sizeof(rotation));
             memcpy(&scale, &stream.read<XMFLOAT3>(), sizeof(scale));
@@ -22,19 +22,19 @@ namespace Ghurund {
             memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
 
             Status result;
-            entity = (Ghurund::Entity*)resourceManager.load(context, stream, &result, options);
+            entity = (Ghurund::Entity*)resourceManager.load(context, workingDir, stream, &result, options);
 
             return result;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override {
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const override {
             stream.write(position);
             stream.write(rotation);
             stream.write(scale);
 
             stream.write(world);
 
-            return resourceManager.save(*entity, stream, options);
+            return resourceManager.save(*entity, workingDir, stream, options);
         }
 
         virtual void clean() {}
@@ -54,11 +54,11 @@ namespace Ghurund {
             entity->release();
         }
 
-        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {
+        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) override {
             XMFLOAT4X4 localTransformation = getTransformation();
             XMFLOAT4X4 dest;
             XMStoreFloat4x4(&dest, XMLoadFloat4x4(&transformation)*XMLoadFloat4x4(&localTransformation));
-            entity->flatten(batch, dest);
+            entity->flatten(step, dest);
         }
 
         virtual const Ghurund::Type &getType() const override {

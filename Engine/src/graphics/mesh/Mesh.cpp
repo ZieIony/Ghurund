@@ -1,11 +1,11 @@
 #include "Mesh.h"
 
 namespace Ghurund {
-    Status Mesh::loadInternal(ResourceManager & resourceManager, ResourceContext & context, MemoryInputStream & stream, LoadOption option) {
-        if(!FileName.Empty) {
-            if(FileName.endsWith(ResourceFormat::OBJ.getExtension())) {
+    Status Mesh::loadInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption option) {
+        if(Path) {
+            if(Path->get().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
-            } else if(FileName.endsWith(ResourceFormat::MESH.getExtension())) {
+            } else if(Path->get().endsWith(ResourceFormat::MESH.getExtension())) {
                 return loadMesh(context, stream);
             } else {
                 return Status::UNKNOWN_FORMAT;
@@ -103,7 +103,7 @@ namespace Ghurund {
         return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::saveInternal(ResourceManager &resourceManager, MemoryOutputStream & stream, SaveOption options) const {
+    Status Mesh::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream & stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);
@@ -382,8 +382,7 @@ namespace Ghurund {
         boundingBox = DirectX::BoundingBox(center, extents);
     }
 
-    bool Mesh::intersects(XMFLOAT3 & pos, XMFLOAT3 & dir) {
-        float dist;
+    bool Mesh::intersects(XMFLOAT3 & pos, XMFLOAT3 & dir, float &dist) {
         XMVECTOR pos2 = XMLoadFloat3(&pos);
         XMVECTOR dir2 = XMLoadFloat3(&dir);
         for(size_t i = 0; i<indexCount/3; i++) {

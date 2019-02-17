@@ -37,7 +37,7 @@ namespace Ghurund {
 			delete[] entryPoint;
 		}
 
-		Status compile(const char *code, char **outErrorMessages);
+		Status compile(const char *code, char **outErrorMessages, char *fileName = nullptr);
 
 		void setEntryPoint(const char *entryPoint) {
 			if (entryPoint == nullptr) {

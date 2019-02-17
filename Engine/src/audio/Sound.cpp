@@ -2,7 +2,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Sound::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream & stream, LoadOption options) {
+    Status Sound::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
         Status result = loadData(context, stream, options);
         if(result!=Status::OK)
             return result;

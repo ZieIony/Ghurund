@@ -3,16 +3,16 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Material::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+    Status Material::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
         Status result;
-        shader = resourceManager.load<Ghurund::Shader>(context, stream.readUnicode(), &result, options);
+        shader = resourceManager.load<Ghurund::Shader>(context, workingDir, stream, &result, options);
         if(filterStatus(result, options)!=Status::OK)
             return result;
 
         size_t textureCount = stream.read<size_t>();
         for(size_t i = 0; i<textureCount; i++) {
             ASCIIString name = stream.readASCII();
-            Texture *texture = (Texture*)resourceManager.load(context, stream, &result, options);
+            Texture *texture = (Texture*)resourceManager.load(context, workingDir, stream, &result, options);
             if(filterStatus(result, options)!=Status::OK)
                 return result;
             textures.set(name, texture);
@@ -22,17 +22,17 @@ namespace Ghurund {
         return result;
     }
 
-    Status Material::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+    Status Material::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
         if(shader==nullptr) {
             Logger::log(_T("Shader cannot be empty\n"));
             return Status::INV_STATE;
         }
 
-        stream.writeUnicode(shader->FileName);
+        resourceManager.save(*shader, workingDir, stream, options);
         stream.write<size_t>(textures.Size);
         for(size_t i = 0; i<textures.Size; i++) {
             stream.writeASCII(textures.getKey(i));
-            resourceManager.save(*textures.getValue(i), stream, options);
+            resourceManager.save(*textures.getValue(i), workingDir, stream, options);
         }
 
         return Status::OK;

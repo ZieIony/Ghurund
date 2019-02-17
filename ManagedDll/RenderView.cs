@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Ghurund.Managed.Application;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
     public delegate void RenderCallback(Renderer renderer, ParameterManager parameterManager);
@@ -61,15 +62,15 @@ namespace Ghurund.Managed {
             disposed = true;
         }
 
-        public void Init(Graphics.Graphics graphics, ParameterManager parameterManager) {
-            Graphics = graphics;
-            ParameterManager = parameterManager;
+        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
+            Graphics = resourceContext.Graphics;
+            ParameterManager = resourceContext.ParameterManager;
 
             window = new Window();
             window.Init(Handle);
             window.InitParameters(ParameterManager);
             Renderer = new Renderer();
-            Renderer.Init(Graphics, window);
+            Renderer.Init(window, resourceManager, resourceContext);
             Renderer.ClearColor = 0xff7f7f7f;
         }
 
@@ -96,10 +97,8 @@ namespace Ghurund.Managed {
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(Color.CornflowerBlue);
             } else if (Renderer != null) {
-                camera.UpdateParameters();
-                CommandList commandList = Renderer.StartFrame();
                 RenderCallback?.Invoke(Renderer, ParameterManager);
-                Renderer.FinishFrame();
+                Renderer.Render();
             }
         }
 

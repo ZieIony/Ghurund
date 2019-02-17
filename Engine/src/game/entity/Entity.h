@@ -12,13 +12,13 @@
 
 namespace Ghurund {
 
-    class RenderingBatch;
+    class RenderStep;
 
     class Entity: public Resource, public NamedObject, public ParameterProvider, public ObservableObject {
     public:
-        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) = 0;
+        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) = 0;
 
-        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir) {
+        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir, float &dist) {
             return false;
         }
     };

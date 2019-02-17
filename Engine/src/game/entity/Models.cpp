@@ -46,4 +46,16 @@ namespace Ghurund {
 
         return entity;
     }
+
+    Model * Models::makeQuad(ResourceContext & context, Material & material) {
+        Mesh *mesh = ghnew QuadMesh();
+        mesh->init(context.Graphics, context.CommandList);
+
+        Model *model = ghnew Model(mesh, &material);
+        model->Valid = true;
+        model->initParameters(context.ParameterManager);
+        mesh->release();
+
+        return model;
+    }
 }

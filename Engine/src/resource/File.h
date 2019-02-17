@@ -1,19 +1,20 @@
 #pragma once
 
 #include "Ghurund.h"
+#include "FileUtils.h"
+#include "FilePath.h"
 #include "collection/String.h"
 
 namespace Ghurund {
     class File {
     private:
-        UnicodeString name;
+        FilePath path;
         size_t size = 0;
         void *data = nullptr;
 
     public:
 
-        File(const UnicodeString &name) {
-            this->name = name;
+        File(const FilePath &path):path(path.AbsolutePath) {
         }
 
         ~File() {
@@ -24,13 +25,13 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        const UnicodeString &getName() const { return name; }
+        const FilePath &getPath() const { return path; }
 
-        void setName(const UnicodeString &val) {
-            this->name = val;
+        void setPath(const FilePath &val) {
+            this->path = val.AbsolutePath;
         }
 
-        __declspec(property(get = getName, put = setName)) UnicodeString &Name;
+        __declspec(property(get = getPath, put = setPath)) FilePath &Path;
 
         const void *getData()const {
             return data;
@@ -47,36 +48,15 @@ namespace Ghurund {
         }
 
         Status read() {
-            HANDLE handle = CreateFileW(name, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-            DWORD derr = GetLastError();
-            if(handle==INVALID_HANDLE_VALUE)
-                return Status::IO;
-            if(data!=nullptr)
-                delete[] data;
-            unsigned long bytes;
-            size = GetFileSize(handle, nullptr);
-            data = ghnew BYTE[size];
-            ReadFile(handle, data, size, &bytes, false);
-            CloseHandle(handle);
-            if(bytes!=size)
-                return Status::IO;
-            return Status::OK;
+            return readFile(path, data, size);
         }
 
         Status write() {
-            HANDLE handle = CreateFileW(name, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
-            if(handle==INVALID_HANDLE_VALUE)
-                return Status::IO;
-            unsigned long bytes;
-            WriteFile(handle, data, size, &bytes, false);
-            if(bytes!=size)
-                return Status::IO;
-            CloseHandle(handle);
-            return Status::OK;
+            return writeFile(path, data, size);
         }
 
-        bool exists() const {
-            DWORD attributes = GetFileAttributesW(name);
+        inline bool exists() const {
+            DWORD attributes = GetFileAttributesW(path);
 
             return (attributes != INVALID_FILE_ATTRIBUTES &&
                     !(attributes & FILE_ATTRIBUTE_DIRECTORY));

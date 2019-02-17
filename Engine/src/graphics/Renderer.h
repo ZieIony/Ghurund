@@ -1,54 +1,38 @@
 #pragma once
 
 #include "Graphics.h"
-#include "SwapChain.h"
-#include "core/Object.h"
-#include "game/entity/Scene.h"
-#include "RenderingBatch.h"
 #include "Materials.h"
+#include "Postprocess.h"
+#include "RenderStep.h"
+#include "SwapChain.h"
+
+#include "core/Object.h"
+#include "game/entity/Model.h"
+#include "game/entity/Models.h"
+#include "game/entity/Scene.h"
 #include "resource/ResourceManager.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     class Renderer: public Object {
     private:
         static const UINT FRAME_COUNT = 2;
 
-        SwapChain *swapChain;
+        Model *fullScreenQuad = nullptr;
+        Material *lightPassMaterial = nullptr;
+        Postprocess *postprocess = nullptr;
+        RenderTarget *postprocessRenderTarget[FRAME_COUNT] = {};
+
+        SwapChain *swapChain = nullptr;
         Graphics *graphics = nullptr;
+        ParameterManager *parameterManager = nullptr;
         Material *material = nullptr;
         Material *invalidMaterial = nullptr;
         RenderingStatistics stats;
 
         XMFLOAT4 *clearColor = nullptr;
 
-    public:
-        Renderer() {
-            swapChain = ghnew SwapChain();
-        }
-
-        ~Renderer() {
-            if(invalidMaterial!=nullptr)
-                invalidMaterial->release();
-            uninit();
-            delete swapChain;
-            swapChain = nullptr;
-            delete clearColor;
-        }
-
-        Status init(Graphics &graphics, Window &window) {
-            this->graphics = &graphics;
-            Status result = swapChain->init(graphics, window, FRAME_COUNT);
-            if(result!=Status::OK)
-                return result;
-
-            return Status::OK;
-        }
-
-        void uninit() {
-            if(swapChain==nullptr)
-                return;
-            swapChain->uninitBuffers();
-        }
+        List<RenderStep*> steps;
 
         CommandList &startFrame() {
             swapChain->startFrame(clearColor);
@@ -59,15 +43,32 @@ namespace Ghurund {
             return commandList;
         }
 
-        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager);
-        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
-
         void finishFrame() {
             swapChain->finishFrame();
         }
 
+    public:
+        ~Renderer() {
+            if(lightPassMaterial!=nullptr)
+                lightPassMaterial->release();
+            if(invalidMaterial!=nullptr)
+                invalidMaterial->release();
+            uninit();
+            delete clearColor;
+        }
+
+        Status init(Window &window, ResourceManager &resourceManager, ResourceContext &resourceContext);
+
+        void uninit();
+
+        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
+
+        void render();
+
         void resize(unsigned int width, unsigned int height) {
             swapChain->resize(*graphics, width, height);
+            //for(int i = 0; i<FRAME_COUNT; i++)
+              //  postprocessRenderTarget[i]->resize(*graphics, width, height);
         }
 
         void setInvalidMaterial(Ghurund::Material *material) {
@@ -92,5 +93,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getStatistics)) RenderingStatistics &Statistics;
+
+        List<RenderStep*> &getSteps() {
+            return steps;
+        }
+
+        __declspec(property(get = getSteps)) List<RenderStep*> &Steps;
     };
 }

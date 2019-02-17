@@ -5,7 +5,7 @@
 
 namespace Ghurund {
     class RenderingStatistics:public ObservableObject {
-        friend class RenderingBatch;
+        friend class RenderStep;
         friend class Model;
 
     private:

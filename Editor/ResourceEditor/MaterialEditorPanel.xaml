@@ -41,7 +41,12 @@
 				<managed:SceneView x:Name="preview"/>
 			</workspace:SplitPanel.Panel1>
 			<workspace:SplitPanel.Panel2>
-				<controls:CodeTextBox x:Name="shaderCode" VerticalScrollBarVisibility="Auto" Padding="4,0,4,0" BorderThickness="0" GotFocus="ShaderCode_GotFocus"/>
+				<DockPanel>
+					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}">
+						<TextBlock x:Name="status" Background="{DynamicResource Ghurund.Background}" Text="[0:0]"/>
+					</Border>
+					<controls:CodeTextBox x:Name="shaderCode" VerticalScrollBarVisibility="Auto" Padding="4,0,4,0" BorderThickness="0" GotFocus="ShaderCode_GotFocus" SelectionChanged="ShaderCode_SelectionChanged"/>
+				</DockPanel>
 			</workspace:SplitPanel.Panel2>
 		</workspace:SplitPanel>
 	</wpf:DockPanel>

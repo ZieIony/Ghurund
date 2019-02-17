@@ -1,7 +1,8 @@
 #include "ShaderProgram.h"
+#include "CompilerInclude.h"
 
 namespace Ghurund {
-    Status ShaderProgram::compile(const char *code, char **outErrorMessages) {
+    Status ShaderProgram::compile(const char *code, char **outErrorMessages, char *fileName) {
         unsigned int compileFlags;
 #ifdef _DEBUG
         compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
@@ -9,11 +10,15 @@ namespace Ghurund {
         compileFlags = 0;
 #endif
 
+        const tchar *localShaderDir = nullptr;
+        if(fileName)
+            localShaderDir = FilePath(fileName).Directory;
+        CompilerInclude include(localShaderDir, _T("shaders/"));
         const char *targetText = makeCompilationTarget();
         ID3DBlob *errorBlob;
         Status result;
         ComPtr<ID3DBlob> shader;
-        HRESULT hr = D3DCompile(code, strlen(code), nullptr, nullptr, nullptr, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
+        HRESULT hr = D3DCompile(code, strlen(code), fileName, nullptr, &include, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
         if(FAILED(hr)) {
             if(errorBlob == nullptr) {
                 Logger::log(_T("Unknown error while compiling shader\n"));

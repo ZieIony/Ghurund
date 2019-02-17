@@ -41,7 +41,7 @@ namespace Ghurund.Editor {
         private void log(string log) {
             logs.Logs.Add(new Log() {
                 Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
-                Message = log.Trim()
+                Message = log.Substring(log.IndexOf(']')+1).Trim()
             });
         }
 

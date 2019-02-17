@@ -126,7 +126,7 @@ namespace Ghurund.Managed {
 
             CameraMode = cameraMode;    // just to update the current camera
 
-            renderView.Init(resourceContext.Graphics, resourceContext.ParameterManager);
+            renderView.Init(resourceManager, resourceContext);
 
             editorScene = Scenes.MakeEditor(resourceManager, resourceContext);
             invalidMaterial = Materials.MakeInvalid(resourceManager, resourceContext);

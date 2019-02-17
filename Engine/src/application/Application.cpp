@@ -12,13 +12,14 @@ namespace Ghurund {
         audio = ghnew Ghurund::Audio();
         audio->init();
         resourceManager = ghnew Ghurund::ResourceManager();
+        resourceManager->Libraries.add(L"main", DirectoryPath(L"\\"));
         resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
 
         renderer = ghnew Ghurund::Renderer();
-        renderer->init(*graphics, window);
+        renderer->init(window, *resourceManager, *resourceContext);
 
         client = ghnew Ghurund::Client(windowProc->FunctionQueue);
         client->init();
@@ -117,9 +118,8 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        renderer->startFrame();
         onDraw();
-        renderer->finishFrame();
+        renderer->render();
     }
 
     void Application::reset() {

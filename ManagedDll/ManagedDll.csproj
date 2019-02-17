@@ -79,6 +79,7 @@
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Mesh\Mesh.cs" />
     <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\RenderStep.cs" />
     <Compile Include="Graphics\RenderingStatistics.cs" />
     <Compile Include="Graphics\Texture\Image.cs" />
     <Compile Include="LauncherSettings.cs" />

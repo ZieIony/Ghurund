@@ -12,13 +12,13 @@ namespace Ghurund.Controls.Workspace {
         public static readonly DependencyProperty OrientationProperty =
             DependencyProperty.Register("Orientation", typeof(Orientation), typeof(SplitPanel), new PropertyMetadata(Orientation.Horizontal));
 
-        public Control Panel1 {
-            get { return (Control)GetValue(Panel1Property); }
+        public FrameworkElement Panel1 {
+            get { return (FrameworkElement)GetValue(Panel1Property); }
             set { SetValue(Panel1Property, value); }
         }
 
         public static readonly DependencyProperty Panel1Property =
-            DependencyProperty.Register("Panel1", typeof(Control), typeof(SplitPanel), new PropertyMetadata(null));
+            DependencyProperty.Register("Panel1", typeof(FrameworkElement), typeof(SplitPanel), new PropertyMetadata(null));
 
         public GridLength Panel1Size {
             get { return (GridLength)GetValue(Panel1SizeProperty); }
@@ -28,13 +28,13 @@ namespace Ghurund.Controls.Workspace {
         public static readonly DependencyProperty Panel1SizeProperty =
             DependencyProperty.Register("Panel1Size", typeof(GridLength), typeof(SplitPanel), new PropertyMetadata(null));
 
-        public Control Panel2 {
-            get { return (Control)GetValue(Panel2Property); }
+        public FrameworkElement Panel2 {
+            get { return (FrameworkElement)GetValue(Panel2Property); }
             set { SetValue(Panel2Property, value); }
         }
 
         public static readonly DependencyProperty Panel2Property =
-            DependencyProperty.Register("Panel2", typeof(Control), typeof(SplitPanel), new PropertyMetadata(null));
+            DependencyProperty.Register("Panel2", typeof(FrameworkElement), typeof(SplitPanel), new PropertyMetadata(null));
 
         public GridLength Panel2Size {
             get { return (GridLength)GetValue(Panel2SizeProperty); }

@@ -62,15 +62,15 @@ namespace Ghurund.Controls.Workspace {
             peekedContent.Orientation = side == PeekSide.Bottom || side == PeekSide.Top ? Orientation.Vertical : Orientation.Horizontal;
             if (side == PeekSide.Top || side == PeekSide.Left) {
                 peekedContent.Panel1 = new EditorPanel(peekedPanel.DockableControl);
-                peekedContent.Panel1.BorderThickness = new Thickness(1);
-                peekedContent.Panel1.BorderBrush = BorderBrush;
+                //peekedContent.Panel1.BorderThickness = new Thickness(1);
+                //peekedContent.Panel1.BorderBrush = BorderBrush;
                 peekedContent.Panel1Size = new GridLength(side == PeekSide.Top ? peekedPanel.Size.Height : peekedPanel.Size.Width);
                 peekedContent.Panel2 = contentHider;
             } else {
                 peekedContent.Panel1 = contentHider;
                 peekedContent.Panel2 = new EditorPanel(peekedPanel.DockableControl);
-                peekedContent.Panel2.BorderThickness = new Thickness(1);
-                peekedContent.Panel2.BorderBrush = BorderBrush;
+                //peekedContent.Panel2.BorderThickness = new Thickness(1);
+                //peekedContent.Panel2.BorderBrush = BorderBrush;
                 peekedContent.Panel2Size = new GridLength(side == PeekSide.Bottom ? peekedPanel.Size.Height : peekedPanel.Size.Width);
             }
             peekedContent.Visibility = Visibility.Visible;

@@ -1,19 +1,11 @@
 #include "FileWatcher.h"
 #include "process.h"
+#include "resource/File.h"
 
 namespace Ghurund {
     void FileWatcher::readChangesProc(ULONG_PTR arg) {
         DirectoryWatch* watch = (DirectoryWatch*)arg;
         watch->readChanges();
-    }
-
-    fs::path FileWatcher::getPath(const String &file) {
-        int bufferLength = GetCurrentDirectory(0, nullptr)+file.Size+2; // slash and string terminator
-        tchar *fullPath = ghnew tchar[bufferLength];
-        GetFullPathName(file, bufferLength, fullPath, nullptr);
-        auto path = fs::path(fullPath);
-        delete[] fullPath;
-        return path;
     }
 
     FileWatcher::FileWatcher() {
@@ -26,35 +18,31 @@ namespace Ghurund {
         thread.finish();
     }
 
-    void FileWatcher::addFile(const String &file, std::function<void(const String &fileName, const FileChange)> fileChangedHandler) {
-        auto path = getPath(file);
-        String dir = path.parent_path().string().c_str();
-        String fileName = path.filename().string().c_str();
+    void FileWatcher::addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler) {
+        String dir = path.Directory;
 
         if(!watches.contains(dir)) {
             DirectoryWatch *watch = ghnew DirectoryWatch(dir);
             watches.set(dir, watch);
 
-            watch->addFile(fileName, fileChangedHandler);
+            watch->addFile(path, fileChangedHandler);
 
             thread.post(readChangesProc, (ULONG_PTR)watch);
         } else {
-            watches[dir]->addFile(fileName, fileChangedHandler);
+            watches[dir]->addFile(path, fileChangedHandler);
         }
     }
 
-    void FileWatcher::removeFile(const String &file) {
-        auto path = getPath(file);
-        String dir = path.parent_path().string().c_str();
-        String fileName = path.filename().string().c_str();
+    void FileWatcher::removeFile(const FilePath &path) {
+        String dir = path.Directory;
 
         if(!watches.contains(dir))
             return;
 
         DirectoryWatch *watch = watches[dir];
-        watch->removeFile(fileName);
+        watch->removeFile(path);
         if(watch->FileCount==0) {
-            watches.remove(fileName);
+            watches.remove(path);
             delete watch;
         }
     }

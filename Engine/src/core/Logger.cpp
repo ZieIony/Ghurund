@@ -79,12 +79,12 @@ namespace Ghurund {
 
 #ifdef _DEBUG
         fileLine.add(buffer);
-        if(!fileLine.endsWith("\n"))
-            fileLine.add("\n");
+        if(!fileLine.endsWith(_T("\n")))
+            fileLine.add(_T("\n"));
         log(fileLine);
 #else
-        if(!buffer.endsWith("\n"))
-            buffer.add("\n");
+        if(!buffer.endsWith(_T("\n")))
+            buffer.add(_T("\n"));
         log(buffer);
 #endif
 

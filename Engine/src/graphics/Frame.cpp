@@ -33,8 +33,6 @@ namespace Ghurund {
 
     Status Frame::finish() {
         renderTarget->finish(*commandList);
-        commandList->finish();
-
-        return Status::OK;
+        return commandList->finish();
     }
 }

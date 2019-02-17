@@ -14,17 +14,16 @@ namespace Ghurund {
         Image *image = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
-            image = ghnew Image();
-            Status result = image->load(resourceManager, context, stream.readUnicode(), nullptr, options);
-            if(result!=Status::OK)
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+            Status result;
+            image = (Image*)resourceManager.load(context, workingDir, stream, &result, options);
+            if(filterStatus(result, options)!=Status::OK)
                 return result;
             return init(context, *image);
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options)const {
-            stream.writeUnicode(image->FileName);
-            return Status::OK;
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options)const {
+            return resourceManager.save(*image, workingDir, stream, options);
         }
 
     public:

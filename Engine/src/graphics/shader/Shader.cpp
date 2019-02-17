@@ -332,14 +332,14 @@ namespace Ghurund {
         return build(context);
     }
 
-    Status Shader::loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+    Status Shader::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
         this->graphics = &context.Graphics;
         Status result;
 
-        if(!FileName.Empty) {
-            if(FileName.endsWith(ResourceFormat::SHADER.getExtension())) {
+        if(Path) {
+            if(Path->get().endsWith(ResourceFormat::SHADER.getExtension())) {
                 result = loadShd(context, stream);
-            } else if(FileName.endsWith(ResourceFormat::HLSL.getExtension())) {
+            } else if(Path->get().endsWith(ResourceFormat::HLSL.getExtension())) {
                 result = loadHlsl(context, stream);
             } else {
                 return Status::UNKNOWN_FORMAT;
@@ -361,7 +361,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+    Status Shader::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.writeBoolean(compiled);

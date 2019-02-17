@@ -16,8 +16,8 @@ namespace Ghurund {
     protected:
         PointerList<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const override;
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const override;
 
     public:
 
@@ -51,6 +51,44 @@ namespace Ghurund {
 
         __declspec(property(get = getEntities)) PointerList<Entity*> &Entities;
 
+        Entity *findEntity(String &name) {
+            for(Entity *entity:entities) {
+                if(entity->Name==name)
+                    return entity;
+            }
+
+            return nullptr;
+        }
+
+        List<Entity*> *findEntities(String &name) {
+            List<Entity*> *list = ghnew List<Entity*>();
+            for(Entity *entity:entities) {
+                if(entity->Name==name)
+                    list->add(entity);
+            }
+
+            return list;
+        }
+
+        Entity *findEntity(Ghurund::Type &type) {
+            for(Entity *entity:entities) {
+                if(entity->Type==type)
+                    return entity;
+            }
+
+            return nullptr;
+        }
+
+        List<Entity*> *findEntities(Ghurund::Type &type) {
+            List<Entity*> *list = ghnew List<Entity*>();
+            for(Entity *entity:entities) {
+                if(entity->Type==type)
+                    list->add(entity);
+            }
+
+            return list;
+        }
+
         static const Array<ResourceFormat*> &getFormats() {
             static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::SCENE};
             return formats;
@@ -58,10 +96,10 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
 
-        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override {
+        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) override {
             for(size_t i = 0; i<Entities.Size; i++) {
                 Entity *entity = Entities[i];
-                entity->flatten(batch, transformation);
+                entity->flatten(step, transformation);
             }
         }
 

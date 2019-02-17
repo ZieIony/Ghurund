@@ -9,11 +9,11 @@ namespace Ghurund {
         Array<Parameter*> parameters;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, MemoryOutputStream &stream, SaveOption options) const {
+        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -37,6 +37,6 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
 
-        virtual void flatten(RenderingBatch &batch, XMFLOAT4X4 &transformation) override;
+        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) override;
     };
 }
