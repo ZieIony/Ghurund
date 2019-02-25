@@ -46,18 +46,28 @@ namespace Ghurund.Controls.Workspace {
         }
     }
 
-    public interface IDockablePanel : IDisposable {
+    public interface IDockablePanel: IDisposable {
         ImageSource Icon { get; }
         Control Control { get; }
         Title Title { get; }
     }
 
-    public interface IToolPanel : IDockablePanel {
-        List<object> SelectedItems { get; set; }
-        event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged;
+    public class RoutedSelectionChangedEventArgs: RoutedEventArgs {
+        public List<object> Items { get; set; }
+
+        public RoutedSelectionChangedEventArgs(List<object> items, RoutedEvent routedEvent) : base(routedEvent) {
+            Items = items;
+        }
     }
 
-    public interface IDocumentPanel : IToolPanel {
+    public delegate void RoutedSelectionChangedEventHandler(object sender, RoutedSelectionChangedEventArgs e);
+
+    public interface IToolPanel: IDockablePanel {
+        List<object> SelectedItems { get; set; }
+        event RoutedSelectionChangedEventHandler SelectionChanged;
+    }
+
+    public interface IDocumentPanel: IToolPanel {
         object Document { get; set; }
         bool NeedsSaving { get; }
         bool Save(string fileName = null);

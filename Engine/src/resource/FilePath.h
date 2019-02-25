@@ -5,24 +5,24 @@
 
 namespace Ghurund {
 
-    class FilePath :public Path {
+    class FilePath:public Path {
     public:
-        FilePath(const DirectoryPath& dirPath, const UnicodeString& fileName) :Path(dirPath.get()) {
+        FilePath(const DirectoryPath& dirPath, const UnicodeString& fileName):Path(dirPath.get()) {
             path.add(fileName);
         }
 
-        FilePath(const char* path) :FilePath(UnicodeString(path)) {}
+        FilePath(const char* path):FilePath(UnicodeString(path)) {}
 
-        FilePath(const wchar_t* path) :FilePath(UnicodeString(path)) {}
+        FilePath(const wchar_t* path):FilePath(UnicodeString(path)) {}
 
-        FilePath(const UnicodeString& path) :Path(path) {
+        FilePath(const UnicodeString& path):Path(path) {
             DWORD attributes = GetFileAttributesW(path);
 
             if (attributes != INVALID_FILE_ATTRIBUTES && attributes & FILE_ATTRIBUTE_DIRECTORY)
                 Logger::log(_T("invalid file path %s\n"), String(path).getData());
         }
 
-        FilePath(const FilePath & path) :Path(path.get()) {}
+        FilePath(const FilePath & path):Path(path.get()) {}
 
         DirectoryPath getDirectory() const {
             size_t index = path.findLast(L"\\");

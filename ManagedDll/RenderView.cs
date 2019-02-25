@@ -7,8 +7,6 @@ using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
-    public delegate void RenderCallback(Renderer renderer, ParameterManager parameterManager);
-
     public class RenderView : UserControl, IDisposable {
 
         Window window;
@@ -39,8 +37,6 @@ namespace Ghurund.Managed {
         private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
             Refresh();
         }
-
-        public RenderCallback RenderCallback { private get; set; }
 
         private bool disposed = false;
 
@@ -97,7 +93,6 @@ namespace Ghurund.Managed {
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(Color.CornflowerBlue);
             } else if (Renderer != null) {
-                RenderCallback?.Invoke(Renderer, ParameterManager);
                 Renderer.Render();
             }
         }

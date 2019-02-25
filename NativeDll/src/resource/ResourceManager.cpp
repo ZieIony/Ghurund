@@ -7,7 +7,9 @@
 using namespace Ghurund;
 
 extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new() {
-    return new ResourceManager();
+    ResourceManager *resourceManager = new ResourceManager();
+    resourceManager->Libraries.add(L"main", DirectoryPath(L"\\"));
+    return resourceManager;
 }
 
 template<class Type> void load(ResourceManager *_this, ResourceContext &context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {

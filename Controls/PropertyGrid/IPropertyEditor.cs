@@ -21,15 +21,25 @@ namespace Ghurund.Controls.PropertyGrid {
         }
     }
 
+    public class IntPropertyEditor : IPropertyEditor {
+        public FrameworkElement MakeControl(Value property) {
+            TextBox textBox = new TextBox();
+            textBox.Text = property.Getter().ToString();
+            textBox.KeyDown += (object sender, KeyEventArgs e) => {
+                if (e.Key == Key.Enter)
+                    property.Setter(int.TryParse(textBox.Text, out int val) ? val : property.Getter());
+            };
+            return textBox;
+        }
+    }
+
     public class FloatPropertyEditor : IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             TextBox textBox = new TextBox();
             textBox.Text = property.Getter().ToString();
             textBox.KeyDown += (object sender, KeyEventArgs e) => {
-                if (e.Key == Key.Enter) {
-                    float val;
-                    property.Setter(float.TryParse(textBox.Text, out val) ? val : property.Getter());
-                }
+                if (e.Key == Key.Enter)
+                    property.Setter(float.TryParse(textBox.Text, out float val) ? val : property.Getter());
             };
             return textBox;
         }
@@ -45,6 +55,19 @@ namespace Ghurund.Controls.PropertyGrid {
                 }
             };
             return textBox;
+        }
+    }
+
+    public class EnumPropertyEditor : IPropertyEditor {
+        public FrameworkElement MakeControl(Value property) {
+            ComboBox comboBox = new ComboBox();
+            foreach (var item in property.Type.GetEnumValues())
+                comboBox.Items.Add(item);
+            comboBox.SelectedItem = property.Getter();
+            comboBox.SelectionChanged += (object sender, SelectionChangedEventArgs e) => {
+                property.Setter(comboBox.SelectedItem);
+            };
+            return comboBox;
         }
     }
 }

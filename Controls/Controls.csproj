@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeTextBox.cs" />
+    <Compile Include="FlowPanel.cs" />
     <Compile Include="HintTextBox.cs">
       <DependentUpon>HintTextBox.xaml</DependentUpon>
     </Compile>

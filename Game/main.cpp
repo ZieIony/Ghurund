@@ -1,5 +1,6 @@
 #include "FileUtils.h"
 #include "core/Logger.h"
+#include "core/ScopedPointer.h"
 #include "application/Application.h"
 #include "audio/Sound.h"
 #include "game/entity/Scene.h"
@@ -33,14 +34,19 @@ private:
     Application &app;
     TransformedEntity *selection = nullptr;
     Material *overrideMaterial = nullptr;
-    Scene *scene = nullptr;
-    Scene *editorScene = nullptr;
     Material *invalidMaterial = nullptr;
+
+    RenderStep editorStep, sceneStep;
 
 public:
     TestLevel(Application &app):app(app) {}
 
     virtual bool onMouseButtonEvent(MouseButtonEvent &event) override {
+        if (event.Action == MouseAction::DOWN) {
+            GlobalEntity<Model> *model = sceneStep.pick(app.Input.MousePos);
+            if (model != nullptr)
+                return true;
+        }
         return cameraController->dispatchMouseButtonEvent(event);
     }
 
@@ -83,19 +89,25 @@ public:
 
         cameraController = ghnew CameraController(*camera, &app.Window);
 
+        editorStep.Camera = camera;
+        editorStep.initParameters(app.ParameterManager);
+        app.Renderer.Steps.add(&editorStep);
+
+        sceneStep.Camera = camera;
+        sceneStep.initParameters(app.ParameterManager);
+        app.Renderer.Steps.add(&sceneStep);
+
         File sceneFile("test/test.scene");
         if(sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test/test.scene", [&](Ghurund::Scene *scene, Status result) {
                 scene->initParameters(app.ParameterManager);
-                this->scene = scene;
-                scene->release();
+                sceneStep.Entities.add(scene);
             });
         } else {
-            Scene *scene = ghnew Ghurund::Scene();
+            ScopedPointer<Scene> scene = ghnew Ghurund::Scene();
 
-            Model *model;
             {
-                Mesh *mesh;
+                ScopedPointer<Mesh> mesh;
                 File file("test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 if(file.Exists) {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
@@ -105,34 +117,30 @@ public:
                         mesh->save(app.ResourceManager, "test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 }
 
-                Image *image = app.ResourceManager.load<Image>(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+                ScopedPointer<Image> image = app.ResourceManager.load<Image>(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
                 if(image!=nullptr&&mesh!=nullptr) {
-                    Texture *texture = ghnew Texture();
+                    ScopedPointer<Texture> texture = ghnew Texture();
                     texture->init(app.ResourceContext, *image);
 
-                    Shader *shader = app.ResourceManager.load<Shader>(app.ResourceContext, "shaders/basic.hlsl");
-                    Material *material = ghnew Material(shader);
+                    ScopedPointer<Shader> shader = app.ResourceManager.load<Shader>(app.ResourceContext, "shaders/basic.hlsl");
+                    ScopedPointer<Material> material = ghnew Material(shader);
                     material->Textures.set("diffuse", texture);
                     material->Valid = true;
-                    texture->release();
 
-                    model = ghnew Model(mesh, material);
+                    ScopedPointer<Model> model = ghnew Model(mesh, material);
                     model->Valid = true;
-                    mesh->release();
-                    material->release();
 
                     scene->Entities.add(model);
-                    model->release();
                 }
             }
 
             /*{
-                Material *material = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
-                TransformedEntity *transformedModel = Models::makeSphere(app.ResourceContext, *material);
+                Material *material = Materials::makeNormals(app.ResourceManager, app.ResourceContext);
+                TransformedEntity *transformedModel = Models::makeCone(app.ResourceContext, *material);
                 material->release();
 
-                transformedModel->Position = XMFLOAT3(100, 100, 100);
-                transformedModel->Scale = XMFLOAT3(50, 50, 50);
+                //transformedModel->Position = XMFLOAT3(100, 100, 100);
+                transformedModel->Scale = XMFLOAT3(50, 100, 50);
 
                 scene->Entities.add(transformedModel);
                 transformedModel->release();
@@ -155,36 +163,20 @@ public:
                 Logger::log(_T("failed to save scene\n"));
 
             scene->initParameters(app.ParameterManager);
-            scene->release();
-            this->scene = scene;
+            sceneStep.Entities.add(scene);
         }
 
         invalidMaterial = Materials::makeInvalid(app.ResourceManager, app.ResourceContext);
-        editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
-    }
-
-    virtual void onPreDraw(RenderStep &step) {
-        GlobalEntity<Model> *model = step.pick(app.Input.MousePos);
-        if(model!=nullptr) {
-            //          selection->Position = model->BoundingBox.Center;
-          //            selection->Scale = model->BoundingBox.Extents;
-        }
+        ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
+        editorStep.Entities.add(editorScene);
     }
 
     virtual void onUpdate() override {
         camera->setScreenSize(app.Window.Width, app.Window.Height);
     }
 
-    virtual void onDraw(Renderer &renderer, ParameterManager &parameterManager) override {
-        if(scene!=nullptr)
-            renderer.draw(*camera, *scene, parameterManager, nullptr, invalidMaterial);
-        renderer.draw(*camera, *editorScene, parameterManager, nullptr, invalidMaterial);
-    }
-
     virtual void onUninit() override {
         camera->release();
-        scene->release();
-        editorScene->release();
         invalidMaterial->release();
         delete cameraController;
     }

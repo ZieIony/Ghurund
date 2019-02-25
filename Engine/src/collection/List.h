@@ -84,6 +84,17 @@ namespace Ghurund {
 #endif
         }
 
+        inline void addAll(const List<Value> &list) {
+            if(size==capacity)
+                resize(capacity+list.Size);
+            memcpy(&v[size], list.begin(), list.Size*sizeof(Value));
+            size+=list.Size;
+#ifdef GHURUND_EDITOR
+            if(onItemAdded!=nullptr)
+                onItemAdded();
+#endif
+        }
+
         inline void insert(size_t i, const Value &item) {
 #ifdef _DEBUG
             if(i>=size)

@@ -6,10 +6,9 @@
              xmlns:local="clr-namespace:Ghurund.Editor"
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 mc:Ignorable="d" 
-             d:DesignHeight="168.75" d:DesignWidth="212.98">
+             d:DesignHeight="168.75" d:DesignWidth="200.093">
 	<DockPanel>
-		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<ToolBarPanel Margin="4,0,4,0" Orientation="Horizontal">
+		<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 				<controls:IconButton Icon="/Resources/clearLogs32.png"
 									 Style="{StaticResource IconButton_Large}"
 									 Click="ClearLogs_Click"
@@ -26,9 +25,8 @@
 									 Style="{StaticResource IconButton_Large}"
 									 Click="ScrollToBottom_Click"
 									 ToolTip="Scroll to bottom"/>
-			</ToolBarPanel>
 			<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}"/>
-		</WrapPanel>
+		</controls:FlowPanel>
 		<ScrollViewer Background="{DynamicResource Ghurund.BackgroundLight}">
 			<controls:LogsView x:Name="logs" Filter="{Binding ElementName=filterBox, Path=Text}"/>
 		</ScrollViewer>

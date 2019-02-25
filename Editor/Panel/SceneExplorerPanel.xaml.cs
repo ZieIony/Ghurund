@@ -8,11 +8,11 @@ using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Game;
 
 namespace Ghurund.Editor {
-    public interface ISceneExplorerPanel : IToolPanel {
+    public interface ISceneExplorerPanel: IToolPanel {
         Scene Scene { get; set; }
     }
 
-    public partial class SceneExplorerPanel : UserControl, ISceneExplorerPanel {
+    public partial class SceneExplorerPanel: UserControl, ISceneExplorerPanel {
 
         private List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
@@ -23,16 +23,16 @@ namespace Ghurund.Editor {
                 selectedItems = value;
                 if (selectedItems == null)
                     return;
-                foreach(var item in selectedItems) {
+                foreach (var item in selectedItems) {
                     if (item is Scene)
                         Scene = item as Scene;
                 }
             }
         }
 
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<List<object>>), typeof(ISceneExplorerPanel));
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(ISceneExplorerPanel));
 
-        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged {
+        public event RoutedSelectionChangedEventHandler SelectionChanged {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
@@ -93,7 +93,7 @@ namespace Ghurund.Editor {
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             SelectedItems.Clear();
             SelectedItems.Add(e.NewValue);
-            RaiseEvent(new RoutedPropertyChangedEventArgs<List<object>>(null, SelectedItems, SelectionChangedEvent));
+            RaiseEvent(new RoutedSelectionChangedEventArgs(SelectedItems, SelectionChangedEvent));
         }
 
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {

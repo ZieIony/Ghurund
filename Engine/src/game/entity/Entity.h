@@ -15,11 +15,24 @@ namespace Ghurund {
     class RenderStep;
 
     class Entity: public Resource, public NamedObject, public ParameterProvider, public ObservableObject {
+    private:
+        bool selectable;
+
     public:
         virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) = 0;
 
         virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir, float &dist) {
             return false;
         }
+
+        void setSelectable(bool selectable) {
+            this->selectable = selectable;
+        }
+
+        bool isSelectable() const {
+            return selectable;
+        }
+
+        __declspec(property(get = isSelectable, put = setSelectable)) bool Selectable;
     };
 }

@@ -6,7 +6,7 @@
 namespace Ghurund {
     class PlaneMesh: public Mesh {
     public:
-        Status init(Graphics &graphics, CommandList &commandList) {
+        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 5) {
             Vertex triangleVertices[] = {
                 {{-1.0f, 0.0f, -1.0f}, {0,1,0}, {0,0}},
                 {{1.0f,  0.0f,  1.0f}, {0,1,0}, {1,1}},
@@ -15,9 +15,9 @@ namespace Ghurund {
             };
 
             vertexSize = sizeof(Vertex);
-            vertexCount = sizeof(triangleVertices)/vertexSize;
+            vertexCount = sizeof(triangleVertices) / vertexSize;
             vertices = ghnew Vertex[vertexCount];
-            memcpy(vertices, triangleVertices, vertexCount*vertexSize);
+            memcpy(vertices, triangleVertices, vertexCount * vertexSize);
 
             indices = ghnew unsigned int[6]{
                 0, 1, 2, // first triangle
@@ -26,7 +26,7 @@ namespace Ghurund {
             indexCount = 6;
 
 
-            for(size_t i = 0; i<5; i++)
+            for (size_t i = 0; i < detail; i++)
                 subdivide();
 
             return Mesh::init(graphics, commandList);

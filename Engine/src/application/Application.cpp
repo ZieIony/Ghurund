@@ -118,7 +118,6 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        onDraw();
         renderer->render();
     }
 

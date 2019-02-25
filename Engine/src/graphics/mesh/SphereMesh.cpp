@@ -3,7 +3,7 @@
 #include "SphereMesh.h"
 
 namespace Ghurund {
-    Status SphereMesh::init(Graphics &graphics, CommandList &commandList) {
+    Status SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         float t = (1.0f + sqrt(5.0f)) / 2.0f;
 
         Vertex triangleVertices[] = {
@@ -24,7 +24,7 @@ namespace Ghurund {
         vertexSize = sizeof(Vertex);
         vertexCount = sizeof(triangleVertices) / vertexSize;
         vertices = ghnew Vertex[vertexCount];
-        memcpy(vertices, triangleVertices, vertexCount*vertexSize);
+        memcpy(vertices, triangleVertices, vertexCount * vertexSize);
 
         indices = ghnew unsigned int[60]{
             0, 11, 5,
@@ -52,13 +52,13 @@ namespace Ghurund {
 
         spherify();
 
-        for(size_t i = 0; i<vertexCount; i++) {
+        for (size_t i = 0; i < vertexCount; i++) {
             XMFLOAT3 v = vertices[i].position;
-            vertices[i].texCoord.x = atan2(v.x, v.z) / (2*XM_PI) + 0.5f;
+            vertices[i].texCoord.x = atan2f(v.x, v.z) / (2 * XM_PI) + 0.5f;
             vertices[i].texCoord.y = v.y * 0.5f + 0.5f;
         }
 
-        for(size_t i = 0; i<2; i++) {
+        for (size_t i = 0; i < detail; i++) {
             subdivide();
             removeDuplicates();
             spherify();

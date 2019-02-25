@@ -24,7 +24,7 @@ namespace Ghurund.Editor.ResourceEditor {
             }
         }
 
-        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged;
+        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         private bool disposed = false;
 

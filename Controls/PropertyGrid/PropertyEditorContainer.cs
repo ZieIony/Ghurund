@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 
 namespace Ghurund.Controls.PropertyGrid {
-    public class PropertyEditorContainer : DockPanel {
+    public class PropertyEditorContainer: DockPanel {
 
         public Value Value {
             get { return (Value)GetValue(ValueProperty); }
@@ -23,7 +23,7 @@ namespace Ghurund.Controls.PropertyGrid {
                 var value = Value;
                 if (value != null) {
                     if (value.Editor == null) {
-                        var stringValue = value.Getter().ToString();
+                        var stringValue = value.Getter()?.ToString() ?? "";
                         var indexOf = stringValue.IndexOf("\n");
                         Children.Add(new TextBlock {
                             Text = indexOf > 0 ? stringValue.Substring(0, indexOf) + ".." : stringValue,

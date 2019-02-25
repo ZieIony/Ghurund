@@ -34,7 +34,7 @@ namespace Ghurund.Editor.ResourceEditor {
             }
         }
 
-        public event RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>> SelectionChanged;
+        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }

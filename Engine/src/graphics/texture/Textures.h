@@ -9,7 +9,7 @@ namespace Ghurund {
 
     public:
         static Texture *makeChecker(ResourceManager &resourceManager, ResourceContext &context) {
-            Image *image = resourceManager.load<Image>(context, "../textures/checker.png");
+            Image *image = resourceManager.load<Image>(context, "textures/checker.png");
             Texture *texture = ghnew Texture();
             texture->init(context, *image);
             return texture;

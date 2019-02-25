@@ -52,7 +52,7 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="PanelFocused" Value="true">
 							<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary.Inverse}" />
-							<Setter Property="Background" Value="{DynamicResource Ghurund.PrimaryDark}" />
+							<Setter Property="Background" Value="{DynamicResource Ghurund.Primary}" />
 							<Setter Property="IconColor" Value="{DynamicResource Ghurund.Icon.Inverse}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">

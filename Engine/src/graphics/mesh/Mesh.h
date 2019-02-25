@@ -26,10 +26,10 @@ namespace Ghurund {
 
     class Mesh:public Resource {
     protected:
-        Vertex *vertices = nullptr;
+        Vertex* vertices = nullptr;
         unsigned int vertexSize;
         vindex_t vertexCount;
-        vindex_t *indices = nullptr;
+        vindex_t* indices = nullptr;
         vindex_t indexCount;
 
         ComPtr<ID3D12Resource> vertexBuffer;
@@ -42,12 +42,12 @@ namespace Ghurund {
 
         BoundingBox boundingBox;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption option);
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
 
-        Status loadObj(ResourceContext &context, MemoryInputStream &stream);
-        Status loadMesh(ResourceContext &context, MemoryInputStream &stream);
+        Status loadObj(ResourceContext& context, MemoryInputStream& stream);
+        Status loadMesh(ResourceContext& context, MemoryInputStream& stream);
 
-        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager& resourceManager, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;
@@ -56,9 +56,9 @@ namespace Ghurund {
     public:
         ~Mesh();
 
-        virtual Status init(Graphics &graphics, CommandList &commandList);
+        virtual Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0);
 
-        void draw(CommandList &commandList);
+        void draw(CommandList& commandList);
 
         void removeDuplicates();
         void subdivide();
@@ -69,7 +69,7 @@ namespace Ghurund {
         void invertWinding();
         void computeBoundingBox();
 
-        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir, float &dist);
+        virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
 
         vindex_t getVertexCount() const {
             return vertexCount;
@@ -83,21 +83,21 @@ namespace Ghurund {
 
         __declspec(property(get = getIndexCount)) vindex_t IndexCount;
 
-        BoundingBox &getBoundingBox() {
+        BoundingBox& getBoundingBox() {
             return boundingBox;
         }
 
-        __declspec(property(get = getBoundingBox)) BoundingBox &BoundingBox;
+        __declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::MESH;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MESH, (ResourceFormat*)&ResourceFormat::OBJ};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::MESH, (ResourceFormat*)& ResourceFormat::OBJ};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
     };
 }

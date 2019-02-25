@@ -18,26 +18,26 @@ namespace Ghurund {
     private:
         static const UINT FRAME_COUNT = 2;
 
-        Model *fullScreenQuad = nullptr;
-        Material *lightPassMaterial = nullptr;
-        Postprocess *postprocess = nullptr;
-        RenderTarget *postprocessRenderTarget[FRAME_COUNT] = {};
+        Model* fullScreenQuad = nullptr;
+        Material* lightPassMaterial = nullptr;
+        Postprocess* postprocess = nullptr;
+        RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
-        SwapChain *swapChain = nullptr;
-        Graphics *graphics = nullptr;
-        ParameterManager *parameterManager = nullptr;
-        Material *material = nullptr;
-        Material *invalidMaterial = nullptr;
+        SwapChain* swapChain = nullptr;
+        Graphics* graphics = nullptr;
+        ParameterManager* parameterManager = nullptr;
+        Material* material = nullptr;
+        Material* invalidMaterial = nullptr;
         RenderingStatistics stats;
 
-        XMFLOAT4 *clearColor = nullptr;
+        XMFLOAT4* clearColor = nullptr;
 
         List<RenderStep*> steps;
 
-        CommandList &startFrame() {
+        CommandList& startFrame() {
             swapChain->startFrame(clearColor);
 
-            CommandList &commandList = swapChain->CommandList;
+            CommandList& commandList = swapChain->CommandList;
             graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
 
             return commandList;
@@ -49,19 +49,17 @@ namespace Ghurund {
 
     public:
         ~Renderer() {
-            if(lightPassMaterial!=nullptr)
+            if (lightPassMaterial != nullptr)
                 lightPassMaterial->release();
-            if(invalidMaterial!=nullptr)
+            if (invalidMaterial != nullptr)
                 invalidMaterial->release();
             uninit();
             delete clearColor;
         }
 
-        Status init(Window &window, ResourceManager &resourceManager, ResourceContext &resourceContext);
+        Status init(Window & window, ResourceManager & resourceManager, ResourceContext & resourceContext);
 
         void uninit();
-
-        void draw(Camera &camera, Entity &entity, ParameterManager &parameterManager, Material *overrideMaterial, Material *invalidMaterial);
 
         void render();
 
@@ -71,33 +69,33 @@ namespace Ghurund {
               //  postprocessRenderTarget[i]->resize(*graphics, width, height);
         }
 
-        void setInvalidMaterial(Ghurund::Material *material) {
+        void setInvalidMaterial(Ghurund::Material * material) {
             setPointer(this->invalidMaterial, material);
         }
 
-        __declspec(property(put = setInvalidMaterial)) Ghurund::Material *InvalidMaterial;
+        __declspec(property(put = setInvalidMaterial)) Ghurund::Material * InvalidMaterial;
 
-        XMFLOAT4 *getClearColor() {
+        XMFLOAT4 * getClearColor() {
             return clearColor;
         }
 
-        void setClearColor(XMFLOAT4 *color) {
+        void setClearColor(XMFLOAT4 * color) {
             delete clearColor;
             clearColor = color;
         }
 
-        __declspec(property(get = getClearColor, put = setClearColor)) XMFLOAT4 *ClearColor;
+        __declspec(property(get = getClearColor, put = setClearColor)) XMFLOAT4 * ClearColor;
 
-        RenderingStatistics &getStatistics() {
+        RenderingStatistics & getStatistics() {
             return stats;
         }
 
-        __declspec(property(get = getStatistics)) RenderingStatistics &Statistics;
+        __declspec(property(get = getStatistics)) RenderingStatistics & Statistics;
 
-        List<RenderStep*> &getSteps() {
+        List<RenderStep*> & getSteps() {
             return steps;
         }
 
-        __declspec(property(get = getSteps)) List<RenderStep*> &Steps;
+        __declspec(property(get = getSteps)) List<RenderStep*> & Steps;
     };
 }

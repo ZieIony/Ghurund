@@ -33,21 +33,10 @@ namespace Ghurund {
         swapChain = nullptr;
     }
 
-    void Renderer::draw(Camera &camera, Entity & entity, ParameterManager & parameterManager, Material *overrideMaterial, Material *invalidMaterial) {
-        RenderStep *step = ghnew RenderStep();
-        step->Camera = &camera;
-        XMFLOAT4X4 identity;
-        XMStoreFloat4x4(&identity, XMMatrixIdentity());
-        entity.flatten(*step, identity);
-
-        steps.add(step);
-    }
-
     void Renderer::render() {
         CommandList &commandList = startFrame();
         for(RenderStep *step:steps)
-            step->draw(*graphics, commandList, *parameterManager, stats);
+            step->draw(*graphics, commandList, stats);
         finishFrame();
-        steps.deleteItems();
     }
 }

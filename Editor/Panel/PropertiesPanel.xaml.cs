@@ -24,9 +24,9 @@ namespace Ghurund.Editor {
             }
         }
 
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<List<object>>), typeof(IPropertiesPanel));
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(IPropertiesPanel));
 
-        public event RoutedPropertyChangedEventHandler<List<object>> SelectionChanged {
+        public event RoutedSelectionChangedEventHandler SelectionChanged {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }

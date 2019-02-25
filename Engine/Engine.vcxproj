@@ -42,6 +42,7 @@
     <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\GraphicsMemoryAllocator.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
+    <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
@@ -96,6 +97,7 @@
     <ClInclude Include="src\core\FunctionQueue.h" />
     <ClInclude Include="src\core\Object.h" />
     <ClInclude Include="src\core\Pointer.h" />
+    <ClInclude Include="src\core\ScopedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
     <ClInclude Include="src\core\Task.h" />
     <ClInclude Include="src\core\Thread.h" />

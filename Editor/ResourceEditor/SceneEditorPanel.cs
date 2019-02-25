@@ -29,9 +29,9 @@ namespace Ghurund.Editor.ResourceEditor {
 
         public object Document { get; set; }
 
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>>), typeof(ISceneEditor));
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(ISceneEditor));
 
-        public event RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>> SelectionChanged {
+        public event RoutedSelectionChangedEventHandler SelectionChanged {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
@@ -215,5 +215,30 @@ namespace Ghurund.Editor.ResourceEditor {
             cameraPerspective.IsChecked = sceneView.Camera.Perspective;
             sceneView.Refresh();
         }
+
+        private void sceneView_SelectionChanged(object sender, RoutedEventArgs e) {
+            e.Handled = true;
+            var list = new System.Collections.Generic.List<object>(sceneView.SelectedEntities);
+            RaiseEvent(new RoutedSelectionChangedEventArgs(list, SelectionChangedEvent));
+        }
+
+        private void SelectionMove_Checked(object sender, RoutedEventArgs e) {
+        }
+
+        private void SelectionRotate_Checked(object sender, RoutedEventArgs e) {
+        }
+
+        private void SelectionScale_Checked(object sender, RoutedEventArgs e) {
+        }
+
+        private void XCoordinate_Checked(object sender, RoutedEventArgs e) {
+        }
+
+        private void YCoordinate_Checked(object sender, RoutedEventArgs e) {
+        }
+
+        private void ZCoordinate_Checked(object sender, RoutedEventArgs e) {
+        }
+
     }
 }

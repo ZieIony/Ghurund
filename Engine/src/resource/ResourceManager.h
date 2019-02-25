@@ -77,6 +77,7 @@ namespace Ghurund {
                 }
                 if (onLoaded != nullptr)
                     onLoaded((Type*)resource, loadResult);
+                resource->release();
                 return loadResult;
                 });
             loadingThread.post(task);
@@ -113,6 +114,7 @@ namespace Ghurund {
                 }
                 if (onLoaded != nullptr)
                     onLoaded(resource, result);
+                resource->release();
                 return result;
             });
             loadingThread.post(task);

@@ -13,8 +13,8 @@
 				<ResourceDictionary Source="Themes/Generic.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
-			<SolidColorBrush x:Key="Ghurund.Primary">#ffa726</SolidColorBrush>
-			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#f57c00</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.Primary">#0061BC</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#003B72</SolidColorBrush>
 			<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
 
 		</ResourceDictionary>

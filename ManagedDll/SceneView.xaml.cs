@@ -13,14 +13,24 @@ namespace Ghurund.Managed {
         Top, Side, Front, Default, Custom
     }
 
-    public partial class SceneView : UserControl, IDisposable {
+    public partial class SceneView: UserControl, IDisposable {
 
         private Point prevPos;
         private bool pressed = false;
         private Material invalidMaterial;
         private Scene editorScene;
 
+        private RenderStep editorStep;
+        private RenderStep sceneStep;
+
         public NavigationMode NavigationMode { get; set; }
+
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SceneView));
+
+        public event RoutedEventHandler SelectionChanged {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
 
         private Camera topCamera, sideCamera, frontCamera, defaultCamera, customCamera;
 
@@ -53,9 +63,12 @@ namespace Ghurund.Managed {
         public Scene Scene {
             get => scene;
             set {
+                sceneStep.Entities.Clear();
                 value?.AddReference();
                 scene?.Release();
                 scene = value;
+                if (scene != null)
+                    sceneStep.Entities.Add(scene);
             }
         }
 
@@ -84,7 +97,7 @@ namespace Ghurund.Managed {
         public System.Collections.Generic.List<Entity> SelectedEntities {
             get;
             set;
-        }
+        } = new System.Collections.Generic.List<Entity>();
 
         public SceneView() {
             InitializeComponent();
@@ -131,12 +144,16 @@ namespace Ghurund.Managed {
             editorScene = Scenes.MakeEditor(resourceManager, resourceContext);
             invalidMaterial = Materials.MakeInvalid(resourceManager, resourceContext);
 
-            renderView.RenderCallback = (renderer, parameterManager) => {
-                renderer.Statistics.Reset();
-                if (Scene != null)
-                    renderer.Draw(Camera, Scene, parameterManager, overrideMaterial, invalidMaterial);
-                renderer.Draw(Camera, editorScene, parameterManager, null, invalidMaterial);
-            };
+            editorStep = new RenderStep();
+            editorStep.Camera = Camera;
+            editorStep.Entities.Add(editorScene);
+            editorStep.InitParameters(resourceContext.ParameterManager);
+            Renderer.Steps.Add(editorStep);
+
+            sceneStep = new RenderStep();
+            sceneStep.Camera = Camera;
+            sceneStep.InitParameters(resourceContext.ParameterManager);
+            Renderer.Steps.Add(sceneStep);
         }
 
         public void Uninit() {
@@ -201,8 +218,8 @@ namespace Ghurund.Managed {
         }
 
         private void renderView_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
+            var pos = new Point(e.X, e.Y);
             if (pressed) {
-                var pos = new Point(e.X, e.Y);
                 var dx = pos.X - prevPos.X;
                 var dy = -(pos.Y - prevPos.Y);
                 if (NavigationMode == NavigationMode.Orbit) {
@@ -215,13 +232,22 @@ namespace Ghurund.Managed {
                     renderView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 }
                 renderView.Refresh();
-                prevPos = pos;
             }
+            prevPos = pos;
         }
 
         private void renderView_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 pressed = false;
+        }
+
+        private void renderView_Click(object sender, System.EventArgs e) {
+            SelectedEntities.Clear();
+            Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
+            if (model != null) {
+                SelectedEntities.Add(model);
+                RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
+            }
         }
     }
 }

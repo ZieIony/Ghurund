@@ -28,6 +28,11 @@
 						</MenuItem>
 						<MenuItem Header="_Open" Click="FileOpen_Click"/>
 						<Separator/>
+						<MenuItem Header="_Settings" Click="Settings_Click">
+							<MenuItem.Icon>
+								<Image Source="Resources/settings32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
 						<MenuItem Header="_Exit" Click="Exit_Click">
 							<MenuItem.Icon>
 								<Image Source="Resources/exit32.png"/>

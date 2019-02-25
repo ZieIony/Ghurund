@@ -75,7 +75,8 @@ namespace Ghurund.Editor {
             AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
 
-            AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedPropertyChangedEventHandler<System.Collections.Generic.List<object>>(selectionChangedHandler));
+            AddHandler(SceneEditorPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
+            AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
             AddHandler(WorkspacePanel.PanelFocusedEvent, new PanelActionEventHandler(panelFocused));
         }
 
@@ -98,12 +99,12 @@ namespace Ghurund.Editor {
             }
         }
 
-        private void selectionChangedHandler(object sender, RoutedPropertyChangedEventArgs<System.Collections.Generic.List<object>> e) {
+        private void selectionChangedHandler(object sender, RoutedSelectionChangedEventArgs e) {
             foreach (var documentPanel in documentPanels)
-                documentPanel.SelectedItems = e.NewValue;
-            SceneExplorer.SelectedItems = e.NewValue;
-            PropertiesPanel.SelectedItems = e.NewValue;
-            ParametersPanel.SelectedItems = e.NewValue;
+                documentPanel.SelectedItems = e.Items;
+            SceneExplorer.SelectedItems = e.Items;
+            PropertiesPanel.SelectedItems = e.Items;
+            ParametersPanel.SelectedItems = e.Items;
             //ProjectExplorer.SelectedItems = e.NewValue;
         }
 
@@ -178,6 +179,10 @@ namespace Ghurund.Editor {
 
         private void FileOpen_Click(object sender, RoutedEventArgs e) {
             openFile();
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e) {
+            new SettingsWindow().Show();
         }
 
         private void saveSettings() {
