@@ -93,6 +93,8 @@ namespace Ghurund {
             return source;
         }
 
+        __declspec(property(get = getSourceCode, put = setSourceCode)) const char* SourceCode;
+
         Status makePipelineState(bool supportsTransparency);
 
         bool set(Graphics &graphics, CommandList &commandList) {

@@ -32,7 +32,8 @@
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\core\WorkerThread.cpp" />
     <ClCompile Include="src\FileUtils.cpp" />
-    <ClCompile Include="src\game\entity\Scene.cpp" />
+    <ClCompile Include="src\game\entity\Entity.cpp" />
+    <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\graphics\CommandList.cpp" />
@@ -69,6 +70,9 @@
     <ClCompile Include="src\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
     <ClCompile Include="src\game\parameter\Parameter.cpp" />
+    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
+    <ClCompile Include="src\script\Script.cpp" />
+    <ClCompile Include="src\script\ScriptEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
@@ -99,6 +103,7 @@
     <ClInclude Include="src\core\Pointer.h" />
     <ClInclude Include="src\core\ScopedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\StaticClass.h" />
     <ClInclude Include="src\core\Task.h" />
     <ClInclude Include="src\core\Thread.h" />
     <ClInclude Include="src\core\Timer.h" />
@@ -108,13 +113,15 @@
     <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\game\CameraController.h" />
+    <ClInclude Include="src\game\entity\EntityGroup.h" />
+    <ClInclude Include="src\game\entity\EntityList.h" />
     <ClInclude Include="src\game\entity\Scenes.h" />
+    <ClInclude Include="src\game\entity\Target.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
     <ClInclude Include="src\game\parameter\ParameterProvider.h" />
     <ClInclude Include="src\game\entity\Scene.h" />
-    <ClInclude Include="src\game\entity\TransformedEntity.h" />
     <ClInclude Include="src\graphics\Adapter.h" />
     <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
     <ClInclude Include="src\game\entity\Camera.h" />
@@ -176,6 +183,13 @@
     <ClInclude Include="src\resource\ResourceFactory.h" />
     <ClInclude Include="src\resource\ResourceFormat.h" />
     <ClInclude Include="src\resource\watcher\FileChange.h" />
+    <ClInclude Include="src\script\angelscript\scriptmath.h" />
+    <ClInclude Include="src\script\Argument.h" />
+    <ClInclude Include="src\script\ScriptBindings.h" />
+    <ClInclude Include="src\script\Script.h" />
+    <ClInclude Include="src\script\ScriptEngine.h" />
+    <ClInclude Include="src\script\Scripts.h" />
+    <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\ui\Control.h" />
     <ClInclude Include="src\ui\Layout.h" />
@@ -199,6 +213,9 @@
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\resource\TextResource.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -265,7 +282,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>

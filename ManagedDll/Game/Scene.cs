@@ -13,11 +13,11 @@ namespace Ghurund.Managed.Game {
 
 
         public Scene() {
-            Entities = new PointerList<Entity>(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
+            Entities = new EntityList(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
         }
 
         public Scene(IntPtr ptr) : base(ptr) {
-            Entities = new PointerList<Entity>(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
+            Entities = new EntityList(Scene_getEntities(NativePtr), p => Game.Entities.MakeEntity(p));
         }
 
 
@@ -25,7 +25,7 @@ namespace Ghurund.Managed.Game {
         private static extern IntPtr Scene_getEntities(IntPtr _this);
 
         [Browsable(false)]
-        public PointerList<Entity> Entities {
+        public EntityList Entities {
             get; internal set;
         }
 

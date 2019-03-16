@@ -17,15 +17,11 @@ namespace Ghurund {
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if(FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
-            Logger::log(_T("factory->CreateSwapChainForHwnd() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->CreateSwapChainForHwnd() failed\n"));
 
-        if(FAILED(swapChain1.As(&swapChain))) {
-            Logger::log(_T("swapChain1.As() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(swapChain1.As(&swapChain)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain1.As() failed\n"));
 
         return initBuffers(graphics);
     }

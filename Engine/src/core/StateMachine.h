@@ -125,8 +125,8 @@ namespace Ghurund {
                 }
             }
 
-            Logger::log(_T("No edge for specified states: %i -> %i\n"), currentState, state);
             result = Status::INV_PARAM;
+            Logger::log(LogType::WARNING, result, _T("No edge for specified states: %i -> %i\n"), currentState, state);
 
         cleanUp:
             cs.leave();

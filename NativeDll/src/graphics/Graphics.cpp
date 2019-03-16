@@ -7,12 +7,8 @@ extern "C" __declspec(dllexport) Graphics *Graphics_new() {
     return new Graphics();
 }
 
-extern "C" __declspec(dllexport) void Graphics_delete(Graphics *obj) {
-    delete obj;
-}
-
-extern "C" __declspec(dllexport) void Graphics_init(Graphics *graphics) {
-    graphics->init();
+extern "C" __declspec(dllexport) Status Graphics_init(Graphics *graphics) {
+    return graphics->init();
 }
 
 extern "C" __declspec(dllexport) size_t Graphics_getAdapters_Size(Graphics *graphics) {

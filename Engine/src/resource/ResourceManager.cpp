@@ -3,14 +3,16 @@
 #include "TextResource.h"
 
 namespace Ghurund {
+    const wchar_t* const ResourceManager::ENGINE_LIB_NAME = L"engine";
+    const wchar_t* const ResourceManager::LIB_PROTOCOL_PREFIX = L"lib:\\";
+
+
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(*this, context, path, nullptr, options);
-        if (result != Status::OK) {
-            Logger::log(_T("failed to load file: %s\n"), path.get().getData());
-            return result;
-        }
+        if (result != Status::OK)
+            return Logger::log(LogType::ERR0R, result, _T("failed to load file: %s\n"), path.get().getData());
 
-        if (hotReloadEnabled && !(options& LoadOption::DONT_WATCH)) {
+        if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &resource, &context](const FilePath & path, FileChange fileChange) {
                 if (fileChange == FileChange::MODIFIED) {
                     section.enter();
@@ -34,6 +36,38 @@ namespace Ghurund {
         return Status::OK;
     }
 
+    FilePath ResourceManager::decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir) const {
+        if (fileName.startsWith(LIB_PROTOCOL_PREFIX)) {
+            UnicodeString libName = fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX), fileName.find(L"\\", lengthOf(LIB_PROTOCOL_PREFIX)) - lengthOf(LIB_PROTOCOL_PREFIX));
+            FilePath libPath(libraries.get(libName)->Path, fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX) + 1 + libName.Length));
+            return libPath;
+        } else if (workingDir) {
+            return FilePath(*workingDir, fileName);
+        } else {
+            return fileName;
+        }
+    }
+
+    FilePath ResourceManager::encodePath(const FilePath & resourcePath, const DirectoryPath & workingDir) const {
+        FilePath relativePath = resourcePath.getRelativePath(workingDir);
+        if (relativePath.get().startsWith(_T(".."))) {
+            size_t libIndex = libraries.findFile(resourcePath);
+            if (libIndex != libraries.Size) {
+                UnicodeString libPathString = LIB_PROTOCOL_PREFIX;
+                libPathString.add(libraries.get(libIndex).Name);
+                libPathString.add("\\");
+                libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path));
+                return libPathString;
+            } else {
+                if (relativePath == resourcePath)
+                    Logger::log(LogType::WARNING, _T("Resource path is absolute: %s\n"), String(resourcePath.get()).getData());
+                return resourcePath;
+            }
+        } else {
+            return relativePath;
+        }
+    }
+
     ResourceManager::ResourceManager() {
         loadingThread.start();
     }
@@ -54,45 +88,27 @@ namespace Ghurund {
         section.leave();
     }
 
-    Status ResourceManager::save(Resource& resource, SaveOption options) {
+    Status ResourceManager::save(Resource & resource, SaveOption options) {
         return resource.save(*this, options);
     }
 
-    Status ResourceManager::save(Resource& resource, const FilePath& path, SaveOption options) {
+    Status ResourceManager::save(Resource & resource, const FilePath & path, SaveOption options) {
         return resource.save(*this, path, options);
     }
 
-    Status ResourceManager::save(Resource& resource, File& file, SaveOption options) {
+    Status ResourceManager::save(Resource & resource, File & file, SaveOption options) {
         return resource.save(*this, file, options);
     }
 
-    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
+    Status ResourceManager::save(Resource & resource, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) {
         resourceFactory->describeResource(resource, stream);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
             return resource.save(*this, workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
-            FilePath relativePath = resource.Path->getRelativePath(workingDir);
-            if (relativePath == *resource.Path) {
-                size_t libIndex = libraries.findFile(*resource.Path);
-                if (libIndex != libraries.Size) {
-                    UnicodeString libPathString = L"lib:";
-                    libPathString.add(libraries.get(libIndex).Name);
-                    libPathString.add("\\");
-                    libPathString.add(libraries.get(libIndex).Path);
-                    stream.writeUnicode(libPathString);
-                } else {
-                    Logger::log(_T("Saving resource by absolute path reference (%s)\n"), String(resource.Path->get()).getData());
-                    stream.writeUnicode(*resource.Path);
-                }
-            } else {
-                stream.writeUnicode(resource.Path->getRelativePath(workingDir));
-            }
-            Status result = resource.save(*this, *resource.Path, options);
-            if (options& SaveOption::SKIP_IF_EXISTS&& result == Status::FILE_EXISTS)
-                return Status::OK;
-            return result;
+            stream.writeUnicode(encodePath(*resource.Path, workingDir));
+            return resource.save(*this, *resource.Path, options);
         }
     }
 

@@ -93,10 +93,60 @@ namespace Ghurund {
             v[size-1] = 0;
             computeHash();
         }
+
+        inline void add(const float s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%f"), s);
+            add(c);
+        }
+
+        inline void add(const double s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%f"), s);
+            add(c);
+        }
+
+        inline void add(const unsigned int s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%u"), s);
+            add(c);
+        }
+
+        inline void add(const unsigned short s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%hu"), s);
+            add(c);
+        }
+
+        inline void add(const unsigned long s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%lu"), s);
+            add(c);
+        }
+
+        inline void add(const int s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%i"), s);
+            add(c);
+        }
+
+        inline void add(const short s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%hi"), s);
+            add(c);
+        }
+
+        inline void add(const long s) {
+            Type c[20];
+            _stprintf_s(c, 20, _T("%li"), s);
+            add(c);
+        }
+
         inline void set(size_t i, Type c) {
             v[i] = c;
             computeHash();
         }
+
         inline Type get(size_t i)const {
             return v[i];
         }

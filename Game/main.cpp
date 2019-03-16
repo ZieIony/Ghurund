@@ -12,6 +12,7 @@
 #include "game/CameraController.h"
 #include "game/LevelManager.h"
 #include "game/entity/Scenes.h"
+#include "script/Scripts.h"
 
 #include "core/Allocator.h"
 
@@ -29,53 +30,54 @@ using namespace DirectX;
 
 class TestLevel:public Level {
 private:
-    Camera *camera = nullptr;
-    CameraController *cameraController = nullptr;
-    Application &app;
-    TransformedEntity *selection = nullptr;
-    Material *overrideMaterial = nullptr;
-    Material *invalidMaterial = nullptr;
+    Camera* camera = nullptr;
+    CameraController* cameraController = nullptr;
+    Application& app;
+    Entity* selection = nullptr;
+    Material* overrideMaterial = nullptr;
+    Material* invalidMaterial = nullptr;
+    Script* script = nullptr;
 
     RenderStep editorStep, sceneStep;
 
 public:
-    TestLevel(Application &app):app(app) {}
+    TestLevel(Application& app):app(app) {}
 
-    virtual bool onMouseButtonEvent(MouseButtonEvent &event) override {
+    virtual bool onMouseButtonEvent(MouseButtonEvent& event) override {
         if (event.Action == MouseAction::DOWN) {
-            GlobalEntity<Model> *model = sceneStep.pick(app.Input.MousePos);
+            Model* model = sceneStep.pick(app.Input.MousePos);
             if (model != nullptr)
                 return true;
         }
         return cameraController->dispatchMouseButtonEvent(event);
     }
 
-    virtual bool onMouseMouseMotionEvent(MouseMotionEvent &event) override {
+    virtual bool onMouseMouseMotionEvent(MouseMotionEvent & event) override {
         return cameraController->dispatchMouseMotionEvent(event);
     }
 
-    virtual bool onMouseWheelEvent(MouseWheelEvent &event) override {
+    virtual bool onMouseWheelEvent(MouseWheelEvent & event) override {
         return cameraController->dispatchMouseWheelEvent(event);
     }
 
-    virtual bool onKeyEvent(KeyEvent &event) override {
-        if(event.Action==KeyAction::DOWN&&event.Key=='W') {
-            if(overrideMaterial!=nullptr)
+    virtual bool onKeyEvent(KeyEvent & event) override {
+        if (event.Action == KeyAction::DOWN && event.Key == 'W') {
+            if (overrideMaterial != nullptr)
                 overrideMaterial->release();
             overrideMaterial = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
-        } else if(event.Action==KeyAction::UP&&event.Key=='W') {
-            if(overrideMaterial!=nullptr)
+        } else if (event.Action == KeyAction::UP && event.Key == 'W') {
+            if (overrideMaterial != nullptr)
                 overrideMaterial->release();
             overrideMaterial = nullptr;
-        } else if(event.Action==KeyAction::DOWN&&event.Key=='C') {
-            if(overrideMaterial!=nullptr)
+        } else if (event.Action == KeyAction::DOWN && event.Key == 'C') {
+            if (overrideMaterial != nullptr)
                 overrideMaterial->release();
             overrideMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
-        } else if(event.Action==KeyAction::UP&&event.Key=='C') {
-            if(overrideMaterial!=nullptr)
+        } else if (event.Action == KeyAction::UP && event.Key == 'C') {
+            if (overrideMaterial != nullptr)
                 overrideMaterial->release();
             overrideMaterial = nullptr;
-        } else if(event.Action==KeyAction::DOWN&&event.Key==VK_ESCAPE) {
+        } else if (event.Action == KeyAction::DOWN && event.Key == VK_ESCAPE) {
             PostQuitMessage(0);
             return true;
         }
@@ -98,27 +100,29 @@ public:
         app.Renderer.Steps.add(&sceneStep);
 
         File sceneFile("test/test.scene");
-        if(sceneFile.Exists) {
-            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test/test.scene", [&](Ghurund::Scene *scene, Status result) {
+        if (sceneFile.Exists) {
+            app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test/test.scene", [&](Ghurund::Scene * scene, Status result) {
+                if (result != Status::OK)
+                    return;
                 scene->initParameters(app.ParameterManager);
                 sceneStep.Entities.add(scene);
-            });
+                });
         } else {
             ScopedPointer<Scene> scene = ghnew Ghurund::Scene();
 
             {
                 ScopedPointer<Mesh> mesh;
                 File file("test/obj/lamborghini/Lamborghini_Aventador.mesh");
-                if(file.Exists) {
+                if (file.Exists) {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
                 } else {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/lamborghini/Lamborghini_Aventador.obj");
-                    if(mesh!=nullptr)
+                    if (mesh != nullptr)
                         mesh->save(app.ResourceManager, "test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 }
 
                 ScopedPointer<Image> image = app.ResourceManager.load<Image>(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-                if(image!=nullptr&&mesh!=nullptr) {
+                if (image != nullptr && mesh != nullptr) {
                     ScopedPointer<Texture> texture = ghnew Texture();
                     texture->init(app.ResourceContext, *image);
 
@@ -159,8 +163,8 @@ public:
             }*/
 
             Status result = scene->save(app.ResourceManager, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
-            if(result!=Status::OK)
-                Logger::log(_T("failed to save scene\n"));
+            if (result != Status::OK)
+                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
 
             scene->initParameters(app.ParameterManager);
             sceneStep.Entities.add(scene);
@@ -169,13 +173,20 @@ public:
         invalidMaterial = Materials::makeInvalid(app.ResourceManager, app.ResourceContext);
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
         editorStep.Entities.add(editorScene);
+
+        script = Scripts::makeEmpty(camera);
+        script->SourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),sin(timer.getTime()/5.0f)*5.0f);}";
+        script->build(app.ScriptEngine);
     }
 
     virtual void onUpdate() override {
         camera->setScreenSize(app.Window.Width, app.Window.Height);
+
+        script->execute();
     }
 
     virtual void onUninit() override {
+        script->release();
         camera->release();
         invalidMaterial->release();
         delete cameraController;
@@ -184,7 +195,7 @@ public:
 
 class TestApplication:public Application {
 private:
-    Level *testLevel = nullptr;
+    Level* testLevel = nullptr;
 
 public:
     void onInit() {
@@ -205,6 +216,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
     Logger::init(LogOutput::SYSTEM_CONSOLE);
+    Logger::log(LogType::INFO, String("working dir: ")+DirectoryPath(".").getAbsolutePath());
 
     {
         TestApplication application;
@@ -218,7 +230,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 #ifdef _DEBUG
     _____________________checkMemory();
     ComPtr<IDXGIDebug> debugInterface;
-    if(SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
+    if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
         debugInterface->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 #endif
     return 0;

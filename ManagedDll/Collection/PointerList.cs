@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Collection {
@@ -36,7 +37,7 @@ namespace Ghurund.Managed.Collection {
         public static extern int PointerList_indexOf(IntPtr _this, IntPtr item);
     }
 
-    public class PointerList<T> : NativeClass, IList<T> where T : NativeClass {
+    public class PointerList<T>: NativeClass, IList<T>, INotifyCollectionChanged where T : NativeClass {
 
         private MakeNativeObjectDelegate<T> makeNativeObjectDelegate;
 
@@ -53,7 +54,12 @@ namespace Ghurund.Managed.Collection {
 
         public bool IsReadOnly => false;
 
-        public void Add(T item) => NativeLists.PointerList_add(NativePtr, item.NativePtr);
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+        public void Add(T item) {
+            NativeLists.PointerList_add(NativePtr, item.NativePtr);
+            CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, item, Count - 1));
+        }
 
         public void Clear() => NativeLists.PointerList_clear(NativePtr);
 

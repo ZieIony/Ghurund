@@ -16,6 +16,7 @@ WpfCustomControlLibrary1/obj
 packages
 test
 WidgetTest
+AS_DEBUG
 
 # User-specific files
 *.suo

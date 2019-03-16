@@ -1,6 +1,5 @@
 #include "game/entity/Entity.h"
 #include "../Float3.h"
-#include "game/entity/TransformedEntity.h"
 
 using namespace Ghurund;
 
@@ -28,32 +27,8 @@ extern "C" __declspec(dllexport) void Entity_setName(Entity *_this, const wchar_
     _this->setName(name);
 }
 
-extern "C" __declspec(dllexport) const Float3 TransformedEntity_getPosition(TransformedEntity *_this) {
-    return convertFloat3(_this->getPosition());
-}
-
-extern "C" __declspec(dllexport) void TransformedEntity_setPosition(TransformedEntity *_this, XMFLOAT3 position) {
-    _this->setPosition(position);
-}
-
-extern "C" __declspec(dllexport) const Float3 TransformedEntity_getRotation(TransformedEntity *_this) {
-    return convertFloat3(_this->getRotation());
-}
-
-extern "C" __declspec(dllexport) void TransformedEntity_setRotation(TransformedEntity *_this, XMFLOAT3 rotation) {
-    _this->setRotation(rotation);
-}
-
-extern "C" __declspec(dllexport) const Float3 TransformedEntity_getScale(TransformedEntity *_this) {
-    return convertFloat3(_this->getScale());
-}
-
-extern "C" __declspec(dllexport) void TransformedEntity_setScale(TransformedEntity *_this, XMFLOAT3 scale) {
-    _this->setScale(scale);
-}
-
-extern "C" __declspec(dllexport) Entity *TransformedEntity_getEntity(TransformedEntity *_this) {
-    return _this->getEntity();
+extern "C" __declspec(dllexport) BOOL Entity_isSelectable(Entity *_this) {
+    return _this->isSelectable();
 }
 
 extern "C" __declspec(dllexport) Array<Parameter*> *Entity_getParameters(Entity *_this) {
@@ -68,10 +43,10 @@ extern "C" __declspec(dllexport) void Entity_updateParameters(Entity *_this) {
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity *_this, void(__stdcall *listener)()) {
+extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity *_this, listener_t listener) {
     _this->setOnChangedListener(listener);
 }
 
-extern "C" __declspec(dllexport) const Array<ResourceFormat*> *TransformedEntity_getFormats() {
-    return &TransformedEntity::getFormats();
+extern "C" __declspec(dllexport) listener_t Entity_getPropertyChangedListener(Entity *_this) {
+    return _this->getOnChangedListener();
 }

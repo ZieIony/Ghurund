@@ -4,10 +4,8 @@
 namespace Ghurund {
 
 	Status DescriptorHeap::init(Graphics &graphics){
-		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
-			Logger::log(_T("CreateDescriptorHeap(...) failed\n"));
-			return Status::CALL_FAIL;
-		}
+		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap))))
+			return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDescriptorHeap(...) failed\n"));
 
 		descriptorSize = graphics.Device->GetDescriptorHandleIncrementSize(heapDescriptor.Type);
 		numFreeDescriptors = heapDescriptor.NumDescriptors;

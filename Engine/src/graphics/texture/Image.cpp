@@ -99,10 +99,8 @@ namespace Ghurund {
         bool imageConverted = false;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
-        if(FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
-            Logger::log(_T("Failed to create decoder\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to create decoder\n"));
 
         if(FAILED(wicDecoder->GetFrame(0, &wicFrame)))
             return Status::CALL_FAIL;

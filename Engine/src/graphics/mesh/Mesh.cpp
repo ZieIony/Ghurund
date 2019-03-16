@@ -143,8 +143,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&vertexBuffer)))) {
-                Logger::log(_T("device->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
             }
 
             if (FAILED(graphics.Device->CreateCommittedResource(
@@ -154,8 +153,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&vertexUploadHeap)))) {
-                Logger::log(_T("device->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
             }
 
             D3D12_SUBRESOURCE_DATA vertexData = {};
@@ -187,8 +185,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&indexBuffer)))) {
-                Logger::log(_T("device->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
             }
 
             if (FAILED(graphics.Device->CreateCommittedResource(
@@ -198,8 +195,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&indexUploadHeap)))) {
-                Logger::log(_T("device->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
             }
 
             D3D12_SUBRESOURCE_DATA indexData = {};

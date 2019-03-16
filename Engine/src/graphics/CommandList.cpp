@@ -22,20 +22,14 @@ namespace Ghurund {
         if(result!=Status::OK)
             return result;
 
-        if(FAILED(graphics.Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator)))) {
-            Logger::log(_T("CreateCommandAllocator() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(graphics.Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&commandAllocator))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateCommandAllocator() failed\n"));
 
-        if(FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList)))) {
-            Logger::log(_T("CreateCommandList() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateCommandList() failed\n"));
 
-        if(FAILED(commandList->Close())) {
-            Logger::log(_T("commandList->Close() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(commandList->Close()))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("commandList->Close() failed\n"));
 
         state = CommandListState::FINISHED;
 
@@ -60,15 +54,11 @@ namespace Ghurund {
         if(state!=CommandListState::FINISHED)
             return Status::INV_STATE;
 
-        if(FAILED(commandAllocator->Reset())) {
-            Logger::log(_T("commandAllocator->Reset() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(commandAllocator->Reset()))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("commandAllocator->Reset() failed\n"));
 
-        if(FAILED(commandList->Reset(commandAllocator.Get(), nullptr))) {
-            Logger::log(_T("commandList->Reset() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(commandList->Reset(commandAllocator.Get(), nullptr)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("commandList->Reset() failed\n"));
 
         state = CommandListState::RECORDING;
 
@@ -79,10 +69,8 @@ namespace Ghurund {
         if(state!=CommandListState::RECORDING)
             return Status::INV_STATE;
 
-        if(FAILED(commandList->Close())) {
-            Logger::log(_T("commandList->Close() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(commandList->Close()))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("commandList->Close() failed\n"));
 
         ID3D12CommandList* ppCommandLists[] = {commandList.Get()};
         commandQueue->ExecuteCommandLists(_countof(ppCommandLists), ppCommandLists);
@@ -97,7 +85,7 @@ namespace Ghurund {
     bool CommandList::setPipelineState(ID3D12PipelineState *pipelineState) {
 #ifdef _DEBUG
         if(pipelineState==nullptr)
-            Logger::log(_T("pipelineState cannot be null\n"));
+            Logger::log(LogType::WARNING, _T("pipelineState cannot be null\n"));
 #endif
         if(this->pipelineState!=pipelineState) {
             addResourceRef(pipelineState);
@@ -111,7 +99,7 @@ namespace Ghurund {
     bool CommandList::setGraphicsRootSignature(ID3D12RootSignature *rootSignature) {
 #ifdef _DEBUG
         if(rootSignature==nullptr)
-            Logger::log(_T("rootSignature cannot be null\n"));
+            Logger::log(LogType::WARNING, _T("rootSignature cannot be null\n"));
 #endif
         if(this->rootSignature!=rootSignature) {
             addResourceRef(rootSignature);

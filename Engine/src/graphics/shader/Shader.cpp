@@ -40,13 +40,13 @@ namespace Ghurund {
         ComPtr<ID3DBlob> signature;
         ComPtr<ID3DBlob> error;
         if(FAILED(D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error))) {
-            Logger::log(_T("D3D12SerializeRootSignature() failed\n%hs"), error->GetBufferPointer());
             result = Status::CALL_FAIL;
+            Logger::log(LogType::ERR0R, result, _T("D3D12SerializeRootSignature() failed\n%hs"), error->GetBufferPointer());
             goto cleanUp;
         }
         if(FAILED(graphics->Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {
-            Logger::log(_T("device->CreateRootSignature() failed\n"));
             result = Status::CALL_FAIL;
+            Logger::log(LogType::ERR0R, result, _T("device->CreateRootSignature() failed\n"));
             goto cleanUp;
         }
 
@@ -107,8 +107,8 @@ namespace Ghurund {
         psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
         psoDesc.SampleDesc.Count = 1;
         if(FAILED(graphics->Device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState)))) {
-            Logger::log(_T("device->CreateGraphicsPipelineState() failed\n"));
             result = Status::CALL_FAIL;
+            Logger::log(LogType::ERR0R, result, _T("device->CreateGraphicsPipelineState() failed\n"));
         }
 
         for(unsigned int i = 0; i<psoDesc.InputLayout.NumElements; i++)

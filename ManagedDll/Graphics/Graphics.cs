@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Graphics {
-    public class Graphics : NativeClass {
+    public class Graphics: NativeClass {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Graphics_new();
@@ -12,23 +12,16 @@ namespace Ghurund.Managed.Graphics {
         protected override IntPtr NewObject() => Graphics_new();
 
 
-        public Graphics() {
-            init();
-            initAdapters();
-        }
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Graphics_init(IntPtr _this);
 
-        protected void initAdapters() {
+        public void Init() {
+            Graphics_init(NativePtr);
             Adapter[] adapters = new Adapter[Graphics_getAdapters_Size(NativePtr)];
             for (int i = 0; i < adapters.Length; i++)
                 adapters[i] = new Adapter(Graphics_getAdapters_get(NativePtr, i));
             Adapters = ImmutableList.Create(adapters);
         }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Graphics_init(IntPtr _this);
-
-        public void init() => Graphics_init(NativePtr);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

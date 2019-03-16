@@ -8,7 +8,7 @@ using namespace Ghurund;
 
 extern "C" __declspec(dllexport) ResourceManager *ResourceManager_new() {
     ResourceManager *resourceManager = new ResourceManager();
-    resourceManager->Libraries.add(L"main", DirectoryPath(L"\\"));
+    resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
     return resourceManager;
 }
 

@@ -21,7 +21,9 @@ namespace Ghurund {
 
     const ResourceFormat &ResourceFormat::WAV = ResourceFormat(_T("wav"), true, false);
 
-    const ResourceFormat* ResourceFormat::values[12] = {
+    const ResourceFormat &ResourceFormat::SCRIPT = ResourceFormat(_T("script"), true, true);
+
+    const ResourceFormat* ResourceFormat::values[13] = {
         &ResourceFormat::ENTITY,
         &ResourceFormat::SCENE,
         &ResourceFormat::HLSL,
@@ -33,6 +35,7 @@ namespace Ghurund {
         &ResourceFormat::MODEL,
         &ResourceFormat::MESH,
         &ResourceFormat::OBJ,
-        &ResourceFormat::WAV
+        &ResourceFormat::WAV,
+        &ResourceFormat::SCRIPT
     };
 }

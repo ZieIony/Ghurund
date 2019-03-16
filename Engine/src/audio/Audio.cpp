@@ -4,18 +4,18 @@
 namespace Ghurund {
     Status Audio::init() {
         if(FAILED(MFStartup(MF_VERSION)))
-            return Logger::log(Status::CALL_FAIL, _T("Failed start the Windows Media Foundation\n"));
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed start the Windows Media Foundation\n"));
 
         // set media foundation reader to low latency
         if(FAILED(MFCreateAttributes(sourceReaderConfiguration.GetAddressOf(), 1)))
-            return Logger::log(Status::CALL_FAIL, _T("Unable to create Media Foundation Source Reader configuration\n"));
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to create Media Foundation Source Reader configuration\n"));
 
         if(FAILED(sourceReaderConfiguration->SetUINT32(MF_LOW_LATENCY, true)))
-            return Logger::log(Status::CALL_FAIL, _T("Unable to set Windows Media Foundation configuration\n"));
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set Windows Media Foundation configuration\n"));
 
         UINT32 flags = 0;
         if(FAILED(XAudio2Create(device.GetAddressOf(), flags)))
-            return Logger::log(Status::CALL_FAIL, _T("Failed to init XAudio2 engine\n"));
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to init XAudio2 engine\n"));
 
 #ifdef _DEBUG
         // To see the trace output, you need to view ETW logs for this application:
@@ -31,7 +31,7 @@ namespace Ghurund {
 
         if(FAILED(device->CreateMasteringVoice(&masteringVoice))) {
             device.Reset();
-            return Logger::log(Status::CALL_FAIL, _T("Failed creating mastering voice\n"));
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed creating mastering voice\n"));
         }
 
         return Status::OK;

@@ -60,39 +60,10 @@ namespace Ghurund {
             return *this;
         }
 
-        ASCIIString operator+(const char *str) {
+        template<typename Type>
+        ASCIIString operator+(const Type str) {
             ASCIIString copy(*this);
             copy.add(str);
-            return copy;
-        }
-
-        ASCIIString operator+(const char str) {
-            ASCIIString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        ASCIIString operator+(const ASCIIString &string) const {
-            ASCIIString copy(*this);
-            copy.add(string.getData());
-            return copy;
-        }
-
-        ASCIIString operator+(const wchar_t *str) {
-            ASCIIString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        ASCIIString operator+(const wchar_t str) {
-            ASCIIString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        ASCIIString operator+(const GenericString<wchar_t> &string) const {
-            ASCIIString copy(*this);
-            copy.add(string.getData());
             return copy;
         }
 

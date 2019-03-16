@@ -7,7 +7,7 @@ using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
 
-    public abstract class Entity : Resource.Resource, INotifyPropertyChanged {
+    public abstract class Entity: Resource.Resource, INotifyPropertyChanged {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void PropertyChangedListener();
@@ -16,6 +16,10 @@ namespace Ghurund.Managed.Game {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Entity_setPropertyChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.FunctionPtr)]
+        private static extern PropertyChangedListener Entity_getPropertyChangedListener(IntPtr _this);
 
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -30,14 +34,20 @@ namespace Ghurund.Managed.Game {
 
         public Entity() {
             Parameters = new Array<Parameter>(Entity_getParameters(NativePtr), p => new Parameter(p));
-            propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
-            Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
+            propertyChangedCallback = Entity_getPropertyChangedListener(NativePtr);
+            if (propertyChangedCallback == null) {
+                propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
+                Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
+            }
         }
 
         public Entity(IntPtr ptr) : base(ptr) {
             Parameters = new Array<Parameter>(Entity_getParameters(NativePtr), p => new Parameter(p));
-            propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
-            Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
+            propertyChangedCallback = Entity_getPropertyChangedListener(NativePtr);
+            if (propertyChangedCallback == null) {
+                propertyChangedCallback = new PropertyChangedListener(() => NotifyPropertyChanged());
+                Entity_setPropertyChangedListener(NativePtr, propertyChangedCallback);
+            }
         }
 
 
@@ -58,7 +68,6 @@ namespace Ghurund.Managed.Game {
 
         [Category("Common")]
         [Description("This name will appear in scene explorer and in shaders.")]
-        [Controls.PropertyGrid.Editor(typeof(Controls.PropertyGrid.TextPropertyEditor))]
         public string Name {
             get => Entity_getName(NativePtr);
             set {
@@ -73,6 +82,13 @@ namespace Ghurund.Managed.Game {
 
         [Browsable(false)]
         public Array<Parameter> Parameters { get; }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Entity_getParent(IntPtr _this);
+
+        [Browsable(false)]
+        public Entity Parent { get => Entities.MakeEntity(Entity_getParent(NativePtr)); }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -91,6 +107,9 @@ namespace Ghurund.Managed.Game {
     public static class Entities {
 
         public static Entity MakeEntity(IntPtr ptr) {
+            if (ptr == IntPtr.Zero)
+                return null;
+
             var type = new Core.Type(Entity_getType(ptr));
             switch (type.Name.ToLower()) {
                 case "camera":
@@ -99,81 +118,13 @@ namespace Ghurund.Managed.Game {
                     return new Light(ptr);
                 case "model":
                     return new Model(ptr);
-                case "transformed entity":
-                    return new TransformedEntity(ptr);
+                case "scene":
+                    return new Scene(ptr);
             }
-            return null;    // TODO: should Entity be abstract?
+            return null;
         }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Entity_getType(IntPtr _this);
-    }
-
-    public class TransformedEntity : Entity {
-
-        public TransformedEntity() {
-        }
-
-        public TransformedEntity(IntPtr ptr) : base(ptr) {
-        }
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedEntity_getPosition(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedEntity_setPosition(IntPtr _this, Float3 position);
-
-        [Category("Transformation")]
-        [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public Float3 Position {
-            get => TransformedEntity_getPosition(NativePtr);
-            set => TransformedEntity_setPosition(NativePtr, value);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedEntity_getRotation(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedEntity_setRotation(IntPtr _this, Float3 rotation);
-
-        [Category("Transformation")]
-        [Description("Euler angles in radians. Maybe I should use degrees instead?")]
-        [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public Float3 Rotation {
-            get => TransformedEntity_getRotation(NativePtr);
-            set => TransformedEntity_setRotation(NativePtr, value);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 TransformedEntity_getScale(IntPtr _this);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void TransformedEntity_setScale(IntPtr _this, Float3 scale);
-
-        [Category("Transformation")]
-        [Description("Each value has to be > 0. For 100% scale use value = 1.0.")]
-        [Editor(typeof(Float3UITypeEditor), typeof(System.Drawing.Design.UITypeEditor))]
-        public Float3 Scale {
-            get => TransformedEntity_getScale(NativePtr);
-            set => TransformedEntity_setScale(NativePtr, value);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr TransformedEntity_getEntity(IntPtr _this);
-
-        [Category("General")]
-        [Description("Underlying, untransformed entity.")]
-        public Entity Entity => Entities.MakeEntity(TransformedEntity_getEntity(NativePtr));
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr TransformedEntity_getFormats();
-
-        [Browsable(false)]
-        public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(TransformedEntity_getFormats(), ptr => new ResourceFormat(ptr));
-
     }
 }

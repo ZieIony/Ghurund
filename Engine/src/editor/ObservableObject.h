@@ -5,9 +5,11 @@
 namespace Ghurund {
     class Entity;
 
+    typedef void (__stdcall *listener_t)();
+
     class ObservableObject {
     private:
-        std::function<void()> onObjectChanged = nullptr;
+        listener_t onObjectChanged = nullptr;
 
     protected:
         void notifyObjectChanged() {
@@ -18,10 +20,14 @@ namespace Ghurund {
     public:
         virtual ~ObservableObject() = default;
 
-        void setOnChangedListener(std::function<void()> listener) {
+        void setOnChangedListener(listener_t listener) {
             onObjectChanged = listener;
         }
 
-        __declspec(property(put = setOnChangedListener)) std::function<void()> OnChangedListener;
+        listener_t getOnChangedListener() {
+            return onObjectChanged;
+        }
+
+        __declspec(property(put = setOnChangedListener)) listener_t OnChangedListener;
     };
 }

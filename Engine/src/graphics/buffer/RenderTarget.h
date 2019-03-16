@@ -35,10 +35,8 @@ namespace Ghurund {
             rtvHeapDesc.NumDescriptors = 1;
             rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
             rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-            if(FAILED(graphics.getDevice()->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap)))) {
-                Logger::log(_T("device->CreateDescriptorHeap() failed\n"));
-                return Status::CALL_FAIL;
-            }
+            if(FAILED(graphics.getDevice()->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap))))
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateDescriptorHeap() failed\n"));
 
             handle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
             graphics.getDevice()->CreateRenderTargetView(texture, nullptr, handle);
@@ -81,7 +79,7 @@ namespace Ghurund {
             clearVal.Format = format;
             if(FAILED(graphics.Device->CreateCommittedResource(
                 &heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture)))) {
-                return Logger::log(Status::CALL_FAIL, _T("init RenderTarget with internal texture failed\n"));
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("init RenderTarget with internal texture failed\n"));
             }
 
             return init(graphics, texture);

@@ -16,10 +16,10 @@ namespace Ghurund.Managed.Core {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))]
-        private static extern String Type_getName(IntPtr _this);
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
+        private static extern string Type_getName(IntPtr _this);
 
-        public String Name => Type_getName(NativePtr);
+        public string Name => Type_getName(NativePtr);
 
         public override string ToString() {
             return Name;

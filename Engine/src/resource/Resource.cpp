@@ -48,16 +48,12 @@ namespace Ghurund {
     }
 
     Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead, LoadOption options) {
-        if(!path) {
-            Logger::log(_T("File path is empty\n"));
-            return Status::INV_PARAM;
-        }
+        if(!path)
+            return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
-        if(!file.Exists) {
-            Logger::log(_T("'%s' doesn't exist\n"), path->get().getData());
-            return Status::FILE_DOESNT_EXIST;
-        }
+        if(!file.Exists)
+            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, _T("'%s' doesn't exist\n"), path->get().getData());
 
         Status result = file.read();
         if(result != Status::OK)
@@ -104,10 +100,8 @@ namespace Ghurund {
     }
 
     Status Resource::save(ResourceManager &resourceManager, SaveOption options) const {
-        if(!path) {
-            Logger::log(_T("File path is empty\n"));
-            return Status::INV_PARAM;
-        }
+        if(!path)
+            return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
         Status result = saveInternal(resourceManager, file, options);

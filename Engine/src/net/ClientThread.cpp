@@ -25,18 +25,18 @@ namespace Ghurund {
 
             int result = WSAWaitForMultipleEvents(EVENT_COUNT, &eventHandle, FALSE, TIMEOUT_MS, FALSE);
             if(result == WSA_WAIT_FAILED) {
-                Logger::log(_T("WSAWaitForMultipleEvents() failed with error %d\n"), WSAGetLastError());
+                Logger::log(LogType::ERR0R, _T("WSAWaitForMultipleEvents() failed with error %d\n"), WSAGetLastError());
                 return;
             } else if(result == WSA_WAIT_TIMEOUT) {
                 if(listener!=nullptr)
                     listener->onTimeout(disconnect*TIMEOUT_MS);
                 disconnect++;
-                Logger::log(_T("refreshing connection %i\n"), disconnect);
+                Logger::log(LogType::INFO, _T("refreshing connection %i\n"), disconnect);
                 client.send("ping", strlen("ping")+1);
             } else {
                 disconnect = 0;
                 if(WSAEnumNetworkEvents(socket.Id, eventHandle, &networkEvents) == SOCKET_ERROR) {
-                    Logger::log(_T("WSAEnumNetworkEvents() failed with error %d\n"), WSAGetLastError());
+                    Logger::log(LogType::ERR0R, _T("WSAEnumNetworkEvents() failed with error %d\n"), WSAGetLastError());
                     return;
                 }
 
@@ -46,7 +46,7 @@ namespace Ghurund {
         }
 
         connectionState.setState(ConnectionState::NOT_CONNECTED);
-        Logger::log(_T("ClientThread finished\n"));
+        Logger::log(LogType::INFO, _T("ClientThread finished\n"));
     }
 
     Status ClientThread::handleReadEvent(WSANETWORKEVENTS &networkEvents, Socket &socket) {
@@ -111,7 +111,7 @@ namespace Ghurund {
 
     Status ClientThread::handleEvent(WSANETWORKEVENTS &networkEvents, Socket &socket) {
         if(networkEvents.lNetworkEvents & FD_ACCEPT) {
-            Logger::log(_T("Accept"));
+            Logger::log(LogType::INFO, _T("Accept"));
             /*SOCKET Accept;
 
             if(networkEvents.iErrorCode[FD_ACCEPT_BIT] != 0) {
@@ -140,12 +140,10 @@ namespace Ghurund {
             return handleWriteEvent(networkEvents, socket);
 
         if(networkEvents.lNetworkEvents & FD_CLOSE) {
-            if(networkEvents.iErrorCode[FD_CLOSE_BIT] != 0) {
-                printf("FD_CLOSE failed with error %d\n", networkEvents.iErrorCode[FD_CLOSE_BIT]);
-                return Status::SOCKET;
-            }
+            if(networkEvents.iErrorCode[FD_CLOSE_BIT] != 0)
+                return Logger::log(LogType::ERR0R, Status::SOCKET, _T("FD_CLOSE failed with error %d\n"), networkEvents.iErrorCode[FD_CLOSE_BIT]);
 
-            printf("Closing socket information %d\n", socket.Id);
+            Logger::log(LogType::INFO, _T("Closing socket information %d\n"), socket.Id);
             //FreeSocketInformation(Event - WSA_WAIT_EVENT_0);
         }
 

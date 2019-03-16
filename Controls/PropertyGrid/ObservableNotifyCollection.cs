@@ -2,10 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Ghurund.Controls.PropertyGrid {
     public class ObservableNotifyCollection<T> : ObservableCollection<T> where T : INotifyPropertyChanged {
-        private Dictionary<T, PropertyChangedEventHandler> handlers = new Dictionary<T, PropertyChangedEventHandler>();
+        private readonly Dictionary<T, PropertyChangedEventHandler> handlers = new Dictionary<T, PropertyChangedEventHandler>();
 
         public ObservableNotifyCollection() {
         }
@@ -15,6 +16,7 @@ namespace Ghurund.Controls.PropertyGrid {
             var handler = new PropertyChangedEventHandler((object sender, PropertyChangedEventArgs e) => Refresh(item));
             handlers.Add(item, handler);
             item.PropertyChanged += handler;
+            Debug.Assert(Count == handlers.Count);
         }
 
         protected override void RemoveItem(int index) {
@@ -22,6 +24,7 @@ namespace Ghurund.Controls.PropertyGrid {
             item.PropertyChanged -= handlers[item];
             handlers.Remove(item);
             base.RemoveItem(index);
+            Debug.Assert(Count == handlers.Count);
         }
 
         public new void Clear() {

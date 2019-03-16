@@ -7,7 +7,7 @@ namespace Ghurund.Controls.PropertyGrid {
         FrameworkElement MakeControl(Value property);
     }
 
-    public class BooleanPropertyEditor : IPropertyEditor {
+    public class BooleanPropertyEditor: IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             CheckBox checkBox = new CheckBox();
             checkBox.IsChecked = (bool)property.Getter();
@@ -21,7 +21,7 @@ namespace Ghurund.Controls.PropertyGrid {
         }
     }
 
-    public class IntPropertyEditor : IPropertyEditor {
+    public class IntPropertyEditor: IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             TextBox textBox = new TextBox();
             textBox.Text = property.Getter().ToString();
@@ -29,11 +29,14 @@ namespace Ghurund.Controls.PropertyGrid {
                 if (e.Key == Key.Enter)
                     property.Setter(int.TryParse(textBox.Text, out int val) ? val : property.Getter());
             };
+            textBox.LostFocus += (object sender, RoutedEventArgs e) => {
+                property.Setter(int.TryParse(textBox.Text, out int val) ? val : property.Getter());
+            };
             return textBox;
         }
     }
 
-    public class FloatPropertyEditor : IPropertyEditor {
+    public class FloatPropertyEditor: IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             TextBox textBox = new TextBox();
             textBox.Text = property.Getter().ToString();
@@ -41,11 +44,14 @@ namespace Ghurund.Controls.PropertyGrid {
                 if (e.Key == Key.Enter)
                     property.Setter(float.TryParse(textBox.Text, out float val) ? val : property.Getter());
             };
+            textBox.LostFocus += (object sender, RoutedEventArgs e) => {
+                property.Setter(float.TryParse(textBox.Text, out float val) ? val : property.Getter());
+            };
             return textBox;
         }
     }
 
-    public class TextPropertyEditor : IPropertyEditor {
+    public class TextPropertyEditor: IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             TextBox textBox = new TextBox();
             textBox.Text = property.Getter() as string;
@@ -54,11 +60,14 @@ namespace Ghurund.Controls.PropertyGrid {
                     property.Setter(textBox.Text);
                 }
             };
+            textBox.LostFocus += (object sender, RoutedEventArgs e) => {
+                property.Setter(textBox.Text);
+            };
             return textBox;
         }
     }
 
-    public class EnumPropertyEditor : IPropertyEditor {
+    public class EnumPropertyEditor: IPropertyEditor {
         public FrameworkElement MakeControl(Value property) {
             ComboBox comboBox = new ComboBox();
             foreach (var item in property.Type.GetEnumValues())

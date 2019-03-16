@@ -31,8 +31,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&textureResource)))) {
-                Logger::log(_T("graphics->getDevice()->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
             }
 
             const UINT64 uploadBufferSize = GetRequiredIntermediateSize(textureResource.Get(), 0, 1);
@@ -44,8 +43,7 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&textureUploadHeap))))) {
-                Logger::log(_T("graphics->getDevice()->CreateCommittedResource() failed\n"));
-                return Status::CALL_FAIL;
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
             }
 
             D3D12_SUBRESOURCE_DATA textureData = {};

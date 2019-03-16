@@ -60,39 +60,10 @@ namespace Ghurund {
             return *this;
         }
 
-        UnicodeString operator+(const wchar_t *str) {
+        template<typename Type>
+        UnicodeString operator+(const Type str) {
             UnicodeString copy(*this);
             copy.add(str);
-            return copy;
-        }
-
-        UnicodeString operator+(const wchar_t str) {
-            UnicodeString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        UnicodeString operator+(const UnicodeString &string) const {
-            UnicodeString copy(*this);
-            copy.add(string.getData());
-            return copy;
-        }
-
-        UnicodeString operator+(const char *str) {
-            UnicodeString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        UnicodeString operator+(const char str) {
-            UnicodeString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
-        UnicodeString operator+(const GenericString<char> &string) const {
-            UnicodeString copy(*this);
-            copy.add(string.getData());
             return copy;
         }
 
@@ -127,9 +98,5 @@ namespace Ghurund {
             return UnicodeString(v + i, j - i + 1);
         }
     };
-
-#ifdef UNICODE
-    typedef UnicodeString String;
-#endif
 
 }

@@ -14,10 +14,11 @@
 				<ToolBarPanel Margin="4,0,4,0" Orientation="Horizontal">
 					<controls:IconButton Icon="/Resources/light32.png"
 									 Style="{StaticResource IconButton_Large}"
-									 ToolTip="Add a light"/>
+									 ToolTip="Add a light" Click="addLight_Click"/>
 					<controls:IconButton Icon="/Resources/camera32.png"
 									 Style="{StaticResource IconButton_Large}"
-									 ToolTip="Add a camera"/>
+									 ToolTip="Add a camera" Click="addCamera_Click"/>
+					<ComboBox Name="geometryComboBox" SelectionChanged="geometryComboBox_SelectionChanged"/>
 				</ToolBarPanel>
 				<controls:HintTextBox Style="{StaticResource FilterBoxStyle}" />
 			</WrapPanel>
@@ -58,9 +59,6 @@
 							<TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 						</StackPanel>
 					</DataTemplate>
-					<HierarchicalDataTemplate DataType="{x:Type game:TransformedEntity}" ItemsSource="{Binding Entity}">
-						<TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
-					</HierarchicalDataTemplate>
 					<HierarchicalDataTemplate DataType="{x:Type game:Scene}" ItemsSource="{Binding Entities}">
 						<TextBlock Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=TreeView}}"/>
 					</HierarchicalDataTemplate>

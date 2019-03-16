@@ -16,10 +16,8 @@ namespace Ghurund {
             adapterIndex++;
         }
 
-        if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter)))) {
-            Logger::log(_T("factory->EnumWarpAdapter() failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->EnumWarpAdapter() failed\n"));
 
         adapters.add(ghnew Adapter(adapter));
 
@@ -38,41 +36,33 @@ namespace Ghurund {
 #endif
 
         if(FAILED(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&factory)))) {
-            Logger::log(_T("failed to create DXGIFactory2"));
+            Logger::log(LogType::ERR0R, _T("failed to create DXGIFactory2"));
             return Status::CALL_FAIL;
         }
 
         initAdapters();
         ComPtr<IDXGIAdapter1> adapter = adapters[0]->get();
-        if(FAILED(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device)))) {
-            Logger::log(_T("D3D12CreateDevice failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(D3D12CreateDevice(adapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D3D12CreateDevice failed\n"));
 
         D3D12_COMMAND_QUEUE_DESC queueDesc = {};
         queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&directQueue)))) {
-            Logger::log(_T("create direct queue failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&directQueue))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create direct queue failed\n"));
         directQueue->SetName(L"direct queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
 
-        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&computeQueue)))) {
-            Logger::log(_T("create compute queue failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&computeQueue))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create compute queue failed\n"));
         computeQueue->SetName(L"compute queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
 
-        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&copyQueue)))) {
-            Logger::log(_T("create copy queue failed\n"));
-            return Status::CALL_FAIL;
-        }
+        if(FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&copyQueue))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create copy queue failed\n"));
         copyQueue->SetName(L"copy queue");
 
         /*if(FAILED(factory->MakeWindowAssociation(window.Handle, DXGI_MWA_NO_ALT_ENTER))) {

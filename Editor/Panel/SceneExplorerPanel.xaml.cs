@@ -6,13 +6,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Game;
+using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Resource;
+using Ninject;
 
 namespace Ghurund.Editor {
     public interface ISceneExplorerPanel: IToolPanel {
         Scene Scene { get; set; }
     }
 
+    public enum GeometryType {
+        Cube, Cone, Sphere, Plane
+    }
+
     public partial class SceneExplorerPanel: UserControl, ISceneExplorerPanel {
+
+        [Inject]
+        public ParameterManager ParameterManager { get; set; }
+
+        [Inject]
+        public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public ResourceManager ResourceManager { get; set; }
 
         private List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
@@ -43,8 +59,15 @@ namespace Ghurund.Editor {
         public SceneExplorerPanel() {
             InitializeComponent();
 
+            EditorKernel.Instance.Inject(this);
+
             content.Visibility = Visibility.Collapsed;
             hint.Visibility = Visibility.Visible;
+
+            geometryComboBox.Items.Add(GeometryType.Cube);
+            geometryComboBox.Items.Add(GeometryType.Cone);
+            geometryComboBox.Items.Add(GeometryType.Sphere);
+            geometryComboBox.Items.Add(GeometryType.Plane);
         }
 
         ~SceneExplorerPanel() {
@@ -100,6 +123,35 @@ namespace Ghurund.Editor {
             if (treeView.SelectedItem != null) {
                 var resourceFile = treeView.SelectedItem as ResourceFile;
                 RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
+            }
+        }
+
+        private void addLight_Click(object sender, RoutedEventArgs e) {
+            var l = new Light();
+            l.InitParameters(ParameterManager);
+            scene.Entities.Add(l);
+        }
+
+        private void addCamera_Click(object sender, RoutedEventArgs e) {
+            var c = new Camera();
+            c.InitParameters(ParameterManager);
+            scene.Entities.Add(c);
+        }
+
+        private void geometryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            switch(geometryComboBox.SelectedItem){
+                case GeometryType.Cube:
+                    scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+                    break;
+                case GeometryType.Cone:
+                    scene.Entities.Add(Models.MakeCone(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+                    break;
+                case GeometryType.Sphere:
+                    scene.Entities.Add(Models.MakeSphere(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+                    break;
+                case GeometryType.Plane:
+                    scene.Entities.Add(Models.MakePlane(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+                    break;
             }
         }
     }

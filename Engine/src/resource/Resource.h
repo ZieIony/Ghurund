@@ -93,7 +93,7 @@ namespace Ghurund {
         }
 
         void setPath(const FilePath *path) {
-            delete path;
+            delete this->path;
             this->path = ghnew FilePath(*path);
         }
 

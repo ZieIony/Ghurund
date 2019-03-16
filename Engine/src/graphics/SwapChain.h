@@ -44,10 +44,8 @@ namespace Ghurund {
             frameBuffer->finish();
             frameBuffer.next();
 
-            if(FAILED(swapChain->Present(1, 0))) {
-                Logger::log(_T("swapChain->Present() failed\n"));
-                return Status::CALL_FAIL;
-            }
+            if(FAILED(swapChain->Present(1, 0)))
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
             return Status::OK;
         }
 

@@ -7,6 +7,6 @@ extern "C" __declspec(dllexport) void Logger_init(void(__stdcall *onLogged)(cons
     Logger::init(LogOutput::CUSTOM_CALLBACK, nullptr, onLogged);
 }
 
-extern "C" __declspec(dllexport) void Logger_log(const tchar *log) {
-    Logger::log(log);
+extern "C" __declspec(dllexport) void Logger_log(LogType type, const tchar *log) {
+    Logger::log(type, log);
 }

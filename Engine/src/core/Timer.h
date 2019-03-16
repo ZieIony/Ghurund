@@ -2,11 +2,12 @@
 
 #include "Ghurund.h"
 #include "collection/AverageValue.h"
+#include "core/Pointer.h"
 
 namespace Ghurund {
     typedef LONGLONG ticks_t;
 
-    class Timer {
+    class Timer:public Pointer {
     private:
         LARGE_INTEGER frequency;
         LARGE_INTEGER startFrame;
@@ -19,26 +20,27 @@ namespace Ghurund {
 
         void tick();
 
-        ticks_t getRunTicks()const {
-            return currentFrame.QuadPart-startFrame.QuadPart;
+        ticks_t getTicks()const {
+            return currentFrame.QuadPart - startFrame.QuadPart;
         }
 
-        __declspec(property(get = getRunTicks)) ticks_t RunTicks;
+        __declspec(property(get = getTicks)) ticks_t Ticks;
 
-        float getRunTime()const {
-            return (float)getRunTicks()/frequency.QuadPart;
+        float getTime()const {
+            float f = (float)getTicks() / frequency.QuadPart;
+            return f;
         }
 
-        __declspec(property(get = getRunTime)) float RunTime;
+        __declspec(property(get = getTime)) float Time;
 
         ticks_t getFrameTicks()const {
-            return currentFrame.QuadPart-prevFrame.QuadPart;
+            return currentFrame.QuadPart - prevFrame.QuadPart;
         }
 
         __declspec(property(get = getFrameTicks)) ticks_t FrameTicks;
 
         float getFrameTime()const {
-            return (float)getFrameTicks()/frequency.QuadPart;
+            return (float)getFrameTicks() / frequency.QuadPart;
         }
 
         __declspec(property(get = getFrameTime)) float FrameTime;
@@ -50,5 +52,9 @@ namespace Ghurund {
         }
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
+
+        virtual const Ghurund::Type& getType() const override {
+            return Type::TIMER;
+        }
     };
 }

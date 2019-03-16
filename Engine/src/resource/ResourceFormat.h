@@ -13,7 +13,7 @@ namespace Ghurund {
         const tchar *extension = nullptr;
         bool save, load;
 
-        static const ResourceFormat* values[12];
+        static const ResourceFormat* values[13];
 
     public:
         static const ResourceFormat &ENTITY,
@@ -23,7 +23,8 @@ namespace Ghurund {
             &MATERIAL,
             &MODEL,
             &MESH, &OBJ,
-            &WAV;
+            &WAV,
+            &SCRIPT;
 
         ResourceFormat() {
             extension = nullptr;

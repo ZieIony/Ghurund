@@ -11,9 +11,13 @@ namespace Ghurund {
         graphics->init();
         audio = ghnew Ghurund::Audio();
         audio->init();
+        timer = ghnew Ghurund::Timer();
+        scriptEngine = ghnew Ghurund::ScriptEngine();
+        scriptEngine->init(*timer);
         resourceManager = ghnew Ghurund::ResourceManager();
-        resourceManager->Libraries.add(L"main", DirectoryPath(L"\\"));
-        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager);
+        resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
+
+        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
@@ -26,12 +30,15 @@ namespace Ghurund {
     }
 
     void Application::uninit() {
+        delete scriptEngine;
+
         if(client->isConnected())
             client->disconnect();
         delete client;
 
         delete renderer;
 
+        timer->release();
 		delete parameterManager;
         delete resourceContext;
         delete resourceManager;
@@ -108,7 +115,7 @@ namespace Ghurund {
     }
 
     void Application::update() {
-        timer.tick();
+        timer->tick();
 
         resourceManager->reload();
 

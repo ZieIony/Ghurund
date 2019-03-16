@@ -33,7 +33,7 @@
 				<Border Width="16"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
-				<Button Content="Save thumbnail" Click="Button_Click"/>
+				<Button Content="Save thumbnail" Click="Button_Click" Style="{DynamicResource Button_Flat}"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<workspace:SplitPanel Panel1Size="200" Orientation="Vertical">

@@ -17,20 +17,23 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void LevelManager_setLevel(IntPtr _this, IntPtr level);
+        private static extern void LevelManager_setLevel(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Level level);
 
         public Level Level {
             set {
-                LevelManager_setLevel(NativePtr, value.NativePtr);
+                LevelManager_setLevel(NativePtr, value);
             }
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void LevelManager_draw(IntPtr _this, IntPtr renderer, IntPtr parameterManager);
+        private static extern void LevelManager_draw(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Renderer renderer,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ParameterManager parameterManager);
 
         public void Draw(Renderer renderer, ParameterManager parameterManager) {
-            LevelManager_draw(NativePtr, renderer.NativePtr, parameterManager.NativePtr);
+            LevelManager_draw(NativePtr, renderer, parameterManager);
         }
     }
 }

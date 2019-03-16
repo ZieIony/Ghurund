@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Ghurund.Managed.Application;
 using Ghurund.Managed.Game;
@@ -7,7 +8,7 @@ using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
-    public class RenderView : UserControl, IDisposable {
+    public class RenderView: UserControl, IDisposable {
 
         Window window;
 
@@ -26,7 +27,7 @@ namespace Ghurund.Managed {
                     camera.Release();
                     camera.PropertyChanged -= Camera_PropertyChanged;
                 }
-                    camera = value;
+                camera = value;
                 if (Camera != null) {
                     camera.SetScreenSize((uint)Width, (uint)Height);
                     camera.PropertyChanged += Camera_PropertyChanged;
@@ -35,10 +36,16 @@ namespace Ghurund.Managed {
         }
 
         private void Camera_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
-            Refresh();
+            Invalidate();
         }
 
         private bool disposed = false;
+
+        public RenderView() {
+            //SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+        }
 
         ~RenderView() {
             Dispose(false);
@@ -89,7 +96,7 @@ namespace Ghurund.Managed {
         }
 
         protected override void OnPaint(PaintEventArgs e) {
-            base.OnPaint(e);
+            //base.OnPaint(e);
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(Color.CornflowerBlue);
             } else if (Renderer != null) {

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics {
-    public class Model : Entity {
+    public class Model: Entity {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Model_new();
 
@@ -24,7 +25,8 @@ namespace Ghurund.Managed.Graphics {
         private static extern void Model_setMesh(IntPtr _this, IntPtr mesh);
 
         public Mesh.Mesh Mesh {
-            get => new Mesh.Mesh(Model_getMesh(NativePtr)); set => Model_setMesh(NativePtr, value.NativePtr);
+            get => new Mesh.Mesh(Model_getMesh(NativePtr));
+            set => Model_setMesh(NativePtr, value.NativePtr);
         }
 
 
@@ -36,6 +38,51 @@ namespace Ghurund.Managed.Graphics {
 
         public Material Material {
             get => new Material(Model_getMaterial(NativePtr)); set => Model_setMaterial(NativePtr, value.NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Model_getPosition(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Model_setPosition(IntPtr _this, Float3 scale);
+
+        [Category("Transformation")]
+        [Description("Three floats - x, y, z.")]
+        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        public Float3 Position {
+            get => Model_getPosition(NativePtr);
+            set => Model_setPosition(NativePtr, value);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Model_getRotation(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Model_setRotation(IntPtr _this, Float3 scale);
+
+        [Category("Transformation")]
+        [Description("Euler angles - yaw, pitch, roll.")]
+        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        public Float3 Rotation {
+            get => Model_getRotation(NativePtr);
+            set => Model_setRotation(NativePtr, value);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Model_getScale(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Model_setScale(IntPtr _this, Float3 scale);
+
+        [Category("Transformation")]
+        [Description("Scale 1 means 100%.")]
+        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        public Float3 Scale {
+            get => Model_getScale(NativePtr);
+            set => Model_setScale(NativePtr, value);
         }
 
 
@@ -54,8 +101,19 @@ namespace Ghurund.Managed.Graphics {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
-        public static TransformedEntity MakeCube(ResourceContext context, Material material) {
-            var entity = new TransformedEntity(Models_makeCube(context, material));
+        public static Model MakeCube(ResourceContext context, Material material) {
+            var entity = new Model(Models_makeCube(context, material));
+            entity.Release();
+            return entity;
+        }
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Models_makeCone(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public static Model MakeCone(ResourceContext context, Material material) {
+            var entity = new Model(Models_makeCone(context, material));
             entity.Release();
             return entity;
         }
@@ -65,8 +123,8 @@ namespace Ghurund.Managed.Graphics {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
-        public static TransformedEntity MakePlane(ResourceContext context, Material material) {
-            var entity = new TransformedEntity(Models_makePlane(context, material));
+        public static Model MakePlane(ResourceContext context, Material material) {
+            var entity = new Model(Models_makePlane(context, material));
             entity.Release();
             return entity;
         }
@@ -76,8 +134,8 @@ namespace Ghurund.Managed.Graphics {
                         [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
 
-        public static TransformedEntity MakeSphere(ResourceContext context, Material material) {
-            var entity = new TransformedEntity(Models_makeSphere(context, material));
+        public static Model MakeSphere(ResourceContext context, Material material) {
+            var entity = new Model(Models_makeSphere(context, material));
             entity.Release();
             return entity;
         }

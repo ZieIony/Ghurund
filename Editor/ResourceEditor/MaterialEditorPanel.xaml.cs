@@ -178,7 +178,7 @@ namespace Ghurund.Editor.ResourceEditor {
                 return;
 
             Scene scene = new Scene();
-            TransformedEntity model = null;
+            Model model = null;
             switch (modelPicker.SelectedValue) {
                 case SampleModel.Sphere:
                     model = Models.MakeSphere(ResourceContext, material);
@@ -195,12 +195,10 @@ namespace Ghurund.Editor.ResourceEditor {
             model.Scale = new Float3(50, 50, 50);
             scene.Entities.Add(model);
             model.Release();
-            model = null;
             preview.Scene = scene;
             scene.Release();
-            scene = null;
 
-            preview.Refresh();
+            preview.Invalidate();
         }
 
         private void ShaderCode_GotFocus(object sender, RoutedEventArgs e) {
@@ -208,12 +206,12 @@ namespace Ghurund.Editor.ResourceEditor {
 
         private void ResetCamera_Click(object sender, RoutedEventArgs e) {
             preview.ResetCamera();
-            preview.Refresh();
+            preview.Invalidate();
         }
 
         private void Camera_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             preview.CameraMode = ((CameraMode?)cameraPicker.SelectedValue) ?? CameraMode.Default;
-            preview.Refresh();
+            preview.Invalidate();
         }
 
         private void Build_Click(object sender, RoutedEventArgs e) {
@@ -222,11 +220,11 @@ namespace Ghurund.Editor.ResourceEditor {
             string output = shader.Compile();
             if (output != null) {
                 foreach (string line in output.Split('\n'))
-                    Logger.Log(line);
+                    Logger.Log(LogType.ERROR, line);
             }
             shader.Build(ResourceContext);
             shader.Dispose();
-            preview.Refresh();
+            preview.Invalidate();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {

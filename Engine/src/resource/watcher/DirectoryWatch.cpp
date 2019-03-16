@@ -12,7 +12,7 @@ namespace Ghurund {
                 DWORD action = fni.Action;
                 delayThread.remove(fileName);
                 Task *task = ghnew Task(fileName, [fileName, action, this]() {
-                    Logger::log(_T("file changed: %s, action: %i\n"), fileName.getData(), action);
+                    Logger::log(LogType::INFO, _T("file changed: %s, action: %i\n"), fileName.getData(), action);
                     files[fileName](fileName, (FileChange)action);
                     return Status::OK;
                 });
@@ -56,6 +56,6 @@ namespace Ghurund {
                                                 &bytesReturned, &overlapped, &notificationCompletion);
 
         if(!success)
-            Logger::log(_T("Failed to watch for file changes\n"));
+            Logger::log(LogType::ERR0R, _T("Failed to watch for file changes\n"));
     }
 }

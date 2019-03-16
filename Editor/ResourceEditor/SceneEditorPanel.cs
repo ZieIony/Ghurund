@@ -176,14 +176,14 @@ namespace Ghurund.Editor.ResourceEditor {
                     sceneView.OverrideMaterial = normalsMaterial;
                     break;
             }
-            sceneView.Refresh();
+            sceneView.Invalidate();
         }
 
         private void Perspective_Checked(object sender, RoutedEventArgs e) {
             if (sceneView == null)
                 return;
             sceneView.Camera.Perspective = cameraPerspective.IsChecked.Value;
-            sceneView.Refresh();
+            sceneView.Invalidate();
         }
 
         private void Orbit_Checked(object sender, RoutedEventArgs e) {
@@ -207,13 +207,13 @@ namespace Ghurund.Editor.ResourceEditor {
         private void ResetCamera_Click(object sender, RoutedEventArgs e) {
             sceneView.ResetCamera();
             cameraPerspective.IsChecked = sceneView.Camera.Perspective;
-            sceneView.Refresh();
+            sceneView.Invalidate();
         }
 
         private void Camera_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             sceneView.CameraMode = ((CameraMode?)cameraPicker.SelectedValue) ?? CameraMode.Default;
             cameraPerspective.IsChecked = sceneView.Camera.Perspective;
-            sceneView.Refresh();
+            sceneView.Invalidate();
         }
 
         private void sceneView_SelectionChanged(object sender, RoutedEventArgs e) {

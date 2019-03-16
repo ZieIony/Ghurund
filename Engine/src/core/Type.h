@@ -7,7 +7,7 @@ namespace Ghurund {
     class Type {
     private:
         std::function<void*()> constructor;
-        const tchar *name;
+        const char *name;
 
         Type() = default;
 
@@ -17,10 +17,12 @@ namespace Ghurund {
             &SHADER, &TEXTURE, &MATERIAL, &IMAGE,
             &MODEL, &MESH,
             &SOUND,
-            &TRANSFORMED_ENTITY,
-            &COMMAND_LIST;
+            &COMMAND_LIST,
+            &SCRIPT,
+            
+            &TIMER;
 
-        Type(std::function<void*()> constructor, const tchar *name) {
+        Type(std::function<void*()> constructor, const char *name) {
             this->constructor = constructor;
             this->name = name;
         }
@@ -29,11 +31,11 @@ namespace Ghurund {
             return constructor();
         }
 
-        const tchar *getName() const {
+        const char *getName() const {
             return name;
         }
 
-        __declspec(property(get = getName)) const tchar *Name;
+        __declspec(property(get = getName)) const char *Name;
 
         bool operator==(const Type &type) const {
             return this==&type;

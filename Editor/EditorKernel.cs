@@ -6,6 +6,7 @@ using Ghurund.Managed.Audio;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
+using Ghurund.Managed.Script;
 using Ninject;
 
 namespace Ghurund.Editor {
@@ -57,15 +58,25 @@ namespace Ghurund.Editor {
             kernel.Bind<ILogPanel>().ToMethod(context => context.Kernel.Get<LogPanel>()).InSingletonScope();
 
 
-            kernel.Bind<Graphics>().ToSelf().InSingletonScope();
+            kernel.Bind<Graphics>().ToMethod(context => {
+                Graphics graphics = new Graphics();
+                graphics.Init();
+                return graphics;
+            }).InSingletonScope();
             kernel.Bind<Audio>().ToSelf().InSingletonScope();
             kernel.Bind<ParameterManager>().ToSelf().InSingletonScope();
             kernel.Bind<ResourceManager>().ToSelf().InSingletonScope();
             kernel.Bind<ResourceContext>().ToMethod(context => {
-                return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>());
+                return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>(), context.Kernel.Get<ScriptEngine>());
             }).InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {
                 return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME, new Type[] { typeof(SceneEditorState) }) ?? new EditorSettings();
+            }).InSingletonScope();
+            kernel.Bind<Managed.Core.Timer>().ToSelf().InSingletonScope();
+            kernel.Bind<ScriptEngine>().ToMethod(context => {
+                ScriptEngine scriptEngine = new ScriptEngine();
+                scriptEngine.Init(context.Kernel.Get<Managed.Core.Timer>());
+                return scriptEngine;
             }).InSingletonScope();
         }
 

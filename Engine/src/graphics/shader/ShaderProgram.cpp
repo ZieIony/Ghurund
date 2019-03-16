@@ -21,15 +21,15 @@ namespace Ghurund {
         HRESULT hr = D3DCompile(code, strlen(code), fileName, nullptr, &include, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
         if(FAILED(hr)) {
             if(errorBlob == nullptr) {
-                Logger::log(_T("Unknown error while compiling shader\n"));
                 result = Status::COMPILATION_ERROR;
+                Logger::log(LogType::ERR0R, result, _T("Unknown error while compiling shader\n"));
             } else {
                 ASCIIString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
                 if(errorMessages.find("error X3501")<errorBlob->GetBufferSize()) {
                     result = Status::ENTRY_POINT_NOT_FOUND;
                 } else {
-                    Logger::log(_T("Error while compiling shader:\n%hs\n"), errorMessages.getData());
                     result = Status::COMPILATION_ERROR;
+                    Logger::log(LogType::ERR0R, result, _T("Error while compiling shader:\n%hs\n"), errorMessages.getData());
                     if(outErrorMessages != nullptr) {
                         *outErrorMessages = ghnew char[errorBlob->GetBufferSize()];
                         memcpy(*outErrorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());

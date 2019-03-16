@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/entity/Entity.h"
+#include "game/entity/TransformedObject.h"
 #include "game/parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
@@ -10,7 +11,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    class Model: public Entity {
+    class Model: public Entity, public TransformedObject {
     private:
         Mesh *mesh = nullptr;
         Material *material = nullptr;
@@ -39,7 +40,7 @@ namespace Ghurund {
             finalize();
         }
 
-        virtual void invalidate() {
+        virtual void invalidate() override {
             finalize();
             __super::invalidate();
         }

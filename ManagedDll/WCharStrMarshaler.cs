@@ -12,10 +12,10 @@ namespace Ghurund.Managed {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void deleteObject(IntPtr obj);
+        private static extern void deleteArray(IntPtr obj);
 
         public void CleanUpNativeData(IntPtr pNativeData) {
-            deleteObject(pNativeData);
+            deleteArray(pNativeData);
         }
 
         public int GetNativeDataSize() {

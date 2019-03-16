@@ -34,7 +34,7 @@ namespace Ghurund {
     Parameter * ParameterManager::get(const ASCIIString & name) const {
         size_t index = parameters.indexOf(name);
         if(index==parameters.Size) {
-            Logger::log(_T("Parameter of name '%hs' is missing\n"), name);
+            Logger::log(LogType::WARNING, _T("Parameter of name '%hs' is missing\n"), name);
             return nullptr;
         }
         return parameters.getValue(index);

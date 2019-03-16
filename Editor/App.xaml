@@ -16,7 +16,9 @@
 			<SolidColorBrush x:Key="Ghurund.Primary">#0061BC</SolidColorBrush>
 			<SolidColorBrush x:Key="Ghurund.PrimaryDark">#003B72</SolidColorBrush>
 			<SolidColorBrush x:Key="Ghurund.Accent">#ff6e40</SolidColorBrush>
-
+			<SolidColorBrush x:Key="Ghurund.Highlight">#14ff6e40</SolidColorBrush>
+			<SolidColorBrush x:Key="Ghurund.Selection">#28ff6e40</SolidColorBrush>
+      
 		</ResourceDictionary>
 
 

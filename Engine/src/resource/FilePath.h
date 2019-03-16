@@ -19,7 +19,7 @@ namespace Ghurund {
             DWORD attributes = GetFileAttributesW(path);
 
             if (attributes != INVALID_FILE_ATTRIBUTES && attributes & FILE_ATTRIBUTE_DIRECTORY)
-                Logger::log(_T("invalid file path %s\n"), String(path).getData());
+                Logger::log(LogType::ERR0R, _T("invalid file path %s\n"), String(path).getData());
         }
 
         FilePath(const FilePath & path):Path(path.get()) {}

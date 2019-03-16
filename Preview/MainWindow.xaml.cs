@@ -8,16 +8,19 @@ using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Graphics.Shader;
 using Ghurund.Managed.Resource;
+using Ghurund.Managed.Script;
 
 namespace Ghurund.Preview {
     public partial class MainWindow : Window {
-        Logger.LogCallback callback;
+        readonly Logger.LogCallback callback;
 
-        Graphics graphics;
-        ParameterManager parameterManager;
-        Audio audio;
-        ResourceContext resourceContext;
-        ResourceManager resourceManager;
+        readonly Graphics graphics;
+        readonly ParameterManager parameterManager;
+        readonly Audio audio;
+        readonly ScriptEngine scriptEngine;
+        readonly ResourceContext resourceContext;
+        readonly ResourceManager resourceManager;
+
         Scene scene;
 
         public MainWindow() {
@@ -38,15 +41,20 @@ namespace Ghurund.Preview {
             graphics = new Graphics();
             audio = new Audio();
             parameterManager = new ParameterManager();
+            scriptEngine = new ScriptEngine();
 
             resourceManager = new ResourceManager();
-            resourceContext = new ResourceContext(graphics, audio, parameterManager);
+            resourceContext = new ResourceContext(graphics, audio, parameterManager, scriptEngine);
             sceneView.Init(resourceManager, resourceContext);
 
+            loadFile(filePath);
+        }
+
+        private void loadFile(string filePath) {
             scene = new Scene();
             if (filePath.EndsWith("scene")) {
                 scene.Load(resourceManager, resourceContext, filePath);
-            }else if (filePath.EndsWith("hlsl")) {
+            } else if (filePath.EndsWith("hlsl")) {
                 Shader shader = new Shader();
                 shader.Load(resourceManager, resourceContext, filePath);
                 Material material = new Material {
@@ -54,14 +62,11 @@ namespace Ghurund.Preview {
                     Valid = true
                 };
                 shader.Release();
-                shader = null;
-                TransformedEntity model = Models.MakeCube(resourceContext, material);
+                Model model = Models.MakeCube(resourceContext, material);
                 model.Scale = new Float3(50, 50, 50);
                 material.Release();
-                material = null;
                 scene.Entities.Add(model);
                 model.Release();
-                model = null;
             }
             sceneView.Scene = scene;
         }
@@ -83,6 +88,7 @@ namespace Ghurund.Preview {
             graphics.Dispose();
             audio.Dispose();
             parameterManager.Dispose();
+            scriptEngine.Dispose();
 
             Graphics.reportLiveObjects();
         }
@@ -90,10 +96,8 @@ namespace Ghurund.Preview {
         protected override void OnKeyUp(KeyEventArgs e) {
             base.OnKeyUp(e);
 
-            if (e.Key == Key.P) {
+            if (e.Key == Key.P)
                 sceneView.Camera.Perspective = !sceneView.Camera.Perspective;
-                sceneView.Refresh();
-            }
         }
     }
 }

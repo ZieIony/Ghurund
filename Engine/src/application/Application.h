@@ -18,6 +18,7 @@
 #include "net/Client.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
+#include "script/ScriptEngine.h"
 
 #include <thread>
 
@@ -26,19 +27,20 @@ namespace Ghurund {
     class Application:public Noncopyable {
     private:
         Window window;
-        WindowProc *windowProc;
+        WindowProc* windowProc;
 
-        Client *client;
+        Client* client;
         Settings settings;
-        Graphics *graphics;
-        Audio *audio;
-        ResourceManager *resourceManager;
-        ResourceContext *resourceContext;
-        ParameterManager *parameterManager;
-        Timer timer;
+        Graphics* graphics;
+        Audio* audio;
+        ResourceManager* resourceManager;
+        ResourceContext* resourceContext;
+        ParameterManager* parameterManager;
+        Timer *timer;
         Input input;
+        ScriptEngine* scriptEngine;
 
-        Renderer *renderer;
+        Renderer* renderer;
         LevelManager levelManager;
 
         bool multipleInstances;
@@ -50,7 +52,7 @@ namespace Ghurund {
 
         void messageLoop();
 
-        bool handleMessage(SystemMessage &message);
+        bool handleMessage(SystemMessage& message);
 
     protected:
         virtual void onInit() {};
@@ -79,7 +81,7 @@ namespace Ghurund {
 
         virtual void onWindowDestroy() {}
 
-        virtual bool onMessage(SystemMessage &message) {
+        virtual bool onMessage(SystemMessage& message) {
             return false;
         }
 
@@ -99,10 +101,9 @@ namespace Ghurund {
 
         Application() = default;
 
-        virtual ~Application() {
-        }
+        virtual ~Application() {}
 
-        void run(const Settings *val = nullptr, WindowProc *proc = nullptr);
+        void run(const Settings* val = nullptr, WindowProc* proc = nullptr);
 
         inline void quit() {
             PostQuitMessage(0);
@@ -114,70 +115,76 @@ namespace Ghurund {
 
         void reset();
 
-        inline Window &getWindow() {
+        inline Window& getWindow() {
             return window;
         }
 
-        __declspec(property(get = getWindow)) Window &Window;
+        __declspec(property(get = getWindow)) Window& Window;
 
-        inline Client &getClient() {
+        inline Client& getClient() {
             return *client;
         }
 
-        __declspec(property(get = getClient)) Client &Client;
+        __declspec(property(get = getClient)) Client& Client;
 
-        inline Graphics &getGraphics() {
+        inline Graphics& getGraphics() {
             return *graphics;
         }
 
-        __declspec(property(get = getGraphics)) Graphics &Graphics;
+        __declspec(property(get = getGraphics)) Graphics& Graphics;
 
-        Audio &getAudio() {
+        Audio& getAudio() {
             return *audio;
         }
 
-        __declspec(property(get = getAudio)) Audio &Audio;
+        __declspec(property(get = getAudio)) Audio& Audio;
 
-        inline ResourceManager &getResourceManager() {
+        inline ResourceManager& getResourceManager() {
             return *resourceManager;
         }
 
-        __declspec(property(get = getResourceManager)) ResourceManager &ResourceManager;
+        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
 
-        inline ResourceContext &getResourceContext() {
+        inline ResourceContext& getResourceContext() {
             return *resourceContext;
         }
 
-        __declspec(property(get = getResourceContext)) ResourceContext &ResourceContext;
+        __declspec(property(get = getResourceContext)) ResourceContext& ResourceContext;
 
-        inline ParameterManager &getParameterManager() {
+        inline ParameterManager& getParameterManager() {
             return *parameterManager;
         }
 
-        __declspec(property(get = getParameterManager)) ParameterManager &ParameterManager;
+        __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
 
-        inline Timer &getTimer() {
-            return timer;
+        inline Timer& getTimer() {
+            return *timer;
         }
 
-        __declspec(property(get = getTimer)) Timer &Timer;
+        __declspec(property(get = getTimer)) Timer& Timer;
 
-        inline Input &getInput() {
+        inline Input& getInput() {
             return input;
         }
 
-        __declspec(property(get = getInput)) Input &Input;
+        __declspec(property(get = getInput)) Input& Input;
 
-        inline LevelManager &getLevelManager() {
+        inline LevelManager& getLevelManager() {
             return levelManager;
         }
 
-        __declspec(property(get = getLevelManager)) LevelManager &LevelManager;
+        __declspec(property(get = getLevelManager)) LevelManager& LevelManager;
 
-        inline Renderer &getRenderer() {
+        inline Renderer& getRenderer() {
             return *renderer;
         }
 
-        __declspec(property(get = getRenderer)) Renderer &Renderer;
+        __declspec(property(get = getRenderer)) Renderer& Renderer;
+
+        inline ScriptEngine& getScriptEngine() {
+            return *scriptEngine;
+        }
+
+        __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
     };
 }

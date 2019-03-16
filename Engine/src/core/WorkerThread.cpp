@@ -5,7 +5,7 @@ namespace Ghurund {
         section.enter();
         timer.tick();
         task->addReference();
-        time_t time = (time_t)(timer.RunTime*1000);
+        time_t time = (time_t)(timer.Time*1000);
         task->time = time + delayMs;
         queue.add(task);
         section.leave();
@@ -58,7 +58,7 @@ namespace Ghurund {
                     break;
                 }
                 timer.tick();
-                time_t time = (time_t)(timer.RunTime*1000);
+                time_t time = (time_t)(timer.Time*1000);
                 Task *task = queue.get(0);
                 if(task->time>time) {
                     section.leave();

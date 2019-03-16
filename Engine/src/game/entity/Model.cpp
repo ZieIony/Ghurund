@@ -13,15 +13,11 @@ namespace Ghurund {
     }
 
     Status Model::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
-        if(mesh==nullptr) {
-            Logger::log(_T("Mesh cannot be empty\n"));
-            return Status::INV_STATE;
-        }
+        if(mesh==nullptr)
+            return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Mesh cannot be empty"));
 
-        if(material==nullptr) {
-            Logger::log(_T("Material cannot be empty\n"));
-            return Status::INV_STATE;
-        }
+        if(material==nullptr)
+            return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Material cannot be empty"));
 
         Status result;
         result = resourceManager.save(*mesh, workingDir, stream, options);
@@ -32,6 +28,9 @@ namespace Ghurund {
     }
 
     void Model::flatten(RenderStep &step, XMFLOAT4X4 &transformation) {
-        step.addModel(ghnew GlobalEntity<Model>(*this, mesh->BoundingBox, transformation));
+        XMFLOAT4X4 localTransformation = getTransformation();
+        XMFLOAT4X4 dest;
+        XMStoreFloat4x4(&dest, XMLoadFloat4x4(&transformation)*XMLoadFloat4x4(&localTransformation));
+        step.addModel(ghnew GlobalEntity<Model>(*this, mesh->BoundingBox, dest));
     }
 }

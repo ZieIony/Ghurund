@@ -94,6 +94,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;GHURUNDDYNAMIC_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,9 +152,11 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\collection\Array.cpp" />
+    <ClCompile Include="src\collection\EntityList.cpp" />
     <ClCompile Include="src\collection\PointerList.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\editor\ObservableObject.cpp" />
     <ClCompile Include="src\Float3.cpp" />
@@ -185,6 +188,7 @@
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceContext.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
+    <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -44,7 +44,7 @@ namespace Ghurund {
             size_t size;
 
             if(readFile(fullPath, data, size)!=Status::OK) {
-                Logger::log(_T("failed to load include: %s\n"), fullPath); // TODO: test this %s
+                Logger::log(LogType::ERR0R, _T("failed to load include: %s\n"), fullPath); // TODO: test this %s
                 return E_FAIL;
             }
 

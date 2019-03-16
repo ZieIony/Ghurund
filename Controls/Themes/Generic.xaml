@@ -172,7 +172,7 @@
 	<Style TargetType="{x:Type local:IconRadioButton}">
 		<Setter Property="Background" Value="{x:Null}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
-		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
@@ -196,6 +196,7 @@
 						</Trigger>
 						<Trigger Property="IsChecked" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Fill" TargetName="rectangle" Value="{DynamicResource Ghurund.Icon.Disabled}"/>
@@ -209,7 +210,7 @@
 	<Style TargetType="{x:Type local:IconCheckBox}">
 		<Setter Property="Background" Value="{x:Null}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
-		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
@@ -233,6 +234,7 @@
 						</Trigger>
 						<Trigger Property="IsChecked" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Fill" TargetName="rectangle" Value="{DynamicResource Ghurund.Icon.Disabled}"/>

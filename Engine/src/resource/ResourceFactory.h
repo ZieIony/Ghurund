@@ -33,7 +33,6 @@ namespace Ghurund {
             addType(Type::IMAGE);
             addType(Type::SHADER);
             addType(Type::SCENE);
-            addType(Type::TRANSFORMED_ENTITY);
         }
 
         void addType(const Type &type) {

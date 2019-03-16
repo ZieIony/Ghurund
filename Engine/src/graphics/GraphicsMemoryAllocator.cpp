@@ -7,7 +7,7 @@ namespace Ghurund {
         this->strategy->init(size, 64*1024, 64*1024);
         CD3DX12_HEAP_DESC desc(this->strategy->Size, type, 0, flags);
         if(FAILED(graphics.Device->CreateHeap(&desc, IID_PPV_ARGS(&heap))))
-            Logger::log(_T("failed to create heap\n"));
+            Logger::log(LogType::ERR0R, _T("failed to create heap\n"));
     }
 
     GPUResourceFactory::GPUResourceFactory(Graphics & graphics):graphics(graphics) {
@@ -23,7 +23,7 @@ namespace Ghurund {
         HeapAllocator *heap = allocators.get(heapType);
         memory_t address = heap->allocate(resourceDesc.Width);
         if(FAILED(graphics.Device->CreatePlacedResource(heap->Heap, address, &resourceDesc, initialState, resourceDesc.Dimension==D3D12_RESOURCE_DIMENSION_BUFFER?nullptr:&depthClearValue, IID_PPV_ARGS(resource)))) {
-            Logger::log(_T("failed to create placed resource\n"));
+            Logger::log(LogType::ERR0R, _T("failed to create placed resource\n"));
             return nullptr;
         }
 

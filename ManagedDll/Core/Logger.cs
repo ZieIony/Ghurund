@@ -1,6 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Core {
+    public enum LogType {
+        INFO, WARNING, ERROR
+    }
+
     public static class Logger {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
@@ -16,10 +20,10 @@ namespace Ghurund.Managed.Core {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Logger_log([MarshalAs(UnmanagedType.LPWStr)] string log);
+        private static extern void Logger_log(LogType type, [MarshalAs(UnmanagedType.LPWStr)] string log);
 
-        public static void Log(string log) {
-            Logger_log(log);
+        public static void Log(LogType type, string log) {
+            Logger_log(type, log);
         }
     }
 }

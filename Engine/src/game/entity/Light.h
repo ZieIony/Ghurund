@@ -1,11 +1,13 @@
 #pragma once
 
+#include "Target.h"
 #include "game/entity/Entity.h"
+#include "game/entity/TransformedObject.h"
 
 namespace Ghurund {
-    class Light: public Entity {
+    class Light: public Entity, public TranslatedObject {
     private:
-        XMFLOAT3 target;
+        Target* target;
         Array<Parameter*> parameters;
 
     protected:
@@ -21,6 +23,16 @@ namespace Ghurund {
         Light():parameters(Array<Parameter*>(0)) {
             Name = _T("light");
         }
+
+        inline void setTarget(Target* target) {
+            this->target = target;
+        }
+
+        inline const Target *getTarget() const {
+            return target;
+        }
+
+        __declspec(property(get = getTarget, put = setTarget)) Target *Target;
 
         virtual Array<Parameter*> &getParameters() override {
             return parameters;

@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Ghurund.Managed.Script;
+using System;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Resource {
-    public class ResourceContext : NativeClass {
+    public class ResourceContext: NativeClass {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ResourceContext_new(IntPtr graphics, IntPtr audio, IntPtr parameterManager);
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceContext_delete(IntPtr _this);
-
-        protected override void DeleteObject() => ResourceContext_delete(NativePtr);
+        private static extern IntPtr ResourceContext_new(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Graphics.Graphics graphics,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Audio.Audio audio,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Game.ParameterManager parameterManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ScriptEngine scriptEngine);
 
 
         public Graphics.Graphics Graphics { get; set; }
@@ -19,11 +19,14 @@ namespace Ghurund.Managed.Resource {
 
         public Game.ParameterManager ParameterManager { get; set; }
 
-        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager) {
-            NativePtr = ResourceContext_new(graphics.NativePtr, audio.NativePtr, parameterManager.NativePtr);
+        public ScriptEngine ScriptEngine { get; set; }
+
+        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager, ScriptEngine scriptEngine) {
+            NativePtr = ResourceContext_new(graphics, audio, parameterManager, scriptEngine);
             Graphics = graphics;
             Audio = audio;
             ParameterManager = parameterManager;
+            ScriptEngine = scriptEngine;
         }
     }
 }

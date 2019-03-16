@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using Ghurund.Managed.Game;
@@ -65,11 +66,59 @@ namespace Ghurund.Managed {
             set {
                 sceneStep.Entities.Clear();
                 value?.AddReference();
-                scene?.Release();
+                if (scene != null) {
+                    removeListeners(new System.Collections.Generic.List<Entity>() { scene });
+                    scene.Release();
+                }
                 scene = value;
-                if (scene != null)
+                if (scene != null) {
                     sceneStep.Entities.Add(scene);
+                    addListeners(new System.Collections.Generic.List<Entity>() { scene });
+                }
             }
+        }
+
+        private void addListeners(IList list) {
+            System.Collections.Generic.List<Entity> entities = new System.Collections.Generic.List<Entity>();
+            foreach (Entity e in list)
+                entities.Add(e);
+            while (entities.Count > 0) {
+                Entity entity = entities[0];
+                entities.RemoveAt(0);
+                entity.PropertyChanged += Entity_PropertyChanged;
+                if (entity is Scene) {
+                    foreach (Entity e in (entity as Scene).Entities)
+                        entities.Add(e);
+                    (entity as Scene).Entities.CollectionChanged += Entities_CollectionChanged;
+                }
+            }
+        }
+
+        private void removeListeners(IList list) {
+            System.Collections.Generic.List<Entity> entities = new System.Collections.Generic.List<Entity>();
+            foreach (Entity e in list)
+                entities.Add(e);
+            while (entities.Count > 0) {
+                Entity entity = entities[0];
+                entities.RemoveAt(0);
+                entity.PropertyChanged -= Entity_PropertyChanged;
+                if (entity is Scene) {
+                    foreach (Entity e in (entity as Scene).Entities)
+                        entities.Add(e);
+                    (entity as Scene).Entities.CollectionChanged -= Entities_CollectionChanged;
+                }
+            }
+        }
+
+        private void Entities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            if (e.OldItems != null)
+                removeListeners(e.OldItems);
+            if (e.NewItems != null)
+                addListeners(e.NewItems);
+        }
+
+        private void Entity_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e) {
+            Invalidate();
         }
 
         private Material overrideMaterial;
@@ -159,8 +208,7 @@ namespace Ghurund.Managed {
         public void Uninit() {
             renderView.Uninit();
 
-            scene?.Release();
-            scene = null;
+            Scene = null;
             overrideMaterial?.Release();
             overrideMaterial = null;
 
@@ -181,7 +229,9 @@ namespace Ghurund.Managed {
             defaultCamera = null;
         }
 
-        public void Refresh() => renderView.Refresh();
+        public void Invalidate() {
+            renderView.Invalidate();
+        }
 
         public System.Drawing.Bitmap GenerateThumbnail() {
             System.Drawing.Bitmap bitmap = renderView.GrabFrame();
@@ -231,7 +281,7 @@ namespace Ghurund.Managed {
                 } else {
                     renderView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 }
-                renderView.Refresh();
+                Invalidate();
             }
             prevPos = pos;
         }

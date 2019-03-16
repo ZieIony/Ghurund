@@ -51,6 +51,8 @@ namespace Ghurund {
 			return entryPoint;
 		}
 
+        __declspec(property(get = getEntryPoint, put = setEntryPoint)) const char* EntryPoint;
+
 		void setCompilationTarget(const CompilationTarget &target) {
 			this->target = target;
 		}

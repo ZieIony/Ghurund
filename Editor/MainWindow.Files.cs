@@ -10,7 +10,7 @@ using Ghurund.Managed.Graphics.Shader;
 using Microsoft.Win32;
 
 namespace Ghurund.Editor {
-    public class RoutedFileOpenedEventArgs : RoutedEventArgs {
+    public class RoutedFileOpenedEventArgs: RoutedEventArgs {
         public string Path { get; }
 
         public RoutedFileOpenedEventArgs(string path, RoutedEvent fileOpenedEvent) : base(fileOpenedEvent) {
@@ -51,6 +51,8 @@ namespace Ghurund.Editor {
                 editorPanel = new SceneEditorPanel();
             } else if (path.EndsWith("hlsl") || path.EndsWith("material")) {
                 editorPanel = new MaterialEditorPanel();
+            } else if (path.EndsWith("script")) {
+                //editorPanel = new ScriptEditorPanel();
             } else if (path.EndsWith("project")) {
                 closeProject();
                 openProject(path);

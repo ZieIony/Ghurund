@@ -8,6 +8,7 @@ using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
+using Ghurund.Managed.Script;
 using Ninject;
 
 namespace Ghurund.Editor {
@@ -48,6 +49,12 @@ namespace Ghurund.Editor {
 
         [Inject]
         public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public ScriptEngine ScriptEngine { get; set; }
+
+        [Inject]
+        public Managed.Core.Timer Timer { get; set; }
 
         private System.Collections.Generic.List<IDocumentPanel> documentPanels = new System.Collections.Generic.List<IDocumentPanel>();
 

@@ -39,7 +39,7 @@ namespace Ghurund {
         __declspec(property(get = getName)) String &Name;
 
         virtual const Ghurund::Type &getType() const override {
-            static const Ghurund::Type &TASK = Ghurund::Type(nullptr, _T("task"));
+            static const Ghurund::Type &TASK = Ghurund::Type(nullptr, "task");
 
             return TASK;
         }

@@ -22,8 +22,8 @@
 					<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
 				</WrapPanel>
 				<WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-					<Button Content="Save" Margin="4"/>
-					<Button Content="Cancel" Margin="4"/>
+					<Button Content="Save" Margin="4" Style="{DynamicResource Button_Flat}"/>
+					<Button Content="Cancel" Margin="4" Style="{DynamicResource Button_Flat}"/>
 				</WrapPanel>
 				<Border BorderThickness="0,1,0,0" DockPanel.Dock="Bottom" BorderBrush="{DynamicResource Ghurund.Border}"/>
 				<propertygrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>

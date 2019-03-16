@@ -2,11 +2,12 @@
 
 #include "Collection.h"
 #include <functional>
+#include <cassert>
 
 namespace Ghurund {
     template<class Value> class List:public Collection {
     protected:
-        Value *v;
+        Value* v;
 
 #ifdef GHURUND_EDITOR
         std::function<void()> onItemAdded, onItemRemoved, onItemChanged;
@@ -16,33 +17,35 @@ namespace Ghurund {
 
     public:
         List() {
-            v = ghnew Value[capacity];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
         }
 
         List(size_t initial) {
             this->initial = capacity = initial;
-            v = ghnew Value[capacity];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
         }
 
-        List(const List &t1) {
+        List(const List& t1) {
             capacity = t1.capacity;
             initial = t1.initial;
             size = t1.size;
-            v = ghnew Value[capacity];
-            for(size_t i = 0; i<size; i++)
-                v[i] = t1.v[i];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
+            for (size_t i = 0; i < size; i++)
+                new (v + i)Value(t1[i]);
         }
 
         List(std::initializer_list<Value> list) {
             size = initial = capacity = list.size();
-            v = ghnew Value[capacity];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
             int i = 0;
-            for(auto it = list.begin(); it != list.end(); ++it)
-                v[i++] = *it;
+            for (auto it = list.begin(); it != list.end(); ++it, i++)
+                new (v + i)Value(*it);
         }
 
         ~List() {
-            delete[] v;
+            for (size_t i = 0; i < size; i++)
+                v[i].~Value();
+            delete[] (char*)v;
         }
 
         /*		Set *clone(){
@@ -64,155 +67,164 @@ namespace Ghurund {
 
         inline void resize(size_t c) {//if c<size some items will be lost, cannot resize to less than 1 item
             size_t c2 = std::max<size_t>(c, 1);
-            Value *t1 = ghnew Value[c2];
+            Value* t1 = (Value*)ghnew char[sizeof(Value) * c2];
             capacity = c2;
             size = std::min(size, c);
-            for(size_t i = 0; i<size; i++)
-                t1[i] = v[i];
-            delete[] v;
+            for (size_t i = 0; i < size; i++)
+                new (t1+i) Value(v[i]);
+            delete[] (char*)v;
             v = t1;
         }
 
-        inline void add(const Value &e) {//allows to add null item
-            if(size==capacity)
-                resize(capacity+initial);
-            v[size] = e;
+        inline void add(const Value & e) {//allows to add null item
+            if (size == capacity)
+                resize((size_t)(capacity * 1.6));
+            new(v + size) Value(e);
             size++;
 #ifdef GHURUND_EDITOR
-            if(onItemAdded!=nullptr)
+            if (onItemAdded != nullptr)
                 onItemAdded();
 #endif
         }
 
-        inline void addAll(const List<Value> &list) {
-            if(size==capacity)
-                resize(capacity+list.Size);
-            memcpy(&v[size], list.begin(), list.Size*sizeof(Value));
-            size+=list.Size;
+        inline void addAll(const List<Value> & list) {
+            if (capacity < size + list.Size)
+                resize(size + list.Size);
+            for (size_t i = 0; i < list.Size; i++)
+                new(v + size + i) Value(list[i]);
+            size += list.Size;
 #ifdef GHURUND_EDITOR
-            if(onItemAdded!=nullptr)
+            if (onItemAdded != nullptr)
                 onItemAdded();
 #endif
         }
 
-        inline void insert(size_t i, const Value &item) {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            if(size==capacity)
-                resize(capacity+initial);
+        inline void insert(size_t i, const Value & item) {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            if (size == capacity)
+                resize(capacity + initial);
             v[size] = v[i];
-            v[i] = item;
+            new(v + i) Value(item);
             size++;
         }
 
-        inline void insertKeepOrder(size_t i, const Value &item) {
-            if(size==capacity)
-                resize(capacity+initial);
-            if(i!=size-1)
-                memmove(&v[i+1], &v[i], sizeof(Value)*(size-1-i));
-            v[i] = item;
+        inline void insertKeepOrder(size_t i, const Value & item) {
+            if (size == capacity)
+                resize((size_t)(capacity * 1.6));
+            if (i != size - 1) {
+                for (size_t j = size - 1; j > i; j--)
+                    v[j] = v[j - 1];
+            }
+            new(v + i) Value(item);
             size++;
         }
 
-        inline void set(size_t i, const Value &e) {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            v[i] = e;
+        inline void set(size_t i, const Value & e) {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            v[i].~Value();
+            new(v + i) Value(e);
         }
 
-        inline Value &get(size_t i)const {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
+        inline Value& get(size_t i)const {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
 
         inline void removeAt(size_t i) {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            v[i] = v[size-1];
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            v[i].~Value();
+            v[i] = v[size - 1];
             size--;
         }
 
         inline void removeAtKeepOrder(size_t i) {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            if(i!=size-1)
-                memmove(&v[i], &v[i+1], sizeof(Value)*(size-1-i));
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            v[i].~Value();
+            if (i != size - 1) {
+                for (size_t j = i; j < size - 1; j++)
+                    v[i] = v[i + 1];
+            }
             size--;
         }
 
-        inline void remove(const Value &item) {
+        inline void remove(const Value & item) {
             size_t i = indexOf(item);
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            v[i] = v[size-1];
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            v[i].~Value();
+            v[i] = v[size - 1];
             size--;
         }
 
-        inline void removeKeepOrder(const Value &item) {
+        inline void removeKeepOrder(const Value & item) {
             size_t i = indexOf(item);
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
-            if(i!=size-1)
-                memmove(&v[i], &v[i+1], sizeof(Value)*(size-1-i));
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            v[i].~Value();
+            if (i != size - 1) {
+                for (size_t j = i; j < size - 1; j++)
+                    v[i] = v[i + 1];
+            }
             size--;
         }
 
-        inline Value *begin() {
+        inline Value* begin() {
             return v;
         }
 
-        inline Value *end() {
-            return v+size;
+        inline Value* begin() const {
+            return v;
         }
 
-        inline size_t indexOf(const Value &item) {
-            for(size_t i = 0; i<size; i++)
-                if(v[i]==item)
+        inline Value* end() {
+            return v + size;
+        }
+
+        inline Value* end() const {
+            return v + size;
+        }
+
+        inline size_t indexOf(const Value & item) {
+            for (size_t i = 0; i < size; i++)
+                if (v[i] == item)
                     return i;
             return size;
         }
 
-        inline bool contains(const Value &item) {
-            for(size_t i = 0; i<size; i++)
-                if(v[i]==item)
+        inline bool contains(const Value & item) {
+            for (size_t i = 0; i < size; i++)
+                if (v[i] == item)
                     return true;
             return false;
         }
 
-        inline Value &operator[](size_t i) {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
+        inline Value & operator[](size_t i) {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
 
-        inline const Value &operator[](size_t i)const {
-#ifdef _DEBUG
-            if(i>=size)
-                _ASSERT_EXPR(i>=size, _T("index out of bounds"));
-#endif
+        inline const Value& operator[](size_t i)const {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
+        }
+
+        List<Value> &operator=(const List<Value> &other) {
+            size = other.size;
+            initial = other.initial;
+            capacity = other.capacity;
+            Value *prevV = v;
+            v = (Value*)ghnew char[sizeof(Value) * size];
+            for (size_t i = 0; i < size; i++)
+                new (v + i) Value(other[i]);
+            for (size_t i = 0; i < size; i++)
+                prevV[i].~Value();
+            delete[] (char*)prevV;
+            return *this;
         }
 
         inline void deleteItems() {
-            for(size_t i = 0; i<size; i++)
+            for (size_t i = 0; i < size; i++) {
                 delete v[i];
+                v[i].~Value();
+            }
             size = 0;
         }
 

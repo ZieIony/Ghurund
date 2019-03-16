@@ -18,14 +18,12 @@ namespace Ghurund {
         WSADATA w;    // used to store information about WinSock version
         int error = WSAStartup(0x0202, &w);   // Fill in w
 
-        if(error) { // there was an error
-            Logger::log(_T("there was an error with WinSock initialization"));
-            return Status::CALL_FAIL;
-        }
+        if(error) // there was an error
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("there was an error with WinSock initialization"));
+
         if(w.wVersion != 0x0202) { // wrong WinSock version!
             WSACleanup(); // unload ws2_32.dll
-            Logger::log(_T("wrong WinSock version"));
-            return Status::CALL_FAIL;
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("wrong WinSock version"));
         }
 
         return Status::OK;
@@ -36,8 +34,7 @@ namespace Ghurund {
 
         if(socket.bind()!=Status::OK) { // error
             WSACleanup();  // unload WinSock
-            Logger::log(_T("unable to bind to socket"));         // quit
-            return Status::SOCKET;
+            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket"));         // quit
         }
 
         hosting = true;
@@ -122,10 +119,8 @@ namespace Ghurund {
 
     Status Server::accept() {
         Socket *clientSocket = socket.accept();
-        if(clientSocket==nullptr) {
-            Logger::log(_T("Failed to accept a connection\n"));
-            return Status::SOCKET;
-        }
+        if(clientSocket==nullptr)
+            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("Failed to accept a connection\n"));
 
         sockets.add(clientSocket);
         return Status::OK;

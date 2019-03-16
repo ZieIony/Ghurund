@@ -22,10 +22,10 @@ namespace Ghurund.Managed.Graphics.Shader {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
-        private static extern String Shader_getSourceCode(IntPtr _this);
+        private static extern string Shader_getSourceCode(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Shader_setSourceCode(IntPtr _this, [MarshalAs(UnmanagedType.LPStr)] String sourceCode);
+        private static extern void Shader_setSourceCode(IntPtr _this, [MarshalAs(UnmanagedType.LPStr)] string sourceCode);
 
         public string SourceCode {
             get => Shader_getSourceCode(NativePtr);
