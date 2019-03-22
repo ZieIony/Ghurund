@@ -13,11 +13,11 @@ using Ghurund.Managed.Game;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public interface IParametersPanel : IToolPanel {
+    public interface IParametersPanel: IToolPanel {
         Entity SelectedEntity { get; set; }
     }
 
-    public partial class ParametersPanel : UserControl, IParametersPanel {
+    public partial class ParametersPanel: UserControl, IParametersPanel {
 
         private List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
@@ -63,9 +63,19 @@ namespace Ghurund.Editor {
                     Category = "ParameterManager"
                 };
                 property.Value.Getter = () => p.Value;
-                if (p.Type == ParameterType.Float) {
-                    property.Value.Editor = new FloatPropertyEditor();
-                    property.Value.Setter = v => p.Value = v;
+                switch (p.Type) {
+                    case (ParameterType.Float):
+                        property.Value.Editor = new FloatPropertyEditor();
+                        property.Value.Setter = v => p.Value = v;
+                        break;
+                    case (ParameterType.Float3):
+                        property.Value.Editor = new Float3PropertyEditor();
+                        property.Value.Setter = v => p.Value = v;
+                        break;
+                    case (ParameterType.Color):
+                        property.Value.Editor = new ColorPropertyEditor();
+                        property.Value.Setter = v => p.Value = v;
+                        break;
                 }
                 managerParameters.Add(property);
             }

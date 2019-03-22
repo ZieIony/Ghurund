@@ -15,7 +15,7 @@ using Microsoft.Win32;
 using Ninject;
 
 namespace Ghurund.Editor.ResourceEditor {
-    public interface IMaterialEditor : IDocumentPanel {
+    public interface IMaterialEditor: IDocumentPanel {
         Material Material { get; set; }
     }
 
@@ -23,9 +23,7 @@ namespace Ghurund.Editor.ResourceEditor {
         Cube, Sphere, Plane, Custom
     }
 
-    public partial class MaterialEditorPanel : UserControl, IMaterialEditor, IStateControl {
-
-        public object Document { get; set; }
+    public partial class MaterialEditorPanel: UserControl, IMaterialEditor, IStateControl {
 
         public System.Collections.Generic.List<object> SelectedItems {
             get => null;
@@ -55,7 +53,7 @@ namespace Ghurund.Editor.ResourceEditor {
                 material = value;
                 if (material != null) {
                     material.AddReference();
-                    Title = new Title(material.FileName.Substring(material.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), material.FileName);
+                    Title = new Title(material.ToString().Substring(material.ToString().LastIndexOfAny(new char[] { '\\', '/' }) + 1), material.ToString());
                     shaderCode.Text = material.Shader.SourceCode;
 
                     setupScene();
@@ -236,7 +234,7 @@ namespace Ghurund.Editor.ResourceEditor {
             shaderCode.CaretPosition.GetLineStartPosition(-int.MaxValue, out int lineNumber);
             int columnNumber = shaderCode.CaretPosition.GetLineStartPosition(0).GetOffsetToPosition(shaderCode.CaretPosition);
 
-            status.Text = "["+(-lineNumber+1)+":"+(columnNumber+1)+"]";
+            status.Text = "[" + (-lineNumber + 1) + ":" + (columnNumber + 1) + "]";
         }
     }
 }

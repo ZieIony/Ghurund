@@ -1,6 +1,8 @@
 #include "Renderer.h"
 
 namespace Ghurund {
+    const Ghurund::Type& Renderer::TYPE = Ghurund::Type([]() {return ghnew Renderer(); }, "Renderer");
+  
     Status Renderer::init(Window & window, ResourceManager & resourceManager, ResourceContext & resourceContext) {
         this->graphics = &resourceContext.Graphics;
         this->parameterManager = &resourceContext.ParameterManager;

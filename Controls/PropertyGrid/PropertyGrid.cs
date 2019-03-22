@@ -8,11 +8,28 @@ using System.Windows.Media;
 
 namespace Ghurund.Controls.PropertyGrid {
 
-    public class PropertyGrid : Control {
+    public class RoutedValueEditedEventEventArgs: RoutedEventArgs {
+        public Value Value { get; }
+
+        public RoutedValueEditedEventEventArgs(Value value, RoutedEvent baseEvent) : base(baseEvent) {
+            Value = value;
+        }
+    }
+
+    public delegate void RoutedValueEditedEventHandler(object sender, RoutedValueEditedEventEventArgs e);
+
+    public class PropertyGrid: Control {
+
+        public static readonly RoutedEvent ValueEditedEvent = EventManager.RegisterRoutedEvent("ValueEdited", RoutingStrategy.Bubble, typeof(RoutedValueEditedEventHandler), typeof(PropertyGrid));
+
+        public event RoutedValueEditedEventHandler ValueEdited {
+            add { AddHandler(ValueEditedEvent, value); }
+            remove { RemoveHandler(ValueEditedEvent, value); }
+        }
 
         public ObservableNotifyCollection<Property> Properties { get; } = new ObservableNotifyCollection<Property>();
 
-        private ICollectionView view;
+        private readonly ICollectionView view;
 
 
         public string Filter {
@@ -56,16 +73,6 @@ namespace Ghurund.Controls.PropertyGrid {
             base.OnPropertyChanged(e);
             if (e.Property == FilterProperty)
                 view.Refresh();
-        }
-
-        private void DockPanel_IsKeyboardFocusWithinChanged(object sender, DependencyPropertyChangedEventArgs e) {
-            var element = (FrameworkElement)sender;
-            if (element.IsKeyboardFocusWithin) {
-                Visual cur = element;
-                while (cur != null && !(cur is ListBoxItem))
-                    cur = (Visual)VisualTreeHelper.GetParent(cur);
-                ((ListBoxItem)cur).IsSelected = true;
-            }
         }
 
         private void DockPanel_MouseDown(object sender, MouseEventArgs e) {

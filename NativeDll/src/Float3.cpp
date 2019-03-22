@@ -27,6 +27,15 @@ Float3 convertFloat3(const XMFLOAT3 &xmFloat3) {
     return float3;
 }
 
+XMFLOAT4 convertFloat4(const Float4 &float4) {
+    return XMFLOAT4(float4.x, float4.y, float4.z, float4.w);
+}
+
+Float4 convertFloat4(const XMFLOAT4 &xmFloat4) {
+    Float4 float4 = {xmFloat4.x, xmFloat4.y, xmFloat4.z, xmFloat4.w};
+    return float4;
+}
+
 XMFLOAT4X4 convertMatrix(const Matrix &matrix) {
     return XMFLOAT4X4(matrix.a00, matrix.a01, matrix.a02, matrix.a03,
                       matrix.a10, matrix.a11, matrix.a12, matrix.a13,

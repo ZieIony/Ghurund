@@ -15,8 +15,6 @@ namespace Ghurund.Editor.ResourceEditor {
 
     public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl {
 
-        public object Document { get; set; }
-
         public List<object> SelectedItems {
             get => null;
             set {

@@ -68,7 +68,6 @@ namespace Ghurund.Controls.Workspace {
     }
 
     public interface IDocumentPanel: IToolPanel {
-        object Document { get; set; }
         bool NeedsSaving { get; }
         bool Save(string fileName = null);
         bool Load(string fileName);

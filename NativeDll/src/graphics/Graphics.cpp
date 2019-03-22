@@ -19,6 +19,18 @@ extern "C" __declspec(dllexport) Adapter *Graphics_getAdapters_get(Graphics *gra
     return graphics->getAdapters().get(i);
 }
 
+extern "C" __declspec(dllexport) GPUResourceFactory* Graphics_getResourceFactory(Graphics* graphics) {
+    return &graphics->getResourceFactory();
+}
+
+extern "C" __declspec(dllexport) memory_t GPUResourceFactory_getSize(GPUResourceFactory* resourceFactory) {
+    return resourceFactory->getSize();
+}
+
+extern "C" __declspec(dllexport) memory_t GPUResourceFactory_getAllocated(GPUResourceFactory* resourceFactory) {
+    return resourceFactory->getAllocated();
+}
+
 #include "Ghurund.h"
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>

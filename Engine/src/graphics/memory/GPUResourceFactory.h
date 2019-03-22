@@ -3,6 +3,7 @@
 #include "collection/Map.h"
 #include "core/Allocator.h"
 #include "core/Pointer.h"
+#include "HeapAllocator.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -12,35 +13,6 @@
 
 namespace Ghurund {
     class Graphics;
-
-    class HeapAllocator:public Allocator<memory_t> {
-    public:
-        ID3D12Heap* heap = nullptr;
-        AllocationStrategy *strategy;
-
-    public:
-        HeapAllocator(Graphics &graphics, memory_t size, AllocationStrategy *strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
-
-        ~HeapAllocator() {
-            if(heap!=nullptr)
-                heap->Release();
-            delete strategy;
-        }
-
-        inline memory_t allocate(memory_t size) {
-            return strategy->allocate(size);
-        }
-
-        inline void deallocate(memory_t mem) {
-            strategy->deallocate(mem);
-        }
-
-        ID3D12Heap* getHeap() {
-            return heap;
-        }
-
-        __declspec(property(get = getHeap)) ID3D12Heap* Heap;
-    };
 
     class GPUResourcePointer:public Pointer {
     private:
@@ -80,5 +52,24 @@ namespace Ghurund {
         }
 
         GPUResourcePointer *create(D3D12_HEAP_TYPE heapType, CD3DX12_RESOURCE_DESC resourceDesc, D3D12_RESOURCE_STATES initialState, ID3D12Resource **resource);
+
+        memory_t getSize() {
+            memory_t size = 0;
+            for (size_t i = 0; i < allocators.Size; i++)
+                size += allocators.getValue(i)->Size;
+            return size;
+        }
+
+        __declspec(property(get = getSize)) memory_t Size;
+
+        memory_t getAllocated() {
+            memory_t allocated = 0;
+            for (size_t i = 0; i < allocators.Size; i++)
+                allocated += allocators.getValue(i)->Allocated;
+            return allocated;
+        }
+
+        __declspec(property(get = getAllocated)) memory_t Allocated;
+
     };
 }

@@ -69,11 +69,5 @@ namespace Ghurund.Managed.Graphics {
         [Browsable(true)]
         [Category("Rendering")]
         public uint MaterialChanges { get => RenderingStatistics_getMaterialChanges(NativePtr); }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void RenderingStatistics_reset(IntPtr _this);
-
-        public void Reset() => RenderingStatistics_reset(NativePtr);
     }
 }

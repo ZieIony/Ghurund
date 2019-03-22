@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ghurund.Managed</RootNamespace>
     <AssemblyName>ManagedDll</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -36,6 +36,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
@@ -71,6 +72,7 @@
     <Compile Include="Game\Scene.cs" />
     <Compile Include="Graphics\Adapter.cs" />
     <Compile Include="Graphics\Camera.cs" />
+    <Compile Include="Graphics\Memory\GPUResourceFactory.cs" />
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Mesh\Mesh.cs" />
     <Compile Include="Graphics\Model.cs" />
@@ -84,7 +86,6 @@
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />
     <Compile Include="NativeClass.cs" />
-    <Compile Include="PropertyEditor.cs" />
     <Compile Include="Resource\Resource.cs" />
     <Compile Include="Resource\ResourceContext.cs" />
     <Compile Include="Resource\ResourceFormat.cs" />
@@ -111,12 +112,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Controls\Controls.csproj">
-      <Project>{A149407B-BC15-42B5-8C29-D8833FFB78B7}</Project>
-      <Name>Controls</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

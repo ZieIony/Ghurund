@@ -1,4 +1,6 @@
 #include "script/Script.h"
+#include "script/ScriptEngine.h"
+#include "script/Scripts.h"
 
 using namespace Ghurund;
 using namespace std;
@@ -31,10 +33,18 @@ extern "C" __declspec(dllexport) void Script_setEntryPoint(Script *_this, const 
     _this->setEntryPoint(entryPoint);
 }
 
-extern "C" __declspec(dllexport) Status Script_init(Script *_this, ScriptEngine *scriptEngine) {
+extern "C" __declspec(dllexport) Status Script_build(Script *_this, ScriptEngine *scriptEngine) {
     return _this->build(*scriptEngine);
 }
 
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Script_getFormats() {
     return &Script::getFormats();
+}
+
+extern "C" __declspec(dllexport) Script *Scripts_makeEmpty(Entity *param) {
+    return Scripts::makeEmpty(param);
+}
+
+extern "C" __declspec(dllexport) Script *Scripts_make(Entity *param, const char *sourceCode) {
+    return Scripts::make(param, sourceCode);
 }

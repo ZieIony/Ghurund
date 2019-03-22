@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Graphics.Mesh;
+using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
     public enum NavigationMode {
@@ -193,14 +195,16 @@ namespace Ghurund.Managed {
             editorScene = Scenes.MakeEditor(resourceManager, resourceContext);
             invalidMaterial = Materials.MakeInvalid(resourceManager, resourceContext);
 
-            editorStep = new RenderStep();
-            editorStep.Camera = Camera;
+            editorStep = new RenderStep {
+                Camera = Camera
+            };
             editorStep.Entities.Add(editorScene);
             editorStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(editorStep);
 
-            sceneStep = new RenderStep();
-            sceneStep.Camera = Camera;
+            sceneStep = new RenderStep {
+                Camera = Camera
+            };
             sceneStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(sceneStep);
         }
@@ -298,6 +302,17 @@ namespace Ghurund.Managed {
                 SelectedEntities.Add(model);
                 RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
             }
+        }
+
+        public void SetMaterial(ResourceContext context, Material material) {
+            Scene scene = new Scene();
+            Model sphere = Models.MakeSphere(context, material);
+            scene.Entities.Add(sphere);
+            sphere.Release();
+            Scene = scene;
+            scene.Release();
+
+            CameraMode = CameraMode.Default;
         }
     }
 }

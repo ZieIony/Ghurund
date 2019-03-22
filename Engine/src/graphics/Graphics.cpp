@@ -4,6 +4,8 @@
 #include <D3Dcompiler.h>
 
 namespace Ghurund {
+    const Ghurund::Type& Graphics::TYPE = Ghurund::Type([]() {return ghnew Graphics(); }, "Graphics");
+
     Status Graphics::initAdapters() {
         ComPtr<IDXGIAdapter1> adapter;
 
@@ -74,7 +76,7 @@ namespace Ghurund {
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 
-        memoryAllocator = ghnew GPUResourceFactory(*this);
+        resourceFactory = ghnew GPUResourceFactory(*this);
 
         return Status::OK;
     }

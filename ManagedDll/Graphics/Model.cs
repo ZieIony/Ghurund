@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
-using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
@@ -24,6 +24,8 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Model_setMesh(IntPtr _this, IntPtr mesh);
 
+        [Description("Mesh resource representing the geometry of this model.")]
+        [Editable(true)]
         public Mesh.Mesh Mesh {
             get => new Mesh.Mesh(Model_getMesh(NativePtr));
             set => Model_setMesh(NativePtr, value.NativePtr);
@@ -36,6 +38,8 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Model_setMaterial(IntPtr _this, IntPtr mesh);
 
+        [Description("Material resource used for drawing this model.")]
+        [Editable(true)]
         public Material Material {
             get => new Material(Model_getMaterial(NativePtr)); set => Model_setMaterial(NativePtr, value.NativePtr);
         }
@@ -49,7 +53,7 @@ namespace Ghurund.Managed.Graphics {
 
         [Category("Transformation")]
         [Description("Three floats - x, y, z.")]
-        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        [Editable(true)]
         public Float3 Position {
             get => Model_getPosition(NativePtr);
             set => Model_setPosition(NativePtr, value);
@@ -64,7 +68,7 @@ namespace Ghurund.Managed.Graphics {
 
         [Category("Transformation")]
         [Description("Euler angles - yaw, pitch, roll.")]
-        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        [Editable(true)]
         public Float3 Rotation {
             get => Model_getRotation(NativePtr);
             set => Model_setRotation(NativePtr, value);
@@ -79,7 +83,7 @@ namespace Ghurund.Managed.Graphics {
 
         [Category("Transformation")]
         [Description("Scale 1 means 100%.")]
-        [Controls.PropertyGrid.Editor(typeof(Float3PropertyEditor))]
+        [Editable(true)]
         public Float3 Scale {
             get => Model_getScale(NativePtr);
             set => Model_setScale(NativePtr, value);

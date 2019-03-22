@@ -7,7 +7,7 @@
 #include "core/Object.h"
 #include "graphics/Adapter.h"
 #include "graphics/buffer/DescriptorHeap.h"
-#include "graphics/GraphicsMemoryAllocator.h"
+#include "graphics/memory/GPUResourceFactory.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -28,7 +28,7 @@ namespace Ghurund {
         ComPtr<IDXGIFactory4> factory;
 
 		DescriptorAllocator allocator;
-        GPUResourceFactory *memoryAllocator;
+        GPUResourceFactory *resourceFactory;
 
         List<Adapter*> adapters;
 
@@ -47,7 +47,7 @@ namespace Ghurund {
             directQueue->Release();
             computeQueue->Release();
             copyQueue->Release();
-            delete memoryAllocator;
+            delete resourceFactory;
         }
 
         ComPtr<ID3D12Device> getDevice() {
@@ -92,10 +92,16 @@ namespace Ghurund {
 
         __declspec(property(get = getDescriptorAllocator)) DescriptorAllocator &DescriptorAllocator;
 
-        GPUResourceFactory &getMemoryAllocator() {
-            return *memoryAllocator;
+        GPUResourceFactory &getResourceFactory() {
+            return *resourceFactory;
         }
 
-        __declspec(property(get = getMemoryAllocator)) GPUResourceFactory &MemoryAllocator;
+        __declspec(property(get = getResourceFactory)) GPUResourceFactory &ResourceFactory;
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

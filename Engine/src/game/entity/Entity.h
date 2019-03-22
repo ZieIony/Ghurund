@@ -24,8 +24,8 @@ namespace Ghurund {
         id_t id = 0;
         static PointerList<Entity*> entities;
         static atomic<id_t> currentId;
-        Script* script;
-        Entity* parent;
+        Script* script = nullptr;
+        Entity* parent = nullptr;
 
         friend class EntityList;
 

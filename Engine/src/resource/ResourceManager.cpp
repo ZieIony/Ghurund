@@ -5,7 +5,7 @@
 namespace Ghurund {
     const wchar_t* const ResourceManager::ENGINE_LIB_NAME = L"engine";
     const wchar_t* const ResourceManager::LIB_PROTOCOL_PREFIX = L"lib:\\";
-
+    const Ghurund::Type& ResourceManager::TYPE = Ghurund::Type([]() {return ghnew ResourceManager(); }, "ResourceManager");
 
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(*this, context, path, nullptr, options);

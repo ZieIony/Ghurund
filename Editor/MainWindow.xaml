@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GhurundEditor"
-	xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace" x:Class="Ghurund.Editor.MainWindow"
+	xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+	xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls" x:Class="Ghurund.Editor.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 	<WindowChrome.WindowChrome>
@@ -88,9 +89,10 @@
 			</DockPanel>
 			<StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource Ghurund.Background}">
 				<StatusBarItem Name="currentTask">
-					<DockPanel>
-						<TextBlock Name="mostRecentLog"/>
-					</DockPanel>
+					<TextBlock Name="mostRecentLog" Text="test"/>
+				</StatusBarItem>
+				<StatusBarItem Name="resources" HorizontalAlignment="Right">
+					<controls:PerformanceView Width="50" Height="10"/>
 				</StatusBarItem>
 			</StatusBar>
 			<workspace:WorkspacePanel Name="workspacePanel" Background="{x:Null}"/>

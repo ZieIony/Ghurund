@@ -1,10 +1,13 @@
 #include "ParameterManager.h"
 
 namespace Ghurund {
-    ParameterManager::ParameterManager() {
-        float zero = 0.0f;
-        add(Parameter::PARTY_COLOR, ParameterType::FLOAT)->setValue(&zero);
+    const Ghurund::Type& ParameterManager::TYPE = Ghurund::Type([]() {return ghnew ParameterManager(); }, "ParameterManager");
 
+    ParameterManager::ParameterManager() {
+        XMFLOAT4 red(1,0,0,1);
+        add(Parameter::PARTY_COLOR, ParameterType::COLOR)->setValue(&red);
+
+        float zero = 0.0f;
         add(Parameter::RANDOM, ParameterType::FLOAT)->setValue(&zero);
 
         XMFLOAT2 zero2;

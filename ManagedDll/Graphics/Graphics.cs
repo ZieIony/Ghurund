@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ghurund.Managed.Graphics.Memory;
+using System;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -34,6 +35,13 @@ namespace Ghurund.Managed.Graphics {
         public ImmutableList<Adapter> Adapters {
             get; internal set;
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))]
+        private static extern IntPtr Graphics_getResourceFactory(IntPtr _this);
+
+        public GPUResourceFactory ResourceFactory => new GPUResourceFactory(Graphics_getResourceFactory(NativePtr));
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

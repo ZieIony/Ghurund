@@ -63,7 +63,7 @@ namespace Ghurund.Managed {
 
     public class List<T> : NativeClass, IList<T> where T : NativeClass {
 
-        private MakeNativeObjectDelegate<T> makeNativeObjectDelegate;
+        private readonly MakeNativeObjectDelegate<T> makeNativeObjectDelegate;
 
         public List() {
         }

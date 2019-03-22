@@ -49,6 +49,11 @@ namespace Ghurund {
         __declspec(property(get = getMaterialChanges)) size_t MaterialChanges;
 
         void startFrame() {
+            renderingTime = 0;
+            modelsCulled = 0;
+            modelsRendered = 0;
+            trianglesRendered = 0;
+            materialChanges = 0;
             timer.tick();
         }
 
@@ -56,14 +61,6 @@ namespace Ghurund {
             timer.tick();
             renderingTime += timer.FrameTime;
             notifyObjectChanged();
-        }
-
-        void reset() {
-            renderingTime = 0;
-            modelsCulled = 0;
-            modelsRendered = 0;
-            trianglesRendered = 0;
-            materialChanges = 0;
         }
     };
 }

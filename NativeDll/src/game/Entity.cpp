@@ -3,50 +3,62 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) Array<Parameter*> *ParameterProvider_getParameters(ParameterProvider *_this) {
+extern "C" __declspec(dllexport) Array<Parameter*>* ParameterProvider_getParameters(ParameterProvider* _this) {
     return &_this->getParameters();
 }
 
-extern "C" __declspec(dllexport) void ParameterProvider_initParameters(ParameterProvider *_this, ParameterManager *manager) {
+extern "C" __declspec(dllexport) void ParameterProvider_initParameters(ParameterProvider* _this, ParameterManager* manager) {
     _this->initParameters(*manager);
 }
 
-extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(ParameterProvider *_this) {
+extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(ParameterProvider* _this) {
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) const Type *Entity_getType(Entity *_this) {
+extern "C" __declspec(dllexport) const Type* Entity_getType(Entity* _this) {
     return &(_this->Type);
 }
 
-extern "C" __declspec(dllexport) wchar_t *Entity_getName(Entity *_this) {
+extern "C" __declspec(dllexport) wchar_t* Entity_getName(Entity* _this) {
     return copyStr(_this->getName().getData());
 }
 
-extern "C" __declspec(dllexport) void Entity_setName(Entity *_this, const wchar_t *name) {
+extern "C" __declspec(dllexport) void Entity_setName(Entity* _this, const wchar_t* name) {
     _this->setName(name);
 }
 
-extern "C" __declspec(dllexport) BOOL Entity_isSelectable(Entity *_this) {
+extern "C" __declspec(dllexport) BOOL Entity_isSelectable(Entity* _this) {
     return _this->isSelectable();
 }
 
-extern "C" __declspec(dllexport) Array<Parameter*> *Entity_getParameters(Entity *_this) {
+extern "C" __declspec(dllexport) Array<Parameter*>* Entity_getParameters(Entity* _this) {
     return &_this->getParameters();
 }
 
-extern "C" __declspec(dllexport) void Entity_initParameters(Entity *_this, ParameterManager *manager) {
+extern "C" __declspec(dllexport) Entity* Entity_getParent(Entity* _this) {
+    return _this->getParent();
+}
+
+extern "C" __declspec(dllexport) Script* Entity_getScript(Entity* _this) {
+    return _this->getScript();
+}
+
+extern "C" __declspec(dllexport) void Entity_setScript(Entity* _this, Script* script) {
+    _this->setScript(script);
+}
+
+extern "C" __declspec(dllexport) void Entity_initParameters(Entity* _this, ParameterManager* manager) {
     _this->initParameters(*manager);
 }
 
-extern "C" __declspec(dllexport) void Entity_updateParameters(Entity *_this) {
+extern "C" __declspec(dllexport) void Entity_updateParameters(Entity* _this) {
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity *_this, listener_t listener) {
+extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity* _this, listener_t listener) {
     _this->setOnChangedListener(listener);
 }
 
-extern "C" __declspec(dllexport) listener_t Entity_getPropertyChangedListener(Entity *_this) {
+extern "C" __declspec(dllexport) listener_t Entity_getPropertyChangedListener(Entity* _this) {
     return _this->getOnChangedListener();
 }

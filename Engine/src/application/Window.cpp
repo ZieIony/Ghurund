@@ -2,6 +2,7 @@
 
 namespace Ghurund {
     const tchar *Window::WINDOW_CLASS_NAME = _T("Ghurund");
+    const Ghurund::Type& Window::TYPE = Ghurund::Type([]() {return ghnew Window(); }, "Window");
 
     void Window::init(HWND handle) {
         this->handle = handle;

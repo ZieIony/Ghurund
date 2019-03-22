@@ -18,9 +18,7 @@ namespace Ghurund {
             &MODEL, &MESH,
             &SOUND,
             &COMMAND_LIST,
-            &SCRIPT,
-            
-            &TIMER;
+            &SCRIPT;
 
         Type(std::function<void*()> constructor, const char *name) {
             this->constructor = constructor;

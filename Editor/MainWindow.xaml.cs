@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using Ghurund.Controls.PropertyGrid;
 using Ghurund.Controls.Workspace;
 using Ghurund.Editor.Panel;
 using Ghurund.Editor.ResourceEditor;
@@ -78,6 +79,7 @@ namespace Ghurund.Editor {
 
             AddHandler(ActionPerformedEvent, new RoutedActionPerformedEventHandler(actionPerformedHandler));
             AddHandler(FileOpenedEvent, new RoutedFileOpenedEventHandler(fileOpenedHandler));
+            AddHandler(PropertyGrid.ValueEditedEvent, new RoutedValueEditedEventHandler(valueEditedHandler));
 
             AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));

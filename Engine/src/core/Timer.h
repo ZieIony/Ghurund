@@ -7,7 +7,7 @@
 namespace Ghurund {
     typedef LONGLONG ticks_t;
 
-    class Timer:public Pointer {
+    class Timer:public Object {
     private:
         LARGE_INTEGER frequency;
         LARGE_INTEGER startFrame;
@@ -53,8 +53,10 @@ namespace Ghurund {
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
 
+        const static Ghurund::Type& TYPE;
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::TIMER;
+            return TYPE;
         }
     };
 }

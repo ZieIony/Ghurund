@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
@@ -151,7 +150,6 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Camera_setPerspective(IntPtr _this, bool pers);
 
-        [Controls.PropertyGrid.Editor(typeof(BooleanPropertyEditor))]
         public bool Perspective {
             get => Camera_getPerspective(NativePtr);
             set => Camera_setPerspective(NativePtr, value);

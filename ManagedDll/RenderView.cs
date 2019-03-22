@@ -98,7 +98,7 @@ namespace Ghurund.Managed {
         protected override void OnPaint(PaintEventArgs e) {
             //base.OnPaint(e);
             if (IsInDesignMode(this)) {
-                e.Graphics.Clear(Color.CornflowerBlue);
+                e.Graphics.Clear(System.Drawing.Color.CornflowerBlue);
             } else if (Renderer != null) {
                 Renderer.Render();
             }

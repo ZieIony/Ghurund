@@ -4,6 +4,7 @@
 #include "StringFactory.h"
 #include "core/Object.h"
 #include "core/Timer.h"
+#include "Script.h"
 
 #include <atomic>
 
@@ -24,6 +25,7 @@ namespace Ghurund {
         StringFactory stringFactory;
         std::atomic<unsigned int> moduleIndex=0;
         Timer *timer;
+        PointerList<Script*> scripts;
 
         static void messageCallback(const asSMessageInfo* msg, void* param) {
             LogType type = LogType::ERR0R;
@@ -55,5 +57,18 @@ namespace Ghurund {
             return engine->CreateContext();
         }
 
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+
+        PointerList<Script*>& getScripts() {
+            return scripts;
+        }
+
+        __declspec(property(get = getScripts)) PointerList<Script*> &Scripts;
+
+        void execute();
     };
 }

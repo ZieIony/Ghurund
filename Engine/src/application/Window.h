@@ -109,5 +109,11 @@ namespace Ghurund {
         void updateSize();
 
         void setSize(unsigned int width, unsigned int height);
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

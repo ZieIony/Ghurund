@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 namespace Ghurund.Managed.Game {
 
     public enum ParameterType {
-        Int, Int2, Float, Float2, Float3, Matrix
+        Int, Int2, Float, Float2, Float3, Matrix, Color
     }
 
     public class Parameter : NativeClass, INotifyPropertyChanged {
@@ -14,7 +14,7 @@ namespace Ghurund.Managed.Game {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void PropertyChangedListener();
 
-        private PropertyChangedListener propertyChangedCallback;
+        private readonly PropertyChangedListener propertyChangedCallback;
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void ObservableObject_setOnChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
@@ -25,7 +25,7 @@ namespace Ghurund.Managed.Game {
         // This method is called by the Set accessor of each property.
         // The CallerMemberName attribute that is applied to the optional propertyName
         // parameter causes the property name of the caller to be substituted as an argument.
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "") {
+        protected void NotifyPropertyChanged() {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Value"));
         }
 
@@ -68,6 +68,9 @@ namespace Ghurund.Managed.Game {
         private static extern Matrix Parameter_getMatrixValue(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Color Parameter_getColorValue(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Parameter_setIntValue(IntPtr _this, int value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -84,6 +87,9 @@ namespace Ghurund.Managed.Game {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Parameter_setMatrixValue(IntPtr _this, Matrix value);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Parameter_setColorValue(IntPtr _this, Color value);
 
         [Category("Common")]
         [Description("This value will be set in shaders.")]
@@ -102,6 +108,8 @@ namespace Ghurund.Managed.Game {
                         return Parameter_getFloat3Value(NativePtr);
                     case ParameterType.Matrix:
                         return Parameter_getMatrixValue(NativePtr);
+                    case ParameterType.Color:
+                        return Parameter_getColorValue(NativePtr);
                 }
                 return null;
             }
@@ -124,6 +132,9 @@ namespace Ghurund.Managed.Game {
                         break;
                     case ParameterType.Matrix:
                         Parameter_setMatrixValue(NativePtr, (Matrix)value);
+                        break;
+                    case ParameterType.Color:
+                        Parameter_setColorValue(NativePtr, (Color)value);
                         break;
                 }
             }

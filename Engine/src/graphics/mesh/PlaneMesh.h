@@ -6,7 +6,7 @@
 namespace Ghurund {
     class PlaneMesh: public Mesh {
     public:
-        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 5) {
+        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 1) {
             Vertex triangleVertices[] = {
                 {{-1.0f, 0.0f, -1.0f}, {0,1,0}, {0,0}},
                 {{1.0f,  0.0f,  1.0f}, {0,1,0}, {1,1}},

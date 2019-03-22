@@ -7,7 +7,6 @@
 #include "ResourceFormat.h"
 #include "collection/Array.h"
 #include "core/Pointer.h"
-#include "ResourceContext.h"
 
 
 using namespace std;
@@ -35,6 +34,7 @@ namespace Ghurund {
 
 
     class ResourceManager;
+    class ResourceContext;
 
     class Resource: public Pointer {
     private:

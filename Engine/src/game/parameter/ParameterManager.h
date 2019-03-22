@@ -41,5 +41,11 @@ namespace Ghurund {
             return parameters.getValue(index);
         }
 
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+
     };
 }

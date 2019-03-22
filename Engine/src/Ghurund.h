@@ -4,6 +4,9 @@
 #include "TextUtils.h"
 #include "MathUtils.h"
 
+#include <stdio.h>
+#include <psapi.h>
+
 namespace Ghurund {
     enum class Status {
         OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED, UNKNOWN,
@@ -32,16 +35,17 @@ namespace Ghurund {
     }
 
     template<class Type> inline Type align(Type value, Type alignment) {
-        return (value + alignment-1) & ~(alignment-1);
+        return (value + alignment - 1) & ~(alignment - 1);
     }
 
-    template<class Type> void safeDelete(Type *&p) {
+    template<class Type> void safeDelete(Type * &p) {
         delete p;
         p = nullptr;
     }
 
-    template<class Type> void safeDeleteArray(Type *&p) {
+    template<class Type> void safeDeleteArray(Type * &p) {
         delete[] p;
         p = nullptr;
     }
+
 }

@@ -4,7 +4,7 @@
 #include "collection/BufferedValue.h"
 #include "graphics/CommandList.h"
 #include "graphics/Graphics.h"
-#include "graphics/GraphicsMemoryAllocator.h"
+#include "graphics/memory/GPUResourceFactory.h"
 
 namespace Ghurund {
     class GPUBuffer {
@@ -67,7 +67,7 @@ namespace Ghurund {
 
         void set(Graphics &graphics, CommandList &commandList, unsigned int bindSlot) {
             ID3D12Resource *constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
-            Pointer *resourcePointer = graphics.MemoryAllocator.create(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(buffer->Size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
+            Pointer *resourcePointer = graphics.ResourceFactory.create(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(buffer->Size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
 
             D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
             cbvDesc.BufferLocation = constantBufferUploadHeap->GetGPUVirtualAddress();

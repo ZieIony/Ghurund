@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     Status Mesh::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {

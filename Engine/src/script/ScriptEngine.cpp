@@ -2,6 +2,8 @@
 #include "ScriptBindings.h"
 
 namespace Ghurund {
+    const Ghurund::Type& ScriptEngine::TYPE = Ghurund::Type([]() {return ghnew ScriptEngine(); }, "ScriptEngine");
+  
     Status ScriptEngine::init(Timer& timer) {
         this->timer = &timer;
 
@@ -19,5 +21,12 @@ namespace Ghurund {
         TimerScriptBindings::registerClass(*engine, &this->timer);
 
         return Status::OK;
+    }
+
+    void ScriptEngine::execute() {
+        for (Ghurund::Script* s : scripts) {
+            if(s->Valid)
+                s->execute();
+        }
     }
 }

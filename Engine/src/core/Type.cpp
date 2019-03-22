@@ -19,5 +19,4 @@ namespace Ghurund {
     const Type &Type::SOUND = Type([]() {return ghnew Sound(); }, "Sound");
     const Type &Type::COMMAND_LIST = Type([]() {return ghnew CommandList(); }, "CommandList");
     const Type &Type::SCRIPT = Type([]() {return ghnew Script(); }, "Script");
-    const Type &Type::TIMER = Type([]() {return ghnew Timer(); }, "Timer");
 }

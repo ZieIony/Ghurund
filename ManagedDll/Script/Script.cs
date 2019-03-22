@@ -1,4 +1,5 @@
-﻿using Ghurund.Managed.Resource;
+﻿using Ghurund.Managed.Game;
+using Ghurund.Managed.Resource;
 using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -47,11 +48,10 @@ namespace Ghurund.Managed.Script {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))]
-        private static extern string Script_init(IntPtr _this,
+        private static extern Status Script_build(IntPtr _this,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ScriptEngine engine);
 
-        public string Init(ScriptEngine engine) => Script_init(NativePtr, engine);
+        public Status Build(ScriptEngine engine) => Script_build(NativePtr, engine);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -60,5 +60,30 @@ namespace Ghurund.Managed.Script {
         [Browsable(false)]
         public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Script_getFormats(), ptr => new ResourceFormat(ptr));
 
+    }
+
+    public static class Scripts {
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Scripts_makeEmpty(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity param);
+
+        public static Script MakeEmpty(Entity param) {
+            var entity = new Script(Scripts_makeEmpty(param));
+            entity.Release();
+            return entity;
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Scripts_make(
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity param,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(CharStrMarshaler))] string sourceCode);
+
+        public static Script Make(Entity param, string sourceCode) {
+            var entity = new Script(Scripts_make(param, sourceCode));
+            entity.Release();
+            return entity;
+        }
     }
 }

@@ -21,7 +21,3 @@ extern "C" __declspec(dllexport) unsigned int RenderingStatistics_getTrianglesRe
 extern "C" __declspec(dllexport) unsigned int RenderingStatistics_getMaterialChanges(RenderingStatistics *_this) {
     return _this->MaterialChanges;
 }
-
-extern "C" __declspec(dllexport) void RenderingStatistics_reset(RenderingStatistics *_this) {
-    _this->reset();
-}

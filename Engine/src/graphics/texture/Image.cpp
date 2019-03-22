@@ -1,4 +1,6 @@
 #include "Image.h"
+#include "resource/ResourceContext.h"
+
 #include <Shlwapi.h>
 
 namespace Ghurund {

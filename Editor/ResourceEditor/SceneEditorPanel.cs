@@ -27,8 +27,6 @@ namespace Ghurund.Editor.ResourceEditor {
 
     public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
 
-        public object Document { get; set; }
-
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(ISceneEditor));
 
         public event RoutedSelectionChangedEventHandler SelectionChanged {

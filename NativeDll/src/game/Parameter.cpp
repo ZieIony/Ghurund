@@ -33,6 +33,10 @@ extern "C" __declspec(dllexport) Matrix Parameter_getMatrixValue(Parameter *_thi
     return convertMatrix(*(XMFLOAT4X4*)_this->getValue());
 }
 
+extern "C" __declspec(dllexport) Float4 Parameter_getColorValue(Parameter *_this) {
+    return convertFloat4(*(XMFLOAT4*)_this->getValue());
+}
+
 
 extern "C" __declspec(dllexport) void Parameter_setIntValue(Parameter *_this, int value) {
     _this->setValue(&value);
@@ -56,6 +60,10 @@ extern "C" __declspec(dllexport) void Parameter_setFloat3Value(Parameter *_this,
 
 extern "C" __declspec(dllexport) void Parameter_setMatrixValue(Parameter *_this, Matrix value) {
     _this->setValue(&convertMatrix(value));
+}
+
+extern "C" __declspec(dllexport) void Parameter_setColorValue(Parameter *_this, Float4 value) {
+    _this->setValue(&convertFloat4(value));
 }
 
 

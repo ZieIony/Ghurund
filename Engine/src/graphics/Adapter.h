@@ -46,6 +46,12 @@ namespace Ghurund {
         DXGI_FORMAT getFormat() {
             return format;
         }
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 
     class AdapterOutput: public Object {
@@ -91,6 +97,12 @@ namespace Ghurund {
 
         List<DisplayMode*> &getDisplayModes() {
             return displayModes;
+        }
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
         }
     };
 
@@ -143,6 +155,12 @@ namespace Ghurund {
 
         List<AdapterOutput*> &getOutputs() {
             return outputs;
+        }
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
         }
     };
 }

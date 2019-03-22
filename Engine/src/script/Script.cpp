@@ -1,4 +1,6 @@
 #include "Script.h"
+#include "ScriptEngine.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     Status Script::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -32,6 +34,8 @@ namespace Ghurund {
 
         // Create our context, prepare it, and then execute
         ctx = engine.createContext();
+
+        built = true;
 
         return Status::OK;
     }

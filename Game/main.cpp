@@ -36,7 +36,6 @@ private:
     Entity* selection = nullptr;
     Material* overrideMaterial = nullptr;
     Material* invalidMaterial = nullptr;
-    Script* script = nullptr;
 
     RenderStep editorStep, sceneStep;
 
@@ -174,19 +173,17 @@ public:
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
         editorStep.Entities.add(editorScene);
 
-        script = Scripts::makeEmpty(camera);
-        script->SourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),sin(timer.getTime()/5.0f)*5.0f);}";
-        script->build(app.ScriptEngine);
+        const char* sourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),cos(timer.getTime()/5.0f)*3.0f+30);}";
+        ScopedPointer<Script> script = Scripts::make(camera, sourceCode);
+
+        app.ScriptEngine.Scripts.add(script);
     }
 
     virtual void onUpdate() override {
         camera->setScreenSize(app.Window.Width, app.Window.Height);
-
-        script->execute();
     }
 
     virtual void onUninit() override {
-        script->release();
         camera->release();
         invalidMaterial->release();
         delete cameraController;
@@ -216,7 +213,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
     Logger::init(LogOutput::SYSTEM_CONSOLE);
-    Logger::log(LogType::INFO, String("working dir: ")+DirectoryPath(".").getAbsolutePath());
+    Logger::log(LogType::INFO, String("working dir: ") + DirectoryPath(".").getAbsolutePath());
 
     {
         TestApplication application;

@@ -67,5 +67,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

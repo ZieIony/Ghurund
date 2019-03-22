@@ -39,11 +39,13 @@ namespace Ghurund {
 
             CommandList& commandList = swapChain->CommandList;
             graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
+            stats.startFrame();
 
             return commandList;
         }
 
         void finishFrame() {
+            stats.finishFrame();
             swapChain->finishFrame();
         }
 
@@ -97,5 +99,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getSteps)) List<RenderStep*> & Steps;
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

@@ -1,10 +1,12 @@
 #pragma once
 
 #include "resource/Resource.h"
-#include "ScriptEngine.h"
+#include "resource/ResourceManager.h"
 #include "Argument.h"
 
 namespace Ghurund {
+    class ScriptEngine;
+
     class Script:public Resource {
     private:
         asIScriptModule* mod = nullptr;
@@ -13,6 +15,7 @@ namespace Ghurund {
         char* source = nullptr;
         char* entryPoint = nullptr;
         Array<Argument> arguments;
+        bool built = false;
 
         void finalize() {
             safeDeleteArray(source);
@@ -23,6 +26,7 @@ namespace Ghurund {
                 ctx->Release();
                 ctx = nullptr;
             }
+            built = false;
         }
 
     protected:
@@ -41,13 +45,24 @@ namespace Ghurund {
 
         Status build(ScriptEngine& engine);
 
+        bool getIsBuilt() {
+            return built;
+        }
+
+        __declspec(property(get = getIsBuilt)) bool IsBuilt;
+
         virtual void invalidate() override {
             finalize();
             __super::invalidate();
         }
 
+        virtual bool isValid() const {
+            return __super::isValid() && built;
+        }
+
         void setSourceCode(const char* source) {
             safeCopyStr(&this->source, source);
+            built = false;
         }
 
         const char* getSourceCode() {
@@ -58,6 +73,7 @@ namespace Ghurund {
 
         void setEntryPoint(const char* entryPoint) {
             safeCopyStr(&this->entryPoint, entryPoint);
+            built = false;
         }
 
         const char* getEntryPoint()const {

@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     Status Texture::init(ResourceContext &context, Image &image) {

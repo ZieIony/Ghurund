@@ -1,6 +1,8 @@
 #include "Timer.h"
 
 namespace Ghurund {
+    const Ghurund::Type& Timer::TYPE = Ghurund::Type([]() {return ghnew Timer(); }, "Timer");
+ 
     Timer::Timer() {
         QueryPerformanceCounter(&startFrame);
         QueryPerformanceFrequency(&frequency);

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Graphics;
-using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
 
@@ -12,7 +12,7 @@ namespace Ghurund.Managed.Game {
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void PropertyChangedListener();
 
-        private PropertyChangedListener propertyChangedCallback;
+        private readonly PropertyChangedListener propertyChangedCallback;
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Entity_setPropertyChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] PropertyChangedListener listener);
@@ -68,6 +68,7 @@ namespace Ghurund.Managed.Game {
 
         [Category("Common")]
         [Description("This name will appear in scene explorer and in shaders.")]
+        [Editable(true)]
         public string Name {
             get => Entity_getName(NativePtr);
             set {
@@ -89,6 +90,29 @@ namespace Ghurund.Managed.Game {
 
         [Browsable(false)]
         public Entity Parent { get => Entities.MakeEntity(Entity_getParent(NativePtr)); }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Entity_getScript(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Entity_setScript(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Script.Script script);
+
+        [Description("This script will be executed with this resource as a parameter.")]
+        [Editable(true)]
+        public Script.Script Script {
+            get {
+                IntPtr scriptPtr = Entity_getScript(NativePtr);
+                if (scriptPtr == IntPtr.Zero)
+                    return null;
+                return new Script.Script(scriptPtr);
+            }
+            set {
+                Entity_setScript(NativePtr, value);
+                NotifyPropertyChanged();
+            }
+        }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

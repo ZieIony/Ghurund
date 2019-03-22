@@ -38,7 +38,7 @@ namespace Ghurund {
 
         delete renderer;
 
-        timer->release();
+        delete timer;
 		delete parameterManager;
         delete resourceContext;
         delete resourceManager;
@@ -120,6 +120,8 @@ namespace Ghurund {
         resourceManager->reload();
 
         input.dispatchEvents(levelManager);
+
+        scriptEngine->execute();
 
         onUpdate();
 

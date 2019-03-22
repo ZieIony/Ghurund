@@ -13,9 +13,9 @@ namespace Ghurund {
         return model;
     }
 
-    Model* Models::makePlane(ResourceContext& context, Material& material) {
+    Model* Models::makePlane(ResourceContext& context, Material& material, unsigned int detail) {
         Mesh* mesh = ghnew PlaneMesh();
-        mesh->init(context.Graphics, context.CommandList);
+        mesh->init(context.Graphics, context.CommandList, detail);
         Model *model = ghnew Model(mesh, &material);
         model->Valid = true;
         model->initParameters(context.ParameterManager);

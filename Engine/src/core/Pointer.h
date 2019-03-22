@@ -40,10 +40,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
-
-        virtual const Type &getType() const = 0;
-
-        __declspec(property(get = getType)) Ghurund::Type &Type;
     };
 
     template<class Type>

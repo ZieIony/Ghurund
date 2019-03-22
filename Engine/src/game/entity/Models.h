@@ -13,7 +13,7 @@ namespace Ghurund {
 
     public:
         static Model* makeCube(ResourceContext& context, Material& material);
-        static Model* makePlane(ResourceContext& context, Material& material);
+        static Model* makePlane(ResourceContext& context, Material& material, unsigned int detail = 1);
         static Model* makeSphere(ResourceContext& context, Material& material);
         static Model* makeCone(ResourceContext& context, Material& material);
         static Model* makeQuad(ResourceContext& context, Material& material);

@@ -1,5 +1,6 @@
 #include "Sound.h"
 #include "resource/ResourceManager.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     Status Sound::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {

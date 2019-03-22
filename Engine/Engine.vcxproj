@@ -36,13 +36,15 @@
     <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
+    <ClCompile Include="src\graphics\Adapter.cpp" />
     <ClCompile Include="src\graphics\CommandList.cpp" />
     <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\graphics\Fence.cpp" />
     <ClCompile Include="src\graphics\Frame.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
-    <ClCompile Include="src\graphics\GraphicsMemoryAllocator.cpp" />
+    <ClCompile Include="src\graphics\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
+    <ClCompile Include="src\graphics\memory\HeapAllocator.cpp" />
     <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
@@ -64,6 +66,7 @@
     <ClCompile Include="src\net\ClientThread.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
+    <ClCompile Include="src\resource\ResourceContext.cpp" />
     <ClCompile Include="src\resource\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\resource\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
@@ -130,7 +133,8 @@
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\game\entity\GlobalEntity.h" />
-    <ClInclude Include="src\graphics\GraphicsMemoryAllocator.h" />
+    <ClInclude Include="src\graphics\memory\GPUResourceFactory.h" />
+    <ClInclude Include="src\graphics\memory\HeapAllocator.h" />
     <ClInclude Include="src\graphics\Postprocess.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
@@ -216,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -324,5 +329,12 @@
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\rxcpp.4.0.0\build\native\rxcpp.targets" Condition="Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rxcpp.4.0.0\build\native\rxcpp.targets'))" />
+  </Target>
 </Project>

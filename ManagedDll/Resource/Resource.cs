@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using Ghurund.Managed.Core;
 
 namespace Ghurund.Managed.Resource {
-    public abstract class Resource : Pointer {
+    public abstract class Resource: Pointer {
 
         public Resource() {
         }
@@ -65,7 +65,7 @@ namespace Ghurund.Managed.Resource {
 
 
         public override string ToString() {
-            return FileName;
+            return FileName != null ? FileName.Substring(FileName.LastIndexOf("\\") + 1) : "[unnamed " + GetType().Name + "]";
         }
 
     }

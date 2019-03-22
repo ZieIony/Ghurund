@@ -1,27 +1,61 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Windows.Media;
 
 namespace Ghurund.Managed {
     [StructLayout(LayoutKind.Sequential)]
-    public struct Float4 {
-        private float w;
+    public struct Color {
         private float x;
         private float y;
         private float z;
+        private float w;
 
-        public float W { get => w; set => w = value; }
-        public float X { get => x; set => x = value; }
-        public float Y { get => y; set => y = value; }
-        public float Z { get => z; set => z = value; }
+        public float R { get => x; set => x = value; }
+        public float G { get => y; set => y = value; }
+        public float B { get => z; set => z = value; }
+        public float A { get => w; set => w = value; }
 
-        public Float4(float w, float x, float y, float z) {
-            this.w = w;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+        public Color(float a, float r, float g, float b) {
+            this.w = a;
+            this.x = r;
+            this.y = g;
+            this.z = b;
+        }
+
+        public Color(string hexString) {
+            System.Windows.Media.Color color2 = (System.Windows.Media.Color)ColorConverter.ConvertFromString(hexString);
+            w = color2.A / 255.0f;
+            x = color2.R / 255.0f;
+            y = color2.G / 255.0f;
+            z = color2.B / 255.0f;
         }
 
         public override string ToString() {
-            return w + ", " + x + ", " + y + ", " + z;
+            return string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", (byte)(w * 255), (byte)(x * 255), (byte)(y * 255), (byte)(z * 255));
+        }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct Float4 {
+        private float x;
+        private float y;
+        private float z;
+        private float w;
+
+        public float X { get => x; set => x = value; }
+        public float Y { get => y; set => y = value; }
+        public float Z { get => z; set => z = value; }
+        public float W { get => w; set => w = value; }
+
+        public Float4(float x, float y, float z, float w) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.w = w;
+        }
+
+        public override string ToString() {
+            return ", " + x.ToString("0.##") + ", " + y.ToString("0.##") + ", " + z.ToString("0.##") + w.ToString("0.##");
         }
     }
 
@@ -42,7 +76,7 @@ namespace Ghurund.Managed {
         }
 
         public override string ToString() {
-            return x + ", " + y + ", " + z;
+            return x.ToString("0.##") + ", " + y.ToString("0.##") + ", " + z.ToString("0.##");
         }
     }
 
@@ -55,7 +89,7 @@ namespace Ghurund.Managed {
         public float Y { get => y; set => y = value; }
 
         public override string ToString() {
-            return x + ", " + y;
+            return x.ToString("0.##") + ", " + y.ToString("0.##");
         }
     }
 
@@ -74,31 +108,31 @@ namespace Ghurund.Managed {
 
     [StructLayout(LayoutKind.Sequential)]
     public struct Matrix {
-        private float a00;
-        private float a01;
-        private float a02;
-        private float a03;
+        public float a00;
+        public float a01;
+        public float a02;
+        public float a03;
 
-        private float a10;
-        private float a11;
-        private float a12;
-        private float a13;
+        public float a10;
+        public float a11;
+        public float a12;
+        public float a13;
 
-        private float a20;
-        private float a21;
-        private float a22;
-        private float a23;
+        public float a20;
+        public float a21;
+        public float a22;
+        public float a23;
 
-        private float a30;
-        private float a31;
-        private float a32;
-        private float a33;
+        public float a30;
+        public float a31;
+        public float a32;
+        public float a33;
 
         public override string ToString() {
-            return a00 + ", " + a01 + ", " + a02 + ", " + a03 + "\n" +
-                a10 + ", " + a11 + ", " + a12 + ", " + a13 + "\n" +
-                a20 + ", " + a21 + ", " + a22 + ", " + a23 + "\n" +
-                a30 + ", " + a31 + ", " + a32 + ", " + a33;
+            return a00.ToString("0.##") + ", " + a01.ToString("0.##") + ", " + a02.ToString("0.##") + ", " + a03.ToString("0.##") + "\n" +
+                a10.ToString("0.##") + ", " + a11.ToString("0.##") + ", " + a12.ToString("0.##") + ", " + a13.ToString("0.##") + "\n" +
+                a20.ToString("0.##") + ", " + a21.ToString("0.##") + ", " + a22.ToString("0.##") + ", " + a23.ToString("0.##") + "\n" +
+                a30.ToString("0.##") + ", " + a31.ToString("0.##") + ", " + a32.ToString("0.##") + ", " + a33.ToString("0.##");
         }
     }
 }

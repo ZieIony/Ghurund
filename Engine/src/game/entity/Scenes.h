@@ -15,9 +15,9 @@ namespace Ghurund {
 
             Material *material = Materials::makeWireframe(resourceManager, context);
             if (material) {
-                Model* model = Models::makePlane(context, *material);
+                Model* model = Models::makePlane(context, *material, 5);
                 if (model) {
-                    model->Scale = XMFLOAT3(10000, 1, 10000);
+                    model->Scale = XMFLOAT3(1000, 1, 1000);
                     scene->Entities.add(model);
                     model->release();
                 }
