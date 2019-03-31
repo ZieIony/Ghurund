@@ -62,7 +62,7 @@ namespace Ghurund.Editor {
         public MainWindow() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             removeInvalidRecents();
 

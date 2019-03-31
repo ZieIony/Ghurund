@@ -99,7 +99,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public ScriptEditorPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             shaderCode.TextArea.TextEntering += textEditor_TextArea_TextEntering;
             shaderCode.TextArea.TextEntered += textEditor_TextArea_TextEntered;

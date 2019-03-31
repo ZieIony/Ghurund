@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Ghurund.Managed.Graphics {
-    public class RenderingStatistics : NativeClass, INotifyPropertyChanged {
+    public class RenderingStatistics: NativeClass, INotifyPropertyChanged {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void ObjectChangedListener();
 
-        private ObjectChangedListener objectChangedCallback;
+        private readonly ObjectChangedListener objectChangedCallback;
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void ObservableObject_setOnChangedListener(IntPtr _this, [MarshalAs(UnmanagedType.FunctionPtr)] ObjectChangedListener listener);
@@ -34,9 +34,13 @@ namespace Ghurund.Managed.Graphics {
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern float RenderingStatistics_getRenderingTime(IntPtr _this);
 
-        [Browsable(true)]
+        [Browsable(false)]
         [Category("Rendering")]
         public float RenderingTime { get => RenderingStatistics_getRenderingTime(NativePtr); }
+
+        [Browsable(true)]
+        [Category("Rendering")]
+        public string RenderingTimeMs { get => "" + RenderingStatistics_getRenderingTime(NativePtr) * 1000 + "ms"; }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

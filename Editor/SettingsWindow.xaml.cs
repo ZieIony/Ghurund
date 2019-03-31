@@ -11,7 +11,7 @@ namespace Ghurund.Editor {
         public SettingsWindow() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             propertyGrid.SelectedObject = Settings;
 

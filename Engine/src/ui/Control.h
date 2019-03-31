@@ -1,11 +1,12 @@
 #pragma once
 
+#include "core/Pointer.h"
+#include "input/EventConsumer.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include "core/Pointer.h"
 
 namespace Ghurund {
-    class Control:public Pointer {
+    class Control:public Pointer, public EventConsumer {
     protected:
         XMFLOAT3 pos, rotation;
         XMFLOAT2 size;

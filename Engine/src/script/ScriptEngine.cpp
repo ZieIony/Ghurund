@@ -17,7 +17,9 @@ namespace Ghurund {
         if (r < 0)
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to register global function.\n"));
 
+        Float3ScriptBindings::registerClass(*engine);
         CameraScriptBindings::registerClass(*engine);
+        ModelScriptBindings::registerClass(*engine);
         TimerScriptBindings::registerClass(*engine, &this->timer);
 
         return Status::OK;

@@ -59,7 +59,7 @@ namespace Ghurund.Editor {
         public SceneExplorerPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             content.Visibility = Visibility.Collapsed;
             hint.Visibility = Visibility.Visible;

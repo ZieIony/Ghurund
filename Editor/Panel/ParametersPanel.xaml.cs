@@ -9,6 +9,7 @@ using System.Windows.Media.Imaging;
 using Ghurund.Controls;
 using Ghurund.Controls.PropertyGrid;
 using Ghurund.Controls.Workspace;
+using Ghurund.Editor.Property;
 using Ghurund.Managed.Game;
 using Ninject;
 
@@ -47,18 +48,20 @@ namespace Ghurund.Editor {
         [Inject]
         public ParameterManager ParameterManager { get; set; }
 
-        private List<Property> managerParameters = new List<Property>();
+        private List<Controls.PropertyGrid.Property> managerParameters = new List<Controls.PropertyGrid.Property>();
 
         private bool disposed = false;
 
         public ParametersPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
+
+            propertyGrid.PropertyEditorFactory = new PropertyEditorFactory();
 
             for (uint i = 0; i < ParameterManager.ParameterCount; i++) {
                 Parameter p = ParameterManager.Get(i);
-                var property = new Property(p) {
+                var property = new Controls.PropertyGrid.Property(p) {
                     DisplayName = p.Name,
                     Category = "ParameterManager"
                 };
@@ -80,7 +83,7 @@ namespace Ghurund.Editor {
                 managerParameters.Add(property);
             }
 
-            foreach (Property p in managerParameters)
+            foreach (Controls.PropertyGrid.Property p in managerParameters)
                 propertyGrid.Properties.Add(p);
         }
 
@@ -122,7 +125,7 @@ namespace Ghurund.Editor {
                     for (int i = 0; i < selectedEntity.Parameters.Count; i++) {
                         Parameter p = selectedEntity.Parameters[i];
                         if (p != null) {
-                            var property = new Property(p) {
+                            var property = new Controls.PropertyGrid.Property(p) {
                                 DisplayName = p.Name,
                                 Category = "Selected object"
                             };
@@ -132,7 +135,7 @@ namespace Ghurund.Editor {
                     }
                 }
 
-                foreach (Property p in managerParameters)
+                foreach (Controls.PropertyGrid.Property p in managerParameters)
                     propertyGrid.Properties.Add(p);
             }
         }

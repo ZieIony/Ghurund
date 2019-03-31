@@ -1,6 +1,7 @@
 #include "script/Script.h"
 #include "script/ScriptEngine.h"
 #include "script/Scripts.h"
+#include "../Float3.h"
 
 using namespace Ghurund;
 using namespace std;
@@ -35,6 +36,18 @@ extern "C" __declspec(dllexport) void Script_setEntryPoint(Script *_this, const 
 
 extern "C" __declspec(dllexport) Status Script_build(Script *_this, ScriptEngine *scriptEngine) {
     return _this->build(*scriptEngine);
+}
+
+extern "C" __declspec(dllexport) Status Script_execute(Script *_this) {
+    return _this->execute();
+}
+
+extern "C" __declspec(dllexport) float Script_getFloatResult(Script *_this) {
+    return _this->getFloatResult();
+}
+
+extern "C" __declspec(dllexport) Float3 Script_getFloat3Result(Script *_this) {
+    return convertFloat3(*(XMFLOAT3*)_this->getObjectResult());
 }
 
 extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Script_getFormats() {

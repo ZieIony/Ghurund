@@ -55,6 +55,24 @@ namespace Ghurund.Managed.Script {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Status Script_execute(IntPtr _this);
+
+        public Status Execute() => Script_execute(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float Script_getFloatResult(IntPtr _this);
+
+        public float GetFloatResult() => Script_getFloatResult(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Float3 Script_getFloat3Result(IntPtr _this);
+
+        public Float3 GetFloat3Result() => Script_getFloat3Result(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Script_getFormats();
 
         [Browsable(false)]

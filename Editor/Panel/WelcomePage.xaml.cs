@@ -23,7 +23,7 @@ namespace Ghurund.Editor {
         public WelcomePage() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path)).ToList();
             recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path)).ToList();

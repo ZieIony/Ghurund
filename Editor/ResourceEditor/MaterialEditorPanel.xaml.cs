@@ -69,7 +69,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public MaterialEditorPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             cameraPicker.Items.Add(CameraMode.Default);
             cameraPicker.Items.Add(CameraMode.Side);

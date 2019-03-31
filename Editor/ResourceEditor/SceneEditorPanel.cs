@@ -82,7 +82,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public SceneEditorPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             cameraPicker.Items.Add(CameraMode.Default);
             cameraPicker.Items.Add(CameraMode.Side);

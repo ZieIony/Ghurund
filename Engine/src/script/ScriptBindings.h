@@ -3,6 +3,7 @@
 #include "collection/ASCIIString.h"
 #include "core/StaticClass.h"
 #include "game/entity/Camera.h"
+#include "game/entity/Model.h"
 
 #include "angelscript.h"
 
@@ -27,7 +28,15 @@ namespace Ghurund {
         }
 
         typedef ASCIIString A;
-     
+
+        static void registerValueClass(asIScriptEngine& engine, const char *name) {
+            auto r = engine.RegisterObjectType(name, sizeof(Type), asOBJ_VALUE | asGetTypeTraits<Type>()); assert(r >= 0);
+
+            r = engine.RegisterObjectBehaviour(name, asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(constructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
+            r = engine.RegisterObjectBehaviour(name, asBEHAVE_CONSTRUCT, A("void f(const ") + name + " &in)", asFUNCTION(copyConstructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
+            r = engine.RegisterObjectBehaviour(name, asBEHAVE_DESTRUCT, "void f()", asFUNCTION(destructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
+        }
+
         static void registerValueClass(asIScriptEngine& engine, const Ghurund::Type& type) {
             auto r = engine.RegisterObjectType(type.Name, sizeof(Type), asOBJ_VALUE | asGetTypeTraits<Type>()); assert(r >= 0);
 
@@ -50,6 +59,19 @@ namespace Ghurund {
         }
     };
 
+    class Float3ScriptBindings:ScriptBindings<XMFLOAT3> {
+    public:
+        static void constructor(XMFLOAT3* _this, const float x, const float y, const float z) {
+            new(_this) XMFLOAT3(x,y,z);
+        }
+
+        static void registerClass(asIScriptEngine& engine) {
+            ScriptBindings<XMFLOAT3>::registerValueClass(engine, "float3");
+    
+            auto r = engine.RegisterObjectBehaviour("float3", asBEHAVE_CONSTRUCT, "void f(const float x, const float y, const float z)", asFUNCTION(constructor), asCALL_CDECL_OBJFIRST); assert(r >= 0);
+        }
+    };
+
     class CameraScriptBindings:ScriptBindings<Camera> {
     public:
         static void registerClass(asIScriptEngine& engine) {
@@ -59,6 +81,13 @@ namespace Ghurund {
             r = engine.RegisterObjectMethod("Camera", "void rotate(float yaw, float pitch, float roll=0)", asMETHOD(Camera, rotate), asCALL_THISCALL); assert(r >= 0);
             r = engine.RegisterObjectMethod("Camera", "void setOrbit(float yaw, float pitch, float roll=0)", asMETHOD(Camera, setOrbit), asCALL_THISCALL); assert(r >= 0);
             r = engine.RegisterObjectMethod("Camera", "void orbit(float yaw, float pitch, float roll=0)", asMETHOD(Camera, orbit), asCALL_THISCALL); assert(r >= 0);
+        }
+    };
+
+    class ModelScriptBindings:ScriptBindings<Model> {
+    public:
+        static void registerClass(asIScriptEngine& engine) {
+            ScriptBindings<Model>::registerRefClass(engine, Type::MODEL);
         }
     };
 

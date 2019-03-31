@@ -11,22 +11,6 @@ namespace Ghurund {
         List<Control*> children;
 
     public:
-        void dispatchKeyEvent(KeyEvent &event) {
-
-        }
-
-        void dispatchMouseButtonEvent(MouseButtonEvent &event) {
-
-        }
-
-        void dispatchMouseMotionEvent(MouseMotionEvent &event) {
-
-        }
-
-        void dispatchMouseWheelEvent(MouseWheelEvent &event) {
-
-        }
-
         void dispatchOnSizeChangedEvent() {
             for(Control *c:children) {
 

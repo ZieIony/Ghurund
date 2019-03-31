@@ -31,6 +31,8 @@ namespace Ghurund.Controls.PropertyGrid {
 
         private readonly ICollectionView view;
 
+        public IPropertyEditorFactory PropertyEditorFactory { get; set; }
+
 
         public string Filter {
             get { return (string)GetValue(FilterProperty); }
@@ -55,7 +57,7 @@ namespace Ghurund.Controls.PropertyGrid {
                         var browsable = info.GetCustomAttribute<BrowsableAttribute>(true);
                         if (browsable != null && !browsable.Browsable)
                             continue;
-                        Properties.Add(new Property(selectedObject, info));
+                        Properties.Add(new Property(selectedObject, info, PropertyEditorFactory));
                     }
                 }
             }

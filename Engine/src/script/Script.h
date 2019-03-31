@@ -88,15 +88,27 @@ namespace Ghurund {
 
         __declspec(property(put = setArguments)) const Array<Argument>& Arguments;
 
-        void execute() {
+        Status execute() {
             ctx->Prepare(func);
             for (size_t i = 0; i < arguments.Size; i++)
                 arguments[i].set(i, *ctx);
             int r = ctx->Execute();
             if (r != asEXECUTION_FINISHED) {
-                if (r == asEXECUTION_EXCEPTION)
+                if (r == asEXECUTION_EXCEPTION) {
                     Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), ctx->GetExceptionString());
+                    return Status::SCRIPT_EXCEPTION;
+                }
             }
+
+            return Status::OK;
+        }
+
+        float getFloatResult() {
+            return ctx->GetReturnFloat();
+        }
+
+        void *getObjectResult() {
+            return ctx->GetReturnObject();
         }
 
         virtual const Ghurund::Type& getType() const override {
@@ -108,6 +120,6 @@ namespace Ghurund {
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> & Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
     };
 }

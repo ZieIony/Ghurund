@@ -10,29 +10,11 @@ using Ghurund.Managed.Script;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public sealed class EditorKernel {
-        private static volatile EditorKernel instance;
-        private static object syncRoot = new Object();
+    public static class EditorKernel {
 
-        public static EditorKernel Instance {
-            get {
-                if (instance == null) {
-                    lock (syncRoot) {
-                        if (instance == null)
-                            instance = new EditorKernel();
-                    }
-                }
+        private static readonly IKernel kernel = new StandardKernel();
 
-                return instance;
-            }
-        }
-
-
-
-
-        IKernel kernel = new StandardKernel();
-
-        private EditorKernel() {
+        static EditorKernel() {
             kernel.Bind<WelcomePage>().ToSelf().InSingletonScope();
             kernel.Bind<IWelcomePage>().ToMethod(context => context.Kernel.Get<WelcomePage>()).InSingletonScope();
 
@@ -80,11 +62,11 @@ namespace Ghurund.Editor {
             }).InSingletonScope();
         }
 
-        public void Inject(object target) {
+        public static void Inject(object target) {
             kernel.Inject(target);
         }
 
-        public object GetService(Type type) {
+        public static object GetService(Type type) {
             return kernel.GetService(type);
         }
     }

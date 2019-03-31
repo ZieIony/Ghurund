@@ -20,15 +20,6 @@ namespace Ghurund.Controls.PropertyGrid {
 
     public class Property: INotifyPropertyChanged {
         private static readonly string GENERIC_CATEGORY = "Generic";
-        private static readonly Dictionary<Type, Type> DEFAULT_EDITOR_TYPES = new Dictionary<Type, Type> {
-            {typeof(bool), typeof(BooleanPropertyEditor) },
-            {typeof(int), typeof(IntPropertyEditor) },
-            {typeof(float), typeof(FloatPropertyEditor) },
-            {typeof(string), typeof(TextPropertyEditor) },
-            {typeof(Float3), typeof(Float3PropertyEditor) },
-            {typeof(Color), typeof(ColorPropertyEditor) },
-            {typeof(Resource), typeof(ResourcePropertyEditor) }
-        };
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,13 +37,13 @@ namespace Ghurund.Controls.PropertyGrid {
             notificationSource.PropertyChanged += propertyChangedHandler;
         }
 
-        public Property(object owner, PropertyInfo info) {
+        public Property(object owner, PropertyInfo info, IPropertyEditorFactory editorFactory) {
             DisplayName = info.Name;
             Description = info.GetCustomAttribute<DescriptionAttribute>(true)?.Description;
             Category = info.GetCustomAttribute<CategoryAttribute>(true)?.Category ?? GENERIC_CATEGORY;
 
             var editable = info.GetCustomAttribute<EditableAttribute>(true)?.AllowEdit ?? false;
-            var editorType = editable ? GetEditorType(info.PropertyType) : null;
+            var editorType = editable ? editorFactory.GetEditorType(info.PropertyType) : null;
 
             Value.Owner = owner;
             Value.Type = info.PropertyType;
@@ -64,18 +55,6 @@ namespace Ghurund.Controls.PropertyGrid {
                 notificationSource = owner as INotifyPropertyChanged;
                 propertyChangedHandler = new PropertyChangedEventHandler(Property_PropertyChanged);
                 notificationSource.PropertyChanged += propertyChangedHandler;
-            }
-        }
-
-        private static Type GetEditorType(Type propertyType) {
-            if (propertyType.IsEnum) {
-                return typeof(EnumPropertyEditor);
-            } else {
-                foreach(Type t in DEFAULT_EDITOR_TYPES.Keys) {
-                    if (t.IsAssignableFrom(propertyType))
-                        return DEFAULT_EDITOR_TYPES[t];
-                }
-                return null;
             }
         }
 

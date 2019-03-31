@@ -40,7 +40,7 @@ namespace Ghurund.Editor {
         public ResourceManagerPanel() {
             InitializeComponent();
 
-            EditorKernel.Instance.Inject(this);
+            EditorKernel.Inject(this);
 
             supportedExtensions = ResourceFormat.Values.Map(format => format.Extension).Filter(extension => extension != null).ToArray();
 

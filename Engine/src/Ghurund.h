@@ -21,6 +21,7 @@ namespace Ghurund {
 
         ENTRY_POINT_NOT_FOUND,
         COMPILATION_ERROR,
+        SCRIPT_EXCEPTION,
 
         DIRECTX12_NOT_SUPPORTED
     };

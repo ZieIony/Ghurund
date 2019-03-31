@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
+using Ghurund.Editor.Property;
 
 namespace Ghurund.Editor {
     public interface IPropertiesPanel : IToolPanel {
@@ -35,6 +36,8 @@ namespace Ghurund.Editor {
 
         public PropertiesPanel() {
             InitializeComponent();
+
+            propertyGrid.PropertyEditorFactory = new PropertyEditorFactory();
 
             hint.Visibility = Visibility.Visible;
             content.Visibility = Visibility.Collapsed;
