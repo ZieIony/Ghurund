@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
+using Ghurund.Managed.Editor;
 using Ghurund.Managed.Resource;
 using Ninject;
 
@@ -28,6 +29,12 @@ namespace Ghurund.Editor {
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {
         [Inject]
         public ResourceManager ResourceManager { get; set; }
+
+        [Inject]
+        public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public ThumbnailRenderer ThumbnailRenderer { get; set; }
 
         [Inject]
         public EditorSettings Settings { get; set; }
@@ -113,7 +120,7 @@ namespace Ghurund.Editor {
             }*/
         }
 
-        private void treeView_Expanded(object sender, System.Windows.RoutedEventArgs e) {
+        private void treeView_Expanded(object sender, RoutedEventArgs e) {
             TreeViewItem tvi = e.OriginalSource as TreeViewItem;
             ResourceDirectory expandedItem = tvi.Header as ResourceDirectory;
             if ((expandedItem.Items.Count == 1) && (expandedItem.Items[0] is string)) {
@@ -147,7 +154,7 @@ namespace Ghurund.Editor {
 
             foreach (FileInfo file in expandedDir.GetFiles()) {
                 if (file.Extension.StartsWith(".") && supportedExtensions.Contains(file.Extension.Substring(1)))
-                    resourceGrid.Items.Add(new ResourceFile(file));
+                    resourceGrid.Items.Add(new ResourceFile(file, ResourceManager, ResourceContext, ThumbnailRenderer));
             }
         }
 

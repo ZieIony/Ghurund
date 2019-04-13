@@ -192,7 +192,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Camera::saveInternal(ResourceManager & resourceManager, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status Camera::saveInternal(ResourceManager & resourceManager, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
         saveTransformation(stream);
         stream.writeBytes(&target, sizeof(target));
         stream.writeBytes(&right, sizeof(right));

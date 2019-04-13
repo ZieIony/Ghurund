@@ -21,7 +21,7 @@ namespace Ghurund {
     bool operator &(LoadOption lhs, LoadOption rhs);
 
     enum class SaveOption {
-        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2
+        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2, FORMAT_JPG = 4, FORMAT_PNG = 8
     };
 
     SaveOption operator |(SaveOption lhs, SaveOption rhs);
@@ -39,20 +39,20 @@ namespace Ghurund {
     class Resource: public Pointer {
     private:
         bool valid = false;
-        FilePath *path = nullptr;
+        FilePath* path = nullptr;
 
-        Status saveInternal(ResourceManager &resourceManager, File &file, SaveOption options) const;
+        Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, File& file, SaveOption options) const;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) = 0;
-        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const = 0;
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) = 0;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const = 0;
 
         virtual unsigned int getVersion() const {
             return 0;
         }
 
-        Status writeHeader(MemoryOutputStream &stream) const;
-        Status readHeader(MemoryInputStream &stream);
+        Status writeHeader(MemoryOutputStream& stream) const;
+        Status readHeader(MemoryInputStream& stream);
 
     public:
 
@@ -62,17 +62,17 @@ namespace Ghurund {
             delete path;
         }
 
-        Status load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, const FilePath &path, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, File &file, unsigned long *bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, File& file, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
-        Status save(ResourceManager &resourceManager, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(ResourceManager &resourceManager, const FilePath &path, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager& resourceManager, ResourceContext &context, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager& resourceManager, ResourceContext &context, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(ResourceManager &resourceManager, File &file, SaveOption options = SaveOption::DEFAULT);
-        Status save(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager& resourceManager, ResourceContext &context, File& file, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
         virtual void invalidate() {
             valid = false;
@@ -88,15 +88,15 @@ namespace Ghurund {
 
         __declspec(property(get = isValid, put = setValid)) bool Valid;
 
-        const FilePath *getPath() const {
+        const FilePath* getPath() const {
             return path;
         }
 
-        void setPath(const FilePath *path) {
+        void setPath(const FilePath* path) {
             delete this->path;
             this->path = ghnew FilePath(*path);
         }
 
-        __declspec(property(get = getPath, put = setPath)) FilePath *Path;
+        __declspec(property(get = getPath, put = setPath)) FilePath* Path;
     };
 }

@@ -370,5 +370,8 @@
   <ItemGroup>
     <Resource Include="Resources\AngelScript.xshd" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\addNew32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

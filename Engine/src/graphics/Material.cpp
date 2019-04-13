@@ -22,15 +22,15 @@ namespace Ghurund {
         return result;
     }
 
-    Status Material::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+    Status Material::saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
         if(shader==nullptr)
             return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Shader cannot be empty\n"));
 
-        resourceManager.save(*shader, workingDir, stream, options);
+        resourceManager.save(*shader, context, workingDir, stream, options);
         stream.write<size_t>(textures.Size);
         for(size_t i = 0; i<textures.Size; i++) {
             stream.writeASCII(textures.getKey(i));
-            resourceManager.save(*textures.getValue(i), workingDir, stream, options);
+            resourceManager.save(*textures.getValue(i), context, workingDir, stream, options);
         }
 
         return Status::OK;

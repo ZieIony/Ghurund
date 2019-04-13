@@ -2,11 +2,11 @@
 #include "Graphics.h"
 
 namespace Ghurund {
-    Status Frame::init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer) {
+    Status Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
         this->renderTarget = renderTarget;
         this->depthBuffer = depthBuffer;
-        viewport = window.getViewport();
-        scissorRect = window.getScissorRect();
+        this->viewport = viewport;
+        this->scissorRect = scissorRect;
 
         commandList->init(graphics, graphics.DirectQueue);
         commandList->Name = _T("frame command list");
@@ -14,7 +14,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Frame::start(XMFLOAT4 *color) {
+    Status Frame::start(XMFLOAT4* color) {
         commandList->wait();
         commandList->reset();
 
@@ -24,7 +24,7 @@ namespace Ghurund {
         commandList->get()->RSSetViewports(1, &viewport);
         commandList->get()->RSSetScissorRects(1, &scissorRect);
 
-        if(color!=nullptr)
+        if (color != nullptr)
             renderTarget->clear(*commandList, *color);
         depthBuffer->clear(*commandList);
 

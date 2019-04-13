@@ -99,52 +99,52 @@ namespace Ghurund {
         return result;
     }
 
-    Status Resource::save(ResourceManager &resourceManager, SaveOption options) const {
+    Status Resource::save(ResourceManager &resourceManager, ResourceContext &context, SaveOption options) const {
         if(!path)
             return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
-        Status result = saveInternal(resourceManager, file, options);
+        Status result = saveInternal(resourceManager, context, file, options);
         if(result!=Status::OK)
             return result;
         return file.write();
     }
 
-    Status Resource::save(ResourceManager &resourceManager, const FilePath &path, SaveOption options) {
+    Status Resource::save(ResourceManager &resourceManager, ResourceContext &context, const FilePath &path, SaveOption options) {
         FilePath *p = ghnew FilePath(path);
         delete this->path;
         this->path = p;
 
         File file(*this->path);
-        Status result = saveInternal(resourceManager, file, options);
+        Status result = saveInternal(resourceManager, context, file, options);
         if(result!=Status::OK)
             return result;
         return file.write();
     }
 
-    Status Resource::save(ResourceManager &resourceManager, File & file, SaveOption options) {
+    Status Resource::save(ResourceManager &resourceManager, ResourceContext &context, File & file, SaveOption options) {
         FilePath *p = ghnew FilePath(file.Path);
         delete this->path;
         this->path = p;
 
-        return saveInternal(resourceManager, file, options);
+        return saveInternal(resourceManager, context, file, options);
     }
 
-    Status Resource::saveInternal(ResourceManager &resourceManager, File & file, SaveOption options) const {
+    Status Resource::saveInternal(ResourceManager &resourceManager, ResourceContext &context, File & file, SaveOption options) const {
         if(file.Exists&&options&SaveOption::SKIP_IF_EXISTS)
             return Status::FILE_EXISTS;
         if(file.Exists&&!(options&SaveOption::OVERWRITE))
             return Status::FILE_EXISTS;
 
         MemoryOutputStream stream;
-        Status result = save(resourceManager, file.Path.Directory, stream, options);
+        Status result = save(resourceManager, context, file.Path.Directory, stream, options);
         if(result!=Status::OK)
             return result;
         file.setData(stream.Data, stream.BytesWritten);
         return Status::OK;
     }
 
-    Status Resource::save(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
-        return saveInternal(resourceManager, workingDir, stream, options);
+    Status Resource::save(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+        return saveInternal(resourceManager, context, workingDir, stream, options);
     }
 }

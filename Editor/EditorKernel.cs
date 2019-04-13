@@ -3,6 +3,7 @@ using System.IO;
 using Ghurund.Editor.Panel;
 using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed.Audio;
+using Ghurund.Managed.Editor;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
@@ -48,6 +49,11 @@ namespace Ghurund.Editor {
             kernel.Bind<Audio>().ToSelf().InSingletonScope();
             kernel.Bind<ParameterManager>().ToSelf().InSingletonScope();
             kernel.Bind<ResourceManager>().ToSelf().InSingletonScope();
+            kernel.Bind<ThumbnailRenderer>().ToMethod(context => {
+                ThumbnailRenderer renderer = new ThumbnailRenderer();
+                renderer.Init(context.Kernel.Get<ResourceManager>(), context.Kernel.Get<ResourceContext>(), 200, 200);
+                return renderer;
+            }).InSingletonScope();
             kernel.Bind<ResourceContext>().ToMethod(context => {
                 return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>(), context.Kernel.Get<ScriptEngine>());
             }).InSingletonScope();

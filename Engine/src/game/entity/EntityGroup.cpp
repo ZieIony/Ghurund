@@ -14,10 +14,10 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status EntityGroup::saveInternal(ResourceManager & resourceManager, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status EntityGroup::saveInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
         stream.write(entities.Size);
         for (size_t i = 0; i < entities.Size; i++) {
-            Status result = resourceManager.save(*entities[i], workingDir, stream, options);
+            Status result = resourceManager.save(*entities[i], context, workingDir, stream, options);
             if (filterStatus(result, options) != Status::OK)
                 return result;
         }

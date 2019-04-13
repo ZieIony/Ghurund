@@ -26,6 +26,8 @@ namespace Ghurund {
 
     class Application:public Noncopyable {
     private:
+        static const unsigned int FRAME_COUNT = 3;
+
         Window window;
         WindowProc* windowProc;
 
@@ -41,6 +43,7 @@ namespace Ghurund {
         ScriptEngine* scriptEngine;
 
         Renderer* renderer;
+        SwapChain* swapChain = nullptr;
         LevelManager levelManager;
 
         bool multipleInstances;
@@ -87,7 +90,7 @@ namespace Ghurund {
 
         virtual void onSizeChanged() {
             Window.updateSize();
-            Renderer.resize(Window.Width, Window.Height);
+            swapChain->resize(Window.Width, Window.Height);
             Window.updateParameters();
         }
 

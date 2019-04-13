@@ -47,7 +47,7 @@ namespace Ghurund {
         Status loadObj(ResourceContext& context, MemoryInputStream& stream);
         Status loadMesh(ResourceContext& context, MemoryInputStream& stream);
 
-        virtual Status saveInternal(ResourceManager& resourceManager, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;

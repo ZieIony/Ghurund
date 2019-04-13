@@ -19,67 +19,92 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Image: public Resource {
     private:
-        DXGI_FORMAT dxgiFormat;
-        unsigned int width, height, pixelSize;
-        BYTE *imageData = nullptr;
+        DXGI_FORMAT format;
+        UINT32 width, height, pixelSize, rowPitch;
+        Buffer* imageData = nullptr;
 
-        DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
+        DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
 
-        WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID);
+        WICPixelFormatGUID getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB = nullptr) const;
+
+        WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
 
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options);
-
-        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
-            return Status::NOT_IMPLEMENTED;
-        }
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
+        Image() {}
+
+        Image(Buffer& data, UINT32 width, UINT32 height, DXGI_FORMAT format):
+            imageData(ghnew Buffer(data)),
+            width(width),
+            height(height),
+            format(format),
+            pixelSize(getDXGIFormatBitsPerPixel(format) / 8),
+            rowPitch(data.Size / height) {
+
+            Valid = true;
+        }
+
         ~Image() {
-            delete[] imageData;
+            delete imageData;
         }
 
-        BYTE *getData() {
-            return imageData;
+        Buffer& getData() {
+            return *imageData;
         }
 
-        __declspec(property(get = getData)) BYTE *Data;
+        __declspec(property(get = getData)) Buffer& Data;
 
         DXGI_FORMAT getFormat() {
-            return dxgiFormat;
+            return format;
         }
 
         __declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
-        unsigned int getWidth() {
+        UINT32 getWidth() {
             return width;
         }
 
-        __declspec(property(get = getWidth)) unsigned int Width;
+        __declspec(property(get = getWidth)) UINT32 Width;
 
-        unsigned int getHeight() {
+        UINT32 getHeight() {
             return height;
         }
 
-        __declspec(property(get = getHeight)) unsigned int Height;
+        __declspec(property(get = getHeight)) UINT32 Height;
 
-        unsigned int getPixelSize() {
+        UINT32 getPixelSize() {
             return pixelSize;
         }
 
-        __declspec(property(get = getPixelSize)) unsigned int PixelSize;
+        __declspec(property(get = getPixelSize)) UINT32 PixelSize;
 
-        virtual const Ghurund::Type &getType() const override {
+        UINT32 getRowPitch() {
+            return rowPitch;
+        }
+
+        __declspec(property(get = getRowPitch)) UINT32 RowPitch;
+
+        virtual const Ghurund::Type& getType() const override {
             return Type::IMAGE;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::JPG, (ResourceFormat*)&ResourceFormat::JPEG, (ResourceFormat*)&ResourceFormat::PNG};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::JPG, (ResourceFormat*)& ResourceFormat::JPEG, (ResourceFormat*)& ResourceFormat::PNG};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+
+        Status SaveWICTextureToFile(ResourceManager& resourceManager,
+            ResourceContext& context,
+            ID3D12Resource* pSource,
+            const wchar_t* fileName,
+            D3D12_RESOURCE_STATES beforeState,
+            D3D12_RESOURCE_STATES afterState);
     };
 }

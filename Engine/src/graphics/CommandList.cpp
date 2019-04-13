@@ -18,7 +18,7 @@ namespace Ghurund {
         queue->AddRef();
         commandQueue = queue;
 
-        Status result = fence.init(graphics.Device.Get());
+        Status result = fence.init(graphics.Device);
         if(result!=Status::OK)
             return result;
 

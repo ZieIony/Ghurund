@@ -34,16 +34,18 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_init(IntPtr nativeRenderer, IntPtr window, IntPtr resourceManager, IntPtr resourceContext);
+        private static extern void Renderer_init(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public void Init(Window window, ResourceManager resourceManager, ResourceContext resourceContext) {
-            Renderer_init(NativePtr, window.NativePtr, resourceManager.NativePtr, resourceContext.NativePtr);
+        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
+            Renderer_init(NativePtr, resourceManager, resourceContext);
             Statistics = new RenderingStatistics(Renderer_getStatistics(NativePtr));
         }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_uninit(IntPtr nativeRenderer);
+        private static extern IntPtr Renderer_uninit(IntPtr _this);
 
         public void Uninit() {
             Renderer_uninit(NativePtr);
@@ -51,18 +53,10 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_resize(IntPtr nativeRenderer, uint width, uint height);
+        private static extern void Renderer_render(IntPtr _this, IntPtr frame);
 
-        public void Resize(uint width, uint height) {
-            Renderer_resize(NativePtr, width, height);
-        }
-        
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Renderer_render(IntPtr nativeRenderer);
-
-        public void Render() {
-            Renderer_render(NativePtr);
+        public void Render(IntPtr frame) {
+            Renderer_render(NativePtr, frame);
         }
 
 

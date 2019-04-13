@@ -16,11 +16,11 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Frame {
     private:
-        CommandList *commandList;
+        CommandList* commandList;
         D3D12_VIEWPORT viewport;
         D3D12_RECT scissorRect;
-        RenderTarget *renderTarget;
-        DepthBuffer *depthBuffer;
+        RenderTarget* renderTarget;
+        DepthBuffer* depthBuffer;
 
     public:
         Frame() {
@@ -33,14 +33,15 @@ namespace Ghurund {
             delete depthBuffer;
         }
 
-        Status init(Graphics &graphics, Window &window, RenderTarget *renderTarget, DepthBuffer *depthBuffer);
-        Status start(XMFLOAT4 *color);
+        Status init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
+
+        Status start(XMFLOAT4* color);
         Status finish();
 
-        CommandList &getCommandList() {
+        CommandList& getCommandList() {
             return *commandList;
         }
 
-        __declspec(property(get = getCommandList)) CommandList &CommandList;
+        __declspec(property(get = getCommandList)) CommandList& CommandList;
     };
 }

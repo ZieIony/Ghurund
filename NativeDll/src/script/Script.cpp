@@ -42,6 +42,10 @@ extern "C" __declspec(dllexport) Status Script_execute(Script *_this) {
     return _this->execute();
 }
 
+extern "C" __declspec(dllexport) int Script_getIntResult(Script *_this) {
+    return _this->getIntResult();
+}
+
 extern "C" __declspec(dllexport) float Script_getFloatResult(Script *_this) {
     return _this->getFloatResult();
 }

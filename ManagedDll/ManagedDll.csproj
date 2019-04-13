@@ -61,6 +61,7 @@
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Pointer.cs" />
     <Compile Include="Core\Type.cs" />
+    <Compile Include="Editor\ThumbnailRenderer.cs" />
     <Compile Include="Float3.cs" />
     <Compile Include="Game\EntityList.cs" />
     <Compile Include="Graphics\CommandList.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Mesh\Mesh.cs" />
     <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\SwapChain.cs" />
     <Compile Include="Graphics\RenderStep.cs" />
     <Compile Include="Graphics\RenderingStatistics.cs" />
     <Compile Include="Graphics\Texture\Image.cs" />

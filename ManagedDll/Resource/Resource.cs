@@ -65,7 +65,7 @@ namespace Ghurund.Managed.Resource {
 
 
         public override string ToString() {
-            return FileName != null ? FileName.Substring(FileName.LastIndexOf("\\") + 1) : "[unnamed " + GetType().Name + "]";
+            return FileName != null ? FileName.Substring(FileName.LastIndexOf("\\") + 1) : "[ unnamed " + GetType().Name + " ]";
         }
 
     }

@@ -13,6 +13,7 @@
 #include "game/LevelManager.h"
 #include "game/entity/Scenes.h"
 #include "script/Scripts.h"
+#include "editor/ThumbnailRenderer.h"
 
 #include "core/Allocator.h"
 
@@ -99,14 +100,14 @@ public:
         app.Renderer.Steps.add(&sceneStep);
 
         File sceneFile("test/test.scene");
-        if (sceneFile.Exists) {
+        /*if (sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.ResourceContext, "test/test.scene", [&](Ghurund::Scene * scene, Status result) {
                 if (result != Status::OK)
                     return;
                 scene->initParameters(app.ParameterManager);
                 sceneStep.Entities.add(scene);
                 });
-        } else {
+        } else {*/
             ScopedPointer<Scene> scene = ghnew Ghurund::Scene();
 
             {
@@ -117,7 +118,7 @@ public:
                 } else {
                     mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/lamborghini/Lamborghini_Aventador.obj");
                     if (mesh != nullptr)
-                        mesh->save(app.ResourceManager, "test/obj/lamborghini/Lamborghini_Aventador.mesh");
+                        mesh->save(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborghini_Aventador.mesh");
                 }
 
                 ScopedPointer<Image> image = app.ResourceManager.load<Image>(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
@@ -134,6 +135,13 @@ public:
                     model->Valid = true;
 
                     scene->Entities.add(model);
+
+                    ThumbnailRenderer renderer;
+                    renderer.init(app.ResourceManager, app.ResourceContext, 200,200);
+                    Image* image;
+                    renderer.render(*model, image);
+                    image->save(app.ResourceManager, app.ResourceContext, "screenshot.jpg");
+                    camera->release();
                 }
             }
 
@@ -161,13 +169,13 @@ public:
                 selection->release();
             }*/
 
-            Status result = scene->save(app.ResourceManager, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+            /*Status result = scene->save(app.ResourceManager, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if (result != Status::OK)
-                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
+                Logger::log(LogType::WARNING, _T("failed to save scene\n"));*/
 
             scene->initParameters(app.ParameterManager);
             sceneStep.Entities.add(scene);
-        }
+        //}
 
         invalidMaterial = Materials::makeInvalid(app.ResourceManager, app.ResourceContext);
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);

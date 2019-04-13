@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Controls;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
-using Ghurund.Managed.Graphics.Mesh;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
@@ -174,7 +173,7 @@ namespace Ghurund.Managed {
             disposed = true;
         }
 
-        public void Init(Resource.ResourceManager resourceManager, Resource.ResourceContext resourceContext) {
+        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
             defaultCamera = new Camera();
             defaultCamera.InitParameters(resourceContext.ParameterManager);
             ResetCamera(CameraMode.Default);
@@ -239,7 +238,17 @@ namespace Ghurund.Managed {
 
         public System.Drawing.Bitmap GenerateThumbnail() {
             System.Drawing.Bitmap bitmap = renderView.GrabFrame();
-            return new System.Drawing.Bitmap(bitmap, 100, 100);
+            return new System.Drawing.Bitmap(bitmap, 500, 500);
+        }
+
+        public static System.Drawing.Bitmap GenerateThumbnail(Scene scene, ResourceManager resourceManager, ResourceContext resourceContext) {
+            SceneView sceneView = new SceneView();
+            sceneView.Init(resourceManager, resourceContext);
+            sceneView.Scene = scene;
+            sceneView.Arrange(new Rect(0, 0, 500, 500));
+            System.Drawing.Bitmap bitmap = sceneView.GenerateThumbnail();
+            sceneView.Uninit();
+            return bitmap;
         }
 
         public void ResetCamera() => ResetCamera(CameraMode);

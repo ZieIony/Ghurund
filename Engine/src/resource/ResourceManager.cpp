@@ -88,27 +88,27 @@ namespace Ghurund {
         section.leave();
     }
 
-    Status ResourceManager::save(Resource & resource, SaveOption options) {
-        return resource.save(*this, options);
+    Status ResourceManager::save(Resource & resource, ResourceContext &context, SaveOption options) {
+        return resource.save(*this, context, options);
     }
 
-    Status ResourceManager::save(Resource & resource, const FilePath & path, SaveOption options) {
-        return resource.save(*this, path, options);
+    Status ResourceManager::save(Resource & resource, ResourceContext &context, const FilePath & path, SaveOption options) {
+        return resource.save(*this, context, path, options);
     }
 
-    Status ResourceManager::save(Resource & resource, File & file, SaveOption options) {
-        return resource.save(*this, file, options);
+    Status ResourceManager::save(Resource & resource, ResourceContext &context, File & file, SaveOption options) {
+        return resource.save(*this, context, file, options);
     }
 
-    Status ResourceManager::save(Resource & resource, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) {
+    Status ResourceManager::save(Resource & resource, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) {
         resourceFactory->describeResource(resource, stream);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
-            return resource.save(*this, workingDir, stream, options);
+            return resource.save(*this, context, workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
             stream.writeUnicode(encodePath(*resource.Path, workingDir));
-            return resource.save(*this, *resource.Path, options);
+            return resource.save(*this, context, *resource.Path, options);
         }
     }
 

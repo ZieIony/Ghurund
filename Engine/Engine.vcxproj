@@ -31,12 +31,15 @@
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\core\WorkerThread.cpp" />
+    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\FileUtils.cpp" />
     <ClCompile Include="src\game\entity\Entity.cpp" />
     <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\graphics\Adapter.cpp" />
+    <ClCompile Include="src\graphics\buffer\GPUBuffer.cpp" />
+    <ClCompile Include="src\graphics\buffer\RenderTarget.cpp" />
     <ClCompile Include="src\graphics\CommandList.cpp" />
     <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\graphics\Fence.cpp" />
@@ -114,6 +117,7 @@
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
+    <ClInclude Include="src\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\entity\EntityGroup.h" />

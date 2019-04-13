@@ -31,8 +31,7 @@ namespace Ghurund {
 
     protected:
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-
-        virtual Status saveInternal(ResourceManager& resourceManager, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
         Script():arguments(Array<Argument>(0)) {
@@ -101,6 +100,10 @@ namespace Ghurund {
             }
 
             return Status::OK;
+        }
+
+        int getIntResult() {
+            return ctx->GetReturnWord();
         }
 
         float getFloatResult() {

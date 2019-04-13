@@ -6,7 +6,7 @@
 	<SolidColorBrush x:Key="Ghurund.Highlight">#0c000000</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Highlight.Inverse">#14ffffff</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Selection">#18000000</SolidColorBrush>
-	<SolidColorBrush x:Key="Ghurund.Icon">#8a000000</SolidColorBrush>
+	<SolidColorBrush x:Key="Ghurund.Icon">#de000000</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Icon.Disabled">#61000000</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Icon.Inverse">#ffffffff</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Icon.Disabled.Inverse">#7fffffff</SolidColorBrush>

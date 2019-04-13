@@ -159,6 +159,7 @@
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\editor\ObservableObject.cpp" />
+    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />
     <ClCompile Include="src\game\LevelManager.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\graphics\Mesh.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
+    <ClCompile Include="src\graphics\SwapChain.cpp" />
     <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\graphics\Light.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />

@@ -67,6 +67,10 @@ namespace Ghurund {
 
         bool setGraphicsRootSignature(ID3D12RootSignature *rootSignature);
 
+        inline void barrier(const D3D12_RESOURCE_BARRIER& barrier) {
+            commandList->ResourceBarrier(1, &barrier);
+        }
+
         virtual const Ghurund::Type &getType() const override {
             return Type::COMMAND_LIST;
         }

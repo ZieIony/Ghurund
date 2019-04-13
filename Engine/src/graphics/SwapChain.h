@@ -16,13 +16,14 @@ using namespace Microsoft::WRL;
 namespace Ghurund {
     class Graphics;
 
-    class SwapChain {
+    class SwapChain:public Object {
     private:
+        Graphics* graphics;
         ComPtr<IDXGISwapChain3> swapChain;
-        Frame *frames;
+        Frame* frames;
         BufferedValue<Frame> frameBuffer;
         unsigned int frameCount;
-        Window *window;
+        Window* window;
         DXGI_FORMAT format;
 
     public:
@@ -30,31 +31,37 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics &graphics, Window &window, unsigned int frameCount);
+        Status init(Graphics& graphics, Window& window, unsigned int frameCount);
 
-        Status initBuffers(Graphics &graphics);
+        Status initBuffers();
 
         void uninitBuffers();
 
-        Status startFrame(XMFLOAT4 *color) {
-            return frameBuffer->start(color);
+        Frame& getFrame() {
+            return frameBuffer.get();
         }
 
-        Status finishFrame() {
-            frameBuffer->finish();
+        Status present() {
             frameBuffer.next();
 
-            if(FAILED(swapChain->Present(1, 0)))
+            if (FAILED(swapChain->Present(1, 0)))
                 return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
             return Status::OK;
         }
 
-        CommandList &getCommandList() {
+        CommandList& getCommandList() {
             return frameBuffer->getCommandList();
         }
 
-        __declspec(property(get = getCommandList)) CommandList &CommandList;
+        __declspec(property(get = getCommandList)) CommandList& CommandList;
 
-        void resize(Graphics &graphics, unsigned int width, unsigned int height);
+        void resize(unsigned int width, unsigned int height);
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+
     };
 }

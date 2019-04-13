@@ -6,8 +6,8 @@ extern "C" __declspec(dllexport) Status Resource_load(Resource* _this, ResourceM
     return _this->load(*manager, *context, fileName);
 }
 
-extern "C" __declspec(dllexport) Status Resource_save(Resource* _this, ResourceManager* manager, const tchar* fileName) {
-    return _this->save(*manager, fileName);
+extern "C" __declspec(dllexport) Status Resource_save(Resource* _this, ResourceManager* manager, ResourceContext* context, const tchar* fileName) {
+    return _this->save(*manager, *context, fileName);
 }
 
 extern "C" __declspec(dllexport) void Resource_setFileName(Resource* _this, const wchar_t* fileName) {

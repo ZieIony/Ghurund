@@ -14,7 +14,7 @@ namespace Ghurund {
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceManager& resourceManager, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
             return Status::NOT_IMPLEMENTED;
         }
 

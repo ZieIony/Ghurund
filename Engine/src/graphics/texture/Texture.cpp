@@ -48,7 +48,7 @@ namespace Ghurund {
             }
 
             D3D12_SUBRESOURCE_DATA textureData = {};
-            textureData.pData = image.Data;
+            textureData.pData = image.Data.Data;
             textureData.RowPitch = image.Width * image.PixelSize;
             textureData.SlicePitch = textureData.RowPitch * image.Height;
 

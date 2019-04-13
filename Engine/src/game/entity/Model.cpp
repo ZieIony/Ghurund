@@ -12,7 +12,7 @@ namespace Ghurund {
         return filterStatus(result, options);
     }
 
-    Status Model::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+    Status Model::saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
         if(mesh==nullptr)
             return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Mesh cannot be empty"));
 
@@ -20,10 +20,10 @@ namespace Ghurund {
             return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Material cannot be empty"));
 
         Status result;
-        result = resourceManager.save(*mesh, workingDir, stream, options);
+        result = resourceManager.save(*mesh, context, workingDir, stream, options);
         if(filterStatus(result, options)!=Status::OK)
             return result;
-        result = resourceManager.save(*material, workingDir, stream, options);
+        result = resourceManager.save(*material, context, workingDir, stream, options);
         return filterStatus(result, options);
     }
 

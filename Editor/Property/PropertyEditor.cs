@@ -1,11 +1,12 @@
-﻿using Ghurund.Controls.PropertyGrid;
+﻿using Ghurund.Controls;
+using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed;
 using Ghurund.Managed.Script;
 using System;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace Ghurund.Editor.Property {
 
@@ -31,12 +32,31 @@ namespace Ghurund.Editor.Property {
             };
             textBox.KeyDown += (object sender, KeyEventArgs e) => {
                 if (e.Key == Key.Enter)
-                    property.Setter(int.TryParse(textBox.Text, out int val) ? val : property.Getter());
+                    setValue(property, textBox);
             };
             textBox.LostFocus += (object sender, RoutedEventArgs e) => {
-                property.Setter(int.TryParse(textBox.Text, out int val) ? val : property.Getter());
+                setValue(property, textBox);
             };
             return textBox;
+        }
+
+        private static void setValue(Value property, TextBox textBox) {
+            bool result = int.TryParse(textBox.Text, out int val);
+            if (result) {
+                property.Setter(val);
+            } else {
+                ScriptEngine engine = EditorKernel.GetService(typeof(ScriptEngine)) as ScriptEngine;
+                Script script = new Script {
+                    SourceCode = "int main(){return " + textBox.Text + ";}",
+                    EntryPoint = "int main()"
+                };
+                if (script.Build(engine) == Status.OK && script.Execute() == Status.OK) {
+                    property.Setter(script.GetIntResult());
+                    script.Release();
+                } else {
+                    property.Setter(property.Getter());
+                }
+            }
         }
     }
 
@@ -46,29 +66,32 @@ namespace Ghurund.Editor.Property {
                 Text = property.Getter().ToString()
             };
             textBox.KeyDown += (object sender, KeyEventArgs e) => {
-                if (e.Key == Key.Enter) {
-                    bool result = float.TryParse(textBox.Text, out float val);
-                    if (result) {
-                        property.Setter(val);
-                    } else {
-                        ScriptEngine engine = EditorKernel.GetService(typeof(ScriptEngine)) as ScriptEngine;
-                        Script script = new Script {
-                            SourceCode = "float main(){return " + textBox.Text + ";}",
-                            EntryPoint = "float main()"
-                        };
-                        if (script.Build(engine) == Status.OK && script.Execute() == Status.OK) {
-                            property.Setter(script.GetFloatResult());
-                            script.Release();
-                        } else {
-                            property.Setter(property.Getter());
-                        }
-                    }
-                }
+                if (e.Key == Key.Enter)
+                    setValue(property, textBox);
             };
             textBox.LostFocus += (object sender, RoutedEventArgs e) => {
-                property.Setter(float.TryParse(textBox.Text, out float val) ? val : property.Getter());
+                setValue(property, textBox);
             };
             return textBox;
+        }
+
+        private static void setValue(Value property, TextBox textBox) {
+            bool result = float.TryParse(textBox.Text, out float val);
+            if (result) {
+                property.Setter(val);
+            } else {
+                ScriptEngine engine = EditorKernel.GetService(typeof(ScriptEngine)) as ScriptEngine;
+                Script script = new Script {
+                    SourceCode = "float main(){return " + textBox.Text + ";}",
+                    EntryPoint = "float main()"
+                };
+                if (script.Build(engine) == Status.OK && script.Execute() == Status.OK) {
+                    property.Setter(script.GetFloatResult());
+                    script.Release();
+                } else {
+                    property.Setter(property.Getter());
+                }
+            }
         }
     }
 
@@ -103,14 +126,29 @@ namespace Ghurund.Editor.Property {
     }
 
     public class ResourcePropertyEditor: IPropertyEditor {
-        public FrameworkElement MakeControl(Value value) {
-            TextBlock textBlock = new TextBlock {
-                Text = value.Getter()?.ToString()
+        public FrameworkElement MakeControl(Value property) {
+            DockPanel dockPanel = new DockPanel();
+
+            IconButton button = new IconButton();
+            button.Icon = BitmapFrame.Create(new Uri("pack://application:,,,/Resources/addNew32.png"));
+            button.SetResourceReference(IconButton.StyleProperty, "IconButton_Small");
+            button.Click += (object sender, RoutedEventArgs e) => {
+                button.RaiseEvent(new RoutedValueEditedEventEventArgs(property, PropertyGrid.ValueEditedEvent));
             };
-            textBlock.MouseDown += (object sender, MouseButtonEventArgs e) => {
-                textBlock.RaiseEvent(new RoutedValueEditedEventEventArgs(value, PropertyGrid.ValueEditedEvent));
+            DockPanel.SetDock(button, Dock.Left);
+            dockPanel.Children.Add(button);
+
+            ComboBox comboBox = new ComboBox();
+            object val = property.Getter();
+            if (val != null)
+                comboBox.Items.Add(val);
+            comboBox.SelectedItem = property.Getter();
+            comboBox.SelectionChanged += (object sender, SelectionChangedEventArgs e) => {
+                property.Setter(comboBox.SelectedItem);
             };
-            return textBlock;
+            dockPanel.Children.Add(comboBox);
+
+            return dockPanel;
         }
     }
 
@@ -158,7 +196,7 @@ namespace Ghurund.Editor.Property {
             DockPanel dockPanel = new DockPanel();
 
             Border border = new Border();
-            Managed.Color color = (Managed.Color)property.Getter();
+            Color color = (Color)property.Getter();
             border.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromArgb((byte)(color.A * 255), (byte)(color.R * 255), (byte)(color.G * 255), (byte)(color.B * 255)));
             border.Width = 20;
             border.Height = 20;
@@ -174,12 +212,12 @@ namespace Ghurund.Editor.Property {
             textBox.KeyDown += (object sender, KeyEventArgs e) => {
                 if (e.Key == Key.Enter) {
                     border.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(textBox.Text));
-                    property.Setter(new Managed.Color(textBox.Text));
+                    property.Setter(new Color(textBox.Text));
                 }
             };
             textBox.LostFocus += (object sender, RoutedEventArgs e) => {
                 border.Background = new System.Windows.Media.SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString(textBox.Text));
-                property.Setter(new Managed.Color(textBox.Text));
+                property.Setter(new Color(textBox.Text));
             };
             dockPanel.Children.Add(textBox);
 

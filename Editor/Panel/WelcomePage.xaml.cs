@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ghurund.Controls.Workspace;
+using Ghurund.Managed.Editor;
+using Ghurund.Managed.Resource;
 using Ninject;
 
 namespace Ghurund.Editor {
@@ -14,6 +16,15 @@ namespace Ghurund.Editor {
     }
 
     public partial class WelcomePage : UserControl, IWelcomePage {
+
+        [Inject]
+        public ResourceManager ResourceManager { get; set; }
+
+        [Inject]
+        public ResourceContext ResourceContext { get; set; }
+
+        [Inject]
+        public ThumbnailRenderer ThumbnailRenderer { get; set; }
 
         [Inject]
         public EditorSettings Settings { get; set; }
@@ -25,8 +36,8 @@ namespace Ghurund.Editor {
 
             EditorKernel.Inject(this);
 
-            recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path)).ToList();
-            recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path)).ToList();
+            recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path, ResourceManager, ResourceContext, ThumbnailRenderer)).ToList();
+            recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path, ResourceManager, ResourceContext, ThumbnailRenderer)).ToList();
         }
 
         ~WelcomePage() {
@@ -54,7 +65,7 @@ namespace Ghurund.Editor {
             if (!resourceFile.Exists) {
                 if (MessageBox.Show("The selected project doesn't exist. Do you want to remove it from the recent projects list?", "Project doesn't exist", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
                     Settings.RecentProjects.Remove(resourceFile.Path);
-                    recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path)).ToList();
+                    recentProjects.ItemsSource = Settings.RecentProjects.Select(path => new ResourceFile(path, ResourceManager, ResourceContext, ThumbnailRenderer)).ToList();
                 }
             } else {
                 RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));
@@ -66,7 +77,7 @@ namespace Ghurund.Editor {
             if (!resourceFile.Exists) {
                 if (MessageBox.Show("The selected file doesn't exist. Do you want to remove it from the recent files list?", "File doesn't exist", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes) {
                     Settings.RecentFiles.Remove(resourceFile.Path);
-                    recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path)).ToList();
+                    recentFiles.ItemsSource = Settings.RecentFiles.Select(path => new ResourceFile(path, ResourceManager, ResourceContext, ThumbnailRenderer)).ToList();
                 }
             } else {
                 RaiseEvent(new RoutedFileOpenedEventArgs(resourceFile.Path, MainWindow.FileOpenedEvent));

@@ -4,7 +4,7 @@
 
 namespace Ghurund {
     Status SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
-        float t = (1.0f + sqrt(5.0f)) / 2.0f;
+        float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
         Vertex triangleVertices[] = {
             {{-1.0, t, 0.0},{0,0}},

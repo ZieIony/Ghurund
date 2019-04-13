@@ -3,14 +3,9 @@
 namespace Ghurund {
     const Ghurund::Type& Renderer::TYPE = Ghurund::Type([]() {return ghnew Renderer(); }, "Renderer");
   
-    Status Renderer::init(Window & window, ResourceManager & resourceManager, ResourceContext & resourceContext) {
+    Status Renderer::init(ResourceManager & resourceManager, ResourceContext & resourceContext) {
         this->graphics = &resourceContext.Graphics;
         this->parameterManager = &resourceContext.ParameterManager;
-
-        swapChain = ghnew SwapChain();
-        Status result = swapChain->init(resourceContext.Graphics, window, FRAME_COUNT);
-        if(result!=Status::OK)
-            return result;
 
         /*for(int i = 0; i<FRAME_COUNT; i++) {
             postprocessRenderTarget[i] = ghnew RenderTarget();
@@ -28,17 +23,12 @@ namespace Ghurund {
             delete postprocessRenderTarget[i];
             postprocessRenderTarget[i] = nullptr;
         }*/
-        if(swapChain==nullptr)
-            return;
-        swapChain->uninitBuffers();
-        delete swapChain;
-        swapChain = nullptr;
     }
 
-    void Renderer::render() {
-        CommandList &commandList = startFrame();
+    void Renderer::render(Frame &frame) {
+        CommandList &commandList = startFrame(frame);
         for(RenderStep *step:steps)
             step->draw(*graphics, commandList, stats);
-        finishFrame();
+        finishFrame(frame);
     }
 }

@@ -9,7 +9,7 @@ namespace Ghurund {
         return build(context.ScriptEngine);
     }
 
-    Status Script::saveInternal(ResourceManager& resourceManager, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Script::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         if (!entryPoint || !source)
             return Status::INV_STATE;
         stream.writeASCII(entryPoint);

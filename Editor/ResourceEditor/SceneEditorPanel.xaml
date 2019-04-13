@@ -34,7 +34,11 @@
 				<Border Width="16"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
-				<CheckBox x:Name="cameraPerspective" VerticalAlignment="Center" Content="Perspective" Unchecked="Perspective_Checked" Checked="Perspective_Checked" IsChecked="True"/>
+				<CheckBox
+					x:Name="cameraPerspective" VerticalAlignment="Center"
+					Content="Perspective" Unchecked="Perspective_Checked"
+					Checked="Perspective_Checked" IsChecked="True"
+					Foreground="{DynamicResource Ghurund.Text.Primary}"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
 		<engine:SceneView x:Name="sceneView" SelectionChanged="sceneView_SelectionChanged"/>

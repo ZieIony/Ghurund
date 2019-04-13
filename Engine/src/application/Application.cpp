@@ -5,7 +5,7 @@
 namespace Ghurund {
     void Application::init() {
         CoInitialize(nullptr);
-    
+
         parameterManager = ghnew Ghurund::ParameterManager();
         graphics = ghnew Ghurund::Graphics();
         graphics->init();
@@ -23,7 +23,10 @@ namespace Ghurund {
         window.initParameters(ParameterManager);
 
         renderer = ghnew Ghurund::Renderer();
-        renderer->init(window, *resourceManager, *resourceContext);
+        renderer->init(*resourceManager, *resourceContext);
+
+        swapChain = ghnew SwapChain();
+        swapChain->init(Graphics, window, FRAME_COUNT);
 
         client = ghnew Ghurund::Client(windowProc->FunctionQueue);
         client->init();
@@ -32,14 +35,15 @@ namespace Ghurund {
     void Application::uninit() {
         delete scriptEngine;
 
-        if(client->isConnected())
+        if (client->isConnected())
             client->disconnect();
         delete client;
 
+        delete swapChain;
         delete renderer;
 
         delete timer;
-		delete parameterManager;
+        delete parameterManager;
         delete resourceContext;
         delete resourceManager;
         delete audio;
@@ -51,9 +55,9 @@ namespace Ghurund {
 
     void Application::messageLoop() {
         MSG msg = {};
-        while(true) {
-            while(PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-                if(msg.message==WM_QUIT)
+        while (true) {
+            while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+                if (msg.message == WM_QUIT)
                     return;
                 //TranslateMessage(&msg);
                 DispatchMessage(&msg);
@@ -62,38 +66,38 @@ namespace Ghurund {
         }
     }
 
-    bool Application::handleMessage(SystemMessage &message) {
-        if(message.code>=WM_KEYFIRST&&message.code<=WM_KEYLAST||
-           message.code>=WM_MOUSEFIRST&&message.code<=WM_MOUSELAST) {
-			input.dispatchMessage(message);
-		} else if (message.code == WM_SIZE) {
-			onSizeChanged();
-		} else if (message.code == WM_CREATE) {
-			onWindowCreated();
-		} else if (message.code == WM_DESTROY) {
-			onWindowDestroy();
+    bool Application::handleMessage(SystemMessage & message) {
+        if (message.code >= WM_KEYFIRST && message.code <= WM_KEYLAST ||
+            message.code >= WM_MOUSEFIRST && message.code <= WM_MOUSELAST) {
+            input.dispatchMessage(message);
+        } else if (message.code == WM_SIZE) {
+            onSizeChanged();
+        } else if (message.code == WM_CREATE) {
+            onWindowCreated();
+        } else if (message.code == WM_DESTROY) {
+            onWindowDestroy();
             PostQuitMessage(0);
-		} else {
-			return onMessage(message);
-		}
+        } else {
+            return onMessage(message);
+        }
         return true;
     }
 
-    void Application::run(const Settings *settings, WindowProc *proc) {
-        if(settings)
+    void Application::run(const Settings * settings, WindowProc * proc) {
+        if (settings)
             this->settings = *settings;
-        if(proc == nullptr) {
-            std::function<bool(SystemMessage&)> proc([this](SystemMessage &message) {return handleMessage(message); });
+        if (proc == nullptr) {
+            std::function<bool(SystemMessage&)> proc([this](SystemMessage & message) {return handleMessage(message); });
             windowProc = ghnew WindowProc(proc);
         } else {
             windowProc = proc;
         }
 
         HANDLE singleInstanceMutex = CreateMutex(nullptr, true, window.Title);
-        bool alreadyRunning = GetLastError()==ERROR_ALREADY_EXISTS;
+        bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
 
-        if(!multipleInstances&&alreadyRunning) {
-            MessageBox(nullptr, _T("Application is already running."), window.Title, MB_OK|MB_ICONEXCLAMATION);
+        if (!multipleInstances && alreadyRunning) {
+            MessageBox(nullptr, _T("Application is already running."), window.Title, MB_OK | MB_ICONEXCLAMATION);
             goto cleanUp;
         }
 
@@ -127,7 +131,9 @@ namespace Ghurund {
 
         input.clearEvents();
 
-        renderer->render();
+        Frame& frame = swapChain->getFrame();
+        renderer->render(frame);
+        swapChain->present();
     }
 
     void Application::reset() {

@@ -14,7 +14,7 @@ namespace Ghurund {
             this->size = size;
         }
 
-        Buffer(void *data, size_t size) {
+        Buffer(const void *data, size_t size) {
             this->data = ghnew BYTE[size];
             this->size = size;
             memcpy(this->data, data, size);

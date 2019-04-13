@@ -361,7 +361,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+    Status Shader::saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.writeBoolean(compiled);

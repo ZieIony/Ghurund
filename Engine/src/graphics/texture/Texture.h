@@ -22,8 +22,8 @@ namespace Ghurund {
             return init(context, *image);
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options)const {
-            return resourceManager.save(*image, workingDir, stream, options);
+        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options)const {
+            return resourceManager.save(*image, context, workingDir, stream, options);
         }
 
     public:

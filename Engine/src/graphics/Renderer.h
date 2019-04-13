@@ -23,7 +23,6 @@ namespace Ghurund {
         Postprocess* postprocess = nullptr;
         RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
-        SwapChain* swapChain = nullptr;
         Graphics* graphics = nullptr;
         ParameterManager* parameterManager = nullptr;
         Material* material = nullptr;
@@ -34,19 +33,19 @@ namespace Ghurund {
 
         List<RenderStep*> steps;
 
-        CommandList& startFrame() {
-            swapChain->startFrame(clearColor);
+        CommandList& startFrame(Frame& frame) {
+            frame.start(clearColor);
 
-            CommandList& commandList = swapChain->CommandList;
+            CommandList& commandList = frame.CommandList;
             graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
             stats.startFrame();
 
             return commandList;
         }
 
-        void finishFrame() {
+        void finishFrame(Frame& frame) {
             stats.finishFrame();
-            swapChain->finishFrame();
+            frame.finish();
         }
 
     public:
@@ -59,17 +58,11 @@ namespace Ghurund {
             delete clearColor;
         }
 
-        Status init(Window & window, ResourceManager & resourceManager, ResourceContext & resourceContext);
+        Status init(ResourceManager & resourceManager, ResourceContext & resourceContext);
 
         void uninit();
 
-        void render();
-
-        void resize(unsigned int width, unsigned int height) {
-            swapChain->resize(*graphics, width, height);
-            //for(int i = 0; i<FRAME_COUNT; i++)
-              //  postprocessRenderTarget[i]->resize(*graphics, width, height);
-        }
+        void render(Frame & frame);
 
         void setInvalidMaterial(Ghurund::Material * material) {
             setPointer(this->invalidMaterial, material);
@@ -77,16 +70,16 @@ namespace Ghurund {
 
         __declspec(property(put = setInvalidMaterial)) Ghurund::Material * InvalidMaterial;
 
-        XMFLOAT4 * getClearColor() {
+        const XMFLOAT4 * getClearColor() const {
             return clearColor;
         }
 
-        void setClearColor(XMFLOAT4 * color) {
+        void setClearColor(const XMFLOAT4 * color) {
             delete clearColor;
-            clearColor = color;
+            clearColor = ghnew XMFLOAT4(*color);
         }
 
-        __declspec(property(get = getClearColor, put = setClearColor)) XMFLOAT4 * ClearColor;
+        __declspec(property(get = getClearColor, put = setClearColor)) const XMFLOAT4 * ClearColor;
 
         RenderingStatistics & getStatistics() {
             return stats;
@@ -100,9 +93,9 @@ namespace Ghurund {
 
         __declspec(property(get = getSteps)) List<RenderStep*> & Steps;
 
-        const static Ghurund::Type& TYPE;
+        const static Ghurund::Type & TYPE;
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Type & getType() const override {
             return TYPE;
         }
     };

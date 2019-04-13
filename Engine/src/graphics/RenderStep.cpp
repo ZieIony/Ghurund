@@ -32,6 +32,13 @@ namespace Ghurund {
     }
 
     void RenderStep::draw(Graphics & graphics, CommandList & commandList, RenderingStatistics & stats) {
+#ifdef _DEBUG
+        if (parameterWorld == nullptr) {
+            Logger::log(LogType::ERR0R, _T("parameters not initialized, call initParameters(..) first"));
+            return;
+        }
+#endif
+
         models.deleteItems();
 
         for (size_t i = 0; i < entities.Size; i++) {

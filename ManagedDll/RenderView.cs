@@ -10,7 +10,10 @@ using Ghurund.Managed.Resource;
 namespace Ghurund.Managed {
     public class RenderView: UserControl, IDisposable {
 
+        private readonly uint FRAME_COUNT = 3;
+
         Window window;
+        SwapChain swapChain;
 
         public Graphics.Graphics Graphics { get; private set; }
 
@@ -72,12 +75,16 @@ namespace Ghurund.Managed {
             window = new Window();
             window.Init(Handle);
             window.InitParameters(ParameterManager);
+            swapChain = new SwapChain();
+            swapChain.Init(Graphics, window, FRAME_COUNT);
             Renderer = new Renderer();
-            Renderer.Init(window, resourceManager, resourceContext);
+            Renderer.Init(resourceManager, resourceContext);
             Renderer.ClearColor = 0xff7f7f7f;
         }
 
         public void Uninit() {
+            swapChain?.Dispose();
+            swapChain = null;
             Renderer?.Dispose();
             Renderer = null;
             window?.Dispose();
@@ -100,7 +107,8 @@ namespace Ghurund.Managed {
             if (IsInDesignMode(this)) {
                 e.Graphics.Clear(System.Drawing.Color.CornflowerBlue);
             } else if (Renderer != null) {
-                Renderer.Render();
+                Renderer.Render(swapChain.GetFrame());
+                swapChain.Present();
             }
         }
 
@@ -124,12 +132,16 @@ namespace Ghurund.Managed {
 
         protected override void OnSizeChanged(EventArgs e) {
             base.OnSizeChanged(e);
+            UpdateSize();
+        }
+
+        protected void UpdateSize() {
             if (window == null)
                 return;
             if (Camera != null)
                 Camera.SetScreenSize((uint)Width, (uint)Height);
             window.UpdateSize();
-            Renderer.Resize((uint)Width, (uint)Height);
+            swapChain.Resize((uint)Width, (uint)Height);
             window.UpdateParameters();
         }
     }

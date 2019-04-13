@@ -104,7 +104,7 @@ namespace Ghurund {
         return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::saveInternal(ResourceManager & resourceManager, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status Mesh::saveInternal(ResourceManager & resourceManager, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);

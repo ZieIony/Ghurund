@@ -61,6 +61,12 @@ namespace Ghurund.Managed.Script {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float Script_getIntResult(IntPtr _this);
+
+        public float GetIntResult() => Script_getIntResult(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern float Script_getFloatResult(IntPtr _this);
 
         public float GetFloatResult() => Script_getFloatResult(NativePtr);

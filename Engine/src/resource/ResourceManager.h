@@ -139,10 +139,10 @@ namespace Ghurund {
             return resource;
         }
 
-        Status save(Resource & resource, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, const FilePath & path, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, File & file, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource & resource, ResourceContext & context, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource & resource, ResourceContext & context, const FilePath & path, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource & resource, ResourceContext & context, File & file, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource & resource, ResourceContext & context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options = SaveOption::DEFAULT);
 
         Resource * get(const String & fileName);
 
@@ -168,9 +168,9 @@ namespace Ghurund {
 
         __declspec(property(get = getLibraries)) LibraryList & Libraries;
 
-        const static Ghurund::Type& TYPE;
+        const static Ghurund::Type & TYPE;
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Type & getType() const override {
             return TYPE;
         }
     };

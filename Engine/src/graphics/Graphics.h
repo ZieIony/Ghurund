@@ -23,12 +23,12 @@ namespace Ghurund {
 
     class Graphics: public Object {
     private:
-        ComPtr<ID3D12Device> device;
-        ID3D12CommandQueue *directQueue = nullptr, *computeQueue = nullptr, *copyQueue = nullptr;
-        ComPtr<IDXGIFactory4> factory;
+        ID3D12Device* device;
+        ID3D12CommandQueue* directQueue = nullptr, * computeQueue = nullptr, * copyQueue = nullptr;
+        IDXGIFactory4* factory;
 
-		DescriptorAllocator allocator;
-        GPUResourceFactory *resourceFactory;
+        DescriptorAllocator allocator;
+        GPUResourceFactory* resourceFactory;
 
         List<Adapter*> adapters;
 
@@ -48,55 +48,57 @@ namespace Ghurund {
             computeQueue->Release();
             copyQueue->Release();
             delete resourceFactory;
+            factory->Release();
+            device->Release();
         }
 
-        ComPtr<ID3D12Device> getDevice() {
+        ID3D12Device* getDevice() {
             return device;
         }
 
-        __declspec(property(get = getDevice)) ComPtr<ID3D12Device> Device;
+        __declspec(property(get = getDevice)) ID3D12Device* Device;
 
-        ID3D12CommandQueue *getDirectQueue() {
+        ID3D12CommandQueue* getDirectQueue() {
             return directQueue;
         }
 
-        __declspec(property(get = getDirectQueue)) ID3D12CommandQueue *DirectQueue;
+        __declspec(property(get = getDirectQueue)) ID3D12CommandQueue* DirectQueue;
 
-        ID3D12CommandQueue *getComputeQueue() {
+        ID3D12CommandQueue* getComputeQueue() {
             return computeQueue;
         }
 
-        __declspec(property(get = getComputeQueue)) ID3D12CommandQueue *ComputeQueue;
+        __declspec(property(get = getComputeQueue)) ID3D12CommandQueue* ComputeQueue;
 
-        ID3D12CommandQueue *getCopyQueue() {
+        ID3D12CommandQueue* getCopyQueue() {
             return copyQueue;
         }
 
-        __declspec(property(get = CopyQueue)) ID3D12CommandQueue *CopyQueue;
+        __declspec(property(get = getCopyQueue)) ID3D12CommandQueue* CopyQueue;
 
-        ComPtr<IDXGIFactory4> getFactory() {
+        IDXGIFactory4* getFactory() {
             return factory;
         }
 
-        __declspec(property(get = getFactory)) ComPtr<IDXGIFactory4> Factory;
+        __declspec(property(get = getFactory)) IDXGIFactory4* Factory;
 
-        List<Adapter*> &getAdapters() {
+        List<Adapter*>& getAdapters() {
             return adapters;
         }
 
-        __declspec(property(get = getAdapters)) List<Adapter*> &Adapters;
+        __declspec(property(get = getAdapters)) List<Adapter*>& Adapters;
 
-        DescriptorAllocator &getDescriptorAllocator() {
+        DescriptorAllocator& getDescriptorAllocator() {
             return allocator;
         }
 
-        __declspec(property(get = getDescriptorAllocator)) DescriptorAllocator &DescriptorAllocator;
+        __declspec(property(get = getDescriptorAllocator)) DescriptorAllocator& DescriptorAllocator;
 
-        GPUResourceFactory &getResourceFactory() {
+        GPUResourceFactory& getResourceFactory() {
             return *resourceFactory;
         }
 
-        __declspec(property(get = getResourceFactory)) GPUResourceFactory &ResourceFactory;
+        __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
 
         const static Ghurund::Type& TYPE;
 
