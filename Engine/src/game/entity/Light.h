@@ -2,20 +2,23 @@
 
 #include "Target.h"
 #include "game/entity/Entity.h"
-#include "game/entity/TransformedObject.h"
 
 namespace Ghurund {
-    class Light: public Entity, public TranslatedObject {
+    class Light: public TranslatedEntity {
     private:
         Target* target;
         Array<Parameter*> parameters;
 
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+            __super::loadInternal(resourceManager, context, workingDir, stream, options);
+   
             return Status::NOT_IMPLEMENTED;
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+            __super::saveInternal(resourceManager, context, workingDir, stream, options);
+  
             return Status::NOT_IMPLEMENTED;
         }
 

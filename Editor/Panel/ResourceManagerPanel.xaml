@@ -37,11 +37,13 @@
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">
-								<Image Source="{Binding Thumbnail, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,4,0" Width="50" Height="50"/>
-								<StackPanel Orientation="Vertical" Width="100" Margin="0,0,4,0">
-									<TextBlock Text="{Binding Name}" />
-									<TextBlock Text="{Binding Size}" />
-									<TextBlock Text="{Binding Modified}" />
+								<Border BorderBrush="{DynamicResource Ghurund.Border}" BorderThickness="1" Margin="4,4,0,4">
+									<Image Source="{Binding Thumbnail, UpdateSourceTrigger=PropertyChanged}" Width="56" Height="56" Stretch="UniformToFill"/>
+								</Border>
+								<StackPanel Orientation="Vertical" Width="100" Margin="8">
+									<TextBlock Text="{Binding Name}" Style="{DynamicResource Ghurund.TextStyle.Body}"/>
+									<TextBlock Text="{Binding Size}" Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
+									<TextBlock Text="{Binding Modified}" Style="{DynamicResource Ghurund.TextStyle.Caption}"/>
 								</StackPanel>
 							</StackPanel>
 						</DataTemplate>

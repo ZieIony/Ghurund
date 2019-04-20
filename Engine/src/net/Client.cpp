@@ -11,7 +11,8 @@ namespace Ghurund {
             });
         connectionState.addEdge(ConnectionState::CONNECTED, ConnectionState::DISCONNECTING);
         connectionState.addEdge(ConnectionState::DISCONNECTING, ConnectionState::NOT_CONNECTED, [&]() {
-            safeDelete(serverSocket);
+            delete serverSocket;
+            serverSocket = nullptr;
             delete thread;  // called from that thread's thread
             thread = nullptr;
             if (listener != nullptr)

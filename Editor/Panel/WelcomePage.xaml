@@ -22,7 +22,9 @@
 					<ListBox.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
-								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
+								<Border BorderBrush="{DynamicResource Ghurund.Border}" BorderThickness="1" Margin="4,4,0,4">
+									<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill"/>
+								</Border>
 								<StackPanel Orientation="Vertical" Margin="8" >
 									<TextBlock Text="{Binding Name}" Style="{DynamicResource Ghurund.TextStyle.Body}"/>
 									<TextBlock Text="{Binding Path}" Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
@@ -45,7 +47,9 @@
 					<ListBox.Resources>
 						<DataTemplate DataType="{x:Type local:ResourceFile}">
 							<StackPanel Orientation="Horizontal" ToolTip="{Binding Path}">
-								<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill" Margin="0,4,0,4"/>
+								<Border BorderBrush="{DynamicResource Ghurund.Border}" BorderThickness="1" Margin="4,4,0,4">
+									<Image Source="{Binding Thumbnail}" Width="56" Height="56" Stretch="UniformToFill"/>
+								</Border>
 								<StackPanel Orientation="Vertical" Margin="8">
 									<TextBlock Text="{Binding Name}" Style="{DynamicResource Ghurund.TextStyle.Body}"/>
 									<TextBlock Text="{Binding Path}" Style="{DynamicResource Ghurund.TextStyle.Body2}"/>

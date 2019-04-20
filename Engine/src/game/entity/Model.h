@@ -1,7 +1,6 @@
 #pragma once
 
-#include "game/entity/Entity.h"
-#include "game/entity/TransformedObject.h"
+#include "game/entity/TransformedEntity.h"
 #include "game/parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
@@ -11,7 +10,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    class Model: public Entity, public TransformedObject {
+    class Model: public TransformedEntity {
     private:
         Mesh *mesh = nullptr;
         Material *material = nullptr;
@@ -64,6 +63,10 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getMaterial, put = setMaterial)) Material *Material;
+
+        virtual ::BoundingBox* getBoundingBox() const override {
+            return &mesh->BoundingBox;
+        }
 
         virtual void initParameters(ParameterManager &parameterManager) override {
             material->initParameters(parameterManager);

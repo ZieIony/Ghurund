@@ -1,6 +1,6 @@
 #include "FileWatcher.h"
 #include "process.h"
-#include "resource/File.h"
+#include "core/File.h"
 
 namespace Ghurund {
     void FileWatcher::readChangesProc(ULONG_PTR arg) {

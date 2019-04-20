@@ -69,6 +69,7 @@
     <ClCompile Include="src\net\ClientThread.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
+    <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\resource\ResourceContext.cpp" />
     <ClCompile Include="src\resource\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\resource\watcher\FileWatcher.cpp" />
@@ -97,7 +98,11 @@
     <ClInclude Include="src\collection\PointerMap.h" />
     <ClInclude Include="src\collection\UnicodeString.h" />
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\Allocator.h" />
+    <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
+    <ClInclude Include="src\core\allocation\Allocator.h" />
+    <ClInclude Include="src\core\allocation\CircularBufferStrategy.h" />
+    <ClInclude Include="src\core\allocation\PoolAllocator.h" />
+    <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
     <ClInclude Include="src\core\Buffer.h" />
     <ClInclude Include="src\core\MemoryStream.h" />
     <ClInclude Include="src\collection\List.h" />
@@ -124,6 +129,7 @@
     <ClInclude Include="src\game\entity\EntityList.h" />
     <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\entity\Target.h" />
+    <ClInclude Include="src\game\entity\TransformedEntity.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
@@ -138,6 +144,7 @@
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\game\entity\GlobalEntity.h" />
     <ClInclude Include="src\graphics\memory\GPUResourceFactory.h" />
+    <ClInclude Include="src\graphics\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\graphics\memory\HeapAllocator.h" />
     <ClInclude Include="src\graphics\Postprocess.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
@@ -174,18 +181,17 @@
     <ClInclude Include="src\graphics\texture\Texture.h" />
     <ClInclude Include="src\graphics\mesh\Vertex.h" />
     <ClInclude Include="src\graphics\texture\Textures.h" />
-    <ClInclude Include="src\game\entity\TransformedObject.h" />
     <ClInclude Include="src\input\EventConsumer.h" />
     <ClInclude Include="src\input\Input.h" />
     <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\input\Mouse.h" />
     <ClInclude Include="src\MathUtils.h" />
-    <ClInclude Include="src\resource\DataResource.h" />
+    <ClInclude Include="src\physics\Physics.h" />
     <ClInclude Include="src\game\parameter\Parameter.h" />
-    <ClInclude Include="src\resource\DirectoryPath.h" />
-    <ClInclude Include="src\resource\FilePath.h" />
+    <ClInclude Include="src\core\DirectoryPath.h" />
+    <ClInclude Include="src\core\FilePath.h" />
     <ClInclude Include="src\resource\LibraryList.h" />
-    <ClInclude Include="src\resource\Path.h" />
+    <ClInclude Include="src\core\Path.h" />
     <ClInclude Include="src\resource\ReloadTask.h" />
     <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFactory.h" />
@@ -202,7 +208,7 @@
     <ClInclude Include="src\ui\Control.h" />
     <ClInclude Include="src\ui\Layout.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
-    <ClInclude Include="src\resource\File.h" />
+    <ClInclude Include="src\core\File.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\net\Client.h" />
@@ -219,7 +225,6 @@
     <ClInclude Include="src\resource\watcher\FileWatcher.h" />
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
-    <ClInclude Include="src\resource\TextResource.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
   </ItemGroup>
   <ItemGroup>

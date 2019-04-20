@@ -39,15 +39,4 @@ namespace Ghurund {
     template<class Type> inline Type align(Type value, Type alignment) {
         return (value + alignment - 1) & ~(alignment - 1);
     }
-
-    template<class Type> void safeDelete(Type * &p) {
-        delete p;
-        p = nullptr;
-    }
-
-    template<class Type> void safeDeleteArray(Type * &p) {
-        delete[] p;
-        p = nullptr;
-    }
-
 }

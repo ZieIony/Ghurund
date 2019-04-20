@@ -3,6 +3,8 @@
 
 namespace Ghurund {
     Status Model::loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+        __super::loadInternal(resourceManager, context, workingDir, stream, options);
+  
         Status result;
         mesh = (Ghurund::Mesh*)resourceManager.load(context, workingDir, stream, &result, options);
         if(filterStatus(result, options)!=Status::OK)
@@ -18,6 +20,8 @@ namespace Ghurund {
 
         if(material==nullptr)
             return Logger::log(LogType::ERR0R, Status::INV_STATE, _T("Material cannot be empty"));
+
+        __super::saveInternal(resourceManager, context, workingDir, stream, options);
 
         Status result;
         result = resourceManager.save(*mesh, context, workingDir, stream, options);

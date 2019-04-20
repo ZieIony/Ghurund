@@ -16,6 +16,7 @@
 #include "graphics/Renderer.h"
 #include "input/Input.h"
 #include "net/Client.h"
+#include "physics/Physics.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "script/ScriptEngine.h"
@@ -35,10 +36,12 @@ namespace Ghurund {
         Settings settings;
         Graphics* graphics;
         Audio* audio;
+        Physics* physics;
+
         ResourceManager* resourceManager;
-        ResourceContext* resourceContext;
+        ResourceContext* resourceContext, * asyncResourceContext;
         ParameterManager* parameterManager;
-        Timer *timer;
+        Timer* timer;
         Input input;
         ScriptEngine* scriptEngine;
 
@@ -142,6 +145,12 @@ namespace Ghurund {
 
         __declspec(property(get = getAudio)) Audio& Audio;
 
+        Physics& getPhysics() {
+            return *physics;
+        }
+
+        __declspec(property(get = getPhysics)) Physics& Physics;
+
         inline ResourceManager& getResourceManager() {
             return *resourceManager;
         }
@@ -153,6 +162,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getResourceContext)) ResourceContext& ResourceContext;
+
+        inline Ghurund::ResourceContext& getAsyncResourceContext() {
+            return *asyncResourceContext;
+        }
+
+        __declspec(property(get = getAsyncResourceContext)) Ghurund::ResourceContext& AsyncResourceContext;
 
         inline ParameterManager& getParameterManager() {
             return *parameterManager;

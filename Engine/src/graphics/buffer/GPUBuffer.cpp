@@ -7,7 +7,7 @@ namespace Ghurund {
 
 #ifdef _DEBUG
         if (resourcePointer == nullptr) {
-            Logger::log(LogType::ERR0R, _T("unable to allocate memory for a resource\n"));
+            Logger::log(LogType::ERR0R, _T("unable to create a resource\n"));
             return;
         }
 #endif

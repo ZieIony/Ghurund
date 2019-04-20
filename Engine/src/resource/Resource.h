@@ -2,7 +2,7 @@
 
 #include "Ghurund.h"
 #include "FileUtils.h"
-#include "File.h"
+#include "core/File.h"
 #include "core/MemoryStream.h"
 #include "ResourceFormat.h"
 #include "collection/Array.h"

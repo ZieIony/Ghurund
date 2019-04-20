@@ -13,8 +13,10 @@ namespace Ghurund {
         DepthBuffer* depthBuffer = nullptr;
         RenderStep* step = nullptr;
 
-        ResourceManager* resourceManager;
-        ResourceContext* resourceContext;
+        ResourceManager* resourceManager = nullptr;
+        ResourceContext* resourceContext = nullptr;
+
+        void cameraLookAt(XMFLOAT3 center, XMFLOAT3 extents);
 
     public:
         ~ThumbnailRenderer() {
@@ -27,8 +29,9 @@ namespace Ghurund {
 
         void init(ResourceManager& resourceManager, ResourceContext& context, UINT32 width, UINT32 height);
 
-        void render(Model& model, Image*& image);
-        void render(Mesh& mesh, Image*& image);
+        Status render(Entity& entity, Image*& image);
+        Status render(Mesh& mesh, Image*& image);
+        Status render(Material& material, Image*& image);
 
         const static Ghurund::Type& TYPE;
      

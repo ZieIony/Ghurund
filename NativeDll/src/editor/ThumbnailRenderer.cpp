@@ -10,14 +10,20 @@ extern "C" __declspec(dllexport) void ThumbnailRenderer_init(ThumbnailRenderer* 
     _this->init(*resourceManager, *resourceContext, width, height);
 }
 
-extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderModel(ThumbnailRenderer* _this, Model* model) {
+extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderEntity(ThumbnailRenderer* _this, Entity* entity) {
     Image* image;
-    _this->render(*model, image);
+    _this->render(*entity, image);
     return image;
 }
 
 extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderMesh(ThumbnailRenderer* _this, Mesh* mesh) {
     Image* image;
     _this->render(*mesh, image);
+    return image;
+}
+
+extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderMaterial(ThumbnailRenderer* _this, Material* material) {
+    Image* image;
+    _this->render(*material, image);
     return image;
 }

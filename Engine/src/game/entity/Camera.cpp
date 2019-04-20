@@ -174,7 +174,8 @@ namespace Ghurund {
     }
 
     Status Camera::loadInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath & workingDir, MemoryInputStream & stream, LoadOption options) {
-        loadTransformation(stream);
+        __super::loadInternal(resourceManager, context, workingDir, stream, options);
+ 
         memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
         memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
         memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
@@ -193,7 +194,8 @@ namespace Ghurund {
     }
 
     Status Camera::saveInternal(ResourceManager & resourceManager, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
-        saveTransformation(stream);
+        __super::saveInternal(resourceManager, context, workingDir, stream, options);
+
         stream.writeBytes(&target, sizeof(target));
         stream.writeBytes(&right, sizeof(right));
         stream.writeBytes(&dir, sizeof(dir));

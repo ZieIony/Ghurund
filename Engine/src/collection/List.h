@@ -45,7 +45,7 @@ namespace Ghurund {
         ~List() {
             for (size_t i = 0; i < size; i++)
                 v[i].~Value();
-            delete[] (char*)v;
+            delete[](char*)v;
         }
 
         /*		Set *clone(){
@@ -71,12 +71,12 @@ namespace Ghurund {
             capacity = c2;
             size = std::min(size, c);
             for (size_t i = 0; i < size; i++)
-                new (t1+i) Value(v[i]);
-            delete[] (char*)v;
+                new (t1 + i) Value(v[i]);
+            delete[](char*)v;
             v = t1;
         }
 
-        inline void add(const Value & e) {//allows to add null item
+        inline void add(const Value& e) {//allows to add null item
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
             new(v + size) Value(e);
@@ -87,7 +87,7 @@ namespace Ghurund {
 #endif
         }
 
-        inline void addAll(const List<Value> & list) {
+        inline void addAll(const List<Value>& list) {
             if (capacity < size + list.Size)
                 resize(size + list.Size);
             for (size_t i = 0; i < list.Size; i++)
@@ -99,7 +99,7 @@ namespace Ghurund {
 #endif
         }
 
-        inline void insert(size_t i, const Value & item) {
+        inline void insert(size_t i, const Value& item) {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             if (size == capacity)
                 resize(capacity + initial);
@@ -108,18 +108,18 @@ namespace Ghurund {
             size++;
         }
 
-        inline void insertKeepOrder(size_t i, const Value & item) {
+        inline void insertKeepOrder(size_t i, const Value& item) {
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
-            if (i != size - 1) {
-                for (size_t j = size - 1; j > i; j--)
+            if (i < size) {
+                for (size_t j = size; j > i; j--)
                     v[j] = v[j - 1];
             }
             new(v + i) Value(item);
             size++;
         }
 
-        inline void set(size_t i, const Value & e) {
+        inline void set(size_t i, const Value& e) {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             v[i].~Value();
             new(v + i) Value(e);
@@ -142,12 +142,12 @@ namespace Ghurund {
             v[i].~Value();
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
-                    v[i] = v[i + 1];
+                    v[j] = v[j + 1];
             }
             size--;
         }
 
-        inline void remove(const Value & item) {
+        inline void remove(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             v[i].~Value();
@@ -155,13 +155,13 @@ namespace Ghurund {
             size--;
         }
 
-        inline void removeKeepOrder(const Value & item) {
+        inline void removeKeepOrder(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             v[i].~Value();
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
-                    v[i] = v[i + 1];
+                    v[j] = v[j + 1];
             }
             size--;
         }
@@ -182,21 +182,21 @@ namespace Ghurund {
             return v + size;
         }
 
-        inline size_t indexOf(const Value & item) {
+        inline size_t indexOf(const Value& item) {
             for (size_t i = 0; i < size; i++)
                 if (v[i] == item)
                     return i;
             return size;
         }
 
-        inline bool contains(const Value & item) {
+        inline bool contains(const Value& item) {
             for (size_t i = 0; i < size; i++)
                 if (v[i] == item)
                     return true;
             return false;
         }
 
-        inline Value & operator[](size_t i) {
+        inline Value& operator[](size_t i) {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
@@ -206,17 +206,17 @@ namespace Ghurund {
             return v[i];
         }
 
-        List<Value> &operator=(const List<Value> &other) {
+        List<Value>& operator=(const List<Value>& other) {
             size = other.size;
             initial = other.initial;
             capacity = other.capacity;
-            Value *prevV = v;
+            Value* prevV = v;
             v = (Value*)ghnew char[sizeof(Value) * size];
             for (size_t i = 0; i < size; i++)
                 new (v + i) Value(other[i]);
             for (size_t i = 0; i < size; i++)
                 prevV[i].~Value();
-            delete[] (char*)prevV;
+            delete[](char*)prevV;
             return *this;
         }
 

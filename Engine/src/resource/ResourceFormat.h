@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Ghurund.h"
-#include "File.h"
-#include "core/MemoryStream.h"
-#include "collection/Array.h"
 
 using namespace std;
 

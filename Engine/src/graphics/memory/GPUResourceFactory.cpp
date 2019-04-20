@@ -14,6 +14,10 @@ namespace Ghurund {
     GPUResourcePointer *GPUResourceFactory::create(D3D12_HEAP_TYPE heapType, CD3DX12_RESOURCE_DESC resourceDesc, D3D12_RESOURCE_STATES initialState, ID3D12Resource ** resource) {
         HeapAllocator *heap = allocators.get(heapType);
         memory_t address = heap->allocate(resourceDesc.Width);
+        if (address == heap->Size) {
+            Logger::log(LogType::ERR0R, _T("failed to allocate memory for resource\n"));
+            return nullptr;
+        }
         if(FAILED(graphics.Device->CreatePlacedResource(heap->Heap, address, &resourceDesc, initialState, resourceDesc.Dimension==D3D12_RESOURCE_DIMENSION_BUFFER?nullptr:&depthClearValue, IID_PPV_ARGS(resource)))) {
             Logger::log(LogType::ERR0R, _T("failed to create placed resource\n"));
             return nullptr;

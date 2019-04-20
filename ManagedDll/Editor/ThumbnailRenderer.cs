@@ -4,6 +4,7 @@ using Ghurund.Managed.Graphics.Texture;
 using System;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Graphics.Mesh;
+using Ghurund.Managed.Game;
 
 namespace Ghurund.Managed.Editor {
     public class ThumbnailRenderer: NativeClass {
@@ -26,11 +27,11 @@ namespace Ghurund.Managed.Editor {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ThumbnailRenderer_renderModel(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Model model);
+        private static extern IntPtr ThumbnailRenderer_renderEntity(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity entity);
 
-        public Image Render(Model model) {
-            return new Image(ThumbnailRenderer_renderModel(NativePtr, model));
+        public Image Render(Entity entity) {
+            return new Image(ThumbnailRenderer_renderEntity(NativePtr, entity));
         }
 
 
@@ -40,6 +41,15 @@ namespace Ghurund.Managed.Editor {
 
         public Image Render(Mesh mesh) {
             return new Image(ThumbnailRenderer_renderMesh(NativePtr, mesh));
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr ThumbnailRenderer_renderMaterial(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public Image Render(Material material) {
+            return new Image(ThumbnailRenderer_renderMaterial(NativePtr, material));
         }
     }
 }

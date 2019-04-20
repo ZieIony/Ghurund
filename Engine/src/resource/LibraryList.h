@@ -2,7 +2,7 @@
 
 #include "collection/Map.h"
 #include "collection/String.h"
-#include "resource/FilePath.h"
+#include "core/FilePath.h"
 
 namespace Ghurund {
     class Library {

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Entity.h"
-#include "TransformedObject.h"
+#include "TransformedEntity.h"
 
 namespace Ghurund {
-    class Target:public Entity, public TranslatedObject {
+    class Target:public TranslatedEntity {
     public:
     };
 }

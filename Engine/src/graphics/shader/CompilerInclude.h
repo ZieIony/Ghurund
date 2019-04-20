@@ -3,7 +3,7 @@
 #include "d3dcompiler.h"
 #include "collection/String.h"
 #include "core/Logger.h"
-#include "resource/File.h"
+#include "core/File.h"
 
 namespace Ghurund {
     class CompilerInclude:public ID3DInclude {

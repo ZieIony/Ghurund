@@ -1,12 +1,14 @@
 #pragma once
 
 #include "game/entity/EntityList.h"
+#include "game/entity/TransformedEntity.h"
 
 namespace Ghurund {
 
-    class EntityGroup:public Entity {
+    class EntityGroup:public TransformedEntity {
     protected:
         EntityList entities;
+        mutable ::BoundingBox boundingBox;
 
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
         virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
@@ -24,6 +26,23 @@ namespace Ghurund {
         virtual void updateParameters() override {
             for (Entity* e : entities)
                 e->updateParameters();
+        }
+
+        virtual ::BoundingBox* getBoundingBox() const override {
+            bool init = false;
+            for (Entity *e : entities) {
+                if (e->BoundingBox == nullptr)
+                    continue;
+                if (init) {
+                    ::BoundingBox b;
+                    e->BoundingBox->Transform(b, XMLoadFloat4x4(&e->getTransformation()));
+                    boundingBox.CreateMerged(boundingBox, boundingBox, b);
+                } else {
+                    e->BoundingBox->Transform(boundingBox, XMLoadFloat4x4(&e->getTransformation()));
+                    init = true;
+                }
+            }
+            return &boundingBox;
         }
 
         virtual const Ghurund::Type& getType() const override {

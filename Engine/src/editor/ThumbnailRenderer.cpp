@@ -2,7 +2,14 @@
 
 namespace Ghurund {
     const Ghurund::Type& ThumbnailRenderer::TYPE = Ghurund::Type([]() {return ghnew ThumbnailRenderer(); }, "ThumbnailRenderer");
- 
+
+    void ThumbnailRenderer::cameraLookAt(XMFLOAT3 center, XMFLOAT3 extents) {
+        XMFLOAT3 pos;
+        XMStoreFloat3(&pos, XMLoadFloat3(&center) + XMLoadFloat3(&extents) * 2);
+        pos.z *= -1;
+        camera->setPositionTargetUp(pos, center);
+    }
+
     void ThumbnailRenderer::init(ResourceManager& resourceManager, ResourceContext& context, UINT32 width, UINT32 height) {
         this->resourceManager = &resourceManager;
         this->resourceContext = &context;
@@ -33,41 +40,42 @@ namespace Ghurund {
         renderer->init(resourceManager, context);
     }
 
-    void ThumbnailRenderer::render(Model& model, Image*& image) {
-        Mesh* mesh = model.Mesh;
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, XMLoadFloat3(&mesh->BoundingBox.Center) + XMLoadFloat3(&mesh->BoundingBox.Extents) * 2);
-        pos.z *= -1;
-        camera->setPositionTargetUp(pos, mesh->BoundingBox.Center);
-        mesh->release();
+    Status ThumbnailRenderer::render(Entity& entity, Image*& image) {
+        cameraLookAt(entity.BoundingBox->Center, entity.BoundingBox->Extents);
 
         step->Entities.clear();
-        step->Entities.add(&model);
+        step->Entities.add(&entity);
         renderer->render(*frame);
         frame->CommandList.wait();
 
-        renderTarget->capture(*resourceContext, image);
+        return renderTarget->capture(*resourceContext, image);
     }
 
-    void ThumbnailRenderer::render(Mesh& mesh, Image*& image) {
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, XMLoadFloat3(&mesh.BoundingBox.Center) + XMLoadFloat3(&mesh.BoundingBox.Extents) * 2);
-        pos.z *= -1;
-        camera->setPositionTargetUp(pos, mesh.BoundingBox.Center);
-
+    Status ThumbnailRenderer::render(Mesh& mesh, Image*& image) {
         Model* model = ghnew Model();
         model->Mesh = &mesh;
         model->Material = Materials::makeChecker(*resourceManager, *resourceContext);
         model->Valid = true;
 
-        step->Entities.clear();
-        step->Entities.add(model);
-        renderer->render(*frame);
-        frame->CommandList.wait();
+        Status result = render(*model, image);
 
         model->release();
 
-        renderTarget->capture(*resourceContext, image);
+        return result;
     }
 
+    Status ThumbnailRenderer::render(Material& material, Image*& image) {
+        Model* model = Models::makeSphere(*resourceContext, material);
+
+        BoundingOrientedBox boundingBox;
+        XMFLOAT4X4 localTransformation = model->getTransformation();
+        BoundingOrientedBox::CreateFromBoundingBox(boundingBox, *model->BoundingBox);
+        boundingBox.Transform(boundingBox, XMLoadFloat4x4(&localTransformation));
+
+        Status result = render(*model, image);
+
+        model->release();
+
+        return result;
+    }
 }

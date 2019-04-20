@@ -66,7 +66,7 @@ namespace Ghurund {
             return (Type*)resource;
         }
 
-        template<class Type> void loadAsync(ResourceContext & context, const FilePath & path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(path, [this, &context, path, onLoaded, options]() {
                 Resource* resource = get(path);
                 Status loadResult = Status::ALREADY_LOADED;
@@ -86,7 +86,7 @@ namespace Ghurund {
             task->release();
         }
 
-        template<class Type> Type * load(ResourceContext & context, File & file, Status * result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* load(ResourceContext& context, File& file, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Resource* resource = get(file.Path);
             Status loadResult = Status::ALREADY_LOADED;
             if (resource == nullptr) {
@@ -102,7 +102,7 @@ namespace Ghurund {
             return (Type*)resource;
         }
 
-        template<class Type> Type* loadAsync(ResourceContext & context, File & file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* loadAsync(ResourceContext& context, File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options]() {
                 Type* resource = get<Type>(file.Path);
                 Status result = Status::ALREADY_LOADED;
@@ -139,16 +139,16 @@ namespace Ghurund {
             return resource;
         }
 
-        Status save(Resource & resource, ResourceContext & context, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, ResourceContext & context, const FilePath & path, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, ResourceContext & context, File & file, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource & resource, ResourceContext & context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource& resource, ResourceContext& context, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource& resource, ResourceContext& context, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource& resource, ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT);
 
-        Resource * get(const String & fileName);
+        Resource* get(const String& fileName);
 
-        void add(Resource & resource);
+        void add(Resource& resource);
 
-        void remove(const String & fileName);
+        void remove(const String& fileName);
 
         void clear();
 
@@ -162,15 +162,15 @@ namespace Ghurund {
 
         __declspec(property(get = isHotReloadEnabled, put = setHotReloadEnabled)) bool HotReloadEnabled;
 
-        LibraryList & getLibraries() {
+        LibraryList& getLibraries() {
             return libraries;
         }
 
-        __declspec(property(get = getLibraries)) LibraryList & Libraries;
+        __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        const static Ghurund::Type & TYPE;
+        const static Ghurund::Type& TYPE;
 
-        virtual const Ghurund::Type & getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };

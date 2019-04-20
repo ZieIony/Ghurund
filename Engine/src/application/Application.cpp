@@ -11,6 +11,9 @@ namespace Ghurund {
         graphics->init();
         audio = ghnew Ghurund::Audio();
         audio->init();
+        physics = ghnew Ghurund::Physics();
+        physics->init();
+
         timer = ghnew Ghurund::Timer();
         scriptEngine = ghnew Ghurund::ScriptEngine();
         scriptEngine->init(*timer);
@@ -18,6 +21,7 @@ namespace Ghurund {
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
 
         resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine);
+        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine);
 
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
@@ -44,8 +48,11 @@ namespace Ghurund {
 
         delete timer;
         delete parameterManager;
+        delete asyncResourceContext;
         delete resourceContext;
         delete resourceManager;
+
+        delete physics;
         delete audio;
         delete graphics;
         window.uninit();

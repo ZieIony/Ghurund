@@ -18,12 +18,6 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#include "stdlib.h"
-#include "crtdbg.h"
-#endif
-
 #include "windows.h"
 #include "stdio.h"
 #include "Math.h"

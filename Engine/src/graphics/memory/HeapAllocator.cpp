@@ -1,5 +1,6 @@
 #include "HeapAllocator.h"
 #include "graphics/Graphics.h"
+#include "core/allocation/CircularBufferStrategy.h"
 
 namespace Ghurund {
     HeapAllocator::HeapAllocator(Graphics& graphics, memory_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags) {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "collection/Map.h"
-#include "core/Allocator.h"
+#include "core/allocation/AllocationStrategy.h"
 #include "core/Pointer.h"
 
 #include <d3d12.h>

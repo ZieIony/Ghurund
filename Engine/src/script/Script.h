@@ -18,8 +18,10 @@ namespace Ghurund {
         bool built = false;
 
         void finalize() {
-            safeDeleteArray(source);
-            safeDeleteArray(entryPoint);
+            delete[] source;
+            source = nullptr;
+            delete[] entryPoint;
+            entryPoint = nullptr;
             mod = nullptr;
             func = nullptr; // no need to release
             if (ctx) {

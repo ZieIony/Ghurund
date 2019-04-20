@@ -1,8 +1,7 @@
 #pragma once
 
 #include "core/MemoryStream.h"
-#include "game/entity/Entity.h"
-#include "game/entity/TransformedObject.h"
+#include "game/entity/TransformedEntity.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/Parameter.h"
 #include "graphics/Graphics.h"
@@ -10,7 +9,7 @@
 
 namespace Ghurund {
 
-    class Camera: public Entity, public TranslatedObject {
+    class Camera: public TranslatedEntity {
     private:
         XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, facing;

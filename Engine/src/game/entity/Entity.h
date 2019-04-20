@@ -2,7 +2,6 @@
 
 #include "collection/String.h"
 #include "core/NamedObject.h"
-#include "game/entity/TransformedObject.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ParameterManager.h"
 #include "editor/ObservableObject.h"
@@ -29,9 +28,23 @@ namespace Ghurund {
 
         friend class EntityList;
 
+    protected:
+        mutable XMFLOAT4X4 world;
+
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+            memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
+            return Status::OK;
+        }
+
+        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+            stream.write(world);
+            return Status::OK;
+        }
+
     public:
         Entity() {
             id = currentId++;
+            XMStoreFloat4x4(&world, XMMatrixIdentity());
         }
 
         id_t getId() const {
@@ -45,6 +58,12 @@ namespace Ghurund {
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
             return false;
         }
+
+        virtual BoundingBox* getBoundingBox() const {
+            return nullptr;
+        }
+
+        __declspec(property(get = getBoundingBox)) BoundingBox* BoundingBox;
 
         void setSelectable(bool selectable) {
             this->selectable = selectable;
@@ -71,16 +90,23 @@ namespace Ghurund {
             return script;
         }
 
-        inline void setScript(Script * script) {
+        inline void setScript(Script* script) {
             this->script = script;
         }
 
-        __declspec(property(get = getScript, put = setScript)) Script * Script;
+        __declspec(property(get = getScript, put = setScript)) Script* Script;
 
-        inline Entity * getParent() const {
+        inline Entity* getParent() const {
             return parent;
         }
 
-        __declspec(property(get = getParent)) Entity * Parent;
+        __declspec(property(get = getParent)) Entity* Parent;
+
+        virtual XMFLOAT4X4& getTransformation() const {
+            return world;
+        }
+
+        __declspec(property(get = getTransformation)) XMFLOAT4X4& Transformation;
     };
+
 }

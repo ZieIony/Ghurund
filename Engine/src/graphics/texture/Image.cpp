@@ -196,7 +196,7 @@ namespace Ghurund {
         int bytesPerRow = width * pixelSize;
         int imageSize = bytesPerRow * height;
 
-        imageData = ghnew Buffer(ghnew BYTE[imageSize], imageSize);
+        imageData = ghnew Buffer(imageSize);
 
         if (imageConverted) {
             if (FAILED(wicConverter->CopyPixels(0, bytesPerRow, imageSize, imageData->Data)))

@@ -7,7 +7,7 @@
 #include "FileChange.h"
 #include "core/Buffer.h"
 #include "core/WorkerThread.h"
-#include "resource/FilePath.h"
+#include "core/FilePath.h"
 
 namespace Ghurund {
     class DirectoryWatch {

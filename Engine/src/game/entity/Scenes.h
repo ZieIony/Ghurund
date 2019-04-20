@@ -13,7 +13,7 @@ namespace Ghurund {
         static Scene *makeEditor(ResourceManager &resourceManager, ResourceContext &context) {
             Scene *scene = ghnew Scene();
 
-            Material *material = Materials::makeWireframe(resourceManager, context);
+            Material *material = Materials::makeChecker(resourceManager, context);
             if (material) {
                 Model* model = Models::makePlane(context, *material, 5);
                 if (model) {

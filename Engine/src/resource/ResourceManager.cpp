@@ -1,6 +1,5 @@
 #include "ResourceManager.h"
 #include <functional>
-#include "TextResource.h"
 
 namespace Ghurund {
     const wchar_t* const ResourceManager::ENGINE_LIB_NAME = L"engine";

@@ -1,34 +1,28 @@
 #pragma once
 
-#include "game/parameter/ParameterProvider.h"
-#include "resource/ResourceManager.h"
-
-#include <DirectXCollision.h>
+#include "Entity.h"
 
 namespace Ghurund {
 
-    class TranslatedObject:public virtual ObservableObject {
+    class TranslatedEntity:public Entity {
     protected:
         XMFLOAT3 position = {};
-        XMFLOAT4X4 world;
 
-        void loadTransformation(MemoryInputStream& stream) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+            __super::loadInternal(resourceManager, context, workingDir, stream, options);
             memcpy(&position, &stream.read<XMFLOAT3>(), sizeof(position));
-
-            memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
+            return Status::OK;
         }
 
-        void saveTransformation(MemoryOutputStream& stream) const {
+        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+            __super::saveInternal(resourceManager, context, workingDir, stream, options);
             stream.write(position);
-
-            stream.write(world);
+            return Status::OK;
         }
 
     public:
 
-        virtual ~TranslatedObject() = default;
-
-        XMFLOAT4X4 getTransformation() {
+        virtual XMFLOAT4X4 &getTransformation() const override {
             XMStoreFloat4x4(&world, XMMatrixTranslation(position.x, position.y, position.z));
             return world;
         }
@@ -56,25 +50,27 @@ namespace Ghurund {
 #pragma endregion
     };
 
-    class TransformedObject:public TranslatedObject {
+    class TransformedEntity:public TranslatedEntity {
     protected:
         XMFLOAT3 rotation = {}, scale = {1,1,1};
 
-        void loadTransformation(MemoryInputStream& stream) {
+        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+            __super::loadInternal(resourceManager, context, workingDir, stream, options);
             memcpy(&rotation, &stream.read<XMFLOAT3>(), sizeof(rotation));
             memcpy(&scale, &stream.read<XMFLOAT3>(), sizeof(scale));
-            TranslatedObject::loadTransformation(stream);
+            return Status::OK;
         }
 
-        void saveTransformation(MemoryOutputStream& stream) const {
+        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+            __super::saveInternal(resourceManager, context, workingDir, stream, options);
             stream.write(rotation);
             stream.write(scale);
-            TranslatedObject::saveTransformation(stream);
+            return Status::OK;
         }
 
     public:
 
-        XMFLOAT4X4 getTransformation() {
+        virtual XMFLOAT4X4 &getTransformation() const override {
             XMStoreFloat4x4(&world, XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationRollPitchYaw(rotation.y, rotation.x, rotation.z) * XMMatrixTranslation(position.x, position.y, position.z));
             return world;
         }
