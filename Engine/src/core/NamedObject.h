@@ -14,7 +14,7 @@ namespace Ghurund {
             this->name = name;
         }
         
-        virtual UnicodeString &getName() {
+        virtual const UnicodeString &getName() const {
             return name;
         }
 

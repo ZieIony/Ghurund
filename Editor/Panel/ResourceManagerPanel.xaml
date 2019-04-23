@@ -10,7 +10,7 @@
              d:DesignHeight="188.771" d:DesignWidth="325.343">
 	<DockPanel>
 		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<ToolBarPanel Margin="4,0,4,0">
+			<ToolBarPanel>
 				<controls:IconButton Icon="/Resources/addFolder32.png" Click="Button_Click" Style="{StaticResource IconButton_Large}"/>
 			</ToolBarPanel>
 		</WrapPanel>

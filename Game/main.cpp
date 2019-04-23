@@ -1,5 +1,8 @@
 #include "TestApplication.h"
 
+#include "Dxgi1_6.h"
+#include <dxgidebug.h>
+
 #pragma comment(lib, "GhurundEngine.lib")
 #pragma comment(lib, "PhysX_32.lib")
 #pragma comment(lib, "PhysXCommon_32.lib")

@@ -12,6 +12,10 @@ namespace Ghurund {
             return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basic.hlsl");
         }
 
+        static Shader* loadBasicLight(ResourceManager& resourceManager, ResourceContext& context) {
+            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicLight.hlsl");
+        }
+
         static Shader* loadWireframe(ResourceManager & resourceManager, ResourceContext & context) {
             return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/wireframe.hlsl");
         }

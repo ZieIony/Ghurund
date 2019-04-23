@@ -18,7 +18,7 @@
 						<DockPanel>
 							<ghurund:IconButton x:Name="closeButton" ToolTip="Close"
 												Icon="Resources/close32.png" Foreground="{TemplateBinding IconColor}"
-												DockPanel.Dock="Right" Margin="0,0,4,0"/>
+												DockPanel.Dock="Right"/>
 							<ghurund:IconButton x:Name="restoreButton" ToolTip="Restore"
 												Icon="Resources/restore32.png" Foreground="{TemplateBinding IconColor}"
 												DockPanel.Dock="Right"/>

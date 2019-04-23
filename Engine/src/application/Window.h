@@ -14,7 +14,7 @@
 namespace Ghurund {
     class Window: public ParameterProvider, public NamedObject, public Object {
     private:
-        static const tchar *WINDOW_CLASS_NAME;
+        static const tchar* WINDOW_CLASS_NAME;
 
         String title;
         WNDCLASSEX windowClass;
@@ -23,10 +23,10 @@ namespace Ghurund {
         bool visible;
         D3D12_VIEWPORT viewport;
         D3D12_RECT scissorRect;
-        unsigned int width, height;
+        XMINT2 size;
 
         Array<Parameter*> parameters;
-        Parameter *parameterViewportSize = nullptr;
+        Parameter* parameterViewportSize = nullptr;
 
     public:
 
@@ -38,36 +38,36 @@ namespace Ghurund {
             uninit();
         }
 
-        virtual void initParameters(ParameterManager &parameterManager) override {
-            if(parameterViewportSize!=nullptr)
+        virtual void initParameters(ParameterManager& parameterManager) override {
+            if (parameterViewportSize != nullptr)
                 return;
 
             parameters[0] = parameterViewportSize = parameterManager.add(Parameter::VIEWPORT_SIZE, ParameterType::FLOAT2);
         }
 
         virtual void updateParameters() override {
-            parameterViewportSize->setValue(&XMFLOAT2((float)width, (float)height));
+            parameterViewportSize->setValue(&XMFLOAT2((float)size.x, (float)size.y));
         }
 
-        virtual Array<Parameter*> &getParameters() {
+        virtual Array<Parameter*>& getParameters() {
             return parameters;
         }
 
         void init(HWND handle);
-        void init(Settings &settings, WindowProc &windowProc);
+        void init(Settings& settings, WindowProc& windowProc);
 
         void uninit();
 
-        inline void setTitle(const String &title) {
+        inline void setTitle(const String& title) {
             this->title = title;
             SetWindowText(handle, title);
         }
 
-        inline const String &getTitle()const {
+        inline const String& getTitle()const {
             return title;
         }
 
-        __declspec(property(put = setTitle, get = getTitle)) String &Title;
+        __declspec(property(put = setTitle, get = getTitle)) String& Title;
 
         inline HWND getHandle() {
             return handle;
@@ -86,29 +86,53 @@ namespace Ghurund {
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
-        D3D12_VIEWPORT &getViewport() {
+        D3D12_VIEWPORT& getViewport() {
             return viewport;
         }
 
-        D3D12_RECT &getScissorRect() {
+        D3D12_RECT& getScissorRect() {
             return scissorRect;
         }
 
-        inline unsigned int getWidth() {
-            return width;
+        inline const XMINT2& getSize() const {
+            return size;
         }
 
-        __declspec(property(get = getWidth)) unsigned int Width;
-
-        inline unsigned int getHeight() {
-            return height;
+        inline void setSize(const XMINT2& size) {
+            this->size = size;
+            SetWindowPos(handle, HWND_TOPMOST, 0, 0, size.x, size.y, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
+            updateSize();
         }
 
-        __declspec(property(get = getHeight)) unsigned int Height;
+        inline void setSize(unsigned int w, unsigned int h) {
+            size = XMINT2(w, h);
+            SetWindowPos(handle, HWND_TOPMOST, 0, 0, size.x, size.y, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
+            updateSize();
+        }
+
+        __declspec(property(get = getSize, put = setSize)) XMINT2& Size;
+
+        inline unsigned int getWidth() const {
+            return size.x;
+        }
+
+        inline void setWidth(unsigned int val) {
+            size.x = val;
+        }
+
+        __declspec(property(get = getWidth, put = setWidth)) unsigned int Width;
+
+        inline unsigned int getHeight() const {
+            return size.y;
+        }
+
+        inline void setHeight(unsigned int val) {
+            size.y = val;
+        }
+
+        __declspec(property(get = getHeight, put = setHeight)) unsigned int Height;
 
         void updateSize();
-
-        void setSize(unsigned int width, unsigned int height);
 
         const static Ghurund::Type& TYPE;
 

@@ -23,6 +23,11 @@ DefaultPixel vertexMain(DefaultVertex input) {
 }
 
 float4 pixelMain(DefaultPixel input): SV_Target{
-    float4 color = diffuseTexture.Sample(linearSampler, frac(input.texCoord*5));
-    return color;
+    float3 lightDir = float3(0, 0, -1);
+    float4 lightColor = float4(1, 1, 1, 1);
+
+    float lightIntensity = getDiffuseIntensity(input.normal, lightDir);
+
+    float4 color = diffuseTexture.Sample(linearSampler, input.texCoord);
+    return color * lightColor * lightIntensity;
 }

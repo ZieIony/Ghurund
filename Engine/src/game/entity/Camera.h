@@ -13,7 +13,7 @@ namespace Ghurund {
     private:
         XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, facing;
-        XMFLOAT2 screenSize;
+        XMINT2 screenSize;
         float fov, zNear, zFar, dist;
         bool pers;
 
@@ -27,7 +27,7 @@ namespace Ghurund {
 
     protected:
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
 
@@ -69,40 +69,42 @@ namespace Ghurund {
         __declspec(property(get = getDirection)) XMFLOAT3& Direction;
 
 
-        inline const XMFLOAT2& getScreenSize() const {
+        inline const XMINT2& getScreenSize() const {
             return screenSize;
         }
 
-        inline void setScreenSize(const XMFLOAT2& screenSize) {
+        inline void setScreenSize(const XMINT2& screenSize) {
             this->screenSize = screenSize;
         }
 
         inline void setScreenSize(unsigned int w, unsigned int h) {
-            screenSize = XMFLOAT2((float)w, (float)h);
+            screenSize = XMINT2(w, h);
         }
 
+        __declspec(property(get = getScreenSize, put = setScreenSize)) XMINT2& ScreenSize;
+
         inline unsigned int getWidth() const {
-            return (unsigned int)screenSize.x;
+            return screenSize.x;
         }
 
         inline void setWidth(unsigned int val) {
-            screenSize.x = (float)val;
+            screenSize.x = val;
         }
 
         __declspec(property(get = getWidth, put = setWidth)) unsigned int Width;
 
         inline unsigned int getHeight() const {
-            return (unsigned int)screenSize.y;
+            return screenSize.y;
         }
 
         inline void setHeight(unsigned int val) {
-            screenSize.y = (float)val;
+            screenSize.y = val;
         }
 
         __declspec(property(get = getHeight, put = setHeight)) unsigned int Height;
 
         inline float getAspect() const {
-            return screenSize.x / screenSize.y;
+            return (float)screenSize.x / (float)screenSize.y;
         }
 
         __declspec(property(get = getAspect)) float Aspect;
@@ -162,7 +164,7 @@ namespace Ghurund {
         void pan(float x, float y);
         void zoom(float z);
 
-        void defaultLookAt(Entity * entity) {
+        void defaultLookAt(Entity* entity) {
 
         }
 
@@ -171,8 +173,8 @@ namespace Ghurund {
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> & Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep & step, XMFLOAT4X4 & transformation) override {}
+        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override {}
     };
 }

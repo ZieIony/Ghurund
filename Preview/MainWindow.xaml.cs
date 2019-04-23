@@ -7,6 +7,7 @@ using Ghurund.Managed.Core;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Graphics.Shader;
+using Ghurund.Managed.Physics;
 using Ghurund.Managed.Resource;
 using Ghurund.Managed.Script;
 
@@ -20,6 +21,8 @@ namespace Ghurund.Preview {
         readonly ScriptEngine scriptEngine;
         readonly ResourceContext resourceContext;
         readonly ResourceManager resourceManager;
+        readonly Physics physics;
+        readonly Timer timer;
 
         Scene scene;
 
@@ -39,12 +42,17 @@ namespace Ghurund.Preview {
             string filePath = args[1];
 
             graphics = new Graphics();
+            graphics.Init();
             audio = new Audio();
             parameterManager = new ParameterManager();
+            timer = new Timer();
             scriptEngine = new ScriptEngine();
+            scriptEngine.Init(timer);
+            physics = new Physics();
+            physics.Init();
 
             resourceManager = new ResourceManager();
-            resourceContext = new ResourceContext(graphics, audio, parameterManager, scriptEngine);
+            resourceContext = new ResourceContext(graphics, audio, parameterManager, scriptEngine, physics);
             sceneView.Init(resourceManager, resourceContext);
 
             loadFile(filePath);
@@ -85,10 +93,12 @@ namespace Ghurund.Preview {
             resourceManager.Dispose();
             resourceContext.Dispose();
 
+            timer.Dispose();
             graphics.Dispose();
             audio.Dispose();
             parameterManager.Dispose();
             scriptEngine.Dispose();
+            physics.Dispose();
 
             Graphics.reportLiveObjects();
         }

@@ -11,7 +11,7 @@
 	<Grid>
 		<DockPanel Name="content">
 			<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-				<ToolBarPanel Margin="4,0,4,0" Orientation="Horizontal">
+				<ToolBarPanel Orientation="Horizontal">
 					<controls:IconButton Icon="/Resources/light32.png"
 									 Style="{StaticResource IconButton_Large}"
 									 ToolTip="Add a light" Click="addLight_Click"/>

@@ -10,7 +10,8 @@ namespace Ghurund.Managed.Resource {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Graphics.Graphics graphics,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Audio.Audio audio,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Game.ParameterManager parameterManager,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ScriptEngine scriptEngine);
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ScriptEngine scriptEngine,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Physics.Physics physics);
 
 
         public Graphics.Graphics Graphics { get; set; }
@@ -21,12 +22,15 @@ namespace Ghurund.Managed.Resource {
 
         public ScriptEngine ScriptEngine { get; set; }
 
-        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager, ScriptEngine scriptEngine) {
-            NativePtr = ResourceContext_new(graphics, audio, parameterManager, scriptEngine);
+        public Physics.Physics Physics { get; set; }
+
+        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager, ScriptEngine scriptEngine, Physics.Physics physics) {
+            NativePtr = ResourceContext_new(graphics, audio, parameterManager, scriptEngine, physics);
             Graphics = graphics;
             Audio = audio;
             ParameterManager = parameterManager;
             ScriptEngine = scriptEngine;
+            Physics = physics;
         }
     }
 }

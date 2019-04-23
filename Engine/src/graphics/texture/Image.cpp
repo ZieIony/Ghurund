@@ -311,7 +311,7 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
 
-            WICRect rect = {0, 0, width, height};
+            WICRect rect = {0, 0, (int)width, (int)height};
             hr = frame->WriteSource(FC.Get(), &rect);
             if (FAILED(hr)) {
                 return Status::CALL_FAIL;

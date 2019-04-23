@@ -21,7 +21,7 @@
 	</UserControl.Resources>
 	<wpf:DockPanel>
 		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
+			<wpf:ToolBarPanel Orientation="Horizontal">
 				<controls:IconButton Icon="../Resources/build32.png"
 									 Name="build" ToolTip="Build shader"
 									 Style="{StaticResource IconButton_Large}"

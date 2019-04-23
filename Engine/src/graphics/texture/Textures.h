@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Texture.h"
+#include "core/ScopedPointer.h"
 
 namespace Ghurund {
     class Textures {
@@ -9,10 +10,13 @@ namespace Ghurund {
 
     public:
         static Texture* makeChecker(ResourceManager& resourceManager, ResourceContext& context) {
-            Image* image = resourceManager.load<Image>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/checker.png");
-            Texture * texture = ghnew Texture();
+            return makeFromImage(resourceManager, context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/checker.png");
+        }
+
+        static Texture* makeFromImage(ResourceManager& resourceManager, ResourceContext& context, const FilePath &imagePath) {
+            ScopedPointer<Image> image = resourceManager.load<Image>(context, imagePath);
+            Texture* texture = ghnew Texture();
             texture->init(context, *image);
-            image->release();
             return texture;
         }
     };

@@ -38,7 +38,8 @@ namespace Ghurund {
 
     public:
         ~ScriptEngine() {
-            engine->ShutDownAndRelease();
+            if(engine)
+                engine->ShutDownAndRelease();
         }
 
         static void log(const std::string &str) {

@@ -34,7 +34,7 @@ namespace Ghurund {
                 new (v + i)Value(t1[i]);
         }
 
-        List(std::initializer_list<Value> list) {
+        List(const std::initializer_list<Value> list) {
             size = initial = capacity = list.size();
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             int i = 0;

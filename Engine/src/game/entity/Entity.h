@@ -33,11 +33,13 @@ namespace Ghurund {
 
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
             memcpy(&world, &stream.read<XMFLOAT4X4>(), sizeof(world));
+            Name = stream.readUnicode();
             return Status::OK;
         }
 
         virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
             stream.write(world);
+            stream.writeUnicode(Name);
             return Status::OK;
         }
 

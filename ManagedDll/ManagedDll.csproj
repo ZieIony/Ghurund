@@ -84,6 +84,7 @@
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="List.cs" />
     <Compile Include="Graphics\Material.cs" />
+    <Compile Include="Physics\Physics.cs" />
     <Compile Include="PipelineState.cs" />
     <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Graphics.cs" />

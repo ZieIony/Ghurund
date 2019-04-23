@@ -5,6 +5,7 @@
 #include "game/parameter/ParameterManager.h"
 #include "graphics/CommandList.h"
 #include "script/ScriptEngine.h"
+#include "physics/Physics.h"
 
 #include <wincodec.h>
 
@@ -17,10 +18,11 @@ namespace Ghurund {
         IWICImagingFactory* wicFactory;
         ParameterManager& parameterManager;
         ScriptEngine& scriptEngine;
+        Physics& physics;
 
     public:
-        ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine)
-            : graphics(graphics), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine) {
+        ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics)
+            : graphics(graphics), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics) {
             commandList = ghnew Ghurund::CommandList();
             commandList->init(graphics, graphics.DirectQueue);
             commandList->Name = _T("loading context's CommandList");
@@ -67,6 +69,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
+
+        Physics& getPhysics() {
+            return physics;
+        }
+
+        __declspec(property(get = getPhysics)) Physics& Physics;
 
         const static Ghurund::Type& TYPE;
 

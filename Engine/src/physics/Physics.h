@@ -34,10 +34,31 @@ namespace Ghurund {
 
         Status init();
 
+        PxPhysics& get() {
+            return *physics;
+        }
+
         const static Ghurund::Type& TYPE;
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };
+
+    template<class Type>
+    void setPointer2(Type *&pointer, Type *pointer2) {
+        if(pointer2!=nullptr)
+            pointer2->acquireReference();
+        if(pointer!=nullptr)
+            pointer->release();
+        pointer = pointer2;
+    }
+
+    template<class Type>
+    void safeRelease2(Type *&pointer) {
+        if(pointer!=nullptr) {
+            pointer->release();
+            pointer = nullptr;
+        }
+    }
 }

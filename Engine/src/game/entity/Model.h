@@ -9,30 +9,37 @@
 #include "graphics/RenderingStatistics.h"
 #include "resource/ResourceManager.h"
 
+#include <PxShape.h>
+
+using namespace physx;
+
 namespace Ghurund {
     class Model: public TransformedEntity {
     private:
-        Mesh *mesh = nullptr;
-        Material *material = nullptr;
+        Mesh* mesh = nullptr;
+        Material* material = nullptr;
+        PxShape* shape = nullptr;
 
         void finalize() {
             safeRelease(mesh);
             safeRelease(material);
+            safeRelease2(shape);
         }
 
     protected:
         List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const override;
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
 
-        Model(){}
+        Model() {}
 
-        Model(Mesh *mesh, Material *material) {
+        Model(Mesh* mesh, Material* material, PxShape* shape = nullptr) {
             setPointer(this->mesh, mesh);
             setPointer(this->material, material);
+            setPointer2(this->shape, shape);
         }
 
         ~Model() {
@@ -44,31 +51,41 @@ namespace Ghurund {
             __super::invalidate();
         }
 
-        Mesh *getMesh() {
+        Mesh* getMesh() {
             return mesh;
         }
 
-        void setMesh(Mesh *mesh) {
+        void setMesh(Mesh* mesh) {
             this->mesh = mesh;
         }
 
-        __declspec(property(get = getMesh, put = setMesh)) Mesh *Mesh;
+        __declspec(property(get = getMesh, put = setMesh)) Mesh* Mesh;
 
-        Material *getMaterial() {
+        Material* getMaterial() {
             return material;
         }
 
-        void setMaterial(Material *material) {
+        void setMaterial(Material* material) {
             setPointer(this->material, material);
         }
 
-        __declspec(property(get = getMaterial, put = setMaterial)) Material *Material;
+        __declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
+
+        PxShape* getShape() {
+            return shape;
+        }
+
+        void setShape(PxShape* shape) {
+            setPointer2(this->shape, shape);
+        }
+
+        __declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
         virtual ::BoundingBox* getBoundingBox() const override {
             return &mesh->BoundingBox;
         }
 
-        virtual void initParameters(ParameterManager &parameterManager) override {
+        virtual void initParameters(ParameterManager& parameterManager) override {
             material->initParameters(parameterManager);
         }
 
@@ -76,41 +93,41 @@ namespace Ghurund {
             material->updateParameters();
         }
 
-        virtual Array<Parameter*> &getParameters() {
+        virtual Array<Parameter*>& getParameters() {
             return material->Parameters;
         }
 
         virtual bool isValid() const override {
-            return material!=nullptr&&material->Valid&&mesh!=nullptr&&mesh->Valid&&__super::Valid;
+            return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid && __super::Valid;
         }
 
-        void draw(Graphics &graphics, CommandList &commandList) {
+        void draw(Graphics& graphics, CommandList& commandList) {
             material->set(graphics, commandList);
             mesh->draw(commandList);
         }
 
-        void draw(Graphics &graphics, CommandList &commandList, RenderingStatistics &statistics) {
-            if(material->set(graphics, commandList))
+        void draw(Graphics& graphics, CommandList& commandList, RenderingStatistics& statistics) {
+            if (material->set(graphics, commandList))
                 statistics.materialChanges++;
             mesh->draw(commandList);
             statistics.modelsRendered++;
-            statistics.trianglesRendered += mesh->IndexCount/3;
+            statistics.trianglesRendered += mesh->IndexCount / 3;
         }
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::MODEL;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MODEL};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::MODEL};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) override;
+        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override;
 
-        virtual bool intersects(XMFLOAT3 &pos, XMFLOAT3 &dir, float &dist) {
+        virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
             return mesh->intersects(pos, dir, dist);
         }
 

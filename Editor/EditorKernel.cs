@@ -6,6 +6,7 @@ using Ghurund.Managed.Audio;
 using Ghurund.Managed.Editor;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
+using Ghurund.Managed.Physics;
 using Ghurund.Managed.Resource;
 using Ghurund.Managed.Script;
 using Ninject;
@@ -55,7 +56,12 @@ namespace Ghurund.Editor {
                 return renderer;
             }).InSingletonScope();
             kernel.Bind<ResourceContext>().ToMethod(context => {
-                return new ResourceContext(context.Kernel.Get<Graphics>(), context.Kernel.Get<Audio>(), context.Kernel.Get<ParameterManager>(), context.Kernel.Get<ScriptEngine>());
+                return new ResourceContext(
+                    context.Kernel.Get<Graphics>(),
+                    context.Kernel.Get<Audio>(),
+                    context.Kernel.Get<ParameterManager>(),
+                    context.Kernel.Get<ScriptEngine>(),
+                    context.Kernel.Get<Physics>());
             }).InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {
                 return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME, new Type[] { typeof(SceneEditorState) }) ?? new EditorSettings();
@@ -66,6 +72,7 @@ namespace Ghurund.Editor {
                 scriptEngine.Init(context.Kernel.Get<Managed.Core.Timer>());
                 return scriptEngine;
             }).InSingletonScope();
+            kernel.Bind<Physics>().ToSelf().InSingletonScope();
         }
 
         public static void Inject(object target) {

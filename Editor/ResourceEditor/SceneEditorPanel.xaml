@@ -11,7 +11,7 @@
              d:DesignHeight="254" d:DesignWidth="511">
 	<wpf:DockPanel>
 		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<wpf:ToolBarPanel Orientation="Horizontal" Margin="4,0,4,0">
+			<wpf:ToolBarPanel Orientation="Horizontal">
 				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraOrbit32.png" IsChecked="True" Name="cameraOrbit" Style="{StaticResource IconRadioButton_Large}" Checked="Orbit_Checked"/>
 				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraRotate32.png" Name="cameraRotate" Style="{StaticResource IconRadioButton_Large}" Checked="Rotate_Checked"/>
 				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraPan32.png" Name="cameraPan" Style="{StaticResource IconRadioButton_Large}" Checked="Pan_Checked"/>

@@ -31,48 +31,56 @@ namespace Ghurund {
             // TODO: release all lights
         }
 
-        PointerList<Entity*> & getEntities() {
+        PointerList<Entity*>& getEntities() {
             return entities;
         }
 
-        __declspec(property(get = getEntities)) PointerList<Entity*> & Entities;
+        __declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
 
-        void addLight(Light & light) {
+        void addLight(Light& light) {
             lights.add(&light);
         }
 
-        void addModel(GlobalEntity<Model> * model) {
+        void addModel(GlobalEntity<Model>* model) {
             models.add(model);
         }
 
-        void setCamera(Camera * camera) {
+        void setCamera(Camera* camera) {
             setPointer(this->camera, camera);
         }
 
-        __declspec(property(put = setCamera)) Camera * Camera;
+        __declspec(property(put = setCamera)) Camera* Camera;
 
-        void setMaterial(Material * material) {
+        void setMaterial(Material* material) {
             setPointer(this->material, material);
         }
 
-        __declspec(property(put = setMaterial)) Material * Material;
+        __declspec(property(put = setMaterial)) Material* Material;
 
-        void setInvalidMaterial(Ghurund::Material * material) {
-            setPointer(this->material, material);
+        void setInvalidMaterial(Ghurund::Material* invalidMaterial) {
+            setPointer(this->invalidMaterial, invalidMaterial);
         }
 
-        __declspec(property(put = setInvalidMaterial)) Ghurund::Material * InvalidMaterial;
+        __declspec(property(put = setInvalidMaterial)) Ghurund::Material* InvalidMaterial;
 
         void cull();
 
-        Model * pick(XMINT2 & mousePos);
+        Model* pick(XMINT2& mousePos);
 
-        void initParameters(ParameterManager & parameterManager) {
+        void initParameters(ParameterManager& parameterManager) {
             parameterWorld = parameterManager.get(Parameter::WORLD);
             parameterWorldIT = parameterManager.get(Parameter::WORLD_IT);
+            if (camera)
+                camera->initParameters(parameterManager);
+            if (material)
+                material->initParameters(parameterManager);
+            if (invalidMaterial)
+                invalidMaterial->initParameters(parameterManager);
+            for (Entity* entity : entities)
+                entity->initParameters(parameterManager);
         }
 
-        void draw(Graphics & graphics, CommandList & commandList, RenderingStatistics & stats);
+        void draw(Graphics& graphics, CommandList& commandList, RenderingStatistics& stats);
 
         void clear() {
             lights.clear();

@@ -16,7 +16,7 @@ namespace Ghurund {
     }
 
     Camera::Camera():parameters(Array<Parameter*>(9)) {
-        screenSize = XMFLOAT2(640, 480);
+        screenSize = {640, 480};
         fov = XM_PI / 4;
         zNear = 0.1f;
         zFar = 10000.0f;
@@ -28,7 +28,7 @@ namespace Ghurund {
         rebuild();
 
         float rotation = 0.0f;
-        setPositionTargetUp(XMFLOAT3(sin(rotation)*600, 200, cos(rotation)*600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+        setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
 
         Name = _T("camera");
     }
@@ -62,15 +62,15 @@ namespace Ghurund {
         parameterViewProjection->setValue(&viewProj);
     }
 
-    void Camera::calcMouseRay(const XMINT2 & mousePos, XMFLOAT3 & rayPos, XMFLOAT3 & rayDir)const {
+    void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
         XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 0)),
-            0, 0, screenSize.x, screenSize.y, 0, 1,
+            0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
             XMLoadFloat4x4(&proj),
             XMLoadFloat4x4(&view),
             XMMatrixIdentity());
 
         XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 1)),
-            0, 0, screenSize.x, screenSize.y, 0, 1,
+            0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
             XMLoadFloat4x4(&proj),
             XMLoadFloat4x4(&view),
             XMMatrixIdentity());
@@ -79,11 +79,11 @@ namespace Ghurund {
         XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
     }
 
-    void Camera::setPositionTargetUp(const XMFLOAT3 & pos, const XMFLOAT3 & target, const XMFLOAT3 & up) {
+    void Camera::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
         this->position = pos;
         this->target = target;
 
-        XMVECTOR dv = XMLoadFloat3(&target)-XMLoadFloat3(&pos);
+        XMVECTOR dv = XMLoadFloat3(&target) - XMLoadFloat3(&pos);
 
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
@@ -95,10 +95,10 @@ namespace Ghurund {
         notifyObjectChanged();
     }
 
-    void Camera::setPositionDirectionUp(const XMFLOAT3 & pos, const XMFLOAT3 & dir, const XMFLOAT3 & up) {
+    void Camera::setPositionDirectionUp(const XMFLOAT3& pos, const XMFLOAT3& dir, const XMFLOAT3& up) {
         this->position = pos;
         XMVECTOR dv = XMLoadFloat3(&dir);
-        XMStoreFloat3(&target, XMLoadFloat3(&pos)+dv);
+        XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv);
 
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
@@ -110,13 +110,13 @@ namespace Ghurund {
         notifyObjectChanged();
     }
 
-    void Camera::setPositionDistanceRotation(const XMFLOAT3 & pos, float dist, float yaw, float pitch, float roll) {
+    void Camera::setPositionDistanceRotation(const XMFLOAT3& pos, float dist, float yaw, float pitch, float roll) {
         this->position = pos;
         this->dist = dist;
         setRotation(yaw, pitch, roll);
     }
 
-    void Camera::setTargetDistanceOrbit(const XMFLOAT3 &target, float dist, float yaw, float pitch, float roll) {
+    void Camera::setTargetDistanceOrbit(const XMFLOAT3& target, float dist, float yaw, float pitch, float roll) {
         this->target = target;
         this->dist = dist;
         setOrbit(yaw, pitch, roll);
@@ -126,7 +126,7 @@ namespace Ghurund {
         XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
         dv = XMVector3Transform(dv, rotation);
-        XMStoreFloat3(&target, XMLoadFloat3(&Position)+dv);
+        XMStoreFloat3(&target, XMLoadFloat3(&Position) + dv);
         XMStoreFloat3(&dir, XMVector4Normalize(dv));
         XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
         XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
@@ -159,7 +159,7 @@ namespace Ghurund {
     void Camera::pan(float x, float y) {
         XMVECTOR rv = XMLoadFloat3(&right);
         XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&target, XMLoadFloat3(&target)+rv*x+uv*y);
+        XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
         XMStoreFloat3(&position, XMLoadFloat3(&position) + rv * x + uv * y);
         notifyObjectChanged();
     }
@@ -169,13 +169,13 @@ namespace Ghurund {
         XMVECTOR pv = XMLoadFloat3(&position);
         XMVECTOR pv2 = pv + dv * z;
         XMStoreFloat3(&position, pv2);
-        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target)-pv2));
+        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
         notifyObjectChanged();
     }
 
-    Status Camera::loadInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath & workingDir, MemoryInputStream & stream, LoadOption options) {
+    Status Camera::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         __super::loadInternal(resourceManager, context, workingDir, stream, options);
- 
+
         memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
         memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
         memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
@@ -193,7 +193,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Camera::saveInternal(ResourceManager & resourceManager, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status Camera::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         __super::saveInternal(resourceManager, context, workingDir, stream, options);
 
         stream.writeBytes(&target, sizeof(target));

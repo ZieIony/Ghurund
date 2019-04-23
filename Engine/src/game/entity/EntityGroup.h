@@ -11,11 +11,15 @@ namespace Ghurund {
         mutable ::BoundingBox boundingBox;
 
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
 
-        EntityGroup():entities(*this) {
+        EntityGroup():entities(*this) {}
+
+        EntityGroup(const std::initializer_list<Entity*> list):entities(*this) {
+            for (auto it = list.begin(); it != list.end(); ++it)
+                entities.add(*it);
         }
 
         virtual void initParameters(ParameterManager& parameterManager) override {
@@ -30,7 +34,7 @@ namespace Ghurund {
 
         virtual ::BoundingBox* getBoundingBox() const override {
             bool init = false;
-            for (Entity *e : entities) {
+            for (Entity* e : entities) {
                 if (e->BoundingBox == nullptr)
                     continue;
                 if (init) {
@@ -45,17 +49,13 @@ namespace Ghurund {
             return &boundingBox;
         }
 
-        virtual const Ghurund::Type& getType() const override {
-            return Type::SCENE;
-        }
-
         EntityList& getEntities() {
             return entities;
         }
 
-        __declspec(property(get = getEntities)) EntityList & Entities;
+        __declspec(property(get = getEntities)) EntityList& Entities;
 
-        Entity * findEntity(String & name) {
+        Entity* findEntity(String& name) {
             for (Entity* entity : entities) {
                 if (entity->Name == name)
                     return entity;
@@ -64,7 +64,7 @@ namespace Ghurund {
             return nullptr;
         }
 
-        List<Entity*>* findEntities(String & name) {
+        List<Entity*>* findEntities(String& name) {
             List<Entity*>* list = ghnew List<Entity*>();
             for (Entity* entity : entities) {
                 if (entity->Name == name)
@@ -74,7 +74,7 @@ namespace Ghurund {
             return list;
         }
 
-        Entity* findEntity(Ghurund::Type & type) {
+        Entity* findEntity(Ghurund::Type& type) {
             for (Entity* entity : entities) {
                 if (entity->Type == type)
                     return entity;
@@ -83,7 +83,7 @@ namespace Ghurund {
             return nullptr;
         }
 
-        List<Entity*>* findEntities(Ghurund::Type & type) {
+        List<Entity*>* findEntities(Ghurund::Type& type) {
             List<Entity*>* list = ghnew List<Entity*>();
             for (Entity* entity : entities) {
                 if (entity->Type == type)
@@ -93,7 +93,7 @@ namespace Ghurund {
             return list;
         }
 
-        virtual void flatten(RenderStep & step, XMFLOAT4X4 & transformation) override {
+        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override {
             for (size_t i = 0; i < Entities.Size; i++) {
                 Entity* entity = Entities[i];
                 entity->flatten(step, transformation);

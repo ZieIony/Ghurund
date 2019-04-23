@@ -6,6 +6,10 @@
 #include "graphics/mesh/ConeMesh.h"
 #include "graphics/shader/Shader.h"
 
+#include <PxMaterial.h>
+
+using namespace physx;
+
 namespace Ghurund {
     class Models {
     private:
@@ -14,8 +18,9 @@ namespace Ghurund {
     public:
         static Model* makeCube(ResourceContext& context, Material& material);
         static Model* makePlane(ResourceContext& context, Material& material, unsigned int detail = 1);
-        static Model* makeSphere(ResourceContext& context, Material& material);
+        static Model* makeSphere(ResourceContext& context, Material& material, const PxMaterial *properties = nullptr);
         static Model* makeCone(ResourceContext& context, Material& material);
         static Model* makeQuad(ResourceContext& context, Material& material);
+        static Model* makeSelection(ResourceManager& resourceManager, ResourceContext& context, Model& model);
     };
 }
