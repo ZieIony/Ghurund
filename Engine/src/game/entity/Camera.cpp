@@ -15,7 +15,7 @@ namespace Ghurund {
         XMStoreFloat4x4(&viewProj, view2 * proj2);
     }
 
-    Camera::Camera():parameters(Array<Parameter*>(9)) {
+    Camera::Camera():parameters(Array<Parameter*>(10)) {
         screenSize = {640, 480};
         fov = XM_PI / 4;
         zNear = 0.1f;
@@ -38,20 +38,24 @@ namespace Ghurund {
             return;
 
         int i = 0;
-        parameters[i++] = parameterDirection = parameterManager.add(Parameter::DIRECTION, ParameterType::FLOAT3);
-        parameters[i++] = parameterUp = parameterManager.add(Parameter::UP, ParameterType::FLOAT3);
-        parameters[i++] = parameterRight = parameterManager.add(Parameter::RIGHT, ParameterType::FLOAT3);
-        parameters[i++] = parameterFov = parameterManager.add(Parameter::FOV, ParameterType::FLOAT);
-        parameters[i++] = parameterZNear = parameterManager.add(Parameter::ZNEAR, ParameterType::FLOAT);
-        parameters[i++] = parameterZFar = parameterManager.add(Parameter::ZFAR, ParameterType::FLOAT);
-        parameters[i++] = parameterView = parameterManager.add(Parameter::VIEW, ParameterType::MATRIX);
-        parameters[i++] = parameterProjection = parameterManager.add(Parameter::PROJECTION, ParameterType::MATRIX);
-        parameters[i++] = parameterViewProjection = parameterManager.add(Parameter::VIEW_PROJECTION, ParameterType::MATRIX);
+        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_DIRECTION);
+        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_POSITION);
+        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_UP);
+        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_RIGHT);
+
+        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters.get(Parameter::FOV);
+        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters.get(Parameter::ZNEAR);
+        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters.get(Parameter::ZFAR);
+
+        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters.get(Parameter::VIEW);
+        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters.get(Parameter::PROJECTION);
+        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters.get(Parameter::VIEW_PROJECTION);
     }
 
     void Camera::updateParameters() {
         rebuild();
         parameterDirection->setValue(&dir);
+        parameterPosition->setValue(&position);
         parameterUp->setValue(&up);
         parameterRight->setValue(&right);
         parameterFov->setValue(&fov);

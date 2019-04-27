@@ -70,8 +70,8 @@ namespace Ghurund {
         bool set(Graphics &graphics, CommandList &commandList) {
             bool changed = shader->set(graphics, commandList);
 
-            if(textures.Size>0) // TODO: handle textures properly
-                textures.getValue(0)->set(commandList);
+            //if(textures.Size>0) // TODO: handle textures properly
+            //    textures.getValue(0)->set(commandList);
 
             return changed;
         }

@@ -59,6 +59,7 @@ public:
     virtual void onInit() override {
         camera = ghnew Ghurund::Camera();
         camera->setPositionTargetUp({0, 50, -500}, {0, 50, 0});
+        camera->initParameters(app.ParameterManager);
 
         cameraController = ghnew CameraController(*camera, &app.Window);
 
@@ -66,22 +67,22 @@ public:
         checkerMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
 
         File sceneFile("test/test.scene");
-        if (sceneFile.Exists) {
-            app.ResourceManager.loadAsync<Ghurund::Scene>(app.AsyncResourceContext, "test/test.scene", [&](Ghurund::Scene * scene, Status result) {
+        /*if (sceneFile.Exists) {
+            app.ResourceManager.loadAsync<Ghurund::Scene>(app.AsyncResourceContext, "test/test.scene", [&](Ghurund::Scene* scene, Status result) {
                 if (result != Status::OK)
                     return;
                 scene->initParameters(app.ParameterManager);
                 sceneStep.Entities.add(scene);
                 scene->release();
                 });
-        } else {
-            ScopedPointer<Scene> scene = makeScene();
-            sceneStep.Entities.add(scene);
+        } else {*/
+        ScopedPointer<Scene> scene = makeScene();
+        sceneStep.Entities.add(scene);
 
-            Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
-            if (result != Status::OK)
-                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
-        }
+        /*Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+        if (result != Status::OK)
+            Logger::log(LogType::WARNING, _T("failed to save scene\n"));
+    //}*/
 
         editorStep.Camera = camera;
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
@@ -114,11 +115,14 @@ public:
                     mesh->save(app.ResourceManager, app.ResourceContext, file);
             }
 
-            ScopedPointer<Texture> texture = Textures::makeFromImage(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-            if (texture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceManager, app.ResourceContext, *texture);
+            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
+            if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
+                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceManager, app.ResourceContext, *diffuseTexture, *specularTexture);
 
+                //lamborghini = Models::makeSphere(app.ResourceContext, *material);
                 lamborghini = ghnew Model(mesh, material);
+                //lamborghini->Scale = {100, 100, 100};
                 lamborghini->Name = "lamborghini";
                 lamborghini->Valid = true;
             }
@@ -134,9 +138,19 @@ public:
             cone->Scale = {50, 100, 50};
         }
 
+        ScopedPointer<Model> light;
+        {
+            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceManager, app.ResourceContext);
+            light = Models::makeSphere(app.ResourceContext, *material);
+
+            light->Name = "light";
+            light->Position = {200, 500, -500};
+            light->Scale = {20, 20, 20};
+        }
+
         ScopedPointer<Model> selection = Models::makeSelection(app.ResourceManager, app.ResourceContext, *lamborghini);
 
-        return ghnew Scene({lamborghini, cone, selection});
+        return ghnew Scene({lamborghini, cone, light, selection});
     }
 
     virtual void onUpdate() override {

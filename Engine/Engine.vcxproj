@@ -37,6 +37,7 @@
     <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterType.cpp" />
     <ClCompile Include="src\graphics\Adapter.cpp" />
     <ClCompile Include="src\graphics\buffer\GPUBuffer.cpp" />
     <ClCompile Include="src\graphics\buffer\RenderTarget.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\memory\HeapAllocator.cpp" />
     <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\graphics\mesh\CubeMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\game\entity\Models.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
@@ -133,8 +135,11 @@
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
+    <ClInclude Include="src\game\parameter\ObjectParameter.h" />
     <ClInclude Include="src\game\parameter\ParameterProvider.h" />
     <ClInclude Include="src\game\entity\Scene.h" />
+    <ClInclude Include="src\game\parameter\ParameterType.h" />
+    <ClInclude Include="src\game\parameter\ValueParameter.h" />
     <ClInclude Include="src\graphics\Adapter.h" />
     <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
     <ClInclude Include="src\game\entity\Camera.h" />
@@ -174,7 +179,7 @@
     <ClInclude Include="src\graphics\shader\ShaderProgram.h" />
     <ClInclude Include="src\graphics\shader\Shaders.h" />
     <ClInclude Include="src\graphics\shader\ShaderType.h" />
-    <ClInclude Include="src\graphics\shader\ShaderVariable.h" />
+    <ClInclude Include="src\graphics\shader\ConstantBufferField.h" />
     <ClInclude Include="src\graphics\shader\TextureBufferConstant.h" />
     <ClInclude Include="src\graphics\shader\TextureConstant.h" />
     <ClInclude Include="src\graphics\SwapChain.h" />

@@ -12,7 +12,9 @@ namespace Ghurund {
     public:
         static Material* makeBasic(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
 
-        static Material* makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
+        static Material* makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& diffuseTexture, Texture& specularTexture);
+
+        static Material* makeToon(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
 
         static Material* makeChecker(ResourceManager& resourceManager, ResourceContext& context);
 

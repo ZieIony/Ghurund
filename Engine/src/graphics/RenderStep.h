@@ -4,6 +4,7 @@
 #include "game/entity/Model.h"
 #include "game/entity/Camera.h"
 #include "game/entity/GlobalEntity.h"
+#include "game/parameter/ValueParameter.h"
 #include "graphics/RenderingStatistics.h"
 
 namespace Ghurund {
@@ -15,8 +16,8 @@ namespace Ghurund {
         Camera* camera = nullptr;
         Material* material = nullptr;
         Material* invalidMaterial = nullptr;
-        Parameter* parameterWorld;
-        Parameter* parameterWorldIT;
+        ValueParameter* parameterWorld;
+        ValueParameter* parameterWorldIT;
 
     public:
         ~RenderStep() {
@@ -68,8 +69,8 @@ namespace Ghurund {
         Model* pick(XMINT2& mousePos);
 
         void initParameters(ParameterManager& parameterManager) {
-            parameterWorld = parameterManager.get(Parameter::WORLD);
-            parameterWorldIT = parameterManager.get(Parameter::WORLD_IT);
+            parameterWorld = (ValueParameter*)parameterManager.Parameters.get(Parameter::WORLD);
+            parameterWorldIT = (ValueParameter*)parameterManager.Parameters.get(Parameter::WORLD_IT);
             if (camera)
                 camera->initParameters(parameterManager);
             if (material)

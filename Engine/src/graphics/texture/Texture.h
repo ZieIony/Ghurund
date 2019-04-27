@@ -52,11 +52,11 @@ namespace Ghurund {
 
         Status init(ResourceContext &context, Image &image);
 
-        void set(CommandList &commandList) {
+        void set(CommandList &commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
             commandList.addResourceRef(textureUploadHeap.Get());
 
-            commandList.get()->SetGraphicsRootDescriptorTable(2, descHandle.getGpuHandle());
+            commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
         virtual const Ghurund::Type &getType() const override {

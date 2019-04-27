@@ -12,34 +12,17 @@ namespace Ghurund {
     class ParameterManager: public Object {
     private:
         Map<ASCIIString, Parameter*> parameters;
-        CriticalSection section;
-
-        friend class Parameter;
-
-        void lock() {
-            section.enter();
-        }
-
-        void unlock() {
-            section.leave();
-        }
 
     public:
         ParameterManager();
 
         ~ParameterManager();
 
-        Parameter *add(const ASCIIString &name, const ParameterType &type);
-
-        Parameter *get(const ASCIIString &name) const;
-
-        size_t getParameterCount() const {
-            return parameters.Size;
+        Map<ASCIIString, Parameter*>& getParameters() {
+            return parameters;
         }
 
-        Parameter *get(size_t index) const {
-            return parameters.getValue(index);
-        }
+        __declspec(property(get = getParameters)) Map<ASCIIString, Parameter*>& Parameters;
 
         const static Ghurund::Type& TYPE;
 

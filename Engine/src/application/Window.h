@@ -8,6 +8,7 @@
 #include "core/NamedObject.h"
 #include "core/Object.h"
 #include "game/parameter/ParameterProvider.h"
+#include "game/parameter/ValueParameter.h"
 
 #include "d3dx12.h"
 
@@ -26,7 +27,7 @@ namespace Ghurund {
         XMINT2 size;
 
         Array<Parameter*> parameters;
-        Parameter* parameterViewportSize = nullptr;
+        ValueParameter* parameterViewportSize = nullptr;
 
     public:
 
@@ -42,7 +43,7 @@ namespace Ghurund {
             if (parameterViewportSize != nullptr)
                 return;
 
-            parameters[0] = parameterViewportSize = parameterManager.add(Parameter::VIEWPORT_SIZE, ParameterType::FLOAT2);
+            parameters[0] = parameterViewportSize = (ValueParameter*)parameterManager.Parameters.get(Parameter::VIEWPORT_SIZE);
         }
 
         virtual void updateParameters() override {

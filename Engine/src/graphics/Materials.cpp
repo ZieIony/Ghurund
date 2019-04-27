@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Materials.h"
+#include "game/parameter/ObjectParameter.h"
 
 namespace Ghurund {
     Material* Materials::makeBasic(ResourceManager& resourceManager, ResourceContext& context, Texture& texture) {
@@ -8,15 +9,30 @@ namespace Ghurund {
         ScopedPointer<Shader> shader = Shaders::loadBasic(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
-            material->Textures.set("diffuse", &texture);
+            ObjectParameter *diffuse = (ObjectParameter*)material->Shader->getParameter("diffuseTexture");
+            diffuse->setValue(&texture);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& texture) {
+    Material* Materials::makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& diffuseTexture, Texture& specularTexture) {
         Material* material = nullptr;
         ScopedPointer<Shader> shader = Shaders::loadBasicLight(resourceManager, context);
+        if (shader) {
+            material = ghnew Material(shader);
+            ObjectParameter *diffuse = (ObjectParameter*)material->Shader->getParameter("diffuseTexture");
+            diffuse->setValue(&diffuseTexture);
+            ObjectParameter *specular = (ObjectParameter*)material->Shader->getParameter("specularTexture");
+            specular->setValue(&specularTexture);
+            material->Valid = true;
+        }
+        return material;
+    }
+
+    Material* Materials::makeToon(ResourceManager& resourceManager, ResourceContext& context, Texture& texture) {
+        Material* material = nullptr;
+        ScopedPointer<Shader> shader = Shaders::loadToon(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
             material->Textures.set("diffuse", &texture);
@@ -31,7 +47,8 @@ namespace Ghurund {
         if (shader) {
             material = ghnew Material(shader);
             ScopedPointer<Texture> texture = Textures::makeChecker(resourceManager, context);
-            material->Textures.set("diffuse", texture);
+            ObjectParameter *diffuse = (ObjectParameter*)material->Shader->getParameter("diffuseTexture");
+            diffuse->setValue(texture);
             material->Valid = true;
         }
         return material;

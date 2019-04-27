@@ -1,5 +1,7 @@
 #include "Shader.h"
 #include "resource/ResourceManager.h"
+#include "game/parameter/ObjectParameter.h"
+#include "graphics/texture/Texture.h"
 
 namespace Ghurund {
     Status Shader::makeRootSignature() {
@@ -118,6 +120,22 @@ namespace Ghurund {
         return result;
     }
 
+    bool Shader::set(Graphics& graphics, CommandList& commandList) {
+        bool changed = commandList.setGraphicsRootSignature(rootSignature) | commandList.setPipelineState(pipelineState);
+
+        for (size_t i = 0; i<constantBuffers.Size; i++)
+            constantBuffers[i]->set(graphics, commandList);
+
+        for (size_t i = 0; i < textures.Size; i++) {
+            ObjectParameter* parameter = (ObjectParameter*)parameters->get(i + parameters->Size - textures.Size);
+            Texture* texture = (Texture*)parameter->getValue();
+            if(texture)
+                texture->set(commandList, textures[i]->BindSlot);
+        }
+
+        return changed;
+    }
+
     void Shader::finalize() {
         if(rootSignature!=nullptr)
             rootSignature->Release();
@@ -200,17 +218,21 @@ namespace Ghurund {
         if(parameters!=nullptr)
             return;
 
-        size_t paramCount = 0;
+        size_t constantsCount = 0;
         for(size_t i = 0; i<constantBuffers.Size; i++) {
             constantBuffers[i]->initParameters(parameterManager);
-            paramCount += constantBuffers[i]->Parameters.Size;
+            constantsCount += constantBuffers[i]->Parameters.Size;
         }
-        parameters = ghnew Array<Parameter*>(paramCount);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
+        parameters = ghnew Array<Parameter*>(constantsCount+ textures.Size);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
+
         size_t paramOffset = 0;
         for(size_t i = 0; i<constantBuffers.Size; i++) {
             constantBuffers[i]->Parameters.copyTo(*parameters, paramOffset);
             paramOffset += constantBuffers[i]->Parameters.Size;
         }
+
+        for (size_t i = 0; i < textures.Size; i++)
+            parameters->set(i + constantsCount, ghnew ObjectParameter(textures[i]->getName()));
     }
 
     D3D12_INPUT_LAYOUT_DESC Shader::getInputLayout() {

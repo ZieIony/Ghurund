@@ -2,7 +2,7 @@
 
 cbuffer perCamera : register(b0) {
     row_major float4x4 viewProjection;
-    float3 cameraPosition;
+	float3 cameraPosition;
     float4 ambientLight;
 }
 
@@ -12,7 +12,6 @@ cbuffer perObject : register(b1) {
 
 SamplerState linearSampler : register(s0);
 Texture2D diffuseTexture : register(t0);
-Texture2D specularTexture : register(t1);
 
 struct Pixel {
     float4 screenPosition: SV_POSITION;
@@ -25,7 +24,7 @@ struct Pixel {
 Pixel vertexMain(DefaultVertex input) {
     Pixel output;
 
-    float4 pos = mul(float4(input.position, 1), world);
+	float4 pos = mul(float4(input.position, 1), world);
     output.screenPosition = mul(pos, viewProjection);
     output.position = pos.xyz;
     output.normal = normalize(mul(input.normal, world)).xyz;
@@ -41,11 +40,20 @@ float4 pixelMain(Pixel input): SV_Target{
 
     float3 normal = normalize(input.normal);
     float3 lightDir = normalize(lightPos - input.position);
+    float3 viewDir = normalize(position - input.position);
 
-    float diffuseIntensity = getDiffuseIntensity(input.normal, lightDir);
-    float4 diffuseColor = diffuseTexture.Sample(linearSampler, input.texCoord);
+    float lightIntensity = getDiffuseIntensity(normal, lightDir);
     float specularIntensity = getSpecularIntensity(input.position, normal, cameraPosition, lightDir, 8);
-    float4 specularColor = specularTexture.Sample(linearSampler, input.texCoord);
 
-    return lightColor * (diffuseColor * (ambientLight + diffuseIntensity) + specularColor * specularIntensity);
+    float rimAmount = 0.716;
+	float4 rimDot = 1 - dot(viewDir, input.normal);
+    float rimIntensity = rimDot*pow(lightIntensity,0.1);
+
+    lightIntensity = smoothstep(0, 0.01, lightIntensity);
+    specularIntensity = smoothstep(0.5, 0.51, specularIntensity);
+    rimIntensity = smoothstep(rimAmount - 0.01, rimAmount + 0.01, rimIntensity);
+
+    float4 color = diffuseTexture.Sample(linearSampler, frac(input.texCoord));
+//    float4 color = float4(0.0,0.4,1,1);
+    return color * lightColor * (ambientLight+lightIntensity+specularIntensity+rimIntensity);
 }

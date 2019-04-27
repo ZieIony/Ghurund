@@ -29,7 +29,7 @@ namespace Ghurund {
             shape = context.Physics.get().createShape(PxSphereGeometry(1), *properties);
 
         ScopedPointer<Mesh> mesh = ghnew SphereMesh();
-        mesh->init(context.Graphics, context.CommandList);
+        mesh->init(context.Graphics, context.CommandList, 3);
         Model* model = ghnew Model(mesh, &material, shape);
         model->initParameters(context.ParameterManager);
         model->Valid = true;

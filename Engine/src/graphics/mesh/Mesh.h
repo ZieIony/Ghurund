@@ -6,20 +6,23 @@
 #include "graphics/Graphics.h"
 #include "graphics/CommandList.h"
 #include "Vertex.h"
+#include "resource/Resource.h"
+#include "resource/ResourceManager.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
-#include "resource/Resource.h"
-#include "resource/ResourceManager.h"
+#include <DirectXCollision.h>
 
 #include <wrl.h>
-#include <DirectXCollision.h>
+
+#include <PxShape.h>
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace physx;
 
 namespace Ghurund {
     typedef UINT32 vindex_t;
@@ -70,6 +73,10 @@ namespace Ghurund {
         void computeBoundingBox();
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
+
+        virtual PxGeometry getGeometry() {
+            return PxTriangleMeshGeometry();
+        }
 
         vindex_t getVertexCount() const {
             return vertexCount;

@@ -97,14 +97,7 @@ namespace Ghurund {
 
         Status makePipelineState(bool supportsTransparency);
 
-        bool set(Graphics &graphics, CommandList &commandList) {
-            bool changed = commandList.setGraphicsRootSignature(rootSignature)|commandList.setPipelineState(pipelineState);
-
-            for(size_t i = 0; i<constantBuffers.Size; i++)
-                constantBuffers[i]->set(graphics, commandList);
-
-            return changed;
-        }
+        bool set(Graphics& graphics, CommandList& commandList);
 
         bool getSupportsTransparency() {
             return supportsTransparency;

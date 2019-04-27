@@ -31,5 +31,9 @@ namespace Ghurund {
 
             return Mesh::init(graphics, commandList);
         }
+
+        virtual PxGeometry getGeometry() override {
+            return PxPlaneGeometry();
+        }
     };
 }

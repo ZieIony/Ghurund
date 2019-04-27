@@ -3,7 +3,7 @@
 #include "core/MemoryStream.h"
 #include "game/entity/TransformedEntity.h"
 #include "game/parameter/ParameterProvider.h"
-#include "game/parameter/Parameter.h"
+#include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
 #include "resource/Resource.h"
 
@@ -17,11 +17,11 @@ namespace Ghurund {
         float fov, zNear, zFar, dist;
         bool pers;
 
-        Parameter* parameterDirection = nullptr;
-        Parameter* parameterUp, * parameterRight;
-        Parameter* parameterFov;
-        Parameter* parameterZNear, * parameterZFar;
-        Parameter* parameterView, * parameterProjection, * parameterViewProjection;
+        ValueParameter* parameterDirection = nullptr, *parameterPosition;
+        ValueParameter* parameterUp, * parameterRight;
+        ValueParameter* parameterFov;
+        ValueParameter* parameterZNear, * parameterZFar;
+        ValueParameter* parameterView, * parameterProjection, * parameterViewProjection;
 
         Array<Parameter*> parameters;
 

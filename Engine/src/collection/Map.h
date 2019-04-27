@@ -15,8 +15,6 @@ namespace Ghurund {
         Map() {
             k = ghnew Key[capacity];
             v = ghnew Value[capacity];
-            //memset(k,0,sizeof(Key)*capacity);
-            //memset(v,0,sizeof(Value)*capacity);
         }
 
         Map(const Map &t1) {

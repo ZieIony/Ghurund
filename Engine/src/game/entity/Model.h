@@ -86,6 +86,12 @@ namespace Ghurund {
         }
 
         virtual void initParameters(ParameterManager& parameterManager) override {
+#ifdef _DEBUG
+            if (!material) {
+                Logger::log(LogType::WARNING, _T("material is null\n"));
+                return;
+            }
+#endif
             material->initParameters(parameterManager);
         }
 
