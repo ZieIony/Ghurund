@@ -26,12 +26,12 @@ namespace Ghurund {
         D3D12_RECT scissorRect;
         XMINT2 size;
 
-        Array<Parameter*> parameters;
+        PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
     public:
 
-        Window():parameters(Array<Parameter*>(1)) {
+        Window():parameters(PointerArray<Parameter*>(1)) {
             Name = _T("window");
         }
 
@@ -50,7 +50,7 @@ namespace Ghurund {
             parameterViewportSize->setValue(&XMFLOAT2((float)size.x, (float)size.y));
         }
 
-        virtual Array<Parameter*>& getParameters() {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 

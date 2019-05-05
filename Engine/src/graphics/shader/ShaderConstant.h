@@ -10,11 +10,11 @@
 
 #include <wrl.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
-    class ShaderConstant {
+	using namespace DirectX;
+	using namespace Microsoft::WRL;
+
+	class ShaderConstant {
     protected:
         char *name = nullptr;
         unsigned int bindPoint, bindSlot;

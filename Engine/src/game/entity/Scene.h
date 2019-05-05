@@ -6,22 +6,21 @@
 #include <PxScene.h>
 #include <extensions/PxDefaultCpuDispatcher.h>
 
-using namespace physx;
-
 namespace Ghurund {
+    using namespace physx;
 
     class Scene:public EntityGroup {
     private:
-        Array<Parameter*> parameters;
+        PointerArray<Parameter*> parameters;
         PxDefaultCpuDispatcher* dispatcher = nullptr;
 
     public:
 
-        Scene():parameters(Array<Parameter*>(0)) {
+        Scene():parameters(PointerArray<Parameter*>(0)) {
             Name = _T("scene");
         }
 
-        Scene(const std::initializer_list<Entity*> list):EntityGroup(list), parameters(Array<Parameter*>(0)) {
+        Scene(const std::initializer_list<Entity*> list):EntityGroup(list), parameters(PointerArray<Parameter*>(0)) {
             Name = _T("scene");
         }
 
@@ -41,7 +40,7 @@ namespace Ghurund {
             scene->fetchResults(true);
         }
 
-        virtual Array<Parameter*>& getParameters() {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 

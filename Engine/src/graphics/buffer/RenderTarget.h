@@ -10,9 +10,9 @@
 #include <dxgi1_4.h>
 #include <wrl.h>
 
-using namespace std;
-
 namespace Ghurund {
+    using namespace std;
+
     class RenderTarget: public NamedObject {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
@@ -21,7 +21,7 @@ namespace Ghurund {
         D3D12_RESOURCE_STATES state = D3D12_RESOURCE_STATE_COMMON;
         DXGI_FORMAT format;
 
-        Status captureTexture(Graphics &graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
+        Status captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
 
     public:
         RenderTarget() {

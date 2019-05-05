@@ -20,6 +20,18 @@ namespace Ghurund.Managed.Audio {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Status Sound_play(IntPtr _this);
+
+        public Status Play() => Sound_play(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Sound_stop(IntPtr _this);
+
+        public void Stop() => Sound_stop(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Sound_getFormats();
 
         [Browsable(false)]

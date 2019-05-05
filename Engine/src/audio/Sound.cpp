@@ -129,13 +129,17 @@ namespace Ghurund {
         return readSamples(sourceReader, streamIndex);
     }
 
-    Status Sound::play() {
-        if(FAILED(sourceVoice->SubmitSourceBuffer(&audioBuffer)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to submit source buffer\n"));
+	Status Sound::play() {
+		if (state == PlaybackState::PLAYING)
+			return Status::INV_STATE;
 
-        if(FAILED(sourceVoice->Start()))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to start playback\n"));
+		if (state == PlaybackState::STOPPED) {
+			if (FAILED(sourceVoice->SubmitSourceBuffer(&audioBuffer)))
+				return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to submit source buffer\n"));
+		}
 
-        return Status::OK;
-    }
+		if (FAILED(sourceVoice->Start()))
+			return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to start playback\n"));
+		return Status::OK;
+	}
 }

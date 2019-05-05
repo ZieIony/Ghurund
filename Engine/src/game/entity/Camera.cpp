@@ -15,7 +15,7 @@ namespace Ghurund {
         XMStoreFloat4x4(&viewProj, view2 * proj2);
     }
 
-    Camera::Camera():parameters(Array<Parameter*>(10)) {
+    Camera::Camera():parameters(PointerArray<Parameter*>(10)) {
         screenSize = {640, 480};
         fov = XM_PI / 4;
         zNear = 0.1f;

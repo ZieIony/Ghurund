@@ -23,7 +23,7 @@ namespace Ghurund {
         ValueParameter* parameterZNear, * parameterZFar;
         ValueParameter* parameterView, * parameterProjection, * parameterViewProjection;
 
-        Array<Parameter*> parameters;
+        PointerArray<Parameter*> parameters;
 
     protected:
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
@@ -41,7 +41,7 @@ namespace Ghurund {
 
         virtual void updateParameters();
 
-        virtual Array<Parameter*>& getParameters() override {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 

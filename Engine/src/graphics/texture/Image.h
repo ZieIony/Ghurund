@@ -13,10 +13,10 @@
 #include <wrl.h>
 #include <wincodec.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+
     class Image: public Resource {
     private:
         DXGI_FORMAT format;

@@ -10,10 +10,10 @@
 
 #include <wrl.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+
     struct ScreenVertex {
         XMFLOAT3 position;
         XMFLOAT2 texCoord;
@@ -25,19 +25,19 @@ namespace Ghurund {
             this->texCoord = texCoord;
         }
 
-        ScreenVertex operator+(const ScreenVertex &v)const {
+        ScreenVertex operator+(const ScreenVertex& v)const {
             XMFLOAT3 newPos;
             XMFLOAT2 newTexCoord;
-            XMStoreFloat3(&newPos, XMLoadFloat3(&position)+XMLoadFloat3(&v.position));
-            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord)+XMLoadFloat2(&v.texCoord));
+            XMStoreFloat3(&newPos, XMLoadFloat3(&position) + XMLoadFloat3(&v.position));
+            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord) + XMLoadFloat2(&v.texCoord));
             return ScreenVertex(newPos, newTexCoord);
         }
 
         ScreenVertex operator/(const float v)const {
             XMFLOAT3 newPos;
             XMFLOAT2 newTexCoord;
-            XMStoreFloat3(&newPos, XMLoadFloat3(&position)/v);
-            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord)/v);
+            XMStoreFloat3(&newPos, XMLoadFloat3(&position) / v);
+            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord) / v);
             return ScreenVertex(newPos, newTexCoord);
         }
     };
@@ -64,29 +64,29 @@ namespace Ghurund {
             this->texCoord = texCoord;
         }
 
-        Vertex operator+(const Vertex &v)const {
+        Vertex operator+(const Vertex& v)const {
             XMFLOAT3 newPos, newNormal;
             XMFLOAT2 newTexCoord;
-            XMStoreFloat3(&newPos, XMLoadFloat3(&position)+XMLoadFloat3(&v.position));
-            XMStoreFloat3(&newNormal, XMVector3Normalize(XMLoadFloat3(&normal)+XMLoadFloat3(&v.normal)));
-            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord)+XMLoadFloat2(&v.texCoord));
+            XMStoreFloat3(&newPos, XMLoadFloat3(&position) + XMLoadFloat3(&v.position));
+            XMStoreFloat3(&newNormal, XMVector3Normalize(XMLoadFloat3(&normal) + XMLoadFloat3(&v.normal)));
+            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord) + XMLoadFloat2(&v.texCoord));
             return Vertex(newPos, newNormal, newTexCoord);
         }
 
         Vertex operator/(const float v)const {
             XMFLOAT3 newPos;
             XMFLOAT2 newTexCoord;
-            XMStoreFloat3(&newPos, XMLoadFloat3(&position)/v);
-            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord)/v);
+            XMStoreFloat3(&newPos, XMLoadFloat3(&position) / v);
+            XMStoreFloat2(&newTexCoord, XMLoadFloat2(&texCoord) / v);
             return Vertex(newPos, normal, newTexCoord);
         }
 
-        bool equals(const Vertex &v, float posEpsilon, float angleEpsilon, float texCoordEpsilon) {
+        bool equals(const Vertex& v, float posEpsilon, float angleEpsilon, float texCoordEpsilon) {
             float posLength, normalLength, texCoorLength;
-            XMStoreFloat(&posLength, XMVector3Length(XMLoadFloat3(&position)-XMLoadFloat3(&v.position)));
-            XMStoreFloat(&normalLength, XMVector3AngleBetweenNormals(XMLoadFloat3(&normal),XMLoadFloat3(&v.normal)));
-            XMStoreFloat(&texCoorLength, XMVector3Length(XMLoadFloat2(&texCoord)-XMLoadFloat2(&v.texCoord)));
-            return posLength<posEpsilon&&normalLength<angleEpsilon&&texCoorLength<texCoordEpsilon;
+            XMStoreFloat(&posLength, XMVector3Length(XMLoadFloat3(&position) - XMLoadFloat3(&v.position)));
+            XMStoreFloat(&normalLength, XMVector3AngleBetweenNormals(XMLoadFloat3(&normal), XMLoadFloat3(&v.normal)));
+            XMStoreFloat(&texCoorLength, XMVector3Length(XMLoadFloat2(&texCoord) - XMLoadFloat2(&v.texCoord)));
+            return posLength < posEpsilon && normalLength < angleEpsilon && texCoorLength < texCoordEpsilon;
         }
     };
 

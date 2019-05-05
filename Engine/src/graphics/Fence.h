@@ -7,9 +7,9 @@
 #include <dxgi1_4.h>
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace Microsoft::WRL;
+
     class Fence: public NamedObject {
     private:
         HANDLE fenceEvent = INVALID_HANDLE_VALUE;
@@ -24,17 +24,17 @@ namespace Ghurund {
         }
 
         ~Fence() {
-            if(fenceEvent!=INVALID_HANDLE_VALUE)
+            if (fenceEvent != INVALID_HANDLE_VALUE)
                 CloseHandle(fenceEvent);
         }
 
-        Status init(ID3D12Device *device);
+        Status init(ID3D12Device* device);
 
-        Status signal(ID3D12CommandQueue *commandQueue);
+        Status signal(ID3D12CommandQueue* commandQueue);
 
-        Status wait(ID3D12CommandQueue *commandQueue);
+        Status wait(ID3D12CommandQueue* commandQueue);
 
-        virtual void setName(const UnicodeString &name) override {
+        virtual void setName(const UnicodeString& name) override {
             NamedObject::setName(name);
             fence->SetName(name.getData());
         }

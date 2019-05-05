@@ -1,9 +1,15 @@
 #include "ScriptEngine.h"
-#include "ScriptBindings.h"
+#include "script/bindings/ScriptBindings.h"
+#include "script/bindings/CameraScriptBindings.h"
+#include "script/bindings/Float3ScriptBindings.h"
+#include "script/bindings/TimerScriptBindings.h"
+#include "script/bindings/LightScriptBindings.h"
+#include "script/bindings/ModelScriptBindings.h"
+#include "script/bindings/SceneScriptBindings.h"
 
 namespace Ghurund {
     const Ghurund::Type& ScriptEngine::TYPE = Ghurund::Type([]() {return ghnew ScriptEngine(); }, "ScriptEngine");
-  
+
     Status ScriptEngine::init(Timer& timer) {
         this->timer = &timer;
 
@@ -17,8 +23,14 @@ namespace Ghurund {
         if (r < 0)
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to register global function.\n"));
 
+        Float2ScriptBindings::registerClass(*engine);
         Float3ScriptBindings::registerClass(*engine);
+        Float4ScriptBindings::registerClass(*engine);
+        Int2ScriptBindings::registerClass(*engine);
+
         CameraScriptBindings::registerClass(*engine);
+        LightScriptBindings::registerClass(*engine);
+        SceneScriptBindings::registerClass(*engine);
         ModelScriptBindings::registerClass(*engine);
         TimerScriptBindings::registerClass(*engine, &this->timer);
 
@@ -27,7 +39,7 @@ namespace Ghurund {
 
     void ScriptEngine::execute() {
         for (Ghurund::Script* s : scripts) {
-            if(s->Valid)
+            if (s->Valid)
                 s->execute();
         }
     }

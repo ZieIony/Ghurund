@@ -14,17 +14,17 @@
 
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace Microsoft::WRL;
+
     class ShaderType {
     private:
         unsigned int value;
-        const char *text;
-        const char *entryPoint;
+        const char* text;
+        const char* entryPoint;
         D3D12_SHADER_VISIBILITY visibility;
 
-        ShaderType(unsigned int value, const char *text, const char *entryPoint, D3D12_SHADER_VISIBILITY visibility) {
+        ShaderType(unsigned int value, const char* text, const char* entryPoint, D3D12_SHADER_VISIBILITY visibility) {
             this->value = value;
             this->text = text;
             this->entryPoint = entryPoint;
@@ -32,20 +32,20 @@ namespace Ghurund {
         }
 
     public:
-        static const ShaderType &VS, &PS, &GS, &HS, &DS, &CS;
+        static const ShaderType& VS, & PS, & GS, & HS, & DS, & CS;
 
         static const ShaderType values[];
 
-        static const ShaderType &fromValue(unsigned int value) {
-            if(value==VS.value) {
+        static const ShaderType& fromValue(unsigned int value) {
+            if (value == VS.value) {
                 return VS;
-            } else if(value==PS.value) {
+            } else if (value == PS.value) {
                 return PS;
-            } else if(value==GS.value) {
+            } else if (value == GS.value) {
                 return GS;
-            } else if(value==HS.value) {
+            } else if (value == HS.value) {
                 return HS;
-            } else if(value==DS.value) {
+            } else if (value == DS.value) {
                 return DS;
             } else {
                 return CS;
@@ -58,11 +58,11 @@ namespace Ghurund {
 
         operator unsigned int() const { return value; }
 
-        const char *toString() const {
+        const char* toString() const {
             return text;
         }
 
-        const char *getEntryPoint() const {
+        const char* getEntryPoint() const {
             return entryPoint;
         }
 

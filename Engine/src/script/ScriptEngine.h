@@ -5,6 +5,7 @@
 #include "core/Object.h"
 #include "core/Timer.h"
 #include "Script.h"
+#include "collection/PointerList.h"
 
 #include <atomic>
 

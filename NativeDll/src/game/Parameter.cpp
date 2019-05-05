@@ -4,7 +4,7 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) const ParameterTypeValue Parameter_getType(Parameter *_this) {
+extern "C" __declspec(dllexport) const ParameterValueTypeValue Parameter_getType(Parameter *_this) {
     return _this->Type.Value;
 }
 

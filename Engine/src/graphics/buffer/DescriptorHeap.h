@@ -14,10 +14,10 @@
 
 #include <wrl.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+
     class Graphics;
 
     class DescriptorHandle {
@@ -48,7 +48,7 @@ namespace Ghurund {
 
     class DescriptorHeap {
     private:
-        ID3D12DescriptorHeap *heap = nullptr;
+        ID3D12DescriptorHeap* heap = nullptr;
         D3D12_DESCRIPTOR_HEAP_DESC heapDescriptor;
         unsigned int descriptorSize = 0;
         unsigned int numFreeDescriptors = 0;
@@ -65,13 +65,13 @@ namespace Ghurund {
         }
 
         ~DescriptorHeap() {
-            if(heap!=nullptr)
+            if (heap != nullptr)
                 heap->Release();
         }
 
-        Status init(Graphics &graphics);
+        Status init(Graphics& graphics);
 
-        bool hasAvailableSpace() const { return numFreeDescriptors>0; }
+        bool hasAvailableSpace() const { return numFreeDescriptors > 0; }
         DescriptorHandle allocate();
 
         ID3D12DescriptorHeap* get() const { return heap; }
@@ -86,12 +86,12 @@ namespace Ghurund {
 
     public:
         ~DescriptorAllocator() {
-            for(size_t i = 0; i < heapMap.Size; i++)
+            for (size_t i = 0; i < heapMap.Size; i++)
                 delete heapMap.getValue(i);
         }
 
-        DescriptorHandle allocate(Graphics &graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
-            if(!heapMap.contains(type)) {
+        DescriptorHandle allocate(Graphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
+            if (!heapMap.contains(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);
                 heapMap.set(type, dh);
@@ -99,8 +99,8 @@ namespace Ghurund {
             return heapMap.get(type)->allocate();
         }
 
-        void set(ID3D12GraphicsCommandList *commandList) {
-            ID3D12DescriptorHeap *heaps = {heapMap.getValue(0)->get()};
+        void set(ID3D12GraphicsCommandList* commandList) {
+            ID3D12DescriptorHeap* heaps = {heapMap.getValue(0)->get()};
             commandList->SetDescriptorHeaps(1, &heaps);
         }
     };

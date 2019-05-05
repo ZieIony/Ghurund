@@ -8,13 +8,13 @@ namespace Ghurund {
     protected:
         XMFLOAT3 position = {};
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             __super::loadInternal(resourceManager, context, workingDir, stream, options);
             memcpy(&position, &stream.read<XMFLOAT3>(), sizeof(position));
             return Status::OK;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             __super::saveInternal(resourceManager, context, workingDir, stream, options);
             stream.write(position);
             return Status::OK;
@@ -22,7 +22,7 @@ namespace Ghurund {
 
     public:
 
-        virtual XMFLOAT4X4 &getTransformation() const override {
+        virtual XMFLOAT4X4& getTransformation() const override {
             XMStoreFloat4x4(&world, XMMatrixTranslation(position.x, position.y, position.z));
             return world;
         }
@@ -41,7 +41,7 @@ namespace Ghurund {
             notifyObjectChanged();
         }
 
-        inline XMFLOAT3& getPosition() {
+        inline const XMFLOAT3& getPosition() const {
             return position;
         }
 
@@ -54,14 +54,14 @@ namespace Ghurund {
     protected:
         XMFLOAT3 rotation = {}, scale = {1,1,1};
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             __super::loadInternal(resourceManager, context, workingDir, stream, options);
             memcpy(&rotation, &stream.read<XMFLOAT3>(), sizeof(rotation));
             memcpy(&scale, &stream.read<XMFLOAT3>(), sizeof(scale));
             return Status::OK;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             __super::saveInternal(resourceManager, context, workingDir, stream, options);
             stream.write(rotation);
             stream.write(scale);
@@ -70,7 +70,7 @@ namespace Ghurund {
 
     public:
 
-        virtual XMFLOAT4X4 &getTransformation() const override {
+        virtual XMFLOAT4X4& getTransformation() const override {
             XMStoreFloat4x4(&world, XMMatrixScaling(scale.x, scale.y, scale.z) * XMMatrixRotationRollPitchYaw(rotation.y, rotation.x, rotation.z) * XMMatrixTranslation(position.x, position.y, position.z));
             return world;
         }
@@ -89,7 +89,7 @@ namespace Ghurund {
             notifyObjectChanged();
         }
 
-        inline XMFLOAT3& getRotation() {
+        inline const XMFLOAT3& getRotation() const {
             return rotation;
         }
 
@@ -107,7 +107,7 @@ namespace Ghurund {
             notifyObjectChanged();
         }
 
-        inline XMFLOAT3& getScale() {
+        inline const XMFLOAT3& getScale() const {
             return scale;
         }
 

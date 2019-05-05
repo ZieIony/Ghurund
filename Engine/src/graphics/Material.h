@@ -11,7 +11,6 @@ namespace Ghurund {
     class Material:public Resource, public ParameterProvider {
     private:
         Shader *shader = nullptr;
-        PointerMap<ASCIIString, Texture*> textures;
         bool supportsTransparency = false;
 
         void finalize() {
@@ -44,14 +43,10 @@ namespace Ghurund {
 
         virtual void invalidate() {
             finalize();
-            textures.clear();
             __super::invalidate();
         }
 
         virtual bool isValid() const override {
-            for(size_t i = 0; i<textures.Size; i++)
-                if(!textures.getValue(i)->Valid)
-                    return false;
             return shader!=nullptr&&shader->Valid&&__super::Valid;
         }
 
@@ -63,17 +58,12 @@ namespace Ghurund {
             shader->updateParameters();
         }
 
-        virtual Array<Parameter*> &getParameters() override {
+        virtual const PointerArray<Parameter*> &getParameters() const override {
             return shader->Parameters;
         }
 
         bool set(Graphics &graphics, CommandList &commandList) {
-            bool changed = shader->set(graphics, commandList);
-
-            //if(textures.Size>0) // TODO: handle textures properly
-            //    textures.getValue(0)->set(commandList);
-
-            return changed;
+            return shader->set(graphics, commandList);
         }
 
         Shader *getShader() {
@@ -85,12 +75,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getShader, put = setShader)) Shader *Shader;
-
-        PointerMap<ASCIIString, Texture*> &getTextures() {
-            return textures;
-        }
-
-        __declspec(property(get = getTextures)) PointerMap<ASCIIString, Texture*> &Textures;
 
         bool getSupportsTransparency() {
             return supportsTransparency;

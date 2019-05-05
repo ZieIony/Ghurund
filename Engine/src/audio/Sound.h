@@ -6,6 +6,10 @@
 #include "collection/List.h"
 
 namespace Ghurund {
+	enum class PlaybackState {
+		STOPPED, PAUSED, PLAYING
+	};
+
     class Sound: public Resource {
     private:
         IXAudio2SourceVoice* sourceVoice;
@@ -13,6 +17,7 @@ namespace Ghurund {
         unsigned int waveFormatLength;
         List<BYTE> audioData;
         XAUDIO2_BUFFER audioBuffer;
+		PlaybackState state = PlaybackState::STOPPED;
 
         Status setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
         Status readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
@@ -36,9 +41,31 @@ namespace Ghurund {
 
         Status play();
 
-        void stop() {
-            sourceVoice->Stop();
-        }
+        Status stop() {
+			if (state == PlaybackState::STOPPED)
+				return Status::INV_STATE;
+		
+			if(isPlaying())
+				sourceVoice->Stop();
+			if (state != PlaybackState::STOPPED) {
+				sourceVoice->FlushSourceBuffers();
+				state = PlaybackState::STOPPED;
+				return Status::OK;
+			}
+		}
+
+		inline Status pause() {
+			if (state != PlaybackState::PLAYING)
+				return Status::INV_STATE;
+
+			sourceVoice->Stop();
+			state = PlaybackState::PAUSED;
+			return Status::OK;
+		}
+
+		inline bool isPlaying() {
+			return state == PlaybackState::PLAYING;
+		}
 
         virtual const Ghurund::Type &getType() const override {
             return Type::SOUND;

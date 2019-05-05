@@ -8,10 +8,10 @@
 #include <PxPhysicsAPI.h>
 #include <extensions/PxDefaultAllocator.h>
 
-using namespace physx;
-
 namespace Ghurund {
-    class Physics:public Object {
+	using namespace physx;
+
+	class Physics:public Object {
     private:
         PxDefaultErrorCallback defaultErrorCallback;
         PxDefaultAllocator defaultAllocatorCallback;

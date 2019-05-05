@@ -13,10 +13,10 @@
 
 #include <wrl.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+
     class DisplayMode: public Object {
     private:
         unsigned int width, height;
@@ -27,7 +27,7 @@ namespace Ghurund {
         DisplayMode(DXGI_MODE_DESC mode) {
             width = mode.Width;
             height = mode.Height;
-            refreshRate = (float)mode.RefreshRate.Numerator/mode.RefreshRate.Denominator;
+            refreshRate = (float)mode.RefreshRate.Numerator / mode.RefreshRate.Denominator;
             format = mode.Format;
         }
 
@@ -68,10 +68,10 @@ namespace Ghurund {
 
             output->GetDisplayModeList(format, flags, &num, 0);
 
-            DXGI_MODE_DESC *modes = ghnew DXGI_MODE_DESC[num];
+            DXGI_MODE_DESC* modes = ghnew DXGI_MODE_DESC[num];
             output->GetDisplayModeList(format, flags, &num, modes);
 
-            for(unsigned int i = 0; i<num; i++)
+            for (unsigned int i = 0; i < num; i++)
                 displayModes.add(ghnew DisplayMode(modes[i]));
 
             delete[] modes;
@@ -91,11 +91,11 @@ namespace Ghurund {
             displayModes.deleteItems();
         }
 
-        String &getName() {
+        String& getName() {
             return name;
         }
 
-        List<DisplayMode*> &getDisplayModes() {
+        List<DisplayMode*>& getDisplayModes() {
             return displayModes;
         }
 
@@ -116,15 +116,15 @@ namespace Ghurund {
         Status initOutputs() {
             ComPtr<IDXGIOutput> output;
             unsigned int outputIndex = 0;
-            while(true) {
-                if(DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(outputIndex, &output))
+            while (true) {
+                if (DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(outputIndex, &output))
                     break;
 
                 outputs.add(ghnew AdapterOutput(output));
                 outputIndex++;
             }
 
-            return outputs.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
+            return outputs.Size > 0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
         }
 
     public:
@@ -145,7 +145,7 @@ namespace Ghurund {
             return adapter;
         }
 
-        String &getName() {
+        String& getName() {
             return name;
         }
 
@@ -153,7 +153,7 @@ namespace Ghurund {
             return desc.DedicatedVideoMemory;
         }
 
-        List<AdapterOutput*> &getOutputs() {
+        List<AdapterOutput*>& getOutputs() {
             return outputs;
         }
 

@@ -2,6 +2,7 @@
 #include "ParameterManager.h"
 
 namespace Ghurund {
+    const Ghurund::Type& Parameter::TYPE = Ghurund::Type([]() {return nullptr; }, "Parameter");
 
     const char *Parameter::VIEWPORT_SIZE = "viewportSize";
 

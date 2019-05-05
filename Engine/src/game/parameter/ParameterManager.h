@@ -3,26 +3,23 @@
 #include "Ghurund.h"
 #include "Parameter.h"
 #include "collection/String.h"
-#include "core/CriticalSection.h"
+#include "collection/PointerMap.h"
 #include "core/Object.h"
-#include "graphics/Graphics.h"
 
 namespace Ghurund {
 
     class ParameterManager: public Object {
     private:
-        Map<ASCIIString, Parameter*> parameters;
+        PointerMap<ASCIIString, Parameter*> parameters;
 
     public:
         ParameterManager();
 
-        ~ParameterManager();
-
-        Map<ASCIIString, Parameter*>& getParameters() {
+        PointerMap<ASCIIString, Parameter*>& getParameters() {
             return parameters;
         }
 
-        __declspec(property(get = getParameters)) Map<ASCIIString, Parameter*>& Parameters;
+        __declspec(property(get = getParameters)) PointerMap<ASCIIString, Parameter*>& Parameters;
 
         const static Ghurund::Type& TYPE;
 

@@ -20,11 +20,11 @@
 
 #include <PxShape.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-using namespace physx;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+    using namespace physx;
+
     typedef UINT32 vindex_t;
 
     class Mesh:public Resource {
@@ -50,7 +50,7 @@ namespace Ghurund {
         Status loadObj(ResourceContext& context, MemoryInputStream& stream);
         Status loadMesh(ResourceContext& context, MemoryInputStream& stream);
 
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;

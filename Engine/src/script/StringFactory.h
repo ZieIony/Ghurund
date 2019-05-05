@@ -8,18 +8,18 @@
 #include <stdlib.h> // strtod()
 #include <locale.h> // setlocale()
 
-using namespace std;
-
 #define UNUSED_VAR(x) (void)(x)
 
 // The string factory doesn't need to keep a specific order in the
 // cache, so the unordered_map is faster than the ordinary map
 #include <unordered_map>  // std::unordered_map
 BEGIN_AS_NAMESPACE
-typedef unordered_map<string, int> map_t;
+typedef std::unordered_map<std::string, int> map_t;
 END_AS_NAMESPACE
 
 namespace Ghurund {
+    using namespace std;
+
     class StringFactory: public asIStringFactory {
     public:
         StringFactory() {}
@@ -54,7 +54,7 @@ namespace Ghurund {
             return asSUCCESS;
         }
 
-        int  GetRawStringData(const void* str, char* data, asUINT * length) const {
+        int  GetRawStringData(const void* str, char* data, asUINT* length) const {
             if (str == 0)
                 return asERROR;
 
@@ -70,19 +70,19 @@ namespace Ghurund {
         // TODO: Make sure the access to the string cache is thread safe
         map_t stringCache;
 
-        static void ConstructString(string * thisPointer) {
+        static void ConstructString(string* thisPointer) {
             new(thisPointer) string();
         }
 
-        static void CopyConstructString(const string & other, string * thisPointer) {
+        static void CopyConstructString(const string& other, string* thisPointer) {
             new(thisPointer) string(other);
         }
 
-        static void DestructString(string * thisPointer) {
+        static void DestructString(string* thisPointer) {
             thisPointer->~string();
         }
 
-        static string& AddAssignStringToString(const string & str, string & dest) {
+        static string& AddAssignStringToString(const string& str, string& dest) {
             // We don't register the method directly because some compilers
             // and standard libraries inline the definition, resulting in the
             // linker being unable to find the declaration.
@@ -93,7 +93,7 @@ namespace Ghurund {
 
         // bool string::isEmpty()
         // bool string::empty() // if AS_USE_STLNAMES == 1
-        static bool StringIsEmpty(const string & str) {
+        static bool StringIsEmpty(const string& str) {
             // We don't register the method directly because some compilers
             // and standard libraries inline the definition, resulting in the
             // linker being unable to find the declaration
@@ -101,137 +101,137 @@ namespace Ghurund {
             return str.empty();
         }
 
-        static string& AssignUInt64ToString(asQWORD i, string & dest) {
+        static string& AssignUInt64ToString(asQWORD i, string& dest) {
             ostringstream stream;
             stream << i;
             dest = stream.str();
             return dest;
         }
 
-        static string& AddAssignUInt64ToString(asQWORD i, string & dest) {
+        static string& AddAssignUInt64ToString(asQWORD i, string& dest) {
             ostringstream stream;
             stream << i;
             dest += stream.str();
             return dest;
         }
 
-        static string AddStringUInt64(const string & str, asQWORD i) {
+        static string AddStringUInt64(const string& str, asQWORD i) {
             ostringstream stream;
             stream << i;
             return str + stream.str();
         }
 
-        static string AddInt64String(asINT64 i, const string & str) {
+        static string AddInt64String(asINT64 i, const string& str) {
             ostringstream stream;
             stream << i;
             return stream.str() + str;
         }
 
-        static string& AssignInt64ToString(asINT64 i, string & dest) {
+        static string& AssignInt64ToString(asINT64 i, string& dest) {
             ostringstream stream;
             stream << i;
             dest = stream.str();
             return dest;
         }
 
-        static string& AddAssignInt64ToString(asINT64 i, string & dest) {
+        static string& AddAssignInt64ToString(asINT64 i, string& dest) {
             ostringstream stream;
             stream << i;
             dest += stream.str();
             return dest;
         }
 
-        static string AddStringInt64(const string & str, asINT64 i) {
+        static string AddStringInt64(const string& str, asINT64 i) {
             ostringstream stream;
             stream << i;
             return str + stream.str();
         }
 
-        static string AddUInt64String(asQWORD i, const string & str) {
+        static string AddUInt64String(asQWORD i, const string& str) {
             ostringstream stream;
             stream << i;
             return stream.str() + str;
         }
 
-        static string& AssignDoubleToString(double f, string & dest) {
+        static string& AssignDoubleToString(double f, string& dest) {
             ostringstream stream;
             stream << f;
             dest = stream.str();
             return dest;
         }
 
-        static string& AddAssignDoubleToString(double f, string & dest) {
+        static string& AddAssignDoubleToString(double f, string& dest) {
             ostringstream stream;
             stream << f;
             dest += stream.str();
             return dest;
         }
 
-        static string& AssignFloatToString(float f, string & dest) {
+        static string& AssignFloatToString(float f, string& dest) {
             ostringstream stream;
             stream << f;
             dest = stream.str();
             return dest;
         }
 
-        static string& AddAssignFloatToString(float f, string & dest) {
+        static string& AddAssignFloatToString(float f, string& dest) {
             ostringstream stream;
             stream << f;
             dest += stream.str();
             return dest;
         }
 
-        static string& AssignBoolToString(bool b, string & dest) {
+        static string& AssignBoolToString(bool b, string& dest) {
             ostringstream stream;
             stream << (b ? "true" : "false");
             dest = stream.str();
             return dest;
         }
 
-        static string & AddAssignBoolToString(bool b, string & dest) {
+        static string& AddAssignBoolToString(bool b, string& dest) {
             ostringstream stream;
             stream << (b ? "true" : "false");
             dest += stream.str();
             return dest;
         }
 
-        static string AddStringDouble(const string & str, double f) {
+        static string AddStringDouble(const string& str, double f) {
             ostringstream stream;
             stream << f;
             return str + stream.str();
         }
 
-        static string AddDoubleString(double f, const string & str) {
+        static string AddDoubleString(double f, const string& str) {
             ostringstream stream;
             stream << f;
             return stream.str() + str;
         }
 
-        static string AddStringFloat(const string & str, float f) {
+        static string AddStringFloat(const string& str, float f) {
             ostringstream stream;
             stream << f;
             return str + stream.str();
         }
 
-        static string AddFloatString(float f, const string & str) {
+        static string AddFloatString(float f, const string& str) {
             ostringstream stream;
             stream << f;
             return stream.str() + str;
         }
 
-        static string AddStringBool(const string & str, bool b) {
+        static string AddStringBool(const string& str, bool b) {
             ostringstream stream;
             stream << (b ? "true" : "false");
             return str + stream.str();
         }
 
-        static string AddBoolString(bool b, const string & str) {
+        static string AddBoolString(bool b, const string& str) {
             ostringstream stream;
             stream << (b ? "true" : "false");
             return stream.str() + str;
         }
 
-        static char* StringCharAt(unsigned int i, string & str) {
+        static char* StringCharAt(unsigned int i, string& str) {
             if (i >= str.size()) {
                 // Set a script exception
                 asIScriptContext* ctx = asGetActiveContext();
@@ -246,7 +246,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // int string::opCmp(const string &in) const
-        static int StringCmp(const string & a, const string & b) {
+        static int StringCmp(const string& a, const string& b) {
             int cmp = 0;
             if (a < b) cmp = -1;
             else if (a > b) cmp = 1;
@@ -259,7 +259,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findFirst(const string &in sub, uint start = 0) const
-        static int StringFindFirst(const string & sub, asUINT start, const string & str) {
+        static int StringFindFirst(const string& sub, asUINT start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.find(sub, (size_t)(start < 0 ? string::npos : start));
         }
@@ -270,7 +270,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findFirstOf(const string &in sub, uint start = 0) const
-        static int StringFindFirstOf(const string & sub, asUINT start, const string & str) {
+        static int StringFindFirstOf(const string& sub, asUINT start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.find_first_of(sub, (size_t)(start < 0 ? string::npos : start));
         }
@@ -281,7 +281,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findLastOf(const string &in sub, uint start = -1) const
-        static int StringFindLastOf(const string & sub, asUINT start, const string & str) {
+        static int StringFindLastOf(const string& sub, asUINT start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.find_last_of(sub, (size_t)(start < 0 ? string::npos : start));
         }
@@ -291,7 +291,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findFirstNotOf(const string &in sub, uint start = 0) const
-        static int StringFindFirstNotOf(const string & sub, asUINT start, const string & str) {
+        static int StringFindFirstNotOf(const string& sub, asUINT start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.find_first_not_of(sub, (size_t)(start < 0 ? string::npos : start));
         }
@@ -301,7 +301,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findLastNotOf(const string &in sub, uint start = -1) const
-        static int StringFindLastNotOf(const string & sub, asUINT start, const string & str) {
+        static int StringFindLastNotOf(const string& sub, asUINT start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.find_last_not_of(sub, (size_t)(start < 0 ? string::npos : start));
         }
@@ -312,21 +312,21 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // int string::findLast(const string &in sub, int start = -1) const
-        static int StringFindLast(const string & sub, int start, const string & str) {
+        static int StringFindLast(const string& sub, int start, const string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             return (int)str.rfind(sub, (size_t)(start < 0 ? string::npos : start));
         }
 
         // AngelScript signature:
         // void string::insert(uint pos, const string &in other)
-        static void StringInsert(unsigned int pos, const string & other, string & str) {
+        static void StringInsert(unsigned int pos, const string& other, string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             str.insert(pos, other);
         }
 
         // AngelScript signature:
         // void string::erase(uint pos, int count = -1)
-        static void StringErase(unsigned int pos, int count, string & str) {
+        static void StringErase(unsigned int pos, int count, string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             str.erase(pos, (size_t)(count < 0 ? string::npos : count));
         }
@@ -334,7 +334,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // uint string::length() const
-        static asUINT StringLength(const string & str) {
+        static asUINT StringLength(const string& str) {
             // We don't register the method directly because the return type changes between 32bit and 64bit platforms
             return (asUINT)str.length();
         }
@@ -342,14 +342,14 @@ namespace Ghurund {
 
         // AngelScript signature:
         // void string::resize(uint l)
-        static void StringResize(asUINT l, string & str) {
+        static void StringResize(asUINT l, string& str) {
             // We don't register the method directly because the argument types change between 32bit and 64bit platforms
             str.resize(l);
         }
 
         // AngelScript signature:
         // string formatInt(int64 val, const string &in options, uint width)
-        static string formatInt(asINT64 value, const string & options, asUINT width) {
+        static string formatInt(asINT64 value, const string& options, asUINT width) {
             bool leftJustify = options.find("l") != string::npos;
             bool padWithZero = options.find("0") != string::npos;
             bool alwaysSign = options.find("+") != string::npos;
@@ -392,7 +392,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // string formatUInt(uint64 val, const string &in options, uint width)
-        static string formatUInt(asQWORD value, const string & options, asUINT width) {
+        static string formatUInt(asQWORD value, const string& options, asUINT width) {
             bool leftJustify = options.find("l") != string::npos;
             bool padWithZero = options.find("0") != string::npos;
             bool alwaysSign = options.find("+") != string::npos;
@@ -435,7 +435,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // string formatFloat(double val, const string &in options, uint width, uint precision)
-        static string formatFloat(double value, const string & options, asUINT width, asUINT precision) {
+        static string formatFloat(double value, const string& options, asUINT width, asUINT precision) {
             bool leftJustify = options.find("l") != string::npos;
             bool padWithZero = options.find("0") != string::npos;
             bool alwaysSign = options.find("+") != string::npos;
@@ -470,7 +470,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // int64 parseInt(const string &in val, uint base = 10, uint &out byteCount = 0)
-        static asINT64 parseInt(const string & val, asUINT base, asUINT * byteCount) {
+        static asINT64 parseInt(const string& val, asUINT base, asUINT* byteCount) {
             // Only accept base 10 and 16
             if (base != 10 && base != 16) {
                 if (byteCount)* byteCount = 0;
@@ -518,7 +518,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // uint64 parseUInt(const string &in val, uint base = 10, uint &out byteCount = 0)
-        static asQWORD parseUInt(const string & val, asUINT base, asUINT * byteCount) {
+        static asQWORD parseUInt(const string& val, asUINT base, asUINT* byteCount) {
             // Only accept base 10 and 16
             if (base != 10 && base != 16) {
                 if (byteCount)* byteCount = 0;
@@ -555,7 +555,7 @@ namespace Ghurund {
 
         // AngelScript signature:
         // double parseFloat(const string &in val, uint &out byteCount = 0)
-        static double parseFloat(const string & val, asUINT * byteCount) {
+        static double parseFloat(const string& val, asUINT* byteCount) {
             char* end;
 
             // WinCE doesn't have setlocale. Some quick testing on my current platform
@@ -586,7 +586,7 @@ namespace Ghurund {
         //
         // AngelScript signature:
         // string string::substr(uint start = 0, int count = -1) const
-        static string StringSubString(asUINT start, int count, const string & str) {
+        static string StringSubString(asUINT start, int count, const string& str) {
             // Check for out-of-bounds
             string ret;
             if (start < str.length() && count != 0)
@@ -601,11 +601,11 @@ namespace Ghurund {
         // For some reason gcc 4.7 has difficulties resolving the
         // asFUNCTIONPR(operator==, (const string &, const string &)
         // makro, so this wrapper was introduced as work around.
-        static bool StringEquals(const std::string & lhs, const std::string & rhs) {
+        static bool StringEquals(const std::string& lhs, const std::string& rhs) {
             return lhs == rhs;
         }
 
-        static void RegisterStdString(asIScriptEngine * engine, StringFactory * stringFactory) {
+        static void RegisterStdString(asIScriptEngine* engine, StringFactory* stringFactory) {
             int r = 0;
             UNUSED_VAR(r);
 

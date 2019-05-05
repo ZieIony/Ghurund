@@ -4,13 +4,14 @@
 #include "collection/String.h"
 #include "editor/ObservableObject.h"
 #include "ParameterType.h"
+#include "core/Pointer.h"
 
 namespace Ghurund {
 
-    class Parameter: public ObservableObject {
+    class Parameter: public Pointer, public ObservableObject {
     protected:
         ASCIIString name;
-        const ParameterType& type;
+        const ParameterValueType& type;
 
     public:
         static const char* VIEWPORT_SIZE;
@@ -39,7 +40,7 @@ namespace Ghurund {
         static const char* PROJECTION;
         static const char* VIEW_PROJECTION;
 
-        Parameter(const ASCIIString& name, const ParameterType& type):type(type) {
+        Parameter(const ASCIIString& name, const ParameterValueType& type):type(type) {
             this->name = name;
         }
 
@@ -49,11 +50,17 @@ namespace Ghurund {
 
         __declspec(property(get = getName)) const ASCIIString& Name;
 
-        const ParameterType& getType() const {
+        const ParameterValueType& getValueType() const {
             return type;
         }
 
-        __declspec(property(get = getType)) const ParameterType& Type;
+        __declspec(property(get = getValueType)) const ParameterValueType& ValueType;
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 
 }

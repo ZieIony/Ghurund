@@ -11,9 +11,9 @@
 #include <dxgi1_4.h>
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace Microsoft::WRL;
+
     class Frame {
     private:
         CommandList* commandList;

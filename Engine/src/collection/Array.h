@@ -112,7 +112,7 @@ namespace Ghurund {
             }
         }
 
-        inline void copyTo(Array<Value> & dest, size_t offset = 0) {
+        inline void copyTo(Array<Value> & dest, size_t offset = 0) const {
             for (size_t i = 0; i < size; i++)
                 dest.set(i + offset, v[i]);
         }

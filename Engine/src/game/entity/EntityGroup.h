@@ -8,7 +8,7 @@ namespace Ghurund {
     class EntityGroup:public TransformedEntity {
     protected:
         EntityList entities;
-        mutable ::BoundingBox boundingBox;
+        mutable DirectX::BoundingBox boundingBox;
 
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
         virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
@@ -32,13 +32,13 @@ namespace Ghurund {
                 e->updateParameters();
         }
 
-        virtual ::BoundingBox* getBoundingBox() const override {
+        virtual DirectX::BoundingBox* getBoundingBox() const override {
             bool init = false;
             for (Entity* e : entities) {
                 if (e->BoundingBox == nullptr)
                     continue;
                 if (init) {
-                    ::BoundingBox b;
+                    DirectX::BoundingBox b;
                     e->BoundingBox->Transform(b, XMLoadFloat4x4(&e->getTransformation()));
                     boundingBox.CreateMerged(boundingBox, boundingBox, b);
                 } else {

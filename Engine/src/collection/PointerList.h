@@ -15,69 +15,61 @@ namespace Ghurund {
         }
 
         inline void add(const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
-            item->addReference();
+            if (item != nullptr)
+                item->addReference();
             List::add(item);
         }
 
         inline void insert(size_t i, const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
             List::insert(i, item);
-            item->addReference();
+            if (item != nullptr)
+                item->addReference();
         }
 
         inline void insertKeepOrder(size_t i, const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
             List::insertKeepOrder(i, item);
-            item->addReference();
+            if (item != nullptr)
+                item->addReference();
         }
 
         inline void set(size_t i, const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
-            v[i]->release();
+            if (v[i] != nullptr)
+                v[i]->release();
             List::set(i, item);
-            item->addReference();
+            if (item != nullptr)
+                item->addReference();
         }
 
         inline void removeAt(size_t i) {
-            v[i]->release();
+            if (v[i] != nullptr)
+                v[i]->release();
             List::removeAt(i);
         }
 
         inline void removeAtKeepOrder(size_t i) {
-            v[i]->release();
+            if (v[i] != nullptr)
+                v[i]->release();
             List::removeAtKeepOrder(i);
         }
 
         inline void remove(const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
             List::remove(item);
-            item->release();
+            if (item != nullptr)
+                item->release();
         }
 
         inline void removeKeepOrder(const Value& item) {
-#ifdef _DEBUG
-            assert(item != nullptr);
-#endif
             List::removeKeepOrder(item);
-            item->release();
+            if (item != nullptr)
+                item->release();
         }
 
         inline void clear() {
             size_t s = size;
             List::clear();
             for (size_t i = 0; i < s; i++)
-                v[i]->release();
+                if (v[i] != nullptr)
+                    v[i]->release();
         }
     };
 }

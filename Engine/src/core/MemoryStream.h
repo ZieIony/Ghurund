@@ -92,7 +92,7 @@ namespace Ghurund {
             pointer += (wcslen(i)+1)*sizeof(wchar_t);
             return i;
         }
-        inline void *readBytes(unsigned int length) {
+        inline const void *readBytes(unsigned int length) {
             void *dataToReturn = (void*)(data+pointer);
             pointer += length;
             return dataToReturn;

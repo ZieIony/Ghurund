@@ -3,7 +3,7 @@ My DirectX 12 playground.
 
 ##### Engine
 
-It's written in C++ and HLSL. Uses DirectX 12 and WinAPI. One day I would also like to add a physics engine. It's a fourth iteration after one OpenGL engine, one DX9 and one DX11. I have a lot of ideas I would like to code, like support for resource hot reloading, automatic shader parameters, custom UI or keyframe animation system. I'm using a ton of VS features, so you won't be able to compile it with GCC.
+It's written in C++ and HLSL. Uses DirectX 12, PhysX, AngelScript and WinAPI. It's a fourth iteration after one OpenGL engine, one DX9 and one DX11. I have a lot of ideas I would like to code, like support for resource hot reloading, automatic shader parameters, custom UI or keyframe animation system. I'm using a ton of VS features, so you won't be able to compile it with GCC.
 
 ##### Editor
 
@@ -21,20 +21,40 @@ Not really a game right now. More like an app for checking if the engine is fine
 
 <img src='https://user-images.githubusercontent.com/10180628/39607596-228e5e8a-4f3c-11e8-8da2-b748510f7625.png' width=200/>
 
+##### Other modules
+
+ - Controls - reusable WPF controls
+ - Workspace - WPF docking panels and windows useful for making editors with advanced UI
+ - NativeDll - C .dll with bindings for most important engine methods
+ - ManagedDll - .dll with .Net bindings for engine's classes
+
+### Compilation
+
+To build your own version you need the following tools.
+
+ - [Visual Studio 2019](https://visualstudio.microsoft.com/vs/preview/)
+ - [DirectX 12](https://docs.microsoft.com/en-us/windows/desktop/direct3d12/directx-12-programming-environment-set-up)
+ - [PhysX](https://github.com/NVIDIAGameWorks/PhysX)
+ - [AngelScript](https://www.angelcode.com/angelscript/downloads.html)
+
+This project was never intended to be portable, so it can be only build using Visual Studio and run on Windows 10 with DirectX 12 - compatible graphics card.
+
 ### Knowledge sources
 
 ##### Documentation and samples
 
+ - [PhysX](http://gameworksdocs.nvidia.com/simulation.html#physx)
  - [MSDN](https://msdn.microsoft.com/en-us/library/windows/desktop/dn899121(v=vs.85).aspx)
  - [samples and MiniEngine from Microsoft](https://github.com/Microsoft/DirectX-Graphics-Samples)
  - [GPUOpen Libraries & SDKs](https://github.com/GPUOpen-LibrariesAndSDKs)
+ - [AngelScript](https://www.angelcode.com/angelscript/sdk/docs/manual/index.html)
+ - [X3DAudio](https://docs.microsoft.com/en-us/windows/desktop/xaudio2/how-to--integrate-x3daudio-with-xaudio2)
 
 ##### Blogs and tutorials
 
  - [DirectX tutorials](https://www.braynzarsoft.net/viewtutorial/q16390-04-directx-12-braynzar-soft-tutorials)
  - [StarCraft II effects](https://developer.amd.com/wordpress/media/2012/10/S2008-Filion-McNaughton-StarCraftII.pdf)
  - [ReadDirectoryChangesW](https://qualapps.blogspot.com/2010/05/understanding-readdirectorychangesw_19.html)
- - [Lua tutorial](https://www.gamedev.net/articles/programming/general-and-gameplay-programming/the-lua-tutorial-r2999/), [LuaBind tutorial](http://blog.nuclex-games.com/tutorials/cxx/luabind-introduction/)
  - [rendering techniques by Hiago DeSena (DX11)](https://www.hiagodesena.com/)
  - [gamma correct rendering](http://renderwonk.com/blog/index.php/archive/adventures-with-gamma-correct-rendering/), [linear space lighting](http://filmicworlds.com/blog/linear-space-lighting-i-e-gamma/)
  - [PBR](https://dirkiek.wordpress.com/2015/05/31/physically-based-rendering-and-image-based-lighting/)

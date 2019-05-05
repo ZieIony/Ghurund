@@ -22,6 +22,7 @@ namespace Ghurund.Managed.Graphics {
             for (int i = 0; i < adapters.Length; i++)
                 adapters[i] = new Adapter(Graphics_getAdapters_get(NativePtr, i));
             Adapters = ImmutableList.Create(adapters);
+            ResourceFactory = new GPUResourceFactory(Graphics_getResourceFactory(NativePtr));
         }
 
 
@@ -41,7 +42,7 @@ namespace Ghurund.Managed.Graphics {
         [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))]
         private static extern IntPtr Graphics_getResourceFactory(IntPtr _this);
 
-        public GPUResourceFactory ResourceFactory => new GPUResourceFactory(Graphics_getResourceFactory(NativePtr));
+        public GPUResourceFactory ResourceFactory { get; private set; }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

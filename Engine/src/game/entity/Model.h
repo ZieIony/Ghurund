@@ -11,9 +11,9 @@
 
 #include <PxShape.h>
 
-using namespace physx;
-
 namespace Ghurund {
+    using namespace physx;
+
     class Model: public TransformedEntity {
     private:
         Mesh* mesh = nullptr;
@@ -81,7 +81,7 @@ namespace Ghurund {
 
         __declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
-        virtual ::BoundingBox* getBoundingBox() const override {
+        virtual DirectX::BoundingBox* getBoundingBox() const override {
             return &mesh->BoundingBox;
         }
 
@@ -99,7 +99,7 @@ namespace Ghurund {
             material->updateParameters();
         }
 
-        virtual Array<Parameter*>& getParameters() {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return material->Parameters;
         }
 

@@ -11,17 +11,17 @@ namespace Ghurund {
     public:
         GPUBuffer buffer;
         Array<ConstantBufferField*> variables;
-        Array<Parameter*> managerParameters;
-        Array<Parameter*> parameters;
+        PointerArray<Parameter*> managerParameters;
+        PointerArray<Parameter*> parameters;
 #ifdef _DEBUG
         bool* reported;
 #endif
 
         ConstantBuffer(Graphics& graphics, ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility):
             ShaderConstant(bufferDesc.Name, bindPoint, visibility),
-            parameters(Array<Parameter*>(bufferDesc.Variables)),
+            parameters(PointerArray<Parameter*>(bufferDesc.Variables)),
             variables(Array<ConstantBufferField*>(bufferDesc.Variables)),
-            managerParameters(Array<Parameter*>(bufferDesc.Variables)) {
+            managerParameters(PointerArray<Parameter*>(bufferDesc.Variables)) {
 
 #ifdef _DEBUG
             reported = ghnew bool[variables.Size];
@@ -83,7 +83,7 @@ namespace Ghurund {
             }
         }
 
-        virtual Array<Parameter*>& getParameters() override {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 

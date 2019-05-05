@@ -9,9 +9,9 @@
 #include "core/Pointer.h"
 
 
-using namespace std;
-
 namespace Ghurund {
+    using namespace std;
+
     enum class LoadOption {
         DEFAULT = 0, DONT_WATCH = 1
     };
@@ -41,7 +41,7 @@ namespace Ghurund {
         bool valid = false;
         FilePath* path = nullptr;
 
-        Status saveInternal(ResourceManager& resourceManager, ResourceContext &context, File& file, SaveOption options) const;
+        Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, File& file, SaveOption options) const;
 
     protected:
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) = 0;
@@ -67,12 +67,12 @@ namespace Ghurund {
         Status load(ResourceManager& resourceManager, ResourceContext& context, File& file, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
-        Status save(ResourceManager& resourceManager, ResourceContext &context, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(ResourceManager& resourceManager, ResourceContext &context, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager& resourceManager, ResourceContext& context, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(ResourceManager& resourceManager, ResourceContext &context, File& file, SaveOption options = SaveOption::DEFAULT);
-        Status save(ResourceManager& resourceManager, ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(ResourceManager& resourceManager, ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
+        Status save(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
         virtual void invalidate() {
             valid = false;

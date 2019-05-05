@@ -19,10 +19,10 @@
 
 #include <wrl.h>
 
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
-    class Shader:public Resource, public ParameterProvider {
+	using namespace Microsoft::WRL;
+
+	class Shader:public Resource, public ParameterProvider {
     private:
         ShaderProgram *programs[6] = {};
         ID3D12RootSignature *rootSignature;
@@ -34,7 +34,7 @@ namespace Ghurund {
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
 
-        Array<Parameter*> *parameters = nullptr;
+        PointerArray<Parameter*> *parameters = nullptr;
         Graphics *graphics;
 
         char *source = nullptr;
@@ -80,7 +80,7 @@ namespace Ghurund {
                 constantBuffers[i]->updateParameters();
         }
 
-        virtual Array<Parameter*> &getParameters() {
+        virtual const PointerArray<Parameter*> &getParameters() const override {
             return *parameters;
         }
 

@@ -15,10 +15,10 @@
 #include "d3dx12.h"
 #include <wrl.h>
 
-using namespace DirectX;
-using namespace Microsoft::WRL;
-
 namespace Ghurund {
+    using namespace DirectX;
+    using namespace Microsoft::WRL;
+
     class CommandList;
 
     class Graphics: public Object {

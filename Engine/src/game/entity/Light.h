@@ -7,23 +7,23 @@ namespace Ghurund {
     class Light: public TranslatedEntity {
     private:
         Target* target;
-        Array<Parameter*> parameters;
+        PointerArray<Parameter*> parameters;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             __super::loadInternal(resourceManager, context, workingDir, stream, options);
-   
+
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             __super::saveInternal(resourceManager, context, workingDir, stream, options);
-  
+
             return Status::NOT_IMPLEMENTED;
         }
 
     public:
-        Light():parameters(Array<Parameter*>(0)) {
+        Light():parameters(PointerArray<Parameter*>(0)) {
             Name = _T("light");
         }
 
@@ -31,27 +31,27 @@ namespace Ghurund {
             this->target = target;
         }
 
-        inline const Target *getTarget() const {
+        inline const Target* getTarget() const {
             return target;
         }
 
-        __declspec(property(get = getTarget, put = setTarget)) Target *Target;
+        __declspec(property(get = getTarget, put = setTarget)) Target* Target;
 
-        virtual Array<Parameter*> &getParameters() override {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::LIGHT;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::ENTITY};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::ENTITY};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep &step, XMFLOAT4X4 &transformation) override;
+        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override;
     };
 }

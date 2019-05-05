@@ -8,9 +8,9 @@
 
 #include <PxMaterial.h>
 
-using namespace physx;
-
 namespace Ghurund {
+    using namespace physx;
+
     class Models {
     private:
         Models() = delete;
@@ -18,7 +18,7 @@ namespace Ghurund {
     public:
         static Model* makeCube(ResourceContext& context, Material& material);
         static Model* makePlane(ResourceContext& context, Material& material, unsigned int detail = 1);
-        static Model* makeSphere(ResourceContext& context, Material& material, const PxMaterial *properties = nullptr);
+        static Model* makeSphere(ResourceContext& context, Material& material, const PxMaterial* properties = nullptr);
         static Model* makeCone(ResourceContext& context, Material& material);
         static Model* makeQuad(ResourceContext& context, Material& material);
         static Model* makeSelection(ResourceManager& resourceManager, ResourceContext& context, Model& model);

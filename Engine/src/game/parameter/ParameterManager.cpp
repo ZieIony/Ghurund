@@ -1,42 +1,58 @@
 #include "ParameterManager.h"
 #include "ValueParameter.h"
+#include "core/ScopedPointer.h"
 
 namespace Ghurund {
     const Ghurund::Type& ParameterManager::TYPE = Ghurund::Type([]() {return ghnew ParameterManager(); }, "ParameterManager");
 
     ParameterManager::ParameterManager() {
-        parameters.set(Parameter::VIEWPORT_SIZE, ghnew ValueParameter(Parameter::VIEWPORT_SIZE, ParameterType::FLOAT2));
+        ScopedPointer<ValueParameter> viewportSize = ghnew ValueParameter(Parameter::VIEWPORT_SIZE, ParameterValueType::FLOAT2);
+        parameters.set(Parameter::VIEWPORT_SIZE, viewportSize);
 
-        XMFLOAT4 red(1,0,0,1);
-        parameters.set(Parameter::PARTY_COLOR, ghnew ValueParameter(Parameter::PARTY_COLOR, &red, ParameterType::COLOR));
-        parameters.set(Parameter::RANDOM, ghnew ValueParameter(Parameter::RANDOM, ParameterType::FLOAT));
-        XMFLOAT4 gray(0.4f,0.4f,0.4f,1);
-        parameters.set(Parameter::AMBIENT_LIGHT, ghnew ValueParameter(Parameter::AMBIENT_LIGHT, &gray, ParameterType::COLOR));
+        XMFLOAT4 red(1, 0, 0, 1);
+        ScopedPointer<ValueParameter> partyColor = ghnew ValueParameter(Parameter::PARTY_COLOR, &red, ParameterValueType::COLOR);
+        parameters.set(Parameter::PARTY_COLOR, partyColor);
+        ScopedPointer<ValueParameter> random = ghnew ValueParameter(Parameter::RANDOM, ParameterValueType::FLOAT);
+        parameters.set(Parameter::RANDOM, random);
+        XMFLOAT4 gray(0.4f, 0.4f, 0.4f, 1);
+        ScopedPointer<ValueParameter> ambientLight = ghnew ValueParameter(Parameter::AMBIENT_LIGHT, &gray, ParameterValueType::COLOR);
+        parameters.set(Parameter::AMBIENT_LIGHT, ambientLight);
 
-        parameters.set(Parameter::POSITION, ghnew ValueParameter(Parameter::POSITION, ParameterType::FLOAT3));
-        parameters.set(Parameter::ROTATION, ghnew ValueParameter(Parameter::ROTATION, ParameterType::FLOAT3));
-        parameters.set(Parameter::SCALE, ghnew ValueParameter(Parameter::SCALE, ParameterType::FLOAT3));
+        ScopedPointer<ValueParameter> position = ghnew ValueParameter(Parameter::POSITION, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::POSITION, position);
+        ScopedPointer<ValueParameter> rotation = ghnew ValueParameter(Parameter::ROTATION, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::ROTATION, rotation);
+        ScopedPointer<ValueParameter> scale = ghnew ValueParameter(Parameter::SCALE, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::SCALE, scale);
 
-        parameters.set(Parameter::CAMERA_DIRECTION, ghnew ValueParameter(Parameter::CAMERA_DIRECTION, ParameterType::FLOAT3));
-        parameters.set(Parameter::CAMERA_POSITION, ghnew ValueParameter(Parameter::CAMERA_POSITION, ParameterType::FLOAT3));
-        parameters.set(Parameter::CAMERA_TARGET, ghnew ValueParameter(Parameter::CAMERA_TARGET, ParameterType::FLOAT3));
-        parameters.set(Parameter::CAMERA_UP, ghnew ValueParameter(Parameter::CAMERA_UP, ParameterType::FLOAT3));
-        parameters.set(Parameter::CAMERA_RIGHT, ghnew ValueParameter(Parameter::CAMERA_RIGHT, ParameterType::FLOAT3));
+        ScopedPointer<ValueParameter> cameraDirection = ghnew ValueParameter(Parameter::CAMERA_DIRECTION, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::CAMERA_DIRECTION, cameraDirection);
+        ScopedPointer<ValueParameter> cameraPosition = ghnew ValueParameter(Parameter::CAMERA_POSITION, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::CAMERA_POSITION, cameraPosition);
+        ScopedPointer<ValueParameter> cameraTarget = ghnew ValueParameter(Parameter::CAMERA_TARGET, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::CAMERA_TARGET, cameraTarget);
+        ScopedPointer<ValueParameter> cameraUp = ghnew ValueParameter(Parameter::CAMERA_UP, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::CAMERA_UP, cameraUp);
+        ScopedPointer<ValueParameter> cameraRight = ghnew ValueParameter(Parameter::CAMERA_RIGHT, ParameterValueType::FLOAT3);
+        parameters.set(Parameter::CAMERA_RIGHT, cameraRight);
 
-        parameters.set(Parameter::FOV, ghnew ValueParameter(Parameter::FOV, ParameterType::FLOAT));
-        parameters.set(Parameter::ZNEAR, ghnew ValueParameter(Parameter::ZNEAR, ParameterType::FLOAT));
-        parameters.set(Parameter::ZFAR, ghnew ValueParameter(Parameter::ZFAR, ParameterType::FLOAT));
+        ScopedPointer<ValueParameter> fov = ghnew ValueParameter(Parameter::FOV, ParameterValueType::FLOAT);
+        parameters.set(Parameter::FOV, fov);
+        ScopedPointer<ValueParameter> zNear = ghnew ValueParameter(Parameter::ZNEAR, ParameterValueType::FLOAT);
+        parameters.set(Parameter::ZNEAR, zNear);
+        ScopedPointer<ValueParameter> zFar = ghnew ValueParameter(Parameter::ZFAR, ParameterValueType::FLOAT);
+        parameters.set(Parameter::ZFAR, zFar);
 
         XMMATRIX identity = XMMatrixIdentity();
-        parameters.set(Parameter::WORLD, ghnew ValueParameter(Parameter::WORLD, &identity, ParameterType::MATRIX));
-        parameters.set(Parameter::WORLD_IT, ghnew ValueParameter(Parameter::WORLD_IT, &identity, ParameterType::MATRIX));
-        parameters.set(Parameter::VIEW, ghnew ValueParameter(Parameter::VIEW, &identity, ParameterType::MATRIX));
-        parameters.set(Parameter::PROJECTION, ghnew ValueParameter(Parameter::PROJECTION, &identity, ParameterType::MATRIX));
-        parameters.set(Parameter::VIEW_PROJECTION, ghnew ValueParameter(Parameter::VIEW_PROJECTION, &identity, ParameterType::MATRIX));
-    }
-
-    ParameterManager::~ParameterManager() {
-        for(size_t i = 0; i<parameters.Size; i++)
-            delete parameters.getValue(i);
+        ScopedPointer<ValueParameter> world = ghnew ValueParameter(Parameter::WORLD, &identity, ParameterValueType::MATRIX);
+        parameters.set(Parameter::WORLD, world);
+        ScopedPointer<ValueParameter> worldIT = ghnew ValueParameter(Parameter::WORLD_IT, &identity, ParameterValueType::MATRIX);
+        parameters.set(Parameter::WORLD_IT, worldIT);
+        ScopedPointer<ValueParameter> view = ghnew ValueParameter(Parameter::VIEW, &identity, ParameterValueType::MATRIX);
+        parameters.set(Parameter::VIEW, view);
+        ScopedPointer<ValueParameter> projection = ghnew ValueParameter(Parameter::PROJECTION, &identity, ParameterValueType::MATRIX);
+        parameters.set(Parameter::PROJECTION, projection);
+        ScopedPointer<ValueParameter> viewProjection = ghnew ValueParameter(Parameter::VIEW_PROJECTION, &identity, ParameterValueType::MATRIX);
+        parameters.set(Parameter::VIEW_PROJECTION, viewProjection);
     }
 }

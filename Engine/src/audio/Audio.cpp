@@ -34,7 +34,11 @@ namespace Ghurund {
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed creating mastering voice\n"));
         }
 
-        return Status::OK;
+		DWORD dwChannelMask;
+		masteringVoice->GetChannelMask(&dwChannelMask);
+		X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance);
+
+		return Status::OK;
     }
 
     void Audio::uninit() {
