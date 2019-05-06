@@ -39,7 +39,6 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))]
         private static extern IntPtr Graphics_getResourceFactory(IntPtr _this);
 
         public GPUResourceFactory ResourceFactory { get; private set; }

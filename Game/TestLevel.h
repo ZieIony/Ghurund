@@ -67,7 +67,7 @@ public:
         checkerMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
 
         File sceneFile("test/test.scene");
-        /*if (sceneFile.Exists) {
+        if (sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.AsyncResourceContext, "test/test.scene", [&](Ghurund::Scene* scene, Status result) {
                 if (result != Status::OK)
                     return;
@@ -75,14 +75,14 @@ public:
                 sceneStep.Entities.add(scene);
                 scene->release();
                 });
-        } else {*/
-        ScopedPointer<Scene> scene = makeScene();
-        sceneStep.Entities.add(scene);
+        } else {
+            ScopedPointer<Scene> scene = makeScene();
+            sceneStep.Entities.add(scene);
 
-        /*Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
-        if (result != Status::OK)
-            Logger::log(LogType::WARNING, _T("failed to save scene\n"));
-    //}*/
+            Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+            if (result != Status::OK)
+                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
+        }
 
         editorStep.Camera = camera;
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);

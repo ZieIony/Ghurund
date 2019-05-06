@@ -232,7 +232,7 @@ namespace Ghurund {
         }
 
         for (size_t i = 0; i < textures.Size; i++) {
-            ResourceParameter* parameter = ghnew ResourceParameter(textures[i]->getName());
+            ResourceParameter* parameter = ghnew ResourceParameter(textures[i]->getName(), ParameterValueType::TEXTURE);
             parameters->set(i + constantsCount, parameter);
             parameter->release();
         }
@@ -375,13 +375,15 @@ namespace Ghurund {
             if (result != Status::OK) {
                 stream.set(bytesRead);
                 result = loadHlsl(context, stream);
-                if (result != Status::OK)
+                if (filterStatus(result, options) != Status::OK)
                     return Status::UNKNOWN_FORMAT;
             }
         }
 
-        if (result == Status::OK)
-            initParameters(context.ParameterManager);
+        if (filterStatus(result, options) != Status::OK)
+            return result;
+
+        initParameters(context.ParameterManager);
 
         return result;
     }

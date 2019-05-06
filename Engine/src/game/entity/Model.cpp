@@ -11,6 +11,9 @@ namespace Ghurund {
             return result;
 
         material = (Ghurund::Material*)resourceManager.load(context, workingDir, stream, &result, options);
+
+        initParameters(context.ParameterManager);
+
         return filterStatus(result, options);
     }
 

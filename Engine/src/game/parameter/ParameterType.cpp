@@ -10,5 +10,5 @@ namespace Ghurund {
     const ParameterValueType& ParameterValueType::FLOAT3 = ParameterValueType(ParameterValueTypeValue::FLOAT3, sizeof(XMFLOAT3));
     const ParameterValueType& ParameterValueType::MATRIX = ParameterValueType(ParameterValueTypeValue::MATRIX, sizeof(XMFLOAT4X4));
     const ParameterValueType& ParameterValueType::COLOR = ParameterValueType(ParameterValueTypeValue::COLOR, sizeof(XMFLOAT4));
-    const ParameterValueType& ParameterValueType::RESOURCE = ParameterValueType(ParameterValueTypeValue::RESOURCE, sizeof(Pointer*));
+    const ParameterValueType& ParameterValueType::TEXTURE = ParameterValueType(ParameterValueTypeValue::TEXTURE, sizeof(Pointer*));
 }

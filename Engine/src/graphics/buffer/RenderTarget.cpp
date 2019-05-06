@@ -210,8 +210,8 @@ namespace Ghurund {
         if (FAILED(hr))
             return Status::CALL_FAIL;
 
-        Buffer* buffer = ghnew Buffer(mappedMemory, imageSize);
-        image = ghnew Image(*buffer, desc.Width, desc.Height, desc.Format);
+        Buffer* buffer = ghnew Buffer(mappedMemory, (size_t)imageSize);
+        image = ghnew Image(*buffer, (UINT32)desc.Width, (UINT32)desc.Height, desc.Format);
         delete buffer;
         stagingTexture->Unmap(0, &writeRange);
 

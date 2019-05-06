@@ -187,6 +187,7 @@
     <ClCompile Include="src\graphics\shader\Shader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\collection\List.cpp" />
+    <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceContext.cpp" />

@@ -26,9 +26,21 @@ namespace Ghurund.Managed.Audio {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Sound_stop(IntPtr _this);
+        private static extern Status Sound_pause(IntPtr _this);
 
-        public void Stop() => Sound_stop(NativePtr);
+        public Status Pause() => Sound_pause(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern Status Sound_stop(IntPtr _this);
+
+        public Status Stop() => Sound_stop(NativePtr);
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Sound_isPlaying(IntPtr _this);
+
+        public bool IsPlaying => Sound_isPlaying(NativePtr);
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]

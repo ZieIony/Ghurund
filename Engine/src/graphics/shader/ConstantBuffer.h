@@ -55,11 +55,12 @@ namespace Ghurund {
         virtual void initParameters(ParameterManager& parameterManager) override {
             for (size_t i = 0; i < variables.Size; i++) {
                 ASCIIString name = variables[i]->name;
-                size_t index = parameterManager.Parameters.findKey(name);
-                if (index != parameterManager.Parameters.Size) {
-                    managerParameters[i] = parameterManager.Parameters.getValue(index);
-                } else {
-                    managerParameters[i] = nullptr;
+                managerParameters[i] = nullptr;
+                for (Parameter* p : parameterManager.Parameters) {
+                    if (p->Name == name) {
+                        managerParameters[i] = p;
+                        break;
+                    }
                 }
             }
         }

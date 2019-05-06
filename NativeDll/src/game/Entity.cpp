@@ -3,7 +3,7 @@
 
 using namespace Ghurund;
 
-extern "C" __declspec(dllexport) Array<Parameter*>* ParameterProvider_getParameters(ParameterProvider* _this) {
+extern "C" __declspec(dllexport) const PointerArray<Parameter*>* ParameterProvider_getParameters(ParameterProvider* _this) {
     return &_this->getParameters();
 }
 
@@ -31,7 +31,7 @@ extern "C" __declspec(dllexport) BOOL Entity_isSelectable(Entity* _this) {
     return _this->isSelectable();
 }
 
-extern "C" __declspec(dllexport) Array<Parameter*>* Entity_getParameters(Entity* _this) {
+extern "C" __declspec(dllexport) const PointerArray<Parameter*>* Entity_getParameters(Entity* _this) {
     return &_this->getParameters();
 }
 

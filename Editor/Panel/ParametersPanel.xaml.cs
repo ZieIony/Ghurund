@@ -59,8 +59,8 @@ namespace Ghurund.Editor {
 
             propertyGrid.PropertyEditorFactory = new PropertyEditorFactory();
 
-            for (uint i = 0; i < ParameterManager.ParameterCount; i++) {
-                Parameter p = ParameterManager.Get(i);
+            for (int i = 0; i < ParameterManager.Parameters.Count; i++) {
+                Parameter p = ParameterManager.Parameters[i];
                 var property = new Controls.PropertyGrid.Property(p) {
                     DisplayName = p.Name,
                     Category = "ParameterManager"

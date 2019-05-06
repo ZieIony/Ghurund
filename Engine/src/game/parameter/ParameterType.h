@@ -3,7 +3,7 @@
 namespace Ghurund {
 
     enum class ParameterValueTypeValue {
-        INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, RESOURCE
+        INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE
     };
 
     class ParameterValueType {
@@ -12,7 +12,7 @@ namespace Ghurund {
         unsigned int size;
 
     public:
-        static const ParameterValueType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & RESOURCE;
+        static const ParameterValueType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & TEXTURE;
 
         ParameterValueType(ParameterValueTypeValue value, unsigned int size) {
             this->value = value;

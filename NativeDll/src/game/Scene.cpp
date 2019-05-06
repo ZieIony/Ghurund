@@ -11,7 +11,7 @@ extern "C" __declspec(dllexport) EntityList *Scene_getEntities(Scene *_this) {
     return &_this->getEntities();
 }
 
-extern "C" __declspec(dllexport) Array<Parameter*> *Scene_getParameters(ParameterProvider *_this) {
+extern "C" __declspec(dllexport) const PointerArray<Parameter*> *Scene_getParameters(ParameterProvider *_this) {
     return &_this->getParameters();
 }
 

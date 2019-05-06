@@ -5,6 +5,7 @@ using Ghurund.Controls.PropertyGrid;
 using Ghurund.Controls.Workspace;
 using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed;
+using Ghurund.Managed.Audio;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Graphics.Shader;
@@ -44,7 +45,11 @@ namespace Ghurund.Editor {
 
         private void openFile(bool defaultToProject = false) {
             OpenFileDialog openFileDialog = new OpenFileDialog {
-                Filter = "All (*.*)|*.*|Projects (*.project)|*.project|" + makeFilter("Images", Managed.Graphics.Texture.Image.Formats) + "|" + makeFilter("Scenes", Scene.Formats) + "|" + makeFilter("Shaders", Shader.Formats),
+                Filter = "All (*.*)|*.*|Projects (*.project)|*.project|" 
+                + makeFilter("Images", Managed.Graphics.Texture.Image.Formats)
+                + "|" + makeFilter("Sounds", Sound.Formats)
+                + "|" + makeFilter("Scenes", Scene.Formats)
+                + "|" + makeFilter("Shaders", Shader.Formats),
                 FilterIndex = defaultToProject ? 1 : 0
             };
             if (openFileDialog.ShowDialog() == true)
@@ -62,6 +67,10 @@ namespace Ghurund.Editor {
             } else if (value.Type == typeof(Material)) {
                 editorPanel = new MaterialEditorPanel() {
                     Material = resource as Material
+                };
+            } else if (value.Type == typeof(Sound)) {
+                editorPanel = new SoundEditorPanel() {
+                    Sound = resource as Sound
                 };
             } else if (value.Type == typeof(Script)) {
                 if (resource == null)
@@ -90,6 +99,8 @@ namespace Ghurund.Editor {
                 editorPanel = new SceneEditorPanel();
             } else if (path.EndsWith("hlsl") || path.EndsWith("material")) {
                 editorPanel = new MaterialEditorPanel();
+            } else if (path.EndsWith("wav")) {
+                editorPanel = new SoundEditorPanel();
             } else if (path.EndsWith("script")) {
                 editorPanel = new ScriptEditorPanel();
             } else if (path.EndsWith("project")) {

@@ -7,6 +7,16 @@
 #include "core/Pointer.h"
 
 namespace Ghurund {
+    namespace ParameterId {
+        enum Type {
+            VIEWPORT_SIZE,
+            PARTY_COLOR, RANDOM, AMBIENT_LIGHT,
+            POSITION, ROTATION, SCALE,
+            CAMERA_DIRECTION, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CAMERA_RIGHT,
+            FOV, ZNEAR, ZFAR,
+            WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION
+        };
+    }
 
     class Parameter: public Pointer, public ObservableObject {
     protected:
@@ -14,32 +24,6 @@ namespace Ghurund {
         const ParameterValueType& type;
 
     public:
-        static const char* VIEWPORT_SIZE;
-
-        static const char* PARTY_COLOR;
-        static const char* RANDOM;
-        static const char* AMBIENT_LIGHT;
-
-        static const char* POSITION;
-        static const char* ROTATION;
-        static const char* SCALE;
-
-        static const char* CAMERA_DIRECTION;
-        static const char* CAMERA_POSITION;
-        static const char* CAMERA_TARGET;
-        static const char* CAMERA_UP;
-        static const char* CAMERA_RIGHT;
-
-        static const char* FOV;
-        static const char* ZNEAR;
-        static const char* ZFAR;
-
-        static const char* WORLD;
-        static const char* WORLD_IT;
-        static const char* VIEW;
-        static const char* PROJECTION;
-        static const char* VIEW_PROJECTION;
-
         Parameter(const ASCIIString& name, const ParameterValueType& type):type(type) {
             this->name = name;
         }

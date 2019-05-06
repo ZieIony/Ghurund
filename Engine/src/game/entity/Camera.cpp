@@ -38,18 +38,18 @@ namespace Ghurund {
             return;
 
         int i = 0;
-        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_DIRECTION);
-        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_POSITION);
-        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_UP);
-        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters.get(Parameter::CAMERA_RIGHT);
+        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_DIRECTION];
+        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_POSITION];
+        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_UP];
+        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_RIGHT];
 
-        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters.get(Parameter::FOV);
-        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters.get(Parameter::ZNEAR);
-        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters.get(Parameter::ZFAR);
+        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters[ParameterId::FOV];
+        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters[ParameterId::ZNEAR];
+        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters[ParameterId::ZFAR];
 
-        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters.get(Parameter::VIEW);
-        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters.get(Parameter::PROJECTION);
-        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters.get(Parameter::VIEW_PROJECTION);
+        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters[ParameterId::VIEW];
+        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters[ParameterId::PROJECTION];
+        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters[ParameterId::VIEW_PROJECTION];
     }
 
     void Camera::updateParameters() {

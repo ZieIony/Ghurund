@@ -6,14 +6,6 @@ extern "C" __declspec(dllexport) ParameterManager *ParameterManager_new() {
     return new ParameterManager();
 }
 
-extern "C" __declspec(dllexport) void ParameterManager_delete(ParameterManager *_this) {
-    delete _this;
-}
-
-extern "C" __declspec(dllexport) size_t ParameterManager_getParameterCount(ParameterManager *_this) {
-    return _this->getParameterCount();
-}
-
-extern "C" __declspec(dllexport) Parameter *ParameterManager_get(ParameterManager *_this, size_t index) {
-    return _this->get(index);
+extern "C" __declspec(dllexport) PointerList<Parameter*> *ParameterManager_getParameters(ParameterManager *_this) {
+    return &_this->getParameters();
 }

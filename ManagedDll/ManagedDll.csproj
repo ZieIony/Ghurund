@@ -80,6 +80,7 @@
     <Compile Include="Graphics\SwapChain.cs" />
     <Compile Include="Graphics\RenderStep.cs" />
     <Compile Include="Graphics\RenderingStatistics.cs" />
+    <Compile Include="Graphics\Texture\Texture.cs" />
     <Compile Include="Graphics\Texture\Image.cs" />
     <Compile Include="LauncherSettings.cs" />
     <Compile Include="List.cs" />

@@ -6,10 +6,10 @@ using System.Runtime.InteropServices;
 namespace Ghurund.Managed.Game {
 
     public enum ParameterType {
-        Int, Int2, Float, Float2, Float3, Matrix, Color
+        Int, Int2, Float, Float2, Float3, Matrix, Color, Texture
     }
 
-    public class Parameter : NativeClass, INotifyPropertyChanged {
+    public class Parameter: NativeClass, INotifyPropertyChanged {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void PropertyChangedListener();
@@ -50,46 +50,53 @@ namespace Ghurund.Managed.Game {
         public ParameterType Type { get => Parameter_getType(NativePtr); }
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern int Parameter_getIntValue(IntPtr _this);
+        private static extern int ValueParameter_getIntValue(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Int2 Parameter_getInt2Value(IntPtr _this);
+        private static extern Int2 ValueParameter_getInt2Value(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern float Parameter_getFloatValue(IntPtr _this);
+        private static extern float ValueParameter_getFloatValue(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float2 Parameter_getFloat2Value(IntPtr _this);
+        private static extern Float2 ValueParameter_getFloat2Value(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 Parameter_getFloat3Value(IntPtr _this);
+        private static extern Float3 ValueParameter_getFloat3Value(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Matrix Parameter_getMatrixValue(IntPtr _this);
+        private static extern Matrix ValueParameter_getMatrixValue(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Color Parameter_getColorValue(IntPtr _this);
+        private static extern Color ValueParameter_getColorValue(IntPtr _this);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setIntValue(IntPtr _this, int value);
+        private static extern IntPtr ResourceParameter_getValue(IntPtr _this);
+
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setInt2Value(IntPtr _this, Int2 value);
+        private static extern void ValueParameter_setIntValue(IntPtr _this, int value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setFloatValue(IntPtr _this, float value);
+        private static extern void ValueParameter_setInt2Value(IntPtr _this, Int2 value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setFloat2Value(IntPtr _this, Float2 value);
+        private static extern void ValueParameter_setFloatValue(IntPtr _this, float value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setFloat3Value(IntPtr _this, Float3 value);
+        private static extern void ValueParameter_setFloat2Value(IntPtr _this, Float2 value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setMatrixValue(IntPtr _this, Matrix value);
+        private static extern void ValueParameter_setFloat3Value(IntPtr _this, Float3 value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Parameter_setColorValue(IntPtr _this, Color value);
+        private static extern void ValueParameter_setMatrixValue(IntPtr _this, Matrix value);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ValueParameter_setColorValue(IntPtr _this, Color value);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void ResourceParameter_setValue(IntPtr _this, Resource.Resource value);
 
         [Category("Common")]
         [Description("This value will be set in shaders.")]
@@ -97,44 +104,49 @@ namespace Ghurund.Managed.Game {
             get {
                 switch (Parameter_getType(NativePtr)) {
                     case ParameterType.Int:
-                        return Parameter_getIntValue(NativePtr);
+                        return ValueParameter_getIntValue(NativePtr);
                     case ParameterType.Int2:
-                        return Parameter_getInt2Value(NativePtr);
+                        return ValueParameter_getInt2Value(NativePtr);
                     case ParameterType.Float:
-                        return Parameter_getFloatValue(NativePtr);
+                        return ValueParameter_getFloatValue(NativePtr);
                     case ParameterType.Float2:
-                        return Parameter_getFloat2Value(NativePtr);
+                        return ValueParameter_getFloat2Value(NativePtr);
                     case ParameterType.Float3:
-                        return Parameter_getFloat3Value(NativePtr);
+                        return ValueParameter_getFloat3Value(NativePtr);
                     case ParameterType.Matrix:
-                        return Parameter_getMatrixValue(NativePtr);
+                        return ValueParameter_getMatrixValue(NativePtr);
                     case ParameterType.Color:
-                        return Parameter_getColorValue(NativePtr);
+                        return ValueParameter_getColorValue(NativePtr);
+                    case ParameterType.Texture:
+                        return new Graphics.Texture.Texture(ResourceParameter_getValue(NativePtr));
                 }
                 return null;
             }
             set {
                 switch (Parameter_getType(NativePtr)) {
                     case ParameterType.Int:
-                        Parameter_setIntValue(NativePtr, (int)value);
+                        ValueParameter_setIntValue(NativePtr, (int)value);
                         break;
                     case ParameterType.Int2:
-                        Parameter_setInt2Value(NativePtr, (Int2)value);
+                        ValueParameter_setInt2Value(NativePtr, (Int2)value);
                         break;
                     case ParameterType.Float:
-                        Parameter_setFloatValue(NativePtr, (float)value);
+                        ValueParameter_setFloatValue(NativePtr, (float)value);
                         break;
                     case ParameterType.Float2:
-                        Parameter_setFloat2Value(NativePtr, (Float2)value);
+                        ValueParameter_setFloat2Value(NativePtr, (Float2)value);
                         break;
                     case ParameterType.Float3:
-                        Parameter_setFloat3Value(NativePtr, (Float3)value);
+                        ValueParameter_setFloat3Value(NativePtr, (Float3)value);
                         break;
                     case ParameterType.Matrix:
-                        Parameter_setMatrixValue(NativePtr, (Matrix)value);
+                        ValueParameter_setMatrixValue(NativePtr, (Matrix)value);
                         break;
                     case ParameterType.Color:
-                        Parameter_setColorValue(NativePtr, (Color)value);
+                        ValueParameter_setColorValue(NativePtr, (Color)value);
+                        break;
+                    case ParameterType.Texture:
+                        ResourceParameter_setValue(NativePtr, (Resource.Resource)value);
                         break;
                 }
             }

@@ -10,6 +10,8 @@ namespace Ghurund {
         if (filterStatus(result, options) != Status::OK)
             return result;
 
+        initParameters(context.ParameterManager);
+
         return loadParameters(resourceManager, context, workingDir, stream, options);
     }
 
