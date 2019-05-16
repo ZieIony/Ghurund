@@ -21,7 +21,11 @@ namespace Ghurund.Editor {
                 selectedItems = value;
                 if (selectedItems == null)
                     return;
-                SelectedObject = selectedItems[selectedItems.Count - 1];
+                if (selectedItems.Count == 0) {
+                    SelectedObject = null;
+                } else {
+                    SelectedObject = selectedItems[selectedItems.Count - 1];
+                }
             }
         }
 
@@ -59,7 +63,7 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/properties32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/properties32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Properties");
         public object SelectedObject {

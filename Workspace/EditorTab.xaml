@@ -3,7 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Ghurund.Controls.Workspace">
 
-	<Style TargetType="{x:Type local:EditorTab}" BasedOn="{StaticResource {x:Type TabItem}}">
+	<Style x:Key="Workspace.TabItem" TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
 		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>

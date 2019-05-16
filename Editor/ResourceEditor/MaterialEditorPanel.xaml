@@ -9,8 +9,10 @@
 			 xmlns:managed="clr-namespace:Ghurund.Managed;assembly=ManagedDll"
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
+			 xmlns:property="clr-namespace:Ghurund.Editor.Property"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+	
 	<UserControl.Resources>
 		<ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
                             ObjectType="{x:Type system:Enum}">
@@ -33,21 +35,27 @@
 				<Border Width="16"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
-				<Button Content="Save thumbnail" Click="Button_Click" Style="{DynamicResource Button_Flat}"/>
 			</wpf:ToolBarPanel>
 		</wpf:WrapPanel>
-		<workspace:SplitPanel Panel1Size="200" Orientation="Vertical">
-			<workspace:SplitPanel.Panel1>
-				<managed:SceneView x:Name="preview"/>
-			</workspace:SplitPanel.Panel1>
-			<workspace:SplitPanel.Panel2>
+		<TabControl Style="{StaticResource Workspace.TabControl}" TabStripPlacement="Bottom" BorderThickness="0,0,0,1">
+			<TabItem Style="{StaticResource Workspace.TabItem}" Header="Code">
 				<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}">
 						<TextBlock x:Name="status" Background="{DynamicResource Ghurund.Background}" Text="[0:0]"/>
 					</Border>
 					<controls:CodeTextBox x:Name="shaderCode" VerticalScrollBarVisibility="Auto" Padding="4,0,4,0" BorderThickness="0" GotFocus="ShaderCode_GotFocus" SelectionChanged="ShaderCode_SelectionChanged"/>
 				</DockPanel>
-			</workspace:SplitPanel.Panel2>
-		</workspace:SplitPanel>
+			</TabItem>
+			<TabItem Style="{StaticResource Workspace.TabItem}" Header="Preview">
+				<workspace:SplitPanel Panel2Size="200" Orientation="Horizontal">
+					<workspace:SplitPanel.Panel1>
+						<managed:SceneView x:Name="preview"/>
+					</workspace:SplitPanel.Panel1>
+					<workspace:SplitPanel.Panel2>
+						<property:ParameterGrid x:Name="propertyGrid" Background="{DynamicResource Ghurund.BackgroundLight}"/>
+					</workspace:SplitPanel.Panel2>
+				</workspace:SplitPanel>
+			</TabItem>
+		</TabControl>
 	</wpf:DockPanel>
 </UserControl>

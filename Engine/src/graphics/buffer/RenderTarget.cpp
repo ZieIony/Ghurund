@@ -1,4 +1,5 @@
 #include "RenderTarget.h"
+#include "MathUtils.h"
 
 namespace Ghurund {
     Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
@@ -67,7 +68,7 @@ namespace Ghurund {
         }
     }
 
-    Status RenderTarget::captureTexture(Graphics &graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
+    Status RenderTarget::captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
         ID3D12Device* device = graphics.Device;
 
         if (desc.Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D) {
@@ -86,7 +87,7 @@ namespace Ghurund {
             return Status::NOT_SUPPORTED;
         }
 
-        CommandList *commandList = ghnew CommandList();
+        CommandList* commandList = ghnew CommandList();
         if (commandList->init(graphics, commandQueue) != Status::OK)
             return Status::CALL_FAIL;
         commandList->reset();
@@ -174,7 +175,7 @@ namespace Ghurund {
 
         commandList->barrier(CD3DX12_RESOURCE_BARRIER::Transition(texture, D3D12_RESOURCE_STATE_COPY_SOURCE, state));
 
-        if (commandList->finish()!=Status::OK)
+        if (commandList->finish() != Status::OK)
             return Status::CALL_FAIL;
         commandList->wait();
         commandList->release();
@@ -209,6 +210,17 @@ namespace Ghurund {
         HRESULT hr = stagingTexture->Map(0, &readRange, &mappedMemory);
         if (FAILED(hr))
             return Status::CALL_FAIL;
+        
+        for (size_t x = 0; x < desc.Width; x ++) {
+            for (size_t y = 0; y < desc.Height; y ++) {
+                BYTE* row = (BYTE*)mappedMemory + (y * dstRowPitch);
+                UINT32* pixelRow = (UINT32*)row;
+                UINT32* pixelAddress = pixelRow + x;
+                UINT32 pixel = *pixelAddress;
+                pixel = swizzle(pixel, VectorComponent::X, VectorComponent::W, VectorComponent::Z, VectorComponent::Y);
+                *pixelAddress = pixel;
+            }
+        }
 
         Buffer* buffer = ghnew Buffer(mappedMemory, (size_t)imageSize);
         image = ghnew Image(*buffer, (UINT32)desc.Width, (UINT32)desc.Height, desc.Format);

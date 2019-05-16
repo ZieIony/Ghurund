@@ -10,37 +10,54 @@
 			 mc:Ignorable="d" 
              d:DesignHeight="254" d:DesignWidth="511">
 	<wpf:DockPanel>
-		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<wpf:ToolBarPanel Orientation="Horizontal">
-				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraOrbit32.png" IsChecked="True" Name="cameraOrbit" Style="{StaticResource IconRadioButton_Large}" Checked="Orbit_Checked"/>
-				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraRotate32.png" Name="cameraRotate" Style="{StaticResource IconRadioButton_Large}" Checked="Rotate_Checked"/>
-				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraPan32.png" Name="cameraPan" Style="{StaticResource IconRadioButton_Large}" Checked="Pan_Checked"/>
-				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraZoom32.png" Name="cameraZoom" Style="{StaticResource IconRadioButton_Large}" Checked="Zoom_Checked"/>
-				<Border Width="16"/>
-        <controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraPan32.png" Name="selectionMove" Style="{StaticResource IconRadioButton_Large}" Checked="SelectionMove_Checked"/>
-        <controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraRotate32.png" Name="selectionRotate" Style="{StaticResource IconRadioButton_Large}" Checked="SelectionRotate_Checked"/>
-        <controls:IconRadioButton GroupName="tool" Icon="../Resources/scale32.png" Name="selectionScale" Style="{StaticResource IconRadioButton_Large}" Checked="SelectionScale_Checked"/>
-        <Border Width="16"/>
-        <controls:IconCheckBox Icon="../Resources/xCoordinate32.png" Name="xCoordinate" Style="{StaticResource IconCheckBox_Large}" Checked="XCoordinate_Checked"/>
-        <controls:IconCheckBox Icon="../Resources/yCoordinate32.png" Name="yCoordinate" Style="{StaticResource IconCheckBox_Large}" Checked="YCoordinate_Checked"/>
-        <controls:IconCheckBox Icon="../Resources/zCoordinate32.png" Name="zCoordinate" Style="{StaticResource IconCheckBox_Large}" Checked="ZCoordinate_Checked"/>
-        <Border Width="16"/>
-        <wpf:ComboBox Name="material" SelectionChanged="Material_SelectionChanged">
+		<ToolBarTray DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}" IsLocked="True">
+			<ToolBar>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraOrbit32.png"
+										  IsChecked="True" Name="cameraOrbit"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="Orbit_Checked"/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraRotate32.png"
+										  Name="cameraRotate"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="Rotate_Checked"/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraPan32.png"
+										  Name="cameraPan"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="Pan_Checked"/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraZoom32.png"
+										  Name="cameraZoom"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="Zoom_Checked"/>
+				<Separator/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraPan32.png"
+										  Name="selectionMove"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="SelectionMove_Checked"/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/cameraRotate32.png"
+										  Name="selectionRotate"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="SelectionRotate_Checked"/>
+				<controls:IconRadioButton GroupName="tool" Icon="../Resources/scale32.png"
+										  Name="selectionScale"
+										  Style="{StaticResource IconRadioButton_Small}" Checked="SelectionScale_Checked"/>
+				<Separator/>
+				<controls:IconCheckBox Icon="../Resources/xCoordinate32.png" Name="xCoordinate"
+									   Style="{StaticResource IconCheckBox_Small}" Checked="XCoordinate_Checked"/>
+				<controls:IconCheckBox Icon="../Resources/yCoordinate32.png" Name="yCoordinate"
+									   Style="{StaticResource IconCheckBox_Small}" Checked="YCoordinate_Checked"/>
+				<controls:IconCheckBox Icon="../Resources/zCoordinate32.png" Name="zCoordinate"
+									   Style="{StaticResource IconCheckBox_Small}" Checked="ZCoordinate_Checked"/>
+				<Separator/>
+				<wpf:ComboBox Name="material" SelectionChanged="Material_SelectionChanged">
 					<ComboBoxItem Name="shaded" IsSelected="True">Shaded</ComboBoxItem>
 					<ComboBoxItem Name="wireframe">Wireframe</ComboBoxItem>
 					<ComboBoxItem Name="checker">Checker</ComboBoxItem>
 					<ComboBoxItem Name="normals">Normals</ComboBoxItem>
 				</wpf:ComboBox>
-				<Border Width="16"/>
-				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
+				<Separator/>
+				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Small}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
 				<CheckBox
 					x:Name="cameraPerspective" VerticalAlignment="Center"
 					Content="Perspective" Unchecked="Perspective_Checked"
 					Checked="Perspective_Checked" IsChecked="True"
 					Foreground="{DynamicResource Ghurund.Text.Primary}"/>
-			</wpf:ToolBarPanel>
-		</wpf:WrapPanel>
+			</ToolBar>
+		</ToolBarTray>
 		<engine:SceneView x:Name="sceneView" SelectionChanged="sceneView_SelectionChanged"/>
 	</wpf:DockPanel>
 </UserControl>

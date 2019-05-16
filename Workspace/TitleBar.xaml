@@ -8,6 +8,10 @@
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
 		<Setter Property="IconColor" Value="{DynamicResource Ghurund.Icon}"/>
+		<Setter Property="HandleWindowActions" Value="False"/>
+		<Setter Property="HandleWindowDragging" Value="False"/>
+		<Setter Property="MinimizeButtonVisibility" Value="Collapsed"/>
+		<Setter Property="MaximizeButtonVisibility" Value="Collapsed"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 		<Setter Property="Template">
 			<Setter.Value>
@@ -16,15 +20,21 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
 						<DockPanel>
+							<Rectangle DockPanel.Dock="Left" Height="16"
+									   Fill="{TemplateBinding IconColor}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+								<Rectangle.OpacityMask>
+									<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
+								</Rectangle.OpacityMask>
+							</Rectangle>
 							<ghurund:IconButton x:Name="closeButton" ToolTip="Close"
 												Icon="Resources/close32.png" Foreground="{TemplateBinding IconColor}"
 												DockPanel.Dock="Right"/>
-							<ghurund:IconButton x:Name="restoreButton" ToolTip="Restore"
+							<ghurund:IconButton x:Name="maximizeButton" ToolTip="Maxmize"
 												Icon="Resources/restore32.png" Foreground="{TemplateBinding IconColor}"
-												DockPanel.Dock="Right"/>
+												DockPanel.Dock="Right" Visibility="{TemplateBinding MaximizeButtonVisibility}"/>
 							<ghurund:IconButton x:Name="minimizeButton" ToolTip="Minimize"
 												Icon="Resources/minimize32.png" Foreground="{TemplateBinding IconColor}"
-												DockPanel.Dock="Right"/>
+												DockPanel.Dock="Right" Visibility="{TemplateBinding MinimizeButtonVisibility}"/>
 							<TextBlock x:Name="title"
 									   TextWrapping="NoWrap"
 									   Text="{TemplateBinding Title}"
@@ -34,17 +44,16 @@
 									   Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
 							<DockPanel.ContextMenu>
 								<ContextMenu>
-									<MenuItem Header="_Minimize" />
-									<MenuItem Header="Ma_ximize" />
-									<MenuItem Header="Mimimize _To">
+									<MenuItem Header="_Minimize" Visibility="{TemplateBinding MinimizeButtonVisibility}"/>
+									<MenuItem Header="Ma_ximize" Visibility="{TemplateBinding MaximizeButtonVisibility}" />
+									<MenuItem Header="Mimimize _To" Visibility="{TemplateBinding MinimizeButtonVisibility}">
 										<MenuItem Header="_Left" />
 										<MenuItem Header="_Top" />
 										<MenuItem Header="_Right" />
 										<MenuItem Header="_Bottom" />
 									</MenuItem>
-									<Separator />
 									<MenuItem x:Name="undockMenuItem" Header="Undock"/>
-									<MenuItem x:Name="closeMenuItem" Header="Close" />
+									<MenuItem x:Name="closeMenuItem" Header="Close"/>
 								</ContextMenu>
 							</DockPanel.ContextMenu>
 						</DockPanel>

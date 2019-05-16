@@ -4,7 +4,10 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
 namespace Ghurund.Editor {

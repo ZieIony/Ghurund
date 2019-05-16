@@ -10,8 +10,8 @@ namespace Ghurund.Editor {
     public class ThemeResourceDictionary : ResourceDictionary{
 
         private static readonly Dictionary<Theme, Uri> themes = new Dictionary<Theme, Uri> {
-            {Theme.Light, new Uri("pack://application:,,,/Controls;component/Themes/Theme.Light.xaml") },
-            {Theme.Dark, new Uri("pack://application:,,,/Controls;component/Themes/Theme.Dark.xaml") }
+            {Theme.Light, new Uri("pack://application:,,,/Themes/Theme.Light.xaml") },
+            {Theme.Dark, new Uri("pack://application:,,,/Themes/Theme.Dark.xaml") }
         };
 
         public static void ApplyTheme(FrameworkElement targetElement, Theme theme) {

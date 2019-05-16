@@ -136,7 +136,7 @@
 	<Style TargetType="{x:Type local:IconButton}">
 		<Setter Property="Background" Value="{x:Null}"/>
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
-		<Setter Property="BorderThickness" Value="0"/>
+		<Setter Property="BorderThickness" Value="{DynamicResource Ghurund.Static.BorderThickness}"/>
 		<Setter Property="HorizontalContentAlignment" Value="Center"/>
 		<Setter Property="VerticalContentAlignment" Value="Center"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Small}"/>
@@ -145,8 +145,10 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:IconButton}">
-					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-						<Rectangle Name="rectangle" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+					<Border x:Name="border" Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+						<Rectangle Name="rectangle" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
 							<Rectangle.OpacityMask>
 								<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
 							</Rectangle.OpacityMask>
@@ -157,9 +159,11 @@
 						</Trigger>
 						<Trigger Property="IsMouseOver" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Highlight}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="false">
 							<Setter Property="Fill" TargetName="rectangle" Value="{DynamicResource Ghurund.Icon.Disabled}"/>
@@ -182,8 +186,10 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:IconRadioButton}">
-					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-						<Rectangle Name="rectangle" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+					<Border x:Name="border" Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+						<Rectangle Name="rectangle" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
 							<Rectangle.OpacityMask>
 								<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
 							</Rectangle.OpacityMask>
@@ -192,9 +198,11 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Highlight}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsChecked" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
@@ -221,8 +229,10 @@
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:IconCheckBox}">
-					<Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
-						<Rectangle Name="rectangle" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+					<Border x:Name="border" Padding="{TemplateBinding Padding}"
+							BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}" SnapsToDevicePixels="true">
+						<Rectangle Name="rectangle" Fill="{TemplateBinding Foreground}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
 							<Rectangle.OpacityMask>
 								<ImageBrush ImageSource="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}"/>
 							</Rectangle.OpacityMask>
@@ -231,9 +241,11 @@
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Highlight}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsPressed" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
+							<Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource Ghurund.Accent}"/>
 						</Trigger>
 						<Trigger Property="IsChecked" Value="true">
 							<Setter Property="Background" TargetName="border" Value="{DynamicResource Ghurund.Selection}"/>
@@ -288,7 +300,6 @@
 		</Setter>
 	</Style>
 
-
     <Style TargetType="{x:Type local:PerformanceView}">
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Accent}"/>
 		<Setter Property="Template">
@@ -303,4 +314,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 </ResourceDictionary>

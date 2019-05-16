@@ -19,6 +19,18 @@ extern "C" __declspec(dllexport) void Material_setShader(Material *_this, Shader
     _this->setShader(shader);
 }
 
+extern "C" __declspec(dllexport) const PointerArray<Parameter*>* Material_getParameters(Material* _this) {
+    return &_this->getParameters();
+}
+
+extern "C" __declspec(dllexport) void Material_initParameters(Material* _this, ParameterManager* manager) {
+    _this->initParameters(*manager);
+}
+
+extern "C" __declspec(dllexport) void Material_updateParameters(Material* _this) {
+    _this->updateParameters();
+}
+
 extern "C" __declspec(dllexport) Material *Materials_makeChecker(ResourceManager *resourceManager, ResourceContext *context) {
     return Materials::makeChecker(*resourceManager, *context);
 }

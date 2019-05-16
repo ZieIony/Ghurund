@@ -45,7 +45,7 @@ namespace Ghurund.Editor {
             });
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/logs32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/logs32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Logs");
 

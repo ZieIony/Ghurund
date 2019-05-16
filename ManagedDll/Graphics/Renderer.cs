@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
-using Ghurund.Managed.Application;
 using Ghurund.Managed.Collection;
-using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics {

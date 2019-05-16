@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
+using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Graphics {
@@ -13,9 +14,11 @@ namespace Ghurund.Managed.Graphics {
 
         public Material() {
             FileName = "unnamed material.mtr";
+            Parameters = new Array<Parameter>(Material_getParameters(NativePtr), p => new Parameter(p));
         }
 
         public Material(IntPtr ptr) : base(ptr) {
+            Parameters = new Array<Parameter>(Material_getParameters(NativePtr), p => new Parameter(p));
         }
 
 
@@ -39,6 +42,27 @@ namespace Ghurund.Managed.Graphics {
 
         [Browsable(false)]
         public static Array<ResourceFormat> Formats { get; } = new Array<ResourceFormat>(Material_getFormats(), ptr => new ResourceFormat(ptr));
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Material_getParameters(IntPtr _this);
+
+        [Browsable(false)]
+        public Array<Parameter> Parameters { get; }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Material_initParameters(IntPtr _this, IntPtr parameterManager);
+
+        public void InitParameters(ParameterManager manager) {
+            Material_initParameters(NativePtr, manager.NativePtr);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Material_updateParameters(IntPtr _this);
+
+        public void UpdateParameters() => Material_updateParameters(NativePtr);
     }
 
     public static class Materials {

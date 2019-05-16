@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GhurundEditor"
-	xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
-	xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls" x:Class="Ghurund.Editor.MainWindow"
+        xmlns:local="clr-namespace:Ghurund.Editor"
+		xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+		xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls" x:Class="Ghurund.Editor.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 	<WindowChrome.WindowChrome>
@@ -13,10 +13,23 @@
         CaptionHeight="0"
 			GlassFrameThickness="1" />
 	</WindowChrome.WindowChrome>
-	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
-		<DockPanel Background="{DynamicResource Ghurund.Background}">
-			<DockPanel DockPanel.Dock="Top" Margin="0,4,0,0">
-				<Menu Background="{DynamicResource Ghurund.Background}">
+	<Window.CommandBindings>
+		<CommandBinding Command="local:Commands.ProjectExplorer" Executed="ProjectExplorerCommand_Executed" />
+		<CommandBinding Command="local:Commands.SceneExplorer" Executed="SceneExplorerCommand_Executed" />
+		<CommandBinding Command="local:Commands.Properties" Executed="PropertiesCommand_Executed" />
+		<CommandBinding Command="local:Commands.Parameters" Executed="ParametersCommand_Executed" />
+		<CommandBinding Command="local:Commands.Libraries" Executed="LibrariesCommand_Executed" />
+		<CommandBinding Command="local:Commands.Statistics" Executed="StatisticsCommand_Executed" />
+		<CommandBinding Command="local:Commands.Logs" Executed="LogsCommand_Executed" />
+		
+		<CommandBinding Command="local:Commands.ColorPicker" Executed="ColorPickerCommand_Executed" />
+	</Window.CommandBindings>
+	<Border BorderBrush="{DynamicResource Ghurund.Border}"
+			BorderThickness="{DynamicResource Ghurund.Static.BorderThickness}"
+			Background="{DynamicResource Ghurund.Background}">
+		<DockPanel>
+			<DockPanel DockPanel.Dock="Top">
+				<Menu Background="{DynamicResource Ghurund.Background}" VerticalAlignment="Bottom">
 					<MenuItem Header="_File">
 						<MenuItem Header="_New Project" Click="ProjectNew_Click"/>
 						<MenuItem Header="Open _Project" Click="ProjectOpen_Click"/>
@@ -47,49 +60,81 @@
 							</MenuItem.Icon>
 						</MenuItem>
 						<Separator/>
-						<MenuItem Header="Project E_xplorer" Click="ProjectExplorer_Click">
+						<MenuItem Command="local:Commands.ProjectExplorer">
 							<MenuItem.Icon >
-								<Image Source="Resources/projectExplorer32.png"/>
+								<Image Source="Resources/icons/projectExplorer32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="_Scene Explorer" Click="SceneExplorer_Click">
+						<MenuItem Command="local:Commands.SceneExplorer">
 							<MenuItem.Icon>
-								<Image Source="Resources/sceneExplorer32.png"/>
+								<Image Source="Resources/icons/sceneExplorer32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="_Properties" Click="Properties_Click">
+						<MenuItem Command="local:Commands.Properties">
 							<MenuItem.Icon>
-								<Image Source="Resources/properties32.png"/>
+								<Image Source="Resources/icons/properties32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="P_arameters" Click="Parameters_Click">
+						<MenuItem Command="local:Commands.Parameters">
 							<MenuItem.Icon>
-								<Image Source="Resources/properties32.png"/>
+								<Image Source="Resources/icons/properties32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="_Resource Manager" Click="ResourceManager_Click">
+						<MenuItem Command="local:Commands.Libraries">
 							<MenuItem.Icon>
-								<Image Source="Resources/resourceManager32.png"/>
+								<Image Source="Resources/icons/resourceManager32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
 						<Separator/>
-						<MenuItem Header="S_tatistics" Click="StatisticsPanel_Click">
+						<MenuItem Command="local:Commands.Statistics">
 							<MenuItem.Icon>
-								<Image Source="Resources/statistics32.png"/>
+								<Image Source="Resources/icons/statistics32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
-						<MenuItem Header="_Logs" Click="LogPanel_Click">
+						<MenuItem Command="local:Commands.Logs">
 							<MenuItem.Icon>
-								<Image Source="Resources/logs32.png"/>
+								<Image Source="Resources/icons/logs32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+					</MenuItem>
+					<MenuItem Header="_Tools">
+						<MenuItem Command="local:Commands.ColorPicker">
+							<MenuItem.Icon>
+								<Image Source="Resources/icons/colorPicker32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
 					</MenuItem>
 				</Menu>
-				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}"/>
+				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}"
+									HandleWindowActions="True" HandleWindowDragging="True"
+									MinimizeButtonVisibility="Visible"
+									MaximizeButtonVisibility="Visible"/>
 			</DockPanel>
+			<ToolBarTray DockPanel.Dock="Top" Background="{x:Null}">
+				<ToolBar Name="viewToolbar">
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/projectExplorer32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/sceneExplorer32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/properties32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/properties32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/resourceManager32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/statistics32.png" Style="{StaticResource IconButton_Small}"/>
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/logs32.png" Style="{StaticResource IconButton_Small}"/>
+				</ToolBar>
+				<ToolBar Name="toolsToolbar">
+					<controls:IconButton Command="local:Commands.ColorPicker"
+										 Icon="Resources/icons/colorPicker32.png" Style="{StaticResource IconButton_Small}"/>
+				</ToolBar>
+			</ToolBarTray>
 			<StatusBar DockPanel.Dock="Bottom" Background="{DynamicResource Ghurund.Background}">
 				<StatusBarItem Name="currentTask">
-					<TextBlock Name="mostRecentLog" Text="test"/>
+					<TextBlock Name="mostRecentLog"/>
 				</StatusBarItem>
 				<StatusBarItem Name="resources" HorizontalAlignment="Right">
 					<controls:PerformanceView Width="50" Height="10"/>

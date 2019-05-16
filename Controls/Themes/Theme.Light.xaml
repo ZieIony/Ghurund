@@ -26,4 +26,5 @@
 	<SolidColorBrush x:Key="Ghurund.Text.Secondary.Inverse">#b3ffffff</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Text.Hint.Inverse">#7fffffff</SolidColorBrush>
 	<SolidColorBrush x:Key="Ghurund.Text.Disabled.Inverse">#7fffffff</SolidColorBrush>
+
 </ResourceDictionary>

@@ -5,10 +5,11 @@
 
 	<Style TargetType="{x:Type local:HintTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
 		<Setter Property="HintBrush" Value="{DynamicResource Ghurund.Text.Hint}"/>
+		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Text.Primary}"/>
 		<Setter Property="Background" Value="{DynamicResource Ghurund.Background}"/>
 		<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Border}"/>
 		<Setter Property="TextWrapping" Value="NoWrap"/>
-		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="BorderThickness" Value="{DynamicResource Ghurund.Static.BorderThickness}"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type local:HintTextBox}">

@@ -7,11 +7,11 @@
 
 	<Thickness x:Key="Ghurund.Static.BorderThickness">1</Thickness>
 
-	<system:Double x:Key="Ghurund.Padding.Small">2</system:Double>
-	<system:Double x:Key="Ghurund.Padding">4</system:Double>
+	<Thickness x:Key="Ghurund.Padding.Small">1</Thickness>
+	<Thickness x:Key="Ghurund.Padding">3</Thickness>
 
-	<system:Double x:Key="Ghurund.IconSize.Small">16</system:Double>
-	<system:Double x:Key="Ghurund.IconSize.Large">24</system:Double>
+	<system:Double x:Key="Ghurund.IconSize.Small">20</system:Double>
+	<system:Double x:Key="Ghurund.IconSize.Large">32</system:Double>
 
 	<Style x:Key="IconButton_Small" TargetType="{x:Type local:IconButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconButton}}">
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Icon}"/>

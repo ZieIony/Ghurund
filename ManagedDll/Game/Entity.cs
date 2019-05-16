@@ -79,13 +79,6 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Entity_getParameters(IntPtr _this);
-
-        [Browsable(false)]
-        public Array<Parameter> Parameters { get; }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Entity_getParent(IntPtr _this);
 
         [Browsable(false)]
@@ -116,11 +109,19 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Entity_getParameters(IntPtr _this);
+
+        [Browsable(false)]
+        public Array<Parameter> Parameters { get; }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Entity_initParameters(IntPtr _this, IntPtr parameterManager);
 
         public void InitParameters(ParameterManager manager) {
             Entity_initParameters(NativePtr, manager.NativePtr);
         }
+
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Entity_updateParameters(IntPtr _this);

@@ -57,6 +57,8 @@ namespace Ghurund.Editor.ResourceEditor {
                     shaderCode.Text = material.Shader.SourceCode;
 
                     setupScene();
+
+                    propertyGrid.AddParameters(material.Parameters, "Material");
                 }
             }
         }
@@ -71,13 +73,13 @@ namespace Ghurund.Editor.ResourceEditor {
 
             EditorKernel.Inject(this);
 
+            preview.Init(ResourceManager, ResourceContext);
+
             cameraPicker.Items.Add(CameraMode.Default);
             cameraPicker.Items.Add(CameraMode.Side);
             cameraPicker.Items.Add(CameraMode.Front);
             cameraPicker.Items.Add(CameraMode.Top);
             cameraPicker.SelectedValue = CameraMode.Default;
-
-            preview.Init(ResourceManager, ResourceContext);
 
             modelPicker.SelectedValue = SampleModel.Cube;
         }
@@ -223,11 +225,6 @@ namespace Ghurund.Editor.ResourceEditor {
             shader.Build(ResourceContext);
             shader.Dispose();
             preview.Invalidate();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            preview.GenerateThumbnail();
-
         }
 
         private void ShaderCode_SelectionChanged(object sender, RoutedEventArgs e) {

@@ -6,22 +6,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Ghurund.Controls.Workspace {
-    public partial class TitleBar : Control {
+    public partial class TitleBar: Control {
 
-        Point mousePos;
-        double left, top;
+        private Point mousePos;
+        private double left, top;
         private bool lmbDown, dragging;
 
         public bool DragWindow { get; set; } = true;
 
         [Bindable(true)]
-        public String Title {
-            get { return (String)GetValue(TitleProperty); }
+        public string Title {
+            get { return (string)GetValue(TitleProperty); }
             set { SetValue(TitleProperty, value); }
         }
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(String), typeof(TitleBar), new PropertyMetadata(null));
+            DependencyProperty.Register("Title", typeof(string), typeof(TitleBar), new PropertyMetadata(null));
 
         public bool PanelFocused {
             get { return (bool)GetValue(PanelFocusedProperty); }
@@ -47,6 +47,39 @@ namespace Ghurund.Controls.Workspace {
 
         public static readonly DependencyProperty IconColorProperty =
             DependencyProperty.Register("IconColor", typeof(Brush), typeof(TitleBar), new PropertyMetadata(null));
+        
+        public Visibility MinimizeButtonVisibility {
+            get { return (Visibility)GetValue(MinimizeButtonVisibilityProperty); }
+            set { SetValue(MinimizeButtonVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty MinimizeButtonVisibilityProperty =
+            DependencyProperty.Register("MinimizeButtonVisibility", typeof(Visibility), typeof(TitleBar), new PropertyMetadata(null));
+
+        public Visibility MaximizeButtonVisibility {
+            get { return (Visibility)GetValue(MaximizeButtonVisibilityProperty); }
+            set { SetValue(MaximizeButtonVisibilityProperty, value); }
+        }
+
+        public static readonly DependencyProperty MaximizeButtonVisibilityProperty =
+            DependencyProperty.Register("MaximizeButtonVisibility", typeof(Visibility), typeof(TitleBar), new PropertyMetadata(null));
+
+        public bool HandleWindowActions {
+            get { return (bool)GetValue(HandleWindowActionsProperty); }
+            set { SetValue(HandleWindowActionsProperty, value); }
+        }
+
+        public static readonly DependencyProperty HandleWindowActionsProperty =
+            DependencyProperty.Register("HandleWindowActions", typeof(bool), typeof(TitleBar), new PropertyMetadata(null));
+
+        public bool HandleWindowDragging {
+            get { return (bool)GetValue(HandleWindowDraggingProperty); }
+            set { SetValue(HandleWindowDraggingProperty, value); }
+        }
+
+        public static readonly DependencyProperty HandleWindowDraggingProperty =
+            DependencyProperty.Register("HandleWindowDragging", typeof(bool), typeof(TitleBar), new PropertyMetadata(null));
+
 
         static TitleBar() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TitleBar), new FrameworkPropertyMetadata(typeof(TitleBar)));
@@ -54,30 +87,19 @@ namespace Ghurund.Controls.Workspace {
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
-
+            
             var closeButton = GetTemplateChild("closeButton") as Button;
-            closeButton.Click += CloseButton_Click;
+            closeButton.Click += closeButton_Click;
+            var maximizeButton = GetTemplateChild("maximizeButton") as Button;
+            maximizeButton.Click += maximizeButton_Click;
             var minimizeButton = GetTemplateChild("minimizeButton") as Button;
-            minimizeButton.Click += MinimizeButton_Click;
+            minimizeButton.Click += minimizeButton_Click;
 
             MenuItem closeItem = GetTemplateChild("closeMenuItem") as MenuItem;
-            closeItem.Click += close_Click;
+            closeItem.Click += closeButton_Click;
             MenuItem undockItem = GetTemplateChild("undockMenuItem") as MenuItem;
-            undockItem.Click += undock_Click;
+            undockItem.Click += undockButton_Click;
         }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e) {
-            RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Minimize, new Point()));
-        }
-
-        private void close_Click(object sender, RoutedEventArgs e) {
-            RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Close, new Point()));
-        }
-
-        private void undock_Click(object sender, RoutedEventArgs e) {
-            RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Undock, new Point()));
-        }
-
 
         protected override void OnMouseDown(MouseButtonEventArgs e) {
             base.OnMouseDown(e);
@@ -120,8 +142,13 @@ namespace Ghurund.Controls.Workspace {
                     RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Undock, e.GetPosition(this)));
                 }
 
-                if (dragging)
-                    RaiseEvent(new WindowEventArgs(WindowDraggedEvent, left + pos.X - mousePos.X, top + pos.Y - mousePos.Y));
+                if (dragging) {
+                    if (HandleWindowDragging) {
+                        windowDragged(left + pos.X - mousePos.X, top + pos.Y - mousePos.Y);
+                    } else {
+                        RaiseEvent(new WindowEventArgs(WindowDraggedEvent, left + pos.X - mousePos.X, top + pos.Y - mousePos.Y));
+                    }
+                }
             } catch (Exception) {
                 lmbDown = false;
                 dragging = false;
@@ -141,6 +168,21 @@ namespace Ghurund.Controls.Workspace {
             RaiseEvent(new WindowEventArgs(WindowDroppedEvent, left + pos.X - mousePos.X, top + pos.Y - mousePos.Y));
 
             e.Handled = true;
+        }
+
+        private void windowDragged(double left, double top) {
+            Window.GetWindow(this).Left = left;
+            Window.GetWindow(this).Top = top;
+        }
+
+        private void windowAction(WindowAction action) {
+            if (action == Workspace.WindowAction.Close) {
+                Window.GetWindow(this).Close();
+            } else if (action == Workspace.WindowAction.Maximize) {
+                Window.GetWindow(this).WindowState = (Window.GetWindow(this).WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            } else if (action == Workspace.WindowAction.Minimize) {
+                Window.GetWindow(this).WindowState = WindowState.Minimized;
+            }
         }
     }
 }

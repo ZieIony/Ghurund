@@ -71,9 +71,9 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/resourceManager32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/resourceManager32.png", UriKind.Absolute));
         public Control Control { get => this; }
-        public Title Title { get; } = new Title("Resource Manager");
+        public Title Title { get; } = new Title("Libraries");
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();

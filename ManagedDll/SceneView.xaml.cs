@@ -19,6 +19,9 @@ namespace Ghurund.Managed {
 
         private Point prevPos;
         private bool pressed = false;
+        private float dist = 0;
+        private static readonly float MAX_CLICK_DIST = 5;
+
         private Material invalidMaterial;
         private Scene editorScene;
 
@@ -36,7 +39,7 @@ namespace Ghurund.Managed {
 
         private Camera topCamera, sideCamera, frontCamera, defaultCamera, customCamera;
 
-        private CameraMode cameraMode = CameraMode.Default;
+        private CameraMode cameraMode;
         public CameraMode CameraMode {
             get => cameraMode;
             set {
@@ -44,18 +47,28 @@ namespace Ghurund.Managed {
                 switch (cameraMode) {
                     case CameraMode.Default:
                         renderView.Camera = defaultCamera;
+                        sceneStep.Camera = defaultCamera;
+                        editorStep.Camera = defaultCamera;
                         break;
                     case CameraMode.Front:
                         renderView.Camera = frontCamera;
+                        sceneStep.Camera = frontCamera;
+                        editorStep.Camera = frontCamera;
                         break;
                     case CameraMode.Side:
                         renderView.Camera = sideCamera;
+                        sceneStep.Camera = sideCamera;
+                        editorStep.Camera = sideCamera;
                         break;
                     case CameraMode.Top:
                         renderView.Camera = topCamera;
+                        sceneStep.Camera = topCamera;
+                        editorStep.Camera = topCamera;
                         break;
                     case CameraMode.Custom:
                         renderView.Camera = customCamera;
+                        renderView.Camera = customCamera;
+                        editorStep.Camera = customCamera;
                         break;
                 }
             }
@@ -187,8 +200,6 @@ namespace Ghurund.Managed {
             topCamera.InitParameters(resourceContext.ParameterManager);
             ResetCamera(CameraMode.Top);
 
-            CameraMode = cameraMode;    // just to update the current camera
-
             renderView.Init(resourceManager, resourceContext);
 
             editorScene = Scenes.MakeEditor(resourceManager, resourceContext);
@@ -206,6 +217,8 @@ namespace Ghurund.Managed {
             };
             sceneStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(sceneStep);
+
+            CameraMode = CameraMode.Default;    // just to update the current camera
         }
 
         public void Uninit() {
@@ -236,21 +249,6 @@ namespace Ghurund.Managed {
             renderView.Invalidate();
         }
 
-        public System.Drawing.Bitmap GenerateThumbnail() {
-            System.Drawing.Bitmap bitmap = renderView.GrabFrame();
-            return new System.Drawing.Bitmap(bitmap, 500, 500);
-        }
-
-        public static System.Drawing.Bitmap GenerateThumbnail(Scene scene, ResourceManager resourceManager, ResourceContext resourceContext) {
-            SceneView sceneView = new SceneView();
-            sceneView.Init(resourceManager, resourceContext);
-            sceneView.Scene = scene;
-            sceneView.Arrange(new Rect(0, 0, 500, 500));
-            System.Drawing.Bitmap bitmap = sceneView.GenerateThumbnail();
-            sceneView.Uninit();
-            return bitmap;
-        }
-
         public void ResetCamera() => ResetCamera(CameraMode);
 
         public void ResetCamera(CameraMode cameraMode) {
@@ -276,8 +274,10 @@ namespace Ghurund.Managed {
 
         private void renderView_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
             prevPos = new Point(e.X, e.Y);
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 pressed = true;
+                dist = 0;
+            }
         }
 
         private void renderView_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
@@ -285,6 +285,7 @@ namespace Ghurund.Managed {
             if (pressed) {
                 var dx = pos.X - prevPos.X;
                 var dy = -(pos.Y - prevPos.Y);
+                dist += (float)Math.Sqrt(dx * dx + dy * dy);
                 if (NavigationMode == NavigationMode.Orbit) {
                     renderView.Camera.Orbit((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
                 } else if (NavigationMode == NavigationMode.Pan) {
@@ -300,16 +301,15 @@ namespace Ghurund.Managed {
         }
 
         private void renderView_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 pressed = false;
-        }
-
-        private void renderView_Click(object sender, System.EventArgs e) {
-            SelectedEntities.Clear();
-            Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
-            if (model != null) {
-                SelectedEntities.Add(model);
-                RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
+                if (dist < MAX_CLICK_DIST) {
+                    SelectedEntities.Clear();
+                    Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
+                    if (model != null)
+                        SelectedEntities.Add(model);
+                    RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
+                }
             }
         }
 

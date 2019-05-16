@@ -38,7 +38,7 @@ namespace Ghurund.Controls.PropertyGrid {
         }
 
         public Property(object owner, PropertyInfo info, IPropertyEditorFactory editorFactory) {
-            DisplayName = info.Name;
+            DisplayName = info.GetCustomAttribute<DisplayNameAttribute>(true)?.DisplayName ?? info.Name;
             Description = info.GetCustomAttribute<DescriptionAttribute>(true)?.Description;
             Category = info.GetCustomAttribute<CategoryAttribute>(true)?.Category ?? GENERIC_CATEGORY;
 

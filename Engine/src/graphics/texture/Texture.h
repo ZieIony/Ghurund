@@ -16,7 +16,7 @@ namespace Ghurund {
     protected:
         virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
             Status result;
-            image = (Image*)resourceManager.load(context, workingDir, stream, &result, options);
+            image = (Ghurund::Image*)resourceManager.load(context, workingDir, stream, &result, options);
             if(filterStatus(result, options)!=Status::OK)
                 return result;
             return init(context, *image);
@@ -51,6 +51,12 @@ namespace Ghurund {
         }
 
         Status init(ResourceContext &context, Image &image);
+
+        inline Image* getImage() {
+            return image;
+        }
+
+        __declspec(property(get = getImage)) Image* Image;
 
         void set(CommandList &commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());

@@ -193,16 +193,16 @@ namespace Ghurund {
         }
 
         pixelSize = getDXGIFormatBitsPerPixel(format) / 8;
-        int bytesPerRow = width * pixelSize;
-        int imageSize = bytesPerRow * height;
+        rowPitch = width * pixelSize;
+        int imageSize = rowPitch * height;
 
         imageData = ghnew Buffer(imageSize);
 
         if (imageConverted) {
-            if (FAILED(wicConverter->CopyPixels(0, bytesPerRow, imageSize, imageData->Data)))
+            if (FAILED(wicConverter->CopyPixels(0, rowPitch, imageSize, imageData->Data)))
                 return Status::CALL_FAIL;
         } else {
-            if (FAILED(wicFrame->CopyPixels(0, bytesPerRow, imageSize, imageData->Data)))
+            if (FAILED(wicFrame->CopyPixels(0, rowPitch, imageSize, imageData->Data)))
                 return Status::CALL_FAIL;
         }
 

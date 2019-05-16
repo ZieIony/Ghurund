@@ -108,7 +108,7 @@ namespace Ghurund.Editor.ResourceEditor {
             var foldingStrategy = new XmlFoldingStrategy();
             foldingStrategy.UpdateFoldings(foldingManager, shaderCode.Document);
 
-            Uri uri = new Uri("pack://application:,,,/Resources/AngelScript.xshd", UriKind.Absolute);
+            Uri uri = new Uri("pack://application:,,,/Resources/languages/AngelScript.xshd", UriKind.Absolute);
             StreamResourceInfo info = Application.GetResourceStream(uri);
             Stream xshd_stream = info.Stream;
             XmlTextReader xshd_reader = new XmlTextReader(xshd_stream);

@@ -37,7 +37,7 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/projectExplorer32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/projectExplorer32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Project Explorer");
 

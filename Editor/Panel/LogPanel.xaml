@@ -6,27 +6,31 @@
              xmlns:local="clr-namespace:Ghurund.Editor"
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 mc:Ignorable="d" 
-             d:DesignHeight="168.75" d:DesignWidth="200.093">
+             d:DesignHeight="168.75" d:DesignWidth="238.093">
 	<DockPanel>
-		<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+		<ToolBarTray DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}" IsLocked="True">
+			<ToolBar>
 				<controls:IconButton Icon="/Resources/clearLogs32.png"
-									 Style="{StaticResource IconButton_Large}"
+									 Style="{StaticResource IconButton_Small}"
 									 Click="ClearLogs_Click"
 									 ToolTip="Clear logs"/>
 				<controls:IconCheckBox Icon="/Resources/wrap32.png"
-									   Style="{StaticResource IconCheckBox_Large}"
+									   Style="{StaticResource IconCheckBox_Small}"
 									   IsChecked="{Binding ElementName=logs, Path=WrapMessages}"
 									   ToolTip="Wrap messages"/>
 				<controls:IconCheckBox Icon="/Resources/autoScroll32.png"
-									   Style="{StaticResource IconCheckBox_Large}"
+									   Style="{StaticResource IconCheckBox_Small}"
 									   IsChecked="{Binding ElementName=logs, Path=AutoScroll}"
 									   ToolTip="Auto scroll"/>
 				<controls:IconButton Icon="/Resources/scrollDown32.png"
-									 Style="{StaticResource IconButton_Large}"
+									 Style="{StaticResource IconButton_Small}"
 									 Click="ScrollToBottom_Click"
 									 ToolTip="Scroll to bottom"/>
+			</ToolBar>
+		</ToolBarTray>
+		<DockPanel Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top">
 			<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}"/>
-		</controls:FlowPanel>
+		</DockPanel>
 		<ScrollViewer Background="{DynamicResource Ghurund.BackgroundLight}">
 			<controls:LogsView x:Name="logs" Filter="{Binding ElementName=filterBox, Path=Text}"/>
 		</ScrollViewer>

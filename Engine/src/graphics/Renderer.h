@@ -16,12 +16,10 @@
 namespace Ghurund {
     class Renderer: public Object {
     private:
-        static const UINT FRAME_COUNT = 2;
-
         Model* fullScreenQuad = nullptr;
         Material* lightPassMaterial = nullptr;
         Postprocess* postprocess = nullptr;
-        RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
+        //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
         Graphics* graphics = nullptr;
         ParameterManager* parameterManager = nullptr;

@@ -42,6 +42,7 @@ namespace Ghurund.Editor {
         }
 
         [Editable(true)]
+        [DisplayName("Reopen most recent project")]
         [Category("Recents")]
         [Description("Next time GhurundEditor will start with the most recent project opened (if possible).")]
         public bool ReopenMostRecentProject { get; set; } = true;
@@ -55,6 +56,18 @@ namespace Ghurund.Editor {
         [Category("Recents")]
         [Description("Maximum number of recent files shown on welcome screen.")]
         public int MaxRecentFiles { get; set; } = MAX_RECENT_FILES;
+
+        [Editable(true)]
+        [DisplayName("Show View")]
+        [Category("Toolbars")]
+        [Description("Show View toolbar.")]
+        public bool ShowViewToolbar { get; set; } = true;
+
+        [Editable(true)]
+        [DisplayName("Show Tools")]
+        [Category("Toolbars")]
+        [Description("Show Tools toolbar.")]
+        public bool ShowToolsToolbar { get; set; } = true;
 
         [Editable(true)]
         [Category("Look and feel")]

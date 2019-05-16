@@ -10,7 +10,7 @@
         CaptionHeight="0"
 			GlassFrameThickness="1" />
 	</WindowChrome.WindowChrome>
-	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
+	<Border BorderBrush="{DynamicResource Ghurund.Border}" BorderThickness="{DynamicResource Ghurund.Static.BorderThickness}">
 		<GhurundWorkspace:TabControl x:Name="tabControl" TabStripPlacement="Bottom" Background="{x:Null}" Margin="-1"/>
 	</Border>
 </Window>

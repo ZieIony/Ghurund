@@ -16,14 +16,17 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public EditorTab() {
+            Style = FindResource("Workspace.TabItem") as Style;
         }
 
         public EditorTab(EditorPanel panel) {
+            Style = FindResource("Workspace.TabItem") as Style;
             Content = panel;
             Header = panel.Title;
         }
 
         public EditorTab(IDockablePanel control) {
+            Style = FindResource("Workspace.TabItem") as Style;
             Content = new EditorPanel(control);
             Header = control.Title?.Short ?? "";
         }

@@ -48,8 +48,6 @@ namespace Ghurund.Editor {
         [Inject]
         public ParameterManager ParameterManager { get; set; }
 
-        private List<Controls.PropertyGrid.Property> managerParameters = new List<Controls.PropertyGrid.Property>();
-
         private bool disposed = false;
 
         public ParametersPanel() {
@@ -59,32 +57,8 @@ namespace Ghurund.Editor {
 
             propertyGrid.PropertyEditorFactory = new PropertyEditorFactory();
 
-            for (int i = 0; i < ParameterManager.Parameters.Count; i++) {
-                Parameter p = ParameterManager.Parameters[i];
-                var property = new Controls.PropertyGrid.Property(p) {
-                    DisplayName = p.Name,
-                    Category = "ParameterManager"
-                };
-                property.Value.Getter = () => p.Value;
-                switch (p.Type) {
-                    case (ParameterType.Float):
-                        property.Value.Editor = new FloatPropertyEditor();
-                        property.Value.Setter = v => p.Value = v;
-                        break;
-                    case (ParameterType.Float3):
-                        property.Value.Editor = new Float3PropertyEditor();
-                        property.Value.Setter = v => p.Value = v;
-                        break;
-                    case (ParameterType.Color):
-                        property.Value.Editor = new ColorPropertyEditor();
-                        property.Value.Setter = v => p.Value = v;
-                        break;
-                }
-                managerParameters.Add(property);
-            }
-
-            foreach (Controls.PropertyGrid.Property p in managerParameters)
-                propertyGrid.Properties.Add(p);
+            SelectedEntity = null;
+            propertyGrid.AddParameters(ParameterManager.Parameters, "ParameterManager");
         }
 
         ~ParametersPanel() {
@@ -105,7 +79,7 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/properties32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/properties32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Parameters");
 
@@ -121,23 +95,12 @@ namespace Ghurund.Editor {
 
                 selectedEntity = value;
                 propertyGrid.Properties.Clear();
-                if (selectedEntity != null) {
-                    for (int i = 0; i < selectedEntity.Parameters.Count; i++) {
-                        Parameter p = selectedEntity.Parameters[i];
-                        if (p != null) {
-                            var property = new Controls.PropertyGrid.Property(p) {
-                                DisplayName = p.Name,
-                                Category = "Selected object"
-                            };
-                            property.Value.Getter = () => p.Value;
-                            propertyGrid.Properties.Add(property);
-                        }
-                    }
-                }
+                if (selectedEntity != null)
+                    propertyGrid.AddParameters(selectedEntity.Parameters, "Selected object");
 
-                foreach (Controls.PropertyGrid.Property p in managerParameters)
-                    propertyGrid.Properties.Add(p);
+                propertyGrid.AddParameters(ParameterManager.Parameters, "ParameterManager");
             }
         }
+
     }
 }

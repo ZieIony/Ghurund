@@ -13,7 +13,7 @@ using Ghurund.Managed.Script;
 using Ninject;
 
 namespace Ghurund.Editor {
-    public partial class MainWindow : Window {
+    public partial class MainWindow: Window {
 
         [Inject]
         public IProjectExplorerPanel ProjectExplorer { get; set; }
@@ -28,7 +28,7 @@ namespace Ghurund.Editor {
         public IParametersPanel ParametersPanel { get; set; }
 
         [Inject]
-        public IResourceManagerPanel ResourceManagerPanel { get; set; }
+        public IResourceManagerPanel LibrariesPanel { get; set; }
 
         [Inject]
         public ISceneExplorerPanel SceneExplorer { get; set; }
@@ -64,6 +64,8 @@ namespace Ghurund.Editor {
 
             EditorKernel.Inject(this);
 
+            ThemeResourceDictionary.ApplyTheme(this, Settings.Theme);
+
             removeInvalidRecents();
 
             workspacePanel.Loaded += WorkspacePanel_Loaded;
@@ -80,9 +82,6 @@ namespace Ghurund.Editor {
             AddHandler(ActionPerformedEvent, new RoutedActionPerformedEventHandler(actionPerformedHandler));
             AddHandler(FileOpenedEvent, new RoutedFileOpenedEventHandler(fileOpenedHandler));
             AddHandler(PropertyGrid.ValueEditedEvent, new RoutedValueEditedEventHandler(valueEditedHandler));
-
-            AddHandler(TitleBar.WindowDraggedEvent, new WindowEventHandler(titleBar_WindowDragged));
-            AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
 
             AddHandler(SceneEditorPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
             AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
@@ -102,7 +101,7 @@ namespace Ghurund.Editor {
                 mostRecentToolTabControl = args.TabControl;
             }
 
-            if(args.Panel.Content is ISceneEditor) {
+            if (args.Panel.Content is ISceneEditor) {
                 var editor = args.Panel.Content as ISceneEditor;
                 SceneExplorer.Scene = editor.Scene;
             }
@@ -143,11 +142,10 @@ namespace Ghurund.Editor {
             Application.Current.Shutdown();
         }
 
-        private void ProjectExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, ProjectExplorer);
         private void WelcomePage_Click(object sender, RoutedEventArgs e) => openPanel(sender, WelcomePage);
         private void Properties_Click(object sender, RoutedEventArgs e) => openPanel(sender, PropertiesPanel);
         private void Parameters_Click(object sender, RoutedEventArgs e) => openPanel(sender, ParametersPanel);
-        private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, ResourceManagerPanel);
+        private void ResourceManager_Click(object sender, RoutedEventArgs e) => openPanel(sender, LibrariesPanel);
         private void SceneExplorer_Click(object sender, RoutedEventArgs e) => openPanel(sender, SceneExplorer);
         private void StatisticsPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, StatisticsPanel);
         private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
@@ -198,6 +196,13 @@ namespace Ghurund.Editor {
             Settings.WindowSize = new Size(Width, Height);
             Settings.WorkspaceState = workspacePanel.Save();
             Settings.WriteToBinaryFile(EditorSettings.EDITOR_SETTINGS_FILE_NAME);
+        }
+
+        protected override void OnActivated(EventArgs e) {
+            base.OnActivated(e);
+
+            viewToolbar.Visibility = Settings.ShowViewToolbar ? Visibility.Visible : Visibility.Collapsed;
+            toolsToolbar.Visibility = Settings.ShowToolsToolbar ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 

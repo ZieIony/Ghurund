@@ -68,6 +68,8 @@ namespace Ghurund.Editor {
             geometryComboBox.Items.Add(GeometryType.Cone);
             geometryComboBox.Items.Add(GeometryType.Sphere);
             geometryComboBox.Items.Add(GeometryType.Plane);
+
+            geometryComboBox.SelectedItem = GeometryType.Cube;
         }
 
         ~SceneExplorerPanel() {
@@ -86,7 +88,7 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/sceneExplorer32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/sceneExplorer32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Scene Explorer");
 
@@ -139,6 +141,8 @@ namespace Ghurund.Editor {
         }
 
         private void geometryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (e.RemovedItems.Count == 0)
+                return;
             switch(geometryComboBox.SelectedItem){
                 case GeometryType.Cube:
                     scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));

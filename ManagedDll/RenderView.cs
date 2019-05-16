@@ -96,12 +96,6 @@ namespace Ghurund.Managed {
             Graphics = null;
         }
 
-        public Bitmap GrabFrame() {
-            Bitmap bitmap = new Bitmap(Width, Height);
-            DrawToBitmap(bitmap, Bounds);
-            return bitmap;
-        }
-
         protected override void OnPaint(PaintEventArgs e) {
             //base.OnPaint(e);
             if (IsInDesignMode(this)) {

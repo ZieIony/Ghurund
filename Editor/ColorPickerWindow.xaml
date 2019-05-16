@@ -1,0 +1,25 @@
+﻿<Window x:Class="Ghurund.Editor.ColorPickerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ghurund.Editor"
+		xmlns:workspace="clr-namespace:Ghurund.Controls.Workspace;assembly=GhurundWorkspace"
+		mc:Ignorable="d"
+		Topmost="True" ResizeMode="NoResize"
+        Title="ColorPickerWindow" Height="250" Width="350">
+	<WindowChrome.WindowChrome>
+		<WindowChrome 
+        CaptionHeight="0"
+			GlassFrameThickness="1" />
+	</WindowChrome.WindowChrome>
+	<Border BorderBrush="{DynamicResource Ghurund.Border}"
+			BorderThickness="{DynamicResource Ghurund.Static.BorderThickness}"
+			Background="{DynamicResource Ghurund.Background}">
+		<DockPanel>
+			<workspace:TitleBar DockPanel.Dock="Top" Title="Color picker"
+								HandleWindowDragging="True" Icon="Resources/icons/colorPicker32.png"/>
+			<local:ColorPicker x:Name="colorPicker"/>
+		</DockPanel>
+	</Border>
+</Window>

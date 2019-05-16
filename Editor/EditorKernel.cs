@@ -41,6 +41,8 @@ namespace Ghurund.Editor {
             kernel.Bind<LogPanel>().ToSelf().InSingletonScope();
             kernel.Bind<ILogPanel>().ToMethod(context => context.Kernel.Get<LogPanel>()).InSingletonScope();
 
+            kernel.Bind<ColorPickerWindow>().ToSelf().InSingletonScope();
+
 
             kernel.Bind<Graphics>().ToMethod(context => {
                 Graphics graphics = new Graphics();

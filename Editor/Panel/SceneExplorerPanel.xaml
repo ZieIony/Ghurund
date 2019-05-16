@@ -10,18 +10,20 @@
              d:DesignHeight="450" d:DesignWidth="333.792">
 	<Grid>
 		<DockPanel Name="content">
-			<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-				<ToolBarPanel Orientation="Horizontal">
-					<controls:IconButton Icon="/Resources/light32.png"
-									 Style="{StaticResource IconButton_Large}"
+			<ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="{DynamicResource Ghurund.Background}">
+				<ToolBar>
+					<controls:IconButton Icon="/Resources/light32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Small}"
 									 ToolTip="Add a light" Click="addLight_Click"/>
-					<controls:IconButton Icon="/Resources/camera32.png"
-									 Style="{StaticResource IconButton_Large}"
+					<controls:IconButton Icon="/Resources/camera32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Small}"
 									 ToolTip="Add a camera" Click="addCamera_Click"/>
 					<ComboBox Name="geometryComboBox" SelectionChanged="geometryComboBox_SelectionChanged"/>
-				</ToolBarPanel>
+				</ToolBar>
+			</ToolBarTray>
+			<Grid DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 				<controls:HintTextBox Style="{StaticResource FilterBoxStyle}" />
-			</WrapPanel>
+			</Grid>
 			<TreeView Name="treeView"
 				  BorderThickness="0"
 				  Background="{DynamicResource Ghurund.BackgroundLight}"

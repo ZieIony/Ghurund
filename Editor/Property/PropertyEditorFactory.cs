@@ -1,5 +1,6 @@
 ﻿using Ghurund.Controls.PropertyGrid;
 using Ghurund.Managed;
+using Ghurund.Managed.Graphics.Texture;
 using Ghurund.Managed.Resource;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Ghurund.Editor.Property {
             {typeof(string), typeof(TextPropertyEditor) },
             {typeof(Float3), typeof(Float3PropertyEditor) },
             {typeof(Color), typeof(ColorPropertyEditor) },
+            {typeof(Texture), typeof(TexturePropertyEditor) },
             {typeof(Resource), typeof(ResourcePropertyEditor) }
         };
 

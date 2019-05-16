@@ -2,7 +2,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Texture::init(ResourceContext &context, Image &image) {
+    Status Texture::init(ResourceContext &context, Ghurund::Image &image) {
         Graphics &graphics = context.Graphics;
         CommandList &commandList = context.CommandList;
         if(commandList.State==CommandListState::FINISHED)

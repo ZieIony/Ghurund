@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
-			 xmlns:propertyGrid="clr-namespace:Ghurund.Controls.PropertyGrid;assembly=Controls"
-             mc:Ignorable="d" 
+			 xmlns:property="clr-namespace:Ghurund.Editor.Property"
+			 mc:Ignorable="d" 
              d:DesignHeight="182.869" d:DesignWidth="153.602">
 	<DockPanel>
-		<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}" />
-		</WrapPanel>
-		<propertyGrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
+		<DockPanel Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top">
+			<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}"/>
+		</DockPanel>
+		<property:ParameterGrid x:Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
 	</DockPanel>
 </UserControl>

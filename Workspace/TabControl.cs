@@ -24,6 +24,7 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public TabControl() {
+            Style = FindResource("Workspace.TabControl") as Style;
             AddHandler(TitleBar.WindowActionEvent, new WindowActionEventHandler(titleBar_WindowAction));
         }
 

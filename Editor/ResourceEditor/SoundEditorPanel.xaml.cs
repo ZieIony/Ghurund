@@ -13,7 +13,7 @@ using Ninject;
 
 namespace Ghurund.Editor.ResourceEditor {
 
-    public interface ISoundEditor : IDocumentPanel {
+    public interface ISoundEditor: IDocumentPanel {
     }
 
     public partial class SoundEditorPanel: UserControl, IImageEditor, IStateControl {
@@ -37,6 +37,8 @@ namespace Ghurund.Editor.ResourceEditor {
 
         public SoundEditorPanel() {
             InitializeComponent();
+
+            EditorKernel.Inject(this);
         }
 
         ~SoundEditorPanel() {
@@ -89,8 +91,9 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         public bool Load(string fileName) {
-            sound = new Sound();
+            Sound sound = new Sound();
             sound.Load(ResourceManager, ResourceContext, fileName);
+            Sound = sound;
             return true;
         }
 

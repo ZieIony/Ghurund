@@ -7,9 +7,9 @@
              mc:Ignorable="d" Height="245.825" Width="170">
 	<Grid>
 		<DockPanel Name="content">
-			<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+			<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 				<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
-			</WrapPanel>
+			</controls:FlowPanel>
 			<TreeView Name="treeView" BorderThickness="0" TreeViewItem.Expanded="treeView_Expanded" Background="{DynamicResource Ghurund.BackgroundLight}">
 				<TreeView.ItemContainerStyle>
 					<Style TargetType="{x:Type TreeViewItem}">

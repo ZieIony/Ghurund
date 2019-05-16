@@ -1,9 +1,8 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
-    public partial class TitleBar : Control {
+    public partial class TitleBar: Control {
 
         public static readonly RoutedEvent WindowActionEvent = EventManager.RegisterRoutedEvent("WindowAction", RoutingStrategy.Bubble, typeof(WindowActionEventHandler), typeof(TitleBar));
 
@@ -26,8 +25,32 @@ namespace Ghurund.Controls.Workspace {
             remove { RemoveHandler(WindowDroppedEvent, value); }
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e) {
-            RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Close, new Point()));
+        private void minimizeButton_Click(object sender, RoutedEventArgs e) {
+            if (HandleWindowActions) {
+                windowAction(Workspace.WindowAction.Minimize);
+            } else {
+                RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Minimize, new Point()));
+            }
+        }
+
+        private void maximizeButton_Click(object sender, RoutedEventArgs e) {
+            if (HandleWindowActions) {
+                windowAction(Workspace.WindowAction.Maximize);
+            } else {
+                RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Maximize, new Point()));
+            }
+        }
+
+        private void closeButton_Click(object sender, RoutedEventArgs e) {
+            if (HandleWindowActions) {
+                windowAction(Workspace.WindowAction.Close);
+            } else {
+                RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Close, new Point()));
+            }
+        }
+
+        private void undockButton_Click(object sender, RoutedEventArgs e) {
+            RaiseEvent(new WindowActionEventArgs(WindowActionEvent, Workspace.WindowAction.Undock, new Point()));
         }
 
     }

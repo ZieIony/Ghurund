@@ -9,9 +9,9 @@
              d:DesignHeight="208.611" d:DesignWidth="142.732">
 	<Grid>
 		<DockPanel x:Name="content">
-			<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+			<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 				<controls:HintTextBox Name="filterBox" Style="{StaticResource FilterBoxStyle}"/>
-			</WrapPanel>
+			</controls:FlowPanel>
 			<propertyGrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
 		</DockPanel>
 		<Grid Name="hint" Background="{DynamicResource Ghurund.Background}" Visibility="Collapsed">

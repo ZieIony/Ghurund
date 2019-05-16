@@ -104,6 +104,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ColorPicker.xaml.cs">
+      <DependentUpon>ColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorPickerWindow.xaml.cs">
+      <DependentUpon>ColorPickerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ColorWheelEffect.cs" />
+    <Compile Include="BgraEffect.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="DockableControlFactory.cs" />
     <Compile Include="EditorKernel.cs" />
     <Compile Include="EditorSettings.cs" />
@@ -117,11 +126,14 @@
     <Compile Include="MainWindow.Project.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MainWindow.Tools.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.View.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panel\LogPanel.xaml.cs">
       <DependentUpon>LogPanel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindow.Tasks.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panel\ParametersPanel.xaml.cs">
       <DependentUpon>ParametersPanel.xaml</DependentUpon>
@@ -133,8 +145,18 @@
     <Compile Include="Panel\PropertiesPanel.xaml.cs">
       <DependentUpon>PropertiesPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Property\ColorPropertyControl.xaml.cs">
+      <DependentUpon>ColorPropertyControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Property\ColorPropertyEditor.cs" />
+    <Compile Include="Property\Float3PropertyEditor.cs" />
+    <Compile Include="Property\FloatPropertyEditor.cs" />
+    <Compile Include="Property\IntPropertyEditor.cs" />
+    <Compile Include="Property\ParameterGrid.cs" />
     <Compile Include="Property\PropertyEditor.cs" />
     <Compile Include="Property\PropertyEditorFactory.cs" />
+    <Compile Include="Property\ResourcePropertyEditor.cs" />
+    <Compile Include="Property\TexturePropertyEditor.cs" />
     <Compile Include="ResourceEditor\SoundEditorPanel.xaml.cs">
       <DependentUpon>SoundEditorPanel.xaml</DependentUpon>
     </Compile>
@@ -160,14 +182,18 @@
     <Compile Include="SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Task.cs" />
-    <Compile Include="TaskPanel.xaml.cs">
-      <DependentUpon>TaskPanel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Panel\WelcomePage.xaml.cs">
       <DependentUpon>WelcomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Theme.cs" />
+    <Page Include="ColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ColorPickerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panel\LogPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panel\StatisticsPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Property\ColorPropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -232,7 +262,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TaskPanel.xaml">
+    <Page Include="Themes\Theme.Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.Light.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -271,6 +305,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\effects\colorWheel.ps" />
+    <Resource Include="Resources\effects\bgra.ps" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -292,13 +328,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\projectExplorer32.png" />
+    <Resource Include="Resources\icons\projectExplorer32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\file32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\properties32.png" />
+    <Resource Include="Resources\icons\properties32.png" />
     <Resource Include="Resources\welcomePage32.png" />
   </ItemGroup>
   <ItemGroup>
@@ -326,10 +362,10 @@
     <Resource Include="Resources\cameraZoom32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\sceneExplorer32.png" />
+    <Resource Include="Resources\icons\sceneExplorer32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\resourceManager32.png" />
+    <Resource Include="Resources\icons\resourceManager32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\camera32.png" />
@@ -355,10 +391,10 @@
     <Resource Include="Resources\wrap32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\statistics32.png" />
+    <Resource Include="Resources\icons\statistics32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\logs32.png" />
+    <Resource Include="Resources\icons\logs32.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\exit32.png" />
@@ -375,7 +411,7 @@
     <Resource Include="Resources\scale32.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\AngelScript.xshd" />
+    <Resource Include="Resources\languages\AngelScript.xshd" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\addNew32.png" />
@@ -384,6 +420,12 @@
     <Resource Include="Resources\pause32.png" />
     <Resource Include="Resources\play32.png" />
     <Resource Include="Resources\stop32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\checker.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\colorPicker32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

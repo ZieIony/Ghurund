@@ -38,4 +38,17 @@ namespace Ghurund {
     inline float random() {
         return (float)rand() / (float)RAND_MAX;
     }
+
+    enum class VectorComponent {
+        X, Y, Z, W
+    };
+
+    inline UINT32 swizzle(UINT32 val, VectorComponent x, VectorComponent y, VectorComponent z, VectorComponent w) {
+        UINT32 data[4];
+        data[0] = val >> 24;
+        data[1] = (val >> 16) & 0xff;
+        data[2] = (val >> 8) & 0xff;
+        data[3] = val & 0xff;
+        return (data[(unsigned int)x] << 24) | (data[(unsigned int)y] << 16) | (data[(unsigned int)z] << 8) | data[(unsigned int)w];
+    }
 }

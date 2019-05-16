@@ -12,7 +12,8 @@
 							<local:TitleBar x:Name="titleBar"
 											Title="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Title.Long}"
 											Icon="{TemplateBinding Icon}" IsEnabled="{TemplateBinding IsEnabled}"
-											PanelFocused="{TemplateBinding PanelFocused}" DockPanel.Dock="Top"/>
+											PanelFocused="{TemplateBinding PanelFocused}" DockPanel.Dock="Top"
+											MinimizeButtonVisibility="Visible"/>
 							<ContentPresenter ContentSource="Content" IsEnabled="{TemplateBinding IsEnabled}"/>
 						</DockPanel>
 					</Border>

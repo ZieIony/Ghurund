@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
+using Ghurund.Managed.Graphics.Texture;
 
 namespace Ghurund.Editor.ResourceEditor {
 

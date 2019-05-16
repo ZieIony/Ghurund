@@ -15,5 +15,11 @@ namespace Ghurund.Managed.Graphics.Texture {
 
         public Texture(IntPtr ptr) : base(ptr) {
         }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Texture_getImage(IntPtr _this);
+
+        public Image Image => new Image(Texture_getImage(NativePtr));
     }
 }

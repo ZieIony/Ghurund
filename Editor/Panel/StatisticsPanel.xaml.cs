@@ -32,7 +32,7 @@ namespace Ghurund.Editor.Panel {
             disposed = true;
         }
 
-        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/statistics32.png", UriKind.Absolute));
+        public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/statistics32.png", UriKind.Absolute));
         public Control Control { get => this; }
         public Title Title { get; } = new Title("Statistics");
         public object SelectedObject { get => propertyGrid.SelectedObject; set => propertyGrid.SelectedObject = value; }

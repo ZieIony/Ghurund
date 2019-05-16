@@ -16,16 +16,12 @@
 	</WindowChrome.WindowChrome>
 	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
 		<DockPanel Background="{DynamicResource Ghurund.Background}">
-			<DockPanel DockPanel.Dock="Top" Margin="0,4,0,0">
-				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top" Title="Settings"/>
-				<WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+			<DockPanel DockPanel.Dock="Top">
+				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top" Title="Settings"
+									HandleWindowActions="True" HandleWindowDragging="True"/>
+				<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
 					<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
-				</WrapPanel>
-				<WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-					<Button Content="Save" Margin="4" Style="{DynamicResource Button_Flat}"/>
-					<Button Content="Cancel" Margin="4" Style="{DynamicResource Button_Flat}"/>
-				</WrapPanel>
-				<Border BorderThickness="0,1,0,0" DockPanel.Dock="Bottom" BorderBrush="{DynamicResource Ghurund.Border}"/>
+				</controls:FlowPanel>
 				<propertygrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
 			</DockPanel>
 		</DockPanel>
