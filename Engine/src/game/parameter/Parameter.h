@@ -21,10 +21,10 @@ namespace Ghurund {
     class Parameter: public Pointer, public ObservableObject {
     protected:
         ASCIIString name;
-        const ParameterValueType& type;
+        const ParameterType& type;
 
     public:
-        Parameter(const ASCIIString& name, const ParameterValueType& type):type(type) {
+        Parameter(const ASCIIString& name, const ParameterType& type):type(type) {
             this->name = name;
         }
 
@@ -34,11 +34,11 @@ namespace Ghurund {
 
         __declspec(property(get = getName)) const ASCIIString& Name;
 
-        const ParameterValueType& getValueType() const {
+        const ParameterType& getValueType() const {
             return type;
         }
 
-        __declspec(property(get = getValueType)) const ParameterValueType& ValueType;
+        __declspec(property(get = getValueType)) const ParameterType& ValueType;
 
         const static Ghurund::Type& TYPE;
 

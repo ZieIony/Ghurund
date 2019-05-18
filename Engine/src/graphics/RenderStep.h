@@ -12,7 +12,7 @@ namespace Ghurund {
     private:
         PointerList<Entity*> entities;
         List<Light*> lights;
-        List<GlobalEntity<Model>*> models;
+        List<GlobalEntity*> models;
         Camera* camera = nullptr;
         Material* material = nullptr;
         Material* invalidMaterial = nullptr;
@@ -42,7 +42,7 @@ namespace Ghurund {
             lights.add(&light);
         }
 
-        void addModel(GlobalEntity<Model>* model) {
+        void addModel(GlobalEntity* model) {
             models.add(model);
         }
 
@@ -52,11 +52,11 @@ namespace Ghurund {
 
         __declspec(property(put = setCamera)) Camera* Camera;
 
-        void setMaterial(Material* material) {
+        void setOverrideMaterial(Material* material) {
             setPointer(this->material, material);
         }
 
-        __declspec(property(put = setMaterial)) Material* Material;
+        __declspec(property(put = setOverrideMaterial)) Material* OverrideMaterial;
 
         void setInvalidMaterial(Ghurund::Material* invalidMaterial) {
             setPointer(this->invalidMaterial, invalidMaterial);

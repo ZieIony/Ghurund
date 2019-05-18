@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Ghurund.Controls.Workspace {
     public partial class EditorWindow : Window {
@@ -56,6 +57,11 @@ namespace Ghurund.Controls.Workspace {
         public void StartDrag() {
             var titleBar = Extensions.FindVisualChildByName<TitleBar>(this, "titleBar");
             titleBar.StartDrag();
+        }
+
+        protected override void OnClosed(EventArgs e) {
+            base.OnClosed(e);
+            workspacePanel.Clear();
         }
 
     }

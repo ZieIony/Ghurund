@@ -232,7 +232,7 @@ namespace Ghurund {
         }
 
         for (size_t i = 0; i < textures.Size; i++) {
-            ResourceParameter* parameter = ghnew ResourceParameter(textures[i]->getName(), ParameterValueType::TEXTURE);
+            ResourceParameter* parameter = ghnew ResourceParameter(textures[i]->getName(), ParameterType::TEXTURE);
             parameters->set(i + constantsCount, parameter);
             parameter->release();
         }

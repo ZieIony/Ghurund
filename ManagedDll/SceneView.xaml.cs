@@ -24,6 +24,7 @@ namespace Ghurund.Managed {
 
         private Material invalidMaterial;
         private Scene editorScene;
+        private SelectionModel selection;
 
         private RenderStep editorStep;
         private RenderStep sceneStep;
@@ -142,6 +143,7 @@ namespace Ghurund.Managed {
                 value?.AddReference();
                 overrideMaterial?.Release();
                 overrideMaterial = value;
+                sceneStep.OverrideMaterial = overrideMaterial;
             }
         }
 
@@ -215,8 +217,13 @@ namespace Ghurund.Managed {
             sceneStep = new RenderStep {
                 Camera = Camera
             };
+            sceneStep.InvalidMaterial = invalidMaterial;
             sceneStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(sceneStep);
+
+            selection = Models.MakeSelection(resourceManager, resourceContext);
+            selection.Visible = false;
+            editorScene.Entities.Add(selection);
 
             CameraMode = CameraMode.Default;    // just to update the current camera
         }
@@ -306,8 +313,14 @@ namespace Ghurund.Managed {
                 if (dist < MAX_CLICK_DIST) {
                     SelectedEntities.Clear();
                     Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
-                    if (model != null)
+                    if (model != null) {
                         SelectedEntities.Add(model);
+                        selection.Select(model);
+                        selection.Visible = true;
+                    } else {
+                        selection.Visible = false;
+                    }
+                    Invalidate();
                     RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
                 }
             }

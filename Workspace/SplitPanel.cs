@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 
 namespace Ghurund.Controls.Workspace {
-    public class SplitPanel : Control {
+    public class SplitPanel: Control {
 
         public Orientation Orientation {
             get { return (Orientation)GetValue(OrientationProperty); }
@@ -14,7 +14,13 @@ namespace Ghurund.Controls.Workspace {
 
         public FrameworkElement Panel1 {
             get { return (FrameworkElement)GetValue(Panel1Property); }
-            set { SetValue(Panel1Property, value); }
+            set {
+                if (Panel1 != null)
+                    RemoveLogicalChild(Panel1);
+                SetValue(Panel1Property, value);
+               if (Panel1 != null)
+                    AddLogicalChild(value);
+            }
         }
 
         public static readonly DependencyProperty Panel1Property =
@@ -30,7 +36,13 @@ namespace Ghurund.Controls.Workspace {
 
         public FrameworkElement Panel2 {
             get { return (FrameworkElement)GetValue(Panel2Property); }
-            set { SetValue(Panel2Property, value); }
+            set {
+                if (Panel2 != null)
+                    RemoveLogicalChild(Panel1);
+                SetValue(Panel2Property, value);
+                if (Panel2 != null)
+                    AddLogicalChild(value);
+            }
         }
 
         public static readonly DependencyProperty Panel2Property =

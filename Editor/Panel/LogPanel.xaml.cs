@@ -12,14 +12,13 @@ namespace Ghurund.Editor {
 
     public partial class LogPanel : UserControl, ILogPanel {
 
-        Logger.LogCallback callback;
         private bool disposed = false;
 
         public LogPanel() {
             InitializeComponent();
 
-            callback = new Logger.LogCallback(log);
-            Logger.Init(callback);
+            Logger.Init();
+            Logger.OnLog += Logger_OnLog;
         }
 
         ~LogPanel() {
@@ -35,10 +34,12 @@ namespace Ghurund.Editor {
             if (disposed)
                 return;
 
+            Logger.Uninit();
+
             disposed = true;
         }
 
-        private void log(string log) {
+        private void Logger_OnLog(string log) {
             logs.Logs.Add(new Log() {
                 Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
                 Message = log.Substring(log.IndexOf(']')+1).Trim()

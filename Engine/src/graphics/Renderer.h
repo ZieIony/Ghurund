@@ -23,8 +23,6 @@ namespace Ghurund {
 
         Graphics* graphics = nullptr;
         ParameterManager* parameterManager = nullptr;
-        Material* material = nullptr;
-        Material* invalidMaterial = nullptr;
         RenderingStatistics stats;
 
         XMFLOAT4* clearColor = nullptr;
@@ -50,8 +48,6 @@ namespace Ghurund {
         ~Renderer() {
             if (lightPassMaterial != nullptr)
                 lightPassMaterial->release();
-            if (invalidMaterial != nullptr)
-                invalidMaterial->release();
             uninit();
             delete clearColor;
         }
@@ -61,12 +57,6 @@ namespace Ghurund {
         void uninit();
 
         void render(Frame & frame);
-
-        void setInvalidMaterial(Ghurund::Material * material) {
-            setPointer(this->invalidMaterial, material);
-        }
-
-        __declspec(property(put = setInvalidMaterial)) Ghurund::Material * InvalidMaterial;
 
         const XMFLOAT4 * getClearColor() const {
             return clearColor;

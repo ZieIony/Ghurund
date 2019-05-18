@@ -19,7 +19,7 @@ namespace Ghurund {
 
     class Entity: public Resource, public NamedObject, public ParameterProvider, public virtual ObservableObject {
     private:
-        bool selectable;
+        bool selectable = true, visible = true;
         id_t id = 0;
         static PointerList<Entity*> entities;
         static atomic<id_t> currentId;
@@ -76,6 +76,16 @@ namespace Ghurund {
         }
 
         __declspec(property(get = isSelectable, put = setSelectable)) bool Selectable;
+
+        void setVisible(bool visible) {
+            this->visible = visible;
+        }
+
+        bool isVisible() const {
+            return visible;
+        }
+
+        __declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
         static Entity* find(id_t id) {
             for (auto e : entities)

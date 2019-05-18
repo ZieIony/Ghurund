@@ -427,5 +427,12 @@
   <ItemGroup>
     <Resource Include="Resources\icons\colorPicker32.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\cube32.png" />
+    <Resource Include="Resources\icons\cone32.png" />
+    <Resource Include="Resources\icons\perspective32.png" />
+    <Resource Include="Resources\icons\sphere32.png" />
+    <Resource Include="Resources\icons\plane32.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

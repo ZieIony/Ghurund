@@ -12,8 +12,13 @@ namespace Ghurund {
         SYSTEM_CONSOLE, CUSTOM_CONSOLE, FILE, CUSTOM_CALLBACK
     };
 
+    enum class LogTypeEnum {
+        INFO, WARNING, ERR0R
+    };
+
     class LogType {
     private:
+        LogTypeEnum value;
         const tchar* name;
 
         LogType() = default;
@@ -21,7 +26,8 @@ namespace Ghurund {
     public:
         static const LogType& INFO, & WARNING, & ERR0R;
 
-        explicit LogType(const tchar* name) {
+        explicit LogType(LogTypeEnum value, const tchar* name) {
+            this->value = value;
             this->name = name;
         }
 

@@ -27,8 +27,20 @@ extern "C" __declspec(dllexport) void Entity_setName(Entity* _this, const wchar_
     _this->setName(name);
 }
 
+extern "C" __declspec(dllexport) void Entity_setSelectable(Entity* _this, BOOL selectable) {
+    return _this->setSelectable((bool)selectable);
+}
+
 extern "C" __declspec(dllexport) BOOL Entity_isSelectable(Entity* _this) {
     return _this->isSelectable();
+}
+
+extern "C" __declspec(dllexport) void Entity_setVisible(Entity* _this, BOOL visible) {
+    return _this->setVisible((bool)visible);
+}
+
+extern "C" __declspec(dllexport) BOOL Entity_isVisible(Entity* _this) {
+    return _this->isVisible();
 }
 
 extern "C" __declspec(dllexport) const PointerArray<Parameter*>* Entity_getParameters(Entity* _this) {

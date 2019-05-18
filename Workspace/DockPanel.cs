@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System;
 
 namespace Ghurund.Controls.Workspace {
-    public class DockPanel : ContentControl {
+    public class DockPanel: ContentControl {
 
         protected TabControl tabControl;
         protected SplitPanel splitContainer;
@@ -74,7 +74,7 @@ namespace Ghurund.Controls.Workspace {
                 panel2.Save(statePanel2);
 
                 GridLengthConverter converter = new GridLengthConverter();
-                string panel1Size,panel2Size;
+                string panel1Size, panel2Size;
                 if (splitContainer.Panel1Size.GridUnitType == GridUnitType.Star) {
                     panel1Size = converter.ConvertToString(splitContainer.Panel1Size);
                     panel2Size = (splitContainer.Orientation == Orientation.Vertical ? splitContainer.Panel2.ActualHeight : splitContainer.Panel2.ActualWidth).ToString();
@@ -96,8 +96,21 @@ namespace Ghurund.Controls.Workspace {
         }
 
         public void Clear() {
-            splitContainer = null;
-            tabControl = null;
+            if (splitContainer != null) {
+                if (splitContainer.Panel1 != null) {
+                    (splitContainer.Panel1 as DockPanel).Clear();
+                    splitContainer.Panel1 = null;
+                }
+                if (splitContainer.Panel2 != null) {
+                    (splitContainer.Panel2 as DockPanel).Clear();
+                    splitContainer.Panel2 = null;
+                }
+                splitContainer = null;
+            }
+            if (tabControl != null) {
+                tabControl.Items.Clear();
+                tabControl = null;
+            }
             Content = null;
             side = null;
         }

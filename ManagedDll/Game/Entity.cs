@@ -79,6 +79,42 @@ namespace Ghurund.Managed.Game {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Entity_isSelectable(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Entity_setSelectable(IntPtr _this, bool selectable);
+
+        [Category("Common")]
+        [Description("Can this entity be selected by clicking on it.")]
+        [Editable(true)]
+        public bool Selectable {
+            get => Entity_isSelectable(NativePtr);
+            set {
+                Entity_setSelectable(NativePtr, value);
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Entity_isVisible(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Entity_setVisible(IntPtr _this, bool selectable);
+
+        [Category("Common")]
+        [Description("Visible in the scene.")]
+        [Editable(true)]
+        public bool Visible {
+            get => Entity_isVisible(NativePtr);
+            set {
+                Entity_setVisible(NativePtr, value);
+                NotifyPropertyChanged();
+            }
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Entity_getParent(IntPtr _this);
 
         [Browsable(false)]

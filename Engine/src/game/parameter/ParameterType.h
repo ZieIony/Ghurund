@@ -2,28 +2,28 @@
 
 namespace Ghurund {
 
-    enum class ParameterValueTypeValue {
+    enum class ParameterTypeEnum {
         INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE
     };
 
-    class ParameterValueType {
+    class ParameterType {
     private:
-        ParameterValueTypeValue value;
+        ParameterTypeEnum value;
         unsigned int size;
 
     public:
-        static const ParameterValueType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & TEXTURE;
+        static const ParameterType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & TEXTURE;
 
-        ParameterValueType(ParameterValueTypeValue value, unsigned int size) {
+        ParameterType(ParameterTypeEnum value, unsigned int size) {
             this->value = value;
             this->size = size;
         }
 
-        ParameterValueTypeValue getValue() const {
+        ParameterTypeEnum getValue() const {
             return value;
         }
 
-        __declspec(property(get = getValue)) ParameterValueTypeValue Value;
+        __declspec(property(get = getValue)) ParameterTypeEnum Value;
 
         unsigned int getSize() const {
             return size;

@@ -7,6 +7,7 @@ using Ghurund.Controls.Workspace;
 using Ghurund.Editor.Panel;
 using Ghurund.Editor.ResourceEditor;
 using Ghurund.Managed;
+using Ghurund.Managed.Core;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Resource;
 using Ghurund.Managed.Script;
@@ -86,6 +87,12 @@ namespace Ghurund.Editor {
             AddHandler(SceneEditorPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
             AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
             AddHandler(WorkspacePanel.PanelFocusedEvent, new PanelActionEventHandler(panelFocused));
+
+            Logger.OnLog += Logger_OnLog;
+        }
+
+        private void Logger_OnLog(string log) {
+            mostRecentLog.Text = DateTime.UtcNow.ToString("HH:mm:ssZ") + " " + log.Substring(log.IndexOf(']') + 1).Trim();
         }
 
         IDocumentPanel mostRecentDocumentPanel;
@@ -151,7 +158,8 @@ namespace Ghurund.Editor {
         private void LogPanel_Click(object sender, RoutedEventArgs e) => openPanel(sender, LogPanel);
 
         private void openPanel(object sender, IDockablePanel panel) {
-            // TODO: what if panel is no longer visible?
+            if (workspacePanel.ShowChild(panel.Control))
+                return;
             if (mostRecentDocumentTabControl != null && panel is IDocumentPanel) {
                 var item = new EditorTab(panel);
                 mostRecentDocumentTabControl.Items.Add(item);

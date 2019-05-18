@@ -12,15 +12,15 @@ namespace Ghurund {
             models[i]->cull(frustum);
     }
 
-    Model* RenderStep::pick(XMINT2 & mousePos) {
+    Model* RenderStep::pick(XMINT2& mousePos) {
         XMFLOAT3 pos, dir;
         float dist, closestDist;
         camera->calcMouseRay(mousePos, pos, dir);
 
-        GlobalEntity<Model>* picked = nullptr;
+        GlobalEntity* picked = nullptr;
         for (size_t i = 0; i < models.Size; i++) {
-            GlobalEntity<Model>* model = models[i];
-            if (!model->Visible || !model->Entity.Selectable)
+            GlobalEntity* model = models[i];
+            if (model->Culled || !model->Model.Selectable)
                 continue;
             if (model->intersects(pos, dir, dist) && (picked == nullptr || dist < closestDist)) {
                 picked = model;
@@ -28,10 +28,10 @@ namespace Ghurund {
             }
         }
 
-        return picked != nullptr ? &picked->Entity : nullptr;
+        return picked != nullptr ? &picked->Model : nullptr;
     }
 
-    void RenderStep::draw(Graphics & graphics, CommandList & commandList, RenderingStatistics & stats) {
+    void RenderStep::draw(Graphics& graphics, CommandList& commandList, RenderingStatistics& stats) {
 #ifdef _DEBUG
         if (parameterWorld == nullptr) {
             Logger::log(LogType::ERR0R, _T("parameters not initialized, call initParameters(..) first"));
@@ -51,42 +51,65 @@ namespace Ghurund {
         camera->updateParameters();
         cull();
 
-        for (size_t i = 0; i < models.Size; i++) {
-            GlobalEntity<Model>* entity = models[i];
-            if (!entity->Visible) {
-                stats.modelsCulled++;
-                continue;
-            }
-
-            Ghurund::Material* overrideMaterial = material;
-            if (!entity->Entity.Valid) {
-                if (entity->Entity.Mesh != nullptr && entity->Entity.Mesh->Valid
-                    && entity->Entity.Material != nullptr && !entity->Entity.Material->Valid
-                    && invalidMaterial != nullptr) {
-                    overrideMaterial = invalidMaterial;
-                } else {
+        if (material || invalidMaterial) {
+            for (size_t i = 0; i < models.Size; i++) {
+                GlobalEntity* entity = models[i];
+                if (entity->Culled) {
+                    stats.modelsCulled++;
                     continue;
                 }
+
+                Ghurund::Material* overrideMaterial = material;
+                if (!entity->Model.Valid) {
+                    if (entity->Model.Mesh != nullptr && entity->Model.Mesh->Valid
+                        && entity->Model.Material != nullptr && !entity->Model.Material->Valid
+                        && invalidMaterial != nullptr) {
+                        overrideMaterial = invalidMaterial;
+                    } else {
+                        continue;
+                    }
+                }
+
+                parameterWorld->setValue(&entity->Transformation);
+                XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
+                XMFLOAT4X4 worldIT;
+                XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
+                parameterWorldIT->setValue(&worldIT);
+
+                if (overrideMaterial != nullptr) {
+                    Ghurund::Material* modelMaterial = entity->Model.Material;
+                    modelMaterial->addReference();
+                    entity->Model.Material = overrideMaterial;
+                    entity->Model.updateParameters();
+                    entity->Model.draw(graphics, commandList, stats);
+                    entity->Model.Material = modelMaterial;
+                    modelMaterial->release();
+                } else {
+                    entity->Model.updateParameters();
+                    entity->Model.draw(graphics, commandList, stats);
+                }
             }
+        } else {
+            for (size_t i = 0; i < models.Size; i++) {
+                GlobalEntity* entity = models[i];
+                if (entity->Culled) {
+                    stats.modelsCulled++;
+                    continue;
+                }
 
-            parameterWorld->setValue(&entity->Transformation);
-            XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
-            XMFLOAT4X4 worldIT;
-            XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
-            parameterWorldIT->setValue(&worldIT);
+                if (!entity->Model.Valid)
+                    continue;
 
-            if (overrideMaterial != nullptr) {
-                Ghurund::Material* modelMaterial = entity->Entity.Material;
-                modelMaterial->addReference();
-                entity->Entity.Material = overrideMaterial;
-                entity->Entity.updateParameters();
-                entity->Entity.draw(graphics, commandList, stats);
-                entity->Entity.Material = modelMaterial;
-                modelMaterial->release();
-            } else {
-                entity->Entity.updateParameters();
-                entity->Entity.draw(graphics, commandList, stats);
+                parameterWorld->setValue(&entity->Transformation);
+                XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
+                XMFLOAT4X4 worldIT;
+                XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
+                parameterWorldIT->setValue(&worldIT);
+
+                entity->Model.updateParameters();
+                entity->Model.draw(graphics, commandList, stats);
             }
         }
     }
+
 }

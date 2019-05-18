@@ -8,22 +8,37 @@ namespace Ghurund.Managed.Core {
     public static class Logger {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate void LogCallback([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))] string log);
+        private delegate void LogCallback([MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(WCharStrMarshaler))] string log);
+
+        public delegate void LogEventHandler(string log);
+
+        private static LogCallback logCallback;
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Logger_init([MarshalAs(UnmanagedType.FunctionPtr)] LogCallback callback);
 
-        public static void Init(LogCallback callback) {
-            Logger_init(callback);
+        public static void Init() {
+            logCallback = new LogCallback(log);
+            Logger_init(logCallback);
         }
+
+        public static event LogEventHandler OnLog;
+
+        private static void log(string log) {
+            OnLog?.Invoke(log);
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Logger_uninit();
+
+        public static void Uninit() => Logger_uninit();
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Logger_log(LogType type, [MarshalAs(UnmanagedType.LPWStr)] string log);
 
-        public static void Log(LogType type, string log) {
-            Logger_log(type, log);
-        }
+        public static void Log(LogType type, string log) => Logger_log(type, log);
     }
 }

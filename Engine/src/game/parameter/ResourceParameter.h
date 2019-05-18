@@ -10,11 +10,11 @@ namespace Ghurund {
         Resource* value;
 
     public:
-        ResourceParameter(const ASCIIString& name, const ParameterValueType& type):Parameter(name, type) {
+        ResourceParameter(const ASCIIString& name, const ParameterType& type):Parameter(name, type) {
             this->value = nullptr;
         }
 
-        ResourceParameter(const ASCIIString& name, Resource* value, const ParameterValueType& type):Parameter(name, type) {
+        ResourceParameter(const ASCIIString& name, Resource* value, const ParameterType& type):Parameter(name, type) {
             this->value = value;
             value->addReference();
         }

@@ -19,6 +19,14 @@ extern "C" __declspec(dllexport) void Renderer_setClearColor(Renderer* _this, un
     _this->setClearColor(ghnew XMFLOAT4(makeColor(color)));
 }
 
+extern "C" __declspec(dllexport) void RenderStep_setOverrideMaterial(RenderStep* _this, Material *material) {
+    _this->setOverrideMaterial(material);
+}
+
+extern "C" __declspec(dllexport) void RenderStep_setInvalidMaterial(RenderStep* _this, Material *material) {
+    _this->setInvalidMaterial(material);
+}
+
 extern "C" __declspec(dllexport) void Renderer_render(Renderer* _this, Frame *frame) {
     _this->render(*frame);
 }

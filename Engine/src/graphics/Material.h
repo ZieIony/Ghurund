@@ -10,7 +10,7 @@
 namespace Ghurund {
     class Material:public Resource, public ParameterProvider {
     private:
-        Shader *shader = nullptr;
+        Shader* shader = nullptr;
         bool supportsTransparency = false;
 
         void finalize() {
@@ -26,14 +26,14 @@ namespace Ghurund {
             return 0;
         }
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options);
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const;
+        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
 
         Material() {}
 
-        Material(Shader *shader) {
+        Material(Shader* shader) {
             setPointer(this->shader, shader);
         }
 
@@ -47,10 +47,10 @@ namespace Ghurund {
         }
 
         virtual bool isValid() const override {
-            return shader!=nullptr&&shader->Valid&&__super::Valid;
+            return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        virtual void initParameters(ParameterManager &parameterManager) override {
+        virtual void initParameters(ParameterManager& parameterManager) override {
             shader->initParameters(parameterManager);
         }
 
@@ -58,30 +58,30 @@ namespace Ghurund {
             shader->updateParameters();
         }
 
-        virtual const PointerArray<Parameter*> &getParameters() const override {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return shader->Parameters;
         }
 
-        bool set(Graphics &graphics, CommandList &commandList) {
+        bool set(Graphics& graphics, CommandList& commandList) {
             return shader->set(graphics, commandList);
         }
 
-        Shader *getShader() {
+        Shader* getShader() {
             return shader;
         }
 
-        void setShader(Shader *shader) {
+        void setShader(Shader* shader) {
             setPointer(this->shader, shader);
         }
 
-        __declspec(property(get = getShader, put = setShader)) Shader *Shader;
+        __declspec(property(get = getShader, put = setShader)) Shader* Shader;
 
         bool getSupportsTransparency() {
             return supportsTransparency;
         }
 
         void setSupportsTransparency(bool supportsTransparency) {
-            if(this->supportsTransparency!=supportsTransparency) {
+            if (this->supportsTransparency != supportsTransparency) {
                 this->supportsTransparency = supportsTransparency;
                 shader->makePipelineState(supportsTransparency);
             }
@@ -89,15 +89,15 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::MATERIAL;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::MATERIAL};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::MATERIAL};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
     };
 }

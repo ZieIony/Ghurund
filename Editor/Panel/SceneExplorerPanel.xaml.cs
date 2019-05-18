@@ -63,13 +63,6 @@ namespace Ghurund.Editor {
 
             content.Visibility = Visibility.Collapsed;
             hint.Visibility = Visibility.Visible;
-
-            geometryComboBox.Items.Add(GeometryType.Cube);
-            geometryComboBox.Items.Add(GeometryType.Cone);
-            geometryComboBox.Items.Add(GeometryType.Sphere);
-            geometryComboBox.Items.Add(GeometryType.Plane);
-
-            geometryComboBox.SelectedItem = GeometryType.Cube;
         }
 
         ~SceneExplorerPanel() {
@@ -140,23 +133,20 @@ namespace Ghurund.Editor {
             scene.Entities.Add(c);
         }
 
-        private void geometryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (e.RemovedItems.Count == 0)
-                return;
-            switch(geometryComboBox.SelectedItem){
-                case GeometryType.Cube:
-                    scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
-                    break;
-                case GeometryType.Cone:
-                    scene.Entities.Add(Models.MakeCone(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
-                    break;
-                case GeometryType.Sphere:
-                    scene.Entities.Add(Models.MakeSphere(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
-                    break;
-                case GeometryType.Plane:
-                    scene.Entities.Add(Models.MakePlane(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
-                    break;
-            }
+        private void addCube_Click(object sender, RoutedEventArgs e) {
+            scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+        }
+
+        private void addCone_Click(object sender, RoutedEventArgs e) {
+            scene.Entities.Add(Models.MakeCone(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+        }
+
+        private void addSphere_Click(object sender, RoutedEventArgs e) {
+            scene.Entities.Add(Models.MakeSphere(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+        }
+
+        private void addPlane_Click(object sender, RoutedEventArgs e) {
+            scene.Entities.Add(Models.MakePlane(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
         }
     }
 }

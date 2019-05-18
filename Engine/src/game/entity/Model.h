@@ -51,12 +51,12 @@ namespace Ghurund {
             __super::invalidate();
         }
 
-        Mesh* getMesh() {
+        Mesh* getMesh() const {
             return mesh;
         }
 
         void setMesh(Mesh* mesh) {
-            this->mesh = mesh;
+            setPointer(this->mesh, mesh);
         }
 
         __declspec(property(get = getMesh, put = setMesh)) Mesh* Mesh;
@@ -137,5 +137,13 @@ namespace Ghurund {
             return mesh->intersects(pos, dir, dist);
         }
 
+    };
+
+    class SelectionModel:public Model {
+    public:
+        void select(const Model& model) {
+            Position = model.Mesh->BoundingBox.Center;
+            Scale = model.Mesh->BoundingBox.Extents;
+        }
     };
 }

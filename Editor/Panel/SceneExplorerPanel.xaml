@@ -13,12 +13,23 @@
 			<ToolBarTray DockPanel.Dock="Top" IsLocked="True" Background="{DynamicResource Ghurund.Background}">
 				<ToolBar>
 					<controls:IconButton Icon="/Resources/light32.png" ToolBar.OverflowMode="AsNeeded"
-									 Style="{StaticResource IconButton_Small}"
+									 Style="{StaticResource IconButton_Large}"
 									 ToolTip="Add a light" Click="addLight_Click"/>
 					<controls:IconButton Icon="/Resources/camera32.png" ToolBar.OverflowMode="AsNeeded"
-									 Style="{StaticResource IconButton_Small}"
+									 Style="{StaticResource IconButton_Large}"
 									 ToolTip="Add a camera" Click="addCamera_Click"/>
-					<ComboBox Name="geometryComboBox" SelectionChanged="geometryComboBox_SelectionChanged"/>
+					<controls:IconButton Icon="/Resources/icons/cube32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a cube" Click="addCube_Click"/>
+					<controls:IconButton Icon="/Resources/icons/cone32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a cone" Click="addCone_Click"/>
+					<controls:IconButton Icon="/Resources/icons/sphere32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a sphere" Click="addSphere_Click"/>
+					<controls:IconButton Icon="/Resources/icons/plane32.png" ToolBar.OverflowMode="AsNeeded"
+									 Style="{StaticResource IconButton_Large}"
+									 ToolTip="Add a plane" Click="addPlane_Click"/>
 				</ToolBar>
 			</ToolBarTray>
 			<Grid DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">

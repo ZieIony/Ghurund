@@ -11,6 +11,7 @@ namespace Ghurund {
             material = ghnew Material(shader);
             ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
             diffuse->setValue(&texture);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -25,6 +26,7 @@ namespace Ghurund {
             diffuse->setValue(&diffuseTexture);
             ResourceParameter *specular = (ResourceParameter*)material->Shader->getParameter("specularTexture");
             specular->setValue(&specularTexture);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -37,6 +39,7 @@ namespace Ghurund {
             material = ghnew Material(shader);
             ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
             diffuse->setValue(&texture);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -50,6 +53,7 @@ namespace Ghurund {
             ScopedPointer<Texture> texture = Textures::makeChecker(resourceManager, context);
             ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
             diffuse->setValue(texture);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -60,6 +64,7 @@ namespace Ghurund {
         ScopedPointer<Shader> shader = Shaders::loadWireframe(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -70,6 +75,7 @@ namespace Ghurund {
         ScopedPointer<Shader> shader = Shaders::loadNormals(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -80,6 +86,7 @@ namespace Ghurund {
         ScopedPointer<Shader> shader = Shaders::loadInvalid(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
@@ -90,6 +97,7 @@ namespace Ghurund {
         ScopedPointer<Shader> shader = Shaders::loadLightPass(resourceManager, context);
         if (shader) {
             material = ghnew Material(shader);
+            material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;

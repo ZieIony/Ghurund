@@ -148,9 +148,7 @@ public:
             light->Scale = {20, 20, 20};
         }
 
-        ScopedPointer<Model> selection = Models::makeSelection(app.ResourceManager, app.ResourceContext, *lamborghini);
-
-        return ghnew Scene({lamborghini, cone, light, selection});
+        return ghnew Scene({lamborghini, cone, light});
     }
 
     virtual void onUpdate() override {

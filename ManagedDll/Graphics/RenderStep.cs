@@ -41,6 +41,28 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr RenderStep_setOverrideMaterial(IntPtr renderer,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public Material OverrideMaterial {
+            set {
+                RenderStep_setOverrideMaterial(NativePtr, value);
+            }
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr RenderStep_setInvalidMaterial(IntPtr renderer,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Material material);
+
+        public Material InvalidMaterial {
+            set {
+                RenderStep_setInvalidMaterial(NativePtr, value);
+            }
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void RenderStep_initParameters(IntPtr _this,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ParameterManager parameterManager);
 

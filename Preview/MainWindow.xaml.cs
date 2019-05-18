@@ -13,8 +13,6 @@ using Ghurund.Managed.Script;
 
 namespace Ghurund.Preview {
     public partial class MainWindow : Window {
-        readonly Logger.LogCallback callback;
-
         readonly Graphics graphics;
         readonly ParameterManager parameterManager;
         readonly Audio audio;
@@ -36,8 +34,8 @@ namespace Ghurund.Preview {
                 return;
             }
 
-            callback = new Logger.LogCallback(log);
-            Logger.Init(callback);
+            Logger.Init();
+            Logger.OnLog += Logger_OnLog;
 
             string filePath = args[1];
 
@@ -79,7 +77,7 @@ namespace Ghurund.Preview {
             sceneView.Scene = scene;
         }
 
-        private void log(string log) {
+        private void Logger_OnLog(string log) {
             Console.WriteLine(log);
         }
 

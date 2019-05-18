@@ -7,9 +7,7 @@ namespace Ghurund.Controls.Workspace {
     public class EditorTab : TabItem {
 
         Point mousePos;
-        double left, top;
         private bool lmbDown, dragging;
-        private Window window;
 
         static EditorTab() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditorTab), new FrameworkPropertyMetadata(typeof(EditorTab)));
@@ -33,8 +31,6 @@ namespace Ghurund.Controls.Workspace {
 
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
-
-            window = Window.GetWindow(this);
 
             MenuItem minimizeItem = GetTemplateChild("minimizeMenuItem") as MenuItem;
             minimizeItem.Click += minimize_Click;
@@ -127,8 +123,6 @@ namespace Ghurund.Controls.Workspace {
                 return;
 
             mousePos = PointToScreen(e.GetPosition(this));
-            left = window.Left;
-            top = window.Top;
             CaptureMouse();
             lmbDown = true;
         }

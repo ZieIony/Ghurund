@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Ghurund.Controls.Workspace {
-    public class WorkspacePanel : Control {
+    public class WorkspacePanel: Control {
         private HighlightWindow highlightWindow = new HighlightWindow();
         private DockPanel rootDockPanel;
         private PeekPanel peekPanel;
@@ -123,6 +123,29 @@ namespace Ghurund.Controls.Workspace {
                 return;
             rootDockPanel.Restore(state.dockState, factory);
             peekPanel.Restore(state.peekState, factory);
+        }
+
+        public bool ShowChild(Control control) {
+            DependencyObject parent = control.Parent;
+            while (parent != null) {
+                if (parent == rootDockPanel) {
+                    return true;
+                } else if (parent is FrameworkElement) {
+                    FrameworkElement frameworkElement = parent as FrameworkElement;
+                    if (frameworkElement.Parent is TabControl) {
+                        TabControl tabControl = frameworkElement.Parent as TabControl;
+                        tabControl.SelectedItem = frameworkElement;
+                    }
+                    parent = frameworkElement.Parent;
+                } else {
+                    return false;
+                }
+            }
+            return false;
+        }
+
+        public void Clear() {
+            rootDockPanel.Clear();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Ghurund {
                 Logger::log(LogType::ERR0R, _T("parameter %hs not found while loading material\n"), name);
                 return Status::UNKNOWN;
             }
-            if (p->ValueType.Value == ParameterValueTypeValue::TEXTURE) {
+            if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
                 Status result;
                 ScopedPointer<Resource> resource = resourceManager.load(context, workingDir, stream, &result, options);
                 if (filterStatus(result, options) != Status::OK)
@@ -44,7 +44,7 @@ namespace Ghurund {
         stream.writeUInt(paramsToSave.Size);
         for (Parameter* p : paramsToSave) {
             stream.writeASCII(p->Name);
-            if (p->ValueType.Value == ParameterValueTypeValue::TEXTURE) {
+            if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
                 Status result = resourceManager.save(*((ResourceParameter*)p)->Value, context, workingDir, stream, options);
                 if (filterStatus(result, options) != Status::OK)
                     return result;

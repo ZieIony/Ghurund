@@ -7,11 +7,11 @@
 
 	<Thickness x:Key="Ghurund.Static.BorderThickness">1</Thickness>
 
-	<Thickness x:Key="Ghurund.Padding.Small">1</Thickness>
-	<Thickness x:Key="Ghurund.Padding">3</Thickness>
+	<Thickness x:Key="Ghurund.Padding.Small">0</Thickness>
+	<Thickness x:Key="Ghurund.Padding">2</Thickness>
 
-	<system:Double x:Key="Ghurund.IconSize.Small">20</system:Double>
-	<system:Double x:Key="Ghurund.IconSize.Large">32</system:Double>
+	<system:Double x:Key="Ghurund.IconSize.Small">18</system:Double>
+	<system:Double x:Key="Ghurund.IconSize.Large">22</system:Double>
 
 	<Style x:Key="IconButton_Small" TargetType="{x:Type local:IconButton}" BasedOn="{StaticResource ResourceKey={x:Type local:IconButton}}">
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Icon}"/>
@@ -25,7 +25,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Icon}"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Large}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Large}"/>
-		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding.Small}"/>
+		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
@@ -41,7 +41,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Icon}"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Large}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Large}"/>
-		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding.Small}"/>
+		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 
@@ -57,7 +57,7 @@
 		<Setter Property="Foreground" Value="{DynamicResource Ghurund.Icon}"/>
 		<Setter Property="Width" Value="{DynamicResource Ghurund.IconSize.Large}"/>
 		<Setter Property="Height" Value="{DynamicResource Ghurund.IconSize.Large}"/>
-		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding.Small}"/>
+		<Setter Property="Padding" Value="{DynamicResource Ghurund.Padding}"/>
 		<Setter Property="SnapsToDevicePixels" Value="True"/>
 	</Style>
 

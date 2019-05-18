@@ -55,7 +55,7 @@ namespace Ghurund.Editor {
                 Modified = file.LastWriteTime.ToShortDateString();
 
                 string thumbnailPath = file.FullName + ".thumbnail";
-                if (File.Exists(thumbnailPath)) {
+                if (File.Exists(thumbnailPath) && File.GetLastWriteTimeUtc(thumbnailPath).CompareTo(File.GetLastWriteTimeUtc(Path)) > 0) {
                     Thumbnail = new BitmapImage(new Uri(thumbnailPath));
                 } else {
                     if (Name.EndsWith(".scene")) {

@@ -2,8 +2,8 @@
 
 namespace Ghurund {
     const Ghurund::Type& Renderer::TYPE = Ghurund::Type([]() {return ghnew Renderer(); }, "Renderer");
-  
-    Status Renderer::init(ResourceManager & resourceManager, ResourceContext & resourceContext) {
+
+    Status Renderer::init(ResourceManager& resourceManager, ResourceContext& resourceContext) {
         this->graphics = &resourceContext.Graphics;
         this->parameterManager = &resourceContext.ParameterManager;
 
@@ -25,9 +25,9 @@ namespace Ghurund {
         }*/
     }
 
-    void Renderer::render(Frame &frame) {
-        CommandList &commandList = startFrame(frame);
-        for(RenderStep *step:steps)
+    void Renderer::render(Frame& frame) {
+        CommandList& commandList = startFrame(frame);
+        for (RenderStep* step : steps)
             step->draw(*graphics, commandList, stats);
         finishFrame(frame);
     }
