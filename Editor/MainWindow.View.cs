@@ -1,7 +1,16 @@
-﻿using System.Windows.Input;
+﻿using Ninject;
+using System.Diagnostics;
+using System.Windows.Input;
 
 namespace Ghurund.Editor {
     public partial class MainWindow {
+
+        private void SettingsCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
+            var window = new SettingsWindow();
+            window.Owner = this;
+            window.Show();
+        }
+
 
         private void ProjectExplorerCommand_Executed(object sender, ExecutedRoutedEventArgs e) => openPanel(sender, ProjectExplorer);
 
@@ -16,5 +25,28 @@ namespace Ghurund.Editor {
         private void StatisticsCommand_Executed(object sender, ExecutedRoutedEventArgs e) => openPanel(sender, StatisticsPanel);
 
         private void LogsCommand_Executed(object sender, ExecutedRoutedEventArgs e) => openPanel(sender, LogPanel);
+
+
+        [Inject]
+        public ColorPickerWindow ColorPicker { get; set; }
+
+        private void ColorPickerCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
+            ColorPicker.Show();
+        }
+
+
+        private void HelpCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
+            Process.Start("https://github.com/ZieIony/Ghurund/blob/master/README.md");
+        }
+
+        private void RaiseIssueCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
+            Process.Start("https://github.com/ZieIony/Ghurund/issues");
+        }
+
+        private void AboutCommand_Executed(object sender, ExecutedRoutedEventArgs e) {
+            var window = new AboutWindow();
+            window.Owner = this;
+            window.Show();
+        }
     }
 }

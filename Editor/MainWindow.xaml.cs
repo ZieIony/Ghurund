@@ -196,10 +196,6 @@ namespace Ghurund.Editor {
             openFile();
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e) {
-            new SettingsWindow().Show();
-        }
-
         private void saveSettings() {
             Settings.WindowSize = new Size(Width, Height);
             Settings.WorkspaceState = workspacePanel.Save();

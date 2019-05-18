@@ -8,7 +8,7 @@
 		xmlns:propertygrid="clr-namespace:Ghurund.Controls.PropertyGrid;assembly=Controls"
 		xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 		mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="347.14">
+        Title="Settings" Height="450" Width="347.14" WindowStartupLocation="CenterOwner" Topmost="True">
 	<WindowChrome.WindowChrome>
 		<WindowChrome 
         CaptionHeight="0"
@@ -16,14 +16,12 @@
 	</WindowChrome.WindowChrome>
 	<Border BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}" BorderThickness="1">
 		<DockPanel Background="{DynamicResource Ghurund.Background}">
-			<DockPanel DockPanel.Dock="Top">
-				<workspace:TitleBar Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top" Title="Settings"
+			<workspace:TitleBar Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top" Title="Settings"
 									HandleWindowActions="True" HandleWindowDragging="True"/>
-				<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-					<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
-				</controls:FlowPanel>
-				<propertygrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
-			</DockPanel>
+			<controls:FlowPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
+				<controls:HintTextBox Style="{StaticResource FilterBoxStyle}"/>
+			</controls:FlowPanel>
+			<propertygrid:PropertyGrid Name="propertyGrid" Filter="{Binding ElementName=filterBox, Path=Text}" Background="{DynamicResource Ghurund.BackgroundLight}"/>
 		</DockPanel>
 	</Border>
 </Window>

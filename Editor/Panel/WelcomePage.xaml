@@ -12,8 +12,8 @@
 		<TextBlock Text="Welcome" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Heading}" Margin="16,16,16,0"/>
 		<StackPanel Orientation="Horizontal">
 			<StackPanel Width="300" Margin="16,0,0,0">
-				<TextBlock Margin="0,8,0,0">Get your own copy of Ghurund Engine <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink></TextBlock>
-				<TextBlock Margin="0,8,0,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
+				<TextBlock Style="{DynamicResource Ghurund.TextStyle.Body}" Margin="0,8,0,0">Get your own copy of Ghurund Engine <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund" RequestNavigate="Hyperlink_RequestNavigate">here</Hyperlink></TextBlock>
+				<TextBlock Style="{DynamicResource Ghurund.TextStyle.Body}" Margin="0,8,0,0">In case of problems raise an <Hyperlink NavigateUri="https://github.com/ZieIony/Ghurund/issues" RequestNavigate="Hyperlink_RequestNavigate">issue</Hyperlink></TextBlock>
 
 				<TextBlock Text="Recent Projects" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListBox Name="recentProjects" HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -37,8 +37,8 @@
 
 			</StackPanel>
 			<StackPanel Width="300" Margin="4,0,16,0">
-				<TextBlock Margin="0,8,0,0">Start a <Hyperlink RequestNavigate="NewProject_RequestNavigate" NavigateUri="http://newProject">new project</Hyperlink></TextBlock>
-				<TextBlock Margin="0,8,0,0"><Hyperlink RequestNavigate="OpenFile_RequestNavigate" NavigateUri="http://openFile">Open</Hyperlink> a file</TextBlock>
+				<TextBlock Style="{DynamicResource Ghurund.TextStyle.Body}" Margin="0,8,0,0">Start a <Hyperlink RequestNavigate="NewProject_RequestNavigate" NavigateUri="http://newProject">new project</Hyperlink></TextBlock>
+				<TextBlock Style="{DynamicResource Ghurund.TextStyle.Body}" Margin="0,8,0,0"><Hyperlink RequestNavigate="OpenFile_RequestNavigate" NavigateUri="http://openFile">Open</Hyperlink> a file</TextBlock>
 
 				<TextBlock Text="Recent Files" DockPanel.Dock="Top" Style="{DynamicResource Ghurund.TextStyle.Subhead}" Margin="0,16,0,0"/>
 				<ListBox Name="recentFiles" ItemContainerStyle="{DynamicResource Ghurund.ListBoxItemStyle}"

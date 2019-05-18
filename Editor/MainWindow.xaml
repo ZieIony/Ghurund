@@ -14,6 +14,8 @@
 			GlassFrameThickness="1" />
 	</WindowChrome.WindowChrome>
 	<Window.CommandBindings>
+		<CommandBinding Command="local:Commands.Settings" Executed="SettingsCommand_Executed" />
+		
 		<CommandBinding Command="local:Commands.ProjectExplorer" Executed="ProjectExplorerCommand_Executed" />
 		<CommandBinding Command="local:Commands.SceneExplorer" Executed="SceneExplorerCommand_Executed" />
 		<CommandBinding Command="local:Commands.Properties" Executed="PropertiesCommand_Executed" />
@@ -23,6 +25,10 @@
 		<CommandBinding Command="local:Commands.Logs" Executed="LogsCommand_Executed" />
 		
 		<CommandBinding Command="local:Commands.ColorPicker" Executed="ColorPickerCommand_Executed" />
+
+		<CommandBinding Command="local:Commands.Help" Executed="HelpCommand_Executed" />
+		<CommandBinding Command="local:Commands.ReportIssue" Executed="RaiseIssueCommand_Executed" />
+		<CommandBinding Command="local:Commands.About" Executed="AboutCommand_Executed" />
 	</Window.CommandBindings>
 	<Border BorderBrush="{DynamicResource Ghurund.Border}"
 			BorderThickness="{DynamicResource Ghurund.Static.BorderThickness}"
@@ -42,7 +48,7 @@
 						</MenuItem>
 						<MenuItem Header="_Open" Click="FileOpen_Click"/>
 						<Separator/>
-						<MenuItem Header="_Settings" Click="Settings_Click">
+						<MenuItem Command="local:Commands.Settings">
 							<MenuItem.Icon>
 								<Image Source="Resources/settings32.png"/>
 							</MenuItem.Icon>
@@ -101,6 +107,23 @@
 						<MenuItem Command="local:Commands.ColorPicker">
 							<MenuItem.Icon>
 								<Image Source="Resources/icons/colorPicker32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+					</MenuItem>
+					<MenuItem Header="_Help">
+						<MenuItem Command="local:Commands.Help">
+							<MenuItem.Icon>
+								<Image Source="Resources/icons/help32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Command="local:Commands.ReportIssue">
+							<MenuItem.Icon>
+								<Image Source="Resources/icons/issue32.png"/>
+							</MenuItem.Icon>
+						</MenuItem>
+						<MenuItem Command="local:Commands.About">
+							<MenuItem.Icon>
+								<Image Source="Resources/icons/about32.png"/>
 							</MenuItem.Icon>
 						</MenuItem>
 					</MenuItem>
