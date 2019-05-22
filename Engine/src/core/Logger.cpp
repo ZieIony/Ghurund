@@ -11,6 +11,12 @@ namespace Ghurund {
     const LogType& LogType::WARNING = LogType(LogTypeEnum::WARNING, _T("WARNING"));
     const LogType& LogType::ERR0R = LogType(LogTypeEnum::ERR0R, _T("ERROR"));
 
+    EnumValues<LogTypeEnum, LogType> LogType::VALUES = {
+        &LogType::INFO,
+        &LogType::WARNING,
+        &LogType::ERR0R
+    };
+
     HANDLE Logger::debugOutput;
     HANDLE Logger::file;
     LogOutput Logger::output;
@@ -19,6 +25,7 @@ namespace Ghurund {
     IMAGEHLP_LINE Logger::line;
     CriticalSection Logger::criticalSection;
     std::function<void(const tchar*)> Logger::onLogged;
+    const LogType* Logger::filterLevel;
 
     address_t Logger::getAddress() {
         constexpr int frames = 1;
@@ -92,6 +99,9 @@ namespace Ghurund {
     }
 
     void Logger::log(const LogType& type, const tchar* format, ...) {
+        if (((int)type.Value) < (int)filterLevel->Value)
+            return;
+
         va_list args;
         va_start(args, format);
 
@@ -101,6 +111,9 @@ namespace Ghurund {
     }
 
     Status Logger::log(const LogType& type, const Status status, const tchar* format, ...) {
+        if (((int)type.Value) < (int)filterLevel->Value)
+            return status;
+
         va_list args;
         va_start(args, format);
 
@@ -114,9 +127,16 @@ namespace Ghurund {
     void Logger::init(LogOutput output, const tchar* name, std::function<void(const tchar*)> onLogged) {
         Logger::output = output;
 
+#ifdef _DEBUG
+        filterLevel = &LogType::INFO;
+#else
+        filterLevel = &LogType::ERR0R;
+#endif
+
         if (symbol == nullptr) {
             constexpr int frames = 1;
             process = GetCurrentProcess();
+            _____________________checkMemory();
             SymInitialize(process, NULL, TRUE);
 
             constexpr int symbolStructSize = sizeof(SYMBOL_INFO) + (MAX_SYM_NAME - 1) * sizeof(tchar);

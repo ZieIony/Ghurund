@@ -75,6 +75,7 @@
     <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\resource\ResourceContext.cpp" />
     <ClCompile Include="src\resource\watcher\DirectoryWatch.cpp" />
+    <ClCompile Include="src\resource\watcher\FileChange.cpp" />
     <ClCompile Include="src\resource\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceFormat.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="src\core\allocation\PoolAllocator.h" />
     <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
     <ClInclude Include="src\core\Buffer.h" />
+    <ClInclude Include="src\core\Enum.h" />
     <ClInclude Include="src\core\MemoryStream.h" />
     <ClInclude Include="src\collection\List.h" />
     <ClInclude Include="src\collection\Map.h" />

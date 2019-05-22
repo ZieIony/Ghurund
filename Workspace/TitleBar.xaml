@@ -41,7 +41,7 @@
 									   VerticalAlignment="Center"
 									   Padding="4,0,0,0"
 									   Foreground="{TemplateBinding Foreground}"
-									   Style="{DynamicResource Ghurund.TextStyle.Body2}"/>
+									   Style="{DynamicResource Ghurund.TextStyle.Body}"/>
 							<DockPanel.ContextMenu>
 								<ContextMenu>
 									<MenuItem Header="_Minimize" Visibility="{TemplateBinding MinimizeButtonVisibility}"/>

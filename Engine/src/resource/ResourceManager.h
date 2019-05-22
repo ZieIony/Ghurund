@@ -51,11 +51,12 @@ namespace Ghurund {
         void reload();
 
         template<class Type> Type* load(ResourceContext& context, const FilePath& path, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Resource* resource = get(path);
+            FilePath decodedPath = decodePath(path);
+            Resource* resource = get(decodedPath);
             Status loadResult = Status::ALREADY_LOADED;
             if (resource == nullptr) {
                 resource = ghnew Type();
-                loadResult = loadInternal(*resource, context, decodePath(path), options);
+                loadResult = loadInternal(*resource, context, decodedPath, options);
                 if (filterStatus(loadResult, options) != Status::OK) {
                     resource->release();
                     resource = nullptr;
@@ -68,11 +69,12 @@ namespace Ghurund {
 
         template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(path, [this, &context, path, onLoaded, options]() {
-                Resource* resource = get(path);
+                FilePath decodedPath = decodePath(path);
+                Resource* resource = get(decodedPath);
                 Status loadResult = Status::ALREADY_LOADED;
                 if (resource == nullptr) {
                     resource = ghnew Type();
-                    loadResult = loadInternal(*resource, context, decodePath(path), options);
+                    loadResult = loadInternal(*resource, context, decodedPath, options);
                     if (filterStatus(loadResult, options) != Status::OK) {
                         resource->release();
                         resource = nullptr;
@@ -87,11 +89,12 @@ namespace Ghurund {
         }
 
         template<class Type> Type* load(ResourceContext& context, File& file, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Resource* resource = get(file.Path);
+            FilePath decodedPath = decodePath(file.Path);
+            Resource* resource = get(decodedPath);
             Status loadResult = Status::ALREADY_LOADED;
             if (resource == nullptr) {
                 resource = ghnew Type();
-                loadResult = loadInternal(*resource, context, decodePath(file.Path), options);
+                loadResult = loadInternal(*resource, context, decodedPath, options);
                 if (filterStatus(loadResult, options) != Status::OK) {
                     resource->release();
                     resource = nullptr;
@@ -104,11 +107,12 @@ namespace Ghurund {
 
         template<class Type> Type* loadAsync(ResourceContext& context, File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options]() {
-                Type* resource = get<Type>(file.Path);
+                FilePath decodedPath = decodePath(file.Path);
+                Type* resource = get<Type>(decodedPath);
                 Status result = Status::ALREADY_LOADED;
                 if (resource == nullptr) {
                     resource = ghnew Type();
-                    result = loadInternal(*resource, context, decodePath(file.Path), options);
+                    result = loadInternal(*resource, context, decodedPath, options);
                     if (filterStatus(loadResult, options) != Status::OK) {
                         resource->release();
                         resource = nullptr;
@@ -128,7 +132,15 @@ namespace Ghurund {
             if (stream.readBoolean()) {
                 loadResult = resource->load(*this, context, workingDir, stream, options);
             } else {
-                loadResult = loadInternal(*resource, context, decodePath(stream.readUnicode(), &workingDir), options);
+                FilePath decodedPath = decodePath(stream.readUnicode(), &workingDir);
+                Type* resource2 = (Type*)get(decodedPath);
+                if (resource2) {
+                    loadResult = Status::ALREADY_LOADED;
+                    resource->release();
+                    resource = resource2;
+                }else{
+                    loadResult = loadInternal(*resource, context, decodedPath, options);
+                }
             }
             if (filterStatus(loadResult, options) != Status::OK) {
                 resource->release();

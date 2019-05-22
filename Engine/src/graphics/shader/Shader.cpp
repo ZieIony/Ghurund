@@ -173,6 +173,9 @@ namespace Ghurund {
     }
 
     Status Shader::compile(char** outErrorMessages) {
+        delete parameters;
+        parameters = nullptr;
+
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
         ASCIIString output;
         Status result = Status::OK;

@@ -4,7 +4,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed.Audio;
@@ -16,16 +15,15 @@ namespace Ghurund.Editor.ResourceEditor {
     public interface ISoundEditor: IDocumentPanel {
     }
 
-    public partial class SoundEditorPanel: UserControl, IImageEditor, IStateControl {
+    public partial class SoundEditorPanel: UserControl, ISoundEditor, IStateControl {
 
+        private List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
-            get => null;
+            get => selectedItems;
             set {
                 // nothing, this editor doesn't support selection change
             }
         }
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -62,8 +60,15 @@ namespace Ghurund.Editor.ResourceEditor {
         public Sound Sound {
             get => sound;
             set {
+                if (sound == value)
+                    return;
+
+                selectedItems.Clear();
                 sound = value;
-                Title = new Title(sound.FileName.Substring(sound.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), sound.FileName);
+                if (sound != null) {
+                    selectedItems.Add(sound);
+                    Title = new Title(sound.FileName.Substring(sound.FileName.LastIndexOfAny(new char[] { '\\', '/' }) + 1), sound.FileName);
+                }
             }
         }
 

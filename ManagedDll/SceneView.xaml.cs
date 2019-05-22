@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Ghurund.Managed.Game;
 using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
@@ -90,6 +91,14 @@ namespace Ghurund.Managed {
                     sceneStep.Entities.Add(scene);
                     addListeners(new System.Collections.Generic.List<Entity>() { scene });
                 }
+            }
+        }
+
+        public bool ShowPlane {
+            get => editorScene.Entities[0].Visible;
+            set {
+                editorScene.Entities[0].Visible = value;
+                Invalidate();
             }
         }
 
@@ -279,12 +288,17 @@ namespace Ghurund.Managed {
             }
         }
 
+        private void renderView_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
+            renderView.Camera.Zoom(e.Delta);
+        }
+
         private void renderView_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
             prevPos = new Point(e.X, e.Y);
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 pressed = true;
                 dist = 0;
             }
+            renderView.Focus();
         }
 
         private void renderView_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {

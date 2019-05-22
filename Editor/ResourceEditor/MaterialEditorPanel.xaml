@@ -10,6 +10,7 @@
 			 xmlns:controls="clr-namespace:Ghurund.Controls;assembly=Controls"
 			 xmlns:wpf="http://schemas.microsoft.com/netfx/2009/xaml/presentation"
 			 xmlns:property="clr-namespace:Ghurund.Editor.Property"
+			 xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
 			 mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 	
@@ -22,28 +23,33 @@
 		</ObjectDataProvider>
 	</UserControl.Resources>
 	<wpf:DockPanel>
-		<wpf:WrapPanel DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}">
-			<wpf:ToolBarPanel Orientation="Horizontal">
+		<ToolBarTray DockPanel.Dock="Top" Background="{DynamicResource Ghurund.Background}" IsLocked="True">
+			<ToolBar>
 				<controls:IconButton Icon="../Resources/build32.png"
 									 Name="build" ToolTip="Build shader"
 									 Style="{StaticResource IconButton_Large}"
 									 Click="Build_Click"/>
-				<Border Width="16"/>
+				<Separator/>
 				<wpf:ComboBox x:Name="modelPicker" SelectionChanged="Model_SelectionChanged"
 							  ItemsSource="{Binding Source={StaticResource dataFromEnum}}"
 							  SelectedItem="{Binding Path=SampleModel}"/>
-				<Border Width="16"/>
+				<Separator/>
+				<controls:IconCheckBox Icon="../Resources/icons/plane32.png" Name="showPlane" Style="{StaticResource IconCheckBox_Large}" Click="ShowPlane_Click"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
-			</wpf:ToolBarPanel>
-		</wpf:WrapPanel>
+			</ToolBar>
+		</ToolBarTray>
 		<TabControl Style="{StaticResource Workspace.TabControl}" TabStripPlacement="Bottom" BorderThickness="0,0,0,1">
 			<TabItem Style="{StaticResource Workspace.TabItem}" Header="Code">
 				<DockPanel>
 					<Border DockPanel.Dock="Bottom" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource Ghurund.Border}">
 						<TextBlock x:Name="status" Background="{DynamicResource Ghurund.Background}" Text="[0:0]"/>
 					</Border>
-					<controls:CodeTextBox x:Name="shaderCode" VerticalScrollBarVisibility="Auto" Padding="4,0,4,0" BorderThickness="0" GotFocus="ShaderCode_GotFocus" SelectionChanged="ShaderCode_SelectionChanged"/>
+					<avalonedit:TextEditor FontFamily="Consolas" FontSize="9pt"
+								   x:Name="shaderCode" VerticalScrollBarVisibility="Auto"
+								   Padding="4,0,4,0" BorderThickness="0" PreviewMouseUp="ShaderCode_MouseUp"
+								   SyntaxHighlighting="HLSL" ShowLineNumbers="True"
+								   LineNumbersForeground="{DynamicResource Ghurund.Text.Disabled}"/>
 				</DockPanel>
 			</TabItem>
 			<TabItem Style="{StaticResource Workspace.TabItem}" Header="Preview">

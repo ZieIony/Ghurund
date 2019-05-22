@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
@@ -26,13 +24,6 @@ namespace Ghurund.Editor.ResourceEditor {
     }
 
     public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
-
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(ISceneEditor));
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -217,7 +208,7 @@ namespace Ghurund.Editor.ResourceEditor {
         private void sceneView_SelectionChanged(object sender, RoutedEventArgs e) {
             e.Handled = true;
             var list = new System.Collections.Generic.List<object>(sceneView.SelectedEntities);
-            RaiseEvent(new RoutedSelectionChangedEventArgs(list, SelectionChangedEvent));
+            RaiseEvent(new RoutedSelectionChangedEventArgs(list, WorkspacePanel.SelectionChangedEvent));
         }
 
         private void SelectionMove_Checked(object sender, RoutedEventArgs e) {
@@ -238,5 +229,8 @@ namespace Ghurund.Editor.ResourceEditor {
         private void ZCoordinate_Checked(object sender, RoutedEventArgs e) {
         }
 
+        private void ShowPlane_Click(object sender, RoutedEventArgs e) {
+            sceneView.ShowPlane = showPlane.IsChecked.Value;
+        }
     }
 }

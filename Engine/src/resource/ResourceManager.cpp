@@ -12,7 +12,7 @@ namespace Ghurund {
             return Logger::log(LogType::ERR0R, result, _T("failed to load file: %s\n"), path.get().getData());
 
         if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
-            watcher.addFile(path, [this, &resource, &context](const FilePath & path, FileChange fileChange) {
+            watcher.addFile(path, [this, &resource, &context](const FilePath& path, const FileChange& fileChange) {
                 if (fileChange == FileChange::MODIFIED) {
                     section.enter();
                     bool found = false;
@@ -39,15 +39,15 @@ namespace Ghurund {
         if (fileName.startsWith(LIB_PROTOCOL_PREFIX)) {
             UnicodeString libName = fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX), fileName.find(L"\\", lengthOf(LIB_PROTOCOL_PREFIX)) - lengthOf(LIB_PROTOCOL_PREFIX));
             FilePath libPath(libraries.get(libName)->Path, fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX) + 1 + libName.Length));
-            return libPath;
+            return libPath.AbsolutePath;
         } else if (workingDir) {
-            return FilePath(*workingDir, fileName);
+            return FilePath(*workingDir, fileName).AbsolutePath;
         } else {
             return fileName;
         }
     }
 
-    FilePath ResourceManager::encodePath(const FilePath & resourcePath, const DirectoryPath & workingDir) const {
+    FilePath ResourceManager::encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const {
         FilePath relativePath = resourcePath.getRelativePath(workingDir);
         if (relativePath.get().startsWith(_T(".."))) {
             size_t libIndex = libraries.findFile(resourcePath);
@@ -77,29 +77,42 @@ namespace Ghurund {
     }
 
     void ResourceManager::reload() {
+        if (!hotReloadEnabled)
+            return;
+
         section.enter();
-        for (size_t i = 0; i < reloadQueue.Size; i++) {
-            ReloadTask* task = reloadQueue.get(i);
-            task->execute();    // TODO: try to reload in place
-            delete task;
+        if (!reloadQueue.Empty) {
+            Timer timer;
+            timer.tick();
+            ticks_t startTime = timer.Ticks;
+            Logger::log(LogType::INFO, _T("hot reload started\n"));
+            for (size_t i = 0; i < reloadQueue.Size; i++) {
+                ReloadTask* task = reloadQueue.get(i);
+                task->execute();    // TODO: try to reload in place
+                delete task;
+            }
+            timer.tick();
+            ticks_t finishTime = timer.Ticks;
+            float dt = (double)(finishTime - startTime)*1000/(double)timer.Frequency;
+            Logger::log(LogType::INFO, _T("hot reload finished in %fms\n"), dt);
         }
         reloadQueue.clear();
         section.leave();
     }
 
-    Status ResourceManager::save(Resource & resource, ResourceContext &context, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, ResourceContext& context, SaveOption options) {
         return resource.save(*this, context, options);
     }
 
-    Status ResourceManager::save(Resource & resource, ResourceContext &context, const FilePath & path, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, ResourceContext& context, const FilePath& path, SaveOption options) {
         return resource.save(*this, context, path, options);
     }
 
-    Status ResourceManager::save(Resource & resource, ResourceContext &context, File & file, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, ResourceContext& context, File& file, SaveOption options) {
         return resource.save(*this, context, file, options);
     }
 
-    Status ResourceManager::save(Resource & resource, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
         resourceFactory->describeResource(resource, stream);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
@@ -111,7 +124,7 @@ namespace Ghurund {
         }
     }
 
-    Resource* ResourceManager::get(const String & fileName) {
+    Resource* ResourceManager::get(const String& fileName) {
         section.enter();
         Resource* resource = nullptr;
         size_t index = resources.findKey(fileName);
@@ -121,13 +134,13 @@ namespace Ghurund {
         return resource;
     }
 
-    void ResourceManager::add(Resource & resource) {
+    void ResourceManager::add(Resource& resource) {
         section.enter();
         resources.set(*resource.Path, &resource);
         section.leave();
     }
 
-    void ResourceManager::remove(const String & fileName) {
+    void ResourceManager::remove(const String& fileName) {
         section.enter();
         resources.remove(fileName);
         section.leave();

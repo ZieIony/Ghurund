@@ -28,8 +28,8 @@ namespace Ghurund {
 #endif
 
             for (unsigned int i = 0; i < variables.Size; i++) {
-                managerParameters[i] = nullptr;
-                parameters[i] = nullptr;
+                managerParameters.set(i, nullptr);
+                parameters.set(i, nullptr);
 #ifdef _DEBUG
                 reported[i] = false;
 #endif
@@ -43,10 +43,8 @@ namespace Ghurund {
         }
 
         ~ConstantBuffer() {
-            for (size_t i = 0; i < variables.Size; i++) {
+            for (size_t i = 0; i < variables.Size; i++)
                 delete variables[i];
-                delete parameters[i];
-            }
 #ifdef _DEBUG
             delete[] reported;
 #endif
@@ -55,10 +53,10 @@ namespace Ghurund {
         virtual void initParameters(ParameterManager& parameterManager) override {
             for (size_t i = 0; i < variables.Size; i++) {
                 ASCIIString name = variables[i]->name;
-                managerParameters[i] = nullptr;
+                managerParameters.set(i, nullptr);
                 for (Parameter* p : parameterManager.Parameters) {
                     if (p->Name == name) {
-                        managerParameters[i] = p;
+                        managerParameters.set(i, p);
                         break;
                     }
                 }

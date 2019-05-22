@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
-using Ghurund.Managed.Graphics.Texture;
 
 namespace Ghurund.Editor.ResourceEditor {
 
@@ -16,14 +14,13 @@ namespace Ghurund.Editor.ResourceEditor {
 
     public partial class ImageEditorPanel : UserControl, IImageEditor, IStateControl {
 
+        private List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
-            get => null;
+            get => selectedItems;
             set {
                 // nothing, this editor doesn't support selection change
             }
         }
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         private bool disposed = false;
 
@@ -52,9 +49,15 @@ namespace Ghurund.Editor.ResourceEditor {
         public BitmapImage Image {
             get => image;
             set {
+                selectedItems.Clear();
+                imageView.Source = null;
+                Title = new Title("");
                 image = value;
-                Title = new Title(image.UriSource.ToString().Substring(image.UriSource.ToString().LastIndexOfAny(new char[] { '\\', '/' }) + 1), image.UriSource.ToString());
-                imageView.Source = image;
+                if (image != null) {
+                    Title = new Title(image.UriSource.ToString().Substring(image.UriSource.ToString().LastIndexOfAny(new char[] { '\\', '/' }) + 1), image.UriSource.ToString());
+                    imageView.Source = image;
+                    //selectedItems.Add(image);
+                }
             }
         }
 

@@ -21,9 +21,9 @@ namespace Ghurund {
 
         ~FileWatcher();
 
-        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler);
+        void addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler);
 
-        void removeFile(const FilePath &path);
+        void removeFile(const FilePath& path);
 
     };
 }

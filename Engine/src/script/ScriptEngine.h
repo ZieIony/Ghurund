@@ -24,26 +24,26 @@ namespace Ghurund {
         asIScriptEngine* engine = nullptr;
         asIScriptModule* mod = nullptr;
         StringFactory stringFactory;
-        std::atomic<unsigned int> moduleIndex=0;
-        Timer *timer;
+        std::atomic<unsigned int> moduleIndex = 0;
+        Timer* timer;
         PointerList<Script*> scripts;
 
         static void messageCallback(const asSMessageInfo* msg, void* param) {
-            LogType type = LogType::ERR0R;
+            LogType* type = (LogType*)& LogType::ERR0R;
             if (msg->type == asMSGTYPE_WARNING)
-                type = LogType::WARNING;
+                type = (LogType*)& LogType::WARNING;
             else if (msg->type == asMSGTYPE_INFORMATION)
-                type = LogType::INFO;
-            Logger::log(type, _T("%hs (%d, %d): %hs\n"), msg->section, msg->row, msg->col, msg->message);
+                type = (LogType*)& LogType::INFO;
+            Logger::log(*type, _T("%hs (%d, %d): %hs\n"), msg->section, msg->row, msg->col, msg->message);
         }
 
     public:
         ~ScriptEngine() {
-            if(engine)
+            if (engine)
                 engine->ShutDownAndRelease();
         }
 
-        static void log(const std::string &str) {
+        static void log(const std::string& str) {
             Logger::log(LogType::INFO, S(str.c_str()));
         }
 
@@ -69,7 +69,7 @@ namespace Ghurund {
             return scripts;
         }
 
-        __declspec(property(get = getScripts)) PointerList<Script*> &Scripts;
+        __declspec(property(get = getScripts)) PointerList<Script*>& Scripts;
 
         void execute();
     };

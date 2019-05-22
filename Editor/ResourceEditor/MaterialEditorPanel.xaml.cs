@@ -1,8 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Resources;
+using System.Xml;
 using System.Xml.Serialization;
 using Ghurund.Controls.Workspace;
 using Ghurund.Managed;
@@ -25,14 +28,13 @@ namespace Ghurund.Editor.ResourceEditor {
 
     public partial class MaterialEditorPanel: UserControl, IMaterialEditor, IStateControl {
 
+        private System.Collections.Generic.List<object> selectedItems = new System.Collections.Generic.List<object>();
         public System.Collections.Generic.List<object> SelectedItems {
-            get => null;
+            get => selectedItems;
             set {
                 // nothing, this editor doesn't support selection change
             }
         }
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -50,6 +52,7 @@ namespace Ghurund.Editor.ResourceEditor {
                     return;
 
                 material?.Release();
+                selectedItems.Clear();
                 material = value;
                 if (material != null) {
                     material.AddReference();
@@ -59,6 +62,7 @@ namespace Ghurund.Editor.ResourceEditor {
                     setupScene();
 
                     propertyGrid.AddParameters(material.Parameters, "Material");
+                    selectedItems.Add(material);
                 }
             }
         }
@@ -82,6 +86,14 @@ namespace Ghurund.Editor.ResourceEditor {
             cameraPicker.SelectedValue = CameraMode.Default;
 
             modelPicker.SelectedValue = SampleModel.Cube;
+
+            Uri uri = new Uri("pack://application:,,,/Resources/languages/HLSL.xshd", UriKind.Absolute);
+            StreamResourceInfo info = Application.GetResourceStream(uri);
+            Stream xshd_stream = info.Stream;
+            XmlTextReader xshd_reader = new XmlTextReader(xshd_stream);
+            shaderCode.SyntaxHighlighting = ICSharpCode.AvalonEdit.Highlighting.Xshd.HighlightingLoader.Load(xshd_reader, ICSharpCode.AvalonEdit.Highlighting.HighlightingManager.Instance);
+            xshd_reader.Close();
+            xshd_stream.Close();
         }
 
         public bool Save(string fileName = null) {
@@ -198,10 +210,7 @@ namespace Ghurund.Editor.ResourceEditor {
             preview.Scene = scene;
             scene.Release();
 
-            preview.Invalidate();
-        }
-
-        private void ShaderCode_GotFocus(object sender, RoutedEventArgs e) {
+            preview.ShowPlane = false;
         }
 
         private void ResetCamera_Click(object sender, RoutedEventArgs e) {
@@ -215,6 +224,10 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         private void Build_Click(object sender, RoutedEventArgs e) {
+            var parameters = new System.Collections.Generic.List<Parameter>(material.Parameters.Filter(p => p != null));
+            foreach (Parameter p in parameters)
+                p.AddReference();
+
             Shader shader = Material.Shader;
             shader.SourceCode = shaderCode.Text;
             string output = shader.Compile();
@@ -223,15 +236,32 @@ namespace Ghurund.Editor.ResourceEditor {
                     Logger.Log(LogType.ERROR, line);
             }
             shader.Build(ResourceContext);
-            shader.Dispose();
+            Material.InitParameters(ResourceContext.ParameterManager);
+            var parameters2 = Material.Parameters;
+            foreach (Parameter p2 in parameters2) {
+                if (p2 == null)
+                    continue;
+                foreach (Parameter p in parameters) {
+                    if (p2.Name == p.Name && p2.Type == p.Type) {
+                        p2.Value = p.Value;
+                        break;
+                    }
+                }
+            }
+            foreach (Parameter p in parameters)
+                p.Release();
+            propertyGrid.Properties.Clear();
+            propertyGrid.AddParameters(material.Parameters, "Material");
             preview.Invalidate();
         }
 
-        private void ShaderCode_SelectionChanged(object sender, RoutedEventArgs e) {
-            shaderCode.CaretPosition.GetLineStartPosition(-int.MaxValue, out int lineNumber);
-            int columnNumber = shaderCode.CaretPosition.GetLineStartPosition(0).GetOffsetToPosition(shaderCode.CaretPosition);
+        private void ShowPlane_Click(object sender, RoutedEventArgs e) {
+            preview.ShowPlane = showPlane.IsChecked.Value;
+        }
 
-            status.Text = "[" + (-lineNumber + 1) + ":" + (columnNumber + 1) + "]";
+        private void ShaderCode_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e) {
+            var line = shaderCode.Document.GetLineByOffset(shaderCode.CaretOffset);
+            status.Text = "[" + line.LineNumber + ":" + (shaderCode.CaretOffset - line.Offset) + "]";
         }
     }
 }

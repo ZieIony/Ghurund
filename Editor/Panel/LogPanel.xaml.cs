@@ -39,10 +39,14 @@ namespace Ghurund.Editor {
             disposed = true;
         }
 
-        private void Logger_OnLog(string log) {
+        private void Logger_OnLog(string logText) {
+            string messageWithType = logText.Substring(logText.IndexOf(']') + 1).Trim();
+            string type = messageWithType.Substring(0,messageWithType.IndexOf(' '));
+            string message = messageWithType.Substring(messageWithType.IndexOf(' ')+1);
             logs.Logs.Add(new Log() {
                 Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
-                Message = log.Substring(log.IndexOf(']')+1).Trim()
+                Type = type,
+                Message = message
             });
         }
 

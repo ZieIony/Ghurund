@@ -309,6 +309,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\languages\HLSL.xshd" />
     <Resource Include="Resources\effects\colorWheel.ps" />
     <Resource Include="Resources\effects\bgra.ps" />
   </ItemGroup>
@@ -442,6 +443,11 @@
     <Resource Include="Resources\icons\about32.png" />
     <Resource Include="Resources\icons\issue32.png" />
     <Resource Include="Resources\icons\help32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\icons\error.png" />
+    <Resource Include="Resources\icons\warning.png" />
+    <Resource Include="Resources\icons\info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

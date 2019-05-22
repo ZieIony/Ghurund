@@ -84,8 +84,7 @@ namespace Ghurund.Editor {
             AddHandler(FileOpenedEvent, new RoutedFileOpenedEventHandler(fileOpenedHandler));
             AddHandler(PropertyGrid.ValueEditedEvent, new RoutedValueEditedEventHandler(valueEditedHandler));
 
-            AddHandler(SceneEditorPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
-            AddHandler(SceneExplorerPanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
+            AddHandler(WorkspacePanel.SelectionChangedEvent, new RoutedSelectionChangedEventHandler(selectionChangedHandler));
             AddHandler(WorkspacePanel.PanelFocusedEvent, new PanelActionEventHandler(panelFocused));
 
             Logger.OnLog += Logger_OnLog;

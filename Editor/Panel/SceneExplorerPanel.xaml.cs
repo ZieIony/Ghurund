@@ -30,29 +30,18 @@ namespace Ghurund.Editor {
         [Inject]
         public ResourceManager ResourceManager { get; set; }
 
-        private List<object> selectedItems = new List<object>();
+        private readonly List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
             get => selectedItems;
             set {
-                if (selectedItems == value)
-                    return;
-                selectedItems = value;
-                if (selectedItems == null)
-                    return;
+                selectedItems.Clear();
+                selectedItems.AddRange(value);
                 foreach (var item in selectedItems) {
                     if (item is Scene)
                         Scene = item as Scene;
                 }
             }
         }
-
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(ISceneExplorerPanel));
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
-
 
         private bool disposed = false;
 
@@ -111,7 +100,7 @@ namespace Ghurund.Editor {
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e) {
             SelectedItems.Clear();
             SelectedItems.Add(e.NewValue);
-            RaiseEvent(new RoutedSelectionChangedEventArgs(SelectedItems, SelectionChangedEvent));
+            RaiseEvent(new RoutedSelectionChangedEventArgs(new List<object>(SelectedItems), WorkspacePanel.SelectionChangedEvent));
         }
 
         private void treeView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e) {

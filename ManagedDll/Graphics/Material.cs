@@ -48,7 +48,7 @@ namespace Ghurund.Managed.Graphics {
         private static extern IntPtr Material_getParameters(IntPtr _this);
 
         [Browsable(false)]
-        public Array<Parameter> Parameters { get; }
+        public Array<Parameter> Parameters { get; private set; }
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -56,6 +56,7 @@ namespace Ghurund.Managed.Graphics {
 
         public void InitParameters(ParameterManager manager) {
             Material_initParameters(NativePtr, manager.NativePtr);
+            Parameters = new Array<Parameter>(Material_getParameters(NativePtr), p => new Parameter(p));
         }
 
 

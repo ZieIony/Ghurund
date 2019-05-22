@@ -10,7 +10,7 @@ namespace Ghurund.Editor.Property {
 
             Texture texture = (Texture)property.Getter();
             System.Windows.Controls.Image image = new System.Windows.Controls.Image {
-                Source = texture.Image.ToBitmap(),
+                Source = texture?.Image.ToBitmap(),
                 Effect = new BgraEffect()
             };
 

@@ -26,6 +26,16 @@
 									 Style="{StaticResource IconButton_Small}"
 									 Click="ScrollToBottom_Click"
 									 ToolTip="Scroll to bottom"/>
+				<Separator/>
+				<controls:IconCheckBox Icon="/Resources/icons/info.png"
+										  Style="{StaticResource IconCheckBox_Small}"
+										  IsChecked="True"/>
+				<controls:IconCheckBox Icon="/Resources/icons/warning.png"
+										  Style="{StaticResource IconCheckBox_Small}"
+									   IsChecked="True"/>
+				<controls:IconCheckBox Icon="/Resources/icons/error.png"
+										  Style="{StaticResource IconCheckBox_Small}"
+									   IsChecked="True"/>
 			</ToolBar>
 		</ToolBarTray>
 		<DockPanel Background="{DynamicResource Ghurund.Background}" DockPanel.Dock="Top">

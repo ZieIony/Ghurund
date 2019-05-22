@@ -58,6 +58,8 @@ namespace Ghurund {
         Status result = file.read();
         if(result != Status::OK)
             return result;
+
+        Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const tchar*)path->get());
         MemoryInputStream stream(file.Data, file.Size);
         result = load(resourceManager, context, path->Directory, stream, options);
         if(bytesRead!=nullptr)
@@ -74,10 +76,6 @@ namespace Ghurund {
     }
 
     Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, File & file, unsigned long *bytesRead, LoadOption options) {
-        FilePath *p = ghnew FilePath(file.Path);
-        delete this->path;
-        this->path = p;
-
         if(!file.Exists)
             return Status::FILE_DOESNT_EXIST;
         Status result;
@@ -86,6 +84,12 @@ namespace Ghurund {
             if(result!=Status::OK)
                 return result;
         }
+
+        FilePath *p = ghnew FilePath(file.Path);
+        delete this->path;
+        this->path = p;
+
+        Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const tchar*)path->get());
         MemoryInputStream stream(file.Data, file.Size);
         result = load(resourceManager, context, path->Directory, stream, options);
         if(bytesRead!=nullptr)

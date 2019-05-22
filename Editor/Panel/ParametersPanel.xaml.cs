@@ -20,13 +20,12 @@ namespace Ghurund.Editor {
 
     public partial class ParametersPanel: UserControl, IParametersPanel {
 
-        private List<object> selectedItems = new List<object>();
+        private readonly List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
             get => selectedItems;
             set {
-                selectedItems = value;
-                if (selectedItems == null)
-                    return;
+                selectedItems.Clear();
+                selectedItems.AddRange(value);
                 for (int i = selectedItems.Count - 1; i >= 0; i--) {
                     var item = selectedItems[i];
                     if (item is Entity) {
@@ -36,14 +35,6 @@ namespace Ghurund.Editor {
                 }
             }
         }
-
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(IParametersPanel));
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
-        }
-
 
         [Inject]
         public ParameterManager ParameterManager { get; set; }

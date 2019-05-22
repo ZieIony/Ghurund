@@ -1,29 +1,23 @@
 #pragma once
 
+#include "core/Enum.h"
+
 namespace Ghurund {
 
     enum class ParameterTypeEnum {
         INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE
     };
 
-    class ParameterType {
+    class ParameterType:public Enum<ParameterTypeEnum, ParameterType> {
     private:
-        ParameterTypeEnum value;
         unsigned int size;
 
     public:
         static const ParameterType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & TEXTURE;
 
-        ParameterType(ParameterTypeEnum value, unsigned int size) {
-            this->value = value;
+        ParameterType(ParameterTypeEnum value, const tchar* name, unsigned int size):Enum<ParameterTypeEnum, ParameterType>(value, name) {
             this->size = size;
         }
-
-        ParameterTypeEnum getValue() const {
-            return value;
-        }
-
-        __declspec(property(get = getValue)) ParameterTypeEnum Value;
 
         unsigned int getSize() const {
             return size;

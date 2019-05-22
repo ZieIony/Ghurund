@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ghurund.Managed.Core;
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 
@@ -8,7 +9,7 @@ namespace Ghurund.Managed.Game {
         Int, Int2, Float, Float2, Float3, Matrix, Color, Texture
     }
 
-    public class Parameter: NativeClass, INotifyPropertyChanged {
+    public class Parameter: Pointer, INotifyPropertyChanged {
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         public delegate void PropertyChangedListener();
@@ -95,7 +96,8 @@ namespace Ghurund.Managed.Game {
         private static extern void ValueParameter_setColorValue(IntPtr _this, Color value);
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceParameter_setValue(IntPtr _this, Resource.Resource value);
+        private static extern void ResourceParameter_setValue(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Resource.Resource value);
 
         [Category("Common")]
         [Description("This value will be set in shaders.")]
@@ -117,7 +119,8 @@ namespace Ghurund.Managed.Game {
                     case ParameterType.Color:
                         return ValueParameter_getColorValue(NativePtr);
                     case ParameterType.Texture:
-                        return new Graphics.Texture.Texture(ResourceParameter_getValue(NativePtr));
+                        var ptr = ResourceParameter_getValue(NativePtr);
+                        return ptr != IntPtr.Zero ? new Graphics.Texture.Texture(ptr) : null;
                 }
                 return null;
             }

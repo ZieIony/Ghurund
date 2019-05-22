@@ -26,6 +26,12 @@ namespace Ghurund {
 
         __declspec(property(get = getTicks)) ticks_t Ticks;
 
+        ticks_t getFrequency()const {
+            return frequency.QuadPart;
+        }
+
+        __declspec(property(get = getFrequency)) ticks_t Frequency;
+
         float getTime()const {
             float f = (float)getTicks() / frequency.QuadPart;
             return f;

@@ -1,0 +1,234 @@
+<SyntaxDefinition name="HLSL" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+  <Color name="Comment" foreground="Green" />
+  <Color name="String" foreground="Blue" />
+  <Color name="Import" foreground="Blue" />
+
+  <!-- This is the main ruleset. -->
+  <RuleSet>
+    <Span color="Comment" begin="//" />
+    <Span color="Comment" multiline="true"
+
+       begin="/\*" end="\*/" />
+
+    <Span color="String">
+      <Begin>"</Begin>
+      <End>"</End>
+      <RuleSet>
+        <!-- nested span for escape sequences -->
+        <Span begin="\\" end="." />
+      </RuleSet>
+    </Span>
+
+    <Span color="Import">
+      <Begin>&lt;</Begin>
+      <End>&gt;</End>
+    </Span>
+
+    <Keywords foreground="Red">
+      <Word>auto</Word>
+      <Word>case</Word>
+      <Word>catch</Word>
+      <Word>char</Word>
+      <Word>class</Word>
+      <Word>const_cast</Word>
+      <Word>default</Word>
+      <Word>delete</Word>
+      <Word>dynamic_cast</Word>
+      <Word>enum</Word>
+      <Word>explicit</Word>
+      <Word>friend</Word>
+      <Word>goto</Word>
+      <Word>long</Word>
+      <Word>mutable</Word>
+      <Word>new</Word>
+      <Word>operator</Word>
+      <Word>private</Word>
+      <Word>protected</Word>
+      <Word>public</Word>
+      <Word>reinterpret_cast</Word>
+      <Word>short</Word>
+      <Word>signed</Word>
+      <Word>sizeof</Word>
+      <Word>static_cast</Word>
+      <Word>template</Word>
+      <Word>this</Word>
+      <Word>throw</Word>
+      <Word>try</Word>
+      <Word>typename</Word>
+      <Word>union</Word>
+      <Word>unsigned</Word>
+      <Word>using</Word>
+      <Word>virtual</Word>
+    </Keywords>
+
+    <Keywords foreground="Blue">
+      <Word>AppendStructuredBuffer</Word>
+      <Word>asm</Word>
+      <Word>asm_fragment</Word>
+      <Word>BlendState</Word>
+      <Word>bool</Word>
+      <Word>break</Word>
+      <Word>Buffer</Word>
+      <Word>ByteAddressBuffer</Word>
+      <Word>case</Word>
+      <Word>cbuffer</Word>
+      <Word>centroid</Word>
+      <Word>class</Word>
+      <Word>column_major</Word>
+      <Word>compile</Word>
+      <Word>compile_fragment</Word>
+      <Word>CompileShader</Word>
+      <Word>const</Word>
+      <Word>continue</Word>
+      <Word>ComputeShader</Word>
+      <Word>ConsumeStructuredBuffer</Word>
+      <Word>default</Word>
+      <Word>DepthStencilState</Word>
+      <Word>DepthStencilView</Word>
+      <Word>discard</Word>
+      <Word>do</Word>
+      <Word>double</Word>
+      <Word>DomainShader</Word>
+      <Word>dword</Word>
+      <Word>else</Word>
+      <Word>export</Word>
+      <Word>extern</Word>
+      <Word>false</Word>
+      <Word>float</Word>
+      <Word>float2</Word>
+      <Word>float3</Word>
+      <Word>float4</Word>
+      <Word>float4x4</Word>
+      <Word>for</Word>
+      <Word>fxgroup</Word>
+      <Word>GeometryShader</Word>
+      <Word>groupshared</Word>
+      <Word>half</Word>
+      <Word>Hullshader</Word>
+      <Word>if</Word>
+      <Word>in</Word>
+      <Word>inline</Word>
+      <Word>inout</Word>
+      <Word>InputPatch</Word>
+      <Word>int</Word>
+      <Word>interface</Word>
+      <Word>line</Word>
+      <Word>lineadj</Word>
+      <Word>linear</Word>
+      <Word>LineStream</Word>
+      <Word>matrix</Word>
+      <Word>min16float</Word>
+      <Word>min10float</Word>
+      <Word>min16int</Word>
+      <Word>min12int</Word>
+      <Word>min16uint</Word>
+      <Word>namespace</Word>
+      <Word>nointerpolation</Word>
+      <Word>noperspective</Word>
+      <Word>NULL</Word>
+      <Word>out</Word>
+      <Word>OutputPatch</Word>
+      <Word>packoffset</Word>
+      <Word>pass</Word>
+      <Word>pixelfragment</Word>
+      <Word>PixelShader</Word>
+      <Word>point</Word>
+      <Word>PointStream</Word>
+      <Word>precise</Word>
+      <Word>RasterizerState</Word>
+      <Word>RenderTargetView</Word>
+      <Word>return</Word>
+      <Word>register</Word>
+      <Word>row_major</Word>
+      <Word>RWBuffer</Word>
+      <Word>RWByteAddressBuffer</Word>
+      <Word>RWStructuredBuffer</Word>
+      <Word>RWTexture1D</Word>
+      <Word>RWTexture1DArray</Word>
+      <Word>RWTexture2D</Word>
+      <Word>RWTexture2DArray</Word>
+      <Word>RWTexture3D</Word>
+      <Word>sample</Word>
+      <Word>sampler</Word>
+      <Word>SamplerState</Word>
+      <Word>SamplerComparisonState</Word>
+      <Word>shared</Word>
+      <Word>snorm</Word>
+      <Word>stateblock</Word>
+      <Word>stateblock_state</Word>
+      <Word>static</Word>
+      <Word>string</Word>
+      <Word>struct</Word>
+      <Word>switch</Word>
+      <Word>StructuredBuffer</Word>
+      <Word>tbuffer</Word>
+      <Word>technique</Word>
+      <Word>technique10</Word>
+      <Word>technique11</Word>
+      <Word>texture</Word>
+      <Word>Texture1D</Word>
+      <Word>Texture1DArray</Word>
+      <Word>Texture2D</Word>
+      <Word>Texture2DArray</Word>
+      <Word>Texture2DMS</Word>
+      <Word>Texture2DMSArray</Word>
+      <Word>Texture3D</Word>
+      <Word>TextureCube</Word>
+      <Word>TextureCubeArray</Word>
+      <Word>true</Word>
+      <Word>typedef</Word>
+      <Word>triangle</Word>
+      <Word>triangleadj</Word>
+      <Word>TriangleStream</Word>
+      <Word>uint</Word>
+      <Word>uniform</Word>
+      <Word>unorm</Word>
+      <Word>unsigned</Word>
+      <Word>vector</Word>
+      <Word>vertexfragment</Word>
+      <Word>VertexShader</Word>
+      <Word>void</Word>
+      <Word>volatile</Word>
+      <Word>while</Word>
+
+      <Word>#define</Word>
+      <Word>#elif</Word>
+      <Word>#else</Word>
+      <Word>#endif</Word>
+      <Word>#error</Word>
+      <Word>#if</Word>
+      <Word>#ifdef</Word>
+      <Word>#ifndef</Word>
+      <Word>#include</Word>
+      <Word>#line</Word>
+      <Word>#pragma</Word>
+      <Word>#undef</Word>
+    </Keywords>
+
+    <Keywords foreground="Teal">
+      <Word>SV_Position</Word>
+      <Word>SV_Target</Word>
+      
+      <Word>TexCoord</Word>
+      <Word>TexCoord0</Word>
+      <Word>TexCoord1</Word>
+      <Word>Position</Word>
+      <Word>Position0</Word>
+      <Word>Normal</Word>
+      <Word>Normal0</Word>
+      <Word>Tangent</Word>
+      <Word>Tangent0</Word>
+      <!-- ... -->
+    </Keywords>
+
+    <!-- Digits -->
+    <Rule foreground="DarkBlue">
+      \b0[xX][0-9a-fA-F]+  # hex number
+      |    \b
+      (    \d+(\.[0-9]+)?   #number with optional floating point
+      |    \.[0-9]+         #or just starting with floating point
+      )
+      ([eE][+-]?[0-9]+)? # optional exponent
+    </Rule>
+  </RuleSet>
+</SyntaxDefinition>

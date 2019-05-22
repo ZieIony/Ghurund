@@ -14,26 +14,18 @@ namespace Ghurund.Editor {
 
     public partial class PropertiesPanel : UserControl, IPropertiesPanel {
 
-        private List<object> selectedItems = new List<object>();
+        private readonly List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
             get => selectedItems;
             set {
-                selectedItems = value;
-                if (selectedItems == null)
-                    return;
+                selectedItems.Clear();
+                selectedItems.AddRange(value);
                 if (selectedItems.Count == 0) {
                     SelectedObject = null;
                 } else {
-                    SelectedObject = selectedItems[selectedItems.Count - 1];
+                    SelectedObject = selectedItems[0];
                 }
             }
-        }
-
-        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(IPropertiesPanel));
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged {
-            add { AddHandler(SelectionChangedEvent, value); }
-            remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 
         private bool disposed = false;

@@ -49,6 +49,7 @@
 					<ComboBoxItem Name="normals">Normals</ComboBoxItem>
 				</wpf:ComboBox>
 				<Separator/>
+				<controls:IconCheckBox Icon="../Resources/icons/plane32.png" Name="showPlane" Style="{StaticResource IconCheckBox_Large}" Click="ShowPlane_Click" IsChecked="True"/>
 				<controls:IconButton Icon="../Resources/reset32.png" Name="resetCamera" Style="{StaticResource IconButton_Large}" Click="ResetCamera_Click"/>
 				<wpf:ComboBox x:Name="cameraPicker" SelectionChanged="Camera_SelectionChanged"/>
 				<controls:IconCheckBox

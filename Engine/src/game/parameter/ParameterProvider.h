@@ -10,6 +10,7 @@ namespace Ghurund {
     class DirectoryPath;
     class MemoryInputStream;
     class MemoryOutputStream;
+    
     enum class LoadOption;
     enum class SaveOption;
 

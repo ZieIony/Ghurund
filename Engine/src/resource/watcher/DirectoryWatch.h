@@ -19,7 +19,7 @@ namespace Ghurund {
 
         WorkerThread delayThread;
 
-        Map<UnicodeString, std::function<void(const FilePath &path, const FileChange)>> files;
+        Map<UnicodeString, std::function<void(const FilePath &path, const FileChange&)>> files;
 
         void fileChanged(Buffer &buffer);
 
@@ -37,12 +37,12 @@ namespace Ghurund {
 
         ~DirectoryWatch();
 
-        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler) {
-            files.set(path, fileChangedHandler);
+        void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange&)> fileChangedHandler) {
+            files.set(path.FileName, fileChangedHandler);
         }
 
         void removeFile(const FilePath &path) {
-            files.remove(path);
+            files.remove(path.FileName);
         }
 
         size_t getFileCount() {

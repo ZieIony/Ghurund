@@ -62,20 +62,22 @@
 	</Style>
 
 	<Style x:Key="Ghurund.ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+		<Setter Property="BorderThickness" Value="1"/>
 		<Setter Property="Margin" Value="0"/>
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="{x:Type ListBoxItem}">
-					<Border SnapsToDevicePixels="True"  
-                                BorderThickness="0"   
-                                Background="{TemplateBinding Background}">
+					<Border SnapsToDevicePixels="True" BorderThickness="{TemplateBinding BorderThickness}"
+							BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
 						<ContentPresenter/>
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
+							<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Accent}" />
 							<Setter Property="Background" Value="{DynamicResource Ghurund.Highlight}" />
 						</Trigger>
 						<Trigger Property="IsSelected" Value="True">
+							<Setter Property="BorderBrush" Value="{DynamicResource Ghurund.Accent}" />
 							<Setter Property="Background" Value="{DynamicResource Ghurund.Selection}" />
 						</Trigger>
 						<Trigger Property="IsEnabled" Value="False">
@@ -190,7 +192,7 @@
 			</Trigger>
 		</ControlTemplate.Triggers>
 	</ControlTemplate>
-	
+
 	<Style TargetType="{x:Type ComboBox}">
 		<Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
 		<Setter Property="Background" Value="{DynamicResource Ghurund.BackgroundLight}"/>

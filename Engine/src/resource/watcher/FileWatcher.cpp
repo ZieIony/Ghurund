@@ -13,16 +13,16 @@ namespace Ghurund {
     }
 
     FileWatcher::~FileWatcher() {
-        for(size_t i = 0; i<watches.Size; i++)
+        for (size_t i = 0; i < watches.Size; i++)
             delete watches.getValue(i);
         thread.finish();
     }
 
-    void FileWatcher::addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange)> fileChangedHandler) {
+    void FileWatcher::addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler) {
         String dir = path.Directory;
 
-        if(!watches.contains(dir)) {
-            DirectoryWatch *watch = ghnew DirectoryWatch(dir);
+        if (!watches.contains(dir)) {
+            DirectoryWatch* watch = ghnew DirectoryWatch(dir);
             watches.set(dir, watch);
 
             watch->addFile(path, fileChangedHandler);
@@ -31,17 +31,19 @@ namespace Ghurund {
         } else {
             watches[dir]->addFile(path, fileChangedHandler);
         }
+        Logger::log(LogType::INFO, _T("started watching for file changes: %s\n"), (const wchar_t*)path);
     }
 
-    void FileWatcher::removeFile(const FilePath &path) {
+    void FileWatcher::removeFile(const FilePath& path) {
         String dir = path.Directory;
 
-        if(!watches.contains(dir))
+        if (!watches.contains(dir))
             return;
 
-        DirectoryWatch *watch = watches[dir];
+        DirectoryWatch* watch = watches[dir];
         watch->removeFile(path);
-        if(watch->FileCount==0) {
+        Logger::log(LogType::INFO, _T("stopped watching for file changes: %s\n"), *path);
+        if (watch->FileCount == 0) {
             watches.remove(path);
             delete watch;
         }

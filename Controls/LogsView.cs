@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ghurund.Managed.Core;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -10,6 +11,7 @@ namespace Ghurund.Controls {
 
         public struct Log {
             public string Time { get; set; }
+            public string Type { get; set; }
             public string Message { get; set; }
         }
 
@@ -25,6 +27,15 @@ namespace Ghurund.Controls {
 
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register("Filter", typeof(string), typeof(LogsView), new PropertyMetadata(null));
+
+
+        public string TypeFilter {
+            get { return (string)GetValue(TypeFilterProperty); }
+            set { SetValue(TypeFilterProperty, value); }
+        }
+
+        public static readonly DependencyProperty TypeFilterProperty =
+            DependencyProperty.Register("TypeFilter", typeof(string), typeof(LogsView), new PropertyMetadata(null));
 
 
         public bool AutoScroll {
@@ -68,7 +79,7 @@ namespace Ghurund.Controls {
         public override void OnApplyTemplate() {
             base.OnApplyTemplate();
 
-            view.Filter = obj => string.IsNullOrEmpty(Filter) ? true : (obj as string).ToLower().Contains(Filter);
+            view.Filter = obj => string.IsNullOrEmpty(Filter) ? true : ((Log)obj).Message.Contains(Filter);
 
             var listBox = GetTemplateChild("listBox") as ListBox;
             listBox.ItemsSource = view;

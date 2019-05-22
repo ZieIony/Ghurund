@@ -12,8 +12,9 @@ namespace Ghurund {
                 DWORD action = fni.Action;
                 delayThread.remove(fileName);
                 Task *task = ghnew Task(fileName, [fileName, action, this]() {
-                    Logger::log(LogType::INFO, _T("file changed: %s, action: %i\n"), fileName.getData(), action);
-                    files[fileName](fileName, (FileChange)action);
+                    const FileChange &change = FileChange::VALUES[(FileChangeEnum)action];
+                    Logger::log(LogType::INFO, _T("file changed: %s, action: %s\n"), fileName.getData(), change.Name);
+                    files[fileName](fileName, change);
                     return Status::OK;
                 });
                 delayThread.post(task, 200);

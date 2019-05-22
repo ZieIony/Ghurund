@@ -2,6 +2,7 @@
 
 #include "../Ghurund.h"
 #include "Noncopyable.h"
+#include "Enum.h"
 #include "dbghelp.h"
 #include "CriticalSection.h"
 #include "collection/String.h"
@@ -16,34 +17,11 @@ namespace Ghurund {
         INFO, WARNING, ERR0R
     };
 
-    class LogType {
-    private:
-        LogTypeEnum value;
-        const tchar* name;
-
-        LogType() = default;
-
+    class LogType: public Enum<LogTypeEnum, LogType> {
     public:
         static const LogType& INFO, & WARNING, & ERR0R;
 
-        explicit LogType(LogTypeEnum value, const tchar* name) {
-            this->value = value;
-            this->name = name;
-        }
-
-        const tchar* getName() const {
-            return name;
-        }
-
-        __declspec(property(get = getName)) const tchar* Name;
-
-        bool operator==(const LogType& type) const {
-            return this == &type;
-        }
-
-        bool operator==(const LogType& type) {
-            return this == &type;
-        }
+        explicit LogType(LogTypeEnum value, const tchar* name):Enum<LogTypeEnum, LogType>(value, name) {}
     };
 
     class Logger:public Noncopyable {
@@ -56,6 +34,7 @@ namespace Ghurund {
         static IMAGEHLP_LINE line;
         static CriticalSection criticalSection;
         static std::function<void(const tchar*)> onLogged;
+        static const LogType* filterLevel;
 
         static address_t getAddress();
 
@@ -68,6 +47,10 @@ namespace Ghurund {
         static void init(LogOutput output = LogOutput::SYSTEM_CONSOLE, const tchar* name = nullptr, std::function<void(const tchar*)> onLogged = nullptr);
 
         static void uninit();
+
+        static void setFilter(const LogType& level) {
+            filterLevel = &level;
+        }
 
         static void log(const LogType& type, const tchar* format, ...);
         static Status log(const LogType& type, Status status, const tchar* format, ...);

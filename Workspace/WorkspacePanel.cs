@@ -23,6 +23,13 @@ namespace Ghurund.Controls.Workspace {
             remove { RemoveHandler(PanelClosedEvent, value); }
         }
 
+        public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedSelectionChangedEventHandler), typeof(WorkspacePanel));
+
+        public event RoutedSelectionChangedEventHandler SelectionChanged {
+            add { AddHandler(SelectionChangedEvent, value); }
+            remove { RemoveHandler(SelectionChangedEvent, value); }
+        }
+
         static WorkspacePanel() {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WorkspacePanel), new FrameworkPropertyMetadata(typeof(WorkspacePanel)));
         }
@@ -44,6 +51,8 @@ namespace Ghurund.Controls.Workspace {
                     focusedPanel.PanelFocused = false;
                 focusedPanel = e.Panel;
                 focusedPanel.PanelFocused = true;
+                if(e.Panel.Content is IToolPanel)
+                    RaiseEvent(new RoutedSelectionChangedEventArgs((e.Panel.Content as IToolPanel).SelectedItems, SelectionChangedEvent));
             }
         }
 

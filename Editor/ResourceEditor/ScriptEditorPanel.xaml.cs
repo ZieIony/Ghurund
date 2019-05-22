@@ -56,14 +56,13 @@ namespace Ghurund.Editor.ResourceEditor {
 
     public partial class ScriptEditorPanel: UserControl, IScriptEditor, IStateControl {
 
+        private System.Collections.Generic.List<object> selectedItems = new System.Collections.Generic.List<object>();
         public System.Collections.Generic.List<object> SelectedItems {
-            get => null;
+            get => selectedItems;
             set {
                 // nothing, this editor doesn't support selection change
             }
         }
-
-        public event RoutedSelectionChangedEventHandler SelectionChanged;
 
         [Inject]
         public ResourceManager ResourceManager { get; set; }
@@ -81,12 +80,14 @@ namespace Ghurund.Editor.ResourceEditor {
                 if (script == value)
                     return;
 
+                selectedItems.Clear();
                 script?.Release();
                 script = value;
                 if (script != null) {
                     script.AddReference();
                     Title = new Title(script.ToString().Substring(script.ToString().LastIndexOfAny(new char[] { '\\', '/' }) + 1), script.ToString());
                     shaderCode.Text = script.SourceCode;
+                    selectedItems.Add(script);
                 }
             }
         }

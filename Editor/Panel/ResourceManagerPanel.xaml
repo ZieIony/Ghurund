@@ -25,7 +25,7 @@
 						</HierarchicalDataTemplate>
 						<HierarchicalDataTemplate DataType="{x:Type local:ResourceDirectory}" ItemsSource="{Binding Items}">
 							<StackPanel Orientation="Horizontal">
-								<Image Source="./Resources/folder32.png" Width="16" Height="16" Margin="0,0,4,0" />
+								<Image Source="/Resources/folder32.png" Width="16" Height="16" Margin="0,0,4,0" />
 								<TextBlock Text="{Binding Name}" Foreground="{StaticResource Ghurund.Text.Primary}"/>
 							</StackPanel>
 						</HierarchicalDataTemplate>
@@ -33,7 +33,10 @@
 				</TreeView>
 			</workspace:SplitPanel.Panel1>
 			<workspace:SplitPanel.Panel2>
-				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" Name="resourceGrid" Padding="4" BorderThickness="0" Background="{x:Null}" MouseDoubleClick="treeView_MouseDoubleClick">
+				<ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+						  Name="resourceGrid" Padding="4" BorderThickness="0" Background="{x:Null}"
+						  MouseDoubleClick="treeView_MouseDoubleClick"
+						  ItemContainerStyle="{DynamicResource Ghurund.ListBoxItemStyle}">
 					<ListView.ItemTemplate>
 						<DataTemplate>
 							<StackPanel Orientation="Horizontal">

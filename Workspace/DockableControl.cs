@@ -64,7 +64,6 @@ namespace Ghurund.Controls.Workspace {
 
     public interface IToolPanel: IDockablePanel {
         List<object> SelectedItems { get; set; }
-        event RoutedSelectionChangedEventHandler SelectionChanged;
     }
 
     public interface IDocumentPanel: IToolPanel {
