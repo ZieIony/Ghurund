@@ -157,6 +157,7 @@
     <Compile Include="Property\PropertyEditorFactory.cs" />
     <Compile Include="Property\ResourcePropertyEditor.cs" />
     <Compile Include="Property\TexturePropertyEditor.cs" />
+    <Compile Include="ResourceEditor\SceneTools.cs" />
     <Compile Include="ResourceEditor\SoundEditorPanel.xaml.cs">
       <DependentUpon>SoundEditorPanel.xaml</DependentUpon>
     </Compile>

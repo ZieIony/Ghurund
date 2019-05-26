@@ -62,9 +62,9 @@ namespace Ghurund {
             delete path;
         }
 
-        Status load(ResourceManager& resourceManager, ResourceContext& context, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceManager& resourceManager, ResourceContext& context, File& file, unsigned long* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(ResourceManager& resourceManager, ResourceContext& context, File& file, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
         Status save(ResourceManager& resourceManager, ResourceContext& context, SaveOption options = SaveOption::DEFAULT) const;

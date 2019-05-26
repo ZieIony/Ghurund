@@ -36,6 +36,7 @@
     <ClCompile Include="src\game\entity\Entity.cpp" />
     <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
+    <ClCompile Include="src\game\GameAction.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\game\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\game\parameter\ParameterType.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="src\core\WorkerThread.h" />
     <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
+    <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\FileUtils.h" />
     <ClInclude Include="src\game\CameraController.h" />
@@ -137,6 +139,7 @@
     <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\entity\Target.h" />
     <ClInclude Include="src\game\entity\TransformedEntity.h" />
+    <ClInclude Include="src\game\GameAction.h" />
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="src\input\EventConsumer.h" />
     <ClInclude Include="src\input\Input.h" />
     <ClInclude Include="src\input\Keyboard.h" />
+    <ClInclude Include="src\game\KeyMap.h" />
     <ClInclude Include="src\input\Mouse.h" />
     <ClInclude Include="src\MathUtils.h" />
     <ClInclude Include="src\physics\Physics.h" />
@@ -271,7 +275,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -303,11 +307,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine</TargetName>
+    <TargetName>GhurundEngine_32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
     <TargetName>GhurundEngine</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IntDir>$(Configuration)\</IntDir>
+    <TargetName>GhurundEngine_64</TargetName>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -325,6 +335,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

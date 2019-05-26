@@ -44,7 +44,7 @@ namespace Ghurund {
             height(height),
             format(format),
             pixelSize(getDXGIFormatBitsPerPixel(format) / 8),
-            rowPitch(data.Size / height) {
+            rowPitch((UINT32)(data.Size / height)) {
 
             Valid = true;
         }

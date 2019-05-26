@@ -25,7 +25,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Mesh::loadObj(ResourceContext & context, MemoryInputStream & stream) {
+    Status Mesh::loadObj(ResourceContext& context, MemoryInputStream& stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
@@ -34,8 +34,7 @@ namespace Ghurund {
 
         ASCIIString obj((char*)stream.Data, stream.Size);
         List<ASCIIString> lines = obj.split("\n");
-        for (size_t i = 0; i < lines.Size; i++) {
-            ASCIIString& line = lines[i];
+        for (ASCIIString& line : lines) {
             if (line.startsWith("#")) {
                 continue;
             } else if (line.startsWith("v ")) {
@@ -53,13 +52,13 @@ namespace Ghurund {
             } else if (line.startsWith("f ")) {
                 List<ASCIIString> vert = line.subString(2).trim().split(" ");
 
-                triangleIndices.add(triangleVertices.Size);
-                triangleIndices.add(triangleVertices.Size + 2);
-                triangleIndices.add(triangleVertices.Size + 1);
+                triangleIndices.add((unsigned int)triangleVertices.Size);
+                triangleIndices.add((unsigned int)(triangleVertices.Size + 2));
+                triangleIndices.add((unsigned int)(triangleVertices.Size + 1));
                 for (size_t j = 3; j < vert.Size; j++) {
-                    triangleIndices.add(triangleVertices.Size);
-                    triangleIndices.add(j - 3 + triangleVertices.Size + 3);
-                    triangleIndices.add(j - 3 + triangleVertices.Size + 2);
+                    triangleIndices.add((unsigned int)triangleVertices.Size);
+                    triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 3));
+                    triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 2));
                 }
                 for (size_t j = 0; j < vert.Size; j++) {
                     List<ASCIIString> face = vert[j].split("/");
@@ -70,11 +69,11 @@ namespace Ghurund {
         }
 
         vertexSize = sizeof(Vertex);
-        vertexCount = triangleVertices.Size;
+        vertexCount = (vindex_t)triangleVertices.Size;
         vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, triangleVertices.begin(), vertexCount * vertexSize);
 
-        indexCount = triangleIndices.Size;
+        indexCount = (vindex_t)triangleIndices.Size;
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, triangleIndices.begin(), indexCount * sizeof(vindex_t));
 
@@ -83,7 +82,7 @@ namespace Ghurund {
         return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::loadMesh(ResourceContext & context, MemoryInputStream & stream) {
+    Status Mesh::loadMesh(ResourceContext& context, MemoryInputStream& stream) {
         Status result = readHeader(stream);
         if (result != Status::OK)
             return result;
@@ -104,7 +103,7 @@ namespace Ghurund {
         return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::saveInternal(ResourceManager & resourceManager, ResourceContext &context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status Mesh::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);
@@ -130,7 +129,7 @@ namespace Ghurund {
         indexUploadHeap.ReleaseAndGetAddressOf();
     }
 
-    Status Mesh::init(Graphics & graphics, CommandList & commandList, unsigned int detail) {
+    Status Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         if (commandList.State == CommandListState::FINISHED)
             commandList.reset();
 
@@ -225,7 +224,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void Mesh::draw(CommandList & commandList) {
+    void Mesh::draw(CommandList& commandList) {
         commandList.addPointerRef(this);
         ID3D12GraphicsCommandList* list = commandList.get();
         list->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -240,7 +239,7 @@ namespace Ghurund {
 
         for (vindex_t i = 0; i < indexCount; i++) {
             Vertex& v = vertices[indices[i]];
-            vindex_t index = vertexData.Size;
+            vindex_t index = (vindex_t)vertexData.Size;
 
             for (vindex_t j = 0; j < vertexData.Size; j++) {
                 if (v.equals(vertexData[j], 0.01f, 0.01f, 0.01f)) {
@@ -255,12 +254,12 @@ namespace Ghurund {
         }
 
         delete[] vertices;
-        vertexCount = vertexData.Size;
+        vertexCount = (vindex_t)vertexData.Size;
         vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, vertexData.begin(), vertexCount * vertexSize);
 
         delete[] indices;
-        indexCount = indexData.Size;
+        indexCount = (vindex_t)indexData.Size;
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, indexData.begin(), sizeof(vindex_t) * indexCount);
     }
@@ -302,12 +301,12 @@ namespace Ghurund {
             indexData.add(j + 5);
         }
 
-        vertexCount = vertexData.Size;
+        vertexCount = (vindex_t)vertexData.Size;
         delete[] vertices;
         vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, vertexData.begin(), vertexCount * vertexSize);
 
-        indexCount = indexData.Size;
+        indexCount = (vindex_t)indexData.Size;
         delete[] indices;
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, indexData.begin(), indexCount * sizeof(vindex_t));
@@ -328,7 +327,7 @@ namespace Ghurund {
         Vertex* newVertices = ghnew Vertex[indexCount * 3];
         for (size_t i = 0; i < indexCount; i++) {
             newVertices[i] = vertices[indices[i]];
-            indices[i] = i;
+            indices[i] = (vindex_t)i;
         }
 
         delete[] vertices;
@@ -396,7 +395,7 @@ namespace Ghurund {
         boundingBox = DirectX::BoundingBox(center, extents);
     }
 
-    bool Mesh::intersects(XMFLOAT3 & pos, XMFLOAT3 & dir, float& dist) {
+    bool Mesh::intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
         XMVECTOR pos2 = XMLoadFloat3(&pos);
         XMVECTOR dir2 = XMLoadFloat3(&dir);
         for (size_t i = 0; i < indexCount / 3; i++) {

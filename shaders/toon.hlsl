@@ -40,7 +40,7 @@ float4 pixelMain(Pixel input): SV_Target{
 
     float3 normal = normalize(input.normal);
     float3 lightDir = normalize(lightPos - input.position);
-    float3 viewDir = normalize(position - input.position);
+    float3 viewDir = normalize(cameraPosition - input.position);
 
     float lightIntensity = getDiffuseIntensity(normal, lightDir);
     float specularIntensity = getSpecularIntensity(input.position, normal, cameraPosition, lightDir, 8);

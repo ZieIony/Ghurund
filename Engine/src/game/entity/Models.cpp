@@ -57,22 +57,4 @@ namespace Ghurund {
 
         return model;
     }
-
-    SelectionModel* Models::makeSelection(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Material> material = Materials::makeWireframe(resourceManager, context);
-
-        ScopedPointer<Mesh> mesh = ghnew CubeMesh();
-        mesh->init(context.Graphics, context.CommandList);
-        SelectionModel* model = ghnew SelectionModel();
-        model->Mesh = mesh;
-        model->Material = material;
-        model->initParameters(context.ParameterManager);
-        model->Valid = true;
-
-        model->initParameters(context.ParameterManager);
-        model->Name = "selection";
-        model->Valid = true;
-
-        return model;
-    }
 }

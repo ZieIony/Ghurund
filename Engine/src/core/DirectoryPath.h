@@ -23,7 +23,7 @@ namespace Ghurund {
         }
 
         DirectoryPath getAbsolutePath() const {
-            int bufferLength = GetCurrentDirectory(0, nullptr)+path.Size+2; // slash and string terminator
+            DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr)+path.Size+2); // slash and string terminator
             wchar_t *fullPath = ghnew wchar_t[bufferLength];
             GetFullPathNameW(path, bufferLength, fullPath, nullptr);
             DirectoryPath absolutePath(fullPath);

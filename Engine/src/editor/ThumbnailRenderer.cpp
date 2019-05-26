@@ -1,14 +1,8 @@
 #include "ThumbnailRenderer.h"
+#include "CameraUtils.h"
 
 namespace Ghurund {
     const Ghurund::Type& ThumbnailRenderer::TYPE = Ghurund::Type([]() {return ghnew ThumbnailRenderer(); }, "ThumbnailRenderer");
-
-    void ThumbnailRenderer::cameraLookAt(XMFLOAT3 center, XMFLOAT3 extents) {
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, XMLoadFloat3(&center) + XMLoadFloat3(&extents) * 2);
-        pos.z *= -1;
-        camera->setPositionTargetUp(pos, center);
-    }
 
     void ThumbnailRenderer::init(ResourceManager& resourceManager, ResourceContext& context, UINT32 width, UINT32 height) {
         this->resourceManager = &resourceManager;
@@ -41,7 +35,7 @@ namespace Ghurund {
     }
 
     Status ThumbnailRenderer::render(Entity& entity, Image*& image) {
-        cameraLookAt(entity.BoundingBox->Center, entity.BoundingBox->Extents);
+        CameraUtils::lookAtEntity(*camera, entity);
 
         step->Entities.clear();
         step->Entities.add(&entity);

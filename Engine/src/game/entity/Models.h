@@ -21,6 +21,5 @@ namespace Ghurund {
         static Model* makeSphere(ResourceContext& context, Material& material, const PxMaterial* properties = nullptr);
         static Model* makeCone(ResourceContext& context, Material& material);
         static Model* makeQuad(ResourceContext& context, Material& material);
-        static SelectionModel* makeSelection(ResourceManager& resourceManager, ResourceContext& context);
     };
 }

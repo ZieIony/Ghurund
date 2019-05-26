@@ -149,7 +149,7 @@ namespace Ghurund {
             return name;
         }
 
-        unsigned int getDedicatedVideoMemory() {
+        size_t getDedicatedVideoMemory() {
             return desc.DedicatedVideoMemory;
         }
 

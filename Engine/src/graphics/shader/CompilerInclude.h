@@ -7,10 +7,10 @@
 
 namespace Ghurund {
     class CompilerInclude:public ID3DInclude {
-        tchar *shaderDir, *systemDir;
+        wchar_t *shaderDir, *systemDir;
 
     public:
-        CompilerInclude(const tchar *shaderDir, const tchar *systemDir) {
+        CompilerInclude(const wchar_t *shaderDir, const wchar_t *systemDir) {
             this->shaderDir = copyStr(shaderDir);
             this->systemDir = copyStr(systemDir);
         }
@@ -21,7 +21,7 @@ namespace Ghurund {
         }
 
         virtual HRESULT __stdcall Open(THIS_ D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes) override {
-            String fullPath;
+            UnicodeString fullPath;
 
             switch(IncludeType) {
                 case D3D_INCLUDE_LOCAL: // #include "FILE"
@@ -49,7 +49,7 @@ namespace Ghurund {
             }
 
             *ppData = data;
-            *pBytes = size;
+            *pBytes = (UINT)size;
 
             return S_OK;
         }

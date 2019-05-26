@@ -138,12 +138,4 @@ namespace Ghurund {
         }
 
     };
-
-    class SelectionModel:public Model {
-    public:
-        void select(const Model& model) {
-            Position = model.Mesh->BoundingBox.Center;
-            Scale = model.Mesh->BoundingBox.Extents;
-        }
-    };
 }

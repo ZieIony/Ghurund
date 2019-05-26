@@ -8,8 +8,18 @@ using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed {
-    public enum NavigationMode {
-        Orbit, Pan, Zoom, Rotate
+
+    public abstract class MouseSceneTool {
+        public virtual bool OnClick() {
+            return false;
+        }
+
+        public virtual bool OnMove(bool pressed, float dx, float dy) {
+            return false;
+        }
+
+        public virtual void OnWheel(float dw) {
+        }
     }
 
     public enum CameraMode {
@@ -21,16 +31,18 @@ namespace Ghurund.Managed {
         private Point prevPos;
         private bool pressed = false;
         private float dist = 0;
-        private static readonly float MAX_CLICK_DIST = 5;
-
-        private Material invalidMaterial;
-        private Scene editorScene;
-        private SelectionModel selection;
 
         private RenderStep editorStep;
+        private Scene editorScene;
+        private Material invalidMaterial;
+
+        private RenderStep selectionStep;
+        private Scene selectionScene;
+        private Material outlineMaterial;
+
         private RenderStep sceneStep;
 
-        public NavigationMode NavigationMode { get; set; }
+        public MouseSceneTool Tool { get; set; }
 
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(SceneView));
 
@@ -50,26 +62,31 @@ namespace Ghurund.Managed {
                     case CameraMode.Default:
                         renderView.Camera = defaultCamera;
                         sceneStep.Camera = defaultCamera;
+                        selectionStep.Camera = defaultCamera;
                         editorStep.Camera = defaultCamera;
                         break;
                     case CameraMode.Front:
                         renderView.Camera = frontCamera;
                         sceneStep.Camera = frontCamera;
+                        selectionStep.Camera = frontCamera;
                         editorStep.Camera = frontCamera;
                         break;
                     case CameraMode.Side:
                         renderView.Camera = sideCamera;
                         sceneStep.Camera = sideCamera;
+                        selectionStep.Camera = sideCamera;
                         editorStep.Camera = sideCamera;
                         break;
                     case CameraMode.Top:
                         renderView.Camera = topCamera;
                         sceneStep.Camera = topCamera;
+                        selectionStep.Camera = topCamera;
                         editorStep.Camera = topCamera;
                         break;
                     case CameraMode.Custom:
                         renderView.Camera = customCamera;
-                        renderView.Camera = customCamera;
+                        sceneStep.Camera = customCamera;
+                        selectionStep.Camera = customCamera;
                         editorStep.Camera = customCamera;
                         break;
                 }
@@ -156,6 +173,8 @@ namespace Ghurund.Managed {
             }
         }
 
+        public RenderView RenderView { get => renderView; }
+
         public Renderer Renderer { get => renderView.Renderer; }
 
         public Camera Camera {
@@ -223,16 +242,22 @@ namespace Ghurund.Managed {
             editorStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(editorStep);
 
+            selectionScene = new Scene();
+            selectionStep = new RenderStep {
+                Camera = Camera
+            };
+            selectionStep.Entities.Add(selectionScene);
+            selectionStep.InitParameters(resourceContext.ParameterManager);
+            outlineMaterial = Materials.MakeOutline(resourceManager, resourceContext);
+            selectionStep.OverrideMaterial = outlineMaterial;
+            Renderer.Steps.Add(selectionStep);
+
             sceneStep = new RenderStep {
                 Camera = Camera
             };
             sceneStep.InvalidMaterial = invalidMaterial;
             sceneStep.InitParameters(resourceContext.ParameterManager);
             Renderer.Steps.Add(sceneStep);
-
-            selection = Models.MakeSelection(resourceManager, resourceContext);
-            selection.Visible = false;
-            editorScene.Entities.Add(selection);
 
             CameraMode = CameraMode.Default;    // just to update the current camera
         }
@@ -243,6 +268,9 @@ namespace Ghurund.Managed {
             Scene = null;
             overrideMaterial?.Release();
             overrideMaterial = null;
+
+            selectionScene?.Release();
+            selectionScene = null;
 
             editorScene?.Release();
             editorScene = null;
@@ -289,7 +317,7 @@ namespace Ghurund.Managed {
         }
 
         private void renderView_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
-            renderView.Camera.Zoom(e.Delta);
+            Tool.OnWheel(e.Delta);
         }
 
         private void renderView_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e) {
@@ -303,52 +331,33 @@ namespace Ghurund.Managed {
 
         private void renderView_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e) {
             var pos = new Point(e.X, e.Y);
-            if (pressed) {
-                var dx = pos.X - prevPos.X;
-                var dy = -(pos.Y - prevPos.Y);
-                dist += (float)Math.Sqrt(dx * dx + dy * dy);
-                if (NavigationMode == NavigationMode.Orbit) {
-                    renderView.Camera.Orbit((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
-                } else if (NavigationMode == NavigationMode.Pan) {
-                    renderView.Camera.Pan((float)dx, (float)-dy);
-                } else if (NavigationMode == NavigationMode.Zoom) {
-                    renderView.Camera.Zoom((float)dy);
-                } else {
-                    renderView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
-                }
+            float dx = (float)(pos.X - prevPos.X);
+            float dy = -(float)(pos.Y - prevPos.Y);
+            dist += (float)Math.Sqrt(dx * dx + dy * dy);
+            if (Tool?.OnMove(pressed, dx, dy) ?? false)
                 Invalidate();
-            }
             prevPos = pos;
         }
 
         private void renderView_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
             if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 pressed = false;
-                if (dist < MAX_CLICK_DIST) {
-                    SelectedEntities.Clear();
-                    Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
-                    if (model != null) {
-                        SelectedEntities.Add(model);
-                        selection.Select(model);
-                        selection.Visible = true;
-                    } else {
-                        selection.Visible = false;
+                if (dist < SystemParameters.MinimumHorizontalDragDistance && dist < SystemParameters.MinimumVerticalDragDistance) {
+                    if (!(Tool?.OnClick() ?? false)) {
+                        SelectedEntities.Clear();
+                        selectionScene.Entities.Clear();
+                        Model model = sceneStep.Pick(new Int2 { X = (int)prevPos.X, Y = (int)prevPos.Y });
+                        if (model != null) {
+                            SelectedEntities.Add(model);
+                            selectionScene.Entities.Add(model);
+                        } else {
+                        }
+                        RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
                     }
                     Invalidate();
-                    RaiseEvent(new RoutedEventArgs(SelectionChangedEvent, this));
                 }
             }
         }
 
-        public void SetMaterial(ResourceContext context, Material material) {
-            Scene scene = new Scene();
-            Model sphere = Models.MakeSphere(context, material);
-            scene.Entities.Add(sphere);
-            sphere.Release();
-            Scene = scene;
-            scene.Release();
-
-            CameraMode = CameraMode.Default;
-        }
     }
 }

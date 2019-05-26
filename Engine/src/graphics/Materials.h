@@ -9,6 +9,8 @@ namespace Ghurund {
     private:
         Materials() = delete;
 
+        static Material* makeWithShader(Shader *shader, ResourceContext& context);
+
     public:
         static Material* makeBasic(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
 
@@ -19,6 +21,8 @@ namespace Ghurund {
         static Material* makeChecker(ResourceManager& resourceManager, ResourceContext& context);
 
         static Material* makeWireframe(ResourceManager& resourceManager, ResourceContext& context);
+
+        static Material* makeOutline(ResourceManager& resourceManager, ResourceContext& context);
 
         static Material* makeNormals(ResourceManager& resourceManager, ResourceContext& context);
 

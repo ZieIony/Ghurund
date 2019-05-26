@@ -9,7 +9,7 @@ namespace Ghurund {
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(*this, context, path, nullptr, options);
         if (result != Status::OK)
-            return Logger::log(LogType::ERR0R, result, _T("failed to load file: %s\n"), path.get().getData());
+            return Logger::log(LogType::ERR0R, result, _T("failed to load file: %S\n"), path.get().getData());
 
         if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &resource, &context](const FilePath& path, const FileChange& fileChange) {
@@ -49,7 +49,7 @@ namespace Ghurund {
 
     FilePath ResourceManager::encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const {
         FilePath relativePath = resourcePath.getRelativePath(workingDir);
-        if (relativePath.get().startsWith(_T(".."))) {
+        if (relativePath.get().startsWith(L"..")) {
             size_t libIndex = libraries.findFile(resourcePath);
             if (libIndex != libraries.Size) {
                 UnicodeString libPathString = LIB_PROTOCOL_PREFIX;
@@ -93,7 +93,7 @@ namespace Ghurund {
             }
             timer.tick();
             ticks_t finishTime = timer.Ticks;
-            float dt = (double)(finishTime - startTime)*1000/(double)timer.Frequency;
+            float dt = (float)((double)(finishTime - startTime)*1000/(double)timer.Frequency);
             Logger::log(LogType::INFO, _T("hot reload finished in %fms\n"), dt);
         }
         reloadQueue.clear();
@@ -124,7 +124,7 @@ namespace Ghurund {
         }
     }
 
-    Resource* ResourceManager::get(const String& fileName) {
+    Resource* ResourceManager::get(const UnicodeString& fileName) {
         section.enter();
         Resource* resource = nullptr;
         size_t index = resources.findKey(fileName);
@@ -140,7 +140,7 @@ namespace Ghurund {
         section.leave();
     }
 
-    void ResourceManager::remove(const String& fileName) {
+    void ResourceManager::remove(const UnicodeString& fileName) {
         section.enter();
         resources.remove(fileName);
         section.leave();

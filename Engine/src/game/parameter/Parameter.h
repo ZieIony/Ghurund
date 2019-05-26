@@ -9,7 +9,7 @@
 namespace Ghurund {
     namespace ParameterId {
         enum Type {
-            VIEWPORT_SIZE,
+            VIEWPORT_SIZE, OUTLINE_COLOR,
             PARTY_COLOR, RANDOM, AMBIENT_LIGHT,
             POSITION, ROTATION, SCALE,
             CAMERA_DIRECTION, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CAMERA_RIGHT,

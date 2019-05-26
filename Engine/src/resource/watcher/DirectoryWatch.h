@@ -29,7 +29,8 @@ namespace Ghurund {
         DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10*1024)) {
             overlapped.hEvent = this;
 
-            dirHandle = ::CreateFile(directory, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
+            String dirString = directory.get();
+            dirHandle = ::CreateFile(dirString, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
                                      OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OVERLAPPED, NULL);
 
             delayThread.start();

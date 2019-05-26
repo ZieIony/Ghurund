@@ -18,10 +18,11 @@ namespace Ghurund {
     };
 
     class LogType: public Enum<LogTypeEnum, LogType> {
-    public:
-        static const LogType& INFO, & WARNING, & ERR0R;
-
+    private:
         explicit LogType(LogTypeEnum value, const tchar* name):Enum<LogTypeEnum, LogType>(value, name) {}
+
+    public:
+        static const LogType INFO, WARNING, ERR0R;
     };
 
     class Logger:public Noncopyable {

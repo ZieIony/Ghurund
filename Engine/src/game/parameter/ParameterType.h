@@ -13,7 +13,7 @@ namespace Ghurund {
         unsigned int size;
 
     public:
-        static const ParameterType& INT, & INT2, & FLOAT, & FLOAT2, & FLOAT3, & MATRIX, & COLOR, & TEXTURE;
+        static const ParameterType INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE;
 
         ParameterType(ParameterTypeEnum value, const tchar* name, unsigned int size):Enum<ParameterTypeEnum, ParameterType>(value, name) {
             this->size = size;

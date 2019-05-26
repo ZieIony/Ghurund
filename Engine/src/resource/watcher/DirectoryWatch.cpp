@@ -6,7 +6,7 @@ namespace Ghurund {
         int offset = 0;
         while(true) {
             FILE_NOTIFY_INFORMATION &fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data+offset);
-            String fileName(fni.FileName, fni.FileNameLength/sizeof(wchar_t));
+            UnicodeString fileName(fni.FileName, fni.FileNameLength/sizeof(wchar_t));
 
             if(files.contains(fileName)) {
                 DWORD action = fni.Action;
@@ -53,7 +53,7 @@ namespace Ghurund {
         buffer.zero();
 
         auto filter = FILE_NOTIFY_CHANGE_CREATION|FILE_NOTIFY_CHANGE_LAST_WRITE|FILE_NOTIFY_CHANGE_FILE_NAME;
-        bool success = 0!=ReadDirectoryChangesW(dirHandle, buffer.Data, buffer.Size, false, filter,
+        bool success = 0!=ReadDirectoryChangesW(dirHandle, buffer.Data, (DWORD)buffer.Size, false, filter,
                                                 &bytesReturned, &overlapped, &notificationCompletion);
 
         if(!success)

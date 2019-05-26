@@ -39,6 +39,10 @@ extern "C" __declspec(dllexport) Material *Materials_makeWireframe(ResourceManag
     return Materials::makeWireframe(*resourceManager, *context);
 }
 
+extern "C" __declspec(dllexport) Material *Materials_makeOutline(ResourceManager *resourceManager, ResourceContext *context) {
+    return Materials::makeOutline(*resourceManager, *context);
+}
+
 extern "C" __declspec(dllexport) Material *Materials_makeNormals(ResourceManager *resourceManager, ResourceContext *context) {
     return Materials::makeNormals(*resourceManager, *context);
 }

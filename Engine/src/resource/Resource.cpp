@@ -47,19 +47,19 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, size_t *bytesRead, LoadOption options) {
         if(!path)
             return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
         if(!file.Exists)
-            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, _T("'%s' doesn't exist\n"), path->get().getData());
+            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, _T("'%S' doesn't exist\n"), path->get().getData());
 
         Status result = file.read();
         if(result != Status::OK)
             return result;
 
-        Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const tchar*)path->get());
+        Logger::log(LogType::INFO, _T("Loading '%S'\n"), (const wchar_t*)path->get());
         MemoryInputStream stream(file.Data, file.Size);
         result = load(resourceManager, context, path->Directory, stream, options);
         if(bytesRead!=nullptr)
@@ -67,7 +67,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const FilePath &path, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, const FilePath &path, size_t *bytesRead, LoadOption options) {
         FilePath *p = ghnew FilePath(path.AbsolutePath);
         delete this->path;
         this->path = p;
@@ -75,7 +75,7 @@ namespace Ghurund {
         return load(resourceManager, context, bytesRead, options);
     }
 
-    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, File & file, unsigned long *bytesRead, LoadOption options) {
+    Status Resource::load(ResourceManager &resourceManager, ResourceContext &context, File & file, size_t *bytesRead, LoadOption options) {
         if(!file.Exists)
             return Status::FILE_DOESNT_EXIST;
         Status result;
@@ -89,7 +89,7 @@ namespace Ghurund {
         delete this->path;
         this->path = p;
 
-        Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const tchar*)path->get());
+        Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const wchar_t*)path->get());
         MemoryInputStream stream(file.Data, file.Size);
         result = load(resourceManager, context, path->Directory, stream, options);
         if(bytesRead!=nullptr)

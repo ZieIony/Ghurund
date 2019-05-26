@@ -67,11 +67,3 @@ extern "C" __declspec(dllexport) Model* Models_makePlane(ResourceContext* contex
 extern "C" __declspec(dllexport) Model* Models_makeSphere(ResourceContext* context, Material* material) {
     return Models::makeSphere(*context, *material);
 }
-
-extern "C" __declspec(dllexport) Model* Models_makeSelection(ResourceManager* resourceManager, ResourceContext* context) {
-    return Models::makeSelection(*resourceManager, *context);
-}
-
-extern "C" __declspec(dllexport) void SelectionModel_select(SelectionModel* _this, Model* model) {
-    _this->select(*model);
-}

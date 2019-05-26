@@ -7,7 +7,7 @@ namespace Ghurund {
 
     class ResourceFormat {
     private:
-        const tchar* extension = nullptr;
+        const wchar_t* extension = nullptr;
         bool save, load;
 
         static const ResourceFormat* values[13];
@@ -27,7 +27,7 @@ namespace Ghurund {
             extension = nullptr;
         }
 
-        ResourceFormat(const tchar* extension, bool save, bool load) {
+        ResourceFormat(const wchar_t* extension, bool save, bool load) {
             this->extension = extension;
             this->save = save;
             this->load = load;
@@ -47,7 +47,7 @@ namespace Ghurund {
             return sizeof(values) / sizeof(values[0]);
         }
 
-        const tchar* getExtension() const {
+        const wchar_t* getExtension() const {
             return extension;
         }
 

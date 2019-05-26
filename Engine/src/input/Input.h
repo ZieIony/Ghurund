@@ -19,10 +19,10 @@ namespace Ghurund {
         bool dispatchEvent(SystemMessage &message, EventDispatcher &consumer) {
             if(message.code == WM_KEYDOWN) {
                 keys[message.wParam] = true;
-                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::DOWN, message.wParam, message.time));
+                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::DOWN, (int)message.wParam, message.time));
             } else if(message.code == WM_KEYUP) {
                 keys[message.wParam] = false;
-                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::UP, message.wParam, message.time));
+                return consumer.dispatchKeyEvent(KeyEvent(KeyAction::UP, (int)message.wParam, message.time));
             } else if(message.code == WM_LBUTTONDOWN) {
                 return consumer.dispatchMouseButtonEvent(MouseButtonEvent(MouseAction::DOWN, MouseButton::LEFT, message.time));
             } else if(message.code == WM_LBUTTONUP) {

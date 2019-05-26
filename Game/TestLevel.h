@@ -16,7 +16,7 @@ private:
     Camera* camera = nullptr;
     CameraController* cameraController = nullptr;
     Application& app;
-    Material* overrideMaterial = nullptr, * wireframeMaterial = nullptr, * checkerMaterial = nullptr;
+    Material * wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
 
     RenderStep editorStep, sceneStep;
 
@@ -41,15 +41,7 @@ public:
     }
 
     virtual bool onKeyEvent(KeyEvent& event) override {
-        if (event.Action == KeyAction::DOWN && event.Key == 'W') {
-            setPointer(overrideMaterial, wireframeMaterial);
-        } else if (event.Action == KeyAction::UP && event.Key == 'W') {
-            safeRelease(overrideMaterial);
-        } else if (event.Action == KeyAction::DOWN && event.Key == 'C') {
-            setPointer(overrideMaterial, checkerMaterial);
-        } else if (event.Action == KeyAction::UP && event.Key == 'C') {
-            safeRelease(overrideMaterial);
-        } else if (event.Action == KeyAction::DOWN && event.Key == VK_ESCAPE) {
+        if (event.Action == KeyAction::DOWN && event.Key == VK_ESCAPE) {
             PostQuitMessage(0);
             return true;
         }
@@ -64,6 +56,7 @@ public:
         cameraController = ghnew CameraController(*camera, &app.Window);
 
         wireframeMaterial = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
+        outlineMaterial = Materials::makeOutline(app.ResourceManager, app.ResourceContext);
         checkerMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
 
         File sceneFile("test/test.scene");
@@ -73,11 +66,13 @@ public:
                     return;
                 scene->initParameters(app.ParameterManager);
                 sceneStep.Entities.add(scene);
+                editorStep.Entities.add(scene->Entities[0]);
                 scene->release();
                 });
         } else {
             ScopedPointer<Scene> scene = makeScene();
             sceneStep.Entities.add(scene);
+            editorStep.Entities.add(scene->Entities[0]);
 
             Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if (result != Status::OK)
@@ -85,9 +80,10 @@ public:
         }
 
         editorStep.Camera = camera;
-        ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
+        ScopedPointer<Scene> editorScene = ghnew Scene();// Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
         editorStep.Entities.add(editorScene);
         editorStep.initParameters(app.ParameterManager);
+        editorStep.OverrideMaterial = outlineMaterial;
         app.Renderer.Steps.add(&editorStep);
 
         sceneStep.Camera = camera;
@@ -120,9 +116,7 @@ public:
             if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
                 ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceManager, app.ResourceContext, *diffuseTexture, *specularTexture);
 
-                //lamborghini = Models::makeSphere(app.ResourceContext, *material);
                 lamborghini = ghnew Model(mesh, material);
-                //lamborghini->Scale = {100, 100, 100};
                 lamborghini->Name = "lamborghini";
                 lamborghini->Valid = true;
             }
@@ -153,13 +147,14 @@ public:
 
     virtual void onUpdate() override {
         camera->ScreenSize = app.Window.Size;
+        cameraController->update(app.Input);
     }
 
     virtual void onUninit() override {
         camera->release();
         wireframeMaterial->release();
+        outlineMaterial->release();
         checkerMaterial->release();
-        safeRelease(overrideMaterial);
         delete cameraController;
     }
 };

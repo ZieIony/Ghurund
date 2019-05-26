@@ -70,8 +70,10 @@ namespace Ghurund {
             Value* t1 = (Value*)ghnew char[sizeof(Value) * c2];
             capacity = c2;
             size = std::min(size, c);
-            for (size_t i = 0; i < size; i++)
+            for (size_t i = 0; i < size; i++) {
                 new (t1 + i) Value(v[i]);
+                v[i].~Value();
+            }
             delete[](char*)v;
             v = t1;
         }

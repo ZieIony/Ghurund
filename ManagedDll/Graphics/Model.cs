@@ -146,30 +146,5 @@ namespace Ghurund.Managed.Graphics {
             entity.Release();
             return entity;
         }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Models_makeSelection(
-                        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
-                        [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext context);
-
-        public static SelectionModel MakeSelection(ResourceManager resourceManager, ResourceContext context) {
-            var entity = new SelectionModel(Models_makeSelection(resourceManager, context));
-            entity.Release();
-            return entity;
-        }
-    }
-
-    public class SelectionModel: Model {
-        public SelectionModel(IntPtr ptr) : base(ptr) { }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr SelectionModel_select(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Model model);
-
-        public void Select(Model model) {
-            SelectionModel_select(NativePtr, model);
-        }
     }
 }

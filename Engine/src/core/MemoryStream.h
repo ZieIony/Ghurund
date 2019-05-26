@@ -7,49 +7,49 @@
 namespace Ghurund {
     class MemoryStream {
     protected:
-        unsigned long pointer = 0;
+        size_t pointer = 0;
     };
 
     class MemoryInputStream:public MemoryStream {
     private:
         const BYTE *data;
-        unsigned long size;
+        size_t size;
 
     public:
-        MemoryInputStream(const void *data, unsigned long size) {
+        MemoryInputStream(const void *data, size_t size) {
             this->data = (BYTE*)data;
             this->size = size;
         }
 
-        inline void set(unsigned long bytes) {
+        inline void set(size_t bytes) {
             pointer = bytes;
         }
 
-        inline unsigned long getBytesRead() const {
+        inline size_t getBytesRead() const {
             return pointer;
         }
 
-        __declspec(property(get = getBytesRead)) unsigned long BytesRead;
+        __declspec(property(get = getBytesRead)) size_t BytesRead;
 
-        inline unsigned long getSize() const {
+        inline size_t getSize() const {
             return size;
         }
 
-        __declspec(property(get = getSize)) unsigned long Size;
+        __declspec(property(get = getSize)) size_t Size;
 
-        inline int readInt() {
-            int i = *(int*)(data+pointer);
-            pointer += sizeof(int);
+        inline INT32 readInt() {
+            INT32 i = *(INT32*)(data+pointer);
+            pointer += sizeof(INT32);
             return i;
         }
-        inline unsigned int readUInt() {
-            unsigned int i = *(unsigned int*)(data+pointer);
-            pointer += sizeof(unsigned int);
+        inline UINT32 readUInt() {
+            UINT32 i = *(UINT32*)(data+pointer);
+            pointer += sizeof(UINT32);
             return i;
         }
-        inline long readLong() {
-            long i = *(long*)(data+pointer);
-            pointer += sizeof(long);
+        inline LONG64 readLong() {
+            LONG64 i = *(LONG64*)(data+pointer);
+            pointer += sizeof(LONG64);
             return i;
         }
         inline float readFloat() {
@@ -65,16 +65,6 @@ namespace Ghurund {
         inline bool readBoolean() {
             bool i = *(bool*)(data+pointer);
             pointer += sizeof(bool);
-            return i;
-        }
-        inline char readChar() {
-            char i = *(char*)(data+pointer);
-            pointer += sizeof(char);
-            return i;
-        }
-        inline unsigned char readUChar() {
-            char i = *(unsigned char*)(data+pointer);
-            pointer += sizeof(unsigned char);
             return i;
         }
         inline tchar *readString() {
@@ -114,9 +104,9 @@ namespace Ghurund {
     class MemoryOutputStream:public MemoryStream {
     private:
         BYTE *data;
-        unsigned long capacity, initial;
+        size_t capacity, initial;
 
-        inline void resize(unsigned long size) {
+        inline void resize(size_t size) {
             if(capacity<pointer+size) {
                 capacity += std::max(initial, size);
                 BYTE *data2 = new BYTE[capacity];
@@ -142,26 +132,26 @@ namespace Ghurund {
 
         __declspec(property(get = getData)) const void *Data;
 
-        inline unsigned long getBytesWritten() const {
+        inline size_t getBytesWritten() const {
             return pointer;
         }
 
-        __declspec(property(get = getBytesWritten)) unsigned long BytesWritten;
+        __declspec(property(get = getBytesWritten)) size_t BytesWritten;
 
-        inline void writeInt(int i) {
-            resize(sizeof(int));
-            *(int*)(data+pointer) = i;
-            pointer += sizeof(int);
+        inline void writeInt(INT32 i) {
+            resize(sizeof(INT32));
+            *(INT32*)(data+pointer) = i;
+            pointer += sizeof(INT32);
         }
-        inline void writeUInt(unsigned int i) {
-            resize(sizeof(unsigned int));
-            *(unsigned int*)(data+pointer) = i;
-            pointer += sizeof(unsigned int);
+        inline void writeUInt(UINT32 i) {
+            resize(sizeof(UINT32));
+            *(UINT32*)(data+pointer) = i;
+            pointer += sizeof(UINT32);
         }
-        inline void writeLong(long i) {
-            resize(sizeof(long));
-            *(long*)(data+pointer) = i;
-            pointer += sizeof(long);
+        inline void writeLong(LONG64 i) {
+            resize(sizeof(LONG64));
+            *(LONG64*)(data+pointer) = i;
+            pointer += sizeof(LONG64);
         }
         inline void writeFloat(float i) {
             resize(sizeof(float));
@@ -178,29 +168,19 @@ namespace Ghurund {
             *(bool*)(data+pointer) = i;
             pointer += sizeof(bool);
         }
-        inline void writeChar(char i) {
-            resize(sizeof(char));
-            *(char*)(data+pointer) = i;
-            pointer += sizeof(char);
-        }
-        inline void writeUChar(unsigned char i) {
-            resize(sizeof(unsigned char));
-            *(unsigned char*)(data+pointer) = i;
-            pointer += sizeof(unsigned char);
-        }
         inline void writeString(const tchar *str) {
-            unsigned int length = (_tcslen(str)+1)*sizeof(tchar);
+            size_t length = (_tcslen(str)+1)*sizeof(tchar);
             writeBytes(str, length);
         }
         inline void writeASCII(const char *str) {
-            unsigned int length = (strlen(str)+1)*sizeof(char);
+            size_t length = (strlen(str)+1)*sizeof(char);
             writeBytes(str, length);
         }
         inline void writeUnicode(const wchar_t *str) {
-            unsigned int length = (wcslen(str)+1)*sizeof(wchar_t);
+            size_t length = (wcslen(str)+1)*sizeof(wchar_t);
             writeBytes(str, length);
         }
-        inline void writeBytes(const void *bytes, unsigned int length) {
+        inline void writeBytes(const void *bytes, size_t length) {
             resize(length);
             memcpy((BYTE*)data+pointer, bytes, length);
             pointer += length;

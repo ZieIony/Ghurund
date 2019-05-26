@@ -16,8 +16,6 @@ namespace Ghurund {
         ResourceManager* resourceManager = nullptr;
         ResourceContext* resourceContext = nullptr;
 
-        void cameraLookAt(XMFLOAT3 center, XMFLOAT3 extents);
-
     public:
         ~ThumbnailRenderer() {
             if (camera)

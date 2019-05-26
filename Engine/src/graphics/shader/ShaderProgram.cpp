@@ -10,10 +10,10 @@ namespace Ghurund {
         compileFlags = 0;
 #endif
 
-        const tchar *localShaderDir = nullptr;
+        const wchar_t *localShaderDir = nullptr;
         if(fileName)
             localShaderDir = FilePath(fileName).Directory;
-        CompilerInclude include(localShaderDir, _T("shaders/"));
+        CompilerInclude include(localShaderDir, L"shaders/");
         const char *targetText = makeCompilationTarget();
         ID3DBlob *errorBlob;
         Status result;

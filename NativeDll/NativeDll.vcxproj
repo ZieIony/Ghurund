@@ -159,6 +159,7 @@
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\Type.cpp" />
     <ClCompile Include="src\editor\ObservableObject.cpp" />
+    <ClCompile Include="src\editor\CameraUtils.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\Float3.cpp" />
     <ClCompile Include="src\game\Entity.cpp" />

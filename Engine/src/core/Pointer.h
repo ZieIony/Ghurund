@@ -28,7 +28,7 @@ namespace Ghurund {
         inline void release() {
 #ifdef _DEBUG
             if(referenceCount==0)
-                Logger::log(LogType::WARNING, _T("[%#x] %hs release refCount=%lu. The object may have been deleted or is being released in its destructor\n"), (int)this, typeid(*this).name(), referenceCount);
+                Logger::log(LogType::WARNING, _T("[%p] %hs release refCount=%lu. The object may have been deleted or is being released in its destructor\n"), this, typeid(*this).name(), referenceCount);
 #endif
             referenceCount--;
             if(!referenceCount)

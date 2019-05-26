@@ -8,6 +8,9 @@ namespace Ghurund {
     ParameterManager::ParameterManager() {
         ScopedPointer<ValueParameter> viewportSize = ghnew ValueParameter("viewportSize", ParameterType::FLOAT2);
         parameters.add(viewportSize);
+        XMFLOAT4 white(1, 1, 1, 1);
+        ScopedPointer<ValueParameter> outlineColor = ghnew ValueParameter("outlineColor", &white, ParameterType::COLOR);
+        parameters.add(outlineColor);
 
         XMFLOAT4 red(1, 0, 0, 1);
         ScopedPointer<ValueParameter> partyColor = ghnew ValueParameter("partyColor", &red, ParameterType::COLOR);

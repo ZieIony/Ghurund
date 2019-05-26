@@ -92,7 +92,7 @@ namespace Ghurund {
         Status execute() {
             ctx->Prepare(func);
             for (size_t i = 0; i < arguments.Size; i++)
-                arguments[i].set(i, *ctx);
+                arguments[i].set((asUINT)i, *ctx);
             int r = ctx->Execute();
             if (r != asEXECUTION_FINISHED) {
                 if (r == asEXECUTION_EXCEPTION) {

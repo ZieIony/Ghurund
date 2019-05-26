@@ -13,9 +13,21 @@
 #include "angelscript/scriptmath.h"
 
 #ifdef _DEBUG
+
+#ifdef _WIN64
+#pragma comment(lib, "angelscript64d.lib")
+#else
 #pragma comment(lib, "angelscriptd.lib")
+#endif
+
+#else
+
+#ifdef _WIN64
+#pragma comment(lib, "angelscript64.lib")
 #else
 #pragma comment(lib, "angelscript.lib")
+#endif
+
 #endif
 
 namespace Ghurund {
@@ -29,12 +41,12 @@ namespace Ghurund {
         PointerList<Script*> scripts;
 
         static void messageCallback(const asSMessageInfo* msg, void* param) {
-            LogType* type = (LogType*)& LogType::ERR0R;
+            LogType type = LogType::ERR0R;
             if (msg->type == asMSGTYPE_WARNING)
-                type = (LogType*)& LogType::WARNING;
+                type = LogType::WARNING;
             else if (msg->type == asMSGTYPE_INFORMATION)
-                type = (LogType*)& LogType::INFO;
-            Logger::log(*type, _T("%hs (%d, %d): %hs\n"), msg->section, msg->row, msg->col, msg->message);
+                type = LogType::INFO;
+            Logger::log(type, _T("%hs (%d, %d): %hs\n"), msg->section, msg->row, msg->col, msg->message);
         }
 
     public:

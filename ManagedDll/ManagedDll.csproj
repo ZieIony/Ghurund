@@ -61,6 +61,7 @@
     <Compile Include="Core\Logger.cs" />
     <Compile Include="Core\Pointer.cs" />
     <Compile Include="Core\Type.cs" />
+    <Compile Include="Editor\CameraUtils.cs" />
     <Compile Include="Editor\ThumbnailRenderer.cs" />
     <Compile Include="Float3.cs" />
     <Compile Include="Game\EntityList.cs" />

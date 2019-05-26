@@ -21,7 +21,7 @@ namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
     private:
         FileWatcher watcher;
-        PointerMap<String, Resource*> resources;
+        PointerMap<UnicodeString, Resource*> resources;
         LibraryList libraries;
         CriticalSection section;
         ResourceFactory* resourceFactory = ghnew DefaultResourceFactory();
@@ -68,7 +68,7 @@ namespace Ghurund {
         }
 
         template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Task* task = ghnew Task(path, [this, &context, path, onLoaded, options]() {
+            Task* task = ghnew Task(String(path), [this, &context, path, onLoaded, options]() {
                 FilePath decodedPath = decodePath(path);
                 Resource* resource = get(decodedPath);
                 Status loadResult = Status::ALREADY_LOADED;
@@ -156,11 +156,11 @@ namespace Ghurund {
         Status save(Resource& resource, ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
         Status save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT);
 
-        Resource* get(const String& fileName);
+        Resource* get(const UnicodeString& fileName);
 
         void add(Resource& resource);
 
-        void remove(const String& fileName);
+        void remove(const UnicodeString& fileName);
 
         void clear();
 

@@ -47,7 +47,7 @@ namespace Ghurund {
         }
 
         virtual void describeResource(const Resource &resource, MemoryOutputStream &stream) override {
-            unsigned int index = types.indexOf((Type*)&resource.getType());
+            size_t index = types.indexOf((Type*)&resource.getType());
             stream.write(index);
         }
     };

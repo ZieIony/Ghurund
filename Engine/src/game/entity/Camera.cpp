@@ -92,9 +92,9 @@ namespace Ghurund {
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
         XMStoreFloat3(&dir, XMVector3Normalize(dv));
-        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
+        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
         XMStoreFloat3(&right, rv);
-        uv = XMVector3Normalize(XMVector3Cross(rv, dv));
+        uv = XMVector3Normalize(XMVector3Cross(dv, rv));
         XMStoreFloat3(&this->up, uv);
         notifyObjectChanged();
     }
@@ -107,9 +107,9 @@ namespace Ghurund {
         XMStoreFloat(&dist, XMVector3Length(dv));
         XMVECTOR uv = XMLoadFloat3(&up);
         XMStoreFloat3(&this->dir, XMVector3Normalize(dv));
-        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(dv, uv));
+        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
         XMStoreFloat3(&right, rv);
-        uv = XMVector3Normalize(XMVector3Cross(rv, dv));
+        uv = XMVector3Normalize(XMVector3Cross(dv, rv));
         XMStoreFloat3(&this->up, uv);
         notifyObjectChanged();
     }

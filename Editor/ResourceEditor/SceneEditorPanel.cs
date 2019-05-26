@@ -85,6 +85,7 @@ namespace Ghurund.Editor.ResourceEditor {
             normalsMaterial = Materials.MakeNormals(ResourceManager, ResourceContext);
 
             sceneView.Init(ResourceManager, ResourceContext);
+            sceneView.Tool = new CameraRotateSceneTool(sceneView.RenderView);
             StatisticsPanel.SelectedObject = sceneView.Renderer.Statistics;
 
             cameraPicker.SelectedValue = CameraMode.Default;
@@ -178,19 +179,19 @@ namespace Ghurund.Editor.ResourceEditor {
         private void Orbit_Checked(object sender, RoutedEventArgs e) {
             if (sceneView == null)
                 return;
-            sceneView.NavigationMode = NavigationMode.Orbit;
+            sceneView.Tool = new CameraOrbitSceneTool(sceneView.RenderView);
         }
 
         private void Rotate_Checked(object sender, RoutedEventArgs e) {
-            sceneView.NavigationMode = NavigationMode.Rotate;
+            sceneView.Tool = new CameraRotateSceneTool(sceneView.RenderView);
         }
 
         private void Pan_Checked(object sender, RoutedEventArgs e) {
-            sceneView.NavigationMode = NavigationMode.Pan;
+            sceneView.Tool = new CameraPanSceneTool(sceneView.RenderView);
         }
 
         private void Zoom_Checked(object sender, RoutedEventArgs e) {
-            sceneView.NavigationMode = NavigationMode.Zoom;
+            sceneView.Tool = new CameraZoomSceneTool(sceneView.RenderView);
         }
 
         private void ResetCamera_Click(object sender, RoutedEventArgs e) {
@@ -212,6 +213,7 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         private void SelectionMove_Checked(object sender, RoutedEventArgs e) {
+            sceneView.Tool = new EntityMoveSceneTool(sceneView.RenderView, sceneView.SelectedEntities);
         }
 
         private void SelectionRotate_Checked(object sender, RoutedEventArgs e) {

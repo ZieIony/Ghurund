@@ -8,8 +8,8 @@ namespace Ghurund {
 
     template<class Key, class Value> class Map:public Collection {
     protected:
-        Key * k;
-        Value *v;
+        Key* k;
+        Value* v;
 
     public:
         Map() {
@@ -17,13 +17,13 @@ namespace Ghurund {
             v = ghnew Value[capacity];
         }
 
-        Map(const Map &t1) {
+        Map(const Map& t1) {
             capacity = t1.capacity;
             initial = t1.initial;
             size = t1.size;
             k = ghnew Key[capacity];
             v = ghnew Value[capacity];
-            for(size_t i = 0; i<size; i++) {
+            for (size_t i = 0; i < size; i++) {
                 k[i] = t1.k[i];
                 v[i] = t1.v[i];
             }
@@ -44,9 +44,9 @@ namespace Ghurund {
             capacity = c;
             size = std::min(size, c);
 
-            Key *k1 = ghnew Key[c];
-            Value *v1 = ghnew Value[c];
-            for(size_t i = 0; i<size; i++) {
+            Key* k1 = ghnew Key[c];
+            Value* v1 = ghnew Value[c];
+            for (size_t i = 0; i < size; i++) {
                 k1[i] = k[i];
                 v1[i] = v[i];
             }
@@ -56,65 +56,67 @@ namespace Ghurund {
             v = v1;
         }
 
-        inline void set(const Key &key, const Value &value) {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key) {
+        inline void set(const Key& key, const Value& value) {
+            for (size_t i = 0; i < size; i++) {
+                if (k[i] == key) {
                     v[i] = value;
                     return;
                 }
             }
-            if(size == capacity)
+            if (size == capacity)
                 resize(size + initial);
             k[size] = key;
             v[size] = value;
             size++;
         }
-        inline void setKey(size_t i, Key &key) {
-            if(i >= capacity)
+
+        inline void setKey(size_t i, Key& key) {
+            if (i >= capacity)
                 resize(i);
             k[i] = key;
         }
-        inline void setValue(size_t i, Value &value) {
-            if(i >= capacity)
+
+        inline void setValue(size_t i, Value& value) {
+            if (i >= capacity)
                 resize(i);
             v[i] = value;
         }
-        inline Key &getKey(size_t i) const {
+
+        inline Key& getKey(size_t i) const {
             return k[i];
         }
-        inline Value &getValue(size_t i) const {
+
+        inline Value& getValue(size_t i) const {
             return v[i];
         }
 
-        inline size_t findKey(const Key &key) const {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key)
+        inline size_t findKey(const Key& key) const {
+            for (size_t i = 0; i < size; i++) {
+                if (k[i] == key)
                     return i;
             }
             return size;
         }
 
-        inline size_t findValue(const Value &value) const {
-            for(size_t i = 0; i < size; i++) {
-                if(v[i] == value)
+        inline size_t findValue(const Value& value) const {
+            for (size_t i = 0; i < size; i++) {
+                if (v[i] == value)
                     return i;
             }
             return size;
         }
 
-#pragma warning( push )
-#pragma warning( disable : 4715)
-        inline Value &get(const Key &key) const {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key)
+        inline Value& get(const Key& key) const {
+            for (size_t i = 0; i < size; i++) {
+                if (k[i] == key)
                     return v[i];
             }
+            throw std::exception("no value for given key");
         }
-#pragma warning( pop ) 
 
-        inline void remove(const Key &key) {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key) {
+        inline void remove(const Key& key) {
+            for (size_t i = 0; i < size; i++) {
+                if (k[i] == key) {
                     k[i] = k[size - 1];
                     v[i] = v[size - 1];
                     size--;
@@ -122,30 +124,34 @@ namespace Ghurund {
                 }
             }
         }
-        inline Value *begin() {
+
+        inline Value* begin() {
             return v;
         }
-        inline Value *end() {
+
+        inline Value* end() {
             return v + size;
         }
-        inline size_t indexOf(const Key &item)const {
-            for(size_t i = 0; i < size; i++)
-                if(k[i] == item)
+
+        inline size_t indexOf(const Key& item)const {
+            for (size_t i = 0; i < size; i++)
+                if (k[i] == item)
                     return i;
             return size;
         }
-        inline bool contains(const Key &item) const {
-            for(size_t i = 0; i < size; i++)
-                if(k[i] == item)
+
+        inline bool contains(const Key& item) const {
+            for (size_t i = 0; i < size; i++)
+                if (k[i] == item)
                     return true;
             return false;
         }
 
-        inline Value &operator[](Key &key) {
+        inline Value& operator[](Key& key) {
             return get(key);
         }
 
-        inline const Value &operator[](const Key &key)const {
+        inline const Value& operator[](const Key& key)const {
             return get(key);
         }
     };

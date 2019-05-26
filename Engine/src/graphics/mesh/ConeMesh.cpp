@@ -24,11 +24,11 @@ namespace Ghurund {
         }
 
         vertexSize = sizeof(Vertex);
-        vertexCount = triangleVertices.Size;
+        vertexCount = (vindex_t)triangleVertices.Size;
         vertices = ghnew Vertex[vertexCount];
         memcpy(vertices, triangleVertices.begin(), vertexCount * vertexSize);
 
-        indexCount = triangleIndices.Size + triangleIndices2.Size;
+        indexCount = (vindex_t)(triangleIndices.Size + triangleIndices2.Size);
         indices = ghnew vindex_t[indexCount];
         memcpy(indices, triangleIndices.begin(), triangleIndices.Size * sizeof(vindex_t));
         memcpy(indices + triangleIndices.Size, triangleIndices2.begin(), triangleIndices2.Size * sizeof(vindex_t));

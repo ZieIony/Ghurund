@@ -68,6 +68,12 @@ namespace Ghurund {
 
         __declspec(property(get = getDirection)) XMFLOAT3& Direction;
 
+        inline const XMFLOAT3& getRight() const {
+            return right;
+        }
+
+        __declspec(property(get = getRight)) XMFLOAT3& Right;
+
 
         inline const XMINT2& getScreenSize() const {
             return screenSize;
@@ -115,23 +121,29 @@ namespace Ghurund {
 
         __declspec(property(get = getDistance)) float Distance;
 
-        inline const XMFLOAT4X4* getView() const {
-            return &view;
+        inline const XMFLOAT4X4& getView() const {
+            return view;
         }
 
-        __declspec(property(get = getView)) XMFLOAT4X4* View;
+        __declspec(property(get = getView)) XMFLOAT4X4& View;
 
-        inline const XMFLOAT4X4* getProjection() const {
-            return &proj;
+        inline const XMFLOAT4X4& getProjection() const {
+            return proj;
         }
 
-        __declspec(property(get = getProjection)) XMFLOAT4X4* Projection;
+        __declspec(property(get = getProjection)) XMFLOAT4X4& Projection;
 
-        inline const XMFLOAT4X4* getFacing() const {
-            return &facing;
+        inline const XMFLOAT4X4& getViewProjection() const {
+            return viewProj;
         }
 
-        __declspec(property(get = getFacing)) XMFLOAT4X4* Facing;
+        __declspec(property(get = getViewProjection)) XMFLOAT4X4& ViewProjection;
+
+        inline const XMFLOAT4X4& getFacing() const {
+            return facing;
+        }
+
+        __declspec(property(get = getFacing)) XMFLOAT4X4& Facing;
 
         inline bool getPerspective() const {
             return pers;
@@ -163,10 +175,6 @@ namespace Ghurund {
         void orbit(float yaw, float pitch, float roll = 0.0f);
         void pan(float x, float y);
         void zoom(float z);
-
-        void defaultLookAt(Entity* entity) {
-
-        }
 
         static const Array<ResourceFormat*>& getFormats() {
             static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::ENTITY};
