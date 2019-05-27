@@ -20,7 +20,7 @@ namespace Ghurund {
     class Image: public Resource {
     private:
         DXGI_FORMAT format;
-        UINT32 width, height, pixelSize, rowPitch;
+        uint32_t width, height, pixelSize, rowPitch;
         Buffer* imageData = nullptr;
 
         DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
@@ -38,13 +38,13 @@ namespace Ghurund {
     public:
         Image() {}
 
-        Image(Buffer& data, UINT32 width, UINT32 height, DXGI_FORMAT format):
+        Image(Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format):
             imageData(ghnew Buffer(data)),
             width(width),
             height(height),
             format(format),
             pixelSize(getDXGIFormatBitsPerPixel(format) / 8),
-            rowPitch((UINT32)(data.Size / height)) {
+            rowPitch((uint32_t)(data.Size / height)) {
 
             Valid = true;
         }
@@ -65,29 +65,29 @@ namespace Ghurund {
 
         __declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
-        UINT32 getWidth() {
+        uint32_t getWidth() {
             return width;
         }
 
-        __declspec(property(get = getWidth)) UINT32 Width;
+        __declspec(property(get = getWidth)) uint32_t Width;
 
-        UINT32 getHeight() {
+        uint32_t getHeight() {
             return height;
         }
 
-        __declspec(property(get = getHeight)) UINT32 Height;
+        __declspec(property(get = getHeight)) uint32_t Height;
 
-        UINT32 getPixelSize() {
+        uint32_t getPixelSize() {
             return pixelSize;
         }
 
-        __declspec(property(get = getPixelSize)) UINT32 PixelSize;
+        __declspec(property(get = getPixelSize)) uint32_t PixelSize;
 
-        UINT32 getRowPitch() {
+        uint32_t getRowPitch() {
             return rowPitch;
         }
 
-        __declspec(property(get = getRowPitch)) UINT32 RowPitch;
+        __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
         virtual const Ghurund::Type& getType() const override {
             return Type::IMAGE;

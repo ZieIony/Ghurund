@@ -43,8 +43,8 @@ namespace Ghurund {
         X, Y, Z, W
     };
 
-    inline UINT32 swizzle(UINT32 val, VectorComponent x, VectorComponent y, VectorComponent z, VectorComponent w) {
-        UINT32 data[4];
+    inline uint32_t swizzle(uint32_t val, VectorComponent x, VectorComponent y, VectorComponent z, VectorComponent w) {
+        uint32_t data[4];
         data[0] = val >> 24;
         data[1] = (val >> 16) & 0xff;
         data[2] = (val >> 8) & 0xff;

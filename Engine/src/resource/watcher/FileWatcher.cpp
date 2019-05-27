@@ -31,7 +31,7 @@ namespace Ghurund {
         } else {
             watches[dir]->addFile(path, fileChangedHandler);
         }
-        Logger::log(LogType::INFO, _T("started watching for file changes: %S\n"), (const wchar_t*)path);
+        Logger::log(LogType::INFO, String("started watching for file changes: ") + path + "\n");
     }
 
     void FileWatcher::removeFile(const FilePath& path) {
@@ -42,7 +42,7 @@ namespace Ghurund {
 
         DirectoryWatch* watch = watches[dir];
         watch->removeFile(path);
-        Logger::log(LogType::INFO, _T("stopped watching for file changes: %S\n"), *path);
+        Logger::log(LogType::INFO, String("stopped watching for file changes: ") + path + "\n");
         if (watch->FileCount == 0) {
             watches.remove(path);
             delete watch;

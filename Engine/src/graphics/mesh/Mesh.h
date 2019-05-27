@@ -25,7 +25,7 @@ namespace Ghurund {
     using namespace Microsoft::WRL;
     using namespace physx;
 
-    typedef UINT32 vindex_t;
+    typedef uint32_t vindex_t;
 
     class Mesh:public Resource {
     protected:

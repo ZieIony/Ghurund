@@ -4,7 +4,7 @@
 namespace Ghurund {
     const Ghurund::Type& ThumbnailRenderer::TYPE = Ghurund::Type([]() {return ghnew ThumbnailRenderer(); }, "ThumbnailRenderer");
 
-    void ThumbnailRenderer::init(ResourceManager& resourceManager, ResourceContext& context, UINT32 width, UINT32 height) {
+    void ThumbnailRenderer::init(ResourceManager& resourceManager, ResourceContext& context, uint32_t width, uint32_t height) {
         this->resourceManager = &resourceManager;
         this->resourceContext = &context;
 

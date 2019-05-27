@@ -10,13 +10,13 @@ namespace Ghurund {
 
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             __super::loadInternal(resourceManager, context, workingDir, stream, options);
-            memcpy(&position, &stream.read<XMFLOAT3>(), sizeof(position));
+            position = stream.read<XMFLOAT3>();
             return Status::OK;
         }
 
         virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             __super::saveInternal(resourceManager, context, workingDir, stream, options);
-            stream.write(position);
+            stream.write<XMFLOAT3>(position);
             return Status::OK;
         }
 
@@ -56,15 +56,15 @@ namespace Ghurund {
 
         virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             __super::loadInternal(resourceManager, context, workingDir, stream, options);
-            memcpy(&rotation, &stream.read<XMFLOAT3>(), sizeof(rotation));
-            memcpy(&scale, &stream.read<XMFLOAT3>(), sizeof(scale));
+            rotation = stream.read<XMFLOAT3>();
+            scale = stream.read<XMFLOAT3>();
             return Status::OK;
         }
 
         virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             __super::saveInternal(resourceManager, context, workingDir, stream, options);
-            stream.write(rotation);
-            stream.write(scale);
+            stream.write<XMFLOAT3>(rotation);
+            stream.write<XMFLOAT3>(scale);
             return Status::OK;
         }
 

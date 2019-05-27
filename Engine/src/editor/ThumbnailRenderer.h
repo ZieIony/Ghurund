@@ -25,7 +25,7 @@ namespace Ghurund {
             delete step;
         }
 
-        void init(ResourceManager& resourceManager, ResourceContext& context, UINT32 width, UINT32 height);
+        void init(ResourceManager& resourceManager, ResourceContext& context, uint32_t width, uint32_t height);
 
         Status render(Entity& entity, Image*& image);
         Status render(Mesh& mesh, Image*& image);

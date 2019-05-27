@@ -46,6 +46,8 @@ namespace Ghurund {
             delete[] wstr;
             return result;
         }
+        
+        using GenericString<wchar_t>::operator=;
 
         UnicodeString &operator=(const UnicodeString &string) {
             size = string.size;

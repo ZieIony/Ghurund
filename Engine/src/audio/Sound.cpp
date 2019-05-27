@@ -12,7 +12,7 @@ namespace Ghurund {
             return Logger::log(LogType::WARNING, Status::CALL_FAIL, _T("Unable to create source voice\n"));
 
         memset(&audioBuffer, 0, sizeof(XAUDIO2_BUFFER));
-        audioBuffer.AudioBytes = (UINT32)audioData.Size;
+        audioBuffer.AudioBytes = (uint32_t)audioData.Size;
         audioBuffer.pAudioData = (BYTE* const)&audioData[0];
         audioBuffer.pContext = nullptr;
         audioBuffer.Flags = XAUDIO2_END_OF_STREAM;

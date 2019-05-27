@@ -9,7 +9,7 @@ namespace Ghurund {
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(*this, context, path, nullptr, options);
         if (result != Status::OK)
-            return Logger::log(LogType::ERR0R, result, _T("failed to load file: %S\n"), path.get().getData());
+            return Logger::log(LogType::ERR0R, result, String("failed to load file: ") + path + "\n");
 
         if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &resource, &context](const FilePath& path, const FileChange& fileChange) {
@@ -93,7 +93,7 @@ namespace Ghurund {
             }
             timer.tick();
             ticks_t finishTime = timer.Ticks;
-            float dt = (float)((double)(finishTime - startTime)*1000/(double)timer.Frequency);
+            float dt = (float)((double)(finishTime - startTime) * 1000 / (double)timer.Frequency);
             Logger::log(LogType::INFO, _T("hot reload finished in %fms\n"), dt);
         }
         reloadQueue.clear();

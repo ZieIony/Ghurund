@@ -40,7 +40,7 @@ namespace Ghurund {
         }
 
         virtual Resource *makeResource(MemoryInputStream &stream) override {
-            unsigned int index = stream.read<unsigned int>();
+            size_t index = stream.readUInt();
             const Type *type = types[index];
 
             return (Resource*)type->newInstance();
@@ -48,7 +48,7 @@ namespace Ghurund {
 
         virtual void describeResource(const Resource &resource, MemoryOutputStream &stream) override {
             size_t index = types.indexOf((Type*)&resource.getType());
-            stream.write(index);
+            stream.writeUInt((uint32_t)index);
         }
     };
 }

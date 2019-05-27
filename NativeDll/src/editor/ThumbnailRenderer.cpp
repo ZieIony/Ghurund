@@ -6,7 +6,7 @@ extern "C" __declspec(dllexport) ThumbnailRenderer* ThumbnailRenderer_new() {
     return new ThumbnailRenderer();
 }
 
-extern "C" __declspec(dllexport) void ThumbnailRenderer_init(ThumbnailRenderer* _this, ResourceManager* resourceManager, ResourceContext* resourceContext, UINT32 width, UINT32 height) {
+extern "C" __declspec(dllexport) void ThumbnailRenderer_init(ThumbnailRenderer* _this, ResourceManager* resourceManager, ResourceContext* resourceContext, uint32_t width, uint32_t height) {
     _this->init(*resourceManager, *resourceContext, width, height);
 }
 

@@ -13,7 +13,7 @@ namespace Ghurund {
         if(FAILED(sourceReaderConfiguration->SetUINT32(MF_LOW_LATENCY, true)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set Windows Media Foundation configuration\n"));
 
-        UINT32 flags = 0;
+        uint32_t flags = 0;
         if(FAILED(XAudio2Create(device.GetAddressOf(), flags)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to init XAudio2 engine\n"));
 

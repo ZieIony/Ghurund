@@ -214,16 +214,16 @@ namespace Ghurund {
         for (size_t x = 0; x < desc.Width; x ++) {
             for (size_t y = 0; y < desc.Height; y ++) {
                 BYTE* row = (BYTE*)mappedMemory + (y * dstRowPitch);
-                UINT32* pixelRow = (UINT32*)row;
-                UINT32* pixelAddress = pixelRow + x;
-                UINT32 pixel = *pixelAddress;
+                uint32_t* pixelRow = (uint32_t*)row;
+                uint32_t* pixelAddress = pixelRow + x;
+                uint32_t pixel = *pixelAddress;
                 pixel = swizzle(pixel, VectorComponent::X, VectorComponent::W, VectorComponent::Z, VectorComponent::Y);
                 *pixelAddress = pixel;
             }
         }
 
         Buffer* buffer = ghnew Buffer(mappedMemory, (size_t)imageSize);
-        image = ghnew Image(*buffer, (UINT32)desc.Width, (UINT32)desc.Height, desc.Format);
+        image = ghnew Image(*buffer, (uint32_t)desc.Width, (uint32_t)desc.Height, desc.Format);
         delete buffer;
         stagingTexture->Unmap(0, &writeRange);
 

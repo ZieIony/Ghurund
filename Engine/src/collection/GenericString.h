@@ -6,21 +6,21 @@ namespace Ghurund {
 
     template <class Type> class GenericString {
     protected:
-        Type *v = nullptr;
+        Type* v = nullptr;
         int hash;
         size_t initial;
         size_t size;
         size_t capacity;
 
         inline void fit(size_t c) {
-            if(capacity>=c)
+            if (capacity >= c)
                 return;
-            resize(capacity+initial>=c ? capacity+initial : c);
+            resize(capacity + initial >= c ? capacity + initial : c);
         }
         inline void resize(size_t c) {//if c<size some items will be lost, cannot resize to less than 1 item
             size_t c2 = std::max<size_t>(c, 1);
-            Type *t1 = ghnew Type[c2];
-            memcpy(t1, v, std::min(c, size)*sizeof(Type));
+            Type* t1 = ghnew Type[c2];
+            memcpy(t1, v, std::min(c, size) * sizeof(Type));
             capacity = c2;
             size = std::min(size, c);
             delete[] v;
@@ -28,7 +28,7 @@ namespace Ghurund {
         }
 
         void computeHash() {
-            hash = hashCode(v, size-1);
+            hash = hashCode(v, size - 1);
         }
 
     public:
@@ -36,33 +36,37 @@ namespace Ghurund {
             size = 1;   // with null terminator
             capacity = initial = Collection::INITIAL_CAPACITY;
             v = ghnew Type[capacity];
-            v[size-1] = 0;
+            v[size - 1] = 0;
             hash = 0;
         }
 
-        GenericString(const Type *str) {
+        GenericString(const Type* str) {
             initial = Collection::INITIAL_CAPACITY;
-            capacity = size = lengthOf(str)+1;
+            capacity = size = lengthOf(str) + 1;
             v = ghnew Type[capacity];
-            memcpy(v, str, size*sizeof(Type));
+            memcpy(v, str, size * sizeof(Type));
             computeHash();
         }
 
-        GenericString(const Type *str, size_t length) {
+        GenericString(const Type* str, size_t length) {
             initial = Collection::INITIAL_CAPACITY;
-            capacity = size = length+1;
+            capacity = size = length + 1;
             v = ghnew Type[capacity];
-            memcpy(v, str, length*sizeof(Type));
-            v[size-1] = 0;
+            memcpy(v, str, length * sizeof(Type));
+            v[size - 1] = 0;
             computeHash();
         }
 
-        GenericString(const GenericString<Type> &string) {
+        GenericString(const GenericString<Type>& string) {
             initial = Collection::INITIAL_CAPACITY;
             capacity = size = string.size;
             v = ghnew Type[capacity];
-            memcpy(v, string.v, size*sizeof(Type));
+            memcpy(v, string.v, size * sizeof(Type));
             hash = string.hash;
+        }
+
+        GenericString(GenericString&& other) {
+            *this = std::move(other);
         }
 
         ~GenericString() {
@@ -70,27 +74,27 @@ namespace Ghurund {
         }
 
         inline void add(const Type e) {
-            if(size+1>capacity)
-                resize(capacity+initial);
-            v[size-1] = e;
+            if (size + 1 > capacity)
+                resize(capacity + initial);
+            v[size - 1] = e;
             size++;
-            v[size-1] = 0;
+            v[size - 1] = 0;
             computeHash();
         }
 
-        inline void add(const Type *c) {
-            size_t len = lengthOf(c)+1;
-            fit(size+len);
-            memcpy(v+size-1, c, len*sizeof(Type));
-            size += len-1;	// null terminator already present
+        inline void add(const Type* c) {
+            size_t len = lengthOf(c) + 1;
+            fit(size + len);
+            memcpy(v + size - 1, c, len * sizeof(Type));
+            size += len - 1;	// null terminator already present
             computeHash();
         }
 
-        inline void add(const Type *c, size_t len) {
-            fit(size+len);
-            memcpy(v+size-1, c, len*sizeof(Type));
+        inline void add(const Type* c, size_t len) {
+            fit(size + len);
+            memcpy(v + size - 1, c, len * sizeof(Type));
             size += len;
-            v[size-1] = 0;
+            v[size - 1] = 0;
             computeHash();
         }
 
@@ -152,32 +156,32 @@ namespace Ghurund {
         }
 
         inline void replace(Type from, Type to) {
-            for(size_t i = 0; i<size; i++)
-                if(v[i]==from)
+            for (size_t i = 0; i < size; i++)
+                if (v[i] == from)
                     v[i] = to;
         }
 
-        inline const Type *getData()const {
+        inline const Type* getData()const {
             return v;
         }
-        inline void setData(const Type *data) {
-            size_t len = lengthOf(data)+1;
+        inline void setData(const Type* data) {
+            size_t len = lengthOf(data) + 1;
             delete[] v;
             v = ghnew Type[len];
-            memcpy(this->v, data, len*sizeof(Type));
+            memcpy(this->v, data, len * sizeof(Type));
             capacity = size = len;
             computeHash();
         }
-        inline void setData(const Type *data, size_t len) {
+        inline void setData(const Type* data, size_t len) {
             delete[] v;
             v = ghnew Type[len];
-            memcpy(this->v, data, len*sizeof(Type));
+            memcpy(this->v, data, len * sizeof(Type));
             capacity = size = len;
             computeHash();
         }
 
         inline size_t getLength()const {
-            return size-1;
+            return size - 1;
         }
 
         __declspec(property(get = getLength)) size_t Length;
@@ -188,81 +192,98 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        Type &operator[](size_t i) {
+        Type& operator[](size_t i) {
             return v[i];
         }
-        const Type &operator[](size_t i)const {
+        const Type& operator[](size_t i)const {
             return v[i];
         }
 
-        bool operator==(const GenericString &string) const {
-            return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, Length*sizeof(Type))==0;
+        bool operator==(const GenericString& string) const {
+            return hash == string.hash && size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(Type)) == 0;
         }
 
-        bool operator==(const GenericString &string) {
-            return hash==string.hash&&size==string.size && size!=0&&memcmp(v, string.v, Length*sizeof(Type))==0;
+        bool operator==(const GenericString& string) {
+            return hash == string.hash && size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(Type)) == 0;
         }
 
-        bool operator==(const Type *str) const {
-            return memcmp(v, str, Length*sizeof(Type))==0;
+        bool operator==(const Type* str) const {
+            return memcmp(v, str, Length * sizeof(Type)) == 0;
         }
 
-        bool operator==(const Type *str) {
-            return memcmp(v, str, Length*sizeof(Type))==0;
+        bool operator==(const Type* str) {
+            return memcmp(v, str, Length * sizeof(Type)) == 0;
         }
 
-        operator const Type *()const {
+        GenericString& operator=(GenericString&& other) {
+            if (this == &other)
+                return *this;
+
+            delete[] v;
+
+            v = other.v;
+            size = other.size;
+            initial = other.initial;
+            capacity = other.capacity;
+
+            other.v = nullptr;
+            other.size = 0;
+
+            return *this;
+        }
+
+        operator const Type* ()const {
             return v;
         }
 
-        size_t find(const Type *str, size_t start = 0) const {
+        size_t find(const Type* str, size_t start = 0) const {
             size_t strSize = lengthOf(str);
-            for(size_t i = start; i<=size-strSize; i++) {
-                if(memcmp(&v[i], str, strSize*sizeof(Type))==0)
+            for (size_t i = start; i <= size - strSize; i++) {
+                if (memcmp(&v[i], str, strSize * sizeof(Type)) == 0)
                     return i;
             }
             return size;
         }
 
-        size_t findLast(const Type *str) const {
+        size_t findLast(const Type* str) const {
             size_t strSize = lengthOf(str);
-            for(size_t i = size-strSize; i>0; i--) {
-                if(memcmp(&v[i], str, strSize*sizeof(Type))==0)
+            for (size_t i = size - strSize; i > 0; i--) {
+                if (memcmp(&v[i], str, strSize * sizeof(Type)) == 0)
                     return i;
             }
 
-            if(memcmp(v, str, strSize*sizeof(Type))==0)
+            if (memcmp(v, str, strSize * sizeof(Type)) == 0)
                 return 0;
             return size;
         }
 
-        bool startsWith(const Type *str) const {
+        bool startsWith(const Type* str) const {
             size_t i = 0;
-            while(true) {
-                if(str[i]==(Type)'\0')
+            while (true) {
+                if (str[i] == (Type)'\0')
                     return true;
-                if(str[i]!=v[i])
+                if (str[i] != v[i])
                     return false;
                 i++;
             }
         }
 
-        bool endsWith(const Type *str) const {
+        bool endsWith(const Type* str) const {
             size_t l = lengthOf(str);
-            if(l>Length)
+            if (l > Length)
                 return false;
             size_t i = 0;
-            while(true) {
-                if(str[i]==(Type)'\0')
+            while (true) {
+                if (str[i] == (Type)'\0')
                     return true;
-                if(str[i]!=v[Length-l+i])
+                if (str[i] != v[Length - l + i])
                     return false;
                 i++;
             }
         }
 
         bool isEmpty()const {
-            return size==1;
+            return size == 1;
         }
 
         __declspec(property(get = isEmpty)) bool Empty;

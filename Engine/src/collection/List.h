@@ -106,6 +106,7 @@ namespace Ghurund {
             if (size == capacity)
                 resize(capacity + initial);
             v[size] = v[i];
+            v[i].~Value();
             new(v + i) Value(item);
             size++;
         }
@@ -114,9 +115,11 @@ namespace Ghurund {
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
             if (i < size) {
-                for (size_t j = size; j > i; j--)
-                    v[j] = v[j - 1];
+                v[size] = v[size - 1];
+                for (size_t j = size - 1; j > i; j--)
+                    v[j] = std::move(v[j - 1]);
             }
+            v[i].~Value();
             new(v + i) Value(item);
             size++;
         }
@@ -134,37 +137,37 @@ namespace Ghurund {
 
         inline void removeAt(size_t i) {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
-            v[i].~Value();
-            v[i] = v[size - 1];
+            v[i] = std::move(v[size - 1]);
+            v[size - 1].~Value();
             size--;
         }
 
         inline void removeAtKeepOrder(size_t i) {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
-            v[i].~Value();
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
-                    v[j] = v[j + 1];
+                    v[j] = std::move(v[j + 1]);
             }
+            v[size - 1].~Value();
             size--;
         }
 
         inline void remove(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
-            v[i].~Value();
-            v[i] = v[size - 1];
+            v[i] = std::move(v[size - 1]);
+            v[size - 1].~Value();
             size--;
         }
 
         inline void removeKeepOrder(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
-            v[i].~Value();
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
-                    v[j] = v[j + 1];
+                    v[j] = std::move(v[j + 1]);
             }
+            v[size - 1].~Value();
             size--;
         }
 
@@ -231,7 +234,7 @@ namespace Ghurund {
         }
 
         inline void sort(std::function<int(const void*, const void*)> comparisonFunction = DEFAULT_COMPARISON_FUNCTION) {
-            qsort(v, size, sizeof(Type), comparisonFunction);
+            qsort(v, size, sizeof(Value), comparisonFunction);
         }
     };
 
