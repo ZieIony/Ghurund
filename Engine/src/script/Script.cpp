@@ -3,13 +3,13 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Script::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();
         return build(context.ScriptEngine);
     }
 
-    Status Script::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Script::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         if (!entryPoint || !source)
             return Status::INV_STATE;
         stream.writeASCII(entryPoint);

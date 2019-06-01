@@ -26,8 +26,8 @@ namespace Ghurund {
         PointerArray<Parameter*> parameters;
 
     protected:
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
 
@@ -183,6 +183,6 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override {}
+        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override {}
     };
 }

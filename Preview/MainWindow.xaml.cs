@@ -50,8 +50,9 @@ namespace Ghurund.Preview {
             physics.Init();
 
             resourceManager = new ResourceManager();
-            resourceContext = new ResourceContext(graphics, audio, parameterManager, scriptEngine, physics);
-            sceneView.Init(resourceManager, resourceContext);
+            resourceContext = new ResourceContext(graphics, audio, parameterManager, scriptEngine, physics, resourceManager);
+            parameterManager.InitDefaultTextures(resourceContext);
+            sceneView.Init(resourceContext);
 
             loadFile(filePath);
         }
@@ -59,10 +60,10 @@ namespace Ghurund.Preview {
         private void loadFile(string filePath) {
             scene = new Scene();
             if (filePath.EndsWith("scene")) {
-                scene.Load(resourceManager, resourceContext, filePath);
+                scene.Load(resourceContext, filePath);
             } else if (filePath.EndsWith("hlsl")) {
                 Shader shader = new Shader();
-                shader.Load(resourceManager, resourceContext, filePath);
+                shader.Load(resourceContext, filePath);
                 Material material = new Material {
                     Shader = shader,
                     Valid = true

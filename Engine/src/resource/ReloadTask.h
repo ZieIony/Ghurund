@@ -7,12 +7,11 @@ namespace Ghurund {
 
     class ReloadTask {
     private:
-        ResourceManager &resourceManager;
         ResourceContext &context;
         Resource *resource;
 
     public:
-        ReloadTask(ResourceManager &resourceManager, ResourceContext &context, Resource &resource):resourceManager(resourceManager), context(context) {
+        ReloadTask(ResourceContext &context, Resource &resource):context(context) {
             this->resource = &resource;
         }
 
@@ -26,7 +25,7 @@ namespace Ghurund {
             resource->Valid = true;
             resource->invalidate();
             resource->addReference();
-            resource->load(resourceManager, context);
+            resource->load(context);
             resource->release();
         }
     };

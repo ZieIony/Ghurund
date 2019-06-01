@@ -10,14 +10,14 @@ namespace Ghurund {
         PointerArray<Parameter*> parameters;
 
     protected:
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            __super::loadInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            __super::loadInternal(context, workingDir, stream, options);
 
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            __super::saveInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            __super::saveInternal(context, workingDir, stream, options);
 
             return Status::NOT_IMPLEMENTED;
         }
@@ -52,6 +52,6 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override;
+        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override;
     };
 }

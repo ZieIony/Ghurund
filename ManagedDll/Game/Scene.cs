@@ -42,11 +42,10 @@ namespace Ghurund.Managed.Game {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Scenes_makeEditor(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Scene MakeEditor(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Scene scene = new Scene(Scenes_makeEditor(resourceManager, resourceContext));
+        public static Scene MakeEditor(ResourceContext resourceContext) {
+            Scene scene = new Scene(Scenes_makeEditor(resourceContext));
             scene.Release();
             return scene;
         }

@@ -70,11 +70,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Materials_makeChecker(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material MakeChecker(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Material material = new Material(Materials_makeChecker(resourceManager, resourceContext));
+        public static Material MakeChecker(ResourceContext resourceContext) {
+            Material material = new Material(Materials_makeChecker(resourceContext));
             material.Release();
             return material;
         }
@@ -82,11 +81,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Materials_makeWireframe(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material MakeWireframe(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Material material = new Material(Materials_makeWireframe(resourceManager, resourceContext));
+        public static Material MakeWireframe(ResourceContext resourceContext) {
+            Material material = new Material(Materials_makeWireframe(resourceContext));
             material.Release();
             return material;
         }
@@ -94,11 +92,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Materials_makeOutline(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material MakeOutline(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Material material = new Material(Materials_makeOutline(resourceManager, resourceContext));
+        public static Material MakeOutline(ResourceContext resourceContext) {
+            Material material = new Material(Materials_makeOutline(resourceContext));
             material.Release();
             return material;
         }
@@ -106,11 +103,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Materials_makeNormals(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material MakeNormals(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Material material = new Material(Materials_makeNormals(resourceManager, resourceContext));
+        public static Material MakeNormals(ResourceContext resourceContext) {
+            Material material = new Material(Materials_makeNormals(resourceContext));
             material.Release();
             return material;
         }
@@ -118,11 +114,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Materials_makeInvalid(
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public static Material MakeInvalid(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Material material = new Material(Materials_makeInvalid(resourceManager, resourceContext));
+        public static Material MakeInvalid(ResourceContext resourceContext) {
+            Material material = new Material(Materials_makeInvalid(resourceContext));
             material.Release();
             return material;
         }

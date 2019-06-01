@@ -33,11 +33,10 @@ namespace Ghurund.Managed.Graphics {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Renderer_init(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext);
 
-        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
-            Renderer_init(NativePtr, resourceManager, resourceContext);
+        public void Init(ResourceContext resourceContext) {
+            Renderer_init(NativePtr, resourceContext);
             Statistics = new RenderingStatistics(Renderer_getStatistics(NativePtr));
         }
 

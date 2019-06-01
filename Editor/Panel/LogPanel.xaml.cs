@@ -17,7 +17,6 @@ namespace Ghurund.Editor {
         public LogPanel() {
             InitializeComponent();
 
-            Logger.Init();
             Logger.OnLog += Logger_OnLog;
         }
 

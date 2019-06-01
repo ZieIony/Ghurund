@@ -12,22 +12,24 @@ namespace Ghurund {
         static Material* makeWithShader(Shader *shader, ResourceContext& context);
 
     public:
-        static Material* makeBasic(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
+        static Material* makeBasic(ResourceContext& context, Texture* texture = nullptr);
 
-        static Material* makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& diffuseTexture, Texture& specularTexture);
+        static Material* makeBasicLight(ResourceContext& context, Texture* diffuseTexture = nullptr, Texture* specularTexture = nullptr);
 
-        static Material* makeToon(ResourceManager& resourceManager, ResourceContext& context, Texture& texture);
+        static Material* makeToon(ResourceContext& context, Texture* texture = nullptr);
 
-        static Material* makeChecker(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeChecker(ResourceContext& context);
 
-        static Material* makeWireframe(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeWireframe(ResourceContext& context);
 
-        static Material* makeOutline(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeOutline(ResourceContext& context);
 
-        static Material* makeNormals(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeNormals(ResourceContext& context);
 
-        static Material* makeInvalid(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeInvalid(ResourceContext& context);
 
-        static Material* makeLightPass(ResourceManager& resourceManager, ResourceContext& context);
+        static Material* makeLightPass(ResourceContext& context);
+
+        static Material* makeUi(ResourceContext& context);
     };
 }

@@ -27,8 +27,6 @@ namespace Ghurund.Editor {
     }
 
     public partial class ResourceManagerPanel : UserControl, IResourceManagerPanel {
-        [Inject]
-        public ResourceManager ResourceManager { get; set; }
 
         [Inject]
         public ResourceContext ResourceContext { get; set; }
@@ -154,7 +152,7 @@ namespace Ghurund.Editor {
 
             foreach (FileInfo file in expandedDir.GetFiles()) {
                 if (file.Extension.StartsWith(".") && supportedExtensions.Contains(file.Extension.Substring(1)))
-                    resourceGrid.Items.Add(new ResourceFile(file, ResourceManager, ResourceContext, ThumbnailRenderer));
+                    resourceGrid.Items.Add(new ResourceFile(file, ResourceContext, ThumbnailRenderer));
             }
         }
 

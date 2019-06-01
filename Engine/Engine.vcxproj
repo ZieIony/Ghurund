@@ -128,7 +128,6 @@
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Type.h" />
     <ClInclude Include="src\core\WorkerThread.h" />
-    <ClInclude Include="src\d3dx12.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
@@ -143,7 +142,7 @@
     <ClInclude Include="src\game\Level.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\LevelManager.h" />
-    <ClInclude Include="src\game\parameter\ResourceParameter.h" />
+    <ClInclude Include="src\game\parameter\TextureParameter.h" />
     <ClInclude Include="src\game\parameter\ParameterProvider.h" />
     <ClInclude Include="src\game\entity\Scene.h" />
     <ClInclude Include="src\game\parameter\ParameterType.h" />
@@ -228,6 +227,8 @@
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\ui\Control.h" />
+    <ClInclude Include="src\ui\GuiRenderStep.h" />
+    <ClInclude Include="src\ui\ImageView.h" />
     <ClInclude Include="src\ui\Layout.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\core\File.h" />
@@ -248,6 +249,8 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
+    <ClInclude Include="src\ui\Event.h" />
+    <ClInclude Include="src\ui\TextBox.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

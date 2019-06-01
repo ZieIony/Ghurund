@@ -19,6 +19,10 @@ namespace Ghurund.Editor.ResourceEditor {
             renderView.Camera.Orbit((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
             return true;
         }
+
+        public override void OnWheel(float dw) {
+            renderView.Camera.Zoom(dw);
+        }
     }
 
     public class CameraPanSceneTool: MouseSceneTool {
@@ -34,6 +38,10 @@ namespace Ghurund.Editor.ResourceEditor {
             renderView.Camera.Pan((float)dx, (float)-dy);
             return true;
         }
+
+        public override void OnWheel(float dw) {
+            renderView.Camera.Zoom(dw);
+        }
     }
 
     public class CameraZoomSceneTool: MouseSceneTool {
@@ -41,6 +49,13 @@ namespace Ghurund.Editor.ResourceEditor {
 
         public CameraZoomSceneTool(RenderView renderView) {
             this.renderView = renderView;
+        }
+
+        public override bool OnMove(bool pressed, float dx, float dy) {
+            if (!pressed)
+                return false;
+            renderView.Camera.Zoom(dy);
+            return true;
         }
 
         public override void OnWheel(float dw) {
@@ -60,6 +75,10 @@ namespace Ghurund.Editor.ResourceEditor {
                 return false;
             renderView.Camera.Rotate((float)(dx / 5 * Math.PI / 180), (float)(dy / 5 * Math.PI / 180));
             return true;
+        }
+
+        public override void OnWheel(float dw) {
+            renderView.Camera.Zoom(dw);
         }
     }
 

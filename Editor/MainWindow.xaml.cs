@@ -63,6 +63,8 @@ namespace Ghurund.Editor {
         public MainWindow() {
             InitializeComponent();
 
+            Logger.Init();
+
             EditorKernel.Inject(this);
 
             ThemeResourceDictionary.ApplyTheme(this, Settings.Theme);

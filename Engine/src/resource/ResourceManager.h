@@ -130,7 +130,7 @@ namespace Ghurund {
             Type* resource = (Type*)resourceFactory->makeResource(stream);
             Status loadResult;
             if (stream.readBoolean()) {
-                loadResult = resource->load(*this, context, workingDir, stream, options);
+                loadResult = resource->load(context, workingDir, stream, options);
             } else {
                 FilePath decodedPath = decodePath(stream.readUnicode(), &workingDir);
                 Type* resource2 = (Type*)get(decodedPath);

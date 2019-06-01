@@ -36,9 +36,6 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         [Inject]
-        public ResourceManager ResourceManager { get; set; }
-
-        [Inject]
         public ResourceContext ResourceContext { get; set; }
 
         public SampleModel SampleModel { get; set; } = SampleModel.Cube;
@@ -76,7 +73,7 @@ namespace Ghurund.Editor.ResourceEditor {
 
             EditorKernel.Inject(this);
 
-            preview.Init(ResourceManager, ResourceContext);
+            preview.Init(ResourceContext);
 
             cameraPicker.Items.Add(CameraMode.Default);
             cameraPicker.Items.Add(CameraMode.Side);
@@ -103,14 +100,14 @@ namespace Ghurund.Editor.ResourceEditor {
                     return false;
                 fileName = saveFileDialog.FileName;
             }
-            return material.Save(ResourceManager, fileName) == Status.OK;
+            return material.Save(ResourceContext, fileName) == Status.OK;
         }
 
         public bool Load(string fileName) {
             var material = new Material();
             if (Shader.Formats.Any(format => fileName.EndsWith(format.Extension))) {
                 var shader = new Shader();
-                if (shader.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
+                if (shader.Load(ResourceContext, fileName) != Status.OK) {
                     if (fileName.EndsWith("shader")) {  // TODO: pass only if it's a compilation error
                         material.Release();
                         shader.Release();
@@ -123,7 +120,7 @@ namespace Ghurund.Editor.ResourceEditor {
                 material.Release();
                 shader.Release();
             } else {
-                if (material.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
+                if (material.Load(ResourceContext, fileName) != Status.OK) {
                     material.Release();
                     return false;
                 }

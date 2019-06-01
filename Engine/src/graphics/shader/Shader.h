@@ -20,13 +20,13 @@
 #include <wrl.h>
 
 namespace Ghurund {
-	using namespace Microsoft::WRL;
+    using namespace Microsoft::WRL;
 
-	class Shader:public Resource, public ParameterProvider {
+    class Shader:public Resource, public ParameterProvider {
     private:
-        ShaderProgram *programs[6] = {};
-        ID3D12RootSignature *rootSignature;
-        ID3D12PipelineState *pipelineState;
+        ShaderProgram* programs[6] = {};
+        ID3D12RootSignature* rootSignature;
+        ID3D12PipelineState* pipelineState;
         bool supportsTransparency = false;
 
         List<ConstantBuffer*> constantBuffers;
@@ -34,27 +34,31 @@ namespace Ghurund {
         List<TextureConstant*> textures;
         List<Sampler*> samplers;
 
-        PointerArray<Parameter*> *parameters = nullptr;
-        Graphics *graphics;
+        PointerArray<Parameter*>* parameters = nullptr;
+#ifdef _DEBUG
+        bool* reported;
+#endif
 
-        char *source = nullptr;
+        Graphics* graphics;
+
+        char* source = nullptr;
         bool compiled = false;
 
         Status makeRootSignature();
 
         D3D12_INPUT_LAYOUT_DESC getInputLayout();
 
-        void initConstants(ParameterManager &parameterManager);
-        void initConstants(ParameterManager &parameterManager, ShaderProgram &program);
+        void initConstants(ParameterManager& parameterManager);
+        void initConstants(ParameterManager& parameterManager, ShaderProgram& program);
 
-        Status loadShd(ResourceContext &context, MemoryInputStream &stream);
-        Status loadHlsl(ResourceContext &context, MemoryInputStream &stream);
+        Status loadShd(ResourceContext& context, MemoryInputStream& stream);
+        Status loadHlsl(ResourceContext& context, MemoryInputStream& stream);
 
         void finalize();
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const override;
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
         virtual unsigned int getVersion() const override {
             return 0;
@@ -66,30 +70,30 @@ namespace Ghurund {
         virtual void invalidate();
 
         virtual bool isValid() const {
-            return pipelineState!=nullptr&&rootSignature!=nullptr&&compiled&&__super::isValid();
+            return pipelineState != nullptr && rootSignature != nullptr && compiled && __super::isValid();
         }
 
-        Status compile(char **output = nullptr);
+        Status compile(char** output = nullptr);
 
-        Status build(ResourceContext &context, char **output = nullptr);
+        Status build(ResourceContext& context, char** output = nullptr);
 
-        virtual void initParameters(ParameterManager &parameterManager) override;
+        virtual void initParameters(ParameterManager& parameterManager) override;
 
         virtual void updateParameters() override {
-            for(size_t i = 0; i<constantBuffers.Size; i++)
+            for (size_t i = 0; i < constantBuffers.Size; i++)
                 constantBuffers[i]->updateParameters();
         }
 
-        virtual const PointerArray<Parameter*> &getParameters() const override {
+        virtual const PointerArray<Parameter*>& getParameters() const override {
             return *parameters;
         }
 
-        void setSourceCode(const char *source) {
+        void setSourceCode(const char* source) {
             safeCopyStr(&this->source, source);
             compiled = false;
         }
 
-        const char *getSourceCode() {
+        const char* getSourceCode() {
             return source;
         }
 
@@ -105,15 +109,15 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::SHADER;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::SHADER, (ResourceFormat*)&ResourceFormat::HLSL};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::SHADER, (ResourceFormat*)& ResourceFormat::HLSL};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
     };
 }

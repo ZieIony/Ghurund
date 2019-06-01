@@ -47,7 +47,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Resource::load(ResourceManager& resourceManager, ResourceContext& context, size_t* bytesRead, LoadOption options) {
+    Status Resource::load(ResourceContext& context, size_t* bytesRead, LoadOption options) {
         if (!path)
             return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
@@ -61,21 +61,21 @@ namespace Ghurund {
 
         Logger::log(LogType::INFO, String("Loading '") + *path + "'\n");
         MemoryInputStream stream(file.Data, file.Size);
-        result = load(resourceManager, context, path->Directory, stream, options);
+        result = load(context, path->Directory, stream, options);
         if (bytesRead != nullptr)
             * bytesRead = stream.BytesRead;
         return result;
     }
 
-    Status Resource::load(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, size_t* bytesRead, LoadOption options) {
+    Status Resource::load(ResourceContext& context, const FilePath& path, size_t* bytesRead, LoadOption options) {
         FilePath* p = ghnew FilePath(path.AbsolutePath);
         delete this->path;
         this->path = p;
 
-        return load(resourceManager, context, bytesRead, options);
+        return load(context, bytesRead, options);
     }
 
-    Status Resource::load(ResourceManager& resourceManager, ResourceContext& context, File& file, size_t* bytesRead, LoadOption options) {
+    Status Resource::load(ResourceContext& context, File& file, size_t* bytesRead, LoadOption options) {
         if (!file.Exists)
             return Status::FILE_DOESNT_EXIST;
         Status result;
@@ -91,64 +91,64 @@ namespace Ghurund {
 
         Logger::log(LogType::INFO, _T("Loading '%s'\n"), (const wchar_t*)path->get());
         MemoryInputStream stream(file.Data, file.Size);
-        result = load(resourceManager, context, path->Directory, stream, options);
+        result = load(context, path->Directory, stream, options);
         if (bytesRead != nullptr)
             * bytesRead = stream.BytesRead;
         return result;
     }
 
-    Status Resource::load(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        Status result = loadInternal(resourceManager, context, workingDir, stream, options);
+    Status Resource::load(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        Status result = loadInternal(context, workingDir, stream, options);
         valid = result == Status::OK;
         return result;
     }
 
-    Status Resource::save(ResourceManager& resourceManager, ResourceContext& context, SaveOption options) const {
+    Status Resource::save(ResourceContext& context, SaveOption options) const {
         if (!path)
             return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
-        Status result = saveInternal(resourceManager, context, file, options);
+        Status result = saveInternal(context, file, options);
         if (result != Status::OK)
             return result;
         return file.write();
     }
 
-    Status Resource::save(ResourceManager& resourceManager, ResourceContext& context, const FilePath& path, SaveOption options) {
+    Status Resource::save(ResourceContext& context, const FilePath& path, SaveOption options) {
         FilePath* p = ghnew FilePath(path);
         delete this->path;
         this->path = p;
 
         File file(*this->path);
-        Status result = saveInternal(resourceManager, context, file, options);
+        Status result = saveInternal(context, file, options);
         if (result != Status::OK)
             return result;
         return file.write();
     }
 
-    Status Resource::save(ResourceManager& resourceManager, ResourceContext& context, File& file, SaveOption options) {
+    Status Resource::save(ResourceContext& context, File& file, SaveOption options) {
         FilePath* p = ghnew FilePath(file.Path);
         delete this->path;
         this->path = p;
 
-        return saveInternal(resourceManager, context, file, options);
+        return saveInternal(context, file, options);
     }
 
-    Status Resource::saveInternal(ResourceManager& resourceManager, ResourceContext& context, File& file, SaveOption options) const {
+    Status Resource::saveInternal(ResourceContext& context, File& file, SaveOption options) const {
         if (file.Exists && options & SaveOption::SKIP_IF_EXISTS)
             return Status::FILE_EXISTS;
         if (file.Exists && !(options & SaveOption::OVERWRITE))
             return Status::FILE_EXISTS;
 
         MemoryOutputStream stream;
-        Status result = save(resourceManager, context, file.Path.Directory, stream, options);
+        Status result = save(context, file.Path.Directory, stream, options);
         if (result != Status::OK)
             return result;
         file.setData(stream.Data, stream.BytesWritten);
         return Status::OK;
     }
 
-    Status Resource::save(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        return saveInternal(resourceManager, context, workingDir, stream, options);
+    Status Resource::save(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        return saveInternal(context, workingDir, stream, options);
     }
 }

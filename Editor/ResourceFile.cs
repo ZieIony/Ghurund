@@ -42,11 +42,11 @@ namespace Ghurund.Editor {
             }
         }
 
-        public ResourceFile(string path, ResourceManager resourceManager, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer)
-            : this(new FileInfo(path), resourceManager, resourceContext, thumbnailRenderer) {
+        public ResourceFile(string path, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer)
+            : this(new FileInfo(path), resourceContext, thumbnailRenderer) {
         }
 
-        public ResourceFile(FileInfo file, ResourceManager resourceManager, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer) {
+        public ResourceFile(FileInfo file, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer) {
             Path = file.FullName;
             Name = file.Name;
             Exists = file.Exists;
@@ -59,11 +59,11 @@ namespace Ghurund.Editor {
                     Thumbnail = new BitmapImage(new Uri(thumbnailPath));
                 } else {
                     if (Name.EndsWith(".scene")) {
-                        generateThumbnailEntity(new Scene(), resourceManager, resourceContext, thumbnailRenderer, thumbnailPath);
+                        generateThumbnailEntity(new Scene(), resourceContext, thumbnailRenderer, thumbnailPath);
                     } else if (Name.EndsWith(".model")) {
-                        generateThumbnailEntity(new Model(), resourceManager, resourceContext, thumbnailRenderer, thumbnailPath);
+                        generateThumbnailEntity(new Model(), resourceContext, thumbnailRenderer, thumbnailPath);
                     } else if (Name.EndsWith(".mesh")) {
-                        generateThumbnailMesh(resourceManager, resourceContext, thumbnailRenderer, thumbnailPath);
+                        generateThumbnailMesh(resourceContext, thumbnailRenderer, thumbnailPath);
                     } else {
                         loadThumbnail();
                     }
@@ -71,14 +71,14 @@ namespace Ghurund.Editor {
             }
         }
 
-        private async void generateThumbnailEntity(Entity entity, ResourceManager resourceManager, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer, string thumbnailPath) {
+        private async void generateThumbnailEntity(Entity entity, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer, string thumbnailPath) {
             await Application.Current.Dispatcher.InvokeAsync(() => {
                 if (Path == null || !File.Exists(Path)) { // TODO: error handling
                     Thumbnail = null;
                     return;
                 }
 
-                if (entity.Load(resourceManager, resourceContext, Path) != Status.OK) {
+                if (entity.Load(resourceContext, Path) != Status.OK) {
                     Thumbnail = null;
                     return;
                 }
@@ -94,7 +94,7 @@ namespace Ghurund.Editor {
             });
         }
 
-        private async void generateThumbnailMesh(ResourceManager resourceManager, ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer, string thumbnailPath) {
+        private async void generateThumbnailMesh(ResourceContext resourceContext, ThumbnailRenderer thumbnailRenderer, string thumbnailPath) {
             await Application.Current.Dispatcher.InvokeAsync(() => {
                 if (Path == null || !File.Exists(Path)) { // TODO: error handling
                     Thumbnail = null;
@@ -102,7 +102,7 @@ namespace Ghurund.Editor {
                 }
 
                 Mesh mesh = new Mesh();
-                if (mesh.Load(resourceManager, resourceContext, Path) != Status.OK) {
+                if (mesh.Load(resourceContext, Path) != Status.OK) {
                     mesh.Release();
                     Thumbnail = null;
                     return;

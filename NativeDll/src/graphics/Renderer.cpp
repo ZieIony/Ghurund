@@ -7,8 +7,8 @@ extern "C" __declspec(dllexport) Renderer* Renderer_new() {
     return new Renderer();
 }
 
-extern "C" __declspec(dllexport) void Renderer_init(Renderer* _this, ResourceManager* resourceManager, ResourceContext* resourceContext) {
-    _this->init(*resourceManager, *resourceContext);
+extern "C" __declspec(dllexport) void Renderer_init(Renderer* _this, ResourceContext* resourceContext) {
+    _this->init(*resourceContext);
 }
 
 extern "C" __declspec(dllexport) void Renderer_uninit(Renderer* _this) {

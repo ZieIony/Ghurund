@@ -216,7 +216,7 @@ namespace Ghurund.Managed {
             disposed = true;
         }
 
-        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
+        public void Init(ResourceContext resourceContext) {
             defaultCamera = new Camera();
             defaultCamera.InitParameters(resourceContext.ParameterManager);
             ResetCamera(CameraMode.Default);
@@ -230,10 +230,10 @@ namespace Ghurund.Managed {
             topCamera.InitParameters(resourceContext.ParameterManager);
             ResetCamera(CameraMode.Top);
 
-            renderView.Init(resourceManager, resourceContext);
+            renderView.Init(resourceContext);
 
-            editorScene = Scenes.MakeEditor(resourceManager, resourceContext);
-            invalidMaterial = Materials.MakeInvalid(resourceManager, resourceContext);
+            editorScene = Scenes.MakeEditor(resourceContext);
+            invalidMaterial = Materials.MakeInvalid(resourceContext);
 
             editorStep = new RenderStep {
                 Camera = Camera
@@ -248,7 +248,7 @@ namespace Ghurund.Managed {
             };
             selectionStep.Entities.Add(selectionScene);
             selectionStep.InitParameters(resourceContext.ParameterManager);
-            outlineMaterial = Materials.MakeOutline(resourceManager, resourceContext);
+            outlineMaterial = Materials.MakeOutline(resourceContext);
             selectionStep.OverrideMaterial = outlineMaterial;
             Renderer.Steps.Add(selectionStep);
 

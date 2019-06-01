@@ -17,12 +17,11 @@ namespace Ghurund.Managed.Editor {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern Status ThumbnailRenderer_init(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceContext resourceContext,
             uint width, uint height);
 
-        public Status Init(ResourceManager resourceManager, ResourceContext resourceContext, uint width, uint height) {
-            return ThumbnailRenderer_init(NativePtr, resourceManager, resourceContext, width, height);
+        public Status Init(ResourceContext resourceContext, uint width, uint height) {
+            return ThumbnailRenderer_init(NativePtr, resourceContext, width, height);
         }
 
 

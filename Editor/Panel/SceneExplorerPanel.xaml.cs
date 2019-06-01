@@ -27,9 +27,6 @@ namespace Ghurund.Editor {
         [Inject]
         public ResourceContext ResourceContext { get; set; }
 
-        [Inject]
-        public ResourceManager ResourceManager { get; set; }
-
         private readonly List<object> selectedItems = new List<object>();
         public List<object> SelectedItems {
             get => selectedItems;
@@ -123,19 +120,19 @@ namespace Ghurund.Editor {
         }
 
         private void addCube_Click(object sender, RoutedEventArgs e) {
-            scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+            scene.Entities.Add(Models.MakeCube(ResourceContext, Materials.MakeChecker(ResourceContext)));
         }
 
         private void addCone_Click(object sender, RoutedEventArgs e) {
-            scene.Entities.Add(Models.MakeCone(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+            scene.Entities.Add(Models.MakeCone(ResourceContext, Materials.MakeChecker(ResourceContext)));
         }
 
         private void addSphere_Click(object sender, RoutedEventArgs e) {
-            scene.Entities.Add(Models.MakeSphere(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+            scene.Entities.Add(Models.MakeSphere(ResourceContext, Materials.MakeChecker(ResourceContext)));
         }
 
         private void addPlane_Click(object sender, RoutedEventArgs e) {
-            scene.Entities.Add(Models.MakePlane(ResourceContext, Materials.MakeChecker(ResourceManager, ResourceContext)));
+            scene.Entities.Add(Models.MakePlane(ResourceContext, Materials.MakeChecker(ResourceContext)));
         }
     }
 }

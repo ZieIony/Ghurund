@@ -3,7 +3,7 @@
 namespace Ghurund {
     const Ghurund::Type& Renderer::TYPE = Ghurund::Type([]() {return ghnew Renderer(); }, "Renderer");
 
-    Status Renderer::init(ResourceManager& resourceManager, ResourceContext& resourceContext) {
+    Status Renderer::init(ResourceContext& resourceContext) {
         this->graphics = &resourceContext.Graphics;
         this->parameterManager = &resourceContext.ParameterManager;
 

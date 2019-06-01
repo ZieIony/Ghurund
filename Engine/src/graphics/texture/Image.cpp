@@ -146,7 +146,7 @@ namespace Ghurund {
         return -1;
     }
 
-    Status Image::loadInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath & workingDir, MemoryInputStream & stream, LoadOption options) {
+    Status Image::loadInternal(ResourceContext & context, const DirectoryPath & workingDir, MemoryInputStream & stream, LoadOption options) {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
         IWICFormatConverter* wicConverter = nullptr;
@@ -209,7 +209,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Image::saveInternal(ResourceManager & resourceManager, ResourceContext & context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
+    Status Image::saveInternal(ResourceContext & context, const DirectoryPath & workingDir, MemoryOutputStream & stream, SaveOption options) const {
         IWICImagingFactory* pWIC = context.ImageFactory;
         GUID guidContainerFormat = options & SaveOption::FORMAT_PNG ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
 

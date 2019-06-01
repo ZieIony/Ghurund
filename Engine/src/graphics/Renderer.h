@@ -52,38 +52,38 @@ namespace Ghurund {
             delete clearColor;
         }
 
-        Status init(ResourceManager & resourceManager, ResourceContext & resourceContext);
+        Status init(ResourceContext& resourceContext);
 
         void uninit();
 
-        void render(Frame & frame);
+        void render(Frame& frame);
 
-        const XMFLOAT4 * getClearColor() const {
+        const XMFLOAT4* getClearColor() const {
             return clearColor;
         }
 
-        void setClearColor(const XMFLOAT4 * color) {
+        void setClearColor(const XMFLOAT4* color) {
             delete clearColor;
             clearColor = ghnew XMFLOAT4(*color);
         }
 
-        __declspec(property(get = getClearColor, put = setClearColor)) const XMFLOAT4 * ClearColor;
+        __declspec(property(get = getClearColor, put = setClearColor)) const XMFLOAT4* ClearColor;
 
-        RenderingStatistics & getStatistics() {
+        RenderingStatistics& getStatistics() {
             return stats;
         }
 
-        __declspec(property(get = getStatistics)) RenderingStatistics & Statistics;
+        __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
 
-        List<RenderStep*> & getSteps() {
+        List<RenderStep*>& getSteps() {
             return steps;
         }
 
-        __declspec(property(get = getSteps)) List<RenderStep*> & Steps;
+        __declspec(property(get = getSteps)) List<RenderStep*>& Steps;
 
-        const static Ghurund::Type & TYPE;
+        const static Ghurund::Type& TYPE;
 
-        virtual const Ghurund::Type & getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };

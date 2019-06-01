@@ -71,12 +71,6 @@ namespace Ghurund {
             return engine->CreateContext();
         }
 
-        const static Ghurund::Type& TYPE;
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
-
         PointerList<Script*>& getScripts() {
             return scripts;
         }
@@ -84,5 +78,11 @@ namespace Ghurund {
         __declspec(property(get = getScripts)) PointerList<Script*>& Scripts;
 
         void execute();
+
+        const static Ghurund::Type& TYPE;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

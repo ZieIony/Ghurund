@@ -2,7 +2,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Mesh::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
+    Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
         if (Path) {
             if (Path->get().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
@@ -103,7 +103,7 @@ namespace Ghurund {
         return init(context.Graphics, context.CommandList);
     }
 
-    Status Mesh::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Mesh::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);

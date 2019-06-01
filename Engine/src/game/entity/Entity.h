@@ -19,7 +19,7 @@ namespace Ghurund {
 
     class Entity: public Resource, public NamedObject, public ParameterProvider, public virtual ObservableObject {
     private:
-        bool selectable = true, visible = true;
+        bool selectable = true, visible = true, editMode = false;
         id_t id = 0;
         static PointerList<Entity*> entities;
         static atomic<id_t> currentId;
@@ -31,13 +31,13 @@ namespace Ghurund {
     protected:
         mutable XMFLOAT4X4 world;
 
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             world = stream.read<XMFLOAT4X4>();
             Name = stream.readUnicode();
             return Status::OK;
         }
 
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options) const {
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             stream.write<XMFLOAT4X4>(world);
             stream.writeUnicode(Name);
             return Status::OK;
@@ -55,7 +55,7 @@ namespace Ghurund {
 
         __declspec(property(get = getId)) id_t Id;
 
-        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) = 0;
+        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) = 0;
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
             return false;
@@ -86,6 +86,16 @@ namespace Ghurund {
         }
 
         __declspec(property(get = isVisible, put = setVisible)) bool Visible;
+
+        void setInEditMode(bool inEditMode) {
+            this->editMode = inEditMode;
+        }
+
+        bool isInEditMode()const {
+            return editMode;
+        }
+
+        __declspec(property(get = isInEditMode, put = setInEditMode)) bool InEditMode;
 
         static Entity* find(id_t id) {
             for (auto e : entities)

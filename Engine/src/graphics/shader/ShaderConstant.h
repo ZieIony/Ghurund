@@ -35,6 +35,8 @@ namespace Ghurund {
             return name;
         }
 
+        __declspec(property(get = getName)) const char* Name;
+
         inline unsigned int getBindPoint() const {
             return bindPoint;
         }

@@ -65,9 +65,6 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         [Inject]
-        public ResourceManager ResourceManager { get; set; }
-
-        [Inject]
         public ResourceContext ResourceContext { get; set; }
 
         [Inject]
@@ -155,12 +152,12 @@ namespace Ghurund.Editor.ResourceEditor {
                     return false;
                 fileName = saveFileDialog.FileName;
             }
-            return script.Save(ResourceManager, fileName) == Status.OK;
+            return script.Save(ResourceContext, fileName) == Status.OK;
         }
 
         public bool Load(string fileName) {
             var material = new Script();
-            if (material.Load(ResourceManager, ResourceContext, fileName) != Status.OK) {
+            if (material.Load(ResourceContext, fileName) != Status.OK) {
                 material.Release();
                 return false;
             }

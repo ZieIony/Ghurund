@@ -2,6 +2,18 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
+    Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        Status result;
+        image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
+        if (filterStatus(result, options) != Status::OK)
+            return result;
+        return init(context, *image);
+    }
+
+    Status Texture::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        return context.ResourceManager.save(*image, context, workingDir, stream, options);
+    }
+
     Status Texture::init(ResourceContext &context, Ghurund::Image &image) {
         Graphics &graphics = context.Graphics;
         CommandList &commandList = context.CommandList;

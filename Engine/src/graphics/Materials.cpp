@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Materials.h"
-#include "game/parameter/ResourceParameter.h"
+#include "game/parameter/TextureParameter.h"
 
 namespace Ghurund {
     Material* Materials::makeWithShader(Shader* shader, ResourceContext& context) {
@@ -14,54 +14,62 @@ namespace Ghurund {
         return material;
     }
 
-    Material* Materials::makeBasic(ResourceManager& resourceManager, ResourceContext& context, Texture& texture) {
+    Material* Materials::makeBasic(ResourceContext& context, Texture* diffuseTexture) {
         Material* material = nullptr;
-        ScopedPointer<Shader> shader = Shaders::loadBasic(resourceManager, context);
+        ScopedPointer<Shader> shader = Shaders::loadBasic(context);
         if (shader) {
             material = ghnew Material(shader);
-            ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
-            diffuse->setValue(&texture);
+            if (diffuseTexture) {
+                TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
+                diffuse->setValue(diffuseTexture);
+            }
             material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeBasicLight(ResourceManager& resourceManager, ResourceContext& context, Texture& diffuseTexture, Texture& specularTexture) {
+    Material* Materials::makeBasicLight(ResourceContext& context, Texture* diffuseTexture, Texture* specularTexture) {
         Material* material = nullptr;
-        ScopedPointer<Shader> shader = Shaders::loadBasicLight(resourceManager, context);
+        ScopedPointer<Shader> shader = Shaders::loadBasicLight(context);
         if (shader) {
             material = ghnew Material(shader);
-            ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
-            diffuse->setValue(&diffuseTexture);
-            ResourceParameter *specular = (ResourceParameter*)material->Shader->getParameter("specularTexture");
-            specular->setValue(&specularTexture);
+            if (diffuseTexture) {
+                TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
+                diffuse->setValue(diffuseTexture);
+            }
+            if (specularTexture) {
+                TextureParameter* specular = (TextureParameter*)material->Shader->getParameter(ParameterId::SPECULAR_TEXTURE.ConstantName);
+                specular->setValue(specularTexture);
+            }
             material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeToon(ResourceManager& resourceManager, ResourceContext& context, Texture& texture) {
+    Material* Materials::makeToon(ResourceContext& context, Texture* diffuseTexture) {
         Material* material = nullptr;
-        ScopedPointer<Shader> shader = Shaders::loadToon(resourceManager, context);
+        ScopedPointer<Shader> shader = Shaders::loadToon(context);
         if (shader) {
             material = ghnew Material(shader);
-            ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
-            diffuse->setValue(&texture);
+            if (diffuseTexture) {
+                TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
+                diffuse->setValue(diffuseTexture);
+            }
             material->initParameters(context.ParameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeChecker(ResourceManager& resourceManager, ResourceContext& context) {
+    Material* Materials::makeChecker(ResourceContext& context) {
         Material* material = nullptr;
-        ScopedPointer<Shader> shader = Shaders::loadBasic(resourceManager, context);
+        ScopedPointer<Shader> shader = Shaders::loadBasic(context);
         if (shader) {
             material = ghnew Material(shader);
-            ScopedPointer<Texture> texture = Textures::makeChecker(resourceManager, context);
-            ResourceParameter *diffuse = (ResourceParameter*)material->Shader->getParameter("diffuseTexture");
+            ScopedPointer<Texture> texture = Textures::makeChecker(context);
+            TextureParameter *diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             diffuse->setValue(texture);
             material->initParameters(context.ParameterManager);
             material->Valid = true;
@@ -69,28 +77,33 @@ namespace Ghurund {
         return material;
     }
 
-    Material* Materials::makeWireframe(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadWireframe(resourceManager, context);
+    Material* Materials::makeWireframe(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadWireframe(context);
         return makeWithShader(shader, context);
     }
 
-    Material* Materials::makeOutline(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadOutline(resourceManager, context);
+    Material* Materials::makeOutline(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadOutline(context);
         return makeWithShader(shader, context);
     }
 
-    Material* Materials::makeNormals(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadNormals(resourceManager, context);
+    Material* Materials::makeNormals(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadNormals(context);
         return makeWithShader(shader, context);
     }
 
-    Material* Materials::makeInvalid(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadInvalid(resourceManager, context);
+    Material* Materials::makeInvalid(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadInvalid(context);
         return makeWithShader(shader, context);
     }
 
-    Material* Materials::makeLightPass(ResourceManager& resourceManager, ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadLightPass(resourceManager, context);
+    Material* Materials::makeLightPass(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadLightPass(context);
+        return makeWithShader(shader, context);
+    }
+
+    Material* Materials::makeUi(ResourceContext& context) {
+        ScopedPointer<Shader> shader = Shaders::loadUi(context);
         return makeWithShader(shader, context);
     }
 }

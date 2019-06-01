@@ -11,7 +11,8 @@ namespace Ghurund.Managed.Resource {
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Audio.Audio audio,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Game.ParameterManager parameterManager,
             [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ScriptEngine scriptEngine,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Physics.Physics physics);
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Physics.Physics physics,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ResourceManager resourceManager);
 
 
         public Graphics.Graphics Graphics { get; set; }
@@ -24,13 +25,21 @@ namespace Ghurund.Managed.Resource {
 
         public Physics.Physics Physics { get; set; }
 
-        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager, ScriptEngine scriptEngine, Physics.Physics physics) {
-            NativePtr = ResourceContext_new(graphics, audio, parameterManager, scriptEngine, physics);
+        public ResourceManager ResourceManager { get; set; }
+
+        public ResourceContext(Graphics.Graphics graphics, Audio.Audio audio, Game.ParameterManager parameterManager, ScriptEngine scriptEngine, Physics.Physics physics, ResourceManager resourceManager) {
+            NativePtr = ResourceContext_new(graphics, audio, parameterManager, scriptEngine, physics, resourceManager);
             Graphics = graphics;
             Audio = audio;
             ParameterManager = parameterManager;
             ScriptEngine = scriptEngine;
             Physics = physics;
+            ResourceManager = resourceManager;
         }
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr ResourceContext_init(IntPtr _this);
+
+        public void Init() => ResourceContext_init(NativePtr);
     }
 }

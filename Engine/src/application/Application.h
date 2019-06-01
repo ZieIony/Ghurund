@@ -97,11 +97,6 @@ namespace Ghurund {
             Window.updateParameters();
         }
 
-        /*
-        if(event.getAction()==KeyAction::DOWN&&event.getKey()==VK_ESCAPE) {
-            PostQuitMessage(0);
-        }*/
-
 
     public:
 

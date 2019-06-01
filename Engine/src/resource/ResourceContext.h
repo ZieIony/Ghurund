@@ -14,24 +14,34 @@ namespace Ghurund {
     protected:
         Graphics& graphics;
         Audio& audio;
-        CommandList* commandList;
-        IWICImagingFactory* wicFactory;
+        CommandList* commandList = nullptr;
+        IWICImagingFactory* wicFactory = nullptr;
         ParameterManager& parameterManager;
         ScriptEngine& scriptEngine;
         Physics& physics;
+        ResourceManager& resourceManager;
 
     public:
-        ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics)
-            : graphics(graphics), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics) {
-            commandList = ghnew Ghurund::CommandList();
-            commandList->init(graphics, graphics.DirectQueue);
-            commandList->Name = _T("loading context's CommandList");
-            HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
-        }
+        ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
+            : graphics(graphics), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
 
         ~ResourceContext() {
-            wicFactory->Release();
-            commandList->release();
+            if (wicFactory)
+                wicFactory->Release();
+            if (commandList)
+                commandList->release();
+        }
+
+        Status init() {
+            commandList = ghnew Ghurund::CommandList();
+            Status result = commandList->init(graphics, graphics.DirectQueue);
+            if (result != Status::OK)
+                return result;
+            commandList->Name = _T("resource context's CommandList");
+            HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
+            if (FAILED(hr))
+                return Status::CALL_FAIL;
+            return Status::OK;
         }
 
         Graphics& getGraphics() {
@@ -75,6 +85,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getPhysics)) Physics& Physics;
+
+        inline ResourceManager& getResourceManager() {
+            return resourceManager;
+        }
+
+        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
 
         const static Ghurund::Type& TYPE;
 

@@ -55,9 +55,9 @@ public:
 
         cameraController = ghnew CameraController(*camera, &app.Window);
 
-        wireframeMaterial = Materials::makeWireframe(app.ResourceManager, app.ResourceContext);
-        outlineMaterial = Materials::makeOutline(app.ResourceManager, app.ResourceContext);
-        checkerMaterial = Materials::makeChecker(app.ResourceManager, app.ResourceContext);
+        wireframeMaterial = Materials::makeWireframe(app.ResourceContext);
+        outlineMaterial = Materials::makeOutline(app.ResourceContext);
+        checkerMaterial = Materials::makeChecker(app.ResourceContext);
 
         File sceneFile("test/test.scene");
         if (sceneFile.Exists) {
@@ -74,7 +74,7 @@ public:
             sceneStep.Entities.add(scene);
             editorStep.Entities.add(scene->Entities[0]);
 
-            Status result = scene->save(app.ResourceManager, app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+            Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if (result != Status::OK)
                 Logger::log(LogType::WARNING, _T("failed to save scene\n"));
         }
@@ -87,7 +87,7 @@ public:
         app.Renderer.Steps.add(&editorStep);
 
         sceneStep.Camera = camera;
-        ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceManager, app.ResourceContext);
+        ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
         sceneStep.InvalidMaterial = invalidMaterial;
         sceneStep.initParameters(app.ParameterManager);
         app.Renderer.Steps.add(&sceneStep);
@@ -108,13 +108,13 @@ public:
             } else {
                 mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/lamborghini/Lamborghini_Aventador.obj");
                 if (mesh != nullptr)
-                    mesh->save(app.ResourceManager, app.ResourceContext, file);
+                    mesh->save(app.ResourceContext, file);
             }
 
-            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceManager, app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
+            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
             if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceManager, app.ResourceContext, *diffuseTexture, *specularTexture);
+                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext);
 
                 lamborghini = ghnew Model(mesh, material);
                 lamborghini->Name = "lamborghini";
@@ -124,7 +124,7 @@ public:
 
         ScopedPointer<Model> cone;
         {
-            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceManager, app.ResourceContext);
+            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
             cone = Models::makeCone(app.ResourceContext, *material);
 
             cone->Name = "cone";
@@ -134,7 +134,7 @@ public:
 
         ScopedPointer<Model> light;
         {
-            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceManager, app.ResourceContext);
+            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
             light = Models::makeSphere(app.ResourceContext, *material);
 
             light->Name = "light";

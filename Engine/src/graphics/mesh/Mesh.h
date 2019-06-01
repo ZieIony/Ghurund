@@ -45,12 +45,12 @@ namespace Ghurund {
 
         BoundingBox boundingBox;
 
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
 
         Status loadObj(ResourceContext& context, MemoryInputStream& stream);
         Status loadMesh(ResourceContext& context, MemoryInputStream& stream);
 
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;

@@ -7,7 +7,7 @@ namespace Ghurund {
     const Ghurund::Type& ResourceManager::TYPE = Ghurund::Type([]() {return ghnew ResourceManager(); }, "ResourceManager");
 
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
-        Status result = resource.load(*this, context, path, nullptr, options);
+        Status result = resource.load(context, path, nullptr, options);
         if (result != Status::OK)
             return Logger::log(LogType::ERR0R, result, String("failed to load file: ") + path + "\n");
 
@@ -24,7 +24,7 @@ namespace Ghurund {
                     }
                     if (!found) {
                         resource.Valid = false;
-                        reloadQueue.add(ghnew ReloadTask(*this, context, resource));
+                        reloadQueue.add(ghnew ReloadTask(context, resource));
                     }
                     section.leave();
                 }
@@ -101,26 +101,26 @@ namespace Ghurund {
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, SaveOption options) {
-        return resource.save(*this, context, options);
+        return resource.save(context, options);
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, const FilePath& path, SaveOption options) {
-        return resource.save(*this, context, path, options);
+        return resource.save(context, path, options);
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, File& file, SaveOption options) {
-        return resource.save(*this, context, file, options);
+        return resource.save(context, file, options);
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
         resourceFactory->describeResource(resource, stream);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
-            return resource.save(*this, context, workingDir, stream, options);
+            return resource.save(context, workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
             stream.writeUnicode(encodePath(*resource.Path, workingDir));
-            return resource.save(*this, context, *resource.Path, options);
+            return resource.save(context, *resource.Path, options);
         }
     }
 

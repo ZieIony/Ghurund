@@ -45,7 +45,7 @@ namespace Ghurund {
             Entity* entity = entities[i];
             XMFLOAT4X4 identity;
             XMStoreFloat4x4(&identity, XMMatrixIdentity());
-            entity->flatten(*this, identity);
+            entity->render(*this, identity);
         }
 
         camera->updateParameters();

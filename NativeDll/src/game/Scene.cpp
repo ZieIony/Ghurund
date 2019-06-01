@@ -27,6 +27,6 @@ extern "C" __declspec(dllexport) const Array<ResourceFormat*> *Scene_getFormats(
     return &Scene::getFormats();
 }
 
-extern "C" __declspec(dllexport) Scene *Scenes_makeEditor(ResourceManager *resourceManager, ResourceContext *context) {
-    return Scenes::makeEditor(*resourceManager, *context);
+extern "C" __declspec(dllexport) Scene *Scenes_makeEditor(ResourceContext *context) {
+    return Scenes::makeEditor(*context);
 }

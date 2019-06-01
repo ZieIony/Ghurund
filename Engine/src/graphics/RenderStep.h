@@ -69,8 +69,8 @@ namespace Ghurund {
         Model* pick(XMINT2& mousePos);
 
         void initParameters(ParameterManager& parameterManager) {
-            parameterWorld = (ValueParameter*)parameterManager.Parameters[ParameterId::WORLD];
-            parameterWorldIT = (ValueParameter*)parameterManager.Parameters[ParameterId::WORLD_IT];
+            parameterWorld = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::WORLD.Value];
+            parameterWorldIT = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::WORLD_IT.Value];
             if (camera)
                 camera->initParameters(parameterManager);
             if (material)

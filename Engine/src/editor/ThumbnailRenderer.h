@@ -13,7 +13,6 @@ namespace Ghurund {
         DepthBuffer* depthBuffer = nullptr;
         RenderStep* step = nullptr;
 
-        ResourceManager* resourceManager = nullptr;
         ResourceContext* resourceContext = nullptr;
 
     public:
@@ -25,7 +24,7 @@ namespace Ghurund {
             delete step;
         }
 
-        void init(ResourceManager& resourceManager, ResourceContext& context, uint32_t width, uint32_t height);
+        void init(ResourceContext& context, uint32_t width, uint32_t height);
 
         Status render(Entity& entity, Image*& image);
         Status render(Mesh& mesh, Image*& image);

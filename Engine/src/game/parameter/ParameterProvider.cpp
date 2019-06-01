@@ -1,26 +1,29 @@
 #include "ParameterProvider.h"
-#include "ResourceParameter.h"
+#include "TextureParameter.h"
 #include "core/ScopedPointer.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
+#include "graphics/texture/Texture.h"
 
 namespace Ghurund {
-    Status ParameterProvider::loadParameters(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    Status ParameterProvider::loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         size_t paramCount = stream.readUInt();
         for (size_t i = 0; i < paramCount; i++) {
             char* name = stream.readASCII();
             Parameter* p = getParameter(name);
 
             if (!p) {
-                Logger::log(LogType::ERR0R, _T("parameter %hs not found while loading material\n"), name);
+                Logger::log(LogType::ERR0R, _T("parameter %hs not found while loading\n"), name);
                 return Status::UNKNOWN;
             }
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
-                Status result;
-                ScopedPointer<Resource> resource = resourceManager.load(context, workingDir, stream, &result, options);
-                if (filterStatus(result, options) != Status::OK)
-                    return result;
-                ((ResourceParameter*)p)->setValue(resource);
+                if (stream.readBoolean()) {
+                    Status result;
+                    ScopedPointer<Texture> resource = (Texture*)context.ResourceManager.load(context, workingDir, stream, &result, options);
+                    if (filterStatus(result, options) != Status::OK)
+                        return result;
+                    ((TextureParameter*)p)->setValue(resource);
+                }
             } else {
                 const void* bytes = stream.readBytes(p->ValueType.Size);
                 ((ValueParameter*)p)->setValue(bytes);
@@ -30,24 +33,28 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status ParameterProvider::saveParameters(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status ParameterProvider::saveParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         List<Parameter*> paramsToSave;
         for (Parameter* p : Parameters) {
             if (!p)
                 continue;
             for (Parameter* mp : context.ParameterManager.Parameters) {
-                if (mp->Name == p->Name)
+                if (mp->Empty)
                     continue;
             }
             paramsToSave.add(p);
         }
         stream.writeUInt((unsigned int)paramsToSave.Size);
         for (Parameter* p : paramsToSave) {
-            stream.writeASCII(p->Name);
+            stream.writeASCII(p->ConstantName);
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
-                Status result = resourceManager.save(*((ResourceParameter*)p)->Value, context, workingDir, stream, options);
-                if (filterStatus(result, options) != Status::OK)
-                    return result;
+                Texture* texture = ((TextureParameter*)p)->Value;
+                stream.writeBoolean(texture != nullptr);
+                if (texture) {
+                    Status result = context.ResourceManager.save(*texture, context, workingDir, stream, options);
+                    if (filterStatus(result, options) != Status::OK)
+                        return result;
+                }
             } else {
                 stream.writeBytes(((ValueParameter*)p)->Value, ((ValueParameter*)p)->ValueType.Size);
             }

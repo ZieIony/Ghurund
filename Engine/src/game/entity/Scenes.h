@@ -10,10 +10,10 @@ namespace Ghurund {
         Scenes() = delete;
 
     public:
-        static Scene *makeEditor(ResourceManager &resourceManager, ResourceContext &context) {
+        static Scene *makeEditor(ResourceContext &context) {
             Scene *scene = ghnew Scene();
 
-            ScopedPointer<Material> material = Materials::makeChecker(resourceManager, context);
+            ScopedPointer<Material> material = Materials::makeChecker(context);
             if (material) {
                 ScopedPointer<Model> model = Models::makePlane(context, *material, 0);
                 if (model) {

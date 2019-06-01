@@ -54,16 +54,21 @@ namespace Ghurund.Editor {
             kernel.Bind<ResourceManager>().ToSelf().InSingletonScope();
             kernel.Bind<ThumbnailRenderer>().ToMethod(context => {
                 ThumbnailRenderer renderer = new ThumbnailRenderer();
-                renderer.Init(context.Kernel.Get<ResourceManager>(), context.Kernel.Get<ResourceContext>(), 200, 200);
+                renderer.Init(context.Kernel.Get<ResourceContext>(), 200, 200);
                 return renderer;
             }).InSingletonScope();
             kernel.Bind<ResourceContext>().ToMethod(context => {
-                return new ResourceContext(
+                ParameterManager parameterManager = context.Kernel.Get<ParameterManager>();
+                ResourceContext resourceContext = new ResourceContext(
                     context.Kernel.Get<Graphics>(),
                     context.Kernel.Get<Audio>(),
-                    context.Kernel.Get<ParameterManager>(),
+                    parameterManager,
                     context.Kernel.Get<ScriptEngine>(),
-                    context.Kernel.Get<Physics>());
+                    context.Kernel.Get<Physics>(),
+                    context.Kernel.Get<ResourceManager>());
+                resourceContext.Init();
+                parameterManager.InitDefaultTextures(resourceContext);
+                return resourceContext;
             }).InSingletonScope();
             kernel.Bind<EditorSettings>().ToMethod(context => {
                 return Controls.Workspace.Extensions.ReadFromBinaryFile<EditorSettings>(EditorSettings.EDITOR_SETTINGS_FILE_NAME, new Type[] { typeof(SceneEditorState) }) ?? new EditorSettings();

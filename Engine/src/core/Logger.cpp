@@ -25,7 +25,7 @@ namespace Ghurund {
     IMAGEHLP_LINE Logger::line;
     CriticalSection Logger::criticalSection;
     std::function<void(const tchar*)> Logger::onLogged;
-    const LogType* Logger::filterLevel;
+    LogType Logger::filterLevel = LogType::INFO;
 
     address_t Logger::getAddress() {
         constexpr int frames = 1;
@@ -99,7 +99,7 @@ namespace Ghurund {
     }
 
     void Logger::log(const LogType& type, const tchar* format, ...) {
-        if (((int)type.Value) < (int)filterLevel->Value)
+        if (((int)type.Value) < (int)filterLevel.Value)
             return;
 
         va_list args;
@@ -111,7 +111,7 @@ namespace Ghurund {
     }
 
     Status Logger::log(const LogType& type, const Status status, const tchar* format, ...) {
-        if (((int)type.Value) < (int)filterLevel->Value)
+        if (((int)type.Value) < (int)filterLevel.Value)
             return status;
 
         va_list args;
@@ -128,9 +128,9 @@ namespace Ghurund {
         Logger::output = output;
 
 #ifdef _DEBUG
-        filterLevel = &LogType::INFO;
+        filterLevel = LogType::INFO;
 #else
-        filterLevel = &LogType::ERR0R;
+        filterLevel = LogType::ERR0R;
 #endif
 
         if (symbol == nullptr) {

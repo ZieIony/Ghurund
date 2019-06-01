@@ -1,5 +1,5 @@
 #include "game/parameter/ValueParameter.h"
-#include "game/parameter/ResourceParameter.h"
+#include "game/parameter/TextureParameter.h"
 
 #include "../Float3.h"
 
@@ -38,7 +38,7 @@ extern "C" __declspec(dllexport) Float4 ValueParameter_getColorValue(ValueParame
     return convertFloat4(*(XMFLOAT4*)_this->getValue());
 }
 
-extern "C" __declspec(dllexport) Resource *ResourceParameter_getValue(ResourceParameter *_this) {
+extern "C" __declspec(dllexport) Texture *ResourceParameter_getValue(TextureParameter *_this) {
     return _this->getValue();
 }
 
@@ -71,11 +71,11 @@ extern "C" __declspec(dllexport) void ValueParameter_setColorValue(ValueParamete
     _this->setValue(&convertFloat4(value));
 }
 
-extern "C" __declspec(dllexport) void ResourceParameter_setValue(ResourceParameter *_this, Resource *value) {
+extern "C" __declspec(dllexport) void ResourceParameter_setValue(TextureParameter *_this, Texture *value) {
     _this->setValue(value);
 }
 
 
 extern "C" __declspec(dllexport) tchar *Parameter_getName(Parameter *_this) {
-    return toTchar(_this->getName().getData());
+    return toTchar(_this->getConstantName());
 }

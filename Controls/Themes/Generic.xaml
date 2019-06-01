@@ -289,7 +289,7 @@
 								<DataTemplate>
 									<DockPanel Margin="4 0 4 0">
 										<TextBlock Text="{Binding Time}" Width="100"/>
-										<TextBlock Text="{Binding Type}" Width="50"/>
+										<TextBlock Text="{Binding Type}" Width="100"/>
 										<TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
 									</DockPanel>
 								</DataTemplate>

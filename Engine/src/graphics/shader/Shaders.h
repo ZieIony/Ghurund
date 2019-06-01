@@ -8,36 +8,40 @@ namespace Ghurund {
         Shaders() = delete;
 
     public:
-        static Shader* loadBasic(ResourceManager& resourceManager, ResourceContext& context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basic.hlsl");
+        static Shader* loadBasic(ResourceContext& context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basic.hlsl");
         }
 
-        static Shader* loadBasicLight(ResourceManager& resourceManager, ResourceContext& context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicLight.hlsl");
+        static Shader* loadBasicLight(ResourceContext& context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicLight.hlsl");
         }
 
-        static Shader* loadToon(ResourceManager& resourceManager, ResourceContext& context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/toon.hlsl");
+        static Shader* loadToon(ResourceContext& context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/toon.hlsl");
         }
 
-        static Shader* loadWireframe(ResourceManager & resourceManager, ResourceContext & context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/wireframe.hlsl");
+        static Shader* loadWireframe(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/wireframe.hlsl");
         }
 
-        static Shader* loadOutline(ResourceManager & resourceManager, ResourceContext & context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/outline.hlsl");
+        static Shader* loadOutline(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/outline.hlsl");
         }
 
-        static Shader* loadNormals(ResourceManager & resourceManager, ResourceContext & context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/normals.hlsl");
+        static Shader* loadNormals(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/normals.hlsl");
         }
 
-        static Shader* loadInvalid(ResourceManager & resourceManager, ResourceContext & context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/invalid.hlsl");
+        static Shader* loadInvalid(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/invalid.hlsl");
         }
 
-        static Shader* loadLightPass(ResourceManager & resourceManager, ResourceContext & context) {
-            return resourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/lightPass.hlsl");
+        static Shader* loadLightPass(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/lightPass.hlsl");
+        }
+
+        static Shader* loadUi(ResourceContext & context) {
+            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/ui.hlsl");
         }
     };
 }

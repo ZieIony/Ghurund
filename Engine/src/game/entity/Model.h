@@ -29,8 +29,8 @@ namespace Ghurund {
     protected:
         List<Entity*> entities;
 
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
 
@@ -131,7 +131,7 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override;
+        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override;
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
             return mesh->intersects(pos, dir, dist);

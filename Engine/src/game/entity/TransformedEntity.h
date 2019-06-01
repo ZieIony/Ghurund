@@ -8,14 +8,14 @@ namespace Ghurund {
     protected:
         XMFLOAT3 position = {};
 
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            __super::loadInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            __super::loadInternal(context, workingDir, stream, options);
             position = stream.read<XMFLOAT3>();
             return Status::OK;
         }
 
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            __super::saveInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            __super::saveInternal(context, workingDir, stream, options);
             stream.write<XMFLOAT3>(position);
             return Status::OK;
         }
@@ -54,15 +54,15 @@ namespace Ghurund {
     protected:
         XMFLOAT3 rotation = {}, scale = {1,1,1};
 
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            __super::loadInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            __super::loadInternal(context, workingDir, stream, options);
             rotation = stream.read<XMFLOAT3>();
             scale = stream.read<XMFLOAT3>();
             return Status::OK;
         }
 
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            __super::saveInternal(resourceManager, context, workingDir, stream, options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            __super::saveInternal(context, workingDir, stream, options);
             stream.write<XMFLOAT3>(rotation);
             stream.write<XMFLOAT3>(scale);
             return Status::OK;

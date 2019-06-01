@@ -38,18 +38,18 @@ namespace Ghurund {
             return;
 
         int i = 0;
-        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_DIRECTION];
-        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_POSITION];
-        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_UP];
-        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters[ParameterId::CAMERA_RIGHT];
+        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_DIRECTION.Value];
+        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_POSITION.Value];
+        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_UP.Value];
+        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_RIGHT.Value];
 
-        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters[ParameterId::FOV];
-        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters[ParameterId::ZNEAR];
-        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters[ParameterId::ZFAR];
+        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::FOV.Value];
+        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZNEAR.Value];
+        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZFAR.Value];
 
-        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters[ParameterId::VIEW];
-        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters[ParameterId::PROJECTION];
-        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters[ParameterId::VIEW_PROJECTION];
+        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW.Value];
+        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::PROJECTION.Value];
+        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION.Value];
     }
 
     void Camera::updateParameters() {
@@ -177,8 +177,8 @@ namespace Ghurund {
         notifyObjectChanged();
     }
 
-    Status Camera::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        __super::loadInternal(resourceManager, context, workingDir, stream, options);
+    Status Camera::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        __super::loadInternal(context, workingDir, stream, options);
 
         memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
         memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
@@ -197,8 +197,8 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status Camera::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        __super::saveInternal(resourceManager, context, workingDir, stream, options);
+    Status Camera::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        __super::saveInternal(context, workingDir, stream, options);
 
         stream.writeBytes(&target, sizeof(target));
         stream.writeBytes(&right, sizeof(right));

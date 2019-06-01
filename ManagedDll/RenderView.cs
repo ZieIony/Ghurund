@@ -68,7 +68,7 @@ namespace Ghurund.Managed {
             disposed = true;
         }
 
-        public void Init(ResourceManager resourceManager, ResourceContext resourceContext) {
+        public void Init(ResourceContext resourceContext) {
             Graphics = resourceContext.Graphics;
             ParameterManager = resourceContext.ParameterManager;
 
@@ -78,7 +78,7 @@ namespace Ghurund.Managed {
             swapChain = new SwapChain();
             swapChain.Init(Graphics, window, FRAME_COUNT);
             Renderer = new Renderer();
-            Renderer.Init(resourceManager, resourceContext);
+            Renderer.Init(resourceContext);
             Renderer.ClearColor = 0xff7f7f7f;
         }
 

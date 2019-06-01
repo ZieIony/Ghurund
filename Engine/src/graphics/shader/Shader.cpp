@@ -1,7 +1,8 @@
 #include "Shader.h"
-#include "resource/ResourceManager.h"
-#include "game/parameter/ResourceParameter.h"
+#include "core/ScopedPointer.h"
+#include "game/parameter/TextureParameter.h"
 #include "graphics/texture/Texture.h"
+#include "resource/ResourceManager.h"
 
 namespace Ghurund {
     Status Shader::makeRootSignature() {
@@ -127,10 +128,18 @@ namespace Ghurund {
             constantBuffers[i]->set(graphics, commandList);
 
         for (size_t i = 0; i < textures.Size; i++) {
-            ResourceParameter* parameter = (ResourceParameter*)parameters->get(i + parameters->Size - textures.Size);
+            TextureParameter* parameter = (TextureParameter*)parameters->get(i + parameters->Size - textures.Size);
             Texture* texture = (Texture*)parameter->getValue();
-            if (texture)
-                texture->set(commandList, textures[i]->BindSlot);
+#ifdef _DEBUG
+            if (!texture) {
+                if (!reported[i]) {
+                    Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing. Parameters are initialized only once and then reused. Please make sure that the parameter is available either in the parameter manager when the shader is initialized or in the shader when the shader is used.\n"), textures[i]->Name);
+                    reported[i] = true;
+                }
+                continue;
+            }
+#endif
+            texture->set(commandList, textures[i]->BindSlot);
         }
 
         return changed;
@@ -151,6 +160,9 @@ namespace Ghurund {
         delete[] source;
 
         delete parameters;
+#ifdef _DEBUG
+        delete[] reported;
+#endif
     }
 
     Shader::~Shader() {
@@ -227,6 +239,9 @@ namespace Ghurund {
             constantsCount += constantBuffers[i]->Parameters.Size;
         }
         parameters = ghnew PointerArray<Parameter*>(constantsCount + textures.Size);    // TODO: correct number of parameters  +textureBuffers.Size+textures.Size
+#ifdef _DEBUG
+        reported = ghnew bool[textures.Size];
+#endif
 
         size_t paramOffset = 0;
         for (size_t i = 0; i < constantBuffers.Size; i++) {
@@ -235,9 +250,14 @@ namespace Ghurund {
         }
 
         for (size_t i = 0; i < textures.Size; i++) {
-            ResourceParameter* parameter = ghnew ResourceParameter(textures[i]->getName(), ParameterType::TEXTURE);
-            parameters->set(i + constantsCount, parameter);
-            parameter->release();
+            Parameter* p = parameterManager.getParameter(textures[i]->getName());
+#ifdef _DEBUG
+            reported[i] = false;
+#endif
+            ScopedPointer<TextureParameter> tp = ghnew TextureParameter(textures[i]->getName());
+            if (p && p->ValueType == ParameterType::TEXTURE)
+                tp->DefaultValue = ((TextureParameter*)p)->Value;
+            parameters->set(i + constantsCount, tp);
         }
     }
 
@@ -360,7 +380,7 @@ namespace Ghurund {
         return build(context);
     }
 
-    Status Shader::loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    Status Shader::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         this->graphics = &context.Graphics;
         Status result;
 
@@ -391,7 +411,7 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Shader::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.writeBoolean(compiled);

@@ -4,8 +4,7 @@
 namespace Ghurund {
     const Ghurund::Type& ThumbnailRenderer::TYPE = Ghurund::Type([]() {return ghnew ThumbnailRenderer(); }, "ThumbnailRenderer");
 
-    void ThumbnailRenderer::init(ResourceManager& resourceManager, ResourceContext& context, uint32_t width, uint32_t height) {
-        this->resourceManager = &resourceManager;
+    void ThumbnailRenderer::init(ResourceContext& context, uint32_t width, uint32_t height) {
         this->resourceContext = &context;
 
         camera = ghnew Camera();
@@ -31,7 +30,7 @@ namespace Ghurund {
         D3D12_RECT scissorRect = D3D12_RECT{0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
         frame->init(context.Graphics, viewport, scissorRect, renderTarget, depthBuffer);
 
-        renderer->init(resourceManager, context);
+        renderer->init(context);
     }
 
     Status ThumbnailRenderer::render(Entity& entity, Image*& image) {
@@ -48,7 +47,7 @@ namespace Ghurund {
     Status ThumbnailRenderer::render(Mesh& mesh, Image*& image) {
         Model* model = ghnew Model();
         model->Mesh = &mesh;
-        model->Material = Materials::makeChecker(*resourceManager, *resourceContext);
+        model->Material = Materials::makeChecker(*resourceContext);
         model->Valid = true;
 
         Status result = render(*model, image);

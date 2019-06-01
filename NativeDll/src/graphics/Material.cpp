@@ -31,22 +31,22 @@ extern "C" __declspec(dllexport) void Material_updateParameters(Material* _this)
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) Material *Materials_makeChecker(ResourceManager *resourceManager, ResourceContext *context) {
-    return Materials::makeChecker(*resourceManager, *context);
+extern "C" __declspec(dllexport) Material *Materials_makeChecker(ResourceContext *context) {
+    return Materials::makeChecker(*context);
 }
 
-extern "C" __declspec(dllexport) Material *Materials_makeWireframe(ResourceManager *resourceManager, ResourceContext *context) {
-    return Materials::makeWireframe(*resourceManager, *context);
+extern "C" __declspec(dllexport) Material *Materials_makeWireframe(ResourceContext *context) {
+    return Materials::makeWireframe(*context);
 }
 
-extern "C" __declspec(dllexport) Material *Materials_makeOutline(ResourceManager *resourceManager, ResourceContext *context) {
-    return Materials::makeOutline(*resourceManager, *context);
+extern "C" __declspec(dllexport) Material *Materials_makeOutline(ResourceContext *context) {
+    return Materials::makeOutline(*context);
 }
 
-extern "C" __declspec(dllexport) Material *Materials_makeNormals(ResourceManager *resourceManager, ResourceContext *context) {
-    return Materials::makeNormals(*resourceManager, *context);
+extern "C" __declspec(dllexport) Material *Materials_makeNormals(ResourceContext *context) {
+    return Materials::makeNormals(*context);
 }
 
-extern "C" __declspec(dllexport) Material *Materials_makeInvalid(ResourceManager *resourceManager, ResourceContext *context) {
-    return Materials::makeInvalid(*resourceManager, *context);
+extern "C" __declspec(dllexport) Material *Materials_makeInvalid(ResourceContext *context) {
+    return Materials::makeInvalid(*context);
 }

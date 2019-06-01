@@ -35,7 +35,7 @@ namespace Ghurund {
         static IMAGEHLP_LINE line;
         static CriticalSection criticalSection;
         static std::function<void(const tchar*)> onLogged;
-        static const LogType* filterLevel;
+        static LogType filterLevel;
 
         static address_t getAddress();
 
@@ -50,7 +50,7 @@ namespace Ghurund {
         static void uninit();
 
         static void setFilter(const LogType& level) {
-            filterLevel = &level;
+            filterLevel = level;
         }
 
         static void log(const LogType& type, const tchar* format, ...);

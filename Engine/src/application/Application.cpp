@@ -6,13 +6,14 @@ namespace Ghurund {
     void Application::init() {
         CoInitialize(nullptr);
 
-        parameterManager = ghnew Ghurund::ParameterManager();
+        // engine
         graphics = ghnew Ghurund::Graphics();
         graphics->init();
         audio = ghnew Ghurund::Audio();
         audio->init();
         physics = ghnew Ghurund::Physics();
         physics->init();
+        parameterManager = ghnew Ghurund::ParameterManager();
 
         timer = ghnew Ghurund::Timer();
         scriptEngine = ghnew Ghurund::ScriptEngine();
@@ -20,15 +21,17 @@ namespace Ghurund {
         resourceManager = ghnew Ghurund::ResourceManager();
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
 
-        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics);
-        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics);
+        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
+        resourceContext->init();
+        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
+        asyncResourceContext->init();
+        parameterManager->initDefaultTextures(*resourceContext);
 
+        // app
         window.init(settings, *windowProc);
         window.initParameters(ParameterManager);
-
         renderer = ghnew Ghurund::Renderer();
-        renderer->init(*resourceManager, *resourceContext);
-
+        renderer->init(*resourceContext);
         swapChain = ghnew SwapChain();
         swapChain->init(Graphics, window, FRAME_COUNT);
 

@@ -26,9 +26,6 @@ namespace Ghurund.Editor.ResourceEditor {
     public partial class SceneEditorPanel : UserControl, ISceneEditor, IStateControl {
 
         [Inject]
-        public ResourceManager ResourceManager { get; set; }
-
-        [Inject]
         public ResourceContext ResourceContext { get; set; }
 
         [Inject]
@@ -80,12 +77,12 @@ namespace Ghurund.Editor.ResourceEditor {
             cameraPicker.Items.Add(CameraMode.Front);
             cameraPicker.Items.Add(CameraMode.Top);
 
-            checkerMaterial = Materials.MakeChecker(ResourceManager, ResourceContext);
-            wireframeMaterial = Materials.MakeWireframe(ResourceManager, ResourceContext);
-            normalsMaterial = Materials.MakeNormals(ResourceManager, ResourceContext);
+            checkerMaterial = Materials.MakeChecker(ResourceContext);
+            wireframeMaterial = Materials.MakeWireframe(ResourceContext);
+            normalsMaterial = Materials.MakeNormals(ResourceContext);
 
-            sceneView.Init(ResourceManager, ResourceContext);
-            sceneView.Tool = new CameraRotateSceneTool(sceneView.RenderView);
+            sceneView.Init(ResourceContext);
+            sceneView.Tool = new CameraOrbitSceneTool(sceneView.RenderView);
             StatisticsPanel.SelectedObject = sceneView.Renderer.Statistics;
 
             cameraPicker.SelectedValue = CameraMode.Default;
@@ -123,12 +120,12 @@ namespace Ghurund.Editor.ResourceEditor {
                     return false;
                 fileName = saveFileDialog.FileName;
             }
-            return Scene.Save(ResourceManager, fileName) == Status.OK;
+            return Scene.Save(ResourceContext, fileName) == Status.OK;
         }
 
         public bool Load(string fileName) {
             var scene = new Scene();
-            if (scene.Load(ResourceManager, ResourceContext, fileName) != Status.OK)
+            if (scene.Load(ResourceContext, fileName) != Status.OK)
                 return false;
             scene.InitParameters(ParameterManager);
             Scene = scene;

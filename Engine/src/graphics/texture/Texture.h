@@ -11,20 +11,11 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
 
-        Image *image = nullptr;
+        Image* image = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream &stream, LoadOption options) {
-            Status result;
-            image = (Ghurund::Image*)resourceManager.load(context, workingDir, stream, &result, options);
-            if(filterStatus(result, options)!=Status::OK)
-                return result;
-            return init(context, *image);
-        }
-
-        virtual Status saveInternal(ResourceManager &resourceManager, ResourceContext &context, const DirectoryPath &workingDir, MemoryOutputStream &stream, SaveOption options)const {
-            return resourceManager.save(*image, context, workingDir, stream, options);
-        }
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
     public:
         DescriptorHandle descHandle;
@@ -36,7 +27,7 @@ namespace Ghurund {
         void finalize() {
             textureResource.ReleaseAndGetAddressOf();
             textureUploadHeap.ReleaseAndGetAddressOf();
-            if(image!=nullptr)
+            if (image != nullptr)
                 image->release();
         }
 
@@ -47,10 +38,10 @@ namespace Ghurund {
         }
 
         virtual bool isValid() {
-            return image!=nullptr&&image->Valid&&__super::Valid;
+            return image != nullptr && image->Valid && __super::Valid;
         }
 
-        Status init(ResourceContext &context, Image &image);
+        Status init(ResourceContext& context, Image& image);
 
         inline Image* getImage() {
             return image;
@@ -58,22 +49,22 @@ namespace Ghurund {
 
         __declspec(property(get = getImage)) Image* Image;
 
-        void set(CommandList &commandList, unsigned int index) {
+        void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
             commandList.addResourceRef(textureUploadHeap.Get());
 
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
-        virtual const Ghurund::Type &getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return Type::TEXTURE;
         }
 
-        static const Array<ResourceFormat*> &getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)&ResourceFormat::JPG};
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::JPG};
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*> &Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
     };
 }

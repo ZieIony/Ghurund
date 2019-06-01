@@ -26,9 +26,6 @@ namespace Ghurund.Editor.ResourceEditor {
         }
 
         [Inject]
-        public ResourceManager ResourceManager { get; set; }
-
-        [Inject]
         public ResourceContext ResourceContext { get; set; }
 
         private bool disposed = false;
@@ -97,7 +94,7 @@ namespace Ghurund.Editor.ResourceEditor {
 
         public bool Load(string fileName) {
             Sound sound = new Sound();
-            sound.Load(ResourceManager, ResourceContext, fileName);
+            sound.Load(ResourceContext, fileName);
             Sound = sound;
             return true;
         }

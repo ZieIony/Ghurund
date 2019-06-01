@@ -43,7 +43,7 @@ namespace Ghurund {
             if (parameterViewportSize != nullptr)
                 return;
 
-            parameters[0] = parameterViewportSize = (ValueParameter*)parameterManager.Parameters[ParameterId::VIEWPORT_SIZE];
+            parameters[0] = parameterViewportSize = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEWPORT_SIZE.Value];
         }
 
         virtual void updateParameters() override {

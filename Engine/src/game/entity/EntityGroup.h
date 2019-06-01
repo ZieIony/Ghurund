@@ -10,8 +10,8 @@ namespace Ghurund {
         EntityList entities;
         mutable DirectX::BoundingBox boundingBox;
 
-        virtual Status loadInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceManager& resourceManager, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
 
@@ -93,10 +93,10 @@ namespace Ghurund {
             return list;
         }
 
-        virtual void flatten(RenderStep& step, XMFLOAT4X4& transformation) override {
+        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override {
             for (size_t i = 0; i < Entities.Size; i++) {
                 Entity* entity = Entities[i];
-                entity->flatten(step, transformation);
+                entity->render(step, transformation);
             }
         }
 
