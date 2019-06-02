@@ -63,7 +63,7 @@ namespace Ghurund {
 #ifdef _DEBUG
                 if (p->Value == nullptr) {
                     if (!reported[i]) {
-                        Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing. Parameters are initialized only once and then reused. Please make sure that the parameter is available either in the parameter manager when the shader is initialized or in the shader when the shader is used.\n"), variables[i]->name);
+                        Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing.\n"), variables[i]->name);
                         reported[i] = true;
                     }
                     continue;

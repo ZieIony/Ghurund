@@ -55,7 +55,7 @@ namespace Ghurund {
 
         __declspec(property(get = getId)) id_t Id;
 
-        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) = 0;
+        virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) = 0;
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
             return false;

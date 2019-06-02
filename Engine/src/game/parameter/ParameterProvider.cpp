@@ -36,12 +36,8 @@ namespace Ghurund {
     Status ParameterProvider::saveParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         List<Parameter*> paramsToSave;
         for (Parameter* p : Parameters) {
-            if (!p)
+            if (p->Empty)
                 continue;
-            for (Parameter* mp : context.ParameterManager.Parameters) {
-                if (mp->Empty)
-                    continue;
-            }
             paramsToSave.add(p);
         }
         stream.writeUInt((unsigned int)paramsToSave.Size);

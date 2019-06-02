@@ -133,7 +133,7 @@ namespace Ghurund {
 #ifdef _DEBUG
             if (!texture) {
                 if (!reported[i]) {
-                    Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing. Parameters are initialized only once and then reused. Please make sure that the parameter is available either in the parameter manager when the shader is initialized or in the shader when the shader is used.\n"), textures[i]->Name);
+                    Logger::log(LogType::WARNING, _T("Parameter for variable '%hs' is missing.\n"), textures[i]->Name);
                     reported[i] = true;
                 }
                 continue;

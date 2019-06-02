@@ -52,6 +52,6 @@ namespace Ghurund {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override;
+        virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) override;
     };
 }

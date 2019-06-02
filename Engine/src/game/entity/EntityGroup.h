@@ -93,10 +93,10 @@ namespace Ghurund {
             return list;
         }
 
-        virtual void render(RenderStep& step, XMFLOAT4X4& transformation) override {
+        virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) override {
             for (size_t i = 0; i < Entities.Size; i++) {
                 Entity* entity = Entities[i];
-                entity->render(step, transformation);
+                entity->queueDraw(step, transformation);
             }
         }
 

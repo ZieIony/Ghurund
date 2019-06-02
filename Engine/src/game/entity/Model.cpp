@@ -34,7 +34,7 @@ namespace Ghurund {
         return filterStatus(result, options);
     }
 
-    void Model::render(RenderStep& step, XMFLOAT4X4& transformation) {
+    void Model::queueDraw(RenderStep& step, XMFLOAT4X4& transformation) {
         if (!Visible)
             return;
 

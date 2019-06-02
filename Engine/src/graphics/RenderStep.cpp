@@ -45,7 +45,7 @@ namespace Ghurund {
             Entity* entity = entities[i];
             XMFLOAT4X4 identity;
             XMStoreFloat4x4(&identity, XMMatrixIdentity());
-            entity->render(*this, identity);
+            entity->queueDraw(*this, identity);
         }
 
         camera->updateParameters();
@@ -59,10 +59,11 @@ namespace Ghurund {
                     continue;
                 }
 
+                Model& model = entity->Model;
                 Ghurund::Material* overrideMaterial = material;
-                if (!entity->Model.Valid) {
-                    if (entity->Model.Mesh != nullptr && entity->Model.Mesh->Valid
-                        && entity->Model.Material != nullptr && !entity->Model.Material->Valid
+                if (!model.Valid) {
+                    if (model.Mesh != nullptr && model.Mesh->Valid
+                        && model.Material != nullptr && !model.Material->Valid
                         && invalidMaterial != nullptr) {
                         overrideMaterial = invalidMaterial;
                     } else {
@@ -77,16 +78,16 @@ namespace Ghurund {
                 parameterWorldIT->setValue(&worldIT);
 
                 if (overrideMaterial != nullptr) {
-                    Ghurund::Material* modelMaterial = entity->Model.Material;
+                    Ghurund::Material* modelMaterial = model.Material;
                     modelMaterial->addReference();
-                    entity->Model.Material = overrideMaterial;
-                    entity->Model.updateParameters();
-                    entity->Model.draw(graphics, commandList, stats);
-                    entity->Model.Material = modelMaterial;
+                    model.Material = overrideMaterial;
+                    model.updateParameters();
+                    model.draw(graphics, commandList, stats);
+                    model.Material = modelMaterial;
                     modelMaterial->release();
                 } else {
-                    entity->Model.updateParameters();
-                    entity->Model.draw(graphics, commandList, stats);
+                    model.updateParameters();
+                    model.draw(graphics, commandList, stats);
                 }
             }
         } else {
@@ -97,7 +98,8 @@ namespace Ghurund {
                     continue;
                 }
 
-                if (!entity->Model.Valid)
+                Model& model = entity->Model;
+                if (!model.Valid)
                     continue;
 
                 parameterWorld->setValue(&entity->Transformation);
@@ -106,8 +108,8 @@ namespace Ghurund {
                 XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
                 parameterWorldIT->setValue(&worldIT);
 
-                entity->Model.updateParameters();
-                entity->Model.draw(graphics, commandList, stats);
+                model.updateParameters();
+                model.draw(graphics, commandList, stats);
             }
         }
     }

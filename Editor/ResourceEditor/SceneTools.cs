@@ -35,7 +35,7 @@ namespace Ghurund.Editor.ResourceEditor {
         public override bool OnMove(bool pressed, float dx, float dy) {
             if (!pressed)
                 return false;
-            renderView.Camera.Pan((float)dx, (float)-dy);
+            renderView.Camera.Pan(dx, -dy);
             return true;
         }
 
