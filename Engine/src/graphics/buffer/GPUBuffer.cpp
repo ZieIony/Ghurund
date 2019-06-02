@@ -12,17 +12,14 @@ namespace Ghurund {
         }
 #endif
 
-        D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
-        cbvDesc.BufferLocation = constantBufferUploadHeap->GetGPUVirtualAddress();
-        cbvDesc.SizeInBytes = align<UINT>((UINT)buffer->Size, 256);    // CB size is required to be 256-byte aligned.
-        graphics.Device->CreateConstantBufferView(&cbvDesc, descHandle.getCpuHandle());
-
         CD3DX12_RANGE readRange(0, 0);
         constantBufferUploadHeap->Map(0, &readRange, (void**)& gpuAddress);
 
         memcpy(gpuAddress, buffer->Data, buffer->Size);
+        CD3DX12_RANGE writeRange(0, buffer->Size);
+        constantBufferUploadHeap->Unmap(0, &writeRange);
 
-        commandList.get()->SetGraphicsRootDescriptorTable(bindSlot, descHandle.getGpuHandle());
+        commandList.get()->SetGraphicsRootConstantBufferView(bindSlot, constantBufferUploadHeap->GetGPUVirtualAddress());
         commandList.addPointerRef(resourcePointer);
         resourcePointer->release();
     }

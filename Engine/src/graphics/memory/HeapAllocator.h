@@ -16,13 +16,13 @@ namespace Ghurund {
     class HeapAllocator:public Allocator<memory_t> {
     public:
         ID3D12Heap* heap = nullptr;
-        AllocationStrategy *strategy;
+        AllocationStrategy* strategy;
 
     public:
-        HeapAllocator(Graphics &graphics, memory_t size, AllocationStrategy *strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(Graphics& graphics, memory_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
-            if(heap!=nullptr)
+            if (heap != nullptr)
                 heap->Release();
             delete strategy;
         }

@@ -42,11 +42,13 @@ namespace Ghurund.Editor {
             string messageWithType = logText.Substring(logText.IndexOf(']') + 1).Trim();
             string type = messageWithType.Substring(0,messageWithType.IndexOf(' '));
             string message = messageWithType.Substring(messageWithType.IndexOf(' ')+1);
-            logs.Logs.Add(new Log() {
-                Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
-                Type = type,
-                Message = message
-            });
+            Dispatcher.Invoke(new Action(() => {
+                logs.Logs.Add(new Log() {
+                    Time = DateTime.UtcNow.ToString("HH:mm:ssZ"),
+                    Type = type,
+                    Message = message
+                });
+            }));
         }
 
         public ImageSource Icon { get; } = new BitmapImage(new Uri("pack://application:,,,/Resources/icons/logs32.png", UriKind.Absolute));

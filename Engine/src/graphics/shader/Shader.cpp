@@ -10,21 +10,20 @@ namespace Ghurund {
 
         size_t paramCount = constantBuffers.Size + textureBuffers.Size + textures.Size;
         CD3DX12_ROOT_PARAMETER1* rootParameters = ghnew CD3DX12_ROOT_PARAMETER1[paramCount];
-        CD3DX12_DESCRIPTOR_RANGE1* ranges = ghnew CD3DX12_DESCRIPTOR_RANGE1[paramCount];
 
         unsigned int r = 0;
         for (size_t i = 0; i < constantBuffers.Size; i++, r++) {
             ShaderConstant* constant = constantBuffers.get(i);
             constant->BindSlot = r;
-            ranges[r].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
-            rootParameters[r].InitAsDescriptorTable(1, &ranges[r], constant->getVisibility());
+            rootParameters[r].InitAsConstantBufferView(constant->getBindPoint(), 0, D3D12_ROOT_DESCRIPTOR_FLAG_NONE, constant->getVisibility());
         }
 
+        CD3DX12_DESCRIPTOR_RANGE1* ranges = ghnew CD3DX12_DESCRIPTOR_RANGE1[textures.Size];
         for (size_t i = 0; i < textures.Size; i++, r++) {
             ShaderConstant* constant = textures.get(i);
             constant->BindSlot = r;
-            ranges[r].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
-            rootParameters[r].InitAsDescriptorTable(1, &ranges[r], constant->getVisibility());
+            ranges[i].Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, constant->getBindPoint(), 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+            rootParameters[r].InitAsDescriptorTable(1, &ranges[i], constant->getVisibility());
         }
 
         D3D12_STATIC_SAMPLER_DESC* samplerDescs = ghnew D3D12_STATIC_SAMPLER_DESC[samplers.Size];
@@ -54,8 +53,8 @@ namespace Ghurund {
         }
 
     cleanUp:
-        delete[] rootParameters;
         delete[] ranges;
+        delete[] rootParameters;
         delete[] samplerDescs;
 
         return result;

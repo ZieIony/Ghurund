@@ -93,7 +93,9 @@ namespace Ghurund.Editor {
         }
 
         private void Logger_OnLog(string log) {
-            mostRecentLog.Text = DateTime.UtcNow.ToString("HH:mm:ssZ") + " " + log.Substring(log.IndexOf(']') + 1).Trim();
+            Dispatcher.Invoke(new Action(() => {
+                mostRecentLog.Text = DateTime.UtcNow.ToString("HH:mm:ssZ") + " " + log.Substring(log.IndexOf(']') + 1).Trim();
+            }));
         }
 
         IDocumentPanel mostRecentDocumentPanel;

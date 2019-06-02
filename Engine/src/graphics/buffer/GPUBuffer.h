@@ -9,7 +9,6 @@
 namespace Ghurund {
     class GPUBuffer {
     private:
-		DescriptorHandle descHandle;
         //ID3D12Resource *constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
         Buffer *buffer;
 		void *gpuAddress = nullptr;
@@ -22,8 +21,6 @@ namespace Ghurund {
         }
 
         void init(Graphics &graphics, size_t size) {
-            descHandle = graphics.DescriptorAllocator.allocate(graphics, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
             //graphics.MemoryAllocator.allocate(D3D12_HEAP_TYPE_UPLOAD, CD3DX12_RESOURCE_DESC::Buffer(align<unsigned int>(size, 1024 * 64)), D3D12_RESOURCE_STATE_GENERIC_READ, &constantBufferUploadHeap);
             /*graphics.getDevice()->CreateCommittedResource(
                 &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),

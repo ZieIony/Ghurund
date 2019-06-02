@@ -71,11 +71,7 @@ namespace Ghurund {
                     }
                 }
 
-                parameterWorld->setValue(&entity->Transformation);
-                XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
-                XMFLOAT4X4 worldIT;
-                XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
-                parameterWorldIT->setValue(&worldIT);
+                setupDrawingParams(*entity);
 
                 if (overrideMaterial != nullptr) {
                     Ghurund::Material* modelMaterial = model.Material;
@@ -102,16 +98,20 @@ namespace Ghurund {
                 if (!model.Valid)
                     continue;
 
-                parameterWorld->setValue(&entity->Transformation);
-                XMMATRIX world = XMLoadFloat4x4(&entity->Transformation);
-                XMFLOAT4X4 worldIT;
-                XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
-                parameterWorldIT->setValue(&worldIT);
+                setupDrawingParams(*entity);
 
                 model.updateParameters();
                 model.draw(graphics, commandList, stats);
             }
         }
+    }
+
+    void RenderStep::setupDrawingParams(Ghurund::GlobalEntity& entity) {
+        parameterWorld->setValue(&entity.Transformation);
+        XMMATRIX world = XMLoadFloat4x4(&entity.Transformation);
+        XMFLOAT4X4 worldIT;
+        XMStoreFloat4x4(&worldIT, XMMatrixTranspose(XMMatrixInverse(nullptr, world)));
+        parameterWorldIT->setValue(&worldIT);
     }
 
 }

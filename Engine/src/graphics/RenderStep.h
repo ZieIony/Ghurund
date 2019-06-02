@@ -19,6 +19,9 @@ namespace Ghurund {
         ValueParameter* parameterWorld;
         ValueParameter* parameterWorldIT;
 
+        void cull();
+        void setupDrawingParams(Ghurund::GlobalEntity& entity);
+
     public:
         ~RenderStep() {
             if (camera)
@@ -63,8 +66,6 @@ namespace Ghurund {
         }
 
         __declspec(property(put = setInvalidMaterial)) Ghurund::Material* InvalidMaterial;
-
-        void cull();
 
         Model* pick(XMINT2& mousePos);
 

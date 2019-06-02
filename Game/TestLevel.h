@@ -16,7 +16,7 @@ private:
     Camera* camera = nullptr;
     CameraController* cameraController = nullptr;
     Application& app;
-    Material * wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
+    Material* wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
 
     RenderStep editorStep, sceneStep;
 
@@ -114,7 +114,7 @@ public:
             ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
             ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
             if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext);
+                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture);
 
                 lamborghini = ghnew Model(mesh, material);
                 lamborghini->Name = "lamborghini";
@@ -148,6 +148,7 @@ public:
     virtual void onUpdate() override {
         camera->ScreenSize = app.Window.Size;
         cameraController->update(app.Input);
+        ((Model*)((Scene*)sceneStep.Entities[0])->Entities[1])->Position = {sin(app.Timer.getTime()) * 50 + 100, 100,cos(app.Timer.getTime()) * 50 + 100};
     }
 
     virtual void onUninit() override {
