@@ -67,6 +67,8 @@ namespace Ghurund {
     public:
         ~Shader();
 
+        virtual void reload(ResourceContext& context);
+
         virtual void invalidate();
 
         virtual bool isValid() const {

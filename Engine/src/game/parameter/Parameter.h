@@ -63,7 +63,11 @@ namespace Ghurund {
 
     public:
         Parameter(const char* constantName, const ParameterType& type):type(type) {
-            this->constantName = constantName;
+            this->constantName = copyStr(constantName);
+        }
+
+        ~Parameter() {
+            delete[] constantName;
         }
 
         const ParameterType& getValueType() const {

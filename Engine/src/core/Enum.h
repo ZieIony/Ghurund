@@ -65,6 +65,7 @@ namespace Ghurund {
         }
 
     public:
+
         static EnumValues<Type, Type2> VALUES;
 
         EnumValues<Type, Type2>& getValues() const {

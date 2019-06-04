@@ -19,7 +19,7 @@ Made of the same blocks as Editor. Useful for polishing C++/C# interop and previ
 
 Not really a game right now. More like an app for checking if the engine is fine. This is how it looks like:
 
-<img src='https://user-images.githubusercontent.com/10180628/39607596-228e5e8a-4f3c-11e8-8da2-b748510f7625.png' width=200/>
+<img src='https://github.com/ZieIony/Ghurund/blob/master/images/game.png'  width=200/>
 
 ##### Other modules
 

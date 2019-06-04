@@ -14,7 +14,7 @@ namespace Ghurund {
     public:
         static Material* makeBasic(ResourceContext& context, Texture* texture = nullptr);
 
-        static Material* makeBasicLight(ResourceContext& context, Texture* diffuseTexture = nullptr, Texture* specularTexture = nullptr);
+        static Material* makeBasicLight(ResourceContext& context, Texture* diffuseTexture = nullptr, Texture* specularTexture = nullptr, Texture* normalTexture = nullptr);
 
         static Material* makeToon(ResourceContext& context, Texture* texture = nullptr);
 

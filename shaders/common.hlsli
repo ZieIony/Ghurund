@@ -22,6 +22,14 @@ float getSpecularIntensity(float3 vertexPos, float3 normalNormalized, float3 cam
     return pow(saturate(dot(r, v)), power);
 }
 
+/*float3 sampleNormalMap(float3 normal, float3 tangent, float2 texCoord){
+	float3x3 toWorld = float3x3(tangent, cross(tangent, normal), normal);
+	float3 normalMap = u_NormalMap.Sample(u_NormalSampler, texCoord).rgb * 2.0 - 1.0;
+	normalMap = mul(normalMap.rgb, toWorld);
+	normalMap = normalize(normalMap);
+	return normalMap;
+}*/
+	
 float3x3 getWorldToTangent(float3 normal, float3 tangent, float4x4 world){
     float3x3 worldToTangentSpace;
     worldToTangentSpace[0] = mul(tangent, world);

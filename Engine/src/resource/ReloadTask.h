@@ -22,11 +22,7 @@ namespace Ghurund {
         __declspec(property(get = getResource)) Resource &Resource;
 
         void execute() {
-            resource->Valid = true;
-            resource->invalidate();
-            resource->addReference();
-            resource->load(context);
-            resource->release();
+            resource->reload(context);
         }
     };
 }

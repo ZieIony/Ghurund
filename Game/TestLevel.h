@@ -18,7 +18,7 @@ private:
     Application& app;
     Material* wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
 
-    RenderStep editorStep, sceneStep;
+    RenderStep editorStep, sceneStep, selectionStep;
 
 public:
     TestLevel(Application& app):app(app) {}
@@ -49,6 +49,9 @@ public:
     }
 
     virtual void onInit() override {
+        ScopedPointer<ValueParameter> lightPosParameter = ghnew ValueParameter("lightPos", ParameterType::FLOAT3);
+        app.ParameterManager.Parameters.add(lightPosParameter);
+    
         camera = ghnew Ghurund::Camera();
         camera->setPositionTargetUp({0, 50, -500}, {0, 50, 0});
         camera->initParameters(app.ParameterManager);
@@ -66,13 +69,13 @@ public:
                     return;
                 scene->initParameters(app.ParameterManager);
                 sceneStep.Entities.add(scene);
-                editorStep.Entities.add(scene->Entities[0]);
+                selectionStep.Entities.add(scene->Entities[0]);
                 scene->release();
                 });
         } else {
             ScopedPointer<Scene> scene = makeScene();
             sceneStep.Entities.add(scene);
-            editorStep.Entities.add(scene->Entities[0]);
+            selectionStep.Entities.add(scene->Entities[0]);
 
             Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if (result != Status::OK)
@@ -80,11 +83,17 @@ public:
         }
 
         editorStep.Camera = camera;
-        ScopedPointer<Scene> editorScene = ghnew Scene();// Scenes::makeEditor(app.ResourceManager, app.ResourceContext);
+        ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
         editorStep.Entities.add(editorScene);
         editorStep.initParameters(app.ParameterManager);
-        editorStep.OverrideMaterial = outlineMaterial;
         app.Renderer.Steps.add(&editorStep);
+
+        selectionStep.Camera = camera;
+        ScopedPointer<Scene> selectionScene = ghnew Scene();
+        selectionStep.Entities.add(selectionScene);
+        selectionStep.initParameters(app.ParameterManager);
+        selectionStep.OverrideMaterial = outlineMaterial;
+        app.Renderer.Steps.add(&selectionStep);
 
         sceneStep.Camera = camera;
         ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
@@ -99,7 +108,7 @@ public:
     }
 
     Scene* makeScene() {
-        ScopedPointer<Model> lamborghini;
+        /*ScopedPointer<Model> lamborghini;
         {
             ScopedPointer<Mesh> mesh;
             File file("test/obj/lamborghini/Lamborghini_Aventador.mesh");
@@ -113,12 +122,37 @@ public:
 
             ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
             ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
+            ScopedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
             if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture);
+                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
                 lamborghini = ghnew Model(mesh, material);
                 lamborghini->Name = "lamborghini";
                 lamborghini->Valid = true;
+            }
+        }*/
+
+        ScopedPointer<Model> house;
+        {
+            ScopedPointer<Mesh> mesh;
+            File file("test/obj/house/house.mesh");
+            if (file.Exists) {
+                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
+            } else {
+                mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/house/house_obj.obj");
+                if (mesh != nullptr)
+                    mesh->save(app.ResourceContext, file);
+            }
+
+            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_diffuse.png");
+            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_spec.png");
+            ScopedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
+            if (diffuseTexture != nullptr && specularTexture != nullptr && normalTexture!=nullptr && mesh != nullptr) {
+                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
+
+                house = ghnew Model(mesh, material);
+                house->Name = "house";
+                house->Valid = true;
             }
         }
 
@@ -138,17 +172,19 @@ public:
             light = Models::makeSphere(app.ResourceContext, *material);
 
             light->Name = "light";
-            light->Position = {200, 500, -500};
-            light->Scale = {20, 20, 20};
+            light->Position = {120, 100, -150};
+            light->Scale = {10, 10, 10};
         }
 
-        return ghnew Scene({lamborghini, cone, light});
+        return ghnew Scene({house, cone, light});
     }
 
     virtual void onUpdate() override {
+        ValueParameter *param = (ValueParameter*)app.ParameterManager.getParameter("lightPos");
+        XMFLOAT3 lightPos = {sin(app.Timer.Time) * 150, 150, cos(app.Timer.Time) * 150};
+        param->setValue(&lightPos);
         camera->ScreenSize = app.Window.Size;
         cameraController->update(app.Input);
-        ((Model*)((Scene*)sceneStep.Entities[0])->Entities[1])->Position = {sin(app.Timer.getTime()) * 50 + 100, 100,cos(app.Timer.getTime()) * 50 + 100};
     }
 
     virtual void onUninit() override {

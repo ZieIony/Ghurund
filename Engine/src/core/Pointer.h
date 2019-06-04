@@ -4,14 +4,18 @@
 #include "Type.h"
 #include "Logger.h"
 #include "Object.h"
+#include "CriticalSection.h"
 
 namespace Ghurund {
-
-    void dumpPointers();
 
     class Pointer: public Object {
     private:
         unsigned long referenceCount;
+
+#ifdef _DEBUG
+        static Ghurund::List<Ghurund::Pointer*> pointers;
+        static CriticalSection section;
+#endif
 
     protected:
         Pointer(const Pointer &pointer);
@@ -40,6 +44,10 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
+
+#ifdef _DEBUG
+        static void dumpPointers();
+#endif
     };
 
     template<class Type>

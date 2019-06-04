@@ -29,7 +29,7 @@ namespace Ghurund {
         return material;
     }
 
-    Material* Materials::makeBasicLight(ResourceContext& context, Texture* diffuseTexture, Texture* specularTexture) {
+    Material* Materials::makeBasicLight(ResourceContext& context, Texture* diffuseTexture, Texture* specularTexture, Texture* normalTexture) {
         Material* material = nullptr;
         ScopedPointer<Shader> shader = Shaders::loadBasicLight(context);
         if (shader) {
@@ -41,6 +41,10 @@ namespace Ghurund {
             if (specularTexture) {
                 TextureParameter* specular = (TextureParameter*)material->Shader->getParameter(ParameterId::SPECULAR_TEXTURE.ConstantName);
                 specular->setValue(specularTexture);
+            }
+            if (normalTexture) {
+                TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::NORMAL_TEXTURE.ConstantName);
+                diffuse->setValue(normalTexture);
             }
             material->initParameters(context.ParameterManager);
             material->Valid = true;

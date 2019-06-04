@@ -168,6 +168,30 @@ namespace Ghurund {
         finalize();
     }
 
+    void Shader::reload(ResourceContext& context) {
+        size_t paramCount = this->parameters ? this->parameters->Size : 0;
+        PointerArray<Parameter*> parameters(paramCount);
+        if (this->parameters)
+            this->parameters->copyTo(parameters);
+        __super::reload(context);
+        if (this->parameters) {
+            for (Parameter* p2 : parameters) {
+                if (p2->Empty)
+                    continue;
+                for (Parameter* p : *this->parameters) {
+                    if (strcmp(p->ConstantName, p2->ConstantName) == 0 && p->ValueType == p2->ValueType) {
+                        if (p->ValueType == ParameterType::TEXTURE) {
+                            ((TextureParameter*)p)->Value = ((TextureParameter*)p2)->Value;
+                        } else {
+                            ((ValueParameter*)p)->Value = ((ValueParameter*)p2)->Value;
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     void Shader::invalidate() {
         finalize();
 
@@ -179,6 +203,7 @@ namespace Ghurund {
 
         source = nullptr;
         parameters = nullptr;
+        reported = nullptr;
 
         __super::invalidate();
     }

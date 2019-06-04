@@ -24,5 +24,19 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getSize)) unsigned int Size;
+
+        static const ParameterType &fromSize(size_t size) {
+            if (size == 4) {
+                return ParameterType::FLOAT;
+            } else if (size == 8) {
+                return ParameterType::FLOAT2;
+            } else if (size == 12) {
+                return ParameterType::FLOAT3;
+            } else if (size == 16) {
+                return ParameterType::COLOR;
+            } else {
+                return ParameterType::MATRIX;
+            }
+        }
     };
 }

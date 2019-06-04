@@ -74,6 +74,14 @@ namespace Ghurund {
         Status save(ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
         Status save(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
+        virtual void reload(ResourceContext& context) {
+            valid = true;
+            invalidate();
+            addReference();
+            load(context);
+            release();
+        }
+
         virtual void invalidate() {
             valid = false;
         }

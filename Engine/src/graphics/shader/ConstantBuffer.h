@@ -50,9 +50,10 @@ namespace Ghurund {
 
         virtual void initParameters(ParameterManager& parameterManager) override {
             for (size_t i = 0; i < variables.Size; i++) {
+                ScopedPointer<ValueParameter> vp = ghnew ValueParameter(variables[i]->name, ParameterType::fromSize(variables[i]->size));
                 ValueParameter* p = (ValueParameter*)parameterManager.getParameter(variables[i]->name);
-                ScopedPointer<ValueParameter> vp = ghnew ValueParameter(variables[i]->name, p->ValueType);
-                vp->DefaultValue = p->Value;
+                if(p)
+                    vp->DefaultValue = p->Value;
                 parameters.set(i, vp);
             }
         }
