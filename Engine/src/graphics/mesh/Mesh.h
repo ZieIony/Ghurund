@@ -29,7 +29,7 @@ namespace Ghurund {
 
     class Mesh:public Resource {
     protected:
-        Vertex* vertices = nullptr;
+        void* vertices = nullptr;
         unsigned int vertexSize;
         vindex_t vertexCount;
         vindex_t* indices = nullptr;

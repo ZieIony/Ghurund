@@ -3,7 +3,7 @@
 
 namespace Ghurund {
     void Camera::rebuild() {
-        XMMATRIX view2, proj2;
+        XMMATRIX view2, proj2, viewProj2;
         view2 = XMMatrixLookAtLH(XMLoadFloat3(&position), XMLoadFloat3(&target), XMLoadFloat3(&up));
         XMStoreFloat4x4(&view, view2);
         if (pers) {
@@ -12,10 +12,12 @@ namespace Ghurund {
             proj2 = XMMatrixOrthographicLH((float)screenSize.x, (float)screenSize.y, zNear, zFar);
         }
         XMStoreFloat4x4(&proj, proj2);
-        XMStoreFloat4x4(&viewProj, view2 * proj2);
+        viewProj2 = view2 * proj2;
+        XMStoreFloat4x4(&viewProj, viewProj2);
+        XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
     }
 
-    Camera::Camera():parameters(PointerArray<Parameter*>(10)) {
+    Camera::Camera():parameters(PointerArray<Parameter*>(11)) {
         screenSize = {640, 480};
         fov = XM_PI / 4;
         zNear = 0.1f;
@@ -50,6 +52,7 @@ namespace Ghurund {
         parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW.Value];
         parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::PROJECTION.Value];
         parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION.Value];
+        parameters[i++] = parameterViewProjectionInv = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION_INV.Value];
     }
 
     void Camera::updateParameters() {
@@ -64,6 +67,7 @@ namespace Ghurund {
         parameterView->setValue(&view);
         parameterProjection->setValue(&proj);
         parameterViewProjection->setValue(&viewProj);
+        parameterViewProjectionInv->setValue(&viewProjInv);
     }
 
     void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
@@ -94,58 +98,38 @@ namespace Ghurund {
         XMStoreFloat3(&dir, XMVector3Normalize(dv));
         XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
         XMStoreFloat3(&right, rv);
-        uv = XMVector3Normalize(XMVector3Cross(dv, rv));
-        XMStoreFloat3(&this->up, uv);
+        XMStoreFloat3(&this->up, XMVector3Normalize(uv));
         notifyObjectChanged();
     }
 
-    void Camera::setPositionDirectionUp(const XMFLOAT3& pos, const XMFLOAT3& dir, const XMFLOAT3& up) {
+    void Camera::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
         this->position = pos;
-        XMVECTOR dv = XMLoadFloat3(&dir);
-        XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv);
+        XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
+        XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
 
-        XMStoreFloat(&dist, XMVector3Length(dv));
+        this->dist = dist;
         XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&this->dir, XMVector3Normalize(dv));
+        XMStoreFloat3(&this->dir, dv);
         XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
         XMStoreFloat3(&right, rv);
-        uv = XMVector3Normalize(XMVector3Cross(dv, rv));
-        XMStoreFloat3(&this->up, uv);
+        XMStoreFloat3(&this->up, XMVector3Normalize(uv));
         notifyObjectChanged();
-    }
-
-    void Camera::setPositionDistanceRotation(const XMFLOAT3& pos, float dist, float yaw, float pitch, float roll) {
-        this->position = pos;
-        this->dist = dist;
-        setRotation(yaw, pitch, roll);
-    }
-
-    void Camera::setTargetDistanceOrbit(const XMFLOAT3& target, float dist, float yaw, float pitch, float roll) {
-        this->target = target;
-        this->dist = dist;
-        setOrbit(yaw, pitch, roll);
     }
 
     void Camera::setRotation(float yaw, float pitch, float roll) {
         XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
-        dv = XMVector3Transform(dv, rotation);
-        XMStoreFloat3(&target, XMLoadFloat3(&Position) + dv);
-        XMStoreFloat3(&dir, XMVector4Normalize(dv));
-        XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
-        notifyObjectChanged();
+        dv = XMVector3TransformNormal(dv, rotation);
+        XMStoreFloat3(&target, XMLoadFloat3(&position) + dv);
+        setPositionTargetUp(position, target, up);
     }
 
     void Camera::setOrbit(float yaw, float pitch, float roll) {
         XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
-        dv = XMVector3Transform(dv, rotation);
-        XMStoreFloat3(&position, XMLoadFloat3(&position) + XMLoadFloat3(&dir) * dist - dv);
-        XMStoreFloat3(&dir, XMVector4Normalize(dv));
-        XMStoreFloat3(&up, XMVector3Transform(XMVectorSet(0, 1, 0, 0), rotation));
-        XMStoreFloat3(&right, XMVector3Transform(XMVectorSet(1, 0, 0, 0), rotation));
-        notifyObjectChanged();
+        dv = XMVector3TransformNormal(dv, rotation);
+        XMStoreFloat3(&position, XMLoadFloat3(&target) - dv);
+        setPositionTargetUp(position, target, up);
     }
 
     void Camera::rotate(float yaw, float pitch, float roll) {

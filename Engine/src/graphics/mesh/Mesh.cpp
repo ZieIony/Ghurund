@@ -169,7 +169,7 @@ namespace Ghurund {
             commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
 
             vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
-            vertexBufferView.StrideInBytes = sizeof(Vertex);
+            vertexBufferView.StrideInBytes = vertexSize;
             vertexBufferView.SizeInBytes = vertexBufferSize;
         }
 
@@ -239,7 +239,7 @@ namespace Ghurund {
         List<vindex_t> indexData;
 
         for (vindex_t i = 0; i < indexCount; i++) {
-            Vertex& v = vertices[indices[i]];
+            Vertex& v = ((Vertex*)vertices)[indices[i]];
             vindex_t index = (vindex_t)vertexData.Size;
 
             for (vindex_t j = 0; j < vertexData.Size; j++) {
@@ -270,9 +270,9 @@ namespace Ghurund {
         List<vindex_t> indexData;
 
         for (vindex_t i = 0, j = 0; i < indexCount; i += 3, j += 6) {
-            Vertex v0 = vertices[indices[i]];
-            Vertex v1 = vertices[indices[i + 1]];
-            Vertex v2 = vertices[indices[i + 2]];
+            Vertex v0 = ((Vertex*)vertices)[indices[i]];
+            Vertex v1 = ((Vertex*)vertices)[indices[i + 1]];
+            Vertex v2 = ((Vertex*)vertices)[indices[i + 2]];
 
             Vertex v3 = (v0 + v1) / 2;
             Vertex v4 = (v1 + v2) / 2;
@@ -315,7 +315,7 @@ namespace Ghurund {
 
     void Mesh::spherify() {
         for (vindex_t i = 0; i < vertexCount; i++) {
-            Vertex& v = vertices[i];
+            Vertex& v = ((Vertex*)vertices)[i];
             XMVECTOR pos = XMLoadFloat3(&v.position);
             XMStoreFloat3(&v.position, XMVector3Normalize(XMLoadFloat3(&v.position)));
         }
@@ -327,7 +327,7 @@ namespace Ghurund {
     void Mesh::generateSmoothing(float smoothingTreshold) {
         Vertex* newVertices = ghnew Vertex[indexCount * 3];
         for (size_t i = 0; i < indexCount; i++) {
-            newVertices[i] = vertices[indices[i]];
+            newVertices[i] = ((Vertex*)vertices)[indices[i]];
             indices[i] = (vindex_t)i;
         }
 
@@ -338,11 +338,11 @@ namespace Ghurund {
 
     void Mesh::generateNormals() {
         for (size_t i = 0; i < vertexCount; i++)
-            vertices[i].normal = XMFLOAT3(0, 0, 0);
+            ((Vertex*)vertices)[i].normal = XMFLOAT3(0, 0, 0);
         for (size_t i = 0; i < indexCount; i += 3) {
-            Vertex& v1 = vertices[indices[i]];
-            Vertex& v2 = vertices[indices[i + 1]];
-            Vertex& v3 = vertices[indices[i + 2]];
+            Vertex& v1 = ((Vertex*)vertices)[indices[i]];
+            Vertex& v2 = ((Vertex*)vertices)[indices[i + 1]];
+            Vertex& v3 = ((Vertex*)vertices)[indices[i + 2]];
             XMVECTOR pos1 = XMLoadFloat3(&v1.position);
             XMVECTOR pos2 = XMLoadFloat3(&v2.position);
             XMVECTOR pos3 = XMLoadFloat3(&v3.position);
@@ -352,7 +352,7 @@ namespace Ghurund {
             XMStoreFloat3(&v3.normal, XMLoadFloat3(&v3.normal) + normal);
         }
         for (size_t i = 0; i < vertexCount; i++)
-            XMStoreFloat3(&vertices[i].normal, XMVector3Normalize(XMLoadFloat3(&vertices[i].normal)));
+            XMStoreFloat3(&((Vertex*)vertices)[i].normal, XMVector3Normalize(XMLoadFloat3(&((Vertex*)vertices)[i].normal)));
     }
 
     void Mesh::generateTangents() {
@@ -369,9 +369,9 @@ namespace Ghurund {
             vindex_t i1 = indices[i + 1];
             vindex_t i2 = indices[i + 2];
 
-            XMVECTOR t0 = XMLoadFloat2(&vertices[i0].texCoord);
-            XMVECTOR t1 = XMLoadFloat2(&vertices[i1].texCoord);
-            XMVECTOR t2 = XMLoadFloat2(&vertices[i2].texCoord);
+            XMVECTOR t0 = XMLoadFloat2(&((Vertex*)vertices)[i0].texCoord);
+            XMVECTOR t1 = XMLoadFloat2(&((Vertex*)vertices)[i1].texCoord);
+            XMVECTOR t2 = XMLoadFloat2(&((Vertex*)vertices)[i2].texCoord);
 
             XMVECTOR s = XMVectorMergeXY(XMVectorSubtract(t1, t0), XMVectorSubtract(t2, t0));
 
@@ -388,9 +388,9 @@ namespace Ghurund {
             m0.r[1] = XMVectorPermute<1, 0, 4, 5>(s, g_XMZero);
             m0.r[2] = m0.r[3] = g_XMZero;
 
-            XMVECTOR p0 = XMLoadFloat3(&vertices[i0].position);
-            XMVECTOR p1 = XMLoadFloat3(&vertices[i1].position);
-            XMVECTOR p2 = XMLoadFloat3(&vertices[i2].position);
+            XMVECTOR p0 = XMLoadFloat3(&((Vertex*)vertices)[i0].position);
+            XMVECTOR p1 = XMLoadFloat3(&((Vertex*)vertices)[i1].position);
+            XMVECTOR p2 = XMLoadFloat3(&((Vertex*)vertices)[i2].position);
 
             XMMATRIX m1;
             m1.r[0] = XMVectorSubtract(p1, p0);
@@ -410,7 +410,7 @@ namespace Ghurund {
 
         for (vindex_t j = 0; j < vertexCount; ++j) {
             // Gram-Schmidt orthonormalization
-            XMVECTOR b0 = XMLoadFloat3(&vertices[j].normal);
+            XMVECTOR b0 = XMLoadFloat3(&((Vertex*)vertices)[j].normal);
             b0 = XMVector3Normalize(b0);
 
             XMVECTOR tan1 = tangent1[j];
@@ -452,7 +452,7 @@ namespace Ghurund {
                 }
             }
 
-            XMStoreFloat3(&vertices[j].tangent, b1);
+            XMStoreFloat3(&((Vertex*)vertices)[j].tangent, b1);
 
             /*
             if (tangents4) {
@@ -474,7 +474,7 @@ namespace Ghurund {
 
     void Mesh::invertWinding() {
         for (size_t i = 0; i < vertexCount; i++) {
-            Vertex& v = vertices[i];
+            Vertex& v = ((Vertex*)vertices)[i];
             v.normal.z *= -1;
             v.tangent.z *= -1;
             v.position.z *= -1;
@@ -515,9 +515,9 @@ namespace Ghurund {
         XMVECTOR pos2 = XMLoadFloat3(&pos);
         XMVECTOR dir2 = XMLoadFloat3(&dir);
         for (size_t i = 0; i < indexCount / 3; i++) {
-            Vertex& v0 = vertices[indices[i]];
-            Vertex& v1 = vertices[indices[i + 1]];
-            Vertex& v2 = vertices[indices[i + 2]];
+            Vertex& v0 = ((Vertex*)vertices)[indices[i]];
+            Vertex& v1 = ((Vertex*)vertices)[indices[i + 1]];
+            Vertex& v2 = ((Vertex*)vertices)[indices[i + 2]];
             if (TriangleTests::Intersects(pos2, dir2, XMLoadFloat3(&v0.position), XMLoadFloat3(&v1.position), XMLoadFloat3(&v2.position), dist))
                 return true;
         }

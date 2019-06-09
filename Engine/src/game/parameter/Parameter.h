@@ -17,7 +17,7 @@ namespace Ghurund {
         POSITION, ROTATION, SCALE,
         CAMERA_DIRECTION, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CAMERA_RIGHT,
         FOV, ZNEAR, ZFAR,
-        WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION,
+        WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION, VIEW_PROJECTION_INV,
         DIFFUSE_TEXTURE, SPECULAR_TEXTURE, NORMAL_TEXTURE,
     };
 
@@ -35,7 +35,7 @@ namespace Ghurund {
             POSITION, ROTATION, SCALE,
             CAMERA_DIRECTION, CAMERA_POSITION, CAMERA_TARGET, CAMERA_UP, CAMERA_RIGHT,
             FOV, ZNEAR, ZFAR,
-            WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION,
+            WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION, VIEW_PROJECTION_INV,
             DIFFUSE_TEXTURE, SPECULAR_TEXTURE, NORMAL_TEXTURE;
 
         ParameterId(ParameterIdEnum value, const tchar *name, const char* constantName, const ParameterType& type):Enum<ParameterIdEnum, ParameterId>(value, name), type(type) {

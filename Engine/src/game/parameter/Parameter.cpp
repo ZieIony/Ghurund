@@ -25,6 +25,7 @@ namespace Ghurund {
     const ParameterId ParameterId::VIEW = ParameterId(ParameterIdEnum::VIEW, _T("VIEW"), "view", ParameterType::MATRIX);
     const ParameterId ParameterId::PROJECTION = ParameterId(ParameterIdEnum::PROJECTION, _T("PROJECTION"), "projection", ParameterType::MATRIX);
     const ParameterId ParameterId::VIEW_PROJECTION = ParameterId(ParameterIdEnum::VIEW_PROJECTION, _T("VIEW_PROJECTION"), "viewProjection", ParameterType::MATRIX);
+    const ParameterId ParameterId::VIEW_PROJECTION_INV = ParameterId(ParameterIdEnum::VIEW_PROJECTION_INV, _T("VIEW_PROJECTION_INV"), "viewProjectionInv", ParameterType::MATRIX);
     const ParameterId ParameterId::DIFFUSE_TEXTURE = ParameterId(ParameterIdEnum::DIFFUSE_TEXTURE, _T("DIFFUSE_TEXTURE"), "diffuseTexture", ParameterType::TEXTURE);
     const ParameterId ParameterId::SPECULAR_TEXTURE = ParameterId(ParameterIdEnum::SPECULAR_TEXTURE, _T("SPECULAR_TEXTURE"), "specularTexture", ParameterType::TEXTURE);
     const ParameterId ParameterId::NORMAL_TEXTURE = ParameterId(ParameterIdEnum::NORMAL_TEXTURE, _T("NORMAL_TEXTURE"), "normalTexture", ParameterType::TEXTURE);
@@ -50,6 +51,7 @@ namespace Ghurund {
         &ParameterId::VIEW,
         &ParameterId::PROJECTION,
         &ParameterId::VIEW_PROJECTION,
+        &ParameterId::VIEW_PROJECTION_INV,
         &ParameterId::DIFFUSE_TEXTURE,
         &ParameterId::SPECULAR_TEXTURE,
         &ParameterId::NORMAL_TEXTURE

@@ -5,6 +5,11 @@ struct DefaultVertex {
     float2 texCoord : TEXCOORD0;
 };
 
+struct ScreenVertex {
+    float3 position : POSITION;
+    float2 texCoord : TEXCOORD0;
+};
+
 struct DefaultPixel {
     float4 position : SV_POSITION;
     float3 normal : NORMAL;

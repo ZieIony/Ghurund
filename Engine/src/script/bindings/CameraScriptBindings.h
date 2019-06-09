@@ -14,9 +14,7 @@ namespace Ghurund {
             r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setPerspective(bool pers)", asMETHOD(Camera, setPerspective), asCALL_THISCALL); assert(r >= 0);
 
             r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setPositionTargetUp(const float3 pos, const float3 target, const float3 up = float3(0, 1, 0))", asMETHOD(Camera, setPositionTargetUp), asCALL_THISCALL); assert(r >= 0);
-            r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setPositionDirectionUp(const float3 pos, const float3 dir, const float3 up = float3(0, 1, 0))", asMETHOD(Camera, setPositionDirectionUp), asCALL_THISCALL); assert(r >= 0);
-            r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setPositionDistanceRotation(const float3 pos, float dist, float yaw, float pitch, float roll = 0.0f)", asMETHOD(Camera, setPositionDistanceRotation), asCALL_THISCALL); assert(r >= 0);
-            r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setTargetDistanceOrbit(const float3 target, float dist, float yaw, float pitch, float roll = 0.0f)", asMETHOD(Camera, setTargetDistanceOrbit), asCALL_THISCALL); assert(r >= 0);
+            r = engine.RegisterObjectMethod(Type::CAMERA.Name, "void setPositionDirectionDistanceUp(const float3 pos, const float3 dir, float dist = 1, const float3 up = float3(0, 1, 0))", asMETHOD(Camera, setPositionDirectionDistanceUp), asCALL_THISCALL); assert(r >= 0);
 
             r = engine.RegisterObjectMethod(Type::CAMERA.Name, "float3 getRotation() const", asMETHOD(Camera, getRotation), asCALL_THISCALL); assert(r >= 0);
 

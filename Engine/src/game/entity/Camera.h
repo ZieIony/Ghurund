@@ -12,7 +12,7 @@ namespace Ghurund {
     class Camera: public TranslatedEntity {
     private:
         XMFLOAT3 target, dir, right, up;
-        XMFLOAT4X4 view, proj, viewProj, facing;
+        XMFLOAT4X4 view, proj, viewProj, viewProjInv, facing;
         XMINT2 screenSize;
         float fov, zNear, zFar, dist;
         bool pers;
@@ -21,7 +21,7 @@ namespace Ghurund {
         ValueParameter* parameterUp, * parameterRight;
         ValueParameter* parameterFov;
         ValueParameter* parameterZNear, * parameterZFar;
-        ValueParameter* parameterView, * parameterProjection, * parameterViewProjection;
+        ValueParameter* parameterView, * parameterProjection, * parameterViewProjection, * parameterViewProjectionInv;
 
         PointerArray<Parameter*> parameters;
 
@@ -139,6 +139,12 @@ namespace Ghurund {
 
         __declspec(property(get = getViewProjection)) XMFLOAT4X4& ViewProjection;
 
+        inline const XMFLOAT4X4& getViewProjectionInv() const {
+            return viewProjInv;
+        }
+
+        __declspec(property(get = getViewProjectionInv)) XMFLOAT4X4& ViewProjectionInv;
+
         inline const XMFLOAT4X4& getFacing() const {
             return facing;
         }
@@ -157,9 +163,7 @@ namespace Ghurund {
         __declspec(property(get = getPerspective, put = setPerspective)) bool Perspective;
 
         void setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
-        void setPositionDirectionUp(const XMFLOAT3& pos, const XMFLOAT3& dir, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
-        void setPositionDistanceRotation(const XMFLOAT3& pos, float dist, float yaw, float pitch, float roll = 0.0f);
-        void setTargetDistanceOrbit(const XMFLOAT3& target, float dist, float yaw, float pitch, float roll = 0.0f);
+        void setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist = 1.0f, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
 
         inline XMFLOAT3 getRotation() const {
             float currentYaw = (float)(atan2(dir.x, dir.z) + XM_PI);

@@ -46,7 +46,7 @@ namespace Ghurund {
         __declspec(property(get = isCulled)) bool Culled;
 
         void cull(BoundingFrustum& frustum) {
-            culled = frustum.Contains(boundingBox) == ContainmentType::DISJOINT;
+            culled = model.CullingEnabled && frustum.Contains(boundingBox) == ContainmentType::DISJOINT;
         }
 
         bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {

@@ -19,7 +19,7 @@ namespace Ghurund {
 
     class Entity: public Resource, public NamedObject, public ParameterProvider, public virtual ObservableObject {
     private:
-        bool selectable = true, visible = true, editMode = false;
+        bool selectable = true, visible = true, editMode = false, cullingEnabled = true;
         id_t id = 0;
         static PointerList<Entity*> entities;
         static atomic<id_t> currentId;
@@ -76,6 +76,16 @@ namespace Ghurund {
         }
 
         __declspec(property(get = isSelectable, put = setSelectable)) bool Selectable;
+
+        void setCullingEnabled(bool cullingEnabled) {
+            this->cullingEnabled = cullingEnabled;
+        }
+
+        bool isCullingEnabled() const {
+            return cullingEnabled;
+        }
+
+        __declspec(property(get = isCullingEnabled, put = setCullingEnabled)) bool CullingEnabled;
 
         void setVisible(bool visible) {
             this->visible = visible;

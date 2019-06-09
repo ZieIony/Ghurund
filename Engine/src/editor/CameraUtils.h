@@ -11,12 +11,12 @@ namespace Ghurund {
             XMFLOAT3 pos;
             XMStoreFloat3(&pos, XMLoadFloat3(&entity.BoundingBox->Center) + XMLoadFloat3(&entity.BoundingBox->Extents) * 2);
             pos.z *= -1;
+            pos.y /= 2;
             camera.setPositionTargetUp(pos, entity.BoundingBox->Center);
         }
 
         static XMFLOAT3 screenVectorTo3D(XMFLOAT2& mouseMove, Camera& camera) {
-            XMMATRIX matrix = XMLoadFloat4x4(&camera.ViewProjection);
-            XMMATRIX matrixInv = XMMatrixInverse(nullptr, matrix);
+            XMMATRIX matrixInv = XMLoadFloat4x4(&camera.ViewProjectionInv);
             if (XMMatrixIsInfinite(matrixInv))
                 return XMFLOAT3();
 

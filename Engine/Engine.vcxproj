@@ -33,6 +33,7 @@
     <ClCompile Include="src\core\WorkerThread.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\FileUtils.cpp" />
+    <ClCompile Include="src\game\CameraController.cpp" />
     <ClCompile Include="src\game\entity\Entity.cpp" />
     <ClCompile Include="src\game\entity\EntityGroup.cpp" />
     <ClCompile Include="src\game\entity\Camera.cpp" />
@@ -68,6 +69,7 @@
     <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
     <ClCompile Include="src\graphics\SwapChain.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
+    <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\core\Logger.cpp" />
     <ClCompile Include="src\net\ClientThread.cpp" />

@@ -53,7 +53,7 @@ public:
         app.ParameterManager.Parameters.add(lightPosParameter);
     
         camera = ghnew Ghurund::Camera();
-        camera->setPositionTargetUp({0, 50, -500}, {0, 50, 0});
+        camera->setPositionTargetUp({0, 50, -500}, {0, 25, 0});
         camera->initParameters(app.ParameterManager);
 
         cameraController = ghnew CameraController(*camera, &app.Window);
@@ -63,7 +63,7 @@ public:
         checkerMaterial = Materials::makeChecker(app.ResourceContext);
 
         File sceneFile("test/test.scene");
-        if (sceneFile.Exists) {
+        /*if (sceneFile.Exists) {
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.AsyncResourceContext, "test/test.scene", [&](Ghurund::Scene* scene, Status result) {
                 if (result != Status::OK)
                     return;
@@ -72,15 +72,15 @@ public:
                 selectionStep.Entities.add(scene->Entities[0]);
                 scene->release();
                 });
-        } else {
+        } else {*/
             ScopedPointer<Scene> scene = makeScene();
             sceneStep.Entities.add(scene);
             selectionStep.Entities.add(scene->Entities[0]);
 
-            Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+            /*Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
             if (result != Status::OK)
-                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
-        }
+                Logger::log(LogType::WARNING, _T("failed to save scene\n"));*/
+        //}
 
         editorStep.Camera = camera;
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
@@ -176,7 +176,14 @@ public:
             light->Scale = {10, 10, 10};
         }
 
-        return ghnew Scene({house, cone, light});
+        ScopedPointer<Model> sky;
+        {
+            ScopedPointer<Material> material = Materials::makeSky(app.ResourceContext);
+            sky = Models::makeQuad(app.ResourceContext, *material);
+            sky->CullingEnabled = false;
+        }
+
+        return ghnew Scene({cone, light, sky});
     }
 
     virtual void onUpdate() override {

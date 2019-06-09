@@ -64,6 +64,8 @@ namespace Ghurund {
         parameters.add(projection);
         ScopedPointer<ValueParameter> viewProjection = ghnew ValueParameter(ParameterId::VIEW_PROJECTION.ConstantName, ParameterType::MATRIX, &defaultMatrix);
         parameters.add(viewProjection);
+        ScopedPointer<ValueParameter> viewProjectionInv = ghnew ValueParameter(ParameterId::VIEW_PROJECTION_INV.ConstantName, ParameterType::MATRIX, &defaultMatrix);
+        parameters.add(viewProjectionInv);
 
         ScopedPointer<TextureParameter> diffuseTextureParameter = ghnew TextureParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
         parameters.add(diffuseTextureParameter);

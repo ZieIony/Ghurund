@@ -53,9 +53,9 @@ namespace Ghurund {
         spherify();
 
         for (size_t i = 0; i < vertexCount; i++) {
-            XMFLOAT3 v = vertices[i].position;
-            vertices[i].texCoord.x = atan2f(v.x, v.z) / (2 * XM_PI) + 0.5f;
-            vertices[i].texCoord.y = v.y * 0.5f + 0.5f;
+            XMFLOAT3 v = ((Vertex*)vertices)[i].position;
+            ((Vertex*)vertices)[i].texCoord.x = atan2f(v.x, v.z) / (2 * XM_PI) + 0.5f;
+            ((Vertex*)vertices)[i].texCoord.y = v.y * 0.5f + 0.5f;
         }
 
         for (size_t i = 0; i < detail; i++) {
