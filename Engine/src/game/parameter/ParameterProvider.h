@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Event.h"
 #include "Parameter.h"
 #include "collection/PointerArray.h"
 #include "ParameterManager.h"
@@ -15,6 +16,9 @@ namespace Ghurund {
     enum class SaveOption;
 
     class ParameterProvider {
+    private:
+        Event<ParameterProvider> onParametersChanged;
+
     protected:
         Status loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         Status saveParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
@@ -38,5 +42,12 @@ namespace Ghurund {
 
             return nullptr;
         }
+
+        // called when parameter names or types were changed
+        Event<ParameterProvider>& getOnParametersChanged() {
+            return onParametersChanged;
+        }
+
+        __declspec(property(get = getOnParametersChanged)) Event<ParameterProvider>& OnParametersChanged;
     };
 }

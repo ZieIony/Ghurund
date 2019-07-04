@@ -233,6 +233,7 @@ namespace Ghurund {
                     delete[] programErrors;
                 }
                 delete program;
+				break;
             }
         }
         if (output.Length > 0 && outErrorMessages != nullptr)
@@ -445,7 +446,7 @@ namespace Ghurund {
                 if (programs[i] != nullptr) {
                     stream.writeASCII(programs[i]->getEntryPoint());
                     stream.writeInt(programs[i]->getCompilationTarget().getValue());
-                    stream.writeUInt(programs[i]->ByteCode->Size);
+                    stream.writeUInt((uint32_t)programs[i]->ByteCode->Size);
                     stream.writeBytes(programs[i]->ByteCode->Data, programs[i]->ByteCode->Size);
                 }
             }

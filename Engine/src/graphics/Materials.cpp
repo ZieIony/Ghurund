@@ -111,8 +111,13 @@ namespace Ghurund {
         return makeWithShader(shader, context);
     }
 
-    Material* Materials::makeSky(ResourceContext& context) {
-        ScopedPointer<Shader> shader = Shaders::loadSky(context);
-        return makeWithShader(shader, context);
-    }
+	Material* Materials::makeBasicSky(ResourceContext& context) {
+		ScopedPointer<Shader> shader = Shaders::loadBasicSky(context);
+		return makeWithShader(shader, context);
+	}
+
+	Material* Materials::makeAdvancedSky(ResourceContext& context) {
+		ScopedPointer<Shader> shader = Shaders::loadAdvancedSky(context);
+		return makeWithShader(shader, context);
+	}
 }

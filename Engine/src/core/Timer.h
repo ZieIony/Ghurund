@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "collection/AverageValue.h"
 #include "core/Pointer.h"
 
@@ -59,7 +58,7 @@ namespace Ghurund {
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
 
-        const static Ghurund::Type& TYPE;
+        static const Ghurund::Type& TYPE;
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

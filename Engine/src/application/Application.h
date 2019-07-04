@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
-
 #include "Settings.h"
 #include "Window.h"
 #include "WindowProc.h"

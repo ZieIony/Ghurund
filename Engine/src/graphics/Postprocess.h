@@ -1,7 +1,7 @@
 #pragma once
 
 #include "buffer/RenderTarget.h"
-#include "game/entity/Models.h"
+#include "graphics/entity/Models.h"
 
 namespace Ghurund {
     class Postprocess: public Resource {
@@ -14,7 +14,7 @@ namespace Ghurund {
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -26,11 +26,11 @@ namespace Ghurund {
                 material->release();
         }
 
-        void init(ResourceContext & resourceContext, Material & material) {
+        void init(ResourceContext& resourceContext, Material& material) {
             setPointer(this->material, &material);
             fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
         }
 
-        void process(Texture * texture, RenderTarget * renderTarget) {}
+        void process(Texture* texture, RenderTarget* renderTarget) {}
     };
 }

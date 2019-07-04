@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
-
 #include "application/Settings.h"
 #include "application/WindowProc.h"
 #include "collection/Array.h"
@@ -9,6 +7,7 @@
 #include "core/Object.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
+#include "graphics/Graphics.h"
 
 #include "d3dx12.h"
 

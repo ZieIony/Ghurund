@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ghurund.h"
+#pragma warning (disable : 4521)	// multiple copy constructors specified
 
 namespace Ghurund {
     class Noncopyable {

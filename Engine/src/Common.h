@@ -37,3 +37,17 @@ typedef DWORD64 address_t;
 #else
 typedef DWORD address_t;
 #endif
+
+namespace Ghurund {
+    inline void dumpMemoryLeaks() {
+        _CrtDumpMemoryLeaks();
+    }
+
+    inline void _____________________checkMemory() {
+        _ASSERTE(_CrtCheckMemory());
+    }
+
+    template<class Type> inline Type align(Type value, Type alignment) {
+        return (value + alignment - 1) & ~(alignment - 1);
+    }
+}

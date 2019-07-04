@@ -2,7 +2,6 @@
 
 #include "winsock2.h"
 #include "collection/List.h"
-#include "Ghurund.h"
 #include "Message.h"
 #include "Socket.h"
 

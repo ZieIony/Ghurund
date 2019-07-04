@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/CriticalSection.h"
 #include "collection/List.h"
 #include "core/Logger.h"

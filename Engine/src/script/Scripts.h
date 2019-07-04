@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Script.h"
-#include "game/entity/Entity.h"
+#include "graphics/entity/Entity.h"
 
 namespace Ghurund {
 
@@ -20,7 +20,7 @@ namespace Ghurund {
             return script;
         }
 
-        static Script* make(Entity* entity, const char *sourceCode) {
+        static Script* make(Entity* entity, const char* sourceCode) {
             typedef ASCIIString A;
 
             Script* script = ghnew Script();

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Ghurund.h"
+#include "Common.h"
+#include "TextUtils.h"
 #include <algorithm>
 
 namespace Ghurund {

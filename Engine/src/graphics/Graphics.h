@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
-
 #include "collection/List.h"
 #include "core/Logger.h"
 #include "core/Object.h"

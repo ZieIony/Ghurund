@@ -3,6 +3,7 @@
 #include "audio/Audio.h"
 #include "collection/PointerMap.h"
 #include "collection/HashMap.h"
+#include "core/File.h"
 #include "core/Logger.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"

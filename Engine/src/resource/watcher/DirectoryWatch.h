@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/FunctionQueue.h"
 #include "collection/String.h"
 #include "collection/Map.h"

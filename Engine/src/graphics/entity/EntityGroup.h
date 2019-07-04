@@ -1,7 +1,7 @@
 #pragma once
 
-#include "game/entity/EntityList.h"
-#include "game/entity/TransformedEntity.h"
+#include "graphics/entity/EntityList.h"
+#include "graphics/entity/TransformedEntity.h"
 
 namespace Ghurund {
 
@@ -94,9 +94,16 @@ namespace Ghurund {
         }
 
         virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) override {
+			if (!Visible)
+				return;
+
+			XMFLOAT4X4 localTransformation = getTransformation();
+			XMFLOAT4X4 dest;
+			XMStoreFloat4x4(&dest, XMLoadFloat4x4(&transformation) * XMLoadFloat4x4(&localTransformation));
+
             for (size_t i = 0; i < Entities.Size; i++) {
                 Entity* entity = Entities[i];
-                entity->queueDraw(step, transformation);
+                entity->queueDraw(step, dest);
             }
         }
 

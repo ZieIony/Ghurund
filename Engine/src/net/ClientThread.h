@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "winsock2.h"
 #include "Socket.h"
 #include "NetworkListener.h"

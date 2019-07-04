@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "Parameter.h"
 #include "collection/String.h"
 #include "collection/PointerList.h"

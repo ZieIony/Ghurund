@@ -7,9 +7,9 @@
 #include "SwapChain.h"
 
 #include "core/Object.h"
-#include "game/entity/Model.h"
-#include "game/entity/Models.h"
-#include "game/entity/Scene.h"
+#include "graphics/entity/Model.h"
+#include "graphics/entity/Models.h"
+#include "graphics/entity/Scene.h"
 #include "resource/ResourceManager.h"
 #include "resource/ResourceContext.h"
 

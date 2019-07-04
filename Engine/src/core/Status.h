@@ -1,0 +1,22 @@
+#pragma once
+
+namespace Ghurund {
+    enum class Status {
+        OK, INV_PARAM, INV_STATE, CALL_FAIL, SOCKET, IO, NOT_IMPLEMENTED, ALREADY_LOADED, UNKNOWN,
+
+        WRONG_RESOURCE_VERSION,
+        WRONG_RESOURCE_TYPE,
+        FILE_DOESNT_EXIST,
+        FILE_EXISTS,
+        UNKNOWN_FORMAT,
+        INV_FORMAT,
+        UNEXPECTED_EOF,
+        NOT_SUPPORTED,
+
+        ENTRY_POINT_NOT_FOUND,
+        COMPILATION_ERROR,
+        SCRIPT_EXCEPTION,
+
+        DIRECTX12_NOT_SUPPORTED
+    };
+}

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/Timer.h"
 #include "Mouse.h"
 #include "collection/List.h"

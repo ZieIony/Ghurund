@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "graphics/Graphics.h"
 
 #include <d3d12.h>

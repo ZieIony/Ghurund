@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Event.h"
+#include "core/Event.h"
 #include "core/Pointer.h"
 #include "core/ScopedPointer.h"
-#include "game/entity/TransformedEntity.h"
-#include "game/entity/Model.h"
 #include "graphics/Materials.h"
+#include "graphics/entity/TransformedEntity.h"
+#include "graphics/entity/Model.h"
 #include "graphics/mesh/PlaneMesh.h"
 #include "input/EventConsumer.h"
 #include "input/Keyboard.h"
@@ -21,7 +21,7 @@ namespace Ghurund {
     class Control:public TransformedEntity, public EventConsumer {
     protected:
         Model *model = nullptr;
-        Event<SizeChangedEventArgs> onSizeChanged;
+        Event<Control, SizeChangedEventArgs> onSizeChanged;
         Layout* parent = nullptr;
 
     public:
@@ -30,19 +30,19 @@ namespace Ghurund {
                 model->release();
         }
 
-        void init(ResourceManager &resourceManager, ResourceContext & context) {
+        void init(ResourceContext & context) {
             model = ghnew Model();
             ScopedPointer<Mesh> mesh = ghnew PlaneMesh();
             model->Mesh = mesh;
-            ScopedPointer<Material> material = Materials::makeUi(resourceManager, context);
+            ScopedPointer<Material> material = Materials::makeUi(context);
             model->Material = material;
         }
 
-        Event<SizeChangedEventArgs>& getOnSizeChanged() {
+        Event<Control, SizeChangedEventArgs>& getOnSizeChanged() {
             return onSizeChanged;
         }
 
-        __declspec(property(get = getOnSizeChanged)) Event<SizeChangedEventArgs>& OnSizeChanged;
+        __declspec(property(get = getOnSizeChanged)) Event<Control, SizeChangedEventArgs>& OnSizeChanged;
 
         virtual void setSize(float width, float height) {
             scale.x = abs(width);

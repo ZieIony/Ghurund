@@ -1,11 +1,11 @@
 #pragma once
 
-#include "game/entity/Light.h"
-#include "game/entity/Model.h"
-#include "game/entity/Camera.h"
-#include "game/entity/GlobalEntity.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/RenderingStatistics.h"
+#include "graphics/entity/Light.h"
+#include "graphics/entity/Model.h"
+#include "graphics/entity/Camera.h"
+#include "graphics/entity/GlobalEntity.h"
 
 namespace Ghurund {
     class RenderStep {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "Type.h"
 #include "Logger.h"
 #include "Object.h"

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include <DirectXMath.h>
 
 using namespace DirectX;

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/Enum.h"
 
 namespace Ghurund {

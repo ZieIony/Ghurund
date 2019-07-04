@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity/Camera.h"
+#include "graphics/entity/Camera.h"
 #include "input/EventConsumer.h"
 #include "KeyMap.h"
 #include "input/Input.h"
@@ -25,12 +25,12 @@ namespace Ghurund {
     public:
         CameraController(Camera& camera, Window* window = nullptr);
 
-        virtual bool onMouseButtonEvent(MouseButtonEvent& event) override;
+        virtual bool onMouseButtonEvent(MouseButtonEventArgs& event) override;
 
-        virtual bool onMouseMouseMotionEvent(MouseMotionEvent& event) override;
+        virtual bool onMouseMouseMotionEvent(MouseMotionEventArgs& event) override;
 
-        virtual bool onMouseWheelEvent(MouseWheelEvent& event) override;
+        virtual bool onMouseWheelEvent(MouseWheelEventArgs& event) override;
 
-        void update(Input& input);
+        void update(Input& input, float dt);
     };
 }

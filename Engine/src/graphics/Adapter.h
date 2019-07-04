@@ -5,7 +5,6 @@
 #include <DirectXMath.h>
 #include "d3dx12.h"
 
-#include "Ghurund.h"
 #include "collection/List.h"
 #include "collection/String.h"
 #include "core/Object.h"

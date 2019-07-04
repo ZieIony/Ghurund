@@ -44,8 +44,12 @@ namespace Ghurund {
             return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/ui.hlsl");
         }
 
-        static Shader* loadSky(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/sky.hlsl");
-        }
-    };
+		static Shader* loadBasicSky(ResourceContext& context) {
+			return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicSky.hlsl");
+		}
+
+		static Shader* loadAdvancedSky(ResourceContext& context) {
+			return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/advancedSky.hlsl");
+		}
+	};
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/entity/EntityGroup.h"
+#include "graphics/entity/EntityGroup.h"
 #include "physics/Physics.h"
 
 #include <PxScene.h>

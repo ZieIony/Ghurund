@@ -1,5 +1,5 @@
 #include "Client.h"
-#include "../core/Logger.h"
+#include "core/Logger.h"
 
 namespace Ghurund {
     Client::Client(FunctionQueue& functionQueue):connectionState(ConnectionState::NOT_CONNECTED, &functionQueue), functionQueue(functionQueue) {

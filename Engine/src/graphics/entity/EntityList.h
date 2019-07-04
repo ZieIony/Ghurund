@@ -1,7 +1,7 @@
 #pragma once
 
 #include "collection/PointerList.h"
-#include "game/entity/Entity.h"
+#include "graphics/entity/Entity.h"
 
 namespace Ghurund {
 
@@ -17,22 +17,22 @@ namespace Ghurund {
                 v[i]->parent = nullptr;
         }
 
-        inline void add(Entity * const& item) {
+        inline void add(Entity* const& item) {
             PointerList<Entity*>::add(item);
             item->parent = &owner;
         }
 
-        inline void insert(size_t i, Entity * const& item) {
+        inline void insert(size_t i, Entity* const& item) {
             PointerList<Entity*>::insert(i, item);
             item->parent = &owner;
         }
 
-        inline void insertKeepOrder(size_t i, Entity * const& item) {
+        inline void insertKeepOrder(size_t i, Entity* const& item) {
             PointerList<Entity*>::insertKeepOrder(i, item);
             item->parent = &owner;
         }
 
-        inline void set(size_t i, Entity * const& item) {
+        inline void set(size_t i, Entity* const& item) {
             v[i]->parent = nullptr;
             PointerList<Entity*>::set(i, item);
             item->parent = &owner;
@@ -48,12 +48,12 @@ namespace Ghurund {
             PointerList<Entity*>::removeAtKeepOrder(i);
         }
 
-        inline void remove(Entity * const& item) {
+        inline void remove(Entity* const& item) {
             item->parent = nullptr;
             PointerList<Entity*>::remove(item);
         }
 
-        inline void removeKeepOrder(Entity * const& item) {
+        inline void removeKeepOrder(Entity* const& item) {
             item->parent = nullptr;
             PointerList<Entity*>::removeKeepOrder(item);
         }

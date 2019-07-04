@@ -38,18 +38,20 @@ namespace Ghurund {
 
         __declspec(property(get = getName)) String &Name;
 
-        virtual const Ghurund::Type &getType() const override {
-            static const Ghurund::Type &TASK = Ghurund::Type(nullptr, "task");
+		static const Ghurund::Type& TYPE;
 
-            return TASK;
+        virtual const Ghurund::Type &getType() const override {
+            return TYPE;
         }
 
         void run() {
             result = function();
         }
 
-        Status getResult() {
+        Status getResult() const {
             return result;
         }
+
+		__declspec(property(get = getResult)) Status Result;
     };
 }

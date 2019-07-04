@@ -1,6 +1,10 @@
 #pragma once
 
+#include "DirectXMath.h"
+
 namespace Ghurund {
+    using namespace DirectX;
+
     enum class MouseButton {
         LEFT, MIDDLE, RIGHT
     };
@@ -13,30 +17,30 @@ namespace Ghurund {
         DOWN, UP
     };
 
-    class Event {
+    class EventArgs {
     protected:
         time_t time;
 
     public:
-        Event(time_t time) {
+        EventArgs(time_t time) {
             this->time = time;
         }
 
-        virtual ~Event() = 0 {}
+        virtual ~EventArgs() = 0 {}
     };
 
-    class MouseEvent:public Event {
+    class MouseEventArgs :public EventArgs {
     public:
-        MouseEvent(time_t time):Event(time) {}
+        MouseEventArgs(time_t time):EventArgs(time) {}
     };
 
-    class MouseButtonEvent:public MouseEvent {
+    class MouseButtonEventArgs :public MouseEventArgs {
     private:
         MouseAction action;
         MouseButton button;
 
     public:
-        MouseButtonEvent(MouseAction action, MouseButton button, time_t time):MouseEvent(time) {
+        MouseButtonEventArgs(MouseAction action, MouseButton button, time_t time):MouseEventArgs(time) {
             this->action = action;
             this->button = button;
         }
@@ -54,12 +58,12 @@ namespace Ghurund {
         __declspec(property(get = getButton)) MouseButton Button;
     };
 
-    class MouseMotionEvent:public MouseEvent {
+    class MouseMotionEventArgs :public MouseEventArgs {
     private:
         XMINT2 delta;
 
     public:
-        MouseMotionEvent(XMINT2 &delta, time_t time):MouseEvent(time) {
+        MouseMotionEventArgs(XMINT2 &delta, time_t time):MouseEventArgs(time) {
             this->delta = delta;
         }
 
@@ -70,13 +74,13 @@ namespace Ghurund {
         __declspec(property(get = getDelta)) XMINT2 &Delta;
     };
 
-    class MouseWheelEvent:public MouseEvent {
+    class MouseWheelEventArgs :public MouseEventArgs {
     private:
         MouseWheel wheel;
         int delta;
 
     public:
-        MouseWheelEvent(MouseWheel wheel, int delta, time_t time):MouseEvent(time) {
+        MouseWheelEventArgs(MouseWheel wheel, int delta, time_t time):MouseEventArgs(time) {
             this->wheel = wheel;
             this->delta = delta;
         }

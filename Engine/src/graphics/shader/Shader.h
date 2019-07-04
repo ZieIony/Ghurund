@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "resource/Resource.h"
 #include "collection/List.h"
 #include "ConstantBuffer.h"

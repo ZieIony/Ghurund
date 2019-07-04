@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/FunctionQueue.h"
 #include "Windowsx.h"
 #include "core/Logger.h"

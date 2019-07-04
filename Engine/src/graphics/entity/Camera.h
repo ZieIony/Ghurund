@@ -1,10 +1,10 @@
 #pragma once
 
 #include "core/MemoryStream.h"
-#include "game/entity/TransformedEntity.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
+#include "graphics/entity/TransformedEntity.h"
 #include "resource/Resource.h"
 
 namespace Ghurund {

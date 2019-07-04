@@ -32,6 +32,8 @@ namespace Ghurund {
 
         static Material* makeUi(ResourceContext& context);
 
-        static Material* makeSky(ResourceContext& context);
-    };
+		static Material* makeBasicSky(ResourceContext& context);
+
+		static Material* makeAdvancedSky(ResourceContext& context);
+	};
 }

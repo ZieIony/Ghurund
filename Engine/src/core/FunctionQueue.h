@@ -2,7 +2,6 @@
 
 #include <queue>
 #include "CriticalSection.h"
-#include "Ghurund.h"
 #include <functional>
 
 namespace Ghurund {

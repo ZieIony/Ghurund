@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include <deque>
 
 namespace Ghurund {

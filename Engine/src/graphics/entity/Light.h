@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Target.h"
-#include "game/entity/Entity.h"
+#include "graphics/entity/Entity.h"
 
 namespace Ghurund {
     class Light: public TranslatedEntity {

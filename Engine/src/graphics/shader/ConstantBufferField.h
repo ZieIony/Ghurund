@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
-
 namespace Ghurund {
     struct ConstantBufferField {
         char *name = nullptr;

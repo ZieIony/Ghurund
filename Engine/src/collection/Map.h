@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "Collection.h"
 #include <functional>
 

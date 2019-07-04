@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "core/Logger.h"
 #include "graphics/Fence.h"
 #include "graphics/Graphics.h"

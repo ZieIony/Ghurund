@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
 #include "collection/String.h"
 #include "editor/ObservableObject.h"
 #include "ParameterType.h"

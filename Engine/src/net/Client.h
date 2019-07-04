@@ -1,7 +1,6 @@
 #pragma once
 
 #include "winsock2.h"
-#include "Ghurund.h"
 #include "Message.h"
 #include "Socket.h"
 #include "core/Noncopyable.h"

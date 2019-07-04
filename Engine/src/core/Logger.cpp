@@ -5,6 +5,7 @@
 #include <process.h>
 #include "dbghelp.h"
 #include "collection/String.h"
+#include "Common.h"
 
 namespace Ghurund {
     const LogType LogType::INFO = LogType(LogTypeEnum::INFO, _T("INFO"));

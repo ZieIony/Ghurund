@@ -1,9 +1,9 @@
-#include "core/Type.h"
-#include "game/entity/Light.h"
-#include "game/entity/Camera.h"
-#include "game/entity/Scene.h"
-#include "game/entity/Model.h"
 #include "audio/Sound.h"
+#include "core/Type.h"
+#include "graphics/entity/Light.h"
+#include "graphics/entity/Camera.h"
+#include "graphics/entity/Scene.h"
+#include "graphics/entity/Model.h"
 #include "script/Script.h"
 
 namespace Ghurund {

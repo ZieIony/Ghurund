@@ -52,33 +52,33 @@ namespace Ghurund {
         }
     };
 
-    template<class Type, class Type2>
+    template<class EnumValueType, class EnumType>
     class Enum {
     private:
-        Type value;
+		EnumValueType value;
         const tchar* name;
 
     protected:
-        Enum(Type value, const tchar* name) {
+        Enum(EnumValueType value, const tchar* name) {
             this->value = value;
             this->name = name;
         }
 
     public:
 
-        static EnumValues<Type, Type2> VALUES;
+        static EnumValues<EnumValueType, EnumType> VALUES;
 
-        EnumValues<Type, Type2>& getValues() const {
+        EnumValues<EnumValueType, EnumType>& getValues() const {
             return VALUES;
         }
 
-        __declspec(property(get = getValues)) EnumValues<Type, Type2>& Values;
+        __declspec(property(get = getValues)) EnumValues<EnumValueType, EnumType>& Values;
 
-        inline Type getValue() const {
+        inline EnumValueType getValue() const {
             return value;
         }
 
-        __declspec(property(get = getValue)) Type Value;
+        __declspec(property(get = getValue)) EnumValueType Value;
 
         inline const tchar* getName() const {
             return name;

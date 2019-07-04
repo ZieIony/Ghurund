@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ghurund.h"
+#include "Common.h"
 
 namespace Ghurund {
     class Buffer {

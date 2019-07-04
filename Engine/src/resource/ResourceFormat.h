@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Ghurund.h"
-
 namespace Ghurund {
     using namespace std;
 

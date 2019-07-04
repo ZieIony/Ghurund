@@ -1,20 +1,22 @@
 #pragma once
 
+#include "Common.h"
+#include "TextUtils.h"
+
 #include "winsock2.h"
-#include "../Ghurund.h"
 
 #define WM_GHFILEWATCHER WM_USER+100
 
 namespace Ghurund {
     namespace MsgType {
         enum Type {
-            CONTROL = (1>>30), CHAT = (2>>30), SYNC = (3>>30)
+            CONTROL = (1 >> 30), CHAT = (2 >> 30), SYNC = (3 >> 30)
         };
     }
 
     class Message {
     private:
-        void *buffer, *data;
+        void* buffer, * data;
         int type;
         unsigned int size;
 
@@ -32,21 +34,21 @@ namespace Ghurund {
             delete[] buffer;
         }
 
-        void setData(unsigned int type, const char *data, unsigned int size) {
-            if(!data)
+        void setData(unsigned int type, const char* data, unsigned int size) {
+            if (!data)
                 return;
             delete[] buffer;
-            buffer = ghnew char[sizeof(unsigned int)+size];
+            buffer = ghnew char[sizeof(unsigned int) + size];
             this->type = ((unsigned int*)buffer)[0] = type;
-            memcpy((char*)buffer+sizeof(unsigned int), data, size);
-            this->data = (unsigned int*)buffer+1;
+            memcpy((char*)buffer + sizeof(unsigned int), data, size);
+            this->data = (unsigned int*)buffer + 1;
         }
 
         unsigned int getType() {
             return type;
         }
 
-        const char *getData() {
+        const char* getData() {
             return (char*)data;
         }
 
@@ -64,31 +66,31 @@ namespace Ghurund {
     };
 
     struct UDPMessageChat:public UDPMessage {
-        tchar *text = nullptr;
+        tchar* text = nullptr;
 
     public:
 
-        UDPMessageChat(const tchar *text) {
+        UDPMessageChat(const tchar* text) {
             type = UDPMessageType::CHAT;
-            safeCopyStr(&this->text, text);
+            this->text = copyStr(text);
         }
 
-        UDPMessageChat(const void *data, unsigned int size) {
+        UDPMessageChat(const void* data, unsigned int size) {
             type = UDPMessageType::CHAT;
-            tchar *text = (tchar*)((char*)data+sizeof(type));
-            safeCopyStr(&this->text, text);
+            tchar* text = (tchar*)((char*)data + sizeof(type));
+            this->text = copyStr(text);
         }
 
-        void *getData() {
-            size_t length = _tcslen(text)+1;
-            char *data = new char[sizeof(type)+length*sizeof(tchar)];
+        void* getData() {
+            size_t length = _tcslen(text) + 1;
+            char* data = new char[sizeof(type) + length * sizeof(tchar)];
             memcpy(data, &type, sizeof(type));
-            memcpy(data+sizeof(type), text, length*sizeof(tchar));
+            memcpy(data + sizeof(type), text, length * sizeof(tchar));
             return data;
         }
 
         size_t getSize() {
-            return sizeof(type)+(_tcslen(text)+1)*sizeof(tchar);
+            return sizeof(type) + (_tcslen(text) + 1) * sizeof(tchar);
         }
     };
 

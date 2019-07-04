@@ -1,12 +1,12 @@
 #pragma once
 
-#include "game/entity/TransformedEntity.h"
 #include "game/parameter/ParameterProvider.h"
-#include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
+#include "graphics/RenderingStatistics.h"
+#include "graphics/entity/TransformedEntity.h"
+#include "graphics/mesh/Mesh.h"
 #include "graphics/mesh/CubeMesh.h"
 #include "graphics/mesh/SphereMesh.h"
-#include "graphics/RenderingStatistics.h"
 #include "resource/ResourceManager.h"
 
 #include <PxShape.h>
@@ -16,10 +16,6 @@ namespace Ghurund {
 
     class Model: public TransformedEntity {
     private:
-        Mesh* mesh = nullptr;
-        Material* material = nullptr;
-        PxShape* shape = nullptr;
-
         void finalize() {
             safeRelease(mesh);
             safeRelease(material);
@@ -27,6 +23,9 @@ namespace Ghurund {
         }
 
     protected:
+        Mesh* mesh = nullptr;
+        Material* material = nullptr;
+        PxShape* shape = nullptr;
         List<Entity*> entities;
 
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;

@@ -31,7 +31,6 @@ extern "C" __declspec(dllexport) memory_t GPUResourceFactory_getAllocated(GPURes
     return resourceFactory->getAllocated();
 }
 
-#include "Ghurund.h"
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>
 

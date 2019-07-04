@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/StaticClass.h"
-#include "game/entity/Camera.h"
+#include "graphics/entity/Camera.h"
 
 namespace Ghurund {
     class CameraUtils:public StaticClass {

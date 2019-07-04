@@ -1,7 +1,9 @@
 #include "ParameterType.h"
 #include "core/Pointer.h"
+#include "DirectXMath.h"
 
 namespace Ghurund {
+    using namespace DirectX;
 
     const ParameterType ParameterType::INT = ParameterType(ParameterTypeEnum::INT, _T("int"), sizeof(int));
     const ParameterType ParameterType::INT2 = ParameterType(ParameterTypeEnum::INT2, _T("int2"), sizeof(XMINT2));

@@ -2,7 +2,6 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 
-#include "Ghurund.h"
 #include "resource/ResourceManager.h"
 
 #include <d3d12.h>

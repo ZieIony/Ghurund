@@ -1,9 +1,9 @@
 #pragma once
 
 #include "collection/List.h"
-#include "game/entity/Scene.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/RenderStep.h"
+#include "graphics/entity/Scene.h"
 
 #include "Level.h"
 
@@ -30,25 +30,25 @@ namespace Ghurund {
             return level;
         }
 
-        virtual bool dispatchKeyEvent(KeyEvent &event) override {
+        virtual bool dispatchKeyEvent(KeyEventArgs &event) override {
             if(level!=nullptr)
                 return level->dispatchKeyEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseButtonEvent(MouseButtonEvent &event) override {
+        virtual bool dispatchMouseButtonEvent(MouseButtonEventArgs &event) override {
             if(level!=nullptr)
                 return level->dispatchMouseButtonEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseMotionEvent(MouseMotionEvent &event) override {
+        virtual bool dispatchMouseMotionEvent(MouseMotionEventArgs&event) override {
             if(level!=nullptr)
                 return level->dispatchMouseMotionEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseWheelEvent(MouseWheelEvent &event) override {
+        virtual bool dispatchMouseWheelEvent(MouseWheelEventArgs&event) override {
             if(level!=nullptr)
                 return level->dispatchMouseWheelEvent(event);
             return false;
