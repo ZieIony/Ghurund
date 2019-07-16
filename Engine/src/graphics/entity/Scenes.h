@@ -2,7 +2,6 @@
 
 #include "Scene.h"
 #include "graphics/Materials.h"
-#include "Models.h"
 
 namespace Ghurund {
     class Scenes {
@@ -13,7 +12,7 @@ namespace Ghurund {
         static Scene *makeEditor(ResourceContext &context) {
             Scene *scene = ghnew Scene();
 
-            ScopedPointer<Material> material = Materials::makeChecker(context);
+            /*ScopedPointer<Material> material = Materials::makeChecker(context);
             if (material) {
                 ScopedPointer<Model> model = Models::makePlane(context, *material, 0);
                 if (model) {
@@ -22,7 +21,7 @@ namespace Ghurund {
                 }
             }
 
-            scene->initParameters(context.ParameterManager);
+            scene->initParameters(context.ParameterManager);*/
 
             return scene;
         }

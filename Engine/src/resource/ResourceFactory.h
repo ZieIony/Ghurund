@@ -23,17 +23,7 @@ namespace Ghurund {
         List<Type*> types;
 
     public:
-        DefaultResourceFactory() {
-            addType(Type::CAMERA);
-            addType(Type::LIGHT);
-            addType(Type::MESH);
-            addType(Type::MODEL);
-            addType(Type::TEXTURE);
-            addType(Type::MATERIAL);
-            addType(Type::IMAGE);
-            addType(Type::SHADER);
-            addType(Type::SCENE);
-        }
+		DefaultResourceFactory();
 
         void addType(const Type &type) {
             types.add((Type*)&type);

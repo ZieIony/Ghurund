@@ -1,12 +1,12 @@
 #pragma once
 
 #include "buffer/RenderTarget.h"
-#include "graphics/entity/Models.h"
+#include "graphics/DrawableComponents.h"
 
 namespace Ghurund {
     class Postprocess: public Resource {
     private:
-        Model* fullScreenQuad = nullptr;
+        //Model* fullScreenQuad = nullptr;
         Material* material = nullptr;
 
     protected:
@@ -20,15 +20,15 @@ namespace Ghurund {
 
     public:
         ~Postprocess() {
-            if (fullScreenQuad)
-                fullScreenQuad->release();
+            //if (fullScreenQuad)
+              //  fullScreenQuad->release();
             if (material)
                 material->release();
         }
 
         void init(ResourceContext& resourceContext, Material& material) {
             setPointer(this->material, &material);
-            fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
+            //fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
         }
 
         void process(Texture* texture, RenderTarget* renderTarget) {}

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "graphics/entity/Camera.h"
-#include "graphics/entity/Model.h"
 
 namespace Ghurund {
-	class Sky :public Model {
+	/*class Sky :public Model {
 	private:
 		ValueParameter* parameterViewProjection = nullptr;
 		ValueParameter* parameterCameraPosition = nullptr;
@@ -107,5 +106,5 @@ namespace Ghurund {
 		}
 
 		__declspec(property(get = getOuterRadius, put = setOuterRadius)) float OuterRadius;
-	};
+	};*/
 }

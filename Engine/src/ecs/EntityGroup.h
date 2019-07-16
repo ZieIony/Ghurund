@@ -1,11 +1,10 @@
 #pragma once
 
-#include "graphics/entity/EntityList.h"
-#include "graphics/entity/TransformedEntity.h"
+#include "ecs/EntityList.h"
 
 namespace Ghurund {
 
-    class EntityGroup:public TransformedEntity {
+    class EntityGroup:public Entity {
     protected:
         EntityList entities;
         mutable DirectX::BoundingBox boundingBox;

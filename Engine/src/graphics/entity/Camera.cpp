@@ -4,7 +4,8 @@
 namespace Ghurund {
     void Camera::rebuild() {
         XMMATRIX view2, proj2, viewProj2;
-        view2 = XMMatrixLookAtLH(XMLoadFloat3(&position), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		XMFLOAT3 pos = transformComponent->Position;
+        view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
         XMStoreFloat4x4(&view, view2);
         if (pers) {
             proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
@@ -18,6 +19,9 @@ namespace Ghurund {
     }
 
     Camera::Camera():parameters(PointerArray<Parameter*>(11)) {
+		transformComponent = ghnew TransformComponent();
+		Components.add(transformComponent);
+
         screenSize = {640, 480};
         fov = XM_PI / 4;
         zNear = 0.1f;
@@ -58,7 +62,7 @@ namespace Ghurund {
     void Camera::updateParameters() {
         rebuild();
         parameterDirection->setValue(&dir);
-        parameterPosition->setValue(&position);
+        parameterPosition->setValue(&transformComponent->Position);
         parameterUp->setValue(&up);
         parameterRight->setValue(&right);
         parameterFov->setValue(&fov);
@@ -88,7 +92,7 @@ namespace Ghurund {
     }
 
     void Camera::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
-        this->position = pos;
+        transformComponent->Position = pos;
         this->target = target;
 
         XMVECTOR dv = XMLoadFloat3(&target) - XMLoadFloat3(&pos);
@@ -103,7 +107,7 @@ namespace Ghurund {
     }
 
     void Camera::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
-        this->position = pos;
+		transformComponent->Position = pos;
         XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
         XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
 
@@ -120,17 +124,18 @@ namespace Ghurund {
         XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
         dv = XMVector3TransformNormal(dv, rotation);
-        XMStoreFloat3(&target, XMLoadFloat3(&position) + dv);
-        setPositionTargetUp(position, target, up);
+        XMStoreFloat3(&target, XMLoadFloat3(&transformComponent->Position) + dv);
+        setPositionTargetUp(transformComponent->Position, target, up);
     }
 
     void Camera::setOrbit(float yaw, float pitch, float roll) {
         XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
         XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
         dv = XMVector3TransformNormal(dv, rotation);
-        XMStoreFloat3(&position, XMLoadFloat3(&target) - dv);
-        setPositionTargetUp(position, target, up);
-    }
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, XMLoadFloat3(&target) - dv);
+        setPositionTargetUp(pos, target, up);
+	}
 
     void Camera::rotate(float yaw, float pitch, float roll) {
         XMFLOAT3& rotation = getRotation();
@@ -148,16 +153,20 @@ namespace Ghurund {
         XMVECTOR rv = XMLoadFloat3(&right);
         XMVECTOR uv = XMLoadFloat3(&up);
         XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
-        XMStoreFloat3(&position, XMLoadFloat3(&position) + rv * x + uv * y);
+		XMFLOAT3 pos;
+        XMStoreFloat3(&pos, XMLoadFloat3(&transformComponent->Position) + rv * x + uv * y);
+		transformComponent->Position = pos;
         notifyObjectChanged();
     }
 
     void Camera::zoom(float z) {
         XMVECTOR dv = XMLoadFloat3(&dir);
-        XMVECTOR pv = XMLoadFloat3(&position);
+        XMVECTOR pv = XMLoadFloat3(&transformComponent->Position);
         XMVECTOR pv2 = pv + dv * z;
-        XMStoreFloat3(&position, pv2);
-        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, pv2);
+		transformComponent->Position = pos;
+		XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
         notifyObjectChanged();
     }
 

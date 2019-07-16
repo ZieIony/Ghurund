@@ -1,9 +1,12 @@
 #pragma once
 
-#include "TransformedEntity.h"
+#include "ecs/Entity.h"
 
 namespace Ghurund {
-    class Target:public TranslatedEntity {
+    class Target:public Entity {
     public:
+//		Target(TransformSystem& system) {
+	//		Components.add(system.makeTransform());
+		//}
     };
 }

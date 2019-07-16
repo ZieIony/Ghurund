@@ -3,16 +3,31 @@
 #include "collection/List.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/Renderer.h"
-#include "graphics/RenderStep.h"
 #include "graphics/entity/Scene.h"
 #include "input/EventConsumer.h"
 
 namespace Ghurund {
     class Level:public EventConsumer {
+	private:
+		PointerList<Scene*> scenes;
+
     public:
+		PointerList<Scene*>& getScenes() {
+			return scenes;
+		}
+
+		__declspec(property(get = getScenes)) PointerList<Scene*>& Scenes;
+
         virtual void onInit() {}
         virtual void onUninit() {}
-        virtual void onUpdate() {}
-        virtual void onDraw(Renderer& renderer, ParameterManager& parameterManager) {}
+        virtual void onUpdate() {
+			for (Scene* s : scenes)
+				s->transform();
+		}
+
+        virtual void onDraw(CommandList& commandList) {
+			for (Scene* s : scenes)
+				s->render(0, commandList);
+		}
     };
 }

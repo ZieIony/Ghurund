@@ -4,7 +4,7 @@
 #include "graphics/Materials.h"
 
 namespace Ghurund {
-	class BasicSky :public Sky {
+	/*class BasicSky :public Sky {
 	public:
 		void init(ResourceContext& context, Ghurund::Camera* camera) {
 			__super::init(context, camera);
@@ -14,5 +14,5 @@ namespace Ghurund {
 			initParameters(context.ParameterManager);
 			Valid = true;
 		}
-	};
+	};*/
 }

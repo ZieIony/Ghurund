@@ -4,7 +4,7 @@
 #include "graphics/Materials.h"
 
 namespace Ghurund {
-	class AdvancedSky :public Sky {
+	/*class AdvancedSky :public Sky {
 	private:
 		XMFLOAT3 sunDirection = { 1,1,1 };
 
@@ -73,5 +73,5 @@ namespace Ghurund {
 		}
 
 		__declspec(property(get = getSunDirection, put = setSunDirection)) XMFLOAT3 SunDirection;
-	};
+	};*/
 }

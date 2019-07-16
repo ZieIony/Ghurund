@@ -1,14 +1,14 @@
 #pragma once
 
 #include "ScriptBindings.h"
-#include "graphics/entity/Model.h"
+#include "graphics/DrawableComponent.h"
 
 namespace Ghurund {
 
-    class ModelScriptBindings:ScriptBindings<Model> {
+    class ModelScriptBindings:ScriptBindings<DrawableComponent> {
     public:
         static void registerClass(asIScriptEngine& engine) {
-            ScriptBindings<Model>::registerRefClass(engine, Type::MODEL.Name);
+            ScriptBindings<DrawableComponent>::registerRefClass(engine, DrawableComponent::TYPE.Name);
         }
     };
 

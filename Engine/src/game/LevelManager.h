@@ -2,7 +2,6 @@
 
 #include "collection/List.h"
 #include "game/parameter/ParameterManager.h"
-#include "graphics/RenderStep.h"
 #include "graphics/entity/Scene.h"
 
 #include "Level.h"
@@ -59,9 +58,9 @@ namespace Ghurund {
                 level->onUpdate();
         }
 
-        void draw(Renderer &renderer, ParameterManager &parameterManager) {
+        void draw(CommandList& commandList) {
             if(level!=nullptr)
-                level->onDraw(renderer, parameterManager);
+                level->onDraw(commandList);
         }
     };
 }

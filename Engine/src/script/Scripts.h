@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Script.h"
-#include "graphics/entity/Entity.h"
+#include "ecs/Entity.h"
 
 namespace Ghurund {
 

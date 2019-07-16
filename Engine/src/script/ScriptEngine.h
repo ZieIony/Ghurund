@@ -6,6 +6,8 @@
 #include "core/Timer.h"
 #include "Script.h"
 #include "collection/PointerList.h"
+#include "ecs/System.h"
+#include "ScriptComponent.h"
 
 #include <atomic>
 
@@ -31,14 +33,13 @@
 #endif
 
 namespace Ghurund {
-    class ScriptEngine: public Object {
+    class ScriptEngine: public Object, public System<ScriptComponent> {
     private:
         asIScriptEngine* engine = nullptr;
         asIScriptModule* mod = nullptr;
         StringFactory stringFactory;
         std::atomic<unsigned int> moduleIndex = 0;
         Timer* timer;
-        PointerList<Script*> scripts;
 
         static void messageCallback(const asSMessageInfo* msg, void* param) {
             LogType type = LogType::ERR0R;
@@ -71,13 +72,7 @@ namespace Ghurund {
             return engine->CreateContext();
         }
 
-        PointerList<Script*>& getScripts() {
-            return scripts;
-        }
-
-        __declspec(property(get = getScripts)) PointerList<Script*>& Scripts;
-
-        void execute();
+        void update(float dt);
 
         const static Ghurund::Type& TYPE;
 

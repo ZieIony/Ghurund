@@ -11,7 +11,6 @@ namespace Ghurund {
         Frame* frame = nullptr;
         RenderTarget* renderTarget = nullptr;
         DepthBuffer* depthBuffer = nullptr;
-        RenderStep* step = nullptr;
 
         ResourceContext* resourceContext = nullptr;
 
@@ -21,12 +20,11 @@ namespace Ghurund {
                 camera->release();
             delete renderer;
             delete frame;
-            delete step;
         }
 
         void init(ResourceContext& context, uint32_t width, uint32_t height);
 
-        Status render(Entity& entity, Image*& image);
+        Status render(DrawableComponent& entity, Image*& image);
         Status render(Mesh& mesh, Image*& image);
         Status render(Material& material, Image*& image);
 

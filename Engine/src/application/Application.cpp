@@ -131,19 +131,19 @@ namespace Ghurund {
     void Application::update() {
         timer->tick();
 
+		float dt = timer->FrameTime;	// TODO: constant dt
+
         resourceManager->reload();
 
         input.dispatchEvents(levelManager);
 
-        scriptEngine->execute();
+        scriptEngine->update(dt);
 
         onUpdate();
 
         input.clearEvents();
 
-        Frame& frame = swapChain->getFrame();
-        renderer->render(frame);
-        swapChain->present();
+		onDraw();
     }
 
     void Application::reset() {

@@ -14,7 +14,7 @@ namespace Ghurund {
         static const Type &LIGHT, &CAMERA,
             &SCENE,
             &SHADER, &TEXTURE, &MATERIAL, &IMAGE,
-            &MODEL, &MESH,
+            &MESH,
             &SOUND,
             &COMMAND_LIST,
             &SCRIPT;

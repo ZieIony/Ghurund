@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Target.h"
-#include "graphics/entity/Entity.h"
+#include "ecs/Entity.h"
 
 namespace Ghurund {
-    class Light: public TranslatedEntity {
+    class Light: public Entity, public ParameterProvider {
     private:
         Target* target;
         PointerArray<Parameter*> parameters;
@@ -51,7 +51,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
-
-        virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) override;
     };
 }

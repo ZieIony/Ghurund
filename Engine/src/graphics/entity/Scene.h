@@ -1,58 +1,68 @@
 #pragma once
 
-#include "graphics/entity/EntityGroup.h"
+#include "ecs/Entity.h"
+#include "resource/Resource.h"
 #include "physics/Physics.h"
-
-#include <PxScene.h>
-#include <extensions/PxDefaultCpuDispatcher.h>
+#include "physics/PhysicsSystem.h"
+#include "graphics/GraphicsSystem.h"
 
 namespace Ghurund {
-    using namespace physx;
+	class Scene :public Resource {
+	private:
+		PointerList<Entity*> entities;
+		TransformSystem transformSystem;
+		PhysicsSystem physicsSystem;
+		GraphicsSystem graphicsSystem;
 
-    class Scene:public EntityGroup {
-    private:
-        PointerArray<Parameter*> parameters;
-        PxDefaultCpuDispatcher* dispatcher = nullptr;
+	protected:
+		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
-    public:
+	public:
 
-        Scene():parameters(PointerArray<Parameter*>(0)) {
-            Name = _T("scene");
-        }
+		Scene() {}
 
-        Scene(const std::initializer_list<Entity*> list):EntityGroup(list), parameters(PointerArray<Parameter*>(0)) {
-            Name = _T("scene");
-        }
+		void init(Camera* camera, ResourceContext& context) {
+			graphicsSystem.Camera = camera;
+			graphicsSystem.init(context.Graphics);
+			graphicsSystem.initParameters(context.ParameterManager);
+		}
 
-        PxScene* scene = nullptr;
+		PointerList<Entity*>& getEntities() {
+			return entities;
+		}
 
-        void init(Physics& physics) {
-            PxSceneDesc sceneDesc(physics.get().getTolerancesScale());
-            sceneDesc.gravity = PxVec3(0.0f, -9.81f, 0.0f);
-            dispatcher = PxDefaultCpuDispatcherCreate(0);
-            sceneDesc.cpuDispatcher = dispatcher;
-            sceneDesc.filterShader = PxDefaultSimulationFilterShader;
-            scene = physics.get().createScene(sceneDesc);
-        }
+		__declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
 
-        void simulate(float dt) {
-            scene->simulate(dt);
-            scene->fetchResults(true);
-        }
+		TransformSystem& getTransformSystem() {
+			return transformSystem;
+		}
 
-        virtual const PointerArray<Parameter*>& getParameters() const override {
-            return parameters;
-        }
+		__declspec(property(get = getTransformSystem)) TransformSystem& TransformSystem;
 
-        virtual const Ghurund::Type& getType() const override {
-            return Type::SCENE;
-        }
+		GraphicsSystem& getGraphicsSystem() {
+			return graphicsSystem;
+		}
 
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::SCENE};
-            return formats;
-        }
+		__declspec(property(get = getGraphicsSystem)) GraphicsSystem& GraphicsSystem;
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
-    };
+		void transform() {
+			transformSystem.update(0);
+		}
+
+		void render(float dt, CommandList& commandList) {
+			graphicsSystem.update(dt, commandList);
+		}
+
+		virtual const Ghurund::Type& getType() const override {
+			return Type::SCENE;
+		}
+
+		static const Array<ResourceFormat*>& getFormats() {
+			static const Array<ResourceFormat*> formats = { (ResourceFormat*)& ResourceFormat::SCENE };
+			return formats;
+		}
+
+		__declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+	};
 }

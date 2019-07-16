@@ -68,7 +68,11 @@ namespace Ghurund {
         };
 
         virtual void onDraw() {
-            levelManager.draw(*renderer, *parameterManager);
+			Frame& frame = swapChain->getFrame();
+			CommandList& commandList = renderer->startFrame(frame);
+			levelManager.draw(commandList);
+			renderer->finishFrame(frame);
+			swapChain->present();
         };
 
         /*virtual void client(const void *buffer, unsigned int size){

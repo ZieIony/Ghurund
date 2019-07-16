@@ -63,7 +63,7 @@ namespace Ghurund {
 	}
 
 	void CameraController::update(Input& input, float dt) {
-		float vel = 25 * dt;
+		/*float vel = 25 * dt;
 		if (input.Keys[keyMap[GameAction::RUN]])
 			vel *= 5;
 		if (input.Keys[keyMap[GameAction::GO_FORWARD]]) {
@@ -95,6 +95,6 @@ namespace Ghurund {
 			camera.setPositionTargetUp(
 				XMFLOAT3(camera.Position.x, camera.Position.y - camera.Up.y * vel, camera.Position.z),
 				XMFLOAT3(camera.Target.x, camera.Target.y - camera.Up.y * vel, camera.Target.z));
-		}
+		}*/
 	}
 }

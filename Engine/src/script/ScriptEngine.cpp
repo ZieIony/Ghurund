@@ -37,8 +37,11 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void ScriptEngine::execute() {
-        for (Ghurund::Script* s : scripts) {
+    void ScriptEngine::update(float dt) {
+        for (ScriptComponent* c : Components) {
+			if (!c->Enabled)
+				continue;
+			Script* s = c->Script;
             if (s->Valid)
                 s->execute();
         }

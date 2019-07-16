@@ -10,9 +10,9 @@ private:
     CameraController* cameraController = nullptr;
     Application& app;
     Material* wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
-    ScopedPointer<AdvancedSky> sky;
+    //ScopedPointer<AdvancedSky> sky;
 
-    RenderStep editorStep, sceneStep, selectionStep;
+    //RenderStep editorStep, sceneStep, selectionStep;
 
 public:
     TestLevel(Application& app) :app(app) {}
@@ -70,7 +70,7 @@ public:
                 });
         } else {*/
         ScopedPointer<Scene> scene = makeScene();
-        sceneStep.Entities.add(scene);
+		Scenes.add(scene);
         //selectionStep.Entities.add(scene->Entities[0]);
 
         /*Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
@@ -78,32 +78,27 @@ public:
             Logger::log(LogType::WARNING, _T("failed to save scene\n"));*/
             //}
 
-        editorStep.Camera = camera;
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
-        editorStep.Entities.add(editorScene);
-        editorStep.initParameters(app.ParameterManager);
-        app.Renderer.Steps.add(&editorStep);
+        //editorScene->Camera = camera;
 
-        selectionStep.Camera = camera;
         ScopedPointer<Scene> selectionScene = ghnew Scene();
-        selectionStep.Entities.add(selectionScene);
-        selectionStep.initParameters(app.ParameterManager);
-        selectionStep.OverrideMaterial = outlineMaterial;
-        app.Renderer.Steps.add(&selectionStep);
+        //selectionStep.Camera = camera;
+        //selectionScene->OverrideMaterial = outlineMaterial;
 
-        sceneStep.Camera = camera;
+        //sceneStep.Camera = camera;
         ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
-        sceneStep.InvalidMaterial = invalidMaterial;
-        sceneStep.initParameters(app.ParameterManager);
-        app.Renderer.Steps.add(&sceneStep);
+        //sceneStep.InvalidMaterial = invalidMaterial;
 
         const char* sourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),cos(timer.getTime()/5.0f)*3.0f+30);}";
         ScopedPointer<Script> script = Scripts::make(camera, sourceCode);
 
-        app.ScriptEngine.Scripts.add(script);
+        //app.ScriptEngine.Scripts.add(script);
     }
 
     Scene* makeScene() {
+		Scene* scene = ghnew Scene();
+		scene->init(camera, app.ResourceContext);
+
         /*ScopedPointer<Model> lamborghini;
         {
             ScopedPointer<Mesh> mesh;
@@ -128,8 +123,12 @@ public:
             }
         }*/
 
-        ScopedPointer<Model> house;
+        ScopedPointer<Entity> house = ghnew Entity();
         {
+			ScopedPointer<TransformComponent> transform = scene->TransformSystem.makeComponent();
+			transform->Valid = true;
+			house->Components.add(transform);
+
             ScopedPointer<Mesh> mesh;
             File file("test/obj/house/house.mesh");
             if (file.Exists) {
@@ -147,12 +146,18 @@ public:
             if (diffuseTexture != nullptr && specularTexture != nullptr && normalTexture != nullptr && mesh != nullptr) {
                 ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
-                house = ghnew Model(mesh, material);
+				ScopedPointer<DrawableComponent> component = scene->GraphicsSystem.makeComponent();
+				component->TransformComponent = transform;
+				component->Mesh = mesh;
+				component->Material = material;
+				component->initParameters(app.ParameterManager);
+				component->Valid = true;
+				house->Components.add(component);
                 house->Name = "house";
                 house->Valid = true;
             }
         }
-
+		/*
         ScopedPointer<Model> cone;
         {
             ScopedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
@@ -171,12 +176,12 @@ public:
             light->Name = "light";
             light->Position = { 120, 100, -150 };
             light->Scale = { 10, 10, 10 };
-        }
+        }*/
 
-        sky = ghnew AdvancedSky();
-        sky->init(app.ResourceContext, camera);
+        //sky = ghnew AdvancedSky();
+        //sky->init(app.ResourceContext, camera);
 
-        return ghnew Scene({ house, sky });
+        return scene;
     }
 
     virtual void onUpdate() override {
@@ -184,10 +189,12 @@ public:
         XMFLOAT3 lightPos = { sin(app.Timer.Time) * 150, 150, cos(app.Timer.Time) * 150 };
         param->setValue(&lightPos);
 
-        sky->SunDirection = { 1, sin(app.Timer.Time / 10), cos(app.Timer.Time / 10) };
+        //sky->SunDirection = { 1, sin(app.Timer.Time / 10), cos(app.Timer.Time / 10) };
 
         camera->ScreenSize = app.Window.Size;
         cameraController->update(app.Input, app.Timer.FrameTime);
+
+		__super::onUpdate();
     }
 
     virtual void onUninit() override {

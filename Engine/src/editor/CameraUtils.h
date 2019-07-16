@@ -7,12 +7,12 @@ namespace Ghurund {
     class CameraUtils:public StaticClass {
     public:
 
-        static void lookAtEntity(Camera& camera, Entity& entity) {
-            XMFLOAT3 pos;
+        static void lookAtEntity(Camera& camera, DrawableComponent& entity) {
+            /*XMFLOAT3 pos;
             XMStoreFloat3(&pos, XMLoadFloat3(&entity.BoundingBox->Center) + XMLoadFloat3(&entity.BoundingBox->Extents) * 2);
             pos.z *= -1;
             pos.y /= 2;
-            camera.setPositionTargetUp(pos, entity.BoundingBox->Center);
+            camera.setPositionTargetUp(pos, entity.BoundingBox->Center);*/
         }
 
         static XMFLOAT3 screenVectorTo3D(XMFLOAT2& mouseMove, Camera& camera) {

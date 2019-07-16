@@ -25,10 +25,4 @@ namespace Ghurund {
         }*/
     }
 
-    void Renderer::render(Frame& frame) {
-        CommandList& commandList = startFrame(frame);
-        for (RenderStep* step : steps)
-            step->draw(*graphics, commandList, stats);
-        finishFrame(frame);
-    }
 }

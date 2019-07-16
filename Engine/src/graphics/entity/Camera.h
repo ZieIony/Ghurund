@@ -4,14 +4,17 @@
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
-#include "graphics/entity/TransformedEntity.h"
+#include "ecs/Entity.h"
 #include "resource/Resource.h"
+#include "game/TransformComponent.h"
 
 namespace Ghurund {
 
-    class Camera: public TranslatedEntity {
+    class Camera: public Entity, public ParameterProvider {
     private:
-        XMFLOAT3 target, dir, right, up;
+		TransformComponent* transformComponent;
+		
+		XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, viewProjInv, facing;
         XMINT2 screenSize;
         float fov, zNear, zFar, dist;
@@ -32,6 +35,10 @@ namespace Ghurund {
     public:
 
         Camera();
+
+		~Camera() {
+			transformComponent->release();
+		}
 
         virtual const Ghurund::Type& getType() const override {
             return Type::CAMERA;
@@ -186,7 +193,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
-
-        virtual void queueDraw(RenderStep& step, XMFLOAT4X4& transformation) override {}
     };
 }
