@@ -8,8 +8,6 @@
 #include "script/bindings/SceneScriptBindings.h"
 
 namespace Ghurund {
-    const Ghurund::Type& ScriptEngine::TYPE = Ghurund::Type([]() {return ghnew ScriptEngine(); }, "ScriptEngine");
-
     Status ScriptEngine::init(Timer& timer) {
         this->timer = &timer;
 

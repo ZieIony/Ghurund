@@ -3,7 +3,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();
         return build(context.ScriptEngine);

@@ -23,6 +23,8 @@ namespace Ghurund {
 
         ResourceFormat() {
             extension = nullptr;
+			save = false;
+			load = false;
         }
 
         ResourceFormat(const wchar_t* extension, bool save, bool load) {

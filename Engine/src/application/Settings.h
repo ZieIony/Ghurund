@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Common.h"
-#include "core/File.h"
-#include "collection/Map.h"
-#include "collection/String.h"
+#include "core/collection/Map.h"
+#include "core/string/String.h"
+#include "core/io/File.h"
 
 namespace Ghurund {
     class Settings {

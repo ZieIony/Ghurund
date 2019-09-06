@@ -1,11 +1,9 @@
 #include "Graphics.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 
 #include <D3Dcompiler.h>
 
 namespace Ghurund {
-    const Ghurund::Type& Graphics::TYPE = Ghurund::Type([]() {return ghnew Graphics(); }, "Graphics");
-
     Status Graphics::initAdapters() {
         ComPtr<IDXGIAdapter1> adapter;
 

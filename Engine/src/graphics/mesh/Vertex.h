@@ -5,7 +5,10 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
+
+#pragma warning(push, 0)
 #include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
 
@@ -17,7 +20,10 @@ namespace Ghurund {
         XMFLOAT3 position;
         XMFLOAT2 texCoord;
 
-        ScreenVertex() {}
+        ScreenVertex() {
+			position = {};
+			texCoord = {};
+		}
 
         ScreenVertex(XMFLOAT3 position, XMFLOAT2 texCoord) {
             this->position = position;
@@ -47,7 +53,12 @@ namespace Ghurund {
         XMFLOAT3 tangent;
         XMFLOAT2 texCoord;
 
-        Vertex() {}
+        Vertex() {
+			position = {};
+			normal = {};
+			tangent = {};
+			texCoord = {};
+		}
 
         Vertex(XMFLOAT3 position, XMFLOAT2 texCoord) {
             this->position = position;

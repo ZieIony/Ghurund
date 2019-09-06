@@ -8,7 +8,7 @@ namespace Ghurund {
     const FileChange& FileChange::RENAMED_FROM = FileChange(FileChangeEnum::RENAMED_FROM, _T("renamed from"));
     const FileChange& FileChange::RENAMED_TO = FileChange(FileChangeEnum::RENAMED_TO, _T("renamed to"));
 
-    EnumValues<FileChangeEnum, FileChange> FileChange::VALUES = {
+    const EnumValues<FileChangeEnum, FileChange> FileChange::VALUES = {
         &FileChange::ADDED,
         &FileChange::REMOVED,
         &FileChange::MODIFIED,

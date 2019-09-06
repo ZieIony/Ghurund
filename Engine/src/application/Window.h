@@ -2,19 +2,22 @@
 
 #include "application/Settings.h"
 #include "application/WindowProc.h"
-#include "collection/Array.h"
+#include "core/collection/Array.h"
 #include "core/NamedObject.h"
 #include "core/Object.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
 
+#pragma warning(push, 0)
 #include "d3dx12.h"
+#pragma warning(pop)
 
 namespace Ghurund {
-    class Window: public ParameterProvider, public NamedObject, public Object {
+    class Window: public ParameterProvider, public NamedObject<String>, public Object {
     private:
-        static const tchar* WINDOW_CLASS_NAME;
+        inline static const tchar* WINDOW_CLASS_NAME = _T("Ghurund");
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Window>();
 
         String title;
         WNDCLASSEX windowClass;
@@ -42,7 +45,7 @@ namespace Ghurund {
             if (parameterViewportSize != nullptr)
                 return;
 
-            parameters[0] = parameterViewportSize = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEWPORT_SIZE.Value];
+            parameters.set(0, parameterViewportSize = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEWPORT_SIZE.Value]);
         }
 
         virtual void updateParameters() override {
@@ -134,7 +137,7 @@ namespace Ghurund {
 
         void updateSize();
 
-        const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Window");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

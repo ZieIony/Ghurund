@@ -147,7 +147,7 @@ public:
                 ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
 				ScopedPointer<DrawableComponent> component = scene->GraphicsSystem.makeComponent();
-				component->TransformComponent = transform;
+				//component->TransformComponent = transform;
 				component->Mesh = mesh;
 				component->Material = material;
 				component->initParameters(app.ParameterManager);

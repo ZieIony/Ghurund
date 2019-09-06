@@ -6,14 +6,12 @@ namespace Ghurund {
     class SimpleBufferStrategy:public AllocationStrategy {
     private:
         List<Allocation> allocations;
-        memory_t allocated = 0;
 
     public:
         inline memory_t allocate(memory_t size) {
             if (size > this->size - allocated)
                 return this->size;
 
-            memory_t currAddr;
             memory_t address = 0;
             memory_t alignedSize = align<>(size, alignSize);
             if (allocations.Size == 0) {
@@ -44,7 +42,7 @@ namespace Ghurund {
 
         inline void deallocate(memory_t address) {
             for (size_t i = 0; i < allocations.Size; i++) {
-                Allocation& a = allocations[i];
+                Allocation const& a = allocations[i];
                 if (a.address == address) {
                     allocated -= a.size;
                     allocations.removeAtKeepOrder(i);
@@ -52,10 +50,6 @@ namespace Ghurund {
                 }
             }
             Logger::log(LogType::WARNING, _T("the requested address (%i) does not belong to this strategy\n"), address);
-        }
-
-        virtual memory_t getAllocated() const override {
-            return allocated;
         }
     };
 }

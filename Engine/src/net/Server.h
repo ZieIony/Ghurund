@@ -1,7 +1,7 @@
 #pragma once
 
 #include "winsock2.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "Message.h"
 #include "Socket.h"
 

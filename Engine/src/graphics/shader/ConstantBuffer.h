@@ -1,6 +1,6 @@
 #pragma once
 
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "core/ScopedPointer.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/buffer/DynamicBuffer.h"

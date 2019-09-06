@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/Timer.h"
+#include "application/Timer.h"
 #include "Mouse.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "Keyboard.h"
 #include "Windowsx.h"
 #include "EventConsumer.h"
@@ -15,7 +15,7 @@ namespace Ghurund {
         XMINT2 mousePos;
         bool keys[256];
 
-        bool dispatchEvent(SystemMessage& message, EventDispatcher& consumer);
+        bool dispatchEvent(const SystemMessage& message, EventDispatcher& consumer);
 
     public:
         void dispatchMessage(SystemMessage &message) {

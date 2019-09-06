@@ -1,12 +1,14 @@
 #pragma once
 
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "core/Object.h"
 
+#pragma warning(push, 0)
 #include <PxFoundation.h>
 #include <PxPhysics.h>
 #include <PxPhysicsAPI.h>
 #include <extensions/PxDefaultAllocator.h>
+#pragma warning(pop)
 
 #ifdef _WIN64
 #pragma comment(lib, "PhysX_64.lib")
@@ -27,7 +29,9 @@ namespace Ghurund {
 
 	class Physics:public Object {
     private:
-        PxDefaultErrorCallback defaultErrorCallback;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Physics>();
+		
+		PxDefaultErrorCallback defaultErrorCallback;
         PxDefaultAllocator defaultAllocatorCallback;
         PxFoundation* foundation = nullptr;
         PxPhysics* physics = nullptr;
@@ -52,7 +56,7 @@ namespace Ghurund {
             return *physics;
         }
 
-        const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Physics");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

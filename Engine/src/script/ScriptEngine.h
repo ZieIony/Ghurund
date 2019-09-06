@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "StringFactory.h"
 #include "core/Object.h"
-#include "core/Timer.h"
+#include "application/Timer.h"
 #include "Script.h"
-#include "collection/PointerList.h"
+#include "core/collection/PointerList.h"
 #include "ecs/System.h"
 #include "ScriptComponent.h"
 
@@ -35,7 +35,9 @@
 namespace Ghurund {
     class ScriptEngine: public Object, public System<ScriptComponent> {
     private:
-        asIScriptEngine* engine = nullptr;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
+		
+		asIScriptEngine* engine = nullptr;
         asIScriptModule* mod = nullptr;
         StringFactory stringFactory;
         std::atomic<unsigned int> moduleIndex = 0;
@@ -74,7 +76,7 @@ namespace Ghurund {
 
         void update(float dt);
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ScriptEngine");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

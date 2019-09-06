@@ -5,7 +5,7 @@
 namespace Ghurund {
     class AllocationStrategy {
     protected:
-        memory_t size;
+        memory_t size, allocated = 0;
         memory_t alignAddress, alignSize;
 
     public:
@@ -20,14 +20,20 @@ namespace Ghurund {
         virtual memory_t allocate(memory_t size) = 0;
         virtual void deallocate(memory_t) = 0;
 
-        memory_t getSize() const {
+		inline memory_t getSize() const {
             return size;
         }
 
         __declspec(property(get = getSize)) memory_t Size;
 
-        virtual memory_t getAllocated() const = 0;
+		inline memory_t getAllocated() const {
+			return allocated;
+		}
 
         __declspec(property(get = getAllocated)) memory_t Allocated;
+
+		inline bool canAllocate(memory_t size) const {
+			return align<>(allocated, alignAddress) + align<>(size, alignSize) <= Size;
+		}
     };
 }

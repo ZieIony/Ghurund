@@ -4,7 +4,9 @@
 #include "game/TransformComponent.h"
 #include "physics/Physics.h"
 
+#pragma warning(push, 0)
 #include <PxShape.h>
+#pragma warning(pop)
 
 namespace Ghurund {
 	using namespace physx;

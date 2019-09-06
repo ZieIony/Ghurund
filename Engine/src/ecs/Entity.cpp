@@ -2,9 +2,6 @@
 
 namespace Ghurund {
 
-    PointerList<Entity*> Entity::entities;
-    atomic<id_t> Entity::currentId = {0};
-
-	const Ghurund::Type& Entity::TYPE = Ghurund::Type([]() {return ghnew Entity(); }, "Entity");
+	//const Ghurund::Type<Entity>& Entity::TYPE = Ghurund::Type<Entity>([](Allocator& allocator) {return ghnew Entity(); }, "Ghurund", "Entity");
 
 }

@@ -1,7 +1,7 @@
 #include "Input.h"
 
 namespace Ghurund {
-    bool Input::dispatchEvent(SystemMessage& message, EventDispatcher& consumer) {
+    bool Input::dispatchEvent(const SystemMessage& message, EventDispatcher& consumer) {
         if (message.code == WM_KEYDOWN) {
             keys[message.wParam] = true;
             return consumer.dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, (int)message.wParam, message.time));

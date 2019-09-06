@@ -9,7 +9,9 @@ namespace Ghurund {
 
     class Script:public Resource {
     private:
-        asIScriptModule* mod = nullptr;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Script>();
+		
+		asIScriptModule* mod = nullptr;
         asIScriptContext* ctx = nullptr;
         asIScriptFunction* func = nullptr;
         char* source = nullptr;
@@ -116,8 +118,10 @@ namespace Ghurund {
             return ctx->GetReturnObject();
         }
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Script");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::SCRIPT;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

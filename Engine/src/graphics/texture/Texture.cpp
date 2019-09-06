@@ -2,7 +2,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         Status result;
         image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)

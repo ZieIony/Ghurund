@@ -51,4 +51,12 @@ namespace Ghurund {
         data[3] = val & 0xff;
         return (data[(unsigned int)x] << 24) | (data[(unsigned int)y] << 16) | (data[(unsigned int)z] << 8) | data[(unsigned int)w];
     }
+
+	constexpr unsigned int operator"" _KB(unsigned long long val) {
+		return val * 1024;
+	}
+
+	constexpr unsigned int operator"" _MB(unsigned long long val) {
+		return val * 1024 * 1024;
+	}
 }

@@ -97,7 +97,7 @@ namespace Ghurund {
         __declspec(property(get = getUp, put = setUp)) XMFLOAT3 Up;
 
 		void calculate3D(X3DAUDIO_EMITTER& emitter) {
-			X3DAUDIO_DSP_SETTINGS pDSPSettings;
+			X3DAUDIO_DSP_SETTINGS pDSPSettings = {};
 			X3DAudioCalculate(x3DInstance, &listener, &emitter, 0, &pDSPSettings);
 		}
     };

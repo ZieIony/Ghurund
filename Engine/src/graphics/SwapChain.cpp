@@ -2,8 +2,6 @@
 #include "Graphics.h"
 
 namespace Ghurund {
-    const Ghurund::Type& SwapChain::TYPE = Ghurund::Type([]() {return ghnew SwapChain(); }, "SwapChain");
-  
     Status SwapChain::init(Graphics &graphics, Window &window, unsigned int frameCount) {
         this->graphics = &graphics;
         this->window = &window;

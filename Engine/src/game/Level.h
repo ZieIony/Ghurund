@@ -1,6 +1,6 @@
 #pragma once
 
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/Renderer.h"
 #include "graphics/entity/Scene.h"
@@ -27,7 +27,7 @@ namespace Ghurund {
 
         virtual void onDraw(CommandList& commandList) {
 			for (Scene* s : scenes)
-				s->render(0, commandList);
+				s->render(commandList);
 		}
     };
 }

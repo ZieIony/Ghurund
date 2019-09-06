@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/MemoryStream.h"
+#include "core/io/MemoryStream.h"
 #include "graphics/buffer/DynamicBuffer.h"
 #include "graphics/shader/Shader.h"
 #include "graphics/texture/Image.h"
@@ -10,6 +10,8 @@
 namespace Ghurund {
     class Material:public Resource, public ParameterProvider {
     private:
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Material>();
+
         Shader* shader = nullptr;
         bool supportsTransparency = false;
 
@@ -90,8 +92,10 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Material");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::MATERIAL;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

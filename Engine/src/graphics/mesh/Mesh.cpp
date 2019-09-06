@@ -2,7 +2,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
+	Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
         if (Path) {
             if (Path->get().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
@@ -33,24 +33,24 @@ namespace Ghurund {
         List<unsigned int> triangleIndices;
 
         ASCIIString obj((char*)stream.Data, stream.Size);
-        List<ASCIIString> lines = obj.split("\n");
+        Array<ASCIIString> lines = obj.split("\n");
         for (ASCIIString& line : lines) {
             if (line.startsWith("#")) {
                 continue;
             } else if (line.startsWith("v ")) {
-                List<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
                 XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
                 objVerts.add(v);
             } else if (line.startsWith("vt ")) {
-                List<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
                 XMFLOAT2 v((float)atof(vert[0]), 1 - (float)atof(vert[1]));
                 objTexCoords.add(v);
             } else if (line.startsWith("vn ")) {
-                List<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
                 XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
                 objNorms.add(v);
             } else if (line.startsWith("f ")) {
-                List<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
 
                 triangleIndices.add((unsigned int)triangleVertices.Size);
                 triangleIndices.add((unsigned int)(triangleVertices.Size + 2));
@@ -61,7 +61,7 @@ namespace Ghurund {
                     triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 2));
                 }
                 for (size_t j = 0; j < vert.Size; j++) {
-                    List<ASCIIString> face = vert[j].split("/");
+					Array<ASCIIString> face = vert[j].split("/");
                     Vertex v(objVerts[atoi(face[0]) - 1], objNorms[atoi(face[2]) - 1], objTexCoords[atoi(face[1]) - 1]);
                     triangleVertices.add(v);
                 }
@@ -128,6 +128,8 @@ namespace Ghurund {
         indexBuffer.ReleaseAndGetAddressOf();
         vertexUploadHeap.ReleaseAndGetAddressOf();
         indexUploadHeap.ReleaseAndGetAddressOf();
+
+		delete geometry;
     }
 
     Status Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Fence.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "Graphics.h"
 #include "core/NamedObject.h"
-#include "collection/PointerList.h"
+#include "core/collection/PointerList.h"
 
 namespace Ghurund {
     class Shader;
@@ -16,9 +16,11 @@ namespace Ghurund {
         FINISHED    // can be only reset
     };
 
-    class CommandList: public NamedObject, public Pointer {
+    class CommandList: public NamedObject<String>, public Pointer {
     private:
-        Fence fence;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<CommandList>();
+		
+		Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
         ID3D12CommandQueue *commandQueue = nullptr;
@@ -58,9 +60,9 @@ namespace Ghurund {
 
         __declspec(property(get = getState)) CommandListState State;
 
-        virtual void setName(const UnicodeString &name) override {
+        virtual void setName(const String &name) override {
             NamedObject::setName(name);
-            commandList->SetName(name);
+            commandList->SetName((UnicodeString)name);
         }
 
         bool setPipelineState(ID3D12PipelineState *pipelineState);
@@ -71,8 +73,10 @@ namespace Ghurund {
             commandList->ResourceBarrier(1, &barrier);
         }
 
-        virtual const Ghurund::Type &getType() const override {
-            return Type::COMMAND_LIST;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "CommandList");
+
+        virtual const Ghurund::Type&getType() const override {
+            return TYPE;
         }
 
         void addResourceRef(ID3D12Object *resource) {

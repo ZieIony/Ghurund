@@ -4,7 +4,7 @@
 #include <Shlwapi.h>
 
 namespace Ghurund {
-    DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
+	DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
         if (wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBA) return DXGI_FORMAT_R16G16B16A16_UNORM;
@@ -153,7 +153,7 @@ namespace Ghurund {
 
         bool imageConverted = false;
 
-        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, stream.Size);
+        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
         if (FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to create decoder\n"));
 
@@ -288,7 +288,7 @@ namespace Ghurund {
             // Conversion required to write
             ComPtr<IWICBitmap> source;
             hr = pWIC->CreateBitmapFromMemory(width, height, pfGuid,
-                static_cast<UINT>(dstRowPitch), imageData->Size,
+                static_cast<UINT>(dstRowPitch), (UINT)imageData->Size,
                 imageData->Data, source.GetAddressOf());
             if (FAILED(hr)) {
                 return Status::CALL_FAIL;
@@ -317,7 +317,7 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
         } else {
-            hr = frame->WritePixels(height, static_cast<UINT>(dstRowPitch), imageData->Size, imageData->Data);
+            hr = frame->WritePixels(height, static_cast<UINT>(dstRowPitch), (UINT)imageData->Size, imageData->Data);
             if (FAILED(hr))
                 return Status::CALL_FAIL;
         }

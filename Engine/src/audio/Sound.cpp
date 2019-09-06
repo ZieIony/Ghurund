@@ -3,7 +3,7 @@
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Sound::loadInternal(ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
+	Status Sound::loadInternal(ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
         Status result = loadData(context, stream, options);
         if(result!=Status::OK)
             return result;
@@ -86,7 +86,7 @@ namespace Ghurund {
     Status Sound::loadData(ResourceContext &context, MemoryInputStream & stream, LoadOption options) {
         Audio &audio = context.Audio;
 
-        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, stream.Size);
+        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, (UINT)stream.Size);
         ComPtr<IMFByteStream> spMFByteStream = nullptr;
         MFCreateMFByteStreamOnStreamEx((IUnknown*)memStream.Get(), &spMFByteStream);
 

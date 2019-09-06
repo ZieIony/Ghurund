@@ -5,7 +5,7 @@
 #include "resource/ResourceManager.h"
 
 namespace Ghurund {
-    Status Shader::makeRootSignature() {
+	Status Shader::makeRootSignature() {
         Status result = Status::OK;
 
         size_t paramCount = constantBuffers.Size + textureBuffers.Size + textures.Size;
@@ -33,9 +33,9 @@ namespace Ghurund {
         }
 
         CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
-        rootSignatureDesc.Init_1_1(paramCount,
+        rootSignatureDesc.Init_1_1((UINT)paramCount,
             rootParameters,
-            samplers.Size,
+            (UINT)samplers.Size,
             samplerDescs,
             D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 

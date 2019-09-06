@@ -1,7 +1,7 @@
 #include "Pointer.h"
+#include "core/collection/List.h"
+
 #include <typeinfo>
-#include "Logger.h"
-#include "collection/List.h"
 
 namespace Ghurund {
     Ghurund::List<Ghurund::Pointer*> Pointer::pointers;

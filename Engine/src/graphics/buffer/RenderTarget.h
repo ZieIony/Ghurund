@@ -13,7 +13,7 @@
 namespace Ghurund {
     using namespace std;
 
-    class RenderTarget: public NamedObject {
+    class RenderTarget: public NamedObject<String> {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
         ID3D12Resource* texture = nullptr;
@@ -83,9 +83,9 @@ namespace Ghurund {
             }
         }
 
-        virtual void setName(const UnicodeString& name) override {
-            NamedObject::setName(name);
-            texture->SetName(name.getData());
+        virtual void setName(const String& name) override {
+            NamedObject<String>::setName(name);
+            texture->SetName((UnicodeString)name);
         }
 
         Status capture(ResourceContext& context, Image*& image);

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "core/FunctionQueue.h"
-#include "collection/String.h"
-#include "collection/List.h"
 #include "DirectoryWatch.h"
-#include "core/Thread.h"
 #include "FileChange.h"
+#include "core/string/String.h"
+#include "core/collection/List.h"
+#include "core/threading/FunctionQueue.h"
+#include "core/threading/Thread.h"
 
 namespace Ghurund {
     class FileWatcher {

@@ -1,4 +1,4 @@
-#include "game/entity/EntityList.h"
+#include "ecs/EntityList.h"
 
 using namespace Ghurund;
 

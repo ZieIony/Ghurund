@@ -5,8 +5,10 @@
 #include "resource/Resource.h"
 #include "physics/Physics.h"
 
+#pragma warning(push, 0)
 #include <PxScene.h>
 #include <extensions/PxDefaultCpuDispatcher.h>
+#pragma warning(pop)
 
 namespace Ghurund {
 	using namespace physx;

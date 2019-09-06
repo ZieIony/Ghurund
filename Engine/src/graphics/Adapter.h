@@ -1,14 +1,16 @@
 #pragma once
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#pragma warning(pop)
 
-#include "collection/List.h"
-#include "collection/String.h"
+#include "core/collection/List.h"
+#include "core/string/String.h"
 #include "core/Object.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 
 #include <wrl.h>
 
@@ -46,7 +48,7 @@ namespace Ghurund {
             return format;
         }
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "DisplayMode");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -98,7 +100,7 @@ namespace Ghurund {
             return displayModes;
         }
 
-        const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "AdapterOutput");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -156,7 +158,7 @@ namespace Ghurund {
             return outputs;
         }
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "Adapter");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

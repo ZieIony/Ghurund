@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameAction.h"
-#include "collection/Map.h"
+#include "core/collection/Map.h"
 
 namespace Ghurund {
 

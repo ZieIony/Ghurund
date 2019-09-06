@@ -1,19 +1,18 @@
 #pragma once
 
 #include "audio/Audio.h"
-#include "collection/PointerMap.h"
-#include "collection/HashMap.h"
-#include "core/File.h"
-#include "core/Logger.h"
+#include "core/collection/PointerMap.h"
+#include "core/collection/HashMap.h"
+#include "application/Logger.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"
-#include "core/WorkerThread.h"
+#include "core/io/File.h"
+#include "core/threading/WorkerThread.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/CommandList.h"
 #include "resource/LibraryList.h"
 #include "resource/ReloadTask.h"
 #include "resource/Resource.h"
-#include "resource/ResourceFactory.h"
 #include "resource/watcher/FileWatcher.h"
 
 #include <wincodec.h>
@@ -21,11 +20,12 @@
 namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
     private:
-        FileWatcher watcher;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
+		
+		FileWatcher watcher;
         PointerMap<UnicodeString, Resource*> resources;
         LibraryList libraries;
         CriticalSection section;
-        ResourceFactory* resourceFactory = ghnew DefaultResourceFactory();
 
         WorkerThread loadingThread;
         List<ReloadTask*> reloadQueue;
@@ -36,14 +36,46 @@ namespace Ghurund {
             = false;
 #endif
 
-        Status loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options);
+		template<class Type> inline Type* makeResource(ResourceContext& context) {
+			const Ghurund::Type& type = Type::TYPE;
+			return makeResource<Type>(context, type);
+		}
+
+		template<class Type> inline Type* makeResource(ResourceContext& context, const Ghurund::Type& type) {
+			Type* resource = nullptr;
+			Allocator* allocator = context.Allocators.get(type);
+			if (allocator) {
+				resource = (Type*)type.Constructor->newInstance(*allocator);
+			} else {
+				resource = (Type*)type.Constructor->newInstance();
+			}
+			return resource;
+		}
+
+		template<class Type> void loadInternal(Type*& resource, ResourceContext& context, const FilePath& path, Status* result, LoadOption options) {
+			FilePath decodedPath = decodePath(path);
+			resource = get<Type>(decodedPath);
+			Status loadResult = Status::ALREADY_LOADED;
+			if (resource == nullptr) {
+				resource = makeResource<Type>(context);
+				loadResult = loadInternal(*resource, context, decodedPath, options);
+				if (filterStatus(loadResult, options) != Status::OK) {
+					resource->release();
+					resource = nullptr;
+				}
+			}
+			if (result != nullptr)
+				*result = loadResult;
+		}
+
+		Status loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options);
 
         FilePath decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir = nullptr) const;
         FilePath encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const;
 
     public:
-        static const wchar_t* const ENGINE_LIB_NAME;
-        static const wchar_t* const LIB_PROTOCOL_PREFIX;
+        inline static const wchar_t* const ENGINE_LIB_NAME = L"engine";
+        inline static const wchar_t* const LIB_PROTOCOL_PREFIX = L"lib:\\";
 
         ResourceManager();
 
@@ -52,35 +84,16 @@ namespace Ghurund {
         void reload();
 
         template<class Type> Type* load(ResourceContext& context, const FilePath& path, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            FilePath decodedPath = decodePath(path);
-            Resource* resource = get(decodedPath);
-            Status loadResult = Status::ALREADY_LOADED;
-            if (resource == nullptr) {
-                resource = ghnew Type();
-                loadResult = loadInternal(*resource, context, decodedPath, options);
-                if (filterStatus(loadResult, options) != Status::OK) {
-                    resource->release();
-                    resource = nullptr;
-                }
-            }
-            if (result != nullptr)
-                * result = loadResult;
-            return (Type*)resource;
+			Type* resource;
+			loadInternal(resource, context, path, result, options);
+            return resource;
         }
 
         template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(String(path), [this, &context, path, onLoaded, options]() {
-                FilePath decodedPath = decodePath(path);
-                Resource* resource = get(decodedPath);
-                Status loadResult = Status::ALREADY_LOADED;
-                if (resource == nullptr) {
-                    resource = ghnew Type();
-                    loadResult = loadInternal(*resource, context, decodedPath, options);
-                    if (filterStatus(loadResult, options) != Status::OK) {
-                        resource->release();
-                        resource = nullptr;
-                    }
-                }
+				Type* resource;
+				Status loadResult;
+				loadInternal(resource, context, path, &loadResult, options);
                 if (onLoaded != nullptr)
                     onLoaded((Type*)resource, loadResult);
                 return loadResult;
@@ -90,36 +103,17 @@ namespace Ghurund {
         }
 
         template<class Type> Type* load(ResourceContext& context, File& file, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            FilePath decodedPath = decodePath(file.Path);
-            Resource* resource = get(decodedPath);
-            Status loadResult = Status::ALREADY_LOADED;
-            if (resource == nullptr) {
-                resource = ghnew Type();
-                loadResult = loadInternal(*resource, context, decodedPath, options);
-                if (filterStatus(loadResult, options) != Status::OK) {
-                    resource->release();
-                    resource = nullptr;
-                }
-            }
-            if (result != nullptr)
-                * result = loadResult;
-            return (Type*)resource;
-        }
+			Type* resource;
+			loadInternal(resource, context, file.Path, result, options);
+			return resource;
+		}
 
         template<class Type> Type* loadAsync(ResourceContext& context, File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options]() {
-                FilePath decodedPath = decodePath(file.Path);
-                Type* resource = get<Type>(decodedPath);
-                Status result = Status::ALREADY_LOADED;
-                if (resource == nullptr) {
-                    resource = ghnew Type();
-                    result = loadInternal(*resource, context, decodedPath, options);
-                    if (filterStatus(loadResult, options) != Status::OK) {
-                        resource->release();
-                        resource = nullptr;
-                    }
-                }
-                if (onLoaded != nullptr)
+				Type* resource;
+				Status loadResult;
+				loadInternal(resource, context, file.Path, &loadResult, options);
+				if (onLoaded != nullptr)
                     onLoaded(resource, result);
                 return result;
             });
@@ -128,7 +122,10 @@ namespace Ghurund {
         }
 
         template<class Type = Resource> Type * load(ResourceContext & context, const DirectoryPath & workingDir, MemoryInputStream & stream, Status * result = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Type* resource = (Type*)resourceFactory->makeResource(stream);
+			size_t index = stream.readUInt();
+			const Ghurund::Type& type = Ghurund::Type::TYPES[index];
+			Type* resource = makeResource<Type>(context, type);
+
             Status loadResult;
             if (stream.readBoolean()) {
                 loadResult = resource->load(context, workingDir, stream, options);
@@ -157,7 +154,15 @@ namespace Ghurund {
         Status save(Resource& resource, ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
         Status save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT);
 
-        Resource* get(const UnicodeString& fileName);
+		template<class Type = Resource> Type* get(const UnicodeString & fileName) {
+			section.enter();
+			Resource* resource = nullptr;
+			size_t index = resources.findKey(fileName);
+			if (index != resources.Size)
+				resource = resources.getValue(index);
+			section.leave();
+			return (Type*)resource;
+		}
 
         void add(Resource& resource);
 
@@ -181,7 +186,7 @@ namespace Ghurund {
 
         __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ResourceManager");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

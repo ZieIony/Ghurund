@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/MemoryStream.h"
+#include "core/io/MemoryStream.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
@@ -40,8 +40,11 @@ namespace Ghurund {
 			transformComponent->release();
 		}
 
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Camera>();
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Camera");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::CAMERA;
+            return TYPE;
         }
 
         virtual void initParameters(ParameterManager& parameterManager);

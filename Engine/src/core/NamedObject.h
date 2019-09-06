@@ -1,23 +1,21 @@
 #pragma once
 
-#include "collection/String.h"
-
 namespace Ghurund {
-    class NamedObject {
+    template <class T> class NamedObject {
     private:
-        UnicodeString name;
+        T name;
 
     public:
         virtual ~NamedObject() = default;
 
-        virtual void setName(const UnicodeString &name) {
+        virtual void setName(const T &name) {
             this->name = name;
         }
         
-        virtual const UnicodeString &getName() const {
+        virtual const T &getName() const {
             return name;
         }
 
-        __declspec(property(get = getName, put = setName)) UnicodeString &Name;
+        __declspec(property(get = getName, put = setName)) T &Name;
     };
 }

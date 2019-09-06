@@ -1,4 +1,4 @@
-#include "Scene.h"
+/*#include "Scene.h"
 
 #include "resource/ResourceContext.h"
 
@@ -25,4 +25,4 @@ namespace Ghurund {
         }
         return Status::OK;
     }
-}
+}*/

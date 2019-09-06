@@ -1,6 +1,6 @@
 #pragma once
 
-#include "collection/String.h"
+#include "core/string/String.h"
 #include "editor/ObservableObject.h"
 #include "ParameterType.h"
 #include "core/Pointer.h"
@@ -87,7 +87,7 @@ namespace Ghurund {
 
         __declspec(property(get = isEmpty)) bool Empty;
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "Parameter");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

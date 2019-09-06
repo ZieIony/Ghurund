@@ -1,13 +1,15 @@
 #pragma once
 
-#include "collection/ASCIIString.h"
-#include "core/StaticClass.h"
+#include "core/string/ASCIIString.h"
 
 #include "angelscript.h"
 
 namespace Ghurund {
     template <class Type>
-    class ScriptBindings:StaticClass {
+    class ScriptBindings {
+	private:
+		ScriptBindings() = delete;
+
     public:
         static void constructor(Type* _this) {
             new(_this) Type();

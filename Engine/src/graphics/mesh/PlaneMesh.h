@@ -29,11 +29,9 @@ namespace Ghurund {
             for (size_t i = 0; i < detail; i++)
                 subdivide();
 
-            return Mesh::init(graphics, commandList);
-        }
+			geometry = ghnew PxPlaneGeometry();
 
-        virtual PxGeometry getGeometry() override {
-            return PxPlaneGeometry();
+            return Mesh::init(graphics, commandList);
         }
     };
 }

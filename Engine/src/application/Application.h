@@ -3,11 +3,11 @@
 #include "Settings.h"
 #include "Window.h"
 #include "WindowProc.h"
+#include "Timer.h"
 
 #include "audio/Audio.h"
 #include "core/Noncopyable.h"
-#include "core/Timer.h"
-#include "core/FunctionQueue.h"
+#include "core/threading/FunctionQueue.h"
 #include "game/parameter/ParameterManager.h"
 #include "game/LevelManager.h"
 #include "graphics/Graphics.h"

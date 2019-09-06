@@ -1,7 +1,7 @@
 #pragma once
 
 #include "application/Window.h"
-#include "collection/BufferedValue.h"
+#include "core/collection/BufferedValue.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
 
@@ -18,7 +18,9 @@ namespace Ghurund {
 
     class SwapChain:public Object {
     private:
-        Graphics* graphics;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<SwapChain>();
+
+		Graphics* graphics;
         ComPtr<IDXGISwapChain3> swapChain;
         Frame* frames;
         BufferedValue<Frame> frameBuffer;
@@ -57,7 +59,7 @@ namespace Ghurund {
 
         void resize(unsigned int width, unsigned int height);
 
-        const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "SwapChain");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

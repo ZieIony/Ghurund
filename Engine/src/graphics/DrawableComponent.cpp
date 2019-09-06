@@ -1,8 +1,6 @@
 #include "DrawableComponent.h"
 
 namespace Ghurund {
-	const Ghurund::Type& DrawableComponent::TYPE = Ghurund::Type([]() {return ghnew DrawableComponent(); }, "DrawableComponent");
-
 	Status DrawableComponent::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
 		Status result;
 		mesh = (Ghurund::Mesh*)context.ResourceManager.load(context, workingDir, stream, &result, options);

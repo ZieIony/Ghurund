@@ -1,6 +1,6 @@
 #pragma once
 
-#include "collection/String.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class Entity;

@@ -1,25 +1,38 @@
 #pragma once
 
 #include "Component.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
+#include "core/Object.h"
+#include "core/allocation/Allocator.h"
 
 namespace Ghurund {
 	template<class Type>
 	class System {
 	private:
 		PointerList<Type*> components;
+		Allocator* allocator = ghnew SimpleAllocator();
 
 	public:
+		~System() {
+			delete allocator;
+		}
+
 		PointerList<Type*>& getComponents() {
 			return components;
 		}
 
 		__declspec(property(get = getComponents)) PointerList<Type*>& Components;
 
-		template<class... T>
-		void update(float dt, T... params);
+		Type* makeComponent() {
+			Type* c = ghnew Type();
+			components.add(c);
+			return c;
+		}
 
-		template<class... T>
-		Type* makeComponent(T... params);
+		inline Allocator& getAllocator() const {
+			return *allocator;
+		}
+
+		__declspec(property(get = getAllocator)) Allocator& Allocator;
 	};
 }

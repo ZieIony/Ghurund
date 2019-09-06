@@ -2,11 +2,11 @@
 
 #include "FileUtils.h"
 #include "ResourceFormat.h"
-#include "collection/Array.h"
-#include "core/File.h"
-#include "core/MemoryStream.h"
+#include "Status.h"
 #include "core/Pointer.h"
-#include "core/Status.h"
+#include "core/collection/Array.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
 
 namespace Ghurund {
     using namespace std;

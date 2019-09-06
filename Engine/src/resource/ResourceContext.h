@@ -2,6 +2,7 @@
 
 #include "audio/Audio.h"
 #include "core/Noncopyable.h"
+#include "core/allocation/AllocatorMap.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/CommandList.h"
 #include "script/ScriptEngine.h"
@@ -20,6 +21,7 @@ namespace Ghurund {
         ScriptEngine& scriptEngine;
         Physics& physics;
         ResourceManager& resourceManager;
+		AllocatorMap allocators;
 
     public:
         ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
@@ -92,7 +94,13 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
 
-        const static Ghurund::Type& TYPE;
+		inline AllocatorMap& getAllocators() {
+			return allocators;
+		}
+
+		__declspec(property(get = getAllocators)) AllocatorMap& Allocators;
+
+        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "ResourceContext");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

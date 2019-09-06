@@ -1,4 +1,4 @@
-#include "game/entity/Camera.h"
+#include "graphics/entity/Camera.h"
 
 #include "../Float3.h"
 

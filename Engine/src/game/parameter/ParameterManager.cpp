@@ -6,8 +6,6 @@
 #include "graphics/texture/Textures.h"
 
 namespace Ghurund {
-    const Ghurund::Type& ParameterManager::TYPE = Ghurund::Type([]() {return ghnew ParameterManager(); }, "ParameterManager");
-
     ParameterManager::ParameterManager() {
         float defaultFloat = 0;
         XMFLOAT2 defaultFloat2 = {0,0};

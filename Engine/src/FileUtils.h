@@ -1,7 +1,7 @@
 #pragma once
 
-#include "collection/String.h"
-#include "core/Status.h"
+#include "Status.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     Status readFile(const wchar_t * name, void *& data, size_t & size);

@@ -4,7 +4,7 @@
 #include "core/ScopedPointer.h"
 
 namespace Ghurund {
-    Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         Status result;
         shader = context.ResourceManager.load<Ghurund::Shader>(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)

@@ -1,19 +1,22 @@
 #pragma once
 
-#include "collection/Map.h"
+#include "core/collection/Map.h"
 #include "core/allocation/AllocationStrategy.h"
 #include "core/Pointer.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#pragma warning(pop)
+
 #include <wrl.h>
 
 namespace Ghurund {
     class Graphics;
 
-    class HeapAllocator:public Allocator<memory_t> {
+    class HeapAllocator:public Allocator {
     public:
         ID3D12Heap* heap = nullptr;
         AllocationStrategy* strategy;
@@ -27,12 +30,12 @@ namespace Ghurund {
             delete strategy;
         }
 
-        inline memory_t allocate(memory_t size) {
-            return strategy->allocate(size);
+        inline void* allocate(memory_t size) {
+            return (void*)strategy->allocate(size);
         }
 
-        inline void deallocate(memory_t mem) {
-            strategy->deallocate(mem);
+        inline void deallocate(void* mem) {
+            strategy->deallocate((memory_t)mem);
         }
 
         ID3D12Heap* getHeap() {
@@ -52,6 +55,10 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getAllocated)) memory_t Allocated;
+
+		inline bool canAllocate(memory_t size) const {
+			return strategy->canAllocate(size);
+		}
     };
 
 }

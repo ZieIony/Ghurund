@@ -14,7 +14,7 @@ namespace Ghurund {
     const ParameterType ParameterType::COLOR = ParameterType(ParameterTypeEnum::COLOR, _T("color"), sizeof(XMFLOAT4));
     const ParameterType ParameterType::TEXTURE = ParameterType(ParameterTypeEnum::TEXTURE, _T("texture"), sizeof(Pointer*));
 
-    EnumValues<ParameterTypeEnum, ParameterType> ParameterType::VALUES = {
+    const EnumValues<ParameterTypeEnum, ParameterType> ParameterType::VALUES = {
         &ParameterType::INT,
         &ParameterType::INT2,
         &ParameterType::FLOAT,

@@ -2,9 +2,9 @@
 
 namespace Ghurund {
     void Settings::parse(const String & settings) {
-        List<String> commands = settings.split(_T(" "));
+        Array<String> commands = settings.split(_T(" "));
         for(size_t i = 0; i<commands.Size; i++) {
-            List<String> keyVal = commands[i].split(_T("="));
+			Array<String> keyVal = commands[i].split(_T("="));
             if(keyVal.Size!=2)
                 return;
             if(keyVal[0]=="width")

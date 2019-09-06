@@ -1,9 +1,10 @@
 #pragma once
 
-#include "core/FunctionQueue.h"
-#include "Windowsx.h"
-#include "core/Logger.h"
-#include "time.h"
+#include "application/Logger.h"
+#include "core/threading/FunctionQueue.h"
+
+#include <Windowsx.h>
+#include <time.h>
 
 namespace Ghurund {
     struct SystemMessage {

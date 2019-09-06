@@ -1,15 +1,17 @@
 #pragma once
 
 #include "resource/Resource.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "ConstantBuffer.h"
 #include "Sampler.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <D3Dcompiler.h>
 #include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
 

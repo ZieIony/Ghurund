@@ -10,7 +10,7 @@
 namespace Ghurund {
     using namespace Microsoft::WRL;
 
-    class Fence: public NamedObject {
+    class Fence: public NamedObject<String> {
     private:
         HANDLE fenceEvent = INVALID_HANDLE_VALUE;
         ComPtr<ID3D12Fence> fence;
@@ -34,9 +34,9 @@ namespace Ghurund {
 
         Status wait(ID3D12CommandQueue* commandQueue);
 
-        virtual void setName(const UnicodeString& name) override {
+        virtual void setName(const String& name) override {
             NamedObject::setName(name);
-            fence->SetName(name.getData());
+            fence->SetName((UnicodeString)name);
         }
 
         UINT64 getValue() {

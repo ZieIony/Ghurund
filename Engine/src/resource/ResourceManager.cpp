@@ -2,10 +2,6 @@
 #include <functional>
 
 namespace Ghurund {
-    const wchar_t* const ResourceManager::ENGINE_LIB_NAME = L"engine";
-    const wchar_t* const ResourceManager::LIB_PROTOCOL_PREFIX = L"lib:\\";
-    const Ghurund::Type& ResourceManager::TYPE = Ghurund::Type([]() {return ghnew ResourceManager(); }, "ResourceManager");
-
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(context, path, nullptr, options);
         if (result != Status::OK)
@@ -73,7 +69,6 @@ namespace Ghurund {
 
     ResourceManager::~ResourceManager() {
         loadingThread.finish();
-        delete resourceFactory;
     }
 
     void ResourceManager::reload() {
@@ -113,7 +108,8 @@ namespace Ghurund {
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
-        resourceFactory->describeResource(resource, stream);
+		size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
+		stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
             return resource.save(context, workingDir, stream, options);
@@ -122,16 +118,6 @@ namespace Ghurund {
             stream.writeUnicode(encodePath(*resource.Path, workingDir));
             return resource.save(context, *resource.Path, options);
         }
-    }
-
-    Resource* ResourceManager::get(const UnicodeString& fileName) {
-        section.enter();
-        Resource* resource = nullptr;
-        size_t index = resources.findKey(fileName);
-        if (index != resources.Size)
-            resource = resources.getValue(index);
-        section.leave();
-        return resource;
     }
 
     void ResourceManager::add(Resource& resource) {

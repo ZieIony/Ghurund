@@ -1,8 +1,8 @@
 #pragma once
 
-#include "collection/Map.h"
-#include "collection/String.h"
-#include "core/FilePath.h"
+#include "core/collection/Map.h"
+#include "core/string/String.h"
+#include "core/io/FilePath.h"
 
 namespace Ghurund {
     class Library {

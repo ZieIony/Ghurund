@@ -13,7 +13,9 @@
 namespace Ghurund {
     class Renderer: public Object {
     private:
-        //Model* fullScreenQuad = nullptr;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Renderer>();
+		
+		//Model* fullScreenQuad = nullptr;
         Material* lightPassMaterial = nullptr;
         Postprocess* postprocess = nullptr;
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
@@ -68,7 +70,7 @@ namespace Ghurund {
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Renderer");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

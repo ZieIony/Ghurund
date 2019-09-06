@@ -2,8 +2,6 @@
 #include "CameraUtils.h"
 
 namespace Ghurund {
-    const Ghurund::Type& ThumbnailRenderer::TYPE = Ghurund::Type([]() {return ghnew ThumbnailRenderer(); }, "ThumbnailRenderer");
-
     void ThumbnailRenderer::init(ResourceContext& context, uint32_t width, uint32_t height) {
         this->resourceContext = &context;
 

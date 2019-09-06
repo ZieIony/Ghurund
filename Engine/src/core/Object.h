@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Type.h"
+#include "core/reflection/Type.h"
 
 namespace Ghurund {
     class Object {
@@ -9,6 +9,6 @@ namespace Ghurund {
 
         virtual const Type &getType() const = 0;
 
-        __declspec(property(get = getType)) Ghurund::Type &Type;
+        __declspec(property(get = getType)) Type &Type;
     };
 }

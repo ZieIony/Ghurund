@@ -1,11 +1,10 @@
 #pragma once
 
 #include "editor/ObservableObject.h"
-#include "core/Timer.h"
+#include "application/Timer.h"
 
 namespace Ghurund {
     class RenderingStatistics:public ObservableObject {
-        friend class RenderStep;
         friend class DrawableComponent;
 		friend class GraphicsSystem;
 

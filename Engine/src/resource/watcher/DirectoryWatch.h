@@ -1,12 +1,13 @@
 #pragma once
 
-#include "core/FunctionQueue.h"
-#include "collection/String.h"
-#include "collection/Map.h"
 #include "FileChange.h"
+#include "MathUtils.h"
 #include "core/Buffer.h"
-#include "core/WorkerThread.h"
-#include "core/FilePath.h"
+#include "core/collection/Map.h"
+#include "core/io/FilePath.h"
+#include "core/threading/FunctionQueue.h"
+#include "core/threading/WorkerThread.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class DirectoryWatch {
@@ -25,7 +26,7 @@ namespace Ghurund {
         static void CALLBACK notificationCompletion(DWORD errorCode, DWORD numberOfBytesTransfered, LPOVERLAPPED overlapped);
 
     public:
-        DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10*1024)) {
+        DirectoryWatch(const DirectoryPath &dir):directory(dir), buffer(Buffer(10_KB)) {
             overlapped.hEvent = this;
 
             String dirString = directory.get();

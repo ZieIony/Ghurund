@@ -2,8 +2,6 @@
 #include "ParameterManager.h"
 
 namespace Ghurund {
-    const Ghurund::Type& Parameter::TYPE = Ghurund::Type([]() {return nullptr; }, "Parameter");
-
     const ParameterId ParameterId::VIEWPORT_SIZE = ParameterId(ParameterIdEnum::VIEWPORT_SIZE, _T("VIEWPORT_SIZE"), "viewportSize", ParameterType::FLOAT2);
     const ParameterId ParameterId::OUTLINE_COLOR = ParameterId(ParameterIdEnum::OUTLINE_COLOR, _T("OUTLINE_COLOR"), "outlineColor", ParameterType::COLOR);
     const ParameterId ParameterId::PARTY_COLOR = ParameterId(ParameterIdEnum::PARTY_COLOR, _T("PARTY_COLOR"), "partyColor", ParameterType::COLOR);
@@ -30,7 +28,7 @@ namespace Ghurund {
     const ParameterId ParameterId::SPECULAR_TEXTURE = ParameterId(ParameterIdEnum::SPECULAR_TEXTURE, _T("SPECULAR_TEXTURE"), "specularTexture", ParameterType::TEXTURE);
     const ParameterId ParameterId::NORMAL_TEXTURE = ParameterId(ParameterIdEnum::NORMAL_TEXTURE, _T("NORMAL_TEXTURE"), "normalTexture", ParameterType::TEXTURE);
 
-    EnumValues<ParameterIdEnum, ParameterId> ParameterId::VALUES = {
+    const EnumValues<ParameterIdEnum, ParameterId> ParameterId::VALUES = {
         &ParameterId::VIEWPORT_SIZE,
         &ParameterId::OUTLINE_COLOR,
         &ParameterId::PARTY_COLOR,

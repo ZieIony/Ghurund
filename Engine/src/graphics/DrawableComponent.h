@@ -12,7 +12,8 @@
 namespace Ghurund {
 	class DrawableComponent:public Component, public ParameterProvider {
 	private:
-		TransformComponent* transformComponent = nullptr;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<DrawableComponent>();
+
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
 		bool culled = false;
@@ -21,7 +22,6 @@ namespace Ghurund {
 		void finalize() {
 			safeRelease(mesh);
 			safeRelease(material);
-			safeRelease(transformComponent);
 		}
 
 	protected:
@@ -109,16 +109,6 @@ namespace Ghurund {
 			return mesh->intersects(pos, dir, dist);
 		}
 
-		TransformComponent* getTransformComponent() const {
-			return transformComponent;
-		}
-
-		void setTransformComponent(TransformComponent* transform) {
-			setPointer(transformComponent, transform);
-		}
-
-		__declspec(property(get = getTransformComponent, put = setTransformComponent)) TransformComponent* TransformComponent;
-
 		bool isCulled() {
 			return culled;
 		}
@@ -161,16 +151,16 @@ namespace Ghurund {
 
 		__declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-		void update() {
+		void update(const XMFLOAT4X4 &transformation) {
 			BoundingOrientedBox::CreateFromBoundingBox(transformedBoundingBox, boundingBox);
-			transformedBoundingBox.Transform(transformedBoundingBox, XMLoadFloat4x4(&transformComponent->Transformation));
+			transformedBoundingBox.Transform(transformedBoundingBox, XMLoadFloat4x4(&transformation));
 		}
 
 		void cull(BoundingFrustum& frustum) {
 			culled = CullingEnabled && frustum.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
 		}
 
-		const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "DrawableComponent");
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

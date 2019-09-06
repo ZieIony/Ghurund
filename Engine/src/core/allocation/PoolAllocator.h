@@ -3,7 +3,7 @@
 #include "SimpleBufferStrategy.h"
 
 namespace Ghurund {
-    class PoolAllocator:public Allocator<void*> {
+    class PoolAllocator:public Allocator {
     private:
         Buffer* pool;
         AllocationStrategy* strategy;
@@ -30,5 +30,9 @@ namespace Ghurund {
         inline void deallocate(void* obj) {
             strategy->deallocate((BYTE*)obj - pool->Data);
         }
+
+		inline bool canAllocate(memory_t size) const {
+			return strategy->canAllocate(size);
+		}
     };
 }

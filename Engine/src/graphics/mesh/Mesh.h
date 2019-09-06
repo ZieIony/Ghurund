@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "graphics/Fence.h"
 #include "graphics/Graphics.h"
 #include "graphics/CommandList.h"
@@ -8,6 +8,7 @@
 #include "resource/Resource.h"
 #include "resource/ResourceManager.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <D3Dcompiler.h>
@@ -18,6 +19,7 @@
 #include <wrl.h>
 
 #include <PxShape.h>
+#pragma warning(pop)
 
 namespace Ghurund {
     using namespace DirectX;
@@ -27,6 +29,9 @@ namespace Ghurund {
     typedef uint32_t vindex_t;
 
     class Mesh:public Resource {
+	private:
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Mesh>();
+
     protected:
         void* vertices = nullptr;
         unsigned int vertexSize;
@@ -43,6 +48,7 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> indexUploadHeap;
 
         BoundingBox boundingBox;
+		PxGeometry* geometry;
 
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
 
@@ -73,9 +79,11 @@ namespace Ghurund {
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
 
-        virtual PxGeometry getGeometry() {
-            return PxTriangleMeshGeometry();
+        PxGeometry &getGeometry() {
+            return *geometry;
         }
+
+		__declspec(property(get = getGeometry)) PxGeometry& Geometry;
 
         vindex_t getVertexCount() const {
             return vertexCount;
@@ -95,8 +103,10 @@ namespace Ghurund {
 
         __declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Mesh");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::MESH;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

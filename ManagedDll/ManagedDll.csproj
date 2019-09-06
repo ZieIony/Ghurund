@@ -77,9 +77,8 @@
     <Compile Include="Graphics\Memory\GPUResourceFactory.cs" />
     <Compile Include="Graphics\Light.cs" />
     <Compile Include="Graphics\Mesh\Mesh.cs" />
-    <Compile Include="Graphics\Model.cs" />
+    <Compile Include="Graphics\DrawableComponent.cs" />
     <Compile Include="Graphics\SwapChain.cs" />
-    <Compile Include="Graphics\RenderStep.cs" />
     <Compile Include="Graphics\RenderingStatistics.cs" />
     <Compile Include="Graphics\Texture\Texture.cs" />
     <Compile Include="Graphics\Texture\Image.cs" />

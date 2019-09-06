@@ -2,7 +2,7 @@
 
 #include "core/Event.h"
 #include "Parameter.h"
-#include "collection/PointerArray.h"
+#include "core/collection/PointerArray.h"
 #include "ParameterManager.h"
 
 namespace Ghurund {

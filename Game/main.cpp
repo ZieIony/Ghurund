@@ -13,7 +13,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    Logger::init(LogOutput::SYSTEM_CONSOLE);
+	_____________________checkMemory();
+	
+	Logger::init(LogOutput::SYSTEM_CONSOLE);
     Logger::log(LogType::INFO, String("working dir: ") + DirectoryPath(".").getAbsolutePath());
 
     {

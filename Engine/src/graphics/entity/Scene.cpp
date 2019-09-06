@@ -16,7 +16,7 @@ namespace Ghurund {
 	}
 
 	Status Scene::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-		stream.writeUInt(entities.Size);
+		stream.writeUInt((uint32_t)entities.Size);
 		for (size_t i = 0; i < entities.Size; i++) {
 			Status result = context.ResourceManager.save(*entities[i], context, workingDir, stream, options);
 			if (filterStatus(result, options) != Status::OK)

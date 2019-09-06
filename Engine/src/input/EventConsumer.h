@@ -1,8 +1,8 @@
 #pragma once
 
-#include "core/Timer.h"
+#include "application/Timer.h"
 #include "Mouse.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "Keyboard.h"
 #include "Windowsx.h"
 

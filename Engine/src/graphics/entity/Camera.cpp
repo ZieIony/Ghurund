@@ -2,7 +2,7 @@
 #include "script/ScriptEngine.h"
 
 namespace Ghurund {
-    void Camera::rebuild() {
+	void Camera::rebuild() {
         XMMATRIX view2, proj2, viewProj2;
 		XMFLOAT3 pos = transformComponent->Position;
         view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
@@ -44,19 +44,19 @@ namespace Ghurund {
             return;
 
         int i = 0;
-        parameters[i++] = parameterDirection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_DIRECTION.Value];
-        parameters[i++] = parameterPosition = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_POSITION.Value];
-        parameters[i++] = parameterUp = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_UP.Value];
-        parameters[i++] = parameterRight = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_RIGHT.Value];
+        parameters.set(i++, parameterDirection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_DIRECTION.Value]);
+        parameters.set(i++, parameterPosition = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_POSITION.Value]);
+        parameters.set(i++, parameterUp = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_UP.Value]);
+        parameters.set(i++, parameterRight = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_RIGHT.Value]);
 
-        parameters[i++] = parameterFov = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::FOV.Value];
-        parameters[i++] = parameterZNear = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZNEAR.Value];
-        parameters[i++] = parameterZFar = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZFAR.Value];
+        parameters.set(i++, parameterFov = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::FOV.Value]);
+        parameters.set(i++, parameterZNear = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZNEAR.Value]);
+        parameters.set(i++, parameterZFar = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZFAR.Value]);
 
-        parameters[i++] = parameterView = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW.Value];
-        parameters[i++] = parameterProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::PROJECTION.Value];
-        parameters[i++] = parameterViewProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION.Value];
-        parameters[i++] = parameterViewProjectionInv = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION_INV.Value];
+        parameters.set(i++, parameterView = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW.Value]);
+        parameters.set(i++, parameterProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::PROJECTION.Value]);
+        parameters.set(i++, parameterViewProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION.Value]);
+        parameters.set(i++, parameterViewProjectionInv = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION_INV.Value]);
     }
 
     void Camera::updateParameters() {

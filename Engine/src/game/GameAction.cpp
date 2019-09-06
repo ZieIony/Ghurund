@@ -10,7 +10,7 @@ namespace Ghurund {
     const GameAction GameAction::FLOAT_DOWN = GameAction(GameActionEnum::FLOAT_DOWN, _T("float down"));
     const GameAction GameAction::RUN = GameAction(GameActionEnum::RUN, _T("run"));
 
-    EnumValues<GameActionEnum, GameAction> GameAction::VALUES = {
+    const EnumValues<GameActionEnum, GameAction> GameAction::VALUES = {
         &GameAction::GO_FORWARD,
         &GameAction::GO_BACKWARDS,
         &GameAction::STRAFE_LEFT,

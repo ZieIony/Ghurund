@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Parameter.h"
-#include "collection/String.h"
-#include "collection/PointerList.h"
+#include "core/string/String.h"
+#include "core/collection/PointerList.h"
 #include "core/Object.h"
 
 namespace Ghurund {
@@ -11,7 +11,9 @@ namespace Ghurund {
 
     class ParameterManager: public Object {
     private:
-        PointerList<Parameter*> parameters;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ParameterManager>();
+		
+		PointerList<Parameter*> parameters;
 
     public:
         ParameterManager();
@@ -33,7 +35,7 @@ namespace Ghurund {
             return nullptr;
         }
 
-        const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ParameterManager");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

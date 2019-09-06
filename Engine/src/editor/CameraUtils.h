@@ -1,12 +1,14 @@
 #pragma once
 
-#include "core/StaticClass.h"
 #include "graphics/entity/Camera.h"
+#include "graphics/DrawableComponent.h"
 
 namespace Ghurund {
-    class CameraUtils:public StaticClass {
-    public:
+    class CameraUtils {
+	private:
+		CameraUtils() = delete;
 
+    public:
         static void lookAtEntity(Camera& camera, DrawableComponent& entity) {
             /*XMFLOAT3 pos;
             XMStoreFloat3(&pos, XMLoadFloat3(&entity.BoundingBox->Center) + XMLoadFloat3(&entity.BoundingBox->Extents) * 2);

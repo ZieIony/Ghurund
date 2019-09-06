@@ -1,6 +1,7 @@
 #include "Application.h"
+#include "core/threading/FunctionQueue.h"
+
 #include <time.h>
-#include "core/FunctionQueue.h"
 
 namespace Ghurund {
     void Application::init() {

@@ -10,6 +10,8 @@ namespace Ghurund {
 
 	class TransformComponent :public Component {
 	private:
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
+
 		XMFLOAT3 position = {};
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
@@ -100,7 +102,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getScale, put = setScale)) XMFLOAT3& Scale;
 
-		const static Ghurund::Type& TYPE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "TransformComponent");
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

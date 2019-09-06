@@ -6,7 +6,7 @@
 #include "graphics/entity/Camera.h"
 
 namespace Ghurund {
-	class GraphicsSystem :System<DrawableComponent> {
+	class GraphicsSystem :public System<DrawableComponent> {
 	private:
 		Camera* camera = nullptr;
 		Material* material = nullptr;
@@ -90,12 +90,6 @@ namespace Ghurund {
 				c->initParameters(parameterManager);
 		}
 
-		DrawableComponent* makeComponent() {
-			DrawableComponent* c = ghnew DrawableComponent();
-			Components.add(c);
-			return c;
-		}
-
 		void setupDrawingParams(TransformComponent& transform) {
 			parameterWorld->setValue(&transform.Transformation);
 			XMMATRIX world = XMLoadFloat4x4(&transform.Transformation);
@@ -104,7 +98,7 @@ namespace Ghurund {
 			parameterWorldIT->setValue(&worldIT);
 		}
 
-		void update(float dt, CommandList& commandList) {
+		void draw(CommandList& commandList, TransformSystem& transformSystem) {
 #ifdef _DEBUG
 			if (parameterWorld == nullptr) {
 				Logger::log(LogType::ERR0R, _T("parameters not initialized, call initParameters(..) first"));
@@ -115,6 +109,8 @@ namespace Ghurund {
 			camera->updateParameters();
 			cull();
 
+			TransformComponent *t = ghnew TransformComponent();
+			t->update();
 			if (material || invalidMaterial) {
 				for (auto c:Components) {
 					if (c->Culled) {
@@ -133,7 +129,7 @@ namespace Ghurund {
 						}
 					}
 
-					setupDrawingParams(*c->TransformComponent);
+					setupDrawingParams(*t);
 
 					if (overrideMaterial != nullptr) {
 						Ghurund::Material* modelMaterial = c->Material;
@@ -158,12 +154,13 @@ namespace Ghurund {
 					if (!c->Valid)
 						continue;
 
-					setupDrawingParams(*c->TransformComponent);
+					setupDrawingParams(*t);
 
 					c->updateParameters();
 					c->draw(*graphics, commandList, stats);
 				}
 			}
+			t->release();
 		}
 
 	};

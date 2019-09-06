@@ -3,7 +3,7 @@
 #include "resource/Resource.h"
 #include "Audio.h"
 #include <Shlwapi.h>
-#include "collection/List.h"
+#include "core/collection/List.h"
 
 namespace Ghurund {
 	enum class PlaybackState {
@@ -12,7 +12,9 @@ namespace Ghurund {
 
     class Sound: public Resource {
     private:
-        IXAudio2SourceVoice* sourceVoice;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Sound>();
+		
+		IXAudio2SourceVoice* sourceVoice;
         WAVEFORMATEX* waveFormat;
         unsigned int waveFormatLength;
         List<BYTE> audioData;
@@ -67,8 +69,10 @@ namespace Ghurund {
 			return state == PlaybackState::PLAYING;
 		}
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Sound");
+
         virtual const Ghurund::Type &getType() const override {
-            return Type::SOUND;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*> &getFormats() {

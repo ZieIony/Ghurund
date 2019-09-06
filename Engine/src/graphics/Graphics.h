@@ -1,16 +1,19 @@
 #pragma once
 
-#include "collection/List.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
+#include "core/collection/List.h"
 #include "core/Object.h"
 #include "graphics/Adapter.h"
 #include "graphics/buffer/DescriptorHeap.h"
 #include "graphics/memory/GPUResourceFactory.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#pragma warning(pop)
+
 #include <wrl.h>
 
 namespace Ghurund {
@@ -21,7 +24,9 @@ namespace Ghurund {
 
     class Graphics: public Object {
     private:
-        ID3D12Device* device;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Graphics>();
+		
+		ID3D12Device* device;
         ID3D12CommandQueue* directQueue = nullptr, * computeQueue = nullptr, * copyQueue = nullptr;
         IDXGIFactory4* factory;
 
@@ -98,7 +103,7 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
 
-        const static Ghurund::Type& TYPE;
+        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Graphics");
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

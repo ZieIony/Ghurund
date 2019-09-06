@@ -14,20 +14,9 @@ namespace Ghurund.Managed.Graphics {
 
 
         public Renderer() {
-            Steps = new PointerList<RenderStep>(Renderer_getSteps(NativePtr), p => new RenderStep(p));
         }
 
         public Renderer(IntPtr ptr) : base(ptr) {
-            Steps = new PointerList<RenderStep>(Renderer_getSteps(NativePtr), p => new RenderStep(p));
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr Renderer_getSteps(IntPtr _this);
-
-        [Browsable(false)]
-        public PointerList<RenderStep> Steps {
-            get; internal set;
         }
 
 
@@ -46,14 +35,6 @@ namespace Ghurund.Managed.Graphics {
 
         public void Uninit() {
             Renderer_uninit(NativePtr);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Renderer_render(IntPtr _this, IntPtr frame);
-
-        public void Render(IntPtr frame) {
-            Renderer_render(NativePtr, frame);
         }
 
 

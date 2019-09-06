@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "collection/PointerList.h"
+#include "core/collection/PointerList.h"
 
 namespace Ghurund {
 

@@ -18,7 +18,7 @@ namespace Ghurund {
             ID3D12ShaderReflectionVariable* variable = constantBuffer->GetVariableByIndex(i);
             D3D12_SHADER_VARIABLE_DESC variableDesc;
             variable->GetDesc(&variableDesc);
-            variables[i] = ghnew ConstantBufferField(variableDesc.Name, variableDesc.Size, variableDesc.StartOffset);
+            variables.set(i, ghnew ConstantBufferField(variableDesc.Name, variableDesc.Size, variableDesc.StartOffset));
         }
 
         buffer.init(graphics, bufferDesc.Size);

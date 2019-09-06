@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Noncopyable.h"
-#include "collection/Map.h"
+#include "core/collection/Map.h"
 
 namespace Ghurund {
 
@@ -43,11 +43,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline Type2* begin() {
+        inline Type2* begin() const {
             return values.begin();
         }
 
-        inline Type2* end() {
+        inline Type2* end() const {
             return values.end();
         }
     };
@@ -66,9 +66,9 @@ namespace Ghurund {
 
     public:
 
-        static EnumValues<EnumValueType, EnumType> VALUES;
+        static const EnumValues<EnumValueType, EnumType> VALUES;
 
-        EnumValues<EnumValueType, EnumType>& getValues() const {
+        const EnumValues<EnumValueType, EnumType>& getValues() const {
             return VALUES;
         }
 

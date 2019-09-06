@@ -3,7 +3,7 @@
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "Control.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 
 namespace Ghurund {
     class Layout;

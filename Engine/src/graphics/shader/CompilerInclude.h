@@ -1,9 +1,12 @@
 #pragma once
 
-#include "d3dcompiler.h"
-#include "collection/String.h"
-#include "core/Logger.h"
-#include "core/File.h"
+#include "core/string/String.h"
+#include "application/Logger.h"
+#include "core/io/File.h"
+
+#pragma warning(push, 0)
+#include <d3dcompiler.h>
+#pragma warning(pop)
 
 namespace Ghurund {
     class CompilerInclude:public ID3DInclude {

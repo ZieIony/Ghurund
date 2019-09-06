@@ -1,7 +1,9 @@
 #pragma once
 
 #include "ScriptBindings.h"
-#include "game/entity/Model.h"
+#include "core/collection/Array.h"
+#include "core/collection/PointerMap.h"
+#include "core/collection/PointerList.h"
 
 namespace Ghurund {
 

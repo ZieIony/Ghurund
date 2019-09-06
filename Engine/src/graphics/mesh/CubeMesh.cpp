@@ -71,6 +71,8 @@ namespace Ghurund {
         };
         indexCount = 36;
 
+		geometry = ghnew PxBoxGeometry(0.5, 0.5, 0.5);
+
         return Mesh::init(graphics, commandList);
     }
 }

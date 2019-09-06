@@ -1,17 +1,18 @@
 #pragma once
 
-#include "winsock2.h"
-#include "Message.h"
-#include "Socket.h"
-#include "core/Noncopyable.h"
-#include "time.h"
-#include "collection/List.h"
-#include "NetworkListener.h"
-#include <thread>
-#include "core/StateMachine.h"
 #include "ClientThread.h"
 #include "ConnectionState.h"
-#include "core/FunctionQueue.h"
+#include "Message.h"
+#include "NetworkListener.h"
+#include "Socket.h"
+#include "core/Noncopyable.h"
+#include "core/collection/List.h"
+#include "core/threading/FunctionQueue.h"
+#include "core/StateMachine.h"
+
+#include <thread>
+#include <time.h>
+#include <winsock2.h>
 
 namespace Ghurund {
     class Client:public Noncopyable {

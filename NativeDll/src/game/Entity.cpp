@@ -1,4 +1,4 @@
-#include "game/entity/Entity.h"
+#include "ecs/Entity.h"
 #include "../Float3.h"
 
 using namespace Ghurund;
@@ -15,7 +15,7 @@ extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(Paramet
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) const Type* Entity_getType(Entity* _this) {
+extern "C" __declspec(dllexport) const BaseType* Entity_getType(Entity* _this) {
     return &(_this->Type);
 }
 
@@ -27,7 +27,7 @@ extern "C" __declspec(dllexport) void Entity_setName(Entity* _this, const wchar_
     _this->setName(name);
 }
 
-extern "C" __declspec(dllexport) void Entity_setSelectable(Entity* _this, BOOL selectable) {
+/*extern "C" __declspec(dllexport) void Entity_setSelectable(Entity* _this, BOOL selectable) {
     return _this->setSelectable((bool)selectable);
 }
 
@@ -41,30 +41,10 @@ extern "C" __declspec(dllexport) void Entity_setVisible(Entity* _this, BOOL visi
 
 extern "C" __declspec(dllexport) BOOL Entity_isVisible(Entity* _this) {
     return _this->isVisible();
-}
-
-extern "C" __declspec(dllexport) const PointerArray<Parameter*>* Entity_getParameters(Entity* _this) {
-    return &_this->getParameters();
-}
+}*/
 
 extern "C" __declspec(dllexport) Entity* Entity_getParent(Entity* _this) {
     return _this->getParent();
-}
-
-extern "C" __declspec(dllexport) Script* Entity_getScript(Entity* _this) {
-    return _this->getScript();
-}
-
-extern "C" __declspec(dllexport) void Entity_setScript(Entity* _this, Script* script) {
-    _this->setScript(script);
-}
-
-extern "C" __declspec(dllexport) void Entity_initParameters(Entity* _this, ParameterManager* manager) {
-    _this->initParameters(*manager);
-}
-
-extern "C" __declspec(dllexport) void Entity_updateParameters(Entity* _this) {
-    _this->updateParameters();
 }
 
 extern "C" __declspec(dllexport) void Entity_setPropertyChangedListener(Entity* _this, listener_t listener) {

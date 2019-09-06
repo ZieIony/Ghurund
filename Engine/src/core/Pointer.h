@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Type.h"
-#include "Logger.h"
+#include "application/Logger.h"
 #include "Object.h"
-#include "CriticalSection.h"
+#include "core/threading/CriticalSection.h"
+#include "core/reflection/Type.h"
 
 namespace Ghurund {
 

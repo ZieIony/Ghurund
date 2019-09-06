@@ -1,15 +1,17 @@
 #pragma once
 
-#include "core/CriticalSection.h"
-#include "collection/List.h"
-#include "core/Logger.h"
+#include "core/collection/List.h"
+#include "core/collection/Map.h"
+#include "application/Logger.h"
+#include "core/threading/CriticalSection.h"
 #include "graphics/Adapter.h"
-#include "collection/Map.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
 
@@ -25,7 +27,10 @@ namespace Ghurund {
         D3D12_GPU_DESCRIPTOR_HANDLE gpuHandle;
 
     public:
-        DescriptorHandle() {}	// TODO: this constructor 
+        DescriptorHandle() {
+			cpuHandle = {};
+			gpuHandle = {};
+		}	// TODO: this constructor 
 
         DescriptorHandle(SIZE_T cpuAddress, UINT64 gpuAddress) {
             cpuHandle.ptr = cpuAddress;
@@ -61,6 +66,9 @@ namespace Ghurund {
             heapDescriptor.NumDescriptors = descriptorCount;
             heapDescriptor.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
             heapDescriptor.NodeMask = 1;
+
+			cpuDescriptorHandleForHeapStart = {};
+			gpuDescriptorHandleForHeapStart = {};
         }
 
         ~DescriptorHeap() {

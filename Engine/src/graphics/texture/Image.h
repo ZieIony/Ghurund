@@ -4,10 +4,12 @@
 
 #include "resource/ResourceManager.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
 #include <wincodec.h>
@@ -18,7 +20,9 @@ namespace Ghurund {
 
     class Image: public Resource {
     private:
-        DXGI_FORMAT format;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Image>();
+		
+		DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
         Buffer* imageData = nullptr;
 
@@ -88,8 +92,10 @@ namespace Ghurund {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Image");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::IMAGE;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {
@@ -98,12 +104,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
-
-        Status SaveWICTextureToFile(ResourceManager& resourceManager,
-            ResourceContext& context,
-            ID3D12Resource* pSource,
-            const wchar_t* fileName,
-            D3D12_RESOURCE_STATES beforeState,
-            D3D12_RESOURCE_STATES afterState);
     };
 }

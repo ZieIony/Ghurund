@@ -2,13 +2,15 @@
 
 #include "graphics/Graphics.h"
 #include "graphics/Fence.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "Image.h"
 
 namespace Ghurund {
     class Texture:public Resource {
     private:
-        ComPtr<ID3D12Resource> textureResource;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Texture>();
+		
+		ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
 
         Image* image = nullptr;
@@ -56,8 +58,10 @@ namespace Ghurund {
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
-        virtual const Ghurund::Type& getType() const override {
-            return Type::TEXTURE;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Texture");
+
+		virtual const Ghurund::Type& getType() const override {
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

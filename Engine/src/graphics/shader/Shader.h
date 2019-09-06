@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resource/Resource.h"
-#include "collection/List.h"
+#include "core/collection/List.h"
 #include "ConstantBuffer.h"
 #include "Sampler.h"
 #include "TextureBufferConstant.h"
@@ -12,9 +12,11 @@
 #include "ShaderProgram.h"
 #include "resource/ResourceContext.h"
 
+#pragma warning(push, 0)
 #include <d3d12.h>
 #include <D3Dcompiler.h>
 #include "d3dx12.h"
+#pragma warning(pop)
 
 #include <wrl.h>
 
@@ -23,7 +25,9 @@ namespace Ghurund {
 
     class Shader:public Resource, public ParameterProvider {
     private:
-        ShaderProgram* programs[6] = {};
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Shader>();
+		
+		ShaderProgram* programs[6] = {};
         ID3D12RootSignature* rootSignature;
         ID3D12PipelineState* pipelineState;
         bool supportsTransparency = false;
@@ -110,8 +114,10 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
-        virtual const Ghurund::Type& getType() const override {
-            return Type::SHADER;
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Shader");
+
+		virtual const Ghurund::Type& getType() const override {
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

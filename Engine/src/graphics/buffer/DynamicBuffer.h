@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics/Graphics.h"
-#include "collection/BufferedValue.h"
+#include "core/collection/BufferedValue.h"
 #include "GPUBuffer.h"
 
 namespace Ghurund {

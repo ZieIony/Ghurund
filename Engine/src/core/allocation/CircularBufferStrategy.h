@@ -7,7 +7,6 @@ namespace Ghurund {
     private:
         memory_t start = 0, end = 0;
         List<Allocation> allocations;
-        memory_t allocated = 0;
 
     public:
         CircularBufferStrategy() {
@@ -29,9 +28,9 @@ namespace Ghurund {
             return newStart;
         }
 
-        inline void deallocate(memory_t address) {
+        inline void deallocate(memory_t address) {	// TODO: use void*
             for (size_t i = 0; i < allocations.Size; i++) {
-                Allocation& a = allocations[i];
+                const Allocation& a = allocations[i];
                 if (a.address == address) {
                     allocated -= a.size;
                     allocations.removeAtKeepOrder(i);
@@ -44,10 +43,6 @@ namespace Ghurund {
                 }
             }
             Logger::log(LogType::WARNING, _T("the requested address (%i) does not belong to this strategy\n"), address);
-        }
-
-        virtual memory_t getAllocated() const override {
-            return start < end ? end - start : size - start + end;
         }
     };
 

@@ -2,7 +2,7 @@
 #include "graphics/shader/Shader.h"
 
 namespace Ghurund {
-    CommandList::~CommandList() {
+	CommandList::~CommandList() {
         if(state==CommandListState::RECORDING)
             finish();
         if(state==CommandListState::CLOSED)

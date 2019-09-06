@@ -6,7 +6,9 @@
 namespace Ghurund {
     class Light: public Entity, public ParameterProvider {
     private:
-        Target* target;
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Light>();
+
+		Target* target;
         PointerArray<Parameter*> parameters;
 
     protected:
@@ -41,8 +43,10 @@ namespace Ghurund {
             return parameters;
         }
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Light");
+
         virtual const Ghurund::Type& getType() const override {
-            return Type::LIGHT;
+            return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {

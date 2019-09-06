@@ -29,11 +29,10 @@ namespace Ghurund.Managed.Game {
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void LevelManager_draw(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Renderer renderer,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] ParameterManager parameterManager);
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] CommandList commandList);
 
-        public void Draw(Renderer renderer, ParameterManager parameterManager) {
-            LevelManager_draw(NativePtr, renderer, parameterManager);
+        public void Draw(CommandList commandList) {
+            LevelManager_draw(NativePtr, commandList);
         }
     }
 }

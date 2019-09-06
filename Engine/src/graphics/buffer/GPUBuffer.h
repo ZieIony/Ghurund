@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Buffer.h"
-#include "collection/BufferedValue.h"
+#include "core/collection/BufferedValue.h"
 #include "graphics/CommandList.h"
 #include "graphics/Graphics.h"
 #include "graphics/memory/GPUResourceFactory.h"
@@ -10,7 +10,7 @@ namespace Ghurund {
     class GPUBuffer {
     private:
         //ID3D12Resource *constantBufferUploadHeap = nullptr; // this is the memory on the gpu where our constant buffer will be placed.
-        Buffer *buffer;
+        Buffer *buffer = nullptr;
 		void *gpuAddress = nullptr;
 
         //GraphicsMemory *memory;
@@ -25,7 +25,7 @@ namespace Ghurund {
             /*graphics.getDevice()->CreateCommittedResource(
                 &CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
                 D3D12_HEAP_FLAG_NONE,
-                &CD3DX12_RESOURCE_DESC::Buffer(1024 * 64), // size of the resource heap. Must be a multiple of 64KB for single-textures and constant buffers	// TODO: compute actual heap size
+                &CD3DX12_RESOURCE_DESC::Buffer(64_KB), // size of the resource heap. Must be a multiple of 64KB for single-textures and constant buffers	// TODO: compute actual heap size
                 D3D12_RESOURCE_STATE_GENERIC_READ, // will be data that is read from so we keep it in the generic read state
                 nullptr,
                 IID_PPV_ARGS(&constantBufferUploadHeap));*/

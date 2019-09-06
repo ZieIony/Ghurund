@@ -1,4 +1,4 @@
-#include "game/entity/Light.h"
+#include "graphics/entity/Light.h"
 
 using namespace Ghurund;
 

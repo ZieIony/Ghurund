@@ -9,6 +9,8 @@
 namespace Ghurund {
 	class Scene :public Resource {
 	private:
+		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Scene>();
+	
 		PointerList<Entity*> entities;
 		TransformSystem transformSystem;
 		PhysicsSystem physicsSystem;
@@ -50,12 +52,14 @@ namespace Ghurund {
 			transformSystem.update(0);
 		}
 
-		void render(float dt, CommandList& commandList) {
-			graphicsSystem.update(dt, commandList);
+		void render(CommandList& commandList) {
+			graphicsSystem.draw(commandList, transformSystem);
 		}
 
+		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Scene");
+
 		virtual const Ghurund::Type& getType() const override {
-			return Type::SCENE;
+			return TYPE;
 		}
 
 		static const Array<ResourceFormat*>& getFormats() {

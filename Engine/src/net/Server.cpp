@@ -1,5 +1,5 @@
 #include "net/Server.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 #include "Ws2tcpip.h"
 
 namespace Ghurund {
