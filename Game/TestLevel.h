@@ -12,8 +12,6 @@ private:
     Material* wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
     //ScopedPointer<AdvancedSky> sky;
 
-    //RenderStep editorStep, sceneStep, selectionStep;
-
 public:
     TestLevel(Application& app) :app(app) {}
 
@@ -63,31 +61,28 @@ public:
             app.ResourceManager.loadAsync<Ghurund::Scene>(app.AsyncResourceContext, "test/test.scene", [&](Ghurund::Scene* scene, Status result) {
                 if (result != Status::OK)
                     return;
-                scene->initParameters(app.ParameterManager);
-                sceneStep.Entities.add(scene);
-                selectionStep.Entities.add(scene->Entities[0]);
+                scene->Camera = camera;
+                Scenes.add(scene);
                 scene->release();
                 });
         } else {*/
-        ScopedPointer<Scene> scene = makeScene();
-		Scenes.add(scene);
-        //selectionStep.Entities.add(scene->Entities[0]);
+            ScopedPointer<Scene> scene = makeScene();
+            scene->Camera = camera;
+            Scenes.add(scene);
+            ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
+            scene->DrawingSystem.InvalidMaterial = invalidMaterial;
 
-        /*Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
-        if (result != Status::OK)
-            Logger::log(LogType::WARNING, _T("failed to save scene\n"));*/
-            //}
+            Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
+            if (result != Status::OK)
+                Logger::log(LogType::WARNING, _T("failed to save scene\n"));
+        //}
 
         ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
-        //editorScene->Camera = camera;
+        editorScene->Camera = camera;
 
         ScopedPointer<Scene> selectionScene = ghnew Scene();
-        //selectionStep.Camera = camera;
-        //selectionScene->OverrideMaterial = outlineMaterial;
-
-        //sceneStep.Camera = camera;
-        ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
-        //sceneStep.InvalidMaterial = invalidMaterial;
+        selectionScene->Camera = camera;
+        selectionScene->DrawingSystem.OverrideMaterial = outlineMaterial;
 
         const char* sourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),cos(timer.getTime()/5.0f)*3.0f+30);}";
         ScopedPointer<Script> script = Scripts::make(camera, sourceCode);
@@ -97,7 +92,7 @@ public:
 
     Scene* makeScene() {
 		Scene* scene = ghnew Scene();
-		scene->init(camera, app.ResourceContext);
+		scene->init(app.ResourceContext);
 
         /*ScopedPointer<Model> lamborghini;
         {
@@ -133,8 +128,7 @@ public:
             File file("test/obj/house/house.mesh");
             if (file.Exists) {
                 mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
-            }
-            else {
+            } else {
                 mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, "test/obj/house/house_obj.obj");
                 if (mesh != nullptr)
                     mesh->save(app.ResourceContext, file);
@@ -146,7 +140,7 @@ public:
             if (diffuseTexture != nullptr && specularTexture != nullptr && normalTexture != nullptr && mesh != nullptr) {
                 ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
-				ScopedPointer<DrawableComponent> component = scene->GraphicsSystem.makeComponent();
+				ScopedPointer<DrawableComponent> component = scene->DrawingSystem.makeComponent();
 				//component->TransformComponent = transform;
 				component->Mesh = mesh;
 				component->Material = material;

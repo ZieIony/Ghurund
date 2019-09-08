@@ -25,7 +25,8 @@ namespace Ghurund {
 
     class Shader:public Resource, public ParameterProvider {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Shader>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Shader);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Shader>();
 		
 		ShaderProgram* programs[6] = {};
         ID3D12RootSignature* rootSignature;
@@ -114,7 +115,9 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Shader");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Shader>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
 		virtual const Ghurund::Type& getType() const override {
             return TYPE;

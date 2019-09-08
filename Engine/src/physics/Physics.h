@@ -29,7 +29,8 @@ namespace Ghurund {
 
 	class Physics:public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Physics>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Physics);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Physics>();
 		
 		PxDefaultErrorCallback defaultErrorCallback;
         PxDefaultAllocator defaultAllocatorCallback;
@@ -56,7 +57,9 @@ namespace Ghurund {
             return *physics;
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Physics");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Physics>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

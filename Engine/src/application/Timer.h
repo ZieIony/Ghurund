@@ -8,6 +8,7 @@ namespace Ghurund {
 
     class Timer:public Object {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Timer);
 		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Timer>();
 		
 		LARGE_INTEGER frequency;
@@ -60,7 +61,9 @@ namespace Ghurund {
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Timer");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Timer>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

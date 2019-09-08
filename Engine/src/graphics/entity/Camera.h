@@ -12,7 +12,10 @@ namespace Ghurund {
 
     class Camera: public Entity, public ParameterProvider {
     private:
-		TransformComponent* transformComponent;
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Camera);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Camera>();
+        
+        TransformComponent* transformComponent;
 		
 		XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, viewProjInv, facing;
@@ -40,8 +43,9 @@ namespace Ghurund {
 			transformComponent->release();
 		}
 
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Camera>();
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Camera");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Camera>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Entity::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

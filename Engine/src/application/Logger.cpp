@@ -137,7 +137,6 @@ namespace Ghurund {
         if (symbol == nullptr) {
             constexpr int frames = 1;
             process = GetCurrentProcess();
-            _____________________checkMemory();
             SymInitialize(process, NULL, TRUE);
 
             constexpr int symbolStructSize = sizeof(SYMBOL_INFO) + (MAX_SYM_NAME - 1) * sizeof(tchar);

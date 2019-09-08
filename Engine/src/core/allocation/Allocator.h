@@ -33,3 +33,11 @@ namespace Ghurund {
 		}
 	};
 }
+
+inline void* operator new(size_t size, Ghurund::Allocator& allocator) {
+    return allocator.allocate(size);
+}
+
+inline void operator delete(void* ptr, Ghurund::Allocator& allocator) {
+    allocator.deallocate(ptr);
+}

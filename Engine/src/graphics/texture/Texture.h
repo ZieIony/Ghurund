@@ -8,7 +8,8 @@
 namespace Ghurund {
     class Texture:public Resource {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Texture>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Texture);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Texture>();
 		
 		ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
@@ -58,7 +59,9 @@ namespace Ghurund {
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Texture");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Texture>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
 		virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -12,7 +12,8 @@
 namespace Ghurund {
 	class DrawableComponent:public Component, public ParameterProvider {
 	private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<DrawableComponent>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(DrawableComponent);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<DrawableComponent>();
 
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
@@ -160,7 +161,9 @@ namespace Ghurund {
 			culled = CullingEnabled && frustum.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
 		}
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "DrawableComponent");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<DrawableComponent>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Component::TYPE);
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

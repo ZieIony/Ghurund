@@ -18,7 +18,8 @@ namespace Ghurund {
 
     class SwapChain:public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<SwapChain>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(SwapChain);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<SwapChain>();
 
 		Graphics* graphics;
         ComPtr<IDXGISwapChain3> swapChain;
@@ -59,7 +60,9 @@ namespace Ghurund {
 
         void resize(unsigned int width, unsigned int height);
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "SwapChain");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<SwapChain>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

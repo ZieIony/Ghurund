@@ -20,7 +20,8 @@
 namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(ResourceManager);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
 		
 		FileWatcher watcher;
         PointerMap<UnicodeString, Resource*> resources;
@@ -186,7 +187,9 @@ namespace Ghurund {
 
         __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ResourceManager");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<ResourceManager>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

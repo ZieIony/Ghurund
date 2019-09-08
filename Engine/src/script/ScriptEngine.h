@@ -35,7 +35,8 @@
 namespace Ghurund {
     class ScriptEngine: public Object, public System<ScriptComponent> {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(ScriptEngine);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
 		
 		asIScriptEngine* engine = nullptr;
         asIScriptModule* mod = nullptr;
@@ -76,7 +77,9 @@ namespace Ghurund {
 
         void update(float dt);
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ScriptEngine");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<ScriptEngine>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

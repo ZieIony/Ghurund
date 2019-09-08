@@ -10,7 +10,8 @@
 namespace Ghurund {
     class Material:public Resource, public ParameterProvider {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Material>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Material);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Material>();
 
         Shader* shader = nullptr;
         bool supportsTransparency = false;
@@ -92,7 +93,9 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Material");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Material>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

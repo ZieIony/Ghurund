@@ -6,7 +6,8 @@
 namespace Ghurund {
     class Light: public Entity, public ParameterProvider {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Light>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Light);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Light>();
 
 		Target* target;
         PointerArray<Parameter*> parameters;
@@ -43,7 +44,9 @@ namespace Ghurund {
             return parameters;
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Light");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Light>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Entity::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -18,9 +18,7 @@ namespace Ghurund {
 		}
 
 		virtual T* newInstance(Allocator& allocator) const override {
-			void* mem = allocator.allocate(sizeof(T));
-			T* t = new (mem)T();
-			return t;
+			return new (allocator)T();
 		}
 	};
 }

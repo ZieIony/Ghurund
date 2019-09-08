@@ -24,7 +24,8 @@ namespace Ghurund {
 
     class Graphics: public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Graphics>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Graphics);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Graphics>();
 		
 		ID3D12Device* device;
         ID3D12CommandQueue* directQueue = nullptr, * computeQueue = nullptr, * copyQueue = nullptr;
@@ -103,7 +104,9 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Graphics");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Graphics>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

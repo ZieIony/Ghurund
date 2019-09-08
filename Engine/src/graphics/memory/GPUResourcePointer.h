@@ -16,7 +16,9 @@
 namespace Ghurund {
     class GPUResourcePointer:public Pointer {
     private:
-        HeapAllocator *allocator;
+        inline static const char* CLASS_NAME = GH_STRINGIFY(GPUResourcePointer);
+  
+        HeapAllocator* allocator;
         void* address;
         ID3D12Resource *resource;
 
@@ -32,7 +34,8 @@ namespace Ghurund {
             allocator->deallocate(address);
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "GPUResourcePointer");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<GPUResourcePointer>(NAMESPACE_NAME, CLASS_NAME)
+            .withSupertype(Pointer::TYPE);
 
         virtual const Ghurund::Type&getType() const override {
             return TYPE;

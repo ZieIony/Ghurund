@@ -4,17 +4,18 @@
 #include "resource/Resource.h"
 #include "physics/Physics.h"
 #include "physics/PhysicsSystem.h"
-#include "graphics/GraphicsSystem.h"
+#include "graphics/DrawingSystem.h"
 
 namespace Ghurund {
 	class Scene :public Resource {
 	private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Scene>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Scene);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Scene>();
 	
 		PointerList<Entity*> entities;
 		TransformSystem transformSystem;
 		PhysicsSystem physicsSystem;
-		GraphicsSystem graphicsSystem;
+		DrawingSystem drawingSystem;
 
 	protected:
 		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
@@ -24,39 +25,50 @@ namespace Ghurund {
 
 		Scene() {}
 
-		void init(Camera* camera, ResourceContext& context) {
-			graphicsSystem.Camera = camera;
-			graphicsSystem.init(context.Graphics);
-			graphicsSystem.initParameters(context.ParameterManager);
+        inline void init(ResourceContext& context) {
+            drawingSystem.init(context.Graphics);
+            drawingSystem.initParameters(context.ParameterManager);
 		}
 
-		PointerList<Entity*>& getEntities() {
+        inline void setCamera(Camera* camera) {
+            drawingSystem.Camera = camera;
+        }
+
+        inline Camera* getCamera() {
+            return drawingSystem.Camera;
+        }
+
+        __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
+
+		inline PointerList<Entity*>& getEntities() {
 			return entities;
 		}
 
 		__declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
 
-		TransformSystem& getTransformSystem() {
+        inline TransformSystem& getTransformSystem() {
 			return transformSystem;
 		}
 
 		__declspec(property(get = getTransformSystem)) TransformSystem& TransformSystem;
 
-		GraphicsSystem& getGraphicsSystem() {
-			return graphicsSystem;
+        inline DrawingSystem& getGraphicsSystem() {
+			return drawingSystem;
 		}
 
-		__declspec(property(get = getGraphicsSystem)) GraphicsSystem& GraphicsSystem;
+		__declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
 
-		void transform() {
+        inline void transform() {
 			transformSystem.update(0);
 		}
 
-		void render(CommandList& commandList) {
-			graphicsSystem.draw(commandList, transformSystem);
+        inline void render(CommandList& commandList) {
+            drawingSystem.draw(commandList, transformSystem);
 		}
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Scene");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Scene>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

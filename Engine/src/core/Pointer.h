@@ -9,6 +9,8 @@ namespace Ghurund {
 
     class Pointer: public Object {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Pointer);
+  
         unsigned long referenceCount;
 
 #ifdef _DEBUG
@@ -47,6 +49,14 @@ namespace Ghurund {
 #ifdef _DEBUG
         static void dumpPointers();
 #endif
+
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, CLASS_NAME)
+            .withModifiers(TypeModifier::ABSTRACT)
+            .withSupertype(Object::TYPE);
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 
     template<class Type>

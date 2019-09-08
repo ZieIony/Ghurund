@@ -6,7 +6,7 @@
 namespace Ghurund {
     class RenderingStatistics:public ObservableObject {
         friend class DrawableComponent;
-		friend class GraphicsSystem;
+		friend class DrawingSystem;
 
     private:
         float renderingTime = 0;

@@ -3,6 +3,7 @@
 
 namespace Ghurund {
 	Status Scene::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        context.Allocators.set(DrawableComponent::TYPE, DrawingSystem.Allocator);
 		size_t size = stream.readUInt();
 		for (size_t i = 0; i < size; i++) {
 			Status result;

@@ -17,37 +17,29 @@ namespace Ghurund {
 
     public:
         List() {
-			_____________________checkMemory();
 			v = (Value*)ghnew char[sizeof(Value) * capacity];
-			_____________________checkMemory();
 		}
 
         List(size_t initial) {
-			_____________________checkMemory();
 			this->initial = capacity = initial;
             v = (Value*)ghnew char[sizeof(Value) * capacity];
-			_____________________checkMemory();
 		}
 
         List(const List& t1) {
-			_____________________checkMemory();
 			capacity = t1.capacity;
             initial = t1.initial;
             size = t1.size;
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             for (size_t i = 0; i < size; i++)
                 new (v + i)Value(t1[i]);
-			_____________________checkMemory();
 		}
 
         List(const std::initializer_list<Value> list) {
-			_____________________checkMemory();
 			size = initial = capacity = list.size();
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             int i = 0;
             for (auto it = list.begin(); it != list.end(); ++it, i++)
                 new (v + i)Value(*it);
-			_____________________checkMemory();
 		}
 
         ~List() {
@@ -82,7 +74,6 @@ namespace Ghurund {
         inline void add(const Value& e) {//allows to add null item
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
-			_____________________checkMemory();
 			new(v + size) Value(e);
             size++;
 #ifdef GHURUND_EDITOR

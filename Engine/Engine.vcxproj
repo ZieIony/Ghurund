@@ -25,6 +25,7 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\core\collection\List.cpp" />
+    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
     <ClCompile Include="src\core\string\ASCIIString.cpp" />
     <ClCompile Include="src\core\string\UnicodeString.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
@@ -95,6 +96,8 @@
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\core\allocation\AllocatorMap.h" />
     <ClInclude Include="src\core\collection\Array.h" />
+    <ClInclude Include="src\core\reflection\TypeBuilder.h" />
+    <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\string\ASCIIString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
     <ClInclude Include="src\core\collection\BufferedValue.h" />
@@ -165,7 +168,7 @@
     <ClInclude Include="src\graphics\buffer\DepthBuffer.h" />
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
-    <ClInclude Include="src\graphics\GraphicsSystem.h" />
+    <ClInclude Include="src\graphics\DrawingSystem.h" />
     <ClInclude Include="src\graphics\LightSystem.h" />
     <ClInclude Include="src\graphics\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\graphics\memory\GPUResourcePointer.h" />

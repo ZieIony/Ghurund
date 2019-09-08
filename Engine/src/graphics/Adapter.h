@@ -20,6 +20,8 @@ namespace Ghurund {
 
     class DisplayMode: public Object {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(DisplayMode);
+  
         unsigned int width, height;
         float refreshRate;
         DXGI_FORMAT format;
@@ -48,7 +50,7 @@ namespace Ghurund {
             return format;
         }
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "DisplayMode");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<DisplayMode>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -57,6 +59,8 @@ namespace Ghurund {
 
     class AdapterOutput: public Object {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(AdapterOutput);
+     
         DXGI_OUTPUT_DESC desc;
         String name;
         ComPtr<IDXGIOutput> output;
@@ -100,7 +104,7 @@ namespace Ghurund {
             return displayModes;
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "AdapterOutput");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<AdapterOutput>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -109,6 +113,8 @@ namespace Ghurund {
 
     class Adapter: public Object {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Adapter);
+   
         ComPtr<IDXGIAdapter1> adapter;
         DXGI_ADAPTER_DESC1 desc;
         String name;
@@ -158,7 +164,7 @@ namespace Ghurund {
             return outputs;
         }
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "Adapter");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Adapter>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

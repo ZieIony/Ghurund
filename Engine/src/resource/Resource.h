@@ -37,6 +37,8 @@ namespace Ghurund {
 
     class Resource: public Pointer {
     private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Resource);
+   
         bool valid = false;
         FilePath* path = nullptr;
 
@@ -105,5 +107,13 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getPath, put = setPath)) FilePath* Path;
+
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Resource>(NAMESPACE_NAME, CLASS_NAME)
+            .withModifiers(TypeModifier::ABSTRACT)
+            .withSupertype(Object::TYPE);
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

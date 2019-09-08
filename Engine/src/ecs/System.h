@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Component.h"
-#include "core/collection/List.h"
+#include "core/collection/PointerList.h"
 #include "core/Object.h"
 #include "core/allocation/Allocator.h"
 

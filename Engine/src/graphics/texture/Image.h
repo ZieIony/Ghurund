@@ -20,7 +20,8 @@ namespace Ghurund {
 
     class Image: public Resource {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Image>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Image);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Image>();
 		
 		DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
@@ -92,7 +93,9 @@ namespace Ghurund {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Image");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Image>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

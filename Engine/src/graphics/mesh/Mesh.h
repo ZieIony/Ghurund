@@ -30,7 +30,8 @@ namespace Ghurund {
 
     class Mesh:public Resource {
 	private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Mesh>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Mesh);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Mesh>();
 
     protected:
         void* vertices = nullptr;
@@ -103,7 +104,9 @@ namespace Ghurund {
 
         __declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Mesh");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Mesh>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

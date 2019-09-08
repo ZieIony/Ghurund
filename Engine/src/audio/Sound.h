@@ -12,7 +12,8 @@ namespace Ghurund {
 
     class Sound: public Resource {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Sound>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Sound);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Sound>();
 		
 		IXAudio2SourceVoice* sourceVoice;
         WAVEFORMATEX* waveFormat;
@@ -69,7 +70,9 @@ namespace Ghurund {
 			return state == PlaybackState::PLAYING;
 		}
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Sound");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Sound>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Resource::TYPE);
 
         virtual const Ghurund::Type &getType() const override {
             return TYPE;

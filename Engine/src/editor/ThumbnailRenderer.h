@@ -6,7 +6,8 @@
 namespace Ghurund {
     class ThumbnailRenderer:public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ThumbnailRenderer>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(ThumbnailRenderer);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ThumbnailRenderer>();
 		
 		Camera* camera = nullptr;
         Renderer* renderer = nullptr;
@@ -30,7 +31,9 @@ namespace Ghurund {
         Status render(Mesh& mesh, Image*& image);
         Status render(Material& material, Image*& image);
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ThumbnailRenderer");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<ThumbnailRenderer>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

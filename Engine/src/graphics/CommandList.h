@@ -18,7 +18,8 @@ namespace Ghurund {
 
     class CommandList: public NamedObject<String>, public Pointer {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<CommandList>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(CommandList);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<CommandList>();
 		
 		Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
@@ -73,7 +74,9 @@ namespace Ghurund {
             commandList->ResourceBarrier(1, &barrier);
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "CommandList");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<CommandList>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Pointer::TYPE);
 
         virtual const Ghurund::Type&getType() const override {
             return TYPE;

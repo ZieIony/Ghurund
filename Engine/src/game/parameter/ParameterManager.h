@@ -11,7 +11,8 @@ namespace Ghurund {
 
     class ParameterManager: public Object {
     private:
-		inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ParameterManager>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(ParameterManager);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ParameterManager>();
 		
 		PointerList<Parameter*> parameters;
 
@@ -35,7 +36,7 @@ namespace Ghurund {
             return nullptr;
         }
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "ParameterManager");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<ParameterManager>(NAMESPACE_NAME, CLASS_NAME).withConstructor(CONSTRUCTOR);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

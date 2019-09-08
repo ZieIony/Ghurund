@@ -17,6 +17,7 @@ namespace Ghurund {
     class Window: public ParameterProvider, public NamedObject<String>, public Object {
     private:
         inline static const tchar* WINDOW_CLASS_NAME = _T("Ghurund");
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Window);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Window>();
 
         String title;
@@ -137,7 +138,9 @@ namespace Ghurund {
 
         void updateSize();
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type(CONSTRUCTOR, "Ghurund", "Window");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<Window>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -1,7 +1,37 @@
 #include "Entity.h"
+#include "core/reflection/Type.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
 
-	//const Ghurund::Type<Entity>& Entity::TYPE = Ghurund::Type<Entity>([](Allocator& allocator) {return ghnew Entity(); }, "Ghurund", "Entity");
+    Status Entity::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        Name = stream.readUnicode();
+        uint32_t componentCount = stream.readUInt();
+        for (uint32_t i = 0; i < componentCount; i++) {
+            const char* typeNamespace = stream.readASCII();
+            const char* typeName = stream.readASCII();
+            Ghurund::Type* type = Type::fromName(typeNamespace, typeName);
+            if (!type)
+                return Logger::log(LogType::ERR0R, Status::UNKNOWN_TYPE, _T("Attempted to load an unknown type.\n"));
+            Allocator* allocator = context.Allocators.get(*type);
+            if(!allocator)
+                return Logger::log(LogType::ERR0R, Status::MISSING_ALLOCATOR, S("Allocator is missing for components of type ") + typeNamespace + "::" + typeName + _T(".\n"));
+            if(!type->Constructor)
+                return Logger::log(LogType::ERR0R, Status::MISSING_CONSTRUCTOR, S("Type ") + typeNamespace + "::" + typeName + _T(" is missing a constructor.\n"));
+            Component* obj = (Component*)type->Constructor->newInstance(*allocator);
+        }
+        return Status::OK;
+    }
+
+    Status Entity::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        stream.writeUnicode((UnicodeString)Name);
+        stream.writeUInt((uint32_t)components.Size);
+        for (Component* c : components) {
+            stream.writeASCII(c->Type.Namespace);
+            stream.writeASCII(c->Type.Name);
+            c->save(context, workingDir, stream, options);
+        }
+        return Status::OK;
+    }
 
 }

@@ -6,7 +6,7 @@
 #include "graphics/entity/Camera.h"
 
 namespace Ghurund {
-	class GraphicsSystem :public System<DrawableComponent> {
+	class DrawingSystem :public System<DrawableComponent> {
 	private:
 		Camera* camera = nullptr;
 		Material* material = nullptr;
@@ -17,7 +17,7 @@ namespace Ghurund {
 		Graphics* graphics = nullptr;
 
 	public:
-		~GraphicsSystem() {
+		~DrawingSystem() {
 			if (camera)
 				camera->release();
 			if (material)
@@ -26,17 +26,21 @@ namespace Ghurund {
 				invalidMaterial->release();
 		}
 
-		void init(Graphics& graphics) {
+        inline void init(Graphics& graphics) {
 			this->graphics = &graphics;
 		}
 
-		void setCamera(Camera* camera) {
+		inline void setCamera(Camera* camera) {
 			setPointer(this->camera, camera);
 		}
 
-		__declspec(property(put = setCamera)) Camera* Camera;
+        inline Camera* getCamera() {
+            return camera;
+        }
 
-		void setOverrideMaterial(Material* material) {
+		__declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
+
+        inline void setOverrideMaterial(Material* material) {
 			setPointer(this->material, material);
 		}
 

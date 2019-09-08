@@ -13,7 +13,9 @@ namespace Ghurund {
 
 	class RigidBodyComponent :public Component {
 	private:
-		TransformComponent& transformComponent;
+        inline static const char* CLASS_NAME = GH_STRINGIFY(RigidBodyComponent);
+        
+        TransformComponent& transformComponent;
 		PxShape* shape = nullptr;
 
 		void finalize() {
@@ -43,7 +45,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
-		inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "RigidBodyComponent");
+		inline static const Ghurund::Type& TYPE = TypeBuilder<RigidBodyComponent>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Component::TYPE);
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

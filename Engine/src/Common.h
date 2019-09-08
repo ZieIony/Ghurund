@@ -38,7 +38,11 @@ typedef DWORD64 address_t;
 typedef DWORD address_t;
 #endif
 
+#define GH_STRINGIFY(t) #t
+
 namespace Ghurund {
+    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund);
+
     inline void dumpMemoryLeaks() {
         _CrtDumpMemoryLeaks();
     }

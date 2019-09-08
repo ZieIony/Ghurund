@@ -55,6 +55,9 @@ namespace Ghurund {
     };
 
     class Parameter: public Pointer, public ObservableObject {
+    private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Parameter);
+
     protected:
         const char* constantName;
         const ParameterType& type;
@@ -87,7 +90,7 @@ namespace Ghurund {
 
         __declspec(property(get = isEmpty)) bool Empty;
 
-        inline static const Ghurund::Type& TYPE = Ghurund::Type("Ghurund", "Parameter");
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Parameter>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
