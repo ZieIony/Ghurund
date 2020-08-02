@@ -4,9 +4,6 @@
 #define NOMINMAX
 #define _XM_NO_INTRINSICS_
 
-#undef min
-#undef max
-
 #pragma warning (disable : 4521)	// multiple copy constructors specified
 #pragma warning (disable : 4238)	// nonstandard extension used : class rvalue used as lvalue
 
@@ -23,7 +20,15 @@
 #include "Math.h"
 #include "mbctype.h"
 #include "tchar.h"
-#include <memory>
+
+#undef min
+#undef max
+
+#include <stdarg.h>
+#include <float.h>
+#include <crtdbg.h>
+#include <stdlib.h>
+#include <locale.h>
 
 #ifdef _DEBUG
 #define ghnew new(_NORMAL_BLOCK, __FILE__, __LINE__)

@@ -15,7 +15,7 @@ private:
 public:
     TestLevel(Application& app) :app(app) {}
 
-    virtual bool onMouseButtonEvent(MouseButtonEventArgs& event) override {
+    virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
         /*if (event.Action == MouseAction::DOWN) {
             Model* model = sceneStep.pick(app.Input.MousePos);
             if (model != nullptr)
@@ -24,15 +24,15 @@ public:
         return cameraController->dispatchMouseButtonEvent(event);
     }
 
-    virtual bool onMouseMouseMotionEvent(MouseMotionEventArgs& event) override {
+    virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
         return cameraController->dispatchMouseMotionEvent(event);
     }
 
-    virtual bool onMouseWheelEvent(MouseWheelEventArgs& event) override {
+    virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override {
         return cameraController->dispatchMouseWheelEvent(event);
     }
 
-    virtual bool onKeyEvent(KeyEventArgs& event) override {
+    virtual bool onKeyEvent(const KeyEventArgs& event) override {
         if (event.Action == KeyAction::DOWN && event.Key == VK_ESCAPE) {
             PostQuitMessage(0);
             return true;

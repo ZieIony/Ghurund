@@ -1,5 +1,5 @@
 #include "Graphics.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 #include <D3Dcompiler.h>
 

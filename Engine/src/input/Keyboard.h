@@ -20,13 +20,13 @@ namespace Ghurund {
             this->timeStamp = timeStamp;
         }
 
-        KeyAction getAction() {
+        KeyAction getAction() const {
             return action;
         }
 
         __declspec(property(get = getAction)) KeyAction Action;
 
-        int getKey() {
+        int getKey() const {
             return key;
         }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "core/io/File.h"
 
 #pragma warning(push, 0)

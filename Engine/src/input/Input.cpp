@@ -1,8 +1,8 @@
 #include "Input.h"
 
 namespace Ghurund {
-    bool Input::dispatchEvent(const SystemMessage& message, EventDispatcher& consumer) {
-        if (message.code == WM_KEYDOWN) {
+    bool Input::dispatchEvent(const WindowMessage& message, EventDispatcher& consumer) {
+        /*if (message.code == WM_KEYDOWN) {
             keys[message.wParam] = true;
             return consumer.dispatchKeyEvent(KeyEventArgs(KeyAction::DOWN, (int)message.wParam, message.time));
         } else if (message.code == WM_KEYUP) {
@@ -15,7 +15,7 @@ namespace Ghurund {
         } else if (message.code == WM_MBUTTONDOWN) {
             return consumer.dispatchMouseButtonEvent(MouseButtonEventArgs(MouseAction::DOWN, MouseButton::MIDDLE, message.time));
         } else if (message.code == WM_MBUTTONUP) {
-            return consumer.dispatchMouseButtonEvent(MouseButtonEventArgs(MouseAction::UP, MouseButton::MIDDLE, message.time));
+            return consumer.dispatchMouseButtonEvent(MouseButtonEventArgs(MouseAction::UP, MouseButton::MIDDLE, message.time.));
         } else if (message.code == WM_RBUTTONDOWN) {
             return consumer.dispatchMouseButtonEvent(MouseButtonEventArgs(MouseAction::DOWN, MouseButton::RIGHT, message.time));
         } else if (message.code == WM_RBUTTONUP) {
@@ -31,7 +31,7 @@ namespace Ghurund {
             return consumer.dispatchMouseWheelEvent(MouseWheelEventArgs(MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(message.wParam), message.time));
         } else if (message.code == WM_MOUSEHWHEEL) {
             return consumer.dispatchMouseWheelEvent(MouseWheelEventArgs(MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(message.wParam), message.time));
-        }
+        }*/
         return false;	// shouldn't ever happen
     }
 }

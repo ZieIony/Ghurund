@@ -35,11 +35,11 @@ namespace Ghurund.Managed.Resource {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void ResourceManager_loadModel(IntPtr resourceManager, IntPtr context, string fileName,
+        private static extern void ResourceManager_loadMesh(IntPtr resourceManager, IntPtr context, string fileName,
             [MarshalAs(UnmanagedType.FunctionPtr)] ResourceLoadedCallback callback);
 
-        public void LoadModel(ResourceContext context, string fileName, ResourceLoadedCallback callback) {
-            ResourceManager_loadModel(NativePtr, context.NativePtr, fileName, callback);
+        public void LoadMesh(ResourceContext context, string fileName, ResourceLoadedCallback callback) {
+            ResourceManager_loadMesh(NativePtr, context.NativePtr, fileName, callback);
         }
     }
 }

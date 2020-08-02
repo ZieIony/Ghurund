@@ -1,5 +1,5 @@
 #include "../../stdafx.h"
-#include "core/Logger.h"
+#include "application/Logger.h"
 
 using namespace Ghurund;
 

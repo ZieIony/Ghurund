@@ -2,7 +2,7 @@
 
 #include "core/collection/List.h"
 #include "core/collection/Map.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "core/threading/CriticalSection.h"
 #include "graphics/Adapter.h"
 

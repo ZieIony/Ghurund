@@ -29,25 +29,25 @@ namespace Ghurund {
             return level;
         }
 
-        virtual bool dispatchKeyEvent(KeyEventArgs &event) override {
+        virtual bool dispatchKeyEvent(const KeyEventArgs &event) override {
             if(level!=nullptr)
                 return level->dispatchKeyEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseButtonEvent(MouseButtonEventArgs &event) override {
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs &event) override {
             if(level!=nullptr)
                 return level->dispatchMouseButtonEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseMotionEvent(MouseMotionEventArgs&event) override {
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs&event) override {
             if(level!=nullptr)
                 return level->dispatchMouseMotionEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseWheelEvent(MouseWheelEventArgs&event) override {
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs&event) override {
             if(level!=nullptr)
                 return level->dispatchMouseWheelEvent(event);
             return false;

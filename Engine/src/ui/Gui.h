@@ -1,17 +1,12 @@
 #pragma once
 
-#include "graphics/RenderStep.h"
-#include "graphics/entity/Camera.h"
-#include "application/Window.h"
+#include "Canvas.h"
 
 namespace Ghurund {
-    class GuiRenderStep:public RenderStep {
-    private:
-        Window& window;
-
-    public:
-        GuiRenderStep(Window& window):window(window) {
-            camera = ghnew Camera();
-        }
+    __interface Gui {
+        void init();
+        Canvas* makeCanvas(HWND handle);
+        Paint* makePaint();
+        Font* makeFont(const String& family, float size);
     };
 }

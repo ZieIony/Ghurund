@@ -1,19 +1,33 @@
 #pragma once
 
 #include "application/Settings.h"
-#include "application/WindowProc.h"
-#include "core/collection/Array.h"
+#include "core/Event.h"
 #include "core/NamedObject.h"
 #include "core/Object.h"
+#include "core/collection/Array.h"
+#include "core/threading/FunctionQueue.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
+#include "input/Keyboard.h"
+#include "input/Mouse.h"
 
 #pragma warning(push, 0)
 #include "d3dx12.h"
 #pragma warning(pop)
 
 namespace Ghurund {
+    struct WindowMessage {
+        unsigned int code;
+        WPARAM wParam;
+        LPARAM lParam;
+        time_t time;
+    };
+
+    struct WindowSizeChangedEventArgs {
+        unsigned int width, height;
+    };
+
     class Window: public ParameterProvider, public NamedObject<String>, public Object {
     private:
         inline static const tchar* WINDOW_CLASS_NAME = _T("Ghurund");
@@ -25,15 +39,28 @@ namespace Ghurund {
         HWND handle;
         HINSTANCE hInst;
         bool visible;
-        D3D12_VIEWPORT viewport;
-        D3D12_RECT scissorRect;
         XMINT2 size;
 
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
-    public:
+        Event<Window> onCreated;
+        Event<Window> onSizeChanged;
+        Event<Window> onPaint;
+        Event<Window> onDestroy;
 
+        Event<Window, KeyEventArgs> onKeyEvent;
+        Event<Window, MouseButtonEventArgs> onMouseButtonEvent;
+        POINT prevMousePos = {-1, -1};
+        Event<Window, MouseMotionEventArgs> onMouseMotionEvent;
+        Event<Window, MouseWheelEventArgs> onMouseWheelEvent;
+
+        FunctionQueue* functionQueue = nullptr;
+
+        static LRESULT CALLBACK messageProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
+        static void handleMouseMessage(Window& window, UINT msg, WPARAM wParam);
+
+    public:
         Window():parameters(PointerArray<Parameter*>(1)) {
             Name = _T("window");
         }
@@ -58,7 +85,7 @@ namespace Ghurund {
         }
 
         void init(HWND handle);
-        void init(Settings& settings, WindowProc& windowProc);
+        void init(Settings& settings);
 
         void uninit();
 
@@ -73,7 +100,7 @@ namespace Ghurund {
 
         __declspec(property(put = setTitle, get = getTitle)) String& Title;
 
-        inline HWND getHandle() {
+        inline HWND getHandle() const {
             return handle;
         }
 
@@ -90,28 +117,44 @@ namespace Ghurund {
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
-        D3D12_VIEWPORT& getViewport() {
-            return viewport;
+        Event<Window>& getOnCreated() {
+            return onCreated;
         }
 
-        D3D12_RECT& getScissorRect() {
-            return scissorRect;
+        __declspec(property(get = getOnCreated)) Event<Window>& OnCreated;
+
+        Event<Window>& getOnDestroy() {
+            return onDestroy;
         }
+
+        __declspec(property(get = getOnDestroy)) Event<Window>& OnDestroy;
+
+        Event<Window>& getOnPaint() {
+            return onPaint;
+        }
+
+        __declspec(property(get = getOnPaint)) Event<Window>& OnPaint;
 
         inline const XMINT2& getSize() const {
             return size;
         }
 
         inline void setSize(const XMINT2& size) {
-            this->size = size;
-            SetWindowPos(handle, HWND_TOPMOST, 0, 0, size.x, size.y, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
-            updateSize();
+            setSize(size.x, size.y);
         }
 
         inline void setSize(unsigned int w, unsigned int h) {
-            size = XMINT2(w, h);
-            SetWindowPos(handle, HWND_TOPMOST, 0, 0, size.x, size.y, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
-            updateSize();
+            if (size.x != w || size.y != h) {
+                size = XMINT2(w, h);
+
+                RECT rc, rcClient;
+                GetWindowRect(handle, &rc);
+                GetClientRect(handle, &rcClient);
+                int xExtra = rc.right - rc.left - rcClient.right;
+                int yExtra = rc.bottom - rc.top - rcClient.bottom;
+
+                SetWindowPos(handle, HWND_TOPMOST, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
+            }
         }
 
         __declspec(property(get = getSize, put = setSize)) XMINT2& Size;
@@ -120,23 +163,53 @@ namespace Ghurund {
             return size.x;
         }
 
-        inline void setWidth(unsigned int val) {
-            size.x = val;
-        }
-
-        __declspec(property(get = getWidth, put = setWidth)) unsigned int Width;
+        __declspec(property(get = getWidth)) unsigned int Width;
 
         inline unsigned int getHeight() const {
             return size.y;
         }
 
-        inline void setHeight(unsigned int val) {
-            size.y = val;
+        __declspec(property(get = getHeight)) unsigned int Height;
+
+        Event<Window>& getOnSizeChanged() {
+            return onSizeChanged;
         }
 
-        __declspec(property(get = getHeight, put = setHeight)) unsigned int Height;
+        __declspec(property(get = getOnSizeChanged)) Event<Window>& OnSizeChanged;
 
-        void updateSize();
+        Event<Window, KeyEventArgs>& getOnKeyEvent() {
+            return onKeyEvent;
+        }
+
+        __declspec(property(get = getOnKeyEvent)) Event<Window, KeyEventArgs>& OnKeyEvent;
+
+        Event<Window, MouseButtonEventArgs>& getOnMouseButtonEvent() {
+            return onMouseButtonEvent;
+        }
+
+        __declspec(property(get = getOnMouseButtonEvent)) Event<Window, MouseButtonEventArgs>& OnMouseButtonEvent;
+
+        Event<Window, MouseMotionEventArgs>& getOnMouseMotionEvent() {
+            return onMouseMotionEvent;
+        }
+
+        __declspec(property(get = getOnMouseMotionEvent)) Event<Window, MouseMotionEventArgs>& OnMouseMotionEvent;
+
+        Event<Window, MouseWheelEventArgs>& getOnMouseWheelEvent() {
+            return onMouseWheelEvent;
+        }
+
+        __declspec(property(get = getOnMouseWheelEvent)) Event<Window, MouseWheelEventArgs>& OnMouseWheelEvent;
+
+        void refresh() const {
+            RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);
+        }
+
+        FunctionQueue& getFunctionQueue() {
+            return *functionQueue;
+        }
+
+        __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
 		inline static const Ghurund::Type& TYPE = TypeBuilder<Window>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)

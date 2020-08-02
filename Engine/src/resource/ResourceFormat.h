@@ -1,8 +1,6 @@
 #pragma once
 
 namespace Ghurund {
-    using namespace std;
-
     class ResourceFormat {
     private:
         const wchar_t* extension = nullptr;

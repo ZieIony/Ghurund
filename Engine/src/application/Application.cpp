@@ -26,17 +26,21 @@ namespace Ghurund {
         resourceContext->init();
         asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
         asyncResourceContext->init();
-        parameterManager->initDefaultTextures(*resourceContext);
+        //parameterManager->initDefaultTextures(*resourceContext);
 
         // app
-        window.init(settings, *windowProc);
+        window.init(settings);
         window.initParameters(ParameterManager);
         renderer = ghnew Ghurund::Renderer();
         renderer->init(*resourceContext);
         swapChain = ghnew SwapChain();
         swapChain->init(Graphics, window, FRAME_COUNT);
 
-        client = ghnew Ghurund::Client(windowProc->FunctionQueue);
+        window.OnSizeChanged.add([&](Ghurund::Window& window) {
+            //swapChain->resize(args.width, args.height);
+        });
+
+        client = ghnew Ghurund::Client(window.FunctionQueue);
         client->init();
     }
 
@@ -77,12 +81,10 @@ namespace Ghurund {
         }
     }
 
-    bool Application::handleMessage(SystemMessage & message) {
+ /*   bool Application::handleMessage(SystemMessage & message) {
         if (message.code >= WM_KEYFIRST && message.code <= WM_KEYLAST ||
             message.code >= WM_MOUSEFIRST && message.code <= WM_MOUSELAST) {
             input.dispatchMessage(message);
-        } else if (message.code == WM_SIZE) {
-            onSizeChanged();
         } else if (message.code == WM_CREATE) {
             onWindowCreated();
         } else if (message.code == WM_DESTROY) {
@@ -92,17 +94,11 @@ namespace Ghurund {
             return onMessage(message);
         }
         return true;
-    }
+    }*/
 
-    void Application::run(const Settings * settings, WindowProc * proc) {
+    void Application::run(const Settings * settings) {
         if (settings)
             this->settings = *settings;
-        if (proc == nullptr) {
-            std::function<bool(SystemMessage&)> proc([this](SystemMessage & message) {return handleMessage(message); });
-            windowProc = ghnew WindowProc(proc);
-        } else {
-            windowProc = proc;
-        }
 
         HANDLE singleInstanceMutex = CreateMutex(nullptr, true, window.Title);
         bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
@@ -121,8 +117,6 @@ namespace Ghurund {
         window.Visible = false;
         onUninit();
         uninit();
-
-        delete windowProc;
 
 
     cleanUp:
@@ -144,7 +138,7 @@ namespace Ghurund {
 
         input.clearEvents();
 
-		onDraw();
+		//onDraw();
     }
 
     void Application::reset() {

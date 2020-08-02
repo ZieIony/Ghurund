@@ -12,10 +12,6 @@ extern "C" __declspec(dllexport) void Camera_initParameters(Camera *_this, Param
     _this->initParameters(*manager);
 }
 
-extern "C" __declspec(dllexport) Float3 Camera_getPosition(Camera *_this) {
-    return convertFloat3(_this->getPosition());
-}
-
 extern "C" __declspec(dllexport) Float3 Camera_getTarget(Camera *_this) {
     return convertFloat3(_this->getTarget());
 }
@@ -35,17 +31,8 @@ extern "C" __declspec(dllexport) void Camera_setScreenSize(Camera *_this, unsign
 extern "C" __declspec(dllexport) void Camera_setPositionTargetUp(Camera *_this, Float3 pos, Float3 target, Float3 up) {
     _this->setPositionTargetUp(convertFloat3(pos), convertFloat3(target), convertFloat3(up));
 }
-
-extern "C" __declspec(dllexport) void Camera_setPositionDirectionUp(Camera *_this, Float3 pos, Float3 dir, Float3 up) {
-    _this->setPositionDirectionUp(convertFloat3(pos), convertFloat3(dir), convertFloat3(up));
-}
-
-extern "C" __declspec(dllexport) void Camera_setPositionDistanceRotation(Camera *_this, Float3 pos, float dist, float yaw, float pitch, float roll) {
-    _this->setPositionDistanceRotation(convertFloat3(pos), dist, yaw, pitch, roll);
-}
-
-extern "C" __declspec(dllexport) void Camera_setTargetDistanceOrbit(Camera *_this, Float3 pos, float dist, float yaw, float pitch, float roll) {
-    _this->setTargetDistanceOrbit(convertFloat3(pos), dist, yaw, pitch, roll);
+extern "C" __declspec(dllexport) void Camera_setPositionDirectionDistanceUp(Camera *_this, Float3 pos, Float3 dir, float dist, Float3 up) {
+    _this->setPositionDirectionDistanceUp(convertFloat3(pos), convertFloat3(dir), dist, convertFloat3(up));
 }
 
 extern "C" __declspec(dllexport) void Camera_setRotation(Camera *_this, float yaw, float pitch, float roll) {

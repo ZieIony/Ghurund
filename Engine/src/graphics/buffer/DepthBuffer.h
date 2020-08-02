@@ -34,8 +34,8 @@ namespace Ghurund {
 
             CD3DX12_HEAP_PROPERTIES heapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
             CD3DX12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, width, height, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
-            if(FAILED(graphics.Device->CreateCommittedResource(&heapProperties,D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_DEPTH_WRITE,&depthClearValue,IID_PPV_ARGS(&depthStencil))))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("failed to create depth stencil texture\n"));
+       //     if(FAILED(graphics.Device->CreateCommittedResource(&heapProperties,D3D12_HEAP_FLAG_NONE,&resourceDesc,D3D12_RESOURCE_STATE_DEPTH_WRITE,&depthClearValue,IID_PPV_ARGS(&depthStencil))))
+          //      return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("failed to create depth stencil texture\n"));
             /*
             if(FAILED(graphics.Device->CreatePlacedResource(heap, offset, resourceDesc, D3D12_RESOURCE_STATE_DEPTH_WRITE, &depthClearValue, __uuidof(*depthStencil), &depthStencil))) {
                 Logger::log(_T("failed to create depth stencil texture\n"));

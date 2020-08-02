@@ -31,6 +31,9 @@ namespace Ghurund {
         if(window->Width==0||window->Height==0)
             return Status::INV_STATE;
 
+        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Width, (float)window->Height,0,1 };
+        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Width, (LONG)window->Height };
+
         frames = ghnew Frame[frameCount];
         for(unsigned int i = 0; i < frameCount; i++) {
             ID3D12Resource *renderTargetBuffer;
@@ -42,7 +45,7 @@ namespace Ghurund {
             DepthBuffer *depthBuffer = ghnew DepthBuffer();
             depthBuffer->init(*graphics, window->Width, window->Height);
 
-            frames[i].init(*graphics, window->getViewport(), window->getScissorRect(), renderTarget, depthBuffer);
+            frames[i].init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
         }
 
         frameBuffer.init(frames, frameCount);

@@ -25,7 +25,7 @@ namespace Ghurund {
 
             int result = WSAWaitForMultipleEvents(EVENT_COUNT, &eventHandle, FALSE, TIMEOUT_MS, FALSE);
             if(result == WSA_WAIT_FAILED) {
-                Logger::log(LogType::ERR0R, _T("WSAWaitForMultipleEvents() failed with error %d\n"), WSAGetLastError());
+                Logger::log(LogType::ERR0R, _T("WSAWaitForMultipleEvents() failed with error {:d}\n"), WSAGetLastError());
                 return;
             } else if(result == WSA_WAIT_TIMEOUT) {
                 if(listener!=nullptr)
@@ -36,7 +36,7 @@ namespace Ghurund {
             } else {
                 disconnect = 0;
                 if(WSAEnumNetworkEvents(socket.Id, eventHandle, &networkEvents) == SOCKET_ERROR) {
-                    Logger::log(LogType::ERR0R, _T("WSAEnumNetworkEvents() failed with error %d\n"), WSAGetLastError());
+                    Logger::log(LogType::ERR0R, _T("WSAEnumNetworkEvents() failed with error {}\n"), WSAGetLastError());
                     return;
                 }
 

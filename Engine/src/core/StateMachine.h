@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "core/collection/List.h"
 #include "core/threading/CriticalSection.h"
 #include "core/threading/FunctionQueue.h"
@@ -126,7 +126,7 @@ namespace Ghurund {
             }
 
             result = Status::INV_PARAM;
-            Logger::log(LogType::WARNING, result, _T("No edge for specified states: %i -> %i\n"), currentState, state);
+            Logger::log(LogType::WARNING, result, _T("No edge for specified states: {0} -> {1}\n"), currentState.state, state);
 
         cleanUp:
             cs.leave();

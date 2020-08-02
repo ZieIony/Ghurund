@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
+    <ClCompile Include="src\application\log\LogType.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
@@ -70,7 +71,7 @@
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
-    <ClCompile Include="src\application\Logger.cpp" />
+    <ClCompile Include="src\application\log\Logger.cpp" />
     <ClCompile Include="src\net\ClientThread.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
@@ -85,12 +86,18 @@
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
+    <ClCompile Include="src\ui\control\Control.cpp" />
+    <ClCompile Include="src\ui\control\TextView.cpp" />
+    <ClCompile Include="src\ui\gdi\GdiCanvas.cpp" />
+    <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
+    <ClInclude Include="src\application\log\Formatter.h" />
+    <ClInclude Include="src\application\log\LogOutput.h" />
+    <ClInclude Include="src\application\log\LogType.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\Window.h" />
-    <ClInclude Include="src\application\WindowProc.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
@@ -242,11 +249,20 @@
     <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\TextUtils.h" />
-    <ClInclude Include="src\ui\Control.h" />
-    <ClInclude Include="src\ui\Gui.h" />
-    <ClInclude Include="src\ui\GuiRenderStep.h" />
-    <ClInclude Include="src\ui\ImageView.h" />
-    <ClInclude Include="src\ui\Layout.h" />
+    <ClInclude Include="src\ui\control\Border.h" />
+    <ClInclude Include="src\ui\Canvas.h" />
+    <ClInclude Include="src\ui\ChildrenList.h" />
+    <ClInclude Include="src\ui\control\Column.h" />
+    <ClInclude Include="src\ui\control\Control.h" />
+    <ClInclude Include="src\ui\control\ControlContainer.h" />
+    <ClInclude Include="src\ui\control\Row.h" />
+    <ClInclude Include="src\ui\control\Space.h" />
+    <ClInclude Include="src\ui\control\TextView.h" />
+    <ClInclude Include="src\ui\Drawable.h" />
+    <ClInclude Include="src\ui\Font.h" />
+    <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
+    <ClInclude Include="src\ui\control\ImageView.h" />
+    <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\core\io\File.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
@@ -254,7 +270,7 @@
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\core\collection\Collection.h" />
     <ClInclude Include="src\Ghurund.h" />
-    <ClInclude Include="src\application\Logger.h" />
+    <ClInclude Include="src\application\log\Logger.h" />
     <ClInclude Include="src\net\ClientThread.h" />
     <ClInclude Include="src\net\ConnectionState.h" />
     <ClInclude Include="src\net\Message.h" />
@@ -266,7 +282,15 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\TextBox.h" />
+    <ClInclude Include="src\ui\gdi\GdiFont.h" />
+    <ClInclude Include="src\ui\gdi\GdiGui.h" />
+    <ClInclude Include="src\ui\Gui.h" />
+    <ClInclude Include="src\ui\LayoutSize.h" />
+    <ClInclude Include="src\ui\control\Stack.h" />
+    <ClInclude Include="src\ui\Paint.h" />
+    <ClInclude Include="src\ui\RootView.h" />
+    <ClInclude Include="src\ui\control\Button.h" />
+    <ClInclude Include="src\ui\widget\TextBorderButton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
@@ -356,6 +380,7 @@
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

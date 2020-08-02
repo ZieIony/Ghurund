@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "core/Object.h"
 
 #pragma warning(push, 0)

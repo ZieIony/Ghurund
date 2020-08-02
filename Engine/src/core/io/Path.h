@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund {
 

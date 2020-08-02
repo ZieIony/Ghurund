@@ -15,30 +15,6 @@ namespace Ghurund {
             str[i] = (tchar)_toupper(str[i]);
     }
 
-
-    inline bool printToBuffer(tchar **buffer, const tchar *format, va_list args) {
-        unsigned long result = _vsctprintf(format, args);
-        if(result == -1) {
-            return false;
-        }
-
-        unsigned long length = result + 1;
-        *buffer = new tchar[length];
-
-        _vstprintf_s(*buffer, length, format, args);
-
-        return true;
-    }
-
-    inline bool printToBuffer(tchar **buffer, const tchar *format, ...) {
-        va_list args;
-        va_start(args, format);
-
-        bool result = printToBuffer(buffer, format, args);
-        va_end(args);
-        return result;
-    }
-
     inline void safeCopyStr(char **dest, const char *src) {
         if(src) {
             if(*dest)

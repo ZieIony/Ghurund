@@ -2,7 +2,7 @@
 
 namespace Ghurund {
     Status ConeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
-        detail = max<unsigned int>(detail, 3);
+        detail = std::max<unsigned int>(detail, 3);
 
         List<Vertex> triangleVertices;
         triangleVertices.add({{0.0f,  0.0f, 0.0f},{0,0}});

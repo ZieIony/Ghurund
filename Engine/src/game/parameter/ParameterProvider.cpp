@@ -4,6 +4,7 @@
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "graphics/texture/Texture.h"
+#include "application/log/Formatter.h"
 
 namespace Ghurund {
     Status ParameterProvider::loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -13,7 +14,7 @@ namespace Ghurund {
             Parameter* p = getParameter(name);
 
             if (!p) {
-                Logger::log(LogType::ERR0R, _T("parameter %hs not found while loading\n"), name);
+                Logger::log(LogType::ERR0R, _T("parameter {} not found while loading\n"), name);
                 return Status::UNKNOWN;
             }
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {

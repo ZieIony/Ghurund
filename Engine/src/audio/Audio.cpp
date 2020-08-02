@@ -1,5 +1,6 @@
 #include "Audio.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
+#include "application/log/Formatter.h"
 
 namespace Ghurund {
     Status Audio::init() {

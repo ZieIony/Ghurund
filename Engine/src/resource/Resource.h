@@ -9,8 +9,6 @@
 #include "core/io/MemoryStream.h"
 
 namespace Ghurund {
-    using namespace std;
-
     enum class LoadOption {
         DEFAULT = 0, DONT_WATCH = 1
     };

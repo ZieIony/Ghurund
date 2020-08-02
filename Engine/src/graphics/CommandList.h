@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Fence.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "Graphics.h"
 #include "core/NamedObject.h"
 #include "core/collection/PointerList.h"

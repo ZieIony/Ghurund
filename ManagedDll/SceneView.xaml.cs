@@ -32,15 +32,11 @@ namespace Ghurund.Managed {
         private bool pressed = false;
         private float dist = 0;
 
-        private RenderStep editorStep;
         private Scene editorScene;
         private Material invalidMaterial;
 
-        private RenderStep selectionStep;
         private Scene selectionScene;
         private Material outlineMaterial;
-
-        private RenderStep sceneStep;
 
         public MouseSceneTool Tool { get; set; }
 
@@ -61,33 +57,33 @@ namespace Ghurund.Managed {
                 switch (cameraMode) {
                     case CameraMode.Default:
                         renderView.Camera = defaultCamera;
-                        sceneStep.Camera = defaultCamera;
-                        selectionStep.Camera = defaultCamera;
-                        editorStep.Camera = defaultCamera;
+                        scene.Camera = defaultCamera;
+                        selectionScene.Camera = defaultCamera;
+                        editorScene.Camera = defaultCamera;
                         break;
                     case CameraMode.Front:
                         renderView.Camera = frontCamera;
-                        sceneStep.Camera = frontCamera;
-                        selectionStep.Camera = frontCamera;
-                        editorStep.Camera = frontCamera;
+                        scene.Camera = frontCamera;
+                        selectionScene.Camera = frontCamera;
+                        editorScene.Camera = frontCamera;
                         break;
                     case CameraMode.Side:
                         renderView.Camera = sideCamera;
-                        sceneStep.Camera = sideCamera;
-                        selectionStep.Camera = sideCamera;
-                        editorStep.Camera = sideCamera;
+                        scene.Camera = sideCamera;
+                        selectionScene.Camera = sideCamera;
+                        editorScene.Camera = sideCamera;
                         break;
                     case CameraMode.Top:
                         renderView.Camera = topCamera;
-                        sceneStep.Camera = topCamera;
-                        selectionStep.Camera = topCamera;
-                        editorStep.Camera = topCamera;
+                        scene.Camera = topCamera;
+                        selectionScene.Camera = topCamera;
+                        editorScene.Camera = topCamera;
                         break;
                     case CameraMode.Custom:
                         renderView.Camera = customCamera;
-                        sceneStep.Camera = customCamera;
-                        selectionStep.Camera = customCamera;
-                        editorStep.Camera = customCamera;
+                        scene.Camera = customCamera;
+                        selectionScene.Camera = customCamera;
+                        editorScene.Camera = customCamera;
                         break;
                 }
             }
@@ -97,7 +93,7 @@ namespace Ghurund.Managed {
         public Scene Scene {
             get => scene;
             set {
-                sceneStep.Entities.Clear();
+                scene.Entities.Clear();
                 value?.AddReference();
                 if (scene != null) {
                     removeListeners(new System.Collections.Generic.List<Entity>() { scene });
@@ -105,7 +101,7 @@ namespace Ghurund.Managed {
                 }
                 scene = value;
                 if (scene != null) {
-                    sceneStep.Entities.Add(scene);
+                    scene.Entities.Add(scene);
                     addListeners(new System.Collections.Generic.List<Entity>() { scene });
                 }
             }
@@ -169,7 +165,7 @@ namespace Ghurund.Managed {
                 value?.AddReference();
                 overrideMaterial?.Release();
                 overrideMaterial = value;
-                sceneStep.OverrideMaterial = overrideMaterial;
+                scene.OverrideMaterial = overrideMaterial;
             }
         }
 
@@ -340,7 +336,7 @@ namespace Ghurund.Managed {
         }
 
         private void renderView_MouseUp(object sender, System.Windows.Forms.MouseEventArgs e) {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left) {
+            /*if (e.Button == System.Windows.Forms.MouseButtons.Left) {
                 pressed = false;
                 if (dist < SystemParameters.MinimumHorizontalDragDistance && dist < SystemParameters.MinimumVerticalDragDistance) {
                     if (!(Tool?.OnClick() ?? false)) {
@@ -356,7 +352,7 @@ namespace Ghurund.Managed {
                     }
                     Invalidate();
                 }
-            }
+            }*/
         }
 
     }

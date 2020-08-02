@@ -1,6 +1,8 @@
 #include "CameraController.h"
 
 namespace Ghurund {
+	using namespace std;
+
 	CameraController::CameraController(Camera& camera, Window* window) :camera(camera) {
 		modeMap.set(MouseButton::LEFT, Mode::ORBIT);
 		modeMap.set(MouseButton::MIDDLE, Mode::PAN);
@@ -17,7 +19,7 @@ namespace Ghurund {
 		this->window = window;
 	}
 
-	bool CameraController::onMouseButtonEvent(MouseButtonEventArgs& event) {
+	bool CameraController::onMouseButtonEvent(const MouseButtonEventArgs& event) {
 		if (event.Action == MouseAction::DOWN) {
 			pressed = true;
 			pressedButton = event.Button;
@@ -33,7 +35,7 @@ namespace Ghurund {
 		return false;
 	}
 
-	bool CameraController::onMouseMouseMotionEvent(MouseMotionEventArgs& event) {
+	bool CameraController::onMouseMotionEvent(const MouseMotionEventArgs& event) {
 		if (pressed) {
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
@@ -53,7 +55,7 @@ namespace Ghurund {
 		return pressed;
 	}
 
-	bool CameraController::onMouseWheelEvent(MouseWheelEventArgs& event) {
+	bool CameraController::onMouseWheelEvent(const MouseWheelEventArgs& event) {
 		if (camera.getDistance() > event.Delta) {
 			camera.zoom((float)event.Delta);
 		} else {

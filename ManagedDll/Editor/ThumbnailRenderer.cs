@@ -26,11 +26,11 @@ namespace Ghurund.Managed.Editor {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern IntPtr ThumbnailRenderer_renderEntity(IntPtr _this,
-            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Entity entity);
+        private static extern IntPtr ThumbnailRenderer_renderDrawableComponent(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] DrawableComponent drawableComponent);
 
-        public Image Render(Entity entity) {
-            return new Image(ThumbnailRenderer_renderEntity(NativePtr, entity));
+        public Image Render(DrawableComponent drawableComponent) {
+            return new Image(ThumbnailRenderer_renderDrawableComponent(NativePtr, drawableComponent));
         }
 
 

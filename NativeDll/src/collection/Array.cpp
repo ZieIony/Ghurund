@@ -1,4 +1,4 @@
-#include "collection/Array.h"
+#include "core/collection/Array.h"
 
 using namespace Ghurund;
 

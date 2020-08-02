@@ -2,7 +2,7 @@
 
 #include "graphics/Graphics.h"
 #include "graphics/Fence.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "Image.h"
 
 namespace Ghurund {

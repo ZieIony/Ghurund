@@ -2,7 +2,6 @@
 
 #include "Settings.h"
 #include "Window.h"
-#include "WindowProc.h"
 #include "Timer.h"
 
 #include "audio/Audio.h"
@@ -28,7 +27,6 @@ namespace Ghurund {
         static const unsigned int FRAME_COUNT = 3;
 
         Window window;
-        WindowProc* windowProc;
 
         Client* client;
         Settings settings;
@@ -56,7 +54,7 @@ namespace Ghurund {
 
         void messageLoop();
 
-        bool handleMessage(SystemMessage& message);
+      //  bool handleMessage(SystemMessage& message);
 
     protected:
         virtual void onInit() {};
@@ -85,20 +83,6 @@ namespace Ghurund {
                 currentFrame->server(socket, buffer, size);
         };*/
 
-        virtual void onWindowCreated() {}
-
-        virtual void onWindowDestroy() {}
-
-        virtual bool onMessage(SystemMessage& message) {
-            return false;
-        }
-
-        virtual void onSizeChanged() {
-            Window.updateSize();
-            swapChain->resize(Window.Width, Window.Height);
-            Window.updateParameters();
-        }
-
 
     public:
 
@@ -106,7 +90,7 @@ namespace Ghurund {
 
         virtual ~Application() {}
 
-        void run(const Settings* val = nullptr, WindowProc* proc = nullptr);
+        void run(const Settings* val = nullptr);
 
         inline void quit() {
             PostQuitMessage(0);

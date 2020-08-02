@@ -10,7 +10,7 @@
 #include "core/collection/List.h"
 #include "core/string/String.h"
 #include "core/Object.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 #include <wrl.h>
 

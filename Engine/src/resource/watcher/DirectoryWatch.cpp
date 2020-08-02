@@ -1,5 +1,5 @@
 #include "DirectoryWatch.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund {
     void DirectoryWatch::fileChanged(Buffer& buffer) {

@@ -10,9 +10,9 @@ extern "C" __declspec(dllexport) void ThumbnailRenderer_init(ThumbnailRenderer* 
     _this->init(*resourceContext, width, height);
 }
 
-extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderEntity(ThumbnailRenderer* _this, Entity* entity) {
+extern "C" __declspec(dllexport) Image* ThumbnailRenderer_renderDrawableComponent(ThumbnailRenderer* _this, DrawableComponent* drawableComponent) {
     Image* image;
-    _this->render(*entity, image);
+    _this->render(*drawableComponent, image);
     return image;
 }
 

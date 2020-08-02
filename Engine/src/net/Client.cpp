@@ -1,5 +1,5 @@
 #include "Client.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund {
     Client::Client(FunctionQueue& functionQueue):connectionState(ConnectionState::NOT_CONNECTED, &functionQueue), functionQueue(functionQueue) {
@@ -50,7 +50,7 @@ namespace Ghurund {
             int error = WSAGetLastError();
             WSACleanup();  // unload WinSock
             connectionState.setState(ConnectionState::NOT_CONNECTED);
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket, error: %i\n"), error);
+            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket, error: {:d}\n"), error);
         }
 
         // https://stackoverflow.com/questions/34242622/windows-udp-sockets-recvfrom-fails-with-error-10054

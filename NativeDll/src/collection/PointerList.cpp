@@ -1,4 +1,4 @@
-#include "collection/PointerList.h"
+#include "core/collection/PointerList.h"
 
 using namespace Ghurund;
 

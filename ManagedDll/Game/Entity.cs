@@ -177,8 +177,6 @@ namespace Ghurund.Managed.Game {
                     return new Camera(ptr);
                 case "light":
                     return new Light(ptr);
-                case "model":
-                    return new Model(ptr);
                 case "scene":
                     return new Scene(ptr);
             }

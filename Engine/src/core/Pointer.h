@@ -1,9 +1,11 @@
 #pragma once
 
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 #include "Object.h"
 #include "core/threading/CriticalSection.h"
 #include "core/reflection/Type.h"
+
+#include <typeinfo>
 
 namespace Ghurund {
 
@@ -32,8 +34,10 @@ namespace Ghurund {
 
         inline void release() {
 #ifdef _DEBUG
-            if(referenceCount==0)
-                Logger::log(LogType::WARNING, _T("[%p] %hs release refCount=%lu. The object may have been deleted or is being released in its destructor\n"), this, typeid(*this).name(), referenceCount);
+            if (referenceCount == 0) {
+                const auto& info = typeid(*this);
+                Logger::log(LogType::WARNING, _T("[{}] {} release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, info.name(), referenceCount);
+            }
 #endif
             referenceCount--;
             if(!referenceCount)

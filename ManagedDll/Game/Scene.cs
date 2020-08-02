@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using Ghurund.Managed.Collection;
+using Ghurund.Managed.Graphics;
 using Ghurund.Managed.Resource;
 
 namespace Ghurund.Managed.Game {
@@ -25,8 +26,24 @@ namespace Ghurund.Managed.Game {
         private static extern IntPtr Scene_getEntities(IntPtr _this);
 
         [Browsable(false)]
-        public EntityList Entities {
+        public EntityList Entities
+        {
             get; internal set;
+        }
+
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        [return: MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))]
+        private static extern Camera Scene_getCamera(IntPtr _this);
+
+        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Scene_setCamera(IntPtr _this,
+            [MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(NativeClassMarshaler))] Camera camera);
+
+        [Browsable(false)]
+        public Camera Camera
+        {
+            get => Scene_getCamera(NativePtr); set => Scene_setCamera(NativePtr, value);
         }
 
 

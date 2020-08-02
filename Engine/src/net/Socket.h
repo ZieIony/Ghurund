@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 #include "winsock2.h"
 #include "ws2tcpip.h"

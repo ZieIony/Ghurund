@@ -15,7 +15,7 @@ extern "C" __declspec(dllexport) void ParameterProvider_updateParameters(Paramet
     _this->updateParameters();
 }
 
-extern "C" __declspec(dllexport) const BaseType* Entity_getType(Entity* _this) {
+extern "C" __declspec(dllexport) const Type* Entity_getType(Entity* _this) {
     return &(_this->Type);
 }
 

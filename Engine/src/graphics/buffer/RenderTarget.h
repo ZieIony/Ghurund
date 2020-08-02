@@ -11,8 +11,6 @@
 #include <wrl.h>
 
 namespace Ghurund {
-    using namespace std;
-
     class RenderTarget: public NamedObject<String> {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;

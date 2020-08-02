@@ -26,12 +26,27 @@ namespace Ghurund {
             this->time = time;
         }
 
+        inline time_t getTime() const {
+            return time;
+        }
+
+        __declspec(property(get = getTime)) time_t Time;
+
         virtual ~EventArgs() = 0 {}
     };
 
     class MouseEventArgs :public EventArgs {
+    private:
+        XMINT2 position;
+
     public:
-        MouseEventArgs(time_t time):EventArgs(time) {}
+        MouseEventArgs(const XMINT2& pos, time_t time):EventArgs(time), position(pos) {}
+
+        const XMINT2& getPosition() const {
+            return position;
+        }
+
+        __declspec(property(get = getPosition)) XMINT2& Position;
     };
 
     class MouseButtonEventArgs :public MouseEventArgs {
@@ -40,18 +55,18 @@ namespace Ghurund {
         MouseButton button;
 
     public:
-        MouseButtonEventArgs(MouseAction action, MouseButton button, time_t time):MouseEventArgs(time) {
+        MouseButtonEventArgs(const XMINT2& pos, MouseAction action, MouseButton button, time_t time):MouseEventArgs(pos, time) {
             this->action = action;
             this->button = button;
         }
 
-        MouseAction getAction() {
+        MouseAction getAction() const {
             return action;
         }
 
         __declspec(property(get = getAction)) MouseAction Action;
 
-        MouseButton getButton() {
+        MouseButton getButton() const {
             return button;
         }
 
@@ -63,7 +78,7 @@ namespace Ghurund {
         XMINT2 delta;
 
     public:
-        MouseMotionEventArgs(XMINT2 &delta, time_t time):MouseEventArgs(time) {
+        MouseMotionEventArgs(const XMINT2& pos, XMINT2 &delta, time_t time):MouseEventArgs(pos, time) {
             this->delta = delta;
         }
 
@@ -80,18 +95,18 @@ namespace Ghurund {
         int delta;
 
     public:
-        MouseWheelEventArgs(MouseWheel wheel, int delta, time_t time):MouseEventArgs(time) {
+        MouseWheelEventArgs(const XMINT2& pos, MouseWheel wheel, int delta, time_t time):MouseEventArgs(pos, time) {
             this->wheel = wheel;
             this->delta = delta;
         }
 
-        MouseWheel getWheel() {
+        MouseWheel getWheel() const {
             return wheel;
         }
 
         __declspec(property(get = getWheel)) MouseWheel Wheel;
 
-        int getDelta() {
+        int getDelta() const {
             return delta;
         }
 

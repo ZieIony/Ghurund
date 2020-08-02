@@ -1,5 +1,5 @@
-#include "game/entity/Scene.h"
-#include "game/entity/Scenes.h"
+#include "graphics/entity/Scene.h"
+#include "graphics/entity/Scenes.h"
 
 using namespace Ghurund;
 
@@ -7,7 +7,7 @@ extern "C" __declspec(dllexport) Scene *Scene_new() {
     return new Scene();
 }
 
-extern "C" __declspec(dllexport) EntityList *Scene_getEntities(Scene *_this) {
+extern "C" __declspec(dllexport) PointerList<Entity*>* Scene_getEntities(Scene *_this) {
     return &_this->getEntities();
 }
 

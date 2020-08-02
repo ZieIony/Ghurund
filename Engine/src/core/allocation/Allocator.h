@@ -2,7 +2,7 @@
 
 #include "core/Buffer.h"
 #include "core/collection/List.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund {
     typedef UINT64 memory_t;

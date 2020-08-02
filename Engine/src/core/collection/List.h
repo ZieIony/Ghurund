@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Collection.h"
+
 #include <functional>
 #include <cassert>
 

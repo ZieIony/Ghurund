@@ -6,19 +6,19 @@
 #include "Keyboard.h"
 #include "Windowsx.h"
 #include "EventConsumer.h"
-#include "application/WindowProc.h"
+#include "application/Window.h"
 
 namespace Ghurund {
     class Input {
     private:
-        List<SystemMessage> messages;
+        List<WindowMessage> messages;
         XMINT2 mousePos;
         bool keys[256];
 
-        bool dispatchEvent(const SystemMessage& message, EventDispatcher& consumer);
+        bool dispatchEvent(const WindowMessage& message, EventDispatcher& consumer);
 
     public:
-        void dispatchMessage(SystemMessage &message) {
+        void dispatchMessage(WindowMessage &message) {
             messages.add(message);
         }
 

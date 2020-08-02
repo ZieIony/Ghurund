@@ -1,8 +1,8 @@
 #include "resource/ResourceManager.h"
-#include "game/entity/Model.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/texture/Image.h"
 #include "graphics/texture/Texture.h"
+#include "graphics/mesh/Mesh.h"
 
 using namespace Ghurund;
 
@@ -26,6 +26,6 @@ extern "C" __declspec(dllexport) void ResourceManager_loadTexture(ResourceManage
     load<Texture>(_this, *context, fileName, loadCallback);
 }
 
-extern "C" __declspec(dllexport) void ResourceManager_loadModel(ResourceManager *_this, ResourceContext *context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
-    load<Model>(_this, *context, fileName, loadCallback);
+extern "C" __declspec(dllexport) void ResourceManager_loadMesh(ResourceManager *_this, ResourceContext *context, const tchar *fileName, void(__stdcall *loadCallback)(Status status)) {
+    load<Mesh>(_this, *context, fileName, loadCallback);
 }

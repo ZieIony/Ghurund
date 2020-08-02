@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Path.h"
-#include "application/Logger.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund {
 
@@ -11,7 +11,7 @@ namespace Ghurund {
             DWORD attributes = GetFileAttributesW(path);
 
             if (attributes != INVALID_FILE_ATTRIBUTES && !(attributes & FILE_ATTRIBUTE_DIRECTORY))
-                Logger::log(LogType::ERR0R, _T("invalid directory path %s\n"), String(path).getData());
+                Logger::log(LogType::ERR0R, _T("invalid directory path {}\n"), String(path.getData()));
 
             if (!path.endsWith(L"/") && !path.endsWith(L"\\"))
                 this->path.add(L'\\');

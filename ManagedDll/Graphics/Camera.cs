@@ -18,14 +18,6 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern Float3 Camera_getPosition(IntPtr _this);
-
-        public Float3 Position {
-            get => Camera_getPosition(NativePtr);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern Float3 Camera_getTarget(IntPtr _this);
 
         public Float3 Target {
@@ -66,26 +58,10 @@ namespace Ghurund.Managed.Graphics {
 
 
         [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_setPositionDirectionUp(IntPtr _this, Float3 pos, Float3 dir, Float3 up);
+        private static extern void Camera_setPositionDirectionDistanceUp(IntPtr _this, Float3 pos, Float3 dir, float dist, Float3 up);
 
-        public void SetPositionDirectionUp(Float3 pos, Float3 dir, Float3 up) {
-            Camera_setPositionDirectionUp(NativePtr, pos, dir, up);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_setPositionDistanceRotation(IntPtr _this, Float3 pos, float dist, float yaw, float pitch, float roll);
-
-        public void SetPositionDistanceRotation(Float3 pos, float dist, float yaw, float pitch, float roll = 0.0f) {
-            Camera_setPositionDistanceRotation(NativePtr, pos, dist, yaw, pitch, roll);
-        }
-
-
-        [DllImport(@"NativeDll.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Camera_setTargetDistanceOrbit(IntPtr _this, Float3 target, float dist, float yaw, float pitch, float roll);
-
-        public void SetTargetDistanceOrbit(Float3 target, float dist, float yaw, float pitch, float roll = 0.0f) {
-            Camera_setTargetDistanceOrbit(NativePtr, target, dist, yaw, pitch, roll);
+        public void SetPositionDirectionDistanceUp(Float3 pos, Float3 dir, float dist, Float3 up) {
+            Camera_setPositionDirectionDistanceUp(NativePtr, pos, dir, dist, up);
         }
 
 
