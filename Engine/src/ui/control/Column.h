@@ -1,61 +1,48 @@
 #pragma once
 
 #include "ControlGroup.h"
+#include "ui/layout/LayoutInflater.h"
+#include "ui/Gravity.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class Column :public ControlGroup {
+    private:
+        inline static const char* CLASS_NAME = GH_STRINGIFY(Column);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Column>();
+
+        Gravity gravity;
+        float contentHeight = 0.0f;
+        unsigned int spreadCount;
+
     public:
-        HorizontalGravity horizontalGravity = HorizontalGravity::LEFT;
-
-        virtual void measure() {
-            for (Control* c : Children)
-                c->measure();
-
-            if (desiredSize.x == LayoutSize::WRAP_CONTENT) {
-                measuredSize.x = 0;
-                for (Control* c : Children) {
-                    if (c->DesiredSize.x != LayoutSize::MATCH_PARENT)
-                        measuredSize.x = std::max(measuredSize.x, c->MeasuredSize.x);
-                }
-            } else if (desiredSize.x == LayoutSize::MATCH_PARENT) {
-                measuredSize.x = MAX_SIZE;
-            } else {
-                measuredSize.x = desiredSize.x;
-            }
-
-            if (desiredSize.y == LayoutSize::WRAP_CONTENT) {
-                measuredSize.y = 0;
-                for (Control* c : Children) {
-                    if (c->DesiredSize.y != LayoutSize::MATCH_PARENT)
-                        measuredSize.y += c->MeasuredSize.y;
-                }
-            } else if (desiredSize.y == LayoutSize::MATCH_PARENT) {
-                measuredSize.y = MAX_SIZE;
-            } else {
-                measuredSize.y = desiredSize.y;
-            }
+        inline Gravity& getGravity() {
+            return gravity;
         }
 
-        virtual void layout(float x, float y, float width, float height) override {
-            __super::layout(x, y, width, height);
+        inline void setGravity(const Gravity& gravity) {
+            this->gravity = gravity;
+        }
 
-            float currentY = 0.0f;
-            for (Control* c : Children) {
-                float w = std::min(c->MeasuredSize.x, width);
-                float h = std::min(c->MeasuredSize.y, height);
+        __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
 
-                float itx;
-                if (horizontalGravity == HorizontalGravity::LEFT) {
-                    itx = 0;
-                } else if (horizontalGravity == HorizontalGravity::RIGHT) {
-                    itx = width - w;
-                } else {
-                    itx = (width - w) / 2;
-                }
+        virtual void measure();
 
-                c->layout(itx, currentY, w, h);
-                currentY += c->Size.y;
-            }
+        virtual void layout(float x, float y, float width, float height) override;
+
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Column>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(ControlGroup::TYPE);
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+
+        inline static Column* inflate(LayoutInflater& inflater, json& json) {
+            Column* column = ghnew Column();
+            inflater.loadChildren(column, json);
+            inflater.loadControl(column, json);
+            inflater.loadGravity(column, json);
+            return column;
         }
     };
 }

@@ -86,10 +86,17 @@
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\ui\control\Control.cpp" />
+    <ClCompile Include="src\ui\control\Column.cpp" />
+    <ClCompile Include="src\ui\control\ControlContainer.cpp" />
+    <ClCompile Include="src\ui\control\ImageView.cpp" />
+    <ClCompile Include="src\ui\control\Padding.cpp" />
+    <ClCompile Include="src\ui\control\Row.cpp" />
+    <ClCompile Include="src\ui\control\Stack.cpp" />
     <ClCompile Include="src\ui\control\TextView.cpp" />
     <ClCompile Include="src\ui\gdi\GdiCanvas.cpp" />
     <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
+    <ClCompile Include="src\ui\PreferredSize.cpp" />
+    <ClCompile Include="src\ui\layout\LayoutInflater.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
@@ -252,14 +259,18 @@
     <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\ChildrenList.h" />
+    <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\Column.h" />
     <ClInclude Include="src\ui\control\Control.h" />
     <ClInclude Include="src\ui\control\ControlContainer.h" />
+    <ClInclude Include="src\ui\control\ItemAdapter.h" />
+    <ClInclude Include="src\ui\control\ListView.h" />
+    <ClInclude Include="src\ui\control\Padding.h" />
     <ClInclude Include="src\ui\control\Row.h" />
+    <ClInclude Include="src\ui\control\ScrollView.h" />
     <ClInclude Include="src\ui\control\Space.h" />
+    <ClInclude Include="src\ui\control\Surface.h" />
     <ClInclude Include="src\ui\control\TextView.h" />
-    <ClInclude Include="src\ui\Drawable.h" />
-    <ClInclude Include="src\ui\Font.h" />
     <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\control\ControlGroup.h" />
@@ -284,13 +295,19 @@
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
     <ClInclude Include="src\ui\gdi\GdiFont.h" />
     <ClInclude Include="src\ui\gdi\GdiGui.h" />
+    <ClInclude Include="src\ui\gdi\GdiPath.h" />
+    <ClInclude Include="src\ui\Gravity.h" />
     <ClInclude Include="src\ui\Gui.h" />
-    <ClInclude Include="src\ui\LayoutSize.h" />
+    <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\control\Stack.h" />
+    <ClInclude Include="src\ui\layout\LayoutInflater.h" />
     <ClInclude Include="src\ui\Paint.h" />
+    <ClInclude Include="src\ui\Property.h" />
     <ClInclude Include="src\ui\RootView.h" />
-    <ClInclude Include="src\ui\control\Button.h" />
-    <ClInclude Include="src\ui\widget\TextBorderButton.h" />
+    <ClInclude Include="src\ui\control\ClickableView.h" />
+    <ClInclude Include="src\ui\widget\Button.h" />
+    <ClInclude Include="src\ui\widget\TextButton.h" />
+    <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

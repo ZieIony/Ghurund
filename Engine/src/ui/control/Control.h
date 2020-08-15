@@ -5,9 +5,9 @@
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "ui/Canvas.h"
-#include "ui/LayoutSize.h"
+#include "ui/PreferredSize.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class Control: public Pointer, public EventConsumer {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Control);
@@ -16,18 +16,32 @@ namespace Ghurund {
         Control* parent = nullptr;
         XMFLOAT2 position = { 0,0 };
         XMFLOAT2 minSize = { 0,0 };
-        XMFLOAT2 desiredSize = { LayoutSize::WRAP_CONTENT,LayoutSize::WRAP_CONTENT };   // what the user wants
-        XMFLOAT2 measuredSize = { 0,0 };  // what the view wants
-        XMFLOAT2 size = { 0,0 };  // what was finally mediated
+        PreferredSize preferredSize;   // what the user wants
+        XMFLOAT2 measuredSize;  // what the view wants
+        XMFLOAT2 size = { 0, 0 };  // what was finally mediated
         Paint paint;
 
         bool visible = true;
         bool enabled = true;
         Event<Control> onStateChanged;
 
-        static inline const float MAX_SIZE = 32768.0f;
+        tchar* name = nullptr;
 
     public:
+        ~Control() {
+            delete[] name;
+        }
+
+        inline const tchar* getName() const {
+            return name;
+        }
+
+        inline void setName(const tchar* name) {
+            safeCopyStr(&this->name, name);
+        }
+
+        __declspec(property(get = getName, put = setName)) tchar* Name;
+
         inline bool isVisible() const {
             return visible;
         }
@@ -84,20 +98,20 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) XMFLOAT2& Size;
 
-        inline XMFLOAT2& getDesiredSize() {
-            return desiredSize;
+        inline PreferredSize& getPreferredSize() {
+            return preferredSize;
         }
 
-        inline void setDesiredSize(XMFLOAT2& size) {
-            this->desiredSize = size;
+        inline void setPreferredSize(PreferredSize& size) {
+            this->preferredSize = size;
         }
 
-        virtual void setDesiredSize(float width, float height) {
-            desiredSize.x = width;
-            desiredSize.y = height;
+        virtual void setPreferredSize(const PreferredSize::Width& width, const PreferredSize::Height& height) {
+            preferredSize.width = width;
+            preferredSize.height = height;
         }
 
-        __declspec(property(get = getDesiredSize, put = setDesiredSize)) XMFLOAT2& DesiredSize;
+        __declspec(property(get = getPreferredSize, put = setPreferredSize)) PreferredSize& PreferredSize;
 
         inline const XMFLOAT2& getMeasuredSize() const {
             return measuredSize;
@@ -121,9 +135,33 @@ namespace Ghurund {
 
         __declspec(property(get = getParent, put = setParent)) Control* Parent;
 
-        virtual void measure();
+        virtual void repaint() {
+            if (parent)
+                parent->repaint();
+        }
+
+        virtual void invalidate() {
+            if (parent)
+                parent->invalidate();
+        }
+
+        virtual void measure() {
+            if (preferredSize.width == PreferredSize::Width::WRAP) {
+                measuredSize.x = minSize.x;
+            } else if (preferredSize.width != PreferredSize::Width::FILL) {
+                measuredSize.x = (float)preferredSize.width;
+            }
+
+            if (preferredSize.height == PreferredSize::Height::WRAP) {
+                measuredSize.y = minSize.y;
+            } else if (preferredSize.height != PreferredSize::Height::FILL) {
+                measuredSize.y = (float)preferredSize.height;
+            }
+        }
 
         virtual void layout(float x, float y, float width, float height) {
+            //_ASSERT_EXPR(width > 0, "Invalid width.\n");
+            //_ASSERT_EXPR(height > 0, "Invalid height.\n");
             position.x = x;
             position.y = y;
             size.x = width;
@@ -131,6 +169,22 @@ namespace Ghurund {
         }
 
         virtual void draw(Canvas& canvas) = 0;
+
+        virtual Control* find(const String& name) {
+            if (this->name && name.operator==(this->name))
+                return this;
+            return nullptr;
+        }
+
+        virtual String save() const {
+            String str;
+            str = str + TYPE.Name + " {\n";
+            str = str + "preferredSize: {" + (float)(preferredSize.width) + ", " + (float)(preferredSize.height) + "}\n";
+            str = str + "measuredSize: {" + measuredSize.x + ", " + measuredSize.y + "}\n";
+            str = str + "size: {" + size.x + ", " + size.y + "}\n";
+            str = str + "}\n";
+            return str;
+        }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Control>(NAMESPACE_NAME, CLASS_NAME);
 

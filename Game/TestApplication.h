@@ -3,35 +3,44 @@
 #include "ui/gdi/GdiGui.h"
 #include "ui/control/stack.h"
 #include "ui/control/row.h"
-#include "ui/widget/TextBorderButton.h"
+#include "ui/widget/TextButton.h"
 #include "ui/control/Space.h"
+#include <ui\layout\LayoutInflater.h>
+#include "ui/RootView.h"
+#include "ui/control/ListView.h"
+#include "StringObject.h"
+
+#include "MaterialColors.h"
 
 class TestApplication:public Application {
 private:
     Level* testLevel = nullptr;
-    Stack *stack;
+    RootView* rootView;
     Row *row;
     Canvas* canvas;
     Space *space;
-    TextBorderButton*button, *button2;
+    TextButton *button, *button2;
     GdiGui gui;
 
+    List<StringObject*> items;
+    ListView<StringObject*>* listView;
+
     Font* font;
-    ButtonStyle* pressedStyle;
-    ButtonStyle* releasedStyle;
+    ::Material::Light* theme = ghnew ::Material::Light();
 
     std::function<void(Control&)> buttonStateHandler = [&](Control& control) {
-        TextBorderButton& button = (TextBorderButton&)control;
+        TextButton& button = (TextButton&)control;
         if (button.Pressed) {
-            button.setStyle(*pressedStyle);
+            button.setBackgroundColor(theme->color_primary_dark);
         } else {
-            button.setStyle(*releasedStyle);
+            button.setBackgroundColor(theme->color_primary);
         }
         Window.refresh();
     };
 
 public:
     void onInit() {
+
         /*testLevel = ghnew TestLevel(*this);
         LevelManager.setLevel(testLevel);
 
@@ -40,62 +49,102 @@ public:
         gui.init();
         canvas = gui.makeCanvas(Window.Handle);
 
-        font = ghnew GdiFont("Arial", 10);
-        pressedStyle = ghnew ButtonStyle(0xb1000000, 0xde000000, font, ghnew ColorDrawable(0x2f000000));
-        releasedStyle = ghnew ButtonStyle(0x61000000, 0xde000000, font, ghnew ColorDrawable(0x1f000000));
+        font = ghnew Font("Arial", 36);
 
-        button = ghnew TextBorderButton(*releasedStyle);
-        button->setDesiredSize(80, 28);
+        /*button = ghnew TextBorderButton(*releasedStyle);
+        button->setPreferredSize(80, 28);
         button->Text = "BUTTON";
         button->OnStateChanged.add(buttonStateHandler);
 
         space = ghnew Space();
-        space->DesiredSize = XMFLOAT2(8, LayoutSize::MATCH_PARENT);
+        space->PreferredSize = XMFLOAT2(8, MeasuredSize::FILL);
 
         button2 = ghnew TextBorderButton(*releasedStyle);
-        button2->setDesiredSize(LayoutSize::WRAP_CONTENT, LayoutSize::WRAP_CONTENT);
+        button2->setPreferredSize(MeasuredSize::WRAP, MeasuredSize::WRAP);
         button2->Text = "BUTTON 2";
         button2->OnStateChanged.add(buttonStateHandler);
 
         row = ghnew Row();
-        row->DesiredSize = XMFLOAT2(LayoutSize::WRAP_CONTENT, LayoutSize::WRAP_CONTENT);
+        row->PreferredSize = XMFLOAT2(MeasuredSize::WRAP, MeasuredSize::WRAP);
         row->Children.add({ button, space, button2 });
 
         stack = ghnew Stack();
         stack->Children.add(row);
-        stack->Gravity = { HorizontalGravity::CENTER, VerticalGravity::CENTER };
+        stack->Gravity = { Gravity::Horizontal::CENTER, Gravity::Vertical::CENTER };*/
 
+        LayoutInflater inflater;
+        rootView = ghnew RootView(Window);
+
+        /*File file(_T("D:/projekty/GhurundEngine12/test.layout"));
+        file.read();
+        ASCIIString jsonString((char*)file.Data, file.Size);*/
+
+        
+        Gdiplus::Image* image = Gdiplus::Image::FromFile(L"D:/dragon.png");
+        items.add(ghnew StringObject("Strawberry"));
+        items.add(ghnew StringObject("Melon"));
+        items.add(ghnew StringObject("Blueberry"));
+        items.add(ghnew StringObject("Watermelon"));
+        items.add(ghnew StringObject("Apple"));
+        items.add(ghnew StringObject("Pear"));
+        items.add(ghnew StringObject("Plum"));
+        items.add(ghnew StringObject("Orange"));
+        items.add(ghnew StringObject("Banana"));
+        items.add(ghnew StringObject("Beer"));
+        items.add(ghnew StringObject("Lemon"));
+        listView = ghnew ListView<StringObject*>();
+        listView->items = items;
+        listView->addAdapter(ghnew StringItemAdapter(font, theme, image));
+
+        ScopedPointer<Row> row = ghnew Row();
+        ScopedPointer<Stack> stack = ghnew Stack();
+        ScopedPointer<ImageView> iv = ghnew ImageView();
+        iv->PreferredSize.width = PreferredSize::Width(200);
+        iv->PreferredSize.height = PreferredSize::Height(200);
+        iv->Image = font->makeAtlas("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ ");
+        stack->Children.add(iv);
+        row->Children.add({ listView, stack });
+        rootView->Child = row;// inflater.load(jsonString);
+        
         Window.OnSizeChanged.add([this](Ghurund::Window& window) {
-            stack->measure();
-            stack->layout(0, 0, window.Size.x, window.Size.y);
+            rootView->measure();
+            rootView->layout(0, 0, window.Size.x, window.Size.y);
             Window.refresh();
         });
 
         Window.OnKeyEvent.add([this](Ghurund::Window& window, const KeyEventArgs& args) {
-            stack->dispatchKeyEvent(args);
+            rootView->dispatchKeyEvent(args);
         });
 
         Window.OnMouseButtonEvent.add([this](Ghurund::Window& window, const MouseButtonEventArgs& args) {
-            stack->dispatchMouseButtonEvent(args);
+            rootView->dispatchMouseButtonEvent(args);
         });
 
         Window.OnMouseMotionEvent.add([this](Ghurund::Window& window, const MouseMotionEventArgs& args) {
-            stack->dispatchMouseMotionEvent(args);
+            rootView->dispatchMouseMotionEvent(args);
         });
 
         Window.OnMouseWheelEvent.add([this](Ghurund::Window& window, const MouseWheelEventArgs& args) {
-            stack->dispatchMouseWheelEvent(args);
+            rootView->dispatchMouseWheelEvent(args);
         });
 
         Window.OnPaint.add([this](const Ghurund::Window &window) {
             canvas->beginPaint();
-            canvas->clear(0xffe0e0e0);
-            stack->draw(*canvas);
+            canvas->clear(theme->getColorBackground());
+            rootView->draw(*canvas);
             canvas->endPaint();
         });
     }
 
     void onUninit() {
+        items.deleteItems();
+        listView->release();
+        rootView->release();
+        font->release();
+        delete theme;
+        delete canvas;
+        rootView->release();
+
         gui.uninit();
         /*LevelManager.setLevel(nullptr);
         delete testLevel;*/

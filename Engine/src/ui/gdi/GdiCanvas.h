@@ -2,12 +2,13 @@
 
 #include "GdiFont.h"
 #include "ui/Canvas.h"
+#include "GdiPath.h"
 
 #include <uxtheme.h>
 
 #pragma comment (lib, "UxTheme.lib")
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class GdiCanvas : public Canvas {
     private:
         PAINTSTRUCT ps = {};
@@ -27,7 +28,7 @@ namespace Ghurund {
             brush = new Gdiplus::SolidBrush(Gdiplus::Color());
         }
 
-        ~GdiCanvas() {
+        virtual ~GdiCanvas() {
             BufferedPaintUnInit();
             delete pen;
             delete brush;
@@ -58,6 +59,7 @@ namespace Ghurund {
 
         void drawRect(float x, float y, float width, float height, const Paint& paint) {
             color.SetValue(paint.Color);
+            pen->SetWidth(paint.Thickness);
             pen->SetColor(color);
             graphics->DrawRectangle(pen, Gdiplus::RectF(x, y, width, height));
         }
@@ -68,15 +70,35 @@ namespace Ghurund {
             graphics->FillRectangle(brush, Gdiplus::RectF(x, y, width, height));
         }
 
+        virtual void drawPath(const GdiPath& path, const Paint& paint) {
+            color.SetValue(paint.Color);
+            pen->SetWidth(paint.Thickness);
+            pen->SetColor(color);
+            graphics->DrawPath(pen, path.path);
+        }
+
         void drawLine(float x1, float y1, float x2, float y2, const Paint& paint) {
             color.SetValue(paint.Color);
+            pen->SetWidth(paint.Thickness);
             pen->SetColor(color);
             Gdiplus::GraphicsPath path;
             path.AddLine(Gdiplus::PointF(x1, y1), Gdiplus::PointF(x2, y2));
             graphics->DrawPath(pen, &path);
         }
 
-        void drawText(const String& text, float x, float y, float width, float height, const Ghurund::Font& font, const Paint& paint);
+        void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint);
+
+        void drawText2(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) {
+            font.drawText(text, x, y, *this);
+        }
+
+        void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) {
+            graphics->DrawImage(&image, x, y, width, height);
+        }
+        
+        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src) {
+            graphics->DrawImage(&image, x, y, src.X, src.Y, src.Width, src.Height, Gdiplus::Unit::UnitPixel);
+        }
 
         void translate(float x, float y) {
             graphics->TranslateTransform(x, y);
@@ -90,6 +112,16 @@ namespace Ghurund {
             Gdiplus::GraphicsState state = states.get(states.Size - 1);
             graphics->Restore(state);
             states.removeAtKeepOrder(states.Size - 1);
+        }
+
+        void clipPath(const GdiPath& path) {
+            graphics->SetClip(path.path, Gdiplus::CombineModeReplace);
+        }
+
+        void clipRect(float x, float y, float width, float height) {
+            Gdiplus::GraphicsPath path;
+            path.AddRectangle(Gdiplus::RectF(x, y, width, height));
+            graphics->SetClip(&path, Gdiplus::CombineModeReplace);
         }
     };
 }

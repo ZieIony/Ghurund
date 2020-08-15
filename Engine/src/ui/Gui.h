@@ -2,11 +2,9 @@
 
 #include "Canvas.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     __interface Gui {
         void init();
         Canvas* makeCanvas(HWND handle);
-        Paint* makePaint();
-        Font* makeFont(const String& family, float size);
     };
 }

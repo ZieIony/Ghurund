@@ -1,46 +1,56 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Drawable.h"
+#include "ui/layout/LayoutInflater.h"
 
-namespace Ghurund {
-    class DrawableView: public Control {
+#include <algorithm>
+#include <objidl.h>
+#include <gdiplus.h>
+
+namespace Ghurund::UI {
+    class ImageView: public Control {
     private:
-        Drawable* drawable = nullptr;
+        inline static const char* CLASS_NAME = GH_STRINGIFY(ImageView);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ImageView>();
+        
+        Gdiplus::Image* image = nullptr;
 
     public:
-        DrawableView(Drawable* drawable = nullptr) {
-            if (drawable)
-                drawable->addReference();
-            this->drawable = drawable;
+        ImageView(Gdiplus::Image* image = nullptr) {
+            this->image = image;
         }
 
-        ~DrawableView() {
-            if(drawable)
-                drawable->release();
+        ~ImageView() {
+            delete image;
         }
 
-        inline void setDrawable(Drawable* drawable) {
-            setPointer(this->drawable, drawable);
-            if (drawable)
-                drawable->setSize(Size.x, Size.y);
+        inline void setImage(Gdiplus::Image* image) {
+            this->image = image;
         }
 
-        inline Drawable* getDrawable() {
-            return drawable;
+        inline Gdiplus::Image* getImage() {
+            return image;
         }
 
-        __declspec(property(get = getDrawable, put = setDrawable)) Drawable* Drawable;
+        __declspec(property(get = getImage, put = setImage)) Gdiplus::Image* Image;
 
-        virtual void layout(float x, float y, float width, float height) override {
-            __super::layout(x, y, width, height);
-            if (drawable)
-                drawable->setSize(width, height);
-        }
-
+        Paint paint;
         virtual void draw(Canvas& canvas) override {
-            if(drawable)
-                drawable->draw(canvas);
+            if (image) {
+                canvas.drawImage(*image, 0, 0, Size.x, Size.y);
+                paint.Color = 0xff00ff00;
+                canvas.drawRect(0, 0, Size.x, Size.y, paint);
+            }
         }
+
+        inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::TYPE);
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+
+        static ImageView* inflate(LayoutInflater& inflater, json& json);
     };
 }

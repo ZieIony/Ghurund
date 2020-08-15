@@ -5,16 +5,37 @@
 #include "input/Mouse.h"
 #include "ui/ChildrenList.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class ControlGroup:public Control {
     private:
         ChildrenList children;
         Control* capturedChild = nullptr;
 
+    protected:
+        void measureMaxWidth() {
+            if (preferredSize.width == PreferredSize::Width::WRAP) {
+                measuredSize.x = 0;
+                for (Control* c : Children)
+                    measuredSize.x = std::max(measuredSize.x, (float)c->MeasuredSize.x);
+            } else if (preferredSize.width != PreferredSize::Width::FILL) {
+                measuredSize.x = (float)preferredSize.width;
+            }
+        }
+
+        void measureMaxHeight() {
+            if (preferredSize.height == PreferredSize::Height::WRAP) {
+                measuredSize.y = 0;
+                for (Control* c : Children)
+                    measuredSize.y = std::max(measuredSize.y, (float)c->MeasuredSize.y);
+            } else if (preferredSize.height != PreferredSize::Height::FILL) {
+                measuredSize.y = (float)preferredSize.height;
+            }
+        }
+
     public:
         ControlGroup():children(*this) {
-            desiredSize.x = LayoutSize::MATCH_PARENT;
-            desiredSize.y = LayoutSize::MATCH_PARENT;
+            preferredSize.width = PreferredSize::Width::FILL;
+            preferredSize.height = PreferredSize::Height::FILL;
         }
 
         ChildrenList& getChildren() {
@@ -70,6 +91,17 @@ namespace Ghurund {
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
             return __super::dispatchMouseMotionEvent(event);
+        }
+
+        virtual Control* find(const String& name) {
+            if (this->name && name.operator==(this->name))
+                return this;
+            for (Control* c : children) {
+                Control* result = c->find(name);
+                if(result)
+                    return result;
+            }
+            return nullptr;
         }
     };
 }

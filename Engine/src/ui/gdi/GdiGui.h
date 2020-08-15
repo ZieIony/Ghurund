@@ -5,7 +5,7 @@
 
 #pragma comment (lib, "Gdiplus.lib")
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class GdiGui :public Gui {
     private:
         Gdiplus::GdiplusStartupInput gdiplusStartupInput;
@@ -22,14 +22,6 @@ namespace Ghurund {
 
         Canvas* makeCanvas(HWND handle) {
             return ghnew GdiCanvas(handle);
-        }
-
-        Paint* makePaint() {
-            return ghnew Paint();
-        }
-
-        Font* makeFont(const String& family, float size) {
-            return ghnew GdiFont(family, size);
         }
     };
 }

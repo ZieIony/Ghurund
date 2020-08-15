@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Font.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class Paint {
     private:
         unsigned int color = 0xffffffff;
+        float thickness = 1.0f;
 
     public:
         inline unsigned int getColor() const {
@@ -18,5 +18,16 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getColor, put = setColor)) unsigned int Color;
+
+        inline float getThickness() const {
+            return thickness;
+        }
+
+        inline void setThickness(float radius) {
+            this->thickness = thickness;
+        }
+
+        __declspec(property(get = getThickness, put = setThickness)) float Thickness;
+
     };
 }

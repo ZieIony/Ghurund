@@ -138,6 +138,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MaterialColors.h" />
+    <ClInclude Include="StringObject.h" />
     <ClInclude Include="TestApplication.h" />
     <ClInclude Include="TestLevel.h" />
   </ItemGroup>

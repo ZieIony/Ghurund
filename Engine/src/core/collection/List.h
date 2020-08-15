@@ -96,7 +96,7 @@ namespace Ghurund {
         }
 
         inline void insert(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (size == capacity)
                 resize(capacity + initial);
             v[size] = v[i];
@@ -119,25 +119,25 @@ namespace Ghurund {
         }
 
         inline void set(size_t i, const Value& e) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             v[i].~Value();
             new(v + i) Value(e);
         }
 
         inline Value& get(size_t i)const {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             return v[i];
         }
 
         inline void removeAt(size_t i) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             v[i] = std::move(v[size - 1]);
             v[size - 1].~Value();
             size--;
         }
 
         inline void removeAtKeepOrder(size_t i) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
                     v[j] = std::move(v[j + 1]);
@@ -148,7 +148,7 @@ namespace Ghurund {
 
         inline void remove(const Value& item) {
             size_t i = indexOf(item);
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             v[i] = std::move(v[size - 1]);
             v[size - 1].~Value();
             size--;
@@ -156,7 +156,7 @@ namespace Ghurund {
 
         inline void removeKeepOrder(const Value& item) {
             size_t i = indexOf(item);
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
                     v[j] = std::move(v[j + 1]);
@@ -195,8 +195,8 @@ namespace Ghurund {
             return false;
         }
 
-        inline const Value& operator[](size_t i)const {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+        inline Value& operator[](size_t i)const {
+            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             return v[i];
         }
 

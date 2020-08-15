@@ -78,7 +78,7 @@ namespace Ghurund {
         XMINT2 delta;
 
     public:
-        MouseMotionEventArgs(const XMINT2& pos, XMINT2 &delta, time_t time):MouseEventArgs(pos, time) {
+        MouseMotionEventArgs(const XMINT2& pos, const XMINT2 &delta, time_t time):MouseEventArgs(pos, time) {
             this->delta = delta;
         }
 

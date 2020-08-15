@@ -1,9 +1,10 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Font.h"
+#include "ui/gdi/GdiFont.h"
+#include "ui/layout/LayoutInflater.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     class TextView :public Control {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(TextView);
@@ -14,11 +15,19 @@ namespace Ghurund {
 
     public:
 
-        TextView(Font *font):font(font) {}
-        TextView(const String& text, Font* font):text(text), font(font) {}
+        TextView(Font *font) {
+            font->addReference();
+            this->font = font;
+            text = "text";
+        }
+
+        TextView(const String& text, Font* font):text(text) {
+            font->addReference();
+            this->font = font;
+        }
 
         ~TextView() {
-            delete font;
+            font->release();
         }
 
         const String& getText() const {
@@ -56,10 +65,12 @@ namespace Ghurund {
         virtual void draw(Canvas& canvas)override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(Control::TYPE);
+            .withSupertype(__super::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+
+        static TextView* inflate(LayoutInflater& inflater, json& json);
     };
 }
