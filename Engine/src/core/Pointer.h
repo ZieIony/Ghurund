@@ -9,10 +9,10 @@
 
 namespace Ghurund {
 
-    class Pointer: public Object {
+    class Pointer : public Object {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Pointer);
-  
+
         unsigned long referenceCount;
 
 #ifdef _DEBUG
@@ -21,7 +21,7 @@ namespace Ghurund {
 #endif
 
     protected:
-        Pointer(const Pointer &pointer);
+        Pointer(const Pointer& pointer);
 
     public:
         Pointer();
@@ -40,7 +40,7 @@ namespace Ghurund {
             }
 #endif
             referenceCount--;
-            if(!referenceCount)
+            if (!referenceCount)
                 delete this;
         }
 
@@ -64,17 +64,17 @@ namespace Ghurund {
     };
 
     template<class Type>
-    void setPointer(Type *&pointer, Type *pointer2) {
-        if(pointer2!=nullptr)
+    void setPointer(Type*& pointer, Type* pointer2) {
+        if (pointer2 != nullptr)
             pointer2->addReference();
-        if(pointer!=nullptr)
+        if (pointer != nullptr)
             pointer->release();
         pointer = pointer2;
     }
 
     template<class Type>
-    void safeRelease(Type *&pointer) {
-        if(pointer!=nullptr) {
+    void safeRelease(Type*& pointer) {
+        if (pointer != nullptr) {
             pointer->release();
             pointer = nullptr;
         }

@@ -19,7 +19,6 @@ namespace Ghurund::UI {
         PreferredSize preferredSize;   // what the user wants
         XMFLOAT2 measuredSize;  // what the view wants
         XMFLOAT2 size = { 0, 0 };  // what was finally mediated
-        Paint paint;
 
         bool visible = true;
         bool enabled = true;
@@ -124,6 +123,18 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnStateChanged)) Event<Control>& OnStateChanged;
+
+        inline bool canReceiveEvent(const MouseEventArgs& event) {
+            return Visible && Enabled &&
+                event.Position.x >= Position.x && event.Position.x <= Position.x + Size.x &&
+                event.Position.y >= Position.y && event.Position.y <= Position.y + Size.y;
+        }
+
+        using EventConsumer::dispatchMouseButtonEvent;
+
+        using EventConsumer::dispatchMouseMotionEvent;
+
+        using EventConsumer::dispatchMouseWheelEvent;
 
         void setParent(Control* parent) {
             this->parent = parent;

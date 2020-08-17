@@ -21,10 +21,10 @@ namespace Ghurund::UI {
         virtual void drawLine(float x1, float y1, float x2, float y2, const Paint& paint) = 0;
 
         virtual void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) = 0;
-        virtual void drawText2(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) = 0;
 
         virtual void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) = 0;
         virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src) = 0;
+        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src, int32_t tintColor) = 0;
 
         virtual void translate(float x, float y) = 0;
 

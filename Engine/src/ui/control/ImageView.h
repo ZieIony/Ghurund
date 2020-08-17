@@ -8,11 +8,11 @@
 #include <gdiplus.h>
 
 namespace Ghurund::UI {
-    class ImageView: public Control {
+    class ImageView : public Control {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(ImageView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ImageView>();
-        
+
         Gdiplus::Image* image = nullptr;
 
     public:
@@ -36,11 +36,8 @@ namespace Ghurund::UI {
 
         Paint paint;
         virtual void draw(Canvas& canvas) override {
-            if (image) {
+            if (image)
                 canvas.drawImage(*image, 0, 0, Size.x, Size.y);
-                paint.Color = 0xff00ff00;
-                canvas.drawRect(0, 0, Size.x, Size.y, paint);
-            }
         }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)

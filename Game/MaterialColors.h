@@ -1,5 +1,9 @@
 #pragma once
 
+#include "ui/gdi/GdiFont.h"
+#include "ui/widget/TextButton.h"
+#include <iostream>
+
 namespace Material {
     static constexpr unsigned int colorWithAlpha(float alpha, unsigned int color) {
         unsigned int a = alpha * 0xff;
@@ -11,7 +15,34 @@ namespace Material {
     constexpr float emphasis_disabled = 0.38f;
 
     class Theme {
+    private:
+        Ghurund::UI::Font* buttonFont, * primaryTextFont, * secondaryTextFont;
+
     public:
+        Theme() {
+            buttonFont = ghnew Ghurund::UI::Font("Arial", 10, 400, false);
+            primaryTextFont = ghnew Ghurund::UI::Font("Arial", 11, 400, false);
+            secondaryTextFont = ghnew Ghurund::UI::Font("Arial", 10, 400, false);
+        }
+
+        virtual ~Theme() {
+            buttonFont->release();
+            primaryTextFont->release();
+            secondaryTextFont->release();
+        }
+
+        Ghurund::UI::Font* getButtonFont() {
+            return buttonFont;
+        }
+
+        Ghurund::UI::Font* getPrimaryTextFont() {
+            return primaryTextFont;
+        }
+
+        Ghurund::UI::Font* getSecondaryTextFont() {
+            return secondaryTextFont;
+        }
+
         virtual unsigned int getColorBackground() = 0;
 
         virtual unsigned int getColorOnPrimary() = 0;
@@ -34,6 +65,37 @@ namespace Material {
 
         unsigned int getTextColorSecondaryOnSurface() {
             return colorWithAlpha(emphasis_medium, getColorOnSurface());
+        }
+
+        unsigned int getTextColorDisabledOnSurface() {
+            return colorWithAlpha(emphasis_disabled, getColorOnSurface());
+        }
+
+        std::function<void(Ghurund::UI::Control&)> getTextButtonStateHandler() {
+            return [this](Ghurund::UI::Control& control) {
+                Ghurund::UI::TextButton& button = (Ghurund::UI::TextButton&)control;
+                if (!button.Enabled) {
+                    std::cout << "enabled\n";
+                    button.TextColor = getTextColorDisabledOnSurface();
+                    button.BorderColor = getTextColorDisabledOnSurface();
+                    button.repaint();
+                } else if (button.Hovered) {
+                    std::cout << "hovered\n";
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                    button.BorderColor = getTextColorSecondaryOnSurface();
+                    button.repaint();
+                } else if (button.Pressed) {
+                    std::cout << "pressed\n";
+                    button.TextColor = getTextColorPrimaryOnSurface();
+                    button.BorderColor = getTextColorSecondaryOnSurface();
+                    button.repaint();
+                } else {
+                    std::cout << "idle\n";
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                    button.BorderColor = getTextColorDisabledOnSurface();
+                    button.repaint();
+                }
+            };
         }
     };
 

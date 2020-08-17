@@ -71,6 +71,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getButton)) MouseButton Button;
+
+        MouseButtonEventArgs translate(float x, float y) const {
+            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            return MouseButtonEventArgs(childEventPos, action, button, Time);
+        }
     };
 
     class MouseMotionEventArgs :public MouseEventArgs {
@@ -87,6 +92,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getDelta)) XMINT2 &Delta;
+
+        MouseMotionEventArgs translate(float x, float y) const {
+            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            return MouseMotionEventArgs(childEventPos, delta, Time);
+        }
     };
 
     class MouseWheelEventArgs :public MouseEventArgs {
@@ -111,6 +121,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getDelta)) int Delta;
+
+        MouseWheelEventArgs translate(float x, float y) const {
+            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            return MouseWheelEventArgs(childEventPos, wheel, delta, Time);
+        }
     };
 
     struct MouseState {

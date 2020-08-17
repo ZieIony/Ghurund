@@ -26,6 +26,18 @@ namespace Ghurund::UI {
                 Child->layout(0, 0, width, Child->MeasuredSize.y);
         }
 
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+            return __super::dispatchMouseButtonEvent(event.translate(0, -scroll));
+        }
+
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+            return __super::dispatchMouseMotionEvent(event.translate(0, -scroll));
+        }
+
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+            return onMouseWheelEvent(event);
+        }
+
         virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) {
             if (event.Wheel == MouseWheel::VERTICAL && Child) {
                 scroll = std::max(Size.y - Child->Size.y, std::min(scroll + event.Delta, 0.0f));

@@ -9,15 +9,28 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(ClickableView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
 
-        bool pressed = false;
+        bool pressed[3] = { false,false,false };
         bool hovered = false;
+        Event<Control, MouseButton> onClicked;
 
     public:
         inline bool isPressed() const {
-            return pressed;
+            return pressed[0] || pressed[1] || pressed[2];
         }
 
         __declspec(property(get = isPressed)) bool Pressed;
+
+        inline bool isHovered() const {
+            return hovered;
+        }
+
+        __declspec(property(get = isHovered)) bool Hovered;
+
+        Event<Control, MouseButton>& getOnClicked() {
+            return onClicked;
+        }
+
+        __declspec(property(get = getOnClicked)) Event<Control, MouseButton>& OnClicked;
 
         virtual void measure() override {
             __super::measure();
@@ -32,24 +45,22 @@ namespace Ghurund::UI {
         }
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            if (event.Action == MouseAction::DOWN && !pressed) {
-                pressed = true;
+            if (event.Action == MouseAction::DOWN && !pressed[(unsigned int)event.Button]) {
+                pressed[(unsigned int)event.Button] = true;
                 onStateChanged(*this);
-            } else if (event.Action == MouseAction::UP && pressed) {
-                pressed = false;
+            } else if (event.Action == MouseAction::UP && pressed[(unsigned int)event.Button]) {
+                pressed[(unsigned int)event.Button] = false;
                 onStateChanged(*this);
+                onClicked(*this, event.Button);
             }
             return true;
         }
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            bool in = event.Position.x >= Position.x && event.Position.x <= Position.x + Size.x &&
-                event.Position.y >= Position.y && event.Position.y <= Position.y + Size.y;
-
-            if (in && !hovered) {
+            if (canReceiveEvent(event) && !hovered) {
                 hovered = true;
                 onStateChanged(*this);
-            } else if (!in && hovered) {
+            } else if (!canReceiveEvent(event) && hovered) {
                 hovered = false;
                 onStateChanged(*this);
             }

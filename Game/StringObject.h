@@ -1,7 +1,7 @@
 #include "ui/control/ListView.h"
 #include "core/string/String.h"
 #include "ui/control/TextView.h"
-#include "ui/control/Padding.h"
+#include "ui/control/PaddingContainer.h"
 #include "ui/control/Column.h"
 #include "ui/control/Clip.h"
 
@@ -15,9 +15,9 @@ private:
     //        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<StringObject>();
 
 public:
-    String text;
+    String text, subtext;
 
-    StringObject(const String& text):text(text) {}
+    StringObject(const String& text, const String& subtext):text(text), subtext(subtext) {}
 
     inline static const Ghurund::Type& TYPE = TypeBuilder<StringObject>(NAMESPACE_NAME, CLASS_NAME)
         //       .withConstructor(CONSTRUCTOR)
@@ -35,17 +35,15 @@ private:
     ImageView* imageView;
 
 public:
-    StringObjectRow(Font* font, ::Material::Theme* theme) {
+    StringObjectRow(::Material::Theme* theme) {
         PreferredSize.height = PreferredSize::Height::WRAP;
         ScopedPointer<Surface> surface(ghnew Surface(theme->getColorSurface()));
 
-        ScopedPointer<Padding> padding(ghnew Padding());
+        ScopedPointer<PaddingContainer> padding(ghnew PaddingContainer());
         {
             padding->PreferredSize.width = PreferredSize::Width::FILL;
-            padding->left = 16.0f;
-            padding->top = 8.0f;
-            padding->right = 16.0f;
-            padding->bottom = 8.0f;
+            padding->Padding.Horizontal = 16.0f;
+            padding->Padding.Vertical = 8.0f;
 
             ScopedPointer<Row> row(ghnew Row());
             {
@@ -57,11 +55,11 @@ public:
                     stack->PreferredSize.height = PreferredSize::Height::WRAP;
 
                     ScopedPointer<Border> border(ghnew Border(theme->getTextColorSecondaryOnSurface()));
-                    border->CornerRadius = 8;
+                    border->CornerRadius = 2;
 
                     ScopedPointer<Clip> clip(ghnew Clip());
                     {
-                        clip->CornerRadius = 8;
+                        clip->CornerRadius = 2;
 
                         imageView = ghnew ImageView();
                         imageView->PreferredSize.width = PreferredSize::Width(56);
@@ -80,15 +78,17 @@ public:
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
                     column->Gravity.horizontal = Gravity::Horizontal::RIGHT;
 
-                    tv = ghnew TextView(font);
+                    tv = ghnew TextView(theme->getPrimaryTextFont());
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
                     tv->TextColor = theme->getTextColorPrimaryOnSurface();
                     tv->Text = "H";
-                    tv2 = ghnew TextView(font);
+                    tv2 = ghnew TextView(theme->getSecondaryTextFont());
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
                     tv2->TextColor = theme->getTextColorSecondaryOnSurface();
                     tv2->Text = "H";
-                    ScopedPointer<TextButton> tb = ghnew TextButton(font);
+                    ScopedPointer<TextButton> tb = ghnew TextButton(theme->getButtonFont());
+                    tb->OnStateChanged.add(theme->getTextButtonStateHandler());
+                    tb->OnStateChanged(*tb);
                     tb->Text = "CANCEL";
                     column->Children.add({ tv, tv2, tb });
                 }
@@ -141,29 +141,21 @@ public:
 
 class StringItemAdapter :public ItemAdapter<StringObject*> {
 private:
-    Font* font;
     ::Material::Theme* theme;
     Gdiplus::Image* image;
 
 public:
-    StringItemAdapter(Font* font, ::Material::Theme* theme, Gdiplus::Image* image):font(font), theme(theme), image(image) {
-        if (font)
-            font->addReference();
-    }
-
-    ~StringItemAdapter() {
-        if (font)
-            font->release();
+    StringItemAdapter(::Material::Theme* theme, Gdiplus::Image* image):theme(theme), image(image) {
     }
 
     virtual Control* makeControl() const override {
-        return ghnew StringObjectRow(font, theme);
+        return ghnew StringObjectRow(theme);
     }
 
     virtual void bind(StringObject* const& obj, Control& control) const override {
         StringObjectRow& sor = (StringObjectRow&)control;
         sor.Text = obj->text;
-        sor.Subtext = "very tasty";
+        sor.Subtext = obj->subtext;
         sor.Image = image;
     }
 };

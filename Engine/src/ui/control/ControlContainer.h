@@ -8,6 +8,8 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(ControlContainer);
 
         Control* child = nullptr;
+        bool childCaptured = false;
+        bool previousReceiver = false;
 
     public:
         ~ControlContainer() {
@@ -60,39 +62,14 @@ namespace Ghurund::UI {
             return __super::dispatchKeyEvent(event);
         }*/
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event);
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            if (child->Visible && child->Enabled &&
-                event.Position.x >= child->Position.x && event.Position.x <= child->Position.x + child->Size.x &&
-                event.Position.y >= child->Position.y && event.Position.y <= child->Position.y + child->Size.y) {
-                XMINT2 childEventPos = { (int32_t)(event.Position.x - child->Position.x), (int32_t)(event.Position.y - child->Position.y) };
-                MouseMotionEventArgs childEvent = MouseMotionEventArgs(childEventPos, event.Delta, event.Time);
-                if (child->dispatchMouseMotionEvent(childEvent))
-                    return true;
-            }
-            return __super::dispatchMouseMotionEvent(event);
-        }
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-            if (child->Visible && child->Enabled &&
-                event.Position.x >= child->Position.x && event.Position.x <= child->Position.x + child->Size.x &&
-                event.Position.y >= child->Position.y && event.Position.y <= child->Position.y + child->Size.y) {
-                XMINT2 childEventPos = { (int32_t)(event.Position.x - child->Position.x), (int32_t)(event.Position.y - child->Position.y) };
-                MouseWheelEventArgs childEvent = MouseWheelEventArgs(childEventPos, event.Wheel, event.Delta, event.Time);
-                if (child->dispatchMouseWheelEvent(childEvent))
-                    return true;
-            }
-            return __super::dispatchMouseWheelEvent(event);
-        }
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual Control* find(const String& name) {
-            if (this->name && name.operator==(this->name))
-                return this;
-            if (child)
-                return child->find(name);
-            return nullptr;
-        }
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
+
+        virtual Control* find(const String& name);
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ControlContainer>(NAMESPACE_NAME, CLASS_NAME)
             .withSupertype(Control::TYPE);

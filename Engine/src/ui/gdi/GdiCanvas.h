@@ -14,11 +14,14 @@ namespace Ghurund::UI {
         PAINTSTRUCT ps = {};
         HWND hwnd = {};
         HPAINTBUFFER hbuff;
-        Gdiplus::Graphics *graphics = nullptr;
+        Gdiplus::Graphics* graphics = nullptr;
         Gdiplus::Color color;
         Gdiplus::Pen* pen = nullptr;
         Gdiplus::SolidBrush* brush = nullptr;
         List<Gdiplus::GraphicsState> states;
+        Gdiplus::ColorMatrixEffect* colorMatrixEffect;
+        Gdiplus::ColorMatrix colorMatrix;
+        Gdiplus::Matrix* matrix;
 
     public:
         GdiCanvas(HWND hwnd) {
@@ -26,10 +29,21 @@ namespace Ghurund::UI {
             this->hwnd = hwnd;
             pen = new Gdiplus::Pen(Gdiplus::Color());
             brush = new Gdiplus::SolidBrush(Gdiplus::Color());
+            colorMatrixEffect = new Gdiplus::ColorMatrixEffect();
+            colorMatrix = {
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
+                0.0f, 0.0f, 0.0f, 1.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 0.0f, 1.0f
+            };
+            matrix = new Gdiplus::Matrix();
         }
 
         virtual ~GdiCanvas() {
             BufferedPaintUnInit();
+            delete matrix;
+            delete colorMatrixEffect;
             delete pen;
             delete brush;
         }
@@ -86,19 +100,19 @@ namespace Ghurund::UI {
             graphics->DrawPath(pen, &path);
         }
 
-        void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint);
-
-        void drawText2(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) {
-            font.drawText(text, x, y, *this);
+        void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) {
+            font.drawText(*this, text, x, y, paint.Color);
         }
 
         void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) {
             graphics->DrawImage(&image, x, y, width, height);
         }
-        
+
         virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src) {
             graphics->DrawImage(&image, x, y, src.X, src.Y, src.Width, src.Height, Gdiplus::Unit::UnitPixel);
         }
+
+        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src, int32_t tintColor);
 
         void translate(float x, float y) {
             graphics->TranslateTransform(x, y);

@@ -26,7 +26,7 @@ private:
     ListView<StringObject*>* listView;
 
     Font* font;
-    ::Material::Light* theme = ghnew ::Material::Light();
+    ::Material::Light* theme;
 
     std::function<void(Control&)> buttonStateHandler = [&](Control& control) {
         TextButton& button = (TextButton&)control;
@@ -49,7 +49,8 @@ public:
         gui.init();
         canvas = gui.makeCanvas(Window.Handle);
 
-        font = ghnew Font("Arial", 36);
+        theme = ghnew::Material::Light();
+        font = ghnew Font("Arial", 36, 400, false);
 
         /*button = ghnew TextBorderButton(*releasedStyle);
         button->setPreferredSize(80, 28);
@@ -80,28 +81,30 @@ public:
         ASCIIString jsonString((char*)file.Data, file.Size);*/
 
         
-        Gdiplus::Image* image = Gdiplus::Image::FromFile(L"D:/dragon.png");
-        items.add(ghnew StringObject("Strawberry"));
-        items.add(ghnew StringObject("Melon"));
-        items.add(ghnew StringObject("Blueberry"));
-        items.add(ghnew StringObject("Watermelon"));
-        items.add(ghnew StringObject("Apple"));
-        items.add(ghnew StringObject("Pear"));
-        items.add(ghnew StringObject("Plum"));
-        items.add(ghnew StringObject("Orange"));
-        items.add(ghnew StringObject("Banana"));
-        items.add(ghnew StringObject("Beer"));
-        items.add(ghnew StringObject("Lemon"));
+        Gdiplus::Image* image = Gdiplus::Image::FromFile(L"D:/projekty/GuideToCustomViews/images/landscapedrawable.png");
+        items.add(ghnew StringObject("Foxy fox", "Jumps over big fence"));
+        items.add(ghnew StringObject("Ósemka", _T("¹¿ŸæóÊ123-~,.;")));
+        items.add(ghnew StringObject("Strawberry", "Cherry and a rainbow"));
+        items.add(ghnew StringObject("Melon", "Best fruit ever"));
+        items.add(ghnew StringObject("Blueberry", "Greenberry"));
+        items.add(ghnew StringObject("Watermelon", "Noice"));
+        items.add(ghnew StringObject("Apple", "Android"));
+        items.add(ghnew StringObject("Pear", "Deer"));
+        items.add(ghnew StringObject("Plum", "Splash"));
+        items.add(ghnew StringObject("Orange", "A color or a fruit?"));
+        items.add(ghnew StringObject("Banana", "Mana mana"));
+        items.add(ghnew StringObject("Beer", "Dark, with honey"));
+        items.add(ghnew StringObject("Lemon", "Tree"));
         listView = ghnew ListView<StringObject*>();
         listView->items = items;
-        listView->addAdapter(ghnew StringItemAdapter(font, theme, image));
+        listView->addAdapter(ghnew StringItemAdapter(theme, image));
 
         ScopedPointer<Row> row = ghnew Row();
         ScopedPointer<Stack> stack = ghnew Stack();
         ScopedPointer<ImageView> iv = ghnew ImageView();
         iv->PreferredSize.width = PreferredSize::Width(200);
         iv->PreferredSize.height = PreferredSize::Height(200);
-        iv->Image = font->makeAtlas("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ ");
+        iv->Image = font->atlas;
         stack->Children.add(iv);
         row->Children.add({ listView, stack });
         rootView->Child = row;// inflater.load(jsonString);

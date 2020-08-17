@@ -9,6 +9,8 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(Surface);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Surface>();
 
+        Paint paint;
+
     public:
         unsigned int color;
 

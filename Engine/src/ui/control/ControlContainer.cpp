@@ -25,16 +25,48 @@ namespace Ghurund::UI {
             measuredSize.y = (float)preferredSize.height;
         }
     }
-    
+
     bool ControlContainer::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-        if (child->Visible && child->Enabled &&
-            event.Position.x >= child->Position.x && event.Position.x <= child->Position.x + child->Size.x &&
-            event.Position.y >= child->Position.y && event.Position.y <= child->Position.y + child->Size.y) {
-            XMINT2 childEventPos = { (int32_t)(event.Position.x - child->Position.x), (int32_t)(event.Position.y - child->Position.y) };
-            MouseButtonEventArgs childEvent = MouseButtonEventArgs(childEventPos, event.Action, event.Button, event.Time);
-            if (child->dispatchMouseButtonEvent(childEvent))
+        if (childCaptured) {
+            bool result = child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y));
+            if (event.Action == MouseAction::UP)
+                childCaptured = false;
+            if (result)
                 return true;
         }
+        if (child->canReceiveEvent(event) && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y))) {
+            if (event.Action == MouseAction::DOWN)
+                childCaptured = true;
+            return true;
+        }
         return __super::dispatchMouseButtonEvent(event);
+    }
+
+    bool ControlContainer::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+        if (childCaptured || child->canReceiveEvent(event)) {
+            previousReceiver = true;
+            if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y)))
+                return true;
+        }else if (previousReceiver) {
+            previousReceiver = false;
+            if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y)))
+                return true;
+        }
+        return __super::dispatchMouseMotionEvent(event);
+    }
+
+    bool ControlContainer::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+        if ((childCaptured || child->canReceiveEvent(event)) &&
+            child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
+            return true;
+        return __super::dispatchMouseWheelEvent(event);
+    }
+
+    Control* ControlContainer::find(const String& name) {
+        if (this->name && name.operator==(this->name))
+            return this;
+        if (child)
+            return child->find(name);
+        return nullptr;
     }
 }

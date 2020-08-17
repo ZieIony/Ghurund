@@ -1,7 +1,7 @@
 #include "LayoutInflater.h"
 #include "ui/control/Column.h"
 #include "ui/control/ImageView.h"
-#include "ui/control/Padding.h"
+#include "ui/control/PaddingContainer.h"
 #include "ui/control/Row.h"
 #include "ui/control/ScrollView.h"
 #include "ui/control/Space.h"
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         registerType(Row::TYPE.Name, Row::inflate);
         registerType(Column::TYPE.Name, Column::inflate);
         registerType(Space::TYPE.Name, Space::inflate);
-        registerType(Padding::TYPE.Name, Padding::inflate);
+        registerType(PaddingContainer::TYPE.Name, PaddingContainer::inflate);
         registerType(ScrollView::TYPE.Name, ScrollView::inflate);
         registerType(Surface::TYPE.Name, Surface::inflate);
         registerType(Button::TYPE.Name, Button::inflate);
@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         registerType(Border::TYPE.Name, Border::inflate);
 
         registerType(_T("TextButton"), [&](LayoutInflater& inflater, json& json) {
-            Font* font = ghnew Font("Arial", 10);
+            Font* font = ghnew Font("Arial", 10, 400, false);
             TextButton* button = ghnew TextButton(font);
             if (json.contains("text")) {
                 nlohmann::json text = json["text"];

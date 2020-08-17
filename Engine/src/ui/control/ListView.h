@@ -134,6 +134,22 @@ namespace Ghurund::UI {
                 Children.add(control);
                 control->release();
             }
+
+            if (indexTop + Children.Size == items.Size)
+                scroll = std::max(scroll, -Children[Children.Size - 1]->Position.y - Children[Children.Size - 1]->Size.y + Size.y);
+            scroll = std::min(scroll, 0.0f);
+        }
+
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+            return __super::dispatchMouseButtonEvent(event.translate(0, -scroll));
+        }
+
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+            return __super::dispatchMouseMotionEvent(event.translate(0, -scroll));
+        }
+
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+            return onMouseWheelEvent(event);
         }
 
         virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) {

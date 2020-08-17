@@ -1,5 +1,11 @@
 #pragma once
 
+#define GDIPVER     0x0110
+
+namespace Gdiplus {
+    class Graphics;
+}
+
 #include "Common.h"
 #include "core/string/String.h"
 #include "core/Pointer.h"
@@ -14,49 +20,68 @@ namespace Ghurund::UI {
     class Font :public Pointer {
     private:
         static inline const float MAX_SIZE = 32768.0f;
+        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789/*-+[]{};':\",./<>?!@#$%^&*()`~Û”øØüèÒ—Ê∆úåπ•Í ");
 
         struct Glyph {
             Gdiplus::RectF tightRect, fullRect;
         };
 
-        Gdiplus::FontStyle style = Gdiplus::FontStyleRegular;
         float size;
         String familyName;
         bool italic = false;
         unsigned int weight = 400;
+
+        TEXTMETRIC tm;
+
         Map<tchar, Glyph> glyphs;
-        Gdiplus::Image* atlas;
+        unsigned int kerningPairCount;
+        KERNINGPAIR* kerningPairs;
+
+        void makeAtlas(const tchar* characters);
+
+        inline void initKerning(HDC context) {
+            kerningPairCount = GetKerningPairs(context, 0, nullptr);
+            kerningPairs = ghnew KERNINGPAIR[kerningPairCount];
+            GetKerningPairs(context, kerningPairCount, kerningPairs);
+        }
+
+        void initGlyphs(HDC context, const tchar* characters, unsigned int width);
+
+        void makeAtlasBitmap(unsigned int width, unsigned int height, int32_t* pixels);
+
+        HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
 
     public:
-        Gdiplus::Font* font;
-        Gdiplus::FontFamily* fontFamily;
+        Gdiplus::Bitmap* atlas;
 
-        Font(const String& family, float size);
+        Font(const String& family, float size, unsigned int weight = 400, bool italic = false, const tchar* supportedCharacters = nullptr);
 
         ~Font() {
-            delete font;
-            delete fontFamily;
+            delete kerningPairs;
         }
 
-        float getAscent() {
-            float em = fontFamily->GetEmHeight(style);
-            return fontFamily->GetCellAscent(style) / em * size;
+        long getAscent() const {
+            return tm.tmAscent;
         }
 
-        float getDescent() {
-            float em = fontFamily->GetEmHeight(style);
-            return fontFamily->GetCellDescent(style) / em * size;
+        long getDescent() const {
+            return tm.tmDescent;
         }
 
-        float getLineHeight() {
-            float em = fontFamily->GetEmHeight(style);
-            return fontFamily->GetLineSpacing(style) / em * size;
+        long getInternalLeading() const {
+            return tm.tmInternalLeading;
+        }
+
+        long getExternalLeading() const {
+            return tm.tmExternalLeading;
+        }
+
+        long getHeight() const {
+            return tm.tmHeight;
         }
 
         void measureText(const String& text, float width, Gdiplus::SizeF* outSize) const;
 
-        Gdiplus::Image* makeAtlas(const tchar* characters);
-
-        void drawText(const String& text, float x, float y, Canvas& canvas) const;
+        void drawText(Canvas& canvas, const String& text, float x, float y, int32_t color) const;
     };
 }

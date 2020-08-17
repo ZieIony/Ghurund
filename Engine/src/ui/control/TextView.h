@@ -12,6 +12,7 @@ namespace Ghurund::UI {
         String text;
         unsigned int textColor = 0xde000000;
         Font* font;
+        Paint paint;
 
     public:
 

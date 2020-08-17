@@ -7,6 +7,7 @@
 #include "ui/control/ClickableView.h"
 #include "ui/control/Surface.h"
 #include "ui/control/Clip.h"
+#include "ui/control/PaddingContainer.h"
 
 namespace Ghurund::UI {
     class Button :public ClickableView {
@@ -15,47 +16,12 @@ namespace Ghurund::UI {
         Clip* clip;
         Surface* background;
         Stack* stack, * stack2;
-        ControlContainer* container;
+        PaddingContainer* container;
 
     public:
-        Button() {
-            stack2 = ghnew Stack();
-            {
-                clip = ghnew Clip();
-                {
-                    clip->CornerRadius = 2.0f;
+        Button();
 
-                    stack = ghnew Stack();
-                    {
-                        background = ghnew Surface();
-                        background->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height::FILL);
-
-                        container = ghnew ControlContainer();
-                        container->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
-
-                        stack->Gravity = { Gravity::Horizontal::CENTER, Gravity::Vertical::CENTER };
-                        stack->Children.add({ background, container });
-                    }
-                    clip->Child = stack;
-                }
-
-                border = ghnew Border();
-                border->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height::FILL);
-                border->CornerRadius = 2.0f;
-
-                stack2->Children.add({ clip, border });
-            }
-            Content = stack2;
-        }
-
-        ~Button() {
-            container->release();
-            stack->release();
-            stack2->release();
-            clip->release();
-            border->release();
-            background->release();
-        }
+        ~Button();
 
         inline void setContent(Control* control) {
             container->Child = control;
@@ -66,6 +32,12 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;
+
+        inline Padding const& getPadding() const {
+            return container->Padding;
+        }
+
+        __declspec(property(get = getPadding)) Padding& Padding;
 
         inline unsigned int getBorderColor() const {
             return border->Color;
@@ -87,6 +59,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) unsigned int BackgroundColor;
 
+        inline float getCornerRadius() const {
+            return border->CornerRadius;
+        }
+
+        inline void setCornerRadius(float radius) {
+            border->CornerRadius = radius;
+            clip->CornerRadius = radius;
+        }
+
+        __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
+
         inline float getBorderThickness() const {
             return border->Thickness;
         }
@@ -97,12 +80,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBorderThickness, put = setBorderThickness)) float BorderThickness;
 
-        virtual void measure() {
-            container->PreferredSize = PreferredSize;
-            stack->PreferredSize = PreferredSize;
-            stack2->PreferredSize = PreferredSize;
-            clip->PreferredSize = PreferredSize;
-            __super::measure();
-        }
+        virtual void measure();
     };
 }

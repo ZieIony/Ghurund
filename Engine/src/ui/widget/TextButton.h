@@ -38,6 +38,26 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getText, put = setText)) const String& Text;
 
+        inline unsigned int getTextColor() const {
+            return text->TextColor;
+        }
+
+        inline void setTextColor(unsigned int color) {
+            text->TextColor = color;
+        }
+
+        __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
+
+        inline Font* getFont() {
+            return text->Font;
+        }
+
+        inline void setFont(Font* font) {
+            text->Font = font;
+        }
+
+        __declspec(property(get = getFont, put = setFont)) Font* Font;
+
         virtual void measure() {
             text->PreferredSize = PreferredSize;
             __super::measure();

@@ -9,15 +9,18 @@ namespace Ghurund::UI {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Border);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Border>();
-        
+
         unsigned int color = 0x1f000000;
         GdiPath* path;
         float cornerRadius = 0.0f, thickness = 1.0f;
         Gdiplus::RectF bounds;
+        Paint paint;
 
         inline void updatePath() {
-            bounds.Width = size.x;
-            bounds.Height = size.y;
+            bounds.X = 0;
+            bounds.Y = 0;
+            bounds.Width = size.x - 1;
+            bounds.Height = size.y - 1;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {
@@ -30,8 +33,6 @@ namespace Ghurund::UI {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
             path = ghnew GdiPath();
-            bounds.X = 0.0f;
-            bounds.Y = 0.0f;
             setCornerRadius(0.0f);
         }
 
