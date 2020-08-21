@@ -2,6 +2,7 @@
 
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ControlGroup.h"
+#include "core/collection/PointerMap.h"
 
 #include "json.hpp"
 
@@ -11,6 +12,7 @@ namespace Ghurund::UI {
     class LayoutInflater {
     private:
         Map<std::string, std::function<Control*(LayoutInflater&, json&)>> typeHandlers;
+        PointerMap<String, GdiImage*> images;
 
         void registerBasicTypes();
 
@@ -80,6 +82,15 @@ namespace Ghurund::UI {
                     }
                 }
             }
+        }
+
+        GdiImage* loadImage(const String& fileName) {
+            if (images.contains(fileName))
+                return images.get(fileName);
+            GdiImage* image = ghnew GdiImage(fileName);
+            images.set(fileName, image);
+            image->release();
+            return image;
         }
     };
 }

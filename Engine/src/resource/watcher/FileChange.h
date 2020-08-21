@@ -15,6 +15,8 @@ namespace Ghurund {
     public:
         static const FileChange& ADDED, & REMOVED, & MODIFIED, & RENAMED_FROM, & RENAMED_TO;
 
+        static const EnumValues<FileChangeEnum, FileChange> VALUES;
+
         FileChange(FileChangeEnum value, const tchar* name):Enum<FileChangeEnum, FileChange>(value, name) {}
     };
 }

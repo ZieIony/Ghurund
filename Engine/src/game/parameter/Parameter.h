@@ -37,6 +37,8 @@ namespace Ghurund {
             WORLD, WORLD_IT, VIEW, PROJECTION, VIEW_PROJECTION, VIEW_PROJECTION_INV,
             DIFFUSE_TEXTURE, SPECULAR_TEXTURE, NORMAL_TEXTURE;
 
+        static const EnumValues<ParameterIdEnum, ParameterId> VALUES;
+
         ParameterId(ParameterIdEnum value, const tchar *name, const char* constantName, const ParameterType& type):Enum<ParameterIdEnum, ParameterId>(value, name), type(type) {
             this->constantName = constantName;
         }

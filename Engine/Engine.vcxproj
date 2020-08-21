@@ -90,12 +90,14 @@
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
+    <ClCompile Include="src\ui\control\ListView.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\Row.cpp" />
     <ClCompile Include="src\ui\control\Stack.cpp" />
     <ClCompile Include="src\ui\control\TextView.cpp" />
     <ClCompile Include="src\ui\gdi\GdiCanvas.cpp" />
     <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
+    <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\layout\LayoutInflater.cpp" />
     <ClCompile Include="src\ui\widget\Button.cpp" />
@@ -274,6 +276,7 @@
     <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\control\Surface.h" />
     <ClInclude Include="src\ui\control\TextView.h" />
+    <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\control\ControlGroup.h" />
@@ -298,9 +301,11 @@
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
     <ClInclude Include="src\ui\gdi\GdiFont.h" />
     <ClInclude Include="src\ui\gdi\GdiGui.h" />
+    <ClInclude Include="src\ui\gdi\GdiImage.h" />
     <ClInclude Include="src\ui\gdi\GdiPath.h" />
     <ClInclude Include="src\ui\Gravity.h" />
     <ClInclude Include="src\ui\Gui.h" />
+    <ClInclude Include="src\ui\MenuItem.h" />
     <ClInclude Include="src\ui\Padding.h" />
     <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\control\Stack.h" />
@@ -310,6 +315,8 @@
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\control\ClickableView.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
+    <ClInclude Include="src\ui\widget\CheckBox.h" />
+    <ClInclude Include="src\ui\widget\ImageButton.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
     <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
   </ItemGroup>
@@ -383,6 +390,9 @@
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -425,6 +435,8 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

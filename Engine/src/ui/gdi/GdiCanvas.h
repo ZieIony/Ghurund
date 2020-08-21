@@ -3,6 +3,7 @@
 #include "GdiFont.h"
 #include "ui/Canvas.h"
 #include "GdiPath.h"
+#include "GdiImage.h"
 
 #include <uxtheme.h>
 
@@ -104,15 +105,15 @@ namespace Ghurund::UI {
             font.drawText(*this, text, x, y, paint.Color);
         }
 
-        void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) {
-            graphics->DrawImage(&image, x, y, width, height);
+        void drawImage(GdiImage& image, float x, float y, float width, float height) {
+            graphics->DrawImage(image.image, x, y, width, height);
         }
 
-        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src) {
-            graphics->DrawImage(&image, x, y, src.X, src.Y, src.Width, src.Height, Gdiplus::Unit::UnitPixel);
-        }
+        virtual void drawImage(GdiImage& image, float x, float y, float width, float height, int32_t tintColor);
 
-        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src, int32_t tintColor);
+        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst);
+
+        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor);
 
         void translate(float x, float y) {
             graphics->TranslateTransform(x, y);

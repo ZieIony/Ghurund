@@ -9,10 +9,10 @@ namespace Ghurund {
         Window& window = *(Window*)GetWindowLongPtr(handle, GWLP_USERDATA);
 
         if (msg == WM_KEYDOWN) {
-            window.OnKeyEvent(window, KeyEventArgs(KeyAction::DOWN, (int)wParam, time(nullptr)));
+            window.OnKeyEvent(KeyEventArgs(KeyAction::DOWN, (int)wParam, time(nullptr)));
             return 0;
         } else if (msg == WM_KEYUP) {
-            window.OnKeyEvent(window, KeyEventArgs(KeyAction::UP, (int)wParam, time(nullptr)));
+            window.OnKeyEvent(KeyEventArgs(KeyAction::UP, (int)wParam, time(nullptr)));
             return 0;
         } else if(msg >= WM_MOUSEFIRST) {
             handleMouseMessage(window, msg, wParam);
@@ -23,20 +23,20 @@ namespace Ghurund {
             unsigned int height = HIWORD(lParam);
             window.setSize(width, height);
             if (prevSize.x != width || prevSize.y != height)
-                window.OnSizeChanged(window);
+                window.OnSizeChanged();
             return 0;
         } else if (msg == WM_CREATE) {
             LPCREATESTRUCT createStruct = (LPCREATESTRUCT)lParam;
             Window* w = (Window*)createStruct->lpCreateParams;
             SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)w);
-            w->OnCreated(*w);
+            w->OnCreated();
             return 0;
         } else if (msg == WM_DESTROY) {
-            window.OnDestroy(window);
+            window.OnDestroy();
             PostQuitMessage(0);
             return 0;
         } else if (msg == WM_PAINT) {
-            window.OnPaint(window);
+            window.OnPaint();
             return 0;
         }
 
@@ -48,26 +48,26 @@ namespace Ghurund {
         GetCursorPos(&p);
         ScreenToClient(window.Handle, &p);
         if (msg == WM_LBUTTONDOWN) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::LEFT, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::LEFT, time(nullptr)));
         } else if (msg == WM_LBUTTONUP) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::LEFT, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::LEFT, time(nullptr)));
         } else if (msg == WM_MBUTTONDOWN) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::MIDDLE, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::MIDDLE, time(nullptr)));
         } else if (msg == WM_MBUTTONUP) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::MIDDLE, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::MIDDLE, time(nullptr)));
         } else if (msg == WM_RBUTTONDOWN) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::RIGHT, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::RIGHT, time(nullptr)));
         } else if (msg == WM_RBUTTONUP) {
-            window.OnMouseButtonEvent(window, MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::RIGHT, time(nullptr)));
+            window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::RIGHT, time(nullptr)));
         } else if (msg == WM_MOUSEMOVE) {
             if (window.prevMousePos.x == -1 && window.prevMousePos.y == -1)
                 window.prevMousePos = p;
-            window.OnMouseMotionEvent(window, MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - window.prevMousePos.x, p.y - window.prevMousePos.y), time(nullptr)));
+            window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - window.prevMousePos.x, p.y - window.prevMousePos.y), time(nullptr)));
             window.prevMousePos = p;
         } else if (msg == WM_MOUSEWHEEL) {
-            window.OnMouseWheelEvent(window, MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
+            window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
         } else if (msg == WM_MOUSEHWHEEL) {
-            window.OnMouseWheelEvent(window, MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
+            window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
         }
     }
 

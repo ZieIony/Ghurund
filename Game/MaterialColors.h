@@ -1,7 +1,10 @@
 #pragma once
 
 #include "ui/gdi/GdiFont.h"
+#include "ui/gdi/GdiImage.h"
 #include "ui/widget/TextButton.h"
+#include "ui/widget/ImageButton.h"
+#include "ui/widget/CheckBox.h"
 #include <iostream>
 
 namespace Material {
@@ -17,15 +20,21 @@ namespace Material {
     class Theme {
     private:
         Ghurund::UI::Font* buttonFont, * primaryTextFont, * secondaryTextFont;
+        Ghurund::UI::GdiImage* checkBoxChecked, * checkBoxUnchecked;
 
     public:
         Theme() {
             buttonFont = ghnew Ghurund::UI::Font("Arial", 10, 400, false);
             primaryTextFont = ghnew Ghurund::UI::Font("Arial", 11, 400, false);
             secondaryTextFont = ghnew Ghurund::UI::Font("Arial", 10, 400, false);
+
+            checkBoxChecked = ghnew Ghurund::UI::GdiImage(L"D:/projekty/GhurundEngine12/icons/checkBox checked 32.png");
+            checkBoxUnchecked = ghnew Ghurund::UI::GdiImage(L"D:/projekty/GhurundEngine12/icons/checkBox unchecked 32.png");
         }
 
         virtual ~Theme() {
+            checkBoxChecked->release();
+            checkBoxUnchecked->release();
             buttonFont->release();
             primaryTextFont->release();
             secondaryTextFont->release();
@@ -71,30 +80,109 @@ namespace Material {
             return colorWithAlpha(emphasis_disabled, getColorOnSurface());
         }
 
+        std::function<void(Ghurund::UI::Control&)> getImageButtonStateHandler() {
+            return [this](Ghurund::UI::Control& control) {
+                Ghurund::UI::ImageButton& button = (Ghurund::UI::ImageButton&)control;
+                button.Padding.setAll(4.0f);
+                button.BackgroundColor = 0;
+                if (!button.Enabled) {
+                    button.BorderColor = 0;
+                } else if (button.Pressed) {
+                    button.BorderColor = getTextColorSecondaryOnSurface();
+                } else if (button.Hovered) {
+                    button.BorderColor = getTextColorSecondaryOnSurface();
+                } else {
+                    button.BorderColor = 0;
+                }
+                button.repaint();
+            };
+        }
+
         std::function<void(Ghurund::UI::Control&)> getTextButtonStateHandler() {
             return [this](Ghurund::UI::Control& control) {
                 Ghurund::UI::TextButton& button = (Ghurund::UI::TextButton&)control;
+                button.Font = buttonFont;
                 if (!button.Enabled) {
-                    std::cout << "enabled\n";
                     button.TextColor = getTextColorDisabledOnSurface();
                     button.BorderColor = getTextColorDisabledOnSurface();
-                    button.repaint();
-                } else if (button.Hovered) {
-                    std::cout << "hovered\n";
-                    button.TextColor = getTextColorSecondaryOnSurface();
-                    button.BorderColor = getTextColorSecondaryOnSurface();
-                    button.repaint();
                 } else if (button.Pressed) {
-                    std::cout << "pressed\n";
                     button.TextColor = getTextColorPrimaryOnSurface();
                     button.BorderColor = getTextColorSecondaryOnSurface();
-                    button.repaint();
+                } else if (button.Hovered) {
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                    button.BorderColor = getTextColorSecondaryOnSurface();
                 } else {
-                    std::cout << "idle\n";
                     button.TextColor = getTextColorSecondaryOnSurface();
                     button.BorderColor = getTextColorDisabledOnSurface();
-                    button.repaint();
                 }
+                button.repaint();
+            };
+        }
+
+        std::function<void(Ghurund::UI::Control&)> getTextViewStateHandler() {
+            return [this](Ghurund::UI::Control& control) {
+                Ghurund::UI::TextView& button = (Ghurund::UI::TextView&)control;
+                button.Font = primaryTextFont;
+                if (!button.Enabled) {
+                    button.TextColor = getTextColorDisabledOnSurface();
+                } else if (button.Hovered) {
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                } else {
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                }
+                button.repaint();
+            };
+        }
+
+        std::function<void(Ghurund::UI::Control&)> getCheckBoxStateHandler() {
+            return [this](Ghurund::UI::Control& control) {
+                Ghurund::UI::CheckBox& button = (Ghurund::UI::CheckBox&)control;
+                button.Font = buttonFont;
+                if (!button.Enabled) {
+                    button.ImageTint = getTextColorDisabledOnSurface();
+                    button.TextColor = getTextColorDisabledOnSurface();
+                } else if (button.Pressed) {
+                    button.ImageTint = getTextColorPrimaryOnSurface();
+                    button.TextColor = getTextColorPrimaryOnSurface();
+                } else if (button.Hovered) {
+                    button.ImageTint = getTextColorSecondaryOnSurface();
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                } else {
+                    button.ImageTint = getTextColorSecondaryOnSurface();
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                }
+                if (button.Checked) {
+                    button.Image = checkBoxChecked;
+                } else {
+                    button.Image = checkBoxUnchecked;
+                }
+                button.repaint();
+            };
+        }
+
+        std::function<void(Ghurund::UI::Control&)> getRadioButtonStateHandler() {
+            return [this](Ghurund::UI::Control& control) {
+                Ghurund::UI::RadioButton& button = (Ghurund::UI::RadioButton&)control;
+                button.Font = buttonFont;
+                if (!button.Enabled) {
+                    button.ImageTint = getTextColorDisabledOnSurface();
+                    button.TextColor = getTextColorDisabledOnSurface();
+                } else if (button.Pressed) {
+                    button.ImageTint = getTextColorPrimaryOnSurface();
+                    button.TextColor = getTextColorPrimaryOnSurface();
+                } else if (button.Hovered) {
+                    button.ImageTint = getTextColorSecondaryOnSurface();
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                } else {
+                    button.ImageTint = getTextColorSecondaryOnSurface();
+                    button.TextColor = getTextColorSecondaryOnSurface();
+                }
+                if (button.Checked) {
+                    button.Image = checkBoxChecked;
+                } else {
+                    button.Image = checkBoxUnchecked;
+                }
+                button.repaint();
             };
         }
     };

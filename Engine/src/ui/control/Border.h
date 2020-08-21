@@ -77,6 +77,8 @@ namespace Ghurund::UI {
         }
 
         virtual void draw(Canvas& canvas) override {
+            if (!color || thickness < 0.1f)
+                return;
             paint.setThickness(thickness);
             paint.setColor(color);
             canvas.drawPath(*path, paint);

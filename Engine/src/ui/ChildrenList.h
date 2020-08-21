@@ -25,12 +25,14 @@ namespace Ghurund::UI {
             for (Control* control : controls) {
                 children.add(control);
                 control->Parent = &owner;
+                control->OnStateChanged();
             }
         }
 
         inline void insert(size_t i, Control* control) {
             children.insertKeepOrder(i, control);
             control->Parent = &owner;
+            control->OnStateChanged();
         }
 
         inline void remove(Control* control) {

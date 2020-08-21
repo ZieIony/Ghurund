@@ -4,8 +4,10 @@
 #include <typeinfo>
 
 namespace Ghurund {
+#ifdef _DEBUG
     Ghurund::List<Ghurund::Pointer*> Pointer::pointers;
     CriticalSection Pointer::section;
+#endif
 
     Pointer::Pointer() {
         referenceCount = 1;
@@ -35,14 +37,14 @@ namespace Ghurund {
 #endif
     }
 
-    void Pointer::dumpPointers() {
 #ifdef _DEBUG
+    void Pointer::dumpPointers() {
         section.enter();
         for(unsigned int i = 0; i<pointers.getSize(); i++) {
             Pointer *p = pointers[i];
             Logger::log(LogType::INFO, _T("allocated pointer: [{}] {} refCount={}\n"), (void*)p, typeid(*p).name(), p->ReferenceCount);
         }
         section.leave();
-#endif
     }
+#endif
 }

@@ -17,7 +17,7 @@ namespace Ghurund {
 
     class ParameterProvider {
     private:
-        Event<ParameterProvider> onParametersChanged;
+        Event<ParameterProvider> onParametersChanged = Event<ParameterProvider>(*this);
 
     protected:
         Status loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);

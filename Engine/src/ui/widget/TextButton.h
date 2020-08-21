@@ -14,14 +14,15 @@ namespace Ghurund::UI {
         TextView* text;
 
     public:
-        TextButton(Font* font) {
-            text = ghnew TextView(font);
+        TextButton() {
+            text = ghnew TextView();
             text->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
             Content = text;
         }
 
-        TextButton(const String& text, Font* font):TextButton(font) {
+        TextButton(const String& text, Font* font):TextButton() {
             Text = text;
+            Font = font;
         }
 
         ~TextButton() {

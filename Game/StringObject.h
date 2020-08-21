@@ -78,17 +78,16 @@ public:
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
                     column->Gravity.horizontal = Gravity::Horizontal::RIGHT;
 
-                    tv = ghnew TextView(theme->getPrimaryTextFont());
+                    tv = ghnew TextView();
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv->TextColor = theme->getTextColorPrimaryOnSurface();
+                    tv->OnStateChanged.add(theme->getTextViewStateHandler());
                     tv->Text = "H";
-                    tv2 = ghnew TextView(theme->getSecondaryTextFont());
+                    tv2 = ghnew TextView();
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv2->TextColor = theme->getTextColorSecondaryOnSurface();
+                    tv2->OnStateChanged.add(theme->getTextViewStateHandler());
                     tv2->Text = "H";
-                    ScopedPointer<TextButton> tb = ghnew TextButton(theme->getButtonFont());
+                    ScopedPointer<TextButton> tb = ghnew TextButton();
                     tb->OnStateChanged.add(theme->getTextButtonStateHandler());
-                    tb->OnStateChanged(*tb);
                     tb->Text = "CANCEL";
                     column->Children.add({ tv, tv2, tb });
                 }
@@ -127,25 +126,25 @@ public:
 
     __declspec(property(get = getSubtext, put = setSubtext)) const String& Subtext;
 
-    inline void setImage(Gdiplus::Image* image) {
-        this->imageView->Image = image;
+    inline void setImage(GdiImage* image) {
+        imageView->Image = image;
     }
 
-    inline Gdiplus::Image* getImage() {
+    inline GdiImage* getImage() {
         return imageView->Image;
     }
 
-    __declspec(property(get = getImage, put = setImage)) Gdiplus::Image* Image;
+    __declspec(property(get = getImage, put = setImage)) GdiImage* Image;
 
 };
 
 class StringItemAdapter :public ItemAdapter<StringObject*> {
 private:
     ::Material::Theme* theme;
-    Gdiplus::Image* image;
+    GdiImage* image;
 
 public:
-    StringItemAdapter(::Material::Theme* theme, Gdiplus::Image* image):theme(theme), image(image) {
+    StringItemAdapter(::Material::Theme* theme, GdiImage* image):theme(theme), image(image) {
     }
 
     virtual Control* makeControl() const override {

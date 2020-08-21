@@ -23,8 +23,7 @@ namespace Ghurund::UI {
         registerType(Border::TYPE.Name, Border::inflate);
 
         registerType(_T("TextButton"), [&](LayoutInflater& inflater, json& json) {
-            Font* font = ghnew Font("Arial", 10, 400, false);
-            TextButton* button = ghnew TextButton(font);
+            TextButton* button = ghnew TextButton();
             if (json.contains("text")) {
                 nlohmann::json text = json["text"];
                 if (text.is_string()) {

@@ -6,7 +6,8 @@ namespace Ghurund::UI {
 
         if (preferredSize.width == PreferredSize::Width::WRAP) {
             Gdiplus::SizeF outSize;
-            font->measureText(text, MAX_SIZE, &outSize);
+            if (font)
+                font->measureText(text, MAX_SIZE, &outSize);
             measuredSize.x = std::max(minSize.x, outSize.Width);
         } else if (preferredSize.width != PreferredSize::Width::FILL) {
             measuredSize.x = (float)preferredSize.width;
@@ -14,7 +15,8 @@ namespace Ghurund::UI {
 
         if (preferredSize.height == PreferredSize::Height::WRAP) {
             Gdiplus::SizeF outSize;
-            font->measureText(text, (float)measuredSize.x, &outSize);
+            if (font)
+                font->measureText(text, (float)measuredSize.x, &outSize);
             measuredSize.y = std::max(minSize.y, outSize.Height);
         } else if (preferredSize.height != PreferredSize::Height::FILL) {
             measuredSize.y = (float)preferredSize.height;
@@ -22,13 +24,14 @@ namespace Ghurund::UI {
     }
 
     void TextView::draw(Canvas& canvas) {
-        paint.Color = textColor;
-        canvas.drawText(Text, 0 ,0, size.x, size.y, *font, paint);
+        if (font) {
+            paint.Color = textColor;
+            canvas.drawText(Text, 0, 0, size.x, size.y, *font, paint);
+        }
     }
 
     TextView* TextView::inflate(LayoutInflater& inflater, json& json) {
-        Ghurund::UI::Font* font = ghnew Ghurund::UI::Font("Arial", 10, 400, false);
-        TextView* textView = ghnew TextView(font);
+        TextView* textView = ghnew TextView();
         if (json.contains("text")) {
             nlohmann::json text = json["text"];
             if (text.is_string()) {

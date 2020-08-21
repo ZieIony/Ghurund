@@ -705,7 +705,7 @@ namespace Ghurund {
 #endif
 
             // TODO: Implement the following
-            // findAndReplace - replaces a text found in the string
+            // findAndReplace - replaces a textView found in the string
             // replaceRange - replaces a range of bytes in the string
             // multiply/times/opMul/opMul_r - takes the string and multiplies it n times, e.g. "-".multiply(5) returns "-----"
         }

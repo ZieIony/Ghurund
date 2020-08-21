@@ -3,6 +3,7 @@
 #include "ui/gdi/GdiFont.h"
 #include "Paint.h"
 #include "gdi/GdiPath.h"
+#include "gdi/GdiImage.h"
 
 namespace Ghurund::UI {
     class Canvas {
@@ -22,9 +23,10 @@ namespace Ghurund::UI {
 
         virtual void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) = 0;
 
-        virtual void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) = 0;
-        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src) = 0;
-        virtual void drawImage(Gdiplus::Image& image, float x, float y, Gdiplus::RectF src, int32_t tintColor) = 0;
+        virtual void drawImage(GdiImage& image, float x, float y, float width, float height) = 0;
+        virtual void drawImage(GdiImage& image, float x, float y, float width, float height, int32_t tintColor) = 0;
+        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst) = 0;
+        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor) = 0;
 
         virtual void translate(float x, float y) = 0;
 

@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         }
 
         outSize->Width = measuredWidth;
-        outSize->Height = getAscent() + getDescent();
+        outSize->Height = (float)(getAscent() + getDescent());
     }
 
     void Font::makeAtlas(const tchar* characters) {
@@ -100,7 +100,7 @@ namespace Ghurund::UI {
     }
 
     void Font::makeAtlasBitmap(unsigned int width, unsigned int height, int32_t* pixels) {
-        atlas = new Gdiplus::Bitmap(width, height, width * 4, PixelFormat32bppARGB, (BYTE*)pixels);
+        Gdiplus::Bitmap* atlas = new Gdiplus::Bitmap(width, height, width * 4, PixelFormat32bppARGB, (BYTE*)pixels);
         atlas->RotateFlip(Gdiplus::RotateNoneFlipY);
         Gdiplus::Color pixel;
         for (unsigned int x = 0; x < width; x++) {
@@ -110,6 +110,7 @@ namespace Ghurund::UI {
                 atlas->SetPixel(x, y, pixel);
             }
         }
+        this->atlas = ghnew GdiImage(atlas);
     }
 
     HBITMAP Font::makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels) {
@@ -133,7 +134,8 @@ namespace Ghurund::UI {
                 continue;
 
             Glyph& glyph = glyphs.get(c);
-            canvas.drawImage(*atlas, currentX + (glyph.fullRect.X - glyph.tightRect.X), y, glyph.fullRect, color);
+            Gdiplus::RectF dst = Gdiplus::RectF(currentX + (glyph.fullRect.X - glyph.tightRect.X), y, glyph.fullRect.Width, glyph.fullRect.Height);
+            canvas.drawImage(*atlas, glyph.fullRect, dst, color);
 
             if (i < text.Length - 1) {
                 for (unsigned int j = 0; j < kerningPairCount; j++) {

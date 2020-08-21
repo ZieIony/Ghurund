@@ -11,14 +11,12 @@ namespace Ghurund::UI {
 
         String text;
         unsigned int textColor = 0xde000000;
-        Font* font;
+        Font* font = nullptr;
         Paint paint;
 
     public:
 
-        TextView(Font *font) {
-            font->addReference();
-            this->font = font;
+        TextView() {
             text = "text";
         }
 
@@ -28,7 +26,8 @@ namespace Ghurund::UI {
         }
 
         ~TextView() {
-            font->release();
+            if (font)
+                font->release();
         }
 
         const String& getText() const {

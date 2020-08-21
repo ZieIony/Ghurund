@@ -44,16 +44,16 @@ namespace Ghurund {
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
-        Event<Window> onCreated;
-        Event<Window> onSizeChanged;
-        Event<Window> onPaint;
-        Event<Window> onDestroy;
+        Event<Window> onCreated = Event<Window>(*this);
+        Event<Window> onSizeChanged = Event<Window>(*this);
+        Event<Window> onPaint = Event<Window>(*this);
+        Event<Window> onDestroy = Event<Window>(*this);
 
-        Event<Window, KeyEventArgs> onKeyEvent;
-        Event<Window, MouseButtonEventArgs> onMouseButtonEvent;
+        Event<Window, KeyEventArgs> onKeyEvent = Event<Window, KeyEventArgs>(*this);
+        Event<Window, MouseButtonEventArgs> onMouseButtonEvent = Event<Window, MouseButtonEventArgs>(*this);
         POINT prevMousePos = {-1, -1};
-        Event<Window, MouseMotionEventArgs> onMouseMotionEvent;
-        Event<Window, MouseWheelEventArgs> onMouseWheelEvent;
+        Event<Window, MouseMotionEventArgs> onMouseMotionEvent = Event<Window, MouseMotionEventArgs>(*this);
+        Event<Window, MouseWheelEventArgs> onMouseWheelEvent = Event<Window, MouseWheelEventArgs>(*this);
 
         FunctionQueue* functionQueue = nullptr;
 
@@ -154,6 +154,8 @@ namespace Ghurund {
                 int yExtra = rc.bottom - rc.top - rcClient.bottom;
 
                 SetWindowPos(handle, HWND_TOPMOST, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
+
+                OnParametersChanged();
             }
         }
 

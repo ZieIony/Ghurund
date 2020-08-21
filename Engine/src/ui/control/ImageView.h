@@ -13,31 +13,55 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(ImageView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ImageView>();
 
-        Gdiplus::Image* image = nullptr;
+        GdiImage* image = nullptr;
+        unsigned int tint = 0;
 
     public:
-        ImageView(Gdiplus::Image* image = nullptr) {
-            this->image = image;
+        ImageView(GdiImage* image = nullptr) {
+            if (image) {
+                image->addReference();
+                this->image = image;
+            }
         }
 
         ~ImageView() {
-            delete image;
+            if (image)
+                image->release();
         }
 
-        inline void setImage(Gdiplus::Image* image) {
-            this->image = image;
+        inline void setImage(GdiImage* image) {
+            setPointer(this->image, image);
         }
 
-        inline Gdiplus::Image* getImage() {
+        inline GdiImage* getImage() {
             return image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) Gdiplus::Image* Image;
+        __declspec(property(get = getImage, put = setImage)) GdiImage* Image;
 
-        Paint paint;
+        inline void setTint(unsigned int color) {
+            this->tint = color;
+        }
+
+        inline unsigned int getTint() {
+            return tint;
+        }
+
+        __declspec(property(get = getTint, put = setTint)) unsigned int Tint;
+
+        virtual void measure();
+
         virtual void draw(Canvas& canvas) override {
-            if (image)
-                canvas.drawImage(*image, 0, 0, Size.x, Size.y);
+            if (!image)
+                return;
+
+            auto src = Gdiplus::RectF(0, 0, (float)image->image->GetWidth(), (float)image->image->GetHeight());
+            auto dst = Gdiplus::RectF(0, 0, Size.x, Size.y);
+            if (tint) {
+                canvas.drawImage(*image, src, dst, tint);
+            } else {
+                canvas.drawImage(*image, src, dst);
+            }
         }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)

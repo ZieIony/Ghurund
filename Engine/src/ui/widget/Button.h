@@ -33,7 +33,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        inline Padding const& getPadding() const {
+        inline Padding& getPadding() const {
             return container->Padding;
         }
 

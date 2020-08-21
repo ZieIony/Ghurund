@@ -203,7 +203,9 @@ namespace Ghurund {
 
         source = nullptr;
         parameters = nullptr;
+#ifdef _DEBUG
         reported = nullptr;
+#endif
 
         __super::invalidate();
     }

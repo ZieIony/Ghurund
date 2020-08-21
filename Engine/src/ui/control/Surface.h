@@ -20,6 +20,8 @@ namespace Ghurund::UI {
         }
 
         virtual void draw(Canvas& canvas) {
+            if (!color)
+                return;
             paint.Color = color;
             canvas.fillRect(0, 0, size.x, size.y, paint);
         }

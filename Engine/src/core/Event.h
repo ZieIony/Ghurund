@@ -11,8 +11,11 @@ namespace Ghurund {
     class Event<SenderType> {
     private:
         List<std::function<void(SenderType& sender)>> listeners;
+        SenderType& owner;
 
     public:
+        Event(SenderType& owner):owner(owner) {}
+
         void add(std::function<void(SenderType& sender)> listener) {
             listeners.add(listener);
         }
@@ -21,13 +24,13 @@ namespace Ghurund {
             listeners.clear();
         }
 
-        void invoke(SenderType& sender) {
+        void invoke() {
             for (auto listener : listeners)
-                listener(sender);
+                listener(owner);
         }
 
-        inline void operator()(SenderType& sender) {
-            invoke(sender);
+        inline void operator()() {
+            invoke();
         }
     };
 
@@ -35,8 +38,11 @@ namespace Ghurund {
     class Event<SenderType, Type> {
     private:
         List<std::function<void(SenderType& sender, const Type& args)>> listeners;
+        SenderType& owner;
 
     public:
+        Event(SenderType& owner):owner(owner) {}
+    
         void add(std::function<void(SenderType& sender, const Type& args)> listener) {
             listeners.add(listener);
         }
@@ -45,13 +51,13 @@ namespace Ghurund {
             listeners.clear();
         }
 
-        void invoke(SenderType& sender, const Type& args) {
+        void invoke(const Type& args) {
             for (auto listener : listeners)
-                listener(sender, args);
+                listener(owner, args);
         }
 
-        inline void operator()(SenderType& sender, const Type& args) {
-            invoke(sender, args);
+        inline void operator()(const Type& args) {
+            invoke(args);
         }
     };
 }

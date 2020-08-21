@@ -6,9 +6,10 @@
 #include "input/Mouse.h"
 #include "ui/Canvas.h"
 #include "ui/PreferredSize.h"
+#include "ui/Cursor.h"
 
 namespace Ghurund::UI {
-    class Control: public Pointer, public EventConsumer {
+    class Control : public Pointer, public EventConsumer {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Control);
 
@@ -22,9 +23,11 @@ namespace Ghurund::UI {
 
         bool visible = true;
         bool enabled = true;
-        Event<Control> onStateChanged;
+        bool hovered = false;
+        Event<Control> onStateChanged = Event<Control>(*this);
 
         tchar* name = nullptr;
+        Cursor cursor = Cursor::ARROW;
 
     public:
         ~Control() {
@@ -47,7 +50,7 @@ namespace Ghurund::UI {
 
         inline void setVisible(bool visible) {
             this->visible = visible;
-            onStateChanged(*this);
+            onStateChanged();
         }
 
         __declspec(property(get = isVisible, put = setVisible)) bool Visible;
@@ -58,10 +61,28 @@ namespace Ghurund::UI {
 
         inline void setEnabled(bool enabled) {
             this->enabled = enabled;
-            onStateChanged(*this);
+            onStateChanged();
         }
 
         __declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
+
+        inline bool isHovered() const {
+            return hovered;
+        }
+
+        __declspec(property(get = isHovered)) bool Hovered;
+
+        inline const Cursor& getCursor() const {
+            return cursor;
+        }
+
+        inline void setCursor(const Cursor& cursor) {
+            this->cursor = cursor;
+            if (hovered)
+                this->cursor.set();
+        }
+
+        __declspec(property(get = getCursor, put = setCursor)) const Cursor& Cursor;
 
         inline const XMFLOAT2& getPosition() const {
             return position;
@@ -135,6 +156,20 @@ namespace Ghurund::UI {
         using EventConsumer::dispatchMouseMotionEvent;
 
         using EventConsumer::dispatchMouseWheelEvent;
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            bool in = event.Position.x >= 0 && event.Position.x <= Size.x &&
+                event.Position.y >= 0 && event.Position.y <= Size.y;
+            if (in && !hovered) {
+                hovered = true;
+                onStateChanged();
+                cursor.set();
+            } else if (!in && hovered) {
+                hovered = false;
+                onStateChanged();
+            }
+            return false;
+        }
 
         void setParent(Control* parent) {
             this->parent = parent;

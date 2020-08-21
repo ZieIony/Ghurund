@@ -55,7 +55,7 @@ namespace Ghurund {
 
         virtual void initParameters(ParameterManager& parameterManager) override {
             shader->initParameters(parameterManager);
-            OnParametersChanged(*this);
+            OnParametersChanged();
         }
 
         virtual void updateParameters() override {

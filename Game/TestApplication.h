@@ -4,6 +4,7 @@
 #include "ui/control/stack.h"
 #include "ui/control/row.h"
 #include "ui/widget/TextButton.h"
+#include "ui/widget/ImageButton.h"
 #include "ui/control/Space.h"
 #include <ui\layout\LayoutInflater.h>
 #include "ui/RootView.h"
@@ -81,7 +82,7 @@ public:
         ASCIIString jsonString((char*)file.Data, file.Size);*/
 
         
-        Gdiplus::Image* image = Gdiplus::Image::FromFile(L"D:/projekty/GuideToCustomViews/images/landscapedrawable.png");
+        ScopedPointer<GdiImage> image = ghnew GdiImage(_T("D:/projekty/GuideToCustomViews/images/landscapedrawable.png"));
         items.add(ghnew StringObject("Foxy fox", "Jumps over big fence"));
         items.add(ghnew StringObject("Ósemka", _T("¹¿ŸæóÊ123-~,.;")));
         items.add(ghnew StringObject("Strawberry", "Cherry and a rainbow"));
@@ -100,13 +101,23 @@ public:
         listView->addAdapter(ghnew StringItemAdapter(theme, image));
 
         ScopedPointer<Row> row = ghnew Row();
-        ScopedPointer<Stack> stack = ghnew Stack();
+        ScopedPointer<Column> column = ghnew Column();
         ScopedPointer<ImageView> iv = ghnew ImageView();
         iv->PreferredSize.width = PreferredSize::Width(200);
         iv->PreferredSize.height = PreferredSize::Height(200);
-        iv->Image = font->atlas;
-        stack->Children.add(iv);
-        row->Children.add({ listView, stack });
+        iv->Image = image;
+
+        ScopedPointer<CheckBox> checkBox = ghnew CheckBox();
+        checkBox->OnStateChanged.add(theme->getCheckBoxStateHandler());
+        ScopedPointer<RadioButton> radioButton = ghnew RadioButton();
+        radioButton->OnStateChanged.add(theme->getRadioButtonStateHandler());
+        ScopedPointer<ImageButton> imageButton = ghnew ImageButton();
+        ScopedPointer<GdiImage> saveIcon = ghnew GdiImage(L"D:/projekty/GhurundEngine12/icons/icon save 32.png");
+        imageButton->Image = saveIcon;
+        imageButton->OnStateChanged.add(theme->getImageButtonStateHandler());
+        column->Children.add({ iv, checkBox, radioButton, imageButton });
+
+        row->Children.add({ listView, column });
         rootView->Child = row;// inflater.load(jsonString);
         
         Window.OnSizeChanged.add([this](Ghurund::Window& window) {

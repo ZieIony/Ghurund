@@ -9,10 +9,7 @@ namespace Gdiplus {
 #include "Common.h"
 #include "core/string/String.h"
 #include "core/Pointer.h"
-
-#include <algorithm>
-#include <objidl.h>
-#include <gdiplus.h>
+#include "GdiImage.h"
 
 namespace Ghurund::UI {
     class Canvas;
@@ -37,6 +34,8 @@ namespace Ghurund::UI {
         unsigned int kerningPairCount;
         KERNINGPAIR* kerningPairs;
 
+        GdiImage* atlas = nullptr;
+
         void makeAtlas(const tchar* characters);
 
         inline void initKerning(HDC context) {
@@ -52,12 +51,12 @@ namespace Ghurund::UI {
         HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
 
     public:
-        Gdiplus::Bitmap* atlas;
-
         Font(const String& family, float size, unsigned int weight = 400, bool italic = false, const tchar* supportedCharacters = nullptr);
 
         ~Font() {
             delete kerningPairs;
+            if (atlas)
+                atlas->release();
         }
 
         long getAscent() const {
