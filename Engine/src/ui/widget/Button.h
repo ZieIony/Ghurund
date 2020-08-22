@@ -80,6 +80,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBorderThickness, put = setBorderThickness)) float BorderThickness;
 
-        virtual void measure();
+        virtual void onMeasure() override;
     };
 }

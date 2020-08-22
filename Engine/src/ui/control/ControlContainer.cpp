@@ -1,7 +1,7 @@
 #include "ControlContainer.h"
 
 namespace Ghurund::UI {
-    void ControlContainer::measure() {
+    void ControlContainer::onMeasure() {
         if (child)
             child->measure();
 

@@ -1,7 +1,7 @@
 #include "PaddingContainer.h"
 
 namespace Ghurund::UI {
-    void PaddingContainer::measure() {
+    void PaddingContainer::onMeasure() {
         if (Child) {
             if (PreferredSize.width == PreferredSize::Width::WRAP || PreferredSize.width == PreferredSize::Width::FILL) {
                 Child->PreferredSize.width = PreferredSize.width;

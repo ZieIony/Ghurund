@@ -25,13 +25,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
 
-        virtual void measure() override {
-            __super::measure();
+        virtual void onMeasure() override {
+            __super::onMeasure();
             measureMaxWidth();
             measureMaxHeight();
         }
 
-        virtual void layout(float x, float y, float width, float height) override;
+        virtual void onLayout(float x, float y, float width, float height) override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Stack>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)

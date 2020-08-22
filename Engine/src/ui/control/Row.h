@@ -25,9 +25,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
    
-        virtual void measure();
+        virtual void onMeasure() override;
 
-        virtual void layout(float x, float y, float width, float height) override;
+        virtual void onLayout(float x, float y, float width, float height) override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Row>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)

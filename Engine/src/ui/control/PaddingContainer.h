@@ -18,10 +18,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPadding)) Padding& Padding;
 
-        virtual void measure();
+        virtual void onMeasure() override;
 
-        void layout(float x, float y, float width, float height) {
-            Control::layout(x, y, width, height);
+        virtual void onLayout(float x, float y, float width, float height) override {
             if (Child)
                 Child->layout(padding.left, padding.top, width - padding.left - padding.right, height - padding.top - padding.bottom);
         }

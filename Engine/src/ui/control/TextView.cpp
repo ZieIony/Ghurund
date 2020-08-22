@@ -1,7 +1,7 @@
 #include "TextView.h"
 
 namespace Ghurund::UI {
-    void TextView::measure() {
+    void TextView::onMeasure() {
         float MAX_SIZE = 32768.0f;
 
         if (preferredSize.width == PreferredSize::Width::WRAP) {

@@ -45,8 +45,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
 
-        virtual void layout(float x, float y, float width, float height) override {
-            __super::layout(x, y, width, height);
+        virtual void onLayout(float x, float y, float width, float height) override {
+            __super::onLayout(x, y, width, height);
             updatePath();
         }
 

@@ -1,9 +1,7 @@
 #include "Stack.h"
 
 namespace Ghurund::UI {
-    void Stack::layout(float x, float y, float width, float height) {
-        __super::layout(x, y, width, height);
-
+    void Stack::onLayout(float x, float y, float width, float height) {
         for (Control* c : Children) {
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {

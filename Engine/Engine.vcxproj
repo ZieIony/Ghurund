@@ -269,6 +269,8 @@
     <ClInclude Include="src\ui\control\Control.h" />
     <ClInclude Include="src\ui\control\ControlContainer.h" />
     <ClInclude Include="src\ui\control\ItemAdapter.h" />
+    <ClInclude Include="src\ui\layout\Layout.h" />
+    <ClInclude Include="src\ui\layout\LayoutManager.h" />
     <ClInclude Include="src\ui\control\ListView.h" />
     <ClInclude Include="src\ui\control\PaddingContainer.h" />
     <ClInclude Include="src\ui\control\Row.h" />

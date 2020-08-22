@@ -60,9 +60,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFont, put = setFont)) Font* Font;
 
-        virtual void measure();
+        virtual void onMeasure() override;
 
-        virtual void draw(Canvas& canvas)override;
+        virtual void draw(Canvas& canvas) override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, CLASS_NAME)
             .withSupertype(__super::TYPE);

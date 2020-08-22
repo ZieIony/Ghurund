@@ -49,7 +49,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTint, put = setTint)) unsigned int Tint;
 
-        virtual void measure();
+        virtual void onMeasure() override;
 
         virtual void draw(Canvas& canvas) override {
             if (!image)

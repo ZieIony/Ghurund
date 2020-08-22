@@ -20,8 +20,7 @@ namespace Ghurund::UI {
             canvas.restore();
         }
 
-        void layout(float x, float y, float width, float height) {
-            Control::layout(x, y, width, height);
+        virtual void onLayout(float x, float y, float width, float height) override {
             if (Child)
                 Child->layout(0, 0, width, Child->MeasuredSize.y);
         }

@@ -1,7 +1,7 @@
 #include "Column.h"
 
 namespace Ghurund::UI {
-    void Column::measure() {
+    void Column::onMeasure() {
         contentHeight = 0.0f;
         spreadCount = 0;
         for (Control* c : Children) {
@@ -26,9 +26,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void Column::layout(float x, float y, float width, float height) {
-        __super::layout(x, y, width, height);
-
+    void Column::onLayout(float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, height - contentHeight);
         float currentY = 0.0f;
         if (gravity.vertical == Gravity::Vertical::TOP || spreadCount > 0) {

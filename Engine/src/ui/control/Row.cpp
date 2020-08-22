@@ -1,7 +1,7 @@
 #include "Row.h"
 
 namespace Ghurund::UI {
-    void Row::measure() {
+    void Row::onMeasure() {
         contentWidth = 0.0f;
         spreadCount = 0;
         for (Control* c : Children) {
@@ -28,9 +28,7 @@ namespace Ghurund::UI {
         measureMaxHeight();
     }
 
-    void Row::layout(float x, float y, float width, float height) {
-        __super::layout(x, y, width, height);
-        
+    void Row::onLayout(float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, width - contentWidth);
         float currentX;
         if (gravity.horizontal == Gravity::Horizontal::LEFT || spreadCount > 0) {

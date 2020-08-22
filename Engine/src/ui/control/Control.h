@@ -20,6 +20,7 @@ namespace Ghurund::UI {
         PreferredSize preferredSize;   // what the user wants
         XMFLOAT2 measuredSize;  // what the view wants
         XMFLOAT2 size = { 0, 0 };  // what was finally mediated
+        bool needsLayout = true;
 
         bool visible = true;
         bool enabled = true;
@@ -187,11 +188,17 @@ namespace Ghurund::UI {
         }
 
         virtual void invalidate() {
+            needsLayout = true;
             if (parent)
                 parent->invalidate();
         }
 
-        virtual void measure() {
+        inline void measure() {
+            if (needsLayout || (float)preferredSize.width >= 0 || (float)preferredSize.height >= 0)
+                onMeasure();
+        }
+
+        virtual void onMeasure() {
             if (preferredSize.width == PreferredSize::Width::WRAP) {
                 measuredSize.x = minSize.x;
             } else if (preferredSize.width != PreferredSize::Width::FILL) {
@@ -205,14 +212,18 @@ namespace Ghurund::UI {
             }
         }
 
-        virtual void layout(float x, float y, float width, float height) {
-            //_ASSERT_EXPR(width > 0, "Invalid width.\n");
-            //_ASSERT_EXPR(height > 0, "Invalid height.\n");
+        inline void layout(float x, float y, float width, float height) {
             position.x = x;
             position.y = y;
-            size.x = width;
-            size.y = height;
+            if (needsLayout || size.x != width || size.y != height) {
+                size.x = width;
+                size.y = height;
+                needsLayout = false;
+                onLayout(x, y, width, height);
+            }
         }
+
+        virtual void onLayout(float x, float y, float width, float height) {}
 
         virtual void draw(Canvas& canvas) = 0;
 

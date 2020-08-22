@@ -50,13 +50,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChildren)) ChildrenList& Children;
 
-        virtual void measure() override {
+        virtual void onMeasure() override {
             for (Control* c : Children)
                 c->measure();
-        }
-
-        virtual void layout(float x, float y, float width, float height) = 0 {
-            __super::layout(x, y, width, height);
         }
 
         virtual void draw(Canvas& canvas) override;

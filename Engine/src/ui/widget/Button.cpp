@@ -42,11 +42,11 @@ namespace Ghurund::UI {
         background->release();
     }
     
-    void Button::measure() {
+    void Button::onMeasure() {
         container->PreferredSize = PreferredSize;
         stack->PreferredSize = PreferredSize;
         stack2->PreferredSize = PreferredSize;
         clip->PreferredSize = PreferredSize;
-        __super::measure();
+        __super::onMeasure();
     }
 }

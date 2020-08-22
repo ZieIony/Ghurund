@@ -2,7 +2,7 @@
 #include <core\ScopedPointer.h>
 
 namespace Ghurund::UI {
-    void ImageView::measure() {
+    void ImageView::onMeasure() {
         if (preferredSize.width == PreferredSize::Width::WRAP) {
             measuredSize.x = std::max(minSize.x, image ? image->Width : 0.0f);
         } else if (preferredSize.width != PreferredSize::Width::FILL) {

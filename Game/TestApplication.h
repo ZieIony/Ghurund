@@ -23,8 +23,8 @@ private:
     TextButton *button, *button2;
     GdiGui gui;
 
-    List<StringObject*> items;
-    ListView<StringObject*>* listView;
+    List<void*> items;
+    ListView<void*>* listView;
 
     Font* font;
     ::Material::Light* theme;
@@ -83,9 +83,11 @@ public:
 
         
         ScopedPointer<GdiImage> image = ghnew GdiImage(_T("D:/projekty/GuideToCustomViews/images/landscapedrawable.png"));
+        items.add(ghnew String("Character tests"));
         items.add(ghnew StringObject("Foxy fox", "Jumps over big fence"));
         items.add(ghnew StringObject("Ósemka", _T("¹¿ŸæóÊ123-~,.;")));
         items.add(ghnew StringObject("Strawberry", "Cherry and a rainbow"));
+        items.add(ghnew String("Fruits"));
         items.add(ghnew StringObject("Melon", "Best fruit ever"));
         items.add(ghnew StringObject("Blueberry", "Greenberry"));
         items.add(ghnew StringObject("Watermelon", "Noice"));
@@ -96,8 +98,9 @@ public:
         items.add(ghnew StringObject("Banana", "Mana mana"));
         items.add(ghnew StringObject("Beer", "Dark, with honey"));
         items.add(ghnew StringObject("Lemon", "Tree"));
-        listView = ghnew ListView<StringObject*>();
+        listView = ghnew ListView<void*>();
         listView->items = items;
+        listView->addAdapter(ghnew StringHeaderAdapter());
         listView->addAdapter(ghnew StringItemAdapter(theme, image));
 
         ScopedPointer<Row> row = ghnew Row();

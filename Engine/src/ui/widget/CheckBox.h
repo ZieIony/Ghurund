@@ -84,13 +84,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFont, put = setFont)) Font* Font;
 
-        virtual void measure() {
+        virtual void onMeasure() override {
             row->PreferredSize = PreferredSize;
-            __super::measure();
-        }
-
-        virtual void layout(float x, float y, float w, float h)override {
-            __super::layout(x, y, w, h);
+            __super::onMeasure();
         }
     };
 

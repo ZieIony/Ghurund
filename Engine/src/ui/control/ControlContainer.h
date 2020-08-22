@@ -33,10 +33,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChild, put = setChild)) Control* Child;
 
-        virtual void measure() override;
+        virtual void onMeasure() override;
 
-        void layout(float x, float y, float width, float height) {
-            __super::layout(x, y, width, height);
+        virtual void onLayout(float x, float y, float width, float height) override {
             if (child)
                 child->layout(0, 0, width, height);
         }

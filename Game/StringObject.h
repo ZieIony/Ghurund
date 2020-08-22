@@ -28,6 +28,9 @@ public:
     }
 };
 
+class StringObjectHeader :public TextView {
+};
+
 class StringObjectRow :public Stack {
 private:
     TextView* tv;
@@ -138,14 +141,25 @@ public:
 
 };
 
+class StringHeaderAdapter :public ItemAdapter<String*> {
+public:
+    virtual Control* makeControl() const override {
+        return ghnew StringObjectHeader();
+    }
+
+    virtual void bind(String* const& obj, Control& control) const override {
+        StringObjectHeader& sor = (StringObjectHeader&)control;
+        sor.Text = *obj;
+    }
+};
+
 class StringItemAdapter :public ItemAdapter<StringObject*> {
 private:
     ::Material::Theme* theme;
     GdiImage* image;
 
 public:
-    StringItemAdapter(::Material::Theme* theme, GdiImage* image):theme(theme), image(image) {
-    }
+    StringItemAdapter(::Material::Theme* theme, GdiImage* image):theme(theme), image(image) {}
 
     virtual Control* makeControl() const override {
         return ghnew StringObjectRow(theme);
