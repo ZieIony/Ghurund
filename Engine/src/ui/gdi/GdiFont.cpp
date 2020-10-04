@@ -12,6 +12,16 @@ namespace Ghurund::UI {
         makeAtlas(supportedCharacters ? supportedCharacters : DEFAULT_CHARACTER_SET);
     }
 
+    Font::Font(const String& fileName, const String& family, float size, unsigned int weight, bool italic, const tchar* supportedCharacters) {
+        AddFontResourceEx(fileName, FR_PRIVATE, nullptr);
+        this->size = size;
+        this->familyName = family;
+        this->weight = weight;
+        this->italic = italic;
+        makeAtlas(supportedCharacters ? supportedCharacters : DEFAULT_CHARACTER_SET);
+        RemoveFontResourceEx(fileName, FR_PRIVATE, nullptr);
+    }
+
     void Font::measureText(const String& text, float width, Gdiplus::SizeF* outSize) const {
         float measuredWidth = 0;
         for (size_t i = 0; i < text.Length; i++) {
@@ -41,7 +51,7 @@ namespace Ghurund::UI {
         HBITMAP hbmPrev = static_cast<HBITMAP>(SelectObject(hdcBmp, bmp));
 
         float lfHeight = -size * GetDeviceCaps(hdcScreen, LOGPIXELSY) / 72.0f;
-        hf = CreateFont(lfHeight, 0, 0, 0, weight, italic ? TRUE : FALSE, 0, 0, 0, 0, 0, 0, 0, familyName.getData());
+        hf = CreateFont(lfHeight, 0, 0, 0, weight, italic ? TRUE : FALSE, 0, 0, 0, 0, 0, CLEARTYPE_QUALITY, 0, familyName.getData());
         SelectObject(hdcBmp, hf);
 
         GetTextMetrics(hdcBmp, &tm);
@@ -149,5 +159,32 @@ namespace Ghurund::UI {
             }
             currentX += glyph.tightRect.Width;
         }
+    }
+
+    TextSelection Font::findSelection(const String& text, float x) const {
+        float currentX = 0;
+        for (size_t i = 0; i < text.Length; i++) {
+            tchar c = text.get(i);
+            if (!glyphs.contains(c))
+                continue;
+
+            Glyph& glyph = glyphs.get(c);
+
+            if (x < currentX + glyph.tightRect.Width / 2)
+                return { i, currentX };
+
+            if (i < text.Length - 1) {
+                for (unsigned int j = 0; j < kerningPairCount; j++) {
+                    tchar c2 = text.get(i + 1);
+                    KERNINGPAIR pair = kerningPairs[j];
+                    if (pair.wFirst == c && pair.wSecond == c2) {
+                        currentX += pair.iKernAmount;
+                        break;
+                    }
+                }
+            }
+            currentX += glyph.tightRect.Width;
+        }
+        return { text.Length,currentX };
     }
 }

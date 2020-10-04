@@ -19,7 +19,7 @@ namespace Ghurund {
 		this->window = window;
 	}
 
-	bool CameraController::onMouseButtonEvent(const MouseButtonEventArgs& event) {
+	bool CameraController::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
 		if (event.Action == MouseAction::DOWN) {
 			pressed = true;
 			pressedButton = event.Button;
@@ -35,7 +35,7 @@ namespace Ghurund {
 		return false;
 	}
 
-	bool CameraController::onMouseMotionEvent(const MouseMotionEventArgs& event) {
+	bool CameraController::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
 		if (pressed) {
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
@@ -55,7 +55,7 @@ namespace Ghurund {
 		return pressed;
 	}
 
-	bool CameraController::onMouseWheelEvent(const MouseWheelEventArgs& event) {
+	bool CameraController::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
 		if (camera.getDistance() > event.Delta) {
 			camera.zoom((float)event.Delta);
 		} else {

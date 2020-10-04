@@ -1,25 +1,41 @@
 #pragma once
 
-#include "ui/control/Button.h"
-#include "ui/control/Column.h"
+#include "Widget.h"
+#include "ui/control/LinearLayout.h"
+#include "ui/widget/button/ImageButton.h"
 
 namespace Ghurund::UI {
-    class VerticalScrollBar:public Column {
+    class VerticalScrollBarLayout:public Layout {
     private:
-        Button* topButton;
-        Button* barButton;
-        Button* bottomButton;
+        Theme& theme;
+        ImageButton* topButton = nullptr;
+        Button* barButton = nullptr;
+        ImageButton* bottomButton = nullptr;
+        VerticalLayout* verticalLayout = nullptr;
+        GdiImage* arrowUp = nullptr;
+        GdiImage* arrowDown = nullptr;
 
     public:
-        VerticalScrollBar() {
-            topButton = ghnew Button();
-            topButton->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height::WRAP);
-            barButton = ghnew Button();
-            barButton->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height(100));
-            bottomButton = ghnew Button();
-            bottomButton->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height::WRAP);
+        VerticalScrollBarLayout(Theme& theme):theme(theme) {}
 
-            Children.add({ topButton, barButton, bottomButton });
+        virtual void init() override;
+
+        ~VerticalScrollBarLayout() {
+            if (topButton)
+                topButton->release();
+            if (barButton)
+                barButton->release();
+            if (bottomButton)
+                bottomButton->release();
+            if (verticalLayout)
+                verticalLayout->release();
+        }
+    };
+
+    class VerticalScrollBar:public Widget2<VerticalScrollBarLayout> {
+    public:
+        VerticalScrollBar(VerticalScrollBarLayout* layout):Widget2(layout) {
+            setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
         }
     };
 }

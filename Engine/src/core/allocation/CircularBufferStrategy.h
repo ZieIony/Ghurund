@@ -33,7 +33,7 @@ namespace Ghurund {
                 const Allocation& a = allocations[i];
                 if (a.address == address) {
                     allocated -= a.size;
-                    allocations.removeAtKeepOrder(i);
+                    allocations.removeAt(i);
                     if (allocations.Size > 0) {
                         start = allocations[0].address;
                     } else {

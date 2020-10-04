@@ -4,16 +4,18 @@
 #include "ui/Canvas.h"
 #include "GdiPath.h"
 #include "GdiImage.h"
+#include "ui/DrawingCache.h"
 
 #include <uxtheme.h>
 
 #pragma comment (lib, "UxTheme.lib")
 
 namespace Ghurund::UI {
-    class GdiCanvas : public Canvas {
+    class GdiCanvas: public Canvas {
     private:
         PAINTSTRUCT ps = {};
         HWND hwnd = {};
+        Gdiplus::Bitmap* bitmap = nullptr;
         HPAINTBUFFER hbuff;
         Gdiplus::Graphics* graphics = nullptr;
         Gdiplus::Color color;
@@ -24,10 +26,8 @@ namespace Ghurund::UI {
         Gdiplus::ColorMatrix colorMatrix;
         Gdiplus::Matrix* matrix;
 
-    public:
-        GdiCanvas(HWND hwnd) {
+        GdiCanvas() {
             BufferedPaintInit();
-            this->hwnd = hwnd;
             pen = new Gdiplus::Pen(Gdiplus::Color());
             brush = new Gdiplus::SolidBrush(Gdiplus::Color());
             colorMatrixEffect = new Gdiplus::ColorMatrixEffect();
@@ -41,6 +41,15 @@ namespace Ghurund::UI {
             matrix = new Gdiplus::Matrix();
         }
 
+    public:
+        GdiCanvas(HWND hwnd):GdiCanvas() {
+            this->hwnd = hwnd;
+        }
+
+        GdiCanvas(Gdiplus::Bitmap* bitmap):GdiCanvas() {
+            this->bitmap = bitmap;
+        }
+
         virtual ~GdiCanvas() {
             BufferedPaintUnInit();
             delete matrix;
@@ -50,19 +59,25 @@ namespace Ghurund::UI {
         }
 
         void beginPaint() {
-            HDC hdc = BeginPaint(hwnd, &ps);
-            RECT rc;
-            GetClientRect(hwnd, &rc);
-            HDC memdc;
-            hbuff = BeginBufferedPaint(hdc, &rc, BPBF_COMPATIBLEBITMAP, NULL, &memdc);
-            graphics = Gdiplus::Graphics::FromHDC(memdc);
+            if (bitmap) {
+                graphics = Gdiplus::Graphics::FromImage(bitmap);
+            }else{
+                HDC hdc = BeginPaint(hwnd, &ps);
+                RECT rc;
+                GetClientRect(hwnd, &rc);
+                HDC memdc;
+                hbuff = BeginBufferedPaint(hdc, &rc, BPBF_COMPATIBLEBITMAP, NULL, &memdc);
+                graphics = Gdiplus::Graphics::FromHDC(memdc);
+            }
             graphics->SetSmoothingMode(Gdiplus::SmoothingMode::SmoothingModeAntiAlias);
             graphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
         }
 
         void endPaint() {
-            EndBufferedPaint(hbuff, TRUE);
-            EndPaint(hwnd, &ps);
+            if (!bitmap) {
+                EndBufferedPaint(hbuff, TRUE);
+                EndPaint(hwnd, &ps);
+            }
             delete graphics;
             graphics = nullptr;
         }
@@ -76,13 +91,13 @@ namespace Ghurund::UI {
             color.SetValue(paint.Color);
             pen->SetWidth(paint.Thickness);
             pen->SetColor(color);
-            graphics->DrawRectangle(pen, Gdiplus::RectF(x, y, width, height));
+            graphics->DrawRectangle(pen, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
         }
 
         void fillRect(float x, float y, float width, float height, const Paint& paint) {
             color.SetValue(paint.Color);
             brush->SetColor(color);
-            graphics->FillRectangle(brush, Gdiplus::RectF(x, y, width, height));
+            graphics->FillRectangle(brush, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
         }
 
         virtual void drawPath(const GdiPath& path, const Paint& paint) {
@@ -97,26 +112,26 @@ namespace Ghurund::UI {
             pen->SetWidth(paint.Thickness);
             pen->SetColor(color);
             Gdiplus::GraphicsPath path;
-            path.AddLine(Gdiplus::PointF(x1, y1), Gdiplus::PointF(x2, y2));
+            path.AddLine(Gdiplus::PointF(x1 - 0.5f, y1 - 0.5f), Gdiplus::PointF(x2 - 0.5f, y2 - 0.5f));
             graphics->DrawPath(pen, &path);
         }
 
-        void drawText(const String& text, float x, float y, float width, float height, const Ghurund::UI::Font& font, const Paint& paint) {
-            font.drawText(*this, text, x, y, paint.Color);
-        }
-
-        void drawImage(GdiImage& image, float x, float y, float width, float height) {
+        void drawImage(const GdiImage& image, float x, float y, float width, float height) {
             graphics->DrawImage(image.image, x, y, width, height);
         }
 
-        virtual void drawImage(GdiImage& image, float x, float y, float width, float height, int32_t tintColor);
+        virtual void drawImage(const GdiImage& image, float x, float y, float width, float height, int32_t tintColor);
 
-        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst);
+        virtual void drawImage(const GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst);
 
-        virtual void drawImage(GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor);
+        virtual void drawImage(const GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor);
 
         void translate(float x, float y) {
             graphics->TranslateTransform(x, y);
+        }
+
+        virtual void transform(Gdiplus::Matrix& matrix) {
+            graphics->MultiplyTransform(&matrix);
         }
 
         void save() {
@@ -126,17 +141,31 @@ namespace Ghurund::UI {
         void restore() {
             Gdiplus::GraphicsState state = states.get(states.Size - 1);
             graphics->Restore(state);
-            states.removeAtKeepOrder(states.Size - 1);
+            states.removeAt(states.Size - 1);
         }
 
         void clipPath(const GdiPath& path) {
-            graphics->SetClip(path.path, Gdiplus::CombineModeReplace);
+            graphics->SetClip(path.path, Gdiplus::CombineModeIntersect);
         }
 
         void clipRect(float x, float y, float width, float height) {
             Gdiplus::GraphicsPath path;
-            path.AddRectangle(Gdiplus::RectF(x, y, width, height));
-            graphics->SetClip(&path, Gdiplus::CombineModeReplace);
+            path.AddRectangle(Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
+            graphics->SetClip(&path, Gdiplus::CombineModeIntersect);
         }
+
+        virtual Canvas* beginCache(unsigned int width, unsigned int height) override {
+            Gdiplus::Bitmap* bitmap = new Gdiplus::Bitmap(width, height, graphics);
+            Canvas* c = ghnew GdiCanvas(bitmap);
+            c->beginPaint();
+            return c;
+        }
+
+        virtual DrawingCache* endCache() override;
+
+        void drawCachedBitmap(Gdiplus::CachedBitmap* bitmap, unsigned int x, unsigned int y) {
+            graphics->DrawCachedBitmap(bitmap, x, y);
+        }
+
     };
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/layout/LayoutInflater.h"
 #include "ui/gdi/GdiPath.h"
 
 namespace Ghurund::UI {
@@ -19,8 +18,8 @@ namespace Ghurund::UI {
         inline void updatePath() {
             bounds.X = 0;
             bounds.Y = 0;
-            bounds.Width = size.x - 1;
-            bounds.Height = size.y - 1;
+            bounds.Width = size.width - 1;
+            bounds.Height = size.height - 1;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {
@@ -76,7 +75,7 @@ namespace Ghurund::UI {
             updatePath();
         }
 
-        virtual void draw(Canvas& canvas) override {
+        virtual void onDraw(Canvas& canvas) override {
             if (!color || thickness < 0.1f)
                 return;
             paint.setThickness(thickness);
@@ -91,18 +90,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
-
-        inline static Border* inflate(LayoutInflater& inflater, json& json) {
-            Border* border = ghnew Border();
-            if (json.contains("color")) {
-                nlohmann::json color = json["color"];
-                if (color.is_string()) {
-                    std::string colorString = color;
-                    border->color = std::stoul(colorString, nullptr, 16);
-                }
-            }
-            inflater.loadControl(border, json);
-            return border;
-        }
     };
+
+    typedef ScopedPointer<Border> BorderPtr;
 }

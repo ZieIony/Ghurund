@@ -1,43 +1,40 @@
-#include "TestLevel.h"
-#include "MathUtils.h"
+ï»¿#include "MathUtils.h"
 #include "ui/gdi/GdiGui.h"
-#include "ui/control/stack.h"
-#include "ui/control/row.h"
-#include "ui/widget/TextButton.h"
-#include "ui/widget/ImageButton.h"
+#include "ui/control/LinearLayout.h"
+#include "ui/control/LinearLayout.h"
+#include "ui/widget/button/TextButton.h"
+#include "ui/widget/button/ImageButton.h"
 #include "ui/control/Space.h"
-#include <ui\layout\LayoutInflater.h>
 #include "ui/RootView.h"
-#include "ui/control/ListView.h"
-#include "StringObject.h"
+#include "application/Application.h"
+#include "core/ScopedPointer.h"
+#include "ui/widget/menu/MenuItem.h"
+#include "ui/widget/menu/Toolbar.h"
+#include "ui/widget/menu/MenuBar.h"
+#include "ui/widget/tab/TabContainer.h"
+#include "ui/widget/tab/TabContainerStyle.h"
+#include "ui/widget/SplitLayout.h"
+#include "TestRecycler.h"
+#include "LogPanel.h"
+#include "TestControls.h"
+#include "ui/widget/menu/PopupMenu.h"
+#include "TextImageViews.h"
+#include "TestFlowLayouts.h"
 
 #include "MaterialColors.h"
 
+using namespace Ghurund;
+using namespace Ghurund::Editor;
+
 class TestApplication:public Application {
 private:
-    Level* testLevel = nullptr;
     RootView* rootView;
-    Row *row;
     Canvas* canvas;
-    Space *space;
-    TextButton *button, *button2;
     GdiGui gui;
+    LogPanel* logPanel;
 
-    List<void*> items;
-    ListView<void*>* listView;
-
-    Font* font;
-    ::Material::Light* theme;
-
-    std::function<void(Control&)> buttonStateHandler = [&](Control& control) {
-        TextButton& button = (TextButton&)control;
-        if (button.Pressed) {
-            button.setBackgroundColor(theme->color_primary_dark);
-        } else {
-            button.setBackgroundColor(theme->color_primary);
-        }
-        Window.refresh();
-    };
+    ::Material::Theme* theme;
+    ::Material::Theme* menuTheme;
 
 public:
     void onInit() {
@@ -50,117 +47,159 @@ public:
         gui.init();
         canvas = gui.makeCanvas(Window.Handle);
 
-        theme = ghnew::Material::Light();
-        font = ghnew Font("Arial", 36, 400, false);
+        theme = ghnew::Material::Light(0xff0078D7);
+        menuTheme = ghnew::Material::Light(0xff0078D7);
 
-        /*button = ghnew TextBorderButton(*releasedStyle);
-        button->setPreferredSize(80, 28);
-        button->Text = "BUTTON";
-        button->OnStateChanged.add(buttonStateHandler);
-
-        space = ghnew Space();
-        space->PreferredSize = XMFLOAT2(8, MeasuredSize::FILL);
-
-        button2 = ghnew TextBorderButton(*releasedStyle);
-        button2->setPreferredSize(MeasuredSize::WRAP, MeasuredSize::WRAP);
-        button2->Text = "BUTTON 2";
-        button2->OnStateChanged.add(buttonStateHandler);
-
-        row = ghnew Row();
-        row->PreferredSize = XMFLOAT2(MeasuredSize::WRAP, MeasuredSize::WRAP);
-        row->Children.add({ button, space, button2 });
-
-        stack = ghnew Stack();
-        stack->Children.add(row);
-        stack->Gravity = { Gravity::Horizontal::CENTER, Gravity::Vertical::CENTER };*/
-
-        LayoutInflater inflater;
         rootView = ghnew RootView(Window);
 
-        /*File file(_T("D:/projekty/GhurundEngine12/test.layout"));
-        file.read();
-        ASCIIString jsonString((char*)file.Data, file.Size);*/
+        logPanel = ghnew LogPanel(*theme);
+        /*Logger::init(ghnew CallbackLogOutput([this](LogType type, const tchar* log) {
+            logPanel->addLog(type, copyStr(log));
+            logPanel->repaint();
+        }));*/
 
-        
-        ScopedPointer<GdiImage> image = ghnew GdiImage(_T("D:/projekty/GuideToCustomViews/images/landscapedrawable.png"));
-        items.add(ghnew String("Character tests"));
-        items.add(ghnew StringObject("Foxy fox", "Jumps over big fence"));
-        items.add(ghnew StringObject("Ósemka", _T("¹¿ŸæóÊ123-~,.;")));
-        items.add(ghnew StringObject("Strawberry", "Cherry and a rainbow"));
-        items.add(ghnew String("Fruits"));
-        items.add(ghnew StringObject("Melon", "Best fruit ever"));
-        items.add(ghnew StringObject("Blueberry", "Greenberry"));
-        items.add(ghnew StringObject("Watermelon", "Noice"));
-        items.add(ghnew StringObject("Apple", "Android"));
-        items.add(ghnew StringObject("Pear", "Deer"));
-        items.add(ghnew StringObject("Plum", "Splash"));
-        items.add(ghnew StringObject("Orange", "A color or a fruit?"));
-        items.add(ghnew StringObject("Banana", "Mana mana"));
-        items.add(ghnew StringObject("Beer", "Dark, with honey"));
-        items.add(ghnew StringObject("Lemon", "Tree"));
-        listView = ghnew ListView<void*>();
-        listView->items = items;
-        listView->addAdapter(ghnew StringHeaderAdapter());
-        listView->addAdapter(ghnew StringItemAdapter(theme, image));
+        ColorViewPtr redSurface = ghnew ColorView(0xffff0000);
+        SplitLayoutPtr splitLayout = ghnew SplitLayout(Orientation::VERTICAL);
+        splitLayout->Child1 = redSurface;
+        splitLayout->Child2 = logPanel;
 
-        ScopedPointer<Row> row = ghnew Row();
-        ScopedPointer<Column> column = ghnew Column();
-        ScopedPointer<ImageView> iv = ghnew ImageView();
-        iv->PreferredSize.width = PreferredSize::Width(200);
-        iv->PreferredSize.height = PreferredSize::Height(200);
-        iv->Image = image;
+        ScopedPointer<TestRecycler> testRecycler = ghnew TestRecycler(*theme);
+        testRecycler->Name = "test recycler";
 
-        ScopedPointer<CheckBox> checkBox = ghnew CheckBox();
-        checkBox->OnStateChanged.add(theme->getCheckBoxStateHandler());
-        ScopedPointer<RadioButton> radioButton = ghnew RadioButton();
-        radioButton->OnStateChanged.add(theme->getRadioButtonStateHandler());
-        ScopedPointer<ImageButton> imageButton = ghnew ImageButton();
-        ScopedPointer<GdiImage> saveIcon = ghnew GdiImage(L"D:/projekty/GhurundEngine12/icons/icon save 32.png");
-        imageButton->Image = saveIcon;
-        imageButton->OnStateChanged.add(theme->getImageButtonStateHandler());
-        column->Children.add({ iv, checkBox, radioButton, imageButton });
+        ScopedPointer<TestImageViews> testImageViews = ghnew TestImageViews(*theme);
+        ScopedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(*theme);
 
-        row->Children.add({ listView, column });
-        rootView->Child = row;// inflater.load(jsonString);
-        
+        ScopedPointer<TabContainer> tabLayout = ghnew TabContainer(theme->tabContainerStyle);
+        tabLayout->Name = "tabs";
+
+        ScopedPointer<TestControls> column = ghnew TestControls(*theme);
+        column->Name = "controls tab";
+
+        tabLayout->Tabs.addAll({
+            ghnew TextTabItem("RecyclerView", testRecycler),
+            ghnew TextTabItem("ImageViews", testImageViews),
+            ghnew TextTabItem("testFlowLayouts", testFlowLayouts),
+            ghnew TextTabItem("controls", column),
+            ghnew TextTabItem("SplitLayout", splitLayout)
+            });
+        ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.clear();
+        ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
+        tabLayout->SelectedPosition = 0;
+
+        VerticalLayoutPtr mainColumn = ghnew VerticalLayout();
+        {
+            ImagePtr copyIcon = ghnew GdiImage(L"icons/copy 18.png");
+            ImagePtr cutIcon = ghnew GdiImage(L"icons/cut 18.png");
+            ImagePtr pasteIcon = ghnew GdiImage(L"icons/paste 18.png");
+
+            MenuBarPtr menuBar = ghnew MenuBar(menuTheme->menuBarStyle);
+            menuBar->Name = "menu bar";
+            menuBar->Items.addAll({
+                ghnew ButtonMenuItem("File", [](Control&) {
+                    Logger::log(LogType::INFO, "File clicked\n");
+                }),
+                ghnew ButtonMenuItem("Edit", [this](Control& sender) {
+                    Logger::log(LogType::INFO, "Edit clicked\n");
+                    ScopedPointer<GdiImage> copyIcon = ghnew GdiImage(L"icons/copy 18.png");
+                    ScopedPointer<GdiImage> cutIcon = ghnew GdiImage(L"icons/cut 18.png");
+                    ScopedPointer<GdiImage> pasteIcon = ghnew GdiImage(L"icons/paste 18.png");
+                    PopupMenu* menu = ghnew PopupMenu(*menuTheme, Window);
+                    menu->Items.addAll({
+                        ghnew ButtonMenuItem("Undo", [](Control&) {
+                            Logger::log(LogType::INFO, "undo clicked\n");
+                        }),
+                        ghnew ButtonMenuItem("Redo", [](Control&) {
+                            Logger::log(LogType::INFO, "redo clicked\n");
+                        }),
+                        ghnew SeparatorMenuItem(),
+                        ghnew ButtonMenuItem(copyIcon, "Copy", [](Control&) {
+                            Logger::log(LogType::INFO, "copy clicked\n");
+                        }),
+                        ghnew ButtonMenuItem(cutIcon, "Cut", [](Control&) {
+                            Logger::log(LogType::INFO, "cut clicked\n");
+                        }),
+                        ghnew ButtonMenuItem(pasteIcon, "Paste", [](Control&) {
+                            Logger::log(LogType::INFO, "paste clicked\n");
+                        })
+                    });
+                    auto pos = sender.PositionOnScreen;
+                    menu->Window->Position = { (LONG)pos.x, (LONG)(pos.y + sender.Size.height) };
+                    menu->Visible = true;
+                }),
+                ghnew ButtonMenuItem(_T("Help"), [](Control&) {
+                    Logger::log(LogType::INFO, "Help clicked\n");
+                })
+            });
+
+            ScopedPointer<Toolbar> toolbar = ghnew Toolbar(theme->toolbarStyle);
+            toolbar->Name = "toolbar";
+            toolbar->Items.addAll({
+                ghnew ButtonMenuItem(copyIcon, "copy", [](Control&) {
+                    Logger::log(LogType::INFO, "copy clicked\n");
+                }),
+                ghnew ButtonMenuItem(cutIcon, "cut", [](Control&) {
+                    Logger::log(LogType::INFO, "cut clicked\n");
+                }),
+                ghnew ButtonMenuItem(pasteIcon, "paste", [](Control&) {
+                    Logger::log(LogType::INFO, "paste clicked\n");
+                })
+                });
+
+            ScopedPointer<ColorView> statusBar = ghnew ColorView();
+            statusBar->Name = "status bar";
+            statusBar->PreferredSize.height = 24;
+
+            mainColumn->Children = { menuBar, toolbar, tabLayout, statusBar };
+        }
+        rootView->Child = mainColumn;
+
         Window.OnSizeChanged.add([this](Ghurund::Window& window) {
-            rootView->measure();
-            rootView->layout(0, 0, window.Size.x, window.Size.y);
-            Window.refresh();
+            rootView->invalidate();
+            return true;
         });
 
         Window.OnKeyEvent.add([this](Ghurund::Window& window, const KeyEventArgs& args) {
             rootView->dispatchKeyEvent(args);
+            return true;
         });
 
         Window.OnMouseButtonEvent.add([this](Ghurund::Window& window, const MouseButtonEventArgs& args) {
             rootView->dispatchMouseButtonEvent(args);
+            return true;
         });
 
         Window.OnMouseMotionEvent.add([this](Ghurund::Window& window, const MouseMotionEventArgs& args) {
             rootView->dispatchMouseMotionEvent(args);
+            return true;
         });
 
         Window.OnMouseWheelEvent.add([this](Ghurund::Window& window, const MouseWheelEventArgs& args) {
             rootView->dispatchMouseWheelEvent(args);
+            return true;
         });
 
-        Window.OnPaint.add([this](const Ghurund::Window &window) {
+        Window.OnPaint.add([this](const Ghurund::Window& window) {
             canvas->beginPaint();
             canvas->clear(theme->getColorBackground());
             rootView->draw(*canvas);
             canvas->endPaint();
+            return true;
         });
+
+        Window.OnDestroy.add([this](const Ghurund::Window& window) {
+            quit();
+            return true;
+        });
+
+        Window.OnSizeChanged();
     }
 
     void onUninit() {
-        items.deleteItems();
-        listView->release();
         rootView->release();
-        font->release();
         delete theme;
+        delete menuTheme;
         delete canvas;
-        rootView->release();
+        logPanel->release();
 
         gui.uninit();
         /*LevelManager.setLevel(nullptr);

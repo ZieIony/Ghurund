@@ -1,30 +1,35 @@
 #pragma once
 
-#include "control/ControlContainer.h"
+#include "control/HoverableView.h"
 #include <application\Window.h>
 
 namespace Ghurund::UI {
-    class RootView: public ControlContainer {
+    class RootView: public HoverableView {
+    private:
+        Ghurund::Window& window;
+
     public:
-        unsigned int backgroundColor;
-
-        Window& window;
-
-        RootView(Window& window):window(window) {}
-
-        virtual void draw(Canvas& canvas) override {
-            canvas.clear(0xffe0e0e0);
-            __super::draw(canvas);
-        }
+        RootView(Ghurund::Window& window):window(window) {}
 
         virtual void repaint() {
             window.refresh();
         }
 
         virtual void invalidate() {
-            measure();
-            layout(0, 0, Size.x, Size.y);
+            needsLayout = true;
+            measure(window.Size.x, window.Size.y);
+            layout(0, 0, window.Size.x, window.Size.y);
+            repaint();
         }
 
+        virtual Ghurund::Window* getWindow() const {
+            return &window;
+        }
+
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            if (!__super::dispatchMouseMotionEvent(event))
+                Cursor::ARROW.set();
+            return true;
+        }
     };
 }

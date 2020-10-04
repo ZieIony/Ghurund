@@ -1,5 +1,6 @@
 #pragma once
 
+#undef GDIPVER
 #define GDIPVER     0x0110
 
 namespace Gdiplus {
@@ -14,9 +15,14 @@ namespace Gdiplus {
 namespace Ghurund::UI {
     class Canvas;
 
-    class Font :public Pointer {
+    class TextSelection {
+    public:
+        size_t index = 0;
+        float x;
+    };
+
+    class Font:public Pointer {
     private:
-        static inline const float MAX_SIZE = 32768.0f;
         static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789/*-+[]{};':\",./<>?!@#$%^&*()`~Û”øØüèÒ—Ê∆úåπ•Í ");
 
         struct Glyph {
@@ -53,6 +59,8 @@ namespace Ghurund::UI {
     public:
         Font(const String& family, float size, unsigned int weight = 400, bool italic = false, const tchar* supportedCharacters = nullptr);
 
+        Font(const String& fileName, const String& family, float size, unsigned int weight = 400, bool italic = false, const tchar* supportedCharacters = nullptr);
+
         ~Font() {
             delete kerningPairs;
             if (atlas)
@@ -82,5 +90,9 @@ namespace Ghurund::UI {
         void measureText(const String& text, float width, Gdiplus::SizeF* outSize) const;
 
         void drawText(Canvas& canvas, const String& text, float x, float y, int32_t color) const;
+
+        TextSelection findSelection(const String& text, float x) const;
     };
+
+    typedef ScopedPointer<Font> FontPtr;
 }

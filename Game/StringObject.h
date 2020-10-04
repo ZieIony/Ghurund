@@ -1,46 +1,89 @@
-#include "ui/control/ListView.h"
+#include "ui/control/AdapterView.h"
 #include "core/string/String.h"
 #include "ui/control/TextView.h"
 #include "ui/control/PaddingContainer.h"
-#include "ui/control/Column.h"
+#include "ui/control/LinearLayout.h"
 #include "ui/control/Clip.h"
+#include "ui/control/ColorView.h"
+#include "core/ScopedPointer.h"
 
 #include "MaterialColors.h"
 
+using namespace Ghurund;
 using namespace Ghurund::UI;
 
-class StringObject :public Object {
-private:
-    inline static const char* CLASS_NAME = GH_STRINGIFY(StringObject);
-    //        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<StringObject>();
+enum class StringObjectType {
+    ITEM, HEADER
+};
 
-public:
-    String text, subtext;
+struct StringObject {
+    StringObjectType type;
 
-    StringObject(const String& text, const String& subtext):text(text), subtext(subtext) {}
+    virtual ~StringObject() {}
+};
 
-    inline static const Ghurund::Type& TYPE = TypeBuilder<StringObject>(NAMESPACE_NAME, CLASS_NAME)
-        //       .withConstructor(CONSTRUCTOR)
-        .withSupertype(__super::TYPE);
+struct StringObjectItem:public StringObject {
+    Ghurund::String text, subtext;
 
-    virtual const Ghurund::Type& getType() const override {
-        return TYPE;
+    StringObjectItem(const Ghurund::String& text, const Ghurund::String& subtext):text(text), subtext(subtext) {
+        type = StringObjectType::ITEM;
     }
 };
 
-class StringObjectHeader :public TextView {
+struct StringObjectHeader:public StringObject {
+    Ghurund::String text;
+
+    StringObjectHeader(const Ghurund::String& text):text(text) {
+        type = StringObjectType::HEADER;
+    }
 };
 
-class StringObjectRow :public Stack {
+class StringObjectHeaderRow:public StackLayout {
+private:
+    ScopedPointer<TextView> tv;
+    ScopedPointer<PaddingContainer> padding;
+    ScopedPointer<ColorView> backgroundView;
+
+public:
+    StringObjectHeaderRow(Theme& theme) {
+        preferredSize.height = PreferredSize::Height::WRAP;
+        backgroundView = ghnew ColorView(theme.getColorBackground());
+
+        padding = ghnew PaddingContainer();
+        {
+            padding->PreferredSize.width = PreferredSize::Width::FILL;
+            padding->Padding.Horizontal = 16.0f;
+            padding->Padding.Vertical = 4.0f;
+
+            tv = ghnew TextView(theme.textViewHeaderStyle);
+            tv->PreferredSize.width = PreferredSize::Width::FILL;
+            padding->Child = tv;
+
+        }
+        Children = { backgroundView, padding };
+    }
+
+    Ghurund::String& getText() {
+        return tv->Text;
+    }
+
+    void setText(const Ghurund::String& text) {
+        tv->Text = text;
+    }
+
+    __declspec(property(get = getText, put = setText)) const String& Text;
+};
+
+class StringObjectItemRow:public StackLayout {
 private:
     TextView* tv;
     TextView* tv2;
     ImageView* imageView;
 
 public:
-    StringObjectRow(::Material::Theme* theme) {
-        PreferredSize.height = PreferredSize::Height::WRAP;
-        ScopedPointer<Surface> surface(ghnew Surface(theme->getColorSurface()));
+    StringObjectItemRow(Theme& theme) {
+        preferredSize.height = PreferredSize::Height::WRAP;
+        ScopedPointer<ColorView> colorView(ghnew ColorView(theme.getColorBackground()));
 
         ScopedPointer<PaddingContainer> padding(ghnew PaddingContainer());
         {
@@ -48,16 +91,16 @@ public:
             padding->Padding.Horizontal = 16.0f;
             padding->Padding.Vertical = 8.0f;
 
-            ScopedPointer<Row> row(ghnew Row());
+            HorizontalLayoutPtr row = ghnew HorizontalLayout();
             {
                 row->PreferredSize.height = PreferredSize::Height::WRAP;
 
-                ScopedPointer<Stack> stack(ghnew Stack());
+                StackLayoutPtr stack = ghnew StackLayout();
                 {
                     stack->PreferredSize.width = PreferredSize::Width::WRAP;
                     stack->PreferredSize.height = PreferredSize::Height::WRAP;
 
-                    ScopedPointer<Border> border(ghnew Border(theme->getTextColorSecondaryOnSurface()));
+                    BorderPtr border = ghnew Border(theme.getColorControl());
                     border->CornerRadius = 2;
 
                     ScopedPointer<Clip> clip(ghnew Clip());
@@ -70,50 +113,45 @@ public:
                         clip->Child = imageView;
                     }
 
-                    stack->Children.add({ clip, border });
+                    stack->Children = { clip, border };
                 }
 
                 ScopedPointer<Space> space(ghnew Space());
                 space->PreferredSize.width = PreferredSize::Width(16);
 
-                ScopedPointer<Column> column(ghnew Column());
+                VerticalLayoutPtr column = ghnew VerticalLayout();
                 {
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
                     column->Gravity.horizontal = Gravity::Horizontal::RIGHT;
 
-                    tv = ghnew TextView();
+                    tv = ghnew TextView(theme.textViewPrimaryStyle);
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv->OnStateChanged.add(theme->getTextViewStateHandler());
-                    tv->Text = "H";
-                    tv2 = ghnew TextView();
+                    tv2 = ghnew TextView(theme.textViewSecondaryStyle);
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv2->OnStateChanged.add(theme->getTextViewStateHandler());
-                    tv2->Text = "H";
-                    ScopedPointer<TextButton> tb = ghnew TextButton();
-                    tb->OnStateChanged.add(theme->getTextButtonStateHandler());
+                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
                     tb->Text = "CANCEL";
-                    column->Children.add({ tv, tv2, tb });
+                    column->Children = { tv, tv2, tb };
                 }
 
-                row->Children.add({ stack, space, column });
+                row->Children = { stack, space, column };
             }
             padding->Child = row;
 
-            Children.add({ surface, padding });
+            Children = { colorView, padding };
         }
     }
 
-    ~StringObjectRow() {
+    ~StringObjectItemRow() {
         tv->release();
         tv2->release();
         imageView->release();
     }
 
-    const String& getText() const {
+    const Ghurund::String& getText() const {
         return tv->Text;
     }
 
-    void setText(const String& text) {
+    void setText(const Ghurund::String& text) {
         tv->Text = text;
     }
 
@@ -141,34 +179,59 @@ public:
 
 };
 
-class StringHeaderAdapter :public ItemAdapter<String*> {
+class StringHeaderAdapter:public ItemAdapter<StringObject*, Control>{
+private:
+    Theme& theme;
+
 public:
-    virtual Control* makeControl() const override {
-        return ghnew StringObjectHeader();
+    StringHeaderAdapter(Theme& theme):theme(theme) {}
+
+    virtual bool canHandleItem(StringObject* const& item, size_t position) const override {
+        return item->type == StringObjectType::HEADER;
     }
 
-    virtual void bind(String* const& obj, Control& control) const override {
-        StringObjectHeader& sor = (StringObjectHeader&)control;
-        sor.Text = *obj;
+    virtual Control* makeControl() const override {
+        return ghnew StringObjectHeaderRow(theme);
+    }
+
+    virtual void bind(Control& control, StringObject* const& item, size_t position) const override {
+        StringObjectHeaderRow& sor = (StringObjectHeaderRow&)control;
+        StringObjectHeader* strObj = (StringObjectHeader*)item;
+        sor.Text = strObj->text;
     }
 };
 
-class StringItemAdapter :public ItemAdapter<StringObject*> {
+class StringItemAdapter:public ItemAdapter<StringObject*, Control> {
 private:
-    ::Material::Theme* theme;
-    GdiImage* image;
+    Theme& theme;
+    GdiImage* image = nullptr;
 
 public:
-    StringItemAdapter(::Material::Theme* theme, GdiImage* image):theme(theme), image(image) {}
-
-    virtual Control* makeControl() const override {
-        return ghnew StringObjectRow(theme);
+    StringItemAdapter(Theme& theme, GdiImage* image):theme(theme) {
+        if (image) {
+            image->addReference();
+            this->image = image;
+        }
     }
 
-    virtual void bind(StringObject* const& obj, Control& control) const override {
-        StringObjectRow& sor = (StringObjectRow&)control;
-        sor.Text = obj->text;
-        sor.Subtext = obj->subtext;
+    ~StringItemAdapter() {
+        if (image)
+            image->release();
+    }
+
+    virtual bool canHandleItem(StringObject* const& item, size_t position) const override {
+        return item->type == StringObjectType::ITEM;
+    }
+
+    virtual Control* makeControl() const override {
+        return ghnew StringObjectItemRow(theme);
+    }
+
+    virtual void bind(Control& control, StringObject* const& item, size_t position) const override {
+        StringObjectItemRow& sor = (StringObjectItemRow&)control;
+        StringObjectItem* strObj = (StringObjectItem*)item;
+        sor.Text = strObj->text;
+        sor.Subtext = strObj->subtext;
         sor.Image = image;
     }
 };

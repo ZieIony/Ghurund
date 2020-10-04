@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DirectXMath.h"
+#include "application/Timer.h"
 
 namespace Ghurund {
     using namespace DirectX;

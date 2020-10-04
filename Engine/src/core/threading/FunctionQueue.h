@@ -30,12 +30,14 @@ namespace Ghurund {
             PostMessage(window, eventCode, 0, 0);
         }
 
-        std::function<void()> take() {
+        void invoke() {
             section.enter();
-            std::function<void()> function = queue.front();
-            queue.pop();
+            while (!queue.empty()) {
+                std::function<void()> function = queue.front();
+                function();
+                queue.pop();
+            }
             section.leave();
-            return function;
         }
     };
 }

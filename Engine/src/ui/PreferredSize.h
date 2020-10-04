@@ -22,11 +22,11 @@ namespace Ghurund::UI {
             static const Width& WRAP;
             static const Width& FILL;
 
-            explicit Width(float v) {
+            Width(float v) {
                 this->value = std::max(0.0f, v);
             }
 
-            explicit operator float() const {
+            operator float() const {
                 return value;
             }
 
@@ -51,11 +51,11 @@ namespace Ghurund::UI {
             static const Height& WRAP;
             static const Height& FILL;
 
-            explicit Height(float v) {
+            Height(float v) {
                 this->value = std::max(0.0f, v);
             }
 
-            explicit operator float() const {
+            operator float() const {
                 return value;
             }
 

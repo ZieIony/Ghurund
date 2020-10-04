@@ -3,7 +3,9 @@
 #include "Pointer.h"
 
 namespace Ghurund {
-    template<class T> class ScopedPointer {
+    template<class T>
+    requires IsPointer<T>
+    class ScopedPointer {
     private:
         T* pointer = nullptr;
 
@@ -24,6 +26,10 @@ namespace Ghurund {
         }
 
         T* operator ->() {
+            return pointer;
+        }
+
+        const T* operator ->() const {
             return pointer;
         }
 

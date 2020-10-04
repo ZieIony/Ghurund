@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "ui/drawable/Drawable.h"
 #include "core/string/String.h"
 
 #include <algorithm>
@@ -8,32 +8,26 @@
 #include <gdiplus.h>
 
 namespace Ghurund::UI {
-    class GdiImage:public Pointer {
+    class GdiImage:public Drawable {
     public:
         Gdiplus::Image* image;
 
         GdiImage(const String& fileName) {
             image = new Gdiplus::Image(UnicodeString(fileName).getData());
+            size = { image->GetWidth(), image->GetHeight() };
         }
 
         GdiImage(Gdiplus::Image* image) {
             this->image = image;
+            size = { image->GetWidth(), image->GetHeight() };
         }
 
         ~GdiImage() {
             delete image;
         }
 
-        inline unsigned int getWidth() const {
-            return image->GetWidth();
-        }
-
-        __declspec(property(get = getWidth)) unsigned int Width;
-
-        inline unsigned int getHeight() const {
-            return image->GetHeight();
-        }
-
-        __declspec(property(get = getHeight)) unsigned int Height;
+        virtual void draw(Canvas& canvas) const;
     };
+
+    typedef ScopedPointer<GdiImage> ImagePtr;
 }

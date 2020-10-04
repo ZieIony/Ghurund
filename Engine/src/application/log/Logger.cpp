@@ -12,8 +12,8 @@
 namespace Ghurund {
     using namespace std;
 
-    HANDLE Logger::process;
-    SYMBOL_INFO* Logger::symbol;
+    HANDLE Logger::process = {};
+    SYMBOL_INFO* Logger::symbol = nullptr;
     IMAGEHLP_LINE Logger::line;
     CriticalSection Logger::criticalSection;
     LogType Logger::filterLevel = LogType::INFO;
@@ -39,13 +39,16 @@ namespace Ghurund {
         return fmt::format(_T("{0}({1:d}): [{2:x} {3}(..)] "), line.FileName, line.LineNumber, address, symbol->Name);
     }
 
-    void Logger::writeLog(const tchar* str, size_t length) {
+    void Logger::writeLog(LogType type, const tchar* str, size_t length) {
         criticalSection.enter();
-        logOutput->log(str, length);
+        logOutput->log(type, str, length);
         criticalSection.leave();
     }
 
     void Logger::init(LogOutput* output) {
+        if (logOutput)
+            uninit();
+
 #ifdef _DEBUG
         filterLevel = LogType::INFO;
 #else
@@ -75,7 +78,9 @@ namespace Ghurund {
     void Logger::uninit() {
         if (symbol != nullptr) {
             delete[] symbol;
+            symbol = nullptr;
             SymCleanup(process);
+            process = {};
         }
 
         delete logOutput;

@@ -69,26 +69,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-	_____________________checkMemory();
-	
-	Logger::init();
-    Logger::log(LogType::INFO, String("working dir: ") + DirectoryPath(".").getAbsolutePath());
+    _____________________checkMemory();
 
-    {
+    Logger::init();
+    Logger::log(LogType::INFO, "working dir: {}\n", DirectoryPath(".").getAbsolutePath());
+
+    HANDLE singleInstanceMutex = CreateMutex(nullptr, true, "Ghurund::Game");
+    bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
+
+    if (alreadyRunning) {
+        MessageBox(nullptr, _T("Application is already running."), "Ghurund::Game", MB_OK | MB_ICONEXCLAMATION);
+    } else {
         TestApplication application;
         Settings settings;
         settings.parse(cmdLine);
         application.run(&settings);
     }
 
+    CloseHandle(singleInstanceMutex);
+
     Logger::uninit();
 
 #ifdef _DEBUG
     _____________________checkMemory();
-    ComPtr<IDXGIDebug> debugInterface;
-    if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&debugInterface))))
-        debugInterface->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
 #endif
-    fmt::print("{}", 42);
     return 0;
 }

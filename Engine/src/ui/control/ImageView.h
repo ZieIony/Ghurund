@@ -1,20 +1,27 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/layout/LayoutInflater.h"
+#include "core/ScopedPointer.h"
+#include "ui/Gravity.h"
 
 #include <algorithm>
 #include <objidl.h>
 #include <gdiplus.h>
 
 namespace Ghurund::UI {
-    class ImageView : public Control {
+    enum class ImageScaleMode {
+        NONE, STRETCH, FIT, CROP
+    };
+
+    class ImageView: public Control {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(ImageView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ImageView>();
 
         GdiImage* image = nullptr;
         unsigned int tint = 0;
+        ImageScaleMode scaleMode = ImageScaleMode::CROP;
+        Gravity gravity;
 
     public:
         ImageView(GdiImage* image = nullptr) {
@@ -22,6 +29,8 @@ namespace Ghurund::UI {
                 image->addReference();
                 this->image = image;
             }
+            gravity.horizontal = Gravity::Horizontal::CENTER;
+            gravity.vertical = Gravity::Vertical::CENTER;
         }
 
         ~ImageView() {
@@ -49,20 +58,29 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTint, put = setTint)) unsigned int Tint;
 
-        virtual void onMeasure() override;
-
-        virtual void draw(Canvas& canvas) override {
-            if (!image)
-                return;
-
-            auto src = Gdiplus::RectF(0, 0, (float)image->image->GetWidth(), (float)image->image->GetHeight());
-            auto dst = Gdiplus::RectF(0, 0, Size.x, Size.y);
-            if (tint) {
-                canvas.drawImage(*image, src, dst, tint);
-            } else {
-                canvas.drawImage(*image, src, dst);
-            }
+        inline void setScaleMode(ImageScaleMode mode) {
+            this->scaleMode = mode;
         }
+
+        inline ImageScaleMode getScaleMode() const {
+            return scaleMode;
+        }
+
+        __declspec(property(get = getScaleMode, put = setScaleMode)) ImageScaleMode ScaleMode;
+
+        inline Gravity& getGravity() {
+            return gravity;
+        }
+
+        inline void setGravity(const Gravity& gravity) {
+            this->gravity = gravity;
+        }
+
+        __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
+
+        virtual void onMeasure(float parentWidth, float parentHeight) override;
+
+        virtual void onDraw(Canvas& canvas) override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
@@ -71,7 +89,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
-
-        static ImageView* inflate(LayoutInflater& inflater, json& json);
     };
+
+    typedef ScopedPointer<ImageView> ImageViewPtr;
 }

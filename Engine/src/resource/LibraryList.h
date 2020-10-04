@@ -61,7 +61,7 @@ namespace Ghurund {
         }
 
         void remove(size_t i) {
-            libs.removeAtKeepOrder(i);
+            libs.removeAt(i);
         }
 
         size_t findFile(const FilePath & path) const {

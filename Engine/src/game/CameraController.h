@@ -25,11 +25,11 @@ namespace Ghurund {
     public:
         CameraController(Camera& camera, Window* window = nullptr);
 
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
         void update(Input& input, float dt);
     };

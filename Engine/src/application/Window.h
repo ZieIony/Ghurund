@@ -28,46 +28,51 @@ namespace Ghurund {
         unsigned int width, height;
     };
 
+    class Window;
+    class WindowClass;
+
+    struct WindowData {
+        Window* window;
+        POINT prevMousePos = { -1,-1 };
+
+        WindowData(Window* w):window(w) {}
+    };
+
+    LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
+
     class Window: public ParameterProvider, public NamedObject<String>, public Object {
     private:
-        inline static const tchar* WINDOW_CLASS_NAME = _T("Ghurund");
         inline static const char* CLASS_NAME = GH_STRINGIFY(Window);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Window>();
+
+        const WindowClass& windowClass;
 
         String title;
-        WNDCLASSEX windowClass;
         HWND handle;
-        HINSTANCE hInst;
         bool visible;
+        POINT position;
         XMINT2 size;
 
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
         Event<Window> onCreated = Event<Window>(*this);
+        Event<Window> onPositionChanged = Event<Window>(*this);
         Event<Window> onSizeChanged = Event<Window>(*this);
         Event<Window> onPaint = Event<Window>(*this);
         Event<Window> onDestroy = Event<Window>(*this);
 
         Event<Window, KeyEventArgs> onKeyEvent = Event<Window, KeyEventArgs>(*this);
         Event<Window, MouseButtonEventArgs> onMouseButtonEvent = Event<Window, MouseButtonEventArgs>(*this);
-        POINT prevMousePos = {-1, -1};
+        POINT prevMousePos = { -1, -1 };
         Event<Window, MouseMotionEventArgs> onMouseMotionEvent = Event<Window, MouseMotionEventArgs>(*this);
         Event<Window, MouseWheelEventArgs> onMouseWheelEvent = Event<Window, MouseWheelEventArgs>(*this);
 
         FunctionQueue* functionQueue = nullptr;
 
-        static LRESULT CALLBACK messageProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
-        static void handleMouseMessage(Window& window, UINT msg, WPARAM wParam);
-
     public:
-        Window():parameters(PointerArray<Parameter*>(1)) {
-            Name = _T("window");
-        }
+        Window(HWND handle, const WindowClass& type);
 
-        ~Window() {
-            uninit();
-        }
+        ~Window();
 
         virtual void initParameters(ParameterManager& parameterManager) override {
             if (parameterViewportSize != nullptr)
@@ -84,10 +89,11 @@ namespace Ghurund {
             return parameters;
         }
 
-        void init(HWND handle);
-        void init(Settings& settings);
+        inline const WindowClass& getClass() const {
+            return windowClass;
+        }
 
-        void uninit();
+        __declspec(property(get = getClass)) const WindowClass& Class;
 
         inline void setTitle(const String& title) {
             this->title = title;
@@ -108,7 +114,7 @@ namespace Ghurund {
 
         inline void setVisible(bool visible) {
             this->visible = visible;
-            ShowWindow(handle, visible ? SW_SHOW : SW_HIDE);
+            ShowWindow(handle, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
         }
 
         inline bool isVisible() {
@@ -135,6 +141,18 @@ namespace Ghurund {
 
         __declspec(property(get = getOnPaint)) Event<Window>& OnPaint;
 
+        inline const POINT& getPosition() const {
+            return position;
+        }
+
+        inline void setPosition(const POINT& position) {
+            setPosition(position.x, position.y);
+        }
+
+        void setPosition(int x, int y);
+
+        __declspec(property(get = getPosition, put = setPosition)) POINT& Position;
+
         inline const XMINT2& getSize() const {
             return size;
         }
@@ -143,21 +161,7 @@ namespace Ghurund {
             setSize(size.x, size.y);
         }
 
-        inline void setSize(unsigned int w, unsigned int h) {
-            if (size.x != w || size.y != h) {
-                size = XMINT2(w, h);
-
-                RECT rc, rcClient;
-                GetWindowRect(handle, &rc);
-                GetClientRect(handle, &rcClient);
-                int xExtra = rc.right - rc.left - rcClient.right;
-                int yExtra = rc.bottom - rc.top - rcClient.bottom;
-
-                SetWindowPos(handle, HWND_TOPMOST, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER);
-
-                OnParametersChanged();
-            }
-        }
+        void setSize(unsigned int w, unsigned int h);
 
         __declspec(property(get = getSize, put = setSize)) XMINT2& Size;
 
@@ -172,6 +176,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getHeight)) unsigned int Height;
+
+        Event<Window>& getOnPositionChanged() {
+            return onPositionChanged;
+        }
+
+        __declspec(property(get = getOnPositionChanged)) Event<Window>& OnPositionChanged;
 
         Event<Window>& getOnSizeChanged() {
             return onSizeChanged;
@@ -203,8 +213,12 @@ namespace Ghurund {
 
         __declspec(property(get = getOnMouseWheelEvent)) Event<Window, MouseWheelEventArgs>& OnMouseWheelEvent;
 
-        void refresh() const {
+        inline void refresh() const {
             RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);
+        }
+
+        inline void activate() const {
+            SetActiveWindow(handle);
         }
 
         FunctionQueue& getFunctionQueue() {
@@ -213,9 +227,20 @@ namespace Ghurund {
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Window>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+        inline bool handleMessages() {
+            MSG msg = {};
+            while (PeekMessage(&msg, handle, 0, 0, PM_REMOVE)) {
+                if (msg.message == WM_QUIT)
+                    return false;
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+            functionQueue->invoke();
+            return true;
+        }
+
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Window>(NAMESPACE_NAME, CLASS_NAME)
+            .withSupertype(__super::TYPE);
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

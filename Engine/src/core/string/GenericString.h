@@ -215,7 +215,7 @@ namespace Ghurund {
             return memcmp(v, str, Length * sizeof(Type)) == 0;
         }
 
-        GenericString& operator=(GenericString&& other) {
+        GenericString& operator=(GenericString&& other) noexcept {
             if (this == &other)
                 return *this;
 

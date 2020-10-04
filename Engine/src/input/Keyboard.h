@@ -4,7 +4,7 @@
 
 namespace Ghurund {
     enum class KeyAction {
-        DOWN, UP
+        DOWN, UP, CHAR
     };
 
     class KeyEventArgs {

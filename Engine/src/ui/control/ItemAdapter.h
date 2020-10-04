@@ -4,40 +4,21 @@
 #include "core/Object.h"
 
 namespace Ghurund::UI {
-    class BaseItemTypeAdapter {
-    public:
-        ~BaseItemTypeAdapter() {}
-
-        virtual Control* makeControl()const = 0;
-
-        virtual void bind(const void* item, Control& control) const {}
-    };
-
     template<class T>
-    class ItemTypeAdapter :public BaseItemTypeAdapter {
+    class ControlFactory {
     public:
-        virtual void bind(const T* item, Control& control) const override {}
+        virtual ~ControlFactory() {}
+
+        virtual T* makeControl() const = 0;
     };
 
-    class ItemAdapter {
-    private:
-        Map<type_info, BaseItemTypeAdapter*> adapters;
-
+    template<class T, class ControlType>
+    class ItemAdapter:public ControlFactory<ControlType> {
     public:
-        virtual ~ItemAdapter() {
-            for (BaseItemTypeAdapter* adapter : adapters)
-                delete adapter;
+        virtual bool canHandleItem(const T& item, size_t position) const {
+            return true;
         }
 
-        virtual size_t getItemCount() = 0;
-
-        template<class T>
-        inline void registerType(const type_info& type, ItemTypeAdapter<T>* adapter) {
-            adapters.set(type, adapter);
-        }
-
-        virtual Control* makeControl(size_t position) const = 0;
-
-        virtual void bind(Control& control, size_t position) = 0;
+        virtual void bind(ControlType& control, const T& item, size_t position) const {}
     };
 }

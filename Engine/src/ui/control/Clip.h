@@ -3,7 +3,7 @@
 #include "ControlContainer.h"
 
 namespace Ghurund::UI {
-    class Clip :public ControlContainer {
+    class Clip:public ControlContainer {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Clip);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Clip>();
@@ -13,8 +13,8 @@ namespace Ghurund::UI {
         Gdiplus::RectF bounds;
 
         inline void updatePath() {
-            bounds.Width = size.x;
-            bounds.Height = size.y;
+            bounds.Width = size.width;
+            bounds.Height = size.height;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {
@@ -50,10 +50,10 @@ namespace Ghurund::UI {
             updatePath();
         }
 
-        virtual void draw(Canvas& canvas) override {
+        virtual void onDraw(Canvas& canvas) override {
             canvas.save();
             canvas.clipPath(*path);
-            __super::draw(canvas);
+            __super::onDraw(canvas);
             canvas.restore();
         }
 

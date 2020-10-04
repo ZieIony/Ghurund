@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Control.h"
+#include "ControlParent.h"
 
 namespace Ghurund::UI {
-    class ControlContainer : public Control {
+    class ControlContainer : public ControlParent {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(ControlContainer);
 
@@ -33,34 +33,29 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChild, put = setChild)) Control* Child;
 
-        virtual void onMeasure() override;
+        virtual void clearFocus() {
+            if (child)
+                child->clearFocus();
+            __super::clearFocus();
+        }
+
+        virtual Control* getFocus() override {
+            return child;
+        }
+
+        virtual void onMeasure(float parentWidth, float parentHeight) override;
 
         virtual void onLayout(float x, float y, float width, float height) override {
             if (child)
                 child->layout(0, 0, width, height);
         }
 
-        void draw(Canvas& canvas) {
-            if (child) {
-                auto& pos = child->Position;
-                canvas.translate(pos.x, pos.y);
+        void onDraw(Canvas& canvas) {
+            if (child)
                 child->draw(canvas);
-                canvas.translate(-pos.x, -pos.y);
-            }
         }
-        /*
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) {
-            if (child->Visible && child->Enabled &&
-                event.Position.x >= child->Position.x && event.Position.x <= child->Position.x + child->Size.x &&
-                event.Position.y >= child->Position.y && event.Position.y <= child->Position.y + child->Size.y) {
-                XMINT2 childEventPos = { (int32_t)(event.Position.x - child->Position.x), (int32_t)(event.Position.y - child->Position.y) };
-                KeyEventArgs childEvent = KeyEventArgs(childEventPos, event.Action, event.Button, event.Time);
-                if (child->dispatchKeyEvent(childEvent))
-                    return true;
-            }
-            return __super::dispatchKeyEvent(event);
-        }*/
 
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 

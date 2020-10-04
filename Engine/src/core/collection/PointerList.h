@@ -20,14 +20,25 @@ namespace Ghurund {
             List::add(item);
         }
 
-        inline void insert(size_t i, const Value& item) {
-            List::insert(i, item);
-            if (item != nullptr)
-                item->addReference();
+
+        inline void addAll(const List<Value>& list) {
+            for (Value& l : list) {
+                if (item != nullptr)
+                    item->addReference();
+            }
+            List::addAll(list);
         }
 
-        inline void insertKeepOrder(size_t i, const Value& item) {
-            List::insertKeepOrder(i, item);
+        inline void addAll(const std::initializer_list<Value>& list) {
+            for (Value& l : list) {
+                if (item != nullptr)
+                    item->addReference();
+            }
+            List::addAll(list);
+        }
+
+        inline void insert(size_t i, const Value& item) {
+            List::insert(i, item);
             if (item != nullptr)
                 item->addReference();
         }
@@ -46,20 +57,8 @@ namespace Ghurund {
             List::removeAt(i);
         }
 
-        inline void removeAtKeepOrder(size_t i) {
-            if (v[i] != nullptr)
-                v[i]->release();
-            List::removeAtKeepOrder(i);
-        }
-
         inline void remove(const Value& item) {
             List::remove(item);
-            if (item != nullptr)
-                item->release();
-        }
-
-        inline void removeKeepOrder(const Value& item) {
-            List::removeKeepOrder(item);
             if (item != nullptr)
                 item->release();
         }

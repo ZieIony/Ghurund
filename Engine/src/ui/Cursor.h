@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "core/Enum.h"
+#include "application/log/Logger.h"
 
 namespace Ghurund::UI {
     enum class CursorEnum {
@@ -23,7 +24,6 @@ namespace Ghurund::UI {
 
     class Cursor :public Enum<CursorEnum, Cursor> {
     private:
-        const char* constantName;
         HCURSOR handle;
 
     public:
@@ -34,12 +34,17 @@ namespace Ghurund::UI {
         static const EnumValues<CursorEnum, Cursor> VALUES;
 
         Cursor(CursorEnum value, const tchar* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
-            this->constantName = constantName;
             handle = LoadCursor(nullptr, resource);
         }
 
-        void set() {
+        void set() const {
             SetCursor(handle);
         }
+
+        inline HCURSOR getHandle() const {
+            return handle;
+        }
+
+        __declspec(property(get = getHandle)) HCURSOR Handle;
     };
 }

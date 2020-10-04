@@ -5,32 +5,40 @@
 
 namespace Ghurund {
 
-    template<class Key, class Value> class Map:public Collection {
+    template<class Key, class Value> class Map :public Collection {
     protected:
         Key* k;
         Value* v;
 
     public:
         Map() {
-            k = ghnew Key[capacity];
-            v = ghnew Value[capacity];
+            k = (Key*)ghnew char[sizeof(Key) * capacity];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
         }
 
-        Map(const Map& t1) {
-            capacity = t1.capacity;
-            initial = t1.initial;
-            size = t1.size;
-            k = ghnew Key[capacity];
-            v = ghnew Value[capacity];
+        Map(const Map& t1):Collection(t1) {
+            k = (Key*)ghnew char[sizeof(Key) * capacity];
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
             for (size_t i = 0; i < size; i++) {
                 k[i] = t1.k[i];
                 v[i] = t1.v[i];
             }
         }
 
+        Map(Map&& t1) noexcept:Collection(std::move(t1)) {
+            k = t1.k;
+            v = t1.v;
+            t1.k = nullptr;
+            t1.v = nullptr;
+        }
+
         virtual ~Map() {
-            delete[] k;
-            delete[] v;
+            for (size_t i = 0; i < size; i++) {
+                k[i].~Key();
+                v[i].~Value();
+            }
+            delete[] (char*)k;
+            delete[] (char*)v;
         }
 
         inline size_t getSize()const {
@@ -40,18 +48,32 @@ namespace Ghurund {
         __declspec(property(get = getSize)) size_t Size;
 
         inline void resize(size_t c) {
+            Key* k1 = (Key*)ghnew char[sizeof(Key) * c];
+            Value* v1 = (Value*)ghnew char[sizeof(Value) * c];
             capacity = c;
-            size = std::min(size, c);
-
-            Key* k1 = ghnew Key[c];
-            Value* v1 = ghnew Value[c];
-            for (size_t i = 0; i < size; i++) {
-                k1[i] = k[i];
-                v1[i] = v[i];
+            if (c >= size) {
+                for (size_t i = 0; i < size; i++) {
+                    new (k1 + i) Key(k[i]);
+                    k[i].~Key();
+                    new (v1 + i) Value(v[i]);
+                    v[i].~Value();
+                }
+            } else {
+                for (size_t i = 0; i < c; i++) {
+                    new (k1 + i) Key(k[i]);
+                    k[i].~Key();
+                    new (v1 + i) Value(v[i]);
+                    v[i].~Value();
+                }
+                for (size_t i = c; i < size; i++) {
+                    k[i].~Key();
+                    v[i].~Value();
+                }
+                size = c;
             }
-            delete[] k;
+            delete[](char*)k;
+            delete[](char*)v;
             k = k1;
-            delete[] v;
             v = v1;
         }
 
@@ -64,21 +86,29 @@ namespace Ghurund {
             }
             if (size == capacity)
                 resize(size + initial);
-            k[size] = key;
-            v[size] = value;
+            new(k + size) Key(key);
+            new(v + size) Value(value);
             size++;
         }
 
         inline void setKey(size_t i, Key& key) {
-            if (i >= capacity)
+            if (i >= capacity) {
                 resize(i);
-            k[i] = key;
+                new(k + i) Key(key);
+            } else {
+                k[i].~Key();
+                new(k + i) Key(key);
+            }
         }
 
         inline void setValue(size_t i, Value& value) {
-            if (i >= capacity)
+            if (i >= capacity) {
                 resize(i);
-            v[i] = value;
+                new(v + i) Value(value);
+            } else {
+                v[i].~Value();
+                new(v + i) Value(value);
+            }
         }
 
         inline Key& getKey(size_t i) const {
@@ -148,6 +178,32 @@ namespace Ghurund {
 
         inline const Value& operator[](const Key& key) const {
             return get(key);
+        }
+
+        Map<Key, Value>& operator=(const Map<Key, Value>& other) {
+            if (this == &other)
+                return *this;
+            __super::operator=(other);
+            delete[](char*)k;
+            delete[](char*)v;
+            k = (Key*)ghnew(char*)[sizeof(Key) * other.capacity];
+            v = (Value*)ghnew(char*)[sizeof(Value) * other.capacity];
+            for (size_t i = 0; i < size; i++) {
+                new (k + i) Key(other.k[i]);
+                new (v + i) Value(other.v[i]);
+            }
+            return *this;
+        }
+
+        Map<Key, Value>& operator=(const Map<Key, Value>&& other) {
+            if (this == &other)
+                return *this;
+            __super::operator=(std::move(other));
+            k = other.k;
+            v = other.v;
+            other.k = nullptr;
+            other.v = nullptr;
+            return *this;
         }
     };
 }

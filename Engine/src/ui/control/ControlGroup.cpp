@@ -1,13 +1,23 @@
 #include "ControlGroup.h"
 
 namespace Ghurund::UI {
-    void ControlGroup::draw(Canvas& canvas) {
+    void ControlGroup::onDraw(Canvas& canvas) {
+        canvas.save();
+        canvas.clipRect(0, 0, size.width, size.height);
         for (Control* c : children) {
-            auto& pos = c->Position;
-            canvas.translate(pos.x, pos.y);
+            if (!c->Visible)
+                continue;
             c->draw(canvas);
-            canvas.translate(-pos.x, -pos.y);
         }
+        canvas.restore();
+    }
+
+    bool ControlGroup::dispatchKeyEvent(const KeyEventArgs& event) {
+        if (focusedChild) {
+            if (focusedChild->dispatchKeyEvent(event))
+                return true;
+        }
+        return __super::dispatchKeyEvent(event);
     }
 
     bool ControlGroup::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -38,13 +48,13 @@ namespace Ghurund::UI {
             previousReceiver = nullptr;
         }
 
-        safeRelease(previousReceiver);
         for (size_t i = 0; i < children.Size; i++) {
             Control* c = children.get(children.Size - i - 1);
             if (c->canReceiveEvent(event)) {
-                setPointer(previousReceiver, c);
-                if (c->dispatchMouseMotionEvent(event.translate(-c->Position.x, -c->Position.y)))
+                if (c->dispatchMouseMotionEvent(event.translate(-c->Position.x, -c->Position.y))) {
+                    setPointer(previousReceiver, c);
                     return true;
+                }
             }
         }
         return __super::dispatchMouseMotionEvent(event);
@@ -63,7 +73,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlGroup::find(const String& name) {
-        if (this->name && name.operator==(this->name))
+        if (this->name && this->name->operator==(name))
             return this;
         for (Control* c : children) {
             Control* result = c->find(name);

@@ -25,23 +25,49 @@ namespace Ghurund {
             initial = collection.initial;
         }
 
-        virtual ~Collection() {};
+        Collection(Collection&& collection) noexcept {
+            size = collection.size;
+            capacity = collection.capacity;
+            initial = collection.initial;
+            collection.size = 0;
+        }
+
+        virtual ~Collection() = 0 {};
 
         inline void clear() {
             size = 0;
         }
 
-		inline size_t getSize()const {
-			return size;
-		}
+        inline size_t getSize()const {
+            return size;
+        }
 
-		__declspec(property(get = getSize)) size_t Size;
+        __declspec(property(get = getSize)) size_t Size;
 
         inline bool isEmpty()const {
-            return size==0;
+            return size == 0;
         }
 
         __declspec(property(get = isEmpty)) bool Empty;
+
+        Collection& operator=(const Collection& other) {
+            if (this == &other)
+                return *this;
+            size = other.size;
+            initial = other.initial;
+            capacity = other.capacity;
+            return *this;
+        }
+
+        Collection& operator=(Collection&& other) noexcept {
+            if (this == &other)
+                return *this;
+            size = other.size;
+            initial = other.initial;
+            capacity = other.capacity;
+            other.size = 0;
+            return *this;
+        }
     };
 
 }

@@ -25,7 +25,7 @@ namespace Ghurund {
         void dispatchEvents(EventDispatcher &consumer) {
             for(size_t i = 0; i < messages.Size;) {
                 if(dispatchEvent(messages[i], consumer)) {
-                    messages.removeAtKeepOrder(i);
+                    messages.removeAt(i);
                 } else {
                     i++;
                 }

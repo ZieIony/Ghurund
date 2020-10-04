@@ -29,16 +29,16 @@ namespace Ghurund {
         static std::string getFileLine(address_t address);
 
         template<typename... Args>
-        static void logVA(const LogType& type, const tchar* formatStr, Args&& ... args) {
+        static void logVA(LogType type, const tchar* formatStr, Args&& ... args) {
             std::string fileLine = getFileLine(getAddress());
 
             std::string message = fmt::format(formatStr, args...);
             std::string log = message.ends_with(_T("\n")) ? fileLine + message : fileLine + message + _T("\n");
 
-            writeLog(log.c_str(), log.size());
+            writeLog(type, log.c_str(), log.size());
         }
 
-        static void writeLog(const tchar* str, size_t length);
+        static void writeLog(LogType type, const tchar* str, size_t length);
 
     public:
         static void init(LogOutput* output = nullptr);
@@ -50,7 +50,7 @@ namespace Ghurund {
         }
 
         template<typename... Args>
-        static void log(const LogType& type, const tchar* format, Args&& ... args) {
+        static void log(LogType type, const tchar* format, Args&& ... args) {
             if (((int)type.Value) < (int)filterLevel.Value)
                 return;
 
@@ -58,7 +58,7 @@ namespace Ghurund {
         }
 
         template<typename... Args>
-        static Status log(const LogType& type, const Status status, const tchar* format, Args&& ... args) {
+        static Status log(LogType type, const Status status, const tchar* format, Args&& ... args) {
             if (((int)type.Value) < (int)filterLevel.Value)
                 return status;
 

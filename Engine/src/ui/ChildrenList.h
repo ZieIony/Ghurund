@@ -1,16 +1,16 @@
 #pragma once
 
-#include "Control.h"
 #include "core/collection/PointerList.h"
+#include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
     class ChildrenList {
     private:
         PointerList<Control*> children;
-        Control& owner;
+        ControlParent& owner;
 
     public:
-        ChildrenList(Control& owner):owner(owner) {}
+        ChildrenList(ControlParent& owner):owner(owner) {}
 
         ~ChildrenList() {
             clear();
@@ -21,28 +21,26 @@ namespace Ghurund::UI {
             control->Parent = &owner;
         }
 
-        inline void add(std::initializer_list<Control*> controls) {
+        inline void addAll(const std::initializer_list<Control*>& controls) {
             for (Control* control : controls) {
                 children.add(control);
                 control->Parent = &owner;
-                control->OnStateChanged();
             }
         }
 
         inline void insert(size_t i, Control* control) {
-            children.insertKeepOrder(i, control);
+            children.insert(i, control);
             control->Parent = &owner;
-            control->OnStateChanged();
         }
 
         inline void remove(Control* control) {
             control->Parent = nullptr;
-            children.removeKeepOrder(control);
+            children.remove(control);
         }
 
         inline void removeAt(size_t index) {
             children.get(index)->Parent = nullptr;
-            children.removeAtKeepOrder(index);
+            children.removeAt(index);
         }
 
         inline void clear() {

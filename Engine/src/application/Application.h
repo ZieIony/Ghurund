@@ -26,7 +26,7 @@ namespace Ghurund {
     private:
         static const unsigned int FRAME_COUNT = 3;
 
-        Window window;
+        Window* window;
 
         Client* client;
         Settings settings;
@@ -45,14 +45,9 @@ namespace Ghurund {
         SwapChain* swapChain = nullptr;
         LevelManager levelManager;
 
-        bool multipleInstances;
-        HANDLE singleInstanceMutex;
-
         void init();
         void update();
         void uninit();
-
-        void messageLoop();
 
       //  bool handleMessage(SystemMessage& message);
 
@@ -66,11 +61,11 @@ namespace Ghurund {
         };
 
         virtual void onDraw() {
-			Frame& frame = swapChain->getFrame();
-			CommandList& commandList = renderer->startFrame(frame);
-			levelManager.draw(commandList);
-			renderer->finishFrame(frame);
-			swapChain->present();
+            Frame& frame = swapChain->getFrame();
+            CommandList& commandList = renderer->startFrame(frame);
+            levelManager.draw(commandList);
+            renderer->finishFrame(frame);
+            swapChain->present();
         };
 
         /*virtual void client(const void *buffer, unsigned int size){
@@ -96,14 +91,10 @@ namespace Ghurund {
             PostQuitMessage(0);
         }
 
-        inline void setAllowMultipleInstances(bool multipleInstances) {
-            this->multipleInstances = multipleInstances;
-        }
-
         void reset();
 
         inline Window& getWindow() {
-            return window;
+            return *window;
         }
 
         __declspec(property(get = getWindow)) Window& Window;

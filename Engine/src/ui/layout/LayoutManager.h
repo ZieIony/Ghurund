@@ -1,83 +1,71 @@
 #pragma once
 
-#include "ControlGroup.h"
-#include "ItemAdapter.h"
-#include "ui/layout/LayoutInflater.h"
+#include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
     class LayoutManager {
+    protected:
+        inline float measureMaxWidth(ControlGroup& group) {
+            float measuredWidth = 0;
+            if (group.PreferredSize.width == PreferredSize::Width::WRAP) {
+                for (Control* c : group.Children)
+                    measuredWidth = std::max(measuredWidth, (float)c->MeasuredSize.width);
+            } else if (group.PreferredSize.width != PreferredSize::Width::FILL) {
+                measuredWidth = (float)group.PreferredSize.width;
+            }
+            return measuredWidth;
+        }
+
+        inline float measureMaxHeight(ControlGroup& group) {
+            float measuredHeight = 0;
+            if (group.PreferredSize.height == PreferredSize::Height::WRAP) {
+                for (Control* c : group.Children)
+                    measuredHeight = std::max(measuredHeight, (float)c->MeasuredSize.height);
+            } else if (group.PreferredSize.height != PreferredSize::Height::FILL) {
+                measuredHeight = (float)group.PreferredSize.height;
+            }
+            return measuredHeight;
+        }
+
     public:
         virtual ~LayoutManager() = 0 {}
 
-        virtual XMFLOAT2 scroll(float dx, float dy);
-        virtual void measure() {}
-        virtual void layout(float x, float y, float width, float height) = 0;
+        virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) {
+            for (Control* c : group.Children) {
+                c->measure(
+                    group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
+                    group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                );
+            }
+            return { 0,0 };
+        }
+
+        virtual void layout(ControlGroup& group, float x, float y, float width, float height) = 0;
     };
 
-    class VerticalLayoutManager :public LayoutManager {
+    template<class T, class ControlType>
+    class AdapterView;
+
+    template<class T, class ControlType>
+    requires IsControl<ControlType>
+    class AdapterLayoutManager {
+    protected:
+        XMFLOAT2 scroll = { 0,0 };
+
     public:
-        virtual void layout(float x, float y, float width, float height) {
-            if (items.Empty)
-                return;
+        virtual ~AdapterLayoutManager() = 0 {}
 
-            for (Control* c : Children) {
-                if (c->Size.x != Size.x)
-                    c->layout(0, c->Position.y, Size.x, c->Size.y);
-            }
-            if (Children.Size == 0) {
-                T& item = items.get(0);
-                AdapterWithPool<T>* adapter = findAdapterForChild(item);
-                Control* control = adapter->getControl();
-                adapter->adapter->bind(item, *control);
-                control->measure();
-                control->layout(0, posTop, Size.x, control->MeasuredSize.y);
-                Children.add(control);
-                control->release();
-            }
-            // add top
-            while (Children[0]->Position.y + scroll > 0 && indexTop > 0) {
-                indexTop--;
-                T& item = items.get(indexTop);
-                AdapterWithPool<T>* adapter = findAdapterForChild(item);
-                Control* control = adapter->getControl();
-                adapter->adapter->bind(item, *control);
-                control->measure();
-                control->layout(0, Children[0]->Position.y - control->MeasuredSize.y, Size.x, control->MeasuredSize.y);
-                Children.insert(0, control);
-                control->release();
-            }
-            //add bottom
-            while (Children[Children.Size - 1]->Position.y + Children[Children.Size - 1]->Size.y + scroll < Size.y && items.Size>indexTop + Children.Size) {
-                T& item = items.get(indexTop + Children.Size);
-                AdapterWithPool<T>* adapter = findAdapterForChild(item);
-                Control* control = adapter->getControl();
-                adapter->adapter->bind(item, *control);
-                control->measure();
-                control->layout(0, Children[Children.Size - 1]->Position.y + Children[Children.Size - 1]->Size.y, Size.x, control->MeasuredSize.y);
-                Children.add(control);
-                control->release();
-            }
-
-            if (indexTop + Children.Size == items.Size)
-                scroll = std::max(scroll, -Children[Children.Size - 1]->Position.y - Children[Children.Size - 1]->Size.y + Size.y);
-            scroll = std::min(scroll, 0.0f);
-
-            // remove top
-            while (Children.Size > 0 && Children[0]->Position.y + Children[0]->Size.y + scroll < 0) {
-                T& item = items.get(indexTop);
-                AdapterWithPool<T>* adapter = findAdapterForChild(item);
-                adapter->recycle(Children[0]);
-                Children.removeAt(0);
-                indexTop++;
-            }
-            // remove bottom
-            while (Children.Size > 0 && Children[Children.Size - 1]->Position.y + scroll > Size.y) {
-                T& item = items.get(indexTop + Children.Size - 1);
-                AdapterWithPool<T>* adapter = findAdapterForChild(item);
-                adapter->recycle(Children[Children.Size - 1]);
-                Children.removeAt(Children.Size - 1);
-            }
+        inline const XMFLOAT2& getScroll() const {
+            return scroll;
         }
+
+        __declspec(property(get = getScroll)) XMFLOAT2& Scroll;
+
+        virtual void scrollBy(AdapterView<T, ControlType>& adapterView, float dx, float dy) {}
+
+        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView) = 0;
+
+        virtual void layout(AdapterView<T, ControlType>& adapterView, float x, float y, float width, float height) = 0;
     };
 
 }

@@ -1,48 +1,49 @@
 #pragma once
 
 #include "ControlContainer.h"
-#include "ui/layout/LayoutInflater.h"
 
 namespace Ghurund::UI {
-    class ScrollView :public ControlContainer {
+    class ScrollView:public ControlContainer {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(ScrollView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ScrollView>();
 
-    public:
-        float scroll = 0.0f;
+        XMFLOAT2 scroll = { 0.0f, 0.0f };
 
-        virtual void draw(Canvas& canvas) override {
+    public:
+        virtual void onDraw(Canvas& canvas) override {
             canvas.save();
-            canvas.clipRect(position.x, position.y, size.x, size.y);
-            canvas.translate(0, scroll);
-            __super::draw(canvas);
+            canvas.clipRect(0, 0, size.width, size.height);
+            canvas.translate(scroll.x, scroll.y);
+            __super::onDraw(canvas);
             canvas.restore();
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
             if (Child)
-                Child->layout(0, 0, width, Child->MeasuredSize.y);
+                Child->layout(0, 0,
+                    Child->PreferredSize.width == PreferredSize::Width::FILL ? width : Child->MeasuredSize.width,
+                    Child->PreferredSize.height == PreferredSize::Height::FILL ? height : Child->MeasuredSize.height);
         }
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-            return __super::dispatchMouseButtonEvent(event.translate(0, -scroll));
+            return __super::dispatchMouseButtonEvent(event.translate(-scroll.x, -scroll.y));
         }
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            return __super::dispatchMouseMotionEvent(event.translate(0, -scroll));
+            return __super::dispatchMouseMotionEvent(event.translate(-scroll.x, -scroll.y));
         }
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-            return onMouseWheelEvent(event);
-        }
-
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) {
-            if (event.Wheel == MouseWheel::VERTICAL && Child) {
-                scroll = std::max(Size.y - Child->Size.y, std::min(scroll + event.Delta, 0.0f));
+            if (Child) {
+                if (event.Wheel == MouseWheel::HORIZONTAL) {
+                    scroll.x = std::max(Size.width - Child->Size.width, std::min(scroll.x + event.Delta, 0.0f));
+                } else if (event.Wheel == MouseWheel::VERTICAL) {
+                    scroll.y = std::max(Size.height - Child->Size.height, std::min(scroll.y + event.Delta, 0.0f));
+                }
                 repaint();
             }
-            return false;
+            return OnMouseWheel(event);
         }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ScrollView>(NAMESPACE_NAME, CLASS_NAME)
@@ -52,12 +53,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
-
-        inline static ScrollView* inflate(LayoutInflater& inflater, json& json) {
-            ScrollView* scrollView = ghnew ScrollView();
-            inflater.loadChild(scrollView, json);
-            inflater.loadControl(scrollView, json);
-            return scrollView;
-        }
     };
+
+    typedef ScopedPointer<ScrollView> ScrollViewPtr;
 }

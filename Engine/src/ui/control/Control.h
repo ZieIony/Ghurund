@@ -1,49 +1,96 @@
 #pragma once
 
 #include "core/Event.h"
+#include "core/ScopedPointer.h"
 #include "input/EventConsumer.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "ui/Canvas.h"
 #include "ui/PreferredSize.h"
 #include "ui/Cursor.h"
+#include "application/Window.h"
 
 namespace Ghurund::UI {
-    class Control : public Pointer, public EventConsumer {
+    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
+
+    class Control;
+    class ControlParent;
+
+    typedef std::function<bool(Control&)> StateHandler;
+
+    class Control: public Pointer, public EventConsumer {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Control);
 
+        DrawingCache* cache = nullptr;
+        bool transformationInvalid = true;
+
+        inline void rebuildTransformation() {
+            transformation->Reset();
+            transformation->Translate(-size.width / 2, -size.height / 2);
+            transformation->Rotate(rotation);
+            transformation->Scale(scale.x, scale.y);
+            transformation->Translate(position.x + size.width / 2, position.y + size.height / 2);
+            transformationInvalid = false;
+        }
+
     protected:
-        Control* parent = nullptr;
-        XMFLOAT2 position = { 0,0 };
-        XMFLOAT2 minSize = { 0,0 };
+        ControlParent* parent = nullptr;
+
+        XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
+        float rotation = 0;
+        Gdiplus::Matrix* transformation;
+
+        FloatSize minSize = { 0,0 };
         PreferredSize preferredSize;   // what the user wants
-        XMFLOAT2 measuredSize;  // what the view wants
-        XMFLOAT2 size = { 0, 0 };  // what was finally mediated
+        FloatSize measuredSize;  // what the view wants
+        FloatSize size = { 0, 0 };  // what was finally mediated
         bool needsLayout = true;
+        bool cacheEnabled = false;
 
         bool visible = true;
         bool enabled = true;
-        bool hovered = false;
-        Event<Control> onStateChanged = Event<Control>(*this);
+        bool focused = false;
 
-        tchar* name = nullptr;
-        Cursor cursor = Cursor::ARROW;
+        String* name = nullptr;
 
-    public:
+        virtual void onMeasure(float parentWidth, float parentHeight);
+
+        virtual void onLayout(float x, float y, float width, float height) {}
+
+        virtual void onDraw(Canvas& canvas) {}
+
+        virtual void onStateChanged();
+
         ~Control() {
-            delete[] name;
+            delete name;
+            delete transformation;
+            delete cache;
         }
 
-        inline const tchar* getName() const {
+    public:
+        Control() {
+            transformation = new Gdiplus::Matrix();
+        }
+
+        inline const String* getName() const {
             return name;
         }
 
-        inline void setName(const tchar* name) {
-            safeCopyStr(&this->name, name);
+        inline void setName(const String* name) {
+            if (this->name)
+                delete this->name;
+            if (name)
+                this->name = ghnew String(*name);
         }
 
-        __declspec(property(get = getName, put = setName)) tchar* Name;
+        inline void setName(const String& name) {
+            if (this->name)
+                delete this->name;
+            this->name = ghnew String(name);
+        }
+
+        __declspec(property(get = getName, put = setName)) String* Name;
 
         inline bool isVisible() const {
             return visible;
@@ -67,57 +114,77 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
 
-        inline bool isHovered() const {
-            return hovered;
-        }
-
-        __declspec(property(get = isHovered)) bool Hovered;
-
-        inline const Cursor& getCursor() const {
-            return cursor;
-        }
-
-        inline void setCursor(const Cursor& cursor) {
-            this->cursor = cursor;
-            if (hovered)
-                this->cursor.set();
-        }
-
-        __declspec(property(get = getCursor, put = setCursor)) const Cursor& Cursor;
-
         inline const XMFLOAT2& getPosition() const {
             return position;
         }
 
-        inline void setPosition(XMFLOAT2& position) {
+        inline void setPosition(const XMFLOAT2& position) {
             this->position = position;
+            transformationInvalid = true;
         }
 
         inline void setPosition(float x, float y) {
             position.x = x;
             position.y = y;
+            transformationInvalid = true;
         }
 
         __declspec(property(get = getPosition, put = setPosition)) XMFLOAT2& Position;
 
-        inline const XMFLOAT2& getMinSize() const {
+        inline const float getRotation() const {
+            return rotation;
+        }
+
+        inline void setRotation(float rotation) {
+            this->rotation = rotation;
+            transformationInvalid = true;
+        }
+
+        __declspec(property(get = getRotation, put = setRotation)) float Rotation;
+
+        inline const XMFLOAT2& getScale() const {
+            return scale;
+        }
+
+        inline void setScale(const XMFLOAT2& scale) {
+            this->scale = scale;
+            transformationInvalid = true;
+        }
+
+        inline void setScale(float x, float y) {
+            position.x = x;
+            position.y = y;
+            transformationInvalid = true;
+        }
+
+        __declspec(property(get = getScale, put = setScale)) XMFLOAT2& Scale;
+
+        inline Gdiplus::Matrix& getTransformation() const {
+            return *transformation;
+        }
+
+        __declspec(property(get = getTransformation)) Gdiplus::Matrix& Transformation;
+
+        inline FloatSize& getMinSize() {
             return minSize;
         }
 
-        inline void setMinSize(XMFLOAT2& size) {
+        inline void setMinSize(FloatSize& size) {
             this->minSize = size;
         }
 
         virtual void setMinSize(float width, float height) {
-            minSize.x = abs(width);
-            minSize.y = abs(height);
+            minSize.width = abs(width);
+            minSize.height = abs(height);
         }
 
-        inline const XMFLOAT2& getSize() const {
+        __declspec(property(get = getMinSize, put = setMinSize)) FloatSize& MinSize;
+
+        inline const FloatSize& getSize() const {
             return size;
         }
 
-        __declspec(property(get = getSize)) XMFLOAT2& Size;
+        __declspec(property(get = getSize)) FloatSize& Size;
 
         inline PreferredSize& getPreferredSize() {
             return preferredSize;
@@ -134,114 +201,78 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPreferredSize, put = setPreferredSize)) PreferredSize& PreferredSize;
 
-        inline const XMFLOAT2& getMeasuredSize() const {
+        inline const FloatSize& getMeasuredSize() const {
             return measuredSize;
         }
 
-        __declspec(property(get = getMeasuredSize)) XMFLOAT2& MeasuredSize;
-
-        Event<Control>& getOnStateChanged() {
-            return onStateChanged;
-        }
-
-        __declspec(property(get = getOnStateChanged)) Event<Control>& OnStateChanged;
+        __declspec(property(get = getMeasuredSize)) FloatSize& MeasuredSize;
 
         inline bool canReceiveEvent(const MouseEventArgs& event) {
             return Visible && Enabled &&
-                event.Position.x >= Position.x && event.Position.x <= Position.x + Size.x &&
-                event.Position.y >= Position.y && event.Position.y <= Position.y + Size.y;
+                event.Position.x >= position.x && event.Position.x < position.x + Size.width &&
+                event.Position.y >= position.y && event.Position.y < position.y + Size.height;
         }
 
-        using EventConsumer::dispatchMouseButtonEvent;
-
-        using EventConsumer::dispatchMouseMotionEvent;
-
-        using EventConsumer::dispatchMouseWheelEvent;
-
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            bool in = event.Position.x >= 0 && event.Position.x <= Size.x &&
-                event.Position.y >= 0 && event.Position.y <= Size.y;
-            if (in && !hovered) {
-                hovered = true;
-                onStateChanged();
-                cursor.set();
-            } else if (!in && hovered) {
-                hovered = false;
-                onStateChanged();
-            }
-            return false;
-        }
-
-        void setParent(Control* parent) {
+        void setParent(ControlParent* parent) {
             this->parent = parent;
         }
 
-        Control* getParent()const {
+        ControlParent* getParent()const {
             return parent;
         }
 
-        __declspec(property(get = getParent, put = setParent)) Control* Parent;
+        __declspec(property(get = getParent, put = setParent)) ControlParent* Parent;
 
-        virtual void repaint() {
-            if (parent)
-                parent->repaint();
+        virtual Window* getWindow() const;
+
+        __declspec(property(get = getWindow)) Window* Window;
+
+        inline void invalidateCache() {
+            delete cache;
+            cache = nullptr;
         }
 
-        virtual void invalidate() {
-            needsLayout = true;
-            if (parent)
-                parent->invalidate();
+        virtual void repaint();
+
+        virtual void invalidate();
+
+        void requestFocus();
+
+        virtual void clearFocus() {
+            if (!focused)
+                return;
+            focused = false;
+            onStateChanged();
         }
 
-        inline void measure() {
-            if (needsLayout || (float)preferredSize.width >= 0 || (float)preferredSize.height >= 0)
-                onMeasure();
+        inline bool isFocused() const {
+            return focused;
         }
 
-        virtual void onMeasure() {
-            if (preferredSize.width == PreferredSize::Width::WRAP) {
-                measuredSize.x = minSize.x;
-            } else if (preferredSize.width != PreferredSize::Width::FILL) {
-                measuredSize.x = (float)preferredSize.width;
-            }
+        __declspec(property(get = isFocused)) bool Focused;
 
-            if (preferredSize.height == PreferredSize::Height::WRAP) {
-                measuredSize.y = minSize.y;
-            } else if (preferredSize.height != PreferredSize::Height::FILL) {
-                measuredSize.y = (float)preferredSize.height;
-            }
+        inline void measure(float parentWidth, float parentHeight) {
+            if (needsLayout || (float)preferredSize.width < 0 || (float)preferredSize.height < 0)
+                onMeasure(parentWidth, parentHeight);
         }
 
-        inline void layout(float x, float y, float width, float height) {
-            position.x = x;
-            position.y = y;
-            if (needsLayout || size.x != width || size.y != height) {
-                size.x = width;
-                size.y = height;
-                needsLayout = false;
-                onLayout(x, y, width, height);
-            }
-        }
+        void layout(float x, float y, float width, float height);
 
-        virtual void onLayout(float x, float y, float width, float height) {}
-
-        virtual void draw(Canvas& canvas) = 0;
+        void draw(Canvas& canvas);
 
         virtual Control* find(const String& name) {
-            if (this->name && name.operator==(this->name))
+            if (this->name && this->name->operator==(name))
                 return this;
             return nullptr;
         }
 
-        virtual String save() const {
-            String str;
-            str = str + TYPE.Name + " {\n";
-            str = str + "preferredSize: {" + (float)(preferredSize.width) + ", " + (float)(preferredSize.height) + "}\n";
-            str = str + "measuredSize: {" + measuredSize.x + ", " + measuredSize.y + "}\n";
-            str = str + "size: {" + size.x + ", " + size.y + "}\n";
-            str = str + "}\n";
-            return str;
-        }
+        virtual XMFLOAT2 getPositionInWindow();
+
+        __declspec(property(get = getPositionInWindow)) XMFLOAT2 PositionInWindow;
+
+        XMFLOAT2 getPositionOnScreen();
+
+        __declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Control>(NAMESPACE_NAME, CLASS_NAME);
 
@@ -249,4 +280,9 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
+
+    typedef ScopedPointer<Control> ControlPtr;
+
+    template<class T>
+    concept IsControl = std::is_base_of<Control, T>::value;
 }

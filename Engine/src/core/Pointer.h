@@ -23,10 +23,10 @@ namespace Ghurund {
     protected:
         Pointer(const Pointer& pointer);
 
+        virtual ~Pointer() = 0;
+
     public:
         Pointer();
-
-        virtual ~Pointer() = 0;
 
         inline void addReference() {
             referenceCount++;
@@ -62,6 +62,9 @@ namespace Ghurund {
             return TYPE;
         }
     };
+
+    template<class T>
+    concept IsPointer = std::is_base_of<Pointer, T>::value;
 
     template<class Type>
     void setPointer(Type*& pointer, Type* pointer2) {

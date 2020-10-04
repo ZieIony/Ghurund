@@ -1,35 +1,27 @@
 #pragma once
 
-#include "Control.h"
+#include "ControlParent.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include "ui/ChildrenList.h"
 
 namespace Ghurund::UI {
-    class ControlGroup :public Control {
+    class ControlGroup:public ControlParent {
     private:
         ChildrenList children;
         Control* capturedChild = nullptr;
         Control* previousReceiver = nullptr;
+        Control* focusedChild = nullptr;
 
     protected:
-        inline void measureMaxWidth() {
-            if (preferredSize.width == PreferredSize::Width::WRAP) {
-                measuredSize.x = 0;
-                for (Control* c : Children)
-                    measuredSize.x = std::max(measuredSize.x, (float)c->MeasuredSize.x);
-            } else if (preferredSize.width != PreferredSize::Width::FILL) {
-                measuredSize.x = (float)preferredSize.width;
-            }
-        }
-
-        inline void measureMaxHeight() {
-            if (preferredSize.height == PreferredSize::Height::WRAP) {
-                measuredSize.y = 0;
-                for (Control* c : Children)
-                    measuredSize.y = std::max(measuredSize.y, (float)c->MeasuredSize.y);
-            } else if (preferredSize.height != PreferredSize::Height::FILL) {
-                measuredSize.y = (float)preferredSize.height;
+        virtual void onMeasure(float parentWidth, float parentHeight) override {
+            for (Control* c : Children) {
+                if (!c->Visible)
+                    continue;
+                c->measure(
+                    preferredSize.width >= 0 ? preferredSize.width : parentWidth,
+                    preferredSize.height >= 0 ? preferredSize.height : parentHeight
+                );
             }
         }
 
@@ -42,20 +34,48 @@ namespace Ghurund::UI {
         ~ControlGroup() {
             if (capturedChild)
                 capturedChild->release();
+            if (previousReceiver)
+                previousReceiver->release();
+            if (focusedChild)
+                focusedChild->release();
         }
 
         inline ChildrenList& getChildren() {
             return children;
         }
 
-        __declspec(property(get = getChildren)) ChildrenList& Children;
-
-        virtual void onMeasure() override {
-            for (Control* c : Children)
-                c->measure();
+        inline void setChildren(const std::initializer_list<Control*>& controls) {
+            children.clear();
+            children.addAll(controls);
         }
 
-        virtual void draw(Canvas& canvas) override;
+        __declspec(property(get = getChildren, put = setChildren)) ChildrenList& Children;
+
+        virtual void clearFocus() {
+            if (focusedChild) {
+                focusedChild->clearFocus();
+                focusedChild->release();
+                focusedChild = nullptr;
+            }
+            __super::clearFocus();
+        }
+
+        virtual void setFocus(Control* control) override {
+            if (focusedChild == control)
+                return;
+            if (focusedChild && control)
+                focusedChild->clearFocus();
+            setPointer(focusedChild, control);
+            __super::setFocus(this);
+        }
+
+        virtual Control* getFocus() override {
+            return focusedChild;
+        }
+
+        virtual void onDraw(Canvas& canvas) override;
+
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
@@ -65,4 +85,6 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name);
     };
+
+    typedef ScopedPointer<ControlGroup> ControlGroupPtr;
 }

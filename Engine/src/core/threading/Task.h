@@ -19,7 +19,11 @@ namespace Ghurund {
         time_t time;
 
     public:
-        Task(const String &name, std::function<Status()> function) {
+        Task(std::function<Status()> function) {
+            this->function = function;
+        }
+
+        Task(const String& name, std::function<Status()> function) {
             this->Name = name;
             this->function = function;
         }

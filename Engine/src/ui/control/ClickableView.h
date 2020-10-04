@@ -1,23 +1,39 @@
 #pragma once
 
-#include "ui/control/ControlContainer.h"
-#include "ui/layout/LayoutInflater.h"
+#include "HoverableView.h"
 
 namespace Ghurund::UI {
-    class ClickableView :public ControlContainer {
+    class MousePressed {
+        bool pressed[3] = { false, false, false };
+
+    public:
+        operator bool() const {
+            return pressed[0] || pressed[1] || pressed[2];
+        }
+
+        bool& operator[](MouseButton button) {
+            return pressed[(unsigned int)button];
+        }
+
+        const bool& operator[](MouseButton button) const {
+            return pressed[(unsigned int)button];
+        }
+    };
+
+    class ClickableView:public HoverableView {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(ClickableView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
 
-        bool pressed[3] = { false,false,false };
+        MousePressed buttons;
         Event<Control, MouseButton> onClicked = Event<Control, MouseButton>(*this);
 
     public:
-        inline bool isPressed() const {
-            return pressed[0] || pressed[1] || pressed[2];
+        inline const MousePressed& isPressed() const {
+            return buttons;
         }
 
-        __declspec(property(get = isPressed)) bool Pressed;
+        __declspec(property(get = isPressed)) const MousePressed& Pressed;
 
         Event<Control, MouseButton>& getOnClicked() {
             return onClicked;
@@ -26,23 +42,17 @@ namespace Ghurund::UI {
         __declspec(property(get = getOnClicked)) Event<Control, MouseButton>& OnClicked;
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            return onMouseButtonEvent(event);
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            return onMouseMotionEvent(event);
-        }
-
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            if (event.Action == MouseAction::DOWN && !pressed[(unsigned int)event.Button]) {
-                pressed[(unsigned int)event.Button] = true;
+            bool result = false;
+            if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
+                buttons[event.Button] = true;
                 onStateChanged();
-            } else if (event.Action == MouseAction::UP && pressed[(unsigned int)event.Button]) {
-                pressed[(unsigned int)event.Button] = false;
+                result = true;
+            } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
+                buttons[event.Button] = false;
                 onStateChanged();
-                onClicked(event.Button);
+                result = onClicked(event.Button);
             }
-            return true;
+            return result | Control::dispatchMouseButtonEvent(event);
         }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ClickableView>(NAMESPACE_NAME, CLASS_NAME)
@@ -51,13 +61,6 @@ namespace Ghurund::UI {
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
-        }
-
-        inline static ClickableView* inflate(LayoutInflater& inflater, json& json) {
-            ClickableView* clickableView = ghnew ClickableView();
-            inflater.loadChild(clickableView, json);
-            inflater.loadControl(clickableView, json);
-            return clickableView;
         }
     };
 }

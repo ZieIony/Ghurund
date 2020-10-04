@@ -144,10 +144,17 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LogPanel.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MaterialColors.h" />
     <ClInclude Include="StringObject.h" />
     <ClInclude Include="TestApplication.h" />
+    <ClInclude Include="TestControls.h" />
+    <ClInclude Include="TestFlowLayouts.h" />
     <ClInclude Include="TestLevel.h" />
+    <ClInclude Include="TestRecycler.h" />
+    <ClInclude Include="TextImageViews.h" />
+    <ClInclude Include="TitleBar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

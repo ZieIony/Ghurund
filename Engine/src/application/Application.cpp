@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "WindowType.h"
 #include "core/threading/FunctionQueue.h"
 
 #include <time.h>
@@ -29,18 +30,22 @@ namespace Ghurund {
         //parameterManager->initDefaultTextures(*resourceContext);
 
         // app
-        window.init(settings);
-        window.initParameters(ParameterManager);
+        const WindowClass& windowType = settings.windowed ? WindowClass::WINDOWED : WindowClass::FULLSCREEN;
+        window = windowType.create();
+        window->initParameters(ParameterManager);
         renderer = ghnew Ghurund::Renderer();
         renderer->init(*resourceContext);
         swapChain = ghnew SwapChain();
-        swapChain->init(Graphics, window, FRAME_COUNT);
+        swapChain->init(Graphics, *window, FRAME_COUNT);
 
-        window.OnSizeChanged.add([&](Ghurund::Window& window) {
+        window->OnSizeChanged.add([&](Ghurund::Window& window) {
             //swapChain->resize(args.width, args.height);
+            return true;
         });
 
-        client = ghnew Ghurund::Client(window.FunctionQueue);
+        window->Size = XMINT2(settings.width, settings.height);
+
+        client = ghnew Ghurund::Client(window->FunctionQueue);
         client->init();
     }
 
@@ -60,25 +65,12 @@ namespace Ghurund {
         delete resourceContext;
         delete resourceManager;
 
+        delete window;
         delete physics;
         delete audio;
         delete graphics;
-        window.uninit();
 
         CoUninitialize();
-    }
-
-    void Application::messageLoop() {
-        MSG msg = {};
-        while (true) {
-            while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-                if (msg.message == WM_QUIT)
-                    return;
-                //TranslateMessage(&msg);
-                DispatchMessage(&msg);
-            }
-            update();
-        }
     }
 
  /*   bool Application::handleMessage(SystemMessage & message) {
@@ -100,27 +92,17 @@ namespace Ghurund {
         if (settings)
             this->settings = *settings;
 
-        HANDLE singleInstanceMutex = CreateMutex(nullptr, true, window.Title);
-        bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
-
-        if (!multipleInstances && alreadyRunning) {
-            MessageBox(nullptr, _T("Application is already running."), window.Title, MB_OK | MB_ICONEXCLAMATION);
-            goto cleanUp;
-        }
-
         init();
         onInit();
-        window.Visible = true;
+        window->Visible = true;
+        window->activate();
 
-        messageLoop();
+        while (window->handleMessages())
+            update();
 
-        window.Visible = false;
+        window->Visible = false;
         onUninit();
         uninit();
-
-
-    cleanUp:
-        CloseHandle(singleInstanceMutex);
     }
 
     void Application::update() {

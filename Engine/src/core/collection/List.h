@@ -18,30 +18,32 @@ namespace Ghurund {
 
     public:
         List() {
-			v = (Value*)ghnew char[sizeof(Value) * capacity];
-		}
+            v = (Value*)ghnew char[sizeof(Value) * capacity];
+        }
 
         List(size_t initial) {
-			this->initial = capacity = initial;
+            this->initial = capacity = initial;
             v = (Value*)ghnew char[sizeof(Value) * capacity];
-		}
+        }
 
-        List(const List& t1) {
-			capacity = t1.capacity;
-            initial = t1.initial;
-            size = t1.size;
+        List(const List& t1):Collection(t1) {
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             for (size_t i = 0; i < size; i++)
                 new (v + i)Value(t1[i]);
-		}
+        }
+
+        List(List&& t1) noexcept:Collection(std::move(t1)) {
+            v = t1.v;
+            t1.v = nullptr;
+        }
 
         List(const std::initializer_list<Value> list) {
-			size = initial = capacity = list.size();
+            size = initial = capacity = list.size();
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             int i = 0;
             for (auto it = list.begin(); it != list.end(); ++it, i++)
                 new (v + i)Value(*it);
-		}
+        }
 
         ~List() {
             for (size_t i = 0; i < size; i++)
@@ -59,23 +61,31 @@ namespace Ghurund {
             return capacity;
         }
 
-        inline void resize(size_t c) {//if c<size some items will be lost, cannot resize to less than 1 item
-            size_t c2 = std::max<size_t>(c, 1);
-            Value* t1 = (Value*)ghnew char[sizeof(Value) * c2];
-            capacity = c2;
-            size = std::min(size, c);
-            for (size_t i = 0; i < size; i++) {
-                new (t1 + i) Value(v[i]);
-                v[i].~Value();
+        inline void resize(size_t c) {
+            Value* other = (Value*)ghnew char[sizeof(Value) * c];
+            capacity = c;
+            if (c >= size) {
+                for (size_t i = 0; i < size; i++) {
+                    new (other + i) Value(v[i]);
+                    v[i].~Value();
+                }
+            } else {
+                for (size_t i = 0; i < c; i++) {
+                    new (other + i) Value(v[i]);
+                    v[i].~Value();
+                }
+                for (size_t i = c; i < size; i++)
+                    v[i].~Value();
+                size = c;
             }
             delete[](char*)v;
-            v = t1;
+            v = other;
         }
 
-        inline void add(const Value& e) {//allows to add null item
+        inline void add(const Value& item) {
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
-			new(v + size) Value(e);
+            new(v + size) Value(item);
             size++;
 #ifdef GHURUND_EDITOR
             if (onItemAdded != nullptr)
@@ -95,17 +105,20 @@ namespace Ghurund {
 #endif
         }
 
-        inline void insert(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
-            if (size == capacity)
-                resize(capacity + initial);
-            v[size] = v[i];
-            v[i].~Value();
-            new(v + i) Value(item);
-            size++;
+        inline void addAll(const std::initializer_list<Value>& list) {
+            if (capacity < size + list.size())
+                resize(size + list.size());
+            const Value* l = list.begin();
+            for (size_t i = 0; i < list.size(); i++, l++)
+                new(v + size + i) Value(*l);
+            size += list.size();
+#ifdef GHURUND_EDITOR
+            if (onItemAdded != nullptr)
+                onItemAdded();
+#endif
         }
 
-        inline void insertKeepOrder(size_t i, const Value& item) {
+        inline void insert(size_t i, const Value& item) {
             if (size == capacity)
                 resize((size_t)(capacity * 1.6));
             if (i < size) {
@@ -118,10 +131,10 @@ namespace Ghurund {
             size++;
         }
 
-        inline void set(size_t i, const Value& e) {
+        inline void set(size_t i, const Value& item) {
             _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             v[i].~Value();
-            new(v + i) Value(e);
+            new(v + i) Value(item);
         }
 
         inline Value& get(size_t i)const {
@@ -130,13 +143,6 @@ namespace Ghurund {
         }
 
         inline void removeAt(size_t i) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
-            v[i] = std::move(v[size - 1]);
-            v[size - 1].~Value();
-            size--;
-        }
-
-        inline void removeAtKeepOrder(size_t i) {
             _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
@@ -147,14 +153,6 @@ namespace Ghurund {
         }
 
         inline void remove(const Value& item) {
-            size_t i = indexOf(item);
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
-            v[i] = std::move(v[size - 1]);
-            v[size - 1].~Value();
-            size--;
-        }
-
-        inline void removeKeepOrder(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
@@ -201,16 +199,36 @@ namespace Ghurund {
         }
 
         List<Value>& operator=(const List<Value>& other) {
-            size = other.size;
-            initial = other.initial;
-            capacity = other.capacity;
-            Value* prevV = v;
+            if (this == &other)
+                return *this;
+            __super::operator=(other);
+            for (size_t i = 0; i < size; i++)
+                v[i].~Value();
+            delete[](char*)v;
             v = (Value*)ghnew char[sizeof(Value) * size];
             for (size_t i = 0; i < size; i++)
                 new (v + i) Value(other[i]);
+            return *this;
+        }
+
+        List<Value>& operator=(const std::initializer_list<Value>& other) {
+            size = other.size();
             for (size_t i = 0; i < size; i++)
-                prevV[i].~Value();
-            delete[](char*)prevV;
+                v[i].~Value();
+            delete[](char*)v;
+            v = (Value*)ghnew char[sizeof(Value) * size];
+            const Value* l = other.begin();
+            for (size_t i = 0; i < size; i++, l++)
+                new (v + i) Value(*l);
+            return *this;
+        }
+
+        List<Value>& operator=(const List<Value>&& other) {
+            if (this == &other)
+                return *this;
+            __super::operator=(std::move(other));
+            v = other.v;
+            other.v = nullptr;
             return *this;
         }
 

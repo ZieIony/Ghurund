@@ -9,7 +9,7 @@
 
 namespace Ghurund {
     __interface LogOutput {
-        virtual void log(const tchar* str, size_t length) = 0;
+        virtual void log(LogType type, const tchar* str, size_t length) = 0;
     };
 
     class CustomConsoleLogOutput : public LogOutput {
@@ -30,7 +30,7 @@ namespace Ghurund {
             FreeConsole();
         }
 
-        void log(const tchar* str, size_t length) {
+        virtual void log(LogType type, const tchar* str, size_t length) override {
             WriteConsole(debugOutput, str, (DWORD)length, nullptr, nullptr);
         }
     };
@@ -44,7 +44,7 @@ namespace Ghurund {
 #endif
         }
 
-        void log(const tchar* str, size_t length) {
+        virtual void log(LogType type, const tchar* str, size_t length) override {
             OutputDebugString(str);
         }
     };
@@ -63,7 +63,7 @@ namespace Ghurund {
             CloseHandle(file);
         }
 
-        void log(const tchar* str, size_t length) {
+        virtual void log(LogType type, const tchar* str, size_t length) override {
             unsigned long bytes;
             WriteFile(file, str, (DWORD)(length * sizeof(tchar)), &bytes, nullptr);
         }
@@ -71,14 +71,14 @@ namespace Ghurund {
 
     class CallbackLogOutput : public LogOutput {
     private:
-        std::function<void(const tchar*)> onLogged;
+        std::function<void(LogType, const tchar*)> onLogged;
 
     public:
-        CallbackLogOutput(std::function<void(const tchar*)> onLogged): onLogged(onLogged) {
+        CallbackLogOutput(std::function<void(LogType, const tchar*)> onLogged): onLogged(onLogged) {
         }
 
-        void log(const tchar* str, size_t length) {
-            onLogged(str);
+        virtual void log(LogType type, const tchar* str, size_t length) override {
+            onLogged(type, str);
         }
     };
 }
