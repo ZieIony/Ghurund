@@ -11,7 +11,7 @@ namespace Ghurund {
             if (files.contains(fileName)) {
                 DWORD action = fni.Action;
                 delayThread.remove(fileName);
-                Task* task = ghnew Task(fileName, [fileName, action, this]() {
+                Task* task = ghnew Task(fileName, [fileName, action, this] {
                     const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
                     Logger::log(LogType::INFO, S("file changed: ") + fileName + ", action: " + change.Name + "\n");
                     files[fileName](fileName, change);

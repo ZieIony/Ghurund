@@ -2,10 +2,10 @@
 
 #include "core/ScopedPointer.h"
 #include "ui/Theme.h"
-#include "ui/control/LinearLayout.h"
-#include "ui/control/StackLayout.h"
+#include "ui/layout/LinearLayout.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/control/ColorView.h"
-#include "ui/control/TextView.h"
+#include "ui/control/TextBlock.h"
 #include "ui/widget/button/ImageButton.h"
 
 namespace Ghurund::Editor {
@@ -16,7 +16,7 @@ namespace Ghurund::Editor {
         ScopedPointer<ColorView> backgroundView;
         ScopedPointer<HorizontalLayout> row;
         ScopedPointer<ImageButton> closeButton;
-        ScopedPointer<TextView> title;
+        ScopedPointer<TextBlock> title;
 
     public:
         TitleBar(Theme& theme) {
@@ -24,7 +24,7 @@ namespace Ghurund::Editor {
             row = ghnew HorizontalLayout();
             row->PreferredSize.height = PreferredSize::Height::WRAP;
             {
-                title = ghnew TextView(theme.textViewPrimaryStyle);
+                title = ghnew TextBlock(theme.textViewPrimaryStyle);
                 title->PreferredSize.width = PreferredSize::Width::FILL;
                 closeButton = ghnew ImageButton(theme);
                 //closeButton->Image = 

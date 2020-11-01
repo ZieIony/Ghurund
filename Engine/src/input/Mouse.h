@@ -7,7 +7,7 @@ namespace Ghurund {
     using namespace DirectX;
 
     enum class MouseButton {
-        LEFT, MIDDLE, RIGHT
+        LEFT, MIDDLE, RIGHT, VIRTUAL
     };
 
     enum class MouseWheel {

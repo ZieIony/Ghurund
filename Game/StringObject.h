@@ -1,8 +1,8 @@
 #include "ui/control/AdapterView.h"
 #include "core/string/String.h"
-#include "ui/control/TextView.h"
+#include "ui/control/TextBlock.h"
 #include "ui/control/PaddingContainer.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/Clip.h"
 #include "ui/control/ColorView.h"
 #include "core/ScopedPointer.h"
@@ -40,7 +40,7 @@ struct StringObjectHeader:public StringObject {
 
 class StringObjectHeaderRow:public StackLayout {
 private:
-    ScopedPointer<TextView> tv;
+    ScopedPointer<TextBlock> tv;
     ScopedPointer<PaddingContainer> padding;
     ScopedPointer<ColorView> backgroundView;
 
@@ -55,7 +55,7 @@ public:
             padding->Padding.Horizontal = 16.0f;
             padding->Padding.Vertical = 4.0f;
 
-            tv = ghnew TextView(theme.textViewHeaderStyle);
+            tv = ghnew TextBlock(theme.textViewHeaderStyle);
             tv->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Child = tv;
 
@@ -76,8 +76,8 @@ public:
 
 class StringObjectItemRow:public StackLayout {
 private:
-    TextView* tv;
-    TextView* tv2;
+    TextBlock* tv;
+    TextBlock* tv2;
     ImageView* imageView;
 
 public:
@@ -122,11 +122,11 @@ public:
                 VerticalLayoutPtr column = ghnew VerticalLayout();
                 {
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
-                    column->Gravity.horizontal = Gravity::Horizontal::RIGHT;
+                    column->Alignment.horizontal = Alignment::Horizontal::RIGHT;
 
-                    tv = ghnew TextView(theme.textViewPrimaryStyle);
+                    tv = ghnew TextBlock(theme.textViewPrimaryStyle);
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv2 = ghnew TextView(theme.textViewSecondaryStyle);
+                    tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
                     TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
                     tb->Text = "CANCEL";

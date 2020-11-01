@@ -16,21 +16,22 @@ namespace Ghurund::UI {
             ItemSource<T>* items = adapterView.Items;
             scroll.y += dy;
             if (dy > 0) {
-                addTop(adapterView);
+                addTop(adapterView, adapterView.Size.width, adapterView.Size.height);
                 scroll.y = std::min(scroll.y, 0.0f);
                 removeBottom(adapterView);
             } else {
-                addBottom(adapterView);
+                addBottom(adapterView, adapterView.Size.width, adapterView.Size.height);
                 if (indexTop + adapterView.Children.Size == items->Size)
                     scroll.y = std::max(scroll.y, -lastBottom + adapterView.Size.height);
                 removeTop(adapterView);
             }
         }
 
-        void addTop(AdapterView<T, ControlType>& adapterView) {
+        void addTop(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
             while (firstTop + scroll.y > 0 && indexTop > 0) {
                 indexTop--;
                 Control* control = adapterView.getChild(indexTop);
+                control->measure(parentWidth, parentHeight);
                 control->layout(0, firstTop - control->MeasuredSize.height, adapterView.Size.width, control->MeasuredSize.height);
                 adapterView.Children.insert(0, control);
                 firstTop = control->Position.y;
@@ -39,10 +40,11 @@ namespace Ghurund::UI {
             }
         }
 
-        void addBottom(AdapterView<T, ControlType>& adapterView) {
+        void addBottom(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
             ItemSource<T>* items = adapterView.Items;
             while (lastBottom + scroll.y < adapterView.Size.height && items->Size>indexBottom) {
                 Control* control = adapterView.getChild(indexBottom);
+                control->measure(parentWidth, parentHeight);
                 control->layout(0, lastBottom, adapterView.Size.width, control->MeasuredSize.height);
                 adapterView.Children.add(control);
                 control->release();
@@ -78,7 +80,7 @@ namespace Ghurund::UI {
             }
         }
 
-        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView) {
+        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
             if (adapterView.PreferredSize.width == PreferredSize::Width::FILL && adapterView.PreferredSize.height == PreferredSize::Height::FILL)
                 return { 0,0 };
             if (adapterView.PreferredSize.width >= 0 && adapterView.PreferredSize.height >= 0)
@@ -89,7 +91,7 @@ namespace Ghurund::UI {
             ItemSource<T>* items = adapterView.Items;
             for (size_t i = 0; i < items->Size; i++) {
                 Control* control = adapterView.getChild(i);
-                control->measure(100, 100); // TODO: pass parent size
+                control->measure(parentWidth, parentHeight);
                 if (control->PreferredSize.width != PreferredSize::Width::FILL)
                     width = std::max(width, control->MeasuredSize.width);
                 if (control->PreferredSize.height != PreferredSize::Height::FILL)
@@ -114,8 +116,8 @@ namespace Ghurund::UI {
                     c->layout(0, c->Position.y, width, c->Size.height);
             }
 
-            addTop(adapterView);
-            addBottom(adapterView);
+            addTop(adapterView, width, height);
+            addBottom(adapterView, width, height);
 
             if (indexTop + adapterView.Children.Size == items->Size)
                 scroll.y = std::max(scroll.y, -lastBottom + height);

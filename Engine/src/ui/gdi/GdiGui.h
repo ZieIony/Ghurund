@@ -3,8 +3,6 @@
 #include "ui/Gui.h"
 #include "GdiCanvas.h"
 
-#pragma comment (lib, "Gdiplus.lib")
-
 namespace Ghurund::UI {
     class GdiGui :public Gui {
     private:

@@ -21,12 +21,10 @@
 #include <thread>
 
 namespace Ghurund {
-
     class Application:public Noncopyable {
     private:
-        static const unsigned int FRAME_COUNT = 3;
-
-        Window* window;
+        List<SystemWindow*> windows;
+        Ghurund::FunctionQueue* functionQueue = nullptr;
 
         Client* client;
         Settings settings;
@@ -42,14 +40,12 @@ namespace Ghurund {
         ScriptEngine* scriptEngine;
 
         Renderer* renderer;
-        SwapChain* swapChain = nullptr;
         LevelManager levelManager;
 
         void init();
+        void handleMessages();
         void update();
         void uninit();
-
-      //  bool handleMessage(SystemMessage& message);
 
     protected:
         virtual void onInit() {};
@@ -58,14 +54,6 @@ namespace Ghurund {
 
         virtual void onUpdate() {
             levelManager.update();
-        };
-
-        virtual void onDraw() {
-            Frame& frame = swapChain->getFrame();
-            CommandList& commandList = renderer->startFrame(frame);
-            levelManager.draw(commandList);
-            renderer->finishFrame(frame);
-            swapChain->present();
         };
 
         /*virtual void client(const void *buffer, unsigned int size){
@@ -93,11 +81,23 @@ namespace Ghurund {
 
         void reset();
 
-        inline Window& getWindow() {
-            return *window;
+        inline const Settings& getSettings() const {
+            return settings;
         }
 
-        __declspec(property(get = getWindow)) Window& Window;
+        __declspec(property(get = getSettings)) const Settings& Settings;
+
+        inline List<SystemWindow*>& getWindows() {
+            return windows;
+        }
+
+        __declspec(property(get = getWindows)) List<SystemWindow*>& Windows;
+
+        FunctionQueue& getFunctionQueue() {
+            return *functionQueue;
+        }
+
+        __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
         inline Client& getClient() {
             return *client;

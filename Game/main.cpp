@@ -65,6 +65,7 @@ typedef DWORD address_t;
 #pragma comment(lib, "GhurundEngine_32.lib")
 #endif
 
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
 #ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);

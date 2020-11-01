@@ -47,8 +47,10 @@ namespace Ghurund::UI {
 
     public:
         RadioTextButton(CheckBoxRadioTextLayout* layout):RadioButton(layout) {
-            textView = layout->TextView;
+            textView = layout->TextBlock;
         }
+
+        RadioTextButton(Theme& theme):RadioTextButton(ghnew RadioTextButtonLayout(theme)) {}
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<RadioTextButton>(NAMESPACE_NAME, CLASS_NAME)
             .withSupertype(__super::TYPE);

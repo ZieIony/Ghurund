@@ -21,7 +21,7 @@ namespace Ghurund::UI {
         __declspec(property(get = isSelected, put = setSelected)) bool Selected;
 
     private:
-        inline static const Property& SELECTED = TypedProperty<SelectableView, bool>(
-            GH_STRINGIFY(bool), "selected", &isSelected, &setSelected);
+        //inline static const Property& SELECTED = TypedProperty<SelectableView, bool>(
+         //   GH_STRINGIFY(bool), "selected", &isSelected, &setSelected);
     };
 }

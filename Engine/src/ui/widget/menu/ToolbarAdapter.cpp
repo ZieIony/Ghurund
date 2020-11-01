@@ -5,7 +5,7 @@ namespace Ghurund::UI {
     ButtonToolbarAdapter::ButtonToolbarAdapter(Theme& theme):theme(theme) {}
     
     Control* ButtonToolbarAdapter::makeControl() const {
-        return ghnew ImageButton(theme);
+        return ghnew ImageButton(ghnew ImageButtonFlatLayout(theme));
     }
     
     void ButtonToolbarAdapter::bind(Control& control, MenuItem* const& item, size_t position) const {

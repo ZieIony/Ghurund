@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "SystemWindow.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
 #include <windowsx.h>
@@ -38,14 +38,8 @@ namespace Ghurund {
         RegisterClassEx(&windowClass);
     }
 
-    Window* WindowClass::create(const Window* parent) const {
-        HWND handle = CreateWindowEx(exStyle, windowClass.lpszClassName, "Ghurund", dwStyle, 0, 0, 0, 0, parent ? parent->Handle : nullptr, nullptr, windowClass.hInstance, nullptr);
-        DWORD error = GetLastError();
-        Window* window = ghnew Window(handle, *this);
-        WindowData* wd = ghnew WindowData(window);
-        SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)wd);
-        window->OnCreated();
-        return window;
+    HWND WindowClass::create() const {
+        return CreateWindowEx(exStyle, windowClass.lpszClassName, "Ghurund", dwStyle, 0, 0, 0, 0, nullptr, nullptr, windowClass.hInstance, nullptr);
     }
 
 }

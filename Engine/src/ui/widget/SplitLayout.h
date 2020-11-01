@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ui/Orientation.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/ClickableView.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 
 namespace Ghurund::UI {
     class Splitter:public ClickableView {

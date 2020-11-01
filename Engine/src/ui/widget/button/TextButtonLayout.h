@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ButtonLayout.h"
-#include "ui/control/StackLayout.h"
 #include "ui/control/ClickableView.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/mixin/TextMixin.h"
 #include "ui/mixin/BackgroundMixin.h"
 #include "ui/mixin/BorderMixin.h"
@@ -12,7 +12,7 @@ namespace Ghurund::UI {
 
     class TextButtonLayout:public ButtonLayout, public BackgroundLayoutMixin, public BorderLayoutMixin, public TextLayoutMixin, public PaddingLayoutMixin {
     private:
-        StackLayout* stack;
+        StackLayout* stack = nullptr;
 
     protected:
         Theme& theme;

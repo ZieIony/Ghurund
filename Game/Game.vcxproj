@@ -144,6 +144,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LayoutEditorTab.h" />
     <ClInclude Include="LogPanel.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MaterialColors.h" />
@@ -153,7 +154,7 @@
     <ClInclude Include="TestFlowLayouts.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TestRecycler.h" />
-    <ClInclude Include="TextImageViews.h" />
+    <ClInclude Include="TestImageViews.h" />
     <ClInclude Include="TitleBar.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

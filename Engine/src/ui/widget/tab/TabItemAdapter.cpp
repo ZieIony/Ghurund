@@ -19,6 +19,6 @@ namespace Ghurund::UI {
     void TextTabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {
         __super::bind(tabView, tab, position);
         TextTabItem* textTab = (TextTabItem*)tab;
-        ((TextTabLayout&)tabView.Layout).TextView->Text = textTab->text;
+        ((TextTabLayout&)tabView.Layout).TextBlock->Text = textTab->text;
     }
 }

@@ -6,7 +6,7 @@
 #include "Keyboard.h"
 #include "Windowsx.h"
 #include "EventConsumer.h"
-#include "application/Window.h"
+#include "application/SystemWindow.h"
 
 namespace Ghurund {
     class Input {

@@ -12,6 +12,7 @@ namespace Ghurund {
         const char* name;
         Type* supertype = nullptr;
         size_t size;
+        List<Property*> properties;
 
     public:
         TypeBuilder(const char* _namespace, const char* name) {
@@ -31,12 +32,17 @@ namespace Ghurund {
         }
 
         TypeBuilder withSupertype(const Type& supertype) {
-            this->supertype = (Type*)& supertype;
+            this->supertype = (Type*)&supertype;
+            return *this;
+        }
+
+        TypeBuilder withProperty(Property& property) {
+            properties.add(&property);
             return *this;
         }
 
         operator Type() {
-            return Type(constructor, modifiers, _namespace, name, size, supertype);
+            return Type(constructor, modifiers, _namespace, name, size, supertype, properties);
         }
     };
 }

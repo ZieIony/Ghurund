@@ -10,6 +10,9 @@ namespace Ghurund::UI {
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
 
         Padding padding;
+#ifdef _DEBUG
+        Paint paint;
+#endif
 
     public:
         PaddingContainer() {}
@@ -33,16 +36,7 @@ namespace Ghurund::UI {
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
-        virtual void onLayout(float x, float y, float width, float height) override {
-            if (Child) {
-                Child->layout(
-                    padding.left,
-                    padding.top,
-                    std::max(width - padding.left - padding.right, Child->MinSize.width),
-                    std::max(height - padding.top - padding.bottom, Child->MinSize.height)
-                );
-            }
-        }
+        virtual void onLayout(float x, float y, float width, float height) override;
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<PaddingContainer>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)

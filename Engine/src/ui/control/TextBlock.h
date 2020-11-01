@@ -5,40 +5,35 @@
 #include "ui/Style.h"
 
 namespace Ghurund::UI {
-    class TextView:public Control {
+    class TextBlock:public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(TextView);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<TextView>();
+        inline static const char* CLASS_NAME = GH_STRINGIFY(TextBlock);
+        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
 
         String text;
         unsigned int textColor = 0xde000000;
         Font* font = nullptr;
         Paint paint;
-        bool pressed = false;
-        TextSelection selectionStart, selectionEnd;
-        unsigned int selectionColor = 0x7f0078D7;
-        unsigned int cursorColor = 0xff333333;
-        unsigned int cursorWidth = 2;
 
     protected:
-        ~TextView() {
+        ~TextBlock() {
             if (font)
                 font->release();
         }
 
     public:
-        TextView() {
+        TextBlock() {
             text = "text";
             cacheEnabled = true;
         }
 
-        TextView(const String& text, Font* font):text(text) {
+        TextBlock(const String& text, Font* font):text(text) {
             font->addReference();
             this->font = font;
             cacheEnabled = true;
         }
 
-        TextView(Style<TextView>* style):TextView() {
+        TextBlock(Style<TextBlock>* style):TextBlock() {
             style->apply(*this);
             style->onStateChanged(*this);
         }
@@ -77,18 +72,14 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-        inline static const Ghurund::Type& TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, CLASS_NAME)
+        inline static const Ghurund::Type& TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+            .withSupertype(__super::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };
 
-    typedef ScopedPointer<TextView> TextViewPtr;
+    typedef ScopedPointer<TextBlock> TextBlockPtr;
 }

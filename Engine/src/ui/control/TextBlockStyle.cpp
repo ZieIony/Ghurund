@@ -1,8 +1,8 @@
-#include "TextViewStyle.h"
+#include "TextBlockStyle.h"
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
-    void TextViewPrimaryStyle::onStateChanged(TextView& textView) const {
+    void TextBlockPrimaryStyle::onStateChanged(TextBlock& textView) const {
         textView.Font = theme.getPrimaryTextFont();
         if (!textView.Enabled) {
             textView.TextColor = theme.getColorForegroundDisabledOnBackground();
@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void TextViewSecondaryStyle::onStateChanged(TextView& textView) const {
+    void TextBlockSecondaryStyle::onStateChanged(TextBlock& textView) const {
         textView.Font = theme.getSecondaryTextFont();
         if (!textView.Enabled) {
             textView.TextColor = theme.getColorForegroundDisabledOnBackground();
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void TextViewHeaderStyle::onStateChanged(TextView& textView) const {
+    void TextBlockHeaderStyle::onStateChanged(TextBlock& textView) const {
         textView.Font = theme.getSecondaryTextFont();
         if (!textView.Enabled) {
             textView.TextColor = theme.getColorForegroundDisabledOnBackground();

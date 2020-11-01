@@ -13,6 +13,7 @@
 namespace Ghurund::UI {
     class GdiCanvas: public Canvas {
     private:
+        HDC hdc = {};
         PAINTSTRUCT ps = {};
         HWND hwnd = {};
         Gdiplus::Bitmap* bitmap = nullptr;
@@ -62,7 +63,7 @@ namespace Ghurund::UI {
             if (bitmap) {
                 graphics = Gdiplus::Graphics::FromImage(bitmap);
             }else{
-                HDC hdc = BeginPaint(hwnd, &ps);
+                hdc = GetDC(hwnd);// BeginPaint(hwnd, &ps);
                 RECT rc;
                 GetClientRect(hwnd, &rc);
                 HDC memdc;
@@ -76,7 +77,8 @@ namespace Ghurund::UI {
         void endPaint() {
             if (!bitmap) {
                 EndBufferedPaint(hbuff, TRUE);
-                EndPaint(hwnd, &ps);
+                ReleaseDC(hwnd, hdc);
+                //EndPaint(hwnd, &ps);
             }
             delete graphics;
             graphics = nullptr;

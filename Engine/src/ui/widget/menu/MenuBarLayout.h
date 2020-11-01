@@ -4,7 +4,7 @@
 #include "core/ScopedPointer.h"
 #include "ui/widget/Widget.h"
 #include "ui/control/ColorView.h"
-#include "ui/control/StackLayout.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/control/AdapterView.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 

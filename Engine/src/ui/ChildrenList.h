@@ -34,18 +34,23 @@ namespace Ghurund::UI {
         }
 
         inline void remove(Control* control) {
+            control->clearFocus();
             control->Parent = nullptr;
             children.remove(control);
         }
 
         inline void removeAt(size_t index) {
-            children.get(index)->Parent = nullptr;
+            Control* control = children.get(index);
+            control->clearFocus();
+            control->Parent = nullptr;
             children.removeAt(index);
         }
 
         inline void clear() {
-            for (Control* child : children)
+            for (Control* child : children) {
+                child->clearFocus();
                 child->Parent = nullptr;
+            }
             children.clear();
         }
 
@@ -53,7 +58,15 @@ namespace Ghurund::UI {
             return children.begin();
         }
 
+        inline Control** begin() const {
+            return children.begin();
+        }
+
         inline Control** end() {
+            return children.end();
+        }
+
+        inline Control** end() const {
             return children.end();
         }
 
@@ -64,7 +77,13 @@ namespace Ghurund::UI {
         __declspec(property(get = getSize)) size_t Size;
 
         inline void set(size_t i, Control* e) {
+            Control* control = children[i];
+            if (control == e)
+                return;
+            control->clearFocus();
+            control->Parent = nullptr;
             children.set(i, e);
+            control->Parent = &owner;
         }
 
         inline Control* get(size_t i)const {

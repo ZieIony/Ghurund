@@ -5,12 +5,12 @@ namespace Ghurund {
     Client::Client(FunctionQueue& functionQueue):connectionState(ConnectionState::NOT_CONNECTED, &functionQueue), functionQueue(functionQueue) {
         this->functionQueue = functionQueue;
         connectionState.addEdge(ConnectionState::NOT_CONNECTED, ConnectionState::CONNECTING);
-        connectionState.addEdge(ConnectionState::CONNECTING, ConnectionState::CONNECTED, [&]() {
+        connectionState.addEdge(ConnectionState::CONNECTING, ConnectionState::CONNECTED, [&] {
             if (listener != nullptr)
                 listener->onConnected();
             });
         connectionState.addEdge(ConnectionState::CONNECTED, ConnectionState::DISCONNECTING);
-        connectionState.addEdge(ConnectionState::DISCONNECTING, ConnectionState::NOT_CONNECTED, [&]() {
+        connectionState.addEdge(ConnectionState::DISCONNECTING, ConnectionState::NOT_CONNECTED, [&] {
             delete serverSocket;
             serverSocket = nullptr;
             delete thread;  // called from that thread's thread

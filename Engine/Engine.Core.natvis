@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="Ghurund::ASCIIString">
+		<DisplayString>{v,s}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UnicodeString">
+		<DisplayString>L{v,su}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::List&lt;*&gt;">
+		<DisplayString>{{size={size} capacity={capacity}}}</DisplayString>
+		<Expand>
+			<ArrayItems>
+				<Size>size</Size>
+				<ValuePointer>v</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
+	<Type Name="Ghurund::Property">
+		<DisplayString>{{name={propertyName} type={typeName}}}</DisplayString>
+	</Type>
+</AutoVisualizer>

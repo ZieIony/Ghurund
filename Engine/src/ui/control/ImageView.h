@@ -2,11 +2,8 @@
 
 #include "Control.h"
 #include "core/ScopedPointer.h"
-#include "ui/Gravity.h"
-
-#include <algorithm>
-#include <objidl.h>
-#include <gdiplus.h>
+#include "ui/Alignment.h"
+#include "ui/gdi/GdiImage.h"
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {
@@ -21,7 +18,7 @@ namespace Ghurund::UI {
         GdiImage* image = nullptr;
         unsigned int tint = 0;
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
-        Gravity gravity;
+        Alignment gravity;
 
     public:
         ImageView(GdiImage* image = nullptr) {
@@ -29,8 +26,8 @@ namespace Ghurund::UI {
                 image->addReference();
                 this->image = image;
             }
-            gravity.horizontal = Gravity::Horizontal::CENTER;
-            gravity.vertical = Gravity::Vertical::CENTER;
+            gravity.horizontal = Alignment::Horizontal::CENTER;
+            gravity.vertical = Alignment::Vertical::CENTER;
         }
 
         ~ImageView() {
@@ -68,15 +65,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScaleMode, put = setScaleMode)) ImageScaleMode ScaleMode;
 
-        inline Gravity& getGravity() {
+        inline Alignment& getGravity() {
             return gravity;
         }
 
-        inline void setGravity(const Gravity& gravity) {
+        inline void setGravity(const Alignment& gravity) {
             this->gravity = gravity;
         }
 
-        __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
+        __declspec(property(get = getGravity, put = setGravity)) Alignment& Alignment;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
@@ -84,7 +81,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+            .withSupertype(__super::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

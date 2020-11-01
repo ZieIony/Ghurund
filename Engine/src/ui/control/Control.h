@@ -20,7 +20,15 @@ namespace Ghurund::UI {
 
     class Control: public Pointer, public EventConsumer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Control);
+        ControlParent* parent = nullptr;
+
+        FloatSize size = { 0, 0 };  // what was finally mediated
+
+        bool visible = true;
+        bool enabled = true;
+        bool focusable = false;
+
+        ASCIIString* name = nullptr;
 
         DrawingCache* cache = nullptr;
         bool transformationInvalid = true;
@@ -35,8 +43,6 @@ namespace Ghurund::UI {
         }
 
     protected:
-        ControlParent* parent = nullptr;
-
         XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
         Gdiplus::Matrix* transformation;
@@ -44,15 +50,10 @@ namespace Ghurund::UI {
         FloatSize minSize = { 0,0 };
         PreferredSize preferredSize;   // what the user wants
         FloatSize measuredSize;  // what the view wants
-        FloatSize size = { 0, 0 };  // what was finally mediated
         bool needsLayout = true;
         bool cacheEnabled = false;
 
-        bool visible = true;
-        bool enabled = true;
-        bool focused = false;
-
-        String* name = nullptr;
+        Event<Control> onSizeChanged = Event<Control>(*this);
 
         virtual void onMeasure(float parentWidth, float parentHeight);
 
@@ -62,7 +63,7 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged();
 
-        ~Control() {
+        ~Control() = 0 {
             delete name;
             delete transformation;
             delete cache;
@@ -73,24 +74,24 @@ namespace Ghurund::UI {
             transformation = new Gdiplus::Matrix();
         }
 
-        inline const String* getName() const {
+        inline const ASCIIString* getName() const {
             return name;
         }
 
-        inline void setName(const String* name) {
+        inline void setName(const ASCIIString* name) {
             if (this->name)
                 delete this->name;
             if (name)
-                this->name = ghnew String(*name);
+                this->name = ghnew ASCIIString(*name);
         }
 
-        inline void setName(const String& name) {
+        inline void setName(const ASCIIString& name) {
             if (this->name)
                 delete this->name;
-            this->name = ghnew String(name);
+            this->name = ghnew ASCIIString(name);
         }
 
-        __declspec(property(get = getName, put = setName)) String* Name;
+        __declspec(property(get = getName, put = setName)) ASCIIString* Name;
 
         inline bool isVisible() const {
             return visible;
@@ -108,11 +109,47 @@ namespace Ghurund::UI {
         }
 
         inline void setEnabled(bool enabled) {
+            if (this->enabled == enabled)
+                return;
             this->enabled = enabled;
-            onStateChanged();
+            if (!enabled && Focused) {
+                clearFocus();
+            } else {
+                onStateChanged();
+            }
         }
 
         __declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
+
+        inline bool isFocusable() const {
+            return focusable;
+        }
+
+        inline void setFocusable(bool focusable) {
+            this->focusable = focusable;
+            if (!focusable)
+                clearFocus();
+        }
+
+        __declspec(property(get = isFocusable, put = setFocusable)) bool Focusable;
+
+        virtual Control* getFocus() {
+            return focusable ? this : nullptr;
+        }
+
+        __declspec(property(get = getFocus)) Control* Focus;
+
+        void requestFocus();
+
+        void clearFocus();
+
+        virtual bool isFocused() const;
+
+        __declspec(property(get = isFocused)) bool Focused;
+
+        virtual bool focusNext();
+
+        virtual bool focusPrevious();
 
         inline const XMFLOAT2& getPosition() const {
             return position;
@@ -129,9 +166,9 @@ namespace Ghurund::UI {
             transformationInvalid = true;
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) XMFLOAT2& Position;
+        __declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
 
-        inline const float getRotation() const {
+        inline float getRotation() const {
             return rotation;
         }
 
@@ -169,7 +206,7 @@ namespace Ghurund::UI {
             return minSize;
         }
 
-        inline void setMinSize(FloatSize& size) {
+        inline void setMinSize(const FloatSize& size) {
             this->minSize = size;
         }
 
@@ -186,11 +223,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize)) FloatSize& Size;
 
+        inline Event<Control>& getOnSizeChanged() {
+            return onSizeChanged;
+        }
+
+        __declspec(property(get = getOnSizeChanged)) Event<Control>& OnSizeChanged;
+
         inline PreferredSize& getPreferredSize() {
             return preferredSize;
         }
 
-        inline void setPreferredSize(PreferredSize& size) {
+        inline void setPreferredSize(const PreferredSize& size) {
             this->preferredSize = size;
         }
 
@@ -211,6 +254,11 @@ namespace Ghurund::UI {
             return Visible && Enabled &&
                 event.Position.x >= position.x && event.Position.x < position.x + Size.width &&
                 event.Position.y >= position.y && event.Position.y < position.y + Size.height;
+        }
+
+        // TODO: support matrix transformation
+        inline bool hitTest(float x, float y) {
+            return x >= position.x && x < position.x + size.width && y >= position.y && y < position.y + size.height;
         }
 
         void setParent(ControlParent* parent) {
@@ -236,21 +284,6 @@ namespace Ghurund::UI {
 
         virtual void invalidate();
 
-        void requestFocus();
-
-        virtual void clearFocus() {
-            if (!focused)
-                return;
-            focused = false;
-            onStateChanged();
-        }
-
-        inline bool isFocused() const {
-            return focused;
-        }
-
-        __declspec(property(get = isFocused)) bool Focused;
-
         inline void measure(float parentWidth, float parentHeight) {
             if (needsLayout || (float)preferredSize.width < 0 || (float)preferredSize.height < 0)
                 onMeasure(parentWidth, parentHeight);
@@ -258,7 +291,15 @@ namespace Ghurund::UI {
 
         void layout(float x, float y, float width, float height);
 
+        virtual void update(const Timer& timer) {}
+
         void draw(Canvas& canvas);
+
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
+            if (focusable && event.Action == MouseAction::DOWN && !Focused)
+                requestFocus();
+            return __super::dispatchMouseButtonEvent(event);
+        }
 
         virtual Control* find(const String& name) {
             if (this->name && this->name->operator==(name))
@@ -274,10 +315,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Control>(NAMESPACE_NAME, CLASS_NAME);
+        static const Ghurund::Type& TYPE();
 
         virtual const Ghurund::Type& getType() const override {
-            return TYPE;
+            return Control::TYPE();
         }
     };
 

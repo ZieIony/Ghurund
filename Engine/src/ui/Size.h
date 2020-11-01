@@ -2,7 +2,7 @@
 
 namespace Ghurund::UI {
     struct IntSize {
-        unsigned int width, height;
+        uint32_t width, height;
     };
 
     struct FloatSize {

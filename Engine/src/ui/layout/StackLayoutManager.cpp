@@ -25,18 +25,18 @@ namespace Ghurund::UI {
             }
 
             float itx;
-            if (gravity.horizontal == Gravity::Horizontal::LEFT) {
+            if (alignment.horizontal == Alignment::Horizontal::LEFT) {
                 itx = 0;
-            } else if (gravity.horizontal == Gravity::Horizontal::RIGHT) {
+            } else if (alignment.horizontal == Alignment::Horizontal::RIGHT) {
                 itx = width - w;
             } else {
                 itx = (width - w) / 2;
             }
 
             float ity;
-            if (gravity.vertical == Gravity::Vertical::TOP) {
+            if (alignment.vertical == Alignment::Vertical::TOP) {
                 ity = 0;
-            } else if (gravity.vertical == Gravity::Vertical::BOTTOM) {
+            } else if (alignment.vertical == Alignment::Vertical::BOTTOM) {
                 ity = height - h;
             } else {
                 ity = (height - h) / 2;

@@ -1,8 +1,6 @@
 #pragma once
 
-#include <algorithm>
-#include <objidl.h>
-#include <gdiplus.h>
+#include "Gdi.h"
 
 namespace Ghurund::UI {
     class GdiPath {

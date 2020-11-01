@@ -2,7 +2,7 @@
 
 #include "ui/control/RecyclerView.h"
 #include "ui/layout/VerticalLayoutManager.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/widget/VerticalScrollBar.h"
 
 #include "StringObject.h"
@@ -18,7 +18,7 @@ private:
 public:
     TestRecycler(Theme& theme) {
         recyclerView = ghnew RecyclerView<StringObject*, Control>();
-        scrollBar = ghnew VerticalScrollBar(ghnew VerticalScrollBarLayout(theme));
+        scrollBar = ghnew VerticalScrollBar(theme);
         scrollBar->Name = "recycler scroll";
 
         ImagePtr image = ghnew GdiImage(_T("images/game.png"));
@@ -41,8 +41,10 @@ public:
             });
         recyclerView->LayoutManager = ghnew VerticalLayoutManager<StringObject*, Control>();
         recyclerView->Items = ghnew ListItemSource<StringObject*>(items);
-        recyclerView->addAdapter(ghnew StringHeaderAdapter(theme));
-        recyclerView->addAdapter(ghnew StringItemAdapter(theme, image));
+        recyclerView->Adapters.addAll({
+            ghnew StringHeaderAdapter(theme),
+            ghnew StringItemAdapter(theme, image)
+            });
 
         Children = { recyclerView, scrollBar };
     }

@@ -10,12 +10,13 @@ namespace Ghurund {
     public:
         virtual ~Object() {}   // gives a common destructor to all deriving classes
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Object>(NAMESPACE_NAME, CLASS_NAME).withModifiers(TypeModifier::ABSTRACT);
+        inline static const Ghurund::Type& TYPE = TypeBuilder<Object>(NAMESPACE_NAME, CLASS_NAME)
+            .withModifiers(TypeModifier::ABSTRACT);
 
         virtual const Ghurund::Type& getType() const {
             return TYPE;
         }
 
-        __declspec(property(get = getType)) Type &Type;
+        __declspec(property(get = getType)) const Type &Type;
     };
 }

@@ -69,7 +69,7 @@ namespace Ghurund::UI {
                     if (lockedContainer == LockedChild::CHILD_1) {
                         container1->PreferredSize.height = container1->Size.height + args.Position.y - pressMousePos.y;
                     } else {
-                        container2->PreferredSize.height = container2->Size.height - (args.Position.y - args.Position.y);
+                        container2->PreferredSize.height = container2->Size.height - (args.Position.y - pressMousePos.y);
                     }
                     layout->invalidate();
                 }

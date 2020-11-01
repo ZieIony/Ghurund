@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/Window.h"
+#include "application/SystemWindow.h"
 #include "core/collection/BufferedValue.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
@@ -26,7 +26,7 @@ namespace Ghurund {
         Frame* frames;
         BufferedValue<Frame> frameBuffer;
         unsigned int frameCount;
-        Window* window;
+        SystemWindow* window;
         DXGI_FORMAT format;
 
     public:
@@ -34,7 +34,7 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, Window& window, unsigned int frameCount);
+        Status init(Graphics& graphics, SystemWindow& window, unsigned int frameCount);
 
         Status initBuffers();
 

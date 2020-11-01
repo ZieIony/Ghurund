@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LayoutManager.h"
-#include "ui/Gravity.h"
+#include "ui/Alignment.h"
 #include "ui/Orientation.h"
 
 #include <algorithm>
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
         void layoutVertical(ControlGroup& group, float x, float y, float width, float height);
 
     public:
-        Gravity gravity;
+        Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
 
         virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;

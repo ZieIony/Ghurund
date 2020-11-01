@@ -4,7 +4,7 @@
 #include "ToolbarLayout.h"
 #include "ui/Style.h"
 #include "ui/control/ColorView.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/AdapterView.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 

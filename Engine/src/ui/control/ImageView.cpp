@@ -37,16 +37,16 @@ namespace Ghurund::UI {
             float s = std::min(sx, sy);
             dst.Width = src.Width * s;
             dst.Height = src.Height * s;
-            if (gravity.horizontal == Gravity::Horizontal::LEFT) {
+            if (gravity.horizontal == Alignment::Horizontal::LEFT) {
                 dst.X = 0;
-            } else if (gravity.horizontal == Gravity::Horizontal::CENTER) {
+            } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
                 dst.X = (Size.width - dst.Width) / 2.0f;
             } else {
                 dst.X = Size.width - dst.Width;
             }
-            if (gravity.vertical == Gravity::Vertical::TOP) {
+            if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.Y = 0;
-            } else if (gravity.vertical == Gravity::Vertical::TOP) {
+            } else if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.Y = (Size.height - dst.Height) / 2.0f;
             } else {
                 dst.Y = Size.height - dst.Height;
@@ -59,16 +59,16 @@ namespace Ghurund::UI {
             dst.Height = src.Height * s;
             dst.X = (Size.width - dst.Width) / 2.0f;
             dst.Y = (Size.height - dst.Height) / 2.0f;
-            if (gravity.horizontal == Gravity::Horizontal::LEFT) {
+            if (gravity.horizontal == Alignment::Horizontal::LEFT) {
                 dst.X = 0;
-            } else if (gravity.horizontal == Gravity::Horizontal::CENTER) {
+            } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
                 dst.X = (Size.width - dst.Width) / 2.0f;
             } else {
                 dst.X = Size.width - dst.Width;
             }
-            if (gravity.vertical == Gravity::Vertical::TOP) {
+            if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.Y = 0;
-            } else if (gravity.vertical == Gravity::Vertical::TOP) {
+            } else if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.Y = (Size.height - dst.Height) / 2.0f;
             } else {
                 dst.Y = Size.height - dst.Height;

@@ -1,32 +1,54 @@
 #include "ControlContainer.h"
 
 namespace Ghurund::UI {
+    bool ControlContainer::focusNext() {
+        if (!Focused && Focusable && Parent) {
+            Parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        if (!child || !child->Enabled || !child->Visible || Focusable)
+            return false;
+        return child->focusNext();
+    }
+
+    bool ControlContainer::focusPrevious() {
+        if (!Focused && Focusable && Parent) {
+            Parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        if (!child || !child->Enabled || !child->Visible || Focusable)
+            return false;
+        return child->focusPrevious();
+    }
+
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
         if (child) {
             child->measure(
-                preferredSize.width >= 0 ? preferredSize.width : parentWidth,
-                preferredSize.height >= 0 ? preferredSize.height : parentHeight
+                PreferredSize.width >= 0 ? PreferredSize.width : parentWidth,
+                PreferredSize.height >= 0 ? PreferredSize.height : parentHeight
             );
         }
 
-        if (preferredSize.width == PreferredSize::Width::WRAP) {
+        if (PreferredSize.width == PreferredSize::Width::WRAP) {
             if (child) {
                 measuredSize.width = child->MeasuredSize.width;
             } else {
                 measuredSize.width = 0;
             }
-        } else if (preferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)preferredSize.width;
+        } else if (PreferredSize.width != PreferredSize::Width::FILL) {
+            measuredSize.width = (float)PreferredSize.width;
         }
 
-        if (preferredSize.height == PreferredSize::Height::WRAP) {
+        if (PreferredSize.height == PreferredSize::Height::WRAP) {
             if (child) {
                 measuredSize.height = child->MeasuredSize.height;
             } else {
                 measuredSize.height = 0;
             }
-        } else if (preferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)preferredSize.height;
+        } else if (PreferredSize.height != PreferredSize::Height::FILL) {
+            measuredSize.height = (float)PreferredSize.height;
         }
     }
 
@@ -77,7 +99,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlContainer::find(const String& name) {
-        if (this->name && this->name->operator==(name))
+        if (this->Name && this->Name->operator==(name))
             return this;
         if (child)
             return child->find(name);

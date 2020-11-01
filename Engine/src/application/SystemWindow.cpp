@@ -1,5 +1,8 @@
-#include "Window.h"
+#include "SystemWindow.h"
 #include "WindowType.h"
+#include "graphics/SwapChain.h"
+#include "ui/RootView.h"
+
 #include <time.h>
 
 namespace Ghurund {
@@ -8,7 +11,7 @@ namespace Ghurund {
         if (!windowData)
             return DefWindowProc(handle, msg, wParam, lParam);
 
-        Window& window = *windowData->window;
+        SystemWindow& window = *windowData->window;
 
         if (msg == WM_KEYDOWN) {
             window.OnKeyEvent(KeyEventArgs(KeyAction::DOWN, (int)wParam, time(nullptr)));
@@ -40,20 +43,40 @@ namespace Ghurund {
                     windowData->prevMousePos = p;
                 window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), time(nullptr)));
                 windowData->prevMousePos = p;
+
+                if (!windowData->mouseTracked) {
+                    windowData->mouseTracked = true;
+
+                    TRACKMOUSEEVENT mouseEvt;
+                    ZeroMemory(&mouseEvt, sizeof(TRACKMOUSEEVENT));
+                    mouseEvt.cbSize = sizeof(TRACKMOUSEEVENT);
+                    mouseEvt.dwFlags = TME_LEAVE;
+                    mouseEvt.hwndTrack = window.Handle;
+                    TrackMouseEvent(&mouseEvt);
+                }
             } else if (msg == WM_MOUSEWHEEL) {
                 window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
             } else if (msg == WM_MOUSEHWHEEL) {
                 window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(wParam), time(nullptr)));
             }
             return 0;
-        } else if (msg == WM_PAINT) {
-            window.OnPaint();
+        } else if (msg == WM_MOUSELEAVE) {
+            windowData->mouseTracked = false;
+            POINT p;
+            GetCursorPos(&p);
+            ScreenToClient(window.Handle, &p);
+            if (windowData->prevMousePos.x == -1 && windowData->prevMousePos.y == -1)
+                windowData->prevMousePos = p;
+            window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), time(nullptr)));
+            windowData->prevMousePos = p;
+        //} else if (msg == WM_PAINT) {
+          //  window.OnPaint();   // TODO: do it in the message loop
             return 0;
         } else if (msg == WM_MOVE) {
             unsigned int x = LOWORD(lParam);
             unsigned int y = HIWORD(lParam);
 
-            RECT rc = { 0,0,window.Size.x, window.Size.y };
+            RECT rc = { 0,0,window.Size.width, window.Size.height };
             AdjustWindowRect(&rc, window.Class.Style, false);
 
             if (window.Position.x != x + rc.left && window.Position.y != y + rc.top) {
@@ -64,7 +87,7 @@ namespace Ghurund {
         } else if (msg == WM_SIZE) {
             unsigned int width = LOWORD(lParam);
             unsigned int height = HIWORD(lParam);
-            if (window.Size.x != width || window.Size.y != height) {
+            if (window.Size.width != width || window.Size.height != height) {
                 window.setSize(width, height);
                 window.OnSizeChanged();
             }
@@ -74,6 +97,8 @@ namespace Ghurund {
                 PostMessage(window.Handle, WM_CLOSE, 0, 0);
                 return 0;
             }
+        } else if (msg == WM_SETFOCUS || msg == WM_KILLFOCUS) {
+            window.OnFocusedChanged();
         } else if (msg == WM_DESTROY) {
             window.OnDestroy();
             delete windowData;
@@ -83,35 +108,83 @@ namespace Ghurund {
         return DefWindowProc(handle, msg, wParam, lParam);
     }
 
-    Window::Window(HWND handle, const WindowClass& type):windowClass(type), parameters(PointerArray<Parameter*>(1)) {
+    SystemWindow::SystemWindow(HWND handle, const WindowClass& type):Window(nullptr), windowClass(type) {
         this->handle = handle;
-        if (functionQueue != nullptr)
-            delete functionQueue;
-        const unsigned int eventCode = RegisterWindowMessage(_T("GhurundEvent"));
-        functionQueue = ghnew Ghurund::FunctionQueue(handle, eventCode);
+
+        WindowData* wd = ghnew WindowData(this);
+        SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)wd);
+        OnCreated();
     }
 
-    Window::~Window() {
-        delete functionQueue;
-        functionQueue = nullptr;
-
+    SystemWindow::~SystemWindow() {
         setVisible(false);
 
+        if (rootView)
+            rootView->release();
         if (handle)
             DeleteObject(handle);
     }
 
-    void Window::setPosition(int x, int y) {
-        if (position.x != x || position.y != y) {
-            position = { x, y };
+    void SystemWindow::setRootView(Ghurund::UI::RootView* rootView) {
+        setPointer(this->rootView, rootView);
+
+        if (rootView) {
+            OnSizeChanged.remove(onSizeChangedHandler);
+            onSizeChangedHandler = EventHandler<Ghurund::Window>([rootView](Ghurund::Window& window) {
+                rootView->invalidate();
+                return true;
+            });
+            OnSizeChanged.add(onSizeChangedHandler);
+
+            OnKeyEvent.clear();
+            OnKeyEvent.add([rootView](Ghurund::Window& window, const KeyEventArgs& args) {
+                rootView->dispatchKeyEvent(args);
+                return true;
+            });
+
+            OnMouseButtonEvent.clear();
+            OnMouseButtonEvent.add([rootView](Ghurund::Window& window, const MouseButtonEventArgs& args) {
+                rootView->dispatchMouseButtonEvent(args);
+                return true;
+            });
+
+            OnMouseMotionEvent.clear();
+            OnMouseMotionEvent.add([rootView](Ghurund::Window& window, const MouseMotionEventArgs& args) {
+                rootView->dispatchMouseMotionEvent(args);
+                return true;
+            });
+
+            OnMouseWheelEvent.clear();
+            OnMouseWheelEvent.add([rootView](Ghurund::Window& window, const MouseWheelEventArgs& args) {
+                rootView->dispatchMouseWheelEvent(args);
+                return true;
+            });
+
+            OnUpdate.clear();
+            OnUpdate.add([rootView](const Ghurund::Window& window, const Timer& timer) {
+                rootView->update(timer);
+                return true;
+            });
+
+            OnPaint.clear();
+            OnPaint.add([rootView](const Ghurund::Window& window) {
+                rootView->draw();
+                return true;
+            });
+        }
+    }
+
+    void SystemWindow::setPosition(int x, int y) {
+        if (Position.x != x || Position.y != y) {
+            __super::setPosition(x, y);
 
             SetWindowPos(handle, 0, x, y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
         }
     }
 
-    void Window::setSize(unsigned int w, unsigned int h) {
-        if (size.x != w || size.y != h) {
-            size = XMINT2(w, h);
+    void SystemWindow::setSize(unsigned int w, unsigned int h) {
+        if (Size.width != w || Size.height != h) {
+            __super::setSize(w, h);
 
             RECT rc, rcClient;
             GetWindowRect(handle, &rc);
@@ -122,4 +195,13 @@ namespace Ghurund {
             SetWindowPos(handle, 0, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
         }
     }
+
+    OverlappedWindow::OverlappedWindow()
+        :SystemWindow(WindowClass::WINDOWED.create(), WindowClass::WINDOWED) {}
+
+    FullscreenWindow::FullscreenWindow()
+        : SystemWindow(WindowClass::FULLSCREEN.create(), WindowClass::FULLSCREEN) {}
+
+    PopupWindow::PopupWindow()
+        : SystemWindow(WindowClass::POPUP.create(), WindowClass::POPUP) {}
 }

@@ -22,8 +22,8 @@ namespace Ghurund {
 		}
 
     public:
-        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype):
-            modifiers(modifiers), size(size) {
+        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, List<Property*>& properties):
+            modifiers(modifiers), size(size), properties(properties) {
             this->constructor = constructor;
             this->_namespace = _namespace;
             this->name = name;
@@ -88,6 +88,16 @@ namespace Ghurund {
 
 		inline static const List<Type>& TYPES = getTypes();
 
+        bool isOrExtends(const Type& type) const {
+            Type* st = (Type*)this;
+            while (st != nullptr) {
+                if (*st == type)
+                    return true;
+                st = (Type*)st->Supertype;
+            }
+            return false;
+        }
+
         bool extends(const Type& type) const {
             Type* st = (Type*)supertype;
             while (st != nullptr) {
@@ -97,5 +107,5 @@ namespace Ghurund {
             }
             return false;
         }
-	};
+    };
 }

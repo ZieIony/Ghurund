@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ui/control/TextView.h"
+#include "ui/control/TextBlock.h"
 
 namespace Ghurund::UI {
     class TextMixin {
     protected:
-        TextView* textView = nullptr;
+        TextBlock* textView = nullptr;
 
     public:
         const String& getText() const {
@@ -44,21 +44,21 @@ namespace Ghurund::UI {
 
     class TextLayoutMixin {
     protected:
-        TextView* textView;
+        TextBlock* textView;
 
     public:
         TextLayoutMixin() {
-            textView = ghnew Ghurund::UI::TextView();
+            textView = ghnew Ghurund::UI::TextBlock();
         }
 
         ~TextLayoutMixin() {
             textView->release();
         }
 
-        inline TextView* getTextView() {
+        inline TextBlock* getTextBlock() {
             return textView;
         }
 
-        __declspec(property(get = getTextView)) TextView* TextView;
+        __declspec(property(get = getTextBlock)) TextBlock* TextBlock;
     };
 }

@@ -32,12 +32,12 @@ namespace Ghurund::UI {
             if (!color)
                 return;
             paint.Color = color;
-            canvas.fillRect(0, 0, size.width, size.height, paint);
+            canvas.fillRect(0, 0, Size.width, Size.height, paint);
         }
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+            .withSupertype(__super::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

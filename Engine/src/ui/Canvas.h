@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ui/gdi/GdiFont.h"
 #include "Paint.h"
 #include "gdi/GdiPath.h"
-#include "gdi/GdiImage.h"
 #include "DrawingCache.h"
 
 namespace Ghurund::UI {
+    class GdiImage;
+
     class Canvas {
     public:
         virtual ~Canvas() = 0 {};

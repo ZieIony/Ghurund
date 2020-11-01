@@ -18,19 +18,41 @@ namespace Ghurund::UI {
 
     void ImageButtonLayout::onStateChanged(Control& control) {
         paddingContainer->Padding.setAll(4.0f);
+        if (!control.Enabled) {
+            imageView->Tint = theme.getColorForegroundDisabledOnBackground();
+            border->Color = theme.getColorForegroundDisabledOnBackground();
+            backgroundView->Color = theme.getColorControlDisabled();
+        } else if (ClickableView->Pressed) {
+            imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
+            border->Color = theme.getColorAccentDark();
+            backgroundView->Color = theme.getColorControlActivated();
+        } else if (ClickableView->Hovered || control.Focused) {
+            imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+            border->Color = theme.getColorAccent();
+            backgroundView->Color = theme.getColorControlNormal();
+        } else {
+            imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+            border->Color = theme.getColorForegroundPrimaryOnBackground();
+            backgroundView->Color = theme.getColorControlNormal();
+        }
+    }
+
+    void ImageButtonFlatLayout::onStateChanged(Control& control) {
+        paddingContainer->Padding.setAll(4.0f);
         backgroundView->Color = 0;
         if (!control.Enabled) {
             imageView->Tint = theme.getColorForegroundDisabledOnBackground();
             border->Color = 0;
         } else if (ClickableView->Pressed) {
             imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorForegroundPrimaryOnBackground();
-        } else if (ClickableView->Hovered) {
+            border->Color = theme.getColorAccentDark();
+        } else if (ClickableView->Hovered || control.Focused) {
             imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
-            border->Color = theme.getColorForegroundSecondaryOnBackground();
+            border->Color = theme.getColorAccent();
         } else {
             imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
             border->Color = 0;
         }
     }
+
 }

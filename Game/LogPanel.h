@@ -1,11 +1,11 @@
 #pragma once
 
 #include "ui/Theme.h"
-#include "ui/control/LinearLayout.h"
-#include "ui/control/TextView.h"
+#include "ui/layout/LinearLayout.h"
+#include "ui/control/TextBlock.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/RecyclerView.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/layout/VerticalLayoutManager.h"
 #include "TitleBar.h"
 
@@ -15,12 +15,12 @@ namespace Ghurund::Editor {
     class LogRow:public HorizontalLayout {
     private:
         ScopedPointer<ImageView> icon;
-        ScopedPointer<TextView> text;
+        ScopedPointer<TextBlock> text;
 
     public:
         LogRow(Theme& theme) {
             icon = ghnew ImageView();
-            text = ghnew TextView(theme.textViewPrimaryStyle);
+            text = ghnew TextBlock(theme.textViewPrimaryStyle);
             Children = { icon, text };
             PreferredSize.height = PreferredSize::Height::WRAP;
         }
@@ -84,7 +84,7 @@ namespace Ghurund::Editor {
             logRecycler = ghnew RecyclerView<Log, LogRow>();
             logRecycler->LayoutManager = ghnew VerticalLayoutManager<Log, LogRow>();
             logRecycler->Items = ghnew ListItemSource<Log>(items);
-            logRecycler->addAdapter(ghnew LogItemAdapter(theme));
+            logRecycler->Adapters.add(ghnew LogItemAdapter(theme));
             Children = { titleBar, toolbar, logRecycler };
         }
 

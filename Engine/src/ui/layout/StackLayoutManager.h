@@ -1,14 +1,14 @@
 #pragma once
 
 #include "LayoutManager.h"
-#include "ui/Gravity.h"
+#include "ui/Alignment.h"
 
 #include <algorithm>
 
 namespace Ghurund::UI {
     class StackLayoutManager:public LayoutManager {
     public:
-        Gravity gravity;
+        Alignment alignment;
 
         virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;
 

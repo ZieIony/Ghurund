@@ -15,15 +15,13 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(RecyclerView);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<RecyclerView<T, ControlType>>();
 
-        List<ControlPool<ControlType>> pools;
-
     public:
         virtual void onDraw(Canvas& canvas) override {
             if (!layoutManager || !items)
                 return;
 
             canvas.save();
-            canvas.clipRect(0, 0, size.width, size.height);
+            canvas.clipRect(0, 0, Size.width, Size.height);
             auto& scroll = layoutManager->Scroll;
             canvas.translate(scroll.x, scroll.y);
             for (Control* c : Children)
@@ -31,23 +29,15 @@ namespace Ghurund::UI {
             canvas.restore();
         }
 
-        virtual void addAdapter(ItemAdapter<T, ControlType>* adapter) {
-            Adapters.add(adapter);
-            pools.add(ControlPool<ControlType>());
-        }
-
         virtual ControlType* getChild(size_t index) {
-            size_t a = findAdapter(index);
-            ItemAdapter<T, ControlType>* adapter = adapters[a];
-            ControlType* control = pools.get(a).getControl(*adapter);
+            ItemAdapter<T, ControlType>* adapter = findAdapter(index);
+            ControlType* control = adapter->getControl();
             adapter->bind(*control, items->get(index), index);
-            control->measure(100,100); // TODO: pass parent size
             return control;
         }
 
         virtual void releaseChild(ControlType* control, size_t index) {
-            size_t a = findAdapter(index);
-            pools[a].recycle(control);
+            findAdapter(index)->recycleControl(control);
         }
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {

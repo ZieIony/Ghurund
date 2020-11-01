@@ -1,28 +1,38 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "ui/control/ControlContainer.h"
 #include "ui/control/ImageView.h"
-#include "ui/control/LinearLayout.h"
 #include "ui/control/RecyclerView.h"
+#include "ui/layout/LinearLayout.h"
 
 namespace Ghurund::UI {
     class TreeItem {
     public:
-        TreeItem* parent;
+        TreeItem* parent = nullptr;
         List<TreeItem*> children;
+
+        inline uint32_t getDepth() {
+            uint32_t depth = 0;
+            TreeItem* p = parent;
+            while (p) {
+                depth++;
+                p = parent->parent;
+            }
+            return depth;
+        }
     };
 
-    class TreeRow:public Row {
+    class TreeRow:public HorizontalLayout {
     private:
-        ScopedPointer<ImageView> imageView;
-        ScopedPointer<ControlContainer> container;
+        ImageViewPtr imageView;
+        ControlContainerPtr container;
 
     public:
         TreeRow() {
             imageView = ghnew ImageView();
             container = ghnew ControlContainer();
             container->PreferredSize.width = PreferredSize::Width::FILL;
-            Children.add({ imageView, container });
+            Children = { imageView, container };
         }
 
         inline Control* getContent() {

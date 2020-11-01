@@ -2,21 +2,22 @@
 
 #include "core/ScopedPointer.h"
 #include "ui/control/ClickableView.h"
-#include "ui/control/TextView.h"
+#include "ui/control/TextBlock.h"
 
 namespace Ghurund::UI {
     class TextField:public ClickableView {
     private:
-        ScopedPointer<TextView> textView;
+        ScopedPointer<TextBlock> textView;
+        Event<TextField> onTextChanged = Event<TextField>(*this);
 
     public:
         TextField() {
-            textView = ghnew TextView();
+            textView = ghnew TextBlock();
             Child = textView;
         }
 
         TextField(Theme& theme) {
-            textView = ghnew TextView(theme.textViewPrimaryStyle);
+            textView = ghnew TextBlock(theme.textViewPrimaryStyle);
             Child = textView;
         }
 
@@ -50,9 +51,16 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFont, put = setFont)) Font* Font;
 
+        inline Event<TextField>& getOnTextChanged() {
+            return onTextChanged;
+        }
+
+        __declspec(property(get = getOnTextChanged)) Event<TextField>& OnTextChanged;
+
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
             if (event.Action == KeyAction::CHAR) {
                 textView->Text.add((tchar)event.Key);
+                onTextChanged();
                 textView->invalidate();
                 textView->repaint();
             }
@@ -72,4 +80,6 @@ namespace Ghurund::UI {
             return true | __super::dispatchMouseMotionEvent(event);
         }
     };
+
+    typedef ScopedPointer<TextField> TextFieldPtr;
 }

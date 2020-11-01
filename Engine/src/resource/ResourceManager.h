@@ -91,7 +91,7 @@ namespace Ghurund {
         }
 
         template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Task* task = ghnew Task(String(path), [this, &context, path, onLoaded, options]() {
+            Task* task = ghnew Task(String(path), [this, &context, path, onLoaded, options] {
 				Type* resource;
 				Status loadResult;
 				loadInternal(resource, context, path, &loadResult, options);
@@ -110,7 +110,7 @@ namespace Ghurund {
 		}
 
         template<class Type> Type* loadAsync(ResourceContext& context, File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options]() {
+            Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options] {
 				Type* resource;
 				Status loadResult;
 				loadInternal(resource, context, file.Path, &loadResult, options);

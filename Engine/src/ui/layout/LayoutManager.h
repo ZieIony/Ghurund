@@ -5,6 +5,8 @@
 namespace Ghurund::UI {
     class LayoutManager {
     protected:
+        XMFLOAT2 scroll = { 0,0 };
+
         inline float measureMaxWidth(ControlGroup& group) {
             float measuredWidth = 0;
             if (group.PreferredSize.width == PreferredSize::Width::WRAP) {
@@ -29,6 +31,14 @@ namespace Ghurund::UI {
 
     public:
         virtual ~LayoutManager() = 0 {}
+
+        inline const XMFLOAT2& getScroll() const {
+            return scroll;
+        }
+
+        __declspec(property(get = getScroll)) XMFLOAT2& Scroll;
+
+        virtual void scrollBy(ControlGroup& group, float dx, float dy) {}
 
         virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) {
             for (Control* c : group.Children) {
@@ -63,7 +73,7 @@ namespace Ghurund::UI {
 
         virtual void scrollBy(AdapterView<T, ControlType>& adapterView, float dx, float dy) {}
 
-        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView) = 0;
+        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) = 0;
 
         virtual void layout(AdapterView<T, ControlType>& adapterView, float x, float y, float width, float height) = 0;
     };

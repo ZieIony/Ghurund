@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="Ghurund::UI::Control">
+		<DisplayString>{{name={name->v,s}}}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UI::ControlContainer">
+		<DisplayString>{{name={name->v,s} child={child}}}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UI::ControlGroup">
+		<DisplayString>{{name={name->v,s} children={children.size}}}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UI::VerticalLayout">
+		<DisplayString>{{name={name->v,s} children={children.size}}}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UI::ChildrenList">
+		<DisplayString>{{size={children.size}}}</DisplayString>
+		<Expand>
+			<ArrayItems>
+				<Size>children.size</Size>
+				<ValuePointer>children.v</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
+	<Type Name="Ghurund::UI::PreferredSize">
+		<DisplayString>{{width={width.value} height={height.value}}</DisplayString>
+	</Type>
+</AutoVisualizer>

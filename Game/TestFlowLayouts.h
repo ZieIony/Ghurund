@@ -2,10 +2,10 @@
 
 #include "core/ScopedPointer.h"
 #include "ui/Theme.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
 #include "ui/widget/button/TextButton.h"
-#include "ui/control/FlowLayout.h"
+#include "ui/layout/FlowLayout.h"
 
 using namespace Ghurund;
 using namespace Ghurund::UI;

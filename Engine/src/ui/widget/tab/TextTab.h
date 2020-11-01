@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tab.h"
-#include "ui/control/StackLayout.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/control/SelectableView.h"
 #include "ui/mixin/TextMixin.h"
 #include "ui/mixin/BackgroundMixin.h"

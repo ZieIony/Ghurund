@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Space>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+            .withSupertype(__super::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

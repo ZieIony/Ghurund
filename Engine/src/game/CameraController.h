@@ -19,11 +19,11 @@ namespace Ghurund {
         MouseButton pressedButton = MouseButton::LEFT;
         float rotateSensivity = 1.0f / 5 * XM_PI / 180;
         static constexpr float DIST_EPSILON = 0.01f;
-        Window* window;
+        SystemWindow* window;
         KeyMap keyMap;
 
     public:
-        CameraController(Camera& camera, Window* window = nullptr);
+        CameraController(Camera& camera, SystemWindow* window = nullptr);
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 

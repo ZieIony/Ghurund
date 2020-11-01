@@ -3,7 +3,7 @@
 namespace Ghurund {
 	using namespace std;
 
-	CameraController::CameraController(Camera& camera, Window* window) :camera(camera) {
+	CameraController::CameraController(Camera& camera, SystemWindow* window) :camera(camera) {
 		modeMap.set(MouseButton::LEFT, Mode::ORBIT);
 		modeMap.set(MouseButton::MIDDLE, Mode::PAN);
 		modeMap.set(MouseButton::RIGHT, Mode::ROTATE);

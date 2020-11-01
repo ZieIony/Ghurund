@@ -18,8 +18,8 @@ namespace Ghurund::UI {
         inline void updatePath() {
             bounds.X = 0;
             bounds.Y = 0;
-            bounds.Width = size.width - 1;
-            bounds.Height = size.height - 1;
+            bounds.Width = Size.width - 1;
+            bounds.Height = Size.height - 1;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {
@@ -85,7 +85,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<Border>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(Control::TYPE);
+            .withSupertype(Control::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -13,8 +13,8 @@ namespace Ghurund::UI {
         Gdiplus::RectF bounds;
 
         inline void updatePath() {
-            bounds.Width = size.width;
-            bounds.Height = size.height;
+            bounds.Width = Size.width;
+            bounds.Height = Size.height;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {

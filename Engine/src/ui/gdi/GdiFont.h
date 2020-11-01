@@ -1,12 +1,6 @@
 #pragma once
 
-#undef GDIPVER
-#define GDIPVER     0x0110
-
-namespace Gdiplus {
-    class Graphics;
-}
-
+#include "Gdi.h"
 #include "Common.h"
 #include "core/string/String.h"
 #include "core/Pointer.h"
@@ -14,9 +8,11 @@ namespace Gdiplus {
 
 namespace Ghurund::UI {
     class Canvas;
+    class Control;
 
     class TextSelection {
     public:
+        Control* control;
         size_t index = 0;
         float x;
     };

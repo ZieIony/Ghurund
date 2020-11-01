@@ -1,9 +1,51 @@
 #include "ControlGroup.h"
 
 namespace Ghurund::UI {
+    bool ControlGroup::focusNext() {
+        if (!Focused && Focusable && Parent) {
+            Parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        if (Focusable)
+            return false;
+        size_t i = 0;
+        if (focusedChild)
+            i = Children.indexOf(focusedChild);
+        for (i; i < Children.Size; i++) {
+            Control* c = Children[i];
+            if (!c->Enabled || !c->Visible)
+                continue;
+            if (c->focusNext())
+                return true;
+        }
+        return false;
+    }
+
+    bool ControlGroup::focusPrevious() {
+        if (!Focused && Focusable && Parent) {
+            Parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        if (Focusable)
+            return false;
+        size_t i = Children.Size - 1;
+        if (focusedChild)
+            i = Children.indexOf(focusedChild);
+        for (i; i != -1; i--) {
+            Control* c = Children[i];
+            if (!c->Enabled || !c->Visible)
+                continue;
+            if (c->focusPrevious())
+                return true;
+        }
+        return false;
+    }
+
     void ControlGroup::onDraw(Canvas& canvas) {
         canvas.save();
-        canvas.clipRect(0, 0, size.width, size.height);
+        canvas.clipRect(0, 0, Size.width, Size.height);
         for (Control* c : children) {
             if (!c->Visible)
                 continue;
@@ -73,7 +115,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlGroup::find(const String& name) {
-        if (this->name && this->name->operator==(name))
+        if (this->Name && this->Name->operator==(name))
             return this;
         for (Control* c : children) {
             Control* result = c->find(name);

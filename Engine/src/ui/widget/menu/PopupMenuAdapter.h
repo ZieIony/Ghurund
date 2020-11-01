@@ -5,14 +5,14 @@
 #include "ui/Theme.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/PaddingContainer.h"
-#include "ui/control/LinearLayout.h"
-#include "ui/control/TextView.h"
+#include "ui/layout/LinearLayout.h"
+#include "ui/control/TextBlock.h"
 
 namespace Ghurund::UI {
     class ButtonPopupMenuRow:public ClickableView {
     private:
         ScopedPointer<ImageView> icon;
-        ScopedPointer<TextView> text;
+        ScopedPointer<TextBlock> text;
         ScopedPointer<PaddingContainer> padding;
         ScopedPointer<HorizontalLayout> row;
 
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         ButtonPopupMenuRow(Theme& theme) {
             icon = ghnew ImageView();
             icon->PreferredSize.width = 16;
-            text = ghnew TextView(theme.textViewPrimaryStyle);
+            text = ghnew TextBlock(theme.textViewPrimaryStyle);
             padding = ghnew PaddingContainer(4);
             row = ghnew HorizontalLayout();
             row->PreferredSize.width = PreferredSize::Width::WRAP;

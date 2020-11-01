@@ -1,7 +1,7 @@
 ﻿#include "MathUtils.h"
 #include "ui/gdi/GdiGui.h"
-#include "ui/control/LinearLayout.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/widget/button/TextButton.h"
 #include "ui/widget/button/ImageButton.h"
 #include "ui/control/Space.h"
@@ -18,18 +18,19 @@
 #include "LogPanel.h"
 #include "TestControls.h"
 #include "ui/widget/menu/PopupMenu.h"
-#include "TextImageViews.h"
+#include "TestImageViews.h"
 #include "TestFlowLayouts.h"
+#include "LayoutEditorTab.h"
 
 #include "MaterialColors.h"
 
 using namespace Ghurund;
 using namespace Ghurund::Editor;
 
+static const unsigned int FRAME_COUNT = 3;
+
 class TestApplication:public Application {
 private:
-    RootView* rootView;
-    Canvas* canvas;
     GdiGui gui;
     LogPanel* logPanel;
 
@@ -45,12 +46,34 @@ public:
         Renderer.ClearColor = &makeColor(0xff7f7f7f);*/
 
         gui.init();
-        canvas = gui.makeCanvas(Window.Handle);
+
+        SystemWindow* window = nullptr;
+        if (Settings.windowed) {
+            window = ghnew OverlappedWindow();
+        } else {
+            window = ghnew FullscreenWindow();
+        }
+
+        window->initParameters(ParameterManager);
+
+        window->OnSizeChanged.add([&](Ghurund::Window& window) {
+            //swapChain->resize(args.width, args.height);
+            return true;
+        });
+
+        window->Size = UI::IntSize{ Settings.width, Settings.height };
+        /*SwapChain* swapChain = ghnew SwapChain();
+        swapChain->init(Graphics, *window, FRAME_COUNT);
+        window->SwapChain = swapChain;*/
+
+        Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::GdiCanvas(window->Handle);
+        ScopedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
+        rootView->BackgroundColor = 0xffffffff;
+        window->RootView = rootView;
+        Windows.add(window);
 
         theme = ghnew::Material::Light(0xff0078D7);
         menuTheme = ghnew::Material::Light(0xff0078D7);
-
-        rootView = ghnew RootView(Window);
 
         logPanel = ghnew LogPanel(*theme);
         /*Logger::init(ghnew CallbackLogOutput([this](LogType type, const tchar* log) {
@@ -75,12 +98,15 @@ public:
         ScopedPointer<TestControls> column = ghnew TestControls(*theme);
         column->Name = "controls tab";
 
+        ScopedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*theme);
+
         tabLayout->Tabs.addAll({
             ghnew TextTabItem("RecyclerView", testRecycler),
             ghnew TextTabItem("ImageViews", testImageViews),
             ghnew TextTabItem("testFlowLayouts", testFlowLayouts),
             ghnew TextTabItem("controls", column),
-            ghnew TextTabItem("SplitLayout", splitLayout)
+            ghnew TextTabItem("SplitLayout", splitLayout),
+            ghnew TextTabItem("layout editor", layoutEditor)
             });
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.clear();
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
@@ -103,7 +129,7 @@ public:
                     ScopedPointer<GdiImage> copyIcon = ghnew GdiImage(L"icons/copy 18.png");
                     ScopedPointer<GdiImage> cutIcon = ghnew GdiImage(L"icons/cut 18.png");
                     ScopedPointer<GdiImage> pasteIcon = ghnew GdiImage(L"icons/paste 18.png");
-                    PopupMenu* menu = ghnew PopupMenu(*menuTheme, Window);
+                    PopupMenu* menu = ghnew PopupMenu(*menuTheme, *Windows[0]);
                     menu->Items.addAll({
                         ghnew ButtonMenuItem("Undo", [](Control&) {
                             Logger::log(LogType::INFO, "undo clicked\n");
@@ -151,54 +177,16 @@ public:
 
             mainColumn->Children = { menuBar, toolbar, tabLayout, statusBar };
         }
-        rootView->Child = mainColumn;
+        Windows[0]->RootView->Child = mainColumn;
 
-        Window.OnSizeChanged.add([this](Ghurund::Window& window) {
-            rootView->invalidate();
-            return true;
-        });
-
-        Window.OnKeyEvent.add([this](Ghurund::Window& window, const KeyEventArgs& args) {
-            rootView->dispatchKeyEvent(args);
-            return true;
-        });
-
-        Window.OnMouseButtonEvent.add([this](Ghurund::Window& window, const MouseButtonEventArgs& args) {
-            rootView->dispatchMouseButtonEvent(args);
-            return true;
-        });
-
-        Window.OnMouseMotionEvent.add([this](Ghurund::Window& window, const MouseMotionEventArgs& args) {
-            rootView->dispatchMouseMotionEvent(args);
-            return true;
-        });
-
-        Window.OnMouseWheelEvent.add([this](Ghurund::Window& window, const MouseWheelEventArgs& args) {
-            rootView->dispatchMouseWheelEvent(args);
-            return true;
-        });
-
-        Window.OnPaint.add([this](const Ghurund::Window& window) {
-            canvas->beginPaint();
-            canvas->clear(theme->getColorBackground());
-            rootView->draw(*canvas);
-            canvas->endPaint();
-            return true;
-        });
-
-        Window.OnDestroy.add([this](const Ghurund::Window& window) {
-            quit();
-            return true;
-        });
-
-        Window.OnSizeChanged();
+        Windows[0]->OnSizeChanged();
+        Windows[0]->Visible = true;
+        Windows[0]->activate();
     }
 
     void onUninit() {
-        rootView->release();
         delete theme;
         delete menuTheme;
-        delete canvas;
         logPanel->release();
 
         gui.uninit();

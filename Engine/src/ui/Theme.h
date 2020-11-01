@@ -5,7 +5,7 @@
 #include "ui/control/Control.h"
 #include "ui/widget/SeparatorStyle.h"
 #include "ui/widget/ProgressBar.h"
-#include "ui/control/TextViewStyle.h"
+#include "ui/control/TextBlockStyle.h"
 #include "ui/widget/ProgressBar.h"
 #include "ui/widget/menu/ToolbarStyle.h"
 #include "ui/widget/menu/MenuBarStyle.h"
@@ -37,9 +37,9 @@ namespace Ghurund::UI {
         Style<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle(*this);
         Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle(*this);
 
-        Style<TextView>* textViewPrimaryStyle = ghnew TextViewPrimaryStyle(*this);
-        Style<TextView>* textViewSecondaryStyle = ghnew TextViewSecondaryStyle(*this);
-        Style<TextView>* textViewHeaderStyle = ghnew TextViewHeaderStyle(*this);
+        Style<TextBlock>* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle(*this);
+        Style<TextBlock>* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle(*this);
+        Style<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle(*this);
 
         StyleWithLayout<Toolbar, ToolbarLayout>* toolbarStyle = ghnew ToolbarStyle(*this);
         StyleWithLayout<MenuBar, MenuBarLayout>* menuBarStyle = ghnew MenuBarStyle(*this);

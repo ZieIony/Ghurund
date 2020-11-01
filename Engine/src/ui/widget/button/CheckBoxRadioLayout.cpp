@@ -18,7 +18,7 @@ namespace Ghurund::UI {
             } else {
                 imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
             }
-        } else if (selectableView->Hovered) {
+        } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
                 imageView->Tint = theme.getColorAccent();
             } else {
@@ -54,11 +54,11 @@ namespace Ghurund::UI {
         selectableView = ghnew Ghurund::UI::SelectableView();
         ScopedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
         row->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
-        textView = ghnew Ghurund::UI::TextView();
+        textView = ghnew Ghurund::UI::TextBlock();
         imageView = ghnew Ghurund::UI::ImageView();
         ScopedPointer<Space> space = ghnew Space();
         row->Children = { imageView, space, textView };
-        row->Gravity.vertical = Gravity::Vertical::CENTER;
+        row->Alignment.vertical = Alignment::Vertical::CENTER;
         selectableView->Child = row;
         root = selectableView;
     }
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
                 imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
             }
             textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-        } else if (selectableView->Hovered) {
+        } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
                 imageView->Tint = theme.getColorAccent();
             } else {

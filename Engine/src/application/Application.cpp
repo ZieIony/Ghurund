@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "WindowType.h"
 #include "core/threading/FunctionQueue.h"
+#include "ui/RootView.h"
+#include "ui/gdi/GdiCanvas.h"
 
 #include <time.h>
 
@@ -30,33 +32,23 @@ namespace Ghurund {
         //parameterManager->initDefaultTextures(*resourceContext);
 
         // app
-        const WindowClass& windowType = settings.windowed ? WindowClass::WINDOWED : WindowClass::FULLSCREEN;
-        window = windowType.create();
-        window->initParameters(ParameterManager);
+        functionQueue = ghnew Ghurund::FunctionQueue();
         renderer = ghnew Ghurund::Renderer();
         renderer->init(*resourceContext);
-        swapChain = ghnew SwapChain();
-        swapChain->init(Graphics, *window, FRAME_COUNT);
 
-        window->OnSizeChanged.add([&](Ghurund::Window& window) {
-            //swapChain->resize(args.width, args.height);
-            return true;
-        });
-
-        window->Size = XMINT2(settings.width, settings.height);
-
-        client = ghnew Ghurund::Client(window->FunctionQueue);
+        client = ghnew Ghurund::Client(*functionQueue);
         client->init();
     }
 
     void Application::uninit() {
+        windows.deleteItems();
+
         delete scriptEngine;
 
         if (client->isConnected())
             client->disconnect();
         delete client;
 
-        delete swapChain;
         delete renderer;
 
         delete timer;
@@ -65,7 +57,7 @@ namespace Ghurund {
         delete resourceContext;
         delete resourceManager;
 
-        delete window;
+        delete functionQueue;
         delete physics;
         delete audio;
         delete graphics;
@@ -73,42 +65,55 @@ namespace Ghurund {
         CoUninitialize();
     }
 
- /*   bool Application::handleMessage(SystemMessage & message) {
-        if (message.code >= WM_KEYFIRST && message.code <= WM_KEYLAST ||
-            message.code >= WM_MOUSEFIRST && message.code <= WM_MOUSELAST) {
-            input.dispatchMessage(message);
-        } else if (message.code == WM_CREATE) {
-            onWindowCreated();
-        } else if (message.code == WM_DESTROY) {
-            onWindowDestroy();
-            PostQuitMessage(0);
-        } else {
-            return onMessage(message);
-        }
-        return true;
-    }*/
-
-    void Application::run(const Settings * settings) {
+    void Application::run(const Ghurund::Settings* settings) {
         if (settings)
             this->settings = *settings;
 
         init();
         onInit();
-        window->Visible = true;
-        window->activate();
 
-        while (window->handleMessages())
+        while (!windows.Empty) {
+            //while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+            handleMessages();
+            FunctionQueue.invoke();
             update();
+            for (auto window : windows) {
+                //Frame& frame = window->swapChain->getFrame();
+                //CommandList& commandList = renderer->startFrame(frame);
+                //levelManager.draw(commandList);
+                window->OnUpdate(*timer);
+                window->OnPaint();
+                //renderer->finishFrame(frame);
+                //window->swapChain->present();
+            }
+        }
 
-        window->Visible = false;
         onUninit();
         uninit();
+    }
+
+    void Application::handleMessages() {
+        MSG msg = {};
+        while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+
+            if (msg.message == WM_QUIT) {
+                for (auto w : windows) {
+                    if (w->Handle == msg.hwnd) {
+                        windows.remove(w);
+                        delete w;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     void Application::update() {
         timer->tick();
 
-		float dt = timer->FrameTime;	// TODO: constant dt
+        float dt = timer->FrameTime;	// TODO: constant dt
 
         resourceManager->reload();
 
@@ -120,12 +125,11 @@ namespace Ghurund {
 
         input.clearEvents();
 
-		//onDraw();
+        //onDraw();
     }
 
     void Application::reset() {
         onUninit();
         onInit();
     }
-
 }

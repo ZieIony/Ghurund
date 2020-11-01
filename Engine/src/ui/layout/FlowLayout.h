@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ui/layout/FlowLayoutManager.h"
-#include "ui/Gravity.h"
+#include "ui/Alignment.h"
 #include "ui/Orientation.h"
+#include "ui/layout/FlowLayoutManager.h"
 
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(FlowLayout);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
 
-        Gravity gravity;
+        Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
         FlowLayoutManager layoutManager;
 
@@ -23,11 +23,11 @@ namespace Ghurund::UI {
                 maxY = Math.max(maxY, control->getBottom());
             }
             for (Control* control : currentLine) {
-                if ((params.gravity & Gravity.TOP) == Gravity.TOP) {
+                if ((params.alignment & Alignment.TOP) == Alignment.TOP) {
                     control->layout(control->getLeft(), minY, control->getRight(), minY + control->Size.height);
-                } else if ((params.gravity & Gravity.BOTTOM) == Gravity.BOTTOM) {
+                } else if ((params.alignment & Alignment.BOTTOM) == Alignment.BOTTOM) {
                     control->layout(control->getLeft(), maxY - control->Size.height, control->getRight(), maxY);
-                } else if ((params.gravity & Gravity.CENTER_VERTICAL) == Gravity.CENTER_VERTICAL) {
+                } else if ((params.alignment & Alignment.CENTER_VERTICAL) == Alignment.CENTER_VERTICAL) {
                     int top = std::max((maxY + minY) / 2 - control->Size.height / 2, minY);
                     int bottom = top + control->Size.height;
                     control->layout(control->getLeft(), top, control->getRight(), bottom);
@@ -66,15 +66,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getVerticalSpacing, put = setVerticalSpacing)) float VerticalSpacing;
 
-        inline Gravity& getGravity() {
-            return gravity;
+        inline Alignment& getAlignment() {
+            return alignment;
         }
 
-        inline void setGravity(const Gravity& gravity) {
-            this->gravity = gravity;
+        inline void setAlignment(const Alignment& alignment) {
+            this->alignment = alignment;
         }
 
-        __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
+        __declspec(property(get = getAlignment, put = setAlignment)) Alignment& Alignment;
 
         inline Orientation getOrientation() const {
             return orientation;
@@ -96,7 +96,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<FlowLayout>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(ControlGroup::TYPE);
+            .withSupertype(ControlGroup::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

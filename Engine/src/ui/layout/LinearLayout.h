@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ControlGroup.h"
-#include "ui/Gravity.h"
+#include "ui/Alignment.h"
+#include "ui/control/ControlGroup.h"
 #include "ui/layout/LinearLayoutManager.h"
 
 namespace Ghurund::UI {
@@ -13,15 +13,15 @@ namespace Ghurund::UI {
         LinearLayoutManager layoutManager;
 
     public:
-        inline Gravity& getGravity() {
-            return layoutManager.gravity;
+        inline Alignment& getAlignment() {
+            return layoutManager.alignment;
         }
 
-        inline void setGravity(const Gravity& gravity) {
-            layoutManager.gravity = gravity;
+        inline void setAlignment(const Alignment& alignment) {
+            layoutManager.alignment = alignment;
         }
 
-        __declspec(property(get = getGravity, put = setGravity)) Gravity& Gravity;
+        __declspec(property(get = getAlignment, put = setAlignment)) Alignment& Alignment;
 
         inline Orientation getOrientation() const {
             return layoutManager.orientation;
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<LinearLayout>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(ControlGroup::TYPE);
+            .withSupertype(ControlGroup::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

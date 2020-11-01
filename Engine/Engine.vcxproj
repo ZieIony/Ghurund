@@ -22,7 +22,7 @@
     <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\log\LogType.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
-    <ClCompile Include="src\application\Window.cpp" />
+    <ClCompile Include="src\application\SystemWindow.cpp" />
     <ClCompile Include="src\application\WindowType.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
@@ -38,6 +38,7 @@
     <ClCompile Include="src\game\CameraController.cpp" />
     <ClCompile Include="src\ecs\Entity.cpp" />
     <ClCompile Include="src\ecs\EntityGroup.cpp" />
+    <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\graphics\entity\Camera.cpp" />
     <ClCompile Include="src\game\GameAction.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
@@ -92,17 +93,20 @@
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
-    <ClCompile Include="src\ui\control\TextView.cpp" />
-    <ClCompile Include="src\ui\control\TextViewStyle.cpp" />
+    <ClCompile Include="src\ui\control\TextBlock.cpp" />
+    <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
+    <ClCompile Include="src\ui\drawable\Drawable.cpp" />
     <ClCompile Include="src\ui\gdi\GdiCanvas.cpp" />
     <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\gdi\GdiImage.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\ManualLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\TextLayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
-    <ClCompile Include="src\ui\UIWindow.cpp" />
+    <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadioLayout.cpp" />
     <ClCompile Include="src\ui\widget\button\ImageButtonLayout.cpp" />
@@ -119,14 +123,17 @@
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainerStyle.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
+    <ClCompile Include="src\ui\widget\TextView.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
+    <ClInclude Include="src\application\ChildWindow.h" />
     <ClInclude Include="src\application\log\Formatter.h" />
     <ClInclude Include="src\application\log\LogOutput.h" />
     <ClInclude Include="src\application\log\LogType.h" />
     <ClInclude Include="src\application\Settings.h" />
+    <ClInclude Include="src\application\SystemWindow.h" />
     <ClInclude Include="src\application\Window.h" />
     <ClInclude Include="src\application\WindowType.h" />
     <ClInclude Include="src\audio\Audio.h" />
@@ -136,6 +143,7 @@
     <ClInclude Include="src\core\collection\Array.h" />
     <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Set.h" />
+    <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
@@ -296,15 +304,19 @@
     <ClInclude Include="src\ui\control\ControlContainer.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\control\ControlPool.h" />
-    <ClInclude Include="src\ui\control\FlowLayout.h" />
+    <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
+    <ClInclude Include="src\ui\gdi\Gdi.h" />
+    <ClInclude Include="src\ui\layout\FlowLayout.h" />
     <ClInclude Include="src\ui\control\HoverableView.h" />
     <ClInclude Include="src\ui\control\ItemAdapter.h" />
     <ClInclude Include="src\ui\control\ItemSource.h" />
-    <ClInclude Include="src\ui\control\LinearLayout.h" />
+    <ClInclude Include="src\ui\layout\LinearLayout.h" />
     <ClInclude Include="src\ui\control\RecyclerView.h" />
     <ClInclude Include="src\ui\control\SelectableView.h" />
-    <ClInclude Include="src\ui\control\StackLayout.h" />
-    <ClInclude Include="src\ui\control\TextViewStyle.h" />
+    <ClInclude Include="src\ui\layout\ManualLayout.h" />
+    <ClInclude Include="src\ui\layout\ManualLayoutManager.h" />
+    <ClInclude Include="src\ui\layout\StackLayout.h" />
+    <ClInclude Include="src\ui\control\TextBlockStyle.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
     <ClInclude Include="src\ui\drawable\VectorImage.h" />
     <ClInclude Include="src\ui\DrawingCache.h" />
@@ -319,7 +331,7 @@
     <ClInclude Include="src\ui\control\ScrollView.h" />
     <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\control\Surface.h" />
-    <ClInclude Include="src\ui\control\TextView.h" />
+    <ClInclude Include="src\ui\control\TextBlock.h" />
     <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
@@ -347,10 +359,11 @@
     <ClInclude Include="src\ui\gdi\GdiGui.h" />
     <ClInclude Include="src\ui\gdi\GdiImage.h" />
     <ClInclude Include="src\ui\gdi\GdiPath.h" />
-    <ClInclude Include="src\ui\Gravity.h" />
+    <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\Gui.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
+    <ClInclude Include="src\ui\layout\TextLayoutManager.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
     <ClInclude Include="src\ui\MenuItem.h" />
     <ClInclude Include="src\ui\mixin\BackgroundMixin.h" />
@@ -370,7 +383,6 @@
     <ClInclude Include="src\ui\Size.h" />
     <ClInclude Include="src\ui\Style.h" />
     <ClInclude Include="src\ui\Theme.h" />
-    <ClInclude Include="src\ui\UIWindow.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
     <ClInclude Include="src\ui\widget\button\ButtonLayout.h" />
@@ -399,6 +411,11 @@
     <ClInclude Include="src\ui\widget\menu\ToolbarLayout.h" />
     <ClInclude Include="src\ui\widget\menu\ToolbarStyle.h" />
     <ClInclude Include="src\ui\widget\ProgressBar.h" />
+    <ClInclude Include="src\ui\widget\property\BoolPropertyRow.h" />
+    <ClInclude Include="src\ui\widget\property\ObjectProperty.h" />
+    <ClInclude Include="src\ui\widget\property\PropertyList.h" />
+    <ClInclude Include="src\ui\widget\property\PropertyRow.h" />
+    <ClInclude Include="src\ui\widget\property\StringPropertyRow.h" />
     <ClInclude Include="src\ui\widget\Separator.h" />
     <ClInclude Include="src\ui\widget\SeparatorStyle.h" />
     <ClInclude Include="src\ui\widget\SplitLayout.h" />
@@ -410,6 +427,7 @@
     <ClInclude Include="src\ui\widget\tab\TextTab.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
     <ClInclude Include="src\ui\widget\TextField.h" />
+    <ClInclude Include="src\ui\widget\TextView.h" />
     <ClInclude Include="src\ui\widget\TreeView.h" />
     <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
@@ -417,6 +435,10 @@
   <ItemGroup>
     <None Include="cpp.hint" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Engine.Core.natvis" />
+    <Natvis Include="Engine.UI.natvis" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

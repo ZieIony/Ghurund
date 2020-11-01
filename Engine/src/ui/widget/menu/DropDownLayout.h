@@ -2,10 +2,10 @@
 
 #include "ui/widget/Layout.h"
 #include "ui/control/ColorView.h"
-#include "ui/control/StackLayout.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/control/ImageView.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/Border.h"
 
 namespace Ghurund::UI {

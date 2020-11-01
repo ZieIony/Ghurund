@@ -25,4 +25,15 @@ namespace Ghurund::UI {
             measuredSize.height = (float)preferredSize.height;
         }
     }
+    
+    void PaddingContainer::onLayout(float x, float y, float width, float height) {
+        if (Child) {
+            Child->layout(
+                padding.left,
+                padding.top,
+                std::max(width - padding.left - padding.right, Child->MinSize.width),
+                std::max(height - padding.top - padding.bottom, Child->MinSize.height)
+            );
+        }
+    }
 }

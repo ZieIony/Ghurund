@@ -11,7 +11,6 @@ namespace Ghurund::UI {
         ChildrenList children;
         Control* capturedChild = nullptr;
         Control* previousReceiver = nullptr;
-        Control* focusedChild = nullptr;
 
     protected:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
@@ -19,16 +18,16 @@ namespace Ghurund::UI {
                 if (!c->Visible)
                     continue;
                 c->measure(
-                    preferredSize.width >= 0 ? preferredSize.width : parentWidth,
-                    preferredSize.height >= 0 ? preferredSize.height : parentHeight
+                    PreferredSize.width >= 0 ? PreferredSize.width : parentWidth,
+                    PreferredSize.height >= 0 ? PreferredSize.height : parentHeight
                 );
             }
         }
 
     public:
         ControlGroup():children(*this) {
-            preferredSize.width = PreferredSize::Width::FILL;
-            preferredSize.height = PreferredSize::Height::FILL;
+            PreferredSize.width = PreferredSize::Width::FILL;
+            PreferredSize.height = PreferredSize::Height::FILL;
         }
 
         ~ControlGroup() {
@@ -36,11 +35,13 @@ namespace Ghurund::UI {
                 capturedChild->release();
             if (previousReceiver)
                 previousReceiver->release();
-            if (focusedChild)
-                focusedChild->release();
         }
 
         inline ChildrenList& getChildren() {
+            return children;
+        }
+
+        inline const ChildrenList& getChildren() const {
             return children;
         }
 
@@ -51,26 +52,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChildren, put = setChildren)) ChildrenList& Children;
 
-        virtual void clearFocus() {
-            if (focusedChild) {
-                focusedChild->clearFocus();
-                focusedChild->release();
-                focusedChild = nullptr;
-            }
-            __super::clearFocus();
-        }
+        virtual bool focusNext();
 
-        virtual void setFocus(Control* control) override {
-            if (focusedChild == control)
-                return;
-            if (focusedChild && control)
-                focusedChild->clearFocus();
-            setPointer(focusedChild, control);
-            __super::setFocus(this);
-        }
+        virtual bool focusPrevious();
 
-        virtual Control* getFocus() override {
-            return focusedChild;
+        virtual void update(const Timer& timer) override {
+            for (Control* c : children)
+                c->update(timer);
         }
 
         virtual void onDraw(Canvas& canvas) override;
@@ -84,6 +72,18 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
         virtual Control* find(const String& name);
+
+        static const Ghurund::Type& TYPE() {
+            static Ghurund::Type TYPE = TypeBuilder<ControlGroup>(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
+                .withConstructor(NoArgsConstructor<ControlGroup>())
+                .withSupertype(Control::TYPE());
+
+            return TYPE;
+        }
+
+        virtual const Ghurund::Type& getType() const override {
+            return ControlGroup::TYPE();
+        }
     };
 
     typedef ScopedPointer<ControlGroup> ControlGroupPtr;

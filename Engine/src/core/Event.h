@@ -1,8 +1,6 @@
 #pragma once
 
-#include "core/collection/List.h"
-
-#include <functional>
+#include "EventHandler.h"
 
 namespace Ghurund {
     template <class...> class Event;
@@ -10,14 +8,22 @@ namespace Ghurund {
     template<class SenderType>
     class Event<SenderType> {
     private:
-        List<std::function<bool(SenderType& sender)>> listeners;
+        List<EventHandler<SenderType>> listeners;
         SenderType& owner;
 
     public:
         Event(SenderType& owner):owner(owner) {}
 
-        void add(std::function<bool(SenderType& sender)> listener) {
+        void add(std::function<bool(SenderType& sender)> lambda) {
+            listeners.add(lambda);
+        }
+
+        void add(const EventHandler<SenderType>& listener) {
             listeners.add(listener);
+        }
+
+        void remove(const EventHandler<SenderType>& listener) {
+            listeners.remove(listener);
         }
 
         void clear() {
@@ -44,9 +50,17 @@ namespace Ghurund {
 
     public:
         Event(SenderType& owner):owner(owner) {}
-    
-        void add(std::function<bool(SenderType& sender, const Type& args)> listener) {
+
+        void add(std::function<bool(SenderType& sender, const Type& args)> lambda) {
+            listeners.add(lambda);
+        }
+
+        void add(const EventHandler<SenderType, Type>& listener) {
             listeners.add(listener);
+        }
+
+        void remove(const EventHandler<SenderType, Type>& listener) {
+            listeners.remove(listener);
         }
 
         void clear() {

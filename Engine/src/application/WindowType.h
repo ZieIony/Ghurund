@@ -29,7 +29,7 @@ namespace Ghurund {
             UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
         }
 
-        Window* create(const Window* parent = nullptr) const;
+        HWND create() const;
 
         inline DWORD getStyle() const {
             return dwStyle;

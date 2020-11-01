@@ -17,13 +17,12 @@ namespace Ghurund::UI {
         ItemSource<T>* items = nullptr;
         AdapterLayoutManager<T, ControlType>* layoutManager = nullptr;
 
-        inline size_t findAdapter(size_t position) {
-            for (size_t i = 0; i < adapters.Size; i++) {
-                ItemAdapter<T, ControlType>* a = adapters.get(i);
+        inline ItemAdapter<T, ControlType>* findAdapter(size_t position) {
+            for (auto a:adapters) {
                 if (a->canHandleItem(items->get(position), position))
-                    return i;
+                    return a;
             }
-            return adapters.Size;
+            return nullptr;
         }
 
     public:
@@ -60,11 +59,9 @@ namespace Ghurund::UI {
         __declspec(property(get = getAdapters)) List<ItemAdapter<T, ControlType>*>& Adapters;
 
         virtual ControlType* getChild(size_t index) {
-            size_t a = findAdapter(index);
-            ItemAdapter<T, ControlType>* adapter = adapters[a];
-            ControlType* control = adapter->makeControl();
+            ItemAdapter<T, ControlType>* adapter = findAdapter(index);
+            ControlType* control = adapter->getControl();
             adapter->bind(*control, items->get(index), index);
-            control->measure(100,100);  // TODO: pass parent size
             return control;
         }
 
@@ -73,7 +70,7 @@ namespace Ghurund::UI {
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
             if (layoutManager)
-                measuredSize = layoutManager->measure(*this);
+                measuredSize = layoutManager->measure(*this, parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
@@ -83,7 +80,7 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = TypeBuilder<AdapterView>(NAMESPACE_NAME, CLASS_NAME)
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+            .withSupertype(__super::TYPE());
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

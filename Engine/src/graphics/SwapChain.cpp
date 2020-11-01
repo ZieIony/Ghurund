@@ -2,7 +2,7 @@
 #include "Graphics.h"
 
 namespace Ghurund {
-    Status SwapChain::init(Graphics &graphics, Window &window, unsigned int frameCount) {
+    Status SwapChain::init(Graphics& graphics, SystemWindow& window, unsigned int frameCount) {
         this->graphics = &graphics;
         this->window = &window;
         this->frameCount = frameCount;
@@ -10,40 +10,40 @@ namespace Ghurund {
 
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.BufferCount = frameCount;
-        swapChainDesc.Width = window.Width;
-        swapChainDesc.Height = window.Height;
+        swapChainDesc.Width = window.Size.width;
+        swapChainDesc.Height = window.Size.height;
         swapChainDesc.Format = format;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if(FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1)))
+        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->CreateSwapChainForHwnd() failed\n"));
 
-        if(FAILED(swapChain1.As(&swapChain)))
+        if (FAILED(swapChain1.As(&swapChain)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain1.As() failed\n"));
 
         return initBuffers();
     }
 
     Status SwapChain::initBuffers() {
-        if(window->Width==0||window->Height==0)
+        if (window->Size.width == 0 || window->Size.height == 0)
             return Status::INV_STATE;
 
-        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Width, (float)window->Height,0,1 };
-        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Width, (LONG)window->Height };
+        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.width, (float)window->Size.height,0,1 };
+        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.width, (LONG)window->Size.height };
 
         frames = ghnew Frame[frameCount];
-        for(unsigned int i = 0; i < frameCount; i++) {
-            ID3D12Resource *renderTargetBuffer;
+        for (unsigned int i = 0; i < frameCount; i++) {
+            ID3D12Resource* renderTargetBuffer;
             swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargetBuffer));
 
-            RenderTarget *renderTarget = ghnew RenderTarget();
+            RenderTarget* renderTarget = ghnew RenderTarget();
             renderTarget->init(*graphics, renderTargetBuffer);
 
-            DepthBuffer *depthBuffer = ghnew DepthBuffer();
-            depthBuffer->init(*graphics, window->Width, window->Height);
+            DepthBuffer* depthBuffer = ghnew DepthBuffer();
+            depthBuffer->init(*graphics, window->Size.width, window->Size.height);
 
             frames[i].init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
         }
@@ -54,15 +54,15 @@ namespace Ghurund {
     }
 
     void SwapChain::uninitBuffers() {
-        if(frames==nullptr)
+        if (frames == nullptr)
             return;
 
-        Ghurund::CommandList &commandList = frameBuffer->CommandList;
-        if(commandList.State==CommandListState::RECORDING) {
+        Ghurund::CommandList& commandList = frameBuffer->CommandList;
+        if (commandList.State == CommandListState::RECORDING) {
             commandList.get()->OMSetRenderTargets(0, 0, true, 0);
             commandList.finish();
         }
-        if(commandList.State==CommandListState::CLOSED)
+        if (commandList.State == CommandListState::CLOSED)
             commandList.wait();
         delete[] frames;
         frames = nullptr;
@@ -70,7 +70,7 @@ namespace Ghurund {
 
     void SwapChain::resize(unsigned int width, unsigned int height) {
         uninitBuffers();
-        if(width>0&&height>0)
+        if (width > 0 && height > 0)
             swapChain->ResizeBuffers(frameCount, width, height, format, 0);
         initBuffers();
     }

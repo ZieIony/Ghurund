@@ -171,7 +171,7 @@ namespace Ghurund::UI {
             Glyph& glyph = glyphs.get(c);
 
             if (x < currentX + glyph.tightRect.Width / 2)
-                return { i, currentX };
+                return { nullptr, i, currentX };
 
             if (i < text.Length - 1) {
                 for (unsigned int j = 0; j < kerningPairCount; j++) {
@@ -185,6 +185,6 @@ namespace Ghurund::UI {
             }
             currentX += glyph.tightRect.Width;
         }
-        return { text.Length,currentX };
+        return { nullptr, text.Length,currentX };
     }
 }

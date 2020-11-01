@@ -64,9 +64,9 @@ namespace Ghurund::UI {
     void LinearLayoutManager::layoutHorizontal(ControlGroup& group, float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, width - contentSize);
         float currentX;
-        if (gravity.horizontal == Gravity::Horizontal::LEFT || spreadCount > 0) {
+        if (alignment.horizontal == Alignment::Horizontal::LEFT || spreadCount > 0) {
             currentX = 0.0f;
-        } else if (gravity.horizontal == Gravity::Horizontal::CENTER) {
+        } else if (alignment.horizontal == Alignment::Horizontal::CENTER) {
             currentX = spaceLeft / 2.0f;
         } else {
             currentX = spaceLeft;
@@ -90,9 +90,9 @@ namespace Ghurund::UI {
             }
 
             float ity;
-            if (gravity.vertical == Gravity::Vertical::TOP) {
+            if (alignment.vertical == Alignment::Vertical::TOP) {
                 ity = 0;
-            } else if (gravity.vertical == Gravity::Vertical::BOTTOM) {
+            } else if (alignment.vertical == Alignment::Vertical::BOTTOM) {
                 ity = height - h;
             } else {
                 ity = (height - h) / 2;
@@ -106,9 +106,9 @@ namespace Ghurund::UI {
     void LinearLayoutManager::layoutVertical(ControlGroup& group, float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, height - contentSize);
         float currentY = 0.0f;
-        if (gravity.vertical == Gravity::Vertical::TOP || spreadCount > 0) {
+        if (alignment.vertical == Alignment::Vertical::TOP || spreadCount > 0) {
             currentY = 0.0f;
-        } else if (gravity.vertical == Gravity::Vertical::CENTER) {
+        } else if (alignment.vertical == Alignment::Vertical::CENTER) {
             currentY = spaceLeft / 2.0f;
         } else {
             currentY = spaceLeft;
@@ -132,9 +132,9 @@ namespace Ghurund::UI {
             }
 
             float itx;
-            if (gravity.horizontal == Gravity::Horizontal::LEFT) {
+            if (alignment.horizontal == Alignment::Horizontal::LEFT) {
                 itx = 0;
-            } else if (gravity.horizontal == Gravity::Horizontal::RIGHT) {
+            } else if (alignment.horizontal == Alignment::Horizontal::RIGHT) {
                 itx = width - w;
             } else {
                 itx = (width - w) / 2;

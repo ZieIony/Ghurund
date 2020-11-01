@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ui/control/StackLayout.h"
 #include "ui/control/ClickableView.h"
+#include "ui/layout/StackLayout.h"
 #include "ui/mixin/TextMixin.h"
 #include "ui/mixin/BackgroundMixin.h"
 #include "ui/mixin/BorderMixin.h"

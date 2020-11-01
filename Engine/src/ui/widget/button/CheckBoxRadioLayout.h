@@ -3,8 +3,8 @@
 #include "core/ScopedPointer.h"
 #include "ui/control/SelectableView.h"
 #include "ui/control/ImageView.h"
-#include "ui/control/TextView.h"
-#include "ui/control/LinearLayout.h"
+#include "ui/control/TextBlock.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/control/Space.h"
 #include "ui/widget/Layout.h"
 
@@ -58,7 +58,7 @@ namespace Ghurund::UI {
 
     class CheckBoxRadioTextLayout:public CheckBoxRadioLayout {
     protected:
-        TextView* textView = nullptr;
+        TextBlock* textView = nullptr;
 
     public:
         CheckBoxRadioTextLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
@@ -70,11 +70,11 @@ namespace Ghurund::UI {
 
         virtual void init() override;
 
-        TextView* getTextView() {
+        TextBlock* getTextBlock() {
             return textView;
         }
 
-        __declspec(property(get = getTextView)) TextView* TextView;
+        __declspec(property(get = getTextBlock)) TextBlock* TextBlock;
 
         virtual void onStateChanged(Control& control) override;
     };

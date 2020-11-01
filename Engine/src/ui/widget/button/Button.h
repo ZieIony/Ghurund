@@ -9,9 +9,23 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(Button);
 
     public:
-        Button(ButtonLayout* layout):Widget2(layout) {}
+        Button(ButtonLayout* layout):Widget2(layout) {
+            Focusable = true;
+        }
 
-        Event<Control, MouseButton>& getOnClicked() {
+        inline bool isHovered() const {
+            return Layout.ClickableView->Hovered;
+        }
+
+        __declspec(property(get = isHovered)) bool Hovered;
+
+        inline const MousePressed& isPressed() const {
+            return Layout.ClickableView->Pressed;
+        }
+
+        __declspec(property(get = isPressed)) MousePressed& Pressed;
+
+        inline Event<Control, MouseButton>& getOnClicked() {
             return Layout.ClickableView->OnClicked;
         }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 namespace Ghurund::UI {
-    struct Gravity {
+    struct Alignment {
         enum class Horizontal {
             LEFT, RIGHT, CENTER
         };
