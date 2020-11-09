@@ -41,7 +41,7 @@ namespace Ghurund {
     }
 
     void Application::uninit() {
-        windows.deleteItems();
+        windows.clear();
 
         delete scriptEngine;
 
@@ -72,7 +72,7 @@ namespace Ghurund {
         init();
         onInit();
 
-        while (!windows.Empty) {
+        while (windows.Size != 0) {
             //while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             handleMessages();
             FunctionQueue.invoke();

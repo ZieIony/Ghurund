@@ -27,12 +27,28 @@ namespace Ghurund {
         }
     };
 
-    class EventConsumer :public EventDispatcher {
+    class EventConsumer:public EventDispatcher {
     protected:
         Event<EventConsumer, KeyEventArgs> onKey = *this;
         Event<EventConsumer, MouseButtonEventArgs> onMouseButton = *this;
         Event<EventConsumer, MouseMotionEventArgs> onMouseMotion = *this;
         Event<EventConsumer, MouseWheelEventArgs> onMouseWheel = *this;
+
+        virtual bool onKeyEvent(const KeyEventArgs& event) {
+            return false;
+        }
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) {
+            return false;
+        }
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) {
+            return false;
+        }
+
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& event) {
+            return false;
+        }
 
     public:
         virtual ~EventConsumer() {}
@@ -62,19 +78,19 @@ namespace Ghurund {
         __declspec(property(get = getOnMouseWheel)) Event<EventConsumer, MouseWheelEventArgs>& OnMouseWheel;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) {
-            return onKey(event);
+            return onKeyEvent(event) || onKey(event);
         }
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-            return OnMouseButton(event);
+            return onMouseButtonEvent(event) || onMouseButton(event);
         }
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            return OnMouseMotion(event);
+            return onMouseMotionEvent(event) || onMouseMotion(event);
         }
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-            return OnMouseWheel(event);
+            return onMouseWheelEvent(event) || onMouseWheel(event);
         }
     };
 }

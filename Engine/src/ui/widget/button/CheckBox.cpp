@@ -2,9 +2,10 @@
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
-    CheckBox::CheckBox(CheckBoxRadioLayout* layout):Widget2(layout) {
+    CheckBox::CheckBox(CheckBoxRadioLayout* layout):Widget(layout) {
         Focusable = true;
-        Layout.SelectableView->OnClicked.add([this](Control& sender, MouseButton button) {
+        Layout.SelectableView->OnStateChanged.add(OnStateChanged);
+        Layout.SelectableView->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
             Checked = !Checked;
             onCheckedChanged();
             return true;

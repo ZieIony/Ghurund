@@ -9,16 +9,22 @@
 
 namespace Ghurund {
 
-    class Pointer : public Object {
+    class Pointer: public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Pointer);
-
         unsigned long referenceCount;
 
 #ifdef _DEBUG
         static Ghurund::List<Ghurund::Pointer*> pointers;
         static CriticalSection section;
 #endif
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         Pointer(const Pointer& pointer);
@@ -54,9 +60,7 @@ namespace Ghurund {
         static void dumpPointers();
 #endif
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, CLASS_NAME)
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

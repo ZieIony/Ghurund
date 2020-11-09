@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Tab.h"
-#include "ui/control/ItemAdapter.h"
+#include "ui/adapter/ItemAdapter.h"
 
 namespace Ghurund::UI {
     class TabContainer;

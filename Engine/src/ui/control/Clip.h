@@ -5,9 +5,6 @@
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Clip);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Clip>();
-
         GdiPath* path;
         float cornerRadius = 0.0f;
         Gdiplus::RectF bounds;
@@ -20,6 +17,14 @@ namespace Ghurund::UI {
             } else {
                 path->setRoundRect(bounds, cornerRadius);
             }
+        }
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Clip))
+                .withConstructor(NoArgsConstructor<Clip>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
         }
 
     public:
@@ -57,12 +62,12 @@ namespace Ghurund::UI {
             canvas.restore();
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Clip>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };
+
+    typedef ScopedPointer<Clip> ClipPtr;
 }

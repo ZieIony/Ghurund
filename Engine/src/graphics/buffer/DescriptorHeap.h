@@ -4,16 +4,7 @@
 #include "core/collection/Map.h"
 #include "application/log/Logger.h"
 #include "core/threading/CriticalSection.h"
-#include "graphics/Adapter.h"
-
-#pragma warning(push, 0)
-#include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include "d3dx12.h"
-#pragma warning(pop)
-
-#include <wrl.h>
+#include "graphics/GraphicsAdapter.h"
 
 namespace Ghurund {
     using namespace DirectX;

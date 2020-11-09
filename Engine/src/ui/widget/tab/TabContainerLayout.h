@@ -1,14 +1,17 @@
 #pragma once
 
 #include "Tab.h"
+
 #include "core/ScopedPointer.h"
-#include "ui/layout/HorizontalLayoutManager.h"
-#include "ui/control/AdapterView.h"
-#include "ui/layout/LinearLayout.h"
+#include "ui/adapter/AdapterView.h"
 #include "ui/control/ColorView.h"
+#include "ui/layout/HorizontalLayoutManager.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
+    class Theme;
+
     class TabContainerLayout:public Ghurund::UI::Layout {
     protected:
         ScopedPointer<ControlContainer> container;
@@ -35,18 +38,7 @@ namespace Ghurund::UI {
         ScopedPointer<ColorView> separator;
 
     public:
-        TabContainerVerticalBottomLayout() {
-            VerticalLayout* column = ghnew VerticalLayout();
-            container = ghnew ControlContainer();
-            container->PreferredSize.width = PreferredSize::Width::FILL;
-            container->PreferredSize.height = PreferredSize::Height::FILL;
-            separator = ghnew ColorView();
-            tabContainer = ghnew AdapterView<TabItem*, Tab>();
-            tabContainer->PreferredSize.height = PreferredSize::Height::WRAP;
-            tabContainer->LayoutManager = ghnew HorizontalLayoutManager<TabItem*, Tab>();
-            column->Children = { container, separator, tabContainer };
-            root = column;
-        }
+        TabContainerVerticalBottomLayout(Theme& theme);
 
         inline ColorView* getSeparator() {
             return separator;

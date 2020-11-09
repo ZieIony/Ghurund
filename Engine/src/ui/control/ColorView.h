@@ -6,11 +6,16 @@
 namespace Ghurund::UI {
     class ColorView:public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ColorView);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ColorView>();
-
         unsigned int color;
         Paint paint;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
+                .withConstructor(NoArgsConstructor<ColorView>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         ColorView(unsigned int color = 0x1b000000):color(color) {
@@ -35,14 +40,16 @@ namespace Ghurund::UI {
             canvas.fillRect(0, 0, Size.width, Size.height, paint);
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE());
-
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
     };
 
     typedef ScopedPointer<ColorView> ColorViewPtr;
+
+    inline ColorViewPtr makeColorView(unsigned int color = 0x1b000000) {
+        return ColorViewPtr(ghnew ColorView(color));
+    }
 }

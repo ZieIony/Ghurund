@@ -17,14 +17,19 @@ namespace Ghurund {
 
     class Entity: public Resource, public NamedObject<String>, public virtual ObservableObject, public IdObject<Entity> {
 	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Entity);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Entity>();
-		
 		Entity* parent = nullptr;
 
 		PointerList<Component*> components;
 
         friend class EntityList;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Entity))
+                .withConstructor(NoArgsConstructor<Entity>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
@@ -43,9 +48,7 @@ namespace Ghurund {
 
         __declspec(property(get = getParent)) Entity* Parent;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Entity>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

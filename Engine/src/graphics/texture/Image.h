@@ -20,10 +20,7 @@ namespace Ghurund {
 
     class Image: public Resource {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Image);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Image>();
-		
-		DXGI_FORMAT format;
+        DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
         Buffer* imageData = nullptr;
 
@@ -34,6 +31,14 @@ namespace Ghurund {
         WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
 
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Image))
+                .withConstructor(NoArgsConstructor<Image>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
@@ -93,16 +98,14 @@ namespace Ghurund {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Image>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::JPG, (ResourceFormat*)& ResourceFormat::JPEG, (ResourceFormat*)& ResourceFormat::PNG};
+            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::JPG, (ResourceFormat*)&ResourceFormat::JPEG, (ResourceFormat*)&ResourceFormat::PNG };
             return formats;
         }
 

@@ -6,13 +6,15 @@
 namespace Ghurund::UI {
     class PaddingContainer: public ControlContainer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(PaddingContainer);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
-
         Padding padding;
-#ifdef _DEBUG
-        Paint paint;
-#endif
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
+                .withConstructor(NoArgsConstructor<PaddingContainer>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         PaddingContainer() {}
@@ -32,15 +34,17 @@ namespace Ghurund::UI {
             return padding;
         }
 
-        __declspec(property(get = getPadding)) Padding& Padding;
+        inline void setPadding(const Padding& padding) {
+            this->padding = padding;
+        }
+
+        __declspec(property(get = getPadding, put = setPadding)) Padding& Padding;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<PaddingContainer>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -48,4 +52,12 @@ namespace Ghurund::UI {
     };
 
     typedef ScopedPointer<PaddingContainer> PaddingContainerPtr;
+
+    inline PaddingContainerPtr makePaddingContainer(Control* child, const PreferredSize& preferredSize, const Padding& padding) {
+        auto container = ghnew PaddingContainer();
+        container->Child = child;
+        container->PreferredSize = preferredSize;
+        container->Padding = padding;
+        return container;
+    }
 }

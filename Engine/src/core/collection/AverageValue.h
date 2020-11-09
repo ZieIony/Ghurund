@@ -27,7 +27,7 @@ namespace Ghurund {
 
         Type get() const {
             if(values.empty())
-                return Type();
+                return TYPE;
 
             Type sum = 0;
             float weightSum = 0;

@@ -1,15 +1,15 @@
 #pragma once
 
 #include "core/ScopedPointer.h"
+
 #include "ui/Style.h"
 #include "ui/control/Control.h"
+#include "ui/control/TextBlockStyle.h"
+#include "ui/drawable/BitmapImage.h"
 #include "ui/widget/SeparatorStyle.h"
 #include "ui/widget/ProgressBar.h"
-#include "ui/control/TextBlockStyle.h"
-#include "ui/widget/ProgressBar.h"
-#include "ui/widget/menu/ToolbarStyle.h"
-#include "ui/widget/menu/MenuBarStyle.h"
-#include "ui/widget/tab/TabContainerStyle.h"
+#include "ui/widget/menu/ToolbarLayout.h"
+#include "ui/widget/tab/TabContainerLayout.h"
 
 namespace Ghurund::UI {
     class Theme {
@@ -30,8 +30,8 @@ namespace Ghurund::UI {
     protected:
         Map<String, StateHandler> stateHandlers;
         Ghurund::ScopedPointer<Ghurund::UI::Font> buttonFont, listHeaderFont, primaryTextFont, secondaryTextFont;
-        Ghurund::ScopedPointer<Ghurund::UI::GdiImage> checkBoxChecked, checkBoxUnchecked;
-        Ghurund::ScopedPointer<Ghurund::UI::GdiImage> radioButtonChecked, radioButtonUnchecked;
+        BitmapImage* checkBoxChecked, * checkBoxUnchecked;
+        BitmapImage* radioButtonChecked, * radioButtonUnchecked;
 
     public:
         Style<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle(*this);
@@ -41,10 +41,6 @@ namespace Ghurund::UI {
         Style<TextBlock>* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle(*this);
         Style<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle(*this);
 
-        StyleWithLayout<Toolbar, ToolbarLayout>* toolbarStyle = ghnew ToolbarStyle(*this);
-        StyleWithLayout<MenuBar, MenuBarLayout>* menuBarStyle = ghnew MenuBarStyle(*this);
-        StyleWithLayout<TabContainer, TabContainerLayout>* tabContainerStyle = ghnew TabContainerStyle(*this);
-
         virtual ~Theme() {
             separatorStyle->release();
             progressBarStyle->release();
@@ -52,10 +48,6 @@ namespace Ghurund::UI {
             textViewPrimaryStyle->release();
             textViewSecondaryStyle->release();
             textViewHeaderStyle->release();
-
-            toolbarStyle->release();
-            menuBarStyle->release();
-            tabContainerStyle->release();
         }
 
         inline Map<String, StateHandler>& getStateHandlers() {
@@ -86,21 +78,29 @@ namespace Ghurund::UI {
             return secondaryTextFont;
         }
 
-        inline GdiImage* getCheckBoxChecked() {
+        inline BitmapImage* getCheckBoxChecked() {
             return checkBoxChecked;
         }
 
-        inline GdiImage* getCheckBoxUnchecked() {
+        __declspec(property(get = getCheckBoxChecked)) BitmapImage* CheckBoxChecked;
+
+        inline BitmapImage* getCheckBoxUnchecked() {
             return checkBoxUnchecked;
         }
 
-        inline GdiImage* getRadioButtonChecked() {
+        __declspec(property(get = getCheckBoxUnchecked)) BitmapImage* CheckBoxUnchecked;
+
+        inline BitmapImage* getRadioButtonChecked() {
             return radioButtonChecked;
         }
 
-        inline GdiImage* getRadioButtonUnchecked() {
+        __declspec(property(get = getRadioButtonChecked)) BitmapImage* RadioButtonChecked;
+
+        inline BitmapImage* getRadioButtonUnchecked() {
             return radioButtonUnchecked;
         }
+
+        __declspec(property(get = getRadioButtonUnchecked)) BitmapImage* RadioButtonUnchecked;
 
         unsigned int getColorControlNormal() const {
             return colorWithAlpha(state_normal, getColorControl());

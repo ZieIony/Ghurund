@@ -7,14 +7,24 @@
 #include "ui/layout/HorizontalLayoutManager.h"
 
 namespace Ghurund::UI {
-    class MenuBar: public Widget<MenuBar, MenuBarLayout> {
+    class MenuBar: public Widget<MenuBarLayout> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(MenuBar);
-        
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(MenuBar))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
         List<MenuItem*> items;
 
     public:
-        MenuBar(StyleWithLayout<MenuBar, MenuBarLayout>* style);
+        MenuBar(MenuBarLayout* layout):Widget(layout) {
+            Layout.AdapterView->Items = ghnew ListItemSource<MenuItem*>(items);
+            PreferredSize.height = PreferredSize::Height::WRAP;
+        }
+
+        MenuBar(Theme& theme):MenuBar(ghnew MenuBarLayout(theme)) {}
 
         ~MenuBar() {
             items.deleteItems();
@@ -26,8 +36,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getItems)) List<MenuItem*>& Items;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<MenuBar>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

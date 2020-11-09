@@ -13,9 +13,6 @@
 namespace Ghurund {
     class Renderer: public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Renderer);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Renderer>();
-		
 		//Model* fullScreenQuad = nullptr;
         Material* lightPassMaterial = nullptr;
         Postprocess* postprocess = nullptr;
@@ -26,6 +23,14 @@ namespace Ghurund {
         RenderingStatistics stats;
 
         XMFLOAT4* clearColor = nullptr;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Renderer))
+                .withConstructor(NoArgsConstructor<Renderer>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         ~Renderer() {
@@ -71,9 +76,7 @@ namespace Ghurund {
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Renderer>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

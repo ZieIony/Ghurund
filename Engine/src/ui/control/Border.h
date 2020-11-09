@@ -6,9 +6,6 @@
 namespace Ghurund::UI {
     class Border : public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Border);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Border>();
-
         unsigned int color = 0x1f000000;
         GdiPath* path;
         float cornerRadius = 0.0f, thickness = 1.0f;
@@ -25,6 +22,14 @@ namespace Ghurund::UI {
             } else {
                 path->setRoundRect(bounds, cornerRadius);
             }
+        }
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
+                .withConstructor(NoArgsConstructor<Border>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
         }
 
     public:
@@ -83,9 +88,7 @@ namespace Ghurund::UI {
             canvas.drawPath(*path, paint);
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Border>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Control::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

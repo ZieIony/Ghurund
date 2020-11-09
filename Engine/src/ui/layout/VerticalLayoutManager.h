@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LayoutManager.h"
-#include "ui/control/AdapterView.h"
+#include "ui/adapter/AdapterView.h"
 
 namespace Ghurund::UI {
     template<class T, class ControlType>
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 
         void removeTop(AdapterView<T, ControlType>& adapterView) {
             while (adapterView.Children.Size > 0 && firstBottom + scroll.y < 0) {
-                adapterView.releaseChild(adapterView.Children[0], indexTop);
+                adapterView.releaseChild((ControlType*)adapterView.Children[0], indexTop);
                 adapterView.Children.removeAt(0);
                 if (adapterView.Children.Size > 0) {
                     Control* control = adapterView.Children[0];
@@ -70,7 +70,7 @@ namespace Ghurund::UI {
         void removeBottom(AdapterView<T, ControlType>& adapterView) {
             while (adapterView.Children.Size > 0 && lastTop + scroll.y > adapterView.Size.height) {
                 indexBottom--;
-                adapterView.releaseChild(adapterView.Children[adapterView.Children.Size - 1], indexBottom);
+                adapterView.releaseChild((ControlType*)adapterView.Children[adapterView.Children.Size - 1], indexBottom);
                 adapterView.Children.removeAt(adapterView.Children.Size - 1);
                 if (adapterView.Children.Size > 0) {
                     Control* control = adapterView.Children[adapterView.Children.Size - 1];
@@ -90,7 +90,7 @@ namespace Ghurund::UI {
             float height = 0;
             ItemSource<T>* items = adapterView.Items;
             for (size_t i = 0; i < items->Size; i++) {
-                Control* control = adapterView.getChild(i);
+                ControlType* control = adapterView.getChild(i);
                 control->measure(parentWidth, parentHeight);
                 if (control->PreferredSize.width != PreferredSize::Width::FILL)
                     width = std::max(width, control->MeasuredSize.width);

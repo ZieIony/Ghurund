@@ -2,7 +2,7 @@
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
-    ProgressBar::ProgressBar(Style<ProgressBar>& style) {
+    ProgressBar::ProgressBar(Style<ProgressBar>& style):ProgressBar() {
         style.apply(*this);
     }
 
@@ -25,6 +25,11 @@ namespace Ghurund::UI {
     }
 
     ProgressBarStyle::ProgressBarStyle(Theme& theme):Style<ProgressBar>(theme) {}
+
+    void ProgressBarStyle::apply(ProgressBar& progressBar) const {
+        progressBar.ProgressColor = theme.getColorAccent();
+        progressBar.BackgroundColor = theme.getColorControlNormal();
+    }
 
     void ProgressBarStyle::onStateChanged(ProgressBar& progressBar) const {
         if (progressBar.Enabled) {

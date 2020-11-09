@@ -1,6 +1,89 @@
 #include "ControlParent.h"
 
 namespace Ghurund::UI {
+
+    const Ghurund::Type& Control::GET_TYPE() {
+        static auto& PROPERTY_NAME = TypedProperty<Control, const ASCIIString*>(GH_STRINGIFY(ASCIIString*), GH_STRINGIFY(Name), [](Control& control, const ASCIIString*& value) {
+            value = control.Name;
+        }, [](Control& control, const ASCIIString* const& value) {
+            control.Name = value;
+        });
+
+        static auto& PROPERTY_VISIBLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Visible), [](Control& control, bool& value) {
+            value = control.Visible;
+        }, [](Control& control, const bool& value) {
+            control.Visible = value;
+        });
+
+        static auto& PROPERTY_ENABLED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Enabled), [](Control& control, bool& value) {
+            value = control.Enabled;
+        }, [](Control& control, const bool& value) {
+            control.Enabled = value;
+        });
+
+        static auto& PROPERTY_FOCUSABLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focusable), [](Control& control, bool& value) {
+            value = control.Focusable;
+        }, [](Control& control, const bool& value) {
+            control.Focusable = value;
+        });
+
+        static auto PROPERTY_FOCUSED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focused), [](Control& control, bool& value) {value = control.isFocused(); });
+
+        static auto& PROPERTY_POSITION = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Position), [](Control& control, XMFLOAT2& value) {
+            value = control.Position;
+        }, [](Control& control, const XMFLOAT2& value) {
+            control.Position = value;
+        });
+
+        static auto& PROPERTY_ROTATION = TypedProperty<Control, float>("float", GH_STRINGIFY(Rotation), [](Control& control, float& value) {
+            value = control.Rotation;
+        }, [](Control& control, const float& value) {
+            control.Rotation = value;
+        });
+
+        static auto& PROPERTY_SCALE = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Scale), [](Control& control, XMFLOAT2& value) {
+            value = control.Scale;
+        }, [](Control& control, const XMFLOAT2& value) {
+            control.Scale = value;
+        });
+
+        static auto& PROPERTY_MINSIZE = TypedProperty<Control, FloatSize>(GH_STRINGIFY(FloatSize&), GH_STRINGIFY(MinSize), [](Control& control, FloatSize& value) {
+            value = control.MinSize;
+        }, [](Control& control, const FloatSize& value) {
+            control.MinSize = value;
+        });
+
+        static auto& PROPERTY_SIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), [](Control& control, FloatSize& value) {
+            value = control.Size;
+        });
+
+        static auto& PROPERTY_PREFERREDSIZE = TypedProperty<Control, Ghurund::UI::PreferredSize>(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), [](Control& control, Ghurund::UI::PreferredSize& value) {
+            value = control.PreferredSize;
+        });
+
+        static auto& PROPERTY_MEASUREDSIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), [](Control& control, FloatSize& value) {
+            value = control.MeasuredSize;
+        });
+
+        static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Control))
+            .withModifiers(TypeModifier::ABSTRACT)
+            .withSupertype(__super::TYPE)
+            .withProperty(PROPERTY_NAME)
+            .withProperty(PROPERTY_ENABLED)
+            .withProperty(PROPERTY_FOCUSABLE)
+            .withProperty(PROPERTY_FOCUSED)
+            .withProperty(PROPERTY_VISIBLE)
+            .withProperty(PROPERTY_POSITION)
+            .withProperty(PROPERTY_ROTATION)
+            .withProperty(PROPERTY_SCALE)
+            .withProperty(PROPERTY_MINSIZE)
+            .withProperty(PROPERTY_SIZE)
+            .withProperty(PROPERTY_PREFERREDSIZE)
+            .withProperty(PROPERTY_MEASUREDSIZE);
+
+        return TYPE;
+    }
+    
     void Control::onMeasure(float parentWidth, float parentHeight) {
         if (preferredSize.width == PreferredSize::Width::WRAP) {
             measuredSize.width = minSize.width;
@@ -13,11 +96,6 @@ namespace Ghurund::UI {
         } else if (preferredSize.height != PreferredSize::Height::FILL) {
             measuredSize.height = (float)preferredSize.height;
         }
-    }
-
-    void Control::onStateChanged() {
-        if (parent)
-            parent->onStateChanged();
     }
 
     void Control::requestFocus() {
@@ -84,6 +162,7 @@ namespace Ghurund::UI {
         position.y = y;
         transformationInvalid = true;
         if (needsLayout || size.width != width || size.height != height) {
+            invalidateCache();
 #ifdef _DEBUG
             if (width < minSize.width || height < minSize.height)
                 Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : S("[unnamed]"));
@@ -114,7 +193,7 @@ namespace Ghurund::UI {
                 cache = c->endCache();
                 delete c;
             }
-            cache->draw(canvas);
+            canvas.drawImage(*cache, 0,0, (unsigned int)size.width, (unsigned int)size.height);
         } else {
             onDraw(canvas);
         }
@@ -142,87 +221,5 @@ namespace Ghurund::UI {
         POINT p = { (LONG)pos.x, (LONG)pos.y };
         //ClientToScreen(Window->Handle, &p);
         return XMFLOAT2((float)p.x, (float)p.y);
-    }
-
-    const Ghurund::Type& Control::TYPE() {
-        static auto& PROPERTY_NAME = TypedProperty<Control, const ASCIIString*>(GH_STRINGIFY(ASCIIString*), GH_STRINGIFY(Name), [](Control& control, const ASCIIString*& value) {
-            value = control.Name;
-        }, [](Control& control, const ASCIIString* const& value) {
-            control.Name = value;
-        });
-
-        static auto& PROPERTY_VISIBLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Visible), [](Control& control, bool& value) {
-            value = control.Visible;
-        }, [](Control& control, const bool& value) {
-            control.Visible = value;
-        });
-
-        static auto& PROPERTY_ENABLED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Enabled), [](Control& control, bool& value) {
-            value = control.Enabled;
-        }, [](Control& control, const bool& value) {
-            control.Enabled = value;
-        });
-
-        static auto& PROPERTY_FOCUSABLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focusable), [](Control& control, bool& value) {
-            value = control.Focusable;
-        }, [](Control& control, const bool& value) {
-            control.Focusable = value;
-        });
-
-        static auto PROPERTY_FOCUSED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focused), [](Control& control, bool& value) {value = control.isFocused(); });
-
-        static auto& PROPERTY_POSITION = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Position), [](Control& control, XMFLOAT2& value) {
-            value = control.Position;
-        }, [](Control& control, const XMFLOAT2& value) {
-            control.Position = value;
-        });
-
-        static auto& PROPERTY_ROTATION = TypedProperty<Control, float>("float", GH_STRINGIFY(Rotation), [](Control& control, float& value) {
-            value = control.Rotation;
-        }, [](Control& control, const float& value) {
-            control.Rotation = value;
-        });
-
-        static auto& PROPERTY_SCALE = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Scale), [](Control& control, XMFLOAT2& value) {
-            value = control.Scale;
-        }, [](Control& control, const XMFLOAT2& value) {
-            control.Scale = value;
-        });
-
-        static auto& PROPERTY_MINSIZE = TypedProperty<Control, FloatSize>(GH_STRINGIFY(FloatSize&), GH_STRINGIFY(MinSize), [](Control& control, FloatSize& value) {
-            value = control.MinSize;
-        }, [](Control& control, const FloatSize& value) {
-            control.MinSize = value;
-        });
-
-        static auto& PROPERTY_SIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), [](Control& control, FloatSize& value) {
-            value = control.Size;
-        });
-
-        static auto& PROPERTY_PREFERREDSIZE = TypedProperty<Control, Ghurund::UI::PreferredSize>(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), [](Control& control, Ghurund::UI::PreferredSize& value) {
-            value = control.PreferredSize;
-        });
-
-        static auto& PROPERTY_MEASUREDSIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), [](Control& control, FloatSize& value) {
-            value = control.MeasuredSize;
-        });
-
-        static Ghurund::Type TYPE = TypeBuilder<Control>(NAMESPACE_NAME, GH_STRINGIFY(Control))
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(Pointer::TYPE)
-            .withProperty(PROPERTY_NAME)
-            .withProperty(PROPERTY_ENABLED)
-            .withProperty(PROPERTY_FOCUSABLE)
-            .withProperty(PROPERTY_FOCUSED)
-            .withProperty(PROPERTY_VISIBLE)
-            .withProperty(PROPERTY_POSITION)
-            .withProperty(PROPERTY_ROTATION)
-            .withProperty(PROPERTY_SCALE)
-            .withProperty(PROPERTY_MINSIZE)
-            .withProperty(PROPERTY_SIZE)
-            .withProperty(PROPERTY_PREFERREDSIZE)
-            .withProperty(PROPERTY_MEASUREDSIZE);
-
-        return TYPE;
     }
 }

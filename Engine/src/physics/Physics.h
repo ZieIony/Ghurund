@@ -25,19 +25,24 @@
 #endif
 
 namespace Ghurund {
-	using namespace physx;
+    using namespace physx;
 
-	class Physics:public Object {
+    class Physics:public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Physics);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Physics>();
-		
-		PxDefaultErrorCallback defaultErrorCallback;
+        PxDefaultErrorCallback defaultErrorCallback;
         PxDefaultAllocator defaultAllocatorCallback;
         PxFoundation* foundation = nullptr;
         PxPhysics* physics = nullptr;
         PxPvd* visualDebugger = nullptr;
         PxPvdTransport* transport = nullptr;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Physics))
+                .withConstructor(NoArgsConstructor<Physics>())
+                .withSupertype(Object::TYPE);
+
+            return TYPE;
+        }
 
     public:
         ~Physics() {
@@ -57,9 +62,7 @@ namespace Ghurund {
             return *physics;
         }
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Physics>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -67,17 +70,17 @@ namespace Ghurund {
     };
 
     template<class Type>
-    void setPointer2(Type *&pointer, Type *pointer2) {
-        if(pointer2!=nullptr)
+    void setPointer2(Type*& pointer, Type* pointer2) {
+        if (pointer2 != nullptr)
             pointer2->acquireReference();
-        if(pointer!=nullptr)
+        if (pointer != nullptr)
             pointer->release();
         pointer = pointer2;
     }
 
     template<class Type>
-    void safeRelease2(Type *&pointer) {
-        if(pointer!=nullptr) {
+    void safeRelease2(Type*& pointer) {
+        if (pointer != nullptr) {
             pointer->release();
             pointer = nullptr;
         }

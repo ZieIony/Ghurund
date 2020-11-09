@@ -3,6 +3,10 @@
 #include "LayoutManager.h"
 
 namespace Ghurund::UI {
+    struct Spacing {
+        float horizontal = 0.0f, vertical = 0.0f;
+    };
+
     class FlowLayoutManager:public LayoutManager {
     private:
         void layoutFlowingControlsRight(ControlGroup& group, float width);
@@ -15,7 +19,7 @@ namespace Ghurund::UI {
 
     public:
         bool reverseLayout = false;
-        float verticalSpacing = 0.0f, horizontalSpacing = 0.0f;
+        Spacing spacing;
 
         virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;
 

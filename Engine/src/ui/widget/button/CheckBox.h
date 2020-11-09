@@ -6,11 +6,17 @@
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class CheckBox:public Widget2<CheckBoxRadioLayout> {
+    class CheckBox:public Widget<CheckBoxRadioLayout> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(CheckBox);
         Event<CheckBox> onCheckedChanged = Event<CheckBox>(*this);
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+    
     public:
         CheckBox(CheckBoxRadioLayout* layout);
 
@@ -30,8 +36,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnCheckedChanged)) Event<CheckBox>& OnCheckedChanged;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<CheckBox>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -42,15 +47,19 @@ namespace Ghurund::UI {
 
     class CheckBoxText:public CheckBox, public TextMixin {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(CheckBoxText);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxText))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         CheckBoxText(CheckBoxRadioTextLayout* layout):CheckBox(layout) {
             textView = layout->TextBlock;
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<CheckBoxText>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

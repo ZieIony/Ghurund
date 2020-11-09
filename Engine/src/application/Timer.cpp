@@ -7,28 +7,30 @@ namespace Ghurund {
     }
 
     void Timer::tick() {
-        if(paused)
+        if (paused)
             return;
 
-        prevFrame = currentFrame;
+        LARGE_INTEGER prevFrame = currentFrame;
         QueryPerformanceCounter(&currentFrame);
+        ticks = currentFrame.QuadPart - startFrame.QuadPart;
+        time = (double)ticks / frequency.QuadPart;
+        timeMs = ticks / (frequency.QuadPart / 1000.0);
+        frameTicks = currentFrame.QuadPart - prevFrame.QuadPart;
+        frameTime = (float)frameTicks / frequency.QuadPart;
+        frameTimeMs = ticks / (frequency.QuadPart / 1000.0);
     }
 
     void Timer::setPaused(bool p) {
-        if(paused==p)
+        if (paused == p)
             return;
 
-        /*if(p) {
-            LARGE_INTEGER currentTicks;
-            QueryPerformanceCounter(&currentTicks);
-            frameTime = (float)(currentTicks.QuadPart-frameDelay.QuadPart)/(float)frequency.QuadPart;
-            if(frameTime!=0)
-                fps.set(1.0f/frameTime);
-            time += frameTime;
-        } else {
-            QueryPerformanceCounter(&frameDelay);
-        }*/
-
         paused = p;
+        if (paused) {
+            pauseFrame = currentFrame;
+        } else {
+            LARGE_INTEGER prevFrame = currentFrame;
+            QueryPerformanceCounter(&currentFrame);
+            currentFrame.QuadPart -= (prevFrame.QuadPart - pauseFrame.QuadPart);
+        }
     }
 }

@@ -3,7 +3,8 @@
 #include "BoolPropertyRow.h"
 #include "StringPropertyRow.h"
 #include "PropertyRow.h"
-#include "ui/control/RecyclerView.h"
+
+#include "ui/adapter/RecyclerView.h"
 #include "ui/layout/VerticalLayoutManager.h"
 
 namespace Ghurund::UI {

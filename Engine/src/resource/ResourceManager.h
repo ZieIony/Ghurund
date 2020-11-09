@@ -20,9 +20,6 @@
 namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ResourceManager);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
-		
 		FileWatcher watcher;
         PointerMap<UnicodeString, Resource*> resources;
         LibraryList libraries;
@@ -73,6 +70,14 @@ namespace Ghurund {
 
         FilePath decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir = nullptr) const;
         FilePath encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
+                .withConstructor(NoArgsConstructor<ResourceManager>())
+                .withSupertype(Object::TYPE);
+
+            return TYPE;
+        }
 
     public:
         inline static const wchar_t* const ENGINE_LIB_NAME = L"engine";
@@ -187,9 +192,7 @@ namespace Ghurund {
 
         __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ResourceManager>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

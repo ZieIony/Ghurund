@@ -18,20 +18,25 @@ namespace Ghurund {
 
     class CommandList: public NamedObject<String>, public Pointer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(CommandList);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<CommandList>();
-		
-		Fence fence;
+        Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
         ComPtr<ID3D12GraphicsCommandList> commandList;
-        ID3D12CommandQueue *commandQueue = nullptr;
+        ID3D12CommandQueue* commandQueue = nullptr;
         CommandListState state = CommandListState::INVALID;
 
-        ID3D12PipelineState *pipelineState = nullptr;
-        ID3D12RootSignature *rootSignature = nullptr;
+        ID3D12PipelineState* pipelineState = nullptr;
+        ID3D12RootSignature* rootSignature = nullptr;
 
         List<ID3D12Object*> resourceRefs;
         PointerList<Pointer*> pointerRefs;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CommandList))
+                .withConstructor(NoArgsConstructor<CommandList>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
 
@@ -43,7 +48,7 @@ namespace Ghurund {
 
         ~CommandList();
 
-        Status init(Graphics &graphics, ID3D12CommandQueue *queue);
+        Status init(Graphics& graphics, ID3D12CommandQueue* queue);
 
         Status wait();
 
@@ -51,7 +56,7 @@ namespace Ghurund {
 
         Status finish();
 
-        inline ID3D12GraphicsCommandList *get() {
+        inline ID3D12GraphicsCommandList* get() {
             return commandList.Get();
         }
 
@@ -61,33 +66,31 @@ namespace Ghurund {
 
         __declspec(property(get = getState)) CommandListState State;
 
-        virtual void setName(const String &name) override {
+        virtual void setName(const String& name) override {
             NamedObject::setName(name);
             commandList->SetName((UnicodeString)name);
         }
 
-        bool setPipelineState(ID3D12PipelineState *pipelineState);
+        bool setPipelineState(ID3D12PipelineState* pipelineState);
 
-        bool setGraphicsRootSignature(ID3D12RootSignature *rootSignature);
+        bool setGraphicsRootSignature(ID3D12RootSignature* rootSignature);
 
         inline void barrier(const D3D12_RESOURCE_BARRIER& barrier) {
             commandList->ResourceBarrier(1, &barrier);
         }
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<CommandList>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Pointer::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type&getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
 
-        void addResourceRef(ID3D12Object *resource) {
+        void addResourceRef(ID3D12Object* resource) {
             resource->AddRef();
             resourceRefs.add(resource);
         }
 
-        void addPointerRef(Pointer *resource) {
+        void addPointerRef(Pointer* resource) {
             pointerRefs.add(resource);
         }
     };

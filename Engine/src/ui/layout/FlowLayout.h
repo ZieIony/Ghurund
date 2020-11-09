@@ -7,8 +7,13 @@
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(FlowLayout);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(FlowLayout))
+                .withConstructor(NoArgsConstructor<FlowLayout>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
@@ -46,25 +51,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getReverseLayout, put = setReverseLayout)) bool ReverseLayout;
 
-        inline float getHorizontalSpacing() const {
-            return layoutManager.horizontalSpacing;
+        inline Spacing& getSpacing() {
+            return layoutManager.spacing;
         }
 
-        inline void setHorizontalSpacing(float horizontalSpacing) {
-            layoutManager.horizontalSpacing = horizontalSpacing;
+        inline void setSpacing(const Spacing& spacing) {
+            layoutManager.spacing = spacing;
         }
 
-        __declspec(property(get = getHorizontalSpacing, put = setHorizontalSpacing)) float HorizontalSpacing;
-
-        inline float getVerticalSpacing() const {
-            return layoutManager.verticalSpacing;
-        }
-
-        inline void setVerticalSpacing(float verticalSpacing) {
-            layoutManager.verticalSpacing = verticalSpacing;
-        }
-
-        __declspec(property(get = getVerticalSpacing, put = setVerticalSpacing)) float VerticalSpacing;
+        __declspec(property(get = getSpacing, put = setSpacing)) Spacing& Spacing;
 
         inline Alignment& getAlignment() {
             return alignment;
@@ -94,9 +89,7 @@ namespace Ghurund::UI {
             layoutManager.layout(*this, x, y, width, height);
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<FlowLayout>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(ControlGroup::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -34,20 +34,21 @@ namespace Ghurund::UI {
     }
 
     void CheckBoxLayout::onStateChanged(Control& control) {
-        __super::onStateChanged(control);
         if (selectableView->Selected) {
-            imageView->Image = theme.getCheckBoxChecked();
+            imageView->Image = theme.CheckBoxChecked;
         } else {
-            imageView->Image = theme.getCheckBoxUnchecked();
+            imageView->Image = theme.CheckBoxUnchecked;
         }
-    }
-    void RadioButtonLayout::onStateChanged(Control& control) {
         __super::onStateChanged(control);
+    }
+    
+    void RadioButtonLayout::onStateChanged(Control& control) {
         if (selectableView->Selected) {
             imageView->Image = theme.getRadioButtonChecked();
         } else {
             imageView->Image = theme.getRadioButtonUnchecked();
         }
+        __super::onStateChanged(control);
     }
 
     void CheckBoxRadioTextLayout::init() {
@@ -90,28 +91,23 @@ namespace Ghurund::UI {
             }
             textView->TextColor = theme.getColorForegroundSecondaryOnBackground();
         }
-        if (selectableView->Selected) {
-            imageView->Image = theme.getCheckBoxChecked();
-        } else {
-            imageView->Image = theme.getCheckBoxUnchecked();
-        }
     }
 
     void TextCheckBoxLayout::onStateChanged(Control& control) {
-        __super::onStateChanged(control);
         if (selectableView->Selected) {
-            imageView->Image = theme.getCheckBoxChecked();
+            imageView->Image = theme.CheckBoxChecked;
         } else {
-            imageView->Image = theme.getCheckBoxUnchecked();
+            imageView->Image = theme.CheckBoxUnchecked;
         }
+        __super::onStateChanged(control);
     }
 
     void RadioTextButtonLayout::onStateChanged(Control& control) {
-        __super::onStateChanged(control);
         if (selectableView->Selected) {
-            imageView->Image = theme.getRadioButtonChecked();
+            imageView->Image = theme.RadioButtonChecked;
         } else {
-            imageView->Image = theme.getRadioButtonUnchecked();
+            imageView->Image = theme.RadioButtonUnchecked;
         }
+        __super::onStateChanged(control);
     }
 }

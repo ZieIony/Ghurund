@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/ScopedPointer.h"
+#include "ui/Theme.h"
 #include "ui/control/ClickableView.h"
 #include "ui/control/TextBlock.h"
 
@@ -16,7 +17,7 @@ namespace Ghurund::UI {
             Child = textView;
         }
 
-        TextField(Theme& theme) {
+        TextField(Ghurund::UI::Theme& theme) {
             textView = ghnew TextBlock(theme.textViewPrimaryStyle);
             Child = textView;
         }

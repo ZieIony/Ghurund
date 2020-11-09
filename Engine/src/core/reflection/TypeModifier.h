@@ -2,7 +2,7 @@
 
 namespace Ghurund {
     enum class TypeModifier {
-        ABSTRACT
+        ABSTRACT = 1
     };
 
     TypeModifier operator |(TypeModifier lhs, TypeModifier rhs);

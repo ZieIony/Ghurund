@@ -12,6 +12,12 @@ namespace Ghurund {
     public:
         ScopedPointer() {}
 
+        ScopedPointer(const ScopedPointer& sp) {
+            pointer = sp.pointer;
+            if (pointer)
+                pointer->addReference();
+        }
+
         ScopedPointer(T* p) {
             pointer = p;
         }
@@ -33,10 +39,15 @@ namespace Ghurund {
             return pointer;
         }
 
-        ScopedPointer<T>& operator=(T * p) {
+        ScopedPointer<T>& operator=(T* p) {
             if (pointer)
                 pointer->release();
             pointer = p;
+            return *this;
+        }
+
+        ScopedPointer<T>& operator=(const ScopedPointer<T>& sp) {
+            setPointer(pointer, sp.pointer);
             return *this;
         }
     };

@@ -11,13 +11,13 @@ namespace Ghurund {
     private:
         KeyAction action;
         int key;
-        ticks_t timeStamp;
+        int64_t time;
 
     public:
-        KeyEventArgs(KeyAction action, int key, ticks_t timeStamp) {
+        KeyEventArgs(KeyAction action, int key, int64_t time) {
             this->action = action;
             this->key = key;
-            this->timeStamp = timeStamp;
+            this->time = time;
         }
 
         KeyAction getAction() const {
@@ -31,5 +31,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getKey)) int Key;
+
+        inline int64_t getTime() const {
+            return time;
+        }
+
+        __declspec(property(get = getTime)) int64_t Time;
     };
 }

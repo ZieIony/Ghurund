@@ -12,9 +12,6 @@ namespace Ghurund {
 
     class Camera: public Entity, public ParameterProvider {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Camera);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Camera>();
-        
         TransformComponent* transformComponent;
 		
 		XMFLOAT3 target, dir, right, up;
@@ -31,6 +28,14 @@ namespace Ghurund {
 
         PointerArray<Parameter*> parameters;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
+                .withConstructor(NoArgsConstructor<Camera>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
@@ -42,14 +47,6 @@ namespace Ghurund {
 		~Camera() {
 			transformComponent->release();
 		}
-
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Camera>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Entity::TYPE);
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
 
         virtual void initParameters(ParameterManager& parameterManager);
 
@@ -200,5 +197,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        void onStateChanged(DropDown& dropDown) {}
+        void onStateChanged(Control& control) {}
     };
 
 }

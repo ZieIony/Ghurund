@@ -7,8 +7,13 @@
 namespace Ghurund::UI {
     class ScrollView:public ControlContainer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ScrollView);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ScrollView>();
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScrollView))
+                .withConstructor(NoArgsConstructor<ScrollView>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
         XMFLOAT2 scroll = { 0.0f, 0.0f };
         Event<Control> onScrolled = Event<Control>(*this);
@@ -65,7 +70,7 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
             if (Child) {
                 XMFLOAT2 prevScroll = scroll;
-                if (event.Wheel == MouseWheel::HORIZONTAL) {
+                if (event.Wheel == MouseWheel::HORIZONTAL || Child->Size.height == Size.height) {
                     scroll.x = std::max(Size.width - Child->Size.width, std::min(scroll.x + event.Delta, 0.0f));
                 } else if (event.Wheel == MouseWheel::VERTICAL) {
                     scroll.y = std::max(Size.height - Child->Size.height, std::min(scroll.y + event.Delta, 0.0f));
@@ -78,9 +83,7 @@ namespace Ghurund::UI {
             return OnMouseWheel(event);
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ScrollView>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

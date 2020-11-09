@@ -17,7 +17,6 @@ namespace Ghurund::UI {
         ManualLayoutPtr track;
         ScopedPointer<ImageButton> bottomButton;
         VerticalLayoutPtr verticalLayout;
-        ImagePtr arrowUp, arrowDown;
 
     public:
         VerticalScrollBarLayout(Theme& theme):theme(theme) {}
@@ -55,7 +54,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getBottomButton)) ImageButton* BottomButton;
     };
 
-    class VerticalScrollBar:public Widget2<VerticalScrollBarLayout> {
+    class VerticalScrollBar:public Widget<VerticalScrollBarLayout> {
     private:
         uint32_t pressMousePos = 0;
         float pressBarPos = 0;
@@ -71,7 +70,7 @@ namespace Ghurund::UI {
     public:
         VerticalScrollBar(VerticalScrollBarLayout* layout);
 
-        VerticalScrollBar(Theme& theme):VerticalScrollBar(ghnew VerticalScrollBarLayout(theme)) {}
+        VerticalScrollBar(Ghurund::UI::Theme& theme):VerticalScrollBar(ghnew VerticalScrollBarLayout(theme)) {}
 
         inline float getScroll() const {
             return scroll;

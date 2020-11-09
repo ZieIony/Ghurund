@@ -7,28 +7,33 @@
 #include "graphics/DrawingSystem.h"
 
 namespace Ghurund {
-	class Scene :public Resource {
-	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Scene);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Scene>();
-	
-		PointerList<Entity*> entities;
-		TransformSystem transformSystem;
-		PhysicsSystem physicsSystem;
-		DrawingSystem drawingSystem;
+    class Scene:public Resource {
+    private:
+        PointerList<Entity*> entities;
+        TransformSystem transformSystem;
+        PhysicsSystem physicsSystem;
+        DrawingSystem drawingSystem;
 
-	protected:
-		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Scene))
+                .withConstructor(NoArgsConstructor<Scene>())
+                .withSupertype(__super::TYPE);
 
-	public:
+            return TYPE;
+        }
 
-		Scene() {}
+    protected:
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+
+    public:
+
+        Scene() {}
 
         inline void init(ResourceContext& context) {
             drawingSystem.init(context.Graphics);
             drawingSystem.initParameters(context.ParameterManager);
-		}
+        }
 
         inline void setCamera(Camera* camera) {
             drawingSystem.Camera = camera;
@@ -40,45 +45,43 @@ namespace Ghurund {
 
         __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
 
-		inline PointerList<Entity*>& getEntities() {
-			return entities;
-		}
+        inline PointerList<Entity*>& getEntities() {
+            return entities;
+        }
 
-		__declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
+        __declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
 
         inline TransformSystem& getTransformSystem() {
-			return transformSystem;
-		}
+            return transformSystem;
+        }
 
-		__declspec(property(get = getTransformSystem)) TransformSystem& TransformSystem;
+        __declspec(property(get = getTransformSystem)) TransformSystem& TransformSystem;
 
         inline DrawingSystem& getGraphicsSystem() {
-			return drawingSystem;
-		}
+            return drawingSystem;
+        }
 
-		__declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
+        __declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
 
         inline void transform() {
-			transformSystem.update(0);
-		}
+            transformSystem.update(0);
+        }
 
         inline void render(CommandList& commandList) {
             drawingSystem.draw(commandList, transformSystem);
-		}
+        }
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Scene>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
-		virtual const Ghurund::Type& getType() const override {
-			return TYPE;
-		}
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
 
-		static const Array<ResourceFormat*>& getFormats() {
-			static const Array<ResourceFormat*> formats = { (ResourceFormat*)& ResourceFormat::SCENE };
-			return formats;
-		}
+        static const Array<ResourceFormat*>& getFormats() {
+            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::SCENE };
+            return formats;
+        }
 
-		__declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
-	};
+        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+    };
 }

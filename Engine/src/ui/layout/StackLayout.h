@@ -9,6 +9,14 @@ namespace Ghurund::UI {
     private:
         StackLayoutManager layoutManager;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
+                .withConstructor(NoArgsConstructor<StackLayout>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     public:
         inline Alignment& getAlignment() {
             return layoutManager.alignment;
@@ -28,16 +36,10 @@ namespace Ghurund::UI {
             layoutManager.layout(*this, x, y, width, height);
         }
 
-        static const Ghurund::Type& TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder<StackLayout>(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
-                .withConstructor(NoArgsConstructor<StackLayout>())
-                .withSupertype(__super::TYPE());
-
-            return TYPE;
-        }
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
-            return TYPE();
+            return TYPE;
         }
     };
 

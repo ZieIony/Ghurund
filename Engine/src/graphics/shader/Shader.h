@@ -27,8 +27,8 @@ namespace Ghurund {
     private:
         inline static const char* CLASS_NAME = GH_STRINGIFY(Shader);
         inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Shader>();
-		
-		ShaderProgram* programs[6] = {};
+
+        ShaderProgram* programs[6] = {};
         ID3D12RootSignature* rootSignature;
         ID3D12PipelineState* pipelineState;
         bool supportsTransparency = false;
@@ -59,6 +59,14 @@ namespace Ghurund {
         Status loadHlsl(ResourceContext& context, MemoryInputStream& stream);
 
         void finalize();
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME)
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
@@ -115,16 +123,14 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Shader>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
-		virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::SHADER, (ResourceFormat*)& ResourceFormat::HLSL};
+            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::SHADER, (ResourceFormat*)&ResourceFormat::HLSL };
             return formats;
         }
 

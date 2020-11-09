@@ -10,13 +10,18 @@
 namespace Ghurund {
     class Task:public Pointer, public NamedObject<String>, public IdObject<Task> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Task);
-        
         friend class WorkerThread;
 
         std::function<Status()> function;
         Status result = Status::UNKNOWN;
         time_t time;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Task))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         Task(std::function<Status()> function) {
@@ -28,7 +33,7 @@ namespace Ghurund {
             this->function = function;
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Task>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Pointer::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -1,16 +1,15 @@
 #include "VerticalScrollBar.h"
 #include "ui/Theme.h"
+#include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
     void VerticalScrollBarLayout::init() {
-        arrowUp = ghnew GdiImage("icons/arrow up 18.png");
-        arrowDown = ghnew GdiImage("icons/arrow down 18.png");
-
         auto topButtonLayout = ghnew ImageButtonFlatLayout(theme);
         topButton = ghnew ImageButton(topButtonLayout);
         topButtonLayout->PaddingContainer->Padding.All = 0;
         topButton->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
-        topButton->Image = arrowUp;
+        ScopedPointer<BitmapImage> arrowUpImage = ghnew BitmapImage("icons/arrow up 18.png");
+        topButton->Image = arrowUpImage;
 
         barButton = ghnew ImageButton(theme);
         barButton->setPreferredSize(PreferredSize::Width::FILL, PreferredSize::Height(100));
@@ -26,7 +25,8 @@ namespace Ghurund::UI {
         bottomButton = ghnew ImageButton(bottomButtonLayout);
         bottomButtonLayout->PaddingContainer->Padding.All = 0;
         bottomButton->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
-        bottomButton->Image = arrowDown;
+        ScopedPointer<BitmapImage> arrowDownImage = ghnew BitmapImage("icons/arrow down 18.png");
+        bottomButton->Image = arrowDownImage;
 
         verticalLayout = ghnew VerticalLayout();
         verticalLayout->Children = { topButton, track, bottomButton };
@@ -64,10 +64,10 @@ namespace Ghurund::UI {
         }
     }
 
-    VerticalScrollBar::VerticalScrollBar(VerticalScrollBarLayout* layout):Widget2(layout) {
+    VerticalScrollBar::VerticalScrollBar(VerticalScrollBarLayout* layout):Widget(layout) {
         setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
 
-        layout->TopButton->OnClicked.add([this, layout](Control& sender, const MouseButton& args) {
+        layout->TopButton->OnClicked.add([this, layout](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll -= 10;
             if (scroll != prevScroll) {
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
             }
             return true;
         });
-        layout->BottomButton->OnClicked.add([this, layout](Control& sender, const MouseButton& args) {
+        layout->BottomButton->OnClicked.add([this, layout](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll += 10;
             if (scroll != prevScroll) {

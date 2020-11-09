@@ -1,16 +1,15 @@
 #include "TabContainer.h"
-#include "TextTab.h"
+#include "TextTabLayout.h"
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
     Tab* TabItemAdapter::makeControl() const {
-        ScopedPointer<TextTabStyle> style = ghnew TextTabStyle(theme);
-        return ghnew Tab(style);
+        return ghnew Tab(ghnew TextTabLayout(theme));
     }
 
     void TabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {
         tabView.Layout.SelectableView->Selected = tabLayout.SelectedPosition == position;
-        tabView.Layout.SelectableView->OnClicked.add([this, position](Control& sender, const MouseButton& args) {
+        tabView.Layout.SelectableView->OnClicked.add([this, position](Control& sender, const MouseClickedEventArgs& args) {
             tabLayout.SelectedPosition = position;
             return true;
         });

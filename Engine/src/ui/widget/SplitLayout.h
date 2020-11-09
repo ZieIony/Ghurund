@@ -33,7 +33,7 @@ namespace Ghurund::UI {
         ScopedPointer<Splitter> splitter;
         ScopedPointer<ControlContainer> container1, container2;
         ScopedPointer<LinearLayout> layout;
-        LockedChild lockedContainer = LockedChild::CHILD_1;
+        LockedChild lockedChild = LockedChild::CHILD_1;
         Orientation orientation;
         XMINT2 pressMousePos = { 0,0 };
 
@@ -75,6 +75,16 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getChild2, put = setChild2)) Control* Child2;
+
+        inline LockedChild getLockedChild() const {
+            return lockedChild;
+        }
+
+        inline void setLockedChild(LockedChild child) {
+            this->lockedChild = child;
+        }
+
+        __declspec(property(get = getLockedChild, put = setLockedChild)) LockedChild LockedChild;
     };
 
     typedef ScopedPointer<SplitLayout> SplitLayoutPtr;

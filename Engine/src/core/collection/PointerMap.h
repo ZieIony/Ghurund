@@ -27,8 +27,8 @@ namespace Ghurund {
             }
             if(size == capacity)
                 resize(size + initial);
-            k[size] = key;
-            v[size] = value;
+            new(k + size) Key(key);
+            new(v + size) Value(value);
             if(value!=nullptr)
                 value->addReference();
             size++;

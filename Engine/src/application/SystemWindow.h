@@ -27,8 +27,6 @@ namespace Ghurund {
 
     class SystemWindow: public Window {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(SystemWindow);
-
         const WindowClass& windowClass;
 
         HWND handle;
@@ -36,6 +34,13 @@ namespace Ghurund {
         Ghurund::UI::RootView* rootView = nullptr;
 
         EventHandler<Ghurund::Window> onSizeChangedHandler;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         SystemWindow(HWND handle, const WindowClass& type);
@@ -98,8 +103,7 @@ namespace Ghurund {
             SetActiveWindow(handle);
         }
         
-        inline static const Ghurund::Type& TYPE = TypeBuilder<SystemWindow>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

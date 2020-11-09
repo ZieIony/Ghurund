@@ -4,13 +4,19 @@
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class Button:public Widget2<ButtonLayout> {
+    class Button:public Widget<ButtonLayout> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Button);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Button))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
-        Button(ButtonLayout* layout):Widget2(layout) {
+        Button(ButtonLayout* layout):Widget(layout) {
             Focusable = true;
+            Layout.ClickableView->OnStateChanged.add(OnStateChanged);
         }
 
         inline bool isHovered() const {
@@ -25,14 +31,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isPressed)) MousePressed& Pressed;
 
-        inline Event<Control, MouseButton>& getOnClicked() {
+        inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
             return Layout.ClickableView->OnClicked;
         }
 
-        __declspec(property(get = getOnClicked)) Event<Control, MouseButton>& OnClicked;
+        __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Button>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

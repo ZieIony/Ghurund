@@ -3,8 +3,7 @@
 #include "Gdi.h"
 #include "Common.h"
 #include "core/string/String.h"
-#include "core/Pointer.h"
-#include "GdiImage.h"
+#include "core/ScopedPointer.h"
 
 namespace Ghurund::UI {
     class Canvas;
@@ -36,7 +35,7 @@ namespace Ghurund::UI {
         unsigned int kerningPairCount;
         KERNINGPAIR* kerningPairs;
 
-        GdiImage* atlas = nullptr;
+        Gdiplus::Image* atlas = nullptr;
 
         void makeAtlas(const tchar* characters);
 
@@ -60,7 +59,7 @@ namespace Ghurund::UI {
         ~Font() {
             delete kerningPairs;
             if (atlas)
-                atlas->release();
+                delete atlas;
         }
 
         long getAscent() const {

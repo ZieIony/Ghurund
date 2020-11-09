@@ -42,7 +42,7 @@ namespace Ghurund::UI {
             return S("bool") == item->Property.TypeName;
         }
 
-        virtual PropertyRow* makeControl() const override {
+        virtual BoolPropertyRow* makeControl() const override {
             return ghnew BoolPropertyRow(theme);
         }
 

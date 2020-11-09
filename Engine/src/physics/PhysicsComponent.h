@@ -13,13 +13,18 @@ namespace Ghurund {
 
 	class PhysicsComponent :public Component {
 	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(PhysicsComponent);
-        
         TransformComponent& transformComponent;
 		PxShape* shape = nullptr;
 
 		void finalize() {
 			safeRelease2(shape);
+		}
+
+		static const Ghurund::Type& GET_TYPE() {
+			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
+				.withSupertype(__super::TYPE);
+
+			return TYPE;
 		}
 
 	protected:
@@ -44,7 +49,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<PhysicsComponent>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Component::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

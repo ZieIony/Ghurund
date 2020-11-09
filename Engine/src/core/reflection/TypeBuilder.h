@@ -3,7 +3,6 @@
 #include "Type.h"
 
 namespace Ghurund {
-    template<class T>
     class TypeBuilder {
     private:
         BaseConstructor* constructor = nullptr;

@@ -6,13 +6,18 @@
 namespace Ghurund::UI {
     class ProgressBar:public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ProgressBar);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ProgressBar>();
-
         float progress = 0.0f;
         bool indeterminate = false;
-        unsigned int progressColor, backgroundColor;
+        unsigned int progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
         Paint paint;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
+                .withConstructor(NoArgsConstructor<ProgressBar>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         ProgressBar() {
@@ -28,6 +33,7 @@ namespace Ghurund::UI {
 
         inline void setProgress(float progress) {
             this->progress = std::max(0.0f, std::min(progress, 1.0f));
+            indeterminate = false;
         }
 
         __declspec(property(get = getProgress, put = setProgress)) float Progress;
@@ -64,9 +70,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ProgressBar>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -78,6 +82,8 @@ namespace Ghurund::UI {
     class ProgressBarStyle:public Ghurund::UI::Style<ProgressBar> {
     public:
         ProgressBarStyle(Theme& theme);
+
+        virtual void apply(ProgressBar& progressBar) const override;
 
         virtual void onStateChanged(ProgressBar& progressBar) const override;
     };

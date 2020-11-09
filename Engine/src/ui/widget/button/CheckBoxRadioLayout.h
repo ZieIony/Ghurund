@@ -7,6 +7,7 @@
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/Space.h"
 #include "ui/widget/Layout.h"
+#include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
     class CheckBoxRadioLayout:public Ghurund::UI::Layout {
@@ -42,14 +43,14 @@ namespace Ghurund::UI {
         virtual void onStateChanged(Control& control) override;
     };
 
-    class CheckBoxLayout :public CheckBoxRadioLayout {
+    class CheckBoxLayout:public CheckBoxRadioLayout {
     public:
         CheckBoxLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
 
         virtual void onStateChanged(Control& control) override;
     };
 
-    class RadioButtonLayout :public CheckBoxRadioLayout {
+    class RadioButtonLayout:public CheckBoxRadioLayout {
     public:
         RadioButtonLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
 
@@ -79,14 +80,14 @@ namespace Ghurund::UI {
         virtual void onStateChanged(Control& control) override;
     };
 
-    class TextCheckBoxLayout :public CheckBoxRadioTextLayout {
+    class TextCheckBoxLayout:public CheckBoxRadioTextLayout {
     public:
         TextCheckBoxLayout(Theme& theme):CheckBoxRadioTextLayout(theme) {}
 
         virtual void onStateChanged(Control& control) override;
     };
 
-    class RadioTextButtonLayout :public CheckBoxRadioTextLayout {
+    class RadioTextButtonLayout:public CheckBoxRadioTextLayout {
     public:
         RadioTextButtonLayout(Theme& theme):CheckBoxRadioTextLayout(theme) {}
 

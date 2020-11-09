@@ -29,20 +29,31 @@ namespace Ghurund {
     Status filterStatus(Status result, LoadOption option);
     Status filterStatus(Status result, SaveOption option);
 
+    struct DataSize {
+        uint64_t graphical, system;
+    };
 
     class ResourceManager;
     class ResourceContext;
 
     class Resource: public Pointer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Resource);
-   
         bool valid = false;
         FilePath* path = nullptr;
 
         Status saveInternal(ResourceContext& context, File& file, SaveOption options) const;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     protected:
+        DataSize dataSize;
+
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) = 0;
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const = 0;
 
@@ -54,7 +65,6 @@ namespace Ghurund {
         Status readHeader(MemoryInputStream& stream);
 
     public:
-
         Resource() = default;
 
         ~Resource() {
@@ -106,9 +116,13 @@ namespace Ghurund {
 
         __declspec(property(get = getPath, put = setPath)) FilePath* Path;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Resource>(NAMESPACE_NAME, CLASS_NAME)
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(Object::TYPE);
+        const DataSize& getSize() const {
+            return dataSize;
+        }
+
+        __declspec(property(get = getSize)) const DataSize& Size;
+
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

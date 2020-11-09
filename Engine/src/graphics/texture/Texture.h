@@ -8,13 +8,18 @@
 namespace Ghurund {
     class Texture:public Resource {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Texture);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Texture>();
-		
 		ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
 
         Image* image = nullptr;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Texture))
+                .withConstructor(NoArgsConstructor<Texture>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
@@ -59,9 +64,7 @@ namespace Ghurund {
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Texture>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
 		virtual const Ghurund::Type& getType() const override {
             return TYPE;

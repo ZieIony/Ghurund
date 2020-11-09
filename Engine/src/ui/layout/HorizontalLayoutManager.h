@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LayoutManager.h"
-#include "ui/control/AdapterView.h"
+#include "ui/adapter/AdapterView.h"
 
 namespace Ghurund::UI {
     template<class T, class ControlType>
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 
         void removeTop(AdapterView<T, ControlType>& adapterView) {
             while (adapterView.Children.Size > 0 && firstRight + scroll.x < 0) {
-                adapterView.releaseChild(adapterView.Children[0], indexFirst);
+                adapterView.releaseChild((ControlType*)adapterView.Children[0], indexFirst);
                 adapterView.Children.removeAt(0);
                 if (adapterView.Children.Size > 0) {
                     Control* control = adapterView.Children[0];
@@ -70,7 +70,7 @@ namespace Ghurund::UI {
         void removeLeft(AdapterView<T, ControlType>& adapterView) {
             while (adapterView.Children.Size > 0 && lastLeft + scroll.x > adapterView.Size.width) {
                 indexLast--;
-                adapterView.releaseChild(adapterView.Children[adapterView.Children.Size - 1], indexLast);
+                adapterView.releaseChild((ControlType*)adapterView.Children[adapterView.Children.Size - 1], indexLast);
                 adapterView.Children.removeAt(adapterView.Children.Size - 1);
                 if (adapterView.Children.Size > 0) {
                     Control* control = adapterView.Children[adapterView.Children.Size - 1];

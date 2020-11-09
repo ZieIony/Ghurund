@@ -78,8 +78,9 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
+    <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
@@ -141,21 +142,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="LayoutEditorTab.h" />
-    <ClInclude Include="LogPanel.h" />
-    <ClInclude Include="MainMenu.h" />
-    <ClInclude Include="MaterialColors.h" />
-    <ClInclude Include="StringObject.h" />
-    <ClInclude Include="TestApplication.h" />
-    <ClInclude Include="TestControls.h" />
-    <ClInclude Include="TestFlowLayouts.h" />
-    <ClInclude Include="TestLevel.h" />
-    <ClInclude Include="TestRecycler.h" />
-    <ClInclude Include="TestImageViews.h" />
-    <ClInclude Include="TitleBar.h" />
+    <ClInclude Include="src\control\SearchField.h" />
+    <ClInclude Include="src\LayoutEditorTab.h" />
+    <ClInclude Include="src\MusicPlayer.h" />
+    <ClInclude Include="src\tool\LogPanel.h" />
+    <ClInclude Include="src\MainMenu.h" />
+    <ClInclude Include="src\MaterialColors.h" />
+    <ClInclude Include="src\StringObject.h" />
+    <ClInclude Include="src\TestApplication.h" />
+    <ClInclude Include="src\TestControls.h" />
+    <ClInclude Include="src\TestFlowLayouts.h" />
+    <ClInclude Include="src\TestLevel.h" />
+    <ClInclude Include="src\TestRecycler.h" />
+    <ClInclude Include="src\TestImageViews.h" />
+    <ClInclude Include="src\control\TitleBar.h" />
+    <ClInclude Include="src\control\ToolWindow.h" />
+    <ClInclude Include="src\tool\PropertyPanel.h" />
+    <ClInclude Include="src\tool\WidgetHierarchyPanel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

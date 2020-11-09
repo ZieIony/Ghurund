@@ -9,9 +9,6 @@ namespace Ghurund {
 
     class Script:public Resource {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Script);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Script>();
-		
 		asIScriptModule* mod = nullptr;
         asIScriptContext* ctx = nullptr;
         asIScriptFunction* func = nullptr;
@@ -32,6 +29,14 @@ namespace Ghurund {
                 ctx = nullptr;
             }
             built = false;
+        }
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Script))
+                .withConstructor(NoArgsConstructor<Script>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
         }
 
     protected:
@@ -119,9 +124,7 @@ namespace Ghurund {
             return ctx->GetReturnObject();
         }
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<Script>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Resource::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

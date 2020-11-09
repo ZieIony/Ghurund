@@ -7,22 +7,19 @@
 #include "ui/mixin/BackgroundMixin.h"
 #include "ui/mixin/BorderMixin.h"
 #include "ui/mixin/PaddingMixin.h"
+#include "ui/widget/ClickResponseView.h"
 
 namespace Ghurund::UI {
 
     class TextButtonLayout:public ButtonLayout, public BackgroundLayoutMixin, public BorderLayoutMixin, public TextLayoutMixin, public PaddingLayoutMixin {
     private:
-        StackLayout* stack = nullptr;
+        ScopedPointer<StackLayout> stack;
 
     protected:
         Theme& theme;
 
     public:
         TextButtonLayout(Theme& theme):theme(theme) {}
-
-        ~TextButtonLayout() {
-            stack->release();
-        }
 
         virtual void init() override;
 

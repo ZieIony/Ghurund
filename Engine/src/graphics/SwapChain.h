@@ -18,9 +18,6 @@ namespace Ghurund {
 
     class SwapChain:public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(SwapChain);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<SwapChain>();
-
 		Graphics* graphics;
         ComPtr<IDXGISwapChain3> swapChain;
         Frame* frames;
@@ -28,6 +25,14 @@ namespace Ghurund {
         unsigned int frameCount;
         SystemWindow* window;
         DXGI_FORMAT format;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
+                .withConstructor(NoArgsConstructor<SwapChain>())
+                .withSupertype(Object::TYPE);
+
+            return TYPE;
+        }
 
     public:
         ~SwapChain() {
@@ -60,9 +65,7 @@ namespace Ghurund {
 
         void resize(unsigned int width, unsigned int height);
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<SwapChain>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+		inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

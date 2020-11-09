@@ -3,7 +3,7 @@
 #include "Control.h"
 #include "core/ScopedPointer.h"
 #include "ui/Alignment.h"
-#include "ui/gdi/GdiImage.h"
+#include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {
@@ -12,16 +12,21 @@ namespace Ghurund::UI {
 
     class ImageView: public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ImageView);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ImageView>();
-
-        GdiImage* image = nullptr;
+        BitmapImage* image = nullptr;
         unsigned int tint = 0;
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
+                .withConstructor(NoArgsConstructor<ImageView>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     public:
-        ImageView(GdiImage* image = nullptr) {
+        ImageView(BitmapImage* image = nullptr) {
             if (image) {
                 image->addReference();
                 this->image = image;
@@ -35,15 +40,15 @@ namespace Ghurund::UI {
                 image->release();
         }
 
-        inline void setImage(GdiImage* image) {
+        inline void setImage(BitmapImage* image) {
             setPointer(this->image, image);
         }
 
-        inline GdiImage* getImage() {
+        inline BitmapImage* getImage() {
             return image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) GdiImage* Image;
+        __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
 
         inline void setTint(unsigned int color) {
             this->tint = color;
@@ -79,9 +84,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

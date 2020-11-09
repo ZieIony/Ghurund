@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Settings.h"
-#include "Window.h"
 #include "Timer.h"
+#include "Window.h"
+#include "WindowList.h"
 
 #include "audio/Audio.h"
 #include "core/Noncopyable.h"
@@ -23,7 +24,7 @@
 namespace Ghurund {
     class Application:public Noncopyable {
     private:
-        List<SystemWindow*> windows;
+        WindowList windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
         Client* client;
@@ -68,8 +69,7 @@ namespace Ghurund {
 
 
     public:
-
-        Application() = default;
+        Application():windows(*this) {}
 
         virtual ~Application() {}
 
@@ -87,11 +87,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSettings)) const Settings& Settings;
 
-        inline List<SystemWindow*>& getWindows() {
+        inline WindowList& getWindows() {
             return windows;
         }
 
-        __declspec(property(get = getWindows)) List<SystemWindow*>& Windows;
+        __declspec(property(get = getWindows)) WindowList& Windows;
 
         FunctionQueue& getFunctionQueue() {
             return *functionQueue;

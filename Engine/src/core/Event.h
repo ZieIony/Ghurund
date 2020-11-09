@@ -14,23 +14,29 @@ namespace Ghurund {
     public:
         Event(SenderType& owner):owner(owner) {}
 
-        void add(std::function<bool(SenderType& sender)> lambda) {
+        inline void add(std::function<bool(SenderType& sender)> lambda) {
             listeners.add(lambda);
         }
 
-        void add(const EventHandler<SenderType>& listener) {
+        inline void add(const EventHandler<SenderType>& listener) {
             listeners.add(listener);
         }
 
-        void remove(const EventHandler<SenderType>& listener) {
+        inline void add(Event<SenderType>& event) {
+            add([&event](SenderType& sender) {
+                return event();
+            });
+        }
+
+        inline void remove(const EventHandler<SenderType>& listener) {
             listeners.remove(listener);
         }
 
-        void clear() {
+        inline void clear() {
             listeners.clear();
         }
 
-        bool invoke() {
+        inline bool invoke() {
             bool result = false;
             for (auto listener : listeners)
                 result |= listener(owner);
@@ -51,15 +57,21 @@ namespace Ghurund {
     public:
         Event(SenderType& owner):owner(owner) {}
 
-        void add(std::function<bool(SenderType& sender, const Type& args)> lambda) {
+        inline void add(std::function<bool(SenderType& sender, const Type& args)> lambda) {
             listeners.add(lambda);
         }
 
-        void add(const EventHandler<SenderType, Type>& listener) {
+        inline void add(const EventHandler<SenderType, Type>& listener) {
             listeners.add(listener);
         }
 
-        void remove(const EventHandler<SenderType, Type>& listener) {
+        inline void add(Event<SenderType, Type>& event) {
+            add([&event](SenderType& sender) {
+                return event();
+            });
+        }
+
+        inline void remove(const EventHandler<SenderType, Type>& listener) {
             listeners.remove(listener);
         }
 

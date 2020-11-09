@@ -22,10 +22,10 @@ namespace Ghurund {
         unsigned int width, height;
     };
 
+    class Application;
+
     class Window: public ParameterProvider, public NamedObject<String>, public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Window);
-
         String title;
         bool visible;
         POINT position;
@@ -48,7 +48,16 @@ namespace Ghurund {
         Event<Window, MouseMotionEventArgs> onMouseMotionEvent = Event<Window, MouseMotionEventArgs>(*this);
         Event<Window, MouseWheelEventArgs> onMouseWheelEvent = Event<Window, MouseWheelEventArgs>(*this);
 
+        Application* application;
         Window* parent;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Window))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         Window(Window* parent = nullptr):parameters(PointerArray<Parameter*>(1)) {
@@ -196,14 +205,23 @@ namespace Ghurund {
 
         virtual void activate() const {}
 
+        inline Application* getApplication() {
+            return application;
+        }
+
+        inline void setApplication(Application* application) {
+            this->application = application;
+        }
+
+        __declspec(property(get = getApplication, put = setApplication)) Application* Application;
+
         inline Window* getParent() {
             return parent;
         }
 
         __declspec(property(get = getParent)) Window* Parent;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Window>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

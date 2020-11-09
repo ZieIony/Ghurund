@@ -17,7 +17,7 @@ namespace Ghurund::UI {
         ScopedPointer<HorizontalLayout> row;
 
     public:
-        ButtonPopupMenuRow(Theme& theme) {
+        ButtonPopupMenuRow(Ghurund::UI::Theme& theme) {
             icon = ghnew ImageView();
             icon->PreferredSize.width = 16;
             text = ghnew TextBlock(theme.textViewPrimaryStyle);
@@ -32,10 +32,10 @@ namespace Ghurund::UI {
         }
 
         void bind(ButtonMenuItem& item) {
-            icon->Image = item.Image;
+//            icon->Image = item.Image;
             text->Text = item.Text;
             OnClicked.clear();
-            OnClicked.add([&item](Control& sender, const MouseButton& args) {
+            OnClicked.add([&item](Control& sender, const MouseClickedEventArgs& args) {
                 item.ClickEventHandler(sender);
                 return true;
             });

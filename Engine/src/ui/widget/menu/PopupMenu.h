@@ -1,10 +1,11 @@
 #pragma once
 
 #include "PopupMenuAdapter.h"
+
 #include "application/Window.h"
+#include "ui/adapter/AdapterView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
-#include "ui/control/AdapterView.h"
 #include "ui/layout/VerticalLayoutManager.h"
 
 namespace Ghurund::UI {

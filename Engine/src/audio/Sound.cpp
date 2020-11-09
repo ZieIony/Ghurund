@@ -140,6 +140,7 @@ namespace Ghurund {
 
 		if (FAILED(sourceVoice->Start()))
 			return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to start playback\n"));
+        state = PlaybackState::PLAYING;
 		return Status::OK;
 	}
 }

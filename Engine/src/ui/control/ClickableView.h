@@ -20,14 +20,56 @@ namespace Ghurund::UI {
         }
     };
 
+    class MousePressedEventArgs:public MouseEventArgs {
+    private:
+        MouseButton button;
+
+    public:
+        MousePressedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time) {
+            this->button = button;
+        }
+
+        MouseButton getButton() const {
+            return button;
+        }
+
+        __declspec(property(get = getButton)) MouseButton Button;
+    };
+
+    class MouseClickedEventArgs:public MouseEventArgs {
+    private:
+        MouseButton button;
+
+    public:
+        MouseClickedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time) {
+            this->button = button;
+        }
+
+        MouseButton getButton() const {
+            return button;
+        }
+
+        __declspec(property(get = getButton)) MouseButton Button;
+    };
+
     class ClickableView:public HoverableView {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ClickableView);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
-
         MousePressed buttons;
-        Event<Control, MouseButton> onPressed = Event<Control, MouseButton>(*this);
-        Event<Control, MouseButton> onClicked = Event<Control, MouseButton>(*this);
+        Event<Control, MousePressedEventArgs> onPressed = Event<Control, MousePressedEventArgs>(*this);
+        Event<Control, MouseClickedEventArgs> onClicked = Event<Control, MouseClickedEventArgs>(*this);
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableView))
+                .withConstructor(NoArgsConstructor<ClickableView>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
+    protected:
+        virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
     public:
         inline const MousePressed& isPressed() const {
@@ -36,52 +78,19 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isPressed)) const MousePressed& Pressed;
 
-        inline Event<Control, MouseButton>& getOnPressed() {
+        inline Event<Control, MousePressedEventArgs>& getOnPressed() {
             return onPressed;
         }
 
-        __declspec(property(get = getOnPressed)) Event<Control, MouseButton>& OnPressed;
+        __declspec(property(get = getOnPressed)) Event<Control, MousePressedEventArgs>& OnPressed;
 
-        inline Event<Control, MouseButton>& getOnClicked() {
+        inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
             return onClicked;
         }
 
-        __declspec(property(get = getOnClicked)) Event<Control, MouseButton>& OnClicked;
+        __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;
 
-        bool dispatchKeyEvent(const KeyEventArgs& event) {
-            if (event.Key == VK_SPACE || event.Key == VK_RETURN) {
-                if (event.Action == KeyAction::DOWN) {
-                    buttons[MouseButton::VIRTUAL] = true;
-                    onStateChanged();
-                    onPressed(MouseButton::VIRTUAL);
-                    return true;
-                } else if(event.Action == KeyAction::UP){
-                    buttons[MouseButton::VIRTUAL] = false;
-                    onStateChanged();
-                    onClicked(MouseButton::VIRTUAL);
-                    return true;
-                }
-            }
-            return __super::dispatchKeyEvent(event);
-        }
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            bool result = false;
-            if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
-                buttons[event.Button] = true;
-                onStateChanged();
-                result = onPressed(event.Button);
-            } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
-                buttons[event.Button] = false;
-                onStateChanged();
-                result = onClicked(event.Button);
-            }
-            return result | Control::dispatchMouseButtonEvent(event);
-        }
-
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ClickableView>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

@@ -120,7 +120,7 @@ namespace Ghurund::UI {
                 atlas->SetPixel(x, y, pixel);
             }
         }
-        this->atlas = ghnew GdiImage(atlas);
+        this->atlas = atlas;
     }
 
     HBITMAP Font::makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels) {

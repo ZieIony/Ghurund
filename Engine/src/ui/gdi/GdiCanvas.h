@@ -3,8 +3,6 @@
 #include "GdiFont.h"
 #include "ui/Canvas.h"
 #include "GdiPath.h"
-#include "GdiImage.h"
-#include "ui/DrawingCache.h"
 
 #include <uxtheme.h>
 
@@ -118,15 +116,15 @@ namespace Ghurund::UI {
             graphics->DrawPath(pen, &path);
         }
 
-        void drawImage(const GdiImage& image, float x, float y, float width, float height) {
-            graphics->DrawImage(image.image, x, y, width, height);
+        void drawImage(Gdiplus::Image& image, float x, float y, float width, float height) {
+            graphics->DrawImage(&image, x, y, width, height);
         }
 
-        virtual void drawImage(const GdiImage& image, float x, float y, float width, float height, int32_t tintColor);
+        virtual void drawImage(Gdiplus::Image& image, float x, float y, float width, float height, int32_t tintColor);
 
-        virtual void drawImage(const GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst);
+        virtual void drawImage(Gdiplus::Image& image, Gdiplus::RectF src, Gdiplus::RectF dst);
 
-        virtual void drawImage(const GdiImage& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor);
+        virtual void drawImage(Gdiplus::Image& image, Gdiplus::RectF src, Gdiplus::RectF dst, int32_t tintColor);
 
         void translate(float x, float y) {
             graphics->TranslateTransform(x, y);
@@ -163,7 +161,7 @@ namespace Ghurund::UI {
             return c;
         }
 
-        virtual DrawingCache* endCache() override;
+        virtual Gdiplus::Image* endCache() override;
 
         void drawCachedBitmap(Gdiplus::CachedBitmap* bitmap, unsigned int x, unsigned int y) {
             graphics->DrawCachedBitmap(bitmap, x, y);

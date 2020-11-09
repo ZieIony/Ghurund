@@ -22,6 +22,12 @@ namespace Ghurund {
 			safeRelease2(shape);
 		}
 
+		static const Ghurund::Type& GET_TYPE() {
+			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME).withSupertype(Component::TYPE);
+
+			return TYPE;
+		}
+
 	protected:
 		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
 			return Status::OK;
@@ -45,7 +51,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<RigidBodyComponent>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Component::TYPE);
+		inline static const Ghurund::Type& TYPE = GET_TYPE();
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

@@ -12,14 +12,14 @@ namespace Ghurund {
             if(DXGI_ERROR_NOT_FOUND == factory->EnumAdapters1(adapterIndex, &adapter))
                 break;
 
-            adapters.add(ghnew Adapter(adapter));
+            adapters.add(ghnew GraphicsAdapter(adapter));
             adapterIndex++;
         }
 
         if(FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->EnumWarpAdapter() failed\n"));
 
-        adapters.add(ghnew Adapter(adapter));
+        adapters.add(ghnew GraphicsAdapter(adapter));
 
         return adapters.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
     }
@@ -77,6 +77,16 @@ namespace Ghurund {
         resourceFactory = ghnew GPUResourceFactory(*this);
 
         return Status::OK;
+    }
+
+    void Graphics::uninit() {
+        adapters.deleteItems();
+        directQueue->Release();
+        computeQueue->Release();
+        copyQueue->Release();
+        delete resourceFactory;
+        factory->Release();
+        device->Release();
     }
 
 }

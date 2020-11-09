@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         TextButtonLayout& layout = (TextButtonLayout&)textButton.Layout;
         layout.TextBlock->Text = menuItem->Text;
         textButton.OnClicked.clear();
-        textButton.OnClicked.add([menuItem](Control& sender, const MouseButton& args) {
+        textButton.OnClicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);
             return true;
         });

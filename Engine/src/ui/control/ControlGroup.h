@@ -12,6 +12,14 @@ namespace Ghurund::UI {
         Control* capturedChild = nullptr;
         Control* previousReceiver = nullptr;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
+                .withConstructor(NoArgsConstructor<ControlGroup>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     protected:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
             for (Control* c : Children) {
@@ -73,16 +81,10 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name);
 
-        static const Ghurund::Type& TYPE() {
-            static Ghurund::Type TYPE = TypeBuilder<ControlGroup>(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
-                .withConstructor(NoArgsConstructor<ControlGroup>())
-                .withSupertype(Control::TYPE());
-
-            return TYPE;
-        }
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
-            return ControlGroup::TYPE();
+            return GET_TYPE();
         }
     };
 

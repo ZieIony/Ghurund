@@ -39,15 +39,22 @@ namespace Ghurund::UI {
         __declspec(property(get = getSelectableView)) SelectableView* SelectableView;
     };
 
-    class Tab:public Widget<Tab, TabLayout> {
+    class Tab:public Widget<TabLayout> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Tab);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Tab))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
-        Tab(Ghurund::UI::StyleWithLayout<Tab, TabLayout>* style);
+        Tab(TabLayout* layout):Widget(layout) {
+            Focusable = true;
+            Layout.SelectableView->OnStateChanged.add(OnStateChanged);
+        }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Tab>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

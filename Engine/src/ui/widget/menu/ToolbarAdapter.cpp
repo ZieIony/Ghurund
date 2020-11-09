@@ -1,5 +1,6 @@
 #include "ToolbarAdapter.h"
 #include "ui/Theme.h"
+#include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
     ButtonToolbarAdapter::ButtonToolbarAdapter(Theme& theme):theme(theme) {}
@@ -12,9 +13,9 @@ namespace Ghurund::UI {
         ImageButton& imageButton = (ImageButton&)control;
         ButtonMenuItem* menuItem = (ButtonMenuItem*)item;
         imageButton.Name = menuItem->Text;
-        imageButton.Image = menuItem->Image;
+        imageButton.Image = ghnew BitmapImage(menuItem->Image);
         imageButton.OnClicked.clear();
-        imageButton.OnClicked.add([menuItem](Control& sender, const MouseButton& args) {
+        imageButton.OnClicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);
             return true;
         });

@@ -39,7 +39,7 @@ namespace Ghurund {
 
         static const EnumValues<ParameterIdEnum, ParameterId> VALUES;
 
-        ParameterId(ParameterIdEnum value, const tchar *name, const char* constantName, const ParameterType& type):Enum<ParameterIdEnum, ParameterId>(value, name), type(type) {
+        ParameterId(ParameterIdEnum value, const tchar* name, const char* constantName, const ParameterType& type):Enum<ParameterIdEnum, ParameterId>(value, name), type(type) {
             this->constantName = constantName;
         }
 
@@ -58,7 +58,12 @@ namespace Ghurund {
 
     class Parameter: public Pointer, public ObservableObject {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Parameter);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Parameter))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         const char* constantName;
@@ -92,7 +97,7 @@ namespace Ghurund {
 
         __declspec(property(get = isEmpty)) bool Empty;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Parameter>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

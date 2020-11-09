@@ -6,11 +6,16 @@
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class RadioButton:public Widget2<CheckBoxRadioLayout> {
+    class RadioButton:public Widget<CheckBoxRadioLayout> {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(RadioButton);
-
         Event<RadioButton> onCheckedChanged = Event<RadioButton>(*this);
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         RadioButton(CheckBoxRadioLayout* layout);
@@ -31,8 +36,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnCheckedChanged)) Event<RadioButton>& OnCheckedChanged;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<RadioButton>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
@@ -43,17 +47,21 @@ namespace Ghurund::UI {
 
     class RadioTextButton:public RadioButton, public TextMixin {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(RadioTextButton);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioTextButton))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         RadioTextButton(CheckBoxRadioTextLayout* layout):RadioButton(layout) {
             textView = layout->TextBlock;
         }
 
-        RadioTextButton(Theme& theme):RadioTextButton(ghnew RadioTextButtonLayout(theme)) {}
+        RadioTextButton(Ghurund::UI::Theme& theme):RadioTextButton(ghnew RadioTextButtonLayout(theme)) {}
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<RadioTextButton>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

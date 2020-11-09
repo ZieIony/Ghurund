@@ -8,26 +8,26 @@
 
 namespace Ghurund {
     class Level:public EventConsumer {
-	private:
-		PointerList<Scene*> scenes;
+    private:
+        PointerList<Scene*> scenes;
 
     public:
-		PointerList<Scene*>& getScenes() {
-			return scenes;
-		}
+        PointerList<Scene*>& getScenes() {
+            return scenes;
+        }
 
-		__declspec(property(get = getScenes)) PointerList<Scene*>& Scenes;
+        __declspec(property(get = getScenes)) PointerList<Scene*>& Scenes;
 
         virtual void onInit() {}
         virtual void onUninit() {}
         virtual void onUpdate() {
-			for (Scene* s : scenes)
-				s->transform();
-		}
+            for (Scene* s : scenes)
+                s->transform();
+        }
 
         virtual void onDraw(CommandList& commandList) {
-			for (Scene* s : scenes)
-				s->render(commandList);
-		}
+            for (Scene* s : scenes)
+                s->render(commandList);
+        }
     };
 }

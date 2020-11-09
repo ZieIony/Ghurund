@@ -10,9 +10,6 @@ namespace Ghurund {
 
 	class TransformComponent :public Component {
 	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(TransformComponent);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
-
 		XMFLOAT3 position = {};
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
@@ -29,6 +26,14 @@ namespace Ghurund {
 			stream.write<XMFLOAT3>(rotation);
 			stream.write<XMFLOAT3>(scale);
 			return Status::OK;
+		}
+
+		static const Ghurund::Type& GET_TYPE() {
+			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TransformComponent))
+				.withConstructor(NoArgsConstructor<TransformComponent>())
+				.withSupertype(__super::TYPE);
+
+			return TYPE;
 		}
 
 	public:
@@ -103,9 +108,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getScale, put = setScale)) XMFLOAT3& Scale;
 
-		inline static const Ghurund::Type& TYPE = TypeBuilder<TransformComponent>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Component::TYPE);
+		inline static const Ghurund::Type& TYPE = GET_TYPE();
 
 		virtual const Ghurund::Type& getType() const override {
 			return TYPE;

@@ -47,7 +47,7 @@ namespace Ghurund::UI {
                 if (splitter->Pressed[MouseButton::LEFT] || splitter->Hovered)
                     Cursor::SIZEWE.set();
                 if (splitter->Pressed[MouseButton::LEFT]) {
-                    if (lockedContainer == LockedChild::CHILD_1) {
+                    if (lockedChild == LockedChild::CHILD_1) {
                         container1->PreferredSize.width = container1->Size.width + args.Position.x - pressMousePos.x;
                     } else {
                         container2->PreferredSize.width = container2->Size.width - (args.Position.x - pressMousePos.x);
@@ -66,7 +66,7 @@ namespace Ghurund::UI {
                 if (splitter->Pressed[MouseButton::LEFT] || splitter->Hovered)
                     Cursor::SIZENS.set();
                 if (splitter->Pressed[MouseButton::LEFT]) {
-                    if (lockedContainer == LockedChild::CHILD_1) {
+                    if (lockedChild == LockedChild::CHILD_1) {
                         container1->PreferredSize.height = container1->Size.height + args.Position.y - pressMousePos.y;
                     } else {
                         container2->PreferredSize.height = container2->Size.height - (args.Position.y - pressMousePos.y);

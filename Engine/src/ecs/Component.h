@@ -5,9 +5,15 @@
 namespace Ghurund {
 	class Component:public Resource {
 	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Component);
-        
         bool enabled = true;
+
+		static const Ghurund::Type& GET_TYPE() {
+			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Component))
+				.withModifiers(TypeModifier::ABSTRACT)
+				.withSupertype(__super::TYPE);
+
+			return TYPE;
+		}
 
 	public:
 		bool isEnabled() {
@@ -20,9 +26,7 @@ namespace Ghurund {
 
 		__declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Component>(NAMESPACE_NAME, CLASS_NAME)
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(Resource::TYPE);
+		inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

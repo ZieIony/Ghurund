@@ -1,8 +1,9 @@
 #include "TabContainer.h"
 
 namespace Ghurund::UI {
-    TabContainer::TabContainer(StyleWithLayout<TabContainer, TabContainerLayout>* style):Widget<TabContainer, TabContainerLayout>(style) {
+    TabContainer::TabContainer(TabContainerLayout* layout):Widget(layout) {
         Layout.TabContainer->Items = ghnew ListItemSource<TabItem*>(tabs);
+        PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
     }
     
     TabContainer::~TabContainer() {

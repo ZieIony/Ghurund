@@ -63,6 +63,8 @@ namespace Ghurund::UI {
     }
 
     bool ControlGroup::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+        if (Focusable && event.Action == MouseAction::DOWN && !Focused)
+            requestFocus();
         if (capturedChild) {
             bool result = capturedChild->dispatchMouseButtonEvent(event.translate(-capturedChild->Position.x, -capturedChild->Position.y));
             if (event.Action == MouseAction::UP)

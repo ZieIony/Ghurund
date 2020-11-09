@@ -35,12 +35,4 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged(ControlType& control) const {}
     };
-
-    template<class ControlType, class LayoutType>
-    class StyleWithLayout:public Style<ControlType> {
-    public:
-        StyleWithLayout(Theme& theme):Style(theme) {}
-
-        virtual LayoutType* makeLayout() const = 0;
-    };
 }

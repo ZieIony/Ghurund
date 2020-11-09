@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 
             if (currentX != width && currentX - minWidth < 0) {
                 currentX = width;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
                 //relayoutLine(currentLine);
                 currentLine.clear();
             }
@@ -23,12 +23,12 @@ namespace Ghurund::UI {
             currentLine.insert(0, child);
             float childWidth = child->PreferredSize.width == PreferredSize::Width::FILL ? currentX : minWidth;
             child->layout(currentX - childWidth, currentY, childWidth, minHeight);
-            currentX -= childWidth + horizontalSpacing;
+            currentX -= childWidth + spacing.horizontal;
             nextY = std::max(nextY, currentY + minHeight);
 
             if (child->PreferredSize.width == PreferredSize::Width::FILL) {
                 currentX = width;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
                 //relayoutLine(currentLine);
                 currentLine.clear();
             }
@@ -50,7 +50,7 @@ namespace Ghurund::UI {
 
             if (currentX != 0 && currentX + minWidth > width) {
                 currentX = 0;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
                 //relayoutLine(currentLine);
                 currentLine.clear();
             }
@@ -58,12 +58,12 @@ namespace Ghurund::UI {
             currentLine.add(child);
             float childWidth = child->PreferredSize.width == PreferredSize::Width::FILL ? width - currentX : minWidth;
             child->layout(currentX, currentY, childWidth, minHeight);
-            currentX += minWidth + horizontalSpacing;
+            currentX += minWidth + spacing.horizontal;
             nextY = std::max(nextY, currentY + minHeight);
 
             if (child->PreferredSize.width == PreferredSize::Width::FILL) {
                 currentX = 0;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
                 //relayoutLine(currentLine);
                 currentLine.clear();
             }
@@ -76,11 +76,11 @@ namespace Ghurund::UI {
         for (Control* child : group.Children) {
             if (child->Visible) {
                 float minWidth = std::max(child->PreferredSize.width != PreferredSize::Width::FILL ? child->MeasuredSize.width : 0.0f, child->MinSize.width);
-                currentX += minWidth + horizontalSpacing;
+                currentX += minWidth + spacing.horizontal;
             }
         }
 
-        return currentX > 0 ? currentX - horizontalSpacing : 0;
+        return currentX > 0 ? currentX - spacing.horizontal : 0;
     }
 
     int FlowLayoutManager::measureHeight(ControlGroup& group, int width) {
@@ -96,15 +96,15 @@ namespace Ghurund::UI {
 
             if (currentX != 0 && currentX + minWidth > width && width != 0) {
                 currentX = 0;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
             }
 
             nextY = std::max(nextY, currentY + minHeight);
             if (child->PreferredSize.width == PreferredSize::Width::FILL) {
                 currentX = 0;
-                currentY = nextY + verticalSpacing;
+                currentY = nextY + spacing.vertical;
             } else {
-                currentX += minWidth + horizontalSpacing;
+                currentX += minWidth + spacing.horizontal;
             }
         }
         return nextY;

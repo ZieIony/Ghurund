@@ -19,7 +19,7 @@ namespace Ghurund::UI {
         if (!image)
             return;
 
-        auto src = Gdiplus::RectF(0, 0, (float)image->image->GetWidth(), (float)image->image->GetHeight());
+        auto src = Gdiplus::RectF(0, 0, (float)image->Size.width, (float)image->Size.width);
         Gdiplus::RectF dst;
         if (scaleMode == ImageScaleMode::NONE) {
             dst.X = (Size.width - src.Width) / 2.0f;
@@ -75,9 +75,9 @@ namespace Ghurund::UI {
             }
         }
         if (tint) {
-            canvas.drawImage(*image, src, dst, tint);
+            canvas.drawImage(*image->image, dst.X, dst.Y, dst.Width, dst.Height, tint);
         } else {
-            canvas.drawImage(*image, src, dst);
+            canvas.drawImage(*image->image, dst.X, dst.Y, dst.Width, dst.Height);
         }
     }
 }

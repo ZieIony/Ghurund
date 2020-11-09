@@ -1,8 +1,7 @@
 #pragma once
 
-#include "ui/gdi/GdiImage.h"
+#include "ui/adapter/ItemAdapter.h"
 #include "ui/widget/button/ImageButton.h"
-#include "ui/control/ItemAdapter.h"
 #include "ui/widget/Separator.h"
 
 namespace Ghurund::UI {
@@ -21,17 +20,14 @@ namespace Ghurund::UI {
 
     class ButtonMenuItem:public MenuItem {
     private:
-        GdiImage* image = nullptr;
+        Gdiplus::Image* image = nullptr;
         tchar* text = nullptr;
         ClickEventHandler clickEventHandler;
 
     public:
-        ButtonMenuItem(GdiImage* image, ClickEventHandler clickHandler) {
+        ButtonMenuItem(Gdiplus::Image* image, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
-            if (image) {
-                image->addReference();
-                this->image = image;
-            }
+            this->image = image;
             clickEventHandler = clickHandler;
         }
 
@@ -41,31 +37,27 @@ namespace Ghurund::UI {
             clickEventHandler = clickHandler;
         }
 
-        ButtonMenuItem(GdiImage* image, const tchar* text, ClickEventHandler clickHandler) {
+        ButtonMenuItem(Gdiplus::Image* image, const tchar* text, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
-            if (image) {
-                image->addReference();
-                this->image = image;
-            }
+            this->image = image;
             safeCopyStr(&this->text, text);
             clickEventHandler = clickHandler;
         }
 
         ~ButtonMenuItem() {
-            if (image)
-                image->release();
+            delete image;
             delete[] text;
         }
 
-        inline void setImage(GdiImage* image) {
-            setPointer(this->image, image);
+        inline void setImage(Gdiplus::Image* image) {
+            this->image = image;
         }
 
-        inline GdiImage* getImage() {
+        inline Gdiplus::Image* getImage() {
             return image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) GdiImage* Image;
+        __declspec(property(get = getImage, put = setImage)) Gdiplus::Image* Image;
 
         inline void setText(const tchar* text) {
             safeCopyStr(&this->text, text);

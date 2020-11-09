@@ -4,31 +4,43 @@
 #include "ui/Style.h"
 
 namespace Ghurund::UI {
-    template<class ControlType, class LayoutType>
+    template<class LayoutType>
     requires std::is_base_of<Layout, LayoutType>::value
         class Widget:public ControlContainer {
         private:
             LayoutType* widgetLayout = nullptr;
-            StyleWithLayout<ControlType, LayoutType>* style = nullptr;
 
-        protected:
-            virtual void onStateChanged() override {
-                if (style)
-                    style->onStateChanged(*this);
-                if (widgetLayout)
-                    widgetLayout->onStateChanged(*this);
-                repaint();
+            static const Ghurund::Type& GET_TYPE() {
+                static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
+                    .withModifiers(TypeModifier::ABSTRACT)
+                    .withSupertype(__super::TYPE);
+
+                return TYPE;
             }
+
+            EventHandler<Control> stateHandler = [this](Control& control) {
+                if (widgetLayout) {
+                    widgetLayout->onStateChanged(*this);
+                    repaint();
+                }
+                return true;
+            };
 
         public:
-            Widget(StyleWithLayout<ControlType, LayoutType>* style) {
-                Style = style;
+            Widget(LayoutType* layout) {
+                OnStateChanged.add(stateHandler);
+                widgetLayout = layout;
+#ifdef _DEBUG
+                if (widgetLayout->Root)
+                    Logger::log(LogType::INFO, "widget layout for {} initialized in its constructor", Type.Name);
+#endif
+                widgetLayout->init();
+                OnStateChanged();
+                Child = widgetLayout->Root;
             }
 
-            ~Widget() {
+            ~Widget() = 0 {
                 delete widgetLayout;
-                if (style)
-                    style->release();
             }
 
             inline LayoutType& getLayout() const {
@@ -37,72 +49,15 @@ namespace Ghurund::UI {
 
             __declspec(property(get = getLayout)) LayoutType& Layout;
 
-            inline StyleWithLayout<ControlType, LayoutType>* getStyle() {
-                return style;
-            }
-
-            inline void setStyle(StyleWithLayout<ControlType, LayoutType>* style) {
-                setPointer(this->style, style);
-                if (style) {
-                    if (widgetLayout)
-                        delete widgetLayout;
-                    widgetLayout = style->makeLayout();
-                    widgetLayout->init();
-                    widgetLayout->onStateChanged(*this);
-                    Child = widgetLayout->Root;
-                    style->apply(*this);
-                    style->onStateChanged(*this);
-                }
-            }
-
-            __declspec(property(get = getStyle, put = setStyle)) StyleWithLayout<ControlType, LayoutType>* Style;
-
             virtual void onMeasure(float parentWidth, float parentHeight) override {
                 widgetLayout->Root->PreferredSize = preferredSize;
                 __super::onMeasure(parentWidth, parentHeight);
             }
-    };
 
-    template<class LayoutType>
-    requires std::is_base_of<Layout, LayoutType>::value
-        class Widget2:public ControlContainer {
-        private:
-            LayoutType* widgetLayout = nullptr;
+            inline static const Ghurund::Type& TYPE = GET_TYPE();
 
-        protected:
-            virtual void onStateChanged() override {
-                if (widgetLayout)
-                    widgetLayout->onStateChanged(*this);
-                repaint();
-            }
-
-        public:
-            Widget2(LayoutType* layout) {
-                Layout = layout;
-            }
-
-            ~Widget2() {
-                delete widgetLayout;
-            }
-
-            inline LayoutType& getLayout() const {
-                return *widgetLayout;
-            }
-
-            inline void setLayout(LayoutType* layout) {
-                if (widgetLayout)
-                    delete widgetLayout;
-                widgetLayout = layout;
-                widgetLayout->init();
-                widgetLayout->onStateChanged(*this);
-                Child = widgetLayout->Root;
-            }
-
-            __declspec(property(get = getLayout, put = setLayout)) LayoutType& Layout;
-
-            virtual void onMeasure(float parentWidth, float parentHeight) override {
-                widgetLayout->Root->PreferredSize = preferredSize;
-                __super::onMeasure(parentWidth, parentHeight);
+            virtual const Ghurund::Type& getType() const override {
+                return TYPE;
             }
     };
 }

@@ -3,18 +3,9 @@
 #include "application/log/Logger.h"
 #include "core/collection/List.h"
 #include "core/Object.h"
-#include "graphics/Adapter.h"
+#include "graphics/GraphicsAdapter.h"
 #include "graphics/buffer/DescriptorHeap.h"
 #include "graphics/memory/GPUResourceFactory.h"
-
-#pragma warning(push, 0)
-#include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include "d3dx12.h"
-#pragma warning(pop)
-
-#include <wrl.h>
 
 namespace Ghurund {
     using namespace DirectX;
@@ -24,37 +15,33 @@ namespace Ghurund {
 
     class Graphics: public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Graphics);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Graphics>();
-		
-		ID3D12Device* device;
+        ID3D12Device* device;
         ID3D12CommandQueue* directQueue = nullptr, * computeQueue = nullptr, * copyQueue = nullptr;
         IDXGIFactory4* factory;
 
         DescriptorAllocator allocator;
         GPUResourceFactory* resourceFactory;
 
-        List<Adapter*> adapters;
+        List<GraphicsAdapter*> adapters;
 
         Status initAdapters();
 
-    public:
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Graphics))
+                .withConstructor(NoArgsConstructor<Graphics>())
+                .withSupertype(__super::TYPE);
 
+            return TYPE;
+        }
+
+    public:
         ~Graphics() {
             uninit();
         }
 
         Status init();
 
-        void uninit() {
-            adapters.deleteItems();
-            directQueue->Release();
-            computeQueue->Release();
-            copyQueue->Release();
-            delete resourceFactory;
-            factory->Release();
-            device->Release();
-        }
+        void uninit();
 
         ID3D12Device* getDevice() {
             return device;
@@ -86,11 +73,11 @@ namespace Ghurund {
 
         __declspec(property(get = getFactory)) IDXGIFactory4* Factory;
 
-        List<Adapter*>& getAdapters() {
+        List<GraphicsAdapter*>& getAdapters() {
             return adapters;
         }
 
-        __declspec(property(get = getAdapters)) List<Adapter*>& Adapters;
+        __declspec(property(get = getAdapters)) List<GraphicsAdapter*>& Adapters;
 
         DescriptorAllocator& getDescriptorAllocator() {
             return allocator;
@@ -104,9 +91,7 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Graphics>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

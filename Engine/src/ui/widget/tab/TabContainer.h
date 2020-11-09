@@ -7,7 +7,7 @@
 #include "TabContainerLayout.h"
 
 namespace Ghurund::UI {
-    class TabContainer:public Widget<TabContainer, TabContainerLayout> {
+    class TabContainer:public Widget<TabContainerLayout> {
     private:
         size_t selectedPosition = 0;
         List<TabItem*> tabs;
@@ -15,7 +15,9 @@ namespace Ghurund::UI {
     public:
         class LayoutVerticalBottom;
 
-        TabContainer(StyleWithLayout<TabContainer, TabContainerLayout>* style);
+        TabContainer(TabContainerLayout* layout);
+
+        TabContainer(Theme& theme):TabContainer(ghnew TabContainerVerticalBottomLayout(theme)) {}
 
         ~TabContainer();
 

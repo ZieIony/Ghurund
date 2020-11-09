@@ -11,6 +11,13 @@ namespace Ghurund::UI {
         bool childCaptured = false;
         bool previousReceiver = false;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
+
     public:
         ~ControlContainer() {
             if (child) {
@@ -66,8 +73,7 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name);
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ControlContainer>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(Control::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

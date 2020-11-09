@@ -15,6 +15,7 @@ namespace Ghurund::UI {
 
     class Control;
     class ControlParent;
+    class Theme;
 
     typedef std::function<bool(Control&)> StateHandler;
 
@@ -30,17 +31,19 @@ namespace Ghurund::UI {
 
         ASCIIString* name = nullptr;
 
-        DrawingCache* cache = nullptr;
+        Gdiplus::Image* cache = nullptr;
         bool transformationInvalid = true;
 
         inline void rebuildTransformation() {
             transformation->Reset();
-            transformation->Translate(-size.width / 2, -size.height / 2);
+            transformation->Translate(std::round(-size.width / 2), std::round(-size.height / 2));
             transformation->Rotate(rotation);
             transformation->Scale(scale.x, scale.y);
-            transformation->Translate(position.x + size.width / 2, position.y + size.height / 2);
+            transformation->Translate(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
             transformationInvalid = false;
         }
+
+        static const Ghurund::Type& GET_TYPE();
 
     protected:
         XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
@@ -54,6 +57,7 @@ namespace Ghurund::UI {
         bool cacheEnabled = false;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
+        Event<Control> onStateChanged = Event<Control>(*this);
 
         virtual void onMeasure(float parentWidth, float parentHeight);
 
@@ -61,7 +65,11 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) {}
 
-        virtual void onStateChanged();
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
+            if (focusable && event.Action == MouseAction::DOWN && !Focused)
+                requestFocus();
+            return false;
+        }
 
         ~Control() = 0 {
             delete name;
@@ -73,6 +81,12 @@ namespace Ghurund::UI {
         Control() {
             transformation = new Gdiplus::Matrix();
         }
+
+        inline Event<Control>& getOnStateChanged() {
+            return onStateChanged;
+        }
+
+        __declspec(property(get = getOnStateChanged)) Event<Control>& OnStateChanged;
 
         inline const ASCIIString* getName() const {
             return name;
@@ -261,11 +275,11 @@ namespace Ghurund::UI {
             return x >= position.x && x < position.x + size.width && y >= position.y && y < position.y + size.height;
         }
 
-        void setParent(ControlParent* parent) {
+        inline void setParent(ControlParent* parent) {
             this->parent = parent;
         }
 
-        ControlParent* getParent()const {
+        inline ControlParent* getParent()const {
             return parent;
         }
 
@@ -295,12 +309,6 @@ namespace Ghurund::UI {
 
         void draw(Canvas& canvas);
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            if (focusable && event.Action == MouseAction::DOWN && !Focused)
-                requestFocus();
-            return __super::dispatchMouseButtonEvent(event);
-        }
-
         virtual Control* find(const String& name) {
             if (this->name && this->name->operator==(name))
                 return this;
@@ -315,10 +323,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
 
-        static const Ghurund::Type& TYPE();
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
-            return Control::TYPE();
+            return TYPE;
         }
     };
 

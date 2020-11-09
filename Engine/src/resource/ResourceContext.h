@@ -13,7 +13,12 @@
 namespace Ghurund {
     class ResourceContext: public Object {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ResourceContext);
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceContext))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         Graphics& graphics;
@@ -103,7 +108,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getAllocators)) AllocatorMap& Allocators;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<ResourceContext>(NAMESPACE_NAME, CLASS_NAME).withSupertype(Object::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

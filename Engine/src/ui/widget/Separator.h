@@ -7,9 +7,14 @@
 namespace Ghurund::UI {
     class Separator:public PaddingContainer {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(Separator);
-
         ColorView* colorView;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Separator))
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     public:
         Separator(Style<Separator>* style);
@@ -48,8 +53,7 @@ namespace Ghurund::UI {
             __super::onLayout(x, y, width, height);
         }
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<Separator>(NAMESPACE_NAME, CLASS_NAME)
-            .withSupertype(__super::TYPE);
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

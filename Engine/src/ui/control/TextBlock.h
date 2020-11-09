@@ -7,13 +7,18 @@
 namespace Ghurund::UI {
     class TextBlock:public Control {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(TextBlock);
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
-
         String text;
         unsigned int textColor = 0xde000000;
         Font* font = nullptr;
         Paint paint;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
+                .withConstructor(NoArgsConstructor<TextBlock>())
+                .withSupertype(__super::TYPE);
+
+            return TYPE;
+        }
 
     protected:
         ~TextBlock() {
@@ -72,9 +77,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        inline static const Ghurund::Type& TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, CLASS_NAME)
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::TYPE());
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

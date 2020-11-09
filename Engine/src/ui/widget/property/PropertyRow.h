@@ -1,8 +1,9 @@
 #pragma once
 
 #include "ObjectProperty.h"
+
 #include "ui/Theme.h"
-#include "ui/control/ItemAdapter.h"
+#include "ui/adapter/ItemAdapter.h"
 #include "ui/control/TextBlock.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/Separator.h"

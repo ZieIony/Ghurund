@@ -8,15 +8,15 @@ namespace Ghurund::UI {
         ImageView* imageView = nullptr;
 
     public:
-        const GdiImage* getImage() const {
+        const BitmapImage* getImage() const {
             return imageView->Image;
         }
 
-        void setImage(GdiImage* image) {
+        void setImage(BitmapImage* image) {
             imageView->Image = image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) GdiImage* Image;
+        __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
 
         inline void setImageTint(unsigned int color) {
             imageView->Tint = color;
