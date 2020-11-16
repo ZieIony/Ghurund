@@ -36,7 +36,7 @@ namespace Ghurund {
             return connectionState.getState()==ConnectionState::CONNECTED;
         }
 
-        inline Status send(void *data, size_t size)const {
+        inline Status send(const void *data, size_t size)const {
             return serverSocket->send(data, size, 0);
         }
 

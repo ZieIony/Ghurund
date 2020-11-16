@@ -26,9 +26,10 @@ namespace Ghurund {
         SystemWindow* window;
         DXGI_FORMAT format;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<SwapChain>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
-                .withConstructor(NoArgsConstructor<SwapChain>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(Object::TYPE);
 
             return TYPE;

@@ -28,8 +28,8 @@ public:
     TestControls(Theme& theme, ResourceManager& resourceManager, ResourceContext& resourceContext) {
         Name = "controls tab";
         {
-            FontPtr latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
-            TextBlockPtr textView = ghnew TextBlock("big light text", latoLight);
+            ScopedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
+            ScopedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
             ScopedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
             textView2->Font = theme.getSecondaryTextFont();
@@ -41,7 +41,7 @@ public:
             ScopedPointer<TextField> textField2 = ghnew TextField(theme);
             textField2->Text = "type here too";
 
-            CheckBoxTextPtr checkBox = ghnew CheckBoxText(ghnew TextCheckBoxLayout(theme));
+            ScopedPointer<CheckBoxText> checkBox = ghnew CheckBoxText(ghnew TextCheckBoxLayout(theme));
             checkBox->Text = "check me";
 
             RadioTextButtonPtr radioButton = ghnew RadioTextButton(theme);
@@ -50,9 +50,14 @@ public:
             radioButton2->Text = "option 2";
             radioGroup = { radioButton, radioButton2 };
 
-            ScopedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
-            //ImagePtr saveIcon = ghnew GdiImage(L"icons/icon save 32.png");
-         //   imageButton->Image = saveIcon;
+            ScopedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
+            horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
+            for (size_t i : {0, 1, 2, 3}) {
+                ScopedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
+                ScopedPointer<BitmapImage> saveIcon = ghnew BitmapImage(L"icons/icon save 32.png");
+                imageButton->Image = saveIcon;
+                horizontalLayout->Children.add(imageButton);
+            }
 
             player = ghnew MusicPlayer(theme);
 
@@ -72,20 +77,20 @@ public:
                 textView2,
                 textField,
                 textField2,
-                makeSpace(),
+                makeScoped<Space>(),
                 checkBox,
-                makeSpace(),
+                makeScoped<Space>(),
                 radioButton,
                 radioButton2,
                 separator,
-                imageButton,
-                makeSpace(),
+                horizontalLayout,
+                makeScoped<Space>(),
                 player,
-                makeSpace(),
+                makeScoped<Space>(),
                 flatButton,
-                makeSpace(),
+                makeScoped<Space>(),
                 accentButton,
-                makeSpace(),
+                makeScoped<Space>(),
                 progressBar
             };
         }

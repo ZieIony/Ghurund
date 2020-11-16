@@ -10,6 +10,7 @@ namespace Ghurund::UI {
     class TabContainer:public Widget<TabContainerLayout> {
     private:
         size_t selectedPosition = 0;
+        Tab* selectedTab = nullptr;
         List<TabItem*> tabs;
 
     public:
@@ -25,17 +26,20 @@ namespace Ghurund::UI {
             return tabs;
         }
 
-        __declspec(property(get = getTabs)) List<TabItem*>& Tabs;
+        inline void setTabs(const List<TabItem*>& tabs) {
+            this->tabs.clear();
+            this->tabs.addAll(tabs);
+        }
+
+        __declspec(property(get = getTabs, put = setTabs)) List<TabItem*>& Tabs;
 
         inline void setSelectedPosition(size_t position) {
-            if (Layout.TabContainer->Children.Size > 0) {
-                Tab* tab = (Tab*)Layout.TabContainer->Children[selectedPosition];
-                tab->Layout.SelectableView->Selected = false;
-            }
+            if (selectedTab)
+                selectedTab->Layout.SelectableView->Selected = false;
             this->selectedPosition = position;
-            if (Layout.TabContainer->Children.Size > 0) {
-                Tab* tab = (Tab*)Layout.TabContainer->Children[position];
-                tab->Layout.SelectableView->Selected = true;
+            if (Layout.TabContainer->Children.Size > position) {
+                setPointer(selectedTab, (Tab*)Layout.TabContainer->Children[position]);
+                selectedTab->Layout.SelectableView->Selected = true;
             }
             TabItem* tab = tabs[position];
             Layout.Container->Child = tab->content;

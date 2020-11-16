@@ -9,66 +9,66 @@ namespace Ghurund {
         PointerList() {}
 
         ~PointerList() {
-            for (size_t i = 0; i < size; i++)
-                if (v[i] != nullptr)
-                    v[i]->release();
+            for (size_t i = 0; i < List<Value>::size; i++)
+                if (List<Value>::v[i] != nullptr)
+                    List<Value>::v[i]->release();
         }
 
         inline void add(const Value& item) {
             if (item != nullptr)
                 item->addReference();
-            List::add(item);
+            List<Value>::add(item);
         }
 
 
         inline void addAll(const List<Value>& list) {
-            for (Value& l : list) {
+            for (Value& item : list) {
                 if (item != nullptr)
                     item->addReference();
             }
-            List::addAll(list);
+            List<Value>::addAll(list);
         }
 
         inline void addAll(const std::initializer_list<Value>& list) {
-            for (Value& l : list) {
+            for (Value& item : list) {
                 if (item != nullptr)
                     item->addReference();
             }
-            List::addAll(list);
+            List<Value>::addAll(list);
         }
 
         inline void insert(size_t i, const Value& item) {
-            List::insert(i, item);
+            List<Value>::insert(i, item);
             if (item != nullptr)
                 item->addReference();
         }
 
         inline void set(size_t i, const Value& item) {
-            if (v[i] != nullptr)
-                v[i]->release();
-            List::set(i, item);
+            if (List<Value>::v[i] != nullptr)
+                List<Value>::v[i]->release();
+            List<Value>::set(i, item);
             if (item != nullptr)
                 item->addReference();
         }
 
         inline void removeAt(size_t i) {
-            if (v[i] != nullptr)
-                v[i]->release();
-            List::removeAt(i);
+            if (List<Value>::v[i] != nullptr)
+                List<Value>::v[i]->release();
+            List<Value>::removeAt(i);
         }
 
         inline void remove(const Value& item) {
-            List::remove(item);
+            List<Value>::remove(item);
             if (item != nullptr)
                 item->release();
         }
 
         inline void clear() {
-            size_t s = size;
-            List::clear();
+            size_t s = List<Value>::size;
+            List<Value>::clear();
             for (size_t i = 0; i < s; i++)
-                if (v[i] != nullptr)
-                    v[i]->release();
+                if (List<Value>::v[i] != nullptr)
+                    List<Value>::v[i]->release();
         }
     };
 }

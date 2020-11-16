@@ -8,7 +8,7 @@ namespace Ghurund::Editor {
 
     class SearchField:public StackLayout {
     private:
-        TextBlockPtr hint;
+        ScopedPointer<TextBlock> hint;
         TextFieldPtr textField;
 
     public:

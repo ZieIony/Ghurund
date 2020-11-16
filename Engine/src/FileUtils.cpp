@@ -11,7 +11,7 @@ namespace Ghurund {
 		unsigned long bytes;
 		size = GetFileSize(handle, nullptr);
 		data = ghnew BYTE[size];
-		ReadFile(handle, data, (DWORD)size, &bytes, false);
+		ReadFile(handle, data, (DWORD)size, &bytes, nullptr);
 		CloseHandle(handle);
 		if (bytes != size)
 			return Status::IO;
@@ -23,7 +23,7 @@ namespace Ghurund {
 		if (handle == INVALID_HANDLE_VALUE)
 			return Status::IO;
 		unsigned long bytes;
-		WriteFile(handle, data, (DWORD)size, &bytes, false);
+		WriteFile(handle, data, (DWORD)size, &bytes, nullptr);
 		if (bytes != size)
 			return Status::IO;
 		CloseHandle(handle);

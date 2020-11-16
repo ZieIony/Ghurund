@@ -16,7 +16,7 @@ namespace Ghurund::Editor {
     private:
         ScopedPointer<Toolbar> toolbar;
         ScopedPointer<SearchField> searchField;
-        TextBlockPtr objectTypeText;
+        ScopedPointer<TextBlock> objectTypeText;
         TreeViewPtr treeView;
         Gdiplus::Image* sortIcon, * categoryIcon;
 
@@ -37,7 +37,7 @@ namespace Ghurund::Editor {
                 });
             treeView = ghnew TreeView();
             treeView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            ColorViewPtr separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
+            ScopedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
             Children = {
                 toolbar,

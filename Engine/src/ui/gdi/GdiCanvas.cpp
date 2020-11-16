@@ -10,7 +10,8 @@ namespace Ghurund::UI {
         colorMatrix.m[4][2] = (tintColor & 0xff) / 255.0f;
         colorMatrix.m[3][3] = ((tintColor >> 24) & 0xff) / 255.0f;
         colorMatrixEffect->SetParameters(&colorMatrix);
-        graphics->DrawImage(&image, &Gdiplus::RectF(0, 0, image.GetWidth(), image.GetHeight()), matrix, colorMatrixEffect, nullptr, Gdiplus::Unit::UnitPixel);
+        auto sourceRect = Gdiplus::RectF(0, 0, image.GetWidth(), image.GetHeight());
+        graphics->DrawImage(&image, &sourceRect, matrix, colorMatrixEffect, nullptr, Gdiplus::Unit::UnitPixel);
     }
 
     void GdiCanvas::drawImage(Gdiplus::Image& image, Gdiplus::RectF src, Gdiplus::RectF dst) {

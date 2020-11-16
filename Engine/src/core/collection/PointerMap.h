@@ -9,59 +9,59 @@ namespace Ghurund {
         PointerMap() {}
 
         virtual ~PointerMap() {
-            for(size_t i = 0; i<size; i++)
-                if(v[i]!=nullptr)
-                    v[i]->release();
+            for (size_t i = 0; i < Map<Key, Value>::size; i++)
+                if (Map<Key, Value>::v[i] != nullptr)
+                    Map<Key, Value>::v[i]->release();
         }
 
-        inline void set(const Key &key, const Value &value) {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key) {
-                    if(v[i]!=nullptr)
-                        v[i]->release();
-                    v[i] = value;
-                    if(value!=nullptr)
+        inline void set(const Key& key, const Value& value) {
+            for (size_t i = 0; i < Map<Key, Value>::size; i++) {
+                if (Map<Key, Value>::k[i] == key) {
+                    if (Map<Key, Value>::v[i] != nullptr)
+                        Map<Key, Value>::v[i]->release();
+                    Map<Key, Value>::v[i] = value;
+                    if (value != nullptr)
                         value->addReference();
                     return;
                 }
             }
-            if(size == capacity)
-                resize(size + initial);
-            new(k + size) Key(key);
-            new(v + size) Value(value);
-            if(value!=nullptr)
+            if (Map<Key, Value>::size == Map<Key, Value>::capacity)
+                Map<Key, Value>::resize(Map<Key, Value>::size + Map<Key, Value>::initial);
+            new(Map<Key, Value>::k + Map<Key, Value>::size) Key(key);
+            new(Map<Key, Value>::v + Map<Key, Value>::size) Value(value);
+            if (value != nullptr)
                 value->addReference();
-            size++;
+            Map<Key, Value>::size++;
         }
 
-        inline void setValue(size_t i, Value &value) {
-            if(i >= capacity)
-                resize(i);
-            if(v[i]!=nullptr)
-                v[i]->release();
-            v[i] = value;
-            if(value!=nullptr)
+        inline void setValue(size_t i, Value& value) {
+            if (i >= Map<Key, Value>::capacity)
+                Map<Key, Value>::resize(i);
+            if (Map<Key, Value>::v[i] != nullptr)
+                Map<Key, Value>::v[i]->release();
+            Map<Key, Value>::v[i] = value;
+            if (value != nullptr)
                 value->addReference();
         }
 
-        inline void remove(const Key &key) {
-            for(size_t i = 0; i < size; i++) {
-                if(k[i] == key) {
-                    k[i] = k[size - 1];
-                    if(v[i]!=nullptr)
-                        v[i]->release();
-                    v[i] = v[size - 1];
-                    size--;
+        inline void remove(const Key& key) {
+            for (size_t i = 0; i < Map<Key, Value>::size; i++) {
+                if (Map<Key, Value>::k[i] == key) {
+                    Map<Key, Value>::k[i] = Map<Key, Value>::k[Map<Key, Value>::size - 1];
+                    if (Map<Key, Value>::v[i] != nullptr)
+                        Map<Key, Value>::v[i]->release();
+                    Map<Key, Value>::v[i] = Map<Key, Value>::v[Map<Key, Value>::size - 1];
+                    Map<Key, Value>::size--;
                     return;
                 }
             }
         }
 
         inline void clear() {
-            for(size_t i = 0; i<size; i++)
-                if(v[i]!=nullptr)
-                    v[i]->release();
-            size = 0;
+            for (size_t i = 0; i < Map<Key, Value>::size; i++)
+                if (Map<Key, Value>::v[i] != nullptr)
+                    Map<Key, Value>::v[i]->release();
+            Map<Key, Value>::size = 0;
         }
     };
 }

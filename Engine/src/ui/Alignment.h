@@ -12,5 +12,9 @@ namespace Ghurund::UI {
 
         Horizontal horizontal = Horizontal::LEFT;
         Vertical vertical = Vertical::TOP;
+
+        bool operator==(const Alignment& alignment) const {
+            return horizontal == alignment.horizontal && vertical == alignment.vertical;
+        }
     };
 }

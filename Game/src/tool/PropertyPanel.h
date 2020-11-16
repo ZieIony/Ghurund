@@ -16,7 +16,7 @@ namespace Ghurund::Editor {
     private:
         ScopedPointer<Toolbar> toolbar;
         ScopedPointer<SearchField> searchField;
-        TextBlockPtr objectTypeText;
+        ScopedPointer<TextBlock> objectTypeText;
         PropertyListPtr propertyList;
         Gdiplus::Image* sortIcon, * categoryIcon;
 
@@ -27,17 +27,17 @@ namespace Ghurund::Editor {
             searchField = ghnew SearchField(theme);
             sortIcon = new Gdiplus::Image(L"icons/sort 18.png");
             categoryIcon = new Gdiplus::Image(L"icons/category 18.png");
-            toolbar->Items.addAll({
+            toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, "sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
                    ghnew ButtonMenuItem(categoryIcon, "category", [](Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
-                });
+            };
             propertyList = ghnew PropertyList(theme);
             propertyList->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            ColorViewPtr separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
+            ScopedPointer<ColorView> separator = makeScoped<ColorView>(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
             Children = {
                 toolbar,

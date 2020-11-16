@@ -17,8 +17,8 @@ namespace Ghurund::UI {
         bool reverseLayout = false;
         float verticalSpacing = 0.0f, horizontalSpacing = 0.0f;
 
-        virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) override;
 
-        virtual void layout(ControlGroup& group, float x, float y, float width, float height) override;
+        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) override;
     };
 }

@@ -3,7 +3,7 @@
 #include "Tab.h"
 
 #include "core/ScopedPointer.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/layout/LinearLayout.h"
@@ -12,10 +12,10 @@
 namespace Ghurund::UI {
     class Theme;
 
-    class TabContainerLayout:public Ghurund::UI::Layout {
+    class TabContainerLayout:public Ghurund::UI::WidgetLayout {
     protected:
         ScopedPointer<ControlContainer> container;
-        ScopedPointer<AdapterView<TabItem*, Tab>> tabContainer;
+        ScopedPointer<RecyclerView<TabItem*, Tab>> tabContainer;
 
     public:
         virtual ~TabContainerLayout() = 0 {}
@@ -26,19 +26,22 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContainer)) ControlContainer* Container;
 
-        inline AdapterView<TabItem*, Tab>* getTabContainer() {
+        inline RecyclerView<TabItem*, Tab>* getTabContainer() {
             return tabContainer;
         }
 
-        __declspec(property(get = getTabContainer)) AdapterView<TabItem*, Tab>* TabContainer;
+        __declspec(property(get = getTabContainer)) RecyclerView<TabItem*, Tab>* TabContainer;
     };
 
     class TabContainerVerticalBottomLayout:public TabContainerLayout {
     protected:
         ScopedPointer<ColorView> separator;
+        Theme& theme;
 
     public:
-        TabContainerVerticalBottomLayout(Theme& theme);
+        TabContainerVerticalBottomLayout(Theme& theme):theme(theme) {}
+
+        virtual void init() override;
 
         inline ColorView* getSeparator() {
             return separator;

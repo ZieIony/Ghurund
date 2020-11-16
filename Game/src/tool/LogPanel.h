@@ -91,7 +91,7 @@ namespace Ghurund::Editor {
                    })
                 });
             logRecycler = ghnew RecyclerView<Log, LogRow>();
-            logRecycler->LayoutManager = ghnew VerticalLayoutManager<Log, LogRow>();
+            logRecycler->LayoutManager = ghnew VerticalLayoutManager();
             logRecycler->Items = ghnew ListItemSource<Log>(items);
             logRecycler->Adapters.add(ghnew LogItemAdapter(theme));
             Children = { toolbar, logRecycler };

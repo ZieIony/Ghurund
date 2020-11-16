@@ -30,7 +30,7 @@ namespace Ghurund {
     }
     
     Status Server::host(SocketProtocol protocol, unsigned short port) {
-        socket.init(protocol, INADDR_ANY, port);
+        socket.init(protocol, (const tchar*)INADDR_ANY, port);
 
         if(socket.bind()!=Status::OK) { // error
             WSACleanup();  // unload WinSock

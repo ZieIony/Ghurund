@@ -17,10 +17,14 @@ namespace Ghurund {
 
     struct WindowData {
         SystemWindow* window;
-        POINT prevMousePos = { -1,-1 };
+        POINT prevMousePos;
         bool mouseTracked = false;
 
-        WindowData(SystemWindow* w):window(w) {}
+        WindowData(SystemWindow* w):window(w) {
+            POINT p;
+            GetCursorPos(&p);
+            prevMousePos = p;
+        }
     };
 
     LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -102,7 +106,7 @@ namespace Ghurund {
         virtual void activate() const override {
             SetActiveWindow(handle);
         }
-        
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

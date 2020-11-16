@@ -5,7 +5,7 @@
 
 namespace Ghurund::UI {
     template<class LayoutType>
-    requires std::is_base_of<Layout, LayoutType>::value
+    requires std::is_base_of<WidgetLayout, LayoutType>::value
         class Widget:public ControlContainer {
         private:
             LayoutType* widgetLayout = nullptr;

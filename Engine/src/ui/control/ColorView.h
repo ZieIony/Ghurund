@@ -9,9 +9,10 @@ namespace Ghurund::UI {
         unsigned int color;
         Paint paint;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ColorView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
-                .withConstructor(NoArgsConstructor<ColorView>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -46,10 +47,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<ColorView> ColorViewPtr;
-
-    inline ColorViewPtr makeColorView(unsigned int color = 0x1b000000) {
-        return ColorViewPtr(ghnew ColorView(color));
-    }
 }

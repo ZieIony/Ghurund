@@ -39,15 +39,22 @@ namespace Ghurund {
     class MouseEventArgs:public EventArgs {
     private:
         XMINT2 position;
+        bool inside;
 
     public:
-        MouseEventArgs(const XMINT2& pos, uint64_t time):EventArgs(time), position(pos) {}
+        MouseEventArgs(const XMINT2& pos, uint64_t time, bool inside):EventArgs(time), position(pos), inside(inside) {}
 
-        const XMINT2& getPosition() const {
+        inline const XMINT2& getPosition() const {
             return position;
         }
 
         __declspec(property(get = getPosition)) XMINT2& Position;
+
+        inline bool isInside() const {
+            return inside;
+        }
+
+        __declspec(property(get = isInside)) bool Inside;
     };
 
     class MouseButtonEventArgs:public MouseEventArgs {
@@ -56,26 +63,26 @@ namespace Ghurund {
         MouseButton button;
 
     public:
-        MouseButtonEventArgs(const XMINT2& pos, MouseAction action, MouseButton button, uint64_t time):MouseEventArgs(pos, time) {
+        MouseButtonEventArgs(const XMINT2& pos, MouseAction action, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->action = action;
             this->button = button;
         }
 
-        MouseAction getAction() const {
+        inline MouseAction getAction() const {
             return action;
         }
 
         __declspec(property(get = getAction)) MouseAction Action;
 
-        MouseButton getButton() const {
+        inline MouseButton getButton() const {
             return button;
         }
 
         __declspec(property(get = getButton)) MouseButton Button;
 
-        MouseButtonEventArgs translate(float x, float y) const {
+        inline MouseButtonEventArgs translate(float x, float y, bool inside) const {
             XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
-            return MouseButtonEventArgs(childEventPos, action, button, TimeMs);
+            return MouseButtonEventArgs(childEventPos, action, button, TimeMs, inside);
         }
     };
 
@@ -84,19 +91,19 @@ namespace Ghurund {
         XMINT2 delta;
 
     public:
-        MouseMotionEventArgs(const XMINT2& pos, const XMINT2& delta, uint64_t time):MouseEventArgs(pos, time) {
+        MouseMotionEventArgs(const XMINT2& pos, const XMINT2& delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->delta = delta;
         }
 
-        const XMINT2& getDelta() const {
+        inline const XMINT2& getDelta() const {
             return delta;
         }
 
         __declspec(property(get = getDelta)) XMINT2& Delta;
 
-        MouseMotionEventArgs translate(float x, float y) const {
+        inline MouseMotionEventArgs translate(float x, float y, bool inside) const {
             XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
-            return MouseMotionEventArgs(childEventPos, delta, TimeMs);
+            return MouseMotionEventArgs(childEventPos, delta, TimeMs, inside);
         }
     };
 
@@ -106,26 +113,26 @@ namespace Ghurund {
         int delta;
 
     public:
-        MouseWheelEventArgs(const XMINT2& pos, MouseWheel wheel, int delta, uint64_t time):MouseEventArgs(pos, time) {
+        MouseWheelEventArgs(const XMINT2& pos, MouseWheel wheel, int delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->wheel = wheel;
             this->delta = delta;
         }
 
-        MouseWheel getWheel() const {
+        inline MouseWheel getWheel() const {
             return wheel;
         }
 
         __declspec(property(get = getWheel)) MouseWheel Wheel;
 
-        int getDelta() const {
+        inline int getDelta() const {
             return delta;
         }
 
         __declspec(property(get = getDelta)) int Delta;
 
-        MouseWheelEventArgs translate(float x, float y) const {
+        inline MouseWheelEventArgs translate(float x, float y) const {
             XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
-            return MouseWheelEventArgs(childEventPos, wheel, delta, TimeMs);
+            return MouseWheelEventArgs(childEventPos, wheel, delta, TimeMs, Inside);
         }
     };
 

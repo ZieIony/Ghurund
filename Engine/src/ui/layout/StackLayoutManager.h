@@ -10,8 +10,8 @@ namespace Ghurund::UI {
     public:
         Alignment alignment;
 
-        virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) override;
 
-        virtual void layout(ControlGroup& group, float x, float y, float width, float height) override;
+        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) override;
     };
 }

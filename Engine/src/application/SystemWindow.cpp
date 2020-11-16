@@ -29,21 +29,19 @@ namespace Ghurund {
             GetCursorPos(&p);
             ScreenToClient(window.Handle, &p);
             if (msg == WM_LBUTTONDOWN) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::LEFT, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::LEFT, app->Timer.TimeMs, true));
             } else if (msg == WM_LBUTTONUP) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::LEFT, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::LEFT, app->Timer.TimeMs, true));
             } else if (msg == WM_MBUTTONDOWN) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::MIDDLE, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::MIDDLE, app->Timer.TimeMs, true));
             } else if (msg == WM_MBUTTONUP) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::MIDDLE, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::MIDDLE, app->Timer.TimeMs, true));
             } else if (msg == WM_RBUTTONDOWN) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::RIGHT, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::DOWN, MouseButton::RIGHT, app->Timer.TimeMs, true));
             } else if (msg == WM_RBUTTONUP) {
-                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::RIGHT, app->Timer.TimeMs));
+                window.OnMouseButtonEvent(MouseButtonEventArgs(XMINT2(p.x, p.y), MouseAction::UP, MouseButton::RIGHT, app->Timer.TimeMs, true));
             } else if (msg == WM_MOUSEMOVE) {
-                if (windowData->prevMousePos.x == -1 && windowData->prevMousePos.y == -1)
-                    windowData->prevMousePos = p;
-                window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), app->Timer.TimeMs));
+                window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), app->Timer.TimeMs, true));
                 windowData->prevMousePos = p;
 
                 if (!windowData->mouseTracked) {
@@ -57,9 +55,9 @@ namespace Ghurund {
                     TrackMouseEvent(&mouseEvt);
                 }
             } else if (msg == WM_MOUSEWHEEL) {
-                window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam), app->Timer.TimeMs));
+                window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::VERTICAL, GET_WHEEL_DELTA_WPARAM(wParam), app->Timer.TimeMs, true));
             } else if (msg == WM_MOUSEHWHEEL) {
-                window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(wParam), app->Timer.TimeMs));
+                window.OnMouseWheelEvent(MouseWheelEventArgs(XMINT2(p.x, p.y), MouseWheel::HORIZONTAL, GET_WHEEL_DELTA_WPARAM(wParam), app->Timer.TimeMs, true));
             }
             return 0;
         } else if (msg == WM_MOUSELEAVE) {
@@ -67,12 +65,10 @@ namespace Ghurund {
             POINT p;
             GetCursorPos(&p);
             ScreenToClient(window.Handle, &p);
-            if (windowData->prevMousePos.x == -1 && windowData->prevMousePos.y == -1)
-                windowData->prevMousePos = p;
-            window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), app->Timer.TimeMs));
+            window.OnMouseMotionEvent(MouseMotionEventArgs(XMINT2(p.x, p.y), XMINT2(p.x - windowData->prevMousePos.x, p.y - windowData->prevMousePos.y), app->Timer.TimeMs, true));
             windowData->prevMousePos = p;
-        //} else if (msg == WM_PAINT) {
-          //  window.OnPaint();   // TODO: do it in the message loop
+            //} else if (msg == WM_PAINT) {
+              //  window.OnPaint();   // TODO: do it in the message loop
             return 0;
         } else if (msg == WM_MOVE) {
             unsigned int x = LOWORD(lParam);
@@ -146,7 +142,7 @@ namespace Ghurund {
 
             OnMouseButtonEvent.clear();
             OnMouseButtonEvent.add([this, rootView](Ghurund::Window& window, const MouseButtonEventArgs& args) {
-                if (rootView->dispatchMouseButtonEvent(args)) {
+                if (rootView->dispatchMouseButtonEvent(args) && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
                     SetCapture(handle);
                 } else {
                     ReleaseCapture();

@@ -10,7 +10,7 @@
 #include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
-    class CheckBoxRadioLayout:public Ghurund::UI::Layout {
+    class CheckBoxRadioLayout:public Ghurund::UI::WidgetLayout {
     protected:
         SelectableView* selectableView = nullptr;
         ImageView* imageView = nullptr;

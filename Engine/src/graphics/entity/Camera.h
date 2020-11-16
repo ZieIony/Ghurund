@@ -28,9 +28,10 @@ namespace Ghurund {
 
         PointerArray<Parameter*> parameters;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Camera>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
-                .withConstructor(NoArgsConstructor<Camera>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

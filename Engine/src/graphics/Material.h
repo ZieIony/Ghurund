@@ -17,9 +17,10 @@ namespace Ghurund {
             safeRelease(shader);
         }
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Material>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Material))
-                .withConstructor(NoArgsConstructor<Material>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

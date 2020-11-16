@@ -1,63 +1,17 @@
 #pragma once
 
+#include "DragHelper.h"
+#include "VerticalScrollBarLayout.h"
 #include "Widget.h"
-#include "ui/layout/LinearLayout.h"
-#include "ui/layout/ManualLayout.h"
-#include "ui/widget/button/ImageButton.h"
 
 #include <algorithm>
 
 namespace Ghurund::UI {
-    class VerticalScrollBarLayout:public Layout {
-    private:
-        Theme& theme;
-        ScopedPointer<ImageButton> topButton;
-        ScopedPointer<Button> barButton;
-        ScopedPointer<ClickableView> clickableTrack;
-        ManualLayoutPtr track;
-        ScopedPointer<ImageButton> bottomButton;
-        VerticalLayoutPtr verticalLayout;
-
-    public:
-        VerticalScrollBarLayout(Theme& theme):theme(theme) {}
-
-        virtual void init() override;
-
-        inline ImageButton* getTopButton() {
-            return topButton;
-        }
-
-        __declspec(property(get = getTopButton)) ImageButton* TopButton;
-
-        inline Button* getBarButton() {
-            return barButton;
-        }
-
-        __declspec(property(get = getBarButton)) Button* BarButton;
-
-        inline ClickableView* getClickableTrack() {
-            return clickableTrack;
-        }
-
-        __declspec(property(get = getClickableTrack)) ClickableView* ClickableTrack;
-
-        inline Control* getTrack() {
-            return track;
-        }
-
-        __declspec(property(get = getTrack)) Control* Track;
-
-        inline ImageButton* getBottomButton() {
-            return bottomButton;
-        }
-
-        __declspec(property(get = getBottomButton)) ImageButton* BottomButton;
-    };
-
     class VerticalScrollBar:public Widget<VerticalScrollBarLayout> {
     private:
         uint32_t pressMousePos = 0;
         float pressBarPos = 0;
+        DragHelper dragHelper;
 
         float scroll = 0;
         float maxScroll = 100;
@@ -99,6 +53,14 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
+
+        virtual void onMeasure(float parentWidth, float parentHeight) override {
+            __super::onMeasure(parentWidth, parentHeight);
+        }
+
+        virtual void onLayout(float x, float y, float width, float height) override {
+            __super::onLayout(x, y, width, height);
+        }
     };
 
     typedef ScopedPointer<VerticalScrollBar> VerticalScrollBarPtr;

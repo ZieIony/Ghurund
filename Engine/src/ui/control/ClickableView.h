@@ -25,7 +25,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MousePressedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time) {
+        MousePressedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time, true) {
             this->button = button;
         }
 
@@ -41,7 +41,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MouseClickedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time) {
+        MouseClickedEventArgs(const XMINT2& pos, MouseButton button, time_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->button = button;
         }
 
@@ -58,9 +58,10 @@ namespace Ghurund::UI {
         Event<Control, MousePressedEventArgs> onPressed = Event<Control, MousePressedEventArgs>(*this);
         Event<Control, MouseClickedEventArgs> onClicked = Event<Control, MouseClickedEventArgs>(*this);
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableView))
-                .withConstructor(NoArgsConstructor<ClickableView>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -89,6 +90,11 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;
+
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            bool result = __super::dispatchMouseMotionEvent(event);
+            return result || buttons;
+        }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

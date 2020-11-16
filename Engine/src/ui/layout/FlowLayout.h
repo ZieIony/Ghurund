@@ -7,9 +7,10 @@
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
     private:
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(FlowLayout))
-                .withConstructor(NoArgsConstructor<FlowLayout>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -18,6 +19,7 @@ namespace Ghurund::UI {
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
         FlowLayoutManager layoutManager;
+        ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
         /*void relayoutLine(List<Control*>& currentLine) {
             if (currentLine.Size < 2)
@@ -82,11 +84,11 @@ namespace Ghurund::UI {
         __declspec(property(get = getOrientation, put = setOrientation)) Orientation Orientation;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, x, y, width, height);
+            layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
@@ -95,6 +97,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<FlowLayout> FlowLayoutPtr;
 }

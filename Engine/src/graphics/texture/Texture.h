@@ -13,9 +13,10 @@ namespace Ghurund {
 
         Image* image = nullptr;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Texture>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Texture))
-                .withConstructor(NoArgsConstructor<Texture>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

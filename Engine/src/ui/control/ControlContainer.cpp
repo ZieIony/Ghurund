@@ -2,32 +2,58 @@
 
 namespace Ghurund::UI {
     bool ControlContainer::focusNext() {
-        if (!Focused && Focusable && Parent) {
-            Parent->setFocus(this);
-            onStateChanged();
+        if (__super::focusNext())
             return true;
-        }
-        if (!child || !child->Enabled || !child->Visible || Focusable)
+        if (Focusable)
             return false;
-        return child->focusNext();
+        return child && child->focusNext();
     }
 
     bool ControlContainer::focusPrevious() {
-        if (!Focused && Focusable && Parent) {
-            Parent->setFocus(this);
-            onStateChanged();
+        if (__super::focusPrevious())
             return true;
-        }
-        if (!child || !child->Enabled || !child->Visible || Focusable)
+        if (Focusable)
             return false;
-        return child->focusPrevious();
+        return child && child->focusPrevious();
+    }
+
+    bool ControlContainer::focusUp() {
+        if (__super::focusUp())
+            return true;
+        if (Focusable)
+            return false;
+        return child && child->focusUp();
+    }
+
+    bool ControlContainer::focusDown() {
+        if (__super::focusDown())
+            return true;
+        if (Focusable)
+            return false;
+        return child && child->focusDown();
+    }
+
+    bool ControlContainer::focusLeft() {
+        if (__super::focusLeft())
+            return true;
+        if (Focusable)
+            return false;
+        return child && child->focusLeft();
+    }
+
+    bool ControlContainer::focusRight() {
+        if (__super::focusRight())
+            return true;
+        if (Focusable)
+            return false;
+        return child && child->focusRight();
     }
 
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
         if (child) {
             child->measure(
-                PreferredSize.width >= 0 ? PreferredSize.width : parentWidth,
-                PreferredSize.height >= 0 ? PreferredSize.height : parentHeight
+                PreferredSize.width >= 0 ? (float)PreferredSize.width : parentWidth,
+                PreferredSize.height >= 0 ? (float)PreferredSize.height : parentHeight
             );
         }
 
@@ -59,32 +85,22 @@ namespace Ghurund::UI {
     }
 
     bool ControlContainer::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-        if (child) {
-            if (childCaptured) {
-                bool result = child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y));
-                if (event.Action == MouseAction::UP)
-                    childCaptured = false;
-                if (result)
-                    return true;
-            }
-            if (child->canReceiveEvent(event) && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y))) {
-                if (event.Action == MouseAction::DOWN)
-                    childCaptured = true;
-                return true;
-            }
-        }
+        if (child
+            && (capturedChild || child->canReceiveEvent(event))
+            && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true)))
+            return true;
         return __super::dispatchMouseButtonEvent(event);
     }
 
     bool ControlContainer::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (child) {
-            if (childCaptured || child->canReceiveEvent(event)) {
+            if (capturedChild || child->canReceiveEvent(event)) {
                 previousReceiver = true;
-                if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y)))
+                if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, true)))
                     return true;
             } else if (previousReceiver) {
                 previousReceiver = false;
-                if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y)))
+                if (child->dispatchMouseMotionEvent(event.translate(-child->Position.x, -child->Position.y, false)))
                     return true;
             }
         }
@@ -92,8 +108,7 @@ namespace Ghurund::UI {
     }
 
     bool ControlContainer::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-        if ((childCaptured || child && child->canReceiveEvent(event)) &&
-            child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
+        if (child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
             return true;
         return __super::dispatchMouseWheelEvent(event);
     }

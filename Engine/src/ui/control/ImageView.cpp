@@ -19,7 +19,7 @@ namespace Ghurund::UI {
         if (!image)
             return;
 
-        auto src = Gdiplus::RectF(0, 0, (float)image->Size.width, (float)image->Size.width);
+        auto src = Gdiplus::RectF(0, 0, (float)image->Size.width, (float)image->Size.height);
         Gdiplus::RectF dst;
         if (scaleMode == ImageScaleMode::NONE) {
             dst.X = (Size.width - src.Width) / 2.0f;

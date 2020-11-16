@@ -8,7 +8,6 @@ namespace Ghurund::UI {
         inline static const char* CLASS_NAME = GH_STRINGIFY(ControlContainer);
 
         Control* child = nullptr;
-        bool childCaptured = false;
         bool previousReceiver = false;
 
         static const Ghurund::Type& GET_TYPE() {
@@ -30,6 +29,10 @@ namespace Ghurund::UI {
             return child;
         }
 
+        inline const Control* getChild() const {
+            return child;
+        }
+
         inline void setChild(Control* child) {
             if (Focused)
                 clearFocus();
@@ -42,9 +45,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChild, put = setChild)) Control* Child;
 
-        virtual bool focusNext();
+        virtual bool focusNext() override;
 
-        virtual bool focusPrevious();
+        virtual bool focusPrevious() override;
+
+        virtual bool focusUp() override;
+
+        virtual bool focusDown() override;
+
+        virtual bool focusLeft() override;
+
+        virtual bool focusRight() override;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
@@ -79,6 +90,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<ControlContainer> ControlContainerPtr;
 }

@@ -1,12 +1,14 @@
 #pragma once
 
+#include "ResourceContext.h"
+
 #include "audio/Audio.h"
-#include "core/collection/PointerMap.h"
-#include "core/collection/HashMap.h"
 #include "application/log/Logger.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"
 #include "core/io/File.h"
+#include "core/collection/PointerMap.h"
+#include "core/collection/HashMap.h"
 #include "core/threading/WorkerThread.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/CommandList.h"
@@ -71,10 +73,11 @@ namespace Ghurund {
         FilePath decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir = nullptr) const;
         FilePath encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
-                .withConstructor(NoArgsConstructor<ResourceManager>())
-                .withSupertype(Object::TYPE);
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::TYPE);
 
             return TYPE;
         }
@@ -115,13 +118,14 @@ namespace Ghurund {
 		}
 
         template<class Type> Type* loadAsync(ResourceContext& context, File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Task* task = ghnew Task(file.Path, [this, &context, file.Path, onLoaded, options] {
+            FilePath& path = file.Path;
+            Task* task = ghnew Task(file.Path, [this, &context, path, onLoaded, options] {
 				Type* resource;
 				Status loadResult;
-				loadInternal(resource, context, file.Path, &loadResult, options);
+				loadInternal(resource, context, path, &loadResult, options);
 				if (onLoaded != nullptr)
-                    onLoaded(resource, result);
-                return result;
+                    onLoaded(resource, loadResult);
+                return loadResult;
             });
             loadingThread.post(task);
             task->release();

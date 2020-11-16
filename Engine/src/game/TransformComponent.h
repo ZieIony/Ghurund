@@ -28,9 +28,10 @@ namespace Ghurund {
 			return Status::OK;
 		}
 
+		static inline const auto& CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
 		static const Ghurund::Type& GET_TYPE() {
 			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TransformComponent))
-				.withConstructor(NoArgsConstructor<TransformComponent>())
+				.withConstructor(CONSTRUCTOR)
 				.withSupertype(__super::TYPE);
 
 			return TYPE;

@@ -1,52 +1,48 @@
 #pragma once
 
 #include "LayoutManager.h"
-#include "ui/adapter/AdapterView.h"
 
 namespace Ghurund::UI {
-    template<class T, class ControlType>
-    class HorizontalLayoutManager:public AdapterLayoutManager<T, ControlType> {
+    class HorizontalLayoutManager:public LayoutManager {
     private:
         unsigned int indexFirst = 0, indexLast = 0;
         float firstLeft = 0, firstRight = 0;
         float lastLeft = 0, lastRight = 0;
 
     public:
-        virtual void scrollBy(AdapterView<T, ControlType>& adapterView, float dx, float dy) override {
-            ItemSource<T>* items = adapterView.Items;
+        virtual void scrollBy(ControlGroup& group, ChildrenProvider& provider, float dx, float dy) override {
             scroll.x += dx;
             if (dx > 0) {
-                addLeft(adapterView, adapterView.Size.width, adapterView.Size.height);
+                addLeft(group, provider, group.Size.width, group.Size.height);
                 scroll.x = std::min(scroll.x, 0.0f);
-                removeLeft(adapterView);
+                removeLeft(group, provider);
             } else {
-                addRight(adapterView, adapterView.Size.width, adapterView.Size.height);
-                if (indexFirst + adapterView.Children.Size == items->Size)
-                    scroll.y = std::max(scroll.y, -lastRight + adapterView.Size.height);
-                removeTop(adapterView);
+                addRight(group, provider, group.Size.width, group.Size.height);
+                if (indexFirst + group.Children.Size == provider.getChildCount())
+                    scroll.y = std::max(scroll.y, -lastRight + group.Size.height);
+                removeTop(group, provider);
             }
         }
 
-        void addLeft(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
+        void addLeft(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
             while (firstLeft + scroll.x > 0 && indexFirst > 0) {
                 indexFirst--;
-                ControlType* control = adapterView.getChild(indexFirst);
+                Control* control = provider.getChild(indexFirst);
                 control->measure(parentWidth, parentHeight);
-                control->layout(firstLeft - control->MeasuredSize.width, 0, control->MeasuredSize.width, adapterView.Size.height);
-                adapterView.Children.insert(0, control);
+                control->layout(firstLeft - control->MeasuredSize.width, 0, control->MeasuredSize.width, group.Size.height);
+                group.Children.insert(0, control);
                 firstLeft = control->Position.x;
                 firstRight = firstLeft + control->Size.width;
                 control->release();
             }
         }
 
-        void addRight(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
-            ItemSource<T>* items = adapterView.Items;
-            while (lastRight + scroll.x < adapterView.Size.width && items->Size>indexLast) {
-                ControlType* control = adapterView.getChild(indexLast);
+        void addRight(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
+            while (lastRight + scroll.x < group.Size.width && provider.getChildCount()>indexLast) {
+                Control* control = provider.getChild(indexLast);
                 control->measure(parentWidth, parentHeight);
-                control->layout(lastRight, 0, control->MeasuredSize.width, adapterView.Size.height);
-                adapterView.Children.add(control);
+                control->layout(lastRight, 0, control->MeasuredSize.width, group.Size.height);
+                group.Children.add(control);
                 control->release();
                 indexLast++;
                 lastLeft = control->Position.x;
@@ -54,12 +50,12 @@ namespace Ghurund::UI {
             }
         }
 
-        void removeTop(AdapterView<T, ControlType>& adapterView) {
-            while (adapterView.Children.Size > 0 && firstRight + scroll.x < 0) {
-                adapterView.releaseChild((ControlType*)adapterView.Children[0], indexFirst);
-                adapterView.Children.removeAt(0);
-                if (adapterView.Children.Size > 0) {
-                    Control* control = adapterView.Children[0];
+        void removeTop(ControlGroup& group, ChildrenProvider& provider) {
+            while (group.Children.Size > 0 && firstRight + scroll.x < 0) {
+                provider.releaseChild(group.Children[0], indexFirst);
+                group.Children.removeAt(0);
+                if (group.Children.Size > 0) {
+                    Control* control = group.Children[0];
                     firstLeft = control->Position.x;
                     firstRight = firstLeft + control->Size.width;
                 }
@@ -67,69 +63,60 @@ namespace Ghurund::UI {
             }
         }
 
-        void removeLeft(AdapterView<T, ControlType>& adapterView) {
-            while (adapterView.Children.Size > 0 && lastLeft + scroll.x > adapterView.Size.width) {
+        void removeLeft(ControlGroup& group, ChildrenProvider& provider) {
+            while (group.Children.Size > 0 && lastLeft + scroll.x > group.Size.width) {
                 indexLast--;
-                adapterView.releaseChild((ControlType*)adapterView.Children[adapterView.Children.Size - 1], indexLast);
-                adapterView.Children.removeAt(adapterView.Children.Size - 1);
-                if (adapterView.Children.Size > 0) {
-                    Control* control = adapterView.Children[adapterView.Children.Size - 1];
+                provider.releaseChild(group.Children[group.Children.Size - 1], indexLast);
+                group.Children.removeAt(group.Children.Size - 1);
+                if (group.Children.Size > 0) {
+                    Control* control = group.Children[group.Children.Size - 1];
                     lastLeft = control->Position.x;
                     lastRight = lastLeft + control->Size.width;
                 }
             }
         }
 
-        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) {
-            ItemSource<T>* items = adapterView.Items;
-            if (!items) {
-                Logger::log(LogType::WARNING, "AdapterView (with HorizontalLayoutManager) was not measured, because its item source is null\n");
+        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
+            if (group.PreferredSize.width == PreferredSize::Width::FILL &&
+                group.PreferredSize.height == PreferredSize::Height::FILL)
                 return { 0,0 };
-            }
-            if (adapterView.PreferredSize.width == PreferredSize::Width::FILL &&
-                adapterView.PreferredSize.height == PreferredSize::Height::FILL)
-                return { 0,0 };
-            if ((float)adapterView.PreferredSize.width >= 0 &&
-                (float)adapterView.PreferredSize.height >= 0) {
-                return { (float)adapterView.PreferredSize.width, (float)adapterView.PreferredSize.height };
+            if ((float)group.PreferredSize.width >= 0 &&
+                (float)group.PreferredSize.height >= 0) {
+                return { (float)group.PreferredSize.width, (float)group.PreferredSize.height };
             }
 
             FloatSize measuredSize = { 0,0 };
             size_t i = indexFirst;
-            while (i < items->getSize()) {
-                ControlType* control = adapterView.getChild(i);
+            while (i < provider.getChildCount()) {
+                Control* control = provider.getChild(i);
                 control->measure(parentWidth, parentHeight);
                 if (control->PreferredSize.width != PreferredSize::Width::FILL)
                     measuredSize.width += control->MeasuredSize.width;
                 if (control->PreferredSize.height != PreferredSize::Height::FILL)
                     measuredSize.height = std::max(measuredSize.height, control->MeasuredSize.height);
+                provider.releaseChild(control, i);
                 control->release();
-                adapterView.releaseChild(control, i);
                 i++;
             }
 
             return measuredSize;
         }
 
-        virtual void layout(AdapterView<T, ControlType>& adapterView, float x, float y, float width, float height) {
-            ItemSource<T>* items = adapterView.Items;
-            if (!items)
-                return;
-
-            for (Control* c : adapterView.Children) {
+        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
+            for (Control* c : group.Children) {
                 if (c->Size.height != height)
                     c->layout(c->Position.x, 0, c->Size.width, height);
             }
 
-            addLeft(adapterView, width, height);
-            addRight(adapterView, width, height);
+            addLeft(group, provider, width, height);
+            addRight(group, provider, width, height);
 
-            if (indexFirst + adapterView.Children.Size == items->Size)
+            if (indexFirst + group.Children.Size == provider.getChildCount())
                 scroll.x = std::max(scroll.x, -lastRight + width);
             scroll.x = std::min(scroll.x, 0.0f);
 
-            removeTop(adapterView);
-            removeLeft(adapterView);
+            removeTop(group, provider);
+            removeLeft(group, provider);
         }
     };
 

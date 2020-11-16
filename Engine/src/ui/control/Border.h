@@ -24,9 +24,10 @@ namespace Ghurund::UI {
             }
         }
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Border>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
-                .withConstructor(NoArgsConstructor<Border>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -94,6 +95,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<Border> BorderPtr;
 }

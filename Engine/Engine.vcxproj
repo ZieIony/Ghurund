@@ -101,10 +101,12 @@
     <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\ManualLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\TextLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
@@ -113,6 +115,7 @@
     <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
     <ClCompile Include="src\ui\widget\button\TextButtonLayout.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
+    <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBarAdapter.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBarLayout.cpp" />
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
@@ -126,6 +129,7 @@
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
     <ClCompile Include="src\ui\widget\TextView.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
+    <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
@@ -143,6 +147,7 @@
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\core\allocation\AllocatorMap.h" />
     <ClInclude Include="src\core\collection\Array.h" />
+    <ClInclude Include="src\core\collection\ObservablePointerList.h" />
     <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\EventHandler.h" />
@@ -176,7 +181,9 @@
     <ClInclude Include="src\core\threading\CriticalSection.h" />
     <ClInclude Include="src\core\threading\FunctionQueue.h" />
     <ClInclude Include="src\core\Object.h" />
-    <ClInclude Include="src\core\Pointer.h" />
+    <ClInclude Include="src\core\Pointer.h">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClInclude Include="src\core\ScopedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
@@ -295,12 +302,13 @@
     <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\TextUtils.h" />
+    <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\Animation.h" />
-    <ClInclude Include="src\ui\adapter\AdapterView.h" />
     <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\ChildrenList.h" />
     <ClInclude Include="src\ui\control\CheckableView.h" />
+    <ClInclude Include="src\ui\control\ChildrenProvider.h" />
     <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Column.h" />
@@ -308,6 +316,7 @@
     <ClInclude Include="src\ui\control\ControlContainer.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
+    <ClInclude Include="src\ui\layout\DesktopLayout.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\gdi\Gdi.h" />
@@ -397,6 +406,7 @@
     <ClInclude Include="src\ui\widget\button\TextButton.h" />
     <ClInclude Include="src\ui\widget\button\TextButtonLayout.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
+    <ClInclude Include="src\ui\widget\DragHelper.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
     <ClInclude Include="src\ui\widget\Layout.h" />
     <ClInclude Include="src\ui\widget\menu\DropDown.h" />
@@ -410,7 +420,9 @@
     <ClInclude Include="src\ui\widget\menu\Toolbar.h" />
     <ClInclude Include="src\ui\widget\menu\ToolbarAdapter.h" />
     <ClInclude Include="src\ui\widget\menu\ToolbarLayout.h" />
-    <ClInclude Include="src\ui\widget\ProgressBar.h" />
+    <ClInclude Include="src\ui\widget\ProgressBar.h">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClInclude Include="src\ui\widget\property\BoolPropertyRow.h" />
     <ClInclude Include="src\ui\widget\property\ObjectProperty.h" />
     <ClInclude Include="src\ui\widget\property\PropertyList.h" />
@@ -431,7 +443,9 @@
     <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRow.h" />
     <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
+    <ClInclude Include="src\ui\widget\VerticalScrollBarLayout.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
+    <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

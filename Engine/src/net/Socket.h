@@ -52,7 +52,7 @@ namespace Ghurund {
 
         sockaddr* getAddressStruct()const;
 
-        Status send(void* data, size_t size, unsigned int flags = 0)const;
+        Status send(const void* data, size_t size, unsigned int flags = 0)const;
 
         Status receive(void** data = nullptr, size_t* size = nullptr);
 

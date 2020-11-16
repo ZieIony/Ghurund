@@ -2,6 +2,8 @@
 
 #include "Common.h"
 
+#include "core/collection/Collection.h"
+
 namespace Ghurund {
 
     template <class Type> class GenericString {

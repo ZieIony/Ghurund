@@ -12,7 +12,7 @@ namespace Ghurund::UI {
     class DropDown;
     class Theme;
 
-    class DropDownLayout:public Layout {
+    class DropDownLayout:public WidgetLayout {
     private:
         Theme& theme;
         Border* border;

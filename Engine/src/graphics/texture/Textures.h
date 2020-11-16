@@ -26,11 +26,12 @@ namespace Ghurund {
         }
 
         static Texture* makeFromImage(ResourceContext& context, const FilePath& imagePath) {
-            ScopedPointer<Image> image = context.ResourceManager.load<Image>(context, imagePath);
+            Image* image = context.ResourceManager.load<Image>(context, imagePath);
             if (image == nullptr)
                 return nullptr;
             Texture* texture = ghnew Texture();
             texture->init(context, *image);
+            image->release();
             return texture;
         }
     };

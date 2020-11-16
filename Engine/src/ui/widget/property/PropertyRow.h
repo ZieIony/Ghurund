@@ -11,8 +11,8 @@
 namespace Ghurund::UI {
     class PropertyRow: public HorizontalLayout {
     private:
-        TextBlockPtr textView;
-        ControlContainerPtr container;
+        ScopedPointer<TextBlock> textView;
+        ScopedPointer<ControlContainer> container;
 
     public:
         PropertyRow(Theme& theme) {

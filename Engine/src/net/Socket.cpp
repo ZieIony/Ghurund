@@ -60,10 +60,10 @@ namespace Ghurund {
         return (sockaddr*)addressStruct;
     }
 
-    Status Socket::send(void* data, size_t size, unsigned int flags) const {
+    Status Socket::send(const void* data, size_t size, unsigned int flags) const {
         if (addressStruct6 != nullptr)
-            return ::sendto(id, (char*)data, size, flags, (sockaddr*)addressStruct6, sizeof(sockaddr_in6)) == SOCKET_ERROR ? Status::SOCKET : Status::OK;
-        return ::sendto(id, (char*)data, size, flags, (sockaddr*)addressStruct, sizeof(sockaddr_in)) == SOCKET_ERROR ? Status::SOCKET : Status::OK;
+            return ::sendto(id, (const char*)data, size, flags, (sockaddr*)addressStruct6, sizeof(sockaddr_in6)) == SOCKET_ERROR ? Status::SOCKET : Status::OK;
+        return ::sendto(id, (const char*)data, size, flags, (sockaddr*)addressStruct, sizeof(sockaddr_in)) == SOCKET_ERROR ? Status::SOCKET : Status::OK;
     }
 
     Status Socket::receive(void** data, size_t * size) {

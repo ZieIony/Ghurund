@@ -9,7 +9,8 @@ namespace Ghurund {
         virtual Type get() const = 0;
     };
 
-    template<class Type> class AverageValue:Value<Type> {
+    template<class Type>
+    class AverageValue:public Value<Type> {
     private:
         std::deque<Type> values;
         size_t totalValues;
@@ -27,7 +28,7 @@ namespace Ghurund {
 
         Type get() const {
             if(values.empty())
-                return TYPE;
+                return Type();
 
             Type sum = 0;
             float weightSum = 0;

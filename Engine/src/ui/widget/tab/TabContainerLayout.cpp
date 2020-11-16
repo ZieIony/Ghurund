@@ -2,7 +2,7 @@
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
-    TabContainerVerticalBottomLayout::TabContainerVerticalBottomLayout(Theme& theme) {
+    void TabContainerVerticalBottomLayout::init() {
         VerticalLayout* column = ghnew VerticalLayout();
         container = ghnew ControlContainer();
         container->PreferredSize.width = PreferredSize::Width::FILL;
@@ -10,9 +10,9 @@ namespace Ghurund::UI {
         separator = ghnew ColorView();
         separator->PreferredSize.height = 2;
         separator->Color = theme.getColorAccent();
-        tabContainer = ghnew AdapterView<TabItem*, Tab>();
+        tabContainer = ghnew RecyclerView<TabItem*, Tab>();
         tabContainer->PreferredSize.height = PreferredSize::Height::WRAP;
-        tabContainer->LayoutManager = ghnew HorizontalLayoutManager<TabItem*, Tab>();
+        tabContainer->LayoutManager = ghnew HorizontalLayoutManager();
         column->Children = { container, separator, tabContainer };
         root = column;
     }

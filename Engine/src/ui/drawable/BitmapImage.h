@@ -31,6 +31,4 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize)) const IntSize& Size;
     };
-
-    typedef ScopedPointer<BitmapImage> BitmapImagePtr;
 }

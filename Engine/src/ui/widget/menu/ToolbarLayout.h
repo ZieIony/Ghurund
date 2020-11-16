@@ -3,7 +3,7 @@
 #include "ToolbarAdapter.h"
 
 #include "core/ScopedPointer.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/layout/HorizontalLayoutManager.h"
@@ -12,20 +12,20 @@
 namespace Ghurund::UI {
     class Theme;
 
-    class ToolbarLayout:public Layout {
+    class ToolbarLayout:public WidgetLayout {
     protected:
         Theme& theme;
-        ScopedPointer<AdapterView<MenuItem*>> adapterView;
+        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
 
     public:
         ToolbarLayout(Theme& theme):theme(theme) {}
 
         virtual void init() override;
 
-        inline AdapterView<MenuItem*>* getAdapterView() {
-            return adapterView;
+        inline RecyclerView<MenuItem*>* getRecyclerView() {
+            return recyclerView;
         }
 
-        __declspec(property(get = getAdapterView)) AdapterView<MenuItem*>* AdapterView;
+        __declspec(property(get = getRecyclerView)) RecyclerView<MenuItem*>* RecyclerView;
     };
 }

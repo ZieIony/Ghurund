@@ -39,7 +39,7 @@ namespace Ghurund {
 		if (pressed) {
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
-				XMFLOAT3& rotation = camera.getRotation();
+				XMFLOAT3 rotation = camera.getRotation();
 				camera.setOrbit(rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
 			} else if (mode == CameraController::Mode::PAN) {
 				camera.pan((float)event.Delta.x, (float)event.Delta.y);
@@ -47,7 +47,7 @@ namespace Ghurund {
 				if (camera.getDistance() > event.Delta.y)
 					camera.zoom((float)-event.Delta.y);
 			} else {
-				XMFLOAT3& rotation = camera.getRotation();
+				XMFLOAT3 rotation = camera.getRotation();
 				camera.setRotation(rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
 			}
 		}

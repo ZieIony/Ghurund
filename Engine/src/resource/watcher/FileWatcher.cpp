@@ -35,7 +35,7 @@ namespace Ghurund {
     }
 
     void FileWatcher::removeFile(const FilePath& path) {
-        String dir = path.Directory;
+        UnicodeString dir = path.Directory;
 
         if (!watches.contains(dir))
             return;

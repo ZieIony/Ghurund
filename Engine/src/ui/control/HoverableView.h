@@ -7,9 +7,10 @@ namespace Ghurund::UI {
     private:
         bool hovered = false;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<HoverableView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(HoverableView))
-                .withConstructor(NoArgsConstructor<HoverableView>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

@@ -14,18 +14,18 @@ class TestFlowLayouts:public ScrollView {
 public:
     TestFlowLayouts(Theme& theme) {
         Name = "flow layouts tab";
-        VerticalLayoutPtr column = ghnew VerticalLayout();
+        ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
         column->PreferredSize.height = PreferredSize::Height::WRAP;
         Child = column;
 
         {
             StackLayoutPtr stack = ghnew StackLayout();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
-            BorderPtr border = ghnew Border();
-            PaddingContainerPtr padding = ghnew PaddingContainer();
+            ScopedPointer<Border> border = ghnew Border();
+            ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.All = 4;
-            FlowLayoutPtr flowLayout = ghnew FlowLayout();
+            ScopedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
             flowLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             flowLayout->Spacing = { 8,8 };
             padding->Child = flowLayout;
@@ -43,16 +43,16 @@ public:
             flowLayout->Children[8]->PreferredSize.width = PreferredSize::Width::FILL;
         }
 
-        column->Children.add(makeSpace());
+        column->Children.add(ScopedPointer<Space>(ghnew Space()));
 
         {
             StackLayoutPtr stack = ghnew StackLayout();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
-            BorderPtr border = ghnew Border();
-            PaddingContainerPtr padding = ghnew PaddingContainer();
+            ScopedPointer<Border> border = ghnew Border();
+            ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.All = 4;
-            FlowLayoutPtr flowLayout = ghnew FlowLayout();
+            ScopedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
             flowLayout->ReverseLayout = true;
             flowLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             flowLayout->Spacing = { 8,8 };

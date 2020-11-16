@@ -12,9 +12,10 @@ namespace Ghurund::UI {
         Font* font = nullptr;
         Paint paint;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-                .withConstructor(NoArgsConstructor<TextBlock>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -83,6 +84,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<TextBlock> TextBlockPtr;
 }

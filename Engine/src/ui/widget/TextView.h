@@ -11,6 +11,7 @@ namespace Ghurund::UI {
         unsigned int textColor = 0xde000000;
         Font* font = nullptr;
         FlowLayoutManager layoutManager;
+        ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
         Paint paint;
         bool pressed = false;
@@ -69,11 +70,11 @@ namespace Ghurund::UI {
         __declspec(property(get = getCursorDrawable, put = setCursorDrawable)) CursorDrawable* CursorDrawable;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, x, y, width, height);
+            layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
         virtual void update(const Timer& timer) override {

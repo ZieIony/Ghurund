@@ -1,11 +1,13 @@
 #pragma once
 
+#include "ui/control/ChildrenProvider.h"
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
     class LayoutManager {
     protected:
         XMFLOAT2 scroll = { 0,0 };
+        XMFLOAT2 maxScroll = { 0.0f, 0.0f };
 
         inline float measureMaxWidth(ControlGroup& group) {
             float measuredWidth = 0;
@@ -36,46 +38,30 @@ namespace Ghurund::UI {
             return scroll;
         }
 
-        __declspec(property(get = getScroll)) XMFLOAT2& Scroll;
+        inline void setScroll(const XMFLOAT2& scroll) {
+            this->scroll = scroll;
+        }
 
-        virtual void scrollBy(ControlGroup& group, float dx, float dy) {}
+        __declspec(property(get = getScroll, put = setScroll)) const XMFLOAT2& Scroll;
 
-        virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) {
+        virtual void scrollBy(ControlGroup& group, ChildrenProvider& provider, float dx, float dy) {}
+
+        inline const XMFLOAT2& getMaxScroll() const {
+            return maxScroll;
+        }
+
+        __declspec(property(get = getMaxScroll)) const XMFLOAT2& MaxScroll;
+
+        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
             for (Control* c : group.Children) {
                 c->measure(
-                    group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
-                    group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                    group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
+                    group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
                 );
             }
             return { 0,0 };
         }
 
-        virtual void layout(ControlGroup& group, float x, float y, float width, float height) = 0;
+        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) = 0;
     };
-
-    template<class T, class ControlType>
-    class AdapterView;
-
-    template<class T, class ControlType>
-    requires IsControl<ControlType>
-    class AdapterLayoutManager {
-    protected:
-        XMFLOAT2 scroll = { 0,0 };
-
-    public:
-        virtual ~AdapterLayoutManager() = 0 {}
-
-        inline const XMFLOAT2& getScroll() const {
-            return scroll;
-        }
-
-        __declspec(property(get = getScroll)) XMFLOAT2& Scroll;
-
-        virtual void scrollBy(AdapterView<T, ControlType>& adapterView, float dx, float dy) {}
-
-        virtual const FloatSize measure(AdapterView<T, ControlType>& adapterView, float parentWidth, float parentHeight) = 0;
-
-        virtual void layout(AdapterView<T, ControlType>& adapterView, float x, float y, float width, float height) = 0;
-    };
-
 }

@@ -9,12 +9,12 @@ namespace Ghurund::UI {
     class ControlGroup:public ControlParent {
     private:
         ChildrenList children;
-        Control* capturedChild = nullptr;
         Control* previousReceiver = nullptr;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ControlGroup>();
         static const Ghurund::Type& GET_TYPE() {
             static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
-                .withConstructor(NoArgsConstructor<ControlGroup>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -26,8 +26,8 @@ namespace Ghurund::UI {
                 if (!c->Visible)
                     continue;
                 c->measure(
-                    PreferredSize.width >= 0 ? PreferredSize.width : parentWidth,
-                    PreferredSize.height >= 0 ? PreferredSize.height : parentHeight
+                    PreferredSize.width >= 0 ? (float)PreferredSize.width : parentWidth,
+                    PreferredSize.height >= 0 ? (float)PreferredSize.height : parentHeight
                 );
             }
         }
@@ -39,8 +39,6 @@ namespace Ghurund::UI {
         }
 
         ~ControlGroup() {
-            if (capturedChild)
-                capturedChild->release();
             if (previousReceiver)
                 previousReceiver->release();
         }
@@ -60,9 +58,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChildren, put = setChildren)) ChildrenList& Children;
 
-        virtual bool focusNext();
+        virtual bool focusNext() override;
 
-        virtual bool focusPrevious();
+        virtual bool focusPrevious() override;
+
+        virtual bool focusUp() override;
+
+        virtual bool focusDown() override;
+
+        virtual bool focusLeft() override;
+
+        virtual bool focusRight() override;
 
         virtual void update(const Timer& timer) override {
             for (Control* c : children)
@@ -87,6 +93,4 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
     };
-
-    typedef ScopedPointer<ControlGroup> ControlGroupPtr;
 }

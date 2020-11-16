@@ -3,34 +3,34 @@
 #include "MenuBarAdapter.h"
 
 #include "core/ScopedPointer.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class MenuBarLayout:public Layout {
+    class MenuBarLayout:public WidgetLayout {
     protected:
-        ScopedPointer<AdapterView<MenuItem*>> adapterView;
+        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
         Theme& theme;
 
     public:
         MenuBarLayout(Theme& theme):theme(theme) {}
 
         virtual void init() override {
-            adapterView = ghnew Ghurund::UI::AdapterView<MenuItem*>();
-            adapterView->PreferredSize.height = PreferredSize::Height::WRAP;
-            adapterView->LayoutManager = ghnew HorizontalLayoutManager<MenuItem*, Control>();
-            adapterView->Adapters.add(ghnew ButtonMenuBarAdapter(theme));
-            root = adapterView;
+            recyclerView = ghnew Ghurund::UI::RecyclerView<MenuItem*>();
+            recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
+            recyclerView->LayoutManager = ghnew HorizontalLayoutManager();
+            recyclerView->Adapters.add(ghnew ButtonMenuBarAdapter(theme));
+            root = recyclerView;
         }
 
-        inline AdapterView<MenuItem*>* getAdapterView() {
-            return adapterView;
+        inline RecyclerView<MenuItem*>* getAdapterView() {
+            return recyclerView;
         }
 
-        __declspec(property(get = getAdapterView)) AdapterView<MenuItem*>* AdapterView;
+        __declspec(property(get = getAdapterView)) RecyclerView<MenuItem*>* RecyclerView;
     };
 
     class MenuBarWithBackgroundLayout:public MenuBarLayout {

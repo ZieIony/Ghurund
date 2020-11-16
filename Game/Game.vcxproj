@@ -143,9 +143,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Module.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\control\SearchField.h" />
+    <ClInclude Include="src\DragTestTab.h">
+      <FileType>Document</FileType>
+    </ClInclude>
     <ClInclude Include="src\LayoutEditorTab.h" />
     <ClInclude Include="src\MusicPlayer.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
@@ -162,6 +166,7 @@
     <ClInclude Include="src\control\ToolWindow.h" />
     <ClInclude Include="src\tool\PropertyPanel.h" />
     <ClInclude Include="src\tool\WidgetHierarchyPanel.h" />
+    <ClInclude Include="src\WindowsTestTab.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

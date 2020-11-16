@@ -9,7 +9,7 @@
 #include "ui/widget/Layout.h"
 
 namespace Ghurund::UI {
-    class ButtonLayout:public Layout {
+    class ButtonLayout:public WidgetLayout {
     private:
         ClickableView* clickableView = nullptr;
 

@@ -17,7 +17,7 @@ namespace Ghurund::UI {
     public:
         PropertyList(Theme& theme) {
             recycler = ghnew RecyclerView<ObjectProperty*, PropertyRow>();
-            recycler->LayoutManager = ghnew VerticalLayoutManager<ObjectProperty*, PropertyRow>();
+            recycler->LayoutManager = ghnew VerticalLayoutManager();
             recycler->Adapters.addAll({
                 ghnew BoolPropertyRowAdapter(theme),
                 ghnew StringPropertyRowAdapter(theme),

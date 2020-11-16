@@ -8,9 +8,10 @@ namespace Ghurund::UI {
     private:
         Padding padding;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
-                .withConstructor(NoArgsConstructor<PaddingContainer>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -50,14 +51,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<PaddingContainer> PaddingContainerPtr;
-
-    inline PaddingContainerPtr makePaddingContainer(Control* child, const PreferredSize& preferredSize, const Padding& padding) {
-        auto container = ghnew PaddingContainer();
-        container->Child = child;
-        container->PreferredSize = preferredSize;
-        container->Padding = padding;
-        return container;
-    }
 }

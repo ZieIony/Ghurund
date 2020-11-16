@@ -100,6 +100,4 @@ namespace Ghurund::UI {
             canvas.restore();
         }
     };
-
-    typedef ScopedPointer<Drawable> DrawablePtr;
 }

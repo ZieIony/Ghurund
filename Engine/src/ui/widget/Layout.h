@@ -3,12 +3,12 @@
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
-    class Layout {
+    class WidgetLayout {
     protected:
         Control* root = nullptr;
 
     public:
-        virtual ~Layout() = 0 {
+        virtual ~WidgetLayout() = 0 {
             if (root)
                 root->release();
         }

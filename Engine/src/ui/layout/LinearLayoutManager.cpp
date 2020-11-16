@@ -7,8 +7,8 @@ namespace Ghurund::UI {
 
         for (Control* c : group.Children) {
             c->measure(
-                group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
+                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
             if (c->PreferredSize.width != PreferredSize::Width::FILL) {
                 contentSize += (float)c->MeasuredSize.width;
@@ -38,8 +38,8 @@ namespace Ghurund::UI {
             if (!c->Visible)
                 continue;
             c->measure(
-                group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
+                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
             if (c->PreferredSize.height != PreferredSize::Height::FILL) {
                 contentSize += (float)c->MeasuredSize.height;
@@ -145,7 +145,7 @@ namespace Ghurund::UI {
         }
     }
 
-    FloatSize LinearLayoutManager::measure(ControlGroup& group, float parentWidth, float parentHeight) {
+    const FloatSize LinearLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
         if (orientation == Orientation::HORIZONTAL) {
             return measureHorizontal(group, parentWidth, parentHeight);
         } else {
@@ -153,7 +153,7 @@ namespace Ghurund::UI {
         }
     }
     
-    void LinearLayoutManager::layout(ControlGroup& group, float x, float y, float width, float height) {
+    void LinearLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
         if (orientation == Orientation::HORIZONTAL) {
             layoutHorizontal(group, x, y, width, height);
         } else {

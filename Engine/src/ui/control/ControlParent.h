@@ -8,8 +8,16 @@ namespace Ghurund::UI {
         friend class Control;
 
         Control* focusedChild = nullptr;
+        Control* capturedChild = nullptr;
 
     public:
+        ~ControlParent() {
+            if (focusedChild)
+                focusedChild->release();
+            if (capturedChild)
+                capturedChild->release();
+        }
+
         void clearChildFocus(Control* stop) {
             focusedChild = nullptr;
             if (Parent) {
@@ -23,7 +31,7 @@ namespace Ghurund::UI {
             Control* focus = Focus;
             if (focus)
                 focus->clearFocus();
-            focusedChild = control;
+            setPointer(focusedChild, control);
             if (Focused)
                 return;
             if (Parent) {
@@ -38,6 +46,12 @@ namespace Ghurund::UI {
             if (focusedChild)
                 return focusedChild->getFocus();
             return nullptr;
+        }
+
+        virtual void setCapturedChild(Control* control) {
+            setPointer(capturedChild, control);
+            if (Parent)
+                Parent->setCapturedChild(control ? this : nullptr);
         }
     };
 }

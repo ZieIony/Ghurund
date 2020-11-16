@@ -30,9 +30,10 @@ namespace Ghurund {
 
     class Mesh:public Resource {
 	private:
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Mesh>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Mesh))
-                .withConstructor(NoArgsConstructor<Mesh>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

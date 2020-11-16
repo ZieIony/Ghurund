@@ -20,6 +20,8 @@
 #include "TestImageViews.h"
 #include "TestFlowLayouts.h"
 #include "LayoutEditorTab.h"
+#include "DragTestTab.h"
+#include "WindowsTestTab.h"
 #include "audio/Sound.h"
 
 #include "MaterialColors.h"
@@ -29,12 +31,15 @@ using namespace Ghurund::Editor;
 
 static const unsigned int FRAME_COUNT = 3;
 
+import Module;
+
 class TestApplication:public Application {
 private:
     GdiGui gui;
 
     ::Material::Theme* theme;
     ::Material::Theme* menuTheme;
+    ModuleTest test;
 
 public:
     void onInit() {
@@ -60,7 +65,7 @@ public:
             return true;
         });
 
-        window->Size = UI::IntSize{ Settings.width, Settings.height };
+        window->Size = { Settings.width, Settings.height };
         /*SwapChain* swapChain = ghnew SwapChain();
         swapChain->init(Graphics, *window, FRAME_COUNT);
         window->SwapChain = swapChain;*/
@@ -83,7 +88,7 @@ public:
             logPanel->repaint();
         }));*/
 
-        ColorViewPtr redSurface = ghnew ColorView(0xffff0000);
+        ScopedPointer<ColorView> redSurface = ghnew ColorView(0xffff0000);
         SplitLayoutPtr splitLayout = ghnew SplitLayout(Orientation::VERTICAL);
         splitLayout->Child1 = redSurface;
         splitLayout->Child2 = logWindow;
@@ -101,20 +106,24 @@ public:
         column->Name = "controls tab";
 
         ScopedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*theme);
+        ScopedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(*theme);
+        ScopedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
-        tabLayout->Tabs.addAll({
+        tabLayout->Tabs = {
             ghnew TextTabItem("RecyclerView", testRecycler),
             ghnew TextTabItem("ImageViews", testImageViews),
             ghnew TextTabItem("testFlowLayouts", testFlowLayouts),
             ghnew TextTabItem("controls", column),
             ghnew TextTabItem("SplitLayout", splitLayout),
-            ghnew TextTabItem("layout editor", layoutEditor)
-            });
+            ghnew TextTabItem("layout editor", layoutEditor),
+            ghnew TextTabItem("drag test", dragTestTab),
+            ghnew TextTabItem("windows test", windowsTestTab)
+        };
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.clear();
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
         tabLayout->SelectedPosition = 0;
 
-        VerticalLayoutPtr mainColumn = ghnew VerticalLayout();
+        ScopedPointer<VerticalLayout> mainColumn = ghnew VerticalLayout();
         {
             Gdiplus::Image* copyIcon = new Gdiplus::Image(L"icons/copy 18.png");
             Gdiplus::Image* cutIcon = new Gdiplus::Image(L"icons/cut 18.png");
@@ -122,7 +131,7 @@ public:
 
             MenuBarPtr menuBar = ghnew MenuBar(*menuTheme);
             menuBar->Name = "menu bar";
-            menuBar->Items.addAll({
+            menuBar->Items = {
                 ghnew ButtonMenuItem("File", [](Control&) {
                     Logger::log(LogType::INFO, "File clicked\n");
                 }),
@@ -132,7 +141,7 @@ public:
                     Gdiplus::Image* cutIcon = new Gdiplus::Image(L"icons/cut 18.png");
                     Gdiplus::Image* pasteIcon = new Gdiplus::Image(L"icons/paste 18.png");
                     PopupMenu* menu = ghnew PopupMenu(*menuTheme, *Windows[0]);
-                    menu->Items.addAll({
+                    menu->Items = {
                         ghnew ButtonMenuItem("Undo", [](Control&) {
                             Logger::log(LogType::INFO, "undo clicked\n");
                         }),
@@ -149,7 +158,7 @@ public:
                         ghnew ButtonMenuItem(pasteIcon, "Paste", [](Control&) {
                             Logger::log(LogType::INFO, "paste clicked\n");
                         })
-                    });
+                    };
                     auto pos = sender.PositionOnScreen;
                     menu->Window->Position = { (LONG)pos.x, (LONG)(pos.y + sender.Size.height) };
                     menu->Visible = true;
@@ -157,11 +166,11 @@ public:
                 ghnew ButtonMenuItem(_T("Help"), [](Control&) {
                     Logger::log(LogType::INFO, "Help clicked\n");
                 })
-            });
+            };
 
             ScopedPointer<Toolbar> toolbar = ghnew Toolbar(*theme);
             toolbar->Name = "toolbar";
-            toolbar->Items.addAll({
+            toolbar->Items = {
                 ghnew ButtonMenuItem(copyIcon, "copy", [](Control&) {
                     Logger::log(LogType::INFO, "copy clicked\n");
                 }),
@@ -171,7 +180,7 @@ public:
                 ghnew ButtonMenuItem(pasteIcon, "paste", [](Control&) {
                     Logger::log(LogType::INFO, "paste clicked\n");
                 })
-                });
+            };
 
             ScopedPointer<ColorView> statusBar = ghnew ColorView();
             statusBar->Name = "status bar";
@@ -179,11 +188,11 @@ public:
 
             mainColumn->Children = { menuBar, toolbar, tabLayout, statusBar };
         }
-        Windows[0]->RootView->Child = mainColumn;
+        rootView->Child = mainColumn;
+        rootView->invalidate();
 
-        Windows[0]->OnSizeChanged();
-        Windows[0]->Visible = true;
-        Windows[0]->activate();
+        window->Visible = true;
+        window->activate();
     }
 
     void onUninit() {

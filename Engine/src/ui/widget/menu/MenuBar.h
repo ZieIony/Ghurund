@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 
     public:
         MenuBar(MenuBarLayout* layout):Widget(layout) {
-            Layout.AdapterView->Items = ghnew ListItemSource<MenuItem*>(items);
+            Layout.RecyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
             PreferredSize.height = PreferredSize::Height::WRAP;
         }
 
@@ -34,7 +34,12 @@ namespace Ghurund::UI {
             return items;
         }
 
-        __declspec(property(get = getItems)) List<MenuItem*>& Items;
+        inline void setItems(const List<MenuItem*>& items) {
+            this->items.clear();
+            this->items.addAll(items);
+        }
+
+        __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

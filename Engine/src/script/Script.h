@@ -1,11 +1,13 @@
 #pragma once
 
-#include "resource/Resource.h"
-#include "resource/ResourceManager.h"
 #include "Argument.h"
+
+#include "resource/Resource.h"
 
 namespace Ghurund {
     class ScriptEngine;
+    class ResourceManager;
+    class ResourceContext;
 
     class Script:public Resource {
     private:
@@ -31,9 +33,10 @@ namespace Ghurund {
             built = false;
         }
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Script>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Script))
-                .withConstructor(NoArgsConstructor<Script>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

@@ -3,25 +3,25 @@
 namespace Ghurund::UI {
 
     const Ghurund::Type& Control::GET_TYPE() {
-        static auto& PROPERTY_NAME = TypedProperty<Control, const ASCIIString*>(GH_STRINGIFY(ASCIIString*), GH_STRINGIFY(Name), [](Control& control, const ASCIIString*& value) {
+        static auto PROPERTY_NAME = TypedProperty<Control, const ASCIIString*>(GH_STRINGIFY(ASCIIString*), GH_STRINGIFY(Name), [](Control& control, const ASCIIString*& value) {
             value = control.Name;
         }, [](Control& control, const ASCIIString* const& value) {
             control.Name = value;
         });
 
-        static auto& PROPERTY_VISIBLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Visible), [](Control& control, bool& value) {
+        static auto PROPERTY_VISIBLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Visible), [](Control& control, bool& value) {
             value = control.Visible;
         }, [](Control& control, const bool& value) {
             control.Visible = value;
         });
 
-        static auto& PROPERTY_ENABLED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Enabled), [](Control& control, bool& value) {
+        static auto PROPERTY_ENABLED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Enabled), [](Control& control, bool& value) {
             value = control.Enabled;
         }, [](Control& control, const bool& value) {
             control.Enabled = value;
         });
 
-        static auto& PROPERTY_FOCUSABLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focusable), [](Control& control, bool& value) {
+        static auto PROPERTY_FOCUSABLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focusable), [](Control& control, bool& value) {
             value = control.Focusable;
         }, [](Control& control, const bool& value) {
             control.Focusable = value;
@@ -29,39 +29,39 @@ namespace Ghurund::UI {
 
         static auto PROPERTY_FOCUSED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focused), [](Control& control, bool& value) {value = control.isFocused(); });
 
-        static auto& PROPERTY_POSITION = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Position), [](Control& control, XMFLOAT2& value) {
+        static auto PROPERTY_POSITION = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Position), [](Control& control, XMFLOAT2& value) {
             value = control.Position;
         }, [](Control& control, const XMFLOAT2& value) {
             control.Position = value;
         });
 
-        static auto& PROPERTY_ROTATION = TypedProperty<Control, float>("float", GH_STRINGIFY(Rotation), [](Control& control, float& value) {
+        static auto PROPERTY_ROTATION = TypedProperty<Control, float>("float", GH_STRINGIFY(Rotation), [](Control& control, float& value) {
             value = control.Rotation;
         }, [](Control& control, const float& value) {
             control.Rotation = value;
         });
 
-        static auto& PROPERTY_SCALE = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Scale), [](Control& control, XMFLOAT2& value) {
+        static auto PROPERTY_SCALE = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Scale), [](Control& control, XMFLOAT2& value) {
             value = control.Scale;
         }, [](Control& control, const XMFLOAT2& value) {
             control.Scale = value;
         });
 
-        static auto& PROPERTY_MINSIZE = TypedProperty<Control, FloatSize>(GH_STRINGIFY(FloatSize&), GH_STRINGIFY(MinSize), [](Control& control, FloatSize& value) {
+        static auto PROPERTY_MINSIZE = TypedProperty<Control, FloatSize>(GH_STRINGIFY(FloatSize&), GH_STRINGIFY(MinSize), [](Control& control, FloatSize& value) {
             value = control.MinSize;
         }, [](Control& control, const FloatSize& value) {
             control.MinSize = value;
         });
 
-        static auto& PROPERTY_SIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), [](Control& control, FloatSize& value) {
+        static auto PROPERTY_SIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), [](Control& control, FloatSize& value) {
             value = control.Size;
         });
 
-        static auto& PROPERTY_PREFERREDSIZE = TypedProperty<Control, Ghurund::UI::PreferredSize>(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), [](Control& control, Ghurund::UI::PreferredSize& value) {
+        static auto PROPERTY_PREFERREDSIZE = TypedProperty<Control, Ghurund::UI::PreferredSize>(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), [](Control& control, Ghurund::UI::PreferredSize& value) {
             value = control.PreferredSize;
         });
 
-        static auto& PROPERTY_MEASUREDSIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), [](Control& control, FloatSize& value) {
+        static auto PROPERTY_MEASUREDSIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), [](Control& control, FloatSize& value) {
             value = control.MeasuredSize;
         });
 
@@ -124,16 +124,54 @@ namespace Ghurund::UI {
     }
 
     bool Control::focusNext() {
-        if (!Focused && focusable && parent) {
+        if (!Focused && Focusable && parent) {
             parent->setFocus(this);
+            onStateChanged();
             return true;
         }
         return false;
     }
 
     bool Control::focusPrevious() {
-        if (!Focused && focusable && parent) {
+        if (!Focused && Focusable && parent) {
             parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        return false;
+    }
+
+    bool Control::focusUp() {
+        if (!Focused && Focusable && parent) {
+            parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        return false;
+    }
+
+    bool Control::focusDown() {
+        if (!Focused && Focusable && parent) {
+            parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        return false;
+    }
+
+    bool Control::focusLeft() {
+        if (!Focused && Focusable && parent) {
+            parent->setFocus(this);
+            onStateChanged();
+            return true;
+        }
+        return false;
+    }
+
+    bool Control::focusRight() {
+        if (!Focused && Focusable && parent) {
+            parent->setFocus(this);
+            onStateChanged();
             return true;
         }
         return false;
@@ -193,7 +231,7 @@ namespace Ghurund::UI {
                 cache = c->endCache();
                 delete c;
             }
-            canvas.drawImage(*cache, 0,0, (unsigned int)size.width, (unsigned int)size.height);
+            canvas.drawImage(*cache, 0,0, size.width, size.height);
         } else {
             onDraw(canvas);
         }

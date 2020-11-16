@@ -47,9 +47,9 @@ namespace Ghurund {
             Property(typeName, propertyName), getter(getter), readOnly(true) {}
 
         virtual void get(void* owner, void** value) {
-            std::remove_const<PropType>::type v;
+            typename std::remove_const<PropType>::type v;
             getter(*(OwnerType*)owner, v);
-            *(std::remove_const<PropType>::type*)value = v;
+            *(typename std::remove_const<PropType>::type*)value = v;
         }
 
         void get(OwnerType& owner, PropType& value) {

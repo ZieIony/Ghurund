@@ -26,9 +26,10 @@ namespace Ghurund {
 
         Status initAdapters();
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Graphics>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Graphics))
-                .withConstructor(NoArgsConstructor<Graphics>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

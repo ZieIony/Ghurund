@@ -43,8 +43,6 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<CheckBox> CheckBoxPtr;
-
     class CheckBoxText:public CheckBox, public TextMixin {
     private:
         static const Ghurund::Type& GET_TYPE() {
@@ -65,6 +63,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<CheckBoxText> CheckBoxTextPtr;
 }

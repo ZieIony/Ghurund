@@ -10,8 +10,8 @@ namespace Ghurund::UI {
         Gdiplus::RectF bounds;
 
         inline void updatePath() {
-            bounds.Width = Size.width;
-            bounds.Height = Size.height;
+            bounds.Width = Size.width - 1;
+            bounds.Height = Size.height - 1;
             if (cornerRadius == 0) {
                 path->setRect(bounds);
             } else {
@@ -19,9 +19,10 @@ namespace Ghurund::UI {
             }
         }
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Clip>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Clip))
-                .withConstructor(NoArgsConstructor<Clip>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -30,8 +31,8 @@ namespace Ghurund::UI {
     public:
         Clip() {
             path = ghnew GdiPath();
-            bounds.X = 0.0f;
-            bounds.Y = 0.0f;
+            bounds.X = -0.5f;
+            bounds.Y = -0.5f;
             setCornerRadius(0.0f);
         }
 
@@ -68,6 +69,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<Clip> ClipPtr;
 }

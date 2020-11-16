@@ -4,8 +4,8 @@ namespace Ghurund::UI {
     void PaddingContainer::onMeasure(float parentWidth, float parentHeight) {
         if (Child) {
             Child->measure(
-                (preferredSize.width >= 0 ? preferredSize.width : parentWidth) - padding.left - padding.right,
-                (preferredSize.height >= 0 ? preferredSize.height : parentHeight) - padding.top - padding.bottom
+                (preferredSize.width >= 0 ? (float)preferredSize.width : parentWidth) - padding.left - padding.right,
+                (preferredSize.height >= 0 ? (float)preferredSize.height : parentHeight) - padding.top - padding.bottom
             );
         }
 

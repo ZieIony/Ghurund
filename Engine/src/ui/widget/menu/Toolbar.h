@@ -4,7 +4,7 @@
 #include "ToolbarLayout.h"
 
 #include "ui/Style.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/HorizontalLayoutManager.h"
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
     public:
         Toolbar(ToolbarLayout* layout):Widget(layout) {
             PreferredSize.height = PreferredSize::Height::WRAP;
-            Layout.AdapterView->Items = ghnew ListItemSource<MenuItem*>(items);
+            Layout.RecyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
         }
 
         Toolbar(Theme& theme):Toolbar(ghnew ToolbarLayout(theme)) {}
@@ -37,7 +37,12 @@ namespace Ghurund::UI {
             return items;
         }
 
-        __declspec(property(get = getItems)) List<MenuItem*>& Items;
+        inline void setItems(const List<MenuItem*>& items) {
+            this->items.clear();
+            this->items.addAll(items);
+        }
+
+        __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

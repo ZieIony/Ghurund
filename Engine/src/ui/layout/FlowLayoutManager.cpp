@@ -83,9 +83,9 @@ namespace Ghurund::UI {
         return currentX > 0 ? currentX - spacing.horizontal : 0;
     }
 
-    int FlowLayoutManager::measureHeight(ControlGroup& group, int width) {
-        int currentX = 0;
-        int currentY = 0;
+    float FlowLayoutManager::measureHeight(ControlGroup& group, float width) {
+        float currentX = 0;
+        float currentY = 0;
         float nextY = 0;
         for (Control* child : group.Children) {
             if (!child->Visible)
@@ -110,13 +110,13 @@ namespace Ghurund::UI {
         return nextY;
     }
 
-    FloatSize FlowLayoutManager::measure(ControlGroup& group, float parentWidth, float parentHeight) {
+    const FloatSize FlowLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
         for (Control* c : group.Children) {
             if (!c->Visible)
                 continue;
             c->measure(
-                group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
+                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
         }
 
@@ -137,7 +137,7 @@ namespace Ghurund::UI {
         return measuredSize;
     }
 
-    void FlowLayoutManager::layout(ControlGroup& group, float x, float y, float width, float height) {
+    void FlowLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
         if (reverseLayout) {
             layoutFlowingControlsRight(group, width);
         } else {

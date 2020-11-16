@@ -74,7 +74,8 @@ namespace Ghurund {
         }
 
         virtual void updateParameters() override {
-            parameterViewportSize->setValue(&XMFLOAT2((float)size.width, (float)size.height));
+            XMFLOAT2 sizeParam = { (float)size.width, (float)size.height };
+            parameterViewportSize->setValue(&sizeParam);
         }
 
         virtual const PointerArray<Parameter*>& getParameters() const override {

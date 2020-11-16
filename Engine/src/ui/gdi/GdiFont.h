@@ -88,6 +88,4 @@ namespace Ghurund::UI {
 
         TextSelection findSelection(const String& text, float x) const;
     };
-
-    typedef ScopedPointer<Font> FontPtr;
 }

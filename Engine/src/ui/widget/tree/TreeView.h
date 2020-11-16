@@ -42,7 +42,7 @@ namespace Ghurund::UI {
     public:
         TreeView() {
             recycler = ghnew RecyclerView<TreeItem*, TreeRow>();
-            recycler->LayoutManager = ghnew VerticalLayoutManager<TreeItem*, TreeRow>();
+            recycler->LayoutManager = ghnew VerticalLayoutManager();
             recycler->Adapters.add(&adapter);
             recycler->Items = ghnew ListItemSource<TreeItem*>(items);
             Child = recycler;

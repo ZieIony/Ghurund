@@ -27,7 +27,7 @@ namespace Ghurund::UI {
         TextTabItem(const String& text, Control* content):TabItem(content), text(text) {}
     };
 
-    class TabLayout:public Layout {
+    class TabLayout:public WidgetLayout {
     protected:
         SelectableView* selectableView;
 

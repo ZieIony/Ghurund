@@ -15,14 +15,14 @@ namespace Ghurund::UI {
 
         float measureWidth(ControlGroup& group);
 
-        int measureHeight(ControlGroup& group, int width);
+        float measureHeight(ControlGroup& group, float width);
 
     public:
         bool reverseLayout = false;
         Spacing spacing;
 
-        virtual FloatSize measure(ControlGroup& group, float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) override;
 
-        virtual void layout(ControlGroup& group, float x, float y, float width, float height) override;
+        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) override;
     };
 }

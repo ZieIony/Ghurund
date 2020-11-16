@@ -20,15 +20,14 @@ namespace Ghurund::Editor {
             border->Thickness = 1;
             container = ghnew ControlContainer();
             container->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
+            ScopedPointer<PaddingContainer> paddingContainer = ghnew PaddingContainer();
+            paddingContainer->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
+            paddingContainer->Padding.All = 1;
+            ScopedPointer<VerticalLayout> verticalLayout = ghnew VerticalLayout();
+            verticalLayout->Children = { titleBar, container };
+            paddingContainer->Child = verticalLayout;
             Children = {
-                makePaddingContainer(
-                    makeVerticalLayout({
-                        titleBar,
-                        container
-                    }),
-                    { PreferredSize::Width::FILL, PreferredSize::Height::FILL },
-                    { 1,1,1,1 }
-                ),
+                paddingContainer,
                 border
             };
         }

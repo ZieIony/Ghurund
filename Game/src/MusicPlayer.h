@@ -19,13 +19,13 @@ namespace Ghurund::Editor {
         MusicPlayer(Theme& theme) {
             PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             progressBar = ghnew ProgressBar(*theme.progressBarStyle);
-           // ImagePtr playIcon = ghnew GdiImage("icons/play 18.png");
+            auto playIcon = makeScoped<BitmapImage>("icons/play 18.png");
             playButton = ghnew ImageButton(theme);
-            //playButton->Image = playIcon;
-           // ImagePtr stopIcon = ghnew GdiImage("icons/stop 18.png");
+            playButton->Image = playIcon;
+            auto stopIcon = makeScoped<BitmapImage>("icons/stop 18.png");
             stopButton = ghnew ImageButton(theme);
-         //   stopButton->Image = stopIcon;
-            HorizontalLayoutPtr buttons = ghnew HorizontalLayout();
+            stopButton->Image = stopIcon;
+            ScopedPointer<HorizontalLayout> buttons = ghnew HorizontalLayout();
             buttons->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             buttons->Children = { playButton, stopButton };
             Children = { progressBar, buttons };

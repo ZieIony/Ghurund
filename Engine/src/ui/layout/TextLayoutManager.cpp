@@ -110,13 +110,13 @@ namespace Ghurund::UI {
         return nextY;
     }
 
-    FloatSize TextLayoutManager::measure(ControlGroup& group, float parentWidth, float parentHeight) {
+    const FloatSize TextLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
         for (Control* c : group.Children) {
             if (!c->Visible)
                 continue;
             c->measure(
-                group.PreferredSize.width >= 0 ? group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? group.PreferredSize.height : parentHeight
+                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
+                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
         }
 
@@ -137,7 +137,7 @@ namespace Ghurund::UI {
         return measuredSize;
     }
 
-    void TextLayoutManager::layout(ControlGroup& group, float x, float y, float width, float height) {
+    void TextLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
         if (reverseLayout) {
             layoutFlowingControlsRight(group, width);
         } else {

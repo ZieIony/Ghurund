@@ -22,8 +22,8 @@ namespace Ghurund {
             if (XMMatrixIsInfinite(matrixInv))
                 return XMFLOAT3();
 
-            XMVECTOR moveVec = XMLoadFloat3(&XMFLOAT3(mouseMove.x, mouseMove.y, 0));
-            XMVECTOR moveVec3D = XMVector3TransformNormal(moveVec, matrixInv);
+            XMFLOAT3 moveVec = { mouseMove.x, mouseMove.y, 0 };
+            XMVECTOR moveVec3D = XMVector3TransformNormal(XMLoadFloat3(&moveVec), matrixInv);
 
             XMFLOAT3 moveFloat3;
             XMStoreFloat3(&moveFloat3, moveVec3D);

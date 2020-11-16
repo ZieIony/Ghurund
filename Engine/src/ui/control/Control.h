@@ -71,7 +71,7 @@ namespace Ghurund::UI {
             return false;
         }
 
-        ~Control() = 0 {
+        virtual ~Control() = 0 {
             delete name;
             delete transformation;
             delete cache;
@@ -113,7 +113,11 @@ namespace Ghurund::UI {
 
         inline void setVisible(bool visible) {
             this->visible = visible;
-            onStateChanged();
+            if (!visible && Focused) {
+                clearFocus();
+            } else {
+                onStateChanged();
+            }
         }
 
         __declspec(property(get = isVisible, put = setVisible)) bool Visible;
@@ -136,12 +140,12 @@ namespace Ghurund::UI {
         __declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
 
         inline bool isFocusable() const {
-            return focusable;
+            return enabled && visible && focusable;
         }
 
         inline void setFocusable(bool focusable) {
             this->focusable = focusable;
-            if (!focusable)
+            if (!Focusable)
                 clearFocus();
         }
 
@@ -164,6 +168,14 @@ namespace Ghurund::UI {
         virtual bool focusNext();
 
         virtual bool focusPrevious();
+
+        virtual bool focusUp();
+
+        virtual bool focusDown();
+
+        virtual bool focusLeft();
+
+        virtual bool focusRight();
 
         inline const XMFLOAT2& getPosition() const {
             return position;
@@ -256,6 +268,11 @@ namespace Ghurund::UI {
             preferredSize.height = height;
         }
 
+        inline Control* withPreferredSize(const PreferredSize& size) {
+            setPreferredSize(size);
+            return this;
+        }
+
         __declspec(property(get = getPreferredSize, put = setPreferredSize)) PreferredSize& PreferredSize;
 
         inline const FloatSize& getMeasuredSize() const {
@@ -329,8 +346,6 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<Control> ControlPtr;
 
     template<class T>
     concept IsControl = std::is_base_of<Control, T>::value;

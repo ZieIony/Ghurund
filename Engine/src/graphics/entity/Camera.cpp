@@ -75,13 +75,15 @@ namespace Ghurund {
     }
 
     void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
-        XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 0)),
+        XMFLOAT3 v = { (float)mousePos.x, (float)mousePos.y, 0 };
+        XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&v),
             0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
             XMLoadFloat4x4(&proj),
             XMLoadFloat4x4(&view),
             XMMatrixIdentity());
 
-        XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&XMFLOAT3((float)mousePos.x, (float)mousePos.y, 1)),
+        XMFLOAT3 v2 = { (float)mousePos.x, (float)mousePos.y, 1 };
+        XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&v2),
             0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
             XMLoadFloat4x4(&proj),
             XMLoadFloat4x4(&view),
@@ -138,13 +140,13 @@ namespace Ghurund {
 	}
 
     void Camera::rotate(float yaw, float pitch, float roll) {
-        XMFLOAT3& rotation = getRotation();
+        XMFLOAT3 rotation = getRotation();
 
         setRotation(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
     }
 
     void Camera::orbit(float yaw, float pitch, float roll) {
-        XMFLOAT3& rotation = getRotation();
+        XMFLOAT3 rotation = getRotation();
 
         setOrbit(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
     }

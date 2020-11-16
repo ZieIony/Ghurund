@@ -3,7 +3,7 @@
 #include "PopupMenuAdapter.h"
 
 #include "application/Window.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/layout/VerticalLayoutManager.h"
@@ -13,7 +13,7 @@ namespace Ghurund::UI {
     private:
         Ghurund::PopupWindow* window;
         ScopedPointer<ColorView> backgroundView;
-        ScopedPointer<AdapterView<MenuItem*>> adapterView;
+        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
         List<MenuItem*> items;
 
     public:
@@ -21,14 +21,14 @@ namespace Ghurund::UI {
             window = ghnew Ghurund::PopupWindow();
             window->RootView->Child = this;
 
-            adapterView = ghnew AdapterView<MenuItem*>();
-            adapterView->LayoutManager = ghnew VerticalLayoutManager<MenuItem*, Control>();
-            adapterView->Adapters.add(ghnew ButtonPopupMenuAdapter(theme));
-            adapterView->Adapters.add(ghnew SeparatorPopupMenuAdapter(theme));
-            Children = { adapterView };
-            adapterView->PreferredSize.width = PreferredSize::Width::WRAP;
-            adapterView->PreferredSize.height = PreferredSize::Height::WRAP;
-            adapterView->Items = ghnew ListItemSource<MenuItem*>(items);
+            recyclerView = ghnew RecyclerView<MenuItem*>();
+            recyclerView->LayoutManager = ghnew VerticalLayoutManager();
+            recyclerView->Adapters.add(ghnew ButtonPopupMenuAdapter(theme));
+            recyclerView->Adapters.add(ghnew SeparatorPopupMenuAdapter(theme));
+            Children = { recyclerView };
+            recyclerView->PreferredSize.width = PreferredSize::Width::WRAP;
+            recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
+            recyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
             preferredSize.width = PreferredSize::Width::WRAP;
             preferredSize.height = PreferredSize::Height::WRAP;
         }
@@ -65,7 +65,12 @@ namespace Ghurund::UI {
             return items;
         }
 
-        __declspec(property(get = getItems)) List<MenuItem*>& Items;
+        inline void setItems(const List<MenuItem*>& items) {
+            this->items.clear();
+            this->items.addAll(items);
+        }
+
+        __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
 
         virtual Ghurund::Window* getWindow() const override {
             return window;

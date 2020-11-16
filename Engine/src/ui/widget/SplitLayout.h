@@ -25,7 +25,7 @@ namespace Ghurund::UI {
     };
 
     enum class LockedChild {
-        CHILD_1, CHILD_2
+        NONE, CHILD_1, CHILD_2
     };
 
     class SplitLayout:public ControlContainer {
@@ -33,7 +33,7 @@ namespace Ghurund::UI {
         ScopedPointer<Splitter> splitter;
         ScopedPointer<ControlContainer> container1, container2;
         ScopedPointer<LinearLayout> layout;
-        LockedChild lockedChild = LockedChild::CHILD_1;
+        LockedChild lockedChild = LockedChild::NONE;
         Orientation orientation;
         XMINT2 pressMousePos = { 0,0 };
 
@@ -52,13 +52,7 @@ namespace Ghurund::UI {
             return container1->Child;
         }
 
-        inline void setChild1(Control* control) {
-            container1->Child = control;
-            if (control) {
-                control->PreferredSize.width = PreferredSize::Width::FILL;
-                control->PreferredSize.height = PreferredSize::Height::FILL;
-            }
-        }
+        void setChild1(Control* control);
 
         __declspec(property(get = getChild1, put = setChild1)) Control* Child1;
 
@@ -66,13 +60,7 @@ namespace Ghurund::UI {
             return container2->Child;
         }
 
-        inline void setChild2(Control* control) {
-            container2->Child = control;
-            if (control) {
-                control->PreferredSize.width = PreferredSize::Width::FILL;
-                control->PreferredSize.height = PreferredSize::Height::FILL;
-            }
-        }
+        void setChild2(Control* control);
 
         __declspec(property(get = getChild2, put = setChild2)) Control* Child2;
 
@@ -80,9 +68,7 @@ namespace Ghurund::UI {
             return lockedChild;
         }
 
-        inline void setLockedChild(LockedChild child) {
-            this->lockedChild = child;
-        }
+        void setLockedChild(LockedChild child);
 
         __declspec(property(get = getLockedChild, put = setLockedChild)) LockedChild LockedChild;
     };

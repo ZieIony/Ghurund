@@ -7,11 +7,7 @@ namespace Ghurund::UI {
             textView->TextColor = theme.getColorForegroundDisabledOnBackground();
             border->Color = theme.getColorForegroundDisabledOnBackground();
             backgroundView->Color = theme.getColorControlDisabled();
-        } else if (ClickableView->Pressed) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorAccentDark();
-            backgroundView->Color = theme.getColorControlActivated();
-        } else if (ClickableView->Hovered || control.Focused) {
+        } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
             textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
             border->Color = theme.getColorAccent();
             backgroundView->Color = theme.getColorControlNormal();
@@ -26,10 +22,7 @@ namespace Ghurund::UI {
         if (!control.Enabled) {
             textView->TextColor = theme.getColorForegroundDisabledOnBackground();
             border->Color = 0;
-        } else if (ClickableView->Pressed) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorAccentDark();
-        } else if (ClickableView->Hovered || control.Focused) {
+        } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
             textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
             border->Color = theme.getColorAccent();
         } else {
@@ -43,10 +36,7 @@ namespace Ghurund::UI {
         if (!control.Enabled) {
             textView->TextColor = theme.getColorForegroundDisabledOnBackground();
             backgroundView->Color = 0;
-        } else if (ClickableView->Pressed) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnAccent();
-            backgroundView->Color = theme.getColorAccentDark();
-        } else if (ClickableView->Hovered || control.Focused) {
+        } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
             textView->TextColor = theme.getColorForegroundPrimaryOnAccent();
             backgroundView->Color = theme.getColorAccent();
         } else {
@@ -55,7 +45,7 @@ namespace Ghurund::UI {
         }
         border->Color = 0;
     }
-    
+
     void TextButtonLayout::init() {
         __super::init();
         stack = ghnew StackLayout();

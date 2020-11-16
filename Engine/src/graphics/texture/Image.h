@@ -32,9 +32,10 @@ namespace Ghurund {
 
         int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Image>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Image))
-                .withConstructor(NoArgsConstructor<Image>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;

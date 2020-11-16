@@ -281,10 +281,11 @@ namespace Ghurund {
 #ifdef _DEBUG
             reported[i] = false;
 #endif
-            ScopedPointer<TextureParameter> tp = ghnew TextureParameter(textures[i]->getName());
+            TextureParameter* tp = ghnew TextureParameter(textures[i]->getName());
             if (p && p->ValueType == ParameterType::TEXTURE)
                 tp->DefaultValue = ((TextureParameter*)p)->Value;
             parameters->set(i + constantsCount, tp);
+            tp->release();
         }
     }
 
@@ -377,7 +378,8 @@ namespace Ghurund {
                     char* entryPoint = stream.readASCII();
                     const CompilationTarget& target = CompilationTarget::fromValue(stream.readInt());
                     unsigned int length = stream.readUInt();
-                    programs[i] = ghnew ShaderProgram(ShaderType::values[i], Buffer(stream.readBytes(length), length), entryPoint, target);
+                    Buffer byteCode = Buffer(stream.readBytes(length), length);
+                    programs[i] = ghnew ShaderProgram(ShaderType::values[i], byteCode, entryPoint, target);
                 }
             }
         }

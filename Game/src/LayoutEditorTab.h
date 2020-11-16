@@ -30,10 +30,12 @@ namespace Ghurund::Editor {
             propertiesWindow = ghnew ToolWindow(theme);
             propertiesWindow->Title = "Properties";
             propertiesWindow->Content = propertiesPanel;
+            propertiesWindow->PreferredSize.width = 200;
             widgetHierarchyPanel = ghnew WidgetHierarchyPanel(theme);
             widgetHierarchyWindow = ghnew ToolWindow(theme);
             widgetHierarchyWindow->Title = "Widget";
             widgetHierarchyWindow->Content = widgetHierarchyPanel;
+            widgetHierarchyWindow->PreferredSize.width = 200;
 
             editedControl = ghnew TextButton(theme);
             layoutContent = ghnew StackLayout();

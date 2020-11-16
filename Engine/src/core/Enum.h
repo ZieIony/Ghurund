@@ -67,13 +67,6 @@ namespace Ghurund {
         }
 
     public:
-
-        const EnumValues<EnumValueType, EnumType>& getValues() const {
-            return VALUES;
-        }
-
-        __declspec(property(get = getValues)) EnumValues<EnumValueType, EnumType>& Values;
-
         inline EnumValueType getValue() const {
             return value;
         }

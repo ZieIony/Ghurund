@@ -13,7 +13,7 @@ namespace Ghurund::UI {
         bool finishedAnimating = true;
 
     public:
-        uint32_t color = 0x3f0078D7;
+        uint32_t color = 0x3fffffff;
 
         ClickResponseView() {
             OnClicked.add([this](Control&, const MouseClickedEventArgs& event) {

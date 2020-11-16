@@ -69,14 +69,16 @@ namespace Ghurund {
         void start(CommandList& commandList) {
             D3D12_RESOURCE_STATES newState = D3D12_RESOURCE_STATE_RENDER_TARGET;
             if (state != newState) {
-                commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texture, state, newState));
+                auto transition = CD3DX12_RESOURCE_BARRIER::Transition(texture, state, newState);
+                commandList.get()->ResourceBarrier(1, &transition);
                 state = newState;
             }
         }
 
         void finish(CommandList& commandList, D3D12_RESOURCE_STATES newState = D3D12_RESOURCE_STATE_PRESENT) {
             if (state != newState) {
-                commandList.get()->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(texture, state, newState));
+                auto transition = CD3DX12_RESOURCE_BARRIER::Transition(texture, state, newState);
+                commandList.get()->ResourceBarrier(1, &transition);
                 state = newState;
             }
         }

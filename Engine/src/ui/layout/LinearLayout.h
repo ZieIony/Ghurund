@@ -8,10 +8,12 @@ namespace Ghurund::UI {
     class LinearLayout:public ControlGroup {
     private:
         LinearLayoutManager layoutManager;
+        ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<LinearLayout>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(LinearLayout))
-                .withConstructor(NoArgsConstructor<LinearLayout>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -38,12 +40,20 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOrientation, put = setOrientation)) Orientation Orientation;
 
+        virtual bool focusUp() override;
+
+        virtual bool focusDown() override;
+
+        virtual bool focusLeft() override;
+
+        virtual bool focusRight() override;
+
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, x, y, width, height);
+            layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
@@ -53,17 +63,7 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<LinearLayout> LinearLayoutPtr;
-
     class HorizontalLayout:public LinearLayout {};
-
-    typedef ScopedPointer<HorizontalLayout> HorizontalLayoutPtr;
-
-    inline HorizontalLayoutPtr makeHorizontalLayout(const std::initializer_list<Control*>& children) {
-        auto layout = HorizontalLayoutPtr(ghnew HorizontalLayout());
-        layout->Children = children;
-        return layout;
-    }
 
     class VerticalLayout:public LinearLayout {
     public:
@@ -71,12 +71,4 @@ namespace Ghurund::UI {
             Orientation = Orientation::VERTICAL;
         }
     };
- 
-    typedef ScopedPointer<VerticalLayout> VerticalLayoutPtr;
-
-    inline VerticalLayoutPtr makeVerticalLayout(const std::initializer_list<Control*>& children) {
-        auto layout = VerticalLayoutPtr(ghnew VerticalLayout());
-        layout->Children = children;
-        return layout;
-    }
 }

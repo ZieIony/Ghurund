@@ -51,4 +51,9 @@ namespace Ghurund {
             return *this;
         }
     };
+
+    template<typename T, typename... Args>
+    ScopedPointer<T> makeScoped(Args&&... args) {
+        return ghnew T(std::forward<Args>(args)...);
+    }
 }

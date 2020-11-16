@@ -17,9 +17,10 @@ namespace Ghurund::UI {
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ImageView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
-                .withConstructor(NoArgsConstructor<ImageView>())
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::TYPE);
 
             return TYPE;
@@ -33,6 +34,7 @@ namespace Ghurund::UI {
             }
             gravity.horizontal = Alignment::Horizontal::CENTER;
             gravity.vertical = Alignment::Vertical::CENTER;
+            cacheEnabled = true;
         }
 
         ~ImageView() {
@@ -70,7 +72,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScaleMode, put = setScaleMode)) ImageScaleMode ScaleMode;
 
-        inline Alignment& getGravity() {
+        inline const Alignment& getGravity() const {
             return gravity;
         }
 
@@ -90,6 +92,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef ScopedPointer<ImageView> ImageViewPtr;
 }

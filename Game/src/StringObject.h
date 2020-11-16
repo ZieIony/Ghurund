@@ -4,7 +4,7 @@
 
 #include "core/ScopedPointer.h"
 #include "core/string/String.h"
-#include "ui/adapter/AdapterView.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/control/Clip.h"
 #include "ui/control/ColorView.h"
 #include "ui/control/PaddingContainer.h"
@@ -28,9 +28,17 @@ struct StringObject {
 
 struct StringObjectItem:public StringObject {
     Ghurund::String text, subtext;
+    BitmapImage* image;
 
-    StringObjectItem(const Ghurund::String& text, const Ghurund::String& subtext):text(text), subtext(subtext) {
+    StringObjectItem(const Ghurund::String& text, const Ghurund::String& subtext, BitmapImage* image):text(text), subtext(subtext) {
+        this->image = image;
+        if (image)
+            image->addReference();
         type = StringObjectType::ITEM;
+    }
+
+    ~StringObjectItem() {
+        image->release();
     }
 };
 
@@ -62,10 +70,12 @@ public:
             padding->Child = tv;
 
         }
+        ColorView* colorView = ghnew ColorView(theme.getColorBackground());
         Children = {
-            makeColorView(theme.getColorBackground()),
+            colorView,
             padding
         };
+        colorView->release();
     }
 
     Ghurund::String& getText() {
@@ -88,41 +98,28 @@ private:
 public:
     StringObjectItemRow(Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
-        ColorViewPtr colorView = ghnew ColorView(theme.getColorBackground());
+        ScopedPointer<ColorView> colorView = ghnew ColorView(theme.getColorBackground());
 
-        PaddingContainerPtr padding = ghnew PaddingContainer();
+        ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
         {
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.Horizontal = 16.0f;
             padding->Padding.Vertical = 8.0f;
 
-            HorizontalLayoutPtr row = ghnew HorizontalLayout();
+            ScopedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
             {
                 row->PreferredSize.height = PreferredSize::Height::WRAP;
 
-                StackLayoutPtr stack = ghnew StackLayout();
+                ScopedPointer<Clip> clip = ghnew Clip();
                 {
-                    stack->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
+                    clip->CornerRadius = 4;
 
-                    BorderPtr border = ghnew Border(theme.getColorControl());
-                    border->CornerRadius = 2;
-
-                    ClipPtr clip = ghnew Clip();
-                    {
-                        clip->CornerRadius = 2;
-
-                        imageView = ghnew ImageView();
-                        imageView->PreferredSize = { 56, 56 };
-                        clip->Child = imageView;
-                    }
-
-                    stack->Children = { clip, border };
+                    imageView = ghnew ImageView();
+                    imageView->PreferredSize = { 48, 48 };
+                    clip->Child = imageView;
                 }
 
-                SpacePtr space = ghnew Space();
-                space->PreferredSize.width = 16;
-
-                VerticalLayoutPtr column = ghnew VerticalLayout();
+                ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
                 {
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
                     column->Alignment.horizontal = Alignment::Horizontal::RIGHT;
@@ -136,7 +133,7 @@ public:
                     column->Children = { tv, tv2, tb };
                 }
 
-                row->Children = { stack, space, column };
+                row->Children = { clip, makeScoped<Space>(16.0f), column };
             }
             padding->Child = row;
             ScopedPointer<ClickResponseView> responseView = ghnew ClickResponseView();
@@ -159,6 +156,7 @@ public:
 
     void setText(const Ghurund::String& text) {
         tv->Text = text;
+        tv->invalidateCache();
     }
 
     __declspec(property(get = getText, put = setText)) const String& Text;
@@ -169,12 +167,14 @@ public:
 
     void setSubtext(const String& text) {
         tv2->Text = text;
+        tv2->invalidateCache();
     }
 
     __declspec(property(get = getSubtext, put = setSubtext)) const String& Subtext;
 
     inline void setImage(BitmapImage* image) {
         imageView->Image = image;
+        imageView->invalidateCache();
     }
 
     inline BitmapImage* getImage() {
@@ -185,7 +185,7 @@ public:
 
 };
 
-class StringHeaderAdapter:public ItemAdapter<StringObject*, Control>{
+class StringHeaderAdapter:public ItemAdapter<StringObject*, Control> {
 private:
     Theme& theme;
 
@@ -210,17 +210,9 @@ public:
 class StringItemAdapter:public ItemAdapter<StringObject*, Control> {
 private:
     Theme& theme;
-    Gdiplus::Image* image = nullptr;
 
 public:
-    StringItemAdapter(Theme& theme, Gdiplus::Image* image):theme(theme) {
-            this->image = image;
-    }
-
-    ~StringItemAdapter() {
-        if (image)
-            delete image;
-    }
+    StringItemAdapter(Theme& theme):theme(theme) {}
 
     virtual bool canHandleItem(StringObject* const& item, size_t position) const override {
         return item->type == StringObjectType::ITEM;
@@ -235,6 +227,6 @@ public:
         StringObjectItem* strObj = (StringObjectItem*)item;
         sor.Text = strObj->text;
         sor.Subtext = strObj->subtext;
-        sor.Image = ghnew BitmapImage(image);
+        sor.Image = strObj->image;
     }
 };
