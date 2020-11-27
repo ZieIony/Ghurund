@@ -10,7 +10,8 @@ namespace Ghurund::UI {
         paddingContainer->Padding.All = 4;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
-        stack->Children = { backgroundView, border, paddingContainer };
+        clickResponseView = makeScoped<ClickResponseView>(theme.ColorHighlightOnBackground);
+        stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
         ClickableView->Child = stack;
         root = ClickableView;
     }
@@ -29,6 +30,7 @@ namespace Ghurund::UI {
             border->Color = theme.getColorForegroundPrimaryOnBackground();
             backgroundView->Color = theme.getColorControlNormal();
         }
+        clickResponseView->Pressed = ClickableView->Pressed;
     }
 
     void ImageButtonFlatLayout::onStateChanged(Control& control) {
@@ -43,6 +45,7 @@ namespace Ghurund::UI {
             imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
             border->Color = 0;
         }
+        clickResponseView->Pressed = ClickableView->Pressed;
     }
 
 }

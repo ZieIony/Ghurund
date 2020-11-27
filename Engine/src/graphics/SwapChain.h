@@ -1,6 +1,5 @@
 #pragma once
 
-#include "application/SystemWindow.h"
 #include "core/collection/BufferedValue.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
@@ -11,18 +10,24 @@
 #include <dxgi1_4.h>
 #include <wrl.h>
 
+namespace Ghurund::UI {
+    class Graphics2D;
+}
+
 namespace Ghurund {
     using namespace Microsoft::WRL;
 
     class Graphics;
+    class SystemWindow;
 
     class SwapChain:public Object {
     private:
-		Graphics* graphics;
+        Graphics* graphics;
+        Ghurund::UI::Graphics2D* graphics2d;
         ComPtr<IDXGISwapChain3> swapChain;
         Frame* frames;
-        BufferedValue<Frame> frameBuffer;
-        unsigned int frameCount;
+        uint32_t frameCount;
+        size_t currentFrame = 0;
         SystemWindow* window;
         DXGI_FORMAT format;
 
@@ -40,33 +45,35 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, SystemWindow& window, unsigned int frameCount);
+        Status init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount);
 
         Status initBuffers();
 
         void uninitBuffers();
 
-        Frame& getFrame() {
-            return frameBuffer.get();
+        Frame& getCurrentFrame() {
+            return frames[currentFrame];
         }
 
-        Status present() {
-            frameBuffer.next();
+        __declspec(property(get = getCurrentFrame)) Frame& CurrentFrame;
 
-            if (FAILED(swapChain->Present(1, 0)))
+        Status present() {
+            currentFrame++;
+            currentFrame %= frameCount;
+
+            HRESULT hr = swapChain->Present(1, 0);
+            if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
+                return Logger::log(LogType::ERR0R, Status::DEVICE_LOST, _T("swapChain->Present() failed\n"));
+            } else if (FAILED(hr)) {
                 return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
+            }
+
             return Status::OK;
         }
 
-        CommandList& getCommandList() {
-            return frameBuffer->getCommandList();
-        }
-
-        __declspec(property(get = getCommandList)) CommandList& CommandList;
-
         void resize(unsigned int width, unsigned int height);
 
-		inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;

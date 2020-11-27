@@ -26,11 +26,6 @@ namespace Ghurund::UI {
 
         TextButton(Ghurund::UI::Theme& theme):TextButton(ghnew TextButtonLayout(theme)) {}
 
-        virtual void measure(float parentWidth, float parentHeight) {
-            textView->PreferredSize = preferredSize;
-            __super::measure(parentWidth, parentHeight);
-        }
-
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

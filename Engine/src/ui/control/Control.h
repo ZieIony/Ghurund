@@ -10,6 +10,8 @@
 #include "ui/Cursor.h"
 #include "application/Window.h"
 
+#include "D2d1helper.h"
+
 namespace Ghurund::UI {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
 
@@ -31,15 +33,13 @@ namespace Ghurund::UI {
 
         ASCIIString* name = nullptr;
 
-        Gdiplus::Image* cache = nullptr;
         bool transformationInvalid = true;
 
         inline void rebuildTransformation() {
-            transformation->Reset();
-            transformation->Translate(std::round(-size.width / 2), std::round(-size.height / 2));
-            transformation->Rotate(rotation);
-            transformation->Scale(scale.x, scale.y);
-            transformation->Translate(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
+            transformation = D2D1::Matrix3x2F::Translation(std::round(-size.width / 2), std::round(-size.height / 2))
+                * D2D1::Matrix3x2F::Rotation(rotation)
+                * D2D1::Matrix3x2F::Scale(scale.x, scale.y)
+                * D2D1::Matrix3x2F::Translation(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
             transformationInvalid = false;
         }
 
@@ -48,13 +48,12 @@ namespace Ghurund::UI {
     protected:
         XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
-        Gdiplus::Matrix* transformation;
+        D2D1::Matrix3x2F transformation;
 
         FloatSize minSize = { 0,0 };
         PreferredSize preferredSize;   // what the user wants
         FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
-        bool cacheEnabled = false;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
         Event<Control> onStateChanged = Event<Control>(*this);
@@ -73,15 +72,9 @@ namespace Ghurund::UI {
 
         virtual ~Control() = 0 {
             delete name;
-            delete transformation;
-            delete cache;
         }
 
     public:
-        Control() {
-            transformation = new Gdiplus::Matrix();
-        }
-
         inline Event<Control>& getOnStateChanged() {
             return onStateChanged;
         }
@@ -222,11 +215,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScale, put = setScale)) XMFLOAT2& Scale;
 
-        inline Gdiplus::Matrix& getTransformation() const {
-            return *transformation;
+        inline const D2D1::Matrix3x2F& getTransformation() const {
+            return transformation;
         }
 
-        __declspec(property(get = getTransformation)) Gdiplus::Matrix& Transformation;
+        __declspec(property(get = getTransformation)) const D2D1::Matrix3x2F& Transformation;
 
         inline FloatSize& getMinSize() {
             return minSize;
@@ -282,9 +275,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getMeasuredSize)) FloatSize& MeasuredSize;
 
         inline bool canReceiveEvent(const MouseEventArgs& event) {
-            return Visible && Enabled &&
-                event.Position.x >= position.x && event.Position.x < position.x + Size.width &&
-                event.Position.y >= position.y && event.Position.y < position.y + Size.height;
+            return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
         }
 
         // TODO: support matrix transformation
@@ -306,18 +297,18 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWindow)) Window* Window;
 
-        inline void invalidateCache() {
-            delete cache;
-            cache = nullptr;
-        }
-
         virtual void repaint();
 
         virtual void invalidate();
 
         inline void measure(float parentWidth, float parentHeight) {
-            if (needsLayout || (float)preferredSize.width < 0 || (float)preferredSize.height < 0)
-                onMeasure(parentWidth, parentHeight);
+            if (needsLayout || (float)preferredSize.width < 0 || (float)preferredSize.height < 0) {
+                if (parentWidth > 0 && parentHeight > 0) {
+                    onMeasure(parentWidth, parentHeight);
+                } else {
+                    measuredSize = { 0,0 };
+                }
+            }
         }
 
         void layout(float x, float y, float width, float height);

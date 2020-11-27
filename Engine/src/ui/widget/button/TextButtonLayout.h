@@ -17,6 +17,7 @@ namespace Ghurund::UI {
 
     protected:
         Theme& theme;
+        ScopedPointer<ClickResponseView> clickResponseView;
 
     public:
         TextButtonLayout(Theme& theme):theme(theme) {}
@@ -36,6 +37,8 @@ namespace Ghurund::UI {
     class TextButtonAccentLayout:public TextButtonLayout {
     public:
         TextButtonAccentLayout(Theme& theme):TextButtonLayout(theme) {}
+
+        virtual void init() override;
 
         virtual void onStateChanged(Control& control) override;
     };

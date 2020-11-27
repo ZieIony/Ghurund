@@ -37,6 +37,13 @@ namespace Ghurund {
 
         Status start(XMFLOAT4* color);
         Status finish();
+        void flush();
+
+        RenderTarget& getRenderTarget() {
+            return *renderTarget;
+        }
+
+        __declspec(property(get = getRenderTarget)) RenderTarget& RenderTarget;
 
         CommandList& getCommandList() {
             return *commandList;

@@ -29,6 +29,7 @@ public:
         Name = "controls tab";
         {
             ScopedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
+            latoLight->init(resourceContext.Graphics2D);
             ScopedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
             ScopedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
@@ -54,8 +55,8 @@ public:
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             for (size_t i : {0, 1, 2, 3}) {
                 ScopedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
-                ScopedPointer<BitmapImage> saveIcon = ghnew BitmapImage(L"icons/icon save 32.png");
-                imageButton->Image = saveIcon;
+/*                ScopedPointer<BitmapImage> saveIcon = ghnew BitmapImage(L"icons/icon save 32.png");
+                imageButton->Image = saveIcon;*/
                 horizontalLayout->Children.add(imageButton);
             }
 

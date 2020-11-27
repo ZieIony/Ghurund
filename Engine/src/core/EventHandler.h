@@ -10,7 +10,7 @@ namespace Ghurund {
     template<class SenderType>
     class EventHandler<SenderType> {
     private:
-        static inline uint32_t ID = 0;
+        static inline uint32_t ID = 1;
 
         uint32_t id = 0;
         std::function<bool(SenderType& sender)> lambda;

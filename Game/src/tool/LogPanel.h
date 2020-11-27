@@ -36,15 +36,15 @@ namespace Ghurund::Editor {
 
         __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
 
-        String& getText() {
+        UnicodeString& getText() {
             return text->Text;
         }
 
-        void setText(const String& text) {
+        void setText(const UnicodeString& text) {
             this->text->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) String& Text;
+        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
     };
 
     struct Log {
@@ -73,23 +73,23 @@ namespace Ghurund::Editor {
     private:
         ScopedPointer<Toolbar> toolbar;
         ScopedPointer<RecyclerView<Log, LogRow>> logRecycler;
-        Gdiplus::Image* sortIcon, * categoryIcon;
+        BitmapImage* sortIcon, * categoryIcon;
 
         List<Log> items;
 
     public:
-        LogPanel(Ghurund::UI::Theme& theme) {
+        LogPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
             toolbar = ghnew Toolbar(theme);
-            sortIcon = new Gdiplus::Image(L"icons/sort 18.png");
-            categoryIcon = new Gdiplus::Image(L"icons/category 18.png");
-            toolbar->Items.addAll({
+            sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
+            categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
+            toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, "sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
                    ghnew ButtonMenuItem(categoryIcon, "category", [](Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
-                });
+            };
             logRecycler = ghnew RecyclerView<Log, LogRow>();
             logRecycler->LayoutManager = ghnew VerticalLayoutManager();
             logRecycler->Items = ghnew ListItemSource<Log>(items);

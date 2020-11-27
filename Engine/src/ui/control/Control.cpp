@@ -83,7 +83,7 @@ namespace Ghurund::UI {
 
         return TYPE;
     }
-    
+
     void Control::onMeasure(float parentWidth, float parentHeight) {
         if (preferredSize.width == PreferredSize::Width::WRAP) {
             measuredSize.width = minSize.width;
@@ -184,7 +184,6 @@ namespace Ghurund::UI {
     }
 
     void Control::repaint() {
-        invalidateCache();
         if (parent)
             parent->repaint();
     }
@@ -200,12 +199,11 @@ namespace Ghurund::UI {
         position.y = y;
         transformationInvalid = true;
         if (needsLayout || size.width != width || size.height != height) {
-            invalidateCache();
 #ifdef _DEBUG
-            if (width < minSize.width || height < minSize.height)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : S("[unnamed]"));
-            if (width == 0 || height == 0)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is 0\n", Type.Name, Name ? *Name : S("[unnamed]"));
+      //      if (width < minSize.width || height < minSize.height)
+    //            Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : S("[unnamed]"));
+  //          if (width == 0 || height == 0)
+//                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : S("[unnamed]"));
             size.width = std::max(width, minSize.width);
             size.height = std::max(height, minSize.height);
 #else
@@ -222,33 +220,21 @@ namespace Ghurund::UI {
         if (transformationInvalid)
             rebuildTransformation();
         canvas.save();
-        canvas.transform(*transformation);
-
-        if (cacheEnabled) {
-            if (!cache) {
-                Canvas* c = canvas.beginCache((unsigned int)size.width, (unsigned int)size.height);
-                onDraw(*c);
-                cache = c->endCache();
-                delete c;
-            }
-            canvas.drawImage(*cache, 0,0, size.width, size.height);
-        } else {
-            onDraw(canvas);
-        }
-
+        canvas.transform(transformation);
+        onDraw(canvas);
         canvas.restore();
     }
 
     XMFLOAT2 Control::getPositionInWindow() {
-        Gdiplus::Matrix matrix;
+        D2D1::Matrix3x2F matrix = D2D1::Matrix3x2F::Identity();
         Control* control = this;
         while (control) {
-            matrix.Multiply(&control->Transformation);
+            matrix = matrix * control->Transformation;
             control = control->Parent;
         }
-        Gdiplus::PointF p = { 0,0 };
-        matrix.TransformPoints(&p);
-        return XMFLOAT2(p.X, p.Y);
+        D2D1_POINT_2F p = { 0,0 };
+        matrix.TransformPoint(p);
+        return XMFLOAT2(p.x, p.y);
     }
 
     XMFLOAT2 Control::getPositionOnScreen() {

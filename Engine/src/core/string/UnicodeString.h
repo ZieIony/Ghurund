@@ -11,53 +11,63 @@ namespace Ghurund {
 
         UnicodeString() {}
 
-        UnicodeString(const char *str) {
+        UnicodeString(const UnicodeString& string):GenericString<wchar_t>(string) {}
+
+        UnicodeString(UnicodeString&& string):GenericString<wchar_t>(std::move(string)) {}
+
+        UnicodeString(const char* str) {
             add(str);
         }
 
-        UnicodeString(const char *str, size_t length) {
+        UnicodeString(const char* str, size_t length) {
             add(str, length);
         }
 
-        UnicodeString(const GenericString<char> &string) {
+        UnicodeString(const GenericString<char>& string) {
             add(string.getData());
         }
 
         using GenericString<wchar_t>::add;
 
-        inline void add(const char e);
+        void add(const char e);
 
-        inline void add(const char *str) {
-            wchar_t *wstr = toWideChar(str);
+        inline void add(const char* str) {
+            if (!str)
+                return;
+            wchar_t* wstr = toWideChar(str);
             add(wstr);
             delete[] wstr;
         }
 
-        inline void add(const char *str, size_t len) {
-            wchar_t *wstr = toWideChar(str);
+        inline void add(const char* str, size_t len) {
+            if (!str)
+                return;
+            wchar_t* wstr = toWideChar(str);
             add(wstr, len);
             delete[] wstr;
         }
 
         using GenericString<wchar_t>::operator==;
 
-        bool operator==(const char *str) const {
-            wchar_t *wstr = toWideChar(str);
-            bool result = memcmp(v, wstr, Length*sizeof(wchar_t))==0;
+        bool operator==(const char* str) const {
+            if (!str)
+                return false;
+            wchar_t* wstr = toWideChar(str);
+            bool result = memcmp(v, wstr, Length * sizeof(wchar_t)) == 0;
             delete[] wstr;
             return result;
         }
-        
+
         using GenericString<wchar_t>::operator=;
 
-        UnicodeString &operator=(const UnicodeString &string) {
+        UnicodeString& operator=(const UnicodeString& string) {
             size = string.size;
             initial = string.initial;
             capacity = string.capacity;
-            wchar_t *prevV = v;
-            wchar_t *stringV = string.v;
+            wchar_t* prevV = v;
+            wchar_t* stringV = string.v;
             v = new wchar_t[capacity];
-            memcpy(v, stringV, size*sizeof(wchar_t));
+            memcpy(v, stringV, size * sizeof(wchar_t));
             hash = string.hash;
             delete[] prevV;
             return *this;
@@ -71,33 +81,33 @@ namespace Ghurund {
         }
 
         UnicodeString subString(size_t start)const {
-            return UnicodeString(v+start);
+            return UnicodeString(v + start);
         }
 
         UnicodeString subString(size_t start, size_t length)const {
-            return UnicodeString(v+start, length);
+            return UnicodeString(v + start, length);
         }
 
         Array<UnicodeString> split(const wchar_t* d)const;
 
         UnicodeString toLowerCase() {
             UnicodeString copy(*this);
-            for(size_t i = 0; i < Length; i++)
+            for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (wchar_t)towlower(copy.v[i]);
             return copy;
         }
 
         UnicodeString toUpperCase() {
             UnicodeString copy(*this);
-            for(size_t i = 0; i < Length; i++)
+            for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (wchar_t)towupper(copy.v[i]);
             return copy;
         }
 
         UnicodeString trim() {
             size_t i, j, l = Length;
-            for(i = 0; i < l && iswspace(v[i]); i++);
-            for(j = l - 1; j > i && iswspace(v[j]); j--);
+            for (i = 0; i < l && iswspace(v[i]); i++);
+            for (j = l - 1; j > i && iswspace(v[j]); j--);
             return UnicodeString(v + i, j - i + 1);
         }
     };

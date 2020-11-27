@@ -21,11 +21,6 @@ namespace Ghurund::UI {
 
         ImageButton(Ghurund::UI::Theme& theme):ImageButton(ghnew ImageButtonLayout(theme)) {};
 
-        virtual void measure(float parentWidth, float parentHeight) {
-            imageView->PreferredSize = preferredSize;
-            __super::measure(parentWidth, parentHeight);
-        }
-
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

@@ -29,7 +29,10 @@ namespace Ghurund {
         }
 
         inline void remove(const EventHandler<SenderType>& listener) {
-            listeners.remove(listener);
+            size_t i = listeners.indexOf(listener);
+            if (i == listeners.Size)
+                return;
+            listeners.removeAt(i);
         }
 
         inline void clear() {

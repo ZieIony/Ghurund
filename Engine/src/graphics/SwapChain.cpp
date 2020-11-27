@@ -1,9 +1,12 @@
 #include "SwapChain.h"
 #include "Graphics.h"
+#include "application/SystemWindow.h"
+#include "ui/Graphics2D.h"
 
 namespace Ghurund {
-    Status SwapChain::init(Graphics& graphics, SystemWindow& window, unsigned int frameCount) {
+    Status SwapChain::init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {
         this->graphics = &graphics;
+        this->graphics2d = graphics2d;
         this->window = &window;
         this->frameCount = frameCount;
         this->format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -41,14 +44,14 @@ namespace Ghurund {
 
             RenderTarget* renderTarget = ghnew RenderTarget();
             renderTarget->init(*graphics, renderTargetBuffer);
+            if (graphics2d)
+                renderTarget->init2D(*graphics2d);
 
             DepthBuffer* depthBuffer = ghnew DepthBuffer();
             depthBuffer->init(*graphics, window->Size.width, window->Size.height);
 
             frames[i].init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
         }
-
-        frameBuffer.init(frames, frameCount);
 
         return Status::OK;
     }
@@ -57,7 +60,7 @@ namespace Ghurund {
         if (frames == nullptr)
             return;
 
-        Ghurund::CommandList& commandList = frameBuffer->CommandList;
+        Ghurund::CommandList& commandList = CurrentFrame.CommandList;
         if (commandList.State == CommandListState::RECORDING) {
             commandList.get()->OMSetRenderTargets(0, 0, true, 0);
             commandList.finish();

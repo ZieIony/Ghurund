@@ -10,6 +10,14 @@
 #include <dxgi1_4.h>
 #include <wrl.h>
 
+#include <dxgi1_6.h>
+#include <d2d1_3.h>
+#include <d3d11on12.h>
+
+namespace Ghurund::UI {
+    class Graphics2D;
+}
+
 namespace Ghurund {
     class RenderTarget: public NamedObject<String> {
     private:
@@ -18,6 +26,8 @@ namespace Ghurund {
         D3D12_CPU_DESCRIPTOR_HANDLE handle;
         D3D12_RESOURCE_STATES state = D3D12_RESOURCE_STATE_COMMON;
         DXGI_FORMAT format;
+        ComPtr<ID3D11Resource> wrappedRenderTarget;
+        ComPtr<ID2D1Bitmap1> d2dRenderTarget;
 
         Status captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
 
@@ -36,15 +46,12 @@ namespace Ghurund {
 
         Status init(Graphics& graphics, unsigned int width, unsigned int height, DXGI_FORMAT format);
 
+        Status init2D(Ghurund::UI::Graphics2D& graphics2d);
+
         void uninit();
 
-        Status resize(Graphics& graphics, unsigned int width, unsigned int height) {
-            uninit();
-            return init(graphics, width, height, format);
-        }
-
         void clear(CommandList& commandList, XMFLOAT4 color) {
-            const float clearColor[] = {color.x, color.y, color.z, color.w};
+            const float clearColor[] = { color.x, color.y, color.z, color.w };
             commandList.get()->ClearRenderTargetView(handle, clearColor, 0, nullptr);
         }
 
@@ -53,6 +60,18 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getHandle)) D3D12_CPU_DESCRIPTOR_HANDLE& Handle;
+
+        ID3D11Resource* getWrappedTarget() {
+            return wrappedRenderTarget.Get();
+        }
+
+        __declspec(property(get = getWrappedTarget)) ID3D11Resource* WrappedTarget;
+
+        ID2D1Bitmap1* getTarget2D() {
+            return d2dRenderTarget.Get();
+        }
+
+        __declspec(property(get = getTarget2D)) ID2D1Bitmap1* Target2D;
 
         DXGI_FORMAT getFormat() const {
             return format;

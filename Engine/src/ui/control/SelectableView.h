@@ -14,7 +14,6 @@ namespace Ghurund::UI {
 
         inline void setSelected(bool selected) {
             this->selected = selected;
-            invalidateCache();
             onStateChanged();
         }
 

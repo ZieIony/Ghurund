@@ -11,6 +11,10 @@ namespace Ghurund {
 
         ASCIIString() {}
 
+        ASCIIString(const ASCIIString& string):GenericString<char>(string) {}
+
+        ASCIIString(ASCIIString&& string):GenericString<char>(std::move(string)) {}
+
         ASCIIString(const wchar_t* str) {
             add(str);
         }
@@ -25,15 +29,19 @@ namespace Ghurund {
 
         using GenericString<char>::add;
 
-        inline void add(const wchar_t e);
+        void add(const wchar_t e);
 
         inline void add(const wchar_t* str) {
+            if (!str)
+                return;
             char* cstr = toMultiByte(str);
             add(cstr);
             delete[] cstr;
         }
 
         inline void add(const wchar_t* str, size_t len) {
+            if (!str)
+                return;
             char* cstr = toMultiByte(str);
             add(cstr, len);
             delete[] cstr;
@@ -42,6 +50,8 @@ namespace Ghurund {
         using GenericString<char>::operator==;
 
         bool operator==(const wchar_t* str) const {
+            if (!str)
+                return false;
             char* cstr = toMultiByte(str);
             bool result = memcmp(v, cstr, Length * sizeof(char)) == 0;
             delete[] cstr;

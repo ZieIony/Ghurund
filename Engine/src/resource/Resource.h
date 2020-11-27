@@ -115,12 +115,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getPath, put = setPath)) FilePath* Path;
-
+        /*
         const DataSize& getSize() const {
             return dataSize;
         }
 
-        __declspec(property(get = getSize)) const DataSize& Size;
+        __declspec(property(get = getSize)) const DataSize& Size;*/
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

@@ -1,11 +1,11 @@
 #pragma once
 
+#include "ui/control/ClickableView.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/mixin/TextMixin.h"
 #include "ui/mixin/BackgroundMixin.h"
 #include "ui/mixin/BorderMixin.h"
 #include "ui/mixin/PaddingMixin.h"
-#include "ui/widget/ClickResponseView.h"
 #include "ui/widget/Layout.h"
 
 namespace Ghurund::UI {
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         }
 
         virtual void init() {
-            clickableView = ghnew ClickResponseView();
+            clickableView = ghnew Ghurund::UI::ClickableView();
         }
 
         inline ClickableView* getClickableView() {

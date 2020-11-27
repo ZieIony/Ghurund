@@ -2,7 +2,7 @@
 #include "WindowType.h"
 #include "core/threading/FunctionQueue.h"
 #include "ui/RootView.h"
-#include "ui/gdi/GdiCanvas.h"
+#include "ui/Canvas.h"
 
 #include <time.h>
 
@@ -13,6 +13,8 @@ namespace Ghurund {
         // engine
         graphics = ghnew Ghurund::Graphics();
         graphics->init();
+        graphics2d = ghnew Ghurund::UI::Graphics2D();
+        graphics2d->init(*graphics);
         audio = ghnew Ghurund::Audio();
         audio->init();
         physics = ghnew Ghurund::Physics();
@@ -25,9 +27,9 @@ namespace Ghurund {
         resourceManager = ghnew Ghurund::ResourceManager();
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
 
-        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
+        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
         resourceContext->init();
-        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
+        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
         asyncResourceContext->init();
         //parameterManager->initDefaultTextures(*resourceContext);
 
@@ -60,6 +62,7 @@ namespace Ghurund {
         delete functionQueue;
         delete physics;
         delete audio;
+        delete graphics2d;
         delete graphics;
 
         CoUninitialize();
@@ -78,13 +81,19 @@ namespace Ghurund {
             FunctionQueue.invoke();
             update();
             for (auto window : windows) {
-                //Frame& frame = window->swapChain->getFrame();
-                //CommandList& commandList = renderer->startFrame(frame);
+                Frame& frame = window->SwapChain->CurrentFrame;
+                CommandList& commandList = renderer->startFrame(frame);
                 //levelManager.draw(commandList);
                 window->OnUpdate(*timer);
+                frame.flush();
+                graphics2d->beginPaint(frame.RenderTarget);
                 window->OnPaint();
-                //renderer->finishFrame(frame);
-                //window->swapChain->present();
+                if (graphics2d->endPaint() != Status::OK)
+                    break;
+                if (renderer->finishFrame(frame) != Status::OK)
+                    break;
+                if (window->SwapChain->present() != Status::OK)
+                    break;
             }
         }
 
@@ -113,7 +122,7 @@ namespace Ghurund {
     void Application::update() {
         timer->tick();
 
-        float dt = timer->FrameTime;	// TODO: constant dt
+        double dt = timer->FrameTime;	// TODO: constant dt
 
         resourceManager->reload();
 

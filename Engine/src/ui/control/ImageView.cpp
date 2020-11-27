@@ -16,68 +16,72 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onDraw(Canvas& canvas) {
-        if (!image)
+        if (!image||!image->Data)
             return;
 
-        auto src = Gdiplus::RectF(0, 0, (float)image->Size.width, (float)image->Size.height);
-        Gdiplus::RectF dst;
+        auto src = D2D1::RectF(0, 0, (float)image->Size.width, (float)image->Size.height);
+        D2D1_RECT_F dst;
+
         if (scaleMode == ImageScaleMode::NONE) {
-            dst.X = (Size.width - src.Width) / 2.0f;
-            dst.Y = (Size.height - src.Height) / 2.0f;
-            dst.Width = src.Width;
-            dst.Height = src.Height;
+            dst.left = (Size.width - image->Size.width) / 2.0f;
+            dst.top = (Size.height - image->Size.height) / 2.0f;
+            dst.right = dst.left + image->Size.width;
+            dst.bottom = dst.top + image->Size.height;
         } else if (scaleMode == ImageScaleMode::STRETCH) {
-            dst.X = 0;
-            dst.Y = 0;
-            dst.Width = Size.width;
-            dst.Height = Size.height;
+            dst.left = 0;
+            dst.top = 0;
+            dst.right = Size.width;
+            dst.bottom = Size.height;
         } else if (scaleMode == ImageScaleMode::FIT) {
-            float sx = Size.width / src.Width;
-            float sy = Size.height / src.Height;
+            float sx = Size.width / image->Size.width;
+            float sy = Size.height / image->Size.height;
             float s = std::min(sx, sy);
-            dst.Width = src.Width * s;
-            dst.Height = src.Height * s;
+            float width = image->Size.width * s;
+            float height = image->Size.height * s;
             if (gravity.horizontal == Alignment::Horizontal::LEFT) {
-                dst.X = 0;
+                dst.left = 0;
             } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
-                dst.X = (Size.width - dst.Width) / 2.0f;
+                dst.left = (Size.width - width) / 2.0f;
             } else {
-                dst.X = Size.width - dst.Width;
+                dst.left = Size.width - width;
             }
             if (gravity.vertical == Alignment::Vertical::TOP) {
-                dst.Y = 0;
-            } else if (gravity.vertical == Alignment::Vertical::TOP) {
-                dst.Y = (Size.height - dst.Height) / 2.0f;
+                dst.top = 0;
+            } else if (gravity.vertical == Alignment::Vertical::CENTER) {
+                dst.top = (Size.height - height) / 2.0f;
             } else {
-                dst.Y = Size.height - dst.Height;
+                dst.top = Size.height - height;
             }
+            dst.right = dst.left + width;
+            dst.bottom = dst.top + height;
         } else if (scaleMode == ImageScaleMode::CROP) {
-            float sx = Size.width / src.Width;
-            float sy = Size.height / src.Height;
+            float sx = Size.width / image->Size.width;
+            float sy = Size.height / image->Size.height;
             float s = std::max(sx, sy);
-            dst.Width = src.Width * s;
-            dst.Height = src.Height * s;
-            dst.X = (Size.width - dst.Width) / 2.0f;
-            dst.Y = (Size.height - dst.Height) / 2.0f;
+            float width = image->Size.width * s;
+            float height = image->Size.height * s;
             if (gravity.horizontal == Alignment::Horizontal::LEFT) {
-                dst.X = 0;
+                dst.left = 0;
             } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
-                dst.X = (Size.width - dst.Width) / 2.0f;
+                dst.left = (Size.width - width) / 2.0f;
             } else {
-                dst.X = Size.width - dst.Width;
+                dst.left = Size.width - width;
             }
             if (gravity.vertical == Alignment::Vertical::TOP) {
-                dst.Y = 0;
+                dst.top = 0;
             } else if (gravity.vertical == Alignment::Vertical::TOP) {
-                dst.Y = (Size.height - dst.Height) / 2.0f;
+                dst.top = (Size.height - height) / 2.0f;
             } else {
-                dst.Y = Size.height - dst.Height;
+                dst.top = Size.height - height;
             }
+            dst.right = dst.left + width;
+            dst.bottom = dst.top + height;
         }
+
         if (tint) {
-            canvas.drawImage(*image->image, dst.X, dst.Y, dst.Width, dst.Height, tint);
+            canvas.drawImage(*image, dst, tint);
         } else {
-            canvas.drawImage(*image->image, dst.X, dst.Y, dst.Width, dst.Height);
+            canvas.drawImage(*image, dst);
         }
     }
 }

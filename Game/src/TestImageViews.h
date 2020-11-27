@@ -15,7 +15,7 @@ class TestImageViews:public HorizontalLayout {
     VerticalScrollBarPtr scrollBar;
 
 public:
-    TestImageViews(Ghurund::UI::Theme& theme) {
+    TestImageViews(ResourceContext& context, Ghurund::UI::Theme& theme) {
         scrollView = ghnew ScrollView();
         scrollView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         scrollBar = ghnew VerticalScrollBar(theme);
@@ -45,7 +45,7 @@ public:
             };
             ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
             column->PreferredSize.height = PreferredSize::Height::WRAP;
-            ScopedPointer<BitmapImage> image = ghnew BitmapImage("images/game.png");
+            ScopedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/game.png");
             for (unsigned int i = 0; i < 4; i++) {
                 StackLayoutPtr stack = ghnew StackLayout();
                 stack->PreferredSize = { 200, 120 };

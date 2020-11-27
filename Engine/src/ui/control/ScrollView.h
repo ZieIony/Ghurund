@@ -59,6 +59,7 @@ namespace Ghurund::UI {
             canvas.clipRect(0, 0, Size.width, Size.height);
             canvas.translate(-scroll.x, -scroll.y);
             __super::onDraw(canvas);
+            canvas.restoreClipRect();
             canvas.restore();
         }
 

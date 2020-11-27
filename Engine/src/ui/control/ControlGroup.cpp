@@ -71,6 +71,7 @@ namespace Ghurund::UI {
                 continue;
             c->draw(canvas);
         }
+        canvas.restoreClipRect();
         canvas.restore();
     }
 

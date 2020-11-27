@@ -16,7 +16,7 @@ private:
     VerticalScrollBar* scrollBar;
 
 public:
-    TestRecycler(Ghurund::UI::Theme& theme) {
+    TestRecycler(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context, Ghurund::UI::Theme& theme) {
         recyclerView = ghnew RecyclerView<StringObject*, Control>();
         recyclerView->PreferredSize.width = PreferredSize::Width::FILL;
         scrollBar = ghnew VerticalScrollBar(theme);
@@ -37,18 +37,18 @@ public:
             return true;
         });
 
-        ScopedPointer<BitmapImage> foxImage = ghnew BitmapImage(L"images/test/fox.jpg");
-        ScopedPointer<BitmapImage> strawberryImage = ghnew BitmapImage(L"images/test/strawberry.jpg");
-        ScopedPointer<BitmapImage> melonImage = ghnew BitmapImage(L"images/test/melon.jpg");
-        ScopedPointer<BitmapImage> blueberryImage = ghnew BitmapImage(L"images/test/blueberry.jpg");
-        ScopedPointer<BitmapImage> watermelonImage = ghnew BitmapImage(L"images/test/watermelon.jpg");
-        ScopedPointer<BitmapImage> appleImage = ghnew BitmapImage(L"images/test/apple.jpg");
-        ScopedPointer<BitmapImage> pearImage = ghnew BitmapImage(L"images/test/pear.jpg");
-        ScopedPointer<BitmapImage> plumImage = ghnew BitmapImage(L"images/test/plum.jpg");
-        ScopedPointer<BitmapImage> orangeImage = ghnew BitmapImage(L"images/test/orange.jpg");
-        ScopedPointer<BitmapImage> bananaImage = ghnew BitmapImage(L"images/test/banana.jpg");
-        ScopedPointer<BitmapImage> beerImage = ghnew BitmapImage(L"images/test/beer.jpg");
-        ScopedPointer<BitmapImage> lemonImage = ghnew BitmapImage(L"images/test/lemon.jpg");
+        ScopedPointer<BitmapImage> foxImage = BitmapImage::makeFromImage(context, L"images/test/fox.jpg");
+        ScopedPointer<BitmapImage> strawberryImage = BitmapImage::makeFromImage(context, L"images/test/strawberry.jpg");
+        ScopedPointer<BitmapImage> melonImage = BitmapImage::makeFromImage(context, L"images/test/melon.jpg");
+        ScopedPointer<BitmapImage> blueberryImage = BitmapImage::makeFromImage(context, L"images/test/blueberry.jpg");
+        ScopedPointer<BitmapImage> watermelonImage = BitmapImage::makeFromImage(context, L"images/test/watermelon.jpg");
+        ScopedPointer<BitmapImage> appleImage = BitmapImage::makeFromImage(context, L"images/test/apple.jpg");
+        ScopedPointer<BitmapImage> pearImage = BitmapImage::makeFromImage(context, L"images/test/pear.jpg");
+        ScopedPointer<BitmapImage> plumImage = BitmapImage::makeFromImage(context, L"images/test/plum.jpg");
+        ScopedPointer<BitmapImage> orangeImage = BitmapImage::makeFromImage(context, L"images/test/orange.jpg");
+        ScopedPointer<BitmapImage> bananaImage = BitmapImage::makeFromImage(context, L"images/test/banana.jpg");
+        ScopedPointer<BitmapImage> beerImage = BitmapImage::makeFromImage(context, L"images/test/beer.jpg");
+        ScopedPointer<BitmapImage> lemonImage = BitmapImage::makeFromImage(context, L"images/test/lemon.jpg");
 
         items = {
             ghnew StringObjectHeader("Character tests"),
@@ -71,7 +71,7 @@ public:
         recyclerView->Items = ghnew ListItemSource<StringObject*>(items);
         recyclerView->Adapters = {
             ghnew StringHeaderAdapter(theme),
-            ghnew StringItemAdapter(theme)
+            ghnew StringItemAdapter(context, theme)
         };
 
         Children = { recyclerView, scrollBar };

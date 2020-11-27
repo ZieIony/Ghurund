@@ -55,9 +55,9 @@ namespace Ghurund {
 			return commandList;
 		}
 
-		void finishFrame(Frame& frame) {
+		Status finishFrame(Frame& frame) {
 			stats.finishFrame();
-			frame.finish();
+			return frame.finish();
 		}
 
         const XMFLOAT4* getClearColor() const {

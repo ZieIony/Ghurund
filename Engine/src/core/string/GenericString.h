@@ -68,7 +68,13 @@ namespace Ghurund {
         }
 
         GenericString(GenericString&& other) {
-            *this = std::move(other);
+            v = other.v;
+            size = other.size;
+            initial = other.initial;
+            capacity = other.capacity;
+
+            other.v = nullptr;
+            other.size = 0;
         }
 
         ~GenericString() {
@@ -84,17 +90,21 @@ namespace Ghurund {
             computeHash();
         }
 
-        inline void add(const Type* c) {
-            size_t len = lengthOf(c) + 1;
+        inline void add(const Type* str) {
+            if (!str)
+                return;
+            size_t len = lengthOf(str) + 1;
             fit(size + len);
-            memcpy(v + size - 1, c, len * sizeof(Type));
+            memcpy(v + size - 1, str, len * sizeof(Type));
             size += len - 1;	// null terminator already present
             computeHash();
         }
 
-        inline void add(const Type* c, size_t len) {
+        inline void add(const Type* str, size_t len) {
+            if (!str)
+                return;
             fit(size + len);
-            memcpy(v + size - 1, c, len * sizeof(Type));
+            memcpy(v + size - 1, str, len * sizeof(Type));
             size += len;
             v[size - 1] = 0;
             computeHash();

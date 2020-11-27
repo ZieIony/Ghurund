@@ -7,22 +7,20 @@
 #include "ui/mixin/BackgroundMixin.h"
 #include "ui/mixin/BorderMixin.h"
 #include "ui/mixin/PaddingMixin.h"
+#include "ui/widget/ClickResponseView.h"
 
 namespace Ghurund::UI {
 
     class ImageButtonLayout:public ButtonLayout, public BackgroundLayoutMixin, public BorderLayoutMixin, public ImageLayoutMixin, public PaddingLayoutMixin {
     private:
-        StackLayout* stack = nullptr;
+        ScopedPointer<StackLayout> stack;
 
     protected:
         Theme& theme;
+        ScopedPointer<ClickResponseView> clickResponseView;
 
     public:
         ImageButtonLayout(Theme& theme):theme(theme) {}
-
-        ~ImageButtonLayout() {
-            stack->release();
-        }
 
         virtual void init() override;
 

@@ -34,7 +34,6 @@ namespace Ghurund::UI {
             }
             gravity.horizontal = Alignment::Horizontal::CENTER;
             gravity.vertical = Alignment::Vertical::CENTER;
-            cacheEnabled = true;
         }
 
         ~ImageView() {

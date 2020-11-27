@@ -1,16 +1,17 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/gdi/GdiFont.h"
+#include "ui/Font.h"
 #include "ui/Style.h"
+#include "ui/Graphics2D.h"
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     private:
-        String text;
-        unsigned int textColor = 0xde000000;
+        UnicodeString text;
         Font* font = nullptr;
         Paint paint;
+        ComPtr<IDWriteTextLayout> textLayout;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
         static const Ghurund::Type& GET_TYPE() {
@@ -30,36 +31,34 @@ namespace Ghurund::UI {
     public:
         TextBlock() {
             text = "text";
-            cacheEnabled = true;
         }
 
-        TextBlock(const String& text, Font* font):text(text) {
+        TextBlock(const UnicodeString& text, Font* font):text(text) {
             font->addReference();
             this->font = font;
-            cacheEnabled = true;
         }
 
-        TextBlock(Style<TextBlock>* style):TextBlock() {
+        TextBlock(Style<TextBlock>* style) {
             style->apply(*this);
             style->onStateChanged(*this);
         }
 
-        String& getText() {
+        UnicodeString& getText() {
             return text;
         }
 
-        void setText(const String& text) {
+        void setText(const UnicodeString& text) {
             this->text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) String& Text;
+        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
 
         inline unsigned int getTextColor() const {
-            return textColor;
+            return paint.Color;
         }
 
         inline void setTextColor(unsigned int color) {
-            textColor = color;
+            paint.Color = color;
         }
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;

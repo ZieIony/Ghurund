@@ -16,7 +16,7 @@ namespace Ghurund::Editor {
         ScopedPointer<HorizontalLayout> row;
         ScopedPointer<ImageButton> closeButton;
         ScopedPointer<TextBlock> title;
-        Gdiplus::Image* closeIcon;
+        ScopedPointer<BitmapImage> closeIcon;
 
     public:
         TitleBar(Theme& theme) {
@@ -27,10 +27,9 @@ namespace Ghurund::Editor {
                 title = ghnew TextBlock(theme.textViewPrimaryStyle);
                 title->PreferredSize.width = PreferredSize::Width::FILL;
                 title->TextColor = theme.getColorForegroundPrimaryOnAccent();
-                closeIcon = new Gdiplus::Image(L"icons/close 18.png");
-                BitmapImage* closeIconImage = ghnew BitmapImage(closeIcon);
+//                closeIcon = ghnew BitmapImage(L"icons/close 18.png");
                 closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout(theme));
-                closeButton->Image = closeIconImage;
+              //  closeButton->Image = closeIcon;
                 closeButton->ImageTint = theme.getColorForegroundPrimaryOnAccent();
             }
             row->Alignment.vertical = Alignment::Vertical::CENTER;
@@ -39,14 +38,14 @@ namespace Ghurund::Editor {
             Children = { backgroundView, row };
         }
 
-        inline String& getText() {
+        inline UnicodeString& getText() {
             return title->Text;
         }
 
-        inline void setText(const String& text) {
+        inline void setText(const UnicodeString& text) {
             title->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) String& Text;
+        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
     };
 }

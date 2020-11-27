@@ -8,16 +8,15 @@ namespace Ghurund::UI {
         TextBlock* textView = nullptr;
 
     public:
-        const String& getText() const {
+        const UnicodeString& getText() const {
             return textView->Text;
         }
 
-        void setText(const String& text) {
+        void setText(const UnicodeString& text) {
             this->textView->Text = text;
-            this->textView->invalidateCache();
         }
 
-        __declspec(property(get = getText, put = setText)) const String& Text;
+        __declspec(property(get = getText, put = setText)) const UnicodeString& Text;
 
         inline unsigned int getTextColor() const {
             return textView->TextColor;
@@ -25,7 +24,6 @@ namespace Ghurund::UI {
 
         inline void setTextColor(unsigned int color) {
             textView->TextColor = color;
-            textView->invalidateCache();
         }
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
@@ -36,7 +34,6 @@ namespace Ghurund::UI {
 
         inline void setFont(Font* font) {
             textView->Font = font;
-            textView->invalidateCache();
         }
 
         __declspec(property(get = getFont, put = setFont)) Font* Font;

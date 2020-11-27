@@ -16,6 +16,7 @@ namespace Ghurund::UI {
             border->Color = theme.getColorForegroundPrimaryOnBackground();
             backgroundView->Color = theme.getColorControlNormal();
         }
+        clickResponseView->Pressed = ClickableView->Pressed;
     }
 
     void TextButtonFlatLayout::onStateChanged(Control& control) {
@@ -29,7 +30,13 @@ namespace Ghurund::UI {
             textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
             border->Color = 0;
         }
+        clickResponseView->Pressed = ClickableView->Pressed;
         backgroundView->Color = 0;
+    }
+
+    void TextButtonAccentLayout::init() {
+        __super::init();
+        clickResponseView->Color = theme.ColorHighlightOnAccent;
     }
 
     void TextButtonAccentLayout::onStateChanged(Control& control) {
@@ -41,8 +48,9 @@ namespace Ghurund::UI {
             backgroundView->Color = theme.getColorAccent();
         } else {
             textView->TextColor = theme.getColorForegroundPrimaryOnAccent();
-            backgroundView->Color = theme.getColorAccent();
+            backgroundView->Color = theme.ColorAccent;
         }
+        clickResponseView->Pressed = ClickableView->Pressed;
         border->Color = 0;
     }
 
@@ -55,7 +63,8 @@ namespace Ghurund::UI {
         paddingContainer->Padding.Horizontal = 8;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
-        stack->Children = { backgroundView, border, paddingContainer };
+        clickResponseView = makeScoped<ClickResponseView>(theme.ColorHighlightOnBackground);
+        stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
         ClickableView->Child = stack;
         root = ClickableView;
     }

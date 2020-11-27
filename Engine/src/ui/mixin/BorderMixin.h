@@ -20,17 +20,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBorderColor, put = setBorderColor)) unsigned int BorderColor;
 
-        inline float getCornerRadius() const {
-            return border->CornerRadius;
+        inline Shape* getBorderShape() const {
+            return border->Shape;
         }
 
-        inline void setCornerRadius(float radius) {
-            border->CornerRadius = radius;
+        inline void setBorderShape(Shape* shape) {
+            border->Shape = shape;
             if (clip)
-                clip->CornerRadius = radius;
+                clip->Shape = shape;
         }
 
-        __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
+        __declspec(property(get = getBorderShape, put = setBorderShape)) Shape* BorderShape;
 
         inline float getBorderThickness() const {
             return border->Thickness;

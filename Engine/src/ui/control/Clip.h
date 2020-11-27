@@ -1,23 +1,12 @@
 #pragma once
 
 #include "ControlContainer.h"
+#include "ui/Shape.h"
 
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
     private:
-        GdiPath* path;
-        float cornerRadius = 0.0f;
-        Gdiplus::RectF bounds;
-
-        inline void updatePath() {
-            bounds.Width = Size.width - 1;
-            bounds.Height = Size.height - 1;
-            if (cornerRadius == 0) {
-                path->setRect(bounds);
-            } else {
-                path->setRoundRect(bounds, cornerRadius);
-            }
-        }
+        Shape* shape = nullptr;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<Clip>();
         static const Ghurund::Type& GET_TYPE() {
@@ -29,38 +18,36 @@ namespace Ghurund::UI {
         }
 
     public:
-        Clip() {
-            path = ghnew GdiPath();
-            bounds.X = -0.5f;
-            bounds.Y = -0.5f;
-            setCornerRadius(0.0f);
-        }
-
         ~Clip() {
-            delete path;
+            delete shape;
         }
 
-        inline float getCornerRadius() const {
-            return cornerRadius;
+        inline Shape* getShape() {
+            return shape;
         }
 
-        inline void setCornerRadius(float radius) {
-            this->cornerRadius = radius;
-            updatePath();
+        inline void setShape(Shape* shape) {
+            this->shape = shape;
         }
 
-        __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
+        __declspec(property(get = getShape, put = setShape)) Shape* Shape;
 
         virtual void onLayout(float x, float y, float width, float height) override {
+            if (shape)
+                shape->Bounds = D2D1::RectF(x, y, x + width, y + height);
             __super::onLayout(x, y, width, height);
-            updatePath();
         }
 
         virtual void onDraw(Canvas& canvas) override {
-            canvas.save();
-            canvas.clipPath(*path);
-            __super::onDraw(canvas);
-            canvas.restore();
+            if (shape) {
+                canvas.clipShape(*shape);
+                __super::onDraw(canvas);
+                canvas.restoreClipShape();
+            } else {
+                canvas.clipRect(0, 0, Size.width, Size.height);
+                __super::onDraw(canvas);
+                canvas.restoreClipRect();
+            }
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

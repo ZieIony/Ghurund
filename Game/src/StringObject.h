@@ -78,15 +78,15 @@ public:
         colorView->release();
     }
 
-    Ghurund::String& getText() {
+    Ghurund::UnicodeString& getText() {
         return tv->Text;
     }
 
-    void setText(const Ghurund::String& text) {
+    void setText(const Ghurund::UnicodeString& text) {
         tv->Text = text;
     }
 
-    __declspec(property(get = getText, put = setText)) const String& Text;
+    __declspec(property(get = getText, put = setText)) const UnicodeString& Text;
 };
 
 class StringObjectItemRow:public StackLayout {
@@ -96,7 +96,7 @@ private:
     ImageView* imageView;
 
 public:
-    StringObjectItemRow(Theme& theme) {
+    StringObjectItemRow(ResourceContext& context, Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
         ScopedPointer<ColorView> colorView = ghnew ColorView(theme.getColorBackground());
 
@@ -112,7 +112,7 @@ public:
 
                 ScopedPointer<Clip> clip = ghnew Clip();
                 {
-                    clip->CornerRadius = 4;
+                    clip->Shape = ghnew Ghurund::UI::RoundRect(context.Graphics2D, 4.0f);
 
                     imageView = ghnew ImageView();
                     imageView->PreferredSize = { 48, 48 };
@@ -122,25 +122,25 @@ public:
                 ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
                 {
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
-                    column->Alignment.horizontal = Alignment::Horizontal::RIGHT;
+                    column->Alignment.horizontal = Alignment::Horizontal::CENTER;
 
                     tv = ghnew TextBlock(theme.textViewPrimaryStyle);
-                    tv->PreferredSize.width = PreferredSize::Width::FILL;
+                    tv->PreferredSize.width = PreferredSize::Width::WRAP;
                     tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
-                    tv2->PreferredSize.width = PreferredSize::Width::FILL;
+                    tv2->PreferredSize.width = PreferredSize::Width::WRAP;
                     TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
                     tb->Text = "CANCEL";
-                    column->Children = { tv, tv2, tb };
+                    column->Children = { tv, tb, tv2 };
                 }
 
-                row->Children = { clip, makeScoped<Space>(16.0f), column };
+                TextButtonPtr tb2 = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
+                tb2->Text = "CANCEL2";
+                row->Children = { tb2, clip, makeScoped<Space>(16.0f), column };
             }
             padding->Child = row;
-            ScopedPointer<ClickResponseView> responseView = ghnew ClickResponseView();
-            responseView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::WRAP };
-            responseView->Child = padding;
+            ScopedPointer<ClickResponseView> responseView = ghnew ClickResponseView(theme.ColorHighlightOnBackground);
 
-            Children = { colorView, responseView };
+            Children = { colorView, responseView, padding };
         }
     }
 
@@ -156,7 +156,6 @@ public:
 
     void setText(const Ghurund::String& text) {
         tv->Text = text;
-        tv->invalidateCache();
     }
 
     __declspec(property(get = getText, put = setText)) const String& Text;
@@ -167,14 +166,12 @@ public:
 
     void setSubtext(const String& text) {
         tv2->Text = text;
-        tv2->invalidateCache();
     }
 
     __declspec(property(get = getSubtext, put = setSubtext)) const String& Subtext;
 
     inline void setImage(BitmapImage* image) {
         imageView->Image = image;
-        imageView->invalidateCache();
     }
 
     inline BitmapImage* getImage() {
@@ -210,16 +207,17 @@ public:
 class StringItemAdapter:public ItemAdapter<StringObject*, Control> {
 private:
     Theme& theme;
+    ResourceContext& context;
 
 public:
-    StringItemAdapter(Theme& theme):theme(theme) {}
+    StringItemAdapter(ResourceContext& context, Theme& theme):context(context), theme(theme) {}
 
     virtual bool canHandleItem(StringObject* const& item, size_t position) const override {
         return item->type == StringObjectType::ITEM;
     }
 
     virtual Control* makeControl() const override {
-        return ghnew StringObjectItemRow(theme);
+        return ghnew StringObjectItemRow(context, theme);
     }
 
     virtual void bind(Control& control, StringObject* const& item, size_t position) const override {

@@ -74,7 +74,7 @@ namespace Ghurund {
             unsigned int x = LOWORD(lParam);
             unsigned int y = HIWORD(lParam);
 
-            RECT rc = { 0,0,window.Size.width, window.Size.height };
+            RECT rc = { 0,0,(LONG)window.Size.width, (LONG)window.Size.height };
             AdjustWindowRect(&rc, window.Class.Style, false);
 
             if (window.Position.x != x + rc.left && window.Position.y != y + rc.top) {
@@ -124,23 +124,30 @@ namespace Ghurund {
     }
 
     void SystemWindow::setRootView(Ghurund::UI::RootView* rootView) {
+        OnSizeChanged.remove(onSizeChangedHandler);
+        OnKeyEvent.clear();
+        OnMouseButtonEvent.clear();
+        OnMouseMotionEvent.clear();
+        OnMouseWheelEvent.clear();
+        OnUpdate.clear();
+        OnPaint.clear();
+
         setPointer(this->rootView, rootView);
 
         if (rootView) {
-            OnSizeChanged.remove(onSizeChangedHandler);
-            onSizeChangedHandler = EventHandler<Ghurund::Window>([rootView](Ghurund::Window& window) {
+            onSizeChangedHandler = EventHandler<Ghurund::Window>([rootView, this](Ghurund::Window& window) {
+                if (swapChain)
+                    swapChain->resize(Size.width, Size.height);
                 rootView->invalidate();
                 return true;
             });
             OnSizeChanged.add(onSizeChangedHandler);
 
-            OnKeyEvent.clear();
             OnKeyEvent.add([rootView](Ghurund::Window& window, const KeyEventArgs& args) {
                 rootView->dispatchKeyEvent(args);
                 return true;
             });
 
-            OnMouseButtonEvent.clear();
             OnMouseButtonEvent.add([this, rootView](Ghurund::Window& window, const MouseButtonEventArgs& args) {
                 if (rootView->dispatchMouseButtonEvent(args) && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
                     SetCapture(handle);
@@ -150,25 +157,21 @@ namespace Ghurund {
                 return true;
             });
 
-            OnMouseMotionEvent.clear();
             OnMouseMotionEvent.add([rootView](Ghurund::Window& window, const MouseMotionEventArgs& args) {
                 rootView->dispatchMouseMotionEvent(args);
                 return true;
             });
 
-            OnMouseWheelEvent.clear();
             OnMouseWheelEvent.add([rootView](Ghurund::Window& window, const MouseWheelEventArgs& args) {
                 rootView->dispatchMouseWheelEvent(args);
                 return true;
             });
 
-            OnUpdate.clear();
             OnUpdate.add([rootView](const Ghurund::Window& window, const Timer& timer) {
                 rootView->update(timer);
                 return true;
             });
 
-            OnPaint.clear();
             OnPaint.add([rootView](const Ghurund::Window& window) {
                 rootView->draw();
                 return true;

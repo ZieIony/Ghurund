@@ -1,28 +1,14 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/gdi/GdiPath.h"
+#include "ui/Shape.h"
 
 namespace Ghurund::UI {
-    class Border : public Control {
+    class Border: public Control {
     private:
         unsigned int color = 0x1f000000;
-        GdiPath* path;
-        float cornerRadius = 0.0f, thickness = 1.0f;
-        Gdiplus::RectF bounds;
         Paint paint;
-
-        inline void updatePath() {
-            bounds.X = 0;
-            bounds.Y = 0;
-            bounds.Width = Size.width - 1;
-            bounds.Height = Size.height - 1;
-            if (cornerRadius == 0) {
-                path->setRect(bounds);
-            } else {
-                path->setRoundRect(bounds, cornerRadius);
-            }
-        }
+        Ghurund::UI::Shape* shape = nullptr;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<Border>();
         static const Ghurund::Type& GET_TYPE() {
@@ -34,59 +20,55 @@ namespace Ghurund::UI {
         }
 
     public:
-        Border(unsigned int color = 0x1f000000):color(color) {
+        Border(unsigned int color = 0x1f000000) {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
-            path = ghnew GdiPath();
-            setCornerRadius(0.0f);
+            Color = color;
         }
 
         ~Border() {
-            delete path;
+            delete shape;
         }
 
-        inline unsigned int getColor() const {
-            return color;
+        inline uint32_t getColor() const {
+            return paint.Color;
         }
 
-        inline void setColor(unsigned int color) {
-            this->color = color;
+        inline void setColor(uint32_t color) {
+            paint.Color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) unsigned int Color;
+        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
 
-        inline float getCornerRadius() const {
-            return cornerRadius;
+        inline Shape* getShape() {
+            return shape;
         }
 
-        inline void setCornerRadius(float radius) {
-            this->cornerRadius = radius;
-            updatePath();
+        inline void setShape(Shape* shape) {
+            delete this->shape;
+            this->shape = shape;
         }
 
-        __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
+        __declspec(property(get = getShape, put = setShape)) Shape* Shape;
 
         inline float getThickness() const {
-            return thickness;
+            return paint.Thickness;
         }
 
         inline void setThickness(float thickness) {
-            this->thickness = thickness;
+            paint.Thickness = thickness;
         }
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;
 
-        virtual void onLayout(float x, float y, float width, float height) override {
-            __super::onLayout(x, y, width, height);
-            updatePath();
-        }
-
         virtual void onDraw(Canvas& canvas) override {
-            if (!color || thickness < 0.1f)
+            if (!Color || Thickness < 0.1f)
                 return;
-            paint.setThickness(thickness);
-            paint.setColor(color);
-            canvas.drawPath(*path, paint);
+            if (shape) {
+                canvas.drawShape(*shape, paint);
+            } else {
+                canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.width - Thickness, Size.height - Thickness, paint);
+            }
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

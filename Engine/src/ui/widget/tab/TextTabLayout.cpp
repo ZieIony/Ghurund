@@ -37,6 +37,5 @@ namespace Ghurund::UI {
             backgroundView->Color = theme.getColorBackground();
             border->Color = 0;
         }
-        TextBlock->invalidateCache();
     }
 }

@@ -19,6 +19,7 @@ namespace Ghurund {
         COMPILATION_ERROR,
         SCRIPT_EXCEPTION,
 
-        DIRECTX12_NOT_SUPPORTED
+        DIRECTX12_NOT_SUPPORTED,
+        DEVICE_LOST
     };
 }

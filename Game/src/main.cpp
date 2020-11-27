@@ -15,6 +15,9 @@
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "D3DCompiler.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib")
+#pragma comment(lib, "D3D11.lib")
 
 #include "windows.h"
 #include "stdio.h"
@@ -73,7 +76,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     _____________________checkMemory();
 
     Logger::init();
-    Logger::log(LogType::INFO, "working dir: {}\n", DirectoryPath(".").getAbsolutePath());
+    Logger::log(LogType::INFO, "working dir: {}\n", DirectoryPath(".").AbsolutePath);
 
     HANDLE singleInstanceMutex = CreateMutex(nullptr, true, "Ghurund::Game");
     bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;

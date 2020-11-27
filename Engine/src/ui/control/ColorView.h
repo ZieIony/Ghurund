@@ -6,7 +6,6 @@
 namespace Ghurund::UI {
     class ColorView:public Control {
     private:
-        unsigned int color;
         Paint paint;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<ColorView>();
@@ -19,25 +18,25 @@ namespace Ghurund::UI {
         }
 
     public:
-        ColorView(unsigned int color = 0x1b000000):color(color) {
+        ColorView(unsigned int color = 0x1b000000) {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
+            Color = color;
         }
 
         inline unsigned int getColor() const {
-            return color;
+            return paint.Color;
         }
 
         inline void setColor(unsigned int color) {
-            this->color = color;
+            paint.Color = color;
         }
 
         __declspec(property(get = getColor, put = setColor)) unsigned int Color;
 
         virtual void onDraw(Canvas& canvas) {
-            if (!color)
+            if (!paint.Color)
                 return;
-            paint.Color = color;
             canvas.fillRect(0, 0, Size.width, Size.height, paint);
         }
 

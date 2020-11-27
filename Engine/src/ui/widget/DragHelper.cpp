@@ -10,7 +10,7 @@ namespace Ghurund::UI {
             } else if (args.Action == MouseAction::UP && args.Button == MouseButton::LEFT) {
                 pressed = false;
             }
-            return false;
+            return true;
         });
         handle.OnMouseMotion.add([this, &content](EventConsumer& sender, const MouseMotionEventArgs& args) {
             Control* parent = content.Parent;
@@ -22,6 +22,7 @@ namespace Ghurund::UI {
                 };
                 if (prevControlPos.x != content.Position.x || prevControlPos.y != content.Position.y)
                     onDragged();
+                return true;
             }
             return false;
         });

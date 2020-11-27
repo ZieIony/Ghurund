@@ -27,6 +27,8 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\core\collection\List.cpp" />
+    <ClCompile Include="src\core\io\DirectoryPath.cpp" />
+    <ClCompile Include="src\core\io\FilePath.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
     <ClCompile Include="src\core\string\ASCIIString.cpp" />
     <ClCompile Include="src\core\string\UnicodeString.cpp" />
@@ -88,6 +90,7 @@
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
+    <ClCompile Include="src\ui\Canvas.cpp" />
     <ClCompile Include="src\ui\control\ClickableView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
@@ -97,8 +100,8 @@
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\TextBlock.cpp" />
     <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
-    <ClCompile Include="src\ui\gdi\GdiCanvas.cpp" />
-    <ClCompile Include="src\ui\gdi\GdiFont.cpp" />
+    <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
+    <ClCompile Include="src\ui\Font.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
@@ -109,6 +112,8 @@
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
+    <ClCompile Include="src\ui\Shape.cpp" />
+    <ClCompile Include="src\ui\Graphics2D.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadioLayout.cpp" />
     <ClCompile Include="src\ui\widget\button\ImageButtonLayout.cpp" />
@@ -304,6 +309,7 @@
     <ClInclude Include="src\TextUtils.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\Animation.h" />
+    <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\ChildrenList.h" />
@@ -316,10 +322,13 @@
     <ClInclude Include="src\ui\control\ControlContainer.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
+    <ClInclude Include="src\ui\control\MouseEvents.h" />
+    <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\layout\DesktopLayout.h" />
+    <ClInclude Include="src\ui\Shape.h" />
+    <ClInclude Include="src\ui\Graphics2D.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
-    <ClInclude Include="src\ui\gdi\Gdi.h" />
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
     <ClInclude Include="src\ui\control\HoverableView.h" />
     <ClInclude Include="src\ui\adapter\ItemAdapter.h" />
@@ -344,7 +353,6 @@
     <ClInclude Include="src\ui\control\Surface.h" />
     <ClInclude Include="src\ui\control\TextBlock.h" />
     <ClInclude Include="src\ui\Cursor.h" />
-    <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
@@ -366,12 +374,8 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\gdi\GdiFont.h" />
-    <ClInclude Include="src\ui\gdi\GdiGui.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImage.h" />
-    <ClInclude Include="src\ui\gdi\GdiPath.h" />
+    <ClInclude Include="src\ui\Font.h" />
     <ClInclude Include="src\ui\Alignment.h" />
-    <ClInclude Include="src\ui\Gui.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
     <ClInclude Include="src\ui\layout\TextLayoutManager.h" />

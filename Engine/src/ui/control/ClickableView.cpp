@@ -17,20 +17,21 @@ namespace Ghurund::UI {
         }
         return false;
     }
-    
+
     bool ClickableView::onMouseButtonEvent(const MouseButtonEventArgs& event) {
         bool result = false;
         if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
             buttons[event.Button] = true;
             setCapturedChild(this);
             onStateChanged();
-            onPressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs));
-            return true;
+            if (onPressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs)))
+                return true;
         } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
             buttons[event.Button] = false;
             setCapturedChild(nullptr);
             onStateChanged();
-            return onClicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside));
+            if (onClicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside)))
+                return true;
         }
         return __super::onMouseButtonEvent(event);
     }

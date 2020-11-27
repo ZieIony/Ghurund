@@ -1,5 +1,4 @@
 ﻿#include "MathUtils.h"
-#include "ui/gdi/GdiGui.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/button/TextButton.h"
@@ -35,21 +34,16 @@ import Module;
 
 class TestApplication:public Application {
 private:
-    GdiGui gui;
-
     ::Material::Theme* theme;
     ::Material::Theme* menuTheme;
     ModuleTest test;
 
 public:
     void onInit() {
-
         /*testLevel = ghnew TestLevel(*this);
         LevelManager.setLevel(testLevel);
 
         Renderer.ClearColor = &makeColor(0xff7f7f7f);*/
-
-        gui.init();
 
         SystemWindow* window = nullptr;
         if (Settings.windowed) {
@@ -60,27 +54,23 @@ public:
 
         window->initParameters(ParameterManager);
 
-        window->OnSizeChanged.add([&](Ghurund::Window& window) {
-            //swapChain->resize(args.width, args.height);
-            return true;
-        });
-
         window->Size = { Settings.width, Settings.height };
-        /*SwapChain* swapChain = ghnew SwapChain();
-        swapChain->init(Graphics, *window, FRAME_COUNT);
-        window->SwapChain = swapChain;*/
+        SwapChain* swapChain = ghnew SwapChain();
+        swapChain->init(Graphics, &Graphics2D, *window, FRAME_COUNT);
+        window->SwapChain = swapChain;
 
-        Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::GdiCanvas(window->Handle);
+        Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
+        canvas->init(Graphics2D);
         ScopedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
         rootView->BackgroundColor = 0xffffffff;
         window->RootView = rootView;
         Windows.add(window);
 
-        theme = ghnew::Material::Light(0xff0078D7);
-        menuTheme = ghnew::Material::Light(0xff0078D7);
+        theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
+        menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
 
         ScopedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
-        ScopedPointer<LogPanel> logPanel = ghnew LogPanel(*theme);
+        ScopedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
         logWindow->Content = logPanel;
         logWindow->Title = "Logs";
         /*Logger::init(ghnew CallbackLogOutput([this](LogType type, const tchar* log) {
@@ -93,10 +83,10 @@ public:
         splitLayout->Child1 = redSurface;
         splitLayout->Child2 = logWindow;
 
-        ScopedPointer<TestRecycler> testRecycler = ghnew TestRecycler(*theme);
+        ScopedPointer<TestRecycler> testRecycler = ghnew TestRecycler(ResourceManager, ResourceContext, *theme);
         testRecycler->Name = "test recycler";
 
-        ScopedPointer<TestImageViews> testImageViews = ghnew TestImageViews(*theme);
+        ScopedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
         ScopedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(*theme);
 
         ScopedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
@@ -105,7 +95,7 @@ public:
         ScopedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
         column->Name = "controls tab";
 
-        ScopedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*theme);
+        ScopedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext , *theme);
         ScopedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(*theme);
         ScopedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
@@ -125,9 +115,9 @@ public:
 
         ScopedPointer<VerticalLayout> mainColumn = ghnew VerticalLayout();
         {
-            Gdiplus::Image* copyIcon = new Gdiplus::Image(L"icons/copy 18.png");
-            Gdiplus::Image* cutIcon = new Gdiplus::Image(L"icons/cut 18.png");
-            Gdiplus::Image* pasteIcon = new Gdiplus::Image(L"icons/paste 18.png");
+            BitmapImage* copyIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/copy 18.png");
+            BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
+            BitmapImage* pasteIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/paste 18.png");
 
             MenuBarPtr menuBar = ghnew MenuBar(*menuTheme);
             menuBar->Name = "menu bar";
@@ -137,9 +127,9 @@ public:
                 }),
                 ghnew ButtonMenuItem("Edit", [this](Control& sender) {
                     Logger::log(LogType::INFO, "Edit clicked\n");
-                    Gdiplus::Image* copyIcon = new Gdiplus::Image(L"icons/copy 18.png");
-                    Gdiplus::Image* cutIcon = new Gdiplus::Image(L"icons/cut 18.png");
-                    Gdiplus::Image* pasteIcon = new Gdiplus::Image(L"icons/paste 18.png");
+                    BitmapImage* copyIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/copy 18.png");
+                    BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
+                    BitmapImage* pasteIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/paste 18.png");
                     PopupMenu* menu = ghnew PopupMenu(*menuTheme, *Windows[0]);
                     menu->Items = {
                         ghnew ButtonMenuItem("Undo", [](Control&) {
@@ -198,8 +188,6 @@ public:
     void onUninit() {
         delete theme;
         delete menuTheme;
-
-        gui.uninit();
         /*LevelManager.setLevel(nullptr);
         delete testLevel;*/
     }

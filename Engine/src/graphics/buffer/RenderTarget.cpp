@@ -1,5 +1,6 @@
 #include "RenderTarget.h"
 #include "MathUtils.h"
+#include "ui/Graphics2D.h"
 
 namespace Ghurund {
     Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
@@ -49,15 +50,33 @@ namespace Ghurund {
 
         resourceDesc.Format = format;
         clearVal.Format = format;
-        if (FAILED(graphics.Device->CreateCommittedResource(
-            &heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture)))) {
+        if (FAILED(graphics.Device->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("init RenderTarget with internal texture failed\n"));
-        }
 
         return init(graphics, texture);
     }
 
+    Status RenderTarget::init2D(Ghurund::UI::Graphics2D& graphics2d) {
+        D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
+        if (FAILED(graphics2d.Device11->CreateWrappedResource(texture, &d3d11Flags, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_RENDER_TARGET, IID_PPV_ARGS(&wrappedRenderTarget))))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateWrappedResource failed\n");
+
+        ComPtr<IDXGISurface> surface;
+        if (FAILED(wrappedRenderTarget.As(&surface)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "m_wrappedRenderTarget.As(&surface) failed\n");
+
+        D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
+            D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
+            D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
+        if (FAILED(graphics2d.DeviceContext->CreateBitmapFromDxgiSurface(surface.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf())))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateBitmapFromDxgiSurface failed\n");
+
+        return Status::OK;
+    }
+
     void RenderTarget::uninit() {
+        wrappedRenderTarget.Reset();
+        d2dRenderTarget.Reset();
         if (rtvHeap) {
             rtvHeap->Release();
             rtvHeap = nullptr;
@@ -132,7 +151,7 @@ namespace Ghurund {
 
             DXGI_FORMAT fmt = desc.Format;
 
-            D3D12_FEATURE_DATA_FORMAT_SUPPORT formatInfo = {fmt, D3D12_FORMAT_SUPPORT1_NONE, D3D12_FORMAT_SUPPORT2_NONE};
+            D3D12_FEATURE_DATA_FORMAT_SUPPORT formatInfo = { fmt, D3D12_FORMAT_SUPPORT1_NONE, D3D12_FORMAT_SUPPORT2_NONE };
             hr = device->CheckFeatureSupport(D3D12_FEATURE_FORMAT_SUPPORT, &formatInfo, sizeof(formatInfo));
             if (FAILED(hr))
                 return Status::CALL_FAIL;
@@ -205,14 +224,14 @@ namespace Ghurund {
 
         UINT64 imageSize = dstRowPitch * UINT64(desc.Height);
         void* mappedMemory = nullptr;
-        D3D12_RANGE readRange = {0, static_cast<SIZE_T>(imageSize)};
-        D3D12_RANGE writeRange = {0, 0};
+        D3D12_RANGE readRange = { 0, static_cast<SIZE_T>(imageSize) };
+        D3D12_RANGE writeRange = { 0, 0 };
         HRESULT hr = stagingTexture->Map(0, &readRange, &mappedMemory);
         if (FAILED(hr))
             return Status::CALL_FAIL;
-        
-        for (size_t x = 0; x < desc.Width; x ++) {
-            for (size_t y = 0; y < desc.Height; y ++) {
+
+        for (size_t x = 0; x < desc.Width; x++) {
+            for (size_t y = 0; y < desc.Height; y++) {
                 BYTE* row = (BYTE*)mappedMemory + (y * dstRowPitch);
                 uint32_t* pixelRow = (uint32_t*)row;
                 uint32_t* pixelAddress = pixelRow + x;

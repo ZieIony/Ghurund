@@ -2,7 +2,7 @@
 #include "Graphics.h"
 
 namespace Ghurund {
-    Status Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
+    Status Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, Ghurund::RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
         this->renderTarget = renderTarget;
         this->depthBuffer = depthBuffer;
         this->viewport = viewport;
@@ -34,5 +34,11 @@ namespace Ghurund {
     Status Frame::finish() {
         renderTarget->finish(*commandList);
         return commandList->finish();
+    }
+
+    void Frame::flush() {
+        commandList->finish();
+        commandList->wait();
+        commandList->reset();
     }
 }

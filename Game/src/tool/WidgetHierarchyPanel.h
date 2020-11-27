@@ -18,23 +18,23 @@ namespace Ghurund::Editor {
         ScopedPointer<SearchField> searchField;
         ScopedPointer<TextBlock> objectTypeText;
         TreeViewPtr treeView;
-        Gdiplus::Image* sortIcon, * categoryIcon;
+        BitmapImage* sortIcon, * categoryIcon;
 
     public:
-        WidgetHierarchyPanel(Theme& theme) {
+        WidgetHierarchyPanel(ResourceContext& context, Theme& theme) {
             objectTypeText = ghnew TextBlock("", theme.getSecondaryTextFont());
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(theme);
-            sortIcon = new Gdiplus::Image(L"icons/sort 18.png");
-            categoryIcon = new Gdiplus::Image(L"icons/category 18.png");
-            toolbar->Items.addAll({
+            sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
+            categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
+            toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, "sort", [](Ghurund::UI::Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
                    ghnew ButtonMenuItem(categoryIcon, "category", [](Ghurund::UI::Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
-                });
+            };
             treeView = ghnew TreeView();
             treeView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
             ScopedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());

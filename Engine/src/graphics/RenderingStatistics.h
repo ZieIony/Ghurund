@@ -6,10 +6,10 @@
 namespace Ghurund {
     class RenderingStatistics:public ObservableObject {
         friend class DrawableComponent;
-		friend class DrawingSystem;
+        friend class DrawingSystem;
 
     private:
-        float renderingTime = 0;
+        double renderingTime = 0;
         size_t modelsCulled = 0;
         size_t modelsRendered = 0;
         size_t trianglesRendered = 0;
@@ -18,11 +18,11 @@ namespace Ghurund {
         Timer timer;
 
     public:
-        float getRenderingTime() const {
+        double getRenderingTime() const {
             return renderingTime;
         }
 
-        __declspec(property(get = getRenderingTime)) float RenderingTime;
+        __declspec(property(get = getRenderingTime)) double RenderingTime;
 
         size_t getModelsCulled() const {
             return modelsCulled;
@@ -59,7 +59,7 @@ namespace Ghurund {
 
         void finishFrame() {
             timer.tick();
-            renderingTime += timer.FrameTime;
+            renderingTime = timer.FrameTime;
             notifyObjectChanged();
         }
     };

@@ -10,6 +10,10 @@
 
 #include <wincodec.h>
 
+namespace Ghurund::UI {
+    class Graphics2D;
+}
+
 namespace Ghurund {
     class ResourceContext: public Object {
     private:
@@ -22,6 +26,7 @@ namespace Ghurund {
 
     protected:
         Graphics& graphics;
+        Ghurund::UI::Graphics2D& graphics2d;
         Audio& audio;
         CommandList* commandList = nullptr;
         IWICImagingFactory* wicFactory = nullptr;
@@ -32,8 +37,8 @@ namespace Ghurund {
 		AllocatorMap allocators;
 
     public:
-        ResourceContext(Ghurund::Graphics& graphics, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
-            : graphics(graphics), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
+        ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
+            : graphics(graphics), graphics2d(graphics2d), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
 
         ~ResourceContext() {
             if (wicFactory)
@@ -59,6 +64,12 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getGraphics)) Graphics& Graphics;
+
+        Ghurund::UI::Graphics2D& getGraphics2D() {
+            return graphics2d;
+        }
+
+        __declspec(property(get = getGraphics2D)) Ghurund::UI::Graphics2D& Graphics2D;
 
         Audio& getAudio() {
             return audio;

@@ -23,15 +23,15 @@ namespace Ghurund::Editor {
         StackLayoutPtr layoutContent;
 
     public:
-        LayoutEditorTab(Theme& theme) {
+        LayoutEditorTab(ResourceContext& context, Theme& theme) {
             Name = "editor tab";
 
-            propertiesPanel = ghnew PropertyPanel(theme);
+            propertiesPanel = ghnew PropertyPanel(context, theme);
             propertiesWindow = ghnew ToolWindow(theme);
             propertiesWindow->Title = "Properties";
             propertiesWindow->Content = propertiesPanel;
             propertiesWindow->PreferredSize.width = 200;
-            widgetHierarchyPanel = ghnew WidgetHierarchyPanel(theme);
+            widgetHierarchyPanel = ghnew WidgetHierarchyPanel(context, theme);
             widgetHierarchyWindow = ghnew ToolWindow(theme);
             widgetHierarchyWindow->Title = "Widget";
             widgetHierarchyWindow->Content = widgetHierarchyPanel;

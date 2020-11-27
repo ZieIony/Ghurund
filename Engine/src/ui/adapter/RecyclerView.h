@@ -112,6 +112,7 @@ namespace Ghurund::UI {
             canvas.translate(scroll.x, scroll.y);
             for (Control* c : Children)
                 c->draw(canvas);
+            canvas.restoreClipRect();
             canvas.restore();
         }
 

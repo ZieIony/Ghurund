@@ -18,15 +18,15 @@ namespace Ghurund::UI {
             Content = textField;
         }
 
-        inline String& getValue() {
+        inline UnicodeString& getValue() {
             return textField->Text;
         }
 
-        inline void setValue(String& text) {
+        inline void setValue(UnicodeString& text) {
             textField->Text = text;
         }
 
-        __declspec(property(get = getValue, put = setValue)) String& Value;
+        __declspec(property(get = getValue, put = setValue)) UnicodeString& Value;
     };
 
     class StringPropertyRowAdapter:public ItemAdapter<ObjectProperty*, PropertyRow> {
@@ -46,7 +46,7 @@ namespace Ghurund::UI {
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {
             control.Label = item->Property.Name;
-            String b;
+            UnicodeString b;
             item->get((void**)&b);
             ((StringPropertyRow&)control).Value = b;
             control.Content->Enabled = !item->Property.ReadOnly;

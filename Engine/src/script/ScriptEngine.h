@@ -81,7 +81,7 @@ namespace Ghurund {
             return engine->CreateContext();
         }
 
-        void update(float dt);
+        void update(double dt);
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

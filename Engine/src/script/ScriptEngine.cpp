@@ -35,7 +35,7 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void ScriptEngine::update(float dt) {
+    void ScriptEngine::update(double dt) {
         for (ScriptComponent* c : Components) {
 			if (!c->Enabled)
 				continue;

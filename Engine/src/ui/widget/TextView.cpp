@@ -61,10 +61,10 @@ namespace Ghurund::UI {
                 auto tv = ((TextBlock*)c);
                 if (c->hitTest(x, y)) {
                     if (tv->Font) {
-                        TextSelection s = font->findSelection(tv->Text, x - c->Position.x);
-                        selection.index += s.index;
-                        selection.x = s.x;
-                        selection.control = c;
+                        //TextSelection s = font->findSelection(tv->Text, x - c->Position.x);
+                        //selection.index += s.index;
+                        //selection.x = s.x;
+                        //selection.control = c;
                         repaint();
                         return;
                     }

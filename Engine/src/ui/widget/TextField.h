@@ -22,15 +22,15 @@ namespace Ghurund::UI {
             Child = textView;
         }
 
-        String& getText() {
+        UnicodeString& getText() {
             return textView->Text;
         }
 
-        void setText(const String& text) {
+        void setText(const UnicodeString& text) {
             textView->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) String& Text;
+        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
 
         inline unsigned int getTextColor() const {
             return textView->TextColor;
@@ -78,7 +78,8 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
             if (Hovered || Pressed)
                 Cursor::IBEAM.set();
-            return true | __super::dispatchMouseMotionEvent(event);
+            __super::dispatchMouseMotionEvent(event);
+            return true;
         }
     };
 

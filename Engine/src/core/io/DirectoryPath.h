@@ -1,36 +1,20 @@
 #pragma once
 
 #include "Path.h"
-#include "application/log/Logger.h"
 
 namespace Ghurund {
 
     class DirectoryPath:public Path {
     public:
-        DirectoryPath(const UnicodeString& path):Path(path) {
-            DWORD attributes = GetFileAttributesW(path);
+        DirectoryPath(const UnicodeString& path);
 
-            if (attributes != INVALID_FILE_ATTRIBUTES && !(attributes & FILE_ATTRIBUTE_DIRECTORY))
-                Logger::log(LogType::ERR0R, _T("invalid directory path {}\n"), String(path.getData()));
-
-            if (!path.endsWith(L"/") && !path.endsWith(L"\\"))
-                this->path.add(L'\\');
-        }
-
-        DirectoryPath getRelativePath(const DirectoryPath& dir) const {
+        inline DirectoryPath getRelativePath(const DirectoryPath& dir) const {
             if (path.startsWith(dir))
                 return path.subString(dir.Length);
             return path;
         }
 
-        DirectoryPath getAbsolutePath() const {
-            DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr) + path.Size + 2); // slash and string terminator
-            wchar_t* fullPath = ghnew wchar_t[bufferLength];
-            GetFullPathNameW(path, bufferLength, fullPath, nullptr);
-            DirectoryPath absolutePath(fullPath);
-            delete[] fullPath;
-            return absolutePath;
-        }
+        DirectoryPath getAbsolutePath() const;
 
         __declspec(property(get = getAbsolutePath)) DirectoryPath AbsolutePath;
     };

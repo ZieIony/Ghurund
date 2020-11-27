@@ -18,6 +18,7 @@
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "script/ScriptEngine.h"
+#include "ui/Graphics2D.h"
 
 #include <thread>
 
@@ -32,6 +33,7 @@ namespace Ghurund {
         Graphics* graphics;
         Audio* audio;
         Physics* physics;
+        Ghurund::UI::Graphics2D* graphics2d;
 
         ResourceManager* resourceManager;
         ResourceContext* resourceContext, * asyncResourceContext;
@@ -176,5 +178,11 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
+
+        inline Ghurund::UI::Graphics2D& getGraphics2D() {
+            return *graphics2d;
+        }
+
+        __declspec(property(get = getGraphics2D)) Ghurund::UI::Graphics2D& Graphics2D;
     };
 }

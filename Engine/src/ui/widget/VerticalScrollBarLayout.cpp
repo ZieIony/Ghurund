@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         topButton = ghnew ImageButton(topButtonLayout);
         topButtonLayout->PaddingContainer->Padding.All = 0;
         topButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        topButton->Image = makeScoped<BitmapImage>("icons/arrow up 18.png");
+        topButton->Image = theme.ArrowUp;
 
         barButton = ghnew ImageButton(theme);
         barButton->PreferredSize = { PreferredSize::Width::FILL, 100.0f };
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         bottomButton = ghnew ImageButton(bottomButtonLayout);
         bottomButtonLayout->PaddingContainer->Padding.All = 0;
         bottomButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        bottomButton->Image = makeScoped<BitmapImage>("icons/arrow down 18.png");
+        bottomButton->Image = theme.ArrowDown;
 
         verticalLayout = ghnew VerticalLayout();
         verticalLayout->Children = { topButton, track, bottomButton };

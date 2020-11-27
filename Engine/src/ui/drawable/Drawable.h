@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ui/control/Control.h"
-#include "ui/gdi/Gdi.h"
 
 #include <DirectXMath.h>
 
@@ -13,8 +12,8 @@ namespace Ghurund::UI {
         bool transformationInvalid = true;
 
         inline void rebuildTransformation() {
-            transformation->Reset();
-            transformation->Translate(position.x, position.y);
+            transformation = D2D1::Matrix3x2F::Identity();
+            transformation.Translation(position.x, position.y);
             transformationInvalid = false;
         }
 
@@ -22,21 +21,16 @@ namespace Ghurund::UI {
         FloatSize size = { 0, 0 };
         PreferredSize preferredSize;
         XMFLOAT2 position = { 0,0 };
-        Gdiplus::Matrix* transformation;
+        D2D1::Matrix3x2F transformation;
 
         Control* owner = nullptr;
 
         ~Drawable() {
-            delete transformation;
             if (owner)
                 owner->release();
         }
 
     public:
-        Drawable() {
-            transformation = new Gdiplus::Matrix();
-        }
-
         inline const XMFLOAT2& getPosition() const {
             return position;
         }
@@ -93,7 +87,7 @@ namespace Ghurund::UI {
             if (transformationInvalid)
                 rebuildTransformation();
             canvas.save();
-            canvas.transform(*transformation);
+            canvas.transform(transformation);
 
             onDraw(canvas);
 
