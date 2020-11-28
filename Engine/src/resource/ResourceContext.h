@@ -27,7 +27,7 @@ namespace Ghurund {
     protected:
         Graphics& graphics;
         Ghurund::UI::Graphics2D& graphics2d;
-        Audio& audio;
+        Audio::Audio& audio;
         CommandList* commandList = nullptr;
         IWICImagingFactory* wicFactory = nullptr;
         ParameterManager& parameterManager;
@@ -37,7 +37,7 @@ namespace Ghurund {
 		AllocatorMap allocators;
 
     public:
-        ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Ghurund::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
+        ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Audio::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
             : graphics(graphics), graphics2d(graphics2d), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
 
         ~ResourceContext() {
@@ -71,11 +71,11 @@ namespace Ghurund {
 
         __declspec(property(get = getGraphics2D)) Ghurund::UI::Graphics2D& Graphics2D;
 
-        Audio& getAudio() {
+        Audio::Audio& getAudio() {
             return audio;
         }
 
-        __declspec(property(get = getAudio)) Audio& Audio;
+        __declspec(property(get = getAudio)) Audio::Audio& Audio;
 
         CommandList& getCommandList() {
             return *commandList;

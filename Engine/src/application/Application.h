@@ -31,7 +31,7 @@ namespace Ghurund {
         Client* client;
         Settings settings;
         Graphics* graphics;
-        Audio* audio;
+        Audio::Audio* audio;
         Physics* physics;
         Ghurund::UI::Graphics2D* graphics2d;
 
@@ -113,11 +113,11 @@ namespace Ghurund {
 
         __declspec(property(get = getGraphics)) Graphics& Graphics;
 
-        Audio& getAudio() {
+        Audio::Audio& getAudio() {
             return *audio;
         }
 
-        __declspec(property(get = getAudio)) Audio& Audio;
+        __declspec(property(get = getAudio)) Audio::Audio& Audio;
 
         Physics& getPhysics() {
             return *physics;

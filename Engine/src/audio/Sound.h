@@ -1,11 +1,12 @@
 #pragma once
 
-#include "resource/Resource.h"
 #include "Audio.h"
-#include <Shlwapi.h>
 #include "core/collection/List.h"
+#include "resource/Resource.h"
 
-namespace Ghurund {
+#include <Shlwapi.h>
+
+namespace Ghurund::Audio {
     enum class PlaybackState {
         STOPPED, PAUSED, PLAYING
     };

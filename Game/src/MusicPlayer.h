@@ -13,7 +13,7 @@ namespace Ghurund::Editor {
         ScopedPointer<ProgressBar> progressBar;
         ScopedPointer<ImageButton> playButton;
         ScopedPointer<ImageButton> stopButton;
-        ScopedPointer<Sound> sound;
+        ScopedPointer<Audio::Sound> sound;
 
     public:
         MusicPlayer(Theme& theme) {
@@ -40,17 +40,17 @@ namespace Ghurund::Editor {
             });
         }
 
-        inline Sound* getSound() {
+        inline Audio::Sound* getSound() {
             return sound;
         }
 
-        inline void setSound(Sound* sound) {
+        inline void setSound(Audio::Sound* sound) {
             this->sound = sound;
             playButton->Enabled = this->sound;
             stopButton->Enabled = this->sound;
         }
 
-        __declspec(property(get = getSound, put = setSound)) Sound* Sound;
+        __declspec(property(get = getSound, put = setSound)) Audio::Sound* Sound;
 
         virtual void onDraw(Canvas& canvas) override {
             __super::onDraw(canvas);

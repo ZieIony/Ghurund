@@ -15,7 +15,7 @@ namespace Ghurund {
         graphics->init();
         graphics2d = ghnew Ghurund::UI::Graphics2D();
         graphics2d->init(*graphics);
-        audio = ghnew Ghurund::Audio();
+        audio = ghnew Audio::Audio();
         audio->init();
         physics = ghnew Ghurund::Physics();
         physics->init();
