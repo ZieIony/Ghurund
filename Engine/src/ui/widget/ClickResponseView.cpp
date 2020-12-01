@@ -1,7 +1,7 @@
 #include "ClickResponseView.h"
 
 namespace Ghurund::UI {
-    void ClickResponseView::update(const Timer& timer) {
+    void ClickResponseView::onUpdate(const Timer& timer) {
         if (pressed)
             startTime = timer.TimeMs;
         uint32_t dt = (uint32_t)(timer.TimeMs - startTime);

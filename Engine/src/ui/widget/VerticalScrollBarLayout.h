@@ -8,12 +8,12 @@ namespace Ghurund::UI {
     class VerticalScrollBarLayout:public WidgetLayout {
     private:
         Theme& theme;
-        ScopedPointer<ImageButton> topButton;
-        ScopedPointer<Button> barButton;
-        ScopedPointer<ClickableView> clickableTrack;
+        SharedPointer<ImageButton> topButton;
+        SharedPointer<Button> barButton;
+        SharedPointer<ClickableView> clickableTrack;
         ManualLayoutPtr track;
-        ScopedPointer<ImageButton> bottomButton;
-        ScopedPointer<VerticalLayout> verticalLayout;
+        SharedPointer<ImageButton> bottomButton;
+        SharedPointer<VerticalLayout> verticalLayout;
 
     public:
         VerticalScrollBarLayout(Theme& theme):theme(theme) {}

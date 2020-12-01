@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Event.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "input/EventConsumer.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
@@ -313,7 +313,7 @@ namespace Ghurund::UI {
 
         void layout(float x, float y, float width, float height);
 
-        virtual void update(const Timer& timer) {}
+        virtual void onUpdate(const Timer& timer) {}
 
         void draw(Canvas& canvas);
 

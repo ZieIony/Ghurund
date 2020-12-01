@@ -53,11 +53,11 @@ namespace Ghurund::UI {
 
     void CheckBoxRadioTextLayout::init() {
         selectableView = ghnew Ghurund::UI::SelectableView();
-        ScopedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
+        SharedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
         row->setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::WRAP);
         textView = ghnew Ghurund::UI::TextBlock();
         imageView = ghnew Ghurund::UI::ImageView();
-        ScopedPointer<Space> space = ghnew Space();
+        SharedPointer<Space> space = ghnew Space();
         row->Children = { imageView, space, textView };
         row->Alignment.vertical = Alignment::Vertical::CENTER;
         selectableView->Child = row;

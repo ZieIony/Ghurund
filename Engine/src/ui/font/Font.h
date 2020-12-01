@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "core/string/String.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/Size.h"
 
 #include <dwrite.h>
@@ -15,17 +15,11 @@ namespace Ghurund::UI {
     class Control;
     class Graphics2D;
 
-    class TextSelection {
-    public:
-        Control* control;
-        size_t index = 0;
-        float x;
-    };
-
     class Font:public Pointer {
     private:
+        UnicodeString file;
         float size;
-        String familyName;
+        UnicodeString familyName;
         bool italic = false;
         unsigned int weight = 400;
 
@@ -34,7 +28,7 @@ namespace Ghurund::UI {
         Graphics2D* graphics2d = nullptr;
 
     public:
-        Font(const String& file, const String& family, float size, unsigned int weight = 400, bool italic = false);
+        Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight = 400, bool italic = false);
 
         Status init(Graphics2D& graphics2d);
 

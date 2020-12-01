@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MenuItem.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/Theme.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/PaddingContainer.h"
@@ -11,10 +11,10 @@
 namespace Ghurund::UI {
     class ButtonPopupMenuRow:public ClickableView {
     private:
-        ScopedPointer<ImageView> icon;
-        ScopedPointer<TextBlock> text;
-        ScopedPointer<PaddingContainer> padding;
-        ScopedPointer<HorizontalLayout> row;
+        SharedPointer<ImageView> icon;
+        SharedPointer<TextBlock> text;
+        SharedPointer<PaddingContainer> padding;
+        SharedPointer<HorizontalLayout> row;
 
     public:
         ButtonPopupMenuRow(Ghurund::UI::Theme& theme) {
@@ -77,7 +77,7 @@ namespace Ghurund::UI {
         }
 
         virtual Control* makeControl() const {
-            ScopedPointer<Style<Separator>> style = ghnew HorizontalSeparatorStyle(theme);
+            SharedPointer<Style<Separator>> style = ghnew HorizontalSeparatorStyle(theme);
             Separator* separator = ghnew Separator(style);
             separator->PreferredSize.width = PreferredSize::Width::FILL;
             return separator;

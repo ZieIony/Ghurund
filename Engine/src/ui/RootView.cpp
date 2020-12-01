@@ -20,9 +20,6 @@ namespace Ghurund::UI {
 
     void RootView::invalidate() {
         needsLayout = true;
-        measure((float)window.Size.width, (float)window.Size.height);
-        layout(0, 0, (float)window.Size.width, (float)window.Size.height);
-        repaint();
     }
 
     bool RootView::dispatchKeyEvent(const KeyEventArgs& event) {

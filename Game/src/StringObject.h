@@ -2,7 +2,7 @@
 
 #include "MaterialColors.h"
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "core/string/String.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/Clip.h"
@@ -52,8 +52,8 @@ struct StringObjectHeader:public StringObject {
 
 class StringObjectHeaderRow:public StackLayout {
 private:
-    ScopedPointer<TextBlock> tv;
-    ScopedPointer<PaddingContainer> padding;
+    SharedPointer<TextBlock> tv;
+    SharedPointer<PaddingContainer> padding;
 
 public:
     StringObjectHeaderRow(Theme& theme) {
@@ -98,19 +98,19 @@ private:
 public:
     StringObjectItemRow(ResourceContext& context, Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
-        ScopedPointer<ColorView> colorView = ghnew ColorView(theme.getColorBackground());
+        SharedPointer<ColorView> colorView = ghnew ColorView(theme.ColorBackground);
 
-        ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
+        SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
         {
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.Horizontal = 16.0f;
             padding->Padding.Vertical = 8.0f;
 
-            ScopedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
+            SharedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
             {
                 row->PreferredSize.height = PreferredSize::Height::WRAP;
 
-                ScopedPointer<Clip> clip = ghnew Clip();
+                SharedPointer<Clip> clip = ghnew Clip();
                 {
                     clip->Shape = ghnew Ghurund::UI::RoundRect(context.Graphics2D, 4.0f);
 
@@ -119,26 +119,24 @@ public:
                     clip->Child = imageView;
                 }
 
-                ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
+                SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
                 {
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
-                    column->Alignment.horizontal = Alignment::Horizontal::CENTER;
+                    column->Alignment.horizontal = Alignment::Horizontal::RIGHT;
 
                     tv = ghnew TextBlock(theme.textViewPrimaryStyle);
-                    tv->PreferredSize.width = PreferredSize::Width::WRAP;
+                    tv->PreferredSize.width = PreferredSize::Width::FILL;
                     tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
-                    tv2->PreferredSize.width = PreferredSize::Width::WRAP;
+                    tv2->PreferredSize.width = PreferredSize::Width::FILL;
                     TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
                     tb->Text = "CANCEL";
-                    column->Children = { tv, tb, tv2 };
+                    column->Children = { tv, tv2, tb };
                 }
 
-                TextButtonPtr tb2 = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
-                tb2->Text = "CANCEL2";
-                row->Children = { tb2, clip, makeScoped<Space>(16.0f), column };
+                row->Children = { clip, makeShared<Space>(16.0f), column };
             }
             padding->Child = row;
-            ScopedPointer<ClickResponseView> responseView = ghnew ClickResponseView(theme.ColorHighlightOnBackground);
+            SharedPointer<ClickResponseView> responseView = ghnew ClickResponseView(theme.ColorHighlightOnBackground);
 
             Children = { colorView, responseView, padding };
         }

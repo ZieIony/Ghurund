@@ -53,17 +53,17 @@ namespace Ghurund {
 
         File file(*path);
         if (!file.Exists)
-            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, String("'") + *path + "' doesn't exist\n");
+            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, _T("'{}' doesn't exist\n"), *path);
 
         Status result = file.read();
         if (result != Status::OK)
             return result;
 
-        Logger::log(LogType::INFO, String("Loading '") + *path + "'\n");
+        Logger::log(LogType::INFO, _T("Loading '{}'\n"), *path);
         MemoryInputStream stream(file.Data, file.Size);
         result = load(context, path->Directory, stream, options);
         if (bytesRead != nullptr)
-            * bytesRead = stream.BytesRead;
+            *bytesRead = stream.BytesRead;
         return result;
     }
 
@@ -93,7 +93,7 @@ namespace Ghurund {
         MemoryInputStream stream(file.Data, file.Size);
         result = load(context, path->Directory, stream, options);
         if (bytesRead != nullptr)
-            * bytesRead = stream.BytesRead;
+            *bytesRead = stream.BytesRead;
         return result;
     }
 

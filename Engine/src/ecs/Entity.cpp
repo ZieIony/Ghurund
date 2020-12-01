@@ -14,10 +14,10 @@ namespace Ghurund {
             if (!type)
                 return Logger::log(LogType::ERR0R, Status::UNKNOWN_TYPE, _T("Attempted to load an unknown type.\n"));
             Allocator* allocator = context.Allocators.get(*type);
-            if(!allocator)
-                return Logger::log(LogType::ERR0R, Status::MISSING_ALLOCATOR, S("Allocator is missing for components of type ") + typeNamespace + "::" + typeName + _T(".\n"));
-            if(!type->Constructor)
-                return Logger::log(LogType::ERR0R, Status::MISSING_CONSTRUCTOR, S("Type ") + typeNamespace + "::" + typeName + _T(" is missing a constructor.\n"));
+            if (!allocator)
+                return Logger::log(LogType::ERR0R, Status::MISSING_ALLOCATOR, _T("Allocator is missing for components of type {}::{}\n"), typeNamespace, typeName);
+            if (!type->Constructor)
+                return Logger::log(LogType::ERR0R, Status::MISSING_CONSTRUCTOR, _T("Type {}::{} is missing a constructor.\n"), typeNamespace, typeName);
             Component* obj = (Component*)type->Constructor->newInstance(*allocator);
         }
         return Status::OK;

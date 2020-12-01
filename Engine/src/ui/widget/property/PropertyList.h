@@ -15,12 +15,12 @@ namespace Ghurund::UI {
         Object* item = nullptr;
 
     public:
-        PropertyList(Theme& theme) {
+        PropertyList(ResourceContext& context, Theme& theme) {
             recycler = ghnew RecyclerView<ObjectProperty*, PropertyRow>();
             recycler->LayoutManager = ghnew VerticalLayoutManager();
             recycler->Adapters.addAll({
                 ghnew BoolPropertyRowAdapter(theme),
-                ghnew StringPropertyRowAdapter(theme),
+                ghnew StringPropertyRowAdapter(context, theme),
                 ghnew PropertyRowAdapter(theme)
                 });
             recycler->Items = ghnew ListItemSource<ObjectProperty*>(items);
@@ -53,5 +53,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getItem, put = setItem)) Object* Item;
     };
 
-    typedef ScopedPointer<PropertyList> PropertyListPtr;
+    typedef SharedPointer<PropertyList> PropertyListPtr;
 }

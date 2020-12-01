@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/List.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/buffer/DynamicBuffer.h"
 #include "graphics/shader/ConstantBufferField.h"

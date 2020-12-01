@@ -15,6 +15,11 @@ namespace Ghurund::UI {
         if(FAILED(deviceContext->CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateEffect failed\n");
 
+        deviceContext->CreateEffect(CLSID_D2D1Shadow, &shadowEffect);
+
+        deviceContext->CreateEffect(CLSID_D2D1Flood, &floodEffect);
+        floodEffect->SetValue(D2D1_FLOOD_PROP_COLOR, D2D1::Vector4F(1.0f, 1.0f, 1.0f, 1.0f));
+
         return Status::OK;
     }
 }

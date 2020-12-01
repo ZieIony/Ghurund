@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         paddingContainer->Padding.All = 4;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
-        clickResponseView = makeScoped<ClickResponseView>(theme.ColorHighlightOnBackground);
+        clickResponseView = makeShared<ClickResponseView>(theme.ColorHighlightOnBackground);
         stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
         ClickableView->Child = stack;
         root = ClickableView;

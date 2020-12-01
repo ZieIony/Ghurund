@@ -60,5 +60,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<Separator> SeparatorPtr;
+    typedef SharedPointer<Separator> SeparatorPtr;
 }

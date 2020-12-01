@@ -70,9 +70,9 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
-        virtual void update(const Timer& timer) override {
+        virtual void onUpdate(const Timer& timer) override {
             for (Control* c : children)
-                c->update(timer);
+                c->onUpdate(timer);
         }
 
         virtual void onDraw(Canvas& canvas) override;

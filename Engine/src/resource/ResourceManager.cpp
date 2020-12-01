@@ -5,7 +5,7 @@ namespace Ghurund {
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
         Status result = resource.load(context, path, nullptr, options);
         if (result != Status::OK)
-            return Logger::log(LogType::ERR0R, result, String("failed to load file: ") + path + "\n");
+            return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
 
         if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &resource, &context](const FilePath& path, const FileChange& fileChange) {

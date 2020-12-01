@@ -15,8 +15,8 @@ using namespace Ghurund;
 namespace Ghurund::Editor {
     class LogRow:public HorizontalLayout {
     private:
-        ScopedPointer<ImageView> icon;
-        ScopedPointer<TextBlock> text;
+        SharedPointer<ImageView> icon;
+        SharedPointer<TextBlock> text;
 
     public:
         LogRow(Theme& theme) {
@@ -71,8 +71,8 @@ namespace Ghurund::Editor {
 
     class LogPanel:public VerticalLayout {
     private:
-        ScopedPointer<Toolbar> toolbar;
-        ScopedPointer<RecyclerView<Log, LogRow>> logRecycler;
+        SharedPointer<Toolbar> toolbar;
+        SharedPointer<RecyclerView<Log, LogRow>> logRecycler;
         BitmapImage* sortIcon, * categoryIcon;
 
         List<Log> items;

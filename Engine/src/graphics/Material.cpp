@@ -1,7 +1,7 @@
 #include "Material.h"
 #include "Graphics.h"
 #include "resource/ResourceManager.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 
 namespace Ghurund {
 	Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

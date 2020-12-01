@@ -73,13 +73,6 @@ namespace Ghurund {
             return *this;
         }
 
-        template<typename Type>
-        UnicodeString operator+(const Type str) {
-            UnicodeString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
         UnicodeString subString(size_t start)const {
             return UnicodeString(v + start);
         }

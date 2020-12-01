@@ -13,11 +13,11 @@ namespace Ghurund::UI {
 
     class TextButtonLayout:public ButtonLayout, public BackgroundLayoutMixin, public BorderLayoutMixin, public TextLayoutMixin, public PaddingLayoutMixin {
     private:
-        ScopedPointer<StackLayout> stack;
+        SharedPointer<StackLayout> stack;
 
     protected:
         Theme& theme;
-        ScopedPointer<ClickResponseView> clickResponseView;
+        SharedPointer<ClickResponseView> clickResponseView;
 
     public:
         TextButtonLayout(Theme& theme):theme(theme) {}

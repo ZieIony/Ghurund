@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
@@ -14,18 +14,18 @@ class TestFlowLayouts:public ScrollView {
 public:
     TestFlowLayouts(Theme& theme) {
         Name = "flow layouts tab";
-        ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
+        SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
         column->PreferredSize.height = PreferredSize::Height::WRAP;
         Child = column;
 
         {
             StackLayoutPtr stack = ghnew StackLayout();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
-            ScopedPointer<Border> border = ghnew Border();
-            ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
+            SharedPointer<Border> border = ghnew Border();
+            SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.All = 4;
-            ScopedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
+            SharedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
             flowLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             flowLayout->Spacing = { 8,8 };
             padding->Child = flowLayout;
@@ -34,7 +34,7 @@ public:
 
             for (size_t i = 0; i < 10; i++) {
                 TextButtonPtr button = ghnew TextButton(theme);
-                button->Text = S("test ") + (unsigned int)(i + 1);
+                button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
                 button->MinSize = FloatSize{ 60.0f, 60.0f };
                 flowLayout->Children.add(button);
             }
@@ -43,16 +43,16 @@ public:
             flowLayout->Children[8]->PreferredSize.width = PreferredSize::Width::FILL;
         }
 
-        column->Children.add(ScopedPointer<Space>(ghnew Space()));
+        column->Children.add(SharedPointer<Space>(ghnew Space()));
 
         {
             StackLayoutPtr stack = ghnew StackLayout();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
-            ScopedPointer<Border> border = ghnew Border();
-            ScopedPointer<PaddingContainer> padding = ghnew PaddingContainer();
+            SharedPointer<Border> border = ghnew Border();
+            SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
             padding->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Padding.All = 4;
-            ScopedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
+            SharedPointer<FlowLayout> flowLayout = ghnew FlowLayout();
             flowLayout->ReverseLayout = true;
             flowLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             flowLayout->Spacing = { 8,8 };
@@ -62,7 +62,7 @@ public:
 
             for (size_t i = 0; i < 10; i++) {
                 TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
-                button->Text = S("test ") + (unsigned int)(i + 1);
+                button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
                 flowLayout->Children.add(button);
             }
 

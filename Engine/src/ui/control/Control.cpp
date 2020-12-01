@@ -195,10 +195,13 @@ namespace Ghurund::UI {
     }
 
     void Control::layout(float x, float y, float width, float height) {
-        position.x = x;
-        position.y = y;
-        transformationInvalid = true;
+        if (position.x != x || position.y != y) {
+            position.x = x;
+            position.y = y;
+            transformationInvalid = true;
+        }
         if (needsLayout || size.width != width || size.height != height) {
+            transformationInvalid = true;
 #ifdef _DEBUG
       //      if (width < minSize.width || height < minSize.height)
     //            Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : S("[unnamed]"));

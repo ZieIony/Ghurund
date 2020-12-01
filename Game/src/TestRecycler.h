@@ -37,18 +37,18 @@ public:
             return true;
         });
 
-        ScopedPointer<BitmapImage> foxImage = BitmapImage::makeFromImage(context, L"images/test/fox.jpg");
-        ScopedPointer<BitmapImage> strawberryImage = BitmapImage::makeFromImage(context, L"images/test/strawberry.jpg");
-        ScopedPointer<BitmapImage> melonImage = BitmapImage::makeFromImage(context, L"images/test/melon.jpg");
-        ScopedPointer<BitmapImage> blueberryImage = BitmapImage::makeFromImage(context, L"images/test/blueberry.jpg");
-        ScopedPointer<BitmapImage> watermelonImage = BitmapImage::makeFromImage(context, L"images/test/watermelon.jpg");
-        ScopedPointer<BitmapImage> appleImage = BitmapImage::makeFromImage(context, L"images/test/apple.jpg");
-        ScopedPointer<BitmapImage> pearImage = BitmapImage::makeFromImage(context, L"images/test/pear.jpg");
-        ScopedPointer<BitmapImage> plumImage = BitmapImage::makeFromImage(context, L"images/test/plum.jpg");
-        ScopedPointer<BitmapImage> orangeImage = BitmapImage::makeFromImage(context, L"images/test/orange.jpg");
-        ScopedPointer<BitmapImage> bananaImage = BitmapImage::makeFromImage(context, L"images/test/banana.jpg");
-        ScopedPointer<BitmapImage> beerImage = BitmapImage::makeFromImage(context, L"images/test/beer.jpg");
-        ScopedPointer<BitmapImage> lemonImage = BitmapImage::makeFromImage(context, L"images/test/lemon.jpg");
+        SharedPointer<BitmapImage> foxImage = BitmapImage::makeFromImage(context, L"images/test/fox.jpg");
+        SharedPointer<BitmapImage> strawberryImage = BitmapImage::makeFromImage(context, L"images/test/strawberry.jpg");
+        SharedPointer<BitmapImage> melonImage = BitmapImage::makeFromImage(context, L"images/test/melon.jpg");
+        SharedPointer<BitmapImage> blueberryImage = BitmapImage::makeFromImage(context, L"images/test/blueberry.jpg");
+        SharedPointer<BitmapImage> watermelonImage = BitmapImage::makeFromImage(context, L"images/test/watermelon.jpg");
+        SharedPointer<BitmapImage> appleImage = BitmapImage::makeFromImage(context, L"images/test/apple.jpg");
+        SharedPointer<BitmapImage> pearImage = BitmapImage::makeFromImage(context, L"images/test/pear.jpg");
+        SharedPointer<BitmapImage> plumImage = BitmapImage::makeFromImage(context, L"images/test/plum.jpg");
+        SharedPointer<BitmapImage> orangeImage = BitmapImage::makeFromImage(context, L"images/test/orange.jpg");
+        SharedPointer<BitmapImage> bananaImage = BitmapImage::makeFromImage(context, L"images/test/banana.jpg");
+        SharedPointer<BitmapImage> beerImage = BitmapImage::makeFromImage(context, L"images/test/beer.jpg");
+        SharedPointer<BitmapImage> lemonImage = BitmapImage::makeFromImage(context, L"images/test/lemon.jpg");
 
         items = {
             ghnew StringObjectHeader("Character tests"),

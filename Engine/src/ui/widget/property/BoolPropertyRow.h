@@ -6,11 +6,11 @@
 namespace Ghurund::UI {
     class BoolPropertyRow: public PropertyRow {
     private:
-        ScopedPointer<CheckBox> checkBox;
+        SharedPointer<CheckBox> checkBox;
 
     public:
         BoolPropertyRow(Theme& theme):PropertyRow(theme) {
-            ScopedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
+            SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             checkBox = ghnew CheckBox(ghnew CheckBoxLayout(theme));
             checkBox->OnCheckedChanged.add([this](CheckBox& checkBox) {

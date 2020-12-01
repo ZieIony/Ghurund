@@ -93,10 +93,11 @@ namespace Ghurund {
         inline void add(const Type* str) {
             if (!str)
                 return;
-            size_t len = lengthOf(str) + 1;
+            size_t len = lengthOf(str);
             fit(size + len);
             memcpy(v + size - 1, str, len * sizeof(Type));
-            size += len - 1;	// null terminator already present
+            size += len;
+            v[size - 1] = 0;
             computeHash();
         }
 
@@ -108,54 +109,6 @@ namespace Ghurund {
             size += len;
             v[size - 1] = 0;
             computeHash();
-        }
-
-        inline void add(const float s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%f"), s);
-            add(c);
-        }
-
-        inline void add(const double s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%f"), s);
-            add(c);
-        }
-
-        inline void add(const unsigned int s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%u"), s);
-            add(c);
-        }
-
-        inline void add(const unsigned short s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%hu"), s);
-            add(c);
-        }
-
-        inline void add(const unsigned long s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%lu"), s);
-            add(c);
-        }
-
-        inline void add(const int s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%i"), s);
-            add(c);
-        }
-
-        inline void add(const short s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%hi"), s);
-            add(c);
-        }
-
-        inline void add(const long s) {
-            Type c[20];
-            _stprintf_s(c, 20, _T("%li"), s);
-            add(c);
         }
 
         inline void set(size_t i, Type c) {
@@ -171,6 +124,49 @@ namespace Ghurund {
             for (size_t i = 0; i < size; i++)
                 if (v[i] == from)
                     v[i] = to;
+        }
+
+        inline void insert(size_t pos, Type str) {
+            if (size + 1 > capacity)
+                resize(capacity + initial);
+            memcpy(v + pos + 1, v + pos, (size - pos) * sizeof(Type));
+            v[pos] = str;
+            size++;
+            computeHash();
+        }
+
+        inline void insert(size_t pos, const Type* str) {
+            if (!str)
+                return;
+            size_t len = lengthOf(str);
+            fit(size + len);
+            memcpy(v + pos + len, v + pos, (size - pos) * sizeof(Type));
+            memcpy(v + pos, str, len * sizeof(Type));
+            size += len;	// null terminator already present
+            computeHash();
+        }
+
+        inline void insert(size_t pos, const Type* str, size_t len) {
+            if (!str)
+                return;
+            fit(size + len);
+            memcpy(v + pos + len, v + pos, (size - pos) * sizeof(Type));
+            memcpy(v + pos, str, len * sizeof(Type));
+            size += len;	// null terminator already present
+            computeHash();
+        }
+
+        inline void remove(size_t pos, size_t length) {
+            memcpy(v + pos, v + pos + length, (size - pos - length) * sizeof(Type));
+            size -= length;
+            computeHash();
+        }
+
+        inline void clear() {
+            delete[] v;
+            size = capacity = initial;
+            v = ghnew Type[capacity];
+            computeHash();
         }
 
         inline const Type* getData()const {

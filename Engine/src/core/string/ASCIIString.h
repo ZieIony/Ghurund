@@ -73,13 +73,6 @@ namespace Ghurund {
             return *this;
         }
 
-        template<typename Type>
-        ASCIIString operator+(const Type str) {
-            ASCIIString copy(*this);
-            copy.add(str);
-            return copy;
-        }
-
         ASCIIString subString(size_t start)const {
             return ASCIIString(v + start);
         }

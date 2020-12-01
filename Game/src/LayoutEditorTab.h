@@ -15,11 +15,11 @@ using namespace Ghurund::UI;
 
 namespace Ghurund::Editor {
     class LayoutEditorTab:public ControlContainer {
-        ScopedPointer<ToolWindow> propertiesWindow;
-        ScopedPointer<PropertyPanel> propertiesPanel;
-        ScopedPointer<ToolWindow> widgetHierarchyWindow;
-        ScopedPointer<WidgetHierarchyPanel> widgetHierarchyPanel;
-        ScopedPointer<TextButton> editedControl;
+        SharedPointer<ToolWindow> propertiesWindow;
+        SharedPointer<PropertyPanel> propertiesPanel;
+        SharedPointer<ToolWindow> widgetHierarchyWindow;
+        SharedPointer<WidgetHierarchyPanel> widgetHierarchyPanel;
+        SharedPointer<TextButton> editedControl;
         StackLayoutPtr layoutContent;
 
     public:
@@ -43,9 +43,9 @@ namespace Ghurund::Editor {
             layoutContent->Children = { editedControl };
             propertiesPanel->Item = editedControl;
 
-            ScopedPointer<SplitLayout> widgetHierarchySplit = ghnew SplitLayout();
+            SharedPointer<SplitLayout> widgetHierarchySplit = ghnew SplitLayout();
             widgetHierarchySplit->Orientation = Orientation::HORIZONTAL;
-            ScopedPointer<SplitLayout> propertiesSplit = ghnew SplitLayout();
+            SharedPointer<SplitLayout> propertiesSplit = ghnew SplitLayout();
             propertiesSplit->Orientation = Orientation::HORIZONTAL;
             widgetHierarchySplit->Child1 = widgetHierarchyWindow;
             widgetHierarchySplit->Child2 = propertiesSplit;

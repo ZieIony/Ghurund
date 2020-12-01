@@ -135,9 +135,13 @@ namespace Ghurund {
         setPointer(this->rootView, rootView);
 
         if (rootView) {
+            rootView->PreferredSize = { (float)Size.width, (float)Size.height };
+            rootView->invalidate();
+
             onSizeChangedHandler = EventHandler<Ghurund::Window>([rootView, this](Ghurund::Window& window) {
                 if (swapChain)
                     swapChain->resize(Size.width, Size.height);
+                rootView->PreferredSize = { (float)Size.width, (float)Size.height };
                 rootView->invalidate();
                 return true;
             });
@@ -168,11 +172,13 @@ namespace Ghurund {
             });
 
             OnUpdate.add([rootView](const Ghurund::Window& window, const Timer& timer) {
-                rootView->update(timer);
+                rootView->onUpdate(timer);
                 return true;
             });
 
             OnPaint.add([rootView](const Ghurund::Window& window) {
+                rootView->measure((float)window.Size.width, (float)window.Size.height);
+                rootView->layout(0, 0, (float)window.Size.width, (float)window.Size.height);
                 rootView->draw();
                 return true;
             });

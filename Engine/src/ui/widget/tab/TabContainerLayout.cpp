@@ -1,4 +1,6 @@
 #include "TabContainerLayout.h"
+#include "ui/layout/HorizontalLayoutManager.h"
+#include "ui/layout/LinearLayout.h"
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
@@ -9,7 +11,7 @@ namespace Ghurund::UI {
         container->PreferredSize.height = PreferredSize::Height::FILL;
         separator = ghnew ColorView();
         separator->PreferredSize.height = 2;
-        separator->Color = theme.getColorAccent();
+        separator->Color = theme.ColorAccent;
         tabContainer = ghnew RecyclerView<TabItem*, Tab>();
         tabContainer->PreferredSize.height = PreferredSize::Height::WRAP;
         tabContainer->LayoutManager = ghnew HorizontalLayoutManager();

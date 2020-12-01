@@ -1,22 +1,22 @@
 #pragma once
 
 #include "ui/layout/StackLayout.h"
-#include "ui/widget/TextField.h"
+#include "ui/widget/textfield/TextField.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
 
     class SearchField:public StackLayout {
     private:
-        ScopedPointer<TextBlock> hint;
+        SharedPointer<TextBlock> hint;
         TextFieldPtr textField;
 
     public:
-        SearchField(Theme& theme) {
+        SearchField(ResourceContext& context, Theme& theme) {
             PreferredSize.height = PreferredSize::Height::WRAP;
             hint = ghnew TextBlock("Search", theme.getSecondaryTextFont());
             hint->PreferredSize.width = PreferredSize::Width::FILL;
-            textField = ghnew TextField(theme);
+            textField = ghnew TextField(context.Graphics2D.DWriteFactory, theme);
             textField->PreferredSize.width = PreferredSize::Width::FILL;
             Children = { hint, textField };
 

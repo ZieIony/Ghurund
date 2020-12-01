@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 
 #include "ui/Style.h"
 #include "ui/control/Control.h"
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
 
     protected:
         Map<String, StateHandler> stateHandlers;
-        Ghurund::ScopedPointer<Ghurund::UI::Font> buttonFont, listHeaderFont, primaryTextFont, secondaryTextFont;
+        Ghurund::SharedPointer<Ghurund::UI::Font> buttonFont, listHeaderFont, primaryTextFont, secondaryTextFont;
         BitmapImage* checkBoxChecked, * checkBoxUnchecked;
         BitmapImage* radioButtonChecked, * radioButtonUnchecked;
         BitmapImage* arrowUp, * arrowDown;

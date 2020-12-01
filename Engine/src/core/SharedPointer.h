@@ -3,26 +3,25 @@
 #include "Pointer.h"
 
 namespace Ghurund {
-    template<class T>
-    requires IsPointer<T>
-    class ScopedPointer {
+    template<IsPointer T>
+    class SharedPointer {
     private:
         T* pointer = nullptr;
 
     public:
-        ScopedPointer() {}
+        SharedPointer() {}
 
-        ScopedPointer(const ScopedPointer& sp) {
+        SharedPointer(const SharedPointer& sp) {
             pointer = sp.pointer;
             if (pointer)
                 pointer->addReference();
         }
 
-        ScopedPointer(T* p) {
+        SharedPointer(T* p) {
             pointer = p;
         }
 
-        ~ScopedPointer() {
+        ~SharedPointer() {
             if (pointer)
                 pointer->release();
         }
@@ -39,21 +38,21 @@ namespace Ghurund {
             return pointer;
         }
 
-        ScopedPointer<T>& operator=(T* p) {
+        SharedPointer<T>& operator=(T* p) {
             if (pointer)
                 pointer->release();
             pointer = p;
             return *this;
         }
 
-        ScopedPointer<T>& operator=(const ScopedPointer<T>& sp) {
+        SharedPointer<T>& operator=(const SharedPointer<T>& sp) {
             setPointer(pointer, sp.pointer);
             return *this;
         }
     };
 
-    template<typename T, typename... Args>
-    ScopedPointer<T> makeScoped(Args&&... args) {
+    template<IsPointer T, typename... Args>
+    SharedPointer<T> makeShared(Args&&... args) {
         return ghnew T(std::forward<Args>(args)...);
     }
 }

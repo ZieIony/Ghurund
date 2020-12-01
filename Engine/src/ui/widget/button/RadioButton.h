@@ -43,7 +43,7 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<RadioButton> RadioButtonPtr;
+    typedef SharedPointer<RadioButton> RadioButtonPtr;
 
     class RadioTextButton:public RadioButton, public TextMixin {
     private:
@@ -68,5 +68,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<RadioTextButton> RadioTextButtonPtr;
+    typedef SharedPointer<RadioTextButton> RadioTextButtonPtr;
 }

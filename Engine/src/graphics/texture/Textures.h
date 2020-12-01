@@ -1,28 +1,32 @@
 #pragma once
 
 #include "Texture.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 
 namespace Ghurund {
     class Textures {
     private:
         Textures() = delete;
 
+        static Texture* make(ResourceContext& context, const wchar_t* fileName) {
+            return makeFromImage(context, fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str());
+        }
+
     public:
         static Texture* makeDefaultDiffuse(ResourceContext& context) {
-            return makeFromImage(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/diffuse.png");
+            return make(context, L"/textures/diffuse.png");
         }
 
         static Texture* makeDefaultSpecular(ResourceContext& context) {
-            return makeFromImage(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/specular.png");
+            return make(context, L"/textures/specular.png");
         }
 
         static Texture* makeDefaultNormal(ResourceContext& context) {
-            return makeFromImage(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/normal.png");
+            return make(context, L"/textures/normal.png");
         }
 
         static Texture* makeChecker(ResourceContext& context) {
-            return makeFromImage(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/textures/checker.png");
+            return make(context, L"/textures/checker.png");
         }
 
         static Texture* makeFromImage(ResourceContext& context, const FilePath& imagePath) {

@@ -6,22 +6,21 @@
 #include <commdlg.h>
 
 namespace Ghurund::UI {
-    Font::Font(const String& file, const String& family, float size, unsigned int weight, bool italic) {
-        this->size = size;
-        this->familyName = family;
-        this->weight = weight;
-        this->italic = italic;
-    }
+    Font::Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight, bool italic)
+        :file(file), familyName(family), size(size), weight(weight), italic(italic) {}
 
     Status Font::init(Graphics2D& graphics2d) {
         this->graphics2d = &graphics2d;
+        IDWriteFontCollection* fontCollection;
+        if (FAILED(graphics2d.FontLoader->createFontCollection(file, &fontCollection)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "createFontCollection failed\n");
         if (FAILED(graphics2d.DWriteFactory->CreateTextFormat(
-            UnicodeString(familyName),
-            nullptr,
+            familyName,
+            fontCollection,
             (DWRITE_FONT_WEIGHT)weight,
             DWRITE_FONT_STYLE_NORMAL,
             DWRITE_FONT_STRETCH_NORMAL,
-            size,
+            size * 96.0f / 72.0f,
             L"en-us",
             &textFormat)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateTextFormat failed\n");

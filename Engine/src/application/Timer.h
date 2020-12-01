@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/collection/AverageValue.h"
 #include "core/Pointer.h"
 
 namespace Ghurund {

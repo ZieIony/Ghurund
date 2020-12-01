@@ -64,9 +64,9 @@ namespace Ghurund::UI {
                 child->layout(0, 0, width, height);
         }
 
-        virtual void update(const Timer& timer) override {
+        virtual void onUpdate(const Timer& timer) override {
             if (child)
-                child->update(timer);
+                child->onUpdate(timer);
         }
 
         virtual void onDraw(Canvas& canvas) override {

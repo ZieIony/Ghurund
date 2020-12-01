@@ -33,7 +33,7 @@ namespace Ghurund {
             auto r = engine.RegisterObjectType(name, sizeof(Type), asOBJ_VALUE | asGetTypeTraits<Type>()); assert(r >= 0);
 
             r = engine.RegisterObjectBehaviour(name, asBEHAVE_CONSTRUCT, "void f()", asFUNCTION(constructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
-            r = engine.RegisterObjectBehaviour(name, asBEHAVE_CONSTRUCT, A("void f(const ") + name + " &in)", asFUNCTION(copyConstructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
+            r = engine.RegisterObjectBehaviour(name, asBEHAVE_CONSTRUCT, fmt::format(_T("void f(const {} &in)"), name).c_str(), asFUNCTION(copyConstructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
             r = engine.RegisterObjectBehaviour(name, asBEHAVE_DESTRUCT, "void f()", asFUNCTION(destructor), asCALL_CDECL_OBJLAST); assert(r >= 0);
         }
 
@@ -47,7 +47,7 @@ namespace Ghurund {
         static void registerRefClass(asIScriptEngine& engine, const char* name) {
             registerRefClassUninstantiable(engine, name);
 
-            engine.RegisterObjectBehaviour(name, asBEHAVE_FACTORY, A(name) + "@ f()", asFUNCTION(typeFactory), asCALL_CDECL);
+            engine.RegisterObjectBehaviour(name, asBEHAVE_FACTORY, fmt::format(_T("{}@ f()"), name).c_str(), asFUNCTION(typeFactory), asCALL_CDECL);
         }
     };
 

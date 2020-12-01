@@ -2,7 +2,7 @@
 
 #include "ToolbarAdapter.h"
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
@@ -15,7 +15,7 @@ namespace Ghurund::UI {
     class ToolbarLayout:public WidgetLayout {
     protected:
         Theme& theme;
-        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
 
     public:
         ToolbarLayout(Theme& theme):theme(theme) {}

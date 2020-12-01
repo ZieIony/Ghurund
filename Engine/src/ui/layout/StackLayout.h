@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/layout/StackLayoutManager.h"
 
@@ -45,5 +45,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<StackLayout> StackLayoutPtr;
+    typedef SharedPointer<StackLayout> StackLayoutPtr;
 }

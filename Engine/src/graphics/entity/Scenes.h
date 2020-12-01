@@ -12,9 +12,9 @@ namespace Ghurund {
         static Scene *makeEditor(ResourceContext &context) {
             Scene *scene = ghnew Scene();
 
-            /*ScopedPointer<Material> material = Materials::makeChecker(context);
+            /*SharedPointer<Material> material = Materials::makeChecker(context);
             if (material) {
-                ScopedPointer<Model> model = Models::makePlane(context, *material, 0);
+                SharedPointer<Model> model = Models::makePlane(context, *material, 0);
                 if (model) {
                     model->Scale = XMFLOAT3(1000, 1, 1000);
                     scene->Entities.add(model);

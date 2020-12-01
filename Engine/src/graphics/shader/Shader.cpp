@@ -1,5 +1,5 @@
 #include "Shader.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "game/parameter/TextureParameter.h"
 #include "graphics/texture/Texture.h"
 #include "resource/ResourceManager.h"

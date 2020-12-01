@@ -15,8 +15,8 @@ namespace Ghurund::Editor {
 
     public:
         WindowsTestTab(Theme& theme) {
-            ScopedPointer<ColorView> content = ghnew ColorView(0xffff0000);
-            ScopedPointer<WindowFrame> frame = ghnew WindowFrame();
+            SharedPointer<ColorView> content = ghnew ColorView(0xffff0000);
+            SharedPointer<WindowFrame> frame = ghnew WindowFrame();
             frame->PreferredSize = { 200,150 };
             frame->Position = { 50,50 };
             frame->Child = content;

@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isPressed, put = setPressed)) bool Pressed;
 
-        virtual void update(const Timer& timer) override;
+        virtual void onUpdate(const Timer& timer) override;
 
         virtual void onDraw(Canvas& canvas) override {
             canvas.fillRect(0, 0, Size.width, Size.height, paint);

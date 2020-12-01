@@ -3,16 +3,12 @@
 #include "core/Pointer.h"
 #include "graphics/Graphics.h"
 #include "graphics/buffer/RenderTarget.h"
+#include "ui/font/FontCollectionLoader.h"
 
 #include <dxgi1_6.h>
-#include <d3d12.h>
-#include "d3dx12.h"
 #include <d2d1_3.h>
 #include <dwrite.h>
 #include <d3d11on12.h>
-#include <DirectXMath.h>
-
-#include <wrl.h>
 
 namespace Ghurund::UI {
     using namespace DirectX;
@@ -32,6 +28,7 @@ namespace Ghurund::UI {
         ComPtr<ID2D1Device2> m_d2dDevice;
         UIState state = UIState::IDLE;
         RenderTarget* currentTarget = nullptr;
+        FontCollectionLoader* fontLoader = nullptr;
 
     public:
         ~Graphics2D() {
@@ -67,6 +64,12 @@ namespace Ghurund::UI {
         };
 
         __declspec(property(get = getDWriteFactory)) IDWriteFactory* DWriteFactory;
+
+        inline FontCollectionLoader* getFontLoader() {
+            return fontLoader;
+        }
+
+        __declspec(property(get = getFontLoader)) FontCollectionLoader* FontLoader;
 
         inline UIState getState() const {
             return state;

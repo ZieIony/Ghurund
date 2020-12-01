@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Control.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/Alignment.h"
 #include "ui/drawable/BitmapImage.h"
 

@@ -2,11 +2,8 @@
 
 #include "Tab.h"
 
-#include "core/ScopedPointer.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
-#include "ui/layout/HorizontalLayoutManager.h"
-#include "ui/layout/LinearLayout.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
@@ -14,8 +11,8 @@ namespace Ghurund::UI {
 
     class TabContainerLayout:public Ghurund::UI::WidgetLayout {
     protected:
-        ScopedPointer<ControlContainer> container;
-        ScopedPointer<RecyclerView<TabItem*, Tab>> tabContainer;
+        SharedPointer<ControlContainer> container;
+        SharedPointer<RecyclerView<TabItem*, Tab>> tabContainer;
 
     public:
         virtual ~TabContainerLayout() = 0 {}
@@ -35,7 +32,7 @@ namespace Ghurund::UI {
 
     class TabContainerVerticalBottomLayout:public TabContainerLayout {
     protected:
-        ScopedPointer<ColorView> separator;
+        SharedPointer<ColorView> separator;
         Theme& theme;
 
     public:

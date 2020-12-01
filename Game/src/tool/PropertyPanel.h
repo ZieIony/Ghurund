@@ -14,9 +14,9 @@ using namespace Ghurund::UI;
 namespace Ghurund::Editor {
     class PropertyPanel:public VerticalLayout {
     private:
-        ScopedPointer<Toolbar> toolbar;
-        ScopedPointer<SearchField> searchField;
-        ScopedPointer<TextBlock> objectTypeText;
+        SharedPointer<Toolbar> toolbar;
+        SharedPointer<SearchField> searchField;
+        SharedPointer<TextBlock> objectTypeText;
         PropertyListPtr propertyList;
         BitmapImage* sortIcon, * categoryIcon;
 
@@ -24,7 +24,7 @@ namespace Ghurund::Editor {
         PropertyPanel(ResourceContext& context, Theme& theme) {
             objectTypeText = ghnew TextBlock("", theme.getSecondaryTextFont());
             toolbar = ghnew Toolbar(theme);
-            searchField = ghnew SearchField(theme);
+            searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
@@ -35,9 +35,9 @@ namespace Ghurund::Editor {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
-            propertyList = ghnew PropertyList(theme);
+            propertyList = ghnew PropertyList(context, theme);
             propertyList->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            ScopedPointer<ColorView> separator = makeScoped<ColorView>(theme.getColorForegroundDisabledOnBackground());
+            SharedPointer<ColorView> separator = makeShared<ColorView>(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
             Children = {
                 toolbar,

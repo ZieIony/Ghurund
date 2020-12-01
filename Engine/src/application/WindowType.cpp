@@ -18,7 +18,7 @@ namespace Ghurund {
     WindowClass::WindowClass(WindowClassEnum value, const tchar* name, DWORD exStyle, DWORD dwStyle, UINT style):Enum<WindowClassEnum, WindowClass>(value, name) {
         this->exStyle = exStyle;
         this->dwStyle = dwStyle;
-        className = S("Ghurund") + name;
+        className = fmt::format(_T("Ghurund{}"), name).c_str();
 
         hInst = GetModuleHandle(0);
 

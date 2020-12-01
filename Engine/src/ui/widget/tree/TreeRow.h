@@ -7,8 +7,8 @@
 namespace Ghurund::UI {
     class TreeRow:public HorizontalLayout {
     private:
-        ScopedPointer<ImageView> imageView;
-        ScopedPointer<ControlContainer> container;
+        SharedPointer<ImageView> imageView;
+        SharedPointer<ControlContainer> container;
 
     public:
         TreeRow() {

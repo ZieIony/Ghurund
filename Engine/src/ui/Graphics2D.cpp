@@ -77,10 +77,15 @@ namespace Ghurund::UI {
         if (FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), &m_dwriteFactory)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "DWriteCreateFactory failed\n");
 
+        fontLoader = ghnew FontCollectionLoader(m_dwriteFactory.Get());
+        if (FAILED(m_dwriteFactory->RegisterFontCollectionLoader(fontLoader)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "RegisterFontCollectionLoader failed\n");
+
         return Status::OK;
     }
 
     void Graphics2D::uninit() {
+        m_dwriteFactory->UnregisterFontCollectionLoader(fontLoader);
         deviceContext.Reset();
         m_d3d11DeviceContext.Reset();
         m_d3d11On12Device.Reset();

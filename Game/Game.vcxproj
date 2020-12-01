@@ -146,6 +146,7 @@
     <ClCompile Include="src\Module.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\control\FpsText.h" />
     <ClInclude Include="src\control\SearchField.h" />
     <ClInclude Include="src\DragTestTab.h">
       <FileType>Document</FileType>

@@ -5,17 +5,17 @@
 namespace Ghurund::UI {
     class Shape {
     protected:
-        ComPtr<ID2D1PathGeometry> path;
+        ComPtr<ID2D1Geometry> path;
         D2D_RECT_F bounds;
 
     public:
         virtual ~Shape() = 0 {}
 
-        inline ID2D1PathGeometry* getPath() {
+        inline ID2D1Geometry* getPath() {
             return path.Get();
         }
 
-        __declspec(property(get = getPath)) ID2D1PathGeometry* Path;
+        __declspec(property(get = getPath)) ID2D1Geometry* Path;
 
         inline const D2D_RECT_F& getBounds() const {
             return bounds;

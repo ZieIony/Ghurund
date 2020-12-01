@@ -63,5 +63,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<VerticalScrollBar> VerticalScrollBarPtr;
+    typedef SharedPointer<VerticalScrollBar> VerticalScrollBarPtr;
 }

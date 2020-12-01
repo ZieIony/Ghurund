@@ -30,9 +30,9 @@ namespace Ghurund::UI {
 
     class SplitLayout:public ControlContainer {
     private:
-        ScopedPointer<Splitter> splitter;
-        ScopedPointer<ControlContainer> container1, container2;
-        ScopedPointer<LinearLayout> layout;
+        SharedPointer<Splitter> splitter;
+        SharedPointer<ControlContainer> container1, container2;
+        SharedPointer<LinearLayout> layout;
         LockedChild lockedChild = LockedChild::NONE;
         Orientation orientation;
         XMINT2 pressMousePos = { 0,0 };
@@ -73,5 +73,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getLockedChild, put = setLockedChild)) LockedChild LockedChild;
     };
 
-    typedef ScopedPointer<SplitLayout> SplitLayoutPtr;
+    typedef SharedPointer<SplitLayout> SplitLayoutPtr;
 }

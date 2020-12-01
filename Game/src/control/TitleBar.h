@@ -12,11 +12,11 @@ namespace Ghurund::Editor {
 
     class TitleBar:public StackLayout {
     private:
-        ScopedPointer<ColorView> backgroundView;
-        ScopedPointer<HorizontalLayout> row;
-        ScopedPointer<ImageButton> closeButton;
-        ScopedPointer<TextBlock> title;
-        ScopedPointer<BitmapImage> closeIcon;
+        SharedPointer<ColorView> backgroundView;
+        SharedPointer<HorizontalLayout> row;
+        SharedPointer<ImageButton> closeButton;
+        SharedPointer<TextBlock> title;
+        SharedPointer<BitmapImage> closeIcon;
 
     public:
         TitleBar(Theme& theme) {

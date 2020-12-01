@@ -20,9 +20,21 @@ namespace Ghurund::UI {
         ID2D1DeviceContext2* deviceContext = nullptr;
         Graphics2D* graphics2d;
         ComPtr<ID2D1Effect> tintEffect;
+        ComPtr<ID2D1Effect> shadowEffect;
+        ComPtr<ID2D1Effect> floodEffect;
 
     public:
         Status init(Graphics2D& graphics2d);
+
+        inline bool isAntialiasingEnabled() {
+            return deviceContext->GetAntialiasMode() == D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
+        }
+
+        inline void setAntialiasingEnabled(bool enabled) {
+            deviceContext->SetAntialiasMode(enabled ? D2D1_ANTIALIAS_MODE_PER_PRIMITIVE : D2D1_ANTIALIAS_MODE_ALIASED);
+        }
+
+        __declspec(property(get = isAntialiasingEnabled, put = setAntialiasingEnabled)) bool AntialiasingEnabled;
 
         inline void beginPaint() {
             matrixStack.add(D2D1::Matrix3x2F::Identity());
@@ -51,7 +63,19 @@ namespace Ghurund::UI {
             deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
         }
 
+        inline void fillRect(D2D1_RECT_F rect, const Paint& paint) {
+            fillBrush->SetColor(D2D1::ColorF(paint.Color));
+            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
+            deviceContext->FillRectangle(rect, fillBrush.Get());
+        }
+
         inline void drawShape(Shape& shape, const Paint& paint) {
+            fillBrush->SetColor(D2D1::ColorF(paint.Color));
+            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
+            deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), paint.Thickness);
+        }
+
+        inline void drawShadow(Shape& shape, const Paint& paint) {
             fillBrush->SetColor(D2D1::ColorF(paint.Color));
             fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
             deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), paint.Thickness);
@@ -68,11 +92,11 @@ namespace Ghurund::UI {
             Color color(tintColor);
             D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A, color.R, color.G, color.B, 0);
             tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
-            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);
+            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
         }
 
         inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst) {
-            deviceContext->DrawBitmap(image.Data, dst, 1, D2D1_INTERPOLATION_MODE_LINEAR, src);
+            deviceContext->DrawBitmap(image.Data, dst, 1, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, src);
         }
 
         inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, int32_t tintColor) {
@@ -80,7 +104,7 @@ namespace Ghurund::UI {
             Color color(tintColor);
             D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A, color.R, color.G, color.B, 0);
             tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
-            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);
+            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
         }
 
         inline void drawText(IDWriteTextLayout* layout, float x, float y, const Paint& paint) {

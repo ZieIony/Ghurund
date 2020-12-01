@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TabItemAdapter.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/Widget.h"
 #include "TabContainerLayout.h"

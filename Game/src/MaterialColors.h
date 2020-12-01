@@ -1,7 +1,7 @@
 #pragma once
 
 #include "resource/ResourceManager.h"
-#include "ui/Font.h"
+#include "ui/font/Font.h"
 #include "ui/Theme.h"
 #include "ui/drawable/BitmapImage.h"
 

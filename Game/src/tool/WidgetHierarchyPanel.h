@@ -14,9 +14,9 @@ namespace Ghurund::Editor {
 
     class WidgetHierarchyPanel:public VerticalLayout {
     private:
-        ScopedPointer<Toolbar> toolbar;
-        ScopedPointer<SearchField> searchField;
-        ScopedPointer<TextBlock> objectTypeText;
+        SharedPointer<Toolbar> toolbar;
+        SharedPointer<SearchField> searchField;
+        SharedPointer<TextBlock> objectTypeText;
         TreeViewPtr treeView;
         BitmapImage* sortIcon, * categoryIcon;
 
@@ -24,7 +24,7 @@ namespace Ghurund::Editor {
         WidgetHierarchyPanel(ResourceContext& context, Theme& theme) {
             objectTypeText = ghnew TextBlock("", theme.getSecondaryTextFont());
             toolbar = ghnew Toolbar(theme);
-            searchField = ghnew SearchField(theme);
+            searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
@@ -37,7 +37,7 @@ namespace Ghurund::Editor {
             };
             treeView = ghnew TreeView();
             treeView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            ScopedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
+            SharedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
             Children = {
                 toolbar,

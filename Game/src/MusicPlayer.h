@@ -10,22 +10,22 @@ namespace Ghurund::Editor {
 
     class MusicPlayer:public VerticalLayout {
     private:
-        ScopedPointer<ProgressBar> progressBar;
-        ScopedPointer<ImageButton> playButton;
-        ScopedPointer<ImageButton> stopButton;
-        ScopedPointer<Audio::Sound> sound;
+        SharedPointer<ProgressBar> progressBar;
+        SharedPointer<ImageButton> playButton;
+        SharedPointer<ImageButton> stopButton;
+        SharedPointer<Audio::Sound> sound;
 
     public:
         MusicPlayer(Theme& theme) {
             PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             progressBar = ghnew ProgressBar(*theme.progressBarStyle);
-//            auto playIcon = makeScoped<BitmapImage>("icons/play 18.png");
+//            auto playIcon = makeShared<BitmapImage>("icons/play 18.png");
             playButton = ghnew ImageButton(theme);
          //   playButton->Image = playIcon;
-       //     auto stopIcon = makeScoped<BitmapImage>("icons/stop 18.png");
+       //     auto stopIcon = makeShared<BitmapImage>("icons/stop 18.png");
             stopButton = ghnew ImageButton(theme);
         //    stopButton->Image = stopIcon;
-            ScopedPointer<HorizontalLayout> buttons = ghnew HorizontalLayout();
+            SharedPointer<HorizontalLayout> buttons = ghnew HorizontalLayout();
             buttons->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             buttons->Children = { playButton, stopButton };
             Children = { progressBar, buttons };

@@ -101,8 +101,10 @@
     <ClCompile Include="src\ui\control\TextBlock.cpp" />
     <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
-    <ClCompile Include="src\ui\Font.cpp" />
+    <ClCompile Include="src\ui\font\Font.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
+    <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
+    <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
@@ -132,7 +134,9 @@
     <ClCompile Include="src\ui\widget\tab\TextTabLayout.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\TextView.cpp" />
+    <ClCompile Include="src\ui\widget\textfield\LayoutEditor.cpp" />
+    <ClCompile Include="src\ui\widget\textfield\TextField.cpp" />
+    <ClCompile Include="src\ui\widget\textfield\TextView.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
   </ItemGroup>
@@ -189,7 +193,7 @@
     <ClInclude Include="src\core\Pointer.h">
       <FileType>Document</FileType>
     </ClInclude>
-    <ClInclude Include="src\core\ScopedPointer.h" />
+    <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
@@ -324,6 +328,8 @@
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
+    <ClInclude Include="src\ui\font\FontCollectionLoader.h" />
+    <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
     <ClInclude Include="src\ui\layout\DesktopLayout.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\Graphics2D.h" />
@@ -374,7 +380,7 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\Font.h" />
+    <ClInclude Include="src\ui\font\Font.h" />
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
@@ -441,8 +447,14 @@
     <ClInclude Include="src\ui\widget\tab\TabItemAdapter.h" />
     <ClInclude Include="src\ui\widget\tab\TextTabLayout.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
-    <ClInclude Include="src\ui\widget\TextField.h" />
-    <ClInclude Include="src\ui\widget\TextView.h" />
+    <ClInclude Include="src\ui\widget\textfield\CaretFormat.h" />
+    <ClInclude Include="src\ui\widget\textfield\DrawingEffect.h" />
+    <ClInclude Include="src\ui\widget\textfield\IUnknownImpl.h" />
+    <ClInclude Include="src\ui\widget\textfield\LayoutEditor.h" />
+    <ClInclude Include="src\ui\widget\textfield\SetSelectionMode.h" />
+    <ClInclude Include="src\ui\widget\textfield\TextField.h" />
+    <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
+    <ClInclude Include="src\ui\widget\textfield\TextView.h" />
     <ClInclude Include="src\ui\widget\tree\TreeView.h" />
     <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRow.h" />

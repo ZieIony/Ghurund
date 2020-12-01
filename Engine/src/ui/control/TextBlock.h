@@ -1,17 +1,14 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Font.h"
+#include "ui/font/Font.h"
 #include "ui/Style.h"
 #include "ui/Graphics2D.h"
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     private:
-        UnicodeString text;
         Font* font = nullptr;
-        Paint paint;
-        ComPtr<IDWriteTextLayout> textLayout;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
         static const Ghurund::Type& GET_TYPE() {
@@ -23,9 +20,15 @@ namespace Ghurund::UI {
         }
 
     protected:
+        UnicodeString text;
+        Paint paint;
+        IDWriteTextLayout* textLayout = nullptr;
+
         ~TextBlock() {
             if (font)
                 font->release();
+            if (textLayout)
+                textLayout->Release();
         }
 
     public:
@@ -33,9 +36,10 @@ namespace Ghurund::UI {
             text = "text";
         }
 
-        TextBlock(const UnicodeString& text, Font* font):text(text) {
+        TextBlock(const UnicodeString& text, Font* font, uint32_t color = 0xde000000):text(text) {
             font->addReference();
             this->font = font;
+            TextColor = color;
         }
 
         TextBlock(Style<TextBlock>* style) {
@@ -72,6 +76,14 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getFont, put = setFont)) Font* Font;
+
+        virtual void invalidate() override {
+            if (textLayout) {
+                textLayout->Release();
+                textLayout = nullptr;
+            }
+            __super::invalidate();
+        }
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 

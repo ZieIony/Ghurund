@@ -49,5 +49,5 @@ namespace Ghurund::UI {
 
     };
 
-    typedef ScopedPointer<MenuBar> MenuBarPtr;
+    typedef SharedPointer<MenuBar> MenuBarPtr;
 }

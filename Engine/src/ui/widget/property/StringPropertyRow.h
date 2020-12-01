@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PropertyRow.h"
-#include "ui/widget/TextField.h"
+#include "ui/widget/textfield/TextField.h"
 
 namespace Ghurund::UI {
     class StringPropertyRow: public PropertyRow {
@@ -9,8 +9,8 @@ namespace Ghurund::UI {
         TextFieldPtr textField;
 
     public:
-        StringPropertyRow(Theme& theme):PropertyRow(theme) {
-            textField = ghnew TextField(theme);
+        StringPropertyRow(ResourceContext& context, Theme& theme):PropertyRow(theme) {
+            textField = ghnew TextField(context.Graphics2D.DWriteFactory, theme);
             textField->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::WRAP };
             textField->OnTextChanged.add([this](TextField& textField) {
                 return OnValueChanged();
@@ -31,17 +31,18 @@ namespace Ghurund::UI {
 
     class StringPropertyRowAdapter:public ItemAdapter<ObjectProperty*, PropertyRow> {
     private:
+        ResourceContext& context;
         Theme& theme;
 
     public:
-        StringPropertyRowAdapter(Theme& theme):theme(theme) {}
+        StringPropertyRowAdapter(ResourceContext& context, Theme& theme):context(context), theme(theme) {}
 
         virtual bool canHandleItem(ObjectProperty* const& item, size_t position) const override {
             return S("String") == item->Property.TypeName;
         }
 
         virtual PropertyRow* makeControl() const override {
-            return ghnew StringPropertyRow(theme);
+            return ghnew StringPropertyRow(context, theme);
         }
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {

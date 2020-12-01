@@ -13,7 +13,7 @@ namespace Ghurund {
                 delayThread.remove(fileName);
                 Task* task = ghnew Task(fileName, [fileName, action, this] {
                     const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
-                    Logger::log(LogType::INFO, S("file changed: ") + fileName + ", action: " + change.Name + "\n");
+                    Logger::log(LogType::INFO, _T("file changed: {}, action: {}\n"), fileName, change.Name);
                     files[fileName](fileName, change);
                     return Status::OK;
                     });

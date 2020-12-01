@@ -8,7 +8,7 @@ namespace Ghurund::UI {
             return;
         }
 
-        if (textLayout.Get() == nullptr)
+        if (!textLayout)
             textLayout = font->makeLayout(text, parentWidth, parentHeight);
 
         DWRITE_TEXT_METRICS textMetrics;
@@ -18,6 +18,8 @@ namespace Ghurund::UI {
             measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
         } else if (preferredSize.width != PreferredSize::Width::FILL) {
             measuredSize.width = (float)preferredSize.width;
+            textLayout->Release();
+            textLayout = font->makeLayout(text, measuredSize.width, parentHeight);
         }
 
         if (preferredSize.height == PreferredSize::Height::WRAP) {
@@ -28,7 +30,7 @@ namespace Ghurund::UI {
     }
 
     void TextBlock::onDraw(Canvas& canvas) {
-        if (textLayout.Get())
-            canvas.drawText(textLayout.Get(), 0, 0, paint);
+        if (textLayout)
+            canvas.drawText(textLayout, 0, 0, paint);
     }
 }

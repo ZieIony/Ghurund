@@ -33,5 +33,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<TextButton> TextButtonPtr;
+    typedef SharedPointer<TextButton> TextButtonPtr;
 }

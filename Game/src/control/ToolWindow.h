@@ -9,9 +9,9 @@ namespace Ghurund::Editor {
 
     class ToolWindow:public StackLayout {
     private:
-        ScopedPointer<TitleBar> titleBar;
-        ScopedPointer<Border> border;
-        ScopedPointer<ControlContainer> container;
+        SharedPointer<TitleBar> titleBar;
+        SharedPointer<Border> border;
+        SharedPointer<ControlContainer> container;
 
     public:
         ToolWindow(Theme& theme) {
@@ -20,10 +20,10 @@ namespace Ghurund::Editor {
             border->Thickness = 1;
             container = ghnew ControlContainer();
             container->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            ScopedPointer<PaddingContainer> paddingContainer = ghnew PaddingContainer();
+            SharedPointer<PaddingContainer> paddingContainer = ghnew PaddingContainer();
             paddingContainer->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
             paddingContainer->Padding.All = 1;
-            ScopedPointer<VerticalLayout> verticalLayout = ghnew VerticalLayout();
+            SharedPointer<VerticalLayout> verticalLayout = ghnew VerticalLayout();
             verticalLayout->Children = { titleBar, container };
             paddingContainer->Child = verticalLayout;
             Children = {

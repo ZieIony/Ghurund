@@ -1,6 +1,6 @@
 #include "ParameterProvider.h"
 #include "TextureParameter.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "graphics/texture/Texture.h"
@@ -20,7 +20,7 @@ namespace Ghurund {
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
                 if (stream.readBoolean()) {
                     Status result;
-                    ScopedPointer<Texture> resource = (Texture*)context.ResourceManager.load(context, workingDir, stream, &result, options);
+                    SharedPointer<Texture> resource = (Texture*)context.ResourceManager.load(context, workingDir, stream, &result, options);
                     if (filterStatus(result, options) != Status::OK)
                         return result;
                     ((TextureParameter*)p)->setValue(resource);

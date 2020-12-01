@@ -54,5 +54,5 @@ namespace Ghurund::UI {
 
     };
 
-    typedef ScopedPointer<TreeView> TreeViewPtr;
+    typedef SharedPointer<TreeView> TreeViewPtr;
 }

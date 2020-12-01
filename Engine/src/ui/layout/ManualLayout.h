@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ManualLayoutManager.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
@@ -35,5 +35,5 @@ namespace Ghurund::UI {
         }
     };
 
-    typedef ScopedPointer<ManualLayout> ManualLayoutPtr;
+    typedef SharedPointer<ManualLayout> ManualLayoutPtr;
 }

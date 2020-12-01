@@ -2,7 +2,7 @@
 
 #include "MenuBarAdapter.h"
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
@@ -12,7 +12,7 @@
 namespace Ghurund::UI {
     class MenuBarLayout:public WidgetLayout {
     protected:
-        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
         Theme& theme;
 
     public:
@@ -35,8 +35,8 @@ namespace Ghurund::UI {
 
     class MenuBarWithBackgroundLayout:public MenuBarLayout {
     protected:
-        ScopedPointer<StackLayout> stack;
-        ScopedPointer<ColorView> backgroundView;
+        SharedPointer<StackLayout> stack;
+        SharedPointer<ColorView> backgroundView;
 
     public:
         MenuBarWithBackgroundLayout(Theme& theme):MenuBarLayout(theme) {}

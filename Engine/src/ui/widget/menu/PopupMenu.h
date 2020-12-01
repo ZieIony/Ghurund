@@ -12,8 +12,8 @@ namespace Ghurund::UI {
     class PopupMenu:public StackLayout {
     private:
         Ghurund::PopupWindow* window;
-        ScopedPointer<ColorView> backgroundView;
-        ScopedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<ColorView> backgroundView;
+        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
         List<MenuItem*> items;
 
     public:

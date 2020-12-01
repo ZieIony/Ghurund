@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/control/SelectableView.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/TextBlock.h"

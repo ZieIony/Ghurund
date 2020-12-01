@@ -6,7 +6,7 @@
 #include "ui/control/Space.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/widget/menu/MenuItem.h"
 #include "ui/widget/menu/Toolbar.h"
 #include "ui/widget/menu/MenuBar.h"
@@ -24,6 +24,7 @@
 #include "audio/Sound.h"
 
 #include "MaterialColors.h"
+#include "control/FpsText.h"
 
 using namespace Ghurund;
 using namespace Ghurund::Editor;
@@ -37,6 +38,8 @@ private:
     ::Material::Theme* theme;
     ::Material::Theme* menuTheme;
     ModuleTest test;
+
+    SharedPointer<FpsText> fps;
 
 public:
     void onInit() {
@@ -61,7 +64,7 @@ public:
 
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
         canvas->init(Graphics2D);
-        ScopedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
+        SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
         rootView->BackgroundColor = 0xffffffff;
         window->RootView = rootView;
         Windows.add(window);
@@ -69,8 +72,8 @@ public:
         theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
         menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
 
-        ScopedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
-        ScopedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
+        SharedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
+        SharedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
         logWindow->Content = logPanel;
         logWindow->Title = "Logs";
         /*Logger::init(ghnew CallbackLogOutput([this](LogType type, const tchar* log) {
@@ -78,26 +81,26 @@ public:
             logPanel->repaint();
         }));*/
 
-        ScopedPointer<ColorView> redSurface = ghnew ColorView(0xffff0000);
+        SharedPointer<ColorView> redSurface = ghnew ColorView(0xffff0000);
         SplitLayoutPtr splitLayout = ghnew SplitLayout(Orientation::VERTICAL);
         splitLayout->Child1 = redSurface;
         splitLayout->Child2 = logWindow;
 
-        ScopedPointer<TestRecycler> testRecycler = ghnew TestRecycler(ResourceManager, ResourceContext, *theme);
+        SharedPointer<TestRecycler> testRecycler = ghnew TestRecycler(ResourceManager, ResourceContext, *theme);
         testRecycler->Name = "test recycler";
 
-        ScopedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
-        ScopedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(*theme);
+        SharedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
+        SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(*theme);
 
-        ScopedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
+        SharedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
         tabLayout->Name = "tabs";
 
-        ScopedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
+        SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
         column->Name = "controls tab";
 
-        ScopedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext , *theme);
-        ScopedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(*theme);
-        ScopedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
+        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext , *theme);
+        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(*theme);
+        SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {
             ghnew TextTabItem("RecyclerView", testRecycler),
@@ -113,7 +116,7 @@ public:
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
         tabLayout->SelectedPosition = 0;
 
-        ScopedPointer<VerticalLayout> mainColumn = ghnew VerticalLayout();
+        SharedPointer<VerticalLayout> mainColumn = ghnew VerticalLayout();
         {
             BitmapImage* copyIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/copy 18.png");
             BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
@@ -158,7 +161,7 @@ public:
                 })
             };
 
-            ScopedPointer<Toolbar> toolbar = ghnew Toolbar(*theme);
+            SharedPointer<Toolbar> toolbar = ghnew Toolbar(*theme);
             toolbar->Name = "toolbar";
             toolbar->Items = {
                 ghnew ButtonMenuItem(copyIcon, "copy", [](Control&) {
@@ -172,14 +175,21 @@ public:
                 })
             };
 
-            ScopedPointer<ColorView> statusBar = ghnew ColorView();
-            statusBar->Name = "status bar";
-            statusBar->PreferredSize.height = 24;
+            auto statusBar = makeShared<StackLayout>();
+            statusBar->PreferredSize.height = PreferredSize::Height::WRAP;
+            SharedPointer<ColorView> statusBarBackground = ghnew ColorView();
+            statusBarBackground->Name = "status bar";
+            statusBarBackground->PreferredSize.height = 24;
+            auto statusBarItems = makeShared<HorizontalLayout>();
+            statusBarItems->Alignment = { Alignment::Horizontal::RIGHT, Alignment::Vertical::CENTER };
+            statusBarItems->PreferredSize.height = PreferredSize::Height::WRAP;
+            fps = makeShared<FpsText>(theme->getPrimaryTextFont(), theme->getColorForegroundPrimaryOnBackground());
+            statusBarItems->Children = { fps };
+            statusBar->Children = { statusBarBackground, statusBarItems };
 
             mainColumn->Children = { menuBar, toolbar, tabLayout, statusBar };
         }
         rootView->Child = mainColumn;
-        rootView->invalidate();
 
         window->Visible = true;
         window->activate();

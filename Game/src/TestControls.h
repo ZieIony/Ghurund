@@ -2,7 +2,8 @@
 
 #include "MusicPlayer.h"
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
+#include "ui/control/TextBlock.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/button/CheckBox.h"
 #include "ui/widget/button/CheckBoxRadioLayout.h"
@@ -10,8 +11,7 @@
 #include "ui/widget/button/RadioGroup.h"
 #include "ui/widget/button/ImageButton.h"
 #include "ui/widget/button/TextButton.h"
-#include "ui/widget/TextView.h"
-#include "ui/widget/TextField.h"
+#include "ui/widget/textfield/TextField.h"
 #include "ui/widget/ProgressBar.h"
 #include "ui/widget/menu/DropDown.h"
 
@@ -22,27 +22,27 @@ using namespace Ghurund::Editor;
 class TestControls:public VerticalLayout {
 private:
     RadioGroup radioGroup;
-    ScopedPointer<MusicPlayer> player;
+    SharedPointer<MusicPlayer> player;
 
 public:
     TestControls(Theme& theme, ResourceManager& resourceManager, ResourceContext& resourceContext) {
         Name = "controls tab";
         {
-            ScopedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
+            SharedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
             latoLight->init(resourceContext.Graphics2D);
-            ScopedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
-            ScopedPointer<TextView> textView2 = ghnew TextView();
+            SharedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
+            SharedPointer<TextBlock> textView2 = ghnew TextBlock();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
             textView2->Font = theme.getSecondaryTextFont();
             textView2->Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
             textView2->Focusable = true;
 
-            ScopedPointer<TextField> textField = ghnew TextField(theme);
+            SharedPointer<TextField> textField = ghnew TextField(resourceContext.Graphics2D.DWriteFactory, theme);
             textField->Text = "type here";
-            ScopedPointer<TextField> textField2 = ghnew TextField(theme);
+            SharedPointer<TextField> textField2 = ghnew TextField(resourceContext.Graphics2D.DWriteFactory, theme);
             textField2->Text = "type here too";
 
-            ScopedPointer<CheckBoxText> checkBox = ghnew CheckBoxText(ghnew TextCheckBoxLayout(theme));
+            SharedPointer<CheckBoxText> checkBox = ghnew CheckBoxText(ghnew TextCheckBoxLayout(theme));
             checkBox->Text = "check me";
 
             RadioTextButtonPtr radioButton = ghnew RadioTextButton(theme);
@@ -51,12 +51,12 @@ public:
             radioButton2->Text = "option 2";
             radioGroup = { radioButton, radioButton2 };
 
-            ScopedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
+            SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             for (size_t i : {0, 1, 2, 3}) {
-                ScopedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
-/*                ScopedPointer<BitmapImage> saveIcon = ghnew BitmapImage(L"icons/icon save 32.png");
-                imageButton->Image = saveIcon;*/
+                SharedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
+                SharedPointer<BitmapImage> saveIcon = BitmapImage::makeFromImage(resourceContext, L"icons/icon save 32.png");
+                imageButton->Image = saveIcon;
                 horizontalLayout->Children.add(imageButton);
             }
 
@@ -67,10 +67,10 @@ public:
             TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
             accentButton->Text = "OK";
 
-            ScopedPointer<Style<Separator>> separatorStyle = ghnew HorizontalSeparatorStyle(theme);
-            ScopedPointer<Separator> separator = ghnew Separator(separatorStyle);
+            SharedPointer<Style<Separator>> separatorStyle = ghnew HorizontalSeparatorStyle(theme);
+            SharedPointer<Separator> separator = ghnew Separator(separatorStyle);
 
-            ScopedPointer<ProgressBar> progressBar = ghnew ProgressBar(*theme.progressBarStyle);
+            SharedPointer<ProgressBar> progressBar = ghnew ProgressBar(*theme.progressBarStyle);
             progressBar->Indeterminate = true;
 
             Children = {
@@ -78,20 +78,20 @@ public:
                 textView2,
                 textField,
                 textField2,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 checkBox,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 radioButton,
                 radioButton2,
                 separator,
                 horizontalLayout,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 player,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 flatButton,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 accentButton,
-                makeScoped<Space>(),
+                makeShared<Space>(),
                 progressBar
             };
         }

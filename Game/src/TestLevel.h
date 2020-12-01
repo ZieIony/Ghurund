@@ -10,7 +10,7 @@ private:
     CameraController* cameraController = nullptr;
     Application& app;
     Material* wireframeMaterial = nullptr, * outlineMaterial = nullptr, * checkerMaterial = nullptr;
-    //ScopedPointer<AdvancedSky> sky;
+    //SharedPointer<AdvancedSky> sky;
 
 public:
     TestLevel(Application& app) :app(app) {}
@@ -41,7 +41,7 @@ public:
     }
 
     virtual void onInit() override {
-        ScopedPointer<ValueParameter> lightPosParameter = ghnew ValueParameter("lightPos", ParameterType::FLOAT3);
+        SharedPointer<ValueParameter> lightPosParameter = ghnew ValueParameter("lightPos", ParameterType::FLOAT3);
         app.ParameterManager.Parameters.add(lightPosParameter);
         XMFLOAT3 lightPos = { sin(app.Timer.Time) * 150, 150, cos(app.Timer.Time) * 150 };
         lightPosParameter->setValue(&lightPos);
@@ -66,10 +66,10 @@ public:
                 scene->release();
                 });
         } else {*/
-            ScopedPointer<Scene> scene = makeScene();
+            SharedPointer<Scene> scene = makeScene();
             scene->Camera = camera;
             Scenes.add(scene);
-            ScopedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
+            SharedPointer<Material> invalidMaterial = Materials::makeInvalid(app.ResourceContext);
             scene->DrawingSystem.InvalidMaterial = invalidMaterial;
 
             Status result = scene->save(app.ResourceContext, "test/test.scene", SaveOption::SKIP_IF_EXISTS);
@@ -77,15 +77,15 @@ public:
                 Logger::log(LogType::WARNING, _T("failed to save scene\n"));
         //}
 
-        ScopedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
+        SharedPointer<Scene> editorScene = Scenes::makeEditor(app.ResourceContext);
         editorScene->Camera = camera;
 
-        ScopedPointer<Scene> selectionScene = ghnew Scene();
+        SharedPointer<Scene> selectionScene = ghnew Scene();
         selectionScene->Camera = camera;
         selectionScene->DrawingSystem.OverrideMaterial = outlineMaterial;
 
         const char* sourceCode = "void main(Camera &camera){camera.setOrbit(timer.getTime(),cos(timer.getTime()/5.0f)*3.0f+30);}";
-        ScopedPointer<Script> script = Scripts::make(camera, sourceCode);
+        SharedPointer<Script> script = Scripts::make(camera, sourceCode);
 
         //app.ScriptEngine.Scripts.add(script);
     }
@@ -94,9 +94,9 @@ public:
 		Scene* scene = ghnew Scene();
 		scene->init(app.ResourceContext);
 
-        /*ScopedPointer<Model> lamborghini;
+        /*SharedPointer<Model> lamborghini;
         {
-            ScopedPointer<Mesh> mesh;
+            SharedPointer<Mesh> mesh;
             File file("test/obj/lamborghini/Lamborghini_Aventador.mesh");
             if (file.Exists) {
                 mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
@@ -106,11 +106,11 @@ public:
                     mesh->save(app.ResourceContext, file);
             }
 
-            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
-            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
-            ScopedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
+            SharedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_diffuse.jpeg");
+            SharedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/lamborghini/Lamborginhi Aventador_spec.jpeg");
+            SharedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
             if (diffuseTexture != nullptr && specularTexture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
+                SharedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
                 lamborghini = ghnew Model(mesh, material);
                 lamborghini->Name = "lamborghini";
@@ -118,13 +118,13 @@ public:
             }
         }*/
 
-        ScopedPointer<Entity> house = ghnew Entity();
+        SharedPointer<Entity> house = ghnew Entity();
         {
-			ScopedPointer<TransformComponent> transform = scene->TransformSystem.makeComponent();
+			SharedPointer<TransformComponent> transform = scene->TransformSystem.makeComponent();
 			transform->Valid = true;
 			house->Components.add(transform);
 
-            ScopedPointer<Mesh> mesh;
+            SharedPointer<Mesh> mesh;
             File file("test/obj/house/house.mesh");
             if (file.Exists) {
                 mesh = app.ResourceManager.load<Mesh>(app.ResourceContext, file);
@@ -134,13 +134,13 @@ public:
                     mesh->save(app.ResourceContext, file);
             }
 
-            ScopedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_diffuse.png");
-            ScopedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_spec.png");
-            ScopedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
+            SharedPointer<Texture> diffuseTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_diffuse.png");
+            SharedPointer<Texture> specularTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_spec.png");
+            SharedPointer<Texture> normalTexture = Textures::makeFromImage(app.ResourceContext, "test/obj/house/house_normal.png");
             if (diffuseTexture != nullptr && specularTexture != nullptr && normalTexture != nullptr && mesh != nullptr) {
-                ScopedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
+                SharedPointer<Material> material = Materials::makeBasicLight(app.ResourceContext, diffuseTexture, specularTexture, normalTexture);
 
-				ScopedPointer<DrawableComponent> component = scene->DrawingSystem.makeComponent();
+				SharedPointer<DrawableComponent> component = scene->DrawingSystem.makeComponent();
 				//component->TransformComponent = transform;
 				component->Mesh = mesh;
 				component->Material = material;
@@ -152,9 +152,9 @@ public:
             }
         }
 		/*
-        ScopedPointer<Model> cone;
+        SharedPointer<Model> cone;
         {
-            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
+            SharedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
             cone = Models::makeCone(app.ResourceContext, *material);
 
             cone->Name = "cone";
@@ -162,9 +162,9 @@ public:
             cone->Scale = { 50, 100, 50 };
         }
 
-        ScopedPointer<Model> light;
+        SharedPointer<Model> light;
         {
-            ScopedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
+            SharedPointer<Material> material = Materials::makeNormals(app.ResourceContext);
             light = Models::makeSphere(app.ResourceContext, *material);
 
             light->Name = "light";

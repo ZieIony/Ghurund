@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/ScopedPointer.h"
+#include "core/SharedPointer.h"
 #include "ui/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
@@ -11,7 +11,7 @@ using namespace Ghurund;
 using namespace Ghurund::UI;
 
 class TestImageViews:public HorizontalLayout {
-    ScopedPointer<ScrollView> scrollView;
+    SharedPointer<ScrollView> scrollView;
     VerticalScrollBarPtr scrollBar;
 
 public:
@@ -43,24 +43,24 @@ public:
                 "ScaleMode::FIT",
                 "ScaleMode::CROP"
             };
-            ScopedPointer<VerticalLayout> column = ghnew VerticalLayout();
+            SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
             column->PreferredSize.height = PreferredSize::Height::WRAP;
-            ScopedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/game.png");
+            SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/game.png");
             for (unsigned int i = 0; i < 4; i++) {
                 StackLayoutPtr stack = ghnew StackLayout();
                 stack->PreferredSize = { 200, 120 };
-                ScopedPointer<Border> border = ghnew Border();
-                ScopedPointer<ImageView> imageView = ghnew ImageView();
+                SharedPointer<Border> border = ghnew Border();
+                SharedPointer<ImageView> imageView = ghnew ImageView();
                 imageView->Image = image;
                 imageView->ScaleMode = (enum ImageScaleMode)i;
                 stack->Children = { imageView, border };
-                ScopedPointer<TextBlock> textView = ghnew TextBlock(theme.textViewSecondaryStyle);
+                SharedPointer<TextBlock> textView = ghnew TextBlock(theme.textViewSecondaryStyle);
                 textView->Text = texts[i];
 
                 column->Children.addAll({
                     textView,
                     stack,
-                    ScopedPointer<Space>(ghnew Space(16.0f))
+                    SharedPointer<Space>(ghnew Space(16.0f))
                     });
             }
             scrollView->Child = column;

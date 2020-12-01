@@ -7,49 +7,53 @@ namespace Ghurund {
     private:
         Shaders() = delete;
 
+        static Shader* load(ResourceContext& context, const wchar_t* fileName) {
+            return context.ResourceManager.load<Shader>(context, fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str());
+        }
+
     public:
         static Shader* loadBasic(ResourceContext& context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basic.hlsl");
+            return load(context, L"/shaders/basic.hlsl");
         }
 
         static Shader* loadBasicLight(ResourceContext& context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicLight.hlsl");
+            return load(context, L"/shaders/basicLight.hlsl");
         }
 
         static Shader* loadToon(ResourceContext& context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/toon.hlsl");
+            return load(context, L"/shaders/toon.hlsl");
         }
 
-        static Shader* loadWireframe(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/wireframe.hlsl");
+        static Shader* loadWireframe(ResourceContext& context) {
+            return load(context, L"/shaders/wireframe.hlsl");
         }
 
-        static Shader* loadOutline(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/outline.hlsl");
+        static Shader* loadOutline(ResourceContext& context) {
+            return load(context, L"/shaders/outline.hlsl");
         }
 
-        static Shader* loadNormals(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/normals.hlsl");
+        static Shader* loadNormals(ResourceContext& context) {
+            return load(context, L"/shaders/normals.hlsl");
         }
 
-        static Shader* loadInvalid(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/invalid.hlsl");
+        static Shader* loadInvalid(ResourceContext& context) {
+            return load(context, L"/shaders/invalid.hlsl");
         }
 
-        static Shader* loadLightPass(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/lightPass.hlsl");
+        static Shader* loadLightPass(ResourceContext& context) {
+            return load(context, L"/shaders/lightPass.hlsl");
         }
 
-        static Shader* loadUi(ResourceContext & context) {
-            return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/ui.hlsl");
+        static Shader* loadUi(ResourceContext& context) {
+            return load(context, L"/shaders/ui.hlsl");
         }
 
-		static Shader* loadBasicSky(ResourceContext& context) {
-			return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/basicSky.hlsl");
-		}
+        static Shader* loadBasicSky(ResourceContext& context) {
+            return load(context, L"/shaders/basicSky.hlsl");
+        }
 
-		static Shader* loadAdvancedSky(ResourceContext& context) {
-			return context.ResourceManager.load<Shader>(context, U(ResourceManager::LIB_PROTOCOL_PREFIX) + ResourceManager::ENGINE_LIB_NAME + "/shaders/advancedSky.hlsl");
-		}
-	};
+        static Shader* loadAdvancedSky(ResourceContext& context) {
+            return load(context, L"/shaders/advancedSky.hlsl");
+        }
+    };
 }
