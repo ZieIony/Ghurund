@@ -25,7 +25,7 @@ private:
     SharedPointer<MusicPlayer> player;
 
 public:
-    TestControls(Theme& theme, ResourceManager& resourceManager, ResourceContext& resourceContext) {
+    TestControls(Ghurund::UI::Theme& theme, ResourceManager& resourceManager, ResourceContext& resourceContext) {
         Name = "controls tab";
         {
             SharedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
@@ -42,19 +42,19 @@ public:
             SharedPointer<TextField> textField2 = ghnew TextField(resourceContext.Graphics2D.DWriteFactory, theme);
             textField2->Text = "type here too";
 
-            SharedPointer<CheckBoxText> checkBox = ghnew CheckBoxText(ghnew TextCheckBoxLayout(theme));
+            SharedPointer<CheckBoxText> checkBox = ghnew CheckBoxText();
             checkBox->Text = "check me";
 
-            RadioTextButtonPtr radioButton = ghnew RadioTextButton(theme);
+            RadioTextButtonPtr radioButton = ghnew RadioTextButton();
             radioButton->Text = "option 1";
-            RadioTextButtonPtr radioButton2 = ghnew RadioTextButton(theme);
+            RadioTextButtonPtr radioButton2 = ghnew RadioTextButton();
             radioButton2->Text = "option 2";
             radioGroup = { radioButton, radioButton2 };
 
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             for (size_t i : {0, 1, 2, 3}) {
-                SharedPointer<ImageButton> imageButton = ghnew ImageButton(ghnew ImageButtonLayout(theme));
+                SharedPointer<ImageButton> imageButton = ghnew ImageButton();
                 SharedPointer<BitmapImage> saveIcon = BitmapImage::makeFromImage(resourceContext, L"icons/icon save 32.png");
                 imageButton->Image = saveIcon;
                 horizontalLayout->Children.add(imageButton);
@@ -62,9 +62,9 @@ public:
 
             player = ghnew MusicPlayer(theme);
 
-            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(theme));
+            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout());
             flatButton->Text = "Submit";
-            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
+            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout());
             accentButton->Text = "OK";
 
             SharedPointer<Style<Separator>> separatorStyle = ghnew HorizontalSeparatorStyle(theme);

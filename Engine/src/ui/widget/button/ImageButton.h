@@ -15,11 +15,9 @@ namespace Ghurund::UI {
         }
 
     public:
-        ImageButton(ImageButtonLayout* layout):Button(layout) {
+        ImageButton(ImageButtonLayout* layout = ghnew ImageButtonLayout()):Button(layout) {
             imageView = layout->ImageView;
         };
-
-        ImageButton(Ghurund::UI::Theme& theme):ImageButton(ghnew ImageButtonLayout(theme)) {};
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

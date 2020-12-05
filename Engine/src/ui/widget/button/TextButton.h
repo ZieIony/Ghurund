@@ -20,11 +20,9 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextButton(TextButtonLayout* layout):Button(layout) {
+        TextButton(TextButtonLayout* layout = ghnew TextButtonLayout()):Button(layout) {
             textView = layout->TextBlock;
         }
-
-        TextButton(Ghurund::UI::Theme& theme):TextButton(ghnew TextButtonLayout(theme)) {}
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

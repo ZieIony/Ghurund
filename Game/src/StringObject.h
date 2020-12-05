@@ -56,7 +56,7 @@ private:
     SharedPointer<PaddingContainer> padding;
 
 public:
-    StringObjectHeaderRow(Theme& theme) {
+    StringObjectHeaderRow(Ghurund::UI::Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
 
         padding = ghnew PaddingContainer();
@@ -96,7 +96,7 @@ private:
     ImageView* imageView;
 
 public:
-    StringObjectItemRow(ResourceContext& context, Theme& theme) {
+    StringObjectItemRow(ResourceContext& context, Ghurund::UI::Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
         SharedPointer<ColorView> colorView = ghnew ColorView(theme.ColorBackground);
 
@@ -128,7 +128,7 @@ public:
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
                     tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
+                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout());
                     tb->Text = "CANCEL";
                     column->Children = { tv, tv2, tb };
                 }

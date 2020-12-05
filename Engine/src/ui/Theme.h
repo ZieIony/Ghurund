@@ -40,17 +40,17 @@ namespace Ghurund::UI {
         Style<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle(*this);
         Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle(*this);
 
-        Style<TextBlock>* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle(*this);
-        Style<TextBlock>* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle(*this);
-        Style<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle(*this);
+        Style2<TextBlock>* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
+        Style2<TextBlock>* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
+        Style2<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle();
 
         virtual ~Theme() {
             separatorStyle->release();
             progressBarStyle->release();
 
-            textViewPrimaryStyle->release();
-            textViewSecondaryStyle->release();
-            textViewHeaderStyle->release();
+            delete textViewPrimaryStyle;
+            delete textViewSecondaryStyle;
+            delete textViewHeaderStyle;
         }
 
         inline Map<String, StateHandler>& getStateHandlers() {
@@ -101,9 +101,13 @@ namespace Ghurund::UI {
             return primaryTextFont;
         }
 
+        __declspec(property(get = getPrimaryTextFont)) Ghurund::UI::Font* PrimaryTextFont;
+
         inline Ghurund::UI::Font* getSecondaryTextFont() {
             return secondaryTextFont;
         }
+
+        __declspec(property(get = getSecondaryTextFont)) Ghurund::UI::Font* SecondaryTextFont;
 
         inline BitmapImage* getCheckBoxChecked() {
             return checkBoxChecked;
@@ -157,37 +161,61 @@ namespace Ghurund::UI {
             return colorWithAlpha(state_activated, getColorControl());
         }
 
-        __declspec(property(get = ColorControlActivated)) uint32_t ColorControlActivated;
+        __declspec(property(get = getColorControlActivated)) uint32_t ColorControlActivated;
 
         uint32_t getColorForegroundPrimaryOnError() const {
             return colorWithAlpha(emphasis_high, getColorOnError());
         }
+
+        __declspec(property(get = getColorForegroundPrimaryOnError)) uint32_t ColorForegroundPrimaryOnError;
+
         uint32_t getColorForegroundPrimaryOnBackground() const {
             return colorWithAlpha(emphasis_high, getColorOnBackground());
         }
+
+        __declspec(property(get = getColorForegroundPrimaryOnBackground)) uint32_t ColorForegroundPrimaryOnBackground;
+
         uint32_t getColorForegroundPrimaryOnAccent() const {
             return colorWithAlpha(emphasis_high, getColorOnAccent());
         }
 
+        __declspec(property(get = getColorForegroundPrimaryOnAccent)) uint32_t ColorForegroundPrimaryOnAccent;
+
         uint32_t getColorForegroundSecondaryOnError() const {
             return colorWithAlpha(emphasis_medium, getColorOnError());
         }
+
+        __declspec(property(get = getColorForegroundSecondaryOnError)) uint32_t ColorForegroundSecondaryOnError;
+
         uint32_t getColorForegroundSecondaryOnBackground() const {
             return colorWithAlpha(emphasis_medium, getColorOnBackground());
         }
+
+        __declspec(property(get = getColorForegroundSecondaryOnBackground)) uint32_t ColorForegroundSecondaryOnBackground;
+
         uint32_t getColorForegroundSecondaryOnAccent() const {
             return colorWithAlpha(emphasis_medium, getColorOnAccent());
         }
 
+        __declspec(property(get = getColorForegroundSecondaryOnAccent)) uint32_t ColorForegroundSecondaryOnAccent;
+
         uint32_t getColorForegroundDisabledOnError() const {
             return colorWithAlpha(emphasis_disabled, getColorOnError());
         }
+
+        __declspec(property(get = getColorForegroundDisabledOnError)) uint32_t ColorForegroundDisabledOnError;
+
         uint32_t getColorForegroundDisabledOnBackground() const {
             return colorWithAlpha(emphasis_disabled, getColorOnBackground());
         }
+
+        __declspec(property(get = getColorForegroundDisabledOnBackground)) uint32_t ColorForegroundDisabledOnBackground;
+
         uint32_t getColorForegroundDisabledOnAccent() const {
             return colorWithAlpha(emphasis_disabled, getColorOnAccent());
         }
+
+        __declspec(property(get = getColorForegroundDisabledOnAccent)) uint32_t ColorForegroundDisabledOnAccent;
 
         // highlights
 

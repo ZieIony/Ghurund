@@ -42,9 +42,8 @@ namespace Ghurund::UI {
             TextColor = color;
         }
 
-        TextBlock(Style<TextBlock>* style) {
+        TextBlock(Style2<TextBlock>* style) {
             style->apply(*this);
-            style->onStateChanged(*this);
         }
 
         UnicodeString& getText() {

@@ -63,6 +63,20 @@ namespace Ghurund::UI {
         return focusedChild && focusedChild->focusRight();
     }
 
+    void ControlGroup::dispatchThemeChanged() {
+        if (localTheme) {
+            theme = localTheme;
+            for (Control* child : Children)
+                child->dispatchThemeChanged();
+        } else if (Parent) {
+            theme = Parent->Theme;
+            for (Control* child : Children)
+                child->dispatchThemeChanged();
+        }
+        onThemeChanged();
+        onStateChanged();
+    }
+
     void ControlGroup::onDraw(Canvas& canvas) {
         canvas.save();
         canvas.clipRect(0, 0, Size.width, Size.height);

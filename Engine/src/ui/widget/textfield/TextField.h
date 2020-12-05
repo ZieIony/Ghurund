@@ -32,7 +32,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextField(IDWriteFactory* factory, Theme& theme):TextView(theme), layoutEditor(factory) {
+        TextField(IDWriteFactory* factory, Ghurund::UI::Theme& theme):TextView(theme), layoutEditor(factory) {
             Focusable = true;
         }
 

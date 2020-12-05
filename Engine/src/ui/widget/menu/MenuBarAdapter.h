@@ -7,12 +7,7 @@ namespace Ghurund::UI {
     class Theme;
 
     class ButtonMenuBarAdapter :public ItemAdapter<MenuItem*, Control> {
-    private:
-        Theme& theme;
-
     public:
-        ButtonMenuBarAdapter(Theme& theme);
-
         virtual bool canHandleItem(MenuItem* const& item, size_t position) const override {
             return item->type == MenuItemType::BUTTON;
         }

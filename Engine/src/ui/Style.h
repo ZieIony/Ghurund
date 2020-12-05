@@ -35,4 +35,25 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged(ControlType& control) const {}
     };
+
+    template<class ControlType>
+    class Style2 {
+    public:
+        virtual ~Style2() = 0 {}
+
+        void apply(ControlType& control) {
+            control.OnThemeChanged.add([this, &control](Control& c) {
+                onThemeChanged(control);
+                return true;
+            });
+            control.OnStateChanged.add([this, &control](Control& c) {
+                onStateChanged(control);
+                return true;
+            });
+        }
+
+        virtual void onThemeChanged(ControlType& control) const {}
+
+        virtual void onStateChanged(ControlType& control) const {}
+    };
 }

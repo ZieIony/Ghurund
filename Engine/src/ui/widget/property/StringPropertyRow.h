@@ -9,7 +9,7 @@ namespace Ghurund::UI {
         TextFieldPtr textField;
 
     public:
-        StringPropertyRow(ResourceContext& context, Theme& theme):PropertyRow(theme) {
+        StringPropertyRow(ResourceContext& context, Ghurund::UI::Theme& theme):PropertyRow(theme) {
             textField = ghnew TextField(context.Graphics2D.DWriteFactory, theme);
             textField->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::WRAP };
             textField->OnTextChanged.add([this](TextField& textField) {

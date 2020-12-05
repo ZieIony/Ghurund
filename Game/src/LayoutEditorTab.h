@@ -23,7 +23,7 @@ namespace Ghurund::Editor {
         StackLayoutPtr layoutContent;
 
     public:
-        LayoutEditorTab(ResourceContext& context, Theme& theme) {
+        LayoutEditorTab(ResourceContext& context, Ghurund::UI::Theme& theme) {
             Name = "editor tab";
 
             propertiesPanel = ghnew PropertyPanel(context, theme);
@@ -37,7 +37,7 @@ namespace Ghurund::Editor {
             widgetHierarchyWindow->Content = widgetHierarchyPanel;
             widgetHierarchyWindow->PreferredSize.width = 200;
 
-            editedControl = ghnew TextButton(theme);
+            editedControl = ghnew TextButton();
             layoutContent = ghnew StackLayout();
             layoutContent->Alignment = { Alignment::Horizontal::CENTER, Alignment::Vertical::CENTER };
             layoutContent->Children = { editedControl };

@@ -12,7 +12,7 @@ namespace Ghurund::Editor {
         TextFieldPtr textField;
 
     public:
-        SearchField(ResourceContext& context, Theme& theme) {
+        SearchField(ResourceContext& context, Ghurund::UI::Theme& theme) {
             PreferredSize.height = PreferredSize::Height::WRAP;
             hint = ghnew TextBlock("Search", theme.getSecondaryTextFont());
             hint->PreferredSize.width = PreferredSize::Width::FILL;

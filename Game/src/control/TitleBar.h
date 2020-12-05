@@ -19,7 +19,7 @@ namespace Ghurund::Editor {
         SharedPointer<BitmapImage> closeIcon;
 
     public:
-        TitleBar(Theme& theme) {
+        TitleBar(Ghurund::UI::Theme& theme) {
             PreferredSize.height = PreferredSize::Height::WRAP;
             row = ghnew HorizontalLayout();
             row->PreferredSize.height = PreferredSize::Height::WRAP;
@@ -28,7 +28,7 @@ namespace Ghurund::Editor {
                 title->PreferredSize.width = PreferredSize::Width::FILL;
                 title->TextColor = theme.getColorForegroundPrimaryOnAccent();
 //                closeIcon = ghnew BitmapImage(L"icons/close 18.png");
-                closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout(theme));
+                closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout());
               //  closeButton->Image = closeIcon;
                 closeButton->ImageTint = theme.getColorForegroundPrimaryOnAccent();
             }

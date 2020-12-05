@@ -21,7 +21,7 @@ namespace Ghurund::Editor {
         BitmapImage* sortIcon, * categoryIcon;
 
     public:
-        WidgetHierarchyPanel(ResourceContext& context, Theme& theme) {
+        WidgetHierarchyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
             objectTypeText = ghnew TextBlock("", theme.getSecondaryTextFont());
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(context, theme);

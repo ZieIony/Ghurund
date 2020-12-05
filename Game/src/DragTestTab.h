@@ -15,11 +15,11 @@ namespace Ghurund::Editor {
         DragHelper* helper2;
 
     public:
-        DragTestTab(Theme& theme) {
-            TextButtonPtr tb = ghnew TextButton(ghnew TextButtonFlatLayout(theme));
+        DragTestTab() {
+            TextButtonPtr tb = ghnew TextButton(ghnew TextButtonFlatLayout());
             tb->Text = "CANCEL";
             helper = ghnew DragHelper(*tb);
-            TextButtonPtr tb2 = ghnew TextButton(ghnew TextButtonFlatLayout(theme));
+            TextButtonPtr tb2 = ghnew TextButton(ghnew TextButtonFlatLayout());
             tb2->Text = "TEST";
             helper2 = ghnew DragHelper(*tb2);
             Children = { tb, tb2 };

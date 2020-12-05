@@ -27,7 +27,7 @@ namespace Ghurund::UI {
             Layout.RecyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
         }
 
-        Toolbar(Theme& theme):Toolbar(ghnew ToolbarLayout(theme)) {}
+        Toolbar(Ghurund::UI::Theme& theme):Toolbar(ghnew ToolbarLayout(theme)) {}
 
         ~Toolbar() {
             items.deleteItems();

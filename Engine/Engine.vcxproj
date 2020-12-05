@@ -110,7 +110,6 @@
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\ManualLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\TextLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
@@ -384,7 +383,6 @@
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\TextLayoutManager.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
     <ClInclude Include="src\ui\MenuItem.h" />
     <ClInclude Include="src\ui\mixin\BackgroundMixin.h" />

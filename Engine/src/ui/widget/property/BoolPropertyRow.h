@@ -9,10 +9,10 @@ namespace Ghurund::UI {
         SharedPointer<CheckBox> checkBox;
 
     public:
-        BoolPropertyRow(Theme& theme):PropertyRow(theme) {
+        BoolPropertyRow(Ghurund::UI::Theme& theme):PropertyRow(theme) {
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
-            checkBox = ghnew CheckBox(ghnew CheckBoxLayout(theme));
+            checkBox = ghnew CheckBox();
             checkBox->OnCheckedChanged.add([this](CheckBox& checkBox) {
                 return OnValueChanged();
             });

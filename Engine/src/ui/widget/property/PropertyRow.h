@@ -15,7 +15,7 @@ namespace Ghurund::UI {
         SharedPointer<ControlContainer> container;
 
     public:
-        PropertyRow(Theme& theme) {
+        PropertyRow(Ghurund::UI::Theme& theme) {
             PreferredSize.height = PreferredSize::Height::WRAP;
             textView = ghnew TextBlock(theme.textViewSecondaryStyle);
             textView->PreferredSize.width = PreferredSize::Width::FILL;

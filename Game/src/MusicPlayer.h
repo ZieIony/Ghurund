@@ -16,14 +16,14 @@ namespace Ghurund::Editor {
         SharedPointer<Audio::Sound> sound;
 
     public:
-        MusicPlayer(Theme& theme) {
+        MusicPlayer(Ghurund::UI::Theme& theme) {
             PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             progressBar = ghnew ProgressBar(*theme.progressBarStyle);
 //            auto playIcon = makeShared<BitmapImage>("icons/play 18.png");
-            playButton = ghnew ImageButton(theme);
+            playButton = ghnew ImageButton();
          //   playButton->Image = playIcon;
        //     auto stopIcon = makeShared<BitmapImage>("icons/stop 18.png");
-            stopButton = ghnew ImageButton(theme);
+            stopButton = ghnew ImageButton();
         //    stopButton->Image = stopIcon;
             SharedPointer<HorizontalLayout> buttons = ghnew HorizontalLayout();
             buttons->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };

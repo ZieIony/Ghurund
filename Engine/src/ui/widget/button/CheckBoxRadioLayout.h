@@ -14,11 +14,8 @@ namespace Ghurund::UI {
     protected:
         SelectableView* selectableView = nullptr;
         ImageView* imageView = nullptr;
-        Theme& theme;
 
     public:
-        CheckBoxRadioLayout(Theme& theme):theme(theme) {}
-
         ~CheckBoxRadioLayout() {
             if (selectableView)
                 selectableView->release();
@@ -45,15 +42,11 @@ namespace Ghurund::UI {
 
     class CheckBoxLayout:public CheckBoxRadioLayout {
     public:
-        CheckBoxLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
-
         virtual void onStateChanged(Control& control) override;
     };
 
     class RadioButtonLayout:public CheckBoxRadioLayout {
     public:
-        RadioButtonLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
-
         virtual void onStateChanged(Control& control) override;
     };
 
@@ -62,8 +55,6 @@ namespace Ghurund::UI {
         TextBlock* textView = nullptr;
 
     public:
-        CheckBoxRadioTextLayout(Theme& theme):CheckBoxRadioLayout(theme) {}
-
         ~CheckBoxRadioTextLayout() {
             if (textView)
                 textView->release();
@@ -82,15 +73,11 @@ namespace Ghurund::UI {
 
     class TextCheckBoxLayout:public CheckBoxRadioTextLayout {
     public:
-        TextCheckBoxLayout(Theme& theme):CheckBoxRadioTextLayout(theme) {}
-
         virtual void onStateChanged(Control& control) override;
     };
 
     class RadioTextButtonLayout:public CheckBoxRadioTextLayout {
     public:
-        RadioTextButtonLayout(Theme& theme):CheckBoxRadioTextLayout(theme) {}
-
         virtual void onStateChanged(Control& control) override;
     };
 }

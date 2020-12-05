@@ -17,7 +17,7 @@ namespace Ghurund::UI {
         List<MenuItem*> items;
 
     public:
-        PopupMenu(Theme& theme, Ghurund::Window& parent) {
+        PopupMenu(Ghurund::UI::Theme& theme, Ghurund::Window& parent) {
             window = ghnew Ghurund::PopupWindow();
             window->RootView->Child = this;
 

@@ -22,7 +22,7 @@ namespace Ghurund::UI {
             recyclerView = ghnew Ghurund::UI::RecyclerView<MenuItem*>();
             recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
             recyclerView->LayoutManager = ghnew HorizontalLayoutManager();
-            recyclerView->Adapters.add(ghnew ButtonMenuBarAdapter(theme));
+            recyclerView->Adapters.add(ghnew ButtonMenuBarAdapter());
             root = recyclerView;
         }
 

@@ -16,21 +16,18 @@ namespace Ghurund::UI {
         SharedPointer<StackLayout> stack;
 
     protected:
-        Theme& theme;
         SharedPointer<ClickResponseView> clickResponseView;
 
     public:
-        ImageButtonLayout(Theme& theme):theme(theme) {}
-
         virtual void init() override;
+
+        virtual void onThemeChanged(Control& control) override;
 
         virtual void onStateChanged(Control& control) override;
     };
 
     class ImageButtonFlatLayout:public ImageButtonLayout {
     public:
-        ImageButtonFlatLayout(Theme& theme):ImageButtonLayout(theme) {}
-
         virtual void onStateChanged(Control& control) override;
     };
 

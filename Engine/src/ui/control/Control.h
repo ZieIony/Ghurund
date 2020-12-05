@@ -55,8 +55,12 @@ namespace Ghurund::UI {
         FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
 
+        Theme* localTheme = nullptr;
+        Theme* theme = nullptr;
+
         Event<Control> onSizeChanged = Event<Control>(*this);
         Event<Control> onStateChanged = Event<Control>(*this);
+        Event<Control> onThemeChanged = Event<Control>(*this);
 
         virtual void onMeasure(float parentWidth, float parentHeight);
 
@@ -80,6 +84,12 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnStateChanged)) Event<Control>& OnStateChanged;
+
+        inline Event<Control>& getOnThemeChanged() {
+            return onThemeChanged;
+        }
+
+        __declspec(property(get = getOnThemeChanged)) Event<Control>& OnThemeChanged;
 
         inline const ASCIIString* getName() const {
             return name;
@@ -285,13 +295,24 @@ namespace Ghurund::UI {
 
         inline void setParent(ControlParent* parent) {
             this->parent = parent;
+            dispatchThemeChanged();
         }
 
-        inline ControlParent* getParent()const {
+        inline ControlParent* getParent() const {
             return parent;
         }
 
         __declspec(property(get = getParent, put = setParent)) ControlParent* Parent;
+
+        void setTheme(Theme* theme);
+
+        inline Theme* getTheme() {
+            return theme;
+        }
+
+        __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
+
+        virtual void dispatchThemeChanged();
 
         virtual Window* getWindow() const;
 

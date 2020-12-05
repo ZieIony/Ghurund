@@ -62,15 +62,16 @@ public:
         swapChain->init(Graphics, &Graphics2D, *window, FRAME_COUNT);
         window->SwapChain = swapChain;
 
+        theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
+        menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
+
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
         canvas->init(Graphics2D);
         SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
+        rootView->Theme = theme;
         rootView->BackgroundColor = 0xffffffff;
         window->RootView = rootView;
         Windows.add(window);
-
-        theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
-        menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
 
         SharedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
         SharedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
@@ -90,7 +91,7 @@ public:
         testRecycler->Name = "test recycler";
 
         SharedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
-        SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(*theme);
+        SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts();
 
         SharedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
         tabLayout->Name = "tabs";
@@ -99,7 +100,7 @@ public:
         column->Name = "controls tab";
 
         SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext , *theme);
-        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(*theme);
+        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab();
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {

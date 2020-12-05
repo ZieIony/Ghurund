@@ -16,7 +16,6 @@ namespace Ghurund::UI {
         ComPtr<ID2D1SolidColorBrush> fillBrush;
         ComPtr<ID2D1SolidColorBrush> strokeBrush;
         List<D2D1::Matrix3x2F> matrixStack;
-        SwapChain* swapChain = nullptr;
         ID2D1DeviceContext2* deviceContext = nullptr;
         Graphics2D* graphics2d;
         ComPtr<ID2D1Effect> tintEffect;

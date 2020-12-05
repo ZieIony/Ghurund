@@ -19,7 +19,7 @@ namespace Ghurund::Editor {
         SharedPointer<TextBlock> text;
 
     public:
-        LogRow(Theme& theme) {
+        LogRow(Ghurund::UI::Theme& theme) {
             icon = ghnew ImageView();
             text = ghnew TextBlock(theme.textViewPrimaryStyle);
             Children = { icon, text };

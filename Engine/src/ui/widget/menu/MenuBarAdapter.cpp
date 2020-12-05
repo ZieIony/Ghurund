@@ -2,10 +2,8 @@
 #include "ui/Theme.h"
 
 namespace Ghurund::UI {
-    ButtonMenuBarAdapter::ButtonMenuBarAdapter(Theme& theme):theme(theme) {}
-    
     Control* ButtonMenuBarAdapter::makeControl() const {
-        return ghnew TextButton(ghnew TextButtonFlatLayout(theme));
+        return ghnew TextButton(ghnew TextButtonFlatLayout());
     }
     
     void ButtonMenuBarAdapter::bind(Control& control, MenuItem* const& item, size_t position) const {

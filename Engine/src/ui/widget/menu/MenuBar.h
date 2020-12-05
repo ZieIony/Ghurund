@@ -24,7 +24,7 @@ namespace Ghurund::UI {
             PreferredSize.height = PreferredSize::Height::WRAP;
         }
 
-        MenuBar(Theme& theme):MenuBar(ghnew MenuBarLayout(theme)) {}
+        MenuBar(Ghurund::UI::Theme& theme):MenuBar(ghnew MenuBarLayout(theme)) {}
 
         ~MenuBar() {
             items.deleteItems();

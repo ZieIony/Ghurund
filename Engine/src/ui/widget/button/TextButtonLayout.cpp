@@ -3,52 +3,64 @@
 
 namespace Ghurund::UI {
     void TextButtonLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (!control.Enabled) {
-            textView->TextColor = theme.getColorForegroundDisabledOnBackground();
-            border->Color = theme.getColorForegroundDisabledOnBackground();
-            backgroundView->Color = theme.getColorControlDisabled();
+            textView->TextColor = theme->getColorForegroundDisabledOnBackground();
+            border->Color = theme->getColorForegroundDisabledOnBackground();
+            backgroundView->Color = theme->getColorControlDisabled();
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorAccent();
-            backgroundView->Color = theme.getColorControlNormal();
+            textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
+            border->Color = theme->getColorAccent();
+            backgroundView->Color = theme->getColorControlNormal();
         } else {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorForegroundPrimaryOnBackground();
-            backgroundView->Color = theme.getColorControlNormal();
+            textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
+            border->Color = theme->getColorForegroundPrimaryOnBackground();
+            backgroundView->Color = theme->getColorControlNormal();
         }
         clickResponseView->Pressed = ClickableView->Pressed;
     }
 
     void TextButtonFlatLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (!control.Enabled) {
-            textView->TextColor = theme.getColorForegroundDisabledOnBackground();
+            textView->TextColor = theme->getColorForegroundDisabledOnBackground();
             border->Color = 0;
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            border->Color = theme.getColorAccent();
+            textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
+            border->Color = theme->getColorAccent();
         } else {
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
+            textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
             border->Color = 0;
         }
         clickResponseView->Pressed = ClickableView->Pressed;
         backgroundView->Color = 0;
     }
 
-    void TextButtonAccentLayout::init() {
-        __super::init();
-        clickResponseView->Color = theme.ColorHighlightOnAccent;
+    void TextButtonAccentLayout::onThemeChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        textView->Font = theme->getButtonFont();
+        clickResponseView->Color = theme->ColorHighlightOnAccent;
     }
 
     void TextButtonAccentLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (!control.Enabled) {
-            textView->TextColor = theme.getColorForegroundDisabledOnBackground();
+            textView->TextColor = theme->getColorForegroundDisabledOnBackground();
             backgroundView->Color = 0;
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
-            textView->TextColor = theme.getColorForegroundPrimaryOnAccent();
-            backgroundView->Color = theme.getColorAccent();
+            textView->TextColor = theme->getColorForegroundPrimaryOnAccent();
+            backgroundView->Color = theme->getColorAccent();
         } else {
-            textView->TextColor = theme.getColorForegroundPrimaryOnAccent();
-            backgroundView->Color = theme.ColorAccent;
+            textView->TextColor = theme->getColorForegroundPrimaryOnAccent();
+            backgroundView->Color = theme->ColorAccent;
         }
         clickResponseView->Pressed = ClickableView->Pressed;
         border->Color = 0;
@@ -57,15 +69,22 @@ namespace Ghurund::UI {
     void TextButtonLayout::init() {
         __super::init();
         stack = ghnew StackLayout();
-        textView->Font = theme.getButtonFont();
         paddingContainer->Child = textView;
         paddingContainer->Padding.Vertical = 4;
         paddingContainer->Padding.Horizontal = 8;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
-        clickResponseView = makeShared<ClickResponseView>(theme.ColorHighlightOnBackground);
+        clickResponseView = makeShared<ClickResponseView>();
         stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
         ClickableView->Child = stack;
         root = ClickableView;
+    }
+
+    void TextButtonLayout::onThemeChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        textView->Font = theme->getButtonFont();
+        clickResponseView->Color = theme->ColorHighlightOnBackground;
     }
 }

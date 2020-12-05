@@ -12,7 +12,7 @@ using namespace Ghurund::UI;
 
 class TestFlowLayouts:public ScrollView {
 public:
-    TestFlowLayouts(Theme& theme) {
+    TestFlowLayouts() {
         Name = "flow layouts tab";
         SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
         column->PreferredSize.height = PreferredSize::Height::WRAP;
@@ -33,7 +33,7 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(theme);
+                TextButtonPtr button = ghnew TextButton();
                 button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
                 button->MinSize = FloatSize{ 60.0f, 60.0f };
                 flowLayout->Children.add(button);
@@ -61,7 +61,7 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout(theme));
+                TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout());
                 button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
                 flowLayout->Children.add(button);
             }

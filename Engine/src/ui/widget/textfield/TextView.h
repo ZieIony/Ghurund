@@ -36,11 +36,11 @@ namespace Ghurund::UI {
         bool setSelectionFromPoint(float x, float y, bool extendSelection);
 
     public:
-        TextView(Theme& theme):TextBlock("", theme.getPrimaryTextFont(), theme.getColorForegroundPrimaryOnBackground()) {
+        TextView(Ghurund::UI::Theme& theme):TextBlock("", theme.getPrimaryTextFont(), theme.getColorForegroundPrimaryOnBackground()) {
             textSelectionEffect = ghnew DrawingEffect(theme.ColorHighlightOnBackground);
             imageSelectionEffect = ghnew DrawingEffect(theme.ColorHighlightOnBackground);
             caretBackgroundEffect = ghnew DrawingEffect(theme.getColorForegroundPrimaryOnBackground());
-            updateCaretFormatting();
+            //updateCaretFormatting();
         }
 
         ~TextView() {

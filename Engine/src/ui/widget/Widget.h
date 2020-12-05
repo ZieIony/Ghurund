@@ -19,23 +19,25 @@ namespace Ghurund::UI {
             }
 
             EventHandler<Control> stateHandler = [this](Control& control) {
-                if (widgetLayout) {
-                    widgetLayout->onStateChanged(*this);
-                    repaint();
-                }
+                widgetLayout->onStateChanged(*this);
+                return true;
+            };
+
+            EventHandler<Control> themeHandler = [this](Control& control) {
+                widgetLayout->onThemeChanged(*this);
                 return true;
             };
 
         public:
             Widget(LayoutType* layout) {
                 OnStateChanged.add(stateHandler);
+                OnThemeChanged.add(themeHandler);
                 widgetLayout = layout;
 #ifdef _DEBUG
                 if (widgetLayout->Root)
                     Logger::log(LogType::INFO, "widget layout for {} initialized in its constructor", Type.Name);
 #endif
                 widgetLayout->init();
-                OnStateChanged();
                 Child = widgetLayout->Root;
             }
 

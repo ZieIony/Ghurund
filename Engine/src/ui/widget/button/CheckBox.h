@@ -18,7 +18,7 @@ namespace Ghurund::UI {
         }
     
     public:
-        CheckBox(CheckBoxRadioLayout* layout);
+        CheckBox(CheckBoxRadioLayout* layout = ghnew CheckBoxLayout());
 
         inline void setChecked(bool checked) {
             Layout.SelectableView->Selected = checked;
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        CheckBoxText(CheckBoxRadioTextLayout* layout):CheckBox(layout) {
+        CheckBoxText(CheckBoxRadioTextLayout* layout = ghnew TextCheckBoxLayout()):CheckBox(layout) {
             textView = layout->TextBlock;
         }
 

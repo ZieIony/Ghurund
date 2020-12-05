@@ -32,6 +32,7 @@ namespace Ghurund::UI {
             ItemAdapter<ItemType, ControlType>* adapter = findAdapter(index);
             ControlType* control = adapter->getControl();
             adapter->bind(*control, owner.Items->get(index), index);
+            control->Parent = &owner;
             return control;
         }
 

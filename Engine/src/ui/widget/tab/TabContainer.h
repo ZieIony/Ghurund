@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
         TabContainer(TabContainerLayout* layout);
 
-        TabContainer(Theme& theme):TabContainer(ghnew TabContainerVerticalBottomLayout(theme)) {}
+        TabContainer(Ghurund::UI::Theme& theme):TabContainer(ghnew TabContainerVerticalBottomLayout(theme)) {}
 
         ~TabContainer();
 

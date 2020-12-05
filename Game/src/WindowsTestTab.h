@@ -14,7 +14,7 @@ namespace Ghurund::Editor {
         DragHelper* helper;
 
     public:
-        WindowsTestTab(Theme& theme) {
+        WindowsTestTab(Ghurund::UI::Theme& theme) {
             SharedPointer<ColorView> content = ghnew ColorView(0xffff0000);
             SharedPointer<WindowFrame> frame = ghnew WindowFrame();
             frame->PreferredSize = { 200,150 };

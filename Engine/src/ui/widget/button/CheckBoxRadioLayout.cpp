@@ -10,43 +10,52 @@ namespace Ghurund::UI {
     }
 
     void CheckBoxRadioLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (!control.Enabled) {
-            imageView->Tint = theme.getColorForegroundDisabledOnBackground();
+            imageView->Tint = theme->getColorForegroundDisabledOnBackground();
         } else if (selectableView->Pressed) {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccentDark();
+                imageView->Tint = theme->getColorAccentDark();
             } else {
-                imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
+                imageView->Tint = theme->getColorForegroundPrimaryOnBackground();
             }
         } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccent();
+                imageView->Tint = theme->getColorAccent();
             } else {
-                imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+                imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
         } else {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccent();
+                imageView->Tint = theme->getColorAccent();
             } else {
-                imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+                imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
         }
     }
 
     void CheckBoxLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (selectableView->Selected) {
-            imageView->Image = theme.CheckBoxChecked;
+            imageView->Image = theme->CheckBoxChecked;
         } else {
-            imageView->Image = theme.CheckBoxUnchecked;
+            imageView->Image = theme->CheckBoxUnchecked;
         }
         __super::onStateChanged(control);
     }
-    
+
     void RadioButtonLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (selectableView->Selected) {
-            imageView->Image = theme.getRadioButtonChecked();
+            imageView->Image = theme->getRadioButtonChecked();
         } else {
-            imageView->Image = theme.getRadioButtonUnchecked();
+            imageView->Image = theme->getRadioButtonUnchecked();
         }
         __super::onStateChanged(control);
     }
@@ -65,48 +74,57 @@ namespace Ghurund::UI {
     }
 
     void CheckBoxRadioTextLayout::onStateChanged(Control& control) {
-        textView->Font = theme.getButtonFont();
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        textView->Font = theme->getButtonFont();
         if (!control.Enabled) {
-            imageView->Tint = theme.getColorForegroundDisabledOnBackground();
-            textView->TextColor = theme.getColorForegroundDisabledOnBackground();
+            imageView->Tint = theme->getColorForegroundDisabledOnBackground();
+            textView->TextColor = theme->getColorForegroundDisabledOnBackground();
         } else if (selectableView->Pressed) {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccentDark();
+                imageView->Tint = theme->getColorAccentDark();
             } else {
-                imageView->Tint = theme.getColorForegroundPrimaryOnBackground();
+                imageView->Tint = theme->getColorForegroundPrimaryOnBackground();
             }
-            textView->TextColor = theme.getColorForegroundPrimaryOnBackground();
+            textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
         } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccent();
+                imageView->Tint = theme->getColorAccent();
             } else {
-                imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+                imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
-            textView->TextColor = theme.getColorForegroundSecondaryOnBackground();
+            textView->TextColor = theme->getColorForegroundSecondaryOnBackground();
         } else {
             if (selectableView->Selected) {
-                imageView->Tint = theme.getColorAccent();
+                imageView->Tint = theme->getColorAccent();
             } else {
-                imageView->Tint = theme.getColorForegroundSecondaryOnBackground();
+                imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
-            textView->TextColor = theme.getColorForegroundSecondaryOnBackground();
+            textView->TextColor = theme->getColorForegroundSecondaryOnBackground();
         }
     }
 
     void TextCheckBoxLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (selectableView->Selected) {
-            imageView->Image = theme.CheckBoxChecked;
+            imageView->Image = theme->CheckBoxChecked;
         } else {
-            imageView->Image = theme.CheckBoxUnchecked;
+            imageView->Image = theme->CheckBoxUnchecked;
         }
         __super::onStateChanged(control);
     }
 
     void RadioTextButtonLayout::onStateChanged(Control& control) {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
         if (selectableView->Selected) {
-            imageView->Image = theme.RadioButtonChecked;
+            imageView->Image = theme->RadioButtonChecked;
         } else {
-            imageView->Image = theme.RadioButtonUnchecked;
+            imageView->Image = theme->RadioButtonUnchecked;
         }
         __super::onStateChanged(control);
     }

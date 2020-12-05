@@ -55,11 +55,9 @@ namespace Ghurund::UI {
         }
 
     public:
-        RadioTextButton(CheckBoxRadioTextLayout* layout):RadioButton(layout) {
+        RadioTextButton(CheckBoxRadioTextLayout* layout = ghnew RadioTextButtonLayout()):RadioButton(layout) {
             textView = layout->TextBlock;
         }
-
-        RadioTextButton(Ghurund::UI::Theme& theme):RadioTextButton(ghnew RadioTextButtonLayout(theme)) {}
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

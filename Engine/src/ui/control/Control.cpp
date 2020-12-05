@@ -177,6 +177,23 @@ namespace Ghurund::UI {
         return false;
     }
 
+    void Control::setTheme(Ghurund::UI::Theme* theme) {
+        if (!theme || localTheme != theme) {
+            localTheme = theme;
+            dispatchThemeChanged();
+        }
+    }
+
+    void Control::dispatchThemeChanged() {
+        if (localTheme) {
+            theme = localTheme;
+        } else if (parent) {
+            theme = parent->Theme;
+        }
+        onThemeChanged();
+        onStateChanged();
+    }
+
     Window* Control::getWindow() const {
         if (parent)
             return parent->Window;
@@ -203,10 +220,10 @@ namespace Ghurund::UI {
         if (needsLayout || size.width != width || size.height != height) {
             transformationInvalid = true;
 #ifdef _DEBUG
-      //      if (width < minSize.width || height < minSize.height)
-    //            Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : S("[unnamed]"));
-  //          if (width == 0 || height == 0)
-//                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : S("[unnamed]"));
+            if (width < minSize.width || height < minSize.height)
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : A("[unnamed]"));
+            if (width == 0 || height == 0)
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : A("[unnamed]"));
             size.width = std::max(width, minSize.width);
             size.height = std::max(height, minSize.height);
 #else
@@ -220,6 +237,12 @@ namespace Ghurund::UI {
     }
 
     void Control::draw(Canvas& canvas) {
+#ifdef _DEBUG
+        if (!theme) {
+            Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : A("[unnamed]"));
+            return;
+        }
+#endif
         if (transformationInvalid)
             rebuildTransformation();
         canvas.save();

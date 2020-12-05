@@ -21,6 +21,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRoot)) Control* Root;
 
+        virtual void onThemeChanged(Control& control) {}
+
         virtual void onStateChanged(Control& control) {}
     };
 }

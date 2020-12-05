@@ -14,7 +14,7 @@ namespace Ghurund::Editor {
         SharedPointer<ControlContainer> container;
 
     public:
-        ToolWindow(Theme& theme) {
+        ToolWindow(Ghurund::UI::Theme& theme) {
             titleBar = ghnew TitleBar(theme);
             border = ghnew Border();
             border->Thickness = 1;
