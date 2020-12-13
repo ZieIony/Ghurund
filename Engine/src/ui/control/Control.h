@@ -9,6 +9,7 @@
 #include "ui/PreferredSize.h"
 #include "ui/Cursor.h"
 #include "application/Window.h"
+#include "ui/UIContext.h"
 
 #include "D2d1helper.h"
 
@@ -56,11 +57,12 @@ namespace Ghurund::UI {
         bool needsLayout = true;
 
         Theme* localTheme = nullptr;
-        Theme* theme = nullptr;
+        UIContext* context = nullptr;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
         Event<Control> onStateChanged = Event<Control>(*this);
         Event<Control> onThemeChanged = Event<Control>(*this);
+        Event<Control> onContextChanged = Event<Control>(*this);
 
         virtual void onMeasure(float parentWidth, float parentHeight);
 
@@ -90,6 +92,13 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnThemeChanged)) Event<Control>& OnThemeChanged;
+
+
+        inline Event<Control>& getOnContextChanged() {
+            return onContextChanged;
+        }
+
+        __declspec(property(get = getOnContextChanged)) Event<Control>& OnContextChanged;
 
         inline const ASCIIString* getName() const {
             return name;
@@ -295,7 +304,7 @@ namespace Ghurund::UI {
 
         inline void setParent(ControlParent* parent) {
             this->parent = parent;
-            dispatchThemeChanged();
+            dispatchContextChanged();
         }
 
         inline ControlParent* getParent() const {
@@ -307,16 +316,22 @@ namespace Ghurund::UI {
         void setTheme(Theme* theme);
 
         inline Theme* getTheme() {
-            return theme;
+            if (localTheme)
+                return localTheme;
+            if (context)
+                return &context->Theme;
+            return nullptr;
         }
 
         __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
-        virtual void dispatchThemeChanged();
+        inline UIContext* getContext() {
+            return context;
+        }
 
-        virtual Window* getWindow() const;
+        __declspec(property(get = getContext, put = setContext)) UIContext* Context;
 
-        __declspec(property(get = getWindow)) Window* Window;
+        virtual void dispatchContextChanged();
 
         virtual void repaint();
 

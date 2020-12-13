@@ -1,30 +1,27 @@
 #include "LayoutEditor.h"
 
 namespace Ghurund::UI {
-    HRESULT LayoutEditor::recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text) {
-        HRESULT hr = S_OK;
-
+    Status LayoutEditor::recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text) {
         IDWriteTextLayout* newLayout = nullptr;
 
-        hr = factory->CreateTextLayout(
+        if (FAILED(factory->CreateTextLayout(
             text.getData(),
             (UINT32)text.Length,
             currentLayout,
             currentLayout->GetMaxWidth(),
             currentLayout->GetMaxHeight(),
             &newLayout
-        );
+        )))
+            return Status::CALL_FAIL;
 
-        if (SUCCEEDED(hr)) {
-            if (currentLayout)
-                currentLayout->Release();
-            currentLayout = newLayout;
-        }
+        if (currentLayout)
+            currentLayout->Release();
+        currentLayout = newLayout;
 
-        return hr;
+        return Status::OK;
     }
-    
-    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, CaretFormat* caretFormat) {
+
+    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, Font* font) {
         // Copies a single range of similar properties, from one old layout
         // to a new one.
 
@@ -37,15 +34,15 @@ namespace Ghurund::UI {
         if (fontCollection)
             fontCollection->Release();
 
-        if (caretFormat) {
-            newLayout->SetFontFamilyName(caretFormat->fontFamilyName, range);
-            newLayout->SetLocaleName(caretFormat->localeName, range);
-            newLayout->SetFontWeight(caretFormat->fontWeight, range);
-            newLayout->SetFontStyle(caretFormat->fontStyle, range);
-            newLayout->SetFontStretch(caretFormat->fontStretch, range);
-            newLayout->SetFontSize(caretFormat->fontSize, range);
-            newLayout->SetUnderline(caretFormat->hasUnderline, range);
-            newLayout->SetStrikethrough(caretFormat->hasStrikethrough, range);
+        if (font) {
+            newLayout->SetFontFamilyName(font->FamilyName, range);
+            newLayout->SetLocaleName(font->Locale, range);
+            newLayout->SetFontWeight((DWRITE_FONT_WEIGHT)font->Weight, range);
+            newLayout->SetFontStyle(font->Italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL, range);
+            //newLayout->SetFontStretch(font->fontStretch, range);
+            newLayout->SetFontSize(font->Size, range);
+            //newLayout->SetUnderline(font->hasUnderline, range);
+            //newLayout->SetStrikethrough(font->hasStrikethrough, range);
         } else {
             // font family
             wchar_t fontFamilyName[100];
@@ -65,23 +62,20 @@ namespace Ghurund::UI {
             newLayout->SetFontStyle(style, range);
             newLayout->SetFontStretch(stretch, range);
 
-            // font size
             FLOAT fontSize = 12.0;
             oldLayout->GetFontSize(startPosForOld, &fontSize);
             newLayout->SetFontSize(fontSize, range);
 
-            // underline and strikethrough
             BOOL value = FALSE;
             oldLayout->GetUnderline(startPosForOld, &value);
             newLayout->SetUnderline(value, range);
             oldLayout->GetStrikethrough(startPosForOld, &value);
             newLayout->SetStrikethrough(value, range);
 
-            // locale
-            wchar_t localeName[LOCALE_NAME_MAX_LENGTH];
-            localeName[0] = '\0';
-            oldLayout->GetLocaleName(startPosForOld, &localeName[0], ARRAYSIZE(localeName));
-            newLayout->SetLocaleName(localeName, range);
+            Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
+            localeName.set(0, '\0');
+            oldLayout->GetLocaleName(startPosForOld, localeName.begin(), localeName.Size);
+            newLayout->SetLocaleName(localeName.begin(), range);
         }
 
         // drawing effect
@@ -105,7 +99,7 @@ namespace Ghurund::UI {
         if (typography)
             typography->Release();
     }
-    
+
     UINT32 LayoutEditor::calculateRangeLengthAt(IDWriteTextLayout* layout, UINT32 pos) {
         // Determines the length of a block of similarly formatted properties.
 
@@ -113,66 +107,57 @@ namespace Ghurund::UI {
         DWRITE_TEXT_RANGE incrementAmount = { pos, 1 };
         DWRITE_FONT_WEIGHT weight = DWRITE_FONT_WEIGHT_NORMAL;
 
-        layout->GetFontWeight(pos,&weight,&incrementAmount);
+        layout->GetFontWeight(pos, &weight, &incrementAmount);
 
-        UINT32 rangeLength = incrementAmount.length - (pos - incrementAmount.startPosition);
-        return rangeLength;
+        return incrementAmount.length - (pos - incrementAmount.startPosition);
     }
-    
-    void LayoutEditor::copyRangedProperties(IDWriteTextLayout* oldLayout, UINT32 startPos, UINT32 endPos, UINT32 newLayoutTextOffset, IDWriteTextLayout* newLayout, bool isOffsetNegative) {
-        // Copies properties that set on ranges.
 
+    void LayoutEditor::copyRangedProperties(IDWriteTextLayout* oldLayout, UINT32 startPos, UINT32 endPos, UINT32 newLayoutTextOffset, IDWriteTextLayout* newLayout, bool isOffsetNegative) {
         UINT32 currentPos = startPos;
         while (currentPos < endPos) {
             UINT32 rangeLength = calculateRangeLengthAt(oldLayout, currentPos);
             rangeLength = std::min(rangeLength, endPos - currentPos);
             if (isOffsetNegative) {
-                copySinglePropertyRange(oldLayout,currentPos,newLayout,currentPos - newLayoutTextOffset,rangeLength);
+                copySinglePropertyRange(oldLayout, currentPos, newLayout, currentPos - newLayoutTextOffset, rangeLength);
             } else {
-                copySinglePropertyRange(oldLayout,currentPos,newLayout,currentPos + newLayoutTextOffset,rangeLength);
+                copySinglePropertyRange(oldLayout, currentPos, newLayout, currentPos + newLayoutTextOffset, rangeLength);
             }
             currentPos += rangeLength;
         }
     }
-    
-    HRESULT LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, WCHAR const* textToInsert, UINT32 textToInsertLength, CaretFormat* caretFormat) {
-        HRESULT hr = S_OK;
 
-        // The inserted string gets all the properties of the character right before position.
-        // If there is no text right before position, so use the properties of the character right after position.
-
-        // Copy all the old formatting.
+    Status LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, const UnicodeString& textToInsert, Font* font) {
         if (currentLayout)
             currentLayout->AddRef();
         IDWriteTextLayout* oldLayout = currentLayout;
         UINT32 oldTextLength = text.Length;
         position = std::min(position, (uint32_t)text.Size);
 
-        text.insert(position, textToInsert, textToInsertLength);
+        text.insert(position, textToInsert, textToInsert.Size);
 
-        hr = recreateLayout(currentLayout, text);
+        Status result = recreateLayout(currentLayout, text);
 
         IDWriteTextLayout* newLayout = currentLayout;
 
-        if (SUCCEEDED(hr)) {
+        if (result == Status::OK) {
             copyGlobalProperties(oldLayout, newLayout);
 
             // For each property, get the position range and apply it to the old text.
             if (position == 0) {
                 // Inserted text
-                copySinglePropertyRange(oldLayout, 0, newLayout, 0, textToInsertLength);
+                copySinglePropertyRange(oldLayout, 0, newLayout, 0, textToInsert.Size);
 
                 // The rest of the text
-                copyRangedProperties(oldLayout, 0, oldTextLength, textToInsertLength, newLayout);
+                copyRangedProperties(oldLayout, 0, oldTextLength, textToInsert.Size, newLayout);
             } else {
                 // 1st block
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout);
 
                 // Inserted text
-                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, textToInsertLength, caretFormat);
+                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, textToInsert.Size, font);
 
                 // Last block (if it exists)
-                copyRangedProperties(oldLayout, position, oldTextLength, textToInsertLength, newLayout);
+                copyRangedProperties(oldLayout, position, oldTextLength, textToInsert.Size, newLayout);
             }
 
             // Copy trailing end.
@@ -182,15 +167,10 @@ namespace Ghurund::UI {
         if (oldLayout)
             oldLayout->Release();
 
-        return S_OK;
+        return result;
     }
-    
-    HRESULT LayoutEditor::removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove) {
-        // Removes text and shifts all formatting.
 
-        HRESULT hr = S_OK;
-
-        // copy all the old formatting.
+    Status LayoutEditor::removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove) {
         if (currentLayout)
             currentLayout->AddRef();
         IDWriteTextLayout* oldLayout = currentLayout;
@@ -198,11 +178,11 @@ namespace Ghurund::UI {
 
         text.remove(position, lengthToRemove);
 
-        hr = recreateLayout(currentLayout, text);
+        Status result = recreateLayout(currentLayout, text);
 
         IDWriteTextLayout* newLayout = currentLayout;
 
-        if (SUCCEEDED(hr)) {
+        if (result == Status::OK) {
             copyGlobalProperties(oldLayout, newLayout);
 
             if (position == 0) {
@@ -221,9 +201,9 @@ namespace Ghurund::UI {
         if (oldLayout)
             oldLayout->Release();
 
-        return S_OK;
+        return result;
     }
-    
+
     void LayoutEditor::copyGlobalProperties(IDWriteTextLayout* oldLayout, IDWriteTextLayout* newLayout) {
         newLayout->SetTextAlignment(oldLayout->GetTextAlignment());
         newLayout->SetParagraphAlignment(oldLayout->GetParagraphAlignment());

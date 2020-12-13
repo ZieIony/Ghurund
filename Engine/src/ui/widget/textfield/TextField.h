@@ -12,6 +12,12 @@ namespace Ghurund::UI {
         Event<TextField> onTextChanged = Event<TextField>(*this);
         LayoutEditor layoutEditor;
 
+        void onReturn();
+
+        void onBackspace();
+
+        void onDelete();
+
         void onKeyPress(UINT32 keyCode);
 
         void onKeyCharacter(UINT32 charCode);
@@ -32,7 +38,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextField(IDWriteFactory* factory, Ghurund::UI::Theme& theme):TextView(theme), layoutEditor(factory) {
+        TextField() {
             Focusable = true;
         }
 
@@ -42,33 +48,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnTextChanged)) Event<TextField>& OnTextChanged;
 
-        void copyToClipboard();
-
         void deleteSelection();
 
         void pasteFromClipboard();
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
-            if (Focused) {
-                if (event.Action == KeyAction::DOWN) {
-                    onKeyPress(event.Key);
-                    return true;
-                } else if (event.Action == KeyAction::CHAR) {
-                    onKeyCharacter(event.Key);
-                    return true;
-                }
-            }
-            return __super::dispatchKeyEvent(event);
+        virtual void dispatchContextChanged() override {
+            __super::dispatchContextChanged();
+            if (Context)
+                layoutEditor.init(Context->Graphics.DWriteFactory);
         }
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            return __super::dispatchMouseButtonEvent(event);
-        }
-
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            return __super::dispatchMouseMotionEvent(event);
-        }
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
     };
 
     typedef SharedPointer<TextField> TextFieldPtr;

@@ -9,7 +9,7 @@
 #include "ui/control/ColorView.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/control/TextBlock.h"
-#include "ui/drawable/BitmapImage.h"
+#include "ui/drawable/BitmapImageDrawable.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/ClickResponseView.h"
 
@@ -168,15 +168,15 @@ public:
 
     __declspec(property(get = getSubtext, put = setSubtext)) const String& Subtext;
 
-    inline void setImage(BitmapImage* image) {
+    inline void setImage(ImageDrawable* image) {
         imageView->Image = image;
     }
 
-    inline BitmapImage* getImage() {
+    inline ImageDrawable* getImage() {
         return imageView->Image;
     }
 
-    __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
+    __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
 };
 
@@ -223,6 +223,6 @@ public:
         StringObjectItem* strObj = (StringObjectItem*)item;
         sor.Text = strObj->text;
         sor.Subtext = strObj->subtext;
-        sor.Image = strObj->image;
+        sor.Image = makeShared<BitmapImageDrawable>(strObj->image);
     }
 };

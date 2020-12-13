@@ -23,8 +23,8 @@ namespace Ghurund::UI {
 
             recyclerView = ghnew RecyclerView<MenuItem*>();
             recyclerView->LayoutManager = ghnew VerticalLayoutManager();
-            recyclerView->Adapters.add(ghnew ButtonPopupMenuAdapter(theme));
-            recyclerView->Adapters.add(ghnew SeparatorPopupMenuAdapter(theme));
+            recyclerView->Adapters.add(ghnew ButtonPopupMenuAdapter());
+            recyclerView->Adapters.add(ghnew SeparatorPopupMenuAdapter());
             Children = { recyclerView };
             recyclerView->PreferredSize.width = PreferredSize::Width::WRAP;
             recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
@@ -71,9 +71,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
-
-        virtual Ghurund::Window* getWindow() const override {
-            return window;
-        }
     };
 }

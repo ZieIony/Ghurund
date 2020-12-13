@@ -9,7 +9,7 @@ namespace Ghurund::UI {
         SharedPointer<CheckBox> checkBox;
 
     public:
-        BoolPropertyRow(Ghurund::UI::Theme& theme):PropertyRow(theme) {
+        BoolPropertyRow() {
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             checkBox = ghnew CheckBox();
@@ -32,18 +32,13 @@ namespace Ghurund::UI {
     };
 
     class BoolPropertyRowAdapter:public ItemAdapter<ObjectProperty*, PropertyRow> {
-    private:
-        Theme& theme;
-
     public:
-        BoolPropertyRowAdapter(Theme& theme):theme(theme) {}
-
         virtual bool canHandleItem(ObjectProperty* const& item, size_t position) const override {
             return S("bool") == item->Property.TypeName;
         }
 
         virtual BoolPropertyRow* makeControl() const override {
-            return ghnew BoolPropertyRow(theme);
+            return ghnew BoolPropertyRow();
         }
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {

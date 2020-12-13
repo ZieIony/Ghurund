@@ -16,7 +16,7 @@ namespace Ghurund::Editor {
             PreferredSize.height = PreferredSize::Height::WRAP;
             hint = ghnew TextBlock("Search", theme.getSecondaryTextFont());
             hint->PreferredSize.width = PreferredSize::Width::FILL;
-            textField = ghnew TextField(context.Graphics2D.DWriteFactory, theme);
+            textField = ghnew TextField();
             textField->PreferredSize.width = PreferredSize::Width::FILL;
             Children = { hint, textField };
 

@@ -8,20 +8,10 @@ namespace Ghurund::UI {
     using namespace DirectX;
 
     class Drawable:public Pointer {
-    private:
-        bool transformationInvalid = true;
-
-        inline void rebuildTransformation() {
-            transformation = D2D1::Matrix3x2F::Identity();
-            transformation.Translation(position.x, position.y);
-            transformationInvalid = false;
-        }
-
     protected:
         FloatSize size = { 0, 0 };
         PreferredSize preferredSize;
         XMFLOAT2 position = { 0,0 };
-        D2D1::Matrix3x2F transformation;
 
         Control* owner = nullptr;
 
@@ -37,13 +27,11 @@ namespace Ghurund::UI {
 
         inline void setPosition(const XMFLOAT2& position) {
             this->position = position;
-            transformationInvalid = true;
         }
 
         inline void setPosition(float x, float y) {
             position.x = x;
             position.y = y;
-            transformationInvalid = true;
         }
 
         __declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
@@ -84,14 +72,23 @@ namespace Ghurund::UI {
         virtual void onDraw(Canvas& canvas) = 0;
 
         void draw(Canvas& canvas) {
-            if (transformationInvalid)
-                rebuildTransformation();
-            canvas.save();
-            canvas.transform(transformation);
-
             onDraw(canvas);
-
-            canvas.restore();
         }
+    };
+
+    class ImageDrawable:public Drawable {
+    private:
+        uint32_t tint = 0;
+
+    public:
+        inline void setTint(const uint32_t color) {
+            this->tint = color;
+        }
+
+        inline uint32_t getTint() const {
+            return tint;
+        }
+
+        __declspec(property(get = getTint, put = setTint)) uint32_t Tint;
     };
 }

@@ -6,13 +6,14 @@ namespace Ghurund {
         const wchar_t* extension = nullptr;
         bool save, load;
 
-        static const ResourceFormat* values[13];
+        static const ResourceFormat* values[14];
 
     public:
         static const ResourceFormat& ENTITY,
             & SCENE,
             & HLSL, & SHADER,
             & JPG, & JPEG, & PNG,
+            & SVG,
             & MATERIAL,
             & MODEL,
             & MESH, & OBJ,
@@ -21,8 +22,8 @@ namespace Ghurund {
 
         ResourceFormat() {
             extension = nullptr;
-			save = false;
-			load = false;
+            save = false;
+            load = false;
         }
 
         ResourceFormat(const wchar_t* extension, bool save, bool load) {

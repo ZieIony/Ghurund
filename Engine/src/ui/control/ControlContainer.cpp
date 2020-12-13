@@ -49,18 +49,10 @@ namespace Ghurund::UI {
         return child && child->focusRight();
     }
 
-    void ControlContainer::dispatchThemeChanged() {
-        if (localTheme) {
-            theme = localTheme;
-            if (child)
-                child->dispatchThemeChanged();
-        } else if (Parent) {
-            theme = Parent->Theme;
-            if (child)
-                child->dispatchThemeChanged();
-        }
-        onThemeChanged();
-        onStateChanged();
+    void ControlContainer::dispatchContextChanged() {
+        __super::dispatchContextChanged();
+        if (child)
+            child->dispatchContextChanged();
     }
 
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {

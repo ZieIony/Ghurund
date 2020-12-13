@@ -1,6 +1,6 @@
 #include "VerticalScrollBarLayout.h"
 #include "ui/Theme.h"
-#include "ui/drawable/BitmapImage.h"
+#include "ui/drawable/BitmapImageDrawable.h"
 
 namespace Ghurund::UI {
     void VerticalScrollBarLayout::init() {
@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         topButton = ghnew ImageButton(topButtonLayout);
         topButtonLayout->PaddingContainer->Padding.All = 0;
         topButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        topButton->Image = theme.ArrowUp;
+        topButton->Image = makeShared<BitmapImageDrawable>(theme.ArrowUp);
 
         barButton = ghnew ImageButton();
         barButton->PreferredSize = { PreferredSize::Width::FILL, 100.0f };
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         bottomButton = ghnew ImageButton(bottomButtonLayout);
         bottomButtonLayout->PaddingContainer->Padding.All = 0;
         bottomButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        bottomButton->Image = theme.ArrowDown;
+        bottomButton->Image = makeShared<BitmapImageDrawable>(theme.ArrowDown);
 
         verticalLayout = ghnew VerticalLayout();
         verticalLayout->Children = { topButton, track, bottomButton };

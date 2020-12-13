@@ -14,16 +14,6 @@ namespace Ghurund::UI {
             return color;
         }
 
-        inline COLORREF getColorRef() const throw() {
-            return getColorRef(color);
-        }
-
-        static inline COLORREF getColorRef(uint32_t bgra) throw() {
-            return RGB(GetBValue(bgra), GetGValue(bgra), GetRValue(bgra));
-        }
-
-        static inline COLORREF getBgra(COLORREF rgb) throw() {
-            return RGB(GetBValue(rgb), GetGValue(rgb), GetRValue(rgb)) | 0xFF000000;
-        }
+        __declspec(property(get = getColor)) uint32_t Color;
     };
 }

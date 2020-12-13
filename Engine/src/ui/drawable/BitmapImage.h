@@ -81,7 +81,7 @@ namespace Ghurund::UI {
         }
 
         static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::JPG};
+            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::JPG , (ResourceFormat*)&ResourceFormat::JPEG , (ResourceFormat*)&ResourceFormat::PNG};
             return formats;
         }
 

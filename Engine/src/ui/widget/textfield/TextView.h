@@ -1,23 +1,29 @@
 #pragma once
 
-#include "CaretFormat.h"
 #include "DrawingEffect.h"
 #include "SetSelectionMode.h"
-#include "ui/control/TextBlock.h"
 #include "ui/Theme.h"
+#include "ui/control/TextBlock.h"
+#include "ui/drawable/CursorDrawable.h"
+#include "input/Input.h"
 
 namespace Ghurund::UI {
     class TextView:public TextBlock {
     private:
-        DrawingEffect* textSelectionEffect;
-        DrawingEffect* imageSelectionEffect;
-        DrawingEffect* caretBackgroundEffect;
+        DrawingEffect* textSelectionEffect = nullptr;
+        DrawingEffect* imageSelectionEffect = nullptr;
+        DrawingEffect* caretBackgroundEffect = nullptr;
+
+        CursorDrawable* cursorDrawable = nullptr;
 
     protected:
         uint32_t caretAnchor = 0;
         uint32_t caretPosition = 0;
         uint32_t caretPositionOffset = 0;
-        CaretFormat caretFormat;
+        bool pressed = false;
+
+        Ghurund::UI::Font* currentFont = nullptr;
+        uint32_t currentColor = 0;
 
         DWRITE_TEXT_RANGE getSelectionRange();
 
@@ -35,22 +41,67 @@ namespace Ghurund::UI {
 
         bool setSelectionFromPoint(float x, float y, bool extendSelection);
 
-    public:
-        TextView(Ghurund::UI::Theme& theme):TextBlock("", theme.getPrimaryTextFont(), theme.getColorForegroundPrimaryOnBackground()) {
-            textSelectionEffect = ghnew DrawingEffect(theme.ColorHighlightOnBackground);
-            imageSelectionEffect = ghnew DrawingEffect(theme.ColorHighlightOnBackground);
-            caretBackgroundEffect = ghnew DrawingEffect(theme.getColorForegroundPrimaryOnBackground());
-            //updateCaretFormatting();
+        virtual void onUpdate(const Timer& timer) override {
+            if (cursorDrawable)
+                cursorDrawable->update(timer);
         }
 
+        virtual void onDraw(Canvas& canvas) override;
+
+    public:
         ~TextView() {
-            textSelectionEffect->Release();
-            imageSelectionEffect->Release();
-            caretBackgroundEffect->Release();
+            if (textSelectionEffect)
+                textSelectionEffect->Release();
+            if (imageSelectionEffect)
+                imageSelectionEffect->Release();
+            if (caretBackgroundEffect)
+                caretBackgroundEffect->Release();
         }
+
+        inline CursorDrawable* getCursorDrawable() {
+            return cursorDrawable;
+        }
+
+        inline void setCursorDrawable(CursorDrawable* drawable) {
+            if (cursorDrawable)
+                cursorDrawable->Owner = nullptr;
+            setPointer(cursorDrawable, drawable);
+            if (drawable)
+                drawable->Owner = this;
+        }
+
+        __declspec(property(get = getCursorDrawable, put = setCursorDrawable)) CursorDrawable* CursorDrawable;
 
         bool setSelection(SetSelectionMode moveMode, UINT32 advance, bool extendSelection, bool updateCaretFormat = true);
 
-        virtual void onDraw(Canvas& canvas) override;
+        void copyToClipboard();
+
+        virtual void dispatchContextChanged() override;
+
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
+            if (event.Button == MouseButton::LEFT) {
+                if (event.Action == MouseAction::DOWN) {
+                    pressed = true;
+                    setSelectionFromPoint(event.Position.x, event.Position.y, Input::isShiftDown());
+                } else {
+                    pressed = false;
+                }
+            }
+            return __super::dispatchMouseButtonEvent(event);
+        }
+
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
+            if (event.Action == KeyAction::DOWN && event.Key == 'C' && Input::isControlDown()) {
+                copyToClipboard();
+                return true;
+            }
+            return __super::dispatchKeyEvent(event);
+        }
+
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
+            if (pressed)
+                setSelectionFromPoint(event.Position.x, event.Position.y, true);
+            return __super::dispatchMouseMotionEvent(event);
+        }
     };
 }

@@ -66,7 +66,7 @@ namespace Ghurund::UI {
         if (FAILED(m_d3d11On12Device.As(&dxgiDevice)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "m_d3d11On12Device.As(&dxgiDevice) failed\n");
 
-        if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory3), &d2dFactoryOptions, &m_d2dFactory)))
+        if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory6), &d2dFactoryOptions, &m_d2dFactory)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "D2D1CreateFactory failed\n");
         if (FAILED(m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateDevice failed\n");

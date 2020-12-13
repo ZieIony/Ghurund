@@ -101,6 +101,7 @@
     <ClCompile Include="src\ui\control\TextBlock.cpp" />
     <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
+    <ClCompile Include="src\ui\drawable\SvgImage.cpp" />
     <ClCompile Include="src\ui\font\Font.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="src\core\collection\PointerArray.h" />
     <ClInclude Include="src\core\collection\PointerList.h" />
     <ClInclude Include="src\core\collection\PointerMap.h" />
+    <ClInclude Include="src\core\string\String.h" />
     <ClInclude Include="src\core\string\UnicodeString.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
@@ -185,7 +187,6 @@
     <ClInclude Include="src\core\io\MemoryStream.h" />
     <ClInclude Include="src\core\collection\List.h" />
     <ClInclude Include="src\core\collection\Map.h" />
-    <ClInclude Include="src\core\string\String.h" />
     <ClInclude Include="src\core\threading\CriticalSection.h" />
     <ClInclude Include="src\core\threading\FunctionQueue.h" />
     <ClInclude Include="src\core\Object.h" />
@@ -327,11 +328,15 @@
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
+    <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
+    <ClInclude Include="src\ui\drawable\SvgImage.h" />
+    <ClInclude Include="src\ui\drawable\SvgImageDrawable.h" />
     <ClInclude Include="src\ui\font\FontCollectionLoader.h" />
     <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
     <ClInclude Include="src\ui\layout\DesktopLayout.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\Graphics2D.h" />
+    <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
@@ -445,7 +450,7 @@
     <ClInclude Include="src\ui\widget\tab\TabItemAdapter.h" />
     <ClInclude Include="src\ui\widget\tab\TextTabLayout.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
-    <ClInclude Include="src\ui\widget\textfield\CaretFormat.h" />
+    <ClInclude Include="src\application\Clipboard.h" />
     <ClInclude Include="src\ui\widget\textfield\DrawingEffect.h" />
     <ClInclude Include="src\ui\widget\textfield\IUnknownImpl.h" />
     <ClInclude Include="src\ui\widget\textfield\LayoutEditor.h" />
@@ -468,6 +473,9 @@
   <ItemGroup>
     <Natvis Include="Engine.Core.natvis" />
     <Natvis Include="Engine.UI.natvis" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="src\ui\widget\textfield\license.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

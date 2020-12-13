@@ -12,7 +12,7 @@ namespace Ghurund::UI {
         bool visible = true;
 
     public:
-        CursorDrawable(uint32_t color, float width = 2.0f, float blinkTime = 2.0f):blinkTime(blinkTime) {
+        CursorDrawable(uint32_t color = 0x7f000000, float width = 2.0f, float blinkTime = 2.0f):blinkTime(blinkTime) {
             Color = color;
             preferredSize.width = PreferredSize::Width(width);
         }

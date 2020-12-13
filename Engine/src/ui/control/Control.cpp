@@ -180,24 +180,18 @@ namespace Ghurund::UI {
     void Control::setTheme(Ghurund::UI::Theme* theme) {
         if (!theme || localTheme != theme) {
             localTheme = theme;
-            dispatchThemeChanged();
+            dispatchContextChanged();
         }
     }
 
-    void Control::dispatchThemeChanged() {
-        if (localTheme) {
-            theme = localTheme;
-        } else if (parent) {
-            theme = parent->Theme;
-        }
-        onThemeChanged();
+    void Control::dispatchContextChanged() {
+        Ghurund::UI::Theme* theme = Theme;
+        if (!context && parent)
+            context = parent->Context;
+        onContextChanged();
+        if (theme != Theme)
+            onThemeChanged();
         onStateChanged();
-    }
-
-    Window* Control::getWindow() const {
-        if (parent)
-            return parent->Window;
-        return nullptr;
     }
 
     void Control::repaint() {
@@ -238,7 +232,7 @@ namespace Ghurund::UI {
 
     void Control::draw(Canvas& canvas) {
 #ifdef _DEBUG
-        if (!theme) {
+        if (!Theme) {
             Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : A("[unnamed]"));
             return;
         }
@@ -265,9 +259,9 @@ namespace Ghurund::UI {
 
     XMFLOAT2 Control::getPositionOnScreen() {
         auto pos = PositionInWindow;
-        Ghurund::Window* window = Window;
-        if (!window)
+        if (!context)
             return pos;
+        Ghurund::Window& window = context->Window;
         POINT p = { (LONG)pos.x, (LONG)pos.y };
         //ClientToScreen(Window->Handle, &p);
         return XMFLOAT2((float)p.x, (float)p.y);

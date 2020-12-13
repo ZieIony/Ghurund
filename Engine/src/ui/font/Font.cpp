@@ -6,8 +6,42 @@
 #include <commdlg.h>
 
 namespace Ghurund::UI {
-    Font::Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight, bool italic)
-        :file(file), familyName(family), size(size), weight(weight), italic(italic) {}
+    Font::Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight, bool italic, const UnicodeString& locale)
+        :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
+
+    Font::Font(IDWriteTextLayout* textLayout, UINT32 position) {
+        Array<wchar_t> fontFamilyName(100);
+        fontFamilyName.set(0, L'\0');
+        textLayout->GetFontFamilyName(position, fontFamilyName.begin(), fontFamilyName.Size);
+        familyName = fontFamilyName.begin();
+
+        Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
+        localeName.set(0, L'\0');
+        textLayout->GetLocaleName(position, localeName.begin(), localeName.Size);
+        locale = localeName.begin();
+
+        DWRITE_FONT_WEIGHT fontWeight;
+        textLayout->GetFontWeight(position, &fontWeight);
+        weight = (DWRITE_FONT_WEIGHT)fontWeight;
+
+        DWRITE_FONT_STYLE fontStyle;
+        textLayout->GetFontStyle(position, &fontStyle);
+        italic = fontStyle == DWRITE_FONT_STYLE_ITALIC;
+
+        DWRITE_FONT_STRETCH fontStretch;
+        textLayout->GetFontStretch(position, &fontStretch);
+        stretch = (DWRITE_FONT_STRETCH)fontStretch;
+
+        textLayout->GetFontSize(position, &size);
+
+        BOOL hasUnderline;
+        textLayout->GetUnderline(position, &hasUnderline);
+        underline = hasUnderline;
+
+        BOOL hasStrikethrough;
+        textLayout->GetStrikethrough(position, &hasStrikethrough);
+        strikethrough = hasStrikethrough;
+    }
 
     Status Font::init(Graphics2D& graphics2d) {
         this->graphics2d = &graphics2d;
@@ -18,10 +52,10 @@ namespace Ghurund::UI {
             familyName,
             fontCollection,
             (DWRITE_FONT_WEIGHT)weight,
-            DWRITE_FONT_STYLE_NORMAL,
+            italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL,
             DWRITE_FONT_STRETCH_NORMAL,
             size * 96.0f / 72.0f,
-            L"en-us",
+            locale.getData(),
             &textFormat)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateTextFormat failed\n");
 
@@ -32,18 +66,5 @@ namespace Ghurund::UI {
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "SetParagraphAlignment failed\n");
 
         return Status::OK;
-    }
-
-    IDWriteTextLayout* Font::makeLayout(UnicodeString& text, float width, float height) {
-        IDWriteTextLayout* textLayout;
-        graphics2d->DWriteFactory->CreateTextLayout(
-            text.getData(),      // The string to be laid out and formatted.
-            (UINT32)text.Size,  // The length of the string.
-            textFormat.Get(),  // The text format to apply to the string (contains font information, etc).
-            width,         // The width of the layout box.
-            height,        // The height of the layout box.
-            &textLayout  // The IDWriteTextLayout interface pointer.
-        );
-        return textLayout;
     }
 }

@@ -35,7 +35,7 @@ namespace Ghurund::Editor {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
-            propertyList = ghnew PropertyList(context, theme);
+            propertyList = ghnew PropertyList();
             propertyList->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
             SharedPointer<ColorView> separator = makeShared<ColorView>(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };

@@ -18,13 +18,13 @@ namespace Ghurund {
         bool dispatchEvent(const WindowMessage& message, EventDispatcher& consumer);
 
     public:
-        void dispatchMessage(WindowMessage &message) {
+        void dispatchMessage(WindowMessage& message) {
             messages.add(message);
         }
 
-        void dispatchEvents(EventDispatcher &consumer) {
-            for(size_t i = 0; i < messages.Size;) {
-                if(dispatchEvent(messages[i], consumer)) {
+        void dispatchEvents(EventDispatcher& consumer) {
+            for (size_t i = 0; i < messages.Size;) {
+                if (dispatchEvent(messages[i], consumer)) {
                     messages.removeAt(i);
                 } else {
                     i++;
@@ -42,10 +42,18 @@ namespace Ghurund {
 
         __declspec(property(get = getMousePos)) XMINT2 MousePos;
 
-        const bool *getKeys() const {
+        const bool* getKeys() const {
             return keys;
         }
 
-        __declspec(property(get = getKeys)) bool *Keys;
+        __declspec(property(get = getKeys)) bool* Keys;
+
+        static inline bool isShiftDown() {
+            return (GetKeyState(VK_SHIFT) & 0x80) != 0;
+        }
+
+        static inline bool isControlDown() {
+            return (GetKeyState(VK_CONTROL) & 0x80) != 0;
+        }
     };
 }

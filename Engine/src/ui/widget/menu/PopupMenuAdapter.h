@@ -17,10 +17,10 @@ namespace Ghurund::UI {
         SharedPointer<HorizontalLayout> row;
 
     public:
-        ButtonPopupMenuRow(Ghurund::UI::Theme& theme) {
+        ButtonPopupMenuRow() {
             icon = ghnew ImageView();
             icon->PreferredSize.width = 16;
-            text = ghnew TextBlock(theme.textViewPrimaryStyle);
+            text = ghnew TextBlock();
             padding = ghnew PaddingContainer(4);
             row = ghnew HorizontalLayout();
             row->PreferredSize.width = PreferredSize::Width::WRAP;
@@ -43,18 +43,13 @@ namespace Ghurund::UI {
     };
 
     class ButtonPopupMenuAdapter:public ItemAdapter<MenuItem*, Control> {
-    private:
-        Theme& theme;
-
     public:
-        ButtonPopupMenuAdapter(Theme& theme):theme(theme) {}
-
         virtual bool canHandleItem(MenuItem* const& item, size_t position) const override {
             return item->type == MenuItemType::BUTTON;
         }
 
         virtual Control* makeControl() const {
-            return ghnew ButtonPopupMenuRow(theme);
+            return ghnew ButtonPopupMenuRow();
         }
 
         virtual void bind(Control& control, MenuItem* const& item, size_t position) const {
@@ -65,20 +60,13 @@ namespace Ghurund::UI {
     };
 
     class SeparatorPopupMenuAdapter:public ItemAdapter<MenuItem*, Control> {
-    private:
-        Theme& theme;
-
-    public:
-        SeparatorPopupMenuAdapter(Theme& theme):theme(theme) {}
-
     public:
         virtual bool canHandleItem(MenuItem* const& item, size_t position) const override {
             return item->type == MenuItemType::SEPARATOR;
         }
 
         virtual Control* makeControl() const {
-            SharedPointer<Style<Separator>> style = ghnew HorizontalSeparatorStyle(theme);
-            Separator* separator = ghnew Separator(style);
+            Separator* separator = ghnew Separator(ghnew HorizontalSeparatorStyle());
             separator->PreferredSize.width = PreferredSize::Width::FILL;
             return separator;
         }

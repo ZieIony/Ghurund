@@ -51,7 +51,7 @@ public:
                 stack->PreferredSize = { 200, 120 };
                 SharedPointer<Border> border = ghnew Border();
                 SharedPointer<ImageView> imageView = ghnew ImageView();
-                imageView->Image = image;
+                imageView->Image = makeShared<BitmapImageDrawable>(image);
                 imageView->ScaleMode = (enum ImageScaleMode)i;
                 stack->Children = { imageView, border };
                 SharedPointer<TextBlock> textView = ghnew TextBlock(theme.textViewSecondaryStyle);

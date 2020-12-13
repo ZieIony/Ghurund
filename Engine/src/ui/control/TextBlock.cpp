@@ -1,4 +1,5 @@
 #include "TextBlock.h"
+#include "ui/Theme.h"
 
 namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
@@ -9,7 +10,7 @@ namespace Ghurund::UI {
         }
 
         if (!textLayout)
-            textLayout = font->makeLayout(text, parentWidth, parentHeight);
+            makeLayout(parentWidth, parentHeight);
 
         DWRITE_TEXT_METRICS textMetrics;
         textLayout->GetMetrics(&textMetrics);
@@ -19,7 +20,7 @@ namespace Ghurund::UI {
         } else if (preferredSize.width != PreferredSize::Width::FILL) {
             measuredSize.width = (float)preferredSize.width;
             textLayout->Release();
-            textLayout = font->makeLayout(text, measuredSize.width, parentHeight);
+            makeLayout(measuredSize.width, parentHeight);
         }
 
         if (preferredSize.height == PreferredSize::Height::WRAP) {
@@ -30,7 +31,19 @@ namespace Ghurund::UI {
     }
 
     void TextBlock::onDraw(Canvas& canvas) {
-        if (textLayout)
-            canvas.drawText(textLayout, 0, 0, paint);
+        paint.Color = TextColor;
+        canvas.drawText(textLayout, 0, 0, paint);
+    }
+
+    void TextBlock::dispatchContextChanged() {
+        __super::dispatchContextChanged();
+        if (!Theme)
+            return;
+        if (!Font)
+            Font = Theme->PrimaryTextFont;
+        if (!TextColor)
+            TextColor = Theme->ColorForegroundPrimaryOnBackground;
+        if (!textLayout && Size.width > 0 && Size.height > 0)
+            makeLayout(Size.width, Size.height);
     }
 }

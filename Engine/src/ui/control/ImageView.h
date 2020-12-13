@@ -3,7 +3,7 @@
 #include "Control.h"
 #include "core/SharedPointer.h"
 #include "ui/Alignment.h"
-#include "ui/drawable/BitmapImage.h"
+#include "ui/drawable/Drawable.h"
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {
@@ -12,8 +12,7 @@ namespace Ghurund::UI {
 
     class ImageView: public Control {
     private:
-        BitmapImage* image = nullptr;
-        unsigned int tint = 0;
+        ImageDrawable* image = nullptr;
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
@@ -27,7 +26,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        ImageView(BitmapImage* image = nullptr) {
+        ImageView(ImageDrawable* image = nullptr) {
             if (image) {
                 image->addReference();
                 this->image = image;
@@ -41,25 +40,15 @@ namespace Ghurund::UI {
                 image->release();
         }
 
-        inline void setImage(BitmapImage* image) {
+        inline void setImage(ImageDrawable* image) {
             setPointer(this->image, image);
         }
 
-        inline BitmapImage* getImage() {
+        inline ImageDrawable* getImage() {
             return image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
-
-        inline void setTint(unsigned int color) {
-            this->tint = color;
-        }
-
-        inline unsigned int getTint() {
-            return tint;
-        }
-
-        __declspec(property(get = getTint, put = setTint)) unsigned int Tint;
+        __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
         inline void setScaleMode(ImageScaleMode mode) {
             this->scaleMode = mode;

@@ -67,7 +67,7 @@ namespace Ghurund {
             hash = string.hash;
         }
 
-        GenericString(GenericString&& other) {
+        GenericString(GenericString&& other) noexcept {
             v = other.v;
             size = other.size;
             initial = other.initial;
@@ -216,11 +216,11 @@ namespace Ghurund {
         }
 
         bool operator==(const Type* str) const {
-            return memcmp(v, str, Length * sizeof(Type)) == 0;
+            return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(Type)) == 0;
         }
 
         bool operator==(const Type* str) {
-            return memcmp(v, str, Length * sizeof(Type)) == 0;
+            return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(Type)) == 0;
         }
 
         GenericString& operator=(GenericString&& other) noexcept {

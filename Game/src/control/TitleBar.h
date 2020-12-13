@@ -30,7 +30,7 @@ namespace Ghurund::Editor {
 //                closeIcon = ghnew BitmapImage(L"icons/close 18.png");
                 closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout());
               //  closeButton->Image = closeIcon;
-                closeButton->ImageTint = theme.getColorForegroundPrimaryOnAccent();
+                //closeButton->Image->Tint = theme.getColorForegroundPrimaryOnAccent();
             }
             row->Alignment.vertical = Alignment::Vertical::CENTER;
             row->Children = { title, closeButton };

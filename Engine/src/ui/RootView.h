@@ -6,14 +6,13 @@
 namespace Ghurund::UI {
     class RootView: public ControlContainer {
     private:
-        Ghurund::Window& window;
         Canvas* canvas;
         uint32_t backgroundColor = 0;
         Control* prevFocusedChild = nullptr;
         Control* capturedChild = nullptr;
 
     public:
-        RootView(Ghurund::Window& window, Canvas* canvas);
+        RootView(UIContext& context, Canvas& canvas);
 
         ~RootView() {
             delete canvas;
@@ -30,7 +29,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) uint32_t BackgroundColor;
 
         virtual bool isFocused() const override {
-            return window.isFocused();
+            return context->Window.isFocused();
         }
 
         virtual void setCapturedChild(Control* control) override {
@@ -38,7 +37,7 @@ namespace Ghurund::UI {
         }
 
         virtual void repaint() {
-            window.refresh();
+            context->Window.refresh();
         }
 
         virtual void invalidate();
@@ -51,10 +50,6 @@ namespace Ghurund::UI {
                 canvas->clear(backgroundColor);
             draw(*canvas);
             canvas->endPaint();
-        }
-
-        virtual Ghurund::Window* getWindow() const {
-            return &window;
         }
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;

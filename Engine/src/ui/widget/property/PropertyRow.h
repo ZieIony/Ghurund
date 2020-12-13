@@ -15,13 +15,13 @@ namespace Ghurund::UI {
         SharedPointer<ControlContainer> container;
 
     public:
-        PropertyRow(Ghurund::UI::Theme& theme) {
+        PropertyRow() {
             PreferredSize.height = PreferredSize::Height::WRAP;
-            textView = ghnew TextBlock(theme.textViewSecondaryStyle);
+            textView = ghnew TextBlock();
             textView->PreferredSize.width = PreferredSize::Width::FILL;
             container = ghnew ControlContainer();
             container->PreferredSize.width = PreferredSize::Width::FILL;
-            SeparatorPtr separator = ghnew Separator(ghnew VerticalSeparatorStyle(theme));
+            SeparatorPtr separator = ghnew Separator(ghnew VerticalSeparatorStyle());
             Children = { textView, separator, container };
         }
 
@@ -49,14 +49,9 @@ namespace Ghurund::UI {
     };
 
     class PropertyRowAdapter:public ItemAdapter<ObjectProperty*, PropertyRow> {
-    private:
-        Theme& theme;
-
     public:
-        PropertyRowAdapter(Theme& theme):theme(theme) {}
-
         virtual PropertyRow* makeControl() const override {
-            return ghnew PropertyRow(theme);
+            return ghnew PropertyRow();
         }
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {

@@ -20,12 +20,12 @@ namespace Ghurund::UI {
 
     class Graphics2D:public Pointer {
     private:
-        ComPtr<ID2D1DeviceContext2> deviceContext;
+        ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> m_d3d11DeviceContext;
         ComPtr<ID3D11On12Device> m_d3d11On12Device;
         ComPtr<IDWriteFactory> m_dwriteFactory;
-        ComPtr<ID2D1Factory3> m_d2dFactory;
-        ComPtr<ID2D1Device2> m_d2dDevice;
+        ComPtr<ID2D1Factory6> m_d2dFactory;
+        ComPtr<ID2D1Device5> m_d2dDevice;
         UIState state = UIState::IDLE;
         RenderTarget* currentTarget = nullptr;
         FontCollectionLoader* fontLoader = nullptr;
@@ -35,17 +35,17 @@ namespace Ghurund::UI {
             uninit();
         }
 
-        inline ID2D1Device2* getDevice() {
+        inline ID2D1Device5* getDevice() {
             return m_d2dDevice.Get();
         };
 
-        __declspec(property(get = getDevice)) ID2D1Device2* Device;
+        __declspec(property(get = getDevice)) ID2D1Device5* Device;
 
-        inline ID2D1DeviceContext2* getDeviceContext() {
+        inline ID2D1DeviceContext5* getDeviceContext() {
             return deviceContext.Get();
         };
 
-        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext2* DeviceContext;
+        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5* DeviceContext;
 
         inline ID3D11On12Device* getDevice11() {
             return m_d3d11On12Device.Get();
@@ -53,11 +53,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getDevice11)) ID3D11On12Device* Device11;
 
-        inline ID2D1Factory3* getFactory() {
+        inline ID2D1Factory6* getFactory() {
             return m_d2dFactory.Get();
         };
 
-        __declspec(property(get = getFactory)) ID2D1Factory3* Factory;
+        __declspec(property(get = getFactory)) ID2D1Factory6* Factory;
 
         inline IDWriteFactory* getDWriteFactory() {
             return m_dwriteFactory.Get();

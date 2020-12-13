@@ -4,7 +4,7 @@
 #include "List.h"
 
 namespace Ghurund {
-    template<class Value> class Array :public Collection {
+    template<class Value> class Array:public Collection {
     protected:
         Value* v;
 
@@ -12,6 +12,12 @@ namespace Ghurund {
         Array(size_t size) {
             this->size = size;
             v = (Value*)ghnew char[sizeof(Value) * size];
+        }
+
+        Array(const Value* data, size_t size, size_t offset = 0) {
+            this->size = size;
+            v = (Value*)ghnew char[sizeof(Value) * size];
+            memcpy(v, data + offset, size * sizeof(Value));
         }
 
         Array(const Array& t1):Collection(t1) {

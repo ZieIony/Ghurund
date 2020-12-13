@@ -10,7 +10,7 @@
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
-    
+
     class Canvas;
     class Control;
     class Graphics2D;
@@ -18,19 +18,70 @@ namespace Ghurund::UI {
     class Font:public Pointer {
     private:
         UnicodeString file;
-        float size;
         UnicodeString familyName;
-        bool italic = false;
-        unsigned int weight = 400;
+        float size;
+        bool italic = false, underline = false, strikethrough = false;
+        uint32_t weight = 400, stretch = 0;
+        UnicodeString locale;
 
         TEXTMETRIC tm;
         ComPtr<IDWriteTextFormat> textFormat;
         Graphics2D* graphics2d = nullptr;
 
     public:
-        Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight = 400, bool italic = false);
+        Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight = 400, bool italic = false, const UnicodeString& locale = L"en-us");
+
+        Font(IDWriteTextLayout* textLayout, UINT32 position);
 
         Status init(Graphics2D& graphics2d);
+
+        inline const UnicodeString& getFamilyName() const {
+            return familyName;
+        }
+
+        __declspec(property(get = getFamilyName)) const UnicodeString& FamilyName;
+
+        inline float getSize() const {
+            return size;
+        }
+
+        __declspec(property(get = getSize)) float Size;
+
+        inline bool isItalic() const {
+            return italic;
+        }
+
+        __declspec(property(get = isItalic)) bool Italic;
+
+        inline bool hasUnderline() const {
+            return underline;
+        }
+
+        __declspec(property(get = hasUnderline)) bool Underline;
+
+        inline bool hasStrikethrough() const {
+            return strikethrough;
+        }
+
+        __declspec(property(get = hasStrikethrough)) bool Strikethrough;
+
+        inline uint32_t getWeight() const {
+            return weight;
+        }
+
+        __declspec(property(get = getWeight)) uint32_t Weight;
+
+        inline uint32_t getStretch() const {
+            return stretch;
+        }
+
+        __declspec(property(get = getStretch)) uint32_t Stretch;
+
+        inline const UnicodeString& getLocale() const {
+            return locale;
+        }
+
+        __declspec(property(get = getLocale)) const UnicodeString& Locale;
 
         long getAscent() const {
             return tm.tmAscent;
@@ -57,7 +108,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getTextFormat)) IDWriteTextFormat* TextFormat;
-
-        IDWriteTextLayout* makeLayout(UnicodeString& text, float width, float height);
     };
 }

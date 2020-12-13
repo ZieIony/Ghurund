@@ -70,7 +70,7 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
-        virtual void dispatchThemeChanged() override;
+        virtual void dispatchContextChanged() override;
 
         virtual void onUpdate(const Timer& timer) override {
             for (Control* c : children)

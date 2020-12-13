@@ -57,7 +57,7 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
-        virtual void dispatchThemeChanged() override;
+        virtual void dispatchContextChanged() override;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 

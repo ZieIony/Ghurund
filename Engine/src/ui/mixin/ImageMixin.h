@@ -8,25 +8,15 @@ namespace Ghurund::UI {
         ImageView* imageView = nullptr;
 
     public:
-        const BitmapImage* getImage() const {
+        ImageDrawable* getImage() {
             return imageView->Image;
         }
 
-        void setImage(BitmapImage* image) {
+        void setImage(ImageDrawable* image) {
             imageView->Image = image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
-
-        inline void setImageTint(unsigned int color) {
-            imageView->Tint = color;
-        }
-
-        inline unsigned int getImageTint() {
-            return imageView->Tint;
-        }
-
-        __declspec(property(get = getImageTint, put = setImageTint)) unsigned int ImageTint;
+        __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
     };
 
     class ImageLayoutMixin {

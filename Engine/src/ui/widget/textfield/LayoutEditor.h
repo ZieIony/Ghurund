@@ -1,8 +1,7 @@
 #pragma once
 
-#include "CaretFormat.h"
-
 #include "ui/Graphics2D.h"
+#include "ui/font/Font.h"
 
 namespace Ghurund::UI {
     class LayoutEditor {
@@ -10,15 +9,11 @@ namespace Ghurund::UI {
         IDWriteFactory* factory;
 
     public:
-        LayoutEditor(IDWriteFactory* factory):factory(factory) {}
-
-        IDWriteFactory* getFactory() {
-            return factory;
+        void init(IDWriteFactory* factory) {
+            this->factory = factory;
         }
 
-        __declspec(property(get = getFactory)) IDWriteFactory* Factory;
-
-        HRESULT recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text);
+        Status recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text);
 
         void copySinglePropertyRange(
             IDWriteTextLayout* oldLayout,
@@ -26,7 +21,7 @@ namespace Ghurund::UI {
             IDWriteTextLayout* newLayout,
             UINT32 startPosForNew,
             UINT32 length,
-            CaretFormat* caretFormat = nullptr
+            Font* font = nullptr
         );
 
         UINT32 calculateRangeLengthAt(IDWriteTextLayout* layout, UINT32 pos);
@@ -40,18 +35,17 @@ namespace Ghurund::UI {
             bool isOffsetNegative = false
         );
 
-        HRESULT insertTextAt(
+        Status insertTextAt(
             IDWriteTextLayout*& currentLayout,
             UnicodeString& text,
             UINT32 position,
-            WCHAR const* textToInsert,                  // [lengthToInsert]
-            UINT32 textToInsertLength,
-            CaretFormat* caretFormat = nullptr
+            const UnicodeString& textToInsert,
+            Font* font = nullptr
         );
 
-        HRESULT removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove);
+        Status removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove);
 
-        inline HRESULT clear(IDWriteTextLayout*& currentLayout, UnicodeString& text) {
+        inline Status clear(IDWriteTextLayout*& currentLayout, UnicodeString& text) {
             text.clear();
             return recreateLayout(currentLayout, text);
         }

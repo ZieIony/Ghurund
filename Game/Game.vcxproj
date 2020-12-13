@@ -152,6 +152,7 @@
       <FileType>Document</FileType>
     </ClInclude>
     <ClInclude Include="src\LayoutEditorTab.h" />
+    <ClInclude Include="src\LoginTest.h" />
     <ClInclude Include="src\MusicPlayer.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
     <ClInclude Include="src\MainMenu.h" />

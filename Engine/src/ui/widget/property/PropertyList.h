@@ -15,14 +15,15 @@ namespace Ghurund::UI {
         Object* item = nullptr;
 
     public:
-        PropertyList(ResourceContext& context, Ghurund::UI::Theme& theme) {
+        PropertyList() {
             recycler = ghnew RecyclerView<ObjectProperty*, PropertyRow>();
             recycler->LayoutManager = ghnew VerticalLayoutManager();
-            recycler->Adapters.addAll({
-                ghnew BoolPropertyRowAdapter(theme),
-                ghnew StringPropertyRowAdapter(context, theme),
-                ghnew PropertyRowAdapter(theme)
-                });
+            recycler->Adapters = {
+                ghnew BoolPropertyRowAdapter(),
+                ghnew UnicodeStringPropertyRowAdapter(),
+                ghnew ASCIIStringPropertyRowAdapter(),
+                ghnew PropertyRowAdapter()
+            };
             recycler->Items = ghnew ListItemSource<ObjectProperty*>(items);
             Child = recycler;
         }

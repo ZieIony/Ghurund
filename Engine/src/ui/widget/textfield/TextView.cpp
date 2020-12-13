@@ -1,4 +1,5 @@
 #include "TextView.h"
+#include "application/Clipboard.h"
 
 namespace Ghurund::UI {
     DWRITE_TEXT_RANGE TextView::getSelectionRange() {
@@ -10,14 +11,10 @@ namespace Ghurund::UI {
         caretBegin = std::min(caretBegin, (uint32_t)Text.Length);
         caretEnd = std::min(caretEnd, (uint32_t)Text.Length);
 
-        DWRITE_TEXT_RANGE textRange = { caretBegin, caretEnd - caretBegin };
-        return textRange;
+        return { caretBegin, caretEnd - caretBegin };
     }
 
     D2D1_RECT_F TextView::getCaretRect() {
-        if (!textLayout)
-            return {};
-
         DWRITE_HIT_TEST_METRICS caretMetrics;
         float caretX, caretY;
 
@@ -35,11 +32,12 @@ namespace Ghurund::UI {
         SystemParametersInfo(SPI_GETCARETWIDTH, 0, &caretIntThickness, FALSE);
         const float caretThickness = float(caretIntThickness);
 
-        D2D1_RECT_F rect;
-        rect.left = caretX - caretThickness / 2.0f;
-        rect.right = rect.left + caretThickness;
-        rect.top = caretY;
-        rect.bottom = caretY + caretMetrics.height;
+        D2D1_RECT_F rect = {
+            caretX - caretThickness / 2.0f,
+            caretY,
+            caretX + caretThickness / 2.0f,
+            caretY + caretMetrics.height,
+        };
         return rect;
     }
 
@@ -84,87 +82,47 @@ namespace Ghurund::UI {
     void TextView::updateCaretFormatting() {
         UINT32 currentPos = caretPosition + caretPositionOffset;
 
-        if (currentPos > 0) {
-            --currentPos; // Always adopt the trailing properties.
-        }
+        if (currentPos > 0)
+            currentPos--;
 
-        // Get the family name
-        caretFormat.fontFamilyName[0] = '\0';
-        textLayout->GetFontFamilyName(currentPos, &caretFormat.fontFamilyName[0], ARRAYSIZE(caretFormat.fontFamilyName));
+        if (currentFont)
+            currentFont->release();
 
-        // Get the locale
-        caretFormat.localeName[0] = '\0';
-        textLayout->GetLocaleName(currentPos, &caretFormat.localeName[0], ARRAYSIZE(caretFormat.localeName));
+        if (textLayout) {
+            currentFont = ghnew Ghurund::UI::Font(textLayout, currentPos);
 
-        // Get the remaining attributes...
-        textLayout->GetFontWeight(currentPos, &caretFormat.fontWeight);
-        textLayout->GetFontStyle(currentPos, &caretFormat.fontStyle);
-        textLayout->GetFontStretch(currentPos, &caretFormat.fontStretch);
-        textLayout->GetFontSize(currentPos, &caretFormat.fontSize);
-        textLayout->GetUnderline(currentPos, &caretFormat.hasUnderline);
-        textLayout->GetStrikethrough(currentPos, &caretFormat.hasStrikethrough);
-
-        // Get the current color.
-        IUnknown* drawingEffect = nullptr;
-        textLayout->GetDrawingEffect(currentPos, &drawingEffect);
-        caretFormat.color = 0;
-        if (drawingEffect) {
-            DrawingEffect& effect = *(DrawingEffect*)drawingEffect;
-            caretFormat.color = effect.getColor();
-            drawingEffect->Release();
+            IUnknown* drawingEffect = nullptr;
+            textLayout->GetDrawingEffect(currentPos, &drawingEffect);
+            if (drawingEffect) {
+                DrawingEffect& effect = *(DrawingEffect*)drawingEffect;
+                currentColor = effect.Color;
+                drawingEffect->Release();
+            } else {
+                currentColor = 0;
+            }
+        } else if (Font) {
+            Font->addReference();
+            currentFont = Font;
         }
     }
 
     void TextView::updateSystemCaret(const D2D1_RECT_F& rect) {
-        if (Focused)
+        if (Focused || !Context)
             return;
 
-        /*
-        D2D1::Matrix3x2F pageTransform;
-        GetViewMatrix(&Cast(pageTransform));
-
-        // Transform caret top/left and size according to current scale and origin.
-        D2D1_POINT_2F caretPoint = pageTransform.TransformPoint(D2D1::Point2F(rect.left, rect.top));
-
-        float width = (rect.right - rect.left);
-        float height = (rect.bottom - rect.top);
-        float transformedWidth = width * pageTransform._11 + height * pageTransform._21;
-        float transformedHeight = width * pageTransform._12 + height * pageTransform._22;
-
-        // Update the caret's location, rounding to nearest integer so that
-        // it lines up with the text selection.
-
-        int intX = RoundToInt(caretPoint.x);
-        int intY = RoundToInt(caretPoint.y);
-        int intWidth = RoundToInt(transformedWidth);
-        int intHeight = RoundToInt(caretPoint.y + transformedHeight) - intY;
-
-        CreateCaret(Window->Handle, NULL, intWidth, intHeight);
-        SetCaretPos(intX, intY);
-        */
+        CreateCaret(Context->Window.Handle, NULL, rect.right - rect.left, rect.bottom - rect.top);
+        SetCaretPos(rect.left, rect.top);
     }
 
     bool TextView::setSelectionFromPoint(float x, float y, bool extendSelection) {
-        // Returns the text position corresponding to the mouse x,y.
-        // If hitting the trailing side of a cluster, return the
-        // leading edge of the following text position.
-
         BOOL isTrailingHit;
         BOOL isInside;
         DWRITE_HIT_TEST_METRICS caretMetrics;
 
-        // Remap display coordinates to actual.
-        DWRITE_MATRIX matrix;
-        //GetInverseViewMatrix(&matrix);
+        textLayout->HitTestPoint(x, y, &isTrailingHit, &isInside, &caretMetrics);
 
-        float transformedX = x;// (x * matrix.m11 + y * matrix.m21 + matrix.dx);
-        float transformedY = y;// (x * matrix.m12 + y * matrix.m22 + matrix.dy);
-
-        textLayout->HitTestPoint(transformedX, transformedY, &isTrailingHit, &isInside, &caretMetrics);
-
-        // Update current selection according to click or mouse drag.
         setSelection(
-            isTrailingHit ? SetSelectionModeAbsoluteTrailing : SetSelectionModeAbsoluteLeading,
+            isTrailingHit ? SetSelectionMode::AbsoluteTrailing : SetSelectionMode::AbsoluteLeading,
             caretMetrics.textPosition,
             extendSelection
         );
@@ -173,19 +131,16 @@ namespace Ghurund::UI {
     }
 
     bool TextView::setSelection(SetSelectionMode moveMode, UINT32 advance, bool extendSelection, bool updateCaretFormat) {
-        // Moves the caret relatively or absolutely, optionally extending the
-        // selection range (for example, when shift is held).
-
-        UINT32 line = UINT32_MAX; // current line number, needed by a few modes
+        UINT32 line = UINT32_MAX;
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
         UINT32 oldAbsolutePosition = absolutePosition;
         UINT32 oldCaretAnchor = caretAnchor;
 
         switch (moveMode) {
-        case SetSelectionModeLeft:
+        case SetSelectionMode::Left:
             caretPosition += caretPositionOffset;
             if (caretPosition > 0) {
-                --caretPosition;
+                caretPosition--;
                 alignCaretToNearestCluster(false, true);
 
                 // special check for CR/LF pair
@@ -200,7 +155,7 @@ namespace Ghurund::UI {
             }
             break;
 
-        case SetSelectionModeRight:
+        case SetSelectionMode::Right:
             caretPosition = absolutePosition;
             alignCaretToNearestCluster(true, true);
 
@@ -215,13 +170,13 @@ namespace Ghurund::UI {
             }
             break;
 
-        case SetSelectionModeLeftChar:
+        case SetSelectionMode::LeftChar:
             caretPosition = absolutePosition;
             caretPosition -= std::min(advance, absolutePosition);
             caretPositionOffset = 0;
             break;
 
-        case SetSelectionModeRightChar:
+        case SetSelectionMode::RightChar:
             caretPosition = absolutePosition + advance;
             caretPositionOffset = 0;
             {
@@ -229,19 +184,13 @@ namespace Ghurund::UI {
                 DWRITE_HIT_TEST_METRICS hitTestMetrics;
                 float caretX, caretY;
 
-                textLayout->HitTestTextPosition(
-                    caretPosition,
-                    false,
-                    &caretX,
-                    &caretY,
-                    &hitTestMetrics
-                );
+                textLayout->HitTestTextPosition(caretPosition, false, &caretX, &caretY, &hitTestMetrics);
                 caretPosition = std::min(caretPosition, hitTestMetrics.textPosition + hitTestMetrics.length);
             }
             break;
 
-        case SetSelectionModeUp:
-        case SetSelectionModeDown:
+        case SetSelectionMode::Up:
+        case SetSelectionMode::Down:
         {
             // Retrieve the line metrics to figure out what line we are on.
             std::vector<DWRITE_LINE_METRICS> lineMetrics;
@@ -251,7 +200,7 @@ namespace Ghurund::UI {
             getLineFromPosition(&lineMetrics.front(), static_cast<UINT32>(lineMetrics.size()), caretPosition, &line, &linePosition);
 
             // Move up a line or down
-            if (moveMode == SetSelectionModeUp) {
+            if (moveMode == SetSelectionMode::Up) {
                 if (line <= 0)
                     break; // already top line
                 line--;
@@ -273,40 +222,22 @@ namespace Ghurund::UI {
             float caretX, caretY, dummyX;
 
             // Get x of current text position
-            textLayout->HitTestTextPosition(
-                caretPosition,
-                caretPositionOffset > 0, // trailing if nonzero, else leading edge
-                &caretX,
-                &caretY,
-                &hitTestMetrics
-            );
+            textLayout->HitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY, &hitTestMetrics);
 
             // Get y of new position
-            textLayout->HitTestTextPosition(
-                linePosition,
-                false, // leading edge
-                &dummyX,
-                &caretY,
-                &hitTestMetrics
-            );
+            textLayout->HitTestTextPosition(linePosition, false, &dummyX, &caretY, &hitTestMetrics);
 
             // Now get text position of new x,y.
             BOOL isInside, isTrailingHit;
-            textLayout->HitTestPoint(
-                caretX,
-                caretY,
-                &isTrailingHit,
-                &isInside,
-                &hitTestMetrics
-            );
+            textLayout->HitTestPoint(caretX, caretY, &isTrailingHit, &isInside, &hitTestMetrics);
 
             caretPosition = hitTestMetrics.textPosition;
             caretPositionOffset = isTrailingHit ? (hitTestMetrics.length > 0) : 0;
         }
         break;
 
-        case SetSelectionModeLeftWord:
-        case SetSelectionModeRightWord:
+        case SetSelectionMode::LeftWord:
+        case SetSelectionMode::RightWord:
         {
             // To navigate by whole words, we look for the canWrapLineAfter
             // flag in the cluster metrics.
@@ -314,7 +245,7 @@ namespace Ghurund::UI {
             // First need to know how many clusters there are.
             std::vector<DWRITE_CLUSTER_METRICS> clusterMetrics;
             UINT32 clusterCount;
-            textLayout->GetClusterMetrics(NULL, 0, &clusterCount);
+            textLayout->GetClusterMetrics(nullptr, 0, &clusterCount);
 
             if (clusterCount == 0)
                 break;
@@ -328,7 +259,7 @@ namespace Ghurund::UI {
             UINT32 clusterPosition = 0;
             UINT32 oldCaretPosition = caretPosition;
 
-            if (moveMode == SetSelectionModeLeftWord) {
+            if (moveMode == SetSelectionMode::LeftWord) {
                 // Read through the clusters, keeping track of the farthest valid
                 // stopping point just before the old position.
                 caretPosition = 0;
@@ -343,8 +274,7 @@ namespace Ghurund::UI {
                         caretPosition = clusterPosition;
                     }
                 }
-            } else // SetSelectionModeRightWord
-            {
+            } else {
                 // Read through the clusters, looking for the first stopping point
                 // after the old position.
                 for (UINT32 cluster = 0; cluster < clusterCount; ++cluster) {
@@ -360,8 +290,8 @@ namespace Ghurund::UI {
         }
         break;
 
-        case SetSelectionModeHome:
-        case SetSelectionModeEnd:
+        case SetSelectionMode::Home:
+        case SetSelectionMode::End:
         {
             // Retrieve the line metrics to know first and last position
             // on the current line.
@@ -371,7 +301,7 @@ namespace Ghurund::UI {
             getLineFromPosition(&lineMetrics.front(), static_cast<UINT32>(lineMetrics.size()), caretPosition, &line, &caretPosition);
 
             caretPositionOffset = 0;
-            if (moveMode == SetSelectionModeEnd) {
+            if (moveMode == SetSelectionMode::End) {
                 // Place the caret at the last character on the line,
                 // excluding line breaks. In the case of wrapped lines,
                 // newlineLength will be 0.
@@ -383,28 +313,31 @@ namespace Ghurund::UI {
         }
         break;
 
-        case SetSelectionModeFirst:
+        case SetSelectionMode::First:
             caretPosition = 0;
             caretPositionOffset = 0;
             break;
 
-        case SetSelectionModeAll:
+        case SetSelectionMode::All:
             caretAnchor = 0;
             extendSelection = true;
-            __fallthrough;
-
-        case SetSelectionModeLast:
             caretPosition = UINT32_MAX;
             caretPositionOffset = 0;
             alignCaretToNearestCluster(true);
             break;
 
-        case SetSelectionModeAbsoluteLeading:
+        case SetSelectionMode::Last:
+            caretPosition = UINT32_MAX;
+            caretPositionOffset = 0;
+            alignCaretToNearestCluster(true);
+            break;
+
+        case SetSelectionMode::AbsoluteLeading:
             caretPosition = advance;
             caretPositionOffset = 0;
             break;
 
-        case SetSelectionModeAbsoluteTrailing:
+        case SetSelectionMode::AbsoluteTrailing:
             caretPosition = advance;
             alignCaretToNearestCluster(true);
             break;
@@ -430,54 +363,62 @@ namespace Ghurund::UI {
         return caretMoved;
     }
 
+    void TextView::copyToClipboard() {
+        DWRITE_TEXT_RANGE selectionRange = getSelectionRange();
+        if (selectionRange.length <= 0 || !Context)
+            return;
+
+        Clipboard::putUnicodeText(Context->Window.Handle, Text.subString(selectionRange.startPosition, selectionRange.length));
+    }
+
+    void TextView::dispatchContextChanged() {
+        __super::dispatchContextChanged();
+        if (!Theme)
+            return;
+        textSelectionEffect = ghnew DrawingEffect(Theme->ColorHighlightOnBackground);
+        imageSelectionEffect = ghnew DrawingEffect(Theme->ColorHighlightOnBackground);
+        caretBackgroundEffect = ghnew DrawingEffect(Theme->ColorForegroundPrimaryOnBackground);
+        if (!cursorDrawable)
+            CursorDrawable = ghnew Ghurund::UI::CursorDrawable();
+        updateCaretFormatting();
+    }
+
     void TextView::onDraw(Canvas& canvas) {
-        DWRITE_TEXT_RANGE caretRange = getSelectionRange();
-        UINT32 actualHitTestCount = 0;
+        if (Enabled) {
+            DWRITE_TEXT_RANGE caretRange = getSelectionRange();
+            UINT32 actualHitTestCount = 0;
 
-        if (caretRange.length > 0)
-            textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, nullptr, 0, &actualHitTestCount);
+            if (caretRange.length > 0)
+                textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, nullptr, 0, &actualHitTestCount);
 
-        std::vector<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
+            Array<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
 
-        if (caretRange.length > 0)
-            textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, &hitTestMetrics[0], hitTestMetrics.size(), &actualHitTestCount);
+            if (caretRange.length > 0)
+                textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, hitTestMetrics.begin(), hitTestMetrics.Size, &actualHitTestCount);
 
-        if (actualHitTestCount > 0) {
-            canvas.AntialiasingEnabled = false;
+            if (actualHitTestCount > 0) {
+                canvas.AntialiasingEnabled = false;
 
-            for (size_t i = 0; i < actualHitTestCount; ++i) {
-                const DWRITE_HIT_TEST_METRICS& htm = hitTestMetrics[i];
-                paint.Color = textSelectionEffect->getColor();
-                canvas.fillRect(htm.left, htm.top, htm.width, htm.height, paint);
+                for (const DWRITE_HIT_TEST_METRICS& htm : hitTestMetrics) {
+                    paint.Color = textSelectionEffect->getColor();
+                    canvas.fillRect(htm.left, htm.top, htm.width, htm.height, paint);
+                }
+
+                canvas.AntialiasingEnabled = true;
             }
 
-            canvas.AntialiasingEnabled = true;
-        }
-
-        if (Focused) {
-            auto caretRect = getCaretRect();
-            canvas.AntialiasingEnabled = false;
-            paint.Color = caretBackgroundEffect->getColor();
-            canvas.fillRect(caretRect, paint);
-            canvas.AntialiasingEnabled = true;
+            if (Focused) {
+                canvas.AntialiasingEnabled = false;
+                auto caretRect = getCaretRect();
+                cursorDrawable->Color = caretBackgroundEffect->Color;
+                cursorDrawable->Position = { caretRect.left, caretRect.top };
+                cursorDrawable->Size = { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top };
+                cursorDrawable->draw(canvas);
+                canvas.AntialiasingEnabled = true;
+            }
         }
 
         paint.Color = TextColor;
         canvas.drawText(textLayout, 0, 0, paint);
-
-        if (actualHitTestCount > 0) {
-            canvas.AntialiasingEnabled = false;
-
-            for (size_t i = 0; i < actualHitTestCount; ++i) {
-                const DWRITE_HIT_TEST_METRICS& htm = hitTestMetrics[i];
-                if (htm.isText)
-                    continue; // Only draw selection if not text.
-
-                paint.Color = imageSelectionEffect->getColor();
-                canvas.fillRect(htm.left, htm.top, htm.width, htm.height, paint);
-            }
-
-            canvas.AntialiasingEnabled = true;
-        }
     }
 }

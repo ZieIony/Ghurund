@@ -62,7 +62,7 @@ namespace Ghurund {
             SetWindowText(handle, title);
         }
 
-        inline HWND getHandle() const {
+        virtual HWND getHandle() const {
             return handle;
         }
 

@@ -22,6 +22,7 @@
 #include "DragTestTab.h"
 #include "WindowsTestTab.h"
 #include "audio/Sound.h"
+#include "LoginTest.h"
 
 #include "MaterialColors.h"
 #include "control/FpsText.h"
@@ -37,6 +38,7 @@ class TestApplication:public Application {
 private:
     ::Material::Theme* theme;
     ::Material::Theme* menuTheme;
+    UIContext* context;
     ModuleTest test;
 
     SharedPointer<FpsText> fps;
@@ -64,10 +66,11 @@ public:
 
         theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
         menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
+        context = ghnew UIContext(Graphics2D, *theme, *window);
 
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
         canvas->init(Graphics2D);
-        SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*window, canvas);
+        SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
         rootView->Theme = theme;
         rootView->BackgroundColor = 0xffffffff;
         window->RootView = rootView;
@@ -99,11 +102,13 @@ public:
         SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
         column->Name = "controls tab";
 
-        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext , *theme);
+        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext, *theme);
+        SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext);
         SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab();
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {
+            ghnew TextTabItem("Login", loginTest),
             ghnew TextTabItem("RecyclerView", testRecycler),
             ghnew TextTabItem("ImageViews", testImageViews),
             ghnew TextTabItem("testFlowLayouts", testFlowLayouts),
@@ -154,7 +159,7 @@ public:
                         })
                     };
                     auto pos = sender.PositionOnScreen;
-                    menu->Window->Position = { (LONG)pos.x, (LONG)(pos.y + sender.Size.height) };
+                    //menu->Window->Position = { (LONG)pos.x, (LONG)(pos.y + sender.Size.height) };
                     menu->Visible = true;
                 }),
                 ghnew ButtonMenuItem(_T("Help"), [](Control&) {
@@ -197,6 +202,7 @@ public:
     }
 
     void onUninit() {
+        delete context;
         delete theme;
         delete menuTheme;
         /*LevelManager.setLevel(nullptr);

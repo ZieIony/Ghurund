@@ -4,6 +4,7 @@
 #include "Paint.h"
 #include "Shape.h"
 #include "ui/drawable/BitmapImage.h"
+#include "ui/drawable/SvgImage.h"
 
 namespace Ghurund {
     class SwapChain;
@@ -16,7 +17,7 @@ namespace Ghurund::UI {
         ComPtr<ID2D1SolidColorBrush> fillBrush;
         ComPtr<ID2D1SolidColorBrush> strokeBrush;
         List<D2D1::Matrix3x2F> matrixStack;
-        ID2D1DeviceContext2* deviceContext = nullptr;
+        ID2D1DeviceContext5* deviceContext = nullptr;
         Graphics2D* graphics2d;
         ComPtr<ID2D1Effect> tintEffect;
         ComPtr<ID2D1Effect> shadowEffect;
@@ -104,6 +105,10 @@ namespace Ghurund::UI {
             D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A, color.R, color.G, color.B, 0);
             tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
             deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
+        }
+
+        inline void drawImage(SvgImage& image) {
+            deviceContext->DrawSvgDocument(image.Data);
         }
 
         inline void drawText(IDWriteTextLayout* layout, float x, float y, const Paint& paint) {

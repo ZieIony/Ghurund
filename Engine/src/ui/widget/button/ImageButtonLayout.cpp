@@ -28,15 +28,18 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (!control.Enabled) {
-            imageView->Tint = theme->getColorForegroundDisabledOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundDisabledOnBackground();
             border->Color = theme->getColorForegroundDisabledOnBackground();
             backgroundView->Color = theme->getColorControlDisabled();
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
-            imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             border->Color = theme->getColorAccent();
             backgroundView->Color = theme->getColorControlNormal();
         } else {
-            imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             border->Color = theme->getColorForegroundPrimaryOnBackground();
             backgroundView->Color = theme->getColorControlNormal();
         }
@@ -49,13 +52,16 @@ namespace Ghurund::UI {
             return;
         backgroundView->Color = 0;
         if (!control.Enabled) {
-            imageView->Tint = theme->getColorForegroundDisabledOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundDisabledOnBackground();
             border->Color = 0;
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
-            imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             border->Color = theme->getColorAccent();
         } else {
-            imageView->Tint = theme->getColorForegroundSecondaryOnBackground();
+            if (imageView->Image)
+                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             border->Color = 0;
         }
         clickResponseView->Pressed = ClickableView->Pressed;

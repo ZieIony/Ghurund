@@ -26,15 +26,15 @@ namespace Ghurund::Editor {
             PreferredSize.height = PreferredSize::Height::WRAP;
         }
 
-        inline BitmapImage* getImage() {
+        inline ImageDrawable* getImage() {
             return icon->Image;
         }
 
-        inline void setImage(BitmapImage* image) {
+        inline void setImage(ImageDrawable* image) {
             icon->Image = image;
         }
 
-        __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
+        __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
         UnicodeString& getText() {
             return text->Text;

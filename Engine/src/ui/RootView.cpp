@@ -1,9 +1,10 @@
 #include "RootView.h"
 
 namespace Ghurund::UI {
-    RootView::RootView(Ghurund::Window& window, Canvas* canvas):window(window) {
-        this->canvas = canvas;
-        this->window.OnFocusedChanged.add([this](Ghurund::Window& window) {
+    RootView::RootView(UIContext& context, Canvas& canvas) {
+        this->canvas = &canvas;
+        this->context = &context;
+        this->context->Window.OnFocusedChanged.add([this](Ghurund::Window& window) {
             if (Focused) {
                 if (prevFocusedChild) {
                     prevFocusedChild->requestFocus();

@@ -37,7 +37,7 @@ namespace Ghurund::UI {
         BitmapImage* arrowUp, * arrowDown;
 
     public:
-        Style<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle(*this);
+        Style2<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle();
         Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle(*this);
 
         Style2<TextBlock>* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
         Style2<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle();
 
         virtual ~Theme() {
-            separatorStyle->release();
+            delete separatorStyle;
             progressBarStyle->release();
 
             delete textViewPrimaryStyle;

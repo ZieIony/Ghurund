@@ -92,6 +92,12 @@ namespace Ghurund {
 
         __declspec(property(put = setTitle, get = getTitle)) String& Title;
 
+        virtual HWND getHandle() const {
+            return parent ? parent->Handle : nullptr;
+        }
+
+        __declspec(property(get = getHandle)) HWND Handle;
+
         virtual void setVisible(bool visible) {
             this->visible = visible;
         }
