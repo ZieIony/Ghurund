@@ -1,19 +1,13 @@
 #pragma once
 
-#include "UnicodeString.h"
-#include "ASCIIString.h"
+#include "WString.h"
+#include "AString.h"
 
 namespace Ghurund {
 
 #ifdef UNICODE
-    typedef UnicodeString String;
-    typedef UnicodeString S;
+    typedef WString String;
 #else
-    typedef ASCIIString String;
-    typedef ASCIIString S;
+    typedef AString String;
 #endif
-
-    typedef UnicodeString U;
-    typedef ASCIIString A;
-
 }

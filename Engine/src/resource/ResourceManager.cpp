@@ -31,10 +31,10 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    FilePath ResourceManager::decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir) const {
+    FilePath ResourceManager::decodePath(const WString& fileName, const DirectoryPath* workingDir) const {
         if (fileName.startsWith(LIB_PROTOCOL_PREFIX)) {
-            UnicodeString libName = fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX), fileName.find(L"\\", lengthOf(LIB_PROTOCOL_PREFIX)) - lengthOf(LIB_PROTOCOL_PREFIX));
-            FilePath libPath(libraries.get(libName)->Path, fileName.subString(lengthOf(LIB_PROTOCOL_PREFIX) + 1 + libName.Length));
+            WString libName = fileName.substring(lengthOf(LIB_PROTOCOL_PREFIX), fileName.find(L"\\", lengthOf(LIB_PROTOCOL_PREFIX)) - lengthOf(LIB_PROTOCOL_PREFIX));
+            FilePath libPath(libraries.get(libName)->Path, fileName.substring(lengthOf(LIB_PROTOCOL_PREFIX) + 1 + libName.Length));
             return libPath.AbsolutePath;
         } else if (workingDir) {
             return FilePath(*workingDir, fileName).AbsolutePath;
@@ -48,7 +48,7 @@ namespace Ghurund {
         if (relativePath.get().startsWith(L"..")) {
             size_t libIndex = libraries.findFile(resourcePath);
             if (libIndex != libraries.Size) {
-                UnicodeString libPathString = LIB_PROTOCOL_PREFIX;
+                WString libPathString = LIB_PROTOCOL_PREFIX;
                 libPathString.add(libraries.get(libIndex).Name);
                 libPathString.add("\\");
                 libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path));
@@ -126,7 +126,7 @@ namespace Ghurund {
         section.leave();
     }
 
-    void ResourceManager::remove(const UnicodeString& fileName) {
+    void ResourceManager::remove(const WString& fileName) {
         section.enter();
         resources.remove(fileName);
         section.leave();

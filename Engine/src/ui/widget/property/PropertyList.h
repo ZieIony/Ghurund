@@ -20,8 +20,8 @@ namespace Ghurund::UI {
             recycler->LayoutManager = ghnew VerticalLayoutManager();
             recycler->Adapters = {
                 ghnew BoolPropertyRowAdapter(),
-                ghnew UnicodeStringPropertyRowAdapter(),
-                ghnew ASCIIStringPropertyRowAdapter(),
+                ghnew WStringPropertyRowAdapter(),
+                ghnew AStringPropertyRowAdapter(),
                 ghnew PropertyRowAdapter()
             };
             recycler->Items = ghnew ListItemSource<ObjectProperty*>(items);

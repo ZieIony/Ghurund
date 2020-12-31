@@ -3,7 +3,6 @@
 #include "Settings.h"
 #include "Timer.h"
 #include "Window.h"
-#include "WindowList.h"
 
 #include "audio/Audio.h"
 #include "core/Noncopyable.h"
@@ -25,7 +24,7 @@
 namespace Ghurund {
     class Application:public Noncopyable {
     private:
-        WindowList windows;
+        List<SystemWindow*> windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
         Client* client;
@@ -39,7 +38,6 @@ namespace Ghurund {
         ResourceContext* resourceContext, * asyncResourceContext;
         ParameterManager* parameterManager;
         Timer* timer;
-        Input input;
         ScriptEngine* scriptEngine;
 
         Renderer* renderer;
@@ -47,17 +45,12 @@ namespace Ghurund {
 
         void init();
         void handleMessages();
-        void update();
         void uninit();
 
     protected:
         virtual void onInit() {};
 
         virtual void onUninit() {};
-
-        virtual void onUpdate() {
-            levelManager.update();
-        };
 
         /*virtual void client(const void *buffer, unsigned int size){
             if(currentFrame)
@@ -71,8 +64,6 @@ namespace Ghurund {
 
 
     public:
-        Application():windows(*this) {}
-
         virtual ~Application() {}
 
         void run(const Settings* val = nullptr);
@@ -89,11 +80,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSettings)) const Settings& Settings;
 
-        inline WindowList& getWindows() {
+        inline List<SystemWindow*>& getWindows() {
             return windows;
         }
 
-        __declspec(property(get = getWindows)) WindowList& Windows;
+        __declspec(property(get = getWindows)) List<SystemWindow*>& Windows;
 
         FunctionQueue& getFunctionQueue() {
             return *functionQueue;
@@ -154,12 +145,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getTimer)) Timer& Timer;
-
-        inline Input& getInput() {
-            return input;
-        }
-
-        __declspec(property(get = getInput)) Input& Input;
 
         inline LevelManager& getLevelManager() {
             return levelManager;

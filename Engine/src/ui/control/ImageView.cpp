@@ -80,6 +80,23 @@ namespace Ghurund::UI {
 
         image->Position = { dst.left, dst.top };
         image->Size = { dst.right-dst.left, dst.bottom-dst.top };
+        canvas.clipRect(0, 0, Size.width, Size.height);
         image->draw(canvas);
+        canvas.restoreClipRect();
+    }
+    
+    Status ImageView::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, context, xml);
+        if (result != Status::OK)
+            return result;
+        auto imageAttr = xml.FindAttribute("image");
+        if (imageAttr) {
+            BitmapImage* image = BitmapImage::makeFromImage(context, imageAttr->Value());
+            if (!image)
+                return Status::INV_PARAM;
+            Image = makeShared<BitmapImageDrawable>(image);
+            image->release();
+        }
+        return Status::OK;
     }
 }

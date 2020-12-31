@@ -67,7 +67,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOwner, put = setOwner)) Control* Owner;
 
-        virtual void update(const Timer& timer) {}
+        virtual void update(const uint64_t time) {}
 
         virtual void onDraw(Canvas& canvas) = 0;
 

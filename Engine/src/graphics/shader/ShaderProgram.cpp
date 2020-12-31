@@ -24,7 +24,7 @@ namespace Ghurund {
                 result = Status::COMPILATION_ERROR;
                 Logger::log(LogType::ERR0R, result, _T("Unknown error while compiling shader\n"));
             } else {
-                ASCIIString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
+                AString errorMessages((char*)errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());
                 if(errorMessages.find("error X3501")<errorBlob->GetBufferSize()) {
                     result = Status::ENTRY_POINT_NOT_FOUND;
                 } else {

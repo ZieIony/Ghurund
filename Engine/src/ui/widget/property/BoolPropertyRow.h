@@ -34,7 +34,7 @@ namespace Ghurund::UI {
     class BoolPropertyRowAdapter:public ItemAdapter<ObjectProperty*, PropertyRow> {
     public:
         virtual bool canHandleItem(ObjectProperty* const& item, size_t position) const override {
-            return S("bool") == item->Property.TypeName;
+            return strcmp("bool", item->Property.TypeName) == 0;
         }
 
         virtual BoolPropertyRow* makeControl() const override {

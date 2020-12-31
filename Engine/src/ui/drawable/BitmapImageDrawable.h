@@ -15,6 +15,10 @@ namespace Ghurund::UI {
             preferredSize = { (float)image->Size.width, (float)image->Size.height };
         }
 
+        ~BitmapImageDrawable() {
+            image->release();
+        }
+
         virtual void onDraw(Canvas& canvas) override {
             auto dst = D2D1::RectF(position.x, position.y, position.x + size.width, position.y + size.height);
             if (Tint) {

@@ -5,7 +5,7 @@
 #include "application/Timer.h"
 
 namespace Ghurund::UI {
-    class CursorDrawable:public Drawable {
+    class CursorDrawable: public Drawable {
     private:
         Paint paint;
         float blinkTime;
@@ -27,8 +27,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) uint32_t Color;
 
-        virtual void update(const Timer& timer) override {
-            visible = fmod(timer.Time, blinkTime) < blinkTime / 2;
+        virtual void update(const uint64_t time) override {
+            visible = fmod(time, blinkTime) < blinkTime / 2;
         }
 
         virtual void onDraw(Canvas& canvas) override {

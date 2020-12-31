@@ -32,25 +32,25 @@ namespace Ghurund {
         List<Vertex> triangleVertices;
         List<unsigned int> triangleIndices;
 
-        ASCIIString obj((char*)stream.Data, stream.Size);
-        Array<ASCIIString> lines = obj.split("\n");
-        for (ASCIIString& line : lines) {
+        AString obj((char*)stream.Data, stream.Size);
+        Array<AString> lines = obj.split("\n");
+        for (AString& line : lines) {
             if (line.startsWith("#")) {
                 continue;
             } else if (line.startsWith("v ")) {
-				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<AString> vert = line.substring(2).trim().split(" ");
                 XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
                 objVerts.add(v);
             } else if (line.startsWith("vt ")) {
-				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<AString> vert = line.substring(2).trim().split(" ");
                 XMFLOAT2 v((float)atof(vert[0]), 1 - (float)atof(vert[1]));
                 objTexCoords.add(v);
             } else if (line.startsWith("vn ")) {
-				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<AString> vert = line.substring(2).trim().split(" ");
                 XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
                 objNorms.add(v);
             } else if (line.startsWith("f ")) {
-				Array<ASCIIString> vert = line.subString(2).trim().split(" ");
+				Array<AString> vert = line.substring(2).trim().split(" ");
 
                 triangleIndices.add((unsigned int)triangleVertices.Size);
                 triangleIndices.add((unsigned int)(triangleVertices.Size + 2));
@@ -61,7 +61,7 @@ namespace Ghurund {
                     triangleIndices.add((unsigned int)(j - 3 + triangleVertices.Size + 2));
                 }
                 for (size_t j = 0; j < vert.Size; j++) {
-					Array<ASCIIString> face = vert[j].split("/");
+					Array<AString> face = vert[j].split("/");
                     Vertex v(objVerts[atoi(face[0]) - 1], objNorms[atoi(face[2]) - 1], objTexCoords[atoi(face[1]) - 1]);
                     triangleVertices.add(v);
                 }

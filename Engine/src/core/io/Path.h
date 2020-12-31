@@ -6,20 +6,20 @@ namespace Ghurund {
 
     class Path {
     protected:
-        UnicodeString path;
+        WString path;
 
     public:
-        Path(const UnicodeString &path):path(path) {
+        Path(const WString &path):path(path) {
             this->path.replace(L'/', L'\\');
         }
 
         virtual ~Path() = 0 {}
 
-        const UnicodeString &get() const {
+        const WString &get() const {
             return path;
         }
 
-        operator const UnicodeString &()const {
+        operator const WString &()const {
             return path;
         }
 

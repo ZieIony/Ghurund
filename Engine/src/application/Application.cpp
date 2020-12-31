@@ -3,12 +3,14 @@
 #include "core/threading/FunctionQueue.h"
 #include "ui/RootView.h"
 #include "ui/Canvas.h"
+#include "SystemWindow.h"
 
 #include <time.h>
 
 namespace Ghurund {
     void Application::init() {
         CoInitialize(nullptr);
+        OleInitialize(nullptr);
 
         // engine
         graphics = ghnew Ghurund::Graphics();
@@ -65,6 +67,7 @@ namespace Ghurund {
         delete graphics2d;
         delete graphics;
 
+        OleUninitialize();
         CoUninitialize();
     }
 
@@ -75,25 +78,43 @@ namespace Ghurund {
         init();
         onInit();
 
+        timer->tick();
+        uint64_t time = timer->TimeMs;
+        const uint32_t DT_MS = 10;
+
         while (windows.Size != 0) {
-            //while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
             handleMessages();
             FunctionQueue.invoke();
-            update();
+            resourceManager->reload();
+
+            timer->tick();
+            while (time + DT_MS < timer->TimeMs) {
+                time += DT_MS;
+                scriptEngine->update(time);
+
+                for (auto window : windows)
+                    window->onUpdate(time);
+            }
+
             for (auto window : windows) {
-                Frame& frame = window->SwapChain->CurrentFrame;
-                CommandList& commandList = renderer->startFrame(frame);
-                //levelManager.draw(commandList);
-                window->OnUpdate(*timer);
-                frame.flush();
-                graphics2d->beginPaint(frame.RenderTarget);
-                window->OnPaint();
-                if (graphics2d->endPaint() != Status::OK)
-                    break;
-                if (renderer->finishFrame(frame) != Status::OK)
-                    break;
-                if (window->SwapChain->present() != Status::OK)
-                    break;
+                if (window->SwapChain) {
+                    Frame& frame = window->SwapChain->CurrentFrame;
+                    CommandList& commandList = renderer->startFrame(frame);
+                    //levelManager.draw(commandList);
+                    frame.flush();
+
+                    graphics2d->beginPaint(frame.RenderTarget);
+                    window->onPaint();
+                    if (graphics2d->endPaint() != Status::OK)
+                        break;
+
+                    if (renderer->finishFrame(frame) != Status::OK)
+                        break;
+                    if (window->SwapChain->present() != Status::OK)
+                        break;
+                } else {
+                    window->onPaint();
+                }
             }
         }
 
@@ -104,37 +125,16 @@ namespace Ghurund {
     void Application::handleMessages() {
         MSG msg = {};
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+            if (msg.message == WM_QUIT) {
+                for (auto w : windows)
+                    delete w;
+                windows.clear();
+                break;
+            }
+
             TranslateMessage(&msg);
             DispatchMessage(&msg);
-
-            if (msg.message == WM_QUIT) {
-                for (auto w : windows) {
-                    if (w->Handle == msg.hwnd) {
-                        windows.remove(w);
-                        delete w;
-                        break;
-                    }
-                }
-            }
         }
-    }
-
-    void Application::update() {
-        timer->tick();
-
-        double dt = timer->FrameTime;	// TODO: constant dt
-
-        resourceManager->reload();
-
-        input.dispatchEvents(levelManager);
-
-        scriptEngine->update(dt);
-
-        onUpdate();
-
-        input.clearEvents();
-
-        //onDraw();
     }
 
     void Application::reset() {

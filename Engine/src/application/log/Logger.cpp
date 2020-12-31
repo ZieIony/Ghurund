@@ -28,7 +28,7 @@ namespace Ghurund {
         return (address_t)stack;
     }
 
-    string Logger::getFileLine(address_t address) {
+    std::basic_string<tchar> Logger::getFileLine(address_t address) {
         DWORD64 displacement = 0;
         if (!SymFromAddr(process, address, &displacement, symbol))
             return fmt::format(_T("[{}]: "), address);

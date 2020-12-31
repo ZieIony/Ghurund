@@ -5,25 +5,25 @@
 
 namespace Ghurund {
 
-    class UnicodeString: public GenericString<wchar_t> {
+    class WString: public GenericString<wchar_t> {
     public:
         using GenericString<wchar_t>::GenericString;
 
-        UnicodeString() {}
+        WString() {}
 
-        UnicodeString(const UnicodeString& string):GenericString<wchar_t>(string) {}
+        WString(const WString& string):GenericString<wchar_t>(string) {}
 
-        UnicodeString(UnicodeString&& string):GenericString<wchar_t>(std::move(string)) {}
+        WString(WString&& string) noexcept:GenericString<wchar_t>(std::move(string)) {}
 
-        UnicodeString(const char* str) {
+        WString(const char* str) {
             add(str);
         }
 
-        UnicodeString(const char* str, size_t length) {
+        WString(const char* str, size_t length) {
             add(str, length);
         }
 
-        UnicodeString(const GenericString<char>& string) {
+        WString(const GenericString<char>& string) {
             add(string.getData());
         }
 
@@ -60,7 +60,7 @@ namespace Ghurund {
 
         using GenericString<wchar_t>::operator=;
 
-        UnicodeString& operator=(const UnicodeString& string) {
+        WString& operator=(const WString& string) {
             size = string.size;
             initial = string.initial;
             capacity = string.capacity;
@@ -73,35 +73,35 @@ namespace Ghurund {
             return *this;
         }
 
-        UnicodeString subString(size_t start)const {
-            return UnicodeString(v + start);
+        inline WString substring(size_t start) const {
+            return WString(v + start);
         }
 
-        UnicodeString subString(size_t start, size_t length)const {
-            return UnicodeString(v + start, length);
+        inline WString substring(size_t start, size_t length) const {
+            return WString(v + start, length);
         }
 
-        Array<UnicodeString> split(const wchar_t* d)const;
+        Array<WString> split(const wchar_t* d) const;
 
-        UnicodeString toLowerCase() {
-            UnicodeString copy(*this);
+        inline WString toLowerCase() {
+            WString copy(*this);
             for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (wchar_t)towlower(copy.v[i]);
             return copy;
         }
 
-        UnicodeString toUpperCase() {
-            UnicodeString copy(*this);
+        inline WString toUpperCase() const {
+            WString copy(*this);
             for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (wchar_t)towupper(copy.v[i]);
             return copy;
         }
 
-        UnicodeString trim() {
+        inline WString trim() const {
             size_t i, j, l = Length;
             for (i = 0; i < l && iswspace(v[i]); i++);
-            for (j = l - 1; j > i && iswspace(v[j]); j--);
-            return UnicodeString(v + i, j - i + 1);
+            for (j = l; j > i && iswspace(v[j]); j--);
+            return WString(v + i, j - i);
         }
     };
 

@@ -6,6 +6,7 @@
 #include "ui/control/Space.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
+#include "application/SystemWindow.h"
 #include "core/SharedPointer.h"
 #include "ui/widget/menu/MenuItem.h"
 #include "ui/widget/menu/Toolbar.h"
@@ -23,6 +24,7 @@
 #include "WindowsTestTab.h"
 #include "audio/Sound.h"
 #include "LoginTest.h"
+#include "ui/LayoutLoader.h"
 
 #include "MaterialColors.h"
 #include "control/FpsText.h"
@@ -52,9 +54,9 @@ public:
 
         SystemWindow* window = nullptr;
         if (Settings.windowed) {
-            window = ghnew OverlappedWindow();
+            window = ghnew OverlappedWindow(Timer);
         } else {
-            window = ghnew FullscreenWindow();
+            window = ghnew FullscreenWindow(Timer);
         }
 
         window->initParameters(ParameterManager);
@@ -102,7 +104,7 @@ public:
         SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
         column->Name = "controls tab";
 
-        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(ResourceContext, *theme);
+        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*this, ResourceContext, *theme, "Game/layout.xml");
         SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext);
         SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab();
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
@@ -189,7 +191,7 @@ public:
             auto statusBarItems = makeShared<HorizontalLayout>();
             statusBarItems->Alignment = { Alignment::Horizontal::RIGHT, Alignment::Vertical::CENTER };
             statusBarItems->PreferredSize.height = PreferredSize::Height::WRAP;
-            fps = makeShared<FpsText>(theme->getPrimaryTextFont(), theme->getColorForegroundPrimaryOnBackground());
+            fps = makeShared<FpsText>(theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY], theme->getColorForegroundPrimaryOnBackground(), Timer);
             statusBarItems->Children = { fps };
             statusBar->Children = { statusBarBackground, statusBarItems };
 

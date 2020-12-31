@@ -12,6 +12,8 @@ namespace Ghurund {
         Array(size_t size) {
             this->size = size;
             v = (Value*)ghnew char[sizeof(Value) * size];
+            for (size_t i = 0; i < size; i++)
+                new (v + i) Value();
         }
 
         Array(const Value* data, size_t size, size_t offset = 0) {
@@ -59,7 +61,7 @@ namespace Ghurund {
             new(v + i) Value(e);
         }
 
-        inline Value& get(size_t i)const {
+        inline Value& get(size_t i) const {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
@@ -94,7 +96,12 @@ namespace Ghurund {
             return false;
         }
 
-        const Value& operator[](size_t i)const {
+        Value& operator[](size_t i) {
+            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
+            return v[i];
+        }
+
+        const Value& operator[](size_t i) const {
             _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }

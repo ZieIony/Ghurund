@@ -42,7 +42,7 @@ namespace Ghurund {
 #ifdef _DEBUG
             if (referenceCount == 0) {
                 const auto& info = typeid(*this);
-                Logger::log(LogType::WARNING, _T("[{}] {} release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, info.name(), referenceCount);
+                Logger::log(LogType::WARNING, _T("[{}] {} release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, String(info.name()), referenceCount);
             }
 #endif
             referenceCount--;

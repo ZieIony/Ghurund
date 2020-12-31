@@ -7,15 +7,15 @@
 namespace Ghurund::UI {
     class FontFileEnumerator: public IDWriteFontFileEnumerator {
     private:
-        ULONG refCount = 0;
+        ULONG refCount = 1;
 
         IDWriteFactory* dwriteFactory = nullptr;
         IDWriteFontFile* currentFile = nullptr;
-        UnicodeString fontFilePath;
+        WString fontFilePath;
         size_t nextIndex = 0;
 
     public:
-        FontFileEnumerator(IDWriteFactory* factory, const UnicodeString& fontFilePath);
+        FontFileEnumerator(IDWriteFactory* factory, const WString& fontFilePath);
 
         ~FontFileEnumerator() {
             if (currentFile)

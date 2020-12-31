@@ -77,25 +77,25 @@ namespace Ghurund {
 
         __declspec(property(get = getOnMouseWheel)) Event<EventConsumer, MouseWheelEventArgs>& OnMouseWheel;
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) {
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
             bool result = onKeyEvent(event);
             bool result2 = onKey(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
             bool result = onMouseButtonEvent(event);
             bool result2 = onMouseButton(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
             bool result = onMouseMotionEvent(event);
             bool result2 = onMouseMotion(event);
             return result || result2;
         }
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override {
             bool result = onMouseWheelEvent(event);
             bool result2 = onMouseWheel(event);
             return result || result2;

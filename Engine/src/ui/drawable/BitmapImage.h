@@ -11,7 +11,7 @@
 namespace Ghurund::UI {
     using namespace DirectX;
     using Microsoft::WRL::ComPtr;
-    
+
     class BitmapImage:public Resource {
     private:
         Image* image = nullptr;
@@ -38,21 +38,26 @@ namespace Ghurund::UI {
         }
 
         void finalize() {
-            if (image != nullptr)
+            if (bitmapImage)
+                bitmapImage->Release();
+            if (image)
                 image->release();
         }
 
         virtual void invalidate() {
             finalize();
             image = nullptr;
+            bitmapImage = nullptr;
             __super::invalidate();
         }
 
         virtual bool isValid() {
-            return image != nullptr && image->Valid && __super::Valid;
+            return bitmapImage && image && image->Valid && __super::Valid;
         }
 
-        Status init(ResourceContext& context, Image& image);
+        Status init(Ghurund::UI::Graphics2D& graphics2d, Image& image);
+
+        Status init(Ghurund::UI::Graphics2D& graphics2d, IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
         inline Image* getImage() {
             return image;
@@ -76,12 +81,12 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
-		virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
 
         static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::JPG , (ResourceFormat*)&ResourceFormat::JPEG , (ResourceFormat*)&ResourceFormat::PNG};
+            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::JPG , (ResourceFormat*)&ResourceFormat::JPEG , (ResourceFormat*)&ResourceFormat::PNG };
             return formats;
         }
 
@@ -92,7 +97,7 @@ namespace Ghurund::UI {
             if (image == nullptr)
                 return nullptr;
             BitmapImage* texture = ghnew BitmapImage();
-            texture->init(context, *image);
+            texture->init(context.Graphics2D, *image);
             image->release();
             return texture;
         }

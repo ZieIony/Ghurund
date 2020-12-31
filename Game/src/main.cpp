@@ -18,6 +18,7 @@
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "D3D11.lib")
+#pragma comment(lib, "tinyxml2.lib")
 
 #include "windows.h"
 #include "stdio.h"

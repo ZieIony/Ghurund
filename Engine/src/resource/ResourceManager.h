@@ -23,7 +23,7 @@ namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
     private:
 		FileWatcher watcher;
-        PointerMap<UnicodeString, Resource*> resources;
+        PointerMap<WString, Resource*> resources;
         LibraryList libraries;
         CriticalSection section;
 
@@ -70,7 +70,7 @@ namespace Ghurund {
 
 		Status loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options);
 
-        FilePath decodePath(const UnicodeString& fileName, const DirectoryPath* workingDir = nullptr) const;
+        FilePath decodePath(const WString& fileName, const DirectoryPath* workingDir = nullptr) const;
         FilePath encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
@@ -164,7 +164,7 @@ namespace Ghurund {
         Status save(Resource& resource, ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
         Status save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT);
 
-		template<class Type = Resource> Type* get(const UnicodeString & fileName) {
+		template<class Type = Resource> Type* get(const WString & fileName) {
 			section.enter();
 			Resource* resource = nullptr;
 			size_t index = resources.findKey(fileName);
@@ -176,7 +176,7 @@ namespace Ghurund {
 
         void add(Resource& resource);
 
-        void remove(const UnicodeString& fileName);
+        void remove(const WString& fileName);
 
         void clear();
 

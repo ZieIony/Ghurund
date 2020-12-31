@@ -1,17 +1,16 @@
-#include "ASCIIString.h"
+#include "WString.h"
 
 namespace Ghurund {
-
-    void ASCIIString::add(const wchar_t e) {
+    void WString::add(const char e) {
         if (size + 1>capacity)
             resize(capacity + initial);
 
-        wchar_t c[2];
+        char c[2];
         c[0] = e;
         c[1] = '\0';
-        char retChar[2];
+        wchar_t retChar[2];
         size_t retVal;
-        wcstombs_s(&retVal, retChar, 1, c, 1);
+        mbstowcs_s(&retVal, retChar, 1, c, 1);
 
         v[size - 1] = retChar[0];
         size++;
@@ -19,23 +18,24 @@ namespace Ghurund {
         computeHash();
     }
 
-    Array<ASCIIString> ASCIIString::split(const char* d) const {
-        List<ASCIIString> list;
+    Array<WString> WString::split(const wchar_t* d) const {
+        List<WString> list;
         size_t index = 0;
-        size_t strSize = strlen(d);
-        while (index<Length) {
+        size_t strSize = wcslen(d);
+        while (index < Length) {
             size_t nextIndex = find(d, index);
             if (nextIndex == index) {
             } else if (nextIndex == size) {
-                ASCIIString str = subString(index, size - index - 1);
+                WString str = substring(index, size - index - 1);
                 list.add(str);
                 break;
             } else {
-                ASCIIString str = subString(index, nextIndex - index);
+                WString str = substring(index, nextIndex - index);
                 list.add(str);
             }
             index = nextIndex + strSize;
         }
         return list;
     }
+
 }

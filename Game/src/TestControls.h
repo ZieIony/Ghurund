@@ -33,13 +33,19 @@ public:
         verticalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
 
         {
-            SharedPointer<Font> latoLight = ghnew Ghurund::UI::Font("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
+            SharedPointer<TextStyle> latoLight = ghnew Ghurund::UI::TextStyle("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
             latoLight->init(resourceContext.Graphics2D);
             SharedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
             SharedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
-            textView2->Font = theme.SecondaryTextFont;
+            textView2->TextStyle = theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
             textView2->Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+
+            auto p = makeShared<PaddingContainer>();
+            p->Padding.All = 20;
+            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout());
+            hwButton->Text = "HELLO WORLD";
+            p->Child = hwButton;
 
             SharedPointer<TextField> textField = ghnew TextField();
             textField->Text = "type here";
@@ -79,6 +85,7 @@ public:
             verticalLayout->Children = {
                 textView,
                 textView2,
+                p,
                 textField,
                 textField2,
                 makeShared<Space>(),

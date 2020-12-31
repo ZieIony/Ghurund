@@ -35,7 +35,7 @@ namespace Ghurund::UI {
                 widgetLayout = layout;
 #ifdef _DEBUG
                 if (widgetLayout->Root)
-                    Logger::log(LogType::INFO, "widget layout for {} initialized in its constructor", Type.Name);
+                    Logger::log(LogType::INFO, _T("widget layout for {} initialized in its constructor"), String(Type.Name));
 #endif
                 widgetLayout->init();
                 Child = widgetLayout->Root;

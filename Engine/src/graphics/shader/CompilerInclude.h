@@ -24,7 +24,7 @@ namespace Ghurund {
         }
 
         virtual HRESULT __stdcall Open(THIS_ D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes) override {
-            UnicodeString fullPath;
+            WString fullPath;
 
             switch(IncludeType) {
                 case D3D_INCLUDE_LOCAL: // #include "FILE"

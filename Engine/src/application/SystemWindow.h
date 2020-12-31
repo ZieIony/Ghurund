@@ -1,30 +1,20 @@
 #pragma once
 
+#include "DragDropManager.h"
 #include "Window.h"
 #include "ui/RootView.h"
+#include "input/Input.h"
 
 namespace Ghurund {
-    struct WindowMessage {
-        unsigned int code;
-        WPARAM wParam;
-        LPARAM lParam;
-        time_t time;
-    };
-
     class SystemWindow;
     class WindowClass;
     class SwapChain;
 
     struct WindowData {
         SystemWindow* window;
-        POINT prevMousePos;
         bool mouseTracked = false;
 
-        WindowData(SystemWindow* w):window(w) {
-            POINT p;
-            GetCursorPos(&p);
-            prevMousePos = p;
-        }
+        WindowData(SystemWindow* w):window(w) {}
     };
 
     LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -35,9 +25,15 @@ namespace Ghurund {
 
         HWND handle;
         SwapChain* swapChain = nullptr;
+        Ghurund::Input input;
+        Ghurund::Timer& timer;
         Ghurund::UI::RootView* rootView = nullptr;
 
-        EventHandler<Ghurund::Window> onSizeChangedHandler;
+        ComPtr<DragDropManager> dragDropManager;
+        Event<Ghurund::Window> onDraggedOver = Event<Ghurund::Window>(*this);
+        Event<Ghurund::Window> onDragLeft = Event<Ghurund::Window>(*this);
+        Event<Ghurund::Window, Array<FilePath*>*> onDragEntered = Event<Ghurund::Window, Array<FilePath*>*>(*this);
+        Event<Ghurund::Window, Array<FilePath*>*> onDropped = Event<Ghurund::Window, Array<FilePath*>*>(*this);
 
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
@@ -47,7 +43,7 @@ namespace Ghurund {
         }
 
     public:
-        SystemWindow(HWND handle, const WindowClass& type);
+        SystemWindow(HWND handle, const WindowClass& type, Ghurund::Timer& timer);
 
         ~SystemWindow();
 
@@ -62,7 +58,7 @@ namespace Ghurund {
             SetWindowText(handle, title);
         }
 
-        virtual HWND getHandle() const {
+        virtual HWND getHandle() const override {
             return handle;
         }
 
@@ -86,6 +82,18 @@ namespace Ghurund {
 
         __declspec(property(get = getSwapChain, put = setSwapChain)) SwapChain* SwapChain;
 
+        virtual Ghurund::Input& getInput() override {
+            return input;
+        }
+
+        __declspec(property(get = getInput)) Ghurund::Input& Input;
+
+        virtual Ghurund::Timer& getTimer() const override {
+            return timer;
+        }
+
+        __declspec(property(get = getTimer)) Ghurund::Timer& Timer;
+
         virtual void setVisible(bool visible) override {
             __super::setVisible(visible);
             ShowWindow(handle, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
@@ -99,12 +107,78 @@ namespace Ghurund {
             return handle == GetFocus();
         }
 
+        void setDragDropEnabled(bool enabled);
+
+        inline bool isDragDropEnabled() {
+            return dragDropManager.Get() != nullptr;
+        }
+
+        __declspec(property(get = isDragDropEnabled, put = setDragDropEnabled)) bool DragDropEnabled;
+
+        Event<Ghurund::Window>& getOnDraggedOver() {
+            return onDraggedOver;
+        }
+
+        __declspec(property(get = getOnDraggedOver)) Event<Ghurund::Window>& OnDraggedOver;
+
+        Event<Ghurund::Window>& getOnDragLeft() {
+            return onDragLeft;
+        }
+
+        __declspec(property(get = getOnDragLeft)) Event<Ghurund::Window>& OnDragLeft;
+
+        Event<Ghurund::Window, Array<FilePath*>*>& getOnDragEntered() {
+            return onDragEntered;
+        }
+
+        __declspec(property(get = getOnDragEntered)) Event<Ghurund::Window, Array<FilePath*>*>& OnDragEntered;
+
+        Event<Ghurund::Window, Array<FilePath*>*>& getOnDropped() {
+            return onDropped;
+        }
+
+        __declspec(property(get = getOnDropped)) Event<Ghurund::Window, Array<FilePath*>*>& OnDropped;
+
         virtual void refresh() const override {
             RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);
         }
 
         virtual void activate() const override {
             SetActiveWindow(handle);
+        }
+
+        virtual bool onKeyEvent(const KeyEventArgs& args) override {
+            if (rootView)
+                rootView->dispatchKeyEvent(args);
+            return true;
+        }
+
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
+
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override {
+            if (rootView)
+                rootView->dispatchMouseMotionEvent(args);
+            return true;
+        }
+
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override {
+            if (rootView)
+                rootView->dispatchMouseWheelEvent(args);
+            return true;
+        }
+
+        virtual void onUpdate(const uint64_t time) override {
+            input.dispatchEvents(time, *this);
+            if (rootView) {
+                rootView->onUpdate(time);
+                rootView->measure((float)Size.width, (float)Size.height);
+                rootView->layout(0, 0, (float)Size.width, (float)Size.height);
+            }
+        }
+
+        virtual void onPaint() {
+            if (rootView)
+                rootView->draw();
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
@@ -116,16 +190,16 @@ namespace Ghurund {
 
     class OverlappedWindow:public SystemWindow {
     public:
-        OverlappedWindow();
+        OverlappedWindow(Ghurund::Timer& timer);
     };
 
     class FullscreenWindow:public SystemWindow {
     public:
-        FullscreenWindow();
+        FullscreenWindow(Ghurund::Timer& timer);
     };
 
     class PopupWindow:public SystemWindow {
     public:
-        PopupWindow();
+        PopupWindow(Ghurund::Timer& timer);
     };
 }

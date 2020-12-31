@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
+    <ClCompile Include="src\application\DragDropManager.cpp" />
     <ClCompile Include="src\application\log\LogType.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\application\SystemWindow.cpp" />
@@ -30,8 +31,8 @@
     <ClCompile Include="src\core\io\DirectoryPath.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
-    <ClCompile Include="src\core\string\ASCIIString.cpp" />
-    <ClCompile Include="src\core\string\UnicodeString.cpp" />
+    <ClCompile Include="src\core\string\AString.cpp" />
+    <ClCompile Include="src\core\string\WString.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\application\Timer.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
@@ -91,25 +92,31 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\ui\Canvas.cpp" />
+    <ClCompile Include="src\ui\control\Border.cpp" />
     <ClCompile Include="src\ui\control\ClickableView.cpp" />
+    <ClCompile Include="src\ui\control\Clip.cpp" />
+    <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\HoverableView.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
+    <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\control\TextBlock.cpp" />
     <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
     <ClCompile Include="src\ui\drawable\SvgImage.cpp" />
-    <ClCompile Include="src\ui\font\Font.cpp" />
+    <ClCompile Include="src\ui\font\TextStyle.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
     <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
+    <ClCompile Include="src\ui\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\ManualLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\StackLayout.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
@@ -143,19 +150,20 @@
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ChildWindow.h" />
+    <ClInclude Include="src\application\DragDropManager.h" />
     <ClInclude Include="src\application\log\Formatter.h" />
     <ClInclude Include="src\application\log\LogOutput.h" />
     <ClInclude Include="src\application\log\LogType.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\SystemWindow.h" />
     <ClInclude Include="src\application\Window.h" />
-    <ClInclude Include="src\application\WindowList.h" />
     <ClInclude Include="src\application\WindowType.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\core\allocation\AllocatorMap.h" />
     <ClInclude Include="src\core\collection\Array.h" />
+    <ClInclude Include="src\core\collection\ObservableList.h" />
     <ClInclude Include="src\core\collection\ObservablePointerList.h" />
     <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Set.h" />
@@ -163,16 +171,19 @@
     <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
-    <ClInclude Include="src\core\string\ASCIIString.h" />
+    <ClInclude Include="src\core\string\AString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
     <ClInclude Include="src\core\collection\BufferedValue.h" />
+    <ClInclude Include="src\core\string\AStringView.h" />
     <ClInclude Include="src\core\string\GenericString.h" />
     <ClInclude Include="src\core\collection\HashMap.h" />
     <ClInclude Include="src\core\collection\PointerArray.h" />
     <ClInclude Include="src\core\collection\PointerList.h" />
     <ClInclude Include="src\core\collection\PointerMap.h" />
+    <ClInclude Include="src\core\string\GenericStringView.h" />
     <ClInclude Include="src\core\string\String.h" />
-    <ClInclude Include="src\core\string\UnicodeString.h" />
+    <ClInclude Include="src\core\string\StringView.h" />
+    <ClInclude Include="src\core\string\WString.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
     <ClInclude Include="src\core\allocation\Allocator.h" />
@@ -187,6 +198,7 @@
     <ClInclude Include="src\core\io\MemoryStream.h" />
     <ClInclude Include="src\core\collection\List.h" />
     <ClInclude Include="src\core\collection\Map.h" />
+    <ClInclude Include="src\core\string\WStringView.h" />
     <ClInclude Include="src\core\threading\CriticalSection.h" />
     <ClInclude Include="src\core\threading\FunctionQueue.h" />
     <ClInclude Include="src\core\Object.h" />
@@ -295,7 +307,6 @@
     <ClInclude Include="src\resource\ResourceFormat.h" />
     <ClInclude Include="src\resource\watcher\FileChange.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
-    <ClInclude Include="src\script\Argument.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
     <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
     <ClInclude Include="src\script\bindings\EntityScriptBindings.h" />
@@ -329,10 +340,12 @@
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
+    <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\drawable\SvgImage.h" />
     <ClInclude Include="src\ui\drawable\SvgImageDrawable.h" />
     <ClInclude Include="src\ui\font\FontCollectionLoader.h" />
     <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
+    <ClInclude Include="src\ui\LayoutLoader.h" />
     <ClInclude Include="src\ui\layout\DesktopLayout.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\Graphics2D.h" />
@@ -384,7 +397,7 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\font\Font.h" />
+    <ClInclude Include="src\ui\font\TextStyle.h" />
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
@@ -452,7 +465,7 @@
     <ClInclude Include="src\ui\widget\TextButton.h" />
     <ClInclude Include="src\application\Clipboard.h" />
     <ClInclude Include="src\ui\widget\textfield\DrawingEffect.h" />
-    <ClInclude Include="src\ui\widget\textfield\IUnknownImpl.h" />
+    <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\ui\widget\textfield\LayoutEditor.h" />
     <ClInclude Include="src\ui\widget\textfield\SetSelectionMode.h" />
     <ClInclude Include="src\ui\widget\textfield\TextField.h" />
@@ -597,13 +610,4 @@
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\rxcpp.4.0.0\build\native\rxcpp.targets" Condition="Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" />
-  </ImportGroup>
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\rxcpp.4.0.0\build\native\rxcpp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\rxcpp.4.0.0\build\native\rxcpp.targets'))" />
-  </Target>
 </Project>

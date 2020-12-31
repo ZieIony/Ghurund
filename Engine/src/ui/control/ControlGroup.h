@@ -72,9 +72,9 @@ namespace Ghurund::UI {
 
         virtual void dispatchContextChanged() override;
 
-        virtual void onUpdate(const Timer& timer) override {
+        virtual void onUpdate(const uint64_t time) override {
             for (Control* c : children)
-                c->onUpdate(timer);
+                c->onUpdate(time);
         }
 
         virtual void onDraw(Canvas& canvas) override;
@@ -88,6 +88,30 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
         virtual Control* find(const String& name);
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+
+#ifdef _DEBUG
+        virtual String logTree() {
+            String log = __super::logTree();
+            for (Control* child : children) {
+                auto array = child->logTree().split(_T("\n"));
+                if (!array.Empty) {
+                    String& s = array[0];
+                    log.add(fmt::format(_T(" + {}\n"), s).c_str());
+                }
+                for (size_t i = 1; i < array.Size; i++) {
+                    String& s = array[i];
+                    if (children[children.Size - 1] == child) {
+                        log.add(fmt::format(_T("   {}\n"), s).c_str());
+                    } else {
+                        log.add(fmt::format(_T(" | {}\n"), s).c_str());
+                    }
+                }
+            }
+            return log;
+        }
+#endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

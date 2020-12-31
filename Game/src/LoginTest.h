@@ -40,11 +40,11 @@ public:
                 auto loginTextField = makeShared<TextField>();
 
                 loginRow->Children = {
-                    makeShared<Space>(8),
+                    makeShared<Space>(8.0f),
                     loginIconView,
-                    makeShared<Space>(16),
+                    makeShared<Space>(16.0f),
                     loginTextField,
-                    makeShared<Space>(8)
+                    makeShared<Space>(8.0f)
                 };
             }
 
@@ -59,11 +59,11 @@ public:
                 auto passwordTextField = makeShared<TextField>();
 
                 passwordRow->Children = {
-                    makeShared<Space>(8),
+                    makeShared<Space>(8.0f),
                     passwordIconView,
-                    makeShared<Space>(16),
+                    makeShared<Space>(16.0f),
                     passwordTextField,
-                    makeShared<Space>(8)
+                    makeShared<Space>(8.0f)
                 };
             }
 
@@ -78,21 +78,21 @@ public:
                 registerButton->Text = "REGISTER";
 
                 buttonsRow->Children = {
-                    makeShared<Space>(8),
+                    makeShared<Space>(8.0f),
                     loginButton,
-                    makeShared<Space>(16),
+                    makeShared<Space>(16.0f),
                     registerButton,
-                    makeShared<Space>(8)
+                    makeShared<Space>(8.0f)
                 };
             }
 
             layout->Children = {
                 imageView,
-                makeShared<Space>(8),
+                makeShared<Space>(8.0f),
                 loginRow,
-                makeShared<Space>(8),
+                makeShared<Space>(8.0f),
                 passwordRow,
-                makeShared<Space>(8),
+                makeShared<Space>(8.0f),
                 buttonsRow
             };
         }

@@ -36,15 +36,15 @@ namespace Ghurund::Editor {
 
         __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
-        UnicodeString& getText() {
+        WString& getText() {
             return text->Text;
         }
 
-        void setText(const UnicodeString& text) {
+        void setText(const WString& text) {
             this->text->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
+        __declspec(property(get = getText, put = setText)) WString& Text;
     };
 
     struct Log {

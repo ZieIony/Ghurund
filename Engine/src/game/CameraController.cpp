@@ -1,4 +1,5 @@
 #include "CameraController.h"
+#include "application/SystemWindow.h"
 
 namespace Ghurund {
 	using namespace std;

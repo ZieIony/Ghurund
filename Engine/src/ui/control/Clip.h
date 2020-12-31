@@ -33,22 +33,14 @@ namespace Ghurund::UI {
         __declspec(property(get = getShape, put = setShape)) Shape* Shape;
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            if (shape)
-                shape->Bounds = D2D1::RectF(x, y, x + width, y + height);
             __super::onLayout(x, y, width, height);
+            if (shape)
+                shape->Bounds = D2D1::RectF(0, 0, width, height);
         }
 
-        virtual void onDraw(Canvas& canvas) override {
-            if (shape) {
-                canvas.clipShape(*shape);
-                __super::onDraw(canvas);
-                canvas.restoreClipShape();
-            } else {
-                canvas.clipRect(0, 0, Size.width, Size.height);
-                __super::onDraw(canvas);
-                canvas.restoreClipRect();
-            }
-        }
+        virtual void onDraw(Canvas& canvas) override;
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

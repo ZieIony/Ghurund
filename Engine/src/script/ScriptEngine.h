@@ -47,7 +47,7 @@ namespace Ghurund {
                 type = LogType::WARNING;
             else if (msg->type == asMSGTYPE_INFORMATION)
                 type = LogType::INFO;
-            Logger::log(type, _T("%hs (%d, %d): %hs\n"), msg->section, msg->row, msg->col, msg->message);
+            Logger::log(type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
         }
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
@@ -66,7 +66,7 @@ namespace Ghurund {
         }
 
         static void log(const std::string& str) {
-            Logger::log(LogType::INFO, S(str.c_str()));
+            Logger::log(LogType::INFO, String(str.c_str()));
         }
 
         Status init(Timer& timer);
@@ -81,7 +81,7 @@ namespace Ghurund {
             return engine->CreateContext();
         }
 
-        void update(double dt);
+        void update(const uint64_t time);
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

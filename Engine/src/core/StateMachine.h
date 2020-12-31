@@ -52,12 +52,12 @@ namespace Ghurund {
         List<State<T>*> states;
         List<Edge<T>*> edges;
         mutable CriticalSection cs;
-        FunctionQueue *functionQueue;
+        FunctionQueue* functionQueue;
 
         void findState(T state) {
-            for(size_t i = 0; i<states.Size; i++) {
-                State<T> *s = states[i];
-                if(s->state==state) {
+            for (size_t i = 0; i < states.Size; i++) {
+                State<T>* s = states[i];
+                if (s->state == state) {
                     currentState = *s;
                     return;
                 }
@@ -65,10 +65,10 @@ namespace Ghurund {
             currentState = State<T>(state);
         }
 
-        void run(std::function<void()> &function) {
-            if(function==nullptr)
+        void run(std::function<void()>& function) {
+            if (function == nullptr)
                 return;
-            if(functionQueue!=nullptr) {
+            if (functionQueue != nullptr) {
                 functionQueue->post(function);
             } else {
                 function();
@@ -76,16 +76,16 @@ namespace Ghurund {
         }
 
     public:
-        StateMachine(T initialState, FunctionQueue *functionQueue): currentState(initialState) {
+        StateMachine(T initialState, FunctionQueue* functionQueue): currentState(initialState) {
             this->functionQueue = functionQueue;
         }
 
         StateMachine(T initialState): currentState(initialState) {}
 
         ~StateMachine() {
-            for(size_t i = 0; i<edges.Size; i++)
+            for (size_t i = 0; i < edges.Size; i++)
                 delete edges[i];
-            for(size_t i = 0; i<states.Size; i++)
+            for (size_t i = 0; i < states.Size; i++)
                 delete states[i];
         }
 
@@ -114,9 +114,9 @@ namespace Ghurund {
 
             Status result = Status::OK;
 
-            for(size_t i = 0; i<edges.Size; i++) {
-                Edge<T> *e = edges[i];
-                if(e->from==currentState.state&&e->to==state) {
+            for (size_t i = 0; i < edges.Size; i++) {
+                Edge<T>* e = edges[i];
+                if (e->from == currentState.state && e->to == state) {
                     run(currentState.onStateLeave);
                     findState(e->to);
                     run(e->onStateChange);

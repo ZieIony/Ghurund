@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui/Graphics2D.h"
-#include "ui/font/Font.h"
+#include "ui/font/TextStyle.h"
 
 namespace Ghurund::UI {
     class LayoutEditor {
@@ -13,7 +13,7 @@ namespace Ghurund::UI {
             this->factory = factory;
         }
 
-        Status recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text);
+        Status recreateLayout(IDWriteTextLayout*& currentLayout, const WString& text);
 
         void copySinglePropertyRange(
             IDWriteTextLayout* oldLayout,
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
             IDWriteTextLayout* newLayout,
             UINT32 startPosForNew,
             UINT32 length,
-            Font* font = nullptr
+            TextStyle* font = nullptr
         );
 
         UINT32 calculateRangeLengthAt(IDWriteTextLayout* layout, UINT32 pos);
@@ -37,15 +37,15 @@ namespace Ghurund::UI {
 
         Status insertTextAt(
             IDWriteTextLayout*& currentLayout,
-            UnicodeString& text,
+            WString& text,
             UINT32 position,
-            const UnicodeString& textToInsert,
-            Font* font = nullptr
+            const WString& textToInsert,
+            TextStyle* font = nullptr
         );
 
-        Status removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove);
+        Status removeTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, UINT32 lengthToRemove);
 
-        inline Status clear(IDWriteTextLayout*& currentLayout, UnicodeString& text) {
+        inline Status clear(IDWriteTextLayout*& currentLayout, WString& text) {
             text.clear();
             return recreateLayout(currentLayout, text);
         }

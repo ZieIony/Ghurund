@@ -22,7 +22,7 @@ namespace Ghurund::UI {
         uint32_t caretPositionOffset = 0;
         bool pressed = false;
 
-        Ghurund::UI::Font* currentFont = nullptr;
+        Ghurund::UI::TextStyle* currentFont = nullptr;
         uint32_t currentColor = 0;
 
         DWRITE_TEXT_RANGE getSelectionRange();
@@ -41,9 +41,9 @@ namespace Ghurund::UI {
 
         bool setSelectionFromPoint(float x, float y, bool extendSelection);
 
-        virtual void onUpdate(const Timer& timer) override {
+        virtual void onUpdate(const uint64_t time) override {
             if (cursorDrawable)
-                cursorDrawable->update(timer);
+                cursorDrawable->update(time);
         }
 
         virtual void onDraw(Canvas& canvas) override;
@@ -82,7 +82,7 @@ namespace Ghurund::UI {
             if (event.Button == MouseButton::LEFT) {
                 if (event.Action == MouseAction::DOWN) {
                     pressed = true;
-                    setSelectionFromPoint(event.Position.x, event.Position.y, Input::isShiftDown());
+                    setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input.isShiftDown());
                 } else {
                     pressed = false;
                 }
@@ -91,7 +91,7 @@ namespace Ghurund::UI {
         }
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
-            if (event.Action == KeyAction::DOWN && event.Key == 'C' && Input::isControlDown()) {
+            if (event.Action == KeyAction::DOWN && event.Key == 'C' && Context->Window.Input.isControlDown()) {
                 copyToClipboard();
                 return true;
             }
@@ -100,7 +100,7 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
             if (pressed)
-                setSelectionFromPoint(event.Position.x, event.Position.y, true);
+                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, true);
             return __super::dispatchMouseMotionEvent(event);
         }
     };

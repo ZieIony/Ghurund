@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 
         inline void endPaint() {
             if (matrixStack.Size != 1)
-                Logger::log(LogType::INFO, "mismatched calls to Canvas::save() and Canvas::restore()\n");
+                Logger::log(LogType::INFO, _T("mismatched calls to Canvas::save() and Canvas::restore()\n"));
             matrixStack.clear();
         }
 
@@ -109,6 +109,14 @@ namespace Ghurund::UI {
 
         inline void drawImage(SvgImage& image) {
             deviceContext->DrawSvgDocument(image.Data);
+        }
+
+        inline void drawShadow(BitmapImage& image, float radius, int32_t shadowColor) {
+            shadowEffect->SetInput(0, image.Data);
+            Color color(shadowColor);
+            shadowEffect->SetValue(D2D1_SHADOW_PROP_COLOR, color.Vector);
+            shadowEffect->SetValue(D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION, radius);
+            deviceContext->DrawImage(shadowEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);
         }
 
         inline void drawText(IDWriteTextLayout* layout, float x, float y, const Paint& paint) {

@@ -42,14 +42,14 @@ namespace Ghurund::Editor {
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        inline UnicodeString& getTitle() {
+        inline WString& getTitle() {
             return titleBar->Text;
         }
 
-        inline void setTitle(const UnicodeString& text) {
+        inline void setTitle(const WString& text) {
             titleBar->Text = text;
         }
 
-        __declspec(property(get = getTitle, put = setTitle)) UnicodeString& Title;
+        __declspec(property(get = getTitle, put = setTitle)) WString& Title;
     };
 }

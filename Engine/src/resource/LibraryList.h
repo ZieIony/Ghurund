@@ -7,17 +7,17 @@
 namespace Ghurund {
     class Library {
     private:
-        UnicodeString name;
+        WString name;
         DirectoryPath path;
 
     public:
-        Library(const UnicodeString& name, const DirectoryPath& path):name(name), path(path) {}
+        Library(const WString& name, const DirectoryPath& path):name(name), path(path) {}
 
-        const UnicodeString& getName() const {
+        const WString& getName() const {
             return name;
         }
 
-        __declspec(property(get = getName)) UnicodeString& Name;
+        __declspec(property(get = getName)) WString& Name;
 
         const DirectoryPath& getPath() const {
             return path;
@@ -35,7 +35,7 @@ namespace Ghurund {
             libs.deleteItems();
         }
 
-        void add(const UnicodeString& name, const DirectoryPath& path) {
+        void add(const WString& name, const DirectoryPath& path) {
             libs.add(ghnew Library(name, path.AbsolutePath));
         }
 
@@ -45,7 +45,7 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        const Library* get(const UnicodeString& name) const {
+        const Library* get(const WString& name) const {
             for (size_t i = 0; i < libs.Size; i++)
                 if (libs[i]->Name == name)
                     return libs[i];

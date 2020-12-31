@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UISchema"
+    targetNamespace="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
+    elementFormDefault="qualified"
+    xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<xs:element name="layout">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:choice minOccurs="1" maxOccurs="unbounded">
+					<xs:element ref="TextBlock"/>
+					<xs:element ref="ImageView"/>
+					<xs:element ref="Clip"/>
+					<xs:element ref="Border"/>
+					<xs:element ref="Shadow"/>
+					<xs:element ref="Space"/>
+					<xs:element ref="ColorView"/>
+					<xs:element ref="LinearLayout"/>
+					<xs:element ref="StackLayout"/>
+					<xs:element ref="PaddingContainer"/>
+				</xs:choice>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<!-- attributes -->
+
+	<xs:simpleType name="Size">
+		<xs:annotation>
+			<xs:documentation>
+				A pair of float values for width and height.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(\d+(\.\d+)?), *(\d+(\.\d+)?)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="PreferredSize">
+		<xs:annotation>
+			<xs:documentation>
+				A pair of values for preferred width and height. Each of these values can be either a float,
+				a string 'wrap', or a string 'fill'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((\d+(\.\d+)?)|(wrap)|(fill)), *((\d+(\.\d+)?)|(wrap)|(fill))"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Alignment">
+		<xs:annotation>
+			<xs:documentation>
+				A pair of values for horizontal and vertical alignment: 'left', 'center', 'right'
+				and 'top', 'center', 'bottom'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="((left)|(center)|(right)), *((top)|(center)|(bottom))"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Orientation">
+		<xs:annotation>
+			<xs:documentation>
+				Content orientation: 'horizontal' or 'vertical'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="(horizontal)|(vertical)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ScaleMode">
+		<xs:annotation>
+			<xs:documentation>
+				Can be one of the following: none, stretch, fit, crop.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="none|stretch|fit|crop"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Shape">
+		<xs:annotation>
+			<xs:documentation>
+				Can be one of the following: 'rect', 'roundRect,[radius]'.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="rect|roundRect(, *(\d+(\.\d+)?))?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Color">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="#(([0-9]|[a-f]){8})"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Font">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="theme:\/\/.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Padding">
+		<xs:annotation>
+			<xs:documentation>
+				A positive float to set all padding values, two to set horizontal and vertical,
+				and four to set left, top, right and bottom.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="-?\d+(\.\d+)?(, *-?\d+(\.\d+)?(, *-?\d+(\.\d+)?, *-?\d+(\.\d+)?)?)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- base controls -->
+
+	<xs:complexType name="Control">
+		<xs:attribute name="name" type="xs:string"/>
+		<xs:attribute name="enabled" type="xs:boolean"/>
+		<xs:attribute name="visible" type="xs:boolean"/>
+		<xs:attribute name="focusable" type="xs:boolean"/>
+		<xs:attribute name="minSize" type="Size"/>
+		<xs:attribute name="preferredSize" type="PreferredSize"/>
+	</xs:complexType>
+	<xs:element name="Control" type="Control"/>
+
+	<xs:complexType name="ControlContainer">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:sequence>
+					<xs:choice>
+						<xs:element ref="TextBlock"/>
+						<xs:element ref="ImageView"/>
+						<xs:element ref="Clip"/>
+						<xs:element ref="Border"/>
+						<xs:element ref="Shadow"/>
+						<xs:element ref="Space"/>
+						<xs:element ref="ColorView"/>
+						<xs:element ref="LinearLayout"/>
+						<xs:element ref="StackLayout"/>
+						<xs:element ref="PaddingContainer"/>
+					</xs:choice>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ControlContainer" type="ControlContainer"/>
+
+	<xs:complexType name="ControlGroup">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:sequence>
+					<xs:sequence>
+						<xs:choice minOccurs="1" maxOccurs="unbounded">
+							<xs:element ref="TextBlock"/>
+							<xs:element ref="ImageView"/>
+							<xs:element ref="Clip"/>
+							<xs:element ref="Border"/>
+							<xs:element ref="Shadow"/>
+							<xs:element ref="Space"/>
+							<xs:element ref="ColorView"/>
+							<xs:element ref="LinearLayout"/>
+							<xs:element ref="StackLayout"/>
+							<xs:element ref="PaddingContainer"/>
+						</xs:choice>
+					</xs:sequence>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ControlGroup" type="ControlGroup"/>
+
+	<!-- controls and widgets -->
+
+	<xs:complexType name="TextBlock">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="text" type="xs:string"/>
+				<xs:attribute name="textColor" type="Color"/>
+				<xs:attribute name="font" type="Font"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TextBlock" type="TextBlock"/>
+
+	<xs:complexType name="ImageView">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="image" type="xs:string"/>
+				<xs:attribute name="scaleMode" type="ScaleMode"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ImageView" type="ImageView"/>
+
+	<xs:complexType name="Clip">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer">
+				<xs:attribute name="shape" type="Shape"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Clip" type="Clip"/>
+
+	<xs:complexType name="Border">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="shape" type="Shape"/>
+				<xs:attribute name="color" type="Color"/>
+				<xs:attribute name="thickness" type="xs:float"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Border" type="Border"/>
+
+	<xs:complexType name="Shadow">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="shape" type="Shape"/>
+				<xs:attribute name="color" type="Color"/>
+				<xs:attribute name="radius" type="xs:float"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Shadow" type="Shadow"/>
+
+	<xs:complexType name="Space">
+		<xs:complexContent>
+			<xs:extension base="Control"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Space" type="Space"/>
+
+	<xs:complexType name="ColorView">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="color" type="Color"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ColorView" type="ColorView"/>
+
+	<xs:complexType name="LinearLayout">
+		<xs:complexContent>
+			<xs:extension base="ControlGroup">
+				<xs:attribute name="orientation" type="Orientation"/>
+				<xs:attribute name="alignment" type="Alignment"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="LinearLayout" type="LinearLayout"/>
+
+	<xs:complexType name="StackLayout">
+		<xs:complexContent>
+			<xs:extension base="ControlGroup">
+				<xs:attribute name="alignment" type="Alignment"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="StackLayout" type="StackLayout"/>
+
+	<xs:complexType name="PaddingContainer">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer">
+				<xs:attribute name="padding" type="Padding"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PaddingContainer" type="PaddingContainer"/>
+</xs:schema>

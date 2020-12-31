@@ -56,6 +56,16 @@ namespace Ghurund::UI {
             layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override {
+            Status result = __super::load(loader, context, xml);
+            if (result != Status::OK)
+                return result;
+            auto orientationAttr = xml.FindAttribute("orientation");
+            if (orientationAttr)
+                Orientation = strcmp(orientationAttr->Value(), "horizontal") == 0 ? Orientation::HORIZONTAL : Orientation::VERTICAL;
+            return Status::OK;
+        }
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

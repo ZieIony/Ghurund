@@ -26,14 +26,14 @@ namespace Ghurund {
 
         static address_t getAddress();
 
-        static std::string getFileLine(address_t address);
+        static std::basic_string<tchar> getFileLine(address_t address);
 
         template<typename... Args>
         static void logVA(LogType type, const tchar* formatStr, Args&& ... args) {
-            std::string fileLine = getFileLine(getAddress());
+            std::basic_string<tchar> fileLine = getFileLine(getAddress());
 
-            std::string message = fmt::format(formatStr, args...);
-            std::string log = message.ends_with(_T("\n")) ? fileLine + message : fileLine + message + _T("\n");
+            std::basic_string<tchar> message = fmt::format(formatStr, args...);
+            std::basic_string<tchar> log = message.ends_with(_T("\n")) ? fileLine + message : fileLine + message + _T("\n");
 
             writeLog(type, log.c_str(), log.size());
         }

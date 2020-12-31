@@ -32,7 +32,7 @@ namespace Ghurund {
 
         __declspec(property(get = getParameters)) PointerList<Parameter*>& Parameters;
 
-        Parameter* getParameter(const ASCIIString& name) {
+        Parameter* getParameter(const AString& name) {
             for (Parameter* p : Parameters) {
                 if (p != nullptr && strcmp(p->ConstantName, name)==0)
                     return p;

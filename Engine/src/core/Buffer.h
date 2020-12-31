@@ -30,13 +30,17 @@ namespace Ghurund {
             delete[] data;
         }
 
-        BYTE *getData() {
+        BYTE* getData() {
+            return data;
+        }
+
+        const BYTE* getData() const {
             return data;
         }
 
         __declspec(property(get = getData)) BYTE *Data;
 
-        size_t getSize() {
+        size_t getSize() const {
             return size;
         }
       

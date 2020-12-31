@@ -1,7 +1,7 @@
 #include "LayoutEditor.h"
 
 namespace Ghurund::UI {
-    Status LayoutEditor::recreateLayout(IDWriteTextLayout*& currentLayout, const UnicodeString& text) {
+    Status LayoutEditor::recreateLayout(IDWriteTextLayout*& currentLayout, const WString& text) {
         IDWriteTextLayout* newLayout = nullptr;
 
         if (FAILED(factory->CreateTextLayout(
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, Font* font) {
+    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, TextStyle* font) {
         // Copies a single range of similar properties, from one old layout
         // to a new one.
 
@@ -126,7 +126,7 @@ namespace Ghurund::UI {
         }
     }
 
-    Status LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, const UnicodeString& textToInsert, Font* font) {
+    Status LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, const WString& textToInsert, TextStyle* font) {
         if (currentLayout)
             currentLayout->AddRef();
         IDWriteTextLayout* oldLayout = currentLayout;
@@ -170,7 +170,7 @@ namespace Ghurund::UI {
         return result;
     }
 
-    Status LayoutEditor::removeTextAt(IDWriteTextLayout*& currentLayout, UnicodeString& text, UINT32 position, UINT32 lengthToRemove) {
+    Status LayoutEditor::removeTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, UINT32 lengthToRemove) {
         if (currentLayout)
             currentLayout->AddRef();
         IDWriteTextLayout* oldLayout = currentLayout;

@@ -8,6 +8,12 @@ namespace Ghurund {
     public:
         PointerList() {}
 
+        PointerList(const PointerList& t1):List<Value>(t1) {
+            for (size_t i = 0; i < List<Value>::size; i++)
+                if (List<Value>::v[i] != nullptr)
+                    List<Value>::v[i]->addReference();
+        }
+
         ~PointerList() {
             for (size_t i = 0; i < List<Value>::size; i++)
                 if (List<Value>::v[i] != nullptr)

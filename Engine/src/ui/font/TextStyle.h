@@ -15,31 +15,29 @@ namespace Ghurund::UI {
     class Control;
     class Graphics2D;
 
-    class Font:public Pointer {
+    class TextStyle:public Pointer {
     private:
-        UnicodeString file;
-        UnicodeString familyName;
+        WString file;
+        WString familyName;
         float size;
         bool italic = false, underline = false, strikethrough = false;
         uint32_t weight = 400, stretch = 0;
-        UnicodeString locale;
+        WString locale;
 
-        TEXTMETRIC tm;
         ComPtr<IDWriteTextFormat> textFormat;
-        Graphics2D* graphics2d = nullptr;
 
     public:
-        Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight = 400, bool italic = false, const UnicodeString& locale = L"en-us");
+        TextStyle(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us");
 
-        Font(IDWriteTextLayout* textLayout, UINT32 position);
+        TextStyle(IDWriteTextLayout* textLayout, UINT32 position);
 
         Status init(Graphics2D& graphics2d);
 
-        inline const UnicodeString& getFamilyName() const {
+        inline const WString& getFamilyName() const {
             return familyName;
         }
 
-        __declspec(property(get = getFamilyName)) const UnicodeString& FamilyName;
+        __declspec(property(get = getFamilyName)) const WString& FamilyName;
 
         inline float getSize() const {
             return size;
@@ -77,31 +75,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getStretch)) uint32_t Stretch;
 
-        inline const UnicodeString& getLocale() const {
+        inline const WString& getLocale() const {
             return locale;
         }
 
-        __declspec(property(get = getLocale)) const UnicodeString& Locale;
-
-        long getAscent() const {
-            return tm.tmAscent;
-        }
-
-        long getDescent() const {
-            return tm.tmDescent;
-        }
-
-        long getInternalLeading() const {
-            return tm.tmInternalLeading;
-        }
-
-        long getExternalLeading() const {
-            return tm.tmExternalLeading;
-        }
-
-        long getHeight() const {
-            return tm.tmHeight;
-        }
+        __declspec(property(get = getLocale)) const WString& Locale;
 
         inline IDWriteTextFormat* getTextFormat() {
             return textFormat.Get();

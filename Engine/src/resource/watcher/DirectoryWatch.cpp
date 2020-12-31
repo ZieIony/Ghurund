@@ -1,24 +1,20 @@
 #include "DirectoryWatch.h"
 #include "application/log/Logger.h"
+#include "core/threading/FunctionQueue.h"
 
 namespace Ghurund {
     void DirectoryWatch::fileChanged(Buffer& buffer) {
         int offset = 0;
         while (true) {
             FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data + offset);
-            UnicodeString fileName(fni.FileName, fni.FileNameLength / sizeof(wchar_t));
+            WString fileName(fni.FileName, fni.FileNameLength / sizeof(wchar_t));
 
             if (files.contains(fileName)) {
                 DWORD action = fni.Action;
-                delayThread.remove(fileName);
-                Task* task = ghnew Task(fileName, [fileName, action, this] {
-                    const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
-                    Logger::log(LogType::INFO, _T("file changed: {}, action: {}\n"), fileName, change.Name);
-                    files[fileName](fileName, change);
-                    return Status::OK;
-                    });
-                delayThread.post(task, 200);
-                task->release();
+                const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
+                auto filePath = FilePath(directory, fileName);
+                Logger::log(LogType::INFO, _T("file changed: {}, action: {}\n"), filePath.FileName, change.Name);
+                files[fileName](filePath, change);
             }
 
             if (fni.NextEntryOffset == 0)
@@ -43,7 +39,6 @@ namespace Ghurund {
     }
 
     DirectoryWatch::~DirectoryWatch() {
-        delayThread.finish();
         CancelIo(dirHandle);
         CloseHandle(dirHandle);
     }

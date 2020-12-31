@@ -44,8 +44,11 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView->Font = theme->getButtonFont();
+        textView->TextStyle = theme->TextStyles[Theme::TEXTSTYLE_BUTTON];
         clickResponseView->Color = theme->ColorHighlightOnAccent;
+        border->Shape = ghnew RoundRect(control.Context->Graphics, 2.0f);
+        clip->Shape = ghnew RoundRect(control.Context->Graphics, 2.0f);
+        shadow->Shape = ghnew RoundRect(control.Context->Graphics, 2.0f);
     }
 
     void TextButtonAccentLayout::onStateChanged(Control& control) {
@@ -75,8 +78,13 @@ namespace Ghurund::UI {
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
         clickResponseView = makeShared<ClickResponseView>();
-        stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
-        ClickableView->Child = stack;
+        stack->Children = { backgroundView, clickResponseView, paddingContainer };
+        clip->Child = stack;
+        StackLayoutPtr stack2 = ghnew StackLayout();
+        stack2->PreferredSize.width = PreferredSize::Width::WRAP;
+        stack2->PreferredSize.height = PreferredSize::Height::WRAP;
+        stack2->Children = { shadow, clip, border };
+        ClickableView->Child = stack2;
         root = ClickableView;
     }
 
@@ -84,7 +92,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView->Font = theme->getButtonFont();
+        textView->TextStyle = theme->TextStyles[Theme::TEXTSTYLE_BUTTON];
         clickResponseView->Color = theme->ColorHighlightOnBackground;
     }
 }

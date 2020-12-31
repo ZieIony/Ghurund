@@ -86,6 +86,7 @@ namespace Ghurund::UI {
 
     void Graphics2D::uninit() {
         m_dwriteFactory->UnregisterFontCollectionLoader(fontLoader);
+        fontLoader->Release();
         deviceContext.Reset();
         m_d3d11DeviceContext.Reset();
         m_d3d11On12Device.Reset();

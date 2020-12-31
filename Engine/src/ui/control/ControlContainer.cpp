@@ -1,4 +1,5 @@
 #include "ControlContainer.h"
+#include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
     bool ControlContainer::focusNext() {
@@ -125,5 +126,18 @@ namespace Ghurund::UI {
         if (child)
             return child->find(name);
         return nullptr;
+    }
+
+    Status ControlContainer::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, context, xml);
+        if (result != Status::OK)
+            return result;
+        auto child = xml.FirstChildElement();
+        if (child) {
+            Control* control = loader.loadControl(context, *child);
+            Child = control;
+            control->release();
+        }
+        return Status::OK;
     }
 }

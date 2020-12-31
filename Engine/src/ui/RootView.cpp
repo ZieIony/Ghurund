@@ -5,7 +5,7 @@ namespace Ghurund::UI {
         this->canvas = &canvas;
         this->context = &context;
         this->context->Window.OnFocusedChanged.add([this](Ghurund::Window& window) {
-            if (Focused) {
+            if (!window.Visible || Focused) {
                 if (prevFocusedChild) {
                     prevFocusedChild->requestFocus();
                     prevFocusedChild->release();
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
                 }
             }
             return true;
-        }else if (event.Key == VK_ESCAPE) {
+        } else if (event.Key == VK_ESCAPE) {
             clearFocus();
             if (capturedChild) {
                 capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::UP, MouseButton::VIRTUAL, event.Time, false));

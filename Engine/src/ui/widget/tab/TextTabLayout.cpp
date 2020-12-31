@@ -4,7 +4,7 @@
 namespace Ghurund::UI {
     void TextTabLayout::init() {
         stack = ghnew StackLayout();
-        textView->Font = theme.getButtonFont();
+        textView->TextStyle = theme.TextStyles[Theme::TEXTSTYLE_BUTTON];
         paddingContainer->Child = textView;
         paddingContainer->Padding.All = 4;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;

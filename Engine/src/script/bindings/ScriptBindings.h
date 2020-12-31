@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/string/ASCIIString.h"
+#include "core/string/AString.h"
 
 #include "angelscript.h"
 
@@ -27,7 +27,7 @@ namespace Ghurund {
             return new Type();
         }
 
-        typedef ASCIIString A;
+        typedef AString A;
 
         static void registerValueClass(asIScriptEngine& engine, const char* name) {
             auto r = engine.RegisterObjectType(name, sizeof(Type), asOBJ_VALUE | asGetTypeTraits<Type>()); assert(r >= 0);

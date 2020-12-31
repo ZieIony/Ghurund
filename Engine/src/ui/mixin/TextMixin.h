@@ -8,15 +8,15 @@ namespace Ghurund::UI {
         TextBlock* textView = nullptr;
 
     public:
-        const UnicodeString& getText() const {
+        const WString& getText() const {
             return textView->Text;
         }
 
-        void setText(const UnicodeString& text) {
+        void setText(const WString& text) {
             this->textView->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) const UnicodeString& Text;
+        __declspec(property(get = getText, put = setText)) const WString& Text;
 
         inline unsigned int getTextColor() const {
             return textView->TextColor;
@@ -28,15 +28,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
 
-        inline Font* getFont() {
-            return textView->Font;
+        inline TextStyle* getFont() {
+            return textView->TextStyle;
         }
 
-        inline void setFont(Font* font) {
-            textView->Font = font;
+        inline void setFont(TextStyle* font) {
+            textView->TextStyle = font;
         }
 
-        __declspec(property(get = getFont, put = setFont)) Font* Font;
+        __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;
     };
 
     class TextLayoutMixin {

@@ -55,14 +55,14 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getData)) ID2D1SvgDocument* Data;
 
-        inline IntSize getSize() {
+        inline FloatSize getSize() {
             if (!svgDocument)
                 return { 0,0 };
             auto size = svgDocument->GetViewportSize();
-            return { (uint32_t)size.width, (uint32_t)size.height };
+            return { size.width, size.height };
         }
 
-        __declspec(property(get = getSize)) IntSize Size;
+        __declspec(property(get = getSize)) FloatSize Size;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

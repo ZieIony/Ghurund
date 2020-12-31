@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Window.h"
+#include "core/threading/FunctionQueue.h"
 
 namespace Ghurund {
     class ChildWindow:public Window {

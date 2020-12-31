@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Argument.h"
-
 #include "resource/Resource.h"
+
+#include "angelscript.h"
 
 namespace Ghurund {
     class ScriptEngine;
@@ -16,7 +16,7 @@ namespace Ghurund {
         asIScriptFunction* func = nullptr;
         char* source = nullptr;
         char* entryPoint = nullptr;
-        Array<Argument> arguments;
+        Array<void*> arguments;
         bool built = false;
 
         void finalize() {
@@ -47,7 +47,7 @@ namespace Ghurund {
         virtual Status saveInternal(ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
-        Script():arguments(Array<Argument>(0)) {
+        Script():arguments(Array<void*>(0)) {
             EntryPoint = "void main()";
         }
 
@@ -94,20 +94,20 @@ namespace Ghurund {
 
         __declspec(property(get = getEntryPoint, put = setEntryPoint)) const char* EntryPoint;
 
-        void setArguments(const Array<Argument>& arguments) {
+        void setArguments(const Array<void*>& arguments) {
             this->arguments = arguments;
         }
 
-        __declspec(property(put = setArguments)) const Array<Argument>& Arguments;
+        __declspec(property(put = setArguments)) const Array<void*>& Arguments;
 
         Status execute() {
             ctx->Prepare(func);
             for (size_t i = 0; i < arguments.Size; i++)
-                arguments[i].set((asUINT)i, *ctx);
+                ctx->SetArgAddress((asUINT)i, arguments[i]);
             int r = ctx->Execute();
             if (r != asEXECUTION_FINISHED) {
                 if (r == asEXECUTION_EXCEPTION) {
-                    Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), ctx->GetExceptionString());
+                    Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), String(ctx->GetExceptionString()));
                     return Status::SCRIPT_EXCEPTION;
                 }
             }

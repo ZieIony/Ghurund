@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/font/Font.h"
+#include "ui/font/TextStyle.h"
 #include "ui/Style.h"
 #include "ui/Graphics2D.h"
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     private:
-        Font* font = nullptr;
+        TextStyle* font = nullptr;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
         static const Ghurund::Type& GET_TYPE() {
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         }
 
     protected:
-        UnicodeString text;
+        WString text;
         uint32_t textColor = 0xdd000000;
         Paint paint;
         IDWriteTextLayout* textLayout = nullptr;
@@ -34,9 +34,9 @@ namespace Ghurund::UI {
 
         void makeLayout(float width, float height) {
             Context->Graphics.DWriteFactory->CreateTextLayout(
-                text.getData(),
+                text.Data,
                 (UINT32)text.Size,
-                Font->TextFormat,
+                TextStyle->TextFormat,
                 width,
                 height,
                 &textLayout
@@ -52,7 +52,7 @@ namespace Ghurund::UI {
             text = "text";
         }
 
-        TextBlock(const UnicodeString& text, Font* font, uint32_t color = 0xde000000) {
+        TextBlock(const WString& text, TextStyle* font, uint32_t color = 0xde000000) {
             font->addReference();
             this->text = text;
             this->font = font;
@@ -63,15 +63,15 @@ namespace Ghurund::UI {
             style->apply(*this);
         }
 
-        UnicodeString& getText() {
+        WString& getText() {
             return text;
         }
 
-        void setText(const UnicodeString& text) {
+        void setText(const WString& text) {
             this->text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
+        __declspec(property(get = getText, put = setText)) WString& Text;
 
         inline unsigned int getTextColor() const {
             return textColor;
@@ -83,15 +83,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
 
-        inline Font* getFont() {
+        inline TextStyle* getFont() {
             return font;
         }
 
-        inline void setFont(Font* font) {
+        inline void setFont(TextStyle* font) {
             setPointer(this->font, font);
         }
 
-        __declspec(property(get = getFont, put = setFont)) Font* Font;
+        __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;
 
         void dispatchContextChanged();
 
@@ -102,6 +102,8 @@ namespace Ghurund::UI {
             }
             __super::invalidate();
         }
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

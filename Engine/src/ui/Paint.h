@@ -23,7 +23,7 @@ namespace Ghurund::UI {
             return thickness;
         }
 
-        inline void setThickness(float radius) {
+        inline void setThickness(float thickness) {
             this->thickness = thickness;
         }
 

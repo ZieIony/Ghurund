@@ -5,25 +5,25 @@
 
 namespace Ghurund {
 
-    class ASCIIString: public GenericString<char> {
+    class AString: public GenericString<char> {
     public:
         using GenericString<char>::GenericString;
 
-        ASCIIString() {}
+        AString() {}
 
-        ASCIIString(const ASCIIString& string):GenericString<char>(string) {}
+        AString(const AString& string):GenericString<char>(string) {}
 
-        ASCIIString(ASCIIString&& string):GenericString<char>(std::move(string)) {}
+        AString(AString&& string) noexcept:GenericString<char>(std::move(string)) {}
 
-        ASCIIString(const wchar_t* str) {
+        AString(const wchar_t* str) {
             add(str);
         }
 
-        ASCIIString(const wchar_t* str, size_t length) {
+        AString(const wchar_t* str, size_t length) {
             add(str, length);
         }
 
-        ASCIIString(const GenericString<wchar_t>& string) {
+        AString(const GenericString<wchar_t>& string) {
             add(string.getData());
         }
 
@@ -60,7 +60,7 @@ namespace Ghurund {
 
         using GenericString<char>::operator=;
 
-        ASCIIString& operator=(const ASCIIString& string) {
+        AString& operator=(const AString& string) {
             size = string.size;
             initial = string.initial;
             capacity = string.capacity;
@@ -73,35 +73,35 @@ namespace Ghurund {
             return *this;
         }
 
-        ASCIIString subString(size_t start)const {
-            return ASCIIString(v + start);
+        inline AString substring(size_t start) const {
+            return AString(v + start);
         }
 
-        ASCIIString subString(size_t start, size_t length)const {
-            return ASCIIString(v + start, length);
+        inline AString substring(size_t start, size_t length) const {
+            return AString(v + start, length);
         }
 
-        Array<ASCIIString> split(const char* d)const;
+        Array<AString> split(const char* d) const;
 
-        ASCIIString toLowerCase() {
-            ASCIIString copy(*this);
+        inline AString toLowerCase() const {
+            AString copy(*this);
             for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (char)tolower(copy.v[i]);
             return copy;
         }
 
-        ASCIIString toUpperCase() {
-            ASCIIString copy(*this);
+        inline AString toUpperCase() const {
+            AString copy(*this);
             for (size_t i = 0; i < Length; i++)
                 copy.v[i] = (char)toupper(copy.v[i]);
             return copy;
         }
 
-        ASCIIString trim() {
+        inline AString trim() const {
             size_t i, j, l = Length;
             for (i = 0; i < l && isspace(v[i]); i++);
-            for (j = l - 1; j > i && isspace(v[j]); j--);
-            return ASCIIString(v + i, j - i + 1);
+            for (j = l; j > i && isspace(v[j]); j--);
+            return AString(v + i, j - i);
         }
     };
 

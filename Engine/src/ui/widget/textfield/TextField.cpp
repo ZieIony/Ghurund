@@ -6,8 +6,8 @@ namespace Ghurund::UI {
     void TextField::onReturn() {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
-        UnicodeString textToInsert("\r\n");
-        layoutEditor.insertTextAt(textLayout, text, absolutePosition, textToInsert, Font);
+        WString textToInsert("\r\n");
+        layoutEditor.insertTextAt(textLayout, text, absolutePosition, textToInsert, TextStyle);
         setSelection(SetSelectionMode::AbsoluteLeading, absolutePosition + textToInsert.Size, false, false);
         repaint();
     }
@@ -60,6 +60,7 @@ namespace Ghurund::UI {
     void TextField::onKeyPress(UINT32 keyCode) {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
 
+        Input& input = Context->Window.Input;
         if (keyCode == VK_RETURN) {
             onReturn();
         } else if (keyCode == VK_BACK) {
@@ -67,29 +68,29 @@ namespace Ghurund::UI {
         } else if (keyCode == VK_DELETE) {
             onDelete();
         } else if (keyCode == VK_LEFT) {
-            setSelection(Input::isControlDown() ? SetSelectionMode::LeftWord : SetSelectionMode::Left, 1, Input::isShiftDown());
+            setSelection(input.isControlDown() ? SetSelectionMode::LeftWord : SetSelectionMode::Left, 1, input.isShiftDown());
         } else if (keyCode == VK_RIGHT) {
-            setSelection(Input::isControlDown() ? SetSelectionMode::RightWord : SetSelectionMode::Right, 1, Input::isShiftDown());
+            setSelection(input.isControlDown() ? SetSelectionMode::RightWord : SetSelectionMode::Right, 1, input.isShiftDown());
         } else if (keyCode == VK_UP) {
-            setSelection(SetSelectionMode::Up, 1, Input::isShiftDown());
+            setSelection(SetSelectionMode::Up, 1, input.isShiftDown());
         } else if (keyCode == VK_DOWN) {
-            setSelection(SetSelectionMode::Down, 1, Input::isShiftDown());
+            setSelection(SetSelectionMode::Down, 1, input.isShiftDown());
         } else if (keyCode == VK_HOME) {
-            setSelection(Input::isControlDown() ? SetSelectionMode::First : SetSelectionMode::Home, 0, Input::isShiftDown());
+            setSelection(input.isControlDown() ? SetSelectionMode::First : SetSelectionMode::Home, 0, input.isShiftDown());
         } else if (keyCode == VK_END) {
-            setSelection(Input::isControlDown() ? SetSelectionMode::Last : SetSelectionMode::End, 0, Input::isShiftDown());
+            setSelection(input.isControlDown() ? SetSelectionMode::Last : SetSelectionMode::End, 0, input.isShiftDown());
         } else if (keyCode == VK_INSERT) {
-            if (Input::isControlDown()) {
+            if (input.isControlDown()) {
                 copyToClipboard();
-            } else if (Input::isShiftDown()) {
+            } else if (input.isShiftDown()) {
                 pasteFromClipboard();
             }
-        } else if (keyCode == 'V' && Input::isControlDown()) {
+        } else if (keyCode == 'V' && input.isControlDown()) {
             pasteFromClipboard();
-        } else if (keyCode == 'X' && Input::isControlDown()) {
+        } else if (keyCode == 'X' && input.isControlDown()) {
             copyToClipboard();
             deleteSelection();
-        } else if (keyCode == 'A' && Input::isControlDown()) {
+        } else if (keyCode == 'A' && input.isControlDown()) {
             setSelection(SetSelectionMode::All, 0, true);
         }
     }
@@ -102,7 +103,7 @@ namespace Ghurund::UI {
             // yielding 1-2 code-units. Then advance the caret position by how
             // many code-units were inserted.
 
-            UnicodeString textToInsert;
+            WString textToInsert;
             textToInsert.add((wchar_t)charCode);
 
             // If above the basic multi-lingual plane, split into
@@ -112,7 +113,7 @@ namespace Ghurund::UI {
                 textToInsert.set(0, wchar_t(0xD800 + (charCode >> 10) - (0x10000 >> 10)));
                 textToInsert.add(wchar_t(0xDC00 + (charCode & 0x3FF)));
             }
-            layoutEditor.insertTextAt(textLayout, text, caretPosition + caretPositionOffset, textToInsert, Font);
+            layoutEditor.insertTextAt(textLayout, text, caretPosition + caretPositionOffset, textToInsert, TextStyle);
             setSelection(SetSelectionMode::Right, textToInsert.Size, false, false);
 
             repaint();
@@ -136,7 +137,7 @@ namespace Ghurund::UI {
 
         deleteSelection();
 
-        UnicodeString* data = Clipboard::getUnicodeText(Context->Window.Handle);
+        WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
         if (data) {
             layoutEditor.insertTextAt(textLayout, Text, caretPosition + caretPositionOffset, *data);
             setSelection(SetSelectionMode::RightChar, data->Length, true);

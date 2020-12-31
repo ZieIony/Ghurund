@@ -3,9 +3,9 @@
 namespace Ghurund::UI {
 
     const Ghurund::Type& Control::GET_TYPE() {
-        static auto PROPERTY_NAME = TypedProperty<Control, const ASCIIString*>(GH_STRINGIFY(ASCIIString*), GH_STRINGIFY(Name), [](Control& control, const ASCIIString*& value) {
+        static auto PROPERTY_NAME = TypedProperty<Control, const AString*>(GH_STRINGIFY(AString*), GH_STRINGIFY(Name), [](Control& control, const AString*& value) {
             value = control.Name;
-        }, [](Control& control, const ASCIIString* const& value) {
+        }, [](Control& control, const AString* const& value) {
             control.Name = value;
         });
 
@@ -215,9 +215,9 @@ namespace Ghurund::UI {
             transformationInvalid = true;
 #ifdef _DEBUG
             if (width < minSize.width || height < minSize.height)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : A("[unnamed]"));
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : String("[unnamed]"));
             if (width == 0 || height == 0)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : A("[unnamed]"));
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : String("[unnamed]"));
             size.width = std::max(width, minSize.width);
             size.height = std::max(height, minSize.height);
 #else
@@ -233,7 +233,7 @@ namespace Ghurund::UI {
     void Control::draw(Canvas& canvas) {
 #ifdef _DEBUG
         if (!Theme) {
-            Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : A("[unnamed]"));
+            Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : String("[unnamed]"));
             return;
         }
 #endif
@@ -263,7 +263,37 @@ namespace Ghurund::UI {
             return pos;
         Ghurund::Window& window = context->Window;
         POINT p = { (LONG)pos.x, (LONG)pos.y };
-        //ClientToScreen(Window->Handle, &p);
+        ClientToScreen(window.Handle, &p);
         return XMFLOAT2((float)p.x, (float)p.y);
+    }
+
+    Status Control::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+        auto nameAttr = xml.FindAttribute("name");
+        if (nameAttr)
+            Name = nameAttr->Value();
+        auto preferredSizeAttr = xml.FindAttribute("preferredSize");
+        if (preferredSizeAttr) {
+            AString size = preferredSizeAttr->Value();
+            size_t comma = size.find(",");
+            if (comma != size.Size) {
+                AString width = size.substring(0, comma);
+                if (width == "wrap") {
+                    PreferredSize.width = PreferredSize::Width::WRAP;
+                } else if (width == "fill") {
+                    PreferredSize.width = PreferredSize::Width::FILL;
+                } else {
+                    PreferredSize.width = (float)atof(width.getData());
+                }
+                AString height = size.substring(comma + 1).trim();
+                if (height == "wrap") {
+                    PreferredSize.height = PreferredSize::Height::WRAP;
+                } else if (height == "fill") {
+                    PreferredSize.height = PreferredSize::Height::FILL;
+                } else {
+                    PreferredSize.height = (float)atof(height.getData());
+                }
+            }
+        }
+        return Status::OK;
     }
 }

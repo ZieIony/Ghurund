@@ -5,7 +5,6 @@
 #include "core/Buffer.h"
 #include "core/collection/Map.h"
 #include "core/io/FilePath.h"
-#include "core/threading/FunctionQueue.h"
 #include "core/threading/WorkerThread.h"
 #include "core/string/String.h"
 
@@ -17,9 +16,7 @@ namespace Ghurund {
         DirectoryPath directory;
         Buffer buffer;
 
-        WorkerThread delayThread;
-
-        Map<UnicodeString, std::function<void(const FilePath &path, const FileChange&)>> files;
+        Map<WString, std::function<void(const FilePath &path, const FileChange&)>> files;
 
         void fileChanged(Buffer &buffer);
 
@@ -32,8 +29,6 @@ namespace Ghurund {
             String dirString = directory.get();
             dirHandle = ::CreateFile(dirString, FILE_LIST_DIRECTORY, FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE, NULL,
                                      OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OVERLAPPED, NULL);
-
-            delayThread.start();
         }
 
         ~DirectoryWatch();

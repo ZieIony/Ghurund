@@ -11,7 +11,7 @@ namespace Ghurund {
 
     public:
         static Script* makeEmpty(Entity* entity) {
-            typedef ASCIIString A;
+            typedef AString A;
 
             Script* script = ghnew Script();
             script->SourceCode = A("void main(") + entity->Type.Name + " &in " + A(entity->Type.Name).toLowerCase() + "){\n\n}";
@@ -21,7 +21,7 @@ namespace Ghurund {
         }
 
         static Script* make(Entity* entity, const char* sourceCode) {
-            typedef ASCIIString A;
+            typedef AString A;
 
             Script* script = ghnew Script();
             script->SourceCode = sourceCode;

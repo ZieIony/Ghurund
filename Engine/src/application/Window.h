@@ -1,16 +1,13 @@
 #pragma once
 
 #include "application/Settings.h"
-#include "core/Event.h"
 #include "core/NamedObject.h"
 #include "core/Object.h"
 #include "core/collection/Array.h"
-#include "core/threading/FunctionQueue.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
-#include "input/Keyboard.h"
-#include "input/Mouse.h"
+#include "input/EventConsumer.h"
 #include "ui/Size.h"
 
 #pragma warning(push, 0)
@@ -22,33 +19,20 @@ namespace Ghurund {
         unsigned int width, height;
     };
 
-    class Application;
+    class Input;
 
-    class Window: public ParameterProvider, public NamedObject<String>, public Object {
+    class Window: public ParameterProvider, public NamedObject<String>, public Object, public EventConsumer {
     private:
         String title;
-        bool visible;
-        POINT position;
-        UI::IntSize size;
+        bool visible = false;
+        POINT position = {};
+        UI::IntSize size = {};
 
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
-        Event<Window> onCreated = Event<Window>(*this);
-        Event<Window> onPositionChanged = Event<Window>(*this);
-        Event<Window> onSizeChanged = Event<Window>(*this);
-        Event<Window> onFocusedChanged = Event<Window>(*this);
-        Event<Window, const Timer&> onUpdate = Event<Window, const Timer&>(*this);
-        Event<Window> onPaint = Event<Window>(*this);
-        Event<Window> onDestroy = Event<Window>(*this);
-
-        Event<Window, KeyEventArgs> onKeyEvent = Event<Window, KeyEventArgs>(*this);
-        Event<Window, MouseButtonEventArgs> onMouseButtonEvent = Event<Window, MouseButtonEventArgs>(*this);
         POINT prevMousePos = { -1, -1 };
-        Event<Window, MouseMotionEventArgs> onMouseMotionEvent = Event<Window, MouseMotionEventArgs>(*this);
-        Event<Window, MouseWheelEventArgs> onMouseWheelEvent = Event<Window, MouseWheelEventArgs>(*this);
 
-        Application* application;
         Window* parent;
 
         static const Ghurund::Type& GET_TYPE() {
@@ -57,6 +41,30 @@ namespace Ghurund {
                 .withSupertype(__super::TYPE);
 
             return TYPE;
+        }
+
+    protected:
+        Event<Window> onPositionChanged = *this;
+        virtual bool onPositionChangedEvent() {
+            return false;
+        }
+
+        Event<Window> onSizeChanged = *this;
+        virtual bool onSizeChangedEvent() {
+            return false;
+        }
+
+        Event<Window> onFocusedChanged = *this;
+        virtual bool onFocusedChangedEvent() {
+            return false;
+        }
+
+        virtual void onUpdate(const uint64_t time) {}
+        virtual void onPaint() {}
+
+        Event<Window> onClosed = *this;
+        virtual bool onClosedEvent() {
+            return false;
         }
 
     public:
@@ -93,10 +101,22 @@ namespace Ghurund {
         __declspec(property(put = setTitle, get = getTitle)) String& Title;
 
         virtual HWND getHandle() const {
-            return parent ? parent->Handle : nullptr;
+            return parent->Handle;
         }
 
         __declspec(property(get = getHandle)) HWND Handle;
+
+        virtual Input& getInput() {
+            return parent->Input;
+        }
+
+        __declspec(property(get = getInput)) Input& Input;
+
+        virtual Timer& getTimer() const {
+            return parent->Timer;
+        }
+
+        __declspec(property(get = getTimer)) Timer& Timer;
 
         virtual void setVisible(bool visible) {
             this->visible = visible;
@@ -107,30 +127,6 @@ namespace Ghurund {
         }
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
-
-        Event<Window>& getOnCreated() {
-            return onCreated;
-        }
-
-        __declspec(property(get = getOnCreated)) Event<Window>& OnCreated;
-
-        Event<Window>& getOnDestroy() {
-            return onDestroy;
-        }
-
-        __declspec(property(get = getOnDestroy)) Event<Window>& OnDestroy;
-
-        Event<Window, const Timer&>& getOnUpdate() {
-            return onUpdate;
-        }
-
-        __declspec(property(get = getOnUpdate)) Event<Window, const Timer&>& OnUpdate;
-
-        Event<Window>& getOnPaint() {
-            return onPaint;
-        }
-
-        __declspec(property(get = getOnPaint)) Event<Window>& OnPaint;
 
         inline const POINT& getPosition() const {
             return position;
@@ -160,73 +156,69 @@ namespace Ghurund {
 
         __declspec(property(get = getSize, put = setSize)) UI::IntSize& Size;
 
-        Event<Window>& getOnPositionChanged() {
-            return onPositionChanged;
-        }
-
-        __declspec(property(get = getOnPositionChanged)) Event<Window>& OnPositionChanged;
-
-        Event<Window>& getOnSizeChanged() {
-            return onSizeChanged;
-        }
-
-        __declspec(property(get = getOnSizeChanged)) Event<Window>& OnSizeChanged;
-
         virtual bool isFocused() const {
             return false;
         }
 
         __declspec(property(get = isFocused)) bool Focused;
 
-        Event<Window>& getOnFocusedChanged() {
-            return onFocusedChanged;
-        }
-
-        __declspec(property(get = getOnFocusedChanged)) Event<Window>& OnFocusedChanged;
-
-        Event<Window, KeyEventArgs>& getOnKeyEvent() {
-            return onKeyEvent;
-        }
-
-        __declspec(property(get = getOnKeyEvent)) Event<Window, KeyEventArgs>& OnKeyEvent;
-
-        Event<Window, MouseButtonEventArgs>& getOnMouseButtonEvent() {
-            return onMouseButtonEvent;
-        }
-
-        __declspec(property(get = getOnMouseButtonEvent)) Event<Window, MouseButtonEventArgs>& OnMouseButtonEvent;
-
-        Event<Window, MouseMotionEventArgs>& getOnMouseMotionEvent() {
-            return onMouseMotionEvent;
-        }
-
-        __declspec(property(get = getOnMouseMotionEvent)) Event<Window, MouseMotionEventArgs>& OnMouseMotionEvent;
-
-        Event<Window, MouseWheelEventArgs>& getOnMouseWheelEvent() {
-            return onMouseWheelEvent;
-        }
-
-        __declspec(property(get = getOnMouseWheelEvent)) Event<Window, MouseWheelEventArgs>& OnMouseWheelEvent;
-
         virtual void refresh() const {}
 
         virtual void activate() const {}
-
-        inline Application* getApplication() {
-            return application;
-        }
-
-        inline void setApplication(Application* application) {
-            this->application = application;
-        }
-
-        __declspec(property(get = getApplication, put = setApplication)) Application* Application;
 
         inline Window* getParent() {
             return parent;
         }
 
         __declspec(property(get = getParent)) Window* Parent;
+
+        inline Event<Window>& getOnPositionChanged() {
+            return onPositionChanged;
+        }
+
+        __declspec(property(get = getOnPositionChanged)) Event<Window>& OnPositionChanged;
+
+        inline bool dispatchPositionChangedEvent() {
+            bool result = onPositionChangedEvent();
+            bool result2 = onPositionChanged();
+            return result || result2;
+        }
+
+        inline Event<Window>& getOnSizeChanged() {
+            return onSizeChanged;
+        }
+
+        __declspec(property(get = getOnSizeChanged)) Event<Window>& onSizeChanged;
+
+        inline bool dispatchSizeChangedEvent() {
+            bool result = onSizeChangedEvent();
+            bool result2 = onSizeChanged();
+            return result || result2;
+        }
+
+        inline Event<Window>& getOnFocusedChanged() {
+            return onFocusedChanged;
+        }
+
+        __declspec(property(get = getOnFocusedChanged)) Event<Window>& OnFocusedChanged;
+
+        inline bool dispatchFocusedChangedEvent() {
+            bool result = onFocusedChangedEvent();
+            bool result2 = onFocusedChanged();
+            return result || result2;
+        }
+
+        inline Event<Window>& getOnClosed() {
+            return onClosed;
+        }
+
+        __declspec(property(get = getOnClosed)) Event<Window>& OnClosed;
+
+        inline bool dispatchClosedEvent() {
+            bool result = onClosedEvent();
+            bool result2 = onClosed();
+            return result || result2;
+        }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

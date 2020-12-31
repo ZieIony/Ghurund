@@ -40,6 +40,8 @@ namespace Ghurund::UI {
             canvas.fillRect(0, 0, Size.width, Size.height, paint);
         }
 
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
         
         virtual const Ghurund::Type& getType() const override {

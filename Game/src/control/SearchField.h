@@ -14,7 +14,7 @@ namespace Ghurund::Editor {
     public:
         SearchField(ResourceContext& context, Ghurund::UI::Theme& theme) {
             PreferredSize.height = PreferredSize::Height::WRAP;
-            hint = ghnew TextBlock("Search", theme.getSecondaryTextFont());
+            hint = ghnew TextBlock("Search", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
             hint->PreferredSize.width = PreferredSize::Width::FILL;
             textField = ghnew TextField();
             textField->PreferredSize.width = PreferredSize::Width::FILL;

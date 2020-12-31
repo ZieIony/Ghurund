@@ -4,6 +4,7 @@
 #include "core/SharedPointer.h"
 #include "ui/Alignment.h"
 #include "ui/drawable/Drawable.h"
+#include <ui/drawable/BitmapImageDrawable.h>
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {
@@ -73,6 +74,8 @@ namespace Ghurund::UI {
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
         virtual void onDraw(Canvas& canvas) override;
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

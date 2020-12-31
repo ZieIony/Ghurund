@@ -38,14 +38,14 @@ namespace Ghurund::Editor {
             Children = { backgroundView, row };
         }
 
-        inline UnicodeString& getText() {
+        inline WString& getText() {
             return title->Text;
         }
 
-        inline void setText(const UnicodeString& text) {
+        inline void setText(const WString& text) {
             title->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) UnicodeString& Text;
+        __declspec(property(get = getText, put = setText)) WString& Text;
     };
 }

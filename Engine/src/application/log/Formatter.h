@@ -3,13 +3,14 @@
 #include "core/io/DirectoryPath.h"
 #include "core/io/FilePath.h"
 #include "core/string/String.h"
+#include "core/string/StringView.h"
 
 #include <fmt/format.h>
 
 template <>
-struct fmt::formatter<Ghurund::ASCIIString> {
+struct fmt::formatter<Ghurund::AString> {
     template <typename FormatContext>
-    auto format(const Ghurund::ASCIIString& s, FormatContext& ctx) {
+    auto format(const Ghurund::AString& s, FormatContext& ctx) {
         return format_to(
             ctx.out(),
             "{s}",
@@ -25,9 +26,45 @@ struct fmt::formatter<Ghurund::ASCIIString> {
 };
 
 template <>
-struct fmt::formatter<Ghurund::UnicodeString> {
+struct fmt::formatter<Ghurund::WString> {
     template <typename FormatContext>
-    auto format(const Ghurund::UnicodeString& s, FormatContext& ctx) {
+    auto format(const Ghurund::WString& s, FormatContext& ctx) {
+        return format_to(
+            ctx.out(),
+            "{s}",
+            Ghurund::String(s).getData());
+    }
+
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin(), end = ctx.end();
+        if (it != end && *it != '}')
+            throw format_error("invalid format");
+        return it;
+    }
+};
+
+template <>
+struct fmt::formatter<Ghurund::AStringView> {
+    template <typename FormatContext>
+    auto format(const Ghurund::AStringView& s, FormatContext& ctx) {
+        return format_to(
+            ctx.out(),
+            "{s}",
+            Ghurund::String(s).getData());
+    }
+
+    constexpr auto parse(format_parse_context& ctx) {
+        auto it = ctx.begin(), end = ctx.end();
+        if (it != end && *it != '}')
+            throw format_error("invalid format");
+        return it;
+    }
+};
+
+template <>
+struct fmt::formatter<Ghurund::WStringView> {
+    template <typename FormatContext>
+    auto format(const Ghurund::WStringView& s, FormatContext& ctx) {
         return format_to(
             ctx.out(),
             "{s}",

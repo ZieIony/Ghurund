@@ -12,7 +12,7 @@ namespace Ghurund::UI {
         SvgImageDrawable(SvgImage* image) {
             this->image = image;
             image->addReference();
-            preferredSize = { (float)image->Size.width, (float)image->Size.height };
+            preferredSize = { image->Size.width, image->Size.height };
         }
 
         virtual void onDraw(Canvas& canvas) override {

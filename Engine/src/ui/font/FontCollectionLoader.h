@@ -10,38 +10,19 @@
 namespace Ghurund::UI {
     class FontCollectionLoader: public IDWriteFontCollectionLoader {
     private:
-        ULONG refCount = 0;
-        List<UnicodeString> files;
+        ULONG refCount = 1;
+        List<WString> files;
         IDWriteFactory* dwriteFactory;
 
     public:
         FontCollectionLoader(IDWriteFactory* factory): dwriteFactory(factory) {}
 
-        Status createFontCollection(const UnicodeString& fontFilePath, OUT IDWriteFontCollection** result) {
-            *result = NULL;
+        Status createFontCollection(const WString& fontFilePath, OUT IDWriteFontCollection** result);
 
-            HRESULT hr = S_OK;
-
-            UnicodeString absolutePath = FilePath(fontFilePath).AbsolutePath;
-            size_t collectionKey = files.indexOf(absolutePath);
-            if (collectionKey == files.Size) {
-                files.add(absolutePath);
-                collectionKey = files.Size - 1;
-            }
-            UINT32 keySize = sizeof(collectionKey);
-
-            if (FAILED(dwriteFactory->CreateCustomFontCollection(this, &collectionKey, keySize, result)))
-                return Status::CALL_FAIL;
-
-            return Status::OK;
-        }
-
-        // IUnknown methods
         virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void** ppvObject);
         virtual ULONG STDMETHODCALLTYPE AddRef();
         virtual ULONG STDMETHODCALLTYPE Release();
 
-        // IDWriteFontCollectionLoader methods
         virtual HRESULT STDMETHODCALLTYPE CreateEnumeratorFromKey(
             IDWriteFactory* factory,
             void const* collectionKey,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-	<Type Name="Ghurund::ASCIIString">
+	<Type Name="Ghurund::AString">
 		<DisplayString>{v,s}</DisplayString>
 	</Type>
-	<Type Name="Ghurund::UnicodeString">
+	<Type Name="Ghurund::WString">
 		<DisplayString>L{v,su}</DisplayString>
 	</Type>
 	<Type Name="Ghurund::List&lt;*&gt;">

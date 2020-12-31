@@ -21,6 +21,13 @@ namespace Ghurund::UI {
             control->Parent = &owner;
         }
 
+        inline void addAll(const PointerList<Control*>& controls) {
+            for (Control* control : controls) {
+                children.add(control);
+                control->Parent = &owner;
+            }
+        }
+
         inline void addAll(const std::initializer_list<Control*>& controls) {
             for (Control* control : controls) {
                 children.add(control);

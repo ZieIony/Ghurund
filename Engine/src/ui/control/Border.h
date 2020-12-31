@@ -6,7 +6,6 @@
 namespace Ghurund::UI {
     class Border: public Control {
     private:
-        unsigned int color = 0x1f000000;
         Paint paint;
         Ghurund::UI::Shape* shape = nullptr;
 
@@ -61,15 +60,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;
 
-        virtual void onDraw(Canvas& canvas) override {
-            if (!Color || Thickness < 0.1f)
-                return;
-            if (shape) {
-                canvas.drawShape(*shape, paint);
-            } else {
-                canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.width - Thickness, Size.height - Thickness, paint);
-            }
+        virtual void onLayout(float x, float y, float width, float height) override {
+            __super::onLayout(x, y, width, height);
+            if (shape)
+                shape->Bounds = D2D1::RectF(Thickness / 2, Thickness / 2, width - Thickness / 2, height - Thickness / 2);
         }
+
+        virtual void onDraw(Canvas& canvas) override;
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

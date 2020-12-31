@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-#include "core/string/UnicodeString.h"
+#include "core/string/WString.h"
 
 namespace Ghurund {
     class Clipboard {
@@ -9,7 +9,7 @@ namespace Ghurund {
         Clipboard() = delete;
 
     public:
-        static void putUnicodeText(HWND handle, const UnicodeString& data) {
+        static void putUnicodeText(HWND handle, const WString& data) {
             if (!OpenClipboard(handle))
                 return;
 
@@ -32,21 +32,21 @@ namespace Ghurund {
             CloseClipboard();
         }
 
-        static UnicodeString* getUnicodeText(HWND handle) {
+        static WString* getUnicodeText(HWND handle) {
             UINT32 characterCount = 0;
 
             if (!OpenClipboard(handle))
                 return nullptr;
 
             HGLOBAL clipboardData = GetClipboardData(CF_UNICODETEXT);
-            UnicodeString* data = nullptr;
+            WString* data = nullptr;
 
             if (clipboardData) {
                 size_t byteSize = GlobalSize(clipboardData);
                 const wchar_t* text = (wchar_t*)GlobalLock(clipboardData);
 
                 if (text) {
-                    data = ghnew UnicodeString(text);
+                    data = ghnew WString(text);
                     GlobalUnlock(clipboardData);
                 }
             }

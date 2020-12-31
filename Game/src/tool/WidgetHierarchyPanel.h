@@ -22,7 +22,7 @@ namespace Ghurund::Editor {
 
     public:
         WidgetHierarchyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            objectTypeText = ghnew TextBlock("", theme.getSecondaryTextFont());
+            objectTypeText = ghnew TextBlock("", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");

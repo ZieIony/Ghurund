@@ -2,7 +2,7 @@
 
 #include "PopupMenuAdapter.h"
 
-#include "application/Window.h"
+#include "application/SystemWindow.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
     public:
         PopupMenu(Ghurund::UI::Theme& theme, Ghurund::Window& parent) {
-            window = ghnew Ghurund::PopupWindow();
+            window = ghnew Ghurund::PopupWindow(parent.Timer);
             window->RootView->Child = this;
 
             recyclerView = ghnew RecyclerView<MenuItem*>();
@@ -41,7 +41,7 @@ namespace Ghurund::UI {
         inline void setVisible(bool visible) {
             measure(100,100);   // TODO: pass parent window size or something
             window->setSize((unsigned int)MeasuredSize.width, (unsigned int)MeasuredSize.height);
-            window->OnSizeChanged();
+            window->dispatchSizeChangedEvent();
             window->Visible = visible;
         }
 

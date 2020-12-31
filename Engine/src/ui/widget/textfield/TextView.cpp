@@ -89,7 +89,7 @@ namespace Ghurund::UI {
             currentFont->release();
 
         if (textLayout) {
-            currentFont = ghnew Ghurund::UI::Font(textLayout, currentPos);
+            currentFont = ghnew Ghurund::UI::TextStyle(textLayout, currentPos);
 
             IUnknown* drawingEffect = nullptr;
             textLayout->GetDrawingEffect(currentPos, &drawingEffect);
@@ -100,9 +100,9 @@ namespace Ghurund::UI {
             } else {
                 currentColor = 0;
             }
-        } else if (Font) {
-            Font->addReference();
-            currentFont = Font;
+        } else if (TextStyle) {
+            TextStyle->addReference();
+            currentFont = TextStyle;
         }
     }
 
@@ -368,7 +368,7 @@ namespace Ghurund::UI {
         if (selectionRange.length <= 0 || !Context)
             return;
 
-        Clipboard::putUnicodeText(Context->Window.Handle, Text.subString(selectionRange.startPosition, selectionRange.length));
+        Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.startPosition, selectionRange.length));
     }
 
     void TextView::dispatchContextChanged() {

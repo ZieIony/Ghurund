@@ -1,4 +1,6 @@
 #include "ControlGroup.h"
+#include "ui/LayoutLoader.h"
+#include "ui/Alignment.h"
 
 namespace Ghurund::UI {
     bool ControlGroup::focusNext() {
@@ -70,15 +72,11 @@ namespace Ghurund::UI {
     }
 
     void ControlGroup::onDraw(Canvas& canvas) {
-        canvas.save();
-        canvas.clipRect(0, 0, Size.width, Size.height);
         for (Control* c : children) {
             if (!c->Visible)
                 continue;
             c->draw(canvas);
         }
-        canvas.restoreClipRect();
-        canvas.restore();
     }
 
     bool ControlGroup::dispatchKeyEvent(const KeyEventArgs& event) {
@@ -145,5 +143,14 @@ namespace Ghurund::UI {
                 return result;
         }
         return nullptr;
+    }
+
+    Status ControlGroup::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, context, xml);
+        if (result != Status::OK)
+            return result;
+        Children.clear();
+        Children.addAll(loader.loadControls(context, xml));
+        return Status::OK;
     }
 }

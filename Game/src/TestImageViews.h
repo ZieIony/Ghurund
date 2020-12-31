@@ -45,7 +45,7 @@ public:
             };
             SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
             column->PreferredSize.height = PreferredSize::Height::WRAP;
-            SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/game.png");
+            SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/test/watermelon.jpg");
             for (unsigned int i = 0; i < 4; i++) {
                 StackLayoutPtr stack = ghnew StackLayout();
                 stack->PreferredSize = { 200, 120 };

@@ -12,6 +12,7 @@
 #include "ui/UIContext.h"
 
 #include "D2d1helper.h"
+#include <tinyxml2.h>
 
 namespace Ghurund::UI {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
@@ -19,6 +20,7 @@ namespace Ghurund::UI {
     class Control;
     class ControlParent;
     class Theme;
+    class LayoutLoader;
 
     typedef std::function<bool(Control&)> StateHandler;
 
@@ -32,7 +34,7 @@ namespace Ghurund::UI {
         bool enabled = true;
         bool focusable = false;
 
-        ASCIIString* name = nullptr;
+        AString* name = nullptr;
 
         bool transformationInvalid = true;
 
@@ -100,24 +102,24 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnContextChanged)) Event<Control>& OnContextChanged;
 
-        inline const ASCIIString* getName() const {
+        inline const AString* getName() const {
             return name;
         }
 
-        inline void setName(const ASCIIString* name) {
+        inline void setName(const AString* name) {
             if (this->name)
                 delete this->name;
             if (name)
-                this->name = ghnew ASCIIString(*name);
+                this->name = ghnew AString(*name);
         }
 
-        inline void setName(const ASCIIString& name) {
+        inline void setName(const AString& name) {
             if (this->name)
                 delete this->name;
-            this->name = ghnew ASCIIString(name);
+            this->name = ghnew AString(name);
         }
 
-        __declspec(property(get = getName, put = setName)) ASCIIString* Name;
+        __declspec(property(get = getName, put = setName)) AString* Name;
 
         inline bool isVisible() const {
             return visible;
@@ -349,7 +351,7 @@ namespace Ghurund::UI {
 
         void layout(float x, float y, float width, float height);
 
-        virtual void onUpdate(const Timer& timer) {}
+        virtual void onUpdate(const uint64_t time) {}
 
         void draw(Canvas& canvas);
 
@@ -366,6 +368,14 @@ namespace Ghurund::UI {
         XMFLOAT2 getPositionOnScreen();
 
         __declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
+
+        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml);
+
+#ifdef _DEBUG
+        virtual String logTree() {
+            return fmt::format(_T("{}: {}, ref: {}\n"), Type.Name, Name ? *Name : String(_T("[unnamed]")), ReferenceCount).c_str();
+        }
+#endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

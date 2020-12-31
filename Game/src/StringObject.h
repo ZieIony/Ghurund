@@ -78,15 +78,15 @@ public:
         colorView->release();
     }
 
-    Ghurund::UnicodeString& getText() {
+    Ghurund::WString& getText() {
         return tv->Text;
     }
 
-    void setText(const Ghurund::UnicodeString& text) {
+    void setText(const Ghurund::WString& text) {
         tv->Text = text;
     }
 
-    __declspec(property(get = getText, put = setText)) const UnicodeString& Text;
+    __declspec(property(get = getText, put = setText)) const WString& Text;
 };
 
 class StringObjectItemRow:public StackLayout {

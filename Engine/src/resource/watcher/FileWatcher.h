@@ -11,7 +11,7 @@ namespace Ghurund {
     class FileWatcher {
     private:
         APCThread thread;
-        Map<UnicodeString, DirectoryWatch*> watches;
+        Map<WString, DirectoryWatch*> watches;
 
         static void CALLBACK readChangesProc(__in  ULONG_PTR arg);
 

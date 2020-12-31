@@ -6,11 +6,11 @@ namespace Ghurund {
 
     class DirectoryPath:public Path {
     public:
-        DirectoryPath(const UnicodeString& path);
+        DirectoryPath(const WString& path);
 
         inline DirectoryPath getRelativePath(const DirectoryPath& dir) const {
             if (path.startsWith(dir))
-                return path.subString(dir.Length);
+                return path.substring(dir.Length);
             return path;
         }
 

@@ -1,4 +1,4 @@
-#include "Font.h"
+#include "TextStyle.h"
 #include "ui/Canvas.h"
 #include "application/log/Logger.h"
 #include "ui/Graphics2D.h"
@@ -6,18 +6,18 @@
 #include <commdlg.h>
 
 namespace Ghurund::UI {
-    Font::Font(const UnicodeString& file, const UnicodeString& family, float size, unsigned int weight, bool italic, const UnicodeString& locale)
+    TextStyle::TextStyle(const WString& file, const WString& family, float size, unsigned int weight, bool italic, const WString& locale)
         :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
 
-    Font::Font(IDWriteTextLayout* textLayout, UINT32 position) {
+    TextStyle::TextStyle(IDWriteTextLayout* textLayout, UINT32 position) {
         Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
-        textLayout->GetFontFamilyName(position, fontFamilyName.begin(), fontFamilyName.Size);
+        textLayout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
         familyName = fontFamilyName.begin();
 
         Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
         localeName.set(0, L'\0');
-        textLayout->GetLocaleName(position, localeName.begin(), localeName.Size);
+        textLayout->GetLocaleName(position, localeName.begin(), (UINT32)localeName.Size);
         locale = localeName.begin();
 
         DWRITE_FONT_WEIGHT fontWeight;
@@ -43,8 +43,7 @@ namespace Ghurund::UI {
         strikethrough = hasStrikethrough;
     }
 
-    Status Font::init(Graphics2D& graphics2d) {
-        this->graphics2d = &graphics2d;
+    Status TextStyle::init(Graphics2D& graphics2d) {
         IDWriteFontCollection* fontCollection;
         if (FAILED(graphics2d.FontLoader->createFontCollection(file, &fontCollection)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "createFontCollection failed\n");
@@ -58,6 +57,8 @@ namespace Ghurund::UI {
             locale.getData(),
             &textFormat)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateTextFormat failed\n");
+        // TODO: reuse fontCollection
+        fontCollection->Release();
 
         if (FAILED(textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "SetTextAlignment failed\n");

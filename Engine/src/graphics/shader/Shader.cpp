@@ -215,7 +215,7 @@ namespace Ghurund {
         parameters = nullptr;
 
         ShaderType types[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
-        ASCIIString output;
+        AString output;
         Status result = Status::OK;
         for (unsigned int i = 0; i < 6; i++) {
             ShaderProgram* program = ghnew ShaderProgram(types[i]);
@@ -399,7 +399,7 @@ namespace Ghurund {
     }
 
     Status Shader::loadHlsl(ResourceContext& context, MemoryInputStream& stream) {
-        ASCIIString sourceCode((const char*)stream.Data, stream.Size);
+        AString sourceCode((const char*)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
 
         supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;

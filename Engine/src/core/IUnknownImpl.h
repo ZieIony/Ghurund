@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ui/Graphics2D.h"
+#include <Unknwn.h>
 
-namespace Ghurund::UI {
+namespace Ghurund {
     template <typename InterfaceChain>
     class ComBase: public InterfaceChain {
     private:

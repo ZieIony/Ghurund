@@ -9,11 +9,12 @@ namespace Ghurund::Editor {
     class FpsText:public TextBlock {
     private:
         AverageValue<double> avgValue = AverageValue<double>(30, 20);
+        const Timer& timer;
 
     public:
-        FpsText(Ghurund::UI::Font* font, uint32_t color):TextBlock("", font, color) {}
+        FpsText(Ghurund::UI::TextStyle* font, uint32_t color, const Timer& timer):TextBlock("", font, color), timer(timer) {}
 
-        virtual void onUpdate(const Timer& timer) override {
+        virtual void onUpdate(const uint64_t time) override {
             avgValue.set(1.0f / timer.FrameTime);
             Text = fmt::format("fps: {:.2f}", avgValue.get()).c_str();
             invalidate();

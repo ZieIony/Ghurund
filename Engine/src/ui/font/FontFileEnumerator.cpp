@@ -1,7 +1,7 @@
 #include "FontFileEnumerator.h"
 
 namespace Ghurund::UI {
-    FontFileEnumerator::FontFileEnumerator(IDWriteFactory* factory, const UnicodeString& fontFilePath):fontFilePath(fontFilePath) {
+    FontFileEnumerator::FontFileEnumerator(IDWriteFactory* factory, const WString& fontFilePath):fontFilePath(fontFilePath) {
         if (factory) {
             factory->AddRef();
             dwriteFactory = factory;

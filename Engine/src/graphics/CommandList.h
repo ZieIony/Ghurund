@@ -69,7 +69,7 @@ namespace Ghurund {
 
         virtual void setName(const String& name) override {
             NamedObject::setName(name);
-            commandList->SetName((UnicodeString)name);
+            commandList->SetName((WString)name);
         }
 
         bool setPipelineState(ID3D12PipelineState* pipelineState);

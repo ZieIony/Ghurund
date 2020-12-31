@@ -18,7 +18,7 @@ namespace Ghurund::UI {
         RECORDING, IDLE
     };
 
-    class Graphics2D:public Pointer {
+    class Graphics2D {
     private:
         ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> m_d3d11DeviceContext;

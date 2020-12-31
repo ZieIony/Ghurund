@@ -1,5 +1,6 @@
 #include "TextBlock.h"
 #include "ui/Theme.h"
+#include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
@@ -32,18 +33,35 @@ namespace Ghurund::UI {
 
     void TextBlock::onDraw(Canvas& canvas) {
         paint.Color = TextColor;
-        canvas.drawText(textLayout, 0, 0, paint);
+        if (textLayout)
+            canvas.drawText(textLayout, 0, 0, paint);
     }
 
     void TextBlock::dispatchContextChanged() {
         __super::dispatchContextChanged();
         if (!Theme)
             return;
-        if (!Font)
-            Font = Theme->PrimaryTextFont;
+        if (!TextStyle)
+            TextStyle = Theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
         if (!TextColor)
             TextColor = Theme->ColorForegroundPrimaryOnBackground;
         if (!textLayout && Size.width > 0 && Size.height > 0)
             makeLayout(Size.width, Size.height);
+    }
+
+    Status TextBlock::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, context, xml);
+        if (result != Status::OK)
+            return result;
+        auto textAttr = xml.FindAttribute("text");
+        if (textAttr)
+            Text = textAttr->Value();
+        auto textColorAttr = xml.FindAttribute("textColor");
+        if (textColorAttr)
+            TextColor = loader.loadColor(textColorAttr->Value());
+        auto fontAttr = xml.FindAttribute("font");
+        if (fontAttr)
+            TextStyle = loader.loadFont(context, fontAttr->Value());
+        return Status::OK;
     }
 }

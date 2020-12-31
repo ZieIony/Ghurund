@@ -78,7 +78,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView->Font = theme->getButtonFont();
+        textView->TextStyle = theme->TextStyles[Theme::TEXTSTYLE_BUTTON];
         if (!control.Enabled) {
             imageView->Image->Tint = theme->getColorForegroundDisabledOnBackground();
             textView->TextColor = theme->getColorForegroundDisabledOnBackground();

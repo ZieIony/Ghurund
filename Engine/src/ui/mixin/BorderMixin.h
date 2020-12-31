@@ -2,12 +2,14 @@
 
 #include "ui/control/Border.h"
 #include "ui/control/Clip.h"
+#include "ui/control/Shadow.h"
 
 namespace Ghurund::UI {
     class BorderMixin {
     protected:
         Border* border = nullptr;
         Clip* clip = nullptr;
+        Shadow* shadow = nullptr;
 
     public:
         inline unsigned int getBorderColor() const {
@@ -28,6 +30,7 @@ namespace Ghurund::UI {
             border->Shape = shape;
             if (clip)
                 clip->Shape = shape;
+            shadow->Shape = shape;
         }
 
         __declspec(property(get = getBorderShape, put = setBorderShape)) Shape* BorderShape;
@@ -47,16 +50,19 @@ namespace Ghurund::UI {
     protected:
         Border* border;
         Clip* clip;
+        Shadow* shadow;
 
     public:
         BorderLayoutMixin() {
             border = ghnew Ghurund::UI::Border();
             clip = ghnew Ghurund::UI::Clip();
+            shadow = ghnew Ghurund::UI::Shadow();
         }
 
         ~BorderLayoutMixin() {
             border->release();
             clip->release();
+            shadow->release();
         }
 
         inline Border* getBorder() {

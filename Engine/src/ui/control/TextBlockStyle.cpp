@@ -6,7 +6,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = textView.Theme;
         if (!theme)
             return;
-        textView.Font = theme->PrimaryTextFont;
+        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
     }
 
     void TextBlockPrimaryStyle::onStateChanged(TextBlock& textView) const {
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = textView.Theme;
         if (!theme)
             return;
-        textView.Font = theme->SecondaryTextFont;
+        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
     }
 
     void TextBlockSecondaryStyle::onStateChanged(TextBlock& textView) const {
@@ -42,7 +42,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = textView.Theme;
         if (!theme)
             return;
-        textView.Font = theme->SecondaryTextFont;
+        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
     }
 
     void TextBlockHeaderStyle::onStateChanged(TextBlock& textView) const {

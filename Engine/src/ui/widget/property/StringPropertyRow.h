@@ -55,17 +55,17 @@ namespace Ghurund::UI {
         }
     };
 
-    class UnicodeStringPropertyRowAdapter:public StringPropertyRowAdapter<UnicodeString> {
+    class WStringPropertyRowAdapter:public StringPropertyRowAdapter<WString> {
     public:
         virtual bool canHandleItem(ObjectProperty* const& item, size_t position) const override {
-            return strcmp("UnicodeString", item->Property.TypeName) == 0;
+            return strcmp("WString", item->Property.TypeName) == 0;
         }
     };
 
-    class ASCIIStringPropertyRowAdapter:public StringPropertyRowAdapter<UnicodeString> {
+    class AStringPropertyRowAdapter:public StringPropertyRowAdapter<WString> {
     public:
         virtual bool canHandleItem(ObjectProperty* const& item, size_t position) const override {
-            return strcmp("ASCIIString", item->Property.TypeName) == 0;
+            return strcmp("AString", item->Property.TypeName) == 0;
         }
     };
 }

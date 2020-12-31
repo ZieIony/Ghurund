@@ -6,54 +6,37 @@
 #include "Keyboard.h"
 #include "Windowsx.h"
 #include "EventConsumer.h"
-#include "application/SystemWindow.h"
 
 namespace Ghurund {
+    struct WindowMessage {
+        unsigned int code;
+        WPARAM wParam;
+        uint64_t time;
+        POINT mousePos;
+    };
+    
+    class SystemWindow;
+
     class Input {
     private:
-        List<WindowMessage> messages;
+        POINT prevMousePos;
         XMINT2 mousePos;
         bool keys[256];
-
-        bool dispatchEvent(const WindowMessage& message, EventDispatcher& consumer);
+        List<WindowMessage> events;
 
     public:
-        void dispatchMessage(WindowMessage& message) {
-            messages.add(message);
+        inline void addEvent(const WindowMessage& msg) {
+            events.add(msg);
         }
 
-        void dispatchEvents(EventDispatcher& consumer) {
-            for (size_t i = 0; i < messages.Size;) {
-                if (dispatchEvent(messages[i], consumer)) {
-                    messages.removeAt(i);
-                } else {
-                    i++;
-                }
-            }
+        void dispatchEvents(uint64_t time, SystemWindow& window);
+
+        inline bool isShiftDown() {
+            return keys[VK_SHIFT];
         }
 
-        void clearEvents() {
-            messages.clear();
-        }
-
-        XMINT2 getMousePos() const {
-            return mousePos;
-        }
-
-        __declspec(property(get = getMousePos)) XMINT2 MousePos;
-
-        const bool* getKeys() const {
-            return keys;
-        }
-
-        __declspec(property(get = getKeys)) bool* Keys;
-
-        static inline bool isShiftDown() {
-            return (GetKeyState(VK_SHIFT) & 0x80) != 0;
-        }
-
-        static inline bool isControlDown() {
-            return (GetKeyState(VK_CONTROL) & 0x80) != 0;
+        inline bool isControlDown() {
+            return keys[VK_CONTROL];
         }
     };
 }

@@ -29,14 +29,19 @@ namespace Ghurund::UI {
             return ((a & 0xff) << 24) | (color & 0xffffff);
         }
 
+        PointerMap<WString, TextStyle*> textStyles;
+
     protected:
-        Map<String, StateHandler> stateHandlers;
-        Ghurund::SharedPointer<Ghurund::UI::Font> buttonFont, listHeaderFont, primaryTextFont, secondaryTextFont;
-        BitmapImage* checkBoxChecked, * checkBoxUnchecked;
-        BitmapImage* radioButtonChecked, * radioButtonUnchecked;
-        BitmapImage* arrowUp, * arrowDown;
+        SharedPointer<BitmapImage> checkBoxChecked, checkBoxUnchecked;
+        SharedPointer<BitmapImage> radioButtonChecked, radioButtonUnchecked;
+        SharedPointer<BitmapImage> arrowUp, arrowDown;
 
     public:
+        static inline const WString TEXTSTYLE_BUTTON = "button";
+        static inline const WString TEXTSTYLE_LIST_HEADER = "listHeader";
+        static inline const WString TEXTSTYLE_TEXT_PRIMARY = "textPrimary";
+        static inline const WString TEXTSTYLE_TEXT_SECONDARY = "textSecondary";
+
         Style2<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle();
         Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle(*this);
 
@@ -53,61 +58,43 @@ namespace Ghurund::UI {
             delete textViewHeaderStyle;
         }
 
-        inline Map<String, StateHandler>& getStateHandlers() {
-            return stateHandlers;
-        }
-
-        __declspec(property(get = getStateHandlers)) Map<String, StateHandler>& StateHandlers;
-
         virtual uint32_t getColorError() const = 0;
-   
+
         __declspec(property(get = getColorError)) uint32_t ColorError;
-        
+
         virtual uint32_t getColorBackground() const = 0;
- 
+
         __declspec(property(get = getColorBackground)) uint32_t ColorBackground;
-        
+
         virtual uint32_t getColorControl() const = 0;
-     
+
         __declspec(property(get = getColorControl)) uint32_t ColorControl;
-        
+
         virtual uint32_t getColorAccent() const = 0;
-     
+
         __declspec(property(get = getColorAccent)) uint32_t ColorAccent;
-        
+
         virtual uint32_t getColorAccentDark() const = 0;
 
         __declspec(property(get = getColorAccentDark)) uint32_t ColorAccentDark;
 
         virtual uint32_t getColorOnError() const = 0;
-   
+
         __declspec(property(get = getColorOnError)) uint32_t ColorOnError;
-        
+
         virtual uint32_t getColorOnBackground() const = 0;
-    
+
         __declspec(property(get = getColorOnBackground)) uint32_t ColorOnBackground;
-        
+
         virtual uint32_t getColorOnAccent() const = 0;
 
         __declspec(property(get = getColorOnAccent)) uint32_t ColorOnAccent;
 
-        inline Ghurund::UI::Font* getButtonFont() {
-            return buttonFont;
+        inline PointerMap<WString, TextStyle*>& getTextStyles() {
+            return textStyles;
         }
 
-        __declspec(property(get = getButtonFont)) Ghurund::UI::Font* ButtonFont;
-
-        inline Ghurund::UI::Font* getPrimaryTextFont() {
-            return primaryTextFont;
-        }
-
-        __declspec(property(get = getPrimaryTextFont)) Ghurund::UI::Font* PrimaryTextFont;
-
-        inline Ghurund::UI::Font* getSecondaryTextFont() {
-            return secondaryTextFont;
-        }
-
-        __declspec(property(get = getSecondaryTextFont)) Ghurund::UI::Font* SecondaryTextFont;
+        __declspec(property(get = getTextStyles)) PointerMap<WString, TextStyle*>& TextStyles;
 
         inline BitmapImage* getCheckBoxChecked() {
             return checkBoxChecked;
@@ -148,9 +135,9 @@ namespace Ghurund::UI {
         uint32_t getColorControlNormal() const {
             return colorWithAlpha(state_normal, getColorControl());
         }
-  
+
         __declspec(property(get = getColorControlNormal)) uint32_t ColorControlNormal;
-        
+
         uint32_t getColorControlDisabled() const {
             return colorWithAlpha(state_disabled, getColorControl());
         }
