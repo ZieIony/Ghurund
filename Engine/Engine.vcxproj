@@ -158,6 +158,7 @@
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ChildWindow.h" />
     <ClInclude Include="src\application\DragDropManager.h" />
+    <ClInclude Include="src\application\WindowMessage.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />
     <ClInclude Include="src\core\logging\LogType.h" />
@@ -338,7 +339,7 @@
     <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\Canvas.h" />
-    <ClInclude Include="src\ui\ChildrenList.h" />
+    <ClInclude Include="src\ui\control\ChildrenList.h" />
     <ClInclude Include="src\ui\control\CheckableView.h" />
     <ClInclude Include="src\ui\control\ChildrenProvider.h" />
     <ClInclude Include="src\ui\control\Clip.h" />
@@ -349,7 +350,7 @@
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
-    <ClInclude Include="src\ui\Point.h" />
+    <ClInclude Include="src\core\Point.h" />
     <ClInclude Include="src\ui\style\DarkTheme.h" />
     <ClInclude Include="src\ui\style\DefaultTheme.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
@@ -432,7 +433,7 @@
     <ClInclude Include="src\ui\Property.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\control\ClickableView.h" />
-    <ClInclude Include="src\ui\Size.h" />
+    <ClInclude Include="src\core\Size.h" />
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\widget\Button.h" />

@@ -10,7 +10,7 @@
 #include <extensions/PxDefaultCpuDispatcher.h>
 #pragma warning(pop)
 
-namespace Ghurund {
+namespace Ghurund::Physics {
 	using namespace physx;
 
 	class PhysicsSystem :System<RigidBodyComponent> {

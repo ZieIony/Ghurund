@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextButton))
                 .withProperty(PROPERTY_TEXT)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
             return TYPE;
         }
 

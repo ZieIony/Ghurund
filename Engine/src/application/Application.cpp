@@ -44,7 +44,7 @@ namespace Ghurund {
         if (result != Status::OK)
             return result;
 
-        physics = ghnew Ghurund::Physics();
+        physics = ghnew Physics::Physics();
         result = physics->init();
         if (result != Status::OK)
             return result;

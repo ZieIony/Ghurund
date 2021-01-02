@@ -8,11 +8,12 @@ namespace Ghurund::UI {
     private:
         Shape* shape = nullptr;
 
+    protected:
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<Clip>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Clip))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

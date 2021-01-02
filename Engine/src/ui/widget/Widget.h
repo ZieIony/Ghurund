@@ -10,14 +10,6 @@ namespace Ghurund::UI {
         private:
             LayoutType* widgetLayout = nullptr;
 
-            static const Ghurund::Type& GET_TYPE() {
-                static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
-                    .withModifiers(TypeModifier::ABSTRACT)
-                    .withSupertype(__super::TYPE);
-
-                return TYPE;
-            }
-
             EventHandler<Control> stateHandler = [this](Control& control) {
                 widgetLayout->onStateChanged(*this);
                 return true;
@@ -27,6 +19,15 @@ namespace Ghurund::UI {
                 widgetLayout->onThemeChanged(*this);
                 return true;
             };
+
+        protected:
+            static const Ghurund::Type& GET_TYPE() {
+                static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
+                    .withModifiers(TypeModifier::ABSTRACT)
+                    .withSupertype(__super::GET_TYPE());
+
+                return TYPE;
+            }
 
         public:
             Widget(LayoutType* layout) {

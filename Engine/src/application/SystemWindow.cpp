@@ -16,7 +16,7 @@ namespace Ghurund {
 
         SystemWindow& window = *windowData->window;
         Timer& timer = window.Timer;
-        Input& input = window.Input;
+        Input::Input& input = window.Input;
 
         if (msg >= WM_KEYFIRST && msg <= WM_KEYLAST) {
             input.addEvent({ msg, wParam, timer.TimeMs });
@@ -163,13 +163,13 @@ namespace Ghurund {
         }
     }
 
-    bool SystemWindow::onKeyEvent(const KeyEventArgs& args) {
+    bool SystemWindow::onKeyEvent(const Input::KeyEventArgs& args) {
         if (rootView)
             rootView->dispatchKeyEvent(args);
         return true;
     }
 
-    bool SystemWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
+    bool SystemWindow::onMouseButtonEvent(const Input::MouseButtonEventArgs& args) {
         if (rootView->dispatchMouseButtonEvent(args) && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
             SetCapture(handle);
         } else {
@@ -178,13 +178,13 @@ namespace Ghurund {
         return true;
     }
 
-    bool SystemWindow::onMouseMotionEvent(const MouseMotionEventArgs& args) {
+    bool SystemWindow::onMouseMotionEvent(const Input::MouseMotionEventArgs& args) {
         if (rootView)
             rootView->dispatchMouseMotionEvent(args);
         return true;
     }
 
-    bool SystemWindow::onMouseWheelEvent(const MouseWheelEventArgs& args) {
+    bool SystemWindow::onMouseWheelEvent(const Input::MouseWheelEventArgs& args) {
         if (rootView)
             rootView->dispatchMouseWheelEvent(args);
         return true;

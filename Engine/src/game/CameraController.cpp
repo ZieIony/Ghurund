@@ -5,9 +5,9 @@ namespace Ghurund {
 	using namespace std;
 
 	CameraController::CameraController(Camera& camera, SystemWindow* window) :camera(camera) {
-		modeMap.set(MouseButton::LEFT, Mode::ORBIT);
-		modeMap.set(MouseButton::MIDDLE, Mode::PAN);
-		modeMap.set(MouseButton::RIGHT, Mode::ROTATE);
+		modeMap.set(Input::MouseButton::LEFT, Mode::ORBIT);
+		modeMap.set(Input::MouseButton::MIDDLE, Mode::PAN);
+		modeMap.set(Input::MouseButton::RIGHT, Mode::ROTATE);
 
 		keyMap.map(GameAction::RUN, VK_SHIFT);
 		keyMap.map(GameAction::GO_FORWARD, 'W');
@@ -20,14 +20,14 @@ namespace Ghurund {
 		this->window = window;
 	}
 
-	bool CameraController::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-		if (event.Action == MouseAction::DOWN) {
+	bool CameraController::dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) {
+		if (event.Action == Input::MouseAction::DOWN) {
 			pressed = true;
 			pressedButton = event.Button;
 			if (window != nullptr)
 				SetCapture(window->Handle);
 			return true;
-		} else if (event.Action == MouseAction::UP) {
+		} else if (event.Action == Input::MouseAction::UP) {
 			pressed = false;
 			ReleaseCapture();
 			return true;
@@ -36,7 +36,7 @@ namespace Ghurund {
 		return false;
 	}
 
-	bool CameraController::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+	bool CameraController::dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) {
 		if (pressed) {
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
@@ -56,7 +56,7 @@ namespace Ghurund {
 		return pressed;
 	}
 
-	bool CameraController::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+	bool CameraController::dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) {
 		if (camera.getDistance() > event.Delta) {
 			camera.zoom((float)event.Delta);
 		} else {
@@ -65,7 +65,7 @@ namespace Ghurund {
 		return true;
 	}
 
-	void CameraController::update(Input& input, float dt) {
+	void CameraController::update(Input::Input& input, float dt) {
 		/*float vel = 25 * dt;
 		if (input.Keys[keyMap[GameAction::RUN]])
 			vel *= 5;

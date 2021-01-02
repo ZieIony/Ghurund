@@ -1,12 +1,9 @@
 #pragma once
 
 #include "EventArgs.h"
+#include "core/Point.h"
 
-#include <DirectXMath.h>
-
-namespace Ghurund {
-    using namespace DirectX;
-
+namespace Ghurund::Input {
     enum class MouseButton {
         LEFT, MIDDLE, RIGHT, VIRTUAL
     };
@@ -21,17 +18,17 @@ namespace Ghurund {
 
     class MouseEventArgs:public EventArgs {
     private:
-        XMINT2 position;
+        IntPoint position;
         bool inside;
 
     public:
-        MouseEventArgs(const XMINT2& pos, uint64_t time, bool inside):EventArgs(time), position(pos), inside(inside) {}
+        MouseEventArgs(const IntPoint& pos, uint64_t time, bool inside):EventArgs(time), position(pos), inside(inside) {}
 
-        inline const XMINT2& getPosition() const {
+        inline const IntPoint& getPosition() const {
             return position;
         }
 
-        __declspec(property(get = getPosition)) XMINT2& Position;
+        __declspec(property(get = getPosition)) IntPoint& Position;
 
         inline bool isInside() const {
             return inside;
@@ -46,7 +43,7 @@ namespace Ghurund {
         MouseButton button;
 
     public:
-        MouseButtonEventArgs(const XMINT2& pos, MouseAction action, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseButtonEventArgs(const IntPoint& pos, MouseAction action, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->action = action;
             this->button = button;
         }
@@ -64,28 +61,28 @@ namespace Ghurund {
         __declspec(property(get = getButton)) MouseButton Button;
 
         inline MouseButtonEventArgs translate(float x, float y, bool inside) const {
-            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            IntPoint childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
             return MouseButtonEventArgs(childEventPos, action, button, TimeMs, inside);
         }
     };
 
     class MouseMotionEventArgs:public MouseEventArgs {
     private:
-        XMINT2 delta;
+        IntPoint delta;
 
     public:
-        MouseMotionEventArgs(const XMINT2& pos, const XMINT2& delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseMotionEventArgs(const IntPoint& pos, const IntPoint& delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->delta = delta;
         }
 
-        inline const XMINT2& getDelta() const {
+        inline const IntPoint& getDelta() const {
             return delta;
         }
 
-        __declspec(property(get = getDelta)) XMINT2& Delta;
+        __declspec(property(get = getDelta)) IntPoint& Delta;
 
         inline MouseMotionEventArgs translate(float x, float y, bool inside) const {
-            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            IntPoint childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
             return MouseMotionEventArgs(childEventPos, delta, TimeMs, inside);
         }
     };
@@ -96,7 +93,7 @@ namespace Ghurund {
         int delta;
 
     public:
-        MouseWheelEventArgs(const XMINT2& pos, MouseWheel wheel, int delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseWheelEventArgs(const IntPoint& pos, MouseWheel wheel, int delta, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->wheel = wheel;
             this->delta = delta;
         }
@@ -114,7 +111,7 @@ namespace Ghurund {
         __declspec(property(get = getDelta)) int Delta;
 
         inline MouseWheelEventArgs translate(float x, float y) const {
-            XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
+            IntPoint childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
             return MouseWheelEventArgs(childEventPos, wheel, delta, TimeMs, Inside);
         }
     };

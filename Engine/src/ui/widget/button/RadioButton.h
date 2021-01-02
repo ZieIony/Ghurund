@@ -10,9 +10,10 @@ namespace Ghurund::UI {
     private:
         Event<RadioButton> onCheckedChanged = Event<RadioButton>(*this);
 
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -46,10 +47,10 @@ namespace Ghurund::UI {
     typedef SharedPointer<RadioButton> RadioButtonPtr;
 
     class RadioTextButton:public RadioButton, public TextMixin {
-    private:
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioTextButton))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

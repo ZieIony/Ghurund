@@ -1,7 +1,7 @@
 #pragma once
 
+#include "ControlParent.h"
 #include "core/collection/PointerList.h"
-#include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
     class ChildrenList {

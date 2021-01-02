@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics/texture/Image.h"
-#include "ui/Size.h"
+#include "core/Size.h"
 
 #include <dxgi1_6.h>
 #include <d2d1_3.h>
@@ -17,7 +17,7 @@ namespace Ghurund::UI {
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SvgImage))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

@@ -8,11 +8,12 @@ namespace Ghurund::UI {
     private:
         Paint paint;
 
+    protected:
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<ColorView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

@@ -35,7 +35,7 @@ namespace Ghurund::UI {
         SharedPointer<LinearLayout> layout;
         LockedChild lockedChild = LockedChild::NONE;
         Orientation orientation;
-        XMINT2 pressMousePos = { 0,0 };
+        IntPoint pressMousePos = { 0,0 };
 
     public:
         SplitLayout(Orientation orientation = Orientation::HORIZONTAL);

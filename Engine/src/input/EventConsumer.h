@@ -5,7 +5,7 @@
 #include "core/Event.h"
 #include "core/collection/List.h"
 
-namespace Ghurund {
+namespace Ghurund::Input {
     class EventDispatcher {
     public:
         virtual ~EventDispatcher() {}

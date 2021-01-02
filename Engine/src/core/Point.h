@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace Ghurund::UI {
+namespace Ghurund {
     struct IntPoint {
         int32_t x, y;
     };

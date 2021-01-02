@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace Ghurund::UI {
+namespace Ghurund {
     struct IntSize {
         uint32_t width, height;
     };

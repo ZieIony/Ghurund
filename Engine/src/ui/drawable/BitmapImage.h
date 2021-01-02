@@ -16,18 +16,18 @@ namespace Ghurund::UI {
         Image* image = nullptr;
         ID2D1Bitmap1* bitmapImage = nullptr;
 
+    protected:
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
+
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<BitmapImage>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BitmapImage))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
-
-    protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
     public:
         DescriptorHandle descHandle;

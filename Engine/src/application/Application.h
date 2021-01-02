@@ -17,7 +17,7 @@ namespace Ghurund {
     class Timer;
     class ResourceContext;
     class UI::Graphics2D;
-    class Physics;
+    class Physics::Physics;
     class FunctionQueue;
 
     class Application:public Noncopyable {
@@ -29,7 +29,7 @@ namespace Ghurund {
         Settings settings;
         Graphics* graphics;
         Audio::Audio* audio;
-        Physics* physics;
+        Physics::Physics* physics;
         Ghurund::UI::Graphics2D* graphics2d;
 
         ResourceManager* resourceManager;
@@ -108,11 +108,11 @@ namespace Ghurund {
 
         __declspec(property(get = getAudio)) Audio::Audio& Audio;
 
-        Physics& getPhysics() {
+        Physics::Physics& getPhysics() {
             return *physics;
         }
 
-        __declspec(property(get = getPhysics)) Physics& Physics;
+        __declspec(property(get = getPhysics)) Physics::Physics& Physics;
 
         inline ResourceManager& getResourceManager() {
             return *resourceManager;

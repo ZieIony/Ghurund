@@ -6,7 +6,7 @@
 #include "input/Input.h"
 
 namespace Ghurund {
-    class CameraController: public EventConsumer {
+    class CameraController: public Input::EventConsumer {
     public:
         enum class Mode {
             NONE, ORBIT, PAN, ZOOM, ROTATE
@@ -14,9 +14,9 @@ namespace Ghurund {
 
     private:
         Camera& camera;
-        Map<MouseButton, Mode> modeMap;
+        Map<Input::MouseButton, Mode> modeMap;
         bool pressed = false;
-        MouseButton pressedButton = MouseButton::LEFT;
+        Input::MouseButton pressedButton = Input::MouseButton::LEFT;
         float rotateSensivity = 1.0f / 5 * XM_PI / 180;
         static constexpr float DIST_EPSILON = 0.01f;
         SystemWindow* window;
@@ -25,12 +25,12 @@ namespace Ghurund {
     public:
         CameraController(Camera& camera, SystemWindow* window = nullptr);
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) override;
 
-        void update(Input& input, float dt);
+        void update(Input::Input& input, float dt);
     };
 }

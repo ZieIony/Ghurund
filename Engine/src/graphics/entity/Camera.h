@@ -28,18 +28,18 @@ namespace Ghurund {
 
         PointerArray<Parameter*> parameters;
 
+    protected:
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<Camera>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
-
-    protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
 

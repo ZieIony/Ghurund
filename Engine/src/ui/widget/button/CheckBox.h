@@ -10,9 +10,10 @@ namespace Ghurund::UI {
     private:
         Event<CheckBox> onCheckedChanged = Event<CheckBox>(*this);
 
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -44,10 +45,10 @@ namespace Ghurund::UI {
     };
 
     class CheckBoxText:public CheckBox, public TextMixin {
-    private:
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxText))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 
     typedef std::function<bool(Control&)> StateHandler;
 
-    class Control: public Pointer, public EventConsumer {
+    class Control: public Pointer, public Input::EventConsumer {
     private:
         ControlParent* parent = nullptr;
 
@@ -44,8 +44,6 @@ namespace Ghurund::UI {
                 * D2D1::Matrix3x2F::Translation(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
             transformationInvalid = false;
         }
-
-        static const Ghurund::Type& GET_TYPE();
 
     protected:
         XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
@@ -71,8 +69,8 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) {}
 
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            if (focusable && event.Action == MouseAction::DOWN && !Focused)
+        virtual bool onMouseButtonEvent(const Input::MouseButtonEventArgs& event) override {
+            if (focusable && event.Action == Input::MouseAction::DOWN && !Focused)
                 requestFocus();
             return false;
         }
@@ -80,6 +78,8 @@ namespace Ghurund::UI {
         virtual ~Control() = 0 {
             delete name;
         }
+
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         inline Event<Control>& getOnStateChanged() {
@@ -294,7 +294,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getMeasuredSize)) FloatSize& MeasuredSize;
 
-        inline bool canReceiveEvent(const MouseEventArgs& event) {
+        inline bool canReceiveEvent(const Input::MouseEventArgs& event) {
             return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
         }
 

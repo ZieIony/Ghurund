@@ -8,7 +8,7 @@
 #include <PxShape.h>
 #pragma warning(pop)
 
-namespace Ghurund {
+namespace Ghurund::Physics {
 	using namespace physx;
 
 	class PhysicsComponent :public Component {
@@ -22,7 +22,7 @@ namespace Ghurund {
 
 		static const Ghurund::Type& GET_TYPE() {
 			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
-				.withSupertype(__super::TYPE);
+				.withSupertype(__super::GET_TYPE());
 
 			return TYPE;
 		}

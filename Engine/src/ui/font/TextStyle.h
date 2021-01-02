@@ -3,7 +3,7 @@
 #include "Common.h"
 #include "core/string/String.h"
 #include "core/SharedPointer.h"
-#include "ui/Size.h"
+#include "core/Size.h"
 #include "Status.h"
 
 #include <dwrite.h>

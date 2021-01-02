@@ -24,7 +24,7 @@
 #pragma comment(lib, "PhysXPvdSDK_static_32.lib")
 #endif
 
-namespace Ghurund {
+namespace Ghurund::Physics {
     using namespace physx;
 
     class Physics:public Object {

@@ -6,7 +6,7 @@
 #include "Level.h"
 
 namespace Ghurund {
-    class LevelManager:public EventDispatcher {
+    class LevelManager:public Input::EventDispatcher {
     private:
         Level* level;
 
@@ -28,25 +28,25 @@ namespace Ghurund {
             return level;
         }
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
+        virtual bool dispatchKeyEvent(const Input::KeyEventArgs& event) override {
             if (level != nullptr)
                 return level->dispatchKeyEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
+        virtual bool dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) override {
             if (level != nullptr)
                 return level->dispatchMouseButtonEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
+        virtual bool dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) override {
             if (level != nullptr)
                 return level->dispatchMouseMotionEvent(event);
             return false;
         }
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override {
+        virtual bool dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) override {
             if (level != nullptr)
                 return level->dispatchMouseWheelEvent(event);
             return false;

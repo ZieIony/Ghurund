@@ -7,10 +7,11 @@ namespace Ghurund {
 	private:
         bool enabled = true;
 
+	protected:
 		static const Ghurund::Type& GET_TYPE() {
 			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Component))
 				.withModifiers(TypeModifier::ABSTRACT)
-				.withSupertype(__super::TYPE);
+				.withSupertype(__super::GET_TYPE());
 
 			return TYPE;
 		}

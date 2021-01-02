@@ -6,40 +6,35 @@
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "input/EventConsumer.h"
-#include "ui/Point.h"
-#include "ui/Size.h"
+#include "core/Point.h"
+#include "core/Size.h"
 
 #include <Windows.h>
+
+namespace Ghurund::Input {
+    class Input;
+}
 
 namespace Ghurund {
     struct WindowSizeChangedEventArgs {
         unsigned int width, height;
     };
 
-    class Input;
     class Timer;
 
-    class Window: public ParameterProvider, public NamedObject, public Object, public EventConsumer {
+    class Window: public ParameterProvider, public NamedObject, public Object, public Input::EventConsumer {
     private:
         WString title;
         bool visible = false;
-        UI::IntPoint position = {};
-        UI::IntSize size = {};
+        IntPoint position = {};
+        IntSize size = {};
 
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
-        UI::IntPoint prevMousePos = { -1, -1 };
+        IntPoint prevMousePos = { -1, -1 };
 
         Window* parent;
-
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Window))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::TYPE);
-
-            return TYPE;
-        }
 
     protected:
         Event<Window> onPositionChanged = *this;
@@ -63,6 +58,14 @@ namespace Ghurund {
         Event<Window> onClosed = *this;
         virtual bool onClosedEvent() {
             return false;
+        }
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Window))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
         }
 
     public:
@@ -101,11 +104,11 @@ namespace Ghurund {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        virtual Input& getInput() {
+        virtual Input::Input& getInput() {
             return parent->Input;
         }
 
-        __declspec(property(get = getInput)) Input& Input;
+        __declspec(property(get = getInput)) Input::Input& Input;
 
         virtual Timer& getTimer() const {
             return parent->Timer;
@@ -123,11 +126,11 @@ namespace Ghurund {
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
-        inline const UI::IntPoint& getPosition() const {
+        inline const IntPoint& getPosition() const {
             return position;
         }
 
-        inline void setPosition(const UI::IntPoint& position) {
+        inline void setPosition(const IntPoint& position) {
             setPosition(position.x, position.y);
         }
 
@@ -135,13 +138,13 @@ namespace Ghurund {
             position = { x,y };
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) UI::IntPoint& Position;
+        __declspec(property(get = getPosition, put = setPosition)) IntPoint& Position;
 
-        inline const UI::IntSize& getSize() const {
+        inline const IntSize& getSize() const {
             return size;
         }
 
-        inline void setSize(const UI::IntSize& size) {
+        inline void setSize(const IntSize& size) {
             setSize(size.width, size.height);
         }
 
@@ -149,7 +152,7 @@ namespace Ghurund {
             size = { w, h };
         }
 
-        __declspec(property(get = getSize, put = setSize)) UI::IntSize& Size;
+        __declspec(property(get = getSize, put = setSize)) IntSize& Size;
 
         virtual bool isFocused() const {
             return false;

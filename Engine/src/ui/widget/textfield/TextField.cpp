@@ -60,7 +60,7 @@ namespace Ghurund::UI {
     void TextField::onKeyPress(UINT32 keyCode) {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
 
-        Input& input = Context->Window.Input;
+        Ghurund::Input::Input& input = Context->Window.Input;
         if (keyCode == VK_RETURN) {
             onReturn();
         } else if (keyCode == VK_BACK) {

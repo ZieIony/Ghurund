@@ -27,7 +27,7 @@ namespace Ghurund::Audio {
             static const auto CONSTRUCTOR = NoArgsConstructor<Sound>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Sound))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

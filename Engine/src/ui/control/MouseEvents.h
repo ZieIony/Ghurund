@@ -3,6 +3,8 @@
 #include "input/Mouse.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Input;
+
     class MousePressed {
         bool pressed[4] = { false, false, false, false };
 
@@ -25,7 +27,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MousePressedEventArgs(const XMINT2& pos, MouseButton button, time_t time):MouseEventArgs(pos, time, true) {
+        MousePressedEventArgs(const IntPoint& pos, MouseButton button, uint64_t time):MouseEventArgs(pos, time, true) {
             this->button = button;
         }
 
@@ -41,7 +43,7 @@ namespace Ghurund::UI {
         MouseButton button;
 
     public:
-        MouseClickedEventArgs(const XMINT2& pos, MouseButton button, time_t time, bool inside):MouseEventArgs(pos, time, inside) {
+        MouseClickedEventArgs(const IntPoint& pos, MouseButton button, uint64_t time, bool inside):MouseEventArgs(pos, time, inside) {
             this->button = button;
         }
 

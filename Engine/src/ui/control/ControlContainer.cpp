@@ -86,13 +86,13 @@ namespace Ghurund::UI {
         }
     }
 
-    bool ControlContainer::dispatchKeyEvent(const KeyEventArgs& event) {
+    bool ControlContainer::dispatchKeyEvent(const Input::KeyEventArgs& event) {
         if (child && child->dispatchKeyEvent(event))
             return true;
         return __super::dispatchKeyEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+    bool ControlContainer::dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) {
         if (child
             && (capturedChild || child->canReceiveEvent(event))
             && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true)))
@@ -100,7 +100,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+    bool ControlContainer::dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) {
         if (child) {
             if (capturedChild || child->canReceiveEvent(event)) {
                 previousReceiver = true;
@@ -115,7 +115,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+    bool ControlContainer::dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) {
         if (child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
             return true;
         return __super::dispatchMouseWheelEvent(event);
@@ -136,8 +136,10 @@ namespace Ghurund::UI {
         auto child = xml.FirstChildElement();
         if (child) {
             Control* control = loader.loadControl(context, *child);
-            Child = control;
-            control->release();
+            if (control) {
+                Child = control;
+                control->release();
+            }
         }
         return Status::OK;
     }

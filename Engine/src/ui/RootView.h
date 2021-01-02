@@ -52,10 +52,10 @@ namespace Ghurund::UI {
             canvas->endPaint();
         }
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override;
     };
 }

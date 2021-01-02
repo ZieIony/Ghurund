@@ -7,7 +7,7 @@
 #include "input/EventConsumer.h"
 
 namespace Ghurund {
-    class Level:public EventConsumer {
+    class Level:public Input::EventConsumer {
     private:
         PointerList<Scene*> scenes;
 

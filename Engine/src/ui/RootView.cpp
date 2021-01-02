@@ -25,11 +25,11 @@ namespace Ghurund::UI {
         needsLayout = true;
     }
 
-    bool RootView::dispatchKeyEvent(const KeyEventArgs& event) {
+    bool RootView::dispatchKeyEvent(const Input::KeyEventArgs& event) {
         if (__super::dispatchKeyEvent(event))
             return true;
 
-        if (event.Action != KeyAction::DOWN)
+        if (event.Action != Input::KeyAction::DOWN)
             return false;
 
         if (event.Key == VK_TAB) {
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
         } else if (event.Key == VK_ESCAPE) {
             clearFocus();
             if (capturedChild) {
-                capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::UP, MouseButton::VIRTUAL, event.TimeMs, false));
+                capturedChild->dispatchMouseButtonEvent(Input::MouseButtonEventArgs({ -1,-1 }, Input::MouseAction::UP, Input::MouseButton::VIRTUAL, event.TimeMs, false));
                 capturedChild->release();
                 capturedChild = nullptr;
             }
@@ -66,7 +66,7 @@ namespace Ghurund::UI {
         return false;
     }
 
-    bool RootView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+    bool RootView::dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) {
         if (capturedChild) {
             auto position = capturedChild->PositionInWindow;
             bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.width &&
@@ -77,7 +77,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool RootView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+    bool RootView::dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) {
         if (capturedChild) {
             auto position = capturedChild->PositionInWindow;
             bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.width &&

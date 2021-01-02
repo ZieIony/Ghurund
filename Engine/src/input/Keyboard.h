@@ -2,7 +2,7 @@
 
 #include "EventArgs.h"
 
-namespace Ghurund {
+namespace Ghurund::Input {
     enum class KeyAction {
         DOWN, UP, CHAR
     };

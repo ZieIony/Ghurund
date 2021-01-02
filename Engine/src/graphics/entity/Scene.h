@@ -11,14 +11,14 @@ namespace Ghurund {
     private:
         PointerList<Entity*> entities;
         TransformSystem transformSystem;
-        PhysicsSystem physicsSystem;
+        Physics::PhysicsSystem physicsSystem;
         DrawingSystem drawingSystem;
 
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<Scene>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Scene))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }

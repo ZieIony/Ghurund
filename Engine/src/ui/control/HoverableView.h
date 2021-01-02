@@ -7,17 +7,17 @@ namespace Ghurund::UI {
     private:
         bool hovered = false;
 
+    protected:
+        virtual bool onMouseMotionEvent(const Input::MouseMotionEventArgs& event) override;
+
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<HoverableView>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(HoverableView))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
-
-    protected:
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
     public:
         inline bool isHovered() const {

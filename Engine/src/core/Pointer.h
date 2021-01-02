@@ -9,14 +9,6 @@ namespace Ghurund {
     private:
         uint32_t referenceCount = 1;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::TYPE);
-
-            return TYPE;
-        }
-
 #ifdef _DEBUG
         void checkReferenceCount();
 #endif
@@ -25,6 +17,14 @@ namespace Ghurund {
         Pointer(const Pointer& pointer) = delete;
 
         virtual ~Pointer() = 0;
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
 
     public:
         Pointer() {}

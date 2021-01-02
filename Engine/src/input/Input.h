@@ -4,23 +4,18 @@
 #include "core/collection/List.h"
 #include "Keyboard.h"
 #include "EventConsumer.h"
-
-#include <Windows.h>
+#include "application/WindowMessage.h"
 
 namespace Ghurund {
-    struct WindowMessage {
-        unsigned int code;
-        WPARAM wParam;
-        uint64_t time;
-        POINT mousePos;
-    };
-    
     class SystemWindow;
+}
+
+namespace Ghurund::Input {
 
     class Input {
     private:
         POINT prevMousePos;
-        XMINT2 mousePos;
+        IntPoint mousePos;
         bool keys[256];
         List<WindowMessage> events;
 

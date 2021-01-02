@@ -1,9 +1,9 @@
 #pragma once
 
+#include "ChildrenList.h"
 #include "ControlParent.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include "ui/ChildrenList.h"
 
 namespace Ghurund::UI {
     class ControlGroup:public ControlParent {
@@ -11,11 +11,12 @@ namespace Ghurund::UI {
         ChildrenList children;
         Control* previousReceiver = nullptr;
 
+    protected:
         static inline const auto& CONSTRUCTOR = NoArgsConstructor<ControlGroup>();
         static const Ghurund::Type& GET_TYPE() {
             static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
                 .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -79,13 +80,13 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& event) override;
 
         virtual Control* find(const String& name);
 

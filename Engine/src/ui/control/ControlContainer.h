@@ -5,14 +5,13 @@
 namespace Ghurund::UI {
     class ControlContainer: public ControlParent {
     private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(ControlContainer);
-
         Control* child = nullptr;
         bool previousReceiver = false;
 
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -76,13 +75,13 @@ namespace Ghurund::UI {
                 child->draw(canvas);
         }
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const Input::KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) override;
 
         virtual Control* find(const String& name);
 

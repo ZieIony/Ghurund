@@ -28,7 +28,7 @@ namespace Ghurund {
 
         HWND handle;
         SwapChain* swapChain = nullptr;
-        Ghurund::Input input;
+        Input::Input input;
         Ghurund::Timer& timer;
         Ghurund::UI::RootView* rootView = nullptr;
 
@@ -40,7 +40,7 @@ namespace Ghurund {
 
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -85,11 +85,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSwapChain, put = setSwapChain)) SwapChain* SwapChain;
 
-        virtual Ghurund::Input& getInput() override {
+        virtual Input::Input& getInput() override {
             return input;
         }
 
-        __declspec(property(get = getInput)) Ghurund::Input& Input;
+        __declspec(property(get = getInput)) Input::Input& Input;
 
         virtual Ghurund::Timer& getTimer() const override {
             return timer;
@@ -150,13 +150,13 @@ namespace Ghurund {
             SetActiveWindow(handle);
         }
 
-        virtual bool onKeyEvent(const KeyEventArgs& args) override;
+        virtual bool onKeyEvent(const Input::KeyEventArgs& args) override;
 
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
+        virtual bool onMouseButtonEvent(const Input::MouseButtonEventArgs& args) override;
 
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override;
+        virtual bool onMouseMotionEvent(const Input::MouseMotionEventArgs& args) override;
 
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override;
+        virtual bool onMouseWheelEvent(const Input::MouseWheelEventArgs& args) override;
 
         virtual void onUpdate(const uint64_t time) override;
 

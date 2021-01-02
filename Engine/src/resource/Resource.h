@@ -44,14 +44,6 @@ namespace Ghurund {
 
         Status saveInternal(ResourceContext& context, File& file, SaveOption options) const;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::TYPE);
-
-            return TYPE;
-        }
-
     protected:
         DataSize dataSize;
 
@@ -64,6 +56,14 @@ namespace Ghurund {
 
         Status writeHeader(MemoryOutputStream& stream) const;
         Status readHeader(MemoryInputStream& stream);
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
 
     public:
         Resource() = default;

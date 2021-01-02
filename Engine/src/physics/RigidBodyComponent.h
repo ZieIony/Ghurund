@@ -8,7 +8,7 @@
 #include <PxShape.h>
 #pragma warning(pop)
 
-namespace Ghurund {
+namespace Ghurund::Physics {
 	using namespace physx;
 
 	class RigidBodyComponent :public Component {

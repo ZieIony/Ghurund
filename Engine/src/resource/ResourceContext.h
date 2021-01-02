@@ -15,8 +15,11 @@ namespace Ghurund::Audio {
     class Audio;
 }
 
-namespace Ghurund {
+namespace Ghurund::Physics {
     class Physics;
+}
+
+namespace Ghurund {
     class Graphics;
     class ScriptEngine;
     class CommandList;
@@ -27,7 +30,7 @@ namespace Ghurund {
     private:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceContext))
-                .withSupertype(__super::TYPE);
+                .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
@@ -40,12 +43,12 @@ namespace Ghurund {
         IWICImagingFactory* wicFactory = nullptr;
         ParameterManager& parameterManager;
         ScriptEngine& scriptEngine;
-        Physics& physics;
+        Physics::Physics& physics;
         ResourceManager& resourceManager;
 		AllocatorMap allocators;
 
     public:
-        ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Audio::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
+        ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Audio::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics::Physics& physics, ResourceManager& resourceManager)
             : graphics(graphics), graphics2d(graphics2d), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
 
         ~ResourceContext();
@@ -94,11 +97,11 @@ namespace Ghurund {
 
         __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
 
-        Physics& getPhysics() {
+        Physics::Physics& getPhysics() {
             return physics;
         }
 
-        __declspec(property(get = getPhysics)) Physics& Physics;
+        __declspec(property(get = getPhysics)) Physics::Physics& Physics;
 
         inline ResourceManager& getResourceManager() {
             return resourceManager;

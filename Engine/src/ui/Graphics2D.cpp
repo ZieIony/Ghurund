@@ -15,6 +15,19 @@ namespace Ghurund::UI {
 
         // Enable the D3D11 debug layer.
         d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+
+        ComPtr<ID3D12InfoQueue> d3dInfoQueue;
+        HRESULT hr = graphics.Device->QueryInterface(__uuidof(ID3D12InfoQueue), &d3dInfoQueue);
+        if (SUCCEEDED(hr)) {
+            D3D12_MESSAGE_ID hide[] = {
+                D3D12_MESSAGE_ID_CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVALUE,
+            };
+            D3D12_INFO_QUEUE_FILTER filter;
+            memset(&filter, 0, sizeof(filter));
+            filter.DenyList.NumIDs = _countof(hide);
+            filter.DenyList.pIDList = hide;
+            hr = d3dInfoQueue->AddStorageFilterEntries(&filter);
+        }
 #endif
 
         // Create an 11 device wrapped around the 12 device and share
@@ -99,7 +112,7 @@ namespace Ghurund::UI {
         m_d2dDevice.Reset();
         currentTarget = nullptr;
     }
-    
+
     Status Graphics2D::beginPaint(RenderTarget& target) {
 #ifdef _DEBUG
         if (state != UIState::IDLE)
@@ -116,7 +129,7 @@ namespace Ghurund::UI {
         state = UIState::RECORDING;
         return Status::OK;
     }
-    
+
     Status Graphics2D::endPaint() {
 #ifdef _DEBUG
         if (state != UIState::RECORDING)

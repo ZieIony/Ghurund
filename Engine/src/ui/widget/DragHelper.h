@@ -6,7 +6,7 @@ namespace Ghurund::UI {
     class DragHelper {
     private:
         XMFLOAT2 pressControlPos = {};
-        XMINT2 pressMousePos = {};
+        IntPoint pressMousePos = {};
         bool pressed = false;
 
         Event<Control> onDragged;

@@ -4,7 +4,7 @@
 
 namespace Ghurund {
     class Object {
-    private:
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Object))
                 .withModifiers(TypeModifier::ABSTRACT);
