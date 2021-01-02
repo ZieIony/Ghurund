@@ -144,7 +144,6 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\MaterialColors.h" />
     <ClInclude Include="src\PreviewApplication.h" />
     <ClInclude Include="src\PreviewWindow.h" />
   </ItemGroup>

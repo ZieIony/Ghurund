@@ -1,5 +1,7 @@
 #include "SplitLayout.h"
 
+#include "ui/Cursor.h"
+
 namespace Ghurund::UI {
     void Splitter::setOrientation(Ghurund::UI::Orientation orientation) {
         this->orientation = orientation;

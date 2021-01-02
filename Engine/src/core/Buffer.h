@@ -2,26 +2,28 @@
 
 #include "Common.h"
 
+#include <memory.h>
+
 namespace Ghurund {
     class Buffer {
     private:
-        BYTE *data;
+        uint8_t *data;
         size_t size;
 
     public:
         Buffer(size_t size) {
-            data = ghnew BYTE[size];
+            data = ghnew uint8_t[size];
             this->size = size;
         }
 
         Buffer(const void *data, size_t size) {
-            this->data = ghnew BYTE[size];
+            this->data = ghnew uint8_t[size];
             this->size = size;
             memcpy(this->data, data, size);
         }
 
         Buffer(const Buffer &buffer) {
-            data = ghnew BYTE[buffer.size];
+            data = ghnew uint8_t[buffer.size];
             size = buffer.size;
             memcpy(data, buffer.data, size);
         }
@@ -30,15 +32,15 @@ namespace Ghurund {
             delete[] data;
         }
 
-        BYTE* getData() {
+        uint8_t* getData() {
             return data;
         }
 
-        const BYTE* getData() const {
+        const uint8_t* getData() const {
             return data;
         }
 
-        __declspec(property(get = getData)) BYTE *Data;
+        __declspec(property(get = getData)) uint8_t *Data;
 
         size_t getSize() const {
             return size;

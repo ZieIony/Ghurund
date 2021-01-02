@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DirectoryPath.h"
-#include <Shlwapi.h>
 
 namespace Ghurund {
 
@@ -10,10 +9,6 @@ namespace Ghurund {
         FilePath(const DirectoryPath& dirPath, const WString& fileName):Path(dirPath.get()) {
             path.add(fileName);
         }
-
-        FilePath(const char* path):FilePath(WString(path)) {}
-
-        FilePath(const AString& path):FilePath(WString(path)) {}
 
         FilePath(const wchar_t* path):FilePath(WString(path)) {}
 
@@ -39,19 +34,9 @@ namespace Ghurund {
 
         __declspec(property(get = getFileName)) WString FileName;
 
-        inline FilePath getRelativePath(const DirectoryPath& dir) const {
-            wchar_t relativePathStr[MAX_PATH];
-            BOOL success = PathRelativePathToW(relativePathStr, dir.get().getData(), FILE_ATTRIBUTE_DIRECTORY, path.getData(), FILE_ATTRIBUTE_NORMAL);
-            if (success)
-                return FilePath(relativePathStr);
-            return *this;
-        }
+        FilePath getRelativePath(const DirectoryPath& dir) const;
 
-        inline FilePath getAbsolutePath() const {
-            wchar_t fullPath[MAX_PATH];
-            GetFullPathNameW(path, MAX_PATH, fullPath, nullptr);
-            return FilePath(fullPath);
-        }
+        FilePath getAbsolutePath() const;
 
         __declspec(property(get = getAbsolutePath)) FilePath AbsolutePath;
     };

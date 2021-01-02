@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Thread.h"
-#include "core/string/String.h"
 #include "core/collection/Array.h"
 #include "core/Id.h"
 #include "core/NamedObject.h"
 #include "core/Pointer.h"
+#include "Status.h"
 
 namespace Ghurund {
-    class Task:public Pointer, public NamedObject<String>, public IdObject<Task> {
+    class Task:public Pointer, public NamedObject, public IdObject<Task> {
     private:
         friend class WorkerThread;
 
@@ -28,7 +28,7 @@ namespace Ghurund {
             this->function = function;
         }
 
-        Task(const String& name, std::function<Status()> function) {
+        Task(const WString& name, std::function<Status()> function) {
             this->Name = name;
             this->function = function;
         }

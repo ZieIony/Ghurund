@@ -7,6 +7,8 @@
 #include "graphics/shader/ConstantBufferField.h"
 #include "graphics/shader/ShaderConstant.h"
 
+#include <d3dcompiler.h>
+
 namespace Ghurund {
     class ConstantBuffer:public ShaderConstant, public ParameterProvider {
     public:

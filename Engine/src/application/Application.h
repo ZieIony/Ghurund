@@ -4,30 +4,28 @@
 #include "Timer.h"
 #include "Window.h"
 
-#include "audio/Audio.h"
 #include "core/Noncopyable.h"
-#include "core/threading/FunctionQueue.h"
-#include "game/parameter/ParameterManager.h"
-#include "game/LevelManager.h"
-#include "graphics/Graphics.h"
-#include "graphics/Renderer.h"
-#include "input/Input.h"
 #include "net/Client.h"
-#include "physics/Physics.h"
-#include "resource/ResourceContext.h"
-#include "resource/ResourceManager.h"
-#include "script/ScriptEngine.h"
-#include "ui/Graphics2D.h"
-
-#include <thread>
+#include "game/LevelManager.h"
 
 namespace Ghurund {
+    class Graphics;
+    class Audio::Audio;
+    class Renderer;
+    class ScriptEngine;
+    class ParameterManager;
+    class Timer;
+    class ResourceContext;
+    class UI::Graphics2D;
+    class Physics;
+    class FunctionQueue;
+
     class Application:public Noncopyable {
     private:
         List<SystemWindow*> windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
-        Client* client;
+        Net::Client* client;
         Settings settings;
         Graphics* graphics;
         Audio::Audio* audio;
@@ -43,7 +41,7 @@ namespace Ghurund {
         Renderer* renderer;
         LevelManager levelManager;
 
-        void init();
+        Status init();
         void handleMessages();
         void uninit();
 
@@ -92,11 +90,11 @@ namespace Ghurund {
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-        inline Client& getClient() {
+        inline Net::Client& getClient() {
             return *client;
         }
 
-        __declspec(property(get = getClient)) Client& Client;
+        __declspec(property(get = getClient)) Net::Client& Client;
 
         inline Graphics& getGraphics() {
             return *graphics;

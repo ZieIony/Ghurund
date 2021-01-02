@@ -41,11 +41,7 @@ namespace Ghurund::UI {
             deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
         }
 
-        inline void endPaint() {
-            if (matrixStack.Size != 1)
-                Logger::log(LogType::INFO, _T("mismatched calls to Canvas::save() and Canvas::restore()\n"));
-            matrixStack.clear();
-        }
+        void endPaint();
 
         inline void clear(int32_t color) {
             deviceContext->Clear(D2D1::ColorF(color));

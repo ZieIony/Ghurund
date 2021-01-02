@@ -1,4 +1,5 @@
 #include "ImageView.h"
+#include "core/string/TextConversionUtils.h"
 
 namespace Ghurund::UI {
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
@@ -91,7 +92,8 @@ namespace Ghurund::UI {
             return result;
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            BitmapImage* image = BitmapImage::makeFromImage(context, imageAttr->Value());
+            WString imagePath = toWideChar(AString(imageAttr->Value()));
+            BitmapImage* image = BitmapImage::makeFromImage(context, imagePath);
             if (!image)
                 return Status::INV_PARAM;
             Image = makeShared<BitmapImageDrawable>(image);

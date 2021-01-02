@@ -7,7 +7,6 @@
 #include "input/Mouse.h"
 #include "ui/Canvas.h"
 #include "ui/PreferredSize.h"
-#include "ui/Cursor.h"
 #include "application/Window.h"
 #include "ui/UIContext.h"
 
@@ -372,9 +371,7 @@ namespace Ghurund::UI {
         virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml);
 
 #ifdef _DEBUG
-        virtual String logTree() {
-            return fmt::format(_T("{}: {}, ref: {}\n"), Type.Name, Name ? *Name : String(_T("[unnamed]")), ReferenceCount).c_str();
-        }
+        virtual String logTree();
 #endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

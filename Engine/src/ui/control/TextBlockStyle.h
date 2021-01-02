@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TextBlock.h"
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 
 namespace Ghurund::UI {
     class Theme;

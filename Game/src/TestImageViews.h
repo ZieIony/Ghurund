@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/SharedPointer.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
 #include "ui/control/Space.h"
@@ -37,15 +37,15 @@ public:
 
         Name = "image views tab";
         {
-            const char* texts[4] = {
-                "ScaleMode::NONE",
-                "ScaleMode::STRETCH",
-                "ScaleMode::FIT",
-                "ScaleMode::CROP"
+            const wchar_t* texts[4] = {
+                L"ScaleMode::NONE",
+                L"ScaleMode::STRETCH",
+                L"ScaleMode::FIT",
+                L"ScaleMode::CROP"
             };
             SharedPointer<VerticalLayout> column = ghnew VerticalLayout();
             column->PreferredSize.height = PreferredSize::Height::WRAP;
-            SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, "images/test/watermelon.jpg");
+            SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, L"images/test/watermelon.jpg");
             for (unsigned int i = 0; i < 4; i++) {
                 StackLayoutPtr stack = ghnew StackLayout();
                 stack->PreferredSize = { 200, 120 };

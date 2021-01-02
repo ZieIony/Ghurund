@@ -1,4 +1,5 @@
 #include "GPUBuffer.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     void GPUBuffer::set(Graphics& graphics, CommandList& commandList, unsigned int bindSlot) {

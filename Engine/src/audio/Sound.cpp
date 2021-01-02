@@ -1,5 +1,11 @@
 #include "Sound.h"
+
 #include "resource/ResourceContext.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
+
+#include <Shlwapi.h>
 
 namespace Ghurund::Audio {
 	Status Sound::loadInternal(ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {

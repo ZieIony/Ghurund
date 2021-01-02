@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Net {
     struct NetworkListener {
         virtual ~NetworkListener() {}
 

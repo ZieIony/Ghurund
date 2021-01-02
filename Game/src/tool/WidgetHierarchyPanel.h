@@ -3,7 +3,7 @@
 #include "control/SearchField.h"
 #include "control/ToolWindow.h"
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/control/TextBlock.h"
 #include "ui/widget/tree/TreeView.h"
 #include "ui/widget/menu/Toolbar.h"
@@ -22,16 +22,16 @@ namespace Ghurund::Editor {
 
     public:
         WidgetHierarchyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            objectTypeText = ghnew TextBlock("", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
+            objectTypeText = ghnew TextBlock(L"", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
-                   ghnew ButtonMenuItem(sortIcon, "sort", [](Ghurund::UI::Control&) {
+                   ghnew ButtonMenuItem(sortIcon, L"sort", [](Ghurund::UI::Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
-                   ghnew ButtonMenuItem(categoryIcon, "category", [](Ghurund::UI::Control&) {
+                   ghnew ButtonMenuItem(categoryIcon, L"category", [](Ghurund::UI::Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
@@ -50,7 +50,7 @@ namespace Ghurund::Editor {
 
         inline void setControl(Control* item) {
             //treeView->Item = item;
-            objectTypeText->Text = item->Type.Name;
+            objectTypeText->Text = toWideChar(item->Type.Name);
         }
 
         __declspec(property(put = setControl)) Control* Control;

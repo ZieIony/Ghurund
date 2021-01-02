@@ -1,6 +1,9 @@
 #include "Entity.h"
 #include "core/reflection/Type.h"
 #include "resource/ResourceContext.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 

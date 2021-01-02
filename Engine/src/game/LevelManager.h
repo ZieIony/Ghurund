@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/collection/List.h"
-#include "game/parameter/ParameterManager.h"
 #include "graphics/entity/Scene.h"
 
 #include "Level.h"

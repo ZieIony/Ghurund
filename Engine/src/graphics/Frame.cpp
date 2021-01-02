@@ -9,7 +9,7 @@ namespace Ghurund {
         this->scissorRect = scissorRect;
 
         commandList->init(graphics, graphics.DirectQueue);
-        commandList->Name = _T("frame command list");
+        commandList->Name = L"frame command list";
 
         return Status::OK;
     }

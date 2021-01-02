@@ -110,8 +110,8 @@ namespace Ghurund::UI {
         if (Focused || !Context)
             return;
 
-        CreateCaret(Context->Window.Handle, NULL, rect.right - rect.left, rect.bottom - rect.top);
-        SetCaretPos(rect.left, rect.top);
+        CreateCaret(Context->Window.Handle, NULL, (int)(rect.right - rect.left), (int)(rect.bottom - rect.top));
+        SetCaretPos((int)(rect.left), (int)(rect.top));
     }
 
     bool TextView::setSelectionFromPoint(float x, float y, bool extendSelection) {
@@ -394,7 +394,7 @@ namespace Ghurund::UI {
             Array<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
 
             if (caretRange.length > 0)
-                textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, hitTestMetrics.begin(), hitTestMetrics.Size, &actualHitTestCount);
+                textLayout->HitTestTextRange(caretRange.startPosition, caretRange.length, 0, 0, hitTestMetrics.begin(), (UINT32)hitTestMetrics.Size, &actualHitTestCount);
 
             if (actualHitTestCount > 0) {
                 canvas.AntialiasingEnabled = false;

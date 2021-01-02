@@ -33,32 +33,32 @@ public:
         verticalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
 
         {
-            SharedPointer<TextStyle> latoLight = ghnew Ghurund::UI::TextStyle("fonts/lato_light.ttf", "Lato Light", 40, FW_LIGHT, false);
+            SharedPointer<TextStyle> latoLight = ghnew Ghurund::UI::TextStyle(L"fonts/lato_light.ttf", L"Lato Light", 40, FW_LIGHT, false);
             latoLight->init(resourceContext.Graphics2D);
-            SharedPointer<TextBlock> textView = ghnew TextBlock("big light text", latoLight);
+            SharedPointer<TextBlock> textView = ghnew TextBlock(L"big light text", latoLight);
             SharedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
             textView2->TextStyle = theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
-            textView2->Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+            textView2->Text = L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
             auto p = makeShared<PaddingContainer>();
             p->Padding.All = 20;
             TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout());
-            hwButton->Text = "HELLO WORLD";
+            hwButton->Text = L"HELLO WORLD";
             p->Child = hwButton;
 
             SharedPointer<TextField> textField = ghnew TextField();
-            textField->Text = "type here";
+            textField->Text = L"type here";
             SharedPointer<TextField> textField2 = ghnew TextField();
-            textField2->Text = "type here too";
+            textField2->Text = L"type here too";
 
             SharedPointer<CheckBoxText> checkBox = ghnew CheckBoxText();
-            checkBox->Text = "check me";
+            checkBox->Text = L"check me";
 
             RadioTextButtonPtr radioButton = ghnew RadioTextButton();
-            radioButton->Text = "option 1";
+            radioButton->Text = L"option 1";
             RadioTextButtonPtr radioButton2 = ghnew RadioTextButton();
-            radioButton2->Text = "option 2";
+            radioButton2->Text = L"option 2";
             radioGroup = { radioButton, radioButton2 };
 
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
@@ -73,9 +73,9 @@ public:
             player = ghnew MusicPlayer(theme);
 
             TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout());
-            flatButton->Text = "Submit";
+            flatButton->Text = L"Submit";
             TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout());
-            accentButton->Text = "OK";
+            accentButton->Text = L"OK";
 
             SharedPointer<Separator> separator = ghnew Separator(ghnew HorizontalSeparatorStyle());
 

@@ -2,7 +2,7 @@
 
 #include "MenuBarAdapter.h"
 #include "MenuBarLayout.h"
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 #include "ui/widget/Widget.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 

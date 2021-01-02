@@ -4,6 +4,7 @@
 #include "Parameter.h"
 #include "core/collection/PointerArray.h"
 #include "ParameterManager.h"
+#include "Status.h"
 
 namespace Ghurund {
     class ResourceContext;

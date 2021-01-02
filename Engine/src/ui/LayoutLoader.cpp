@@ -10,7 +10,9 @@
 #include "ui/control/PaddingContainer.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/StackLayout.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
+#include "core/string/TextConversionUtils.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
@@ -92,10 +94,14 @@ namespace Ghurund::UI {
         return value;
     }
 
+    WString LayoutLoader::loadText(const char* str) {
+        return toWideChar(AString(str));
+    }
+
     TextStyle* LayoutLoader::loadFont(ResourceContext& context, const char* str) {
-        AString s = str;
-        const char* fileProtocol = "file://";
-        const char* themeProtocol = "theme://";
+        WString s = toWideChar(AString(str));
+        const wchar_t* fileProtocol = L"file://";
+        const wchar_t* themeProtocol = L"theme://";
         if (s.startsWith(fileProtocol)) {
             auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
             //auto font = ghnew TextStyle()

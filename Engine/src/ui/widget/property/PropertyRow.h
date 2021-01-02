@@ -2,7 +2,7 @@
 
 #include "ObjectProperty.h"
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/adapter/ItemAdapter.h"
 #include "ui/control/TextBlock.h"
 #include "ui/layout/LinearLayout.h"
@@ -25,15 +25,15 @@ namespace Ghurund::UI {
             Children = { textView, separator, container };
         }
 
-        inline const String& getLabel() {
+        inline const WString& getLabel() {
             return textView->Text;
         }
 
-        inline void setLabel(const String& text) {
+        inline void setLabel(const WString& text) {
             textView->Text = text;
         }
 
-        __declspec(property(get = getLabel, put = setLabel)) const String& Label;
+        __declspec(property(get = getLabel, put = setLabel)) const WString& Label;
 
         inline Control* getContent() {
             return container->Child;
@@ -55,7 +55,7 @@ namespace Ghurund::UI {
         }
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {
-            control.Label = item->Property.Name;
+            control.Label = toWideChar(AString(item->Property.Name));
         }
     };
 }

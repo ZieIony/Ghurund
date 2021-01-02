@@ -2,14 +2,15 @@
 
 #include "DisplayMode.h"
 
+#include <wrl.h>
+
 namespace Ghurund {
-    using namespace DirectX;
     using namespace Microsoft::WRL;
 
     class AdapterOutput: public Object {
     private:
         DXGI_OUTPUT_DESC desc;
-        String name;
+        WString name;
         ComPtr<IDXGIOutput> output;
         List<DisplayMode*> displayModes;
 
@@ -50,7 +51,7 @@ namespace Ghurund {
             displayModes.deleteItems();
         }
 
-        String& getName() {
+        WString& getName() {
             return name;
         }
 

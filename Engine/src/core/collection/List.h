@@ -2,19 +2,10 @@
 
 #include "Collection.h"
 
-#include <functional>
-#include <cassert>
-
 namespace Ghurund {
     template<class Value> class List:public Collection {
     protected:
         Value* v;
-
-#ifdef GHURUND_EDITOR
-        std::function<void()> onItemAdded, onItemRemoved, onItemChanged;
-#endif
-
-        static const std::function<int(const void*, const void*)> DEFAULT_COMPARISON_FUNCTION;
 
     public:
         List() {
@@ -87,10 +78,6 @@ namespace Ghurund {
                 resize((size_t)(capacity * 1.6));
             new(v + size) Value(item);
             size++;
-#ifdef GHURUND_EDITOR
-            if (onItemAdded != nullptr)
-                onItemAdded();
-#endif
         }
 
         inline void addAll(const List<Value>& list) {
@@ -99,10 +86,6 @@ namespace Ghurund {
             for (size_t i = 0; i < list.Size; i++)
                 new(v + size + i) Value(list[i]);
             size += list.Size;
-#ifdef GHURUND_EDITOR
-            if (onItemAdded != nullptr)
-                onItemAdded();
-#endif
         }
 
         inline void addAll(const std::initializer_list<Value>& list) {
@@ -112,10 +95,6 @@ namespace Ghurund {
             for (size_t i = 0; i < list.size(); i++, l++)
                 new(v + size + i) Value(*l);
             size += list.size();
-#ifdef GHURUND_EDITOR
-            if (onItemAdded != nullptr)
-                onItemAdded();
-#endif
         }
 
         inline void insert(size_t i, const Value& item) {
@@ -132,18 +111,15 @@ namespace Ghurund {
         }
 
         inline void set(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             v[i].~Value();
             new(v + i) Value(item);
         }
 
         inline Value& get(size_t i)const {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             return v[i];
         }
 
         inline void removeAt(size_t i) {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
                     v[j] = std::move(v[j + 1]);
@@ -154,7 +130,6 @@ namespace Ghurund {
 
         inline void remove(const Value& item) {
             size_t i = indexOf(item);
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             if (i != size - 1) {
                 for (size_t j = i; j < size - 1; j++)
                     v[j] = std::move(v[j + 1]);
@@ -194,7 +169,6 @@ namespace Ghurund {
         }
 
         inline Value& operator[](size_t i)const {
-            _ASSERT_EXPR(i < size, "Index out of bounds.\n");
             return v[i];
         }
 
@@ -238,10 +212,6 @@ namespace Ghurund {
                 v[i].~Value();
             }
             size = 0;
-        }
-
-        inline void sort(std::function<int(const void*, const void*)> comparisonFunction = DEFAULT_COMPARISON_FUNCTION) {
-            qsort(v, size, sizeof(Value), comparisonFunction);
         }
     };
 

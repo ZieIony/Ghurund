@@ -6,6 +6,7 @@
 
 #include <time.h>
 #include <shellapi.h>
+#include <windowsx.h>
 
 namespace Ghurund {
     LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -151,12 +152,21 @@ namespace Ghurund {
         if (enabled) {
             dragDropManager = ghnew DragDropManager(*this);
             DragAcceptFiles(handle, TRUE);
-            RegisterDragDrop(handle, dragDropManager.Get());
+            RegisterDragDrop(handle, dragDropManager);
         } else {
             RevokeDragDrop(handle);
             DragAcceptFiles(handle, FALSE);
-            dragDropManager.Reset();
+            if (dragDropManager) {
+                dragDropManager->Release();
+                dragDropManager = nullptr;
+            }
         }
+    }
+
+    bool SystemWindow::onKeyEvent(const KeyEventArgs& args) {
+        if (rootView)
+            rootView->dispatchKeyEvent(args);
+        return true;
     }
 
     bool SystemWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
@@ -166,6 +176,32 @@ namespace Ghurund {
             ReleaseCapture();
         }
         return true;
+    }
+
+    bool SystemWindow::onMouseMotionEvent(const MouseMotionEventArgs& args) {
+        if (rootView)
+            rootView->dispatchMouseMotionEvent(args);
+        return true;
+    }
+
+    bool SystemWindow::onMouseWheelEvent(const MouseWheelEventArgs& args) {
+        if (rootView)
+            rootView->dispatchMouseWheelEvent(args);
+        return true;
+    }
+
+    void SystemWindow::onUpdate(const uint64_t time) {
+        input.dispatchEvents(time, *this);
+        if (rootView) {
+            rootView->onUpdate(time);
+            rootView->measure((float)Size.width, (float)Size.height);
+            rootView->layout(0, 0, (float)Size.width, (float)Size.height);
+        }
+    }
+
+    void SystemWindow::onPaint() {
+        if (rootView)
+            rootView->draw();
     }
 
     OverlappedWindow::OverlappedWindow(Ghurund::Timer& timer)

@@ -4,9 +4,6 @@
 #include "core/collection/List.h"
 #include "core/io/FilePath.h"
 
-#include <oleidl.h>
-#include <shellapi.h>
-
 namespace Ghurund {
     class SystemWindow;
 
@@ -14,31 +11,12 @@ namespace Ghurund {
     private:
         SystemWindow& window;
 
-        Array<FilePath*>* getFiles(IDataObject * pDataObj) {
-            FORMATETC fmte = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-            STGMEDIUM stgm;
-
-            if (FAILED(pDataObj->GetData(&fmte, &stgm)))
-                return nullptr;
-
-            HDROP hdrop = (HDROP)stgm.hGlobal;
-            UINT file_count = DragQueryFile(hdrop, 0xFFFFFFFF, NULL, 0);
-            auto paths = ghnew Array<FilePath*>(file_count);
-
-            for (UINT i = 0; i < file_count; i++) {
-                TCHAR szFile[MAX_PATH];
-                UINT cch = DragQueryFile(hdrop, i, szFile, MAX_PATH);
-                if (cch > 0 && cch < MAX_PATH)
-                    paths->set(i, ghnew FilePath(szFile));
-            }
-
-            ReleaseStgMedium(&stgm);
-
-            return paths;
-        }
+        Array<FilePath*>* getFiles(IDataObject * pDataObj);
 
     public:
-        DragDropManager(SystemWindow& window):window(window) {}
+        DragDropManager(SystemWindow& window):window(window) {
+            AddRef();
+        }
 
         HRESULT DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
 

@@ -1,5 +1,7 @@
 #include "ConstantBuffer.h"
 
+#include "core/logging/Logger.h"
+
 namespace Ghurund {
     ConstantBuffer::ConstantBuffer(Graphics& graphics, ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility) :
         ShaderConstant(bufferDesc.Name, bindPoint, visibility),

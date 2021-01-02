@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "application/SystemWindow.h"
 #include "ui/Graphics2D.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status SwapChain::init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {

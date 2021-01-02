@@ -1,5 +1,7 @@
 #include "ControlParent.h"
 
+#include "core/logging/Logger.h"
+
 namespace Ghurund::UI {
 
     const Ghurund::Type& Control::GET_TYPE() {
@@ -296,4 +298,11 @@ namespace Ghurund::UI {
         }
         return Status::OK;
     }
+
+#ifdef _DEBUG
+    String Control::logTree() {
+        return fmt::format(_T("{}: {}, ref: {}\n"), Type.Name, Name ? *Name : String(_T("[unnamed]")), ReferenceCount).c_str();
+    }
+#endif
+
 }

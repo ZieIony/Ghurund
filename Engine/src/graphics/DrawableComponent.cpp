@@ -1,4 +1,5 @@
 #include "DrawableComponent.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 	Status DrawableComponent::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

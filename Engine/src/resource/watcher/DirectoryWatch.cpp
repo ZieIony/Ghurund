@@ -1,5 +1,5 @@
 #include "DirectoryWatch.h"
-#include "application/log/Logger.h"
+#include "core/logging/Logger.h"
 #include "core/threading/FunctionQueue.h"
 
 namespace Ghurund {

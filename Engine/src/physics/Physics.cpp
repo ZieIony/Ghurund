@@ -1,5 +1,7 @@
 #include "Physics.h"
 
+#include "core/logging/Logger.h"
+
 namespace Ghurund {
     Status Physics::init() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);

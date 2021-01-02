@@ -6,7 +6,7 @@ namespace Ghurund::UI {
     void TextField::onReturn() {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
-        WString textToInsert("\r\n");
+        WString textToInsert(L"\r\n");
         layoutEditor.insertTextAt(textLayout, text, absolutePosition, textToInsert, TextStyle);
         setSelection(SetSelectionMode::AbsoluteLeading, absolutePosition + textToInsert.Size, false, false);
         repaint();

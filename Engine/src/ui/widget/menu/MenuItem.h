@@ -21,7 +21,7 @@ namespace Ghurund::UI {
     class ButtonMenuItem:public MenuItem {
     private:
         BitmapImage* image = nullptr;
-        tchar* text = nullptr;
+        WString text;
         ClickEventHandler clickEventHandler;
 
     public:
@@ -33,18 +33,18 @@ namespace Ghurund::UI {
             clickEventHandler = clickHandler;
         }
 
-        ButtonMenuItem(const tchar* text, ClickEventHandler clickHandler) {
+        ButtonMenuItem(const WString& text, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
-            safeCopyStr(&this->text, text);
+            this->text = text;
             clickEventHandler = clickHandler;
         }
 
-        ButtonMenuItem(BitmapImage* image, const tchar* text, ClickEventHandler clickHandler) {
+        ButtonMenuItem(BitmapImage* image, const WString& text, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
             this->image = image;
             if (image)
                 image->addReference();
-            safeCopyStr(&this->text, text);
+            this->text = text;
             clickEventHandler = clickHandler;
         }
 
@@ -64,15 +64,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getImage, put = setImage)) BitmapImage* Image;
 
-        inline void setText(const tchar* text) {
-            safeCopyStr(&this->text, text);
+        inline void setText(const WString& text) {
+            this->text = text;
         }
 
-        inline const tchar* getText() {
+        inline const WString& getText() {
             return text;
         }
 
-        __declspec(property(get = getText, put = setText)) const tchar* Text;
+        __declspec(property(get = getText, put = setText)) const WString Text;
 
         inline ClickEventHandler getClickEventHandler() {
             return clickEventHandler;

@@ -2,7 +2,7 @@
 
 #include "core/SharedPointer.h"
 
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 #include "ui/control/Control.h"
 #include "ui/control/TextBlockStyle.h"
 #include "ui/drawable/BitmapImage.h"
@@ -37,10 +37,10 @@ namespace Ghurund::UI {
         SharedPointer<BitmapImage> arrowUp, arrowDown;
 
     public:
-        static inline const WString TEXTSTYLE_BUTTON = "button";
-        static inline const WString TEXTSTYLE_LIST_HEADER = "listHeader";
-        static inline const WString TEXTSTYLE_TEXT_PRIMARY = "textPrimary";
-        static inline const WString TEXTSTYLE_TEXT_SECONDARY = "textSecondary";
+        static inline const WString TEXTSTYLE_BUTTON = L"button";
+        static inline const WString TEXTSTYLE_LIST_HEADER = L"listHeader";
+        static inline const WString TEXTSTYLE_TEXT_PRIMARY = L"textPrimary";
+        static inline const WString TEXTSTYLE_TEXT_SECONDARY = L"textSecondary";
 
         Style2<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle();
         Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle(*this);

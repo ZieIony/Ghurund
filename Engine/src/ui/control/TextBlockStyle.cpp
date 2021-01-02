@@ -1,5 +1,5 @@
 #include "TextBlockStyle.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     void TextBlockPrimaryStyle::onThemeChanged(TextBlock& textView) const {

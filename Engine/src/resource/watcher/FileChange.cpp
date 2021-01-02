@@ -1,5 +1,7 @@
 #include "FileChange.h"
 
+#include <tchar.h>
+
 namespace Ghurund {
 
     const FileChange& FileChange::ADDED = FileChange(FileChangeEnum::ADDED, _T("added"));

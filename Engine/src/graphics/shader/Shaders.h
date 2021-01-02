@@ -1,6 +1,8 @@
 #pragma once
 
 #include "graphics/shader/Shader.h"
+#include "core/string/TextUtils.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     class Shaders {
@@ -8,7 +10,8 @@ namespace Ghurund {
         Shaders() = delete;
 
         static Shader* load(ResourceContext& context, const wchar_t* fileName) {
-            return context.ResourceManager.load<Shader>(context, fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str());
+            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
+            return context.ResourceManager.load<Shader>(context, FilePath(path));
         }
 
     public:

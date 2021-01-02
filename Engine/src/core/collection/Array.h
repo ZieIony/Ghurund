@@ -56,13 +56,11 @@ namespace Ghurund {
         }
 
         inline void set(size_t i, const Value& e) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             v[i].~Value();
             new(v + i) Value(e);
         }
 
         inline Value& get(size_t i) const {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
 
@@ -97,12 +95,10 @@ namespace Ghurund {
         }
 
         Value& operator[](size_t i) {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
 
         const Value& operator[](size_t i) const {
-            _ASSERT_EXPR(i < size, _T("Index out of bounds.\n"));
             return v[i];
         }
 

@@ -1,18 +1,15 @@
 #pragma once
 
-#include "application/Settings.h"
 #include "core/NamedObject.h"
 #include "core/Object.h"
-#include "core/collection/Array.h"
+#include "core/reflection/Type.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
-#include "graphics/Graphics.h"
 #include "input/EventConsumer.h"
+#include "ui/Point.h"
 #include "ui/Size.h"
 
-#pragma warning(push, 0)
-#include "d3dx12.h"
-#pragma warning(pop)
+#include <Windows.h>
 
 namespace Ghurund {
     struct WindowSizeChangedEventArgs {
@@ -20,18 +17,19 @@ namespace Ghurund {
     };
 
     class Input;
+    class Timer;
 
-    class Window: public ParameterProvider, public NamedObject<String>, public Object, public EventConsumer {
+    class Window: public ParameterProvider, public NamedObject, public Object, public EventConsumer {
     private:
-        String title;
+        WString title;
         bool visible = false;
-        POINT position = {};
+        UI::IntPoint position = {};
         UI::IntSize size = {};
 
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
 
-        POINT prevMousePos = { -1, -1 };
+        UI::IntPoint prevMousePos = { -1, -1 };
 
         Window* parent;
 
@@ -81,24 +79,21 @@ namespace Ghurund {
             parameters.set(0, parameterViewportSize = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEWPORT_SIZE.Value]);
         }
 
-        virtual void updateParameters() override {
-            XMFLOAT2 sizeParam = { (float)size.width, (float)size.height };
-            parameterViewportSize->setValue(&sizeParam);
-        }
+        virtual void updateParameters() override;
 
         virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 
-        virtual void setTitle(const String& title) {
+        virtual void setTitle(const WString& title) {
             this->title = title;
         }
 
-        inline const String& getTitle()const {
+        inline const WString& getTitle()const {
             return title;
         }
 
-        __declspec(property(put = setTitle, get = getTitle)) String& Title;
+        __declspec(property(put = setTitle, get = getTitle)) WString& Title;
 
         virtual HWND getHandle() const {
             return parent->Handle;
@@ -128,11 +123,11 @@ namespace Ghurund {
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
-        inline const POINT& getPosition() const {
+        inline const UI::IntPoint& getPosition() const {
             return position;
         }
 
-        inline void setPosition(const POINT& position) {
+        inline void setPosition(const UI::IntPoint& position) {
             setPosition(position.x, position.y);
         }
 
@@ -140,7 +135,7 @@ namespace Ghurund {
             position = { x,y };
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) POINT& Position;
+        __declspec(property(get = getPosition, put = setPosition)) UI::IntPoint& Position;
 
         inline const UI::IntSize& getSize() const {
             return size;

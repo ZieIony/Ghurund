@@ -1,7 +1,5 @@
 #pragma once
 
-#include "MaterialColors.h"
-
 #include "core/SharedPointer.h"
 #include "core/string/String.h"
 #include "ui/adapter/RecyclerView.h"
@@ -12,6 +10,7 @@
 #include "ui/drawable/BitmapImageDrawable.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/ClickResponseView.h"
+#include "ui/style/Theme.h"
 
 using namespace Ghurund;
 using namespace Ghurund::UI;
@@ -27,10 +26,10 @@ struct StringObject {
 };
 
 struct StringObjectItem:public StringObject {
-    Ghurund::String text, subtext;
+    Ghurund::WString text, subtext;
     BitmapImage* image;
 
-    StringObjectItem(const Ghurund::String& text, const Ghurund::String& subtext, BitmapImage* image):text(text), subtext(subtext) {
+    StringObjectItem(const Ghurund::WString& text, const Ghurund::WString& subtext, BitmapImage* image):text(text), subtext(subtext) {
         this->image = image;
         if (image)
             image->addReference();
@@ -43,9 +42,9 @@ struct StringObjectItem:public StringObject {
 };
 
 struct StringObjectHeader:public StringObject {
-    Ghurund::String text;
+    Ghurund::WString text;
 
-    StringObjectHeader(const Ghurund::String& text):text(text) {
+    StringObjectHeader(const Ghurund::WString& text):text(text) {
         type = StringObjectType::HEADER;
     }
 };
@@ -129,7 +128,7 @@ public:
                     tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
                     TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout());
-                    tb->Text = "CANCEL";
+                    tb->Text = L"CANCEL";
                     column->Children = { tv, tv2, tb };
                 }
 
@@ -148,25 +147,25 @@ public:
         imageView->release();
     }
 
-    const Ghurund::String& getText() const {
+    const Ghurund::WString& getText() const {
         return tv->Text;
     }
 
-    void setText(const Ghurund::String& text) {
+    void setText(const Ghurund::WString& text) {
         tv->Text = text;
     }
 
-    __declspec(property(get = getText, put = setText)) const String& Text;
+    __declspec(property(get = getText, put = setText)) const WString& Text;
 
-    const String& getSubtext() const {
+    const WString& getSubtext() const {
         return tv2->Text;
     }
 
-    void setSubtext(const String& text) {
+    void setSubtext(const WString& text) {
         tv2->Text = text;
     }
 
-    __declspec(property(get = getSubtext, put = setSubtext)) const String& Subtext;
+    __declspec(property(get = getSubtext, put = setSubtext)) const WString& Subtext;
 
     inline void setImage(ImageDrawable* image) {
         imageView->Image = image;

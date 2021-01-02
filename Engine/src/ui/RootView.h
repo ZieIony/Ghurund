@@ -15,9 +15,6 @@ namespace Ghurund::UI {
         RootView(UIContext& context, Canvas& canvas);
 
         ~RootView() {
-#ifdef _DEBUG
-            Logger::log(LogType::INFO, _T("\n\n{}\n"), logTree());
-#endif
             delete canvas;
         }
 

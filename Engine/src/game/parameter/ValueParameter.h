@@ -12,14 +12,14 @@ namespace Ghurund {
 
     public:
         ValueParameter(const char* constantName, const ParameterType& type):Parameter(constantName, type) {
-            this->data = ghnew BYTE[type.Size];
+            this->data = ghnew uint8_t[type.Size];
             memset(this->data, 0, type.Size);
             value = defaultValue;
             empty = true;
         }
 
         ValueParameter(const char* constantName, const ParameterType& type, const void* value):Parameter(constantName, type) {
-            this->data = ghnew BYTE[type.Size];
+            this->data = ghnew uint8_t[type.Size];
             memcpy(this->data, value, type.Size);
             this->value = data;
             empty = false;

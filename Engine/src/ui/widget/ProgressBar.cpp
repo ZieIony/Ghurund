@@ -1,5 +1,5 @@
 #include "ProgressBar.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     ProgressBar::ProgressBar(Style<ProgressBar>& style):ProgressBar() {

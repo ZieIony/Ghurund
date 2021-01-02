@@ -1,4 +1,4 @@
-﻿#include "MathUtils.h"
+﻿#include "core/MathUtils.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/button/TextButton.h"
@@ -25,21 +25,19 @@
 #include "audio/Sound.h"
 #include "LoginTest.h"
 #include "ui/LayoutLoader.h"
+#include "ui/style/LightTheme.h"
 
-#include "MaterialColors.h"
 #include "control/FpsText.h"
 
 using namespace Ghurund;
 using namespace Ghurund::Editor;
 
-static const unsigned int FRAME_COUNT = 3;
-
 import Module;
 
 class TestApplication:public Application {
 private:
-    ::Material::Theme* theme;
-    ::Material::Theme* menuTheme;
+    Theme* theme;
+    Theme* menuTheme;
     UIContext* context;
     ModuleTest test;
 
@@ -63,11 +61,11 @@ public:
 
         window->Size = { Settings.width, Settings.height };
         SwapChain* swapChain = ghnew SwapChain();
-        swapChain->init(Graphics, &Graphics2D, *window, FRAME_COUNT);
+        swapChain->init(Graphics, &Graphics2D, *window);
         window->SwapChain = swapChain;
 
-        theme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
-        menuTheme = ghnew::Material::Light(ResourceManager, ResourceContext, 0xff0078D7);
+        theme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
+        menuTheme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
         context = ghnew UIContext(Graphics2D, *theme, *window);
 
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
@@ -81,7 +79,7 @@ public:
         SharedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
         SharedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
         logWindow->Content = logPanel;
-        logWindow->Title = "Logs";
+        logWindow->Title = L"Logs";
         /*Logger::init(ghnew CallbackLogOutput([this](LogType type, const tchar* log) {
             logPanel->addLog(type, copyStr(log));
             logPanel->repaint();
@@ -104,21 +102,21 @@ public:
         SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
         column->Name = "controls tab";
 
-        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*this, ResourceContext, *theme, "Game/layout.xml");
+        SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*this, ResourceContext, *theme, L"Game/layout.xml");
         SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext);
         SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab();
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {
-            ghnew TextTabItem("Login", loginTest),
-            ghnew TextTabItem("RecyclerView", testRecycler),
-            ghnew TextTabItem("ImageViews", testImageViews),
-            ghnew TextTabItem("testFlowLayouts", testFlowLayouts),
-            ghnew TextTabItem("controls", column),
-            ghnew TextTabItem("SplitLayout", splitLayout),
-            ghnew TextTabItem("layout editor", layoutEditor),
-            ghnew TextTabItem("drag test", dragTestTab),
-            ghnew TextTabItem("windows test", windowsTestTab)
+            ghnew TextTabItem(L"Login", loginTest),
+            ghnew TextTabItem(L"RecyclerView", testRecycler),
+            ghnew TextTabItem(L"ImageViews", testImageViews),
+            ghnew TextTabItem(L"testFlowLayouts", testFlowLayouts),
+            ghnew TextTabItem(L"controls", column),
+            ghnew TextTabItem(L"SplitLayout", splitLayout),
+            ghnew TextTabItem(L"layout editor", layoutEditor),
+            ghnew TextTabItem(L"drag test", dragTestTab),
+            ghnew TextTabItem(L"windows test", windowsTestTab)
         };
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.clear();
         ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
@@ -133,30 +131,30 @@ public:
             MenuBarPtr menuBar = ghnew MenuBar(*menuTheme);
             menuBar->Name = "menu bar";
             menuBar->Items = {
-                ghnew ButtonMenuItem("File", [](Control&) {
+                ghnew ButtonMenuItem(L"File", [](Control&) {
                     Logger::log(LogType::INFO, "File clicked\n");
                 }),
-                ghnew ButtonMenuItem("Edit", [this](Control& sender) {
+                ghnew ButtonMenuItem(L"Edit", [this](Control& sender) {
                     Logger::log(LogType::INFO, "Edit clicked\n");
                     BitmapImage* copyIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/copy 18.png");
                     BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
                     BitmapImage* pasteIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/paste 18.png");
                     PopupMenu* menu = ghnew PopupMenu(*menuTheme, *Windows[0]);
                     menu->Items = {
-                        ghnew ButtonMenuItem("Undo", [](Control&) {
+                        ghnew ButtonMenuItem(L"Undo", [](Control&) {
                             Logger::log(LogType::INFO, "undo clicked\n");
                         }),
-                        ghnew ButtonMenuItem("Redo", [](Control&) {
+                        ghnew ButtonMenuItem(L"Redo", [](Control&) {
                             Logger::log(LogType::INFO, "redo clicked\n");
                         }),
                         ghnew SeparatorMenuItem(),
-                        ghnew ButtonMenuItem(copyIcon, "Copy", [](Control&) {
+                        ghnew ButtonMenuItem(copyIcon, L"Copy", [](Control&) {
                             Logger::log(LogType::INFO, "copy clicked\n");
                         }),
-                        ghnew ButtonMenuItem(cutIcon, "Cut", [](Control&) {
+                        ghnew ButtonMenuItem(cutIcon, L"Cut", [](Control&) {
                             Logger::log(LogType::INFO, "cut clicked\n");
                         }),
-                        ghnew ButtonMenuItem(pasteIcon, "Paste", [](Control&) {
+                        ghnew ButtonMenuItem(pasteIcon, L"Paste", [](Control&) {
                             Logger::log(LogType::INFO, "paste clicked\n");
                         })
                     };
@@ -164,7 +162,7 @@ public:
                     //menu->Window->Position = { (LONG)pos.x, (LONG)(pos.y + sender.Size.height) };
                     menu->Visible = true;
                 }),
-                ghnew ButtonMenuItem(_T("Help"), [](Control&) {
+                ghnew ButtonMenuItem(L"Help", [](Control&) {
                     Logger::log(LogType::INFO, "Help clicked\n");
                 })
             };
@@ -172,13 +170,13 @@ public:
             SharedPointer<Toolbar> toolbar = ghnew Toolbar(*theme);
             toolbar->Name = "toolbar";
             toolbar->Items = {
-                ghnew ButtonMenuItem(copyIcon, "copy", [](Control&) {
+                ghnew ButtonMenuItem(copyIcon, L"copy", [](Control&) {
                     Logger::log(LogType::INFO, "copy clicked\n");
                 }),
-                ghnew ButtonMenuItem(cutIcon, "cut", [](Control&) {
+                ghnew ButtonMenuItem(cutIcon, L"cut", [](Control&) {
                     Logger::log(LogType::INFO, "cut clicked\n");
                 }),
-                ghnew ButtonMenuItem(pasteIcon, "paste", [](Control&) {
+                ghnew ButtonMenuItem(pasteIcon, L"paste", [](Control&) {
                     Logger::log(LogType::INFO, "paste clicked\n");
                 })
             };

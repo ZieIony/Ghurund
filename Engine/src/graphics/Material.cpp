@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "resource/ResourceManager.h"
 #include "core/SharedPointer.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 	Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

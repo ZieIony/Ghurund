@@ -1,6 +1,5 @@
 #pragma once
 
-#include "application/log/Logger.h"
 #include "core/collection/List.h"
 #include "core/Object.h"
 #include "graphics/GraphicsAdapter.h"

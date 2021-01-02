@@ -9,7 +9,7 @@ namespace Ghurund {
 
     class LogType : public Enum<LogTypeEnum, LogType> {
     private:
-        explicit LogType(LogTypeEnum value, const tchar* name):Enum<LogTypeEnum, LogType>(value, name) {}
+        explicit LogType(LogTypeEnum value, const char* name):Enum<LogTypeEnum, LogType>(value, name) {}
 
     public:
         static const LogType INFO, WARNING, ERR0R;

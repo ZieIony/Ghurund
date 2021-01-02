@@ -33,7 +33,7 @@ namespace Ghurund {
 
     public:
         Light():parameters(PointerArray<Parameter*>(0)) {
-            Name = _T("light");
+            Name = L"light";
         }
 
         inline void setTarget(Target* target) {

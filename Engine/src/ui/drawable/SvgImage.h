@@ -1,14 +1,13 @@
 #pragma once
 
-#include "application/log/Logger.h"
 #include "graphics/texture/Image.h"
+#include "ui/Size.h"
 
 #include <dxgi1_6.h>
 #include <d2d1_3.h>
 
 namespace Ghurund::UI {
     using namespace DirectX;
-    using Microsoft::WRL::ComPtr;
 
     class SvgImage:public Resource {
     private:
@@ -28,8 +27,6 @@ namespace Ghurund::UI {
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
     public:
-        DescriptorHandle descHandle;
-
         ~SvgImage() {
             finalize();
         }

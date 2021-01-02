@@ -2,7 +2,7 @@
 
 #include "Control.h"
 #include "ui/font/TextStyle.h"
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 #include "ui/Graphics2D.h"
 
 namespace Ghurund::UI {
@@ -49,7 +49,7 @@ namespace Ghurund::UI {
 
     public:
         TextBlock() {
-            text = "text";
+            text = L"text";
         }
 
         TextBlock(const WString& text, TextStyle* font, uint32_t color = 0xde000000) {

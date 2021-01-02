@@ -1,23 +1,13 @@
 #pragma once
 
 #pragma warning(push, 0)
-#include <d3d12.h>
 #include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include "d3dx12.h"
 #pragma warning(pop)
 
-#include "core/collection/List.h"
 #include "core/string/String.h"
 #include "core/Object.h"
-#include "application/log/Logger.h"
-
-#include <wrl.h>
 
 namespace Ghurund {
-    using namespace DirectX;
-    using namespace Microsoft::WRL;
-
     class DisplayMode: public Object {
     private:
         unsigned int width, height;

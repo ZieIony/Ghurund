@@ -1,5 +1,5 @@
 #include "SeparatorStyle.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     Separator::Separator(Style2<Separator>* style) {

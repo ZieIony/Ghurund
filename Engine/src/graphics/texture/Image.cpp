@@ -1,7 +1,12 @@
 #include "Image.h"
+
 #include "resource/ResourceContext.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 #include <Shlwapi.h>
+#include <wrl.h>
 
 namespace Ghurund {
 	DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
@@ -153,7 +158,7 @@ namespace Ghurund {
 
         bool imageConverted = false;
 
-        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
+        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
         if (FAILED(context.ImageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to create decoder\n"));
 
@@ -218,17 +223,17 @@ namespace Ghurund {
         bool sRGB = false;
         WICPixelFormatGUID pfGuid = getWICFormatFromDXGIFormat(format, &sRGB);
 
-        ComPtr<IWICStream> wicStream;
+        Microsoft::WRL::ComPtr<IWICStream> wicStream;
         HRESULT hr = pWIC->CreateStream(wicStream.GetAddressOf());
         if (FAILED(hr))
             return Status::CALL_FAIL;
 
-        ComPtr<IStream> memStream = SHCreateMemStream(nullptr, 0);
+        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream(nullptr, 0);
         hr = wicStream->InitializeFromIStream(memStream.Get());
         if (FAILED(hr))
             return Status::CALL_FAIL;
 
-        ComPtr<IWICBitmapEncoder> encoder;
+        Microsoft::WRL::ComPtr<IWICBitmapEncoder> encoder;
         hr = pWIC->CreateEncoder(guidContainerFormat, nullptr, encoder.GetAddressOf());
         if (FAILED(hr))
             return Status::CALL_FAIL;
@@ -237,8 +242,8 @@ namespace Ghurund {
         if (FAILED(hr))
             return Status::CALL_FAIL;
 
-        ComPtr<IWICBitmapFrameEncode> frame;
-        ComPtr<IPropertyBag2> props;
+        Microsoft::WRL::ComPtr<IWICBitmapFrameEncode> frame;
+        Microsoft::WRL::ComPtr<IPropertyBag2> props;
         hr = encoder->CreateNewFrame(frame.GetAddressOf(), props.GetAddressOf());
         if (FAILED(hr))
             return Status::CALL_FAIL;
@@ -286,7 +291,7 @@ namespace Ghurund {
 
         if (memcmp(&targetGuid, &pfGuid, sizeof(WICPixelFormatGUID)) != 0) {
             // Conversion required to write
-            ComPtr<IWICBitmap> source;
+            Microsoft::WRL::ComPtr<IWICBitmap> source;
             hr = pWIC->CreateBitmapFromMemory(width, height, pfGuid,
                 static_cast<UINT>(dstRowPitch), (UINT)imageData->Size,
                 imageData->Data, source.GetAddressOf());
@@ -294,7 +299,7 @@ namespace Ghurund {
                 return Status::CALL_FAIL;
             }
 
-            ComPtr<IWICFormatConverter> FC;
+            Microsoft::WRL::ComPtr<IWICFormatConverter> FC;
             hr = pWIC->CreateFormatConverter(FC.GetAddressOf());
             if (FAILED(hr)) {
                 return Status::CALL_FAIL;

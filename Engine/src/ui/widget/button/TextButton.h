@@ -7,9 +7,9 @@ namespace Ghurund::UI {
     class TextButton:public Button, public TextMixin {
     private:
         static const Ghurund::Type& GET_TYPE() {
-            static auto PROPERTY_TEXT = TypedProperty<TextButton, String>(GH_STRINGIFY(String), GH_STRINGIFY(Text), [](TextButton& button, String& value) {
+            static auto PROPERTY_TEXT = TypedProperty<TextButton, WString>(GH_STRINGIFY(String), GH_STRINGIFY(Text), [](TextButton& button, WString& value) {
                 value = button.Text;
-            }, [](TextButton& button, const String& value) {
+            }, [](TextButton& button, const WString& value) {
                 button.Text = value;
             });
 

@@ -1,6 +1,9 @@
 #include "Script.h"
 #include "ScriptEngine.h"
 #include "resource/ResourceContext.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 	Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -36,6 +39,21 @@ namespace Ghurund {
         ctx = engine.createContext();
 
         built = true;
+
+        return Status::OK;
+    }
+    
+    Status Script::execute() {
+        ctx->Prepare(func);
+        for (size_t i = 0; i < arguments.Size; i++)
+            ctx->SetArgAddress((asUINT)i, arguments[i]);
+        int r = ctx->Execute();
+        if (r != asEXECUTION_FINISHED) {
+            if (r == asEXECUTION_EXCEPTION) {
+                Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), String(ctx->GetExceptionString()));
+                return Status::SCRIPT_EXCEPTION;
+            }
+        }
 
         return Status::OK;
     }

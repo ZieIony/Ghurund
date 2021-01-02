@@ -1,8 +1,10 @@
 #include "SystemWindow.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include <windowsx.h>
 #include "WindowType.h"
+
+#include <fmt/core.h>
+#include <windowsx.h>
 
 namespace Ghurund {
     const WindowClass WindowClass::WINDOWED = WindowClass(WindowClassEnum::WINDOWED, _T("WINDOWED"), WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, 0);

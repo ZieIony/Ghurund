@@ -1,5 +1,9 @@
 #include "Texture.h"
+
 #include "resource/ResourceContext.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 	Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

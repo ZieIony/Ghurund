@@ -1,5 +1,6 @@
 #include "Shadow.h"
 #include "ui/LayoutLoader.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     void Shadow::onLayout(float x, float y, float width, float height) {

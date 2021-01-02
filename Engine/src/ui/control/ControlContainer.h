@@ -89,21 +89,7 @@ namespace Ghurund::UI {
         virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
-        virtual String logTree() {
-            String log = __super::logTree();
-            if (child) {
-                auto array = child->logTree().split(_T("\n"));
-                if (!array.Empty) {
-                    String& s = array[0];
-                    log.add(fmt::format(_T(" + {}\n"), s).c_str());
-                }
-                for (size_t i = 1; i < array.Size; i++) {
-                    String& s = array[i];
-                    log.add(fmt::format(_T("   {}\n"), s).c_str());
-                }
-            }
-            return log;
-        }
+        virtual String logTree();
 #endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

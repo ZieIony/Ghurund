@@ -2,7 +2,7 @@
 
 #include "MenuItem.h"
 #include "core/SharedPointer.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/layout/LinearLayout.h"

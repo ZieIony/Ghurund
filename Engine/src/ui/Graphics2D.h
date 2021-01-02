@@ -1,17 +1,20 @@
 #pragma once
 
 #include "core/Pointer.h"
-#include "graphics/Graphics.h"
-#include "graphics/buffer/RenderTarget.h"
 #include "ui/font/FontCollectionLoader.h"
 
 #include <dxgi1_6.h>
 #include <d2d1_3.h>
 #include <dwrite.h>
 #include <d3d11on12.h>
+#include <wrl.h>
+
+namespace Ghurund {
+    class Graphics;
+    class RenderTarget;
+}
 
 namespace Ghurund::UI {
-    using namespace DirectX;
     using Microsoft::WRL::ComPtr;
 
     enum class UIState {

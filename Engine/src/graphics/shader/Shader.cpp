@@ -1,8 +1,12 @@
 #include "Shader.h"
+
 #include "core/SharedPointer.h"
 #include "game/parameter/TextureParameter.h"
 #include "graphics/texture/Texture.h"
 #include "resource/ResourceManager.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
 	Status Shader::makeRootSignature() {
@@ -121,7 +125,7 @@ namespace Ghurund {
     }
 
     bool Shader::set(Graphics& graphics, CommandList& commandList) {
-        bool changed = commandList.setGraphicsRootSignature(rootSignature) | commandList.setPipelineState(pipelineState);
+        bool changed = commandList.setGraphicsRootSignature(rootSignature) || commandList.setPipelineState(pipelineState);
 
         for (size_t i = 0; i < constantBuffers.Size; i++)
             constantBuffers[i]->set(graphics, commandList);
@@ -156,7 +160,6 @@ namespace Ghurund {
         samplers.deleteItems();
         for (size_t i = 0; i < 6; i++)
             delete programs[i];
-        delete[] source;
 
         delete parameters;
 #ifdef _DEBUG
@@ -218,7 +221,7 @@ namespace Ghurund {
         AString output;
         Status result = Status::OK;
         for (unsigned int i = 0; i < 6; i++) {
-            ShaderProgram* program = ghnew ShaderProgram(types[i]);
+            ShaderProgram* program = ghnew ShaderProgram(types[i], types[i].getEntryPoint());
             char* programErrors = nullptr;
             result = program->compile(source, &programErrors);
             if (result == Status::OK) {

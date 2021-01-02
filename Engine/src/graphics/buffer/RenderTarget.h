@@ -19,7 +19,7 @@ namespace Ghurund::UI {
 }
 
 namespace Ghurund {
-    class RenderTarget: public NamedObject<String> {
+    class RenderTarget: public NamedObject {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
         ID3D12Resource* texture = nullptr;
@@ -34,7 +34,7 @@ namespace Ghurund {
     public:
         RenderTarget() {
 #ifdef _DEBUG
-            Name = _T("unnamed RenderTarget");
+            Name = L"unnamed RenderTarget";
 #endif
         }
 
@@ -102,9 +102,9 @@ namespace Ghurund {
             }
         }
 
-        virtual void setName(const String& name) override {
-            NamedObject<String>::setName(name);
-            texture->SetName((WString)name);
+        virtual void setName(const WString& name) override {
+            NamedObject::setName(name);
+            texture->SetName(name);
         }
 
         Status capture(ResourceContext& context, Image*& image);

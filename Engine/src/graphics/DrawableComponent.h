@@ -71,12 +71,6 @@ namespace Ghurund {
 		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
 
 		virtual void initParameters(ParameterManager& parameterManager) override {
-#ifdef _DEBUG
-			if (!material) {
-				Logger::log(LogType::WARNING, _T("material is null\n"));
-				return;
-			}
-#endif
 			material->initParameters(parameterManager);
 		}
 

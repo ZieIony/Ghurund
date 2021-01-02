@@ -1,6 +1,7 @@
 #include "ControlGroup.h"
 #include "ui/LayoutLoader.h"
 #include "ui/Alignment.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     bool ControlGroup::focusNext() {
@@ -153,4 +154,26 @@ namespace Ghurund::UI {
         Children.addAll(loader.loadControls(context, xml));
         return Status::OK;
     }
+
+#ifdef _DEBUG
+    String ControlGroup::logTree() {
+        String log = __super::logTree();
+        for (Control* child : children) {
+            auto array = child->logTree().split(_T("\n"));
+            if (!array.Empty) {
+                String& s = array[0];
+                log.add(fmt::format(_T(" + {}\n"), s).c_str());
+            }
+            for (size_t i = 1; i < array.Size; i++) {
+                String& s = array[i];
+                if (children[children.Size - 1] == child) {
+                    log.add(fmt::format(_T("   {}\n"), s).c_str());
+                } else {
+                    log.add(fmt::format(_T(" | {}\n"), s).c_str());
+                }
+            }
+        }
+        return log;
+    }
+#endif
 }

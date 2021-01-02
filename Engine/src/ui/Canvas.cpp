@@ -1,6 +1,6 @@
 #include "Canvas.h"
 
-#include "application/log/Logger.h"
+#include "core/logging/Logger.h"
 #include "graphics/SwapChain.h"
 
 namespace Ghurund::UI {
@@ -21,5 +21,11 @@ namespace Ghurund::UI {
         floodEffect->SetValue(D2D1_FLOOD_PROP_COLOR, D2D1::Vector4F(1.0f, 1.0f, 1.0f, 1.0f));
 
         return Status::OK;
+    }
+
+    void Canvas::endPaint() {
+        if (matrixStack.Size != 1)
+            Logger::log(LogType::INFO, _T("mismatched calls to Canvas::save() and Canvas::restore()\n"));
+        matrixStack.clear();
     }
 }

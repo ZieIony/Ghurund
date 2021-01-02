@@ -1,14 +1,11 @@
 #pragma once
 
 #include "Fence.h"
-#include "application/log/Logger.h"
 #include "Graphics.h"
 #include "core/NamedObject.h"
 #include "core/collection/PointerList.h"
 
 namespace Ghurund {
-    class Shader;
-
     enum class CommandListState {
         INVALID,
         RECORDING,  // can be closed
@@ -16,7 +13,7 @@ namespace Ghurund {
         FINISHED    // can be only reset
     };
 
-    class CommandList: public NamedObject<String>, public Pointer {
+    class CommandList: public NamedObject, public Pointer {
     private:
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
@@ -43,7 +40,7 @@ namespace Ghurund {
 
         CommandList() {
 #ifdef _DEBUG
-            Name = _T("unnamed CommandList");
+            Name = L"unnamed CommandList";
 #endif
         }
 
@@ -67,9 +64,9 @@ namespace Ghurund {
 
         __declspec(property(get = getState)) CommandListState State;
 
-        virtual void setName(const String& name) override {
+        virtual void setName(const WString& name) override {
             NamedObject::setName(name);
-            commandList->SetName((WString)name);
+            commandList->SetName(name);
         }
 
         bool setPipelineState(ID3D12PipelineState* pipelineState);

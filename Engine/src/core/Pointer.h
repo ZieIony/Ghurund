@@ -1,22 +1,13 @@
 #pragma once
 
-#include "application/log/Logger.h"
 #include "Object.h"
-#include "core/threading/CriticalSection.h"
 #include "core/reflection/Type.h"
-
-#include <typeinfo>
 
 namespace Ghurund {
 
     class Pointer: public Object {
     private:
-        unsigned long referenceCount;
-
-#ifdef _DEBUG
-        static Ghurund::List<Ghurund::Pointer*> pointers;
-        static CriticalSection section;
-#endif
+        uint32_t referenceCount = 1;
 
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
@@ -26,13 +17,17 @@ namespace Ghurund {
             return TYPE;
         }
 
+#ifdef _DEBUG
+        void checkReferenceCount();
+#endif
+
     protected:
-        Pointer(const Pointer& pointer);
+        Pointer(const Pointer& pointer) = delete;
 
         virtual ~Pointer() = 0;
 
     public:
-        Pointer();
+        Pointer() {}
 
         inline void addReference() {
             referenceCount++;
@@ -40,10 +35,7 @@ namespace Ghurund {
 
         inline void release() {
 #ifdef _DEBUG
-            if (referenceCount == 0) {
-                const auto& info = typeid(*this);
-                Logger::log(LogType::WARNING, _T("[{}] {} release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, String(info.name()), referenceCount);
-            }
+            checkReferenceCount();
 #endif
             referenceCount--;
             if (!referenceCount)
@@ -55,10 +47,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
-
-#ifdef _DEBUG
-        static void dumpPointers();
-#endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

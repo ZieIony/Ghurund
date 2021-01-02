@@ -2,6 +2,8 @@
 
 #include "core/Enum.h"
 
+#include <Windows.h>
+
 namespace Ghurund {
     enum class FileChangeEnum {
         ADDED = FILE_ACTION_ADDED,

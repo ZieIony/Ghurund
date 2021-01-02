@@ -2,40 +2,29 @@
 
 #pragma warning(push, 0)
 #include <d3d12.h>
-#include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include <D3Dcompiler.h>
-#include "d3dx12.h"
 #pragma warning(pop)
-
-#include <wrl.h>
 
 namespace Ghurund {
 	using namespace DirectX;
-	using namespace Microsoft::WRL;
 
 	class ShaderConstant {
     protected:
-        char *name = nullptr;
+        AString name;
         unsigned int bindPoint, bindSlot;
         D3D12_SHADER_VISIBILITY visibility;
 
     public:
-        ShaderConstant(const char *name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility) {
-            this->name = copyStr(name);
+        ShaderConstant(const AString& name, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility) {
+            this->name = name;
             this->bindPoint = bindPoint;
             this->visibility = visibility;
         }
 
-        virtual ~ShaderConstant() {
-            delete[] name;
-        }
-
-        inline const char *getName() {
+        inline const AString& getName() {
             return name;
         }
 
-        __declspec(property(get = getName)) const char* Name;
+        __declspec(property(get = getName)) const AString& Name;
 
         inline unsigned int getBindPoint() const {
             return bindPoint;

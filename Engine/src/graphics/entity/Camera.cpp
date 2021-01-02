@@ -1,5 +1,8 @@
 #include "Camera.h"
+
 #include "script/ScriptEngine.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
 
 namespace Ghurund {
 	void Camera::rebuild() {
@@ -36,7 +39,7 @@ namespace Ghurund {
         float rotation = 0.0f;
         setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
 
-        Name = _T("camera");
+        Name = L"camera";
     }
 
     void Camera::initParameters(ParameterManager& parameterManager) {

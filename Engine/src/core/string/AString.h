@@ -15,49 +15,6 @@ namespace Ghurund {
 
         AString(AString&& string) noexcept:GenericString<char>(std::move(string)) {}
 
-        AString(const wchar_t* str) {
-            add(str);
-        }
-
-        AString(const wchar_t* str, size_t length) {
-            add(str, length);
-        }
-
-        AString(const GenericString<wchar_t>& string) {
-            add(string.getData());
-        }
-
-        using GenericString<char>::add;
-
-        void add(const wchar_t e);
-
-        inline void add(const wchar_t* str) {
-            if (!str)
-                return;
-            char* cstr = toMultiByte(str);
-            add(cstr);
-            delete[] cstr;
-        }
-
-        inline void add(const wchar_t* str, size_t len) {
-            if (!str)
-                return;
-            char* cstr = toMultiByte(str);
-            add(cstr, len);
-            delete[] cstr;
-        }
-
-        using GenericString<char>::operator==;
-
-        bool operator==(const wchar_t* str) const {
-            if (!str)
-                return false;
-            char* cstr = toMultiByte(str);
-            bool result = memcmp(v, cstr, Length * sizeof(char)) == 0;
-            delete[] cstr;
-            return result;
-        }
-
         using GenericString<char>::operator=;
 
         AString& operator=(const AString& string) {

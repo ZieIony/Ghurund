@@ -1,6 +1,5 @@
 #pragma once
 
-#include "application/log/Logger.h"
 #include "graphics/Fence.h"
 #include "graphics/Graphics.h"
 #include "graphics/CommandList.h"

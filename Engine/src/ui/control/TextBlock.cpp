@@ -1,6 +1,7 @@
 #include "TextBlock.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/LayoutLoader.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
@@ -54,8 +55,9 @@ namespace Ghurund::UI {
         if (result != Status::OK)
             return result;
         auto textAttr = xml.FindAttribute("text");
-        if (textAttr)
-            Text = textAttr->Value();
+        if (textAttr) {
+            Text = loader.loadText(textAttr->Value());
+        }
         auto textColorAttr = xml.FindAttribute("textColor");
         if (textColorAttr)
             TextColor = loader.loadColor(textColorAttr->Value());

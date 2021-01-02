@@ -27,13 +27,13 @@ public:
         {
             auto imageView = makeShared<ImageView>();
             imageView->PreferredSize.height = 200.0f;
-            imageView->Image = makeShared<BitmapImageDrawable>(BitmapImage::makeFromImage(resourceContext, "images/test/strawberry.jpg"));
+            imageView->Image = makeShared<BitmapImageDrawable>(BitmapImage::makeFromImage(resourceContext, L"images/test/strawberry.jpg"));
 
             auto loginRow = makeShared<HorizontalLayout>();
             loginRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
                 auto loginIconView = makeShared<ImageView>();
-                SharedPointer<SvgImage> faceIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, "icons/face 24.svg");
+                SharedPointer<SvgImage> faceIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, L"icons/face 24.svg");
                 auto faceIconDrawable = makeShared<SvgImageDrawable>(faceIcon);
                 faceIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 loginIconView->Image = faceIconDrawable;
@@ -52,7 +52,7 @@ public:
             passwordRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
                 auto passwordIconView = makeShared<ImageView>();
-                SharedPointer<SvgImage> lockIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, "icons/lock 24.svg");
+                SharedPointer<SvgImage> lockIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, L"icons/lock 24.svg");
                 auto passwordIconDrawable = makeShared<SvgImageDrawable>(lockIcon);
                 passwordIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 passwordIconView->Image = passwordIconDrawable;
@@ -72,10 +72,10 @@ public:
             {
                 auto loginButton = makeShared<TextButton>();
                 loginButton->PreferredSize.width = PreferredSize::Width::FILL;
-                loginButton->Text = "LOGIN";
+                loginButton->Text = L"LOGIN";
                 auto registerButton = makeShared<TextButton>();
                 registerButton->PreferredSize.width = PreferredSize::Width::FILL;
-                registerButton->Text = "REGISTER";
+                registerButton->Text = L"REGISTER";
 
                 buttonsRow->Children = {
                     makeShared<Space>(8.0f),

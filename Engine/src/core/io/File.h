@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Common.h"
-#include "FileUtils.h"
+#include "core/io/FileUtils.h"
 #include "FilePath.h"
 #include "core/string/String.h"
 
@@ -43,7 +43,7 @@ namespace Ghurund {
             if(this->data!=nullptr)
                 delete[] this->data;
             this->size = size;
-            this->data = ghnew BYTE[size];
+            this->data = ghnew uint8_t[size];
             memcpy(this->data, data, size);
         }
 
@@ -55,12 +55,7 @@ namespace Ghurund {
             return writeFile(path, data, size);
         }
 
-        inline bool exists() const {
-            DWORD attributes = GetFileAttributesW(path);
-
-            return (attributes != INVALID_FILE_ATTRIBUTES &&
-                    !(attributes & FILE_ATTRIBUTE_DIRECTORY));
-        }
+        bool exists() const;
 
         __declspec(property(get = exists)) bool Exists;
     };

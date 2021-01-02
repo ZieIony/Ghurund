@@ -17,6 +17,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Preview", "Preview\Preview.
 		{86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC} = {86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Messenger", "Messenger\Messenger.vcxproj", "{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC} = {86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +72,16 @@ Global
 		{4E1C6C9B-DAC4-4AB1-91B5-497C3A912F96}.Release|x64.Build.0 = Release|x64
 		{4E1C6C9B-DAC4-4AB1-91B5-497C3A912F96}.Release|x86.ActiveCfg = Release|Win32
 		{4E1C6C9B-DAC4-4AB1-91B5-497C3A912F96}.Release|x86.Build.0 = Release|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Debug|x64.ActiveCfg = Debug|x64
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Debug|x64.Build.0 = Debug|x64
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Debug|x86.ActiveCfg = Debug|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Debug|x86.Build.0 = Debug|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Release|Any CPU.ActiveCfg = Release|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Release|x64.ActiveCfg = Release|x64
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Release|x64.Build.0 = Release|x64
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Release|x86.ActiveCfg = Release|Win32
+		{24C72D92-A7E7-4F5D-B135-12E9FF2419EE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

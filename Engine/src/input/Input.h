@@ -1,11 +1,11 @@
 #pragma once
 
-#include "application/Timer.h"
 #include "Mouse.h"
 #include "core/collection/List.h"
 #include "Keyboard.h"
-#include "Windowsx.h"
 #include "EventConsumer.h"
+
+#include <Windows.h>
 
 namespace Ghurund {
     struct WindowMessage {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/layout/ManualLayout.h"
 #include "ui/widget/button/TextButton.h"
 #include "ui/widget/DragHelper.h"
@@ -17,10 +17,10 @@ namespace Ghurund::Editor {
     public:
         DragTestTab() {
             TextButtonPtr tb = ghnew TextButton(ghnew TextButtonFlatLayout());
-            tb->Text = "CANCEL";
+            tb->Text = L"CANCEL";
             helper = ghnew DragHelper(*tb);
             TextButtonPtr tb2 = ghnew TextButton(ghnew TextButtonFlatLayout());
-            tb2->Text = "TEST";
+            tb2->Text = L"TEST";
             helper2 = ghnew DragHelper(*tb2);
             Children = { tb, tb2 };
         }

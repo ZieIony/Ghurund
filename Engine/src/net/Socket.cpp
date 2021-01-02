@@ -1,7 +1,9 @@
 #include "Socket.h"
 
-namespace Ghurund {
-    Status Ghurund::Socket::init(::SOCKET id, SocketProtocol protocol, const tchar* address, unsigned short port) {
+#include "core/logging/Logger.h"
+
+namespace Ghurund::Net {
+    Status Socket::init(::SOCKET id, SocketProtocol protocol, const tchar* address, unsigned short port) {
         this->id = id;
         this->protocol = protocol;
         if (id == INVALID_SOCKET)
@@ -66,7 +68,7 @@ namespace Ghurund {
         return ::sendto(id, (const char*)data, (int)size, flags, (sockaddr*)addressStruct, sizeof(sockaddr_in)) == SOCKET_ERROR ? Status::SOCKET : Status::OK;
     }
 
-    Status Socket::receive(void** data, size_t * size) {
+    Status Socket::receive(void** data, size_t* size) {
         int bytes;
         sockaddr socketAddr;
         memset(&socketAddr, 0, sizeof(socketAddr));
@@ -83,7 +85,7 @@ namespace Ghurund {
             memcpy(*data, dataBuffer.buf, bytes);
         }
         if (size != nullptr)
-            * size = bytes;
+            *size = bytes;
 
         return Status::OK;
     }

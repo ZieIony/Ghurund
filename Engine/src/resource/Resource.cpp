@@ -1,5 +1,9 @@
 #include "Resource.h"
 
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
+
 namespace Ghurund {
     LoadOption operator |(LoadOption lhs, LoadOption rhs) {
         return (LoadOption)((std::underlying_type<LoadOption>::type)lhs | (std::underlying_type<LoadOption>::type)rhs);
@@ -45,6 +49,10 @@ namespace Ghurund {
         if (stream.readUInt() != getVersion())
             return Status::WRONG_RESOURCE_VERSION;
         return Status::OK;
+    }
+
+    Resource::~Resource() {
+        delete path;
     }
 
     Status Resource::load(ResourceContext& context, size_t* bytesRead, LoadOption options) {
@@ -150,5 +158,10 @@ namespace Ghurund {
 
     Status Resource::save(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         return saveInternal(context, workingDir, stream, options);
+    }
+    
+    void Resource::setPath(const FilePath* path) {
+        delete this->path;
+        this->path = ghnew FilePath(*path);
     }
 }

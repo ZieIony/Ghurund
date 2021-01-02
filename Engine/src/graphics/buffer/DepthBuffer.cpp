@@ -1,4 +1,5 @@
 #include "DepthBuffer.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status DepthBuffer::init(Graphics& graphics, unsigned int width, unsigned int height) {

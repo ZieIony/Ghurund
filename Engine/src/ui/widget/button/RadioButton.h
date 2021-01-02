@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CheckBoxRadioLayout.h"
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 #include "ui/mixin/TextMixin.h"
 #include "ui/widget/Widget.h"
 

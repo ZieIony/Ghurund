@@ -3,7 +3,7 @@
 #include "core/collection/BufferedValue.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
-
+#include "core/logging/Logger.h"
 #include "Frame.h"
 
 #include <d3d12.h>
@@ -45,7 +45,7 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount);
+        Status init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount = 3);
 
         Status initBuffers();
 

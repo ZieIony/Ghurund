@@ -1,5 +1,7 @@
 #include "RootView.h"
 
+#include "ui/Cursor.h"
+
 namespace Ghurund::UI {
     RootView::RootView(UIContext& context, Canvas& canvas) {
         this->canvas = &canvas;
@@ -46,7 +48,7 @@ namespace Ghurund::UI {
         } else if (event.Key == VK_ESCAPE) {
             clearFocus();
             if (capturedChild) {
-                capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::UP, MouseButton::VIRTUAL, event.Time, false));
+                capturedChild->dispatchMouseButtonEvent(MouseButtonEventArgs({ -1,-1 }, MouseAction::UP, MouseButton::VIRTUAL, event.TimeMs, false));
                 capturedChild->release();
                 capturedChild = nullptr;
             }

@@ -2,7 +2,6 @@
 
 #include "graphics/Graphics.h"
 #include "graphics/Fence.h"
-#include "application/log/Logger.h"
 #include "graphics/texture/Image.h"
 
 #include <dxgi1_6.h>

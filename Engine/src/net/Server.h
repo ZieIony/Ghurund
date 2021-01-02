@@ -1,28 +1,27 @@
 #pragma once
 
-#include "winsock2.h"
+#include "core/Noncopyable.h"
 #include "core/collection/List.h"
 #include "Message.h"
 #include "Socket.h"
 
-namespace Ghurund {
+namespace Ghurund::Net {
     class Server:public Noncopyable {
     private:
         Socket socket;
         List<Socket*> sockets;
-        boolean hosting;
+        bool hosting;
 
     public:
         Server();
         ~Server();
 
-        Status init();
         Status host(SocketProtocol protocol, unsigned short port);
         Status accept();
         //Status receive(Socket **sender, void **buffer, int *size);
         void shutdown();
 
-        inline boolean isHosting() {
+        inline bool isHosting() {
             return hosting;
         }
         

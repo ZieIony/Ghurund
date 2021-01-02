@@ -38,7 +38,7 @@ namespace Ghurund::UI {
         }
 
         virtual void bind(PropertyRow& control, ObjectProperty* const& item, size_t position) const override {
-            control.Label = item->Property.Name;
+            control.Label = toWideChar(AString(item->Property.Name));
             StringType b;
             item->get((void**)&b);
             ((StringPropertyRow<StringType>&)control).Value = b;

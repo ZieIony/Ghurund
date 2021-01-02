@@ -1,26 +1,21 @@
 #pragma once
 
 #include "application/SystemWindow.h"
-#include "MathUtils.h"
+#include "core/MathUtils.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
-
-#include "MaterialColors.h"
-
-using namespace Ghurund;
-using namespace Ghurund::UI;
-
-static const unsigned int FRAME_COUNT = 3;
+#include "ui/style/LightTheme.h"
 
 namespace Preview {
     using namespace Ghurund;
+    using namespace Ghurund::UI;
 
     class PreviewWindow:public OverlappedWindow {
     private:
-        ::Material::Theme* theme;
+        Theme* theme;
         UIContext* context;
         SharedPointer<StackLayout> container;
         LayoutLoader layoutLoader;
@@ -33,10 +28,10 @@ namespace Preview {
         PreviewWindow(Application& app):OverlappedWindow(app.Timer) {
             this->app = &app;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
-            swapChain->init(app.Graphics, &app.Graphics2D, *this, FRAME_COUNT);
+            swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = swapChain;
 
-            theme = ghnew::Material::Light(app.ResourceManager, app.ResourceContext, 0xff0078D7);
+            theme = ghnew LightTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
             layoutLoader.Theme = theme;
             context = ghnew UIContext(app.Graphics2D, *theme, *this);
 
@@ -49,7 +44,7 @@ namespace Preview {
             container = makeShared<StackLayout>();
             container->Alignment = { Alignment::Horizontal::CENTER, Alignment::Vertical::CENTER };
             auto file = makeShared<TextBlock>();
-            file->Text = "drop file here to open";
+            file->Text = L"drop file here to open";
             auto padding = makeShared<PaddingContainer>(8.0f);
             padding->Child = file;
             stack->Children = { container, padding };

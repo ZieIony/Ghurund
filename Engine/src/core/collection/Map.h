@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Collection.h"
-#include <functional>
 
 namespace Ghurund {
 

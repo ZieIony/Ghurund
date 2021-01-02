@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/SharedPointer.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
 #include "ui/widget/button/TextButton.h"
@@ -34,7 +34,7 @@ public:
 
             for (size_t i = 0; i < 10; i++) {
                 TextButtonPtr button = ghnew TextButton();
-                button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
+                button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                 button->MinSize = FloatSize{ 60.0f, 60.0f };
                 flowLayout->Children.add(button);
             }
@@ -62,7 +62,7 @@ public:
 
             for (size_t i = 0; i < 10; i++) {
                 TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout());
-                button->Text = fmt::format("test {}", (unsigned int)(i + 1)).c_str();
+                button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                 flowLayout->Children.add(button);
             }
 

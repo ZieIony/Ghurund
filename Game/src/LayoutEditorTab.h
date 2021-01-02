@@ -4,7 +4,7 @@
 #include "tool/PropertyPanel.h"
 #include "tool/WidgetHierarchyPanel.h"
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/control/TextBlock.h"
 #include "ui/widget/SplitLayout.h"
 #include "ui/widget/VerticalScrollBar.h"
@@ -51,12 +51,12 @@ namespace Ghurund::Editor {
 
             propertiesPanel = ghnew PropertyPanel(context, theme);
             propertiesWindow = ghnew ToolWindow(theme);
-            propertiesWindow->Title = "Properties";
+            propertiesWindow->Title = L"Properties";
             propertiesWindow->Content = propertiesPanel;
             propertiesWindow->PreferredSize.width = 200;
             widgetHierarchyPanel = ghnew WidgetHierarchyPanel(context, theme);
             widgetHierarchyWindow = ghnew ToolWindow(theme);
-            widgetHierarchyWindow->Title = "Widget";
+            widgetHierarchyWindow->Title = L"Widget";
             widgetHierarchyWindow->Content = widgetHierarchyPanel;
             widgetHierarchyWindow->PreferredSize.width = 200;
 

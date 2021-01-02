@@ -1,20 +1,28 @@
 #pragma once
 
-#include "audio/Audio.h"
 #include "core/Noncopyable.h"
+#include "core/Object.h"
 #include "core/allocation/AllocatorMap.h"
-#include "game/parameter/ParameterManager.h"
-#include "graphics/CommandList.h"
-#include "script/ScriptEngine.h"
-#include "physics/Physics.h"
+#include "Status.h"
 
-#include <wincodec.h>
+struct IWICImagingFactory;
 
 namespace Ghurund::UI {
     class Graphics2D;
 }
 
+namespace Ghurund::Audio {
+    class Audio;
+}
+
 namespace Ghurund {
+    class Physics;
+    class Graphics;
+    class ScriptEngine;
+    class CommandList;
+    class ParameterManager;
+    class ResourceManager;
+
     class ResourceContext: public Object {
     private:
         static const Ghurund::Type& GET_TYPE() {
@@ -40,24 +48,9 @@ namespace Ghurund {
         ResourceContext(Ghurund::Graphics& graphics, Ghurund::UI::Graphics2D& graphics2d, Audio::Audio& audio, Ghurund::ParameterManager& parameterManager, ScriptEngine& scriptEngine, Physics& physics, ResourceManager& resourceManager)
             : graphics(graphics), graphics2d(graphics2d), audio(audio), parameterManager(parameterManager), scriptEngine(scriptEngine), physics(physics), resourceManager(resourceManager) {}
 
-        ~ResourceContext() {
-            if (wicFactory)
-                wicFactory->Release();
-            if (commandList)
-                commandList->release();
-        }
+        ~ResourceContext();
 
-        Status init() {
-            commandList = ghnew Ghurund::CommandList();
-            Status result = commandList->init(graphics, graphics.DirectQueue);
-            if (result != Status::OK)
-                return result;
-            commandList->Name = _T("resource context's CommandList");
-            HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&wicFactory));
-            if (FAILED(hr))
-                return Status::CALL_FAIL;
-            return Status::OK;
-        }
+        Status init();
 
         Graphics& getGraphics() {
             return graphics;

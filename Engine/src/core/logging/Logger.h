@@ -1,19 +1,18 @@
 #pragma once
 
 #include "Status.h"
-#include "core/Enum.h"
 #include "core/Noncopyable.h"
 #include "core/threading/CriticalSection.h"
 #include "LogType.h"
-#include "LogOutput.h"
 #include "Formatter.h"
 
 #include "fmt/core.h"
 
 #include <dbghelp.h>
-#include <functional>
 
 namespace Ghurund {
+    __interface LogOutput;
+
     class Logger:public Noncopyable {
     private:
         static HANDLE process;
@@ -33,7 +32,7 @@ namespace Ghurund {
             std::basic_string<tchar> fileLine = getFileLine(getAddress());
 
             std::basic_string<tchar> message = fmt::format(formatStr, args...);
-            std::basic_string<tchar> log = message.ends_with(_T("\n")) ? fileLine + message : fileLine + message + _T("\n");
+            std::basic_string<tchar> log = fileLine + message;
 
             writeLog(type, log.c_str(), log.size());
         }

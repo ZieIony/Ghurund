@@ -1,8 +1,9 @@
 #include "ShaderProgram.h"
 #include "CompilerInclude.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
-    Status ShaderProgram::compile(const char *code, char **outErrorMessages, char *fileName) {
+    Status ShaderProgram::compile(const char *code, char **outErrorMessages, const wchar_t* fileName) {
         unsigned int compileFlags;
 #ifdef _DEBUG
         compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
@@ -11,14 +12,18 @@ namespace Ghurund {
 #endif
 
         const wchar_t *localShaderDir = nullptr;
-        if(fileName)
+        const char* fileNameA = nullptr;
+        if (fileName) {
             localShaderDir = FilePath(fileName).Directory;
+            fileNameA = toMultiByte(fileName);
+        }
         CompilerInclude include(localShaderDir, L"shaders/");
         const char *targetText = makeCompilationTarget();
         ID3DBlob *errorBlob;
         Status result;
         ComPtr<ID3DBlob> shader;
-        HRESULT hr = D3DCompile(code, strlen(code), fileName, nullptr, &include, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
+        HRESULT hr = D3DCompile(code, strlen(code), fileNameA, nullptr, &include, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
+        delete[] fileNameA;
         if(FAILED(hr)) {
             if(errorBlob == nullptr) {
                 result = Status::COMPILATION_ERROR;

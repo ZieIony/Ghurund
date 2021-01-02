@@ -2,6 +2,7 @@
 
 #include "Texture.h"
 #include "core/SharedPointer.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     class Textures {
@@ -9,7 +10,8 @@ namespace Ghurund {
         Textures() = delete;
 
         static Texture* make(ResourceContext& context, const wchar_t* fileName) {
-            return makeFromImage(context, fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str());
+            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
+            return makeFromImage(context, FilePath(path));
         }
 
     public:

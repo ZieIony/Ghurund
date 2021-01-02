@@ -1,16 +1,16 @@
 #pragma once
 
 #include "AdapterOutput.h"
+#include "Status.h"
 
 namespace Ghurund {
-    using namespace DirectX;
     using namespace Microsoft::WRL;
 
     class GraphicsAdapter: public Object {
     private:
         ComPtr<IDXGIAdapter1> adapter;
         DXGI_ADAPTER_DESC1 desc;
-        String name;
+        WString name;
         List<AdapterOutput*> outputs;
 
         Status initOutputs() {
@@ -52,7 +52,7 @@ namespace Ghurund {
             return adapter;
         }
 
-        String& getName() {
+        WString& getName() {
             return name;
         }
 

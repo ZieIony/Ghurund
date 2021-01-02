@@ -2,14 +2,12 @@
 
 #include "core/collection/List.h"
 #include "core/collection/Map.h"
-#include "application/log/Logger.h"
 #include "core/threading/CriticalSection.h"
 #include "graphics/GraphicsAdapter.h"
 
-namespace Ghurund {
-    using namespace DirectX;
-    using namespace Microsoft::WRL;
+#include <d3d12.h>
 
+namespace Ghurund {
     class Graphics;
 
     class DescriptorHandle {

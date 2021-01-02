@@ -2,22 +2,17 @@
 
 #include "ResourceContext.h"
 
-#include "audio/Audio.h"
-#include "application/log/Logger.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"
 #include "core/io/File.h"
 #include "core/collection/PointerMap.h"
 #include "core/collection/HashMap.h"
 #include "core/threading/WorkerThread.h"
-#include "game/parameter/ParameterManager.h"
-#include "graphics/CommandList.h"
 #include "resource/LibraryList.h"
 #include "resource/ReloadTask.h"
 #include "resource/Resource.h"
 #include "resource/watcher/FileWatcher.h"
-
-#include <wincodec.h>
+#include "core/io/MemoryStream.h"
 
 namespace Ghurund {
     class ResourceManager:public Noncopyable, public Object {
@@ -99,7 +94,7 @@ namespace Ghurund {
         }
 
         template<class Type> void loadAsync(ResourceContext& context, const FilePath& path, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
-            Task* task = ghnew Task(String(path), [this, &context, path, onLoaded, options] {
+            Task* task = ghnew Task(path, [this, &context, path, onLoaded, options] {
 				Type* resource;
 				Status loadResult;
 				loadInternal(resource, context, path, &loadResult, options);

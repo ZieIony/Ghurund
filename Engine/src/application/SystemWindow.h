@@ -2,8 +2,11 @@
 
 #include "DragDropManager.h"
 #include "Window.h"
-#include "ui/RootView.h"
 #include "input/Input.h"
+
+namespace Ghurund::UI {
+    class RootView;
+}
 
 namespace Ghurund {
     class SystemWindow;
@@ -29,7 +32,7 @@ namespace Ghurund {
         Ghurund::Timer& timer;
         Ghurund::UI::RootView* rootView = nullptr;
 
-        ComPtr<DragDropManager> dragDropManager;
+        DragDropManager* dragDropManager = nullptr;
         Event<Ghurund::Window> onDraggedOver = Event<Ghurund::Window>(*this);
         Event<Ghurund::Window> onDragLeft = Event<Ghurund::Window>(*this);
         Event<Ghurund::Window, Array<FilePath*>*> onDragEntered = Event<Ghurund::Window, Array<FilePath*>*>(*this);
@@ -53,9 +56,9 @@ namespace Ghurund {
 
         __declspec(property(get = getClass)) const WindowClass& Class;
 
-        virtual void setTitle(const String& title) override {
+        virtual void setTitle(const WString& title) override {
             __super::setTitle(title);
-            SetWindowText(handle, title);
+            SetWindowTextW(handle, title);
         }
 
         virtual HWND getHandle() const override {
@@ -110,7 +113,7 @@ namespace Ghurund {
         void setDragDropEnabled(bool enabled);
 
         inline bool isDragDropEnabled() {
-            return dragDropManager.Get() != nullptr;
+            return dragDropManager != nullptr;
         }
 
         __declspec(property(get = isDragDropEnabled, put = setDragDropEnabled)) bool DragDropEnabled;
@@ -147,39 +150,17 @@ namespace Ghurund {
             SetActiveWindow(handle);
         }
 
-        virtual bool onKeyEvent(const KeyEventArgs& args) override {
-            if (rootView)
-                rootView->dispatchKeyEvent(args);
-            return true;
-        }
+        virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override {
-            if (rootView)
-                rootView->dispatchMouseMotionEvent(args);
-            return true;
-        }
+        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override;
 
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override {
-            if (rootView)
-                rootView->dispatchMouseWheelEvent(args);
-            return true;
-        }
+        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override;
 
-        virtual void onUpdate(const uint64_t time) override {
-            input.dispatchEvents(time, *this);
-            if (rootView) {
-                rootView->onUpdate(time);
-                rootView->measure((float)Size.width, (float)Size.height);
-                rootView->layout(0, 0, (float)Size.width, (float)Size.height);
-            }
-        }
+        virtual void onUpdate(const uint64_t time) override;
 
-        virtual void onPaint() {
-            if (rootView)
-                rootView->draw();
-        }
+        virtual void onPaint();
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

@@ -1,14 +1,16 @@
 #include "GameAction.h"
 
+#include <tchar.h>
+
 namespace Ghurund {
 
-    const GameAction GameAction::GO_FORWARD = GameAction(GameActionEnum::GO_FORWARD, _T("go forward"));
-    const GameAction GameAction::GO_BACKWARDS = GameAction(GameActionEnum::GO_BACKWARDS, _T("go backwards"));
-    const GameAction GameAction::STRAFE_LEFT = GameAction(GameActionEnum::STRAFE_LEFT, _T("strafe left"));
-    const GameAction GameAction::STRAFE_RIGHT = GameAction(GameActionEnum::STRAFE_RIGHT, _T("strafe right"));
-    const GameAction GameAction::FLOAT_UP = GameAction(GameActionEnum::FLOAT_UP, _T("float up"));
-    const GameAction GameAction::FLOAT_DOWN = GameAction(GameActionEnum::FLOAT_DOWN, _T("float down"));
-    const GameAction GameAction::RUN = GameAction(GameActionEnum::RUN, _T("run"));
+    const GameAction GameAction::GO_FORWARD = GameAction(GameActionEnum::GO_FORWARD, "go forward");
+    const GameAction GameAction::GO_BACKWARDS = GameAction(GameActionEnum::GO_BACKWARDS, "go backwards");
+    const GameAction GameAction::STRAFE_LEFT = GameAction(GameActionEnum::STRAFE_LEFT, "strafe left");
+    const GameAction GameAction::STRAFE_RIGHT = GameAction(GameActionEnum::STRAFE_RIGHT, "strafe right");
+    const GameAction GameAction::FLOAT_UP = GameAction(GameActionEnum::FLOAT_UP, "float up");
+    const GameAction GameAction::FLOAT_DOWN = GameAction(GameActionEnum::FLOAT_DOWN, "float down");
+    const GameAction GameAction::RUN = GameAction(GameActionEnum::RUN, "run");
 
     const EnumValues<GameActionEnum, GameAction> GameAction::VALUES = {
         &GameAction::GO_FORWARD,

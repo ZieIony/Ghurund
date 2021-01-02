@@ -111,6 +111,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>true</EnableModules>
+      <PreprocessorDefinitions>_WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,7 +156,6 @@
     <ClInclude Include="src\MusicPlayer.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
     <ClInclude Include="src\MainMenu.h" />
-    <ClInclude Include="src\MaterialColors.h" />
     <ClInclude Include="src\StringObject.h" />
     <ClInclude Include="src\TestApplication.h" />
     <ClInclude Include="src\TestControls.h" />
@@ -171,9 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="layout.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -58,10 +58,10 @@ namespace Ghurund {
     class Enum {
     private:
 		EnumValueType value;
-        const tchar* name;
+        const char* name;
 
     protected:
-        Enum(EnumValueType value, const tchar* name) {
+        Enum(EnumValueType value, const char* name) {
             this->value = value;
             this->name = name;
         }
@@ -73,11 +73,11 @@ namespace Ghurund {
 
         __declspec(property(get = getValue)) EnumValueType Value;
 
-        inline const tchar* getName() const {
+        inline const char* getName() const {
             return name;
         }
 
-        __declspec(property(get = getName)) const tchar* Name;
+        __declspec(property(get = getName)) const char* Name;
 
         inline bool operator==(const Enum& type) const {
             return this->value == type.value;

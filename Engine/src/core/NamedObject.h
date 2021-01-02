@@ -1,21 +1,23 @@
 #pragma once
 
+#include "core/string/WString.h"
+
 namespace Ghurund {
-    template <class T> class NamedObject {
+    class NamedObject {
     private:
-        T name;
+        WString name;
 
     public:
         virtual ~NamedObject() = default;
 
-        virtual void setName(const T &name) {
+        virtual void setName(const WString& name) {
             this->name = name;
         }
-        
-        virtual const T &getName() const {
+
+        virtual const WString& getName() const {
             return name;
         }
 
-        __declspec(property(get = getName, put = setName)) T &Name;
+        __declspec(property(get = getName, put = setName)) const WString& Name;
     };
 }

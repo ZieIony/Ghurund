@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {

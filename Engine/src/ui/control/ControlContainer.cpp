@@ -1,5 +1,6 @@
 #include "ControlContainer.h"
 #include "ui/LayoutLoader.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     bool ControlContainer::focusNext() {
@@ -140,4 +141,22 @@ namespace Ghurund::UI {
         }
         return Status::OK;
     }
+    
+#ifdef _DEBUG
+    String ControlContainer::logTree() {
+        String log = __super::logTree();
+        if (child) {
+            auto array = child->logTree().split(_T("\n"));
+            if (!array.Empty) {
+                String& s = array[0];
+                log.add(fmt::format(_T(" + {}\n"), s).c_str());
+            }
+            for (size_t i = 1; i < array.Size; i++) {
+                String& s = array[i];
+                log.add(fmt::format(_T("   {}\n"), s).c_str());
+            }
+        }
+        return log;
+    }
+#endif
 }

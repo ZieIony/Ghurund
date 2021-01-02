@@ -4,6 +4,7 @@
 #include "core/string/String.h"
 #include "core/SharedPointer.h"
 #include "ui/Size.h"
+#include "Status.h"
 
 #include <dwrite.h>
 #include <wrl.h>

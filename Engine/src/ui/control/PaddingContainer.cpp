@@ -47,28 +47,21 @@ namespace Ghurund::UI {
         auto paddingAttr = xml.FindAttribute("padding");
         if (paddingAttr) {
             std::string str = paddingAttr->Value();
-            std::regex regex("^[\\s]*Mem\\(([0-9]+)\\)\\s*=\\s*([0-9]+(\\.[0-9]+)?)\\s*$");
+            std::regex regex("(-?\\d+(?:\\.\\d+)?)(?:, *(-?\\d+(?:\\.\\d+)?)(?:, *(-?\\d+(?:\\.\\d+)?), *(-?\\d+(?:\\.\\d+)?))?)?");
             std::smatch m;
-            std::regex_match(str, m, regex);
-            /*
-            size_t firstComma = padding.find(",");
-            if (firstComma == padding.Size) {
-                Padding.All = (float)atof(padding.getData());
-            } else {
-                size_t secondComma = padding.find(",", firstComma + 1);
-                if (secondComma == padding.Size) {
-                    Padding.Horizontal = (float)atof(padding.getData());
-                    Padding.Vertical = (float)atof(padding.substring(firstComma + 1).trim().getData());
-                } else {
-                    size_t thirdComma = padding.find(",", secondComma + 1);
-                    if (thirdComma == padding.Size)
-                        return Status::INV_PARAM;
-                    Padding.left = (float)atof(padding.getData());
-                    Padding.top = (float)atof(padding.substring(firstComma + 1, secondComma - firstComma - 1).trim().getData());
-                    Padding.top = (float)atof(padding.substring(secondComma + 1, thirdComma - secondComma - 1).trim().getData());
-                    Padding.top = (float)atof(padding.substring(thirdComma + 1, padding.Size - thirdComma - 1).trim().getData());
+            if (std::regex_match(str, m, regex)) {
+                if (!m[2].matched) {
+                    Padding.All = (float)atof(m[1].str().c_str());
+                } else if (!m[3].matched) {
+                    Padding.Horizontal = (float)atof(m[1].str().c_str());
+                    Padding.Vertical = (float)atof(m[2].str().c_str());
+                } else if (m[4].matched) {
+                    Padding.left = (float)atof(m[1].str().c_str());
+                    Padding.top = (float)atof(m[2].str().c_str());
+                    Padding.right = (float)atof(m[3].str().c_str());
+                    Padding.bottom = (float)atof(m[4].str().c_str());
                 }
-            }*/
+            }
         }
         return Status::OK;
     }

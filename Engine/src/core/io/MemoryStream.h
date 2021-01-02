@@ -1,7 +1,5 @@
 #pragma once
 
-#include "application/log/Logger.h"
-
 #include <algorithm>
 
 namespace Ghurund {
@@ -12,12 +10,12 @@ namespace Ghurund {
 
     class MemoryInputStream:public MemoryStream {
     private:
-        const BYTE* data;
+        const uint8_t* data;
         size_t size;
 
     public:
         MemoryInputStream(const void* data, size_t size) {
-            this->data = (BYTE*)data;
+            this->data = (uint8_t*)data;
             this->size = size;
         }
 
@@ -95,7 +93,7 @@ namespace Ghurund {
         }
 
         inline const void* getData() const {
-            return (BYTE*)data;
+            return (uint8_t*)data;
         }
 
         _declspec(property(get = getData)) const void* Data;
@@ -103,13 +101,13 @@ namespace Ghurund {
 
     class MemoryOutputStream:public MemoryStream {
     private:
-        BYTE* data;
+        uint8_t* data;
         size_t capacity, initial;
 
         inline void resize(size_t size) {
             if (capacity < pointer + size) {
                 capacity += std::max(initial, size);
-                BYTE* data2 = new BYTE[capacity];
+                uint8_t* data2 = new uint8_t[capacity];
                 memcpy(data2, data, pointer);
                 delete[] data;
                 data = data2;
@@ -119,7 +117,7 @@ namespace Ghurund {
     public:
         MemoryOutputStream() {
             capacity = initial = 100;
-            this->data = new BYTE[initial];
+            this->data = new uint8_t[initial];
         }
 
         ~MemoryOutputStream() {
@@ -183,14 +181,14 @@ namespace Ghurund {
         }
         inline void writeBytes(const void* bytes, size_t length) {
             resize(length);
-            memcpy((BYTE*)data + pointer, bytes, length);
+            memcpy((uint8_t*)data + pointer, bytes, length);
             pointer += length;
         }
         template<typename T>
         void write(const T& value) {
             size_t length = sizeof(T);
             resize(length);
-            memcpy((BYTE*)data + pointer, &value, length);
+            memcpy((uint8_t*)data + pointer, &value, length);
             pointer += length;
         }
     };

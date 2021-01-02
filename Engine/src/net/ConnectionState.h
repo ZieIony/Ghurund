@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Net {
     enum class ConnectionState {
         NOT_CONNECTED, CONNECTING, CONNECTED, DISCONNECTING
     };

@@ -15,7 +15,7 @@
 
 namespace Ghurund {
 
-    class Entity: public Resource, public NamedObject<String>, public virtual ObservableObject, public IdObject<Entity> {
+    class Entity: public Resource, public NamedObject, public virtual ObservableObject, public IdObject<Entity> {
 	private:
 		Entity* parent = nullptr;
 

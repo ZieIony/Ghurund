@@ -1,6 +1,6 @@
 #include "TextStyle.h"
 #include "ui/Canvas.h"
-#include "application/log/Logger.h"
+#include "core/logging/Logger.h"
 #include "ui/Graphics2D.h"
 
 #include <commdlg.h>

@@ -103,13 +103,6 @@ namespace Ghurund {
 		}
 
 		void draw(CommandList& commandList, TransformSystem& transformSystem) {
-#ifdef _DEBUG
-			if (parameterWorld == nullptr) {
-				Logger::log(LogType::ERR0R, _T("parameters not initialized, call initParameters(..) first"));
-				return;
-			}
-#endif
-
 			camera->updateParameters();
 			cull();
 

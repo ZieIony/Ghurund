@@ -1,6 +1,7 @@
 #include "GPUResourceFactory.h"
-#include "MathUtils.h"
+#include "core/MathUtils.h"
 #include "graphics/Graphics.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     GPUResourceFactory::GPUResourceFactory(Graphics& graphics):graphics(graphics) {

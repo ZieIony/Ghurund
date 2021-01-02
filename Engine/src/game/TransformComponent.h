@@ -14,19 +14,9 @@ namespace Ghurund {
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
 
-		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-			position = stream.read<XMFLOAT3>();
-			rotation = stream.read<XMFLOAT3>();
-			scale = stream.read<XMFLOAT3>();
-			return Status::OK;
-		}
+		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
 
-		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-			stream.write<XMFLOAT3>(position);
-			stream.write<XMFLOAT3>(rotation);
-			stream.write<XMFLOAT3>(scale);
-			return Status::OK;
-		}
+		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
 		static inline const auto& CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
 		static const Ghurund::Type& GET_TYPE() {

@@ -3,7 +3,7 @@
 #include "control/SearchField.h"
 #include "control/ToolWindow.h"
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/control/TextBlock.h"
 #include "ui/widget/property/PropertyList.h"
 #include "ui/widget/menu/Toolbar.h"
@@ -22,16 +22,16 @@ namespace Ghurund::Editor {
 
     public:
         PropertyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            objectTypeText = ghnew TextBlock("", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
+            objectTypeText = ghnew TextBlock(L"", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
-                   ghnew ButtonMenuItem(sortIcon, "sort", [](Control&) {
+                   ghnew ButtonMenuItem(sortIcon, L"sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
-                   ghnew ButtonMenuItem(categoryIcon, "category", [](Control&) {
+                   ghnew ButtonMenuItem(categoryIcon, L"category", [](Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
@@ -50,7 +50,7 @@ namespace Ghurund::Editor {
 
         inline void setItem(Object* item) {
             propertyList->Item = item;
-            objectTypeText->Text = item->Type.Name;
+            objectTypeText->Text = toWideChar(item->Type.Name);
         }
 
         __declspec(property(put = setItem)) Object* Item;

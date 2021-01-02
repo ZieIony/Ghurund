@@ -1,24 +1,6 @@
 #include "AString.h"
 
 namespace Ghurund {
-
-    void AString::add(const wchar_t e) {
-        if (size + 1>capacity)
-            resize(capacity + initial);
-
-        wchar_t c[2];
-        c[0] = e;
-        c[1] = '\0';
-        char retChar[2];
-        size_t retVal;
-        wcstombs_s(&retVal, retChar, 1, c, 1);
-
-        v[size - 1] = retChar[0];
-        size++;
-        v[size - 1] = 0;
-        computeHash();
-    }
-
     Array<AString> AString::split(const char* d) const {
         List<AString> list;
         size_t index = 0;

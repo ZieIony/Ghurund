@@ -1,30 +1,22 @@
 #include "Pointer.h"
 #include "core/collection/List.h"
+#include "core/logging/Logger.h"
 
 #include <typeinfo>
+#include <tchar.h>
 
 namespace Ghurund {
 #ifdef _DEBUG
-    Ghurund::List<Ghurund::Pointer*> Pointer::pointers;
-    CriticalSection Pointer::section;
-#endif
-
-    Pointer::Pointer() {
-        referenceCount = 1;
-#ifdef _DEBUG
-        section.enter();
-        pointers.add(this);
-        section.leave();
-#endif
+    void Pointer::checkReferenceCount() {
+        if (referenceCount == 0) {
+            const auto& info = typeid(*this);
+            Logger::log(LogType::WARNING, _T("[{}] {} release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, String(info.name()), referenceCount);
+        }
     }
-
-    Pointer::Pointer(const Pointer &pointer) {
-        referenceCount = 1;
-    }
+#endif
 
     Pointer::~Pointer() {
 #ifdef _DEBUG
-        section.enter();
         if(referenceCount) {
             if(referenceCount==1) {
                 Logger::log(LogType::WARNING, _T("[%p] %hs delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (void*)this, typeid(*this).name());
@@ -32,19 +24,6 @@ namespace Ghurund {
                 Logger::log(LogType::WARNING, _T("[%p] %hs delete refCount=%lu. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (void*)this, typeid(*this).name(), referenceCount);
             }
         }
-        pointers.remove(this);
-        section.leave();
 #endif
     }
-
-#ifdef _DEBUG
-    void Pointer::dumpPointers() {
-        section.enter();
-        for(unsigned int i = 0; i<pointers.getSize(); i++) {
-            Pointer *p = pointers[i];
-            Logger::log(LogType::INFO, _T("allocated pointer: [{}] {} refCount={}\n"), (void*)p, typeid(*p).name(), p->ReferenceCount);
-        }
-        section.leave();
-    }
-#endif
 }

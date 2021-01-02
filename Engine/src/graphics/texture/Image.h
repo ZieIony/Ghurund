@@ -5,18 +5,13 @@
 #include "resource/ResourceManager.h"
 
 #pragma warning(push, 0)
-#include <d3d12.h>
 #include <dxgi1_4.h>
-#include <DirectXMath.h>
-#include "d3dx12.h"
 #pragma warning(pop)
 
-#include <wrl.h>
 #include <wincodec.h>
 
 namespace Ghurund {
     using namespace DirectX;
-    using namespace Microsoft::WRL;
 
     class Image: public Resource {
     private:

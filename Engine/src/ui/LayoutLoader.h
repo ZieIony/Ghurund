@@ -45,6 +45,8 @@ namespace Ghurund::UI {
         Shape* loadShape(ResourceContext& context, const char* str);
 
         uint32_t loadColor(const char* str);
+        
+        WString loadText(const char* str);
 
         TextStyle* loadFont(ResourceContext& context, const char* str);
 

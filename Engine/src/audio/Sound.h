@@ -1,10 +1,9 @@
 #pragma once
 
 #include "Audio.h"
+#include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "resource/Resource.h"
-
-#include <Shlwapi.h>
 
 namespace Ghurund::Audio {
     enum class PlaybackState {

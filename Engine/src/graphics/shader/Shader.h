@@ -45,7 +45,7 @@ namespace Ghurund {
 
         Graphics* graphics;
 
-        char* source = nullptr;
+        AString source;
         bool compiled = false;
 
         Status makeRootSignature();
@@ -102,16 +102,16 @@ namespace Ghurund {
             return *parameters;
         }
 
-        void setSourceCode(const char* source) {
-            safeCopyStr(&this->source, source);
+        void setSourceCode(const AString& source) {
+            this->source = source;
             compiled = false;
         }
 
-        const char* getSourceCode() {
+        const AString& getSourceCode() {
             return source;
         }
 
-        __declspec(property(get = getSourceCode, put = setSourceCode)) const char* SourceCode;
+        __declspec(property(get = getSourceCode, put = setSourceCode)) const AString& SourceCode;
 
         Status makePipelineState(bool supportsTransparency);
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layout.h"
-#include "ui/Style.h"
+#include "ui/style/Style.h"
 
 namespace Ghurund::UI {
     template<class LayoutType>
@@ -33,10 +33,6 @@ namespace Ghurund::UI {
                 OnStateChanged.add(stateHandler);
                 OnThemeChanged.add(themeHandler);
                 widgetLayout = layout;
-#ifdef _DEBUG
-                if (widgetLayout->Root)
-                    Logger::log(LogType::INFO, _T("widget layout for {} initialized in its constructor"), String(Type.Name));
-#endif
                 widgetLayout->init();
                 Child = widgetLayout->Root;
             }

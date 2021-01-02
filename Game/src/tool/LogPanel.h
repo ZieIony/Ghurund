@@ -2,7 +2,7 @@
 
 #include "control/TitleBar.h"
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ImageView.h"
 #include "ui/control/TextBlock.h"
@@ -49,7 +49,7 @@ namespace Ghurund::Editor {
 
     struct Log {
         LogType type;
-        String text;
+        WString text;
     };
 
     class LogItemAdapter:public ItemAdapter<Log, LogRow> {
@@ -83,10 +83,10 @@ namespace Ghurund::Editor {
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
-                   ghnew ButtonMenuItem(sortIcon, "sort", [](Control&) {
+                   ghnew ButtonMenuItem(sortIcon, L"sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
-                   ghnew ButtonMenuItem(categoryIcon, "category", [](Control&) {
+                   ghnew ButtonMenuItem(categoryIcon, L"category", [](Control&) {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
@@ -97,7 +97,7 @@ namespace Ghurund::Editor {
             Children = { toolbar, logRecycler };
         }
 
-        void addLog(LogType logType, const String& message) {
+        void addLog(LogType logType, const WString& message) {
             items.add({ logType, message });
             logRecycler->invalidate();
         }

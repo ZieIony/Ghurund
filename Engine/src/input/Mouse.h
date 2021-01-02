@@ -1,7 +1,8 @@
 #pragma once
 
-#include "DirectXMath.h"
-#include "application/Timer.h"
+#include "EventArgs.h"
+
+#include <DirectXMath.h>
 
 namespace Ghurund {
     using namespace DirectX;
@@ -16,24 +17,6 @@ namespace Ghurund {
 
     enum class MouseAction {
         DOWN, UP
-    };
-
-    class EventArgs {
-    protected:
-        uint64_t time;
-
-    public:
-        EventArgs(uint64_t time) {
-            this->time = time;
-        }
-
-        inline uint64_t getTimeMs() const {
-            return time;
-        }
-
-        __declspec(property(get = getTimeMs)) uint64_t TimeMs;
-
-        virtual ~EventArgs() = 0 {}
     };
 
     class MouseEventArgs:public EventArgs {
@@ -134,11 +117,5 @@ namespace Ghurund {
             XMINT2 childEventPos = { (int32_t)(Position.x + x), (int32_t)(Position.y + y) };
             return MouseWheelEventArgs(childEventPos, wheel, delta, TimeMs, Inside);
         }
-    };
-
-    struct MouseState {
-        ticks_t timeStamp;
-        bool buttonPressed[3];
-        int position[2];
     };
 }

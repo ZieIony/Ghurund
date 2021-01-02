@@ -2,7 +2,9 @@
 
 #include "Common.h"
 #include "core/Enum.h"
-#include "application/log/Logger.h"
+
+#include <Windows.h>
+#include <tchar.h>
 
 namespace Ghurund::UI {
     enum class CursorEnum {

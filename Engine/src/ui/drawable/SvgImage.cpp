@@ -2,6 +2,8 @@
 #include "resource/ResourceContext.h"
 #include "ui/Graphics2D.h"
 
+#include <Shlwapi.h>
+
 namespace Ghurund::UI {
     Status SvgImage::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);

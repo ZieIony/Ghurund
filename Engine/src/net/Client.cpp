@@ -1,7 +1,7 @@
 #include "Client.h"
-#include "application/log/Logger.h"
+#include "core/logging/Logger.h"
 
-namespace Ghurund {
+namespace Ghurund::Net {
     Client::Client(FunctionQueue& functionQueue):connectionState(ConnectionState::NOT_CONNECTED, &functionQueue), functionQueue(functionQueue) {
         this->functionQueue = functionQueue;
         connectionState.addEdge(ConnectionState::NOT_CONNECTED, ConnectionState::CONNECTING);
@@ -21,28 +21,14 @@ namespace Ghurund {
     };
 
     Client::~Client() {
-        WSACleanup();
         if (listener != nullptr)
             delete listener;
     };
 
-    Status Client::init() {
-        WSADATA w;    // used to store information about WinSock version
-
-        if (WSAStartup(0x0202, &w)) // there was an error
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("there was an error with WinSock initialization\n"));
-        if (w.wVersion != 0x0202) { // wrong WinSock version!
-            WSACleanup(); // unload ws2_32.dll
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("wrong WinSock version\n"));
-        }
-
-        return Status::OK;
-    }
-
     Status Client::connect(SocketProtocol protocol, unsigned short port, const tchar * address) {
         connectionState.setState(ConnectionState::CONNECTING);
 
-        serverSocket = ghnew Socket();
+        serverSocket = ghnew Ghurund::Net::Socket();
         serverSocket->init(protocol, address, port);
         mySocket.init(serverSocket->Id, protocol, nullptr, 0);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/log/Logger.h"
+#include "core/logging/Logger.h"
 #include "StringFactory.h"
 #include "core/Object.h"
 #include "application/Timer.h"

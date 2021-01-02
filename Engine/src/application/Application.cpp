@@ -1,47 +1,87 @@
 #include "Application.h"
-#include "WindowType.h"
+#include "audio/Audio.h"
 #include "core/threading/FunctionQueue.h"
+#include "game/parameter/ParameterManager.h"
+#include "graphics/Graphics.h"
+#include "graphics/Renderer.h"
+#include "physics/Physics.h"
+#include "resource/ResourceContext.h"
+#include "resource/ResourceManager.h"
+#include "script/ScriptEngine.h"
+#include "ui/Graphics2D.h"
+
+#include "WindowType.h"
 #include "ui/RootView.h"
 #include "ui/Canvas.h"
 #include "SystemWindow.h"
+#include "net/Net.h"
 
 #include <time.h>
 
 namespace Ghurund {
-    void Application::init() {
+    Status Application::init() {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
+        Status result = Net::init();
+        if (result != Status::OK) {
+            uninit();
+            return result;
+        }
 
         // engine
         graphics = ghnew Ghurund::Graphics();
-        graphics->init();
+        result = graphics->init();
+        if (result != Status::OK)
+            return result;
+
         graphics2d = ghnew Ghurund::UI::Graphics2D();
-        graphics2d->init(*graphics);
+        result = graphics2d->init(*graphics);
+        if (result != Status::OK)
+            return result;
+
         audio = ghnew Audio::Audio();
-        audio->init();
+        result = audio->init();
+        if (result != Status::OK)
+            return result;
+
         physics = ghnew Ghurund::Physics();
-        physics->init();
+        result = physics->init();
+        if (result != Status::OK)
+            return result;
+
         parameterManager = ghnew Ghurund::ParameterManager();
 
         timer = ghnew Ghurund::Timer();
+
         scriptEngine = ghnew Ghurund::ScriptEngine();
-        scriptEngine->init(*timer);
+        result = scriptEngine->init(*timer);
+        if (result != Status::OK)
+            return result;
+
         resourceManager = ghnew Ghurund::ResourceManager();
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
 
         resourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
-        resourceContext->init();
+        result = resourceContext->init();
+        if (result != Status::OK)
+            return result;
+
         asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
-        asyncResourceContext->init();
+        result = asyncResourceContext->init();
+        if (result != Status::OK)
+            return result;
         //parameterManager->initDefaultTextures(*resourceContext);
 
-        // app
         functionQueue = ghnew Ghurund::FunctionQueue();
+        
         renderer = ghnew Ghurund::Renderer();
-        renderer->init(*resourceContext);
+        result = renderer->init(*resourceContext);
+        if (result != Status::OK)
+            return result;
 
-        client = ghnew Ghurund::Client(*functionQueue);
-        client->init();
+        client = ghnew Ghurund::Net::Client(*functionQueue);
+
+        return Status::OK;
     }
 
     void Application::uninit() {
@@ -49,7 +89,7 @@ namespace Ghurund {
 
         delete scriptEngine;
 
-        if (client->isConnected())
+        if (client->Connected)
             client->disconnect();
         delete client;
 
@@ -67,6 +107,7 @@ namespace Ghurund {
         delete graphics2d;
         delete graphics;
 
+        Net::uninit();
         OleUninitialize();
         CoUninitialize();
     }
@@ -75,7 +116,11 @@ namespace Ghurund {
         if (settings)
             this->settings = *settings;
 
-        init();
+        if (init() != Status::OK) {
+            uninit();
+            return;
+        }
+
         onInit();
 
         timer->tick();

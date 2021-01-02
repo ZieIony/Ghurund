@@ -2,7 +2,7 @@
 
 #include "DrawingEffect.h"
 #include "SetSelectionMode.h"
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/control/TextBlock.h"
 #include "ui/drawable/CursorDrawable.h"
 #include "input/Input.h"

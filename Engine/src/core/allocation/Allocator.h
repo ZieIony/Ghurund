@@ -2,10 +2,9 @@
 
 #include "core/Buffer.h"
 #include "core/collection/List.h"
-#include "application/log/Logger.h"
 
 namespace Ghurund {
-    typedef UINT64 memory_t;
+    typedef uint64_t memory_t;
 
     __interface Allocator {
         void* allocate(memory_t size);

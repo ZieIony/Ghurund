@@ -5,7 +5,7 @@
 #include "core/Pointer.h"
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
-#include "core/string/String.h"
+#include "core/string/WString.h"
 
 namespace Ghurund {
     class WorkerThread:public Thread {
@@ -23,7 +23,7 @@ namespace Ghurund {
 
         void post(Task *task, long delayMs = 0);
 
-        void remove(const String &taskName);
+        void remove(const WString &taskName);
 
         void remove(Task *task);
 

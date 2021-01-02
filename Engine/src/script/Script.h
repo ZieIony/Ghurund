@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource/Resource.h"
+#include "core/string/AString.h"
 
 #include "angelscript.h"
 
@@ -14,8 +15,8 @@ namespace Ghurund {
 		asIScriptModule* mod = nullptr;
         asIScriptContext* ctx = nullptr;
         asIScriptFunction* func = nullptr;
-        char* source = nullptr;
-        char* entryPoint = nullptr;
+        AString source;
+        AString entryPoint;
         Array<void*> arguments;
         bool built = false;
 
@@ -72,8 +73,8 @@ namespace Ghurund {
             return __super::isValid() && built;
         }
 
-        void setSourceCode(const char* source) {
-            safeCopyStr(&this->source, source);
+        void setSourceCode(const AString& source) {
+            this->source = source;
             built = false;
         }
 
@@ -83,8 +84,8 @@ namespace Ghurund {
 
         __declspec(property(get = getSourceCode, put = setSourceCode)) const char* SourceCode;
 
-        void setEntryPoint(const char* entryPoint) {
-            safeCopyStr(&this->entryPoint, entryPoint);
+        void setEntryPoint(const AString& entryPoint) {
+            this->entryPoint = entryPoint;
             built = false;
         }
 
@@ -100,20 +101,7 @@ namespace Ghurund {
 
         __declspec(property(put = setArguments)) const Array<void*>& Arguments;
 
-        Status execute() {
-            ctx->Prepare(func);
-            for (size_t i = 0; i < arguments.Size; i++)
-                ctx->SetArgAddress((asUINT)i, arguments[i]);
-            int r = ctx->Execute();
-            if (r != asEXECUTION_FINISHED) {
-                if (r == asEXECUTION_EXCEPTION) {
-                    Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), String(ctx->GetExceptionString()));
-                    return Status::SCRIPT_EXCEPTION;
-                }
-            }
-
-            return Status::OK;
-        }
+        Status execute();
 
         int getIntResult() {
             return ctx->GetReturnWord();

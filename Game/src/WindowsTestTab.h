@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Theme.h"
+#include "ui/style/Theme.h"
 #include "ui/layout/ManualLayout.h"
 #include "ui/widget/DragHelper.h"
 #include "ui/window/WindowFrame.h"

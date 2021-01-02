@@ -4,7 +4,9 @@
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "graphics/texture/Texture.h"
-#include "application/log/Formatter.h"
+#include "core/io/File.h"
+#include "core/io/MemoryStream.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status ParameterProvider::loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

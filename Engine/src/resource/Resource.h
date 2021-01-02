@@ -1,12 +1,8 @@
 #pragma once
 
-#include "FileUtils.h"
 #include "ResourceFormat.h"
 #include "Status.h"
 #include "core/Pointer.h"
-#include "core/collection/Array.h"
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
 
 namespace Ghurund {
     enum class LoadOption {
@@ -35,6 +31,11 @@ namespace Ghurund {
 
     class ResourceManager;
     class ResourceContext;
+    class MemoryInputStream;
+    class MemoryOutputStream;
+    class File;
+    class FilePath;
+    class DirectoryPath;
 
     class Resource: public Pointer {
     private:
@@ -67,9 +68,7 @@ namespace Ghurund {
     public:
         Resource() = default;
 
-        ~Resource() {
-            delete path;
-        }
+        ~Resource();
 
         Status load(ResourceContext& context, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
         Status load(ResourceContext& context, const FilePath& path, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
@@ -109,10 +108,7 @@ namespace Ghurund {
             return path;
         }
 
-        void setPath(const FilePath* path) {
-            delete this->path;
-            this->path = ghnew FilePath(*path);
-        }
+        void setPath(const FilePath* path);
 
         __declspec(property(get = getPath, put = setPath)) FilePath* Path;
         /*

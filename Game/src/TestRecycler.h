@@ -51,21 +51,21 @@ public:
         SharedPointer<BitmapImage> lemonImage = BitmapImage::makeFromImage(context, L"images/test/lemon.jpg");
 
         items = {
-            ghnew StringObjectHeader("Character tests"),
-            ghnew StringObjectItem("Foxy fox", "Jumps over big fence", foxImage),
-            //ghnew StringObjectItem("Ósemka", _T("ążśćńę123-~,.;")),
-            ghnew StringObjectItem("Strawberry", "Cherry and a rainbow", strawberryImage),
-            ghnew StringObjectHeader("Fruits"),
-            ghnew StringObjectItem("Melon", "Best fruit ever", melonImage),
-            ghnew StringObjectItem("Blueberry", "Greenberry", blueberryImage),
-            ghnew StringObjectItem("Watermelon", "Noice", watermelonImage),
-            ghnew StringObjectItem("Apple", "Android", appleImage),
-            ghnew StringObjectItem("Pear", "Deer", pearImage),
-            ghnew StringObjectItem("Plum", "Splash", plumImage),
-            ghnew StringObjectItem("Orange", "A color or a fruit?", orangeImage),
-            ghnew StringObjectItem("Banana", "Mana mana", bananaImage),
-            ghnew StringObjectItem("Beer", "Dark, with honey", beerImage),
-            ghnew StringObjectItem("Lemon", "Tree", lemonImage)
+            ghnew StringObjectHeader(L"Character tests"),
+            ghnew StringObjectItem(L"Foxy fox", L"Jumps over big fence", foxImage),
+            //ghnew StringObjectItem(L"Ósemka", _T("ążśćńę123-~,.;")),
+            ghnew StringObjectItem(L"Strawberry", L"Cherry and a rainbow", strawberryImage),
+            ghnew StringObjectHeader(L"Fruits"),
+            ghnew StringObjectItem(L"Melon", L"Best fruit ever", melonImage),
+            ghnew StringObjectItem(L"Blueberry", L"Greenberry", blueberryImage),
+            ghnew StringObjectItem(L"Watermelon", L"Noice", watermelonImage),
+            ghnew StringObjectItem(L"Apple", L"Android", appleImage),
+            ghnew StringObjectItem(L"Pear", L"Deer", pearImage),
+            ghnew StringObjectItem(L"Plum", L"Splash", plumImage),
+            ghnew StringObjectItem(L"Orange", L"A color or a fruit?", orangeImage),
+            ghnew StringObjectItem(L"Banana", L"Mana mana", bananaImage),
+            ghnew StringObjectItem(L"Beer", L"Dark, with honey", beerImage),
+            ghnew StringObjectItem(L"Lemon", L"Tree", lemonImage)
         };
         recyclerView->LayoutManager = ghnew VerticalLayoutManager();
         recyclerView->Items = ghnew ListItemSource<StringObject*>(items);

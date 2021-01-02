@@ -2,6 +2,8 @@
 #include "core/Pointer.h"
 #include "DirectXMath.h"
 
+#include <tchar.h>
+
 namespace Ghurund {
     using namespace DirectX;
 

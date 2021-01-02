@@ -15,49 +15,6 @@ namespace Ghurund {
 
         WString(WString&& string) noexcept:GenericString<wchar_t>(std::move(string)) {}
 
-        WString(const char* str) {
-            add(str);
-        }
-
-        WString(const char* str, size_t length) {
-            add(str, length);
-        }
-
-        WString(const GenericString<char>& string) {
-            add(string.getData());
-        }
-
-        using GenericString<wchar_t>::add;
-
-        void add(const char e);
-
-        inline void add(const char* str) {
-            if (!str)
-                return;
-            wchar_t* wstr = toWideChar(str);
-            add(wstr);
-            delete[] wstr;
-        }
-
-        inline void add(const char* str, size_t len) {
-            if (!str)
-                return;
-            wchar_t* wstr = toWideChar(str);
-            add(wstr, len);
-            delete[] wstr;
-        }
-
-        using GenericString<wchar_t>::operator==;
-
-        bool operator==(const char* str) const {
-            if (!str)
-                return false;
-            wchar_t* wstr = toWideChar(str);
-            bool result = memcmp(v, wstr, Length * sizeof(wchar_t)) == 0;
-            delete[] wstr;
-            return result;
-        }
-
         using GenericString<wchar_t>::operator=;
 
         WString& operator=(const WString& string) {

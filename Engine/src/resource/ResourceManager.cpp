@@ -1,4 +1,7 @@
 #include "ResourceManager.h"
+
+#include "core/logging/Logger.h"
+
 #include <functional>
 
 namespace Ghurund {
@@ -50,12 +53,12 @@ namespace Ghurund {
             if (libIndex != libraries.Size) {
                 WString libPathString = LIB_PROTOCOL_PREFIX;
                 libPathString.add(libraries.get(libIndex).Name);
-                libPathString.add("\\");
+                libPathString.add(L"\\");
                 libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path));
                 return libPathString;
             } else {
                 if (relativePath == resourcePath)
-                    Logger::log(LogType::WARNING, _T("Resource path is absolute: %s\n"), String(resourcePath.get()).getData());
+                    Logger::log(LogType::WARNING, _T("Resource path is absolute: %s\n"), resourcePath);
                 return resourcePath;
             }
         } else {

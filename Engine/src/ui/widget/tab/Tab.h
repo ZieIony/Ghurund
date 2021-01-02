@@ -22,9 +22,9 @@ namespace Ghurund::UI {
 
     class TextTabItem:public TabItem {
     public:
-        String text;
+        WString text;
 
-        TextTabItem(const String& text, Control* content):TabItem(content), text(text) {}
+        TextTabItem(const WString& text, Control* content):TabItem(content), text(text) {}
     };
 
     class TabLayout:public WidgetLayout {

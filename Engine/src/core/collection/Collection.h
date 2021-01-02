@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Common.h"
-#include "TextUtils.h"
+
 #include <algorithm>
+#undef min
+#undef max
 
 namespace Ghurund {
     class Collection {

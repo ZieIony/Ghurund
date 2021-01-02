@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Common.h"
-#include "TextUtils.h"
+#include "core/string/TextUtils.h"
 
 #include "winsock2.h"
 
 #define WM_GHFILEWATCHER WM_USER+100
 
-namespace Ghurund {
+namespace Ghurund::Net {
     namespace MsgType {
         enum Type {
             CONTROL = (1 >> 30), CHAT = (2 >> 30), SYNC = (3 >> 30)

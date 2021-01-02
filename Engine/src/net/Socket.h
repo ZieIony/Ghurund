@@ -1,11 +1,13 @@
 #pragma once
 
-#include "application/log/Logger.h"
+#include "Common.h"
+#include "Status.h"
 
-#include "winsock2.h"
-#include "ws2tcpip.h"
+#include <Windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
 
-namespace Ghurund {
+namespace Ghurund::Net {
     enum class SocketProtocol {
         TCP = SOCK_STREAM, UDP = SOCK_DGRAM
     };

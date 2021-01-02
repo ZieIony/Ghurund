@@ -6,12 +6,12 @@ namespace Ghurund::UI {
             if (event.Action == KeyAction::DOWN) {
                 buttons[MouseButton::VIRTUAL] = true;
                 onStateChanged();
-                onPressed(MousePressedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.Time));
+                onPressed(MousePressedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
                 return true;
             } else if (event.Action == KeyAction::UP) {
                 buttons[MouseButton::VIRTUAL] = false;
                 onStateChanged();
-                onClicked(MouseClickedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.Time, true));
+                onClicked(MouseClickedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
                 return true;
             }
         }

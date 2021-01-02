@@ -1,23 +1,21 @@
 #pragma once
 
-#include "application/Timer.h"
+#include "EventArgs.h"
 
 namespace Ghurund {
     enum class KeyAction {
         DOWN, UP, CHAR
     };
 
-    class KeyEventArgs {
+    class KeyEventArgs:public EventArgs {
     private:
         KeyAction action;
         int key;
-        int64_t time;
 
     public:
-        KeyEventArgs(KeyAction action, int key, int64_t time) {
+        KeyEventArgs(KeyAction action, int key, uint64_t time):EventArgs(time) {
             this->action = action;
             this->key = key;
-            this->time = time;
         }
 
         KeyAction getAction() const {
@@ -31,11 +29,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getKey)) int Key;
-
-        inline int64_t getTime() const {
-            return time;
-        }
-
-        __declspec(property(get = getTime)) int64_t Time;
     };
 }

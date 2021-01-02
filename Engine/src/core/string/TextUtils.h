@@ -2,6 +2,9 @@
 
 #include "Common.h"
 
+#include <tchar.h>
+#include <ctype.h>
+
 namespace Ghurund {
     inline void toLowerCase(tchar *str) {
         size_t length = _tcslen(str);
@@ -61,85 +64,19 @@ namespace Ghurund {
         return dest;
     }
 
-    inline char *toMultiByte(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        int length = (int)wcslen(src);
-        int size = WideCharToMultiByte(codePage, 0, src, length, nullptr, 0, nullptr, nullptr);
-        if(!size)
-            return nullptr;
-
-        char *dest = ghnew char[size + 1];
-        WideCharToMultiByte(codePage, 0, src, length + 1, dest, size + 1, nullptr, nullptr);
-        return dest;
-    }
-
-    inline char *toMultiByte(const char *src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-
-#ifdef UNICODE
-    inline tchar *toTchar(const char *src, unsigned int codePage = CP_ACP) {
-        int length = (int)strlen(src);
-
-        int size = MultiByteToWideChar(codePage, 0, src, length, nullptr, 0);
-        if(!size)
-            return nullptr;
-
-        tchar *dest = ghnew tchar[size + 1];
-        MultiByteToWideChar(codePage, 0, src, length + 1, dest, size + 1);
-        return dest;
-    }
-
-    inline tchar *toTchar(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-#else
-    inline tchar *toTchar(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        int length = (int)wcslen(src);
-        int size = WideCharToMultiByte(codePage, 0, src, length, nullptr, 0, nullptr, nullptr);
-        if(!size)
-            return nullptr;
-
-        tchar *dest = ghnew tchar[size + 1];
-        WideCharToMultiByte(codePage, 0, src, length + 1, dest, size + 1, nullptr, nullptr);
-        return dest;
-    }
-
-    inline tchar *toTchar(const char *src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-#endif
-
-    inline wchar_t *toWideChar(const char *src, unsigned int codePage = CP_ACP) {
-        int length = (int)strlen(src);
-
-        int size = MultiByteToWideChar(codePage, 0, src, length, nullptr, 0);
-        if(!size)
-            return nullptr;
-
-        wchar_t *dest = ghnew wchar_t[size + 1];
-        MultiByteToWideChar(codePage, 0, src, length + 1, dest, size + 1);
-        return dest;
-    }
-
-    inline wchar_t *toWideChar(const wchar_t *src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-
-    template<class Type> inline size_t lengthOf(Type text);
-
-    template<> inline size_t lengthOf<char*>(char *text) {
+    inline size_t lengthOf(char *text) {
         return strlen(text);
     }
 
-    template<> inline size_t lengthOf<wchar_t*>(wchar_t *text) {
+    inline size_t lengthOf(wchar_t *text) {
         return wcslen(text);
     }
 
-    template<> inline size_t lengthOf<const char*>(const char *text) {
+    inline size_t lengthOf(const char *text) {
         return strlen(text);
     }
 
-    template<> inline size_t lengthOf<const wchar_t*>(const wchar_t *text) {
+    inline size_t lengthOf(const wchar_t *text) {
         return wcslen(text);
     }
 
