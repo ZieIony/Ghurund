@@ -58,7 +58,7 @@ namespace Ghurund {
 
         virtual void setTitle(const WString& title) override {
             __super::setTitle(title);
-            SetWindowTextW(handle, title);
+            SetWindowTextW(handle, title.Data);
         }
 
         virtual HWND getHandle() const override {

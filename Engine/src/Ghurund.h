@@ -19,13 +19,3 @@
 #else
 #pragma comment(lib, "fmt.lib")
 #endif
-
-namespace Ghurund {
-    inline void dumpMemoryLeaks() {
-        _CrtDumpMemoryLeaks();
-    }
-
-    inline void _____________________checkMemory() {
-        _ASSERTE(_CrtCheckMemory());
-    }
-}

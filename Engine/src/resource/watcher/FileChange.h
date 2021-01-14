@@ -19,6 +19,6 @@ namespace Ghurund {
 
         static const EnumValues<FileChangeEnum, FileChange> VALUES;
 
-        FileChange(FileChangeEnum value, const tchar* name):Enum<FileChangeEnum, FileChange>(value, name) {}
+        FileChange(FileChangeEnum value, const char* name):Enum<FileChangeEnum, FileChange>(value, name) {}
     };
 }

@@ -104,7 +104,7 @@ namespace Ghurund {
 
         virtual void setName(const WString& name) override {
             NamedObject::setName(name);
-            texture->SetName(name);
+            texture->SetName(name.Data);
         }
 
         Status capture(ResourceContext& context, Image*& image);

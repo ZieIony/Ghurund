@@ -97,7 +97,7 @@ namespace Ghurund {
         delete this->path;
         this->path = p;
 
-        Logger::log(LogType::INFO, _T("Loading '{}'\n"), path->get());
+        Logger::log(LogType::INFO, _T("Loading '{}'\n"), *path);
         MemoryInputStream stream(file.Data, file.Size);
         result = load(context, path->Directory, stream, options);
         if (bytesRead != nullptr)

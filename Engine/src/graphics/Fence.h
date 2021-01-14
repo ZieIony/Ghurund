@@ -36,7 +36,7 @@ namespace Ghurund {
 
         virtual void setName(const WString& name) override {
             NamedObject::setName(name);
-            fence->SetName(name);
+            fence->SetName(name.Data);
         }
 
         UINT64 getValue() {

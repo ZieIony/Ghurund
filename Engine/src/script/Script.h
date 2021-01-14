@@ -21,9 +21,7 @@ namespace Ghurund {
         bool built = false;
 
         void finalize() {
-            delete[] source;
             source = nullptr;
-            delete[] entryPoint;
             entryPoint = nullptr;
             mod = nullptr;
             func = nullptr; // no need to release
@@ -78,22 +76,22 @@ namespace Ghurund {
             built = false;
         }
 
-        const char* getSourceCode() {
+        const AString& getSourceCode() {
             return source;
         }
 
-        __declspec(property(get = getSourceCode, put = setSourceCode)) const char* SourceCode;
+        __declspec(property(get = getSourceCode, put = setSourceCode)) const AString& SourceCode;
 
         void setEntryPoint(const AString& entryPoint) {
             this->entryPoint = entryPoint;
             built = false;
         }
 
-        const char* getEntryPoint()const {
+        const AString& getEntryPoint()const {
             return entryPoint;
         }
 
-        __declspec(property(get = getEntryPoint, put = setEntryPoint)) const char* EntryPoint;
+        __declspec(property(get = getEntryPoint, put = setEntryPoint)) const AString& EntryPoint;
 
         void setArguments(const Array<void*>& arguments) {
             this->arguments = arguments;

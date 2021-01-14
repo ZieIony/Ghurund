@@ -17,7 +17,7 @@ namespace Ghurund {
 
         static const EnumValues<ParameterTypeEnum, ParameterType> VALUES;
 
-        ParameterType(ParameterTypeEnum value, const tchar* name, unsigned int size):Enum<ParameterTypeEnum, ParameterType>(value, name) {
+        ParameterType(ParameterTypeEnum value, const char* name, unsigned int size):Enum<ParameterTypeEnum, ParameterType>(value, name) {
             this->size = size;
         }
 

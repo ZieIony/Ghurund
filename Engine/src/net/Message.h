@@ -8,53 +8,13 @@
 #define WM_GHFILEWATCHER WM_USER+100
 
 namespace Ghurund::Net {
-    namespace MsgType {
-        enum Type {
-            CONTROL = (1 >> 30), CHAT = (2 >> 30), SYNC = (3 >> 30)
-        };
-    }
+    enum class ClientMessageType:uint8_t {
+        CONNECT, DISCONNECT, UPDATE, 
+    };
 
-    class Message {
-    private:
-        void* buffer, * data;
-        int type;
-        unsigned int size;
-
-    public:
-        SOCKET sender;
-
-        Message() {
-            buffer = 0;
-            data = 0;
-            type = 0;
-            size = 0;
-        }
-
-        ~Message() {
-            delete[] buffer;
-        }
-
-        void setData(unsigned int type, const char* data, unsigned int size) {
-            if (!data)
-                return;
-            delete[] buffer;
-            buffer = ghnew char[sizeof(unsigned int) + size];
-            this->type = ((unsigned int*)buffer)[0] = type;
-            memcpy((char*)buffer + sizeof(unsigned int), data, size);
-            this->data = (unsigned int*)buffer + 1;
-        }
-
-        unsigned int getType() {
-            return type;
-        }
-
-        const char* getData() {
-            return (char*)data;
-        }
-
-        unsigned int getSize() {
-            return size;
-        }
+    struct Message {
+        uint8_t type;
+        uint16_t sender;
     };
 
     enum class UDPMessageType {

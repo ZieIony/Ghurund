@@ -34,7 +34,7 @@ namespace Ghurund {
 
         Parameter* getParameter(const AString& name) {
             for (Parameter* p : Parameters) {
-                if (p != nullptr && strcmp(p->ConstantName, name)==0)
+                if (p != nullptr && strcmp(p->ConstantName.Data, name.Data)==0)
                     return p;
             }
 

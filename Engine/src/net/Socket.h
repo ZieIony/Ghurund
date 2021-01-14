@@ -3,15 +3,9 @@
 #include "Common.h"
 #include "Status.h"
 
-#include <Windows.h>
-#include <winsock2.h>
 #include <ws2tcpip.h>
 
 namespace Ghurund::Net {
-    enum class SocketProtocol {
-        TCP = SOCK_STREAM, UDP = SOCK_DGRAM
-    };
-
     class Socket {
     private:
         static const int BUFFER_SIZE = 4096;
@@ -21,7 +15,6 @@ namespace Ghurund::Net {
         tchar* address = nullptr;
         sockaddr_in* addressStruct = nullptr;
         sockaddr_in6* addressStruct6 = nullptr;
-        SocketProtocol protocol;
         WSAEVENT eventHandle = 0;
         WSABUF dataBuffer;
 
@@ -34,10 +27,10 @@ namespace Ghurund::Net {
             close();
         }
 
-        Status init(::SOCKET id, SocketProtocol protocol, const tchar* address, unsigned short port);
+        Status init(::SOCKET id, const tchar* address, uint16_t port);
 
-        Status init(SocketProtocol protocol, const tchar* address, unsigned short port) {
-            return init(::socket(AF_INET, (int)protocol, 0), protocol, address, port);
+        Status init(const tchar* address, uint16_t port) {
+            return init(::socket(AF_INET, SOCK_DGRAM, 0), address, port);
         }
 
         ::SOCKET getId() const {
@@ -69,8 +62,6 @@ namespace Ghurund::Net {
         Status bind();
 
         Status select();
-
-        Socket* accept() const;
 
         void close() {
             delete[] dataBuffer.buf;

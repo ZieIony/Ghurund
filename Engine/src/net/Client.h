@@ -1,13 +1,11 @@
 #pragma once
 
-#include "ClientThread.h"
 #include "ConnectionState.h"
 #include "Message.h"
 #include "NetworkListener.h"
 #include "Socket.h"
 #include "core/Noncopyable.h"
 #include "core/collection/List.h"
-#include "core/threading/FunctionQueue.h"
 #include "core/StateMachine.h"
 
 #include <thread>
@@ -21,14 +19,12 @@ namespace Ghurund::Net {
         StateMachine<ConnectionState> connectionState;
         List<UDPMessage*> messages;
         NetworkListener* listener = nullptr;
-        ClientThread* thread = nullptr;
-        FunctionQueue& functionQueue;
 
     public:
-        Client(FunctionQueue& functionQueue);
+        Client();
         ~Client();
 
-        Status connect(SocketProtocol protocol, unsigned short port, const tchar* address);
+        Status connect(const tchar* address, uint16_t port);
         void disconnect();
 
         inline bool isConnected() const {

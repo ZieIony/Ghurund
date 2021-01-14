@@ -22,7 +22,7 @@ namespace Ghurund {
         AllocationStrategy* strategy;
 
     public:
-        HeapAllocator(Graphics& graphics, memory_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(Graphics& graphics, size_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
             if (heap != nullptr)
@@ -30,12 +30,12 @@ namespace Ghurund {
             delete strategy;
         }
 
-        inline void* allocate(memory_t size) {
+        inline void* allocate(size_t size) {
             return (void*)strategy->allocate(size);
         }
 
         inline void deallocate(void* mem) {
-            strategy->deallocate((memory_t)mem);
+            strategy->deallocate((size_t)mem);
         }
 
         ID3D12Heap* getHeap() {
@@ -44,19 +44,19 @@ namespace Ghurund {
 
         __declspec(property(get = getHeap)) ID3D12Heap* Heap;
 
-        memory_t getSize() {
+        size_t getSize() {
             return strategy->getSize();
         }
 
-        __declspec(property(get = getSize)) memory_t Size;
+        __declspec(property(get = getSize)) size_t Size;
 
-        memory_t getAllocated() {
+        size_t getAllocated() {
             return strategy->getAllocated();
         }
 
-        __declspec(property(get = getAllocated)) memory_t Allocated;
+        __declspec(property(get = getAllocated)) size_t Allocated;
 
-		inline bool canAllocate(memory_t size) const {
+		inline bool canAllocate(size_t size) const {
 			return strategy->canAllocate(size);
 		}
     };

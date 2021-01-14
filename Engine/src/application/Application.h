@@ -5,8 +5,11 @@
 #include "Window.h"
 
 #include "core/Noncopyable.h"
-#include "net/Client.h"
 #include "game/LevelManager.h"
+
+namespace Ghurund::Net {
+    class Networking;
+}
 
 namespace Ghurund {
     class Graphics;
@@ -25,7 +28,7 @@ namespace Ghurund {
         List<SystemWindow*> windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
-        Net::Client* client;
+        Net::Networking* networking;
         Settings settings;
         Graphics* graphics;
         Audio::Audio* audio;
@@ -90,11 +93,11 @@ namespace Ghurund {
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-        inline Net::Client& getClient() {
-            return *client;
+        inline Net::Networking& getNetworking() {
+            return *networking;
         }
 
-        __declspec(property(get = getClient)) Net::Client& Client;
+        __declspec(property(get = getNetworking)) Net::Networking& Networking;
 
         inline Graphics& getGraphics() {
             return *graphics;

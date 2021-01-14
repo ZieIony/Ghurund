@@ -23,7 +23,8 @@ namespace Ghurund::Physics {
 		}
 
 		static const Ghurund::Type& GET_TYPE() {
-			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME).withSupertype(Component::TYPE);
+			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME)
+				.withSupertype(__super::GET_TYPE());
 
 			return TYPE;
 		}

@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 
 #include "core/logging/Logger.h"
+#include "application/Timer.h"
 
 #include <functional>
 
@@ -48,13 +49,13 @@ namespace Ghurund {
 
     FilePath ResourceManager::encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const {
         FilePath relativePath = resourcePath.getRelativePath(workingDir);
-        if (relativePath.get().startsWith(L"..")) {
+        if (relativePath.toString().startsWith(L"..")) {
             size_t libIndex = libraries.findFile(resourcePath);
             if (libIndex != libraries.Size) {
                 WString libPathString = LIB_PROTOCOL_PREFIX;
-                libPathString.add(libraries.get(libIndex).Name);
+                libPathString.add(libraries.get(libIndex).Name.Data);
                 libPathString.add(L"\\");
-                libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path));
+                libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path).toString().Data);
                 return libPathString;
             } else {
                 if (relativePath == resourcePath)
@@ -118,7 +119,7 @@ namespace Ghurund {
             return resource.save(context, workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
-            stream.writeUnicode(encodePath(*resource.Path, workingDir));
+            stream.writeUnicode(encodePath(*resource.Path, workingDir).toString().Data);
             return resource.save(context, *resource.Path, options);
         }
     }

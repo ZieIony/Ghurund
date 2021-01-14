@@ -45,7 +45,7 @@ namespace Ghurund {
         }
         stream.writeUInt((unsigned int)paramsToSave.Size);
         for (Parameter* p : paramsToSave) {
-            stream.writeASCII(p->ConstantName);
+            stream.writeASCII(p->ConstantName.Data);
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
                 Texture* texture = ((TextureParameter*)p)->Value;
                 stream.writeBoolean(texture != nullptr);

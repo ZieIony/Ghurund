@@ -9,31 +9,25 @@
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
+#include "net/Server.h"
+#include "net/Client.h"
 
 namespace Messenger {
     using namespace Ghurund;
     using namespace Ghurund::UI;
+    using namespace Ghurund::Net;
 
     class MessengerWindow:public OverlappedWindow {
     private:
         Theme* theme;
         UIContext* context;
-        SharedPointer<StackLayout> container;
-        LayoutLoader layoutLoader;
-        FilePath* filePath = nullptr;
-        FileWatcher fileWatcher;
-        std::function<void()> loadCallback;
         Application* app;
+        List<Server*> servers;
+        List<Client*> clients;
 
     public:
         MessengerWindow(Application& app);
 
         ~MessengerWindow();
-
-        void postLoadCallback(const FilePath& path);
-
-        void loadLayout(const Buffer& data);
-
-        void watchFile(FilePath& filePath);
     };
 }

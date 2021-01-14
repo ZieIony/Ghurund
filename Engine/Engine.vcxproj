@@ -21,26 +21,14 @@
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\DragDropManager.cpp" />
-    <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\application\SystemWindow.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
     <ClCompile Include="src\application\WindowType.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
-    <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
-    <ClCompile Include="src\core\io\DirectoryPath.cpp" />
-    <ClCompile Include="src\core\io\File.cpp" />
-    <ClCompile Include="src\core\io\FilePath.cpp" />
-    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
-    <ClCompile Include="src\core\string\AString.cpp" />
-    <ClCompile Include="src\core\string\WString.cpp" />
-    <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\application\Timer.cpp" />
-    <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
-    <ClCompile Include="src\core\threading\WorkerThread.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\core\io\FileUtils.cpp" />
     <ClCompile Include="src\game\CameraController.cpp" />
     <ClCompile Include="src\ecs\Entity.cpp" />
     <ClCompile Include="src\ecs\EntityGroup.cpp" />
@@ -81,8 +69,7 @@
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
-    <ClCompile Include="src\core\logging\Logger.cpp" />
-    <ClCompile Include="src\net\ClientThread.cpp" />
+    <ClCompile Include="src\net\Networking.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
@@ -159,9 +146,6 @@
     <ClInclude Include="src\application\ChildWindow.h" />
     <ClInclude Include="src\application\DragDropManager.h" />
     <ClInclude Include="src\application\WindowMessage.h" />
-    <ClInclude Include="src\core\logging\Formatter.h" />
-    <ClInclude Include="src\core\logging\LogOutput.h" />
-    <ClInclude Include="src\core\logging\LogType.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\SystemWindow.h" />
     <ClInclude Include="src\application\Window.h" />
@@ -169,70 +153,18 @@
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
-    <ClInclude Include="src\core\allocation\AllocatorMap.h" />
-    <ClInclude Include="src\core\collection\Array.h" />
-    <ClInclude Include="src\core\collection\ObservableList.h" />
-    <ClInclude Include="src\core\collection\ObservablePointerList.h" />
-    <ClInclude Include="src\core\collection\PointerSet.h" />
-    <ClInclude Include="src\core\collection\Set.h" />
-    <ClInclude Include="src\core\EventHandler.h" />
-    <ClInclude Include="src\core\reflection\Property.h" />
-    <ClInclude Include="src\core\reflection\TypeBuilder.h" />
-    <ClInclude Include="src\core\reflection\TypeModifier.h" />
-    <ClInclude Include="src\core\string\AString.h" />
-    <ClInclude Include="src\core\collection\AverageValue.h" />
-    <ClInclude Include="src\core\collection\BufferedValue.h" />
-    <ClInclude Include="src\core\string\AStringView.h" />
-    <ClInclude Include="src\core\string\GenericString.h" />
-    <ClInclude Include="src\core\collection\HashMap.h" />
-    <ClInclude Include="src\core\collection\PointerArray.h" />
-    <ClInclude Include="src\core\collection\PointerList.h" />
-    <ClInclude Include="src\core\collection\PointerMap.h" />
-    <ClInclude Include="src\core\string\GenericStringView.h" />
-    <ClInclude Include="src\core\string\String.h" />
-    <ClInclude Include="src\core\string\StringView.h" />
-    <ClInclude Include="src\core\string\WString.h" />
-    <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
-    <ClInclude Include="src\core\allocation\Allocator.h" />
-    <ClInclude Include="src\core\allocation\CircularBufferStrategy.h" />
-    <ClInclude Include="src\core\allocation\PoolAllocator.h" />
-    <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
-    <ClInclude Include="src\core\Buffer.h" />
-    <ClInclude Include="src\core\reflection\Constructor.h" />
-    <ClInclude Include="src\core\Enum.h" />
-    <ClInclude Include="src\core\Event.h" />
-    <ClInclude Include="src\core\Id.h" />
-    <ClInclude Include="src\core\io\MemoryStream.h" />
-    <ClInclude Include="src\core\collection\List.h" />
-    <ClInclude Include="src\core\collection\Map.h" />
-    <ClInclude Include="src\core\string\WStringView.h" />
-    <ClInclude Include="src\core\threading\CriticalSection.h" />
-    <ClInclude Include="src\core\threading\FunctionQueue.h" />
-    <ClInclude Include="src\core\Object.h" />
-    <ClInclude Include="src\core\Pointer.h">
-      <FileType>Document</FileType>
-    </ClInclude>
-    <ClInclude Include="src\core\SharedPointer.h" />
-    <ClInclude Include="src\core\StateMachine.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
     <ClInclude Include="src\input\EventArgs.h" />
-    <ClInclude Include="src\net\Net.h" />
-    <ClInclude Include="src\Status.h" />
-    <ClInclude Include="src\core\threading\Task.h" />
-    <ClInclude Include="src\core\threading\Thread.h" />
+    <ClInclude Include="src\net\Networking.h" />
     <ClInclude Include="src\application\Timer.h" />
-    <ClInclude Include="src\core\reflection\Type.h" />
-    <ClInclude Include="src\core\threading\WorkerThread.h" />
     <ClInclude Include="src\ecs\Component.h" />
     <ClInclude Include="src\ecs\System.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
-    <ClInclude Include="src\core\io\FileUtils.h" />
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\CameraController.h" />
     <ClInclude Include="src\game\sky\AdvancedSky.h" />
@@ -258,7 +190,6 @@
     <ClInclude Include="src\graphics\entity\Camera.h" />
     <ClInclude Include="src\graphics\CommandList.h" />
     <ClInclude Include="src\graphics\buffer\DepthBuffer.h" />
-    <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
     <ClInclude Include="src\graphics\LightSystem.h" />
@@ -303,16 +234,12 @@
     <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\game\KeyMap.h" />
     <ClInclude Include="src\input\Mouse.h" />
-    <ClInclude Include="src\core\MathUtils.h" />
     <ClInclude Include="src\physics\PhysicsComponent.h" />
     <ClInclude Include="src\physics\RigidBodyComponent.h" />
     <ClInclude Include="src\physics\Physics.h" />
     <ClInclude Include="src\game\parameter\Parameter.h" />
-    <ClInclude Include="src\core\io\DirectoryPath.h" />
-    <ClInclude Include="src\core\io\FilePath.h" />
     <ClInclude Include="src\physics\PhysicsSystem.h" />
     <ClInclude Include="src\resource\LibraryList.h" />
-    <ClInclude Include="src\core\io\Path.h" />
     <ClInclude Include="src\resource\ReloadTask.h" />
     <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFormat.h" />
@@ -332,8 +259,6 @@
     <ClInclude Include="src\script\ScriptEngine.h" />
     <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
-    <ClInclude Include="src\core\string\TextConversionUtils.h" />
-    <ClInclude Include="src\core\string\TextUtils.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\Animation.h" />
     <ClInclude Include="src\ui\Color.h" />
@@ -350,7 +275,6 @@
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
-    <ClInclude Include="src\core\Point.h" />
     <ClInclude Include="src\ui\style\DarkTheme.h" />
     <ClInclude Include="src\ui\style\DefaultTheme.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
@@ -395,17 +319,12 @@
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
-    <ClInclude Include="src\core\io\File.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\net\Client.h" />
-    <ClInclude Include="src\core\collection\Collection.h" />
     <ClInclude Include="src\Ghurund.h" />
-    <ClInclude Include="src\core\logging\Logger.h" />
-    <ClInclude Include="src\net\ClientThread.h" />
     <ClInclude Include="src\net\ConnectionState.h" />
     <ClInclude Include="src\net\Message.h" />
-    <ClInclude Include="src\core\Noncopyable.h" />
     <ClInclude Include="src\net\NetworkListener.h" />
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\Socket.h" />
@@ -433,7 +352,6 @@
     <ClInclude Include="src\ui\Property.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\control\ClickableView.h" />
-    <ClInclude Include="src\core\Size.h" />
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
@@ -481,7 +399,6 @@
     <ClInclude Include="src\ui\widget\TextButton.h" />
     <ClInclude Include="src\application\Clipboard.h" />
     <ClInclude Include="src\ui\widget\textfield\DrawingEffect.h" />
-    <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\ui\widget\textfield\LayoutEditor.h" />
     <ClInclude Include="src\ui\widget\textfield\SetSelectionMode.h" />
     <ClInclude Include="src\ui\widget\textfield\TextField.h" />
@@ -496,11 +413,9 @@
     <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="Engine.Core.natvis" />
     <Natvis Include="Engine.UI.natvis" />
   </ItemGroup>
   <ItemGroup>
@@ -567,7 +482,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

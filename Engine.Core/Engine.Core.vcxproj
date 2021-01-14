@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\logging\LogType.cpp" />
+    <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
+    <ClCompile Include="src\core\io\DirectoryPath.cpp" />
+    <ClCompile Include="src\core\io\File.cpp" />
+    <ClCompile Include="src\core\io\FilePath.cpp" />
+    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
+    <ClCompile Include="src\core\string\AString.cpp" />
+    <ClCompile Include="src\core\string\WString.cpp" />
+    <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
+    <ClCompile Include="src\core\threading\WorkerThread.cpp" />
+    <ClCompile Include="src\core\io\FileUtils.cpp" />
+    <ClCompile Include="src\core\logging\Logger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\allocation\SimpleAllocator.h" />
+    <ClInclude Include="src\core\collection\ArrayCollection.h" />
+    <ClInclude Include="src\core\collection\Bag.h" />
+    <ClInclude Include="src\core\collection\CollectionWithCapacity.h" />
+    <ClInclude Include="src\core\collection\LinkedList.h" />
+    <ClInclude Include="src\core\collection\Queue.h" />
+    <ClInclude Include="src\core\collection\Stack.h" />
+    <ClInclude Include="src\core\collection\Tree.h" />
+    <ClInclude Include="src\core\logging\Formatter.h" />
+    <ClInclude Include="src\core\logging\LogOutput.h" />
+    <ClInclude Include="src\core\logging\LogType.h" />
+    <ClInclude Include="src\core\allocation\AllocatorMap.h" />
+    <ClInclude Include="src\core\collection\Array.h" />
+    <ClInclude Include="src\core\collection\ObservableList.h" />
+    <ClInclude Include="src\core\collection\ObservablePointerList.h" />
+    <ClInclude Include="src\core\collection\PointerSet.h" />
+    <ClInclude Include="src\core\collection\Set.h" />
+    <ClInclude Include="src\core\EventHandler.h" />
+    <ClInclude Include="src\core\reflection\Property.h" />
+    <ClInclude Include="src\core\reflection\TypeBuilder.h" />
+    <ClInclude Include="src\core\reflection\TypeModifier.h" />
+    <ClInclude Include="src\core\string\AString.h" />
+    <ClInclude Include="src\core\collection\AverageValue.h" />
+    <ClInclude Include="src\core\collection\BufferedValue.h" />
+    <ClInclude Include="src\core\string\AStringView.h" />
+    <ClInclude Include="src\core\string\GenericString.h" />
+    <ClInclude Include="src\core\collection\HashMap.h" />
+    <ClInclude Include="src\core\collection\PointerArray.h" />
+    <ClInclude Include="src\core\collection\PointerList.h" />
+    <ClInclude Include="src\core\collection\PointerMap.h" />
+    <ClInclude Include="src\core\string\GenericStringView.h" />
+    <ClInclude Include="src\core\string\String.h" />
+    <ClInclude Include="src\core\string\StringView.h" />
+    <ClInclude Include="src\core\string\WString.h" />
+    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
+    <ClInclude Include="src\core\allocation\Allocator.h" />
+    <ClInclude Include="src\core\allocation\CircularBufferStrategy.h" />
+    <ClInclude Include="src\core\allocation\PoolAllocator.h" />
+    <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
+    <ClInclude Include="src\core\Buffer.h" />
+    <ClInclude Include="src\core\reflection\Constructor.h" />
+    <ClInclude Include="src\core\Enum.h" />
+    <ClInclude Include="src\core\Event.h" />
+    <ClInclude Include="src\core\Id.h" />
+    <ClInclude Include="src\core\io\MemoryStream.h" />
+    <ClInclude Include="src\core\collection\List.h" />
+    <ClInclude Include="src\core\collection\Map.h" />
+    <ClInclude Include="src\core\string\WStringView.h" />
+    <ClInclude Include="src\core\threading\CriticalSection.h" />
+    <ClInclude Include="src\core\threading\FunctionQueue.h" />
+    <ClInclude Include="src\core\Object.h" />
+    <ClInclude Include="src\core\Pointer.h">
+      <FileType>Document</FileType>
+    </ClInclude>
+    <ClInclude Include="src\core\SharedPointer.h" />
+    <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\Status.h" />
+    <ClInclude Include="src\core\threading\Task.h" />
+    <ClInclude Include="src\core\threading\Thread.h" />
+    <ClInclude Include="src\core\reflection\Type.h" />
+    <ClInclude Include="src\core\threading\WorkerThread.h" />
+    <ClInclude Include="src\core\io\FileUtils.h" />
+    <ClInclude Include="src\core\NamedObject.h" />
+    <ClInclude Include="src\core\MathUtils.h" />
+    <ClInclude Include="src\core\io\DirectoryPath.h" />
+    <ClInclude Include="src\core\io\FilePath.h" />
+    <ClInclude Include="src\core\io\Path.h" />
+    <ClInclude Include="src\core\string\TextConversionUtils.h" />
+    <ClInclude Include="src\core\string\TextUtils.h" />
+    <ClInclude Include="src\ui\control\CheckableView.h" />
+    <ClInclude Include="src\ui\control\Column.h" />
+    <ClInclude Include="src\core\Point.h" />
+    <ClInclude Include="src\ui\layout\Layout.h" />
+    <ClInclude Include="src\ui\control\ListView.h" />
+    <ClInclude Include="src\ui\control\Row.h" />
+    <ClInclude Include="src\ui\control\Surface.h" />
+    <ClInclude Include="src\core\io\File.h" />
+    <ClInclude Include="src\core\collection\Collection.h" />
+    <ClInclude Include="src\core\logging\Logger.h" />
+    <ClInclude Include="src\core\Noncopyable.h" />
+    <ClInclude Include="src\ui\MenuItem.h" />
+    <ClInclude Include="src\ui\control\Stack.h" />
+    <ClInclude Include="src\ui\layout\LayoutInflater.h" />
+    <ClInclude Include="src\ui\Property.h" />
+    <ClInclude Include="src\core\Size.h" />
+    <ClInclude Include="src\ui\widget\Button.h" />
+    <ClInclude Include="src\ui\widget\CheckBox.h" />
+    <ClInclude Include="src\ui\widget\ImageButton.h" />
+    <ClInclude Include="src\ui\widget\TextButton.h" />
+    <ClInclude Include="src\core\IUnknownImpl.h" />
+    <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="Engine.Core.natvis" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{D4EE5946-F2FB-47DE-93D3-5B27B9BCEBC9}</ProjectGuid>
+    <RootNamespace>Engine12</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Engine.Core</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <TargetName>GhurundEngine.Core_32</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <TargetName>GhurundEngine</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IntDir>$(Configuration)\</IntDir>
+    <TargetName>GhurundEngine.Core_64</TargetName>
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <EnableModules>true</EnableModules>
+      <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

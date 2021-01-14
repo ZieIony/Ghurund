@@ -79,7 +79,7 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\src;$(SolutionDir)Engine.Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>

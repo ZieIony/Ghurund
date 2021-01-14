@@ -35,8 +35,8 @@ namespace Ghurund::UI {
             fontCollection->Release();
 
         if (font) {
-            newLayout->SetFontFamilyName(font->FamilyName, range);
-            newLayout->SetLocaleName(font->Locale, range);
+            newLayout->SetFontFamilyName(font->FamilyName.Data, range);
+            newLayout->SetLocaleName(font->Locale.Data, range);
             newLayout->SetFontWeight((DWRITE_FONT_WEIGHT)font->Weight, range);
             newLayout->SetFontStyle(font->Italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL, range);
             //newLayout->SetFontStretch(font->fontStretch, range);
@@ -133,7 +133,7 @@ namespace Ghurund::UI {
         UINT32 oldTextLength = text.Length;
         position = std::min(position, (uint32_t)text.Size);
 
-        text.insert(position, textToInsert, textToInsert.Size);
+        text.insert(position, textToInsert.Data, textToInsert.Size);
 
         Status result = recreateLayout(currentLayout, text);
 

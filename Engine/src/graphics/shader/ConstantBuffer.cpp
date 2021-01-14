@@ -29,7 +29,7 @@ namespace Ghurund {
     void ConstantBuffer::initParameters(ParameterManager& parameterManager) {
         for (size_t i = 0; i < variables.Size; i++) {
             ConstantBufferField* variable = variables[i];
-            ValueParameter* vp = ghnew ValueParameter(variable->name, ParameterType::fromSize(variable->size));
+            ValueParameter* vp = ghnew ValueParameter(variable->name.Data, ParameterType::fromSize(variable->size));
             ValueParameter* p = (ValueParameter*)parameterManager.getParameter(variable->name);
             if (p)
                 vp->DefaultValue = p->Value;

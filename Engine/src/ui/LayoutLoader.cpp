@@ -70,7 +70,7 @@ namespace Ghurund::UI {
         if (s == "rect") {
             return ghnew Rect(context.Graphics2D);
         } else if (s.startsWith("roundRect")) {
-            float radius = (float)atof(s.substring(s.find(",") + 1).trim());
+            float radius = (float)atof(s.substring(s.find(",") + 1).trim().Data);
             return ghnew RoundRect(context.Graphics2D, radius);
         }
         return nullptr;

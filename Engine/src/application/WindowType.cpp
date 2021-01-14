@@ -34,7 +34,7 @@ namespace Ghurund {
         windowClass.hCursor = nullptr;
         windowClass.hbrBackground = 0;
         windowClass.lpszMenuName = 0;
-        windowClass.lpszClassName = className;
+        windowClass.lpszClassName = className.Data;
         windowClass.hIconSm = 0;
 
         RegisterClassEx(&windowClass);

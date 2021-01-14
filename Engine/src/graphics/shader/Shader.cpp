@@ -182,7 +182,7 @@ namespace Ghurund {
                 if (p2->Empty)
                     continue;
                 for (Parameter* p : *this->parameters) {
-                    if (strcmp(p->ConstantName, p2->ConstantName) == 0 && p->ValueType == p2->ValueType) {
+                    if (p->ConstantName == p2->ConstantName && p->ValueType == p2->ValueType) {
                         if (p->ValueType == ParameterType::TEXTURE) {
                             ((TextureParameter*)p)->Value = ((TextureParameter*)p2)->Value;
                         } else {
@@ -223,7 +223,7 @@ namespace Ghurund {
         for (unsigned int i = 0; i < 6; i++) {
             ShaderProgram* program = ghnew ShaderProgram(types[i], types[i].getEntryPoint());
             char* programErrors = nullptr;
-            result = program->compile(source, &programErrors);
+            result = program->compile(source.Data, &programErrors);
             if (result == Status::OK) {
                 programs[i] = program;
             } else if (result == Status::ENTRY_POINT_NOT_FOUND) {
@@ -280,11 +280,11 @@ namespace Ghurund {
         }
 
         for (size_t i = 0; i < textures.Size; i++) {
-            Parameter* p = parameterManager.getParameter(textures[i]->getName());
+            Parameter* p = parameterManager.getParameter(textures[i]->Name);
 #ifdef _DEBUG
             reported[i] = false;
 #endif
-            TextureParameter* tp = ghnew TextureParameter(textures[i]->getName());
+            TextureParameter* tp = ghnew TextureParameter(textures[i]->Name.Data);
             if (p && p->ValueType == ParameterType::TEXTURE)
                 tp->DefaultValue = ((TextureParameter*)p)->Value;
             parameters->set(i + constantsCount, tp);
@@ -316,7 +316,7 @@ namespace Ghurund {
             case D3D_SIT_CBUFFER:
             {
                 for (size_t i = 0; i < constantBuffers.Size; i++) {
-                    if (strcmp(bindDesc.Name, constantBuffers[i]->getName()) == 0) {
+                    if (strcmp(bindDesc.Name, constantBuffers[i]->Name.Data) == 0) {
                         constantBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
                         goto bufferMerged;
                     }
@@ -331,7 +331,7 @@ namespace Ghurund {
             case D3D_SIT_TBUFFER:
             {
                 for (size_t i = 0; i < textureBuffers.Size; i++) {
-                    if (strcmp(bindDesc.Name, textureBuffers[i]->getName()) == 0) {
+                    if (strcmp(bindDesc.Name, textureBuffers[i]->Name.Data) == 0) {
                         textureBuffers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
                         goto bufferMerged;
                     }
@@ -344,7 +344,7 @@ namespace Ghurund {
             break;
             case D3D_SIT_TEXTURE:
                 for (size_t i = 0; i < textures.Size; i++) {
-                    if (strcmp(bindDesc.Name, textures[i]->getName()) == 0) {
+                    if (strcmp(bindDesc.Name, textures[i]->Name.Data) == 0) {
                         textures[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
                         goto bufferMerged;
                     }
@@ -353,7 +353,7 @@ namespace Ghurund {
                 break;
             case D3D_SIT_SAMPLER:
                 for (size_t i = 0; i < samplers.Size; i++) {
-                    if (strcmp(bindDesc.Name, samplers[i]->getName()) == 0) {
+                    if (strcmp(bindDesc.Name, samplers[i]->Name.Data) == 0) {
                         samplers[i]->Visibility = D3D12_SHADER_VISIBILITY_ALL;
                         goto bufferMerged;
                     }
@@ -417,9 +417,9 @@ namespace Ghurund {
         Status result;
 
         if (Path) {
-            if (Path->get().endsWith(ResourceFormat::SHADER.getExtension())) {
+            if (Path->toString().endsWith(ResourceFormat::SHADER.getExtension())) {
                 result = loadShd(context, stream);
-            } else if (Path->get().endsWith(ResourceFormat::HLSL.getExtension())) {
+            } else if (Path->toString().endsWith(ResourceFormat::HLSL.getExtension())) {
                 result = loadHlsl(context, stream);
             } else {
                 return Status::UNKNOWN_FORMAT;
@@ -451,7 +451,7 @@ namespace Ghurund {
             for (size_t i = 0; i < 6; i++) {
                 stream.writeBoolean(programs[i] != nullptr);
                 if (programs[i] != nullptr) {
-                    stream.writeASCII(programs[i]->getEntryPoint());
+                    stream.writeASCII(programs[i]->EntryPoint.Data);
                     stream.writeInt(programs[i]->getCompilationTarget().getValue());
                     stream.writeUInt((uint32_t)programs[i]->ByteCode->Size);
                     stream.writeBytes(programs[i]->ByteCode->Data, programs[i]->ByteCode->Size);
@@ -460,7 +460,7 @@ namespace Ghurund {
         }
         stream.writeBoolean(source != nullptr);
         if (source != nullptr)
-            stream.writeASCII(source);
+            stream.writeASCII(source.Data);
 
         stream.writeBoolean(supportsTransparency);
 

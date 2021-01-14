@@ -51,7 +51,6 @@ namespace Ghurund::UI {
         ~ButtonMenuItem() {
             if(image)
                 image->release();
-            delete[] text;
         }
 
         inline void setImage(BitmapImage* image) {

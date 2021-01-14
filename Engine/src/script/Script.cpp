@@ -6,30 +6,30 @@
 #include "core/logging/Logger.h"
 
 namespace Ghurund {
-	Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();
         return build(context.ScriptEngine);
     }
 
     Status Script::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        if (!entryPoint || !source)
+        if (entryPoint.Length == 0 || source.Length == 0)
             return Status::INV_STATE;
-        stream.writeASCII(entryPoint);
-        stream.writeASCII(source);
+        stream.writeASCII(entryPoint.Data);
+        stream.writeASCII(source.Data);
         return Status::OK;
     }
 
-    Status Script::build(ScriptEngine & engine) {
+    Status Script::build(ScriptEngine& engine) {
         mod = engine.makeModule();
 
-        auto r = mod->AddScriptSection("main", source, strlen(source));
+        auto r = mod->AddScriptSection("main", source.Data, source.Length);
         assert(r >= 0);
 
         if (mod->Build() < 0)
             return Logger::log(LogType::ERR0R, Status::COMPILATION_ERROR, _T("Compilation failed.\n"));
 
-        func = mod->GetFunctionByDecl(entryPoint);
+        func = mod->GetFunctionByDecl(entryPoint.Data);
         if (func == 0)
             // The function couldn't be found. Instruct the script writer
             // to include the expected function in the script.
@@ -42,7 +42,7 @@ namespace Ghurund {
 
         return Status::OK;
     }
-    
+
     Status Script::execute() {
         ctx->Prepare(func);
         for (size_t i = 0; i < arguments.Size; i++)

@@ -27,7 +27,7 @@ namespace Ghurund {
     }
 
     Status Entity::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        stream.writeUnicode((WString)Name);
+        stream.writeUnicode(Name.Data);
         stream.writeUInt((uint32_t)components.Size);
         for (Component* c : components) {
             stream.writeASCII(c->Type.Namespace);

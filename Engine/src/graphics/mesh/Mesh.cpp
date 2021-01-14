@@ -5,9 +5,9 @@
 namespace Ghurund {
 	Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
         if (Path) {
-            if (Path->get().endsWith(ResourceFormat::OBJ.getExtension())) {
+            if (Path->toString().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
-            } else if (Path->get().endsWith(ResourceFormat::MESH.getExtension())) {
+            } else if (Path->toString().endsWith(ResourceFormat::MESH.getExtension())) {
                 return loadMesh(context, stream);
             } else {
                 return Status::UNKNOWN_FORMAT;
@@ -40,15 +40,15 @@ namespace Ghurund {
                 continue;
             } else if (line.startsWith("v ")) {
 				Array<AString> vert = line.substring(2).trim().split(" ");
-                XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
+                XMFLOAT3 v((float)atof(vert[0].Data), (float)atof(vert[1].Data), -(float)atof(vert[2].Data));
                 objVerts.add(v);
             } else if (line.startsWith("vt ")) {
 				Array<AString> vert = line.substring(2).trim().split(" ");
-                XMFLOAT2 v((float)atof(vert[0]), 1 - (float)atof(vert[1]));
+                XMFLOAT2 v((float)atof(vert[0].Data), 1 - (float)atof(vert[1].Data));
                 objTexCoords.add(v);
             } else if (line.startsWith("vn ")) {
 				Array<AString> vert = line.substring(2).trim().split(" ");
-                XMFLOAT3 v((float)atof(vert[0]), (float)atof(vert[1]), -(float)atof(vert[2]));
+                XMFLOAT3 v((float)atof(vert[0].Data), (float)atof(vert[1].Data), -(float)atof(vert[2].Data));
                 objNorms.add(v);
             } else if (line.startsWith("f ")) {
 				Array<AString> vert = line.substring(2).trim().split(" ");
@@ -63,7 +63,7 @@ namespace Ghurund {
                 }
                 for (size_t j = 0; j < vert.Size; j++) {
 					Array<AString> face = vert[j].split("/");
-                    Vertex v(objVerts[atoi(face[0]) - 1], objNorms[atoi(face[2]) - 1], objTexCoords[atoi(face[1]) - 1]);
+                    Vertex v(objVerts[atoi(face[0].Data) - 1], objNorms[atoi(face[2].Data) - 1], objTexCoords[atoi(face[1].Data) - 1]);
                     triangleVertices.add(v);
                 }
             }

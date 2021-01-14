@@ -48,7 +48,7 @@ namespace Ghurund::UI {
         if (FAILED(graphics2d.FontLoader->createFontCollection(file, &fontCollection)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "createFontCollection failed\n");
         if (FAILED(graphics2d.DWriteFactory->CreateTextFormat(
-            familyName,
+            familyName.Data,
             fontCollection,
             (DWRITE_FONT_WEIGHT)weight,
             italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL,

@@ -3,111 +3,105 @@
 #include "Ws2tcpip.h"
 
 namespace Ghurund::Net {
-    Server::Server() {
-        hosting = false;
-        //hostThread=0;
+    Status Server::handlePacket(uint8_t* data, uint32_t size, sockaddr_in& socketAddr) {
+        Message* message = (Message*)data;
+        ClientMessageType messageType = (ClientMessageType)message->type;
+        if (messageType == ClientMessageType::CONNECT) {
+            Socket* clientSocket = ghnew Socket();
+            tchar address[16];
+            InetNtop(AF_INET, &socketAddr.sin_addr.s_addr, (tchar*)address, 16);
+            clientSocket->init(socket.Id, address, ntohs(socketAddr.sin_port));
+            uint16_t id = clients.Size;
+            if (!spareIds.Empty) {
+                id = spareIds[spareIds.Size - 1];
+                spareIds.removeAt(spareIds.Size - 1);
+            }
+            clients.set(id, ClientConnection(clientSocket));
+        } else if (clients.contains(message->sender)) {
+            if (messageType == ClientMessageType::DISCONNECT) {
+                clients.remove(message->sender);
+                spareIds.add(message->sender);
+            } else if (messageType == ClientMessageType::UPDATE) {
+
+            }
+        }
+        return Status::SOCKET_INV_PACKET;
     }
 
     Server::~Server() {
         if (hosting)
-            shutdown();//TODO poprawi? wszystkie p?tle sprz?taj?ce
+            shutdown();
     }
 
-    Status Server::host(SocketProtocol protocol, unsigned short port) {
-        socket.init(protocol, (const tchar*)INADDR_ANY, port);
+    Status Server::host(uint16_t port) {
+        socket.init((const tchar*)INADDR_ANY, port);
 
-        if (socket.bind() != Status::OK) { // error
-            WSACleanup();  // unload WinSock
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket"));         // quit
-        }
+        if (socket.bind() != Status::OK)
+            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket"));
 
         hosting = true;
 
         return Status::OK;
     }
 
-    /*
-    Status Server::receive(Socket **senderSocket, void **buffer, int *size) {
+    Status Server::receive() {
         int bytes;
         sockaddr_in socketAddr;
         memset(&socketAddr, 0, sizeof(socketAddr));
         int length = sizeof(socketAddr);
-        if((bytes = recvfrom(socket.getId(), this->buffer, BUFFER_SIZE, 0, (sockaddr*)&socketAddr, &length))==SOCKET_ERROR) {
-            int error = WSAGetLastError();
-            *senderSocket = nullptr;
-            *buffer = nullptr;
-            *size = 0;
-            Logger::log(_T("there was an error while receiving data"));
-            return Status::SOCKET;
+        while (true) {
+            bytes = recvfrom(socket.getId(), (char*)buffer.Data, BUFFER_SIZE, 0, (sockaddr*)&socketAddr, &length);
+            if (bytes == 0)
+                break;
+            if (bytes == SOCKET_ERROR) {
+                int error = WSAGetLastError();
+                if (error == WSAEWOULDBLOCK)
+                    return Status::OK;
+                return Logger::log(LogType::ERR0R, Status::SOCKET, _T("there was an error while receiving data"));
+            }
+
+            handlePacket(buffer.Data, bytes, socketAddr);
         }
 
-        *buffer = ghnew char[bytes];
-        memcpy(*buffer, this->buffer, bytes);
-        *size = bytes;
-
-/*        for(unsigned int i = 0; i<sockets.getSize(); i++) {
-            if(sockets.get(i)->addressStruct.sin_addr.s_addr==socketAddr.sin_addr.s_addr) {
-                *senderSocket = sockets.get(i);
-                return Status::OK;
-            }
-        }*/
-        /*
-            Socket *socket2 = new Socket();
-            tchar address[16];
-            InetNtop(AF_INET, &socketAddr.sin_addr.s_addr, (tchar*)address, 16);
-            socket2->init(socket.getId(), address, ntohs(socketAddr.sin_port));
-            sockets.add(socket2);
-            *senderSocket = socket2;
-
-            return Status::OK;
-        }*/
+        return Status::OK;
+    }
 
     void Server::shutdown() {
-        char buffer[256];
-        for (size_t i = sockets.getSize() - 1; i >= 0; i--) {
-            ::shutdown(sockets.get(i)->getId(), SD_SEND);
-            recv(sockets.get(i)->getId(), buffer, 256, 0);
-            closesocket(sockets.get(i)->getId());
-            delete sockets.get(i);
+        /*char buffer[256];
+        for (size_t i = sockets.Size - 1; i >= 0; i--) {
+            ::shutdown(sockets[i]->Id, SD_SEND);
+            recv(sockets[i]->Id, buffer, 256, 0);
+            closesocket(sockets[i]->Id);
+            delete sockets[i];
             sockets.removeAt(i);
         }
-        ::shutdown(socket.getId(), 1);
-        recv(socket.getId(), buffer, 256, 0);
-        closesocket(socket.getId());
+        ::shutdown(socket.Id, 1);
+        recv(socket.Id, buffer, 256, 0);
+        closesocket(socket.Id);
         hosting = false;
         //if(hostThread)
-            //delete hostThread;
+            //delete hostThread;*/
     }
 
     Status Server::send(void* data, int size, unsigned int flags) {
         Status result = Status::OK;
-        for (unsigned int i = 0; i < sockets.getSize(); i++) {
+        /*for (unsigned int i = 0; i < sockets.Size; i++) {
             result = socket.send(data, size, flags);
             if (result != Status::OK)
                 return result;
-        }
+        }*/
         return result;
     }
 
     Status Server::sendExcept(const Socket* socket, void* data, int size, unsigned int flags) {
         Status result = Status::OK;
-        for (unsigned int i = 0; i < sockets.getSize(); i++) {
-            if (socket->getId() != sockets.get(i)->getId()) {
-                result = sockets.get(i)->send(data, size, flags);
+        /*for (unsigned int i = 0; i < sockets.Size; i++) {
+            if (socket->Id != sockets[i]->Id) {
+                result = sockets[i]->send(data, size, flags);
                 if (result != Status::OK)
                     return result;
             }
-        }
+        }*/
         return result;
     }
-
-    Status Server::accept() {
-        Socket* clientSocket = socket.accept();
-        if (clientSocket == nullptr)
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("Failed to accept a connection\n"));
-
-        sockets.add(clientSocket);
-        return Status::OK;
-    }
-
 }

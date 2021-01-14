@@ -14,7 +14,8 @@
 #include "ui/RootView.h"
 #include "ui/Canvas.h"
 #include "SystemWindow.h"
-#include "net/Net.h"
+
+#include "net/Networking.h"
 
 #include <time.h>
 
@@ -22,7 +23,8 @@ namespace Ghurund {
     Status Application::init() {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
-        Status result = Net::init();
+        networking = ghnew Net::Networking();
+        Status result = networking->init();
         if (result != Status::OK) {
             uninit();
             return result;
@@ -79,8 +81,6 @@ namespace Ghurund {
         if (result != Status::OK)
             return result;
 
-        client = ghnew Ghurund::Net::Client(*functionQueue);
-
         return Status::OK;
     }
 
@@ -88,10 +88,6 @@ namespace Ghurund {
         windows.clear();
 
         delete scriptEngine;
-
-        if (client->Connected)
-            client->disconnect();
-        delete client;
 
         delete renderer;
 
@@ -107,7 +103,7 @@ namespace Ghurund {
         delete graphics2d;
         delete graphics;
 
-        Net::uninit();
+        delete networking;
         OleUninitialize();
         CoUninitialize();
     }

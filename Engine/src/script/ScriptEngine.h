@@ -66,7 +66,7 @@ namespace Ghurund {
         }
 
         static void log(const std::string& str) {
-            Logger::log(LogType::INFO, String(str.c_str()));
+            Logger::log(LogType::INFO, str.c_str());
         }
 
         Status init(Timer& timer);

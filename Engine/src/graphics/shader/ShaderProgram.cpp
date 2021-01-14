@@ -14,7 +14,7 @@ namespace Ghurund {
         const wchar_t *localShaderDir = nullptr;
         const char* fileNameA = nullptr;
         if (fileName) {
-            localShaderDir = FilePath(fileName).Directory;
+            localShaderDir = FilePath(fileName).Directory.toString().Data;
             fileNameA = toMultiByte(fileName);
         }
         CompilerInclude include(localShaderDir, L"shaders/");
@@ -22,7 +22,7 @@ namespace Ghurund {
         ID3DBlob *errorBlob;
         Status result;
         ComPtr<ID3DBlob> shader;
-        HRESULT hr = D3DCompile(code, strlen(code), fileNameA, nullptr, &include, entryPoint, targetText, compileFlags, 0, &shader, &errorBlob);
+        HRESULT hr = D3DCompile(code, strlen(code), fileNameA, nullptr, &include, entryPoint.Data, targetText, compileFlags, 0, &shader, &errorBlob);
         delete[] fileNameA;
         if(FAILED(hr)) {
             if(errorBlob == nullptr) {
