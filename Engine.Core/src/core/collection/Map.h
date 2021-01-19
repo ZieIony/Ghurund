@@ -158,7 +158,15 @@ namespace Ghurund {
             return v;
         }
 
+        inline Value* begin() const {
+            return v;
+        }
+
         inline Value* end() {
+            return v + size;
+        }
+
+        inline Value* end() const {
             return v + size;
         }
 

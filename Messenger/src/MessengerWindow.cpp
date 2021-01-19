@@ -1,4 +1,5 @@
 #include "MessengerWindow.h"
+#include "TextMessage.h"
 
 #include "ui/control/Space.h"
 #include "ui/widget/button/TextButton.h"
@@ -23,45 +24,78 @@ namespace Messenger {
         canvas->init(app.Graphics2D);
         SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
 
-        auto hostUDP = makeShared<TextButton>();
+        status = makeShared<TextBlock>();
+        clientCount = makeShared<TextBlock>();
+
+        auto hostUDP = makeShared<TextButton>(ghnew TextButtonFlatLayout());
         hostUDP->Text = L"HOST";
         hostUDP->OnClicked.add([&app, this](Control&, const MouseClickedEventArgs& args) {
-            Server* server = app.Networking.host(port);
-            if (server)
-                servers.add(server);
+            if (server.host(port) == Status::OK) {
+                server.OnNewClientConnection.add([](Server& server, const Connection& connection) {
+                    return true;
+                });
+                server.OnConnected.add([this](Server& server, const Connection& connection) {
+                    status->Text = L"Hosting";
+                    status->invalidate();
+                    return true;
+                });
+                server.OnDisconnected.add([this](Server& server, const ClientDisconnection& disconnection) {
+                    status->Text = L"Disconnected";
+                    status->invalidate();
+                    return true;
+                });
+            }
             return true;
         });
-        auto connectUDP = makeShared<TextButton>();
+        auto connectUDP = makeShared<TextButton>(ghnew TextButtonFlatLayout());
         connectUDP->Text = L"CONNECT";
         connectUDP->OnClicked.add([&app, this](Control&, const MouseClickedEventArgs& args) {
-            Client* client = app.Networking.connect(_T("localhost"), port);
-            if (client)
-                clients.add(client);
+            if (client.connect(_T("localhost"), port) == Status::OK) {
+                client.OnConnected.add([this](Client& server) {
+                    status->Text = L"Connected";
+                    status->invalidate();
+                    return true;
+                });
+                client.OnDisconnected.add([this](Client& client, const DisconnectionReason& disconnection) {
+                    status->Text = L"Disconnected";
+                    status->invalidate();
+                    return true;
+                });
+            }
             return true;
         });
-        auto sendUDP = makeShared<TextButton>();
-        sendUDP->Text = L"SEND";
+        auto sendUDP = makeShared<TextButton>(ghnew TextButtonFlatLayout());
+        sendUDP->Text = L"SEND TO CLIENTS";
+        sendUDP->OnClicked.add([this](Control&, const MouseClickedEventArgs& args) {
+            TextMessage* message = ghnew TextMessage();
+            client.send(message);
+            return true;
+        });
+        auto sendUDP2 = makeShared<TextButton>(ghnew TextButtonFlatLayout());
+        sendUDP->Text = L"SEND TO SERVER";
         sendUDP->OnClicked.add([](Control&, const MouseClickedEventArgs& args) {
             return true;
         });
-        auto stopHosting = makeShared<TextButton>();
+        auto stopHosting = makeShared<TextButton>(ghnew TextButtonFlatLayout());
         stopHosting->Text = L"STOP HOSTING";
         stopHosting->OnClicked.add([this](Control&, const MouseClickedEventArgs& args) {
-            servers.deleteItems();
+            server.shutdown();
             return true;
         });
-        auto disconnect = makeShared<TextButton>();
+        auto disconnect = makeShared<TextButton>(ghnew TextButtonFlatLayout());
         disconnect->Text = L"DISCONNECT";
         disconnect->OnClicked.add([this](Control&, const MouseClickedEventArgs& args) {
-            clients.deleteItems();
+            client.disconnect();
             return true;
         });
 
         auto content = makeShared<VerticalLayout>();
         content->Children = {
-            hostUDP, connectUDP, sendUDP,
+            hostUDP, stopHosting, sendUDP,
             makeShared<Space>(),
-            stopHosting, disconnect
+            connectUDP, disconnect, sendUDP2,
+            makeShared<Space>(),
+            status, clientCount
         };
         rootView->Child = content;
 
@@ -72,8 +106,21 @@ namespace Messenger {
 
     MessengerWindow::~MessengerWindow() {
         delete context;
+        context = nullptr;
         delete theme;
-        servers.deleteItems();
-        clients.deleteItems();
+    }
+
+    void MessengerWindow::onUpdate(const uint64_t time) {
+        if (server.Hosting) {
+            server.update(time);
+            clientCount->Text = fmt::format(L"server: {} client(s)", server.Connections.count([](Connection* c) {
+                return c->Connected;
+            })).c_str();
+        } else {
+            client.update(time);
+            clientCount->Text = fmt::format(L"client: {}", client.Connected).c_str();
+        }
+        clientCount->invalidate();
+        __super::onUpdate(time);
     }
 }

@@ -45,8 +45,16 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
+        inline Type2* begin() {
+            return values.begin();
+        }
+
         inline Type2* begin() const {
             return values.begin();
+        }
+
+        inline Type2* end() {
+            return values.end();
         }
 
         inline Type2* end() const {

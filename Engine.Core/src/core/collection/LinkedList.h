@@ -349,11 +349,9 @@ namespace Ghurund {
                 list.add(f(item));
         }
 
-        template<typename Value2>
-        inline LinkedList<Value, AllocatorType>& forEach(std::function<void(Value&)> f) {
+        inline void forEach(std::function<void(Value&)> f) {
             for (Value& item : *this)
                 f(item);
-            return *this;
         }
 
         inline LinkedList<Value, AllocatorType> filter(std::function<bool(const Value&)> f) {

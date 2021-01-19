@@ -1,62 +1,72 @@
 #pragma once
 
-#include "ConnectionState.h"
-#include "Message.h"
-#include "NetworkListener.h"
-#include "Socket.h"
-#include "core/Noncopyable.h"
-#include "core/collection/List.h"
+#include "Connection.h"
+#include "ServerMessage.h"
+#include "ReliableUDP.h"
+#include "core/Event.h"
 #include "core/StateMachine.h"
+#include "core/collection/List.h"
 
 #include <thread>
 #include <time.h>
 #include <winsock2.h>
 
 namespace Ghurund::Net {
-    class Client:public Noncopyable {
+    class Client:public ReliableUDP {
     protected:
-        Socket* serverSocket = nullptr, mySocket;
-        StateMachine<ConnectionState> connectionState;
-        List<UDPMessage*> messages;
-        NetworkListener* listener = nullptr;
+        uint16_t id = 0;
+
+        bool connected = false;
+        Event<Client> onConnected = *this;
+        Event<Client, DisconnectionReason> onDisconnected = *this;
+
+        virtual Status getMessageSize(void* data, size_t size, size_t& messageSize) override;
+
+        virtual Status onUpdateMessage(Connection& connection, Message& message) override {
+            return Status::INV_PACKET;
+        }
+
+        virtual Status onReliableMessage(Connection& connection, Message& message) override;
+
+        virtual void onConnectionLost(Connection& connection) override {
+            connected = false;
+            onDisconnected(DisconnectionReason::TIMEOUT);
+        }
 
     public:
-        Client();
         ~Client();
 
         Status connect(const tchar* address, uint16_t port);
+
         void disconnect();
 
         inline bool isConnected() const {
-            return connectionState.getState() == ConnectionState::CONNECTED;
+            return connected;
         }
 
         __declspec(property(get = isConnected)) bool Connected;
 
-        inline Status send(const void* data, size_t size)const {
-            return serverSocket->send(data, size, 0);
+        inline const Ghurund::Net::Socket& getSocket()const {
+            return socket;
         }
 
-        inline Status receive(void** buffer, size_t* size) {
-            return mySocket.receive(buffer, size);
+        __declspec(property(get = getSocket)) Ghurund::Net::Socket& Socket;
+
+        inline Event<Client>& getOnConnected() {
+            return onConnected;
         }
 
-        inline const Socket* getSocket()const {
-            return &mySocket;
+        __declspec(property(get = getOnConnected)) Event<Client>& OnConnected;
+
+        inline Event<Client, DisconnectionReason>& getOnDisconnected() {
+            return onDisconnected;
         }
 
-        __declspec(property(get = getSocket)) Socket* Socket;
+        __declspec(property(get = getOnDisconnected)) Event<Client, DisconnectionReason>& OnDisconnected;
 
-        void update(uint64_t time) {
+        template<typename MessageType>
+        Status send(MessageType* message) {
+            return __super::send(*connections[0], message);
         }
-
-        void setNetworkListener(NetworkListener* listener) {
-            this->listener = listener;
-        }
-
-        NetworkListener* getNetworkListener() {
-            return listener;
-        }
-
     };
 }

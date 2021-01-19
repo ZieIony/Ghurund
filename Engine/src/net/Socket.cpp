@@ -53,46 +53,31 @@ namespace Ghurund::Net {
 
         FreeAddrInfo(result);
 
-        dataBuffer.buf = ghnew char[BUFFER_SIZE];
-        dataBuffer.len = BUFFER_SIZE;
-
         return Status::OK;
     }
 
-    sockaddr* Socket::getAddressStruct() const {
-        if (addressStruct6 != nullptr)
-            return (sockaddr*)addressStruct6;
-        return (sockaddr*)addressStruct;
-    }
-
-    Status Socket::send(const void* data, size_t size, unsigned int flags) const {
+    Status Socket::send(Socket& socket, const void* data, size_t size, unsigned int flags) const {
         int result = 0;
         if (addressStruct6 != nullptr) {
-            result = ::sendto(id, (const char*)data, (int)size, flags, (sockaddr*)addressStruct6, sizeof(sockaddr_in6));
+            result = ::sendto(id, (const char*)data, (int)size, flags, socket.AddressStruct, sizeof(sockaddr_in6));
         } else {
-            result = ::sendto(id, (const char*)data, (int)size, flags, (sockaddr*)addressStruct, sizeof(sockaddr_in));
+            result = ::sendto(id, (const char*)data, (int)size, flags, socket.AddressStruct, sizeof(sockaddr_in));
         }
         return result == SOCKET_ERROR ? Status::SOCKET : Status::OK;
     }
 
-    Status Socket::receive(void** data, size_t* size) {
+    Status Socket::receive(void* data, size_t capacity, size_t& size, sockaddr& socketAddr) {
         int bytes;
-        sockaddr socketAddr;
         memset(&socketAddr, 0, sizeof(socketAddr));
         int length = sizeof(socketAddr);
-        if ((bytes = recvfrom(id, dataBuffer.buf, dataBuffer.len, 0, &socketAddr, &length)) == SOCKET_ERROR) {
+        if ((bytes = recvfrom(id, (char*)data, capacity, 0, &socketAddr, &length)) == SOCKET_ERROR) {
+            size = 0;
             int error = WSAGetLastError();
-            *data = nullptr;
-            *size = 0;
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("there was an error while receiving data"));
+            if (error == WSAEWOULDBLOCK)
+                return Status::OK;
+            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("there was an error while receiving data\n"));
         }
-
-        if (data != nullptr) {
-            *data = ghnew char[bytes];
-            memcpy(*data, dataBuffer.buf, bytes);
-        }
-        if (size != nullptr)
-            *size = bytes;
+        size = bytes;
 
         return Status::OK;
     }
@@ -113,15 +98,26 @@ namespace Ghurund::Net {
         if (result == SOCKET_ERROR)
             return Status::SOCKET;
 
-        return select();
-    }
-
-    Status Socket::select() {
-        eventHandle = WSACreateEvent();
-        if (SOCKET_ERROR == WSAEventSelect(id, eventHandle, FD_ALL_EVENTS)) {
-            int error = WSAGetLastError();
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to register socket for async notification, error: %i"), error);
-        }
         return Status::OK;
+    }
+    
+    void Socket::close() {
+        if (id == INVALID_SOCKET)
+            return;
+        ::shutdown(id, SD_SEND);
+        while (true) {
+            char buffer[256];
+            int bytes = recvfrom(id, buffer, 256, 0, nullptr, 0);
+            if (bytes == SOCKET_ERROR || bytes == 0)
+                break;
+        }
+        closesocket(id);
+        id = INVALID_SOCKET;
+        delete[] address;
+        address = nullptr;
+        delete addressStruct;
+        addressStruct = nullptr;
+        delete addressStruct6;
+        addressStruct6 = nullptr;
     }
 }

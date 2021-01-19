@@ -77,15 +77,15 @@ namespace Ghurund {
         }
 
         inline void insert(size_t i, const Value& item) {
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            _ASSERT_EXPR(i <= A::size, "Index out of bounds.\n");
             if (A::size == A::capacity)
                 A::resize((size_t)(A::capacity * 1.6));
             if (i < A::size) {
                 A::v[A::size] = A::v[A::size - 1];
                 for (size_t j = A::size - 1; j > i; j--)
                     A::v[j] = std::move(A::v[j - 1]);
+                A::v[i].~Value();
             }
-            A::v[i].~Value();
             new(A::v + i) Value(item);
             A::size++;
         }
@@ -165,11 +165,9 @@ namespace Ghurund {
                 list.add(f(item));
         }
 
-        template<typename Value2>
-        inline List<Value, AllocatorType>& forEach(std::function<void(Value&)> f) {
+        inline void forEach(std::function<void(Value&)> f) {
             for (Value& item : *this)
                 f(item);
-            return *this;
         }
 
         inline List<Value, AllocatorType> filter(std::function<bool(const Value&)> f) {
@@ -194,6 +192,23 @@ namespace Ghurund {
                     return false;
             }
             return true;
+        }
+
+        inline size_t count(std::function<bool(const Value&)> f) {
+            size_t count = 0;
+            for (Value& item : *this) {
+                if (f(item))
+                    count++;
+            }
+            return count;
+        }
+
+        inline Value& find(std::function<bool(const Value&)> f) {
+            for (Value& item : *this) {
+                if (f(item))
+                    return item;
+            }
+            return Value();
         }
     };
 

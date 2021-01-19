@@ -1,5 +1,6 @@
 #include "Ghurund.h"
 #include "core/io/DirectoryPath.h"
+#include "core/logging/LogOutput.h"
 
 #include "MessengerApplication.h"
 
@@ -21,11 +22,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 #endif
     _____________________checkMemory();
 
-    Logger::init();
+    Logger::init(ghnew CustomConsoleLogOutput(_T("logs")));
     Logger::log(LogType::INFO, _T("working dir: {}\n"), DirectoryPath(L".").AbsolutePath);
 
     Messenger::MessengerApplication application;
     Settings settings;
+    settings.width = 200;
+    settings.height = 300;
     settings.parse(cmdLine);
     application.run(&settings);
 

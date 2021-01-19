@@ -70,6 +70,8 @@
     <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Networking.cpp" />
+    <ClCompile Include="src\net\MessageType.cpp" />
+    <ClCompile Include="src\net\ReliableUDP.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
@@ -157,6 +159,9 @@
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
     <ClInclude Include="src\input\EventArgs.h" />
+    <ClInclude Include="src\net\ClientMessage.h" />
+    <ClInclude Include="src\net\Connection.h" />
+    <ClInclude Include="src\net\MessageType.h" />
     <ClInclude Include="src\net\Networking.h" />
     <ClInclude Include="src\application\Timer.h" />
     <ClInclude Include="src\ecs\Component.h" />
@@ -234,6 +239,8 @@
     <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\game\KeyMap.h" />
     <ClInclude Include="src\input\Mouse.h" />
+    <ClInclude Include="src\net\ReliableUDP.h" />
+    <ClInclude Include="src\net\ServerMessage.h" />
     <ClInclude Include="src\physics\PhysicsComponent.h" />
     <ClInclude Include="src\physics\RigidBodyComponent.h" />
     <ClInclude Include="src\physics\Physics.h" />
@@ -323,9 +330,7 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\Ghurund.h" />
-    <ClInclude Include="src\net\ConnectionState.h" />
     <ClInclude Include="src\net\Message.h" />
-    <ClInclude Include="src\net\NetworkListener.h" />
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\Socket.h" />
     <ClInclude Include="src\resource\watcher\FileWatcher.h" />

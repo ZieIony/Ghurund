@@ -94,6 +94,22 @@ namespace Ghurund {
             return v + size;
         }
 
+        inline Value* rbegin() {
+            return v + size - 1;
+        }
+
+        inline Value* rbegin() const {
+            return v + size - 1;
+        }
+
+        inline Value* rend() {
+            return v - 1;
+        }
+
+        inline Value* rend() const {
+            return v - 1;
+        }
+
         inline bool contains(const Value& item) const {
             for (size_t i = 0; i < size; i++)
                 if (v[i] == item)

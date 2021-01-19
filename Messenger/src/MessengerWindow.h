@@ -22,12 +22,16 @@ namespace Messenger {
         Theme* theme;
         UIContext* context;
         Application* app;
-        List<Server*> servers;
-        List<Client*> clients;
+        Server server;
+        Client client;
+        SharedPointer<TextBlock> status;
+        SharedPointer<TextBlock> clientCount;
 
     public:
         MessengerWindow(Application& app);
 
         ~MessengerWindow();
+
+        virtual void onUpdate(const uint64_t time) override;
     };
 }

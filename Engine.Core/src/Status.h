@@ -23,6 +23,8 @@ namespace Ghurund {
         DEVICE_LOST,
 
         SOCKET,
-        SOCKET_INV_PACKET
+        INV_PACKET,
+        CONNECTION_REJECTED,
+        DISCONNECTED
     };
 }

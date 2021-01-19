@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="src\MessengerApplication.h" />
     <ClInclude Include="src\MessengerWindow.h" />
+    <ClInclude Include="src\TextMessage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
