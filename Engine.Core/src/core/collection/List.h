@@ -157,59 +157,6 @@ namespace Ghurund {
 
         using A::operator==;
         using A::operator!=;
-
-        template<typename Value2>
-        inline List<Value2, AllocatorType> map(std::function<Value2(const Value&)> f) {
-            List<Value2, AllocatorType> list(A::size);
-            for (Value& item : *this)
-                list.add(f(item));
-        }
-
-        inline void forEach(std::function<void(Value&)> f) {
-            for (Value& item : *this)
-                f(item);
-        }
-
-        inline List<Value, AllocatorType> filter(std::function<bool(const Value&)> f) {
-            List<Value, AllocatorType> list(A::size);
-            for (Value& item : *this) {
-                if (f(item))
-                    list.add(item);
-            }
-        }
-
-        inline bool any(std::function<bool(const Value&)> f) {
-            for (Value& item : *this) {
-                if (f(item))
-                    return true;
-            }
-            return false;
-        }
-
-        inline bool all(std::function<bool(const Value&)> f) {
-            for (Value& item : *this) {
-                if (!f(item))
-                    return false;
-            }
-            return true;
-        }
-
-        inline size_t count(std::function<bool(const Value&)> f) {
-            size_t count = 0;
-            for (Value& item : *this) {
-                if (f(item))
-                    count++;
-            }
-            return count;
-        }
-
-        inline Value& find(std::function<bool(const Value&)> f) {
-            for (Value& item : *this) {
-                if (f(item))
-                    return item;
-            }
-            return Value();
-        }
     };
 
 }

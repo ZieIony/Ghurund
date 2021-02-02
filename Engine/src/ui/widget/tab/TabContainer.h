@@ -2,6 +2,7 @@
 
 #include "TabItemAdapter.h"
 #include "core/SharedPointer.h"
+#include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/Widget.h"
 #include "TabContainerLayout.h"
@@ -12,6 +13,7 @@ namespace Ghurund::UI {
         size_t selectedPosition = 0;
         Tab* selectedTab = nullptr;
         List<TabItem*> tabs;
+        AdapterChildrenProvider<TabItem*, Tab>* provider;
 
     public:
         class LayoutVerticalBottom;
@@ -33,16 +35,23 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTabs, put = setTabs)) List<TabItem*>& Tabs;
 
+        inline void setAdapter(TabItemAdapter* adapter) {
+            provider->Adapters.deleteItems();
+            provider->Adapters.add(adapter);
+        }
+
+        __declspec(property(put = setAdapter)) TabItemAdapter* Adapter;
+
         inline void setSelectedPosition(size_t position) {
             if (selectedTab)
-                selectedTab->Layout.SelectableView->Selected = false;
+                selectedTab->Layout->SelectableView->Selected = false;
             this->selectedPosition = position;
-            if (Layout.TabContainer->Children.Size > position) {
-                setPointer(selectedTab, (Tab*)Layout.TabContainer->Children[position]);
-                selectedTab->Layout.SelectableView->Selected = true;
+            if (Layout->TabContainer->Children.Size > position) {
+                setPointer(selectedTab, (Tab*)Layout->TabContainer->Children[position]);
+                selectedTab->Layout->SelectableView->Selected = true;
             }
             TabItem* tab = tabs[position];
-            Layout.Container->Child = tab->content;
+            Layout->Container->Child = tab->content;
             tab->content->invalidate();
         }
 

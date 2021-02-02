@@ -91,6 +91,10 @@ namespace Ghurund::UI {
             layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
+        bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
+            return __super::dispatchMouseMotionEvent(event);
+        }
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

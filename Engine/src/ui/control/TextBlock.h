@@ -59,7 +59,7 @@ namespace Ghurund::UI {
             TextColor = color;
         }
 
-        TextBlock(Style2<TextBlock>* style) {
+        TextBlock(Style<TextBlock>* style) {
             style->apply(*this);
         }
 
@@ -68,7 +68,13 @@ namespace Ghurund::UI {
         }
 
         void setText(const WString& text) {
+            if (this->text == text)
+                return;
             this->text = text;
+            if (textLayout) {
+                textLayout->Release();
+                textLayout = nullptr;
+            }
         }
 
         __declspec(property(get = getText, put = setText)) WString& Text;
@@ -88,7 +94,13 @@ namespace Ghurund::UI {
         }
 
         inline void setFont(TextStyle* font) {
+            if (this->font == font)
+                return;
             setPointer(this->font, font);
+            if (textLayout) {
+                textLayout->Release();
+                textLayout = nullptr;
+            }
         }
 
         __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;

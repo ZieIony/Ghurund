@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextButton(TextButtonLayout* layout = ghnew TextButtonLayout()):Button(layout) {
+        TextButton(TextButtonLayout* layout):Button(layout) {
             textView = layout->TextBlock;
         }
 

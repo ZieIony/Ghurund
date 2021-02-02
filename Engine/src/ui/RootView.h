@@ -1,7 +1,7 @@
 #pragma once
 
-#include "control/HoverableView.h"
-#include <application\Window.h>
+#include "control/ControlContainer.h"
+#include "application/Window.h"
 
 namespace Ghurund::UI {
     class RootView: public ControlContainer {

@@ -3,6 +3,7 @@
 #include "MenuBarAdapter.h"
 
 #include "core/SharedPointer.h"
+#include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/StackLayout.h"
@@ -12,25 +13,28 @@
 namespace Ghurund::UI {
     class MenuBarLayout:public WidgetLayout {
     protected:
-        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<RecyclerView> recyclerView;
+        ResourceContext& context;
+        LayoutLoader& loader;
         Theme& theme;
 
     public:
-        MenuBarLayout(Theme& theme):theme(theme) {}
+        MenuBarLayout(ResourceContext& context, LayoutLoader& loader, Theme& theme):context(context), loader(loader), theme(theme) {}
+
+        MenuBarLayout(Control* layout):context(context), loader(loader), theme(theme) {}
 
         virtual void init() override {
-            recyclerView = ghnew Ghurund::UI::RecyclerView<MenuItem*>();
+            recyclerView = ghnew Ghurund::UI::RecyclerView();
             recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
             recyclerView->LayoutManager = ghnew HorizontalLayoutManager();
-            recyclerView->Adapters.add(ghnew ButtonMenuBarAdapter());
-            root = recyclerView;
+            Root = recyclerView;
         }
 
-        inline RecyclerView<MenuItem*>* getAdapterView() {
+        inline RecyclerView* getAdapterView() {
             return recyclerView;
         }
 
-        __declspec(property(get = getAdapterView)) RecyclerView<MenuItem*>* RecyclerView;
+        __declspec(property(get = getAdapterView)) RecyclerView* RecyclerView;
     };
 
     class MenuBarWithBackgroundLayout:public MenuBarLayout {
@@ -39,7 +43,7 @@ namespace Ghurund::UI {
         SharedPointer<ColorView> backgroundView;
 
     public:
-        MenuBarWithBackgroundLayout(Theme& theme):MenuBarLayout(theme) {}
+        MenuBarWithBackgroundLayout(ResourceContext& context, LayoutLoader& loader, Theme& theme):MenuBarLayout(context, loader, theme) {}
 
         virtual void init() override;
 

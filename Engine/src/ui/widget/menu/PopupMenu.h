@@ -13,7 +13,7 @@ namespace Ghurund::UI {
     private:
         Ghurund::PopupWindow* window;
         SharedPointer<ColorView> backgroundView;
-        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<RecyclerView> recyclerView;
         List<MenuItem*> items;
 
     public:
@@ -21,14 +21,16 @@ namespace Ghurund::UI {
             window = ghnew Ghurund::PopupWindow(parent.Timer);
             window->RootView->Child = this;
 
-            recyclerView = ghnew RecyclerView<MenuItem*>();
+            recyclerView = ghnew RecyclerView();
             recyclerView->LayoutManager = ghnew VerticalLayoutManager();
-            recyclerView->Adapters.add(ghnew ButtonPopupMenuAdapter());
-            recyclerView->Adapters.add(ghnew SeparatorPopupMenuAdapter());
+            auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*recyclerView);
+            provider->Adapters.add(ghnew ButtonPopupMenuAdapter());
+            provider->Adapters.add(ghnew SeparatorPopupMenuAdapter());
+            provider->Items = ghnew ListItemSource<MenuItem*>(items);
+            recyclerView->childrenProvider = provider;
             Children = { recyclerView };
             recyclerView->PreferredSize.width = PreferredSize::Width::WRAP;
             recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
-            recyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
             preferredSize.width = PreferredSize::Width::WRAP;
             preferredSize.height = PreferredSize::Height::WRAP;
         }

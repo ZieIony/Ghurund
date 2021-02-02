@@ -8,6 +8,8 @@
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
+#include "ui/style/DarkTheme.h"
+#include <ui/widget/button/CheckBox.h>
 
 namespace Preview {
     using namespace Ghurund;
@@ -15,9 +17,10 @@ namespace Preview {
 
     class PreviewWindow:public OverlappedWindow {
     private:
-        Theme* theme;
+        Theme* lightTheme, *darkTheme;
         UIContext* context;
         SharedPointer<StackLayout> container;
+        SharedPointer<Ghurund::UI::RootView> rootView;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -31,27 +34,21 @@ namespace Preview {
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = swapChain;
 
-            theme = ghnew LightTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
-            layoutLoader.Theme = theme;
-            context = ghnew UIContext(app.Graphics2D, *theme, *this);
+            lightTheme = ghnew LightTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
+            darkTheme = ghnew DarkTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
+            context = ghnew UIContext(app.Graphics2D, *lightTheme, *this);
+            layoutLoader.Theme = lightTheme;
 
             Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
             canvas->init(app.Graphics2D);
-            SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
+            rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
+            rootView->Theme = lightTheme;
+            rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
 
-            auto stack = makeShared<StackLayout>();
-            stack->Alignment.vertical = Alignment::Vertical::BOTTOM;
-            container = makeShared<StackLayout>();
-            container->Alignment = { Alignment::Horizontal::CENTER, Alignment::Vertical::CENTER };
-            auto file = makeShared<TextBlock>();
-            file->Text = L"drop file here to open";
-            auto padding = makeShared<PaddingContainer>(8.0f);
-            padding->Child = file;
-            stack->Children = { container, padding };
-            rootView->Child = stack;
+            auto layout = layoutLoader.load(app.ResourceContext, L"Preview/layout.xml");
+            rootView->Child = layout[0];
+            container = (StackLayout*)rootView->find("container");
 
-            rootView->Theme = theme;
-            rootView->BackgroundColor = theme->ColorBackground;
             RootView = rootView;
             
             DragDropEnabled = true;
@@ -73,8 +70,21 @@ namespace Preview {
         ~PreviewWindow() {
             delete filePath;
             delete context;
-            delete theme;
+            delete lightTheme;
+            delete darkTheme;
         }
+
+        /*void updateTheme() {
+            if (themeCheckBox->Checked) {
+                rootView->BackgroundColor = darkTheme->ColorBackground;
+                layoutLoader.Theme = darkTheme;
+                rootView->Theme = darkTheme;
+            } else {
+                rootView->BackgroundColor = lightTheme->ColorBackground;
+                layoutLoader.Theme = lightTheme;
+                rootView->Theme = lightTheme;
+            }
+        }*/
 
         void postLoadCallback(const FilePath& path) {
             loadCallback = [this, path]() {

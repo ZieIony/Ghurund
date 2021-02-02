@@ -12,14 +12,20 @@ namespace Ghurund::UI {
                 continue;
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
-                w = width;
-            } else {
+                w = std::max(width, c->MinSize.width);
+            } else if (c->PreferredSize.width >= 0){
+                w = std::min((float)c->PreferredSize.width, width);
+                w = std::max(w, c->MinSize.width);
+            }else{
                 w = std::min((float)c->MeasuredSize.width, width);
             }
 
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
-                h = height;
+                h = std::max(height, c->MinSize.height);
+            } else if (c->PreferredSize.height >= 0) {
+                h = std::min((float)c->PreferredSize.height, height);
+                h = std::max(h, c->MinSize.height);
             } else {
                 h = std::min((float)c->MeasuredSize.height, height);
             }

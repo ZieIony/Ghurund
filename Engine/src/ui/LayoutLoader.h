@@ -38,6 +38,15 @@ namespace Ghurund::UI {
 
         PointerList<Control*> load(ResourceContext& context, const Buffer& data);
 
+        PointerList<Control*> load(ResourceContext& context, const FilePath& path) {
+            File file(path);
+            if (!file.Exists)
+                return PointerList<Control*>();
+            if (file.read() == Status::OK)
+                return load(context, Buffer(file.Data, file.Size));
+            return PointerList<Control*>();
+        }
+
         PointerList<Control*> loadControls(ResourceContext& context, const tinyxml2::XMLElement& xml);
 
         Control* loadControl(ResourceContext& context, const tinyxml2::XMLElement& xml);
@@ -45,6 +54,8 @@ namespace Ghurund::UI {
         Shape* loadShape(ResourceContext& context, const char* str);
 
         uint32_t loadColor(const char* str);
+
+        BitmapImage* loadImage(ResourceContext& context, const char* str);
         
         WString loadText(const char* str);
 

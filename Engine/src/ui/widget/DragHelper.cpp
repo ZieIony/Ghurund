@@ -2,17 +2,17 @@
 
 namespace Ghurund::UI {
     DragHelper::DragHelper(Control& handle, Control& content):onDragged(content) {
-        handle.OnMouseButton.add([this, &content](Input::EventConsumer& sender, const Input::MouseButtonEventArgs& args) {
-            if (args.Action == Input::MouseAction::DOWN && args.Button == Input::MouseButton::LEFT) {
+        handle.OnMouseButton.add([this, &content](Ghurund::Input::EventConsumer& sender, const Ghurund::Input::MouseButtonEventArgs& args) {
+            if (args.Action == Ghurund::Input::MouseAction::DOWN && args.Button == Ghurund::Input::MouseButton::LEFT) {
                 pressControlPos = content.Position;
                 pressMousePos = args.Position;
                 pressed = true;
-            } else if (args.Action == Input::MouseAction::UP && args.Button == Input::MouseButton::LEFT) {
+            } else if (args.Action == Ghurund::Input::MouseAction::UP && args.Button == Ghurund::Input::MouseButton::LEFT) {
                 pressed = false;
             }
             return true;
         });
-        handle.OnMouseMotion.add([this, &content](Input::EventConsumer& sender, const Input::MouseMotionEventArgs& args) {
+        handle.OnMouseMotion.add([this, &content](Ghurund::Input::EventConsumer& sender, const Ghurund::Input::MouseMotionEventArgs& args) {
             Control* parent = content.Parent;
             if (pressed && parent) {
                 auto prevControlPos = content.Position;

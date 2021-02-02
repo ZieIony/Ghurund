@@ -32,6 +32,10 @@ namespace Ghurund::UI {
         SelectableView* selectableView;
 
     public:
+        TabLayout() {}
+
+        TabLayout(Control* control) {}
+
         inline SelectableView* getSelectableView() {
             return selectableView;
         }
@@ -51,7 +55,7 @@ namespace Ghurund::UI {
     public:
         Tab(TabLayout* layout):Widget(layout) {
             Focusable = true;
-            Layout.SelectableView->OnStateChanged.add(OnStateChanged);
+            Layout->SelectableView->OnStateChanged.add(OnStateChanged);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

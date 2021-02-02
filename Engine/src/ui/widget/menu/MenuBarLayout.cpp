@@ -6,8 +6,8 @@ namespace Ghurund::UI {
         __super::init();
         stack = ghnew StackLayout();
         backgroundView = ghnew ColorView();
-        backgroundView->Color = theme.getColorBackground();
+        backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
         stack->Children = { backgroundView, recyclerView };
-        root = stack;
+        Root = stack;
     }
 }

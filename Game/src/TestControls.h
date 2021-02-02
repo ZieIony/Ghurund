@@ -26,7 +26,7 @@ private:
     SharedPointer<MusicPlayer> player;
 
 public:
-    TestControls(Ghurund::UI::Theme& theme, ResourceManager& resourceManager, ResourceContext& resourceContext) {
+    TestControls(Ghurund::UI::Theme& theme, ResourceManager& resourceManager, ResourceContext& context, LayoutLoader& loader) {
         Name = "controls tab";
 
         SharedPointer<VerticalLayout> verticalLayout = ghnew VerticalLayout();
@@ -34,7 +34,7 @@ public:
 
         {
             SharedPointer<TextStyle> latoLight = ghnew Ghurund::UI::TextStyle(L"fonts/lato_light.ttf", L"Lato Light", 40, FW_LIGHT, false);
-            latoLight->init(resourceContext.Graphics2D);
+            latoLight->init(context.Graphics2D);
             SharedPointer<TextBlock> textView = ghnew TextBlock(L"big light text", latoLight);
             SharedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
@@ -43,7 +43,7 @@ public:
 
             auto p = makeShared<PaddingContainer>();
             p->Padding.All = 20;
-            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout());
+            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
             hwButton->Text = L"HELLO WORLD";
             p->Child = hwButton;
 
@@ -65,16 +65,16 @@ public:
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             for (size_t i : {0, 1, 2, 3}) {
                 SharedPointer<ImageButton> imageButton = ghnew ImageButton();
-                SharedPointer<BitmapImage> saveIcon = BitmapImage::makeFromImage(resourceContext, L"icons/icon save 32.png");
+                SharedPointer<BitmapImage> saveIcon = BitmapImage::makeFromImage(context, L"icons/icon save 32.png");
                 imageButton->Image = makeShared<BitmapImageDrawable>(saveIcon);
                 horizontalLayout->Children.add(imageButton);
             }
 
             player = ghnew MusicPlayer(theme);
 
-            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout());
+            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(context, loader));
             flatButton->Text = L"Submit";
-            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout());
+            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
             accentButton->Text = L"OK";
 
             SharedPointer<Separator> separator = ghnew Separator(ghnew HorizontalSeparatorStyle());

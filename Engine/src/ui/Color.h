@@ -79,7 +79,7 @@ namespace Ghurund::UI {
             return *this;
         }
 
-        inline operator uint32_t() {
+        inline operator uint32_t() const {
             return value;
         }
     };

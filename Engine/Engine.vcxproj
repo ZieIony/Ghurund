@@ -94,7 +94,6 @@
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
-    <ClCompile Include="src\ui\control\HoverableView.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
@@ -125,6 +124,7 @@
     <ClCompile Include="src\ui\widget\button\TextButtonLayout.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
+    <ClCompile Include="src\ui\widget\menu\MenuBar.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBarAdapter.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBarLayout.cpp" />
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
@@ -300,7 +300,6 @@
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
-    <ClInclude Include="src\ui\control\HoverableView.h" />
     <ClInclude Include="src\ui\adapter\ItemAdapter.h" />
     <ClInclude Include="src\ui\adapter\ItemSource.h" />
     <ClInclude Include="src\ui\layout\LinearLayout.h" />

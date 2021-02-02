@@ -65,34 +65,37 @@ namespace Ghurund::UI {
             );
         }
 
-        if (PreferredSize.width == PreferredSize::Width::WRAP) {
-            if (child) {
+        if (preferredSize.width >= 0) {
+            measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
+        } else if (child) {
+            if (child->PreferredSize.width >= 0) {
+                measuredSize.width = std::max(child->MinSize.width, (float)child->PreferredSize.width);
+            } else {
                 measuredSize.width = child->MeasuredSize.width;
-            } else {
-                measuredSize.width = 0;
             }
-        } else if (PreferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)PreferredSize.width;
+        } else {
+            measuredSize.width = minSize.width;
         }
-
-        if (PreferredSize.height == PreferredSize::Height::WRAP) {
-            if (child) {
-                measuredSize.height = child->MeasuredSize.height;
+        if (preferredSize.height >= 0) {
+            measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+        } else if (child) {
+            if (child->PreferredSize.height >= 0) {
+                measuredSize.height = std::max(child->MinSize.height, (float)child->PreferredSize.height);
             } else {
-                measuredSize.height = 0;
+                measuredSize.height = child->MeasuredSize.height;
             }
-        } else if (PreferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)PreferredSize.height;
+        } else {
+            measuredSize.height = minSize.height;
         }
     }
 
-    bool ControlContainer::dispatchKeyEvent(const Input::KeyEventArgs& event) {
+    bool ControlContainer::dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) {
         if (child && child->dispatchKeyEvent(event))
             return true;
         return __super::dispatchKeyEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) {
+    bool ControlContainer::dispatchMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) {
         if (child
             && (capturedChild || child->canReceiveEvent(event))
             && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true)))
@@ -100,7 +103,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) {
+    bool ControlContainer::dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
         if (child) {
             if (capturedChild || child->canReceiveEvent(event)) {
                 previousReceiver = true;
@@ -115,7 +118,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) {
+    bool ControlContainer::dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& event) {
         if (child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
             return true;
         return __super::dispatchMouseWheelEvent(event);
@@ -143,7 +146,7 @@ namespace Ghurund::UI {
         }
         return Status::OK;
     }
-    
+
 #ifdef _DEBUG
     String ControlContainer::logTree() {
         String log = __super::logTree();

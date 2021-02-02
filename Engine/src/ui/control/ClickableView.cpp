@@ -18,8 +18,23 @@ namespace Ghurund::UI {
         return false;
     }
 
+    bool ClickableView::onMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
+        bool in = event.Position.x >= 0 && event.Position.x < Size.width&&
+            event.Position.y >= 0 && event.Position.y < Size.height;
+        if (in && !hovered) {
+            hovered = true;
+            onStateChanged();
+        } else if (!in && hovered) {
+            hovered = false;
+            onStateChanged();
+        }
+
+        return false;
+    }
+
     bool ClickableView::onMouseButtonEvent(const MouseButtonEventArgs& event) {
-        bool result = false;
+        if (__super::onMouseButtonEvent(event))
+            return true;
         if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
             buttons[event.Button] = true;
             setCapturedChild(this);
@@ -33,6 +48,6 @@ namespace Ghurund::UI {
             if (onClicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside)))
                 return true;
         }
-        return __super::onMouseButtonEvent(event);
+        return false;
     }
 }

@@ -11,11 +11,11 @@ namespace Ghurund::UI {
         container->PreferredSize.height = PreferredSize::Height::FILL;
         separator = ghnew ColorView();
         separator->PreferredSize.height = 2;
-        separator->Color = theme.ColorAccent;
-        tabContainer = ghnew RecyclerView<TabItem*, Tab>();
+        separator->Color = theme.Colors[Theme::COLOR_ACCENT];
+        tabContainer = ghnew RecyclerView();
         tabContainer->PreferredSize.height = PreferredSize::Height::WRAP;
         tabContainer->LayoutManager = ghnew HorizontalLayoutManager();
         column->Children = { container, separator, tabContainer };
-        root = column;
+        Root = column;
     }
 }

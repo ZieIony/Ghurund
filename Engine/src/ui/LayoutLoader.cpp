@@ -11,11 +11,16 @@
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/style/Theme.h"
+#include "ui/widget/ClickResponseView.h"
+#include "ui/widget/button/CheckBox.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
+        registerClass(ClickableView::TYPE);
+        registerClass(SelectableView::TYPE);
+        registerClass(ClickResponseView::TYPE);
         registerClass(PaddingContainer::TYPE);
         registerClass(LinearLayout::TYPE);
         registerClass(TextBlock::TYPE);
@@ -26,6 +31,8 @@ namespace Ghurund::UI {
         registerClass(Shadow::TYPE);
         registerClass(Space::TYPE);
         registerClass(ColorView::TYPE);
+
+        registerClass(CheckBox::TYPE);
     }
 
     PointerList<Control*> LayoutLoader::load(ResourceContext& context, const Buffer& data) {
@@ -77,9 +84,10 @@ namespace Ghurund::UI {
     }
 
     uint32_t LayoutLoader::loadColor(const char* str) {
-        AString s = str;
+        WString s = toWideChar(AString(str));
         uint32_t value = 0;
-        if (s.startsWith("#")) {
+        const wchar_t* themeProtocol = L"theme://color/";
+        if (s.startsWith(L"#")) {
             s = s.toLowerCase();
             for (size_t i = 1; i < s.Length; i++) {
                 if (s[i] >= '0' && s[i] <= '9') {
@@ -90,8 +98,30 @@ namespace Ghurund::UI {
                     return 0;
                 }
             }
+        } else if (s.startsWith(themeProtocol) && theme) {
+            WString colorKey = s.substring(lengthOf(themeProtocol));
+            if (theme->Colors.contains(colorKey))
+                return theme->Colors[colorKey];
         }
         return value;
+    }
+
+    BitmapImage* LayoutLoader::loadImage(ResourceContext& context, const char* str) {
+        WString s = toWideChar(AString(str));
+        const wchar_t* fileProtocol = L"file://";
+        const wchar_t* themeProtocol = L"theme://image/";
+        if (s.startsWith(fileProtocol)) {
+            auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
+            return BitmapImage::makeFromImage(context, filePath);
+        } else if (s.startsWith(themeProtocol) && theme) {
+            WString imageKey = s.substring(lengthOf(themeProtocol));
+            if (theme->Images.contains(imageKey)) {
+                BitmapImage* image = theme->Images[imageKey];
+                image->addReference();
+                return image;
+            }
+        }
+        return nullptr;
     }
 
     WString LayoutLoader::loadText(const char* str) {
@@ -107,8 +137,11 @@ namespace Ghurund::UI {
             //auto font = ghnew TextStyle()
         } else if (s.startsWith(themeProtocol) && theme) {
             WString fontKey = s.substring(lengthOf(themeProtocol));
-            if (theme->TextStyles.contains(fontKey))
-                return theme->TextStyles[fontKey];
+            if (theme->TextStyles.contains(fontKey)) {
+                TextStyle* style = theme->TextStyles[fontKey];
+                style->addReference();
+                return style;
+            }
         }
         return nullptr;
     }

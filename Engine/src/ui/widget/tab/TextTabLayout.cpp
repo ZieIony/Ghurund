@@ -12,7 +12,7 @@ namespace Ghurund::UI {
         stack->Children = { backgroundView, border, paddingContainer };
         selectableView = ghnew Ghurund::UI::SelectableView();
         selectableView->Child = stack;
-        root = selectableView;
+        Root = selectableView;
     }
 
     void TextTabLayout::onStateChanged(Control& control) {
@@ -21,20 +21,20 @@ namespace Ghurund::UI {
             backgroundView->Color = 0;
             border->Color = 0;
         } else if (selectableView->Selected) {
-            backgroundView->Color = theme.getColorAccent();
+            backgroundView->Color = theme.Colors[Theme::COLOR_ACCENT];
             border->Color = 0;
             TextBlock->TextColor = theme.getColorForegroundPrimaryOnAccent();
         } else if (selectableView->Pressed) {
             TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            backgroundView->Color = theme.getColorBackground();
-            border->Color = theme.getColorAccentDark();
+            backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
+            //border->Color = theme.getColorAccentDark();
         } else if (selectableView->Hovered || control.Focused) {
             TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            backgroundView->Color = theme.getColorBackground();
-            border->Color = theme.getColorAccent();
+            backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
+            border->Color = theme.Colors[Theme::COLOR_ACCENT];
         } else {
             TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
-            backgroundView->Color = theme.getColorBackground();
+            backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
             border->Color = 0;
         }
     }

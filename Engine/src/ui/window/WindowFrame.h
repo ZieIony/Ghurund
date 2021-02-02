@@ -12,7 +12,9 @@ namespace Ghurund::UI {
     };
 
     class WindowContainerLayout:public WidgetLayout {
-
+    public:
+        WindowContainerLayout() {}
+        WindowContainerLayout(Control* control) {}
     };
 
     class WindowContainer:Widget<WindowContainerLayout> {

@@ -69,7 +69,7 @@ public:
             padding->Child = tv;
 
         }
-        ColorView* colorView = ghnew ColorView(theme.getColorBackground());
+        ColorView* colorView = ghnew ColorView(theme.Colors[Theme::COLOR_BACKGR0UND]);
         Children = {
             colorView,
             padding
@@ -95,9 +95,9 @@ private:
     ImageView* imageView;
 
 public:
-    StringObjectItemRow(ResourceContext& context, Ghurund::UI::Theme& theme) {
+    StringObjectItemRow(ResourceContext& context, LayoutLoader& loader, Ghurund::UI::Theme& theme) {
         preferredSize.height = PreferredSize::Height::WRAP;
-        SharedPointer<ColorView> colorView = ghnew ColorView(theme.ColorBackground);
+        SharedPointer<ColorView> colorView = ghnew ColorView(theme.Colors[Theme::COLOR_BACKGR0UND]);
 
         SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
         {
@@ -127,7 +127,7 @@ public:
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
                     tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout());
+                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
                     tb->Text = L"CANCEL";
                     column->Children = { tv, tv2, tb };
                 }
@@ -205,16 +205,17 @@ class StringItemAdapter:public ItemAdapter<StringObject*, Control> {
 private:
     Theme& theme;
     ResourceContext& context;
+    LayoutLoader& loader;
 
 public:
-    StringItemAdapter(ResourceContext& context, Theme& theme):context(context), theme(theme) {}
+    StringItemAdapter(ResourceContext& context, LayoutLoader& loader, Theme& theme):context(context), loader(loader), theme(theme) {}
 
     virtual bool canHandleItem(StringObject* const& item, size_t position) const override {
         return item->type == StringObjectType::ITEM;
     }
 
     virtual Control* makeControl() const override {
-        return ghnew StringObjectItemRow(context, theme);
+        return ghnew StringObjectItemRow(context, loader, theme);
     }
 
     virtual void bind(Control& control, StringObject* const& item, size_t position) const override {

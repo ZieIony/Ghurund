@@ -1,6 +1,9 @@
 #include "ControlParent.h"
 
 #include "core/logging/Logger.h"
+#include "input/Mouse.h"
+
+#include <regex>
 
 namespace Ghurund::UI {
 
@@ -86,18 +89,18 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    /*
+    * measured size doesn't care about PreferredSize::FILL
+    */
     void Control::onMeasure(float parentWidth, float parentHeight) {
-        if (preferredSize.width == PreferredSize::Width::WRAP) {
-            measuredSize.width = minSize.width;
-        } else if (preferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)preferredSize.width;
-        }
+        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
+        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+    }
 
-        if (preferredSize.height == PreferredSize::Height::WRAP) {
-            measuredSize.height = minSize.height;
-        } else if (preferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)preferredSize.height;
-        }
+    bool Control::onMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) {
+        if (focusable && event.Action == Ghurund::Input::MouseAction::DOWN && !Focused)
+            requestFocus();
+        return false;
     }
 
     void Control::requestFocus() {
@@ -220,12 +223,9 @@ namespace Ghurund::UI {
                 Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : String("[unnamed]"));
             if (width == 0 || height == 0)
                 Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : String("[unnamed]"));
-            size.width = std::max(width, minSize.width);
-            size.height = std::max(height, minSize.height);
-#else
+#endif
             size.width = width;
             size.height = height;
-#endif
             needsLayout = false;
             onLayout(x, y, size.width, size.height);
             onSizeChanged();
@@ -233,6 +233,8 @@ namespace Ghurund::UI {
     }
 
     void Control::draw(Canvas& canvas) {
+        if (size.width == 0 || size.height == 0)
+            return;
 #ifdef _DEBUG
         if (!Theme) {
             Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : String("[unnamed]"));
@@ -273,6 +275,9 @@ namespace Ghurund::UI {
         auto nameAttr = xml.FindAttribute("name");
         if (nameAttr)
             Name = nameAttr->Value();
+        auto enabledAttr = xml.FindAttribute("enabled");
+        if (enabledAttr)
+            Enabled = enabledAttr->BoolValue();
         auto preferredSizeAttr = xml.FindAttribute("preferredSize");
         if (preferredSizeAttr) {
             AString size = preferredSizeAttr->Value();
@@ -294,6 +299,16 @@ namespace Ghurund::UI {
                 } else {
                     PreferredSize.height = (float)atof(height.getData());
                 }
+            }
+        }
+        auto minSizeAttr = xml.FindAttribute("minSize");
+        if (minSizeAttr) {
+            std::string str = minSizeAttr->Value();
+            std::regex regex("(-?\\d+(?:\\.\\d+)?), *(-?\\d+(?:\\.\\d+)?)");
+            std::smatch m;
+            if (std::regex_match(str, m, regex) && m[2].matched) {
+                minSize.width = (float)atof(m[1].str().c_str());
+                minSize.height = (float)atof(m[2].str().c_str());
             }
         }
         return Status::OK;

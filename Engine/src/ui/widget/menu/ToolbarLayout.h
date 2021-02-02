@@ -15,17 +15,19 @@ namespace Ghurund::UI {
     class ToolbarLayout:public WidgetLayout {
     protected:
         Theme& theme;
-        SharedPointer<RecyclerView<MenuItem*>> recyclerView;
+        SharedPointer<RecyclerView> recyclerView;
 
     public:
         ToolbarLayout(Theme& theme):theme(theme) {}
 
+        ToolbarLayout(Control* control):theme(theme) {}
+
         virtual void init() override;
 
-        inline RecyclerView<MenuItem*>* getRecyclerView() {
+        inline RecyclerView* getRecyclerView() {
             return recyclerView;
         }
 
-        __declspec(property(get = getRecyclerView)) RecyclerView<MenuItem*>* RecyclerView;
+        __declspec(property(get = getRecyclerView)) RecyclerView* RecyclerView;
     };
 }

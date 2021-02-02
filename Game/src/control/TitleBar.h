@@ -34,7 +34,7 @@ namespace Ghurund::Editor {
             }
             row->Alignment.vertical = Alignment::Vertical::CENTER;
             row->Children = { title, closeButton };
-            backgroundView = ghnew ColorView(theme.getColorAccent());
+            backgroundView = ghnew ColorView(theme.Colors[Theme::COLOR_ACCENT]);
             Children = { backgroundView, row };
         }
 

@@ -72,7 +72,7 @@ namespace Ghurund::Editor {
     class LogPanel:public VerticalLayout {
     private:
         SharedPointer<Toolbar> toolbar;
-        SharedPointer<RecyclerView<Log, LogRow>> logRecycler;
+        SharedPointer<RecyclerView> logRecycler;
         BitmapImage* sortIcon, * categoryIcon;
 
         List<Log> items;
@@ -90,10 +90,12 @@ namespace Ghurund::Editor {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
-            logRecycler = ghnew RecyclerView<Log, LogRow>();
+            logRecycler = ghnew RecyclerView();
             logRecycler->LayoutManager = ghnew VerticalLayoutManager();
-            logRecycler->Items = ghnew ListItemSource<Log>(items);
-            logRecycler->Adapters.add(ghnew LogItemAdapter(theme));
+            auto provider = ghnew AdapterChildrenProvider<Log, LogRow>(*logRecycler);
+            provider->Adapters.add(ghnew LogItemAdapter(theme));
+            provider->Items = ghnew ListItemSource<Log>(items);
+            logRecycler->childrenProvider = provider;
             Children = { toolbar, logRecycler };
         }
 

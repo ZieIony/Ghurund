@@ -3,34 +3,27 @@
 #include "ui/drawable/BitmapImageDrawable.h"
 
 namespace Ghurund::UI {
-    void CheckBoxRadioLayout::init() {
-        selectableView = ghnew Ghurund::UI::SelectableView();
-        imageView = ghnew Ghurund::UI::ImageView();
-        selectableView->Child = imageView;
-        root = selectableView;
-    }
-
     void CheckBoxRadioLayout::onStateChanged(Control& control) {
         Ghurund::UI::Theme* theme = control.Theme;
-        if (!theme)
+        if (!theme || !imageView->Image)
             return;
         if (!control.Enabled) {
             imageView->Image->Tint = theme->getColorForegroundDisabledOnBackground();
         } else if (selectableView->Pressed) {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccentDark();
+                //imageView->Image->Tint = theme->getColorAccentDark();
             } else {
                 imageView->Image->Tint = theme->getColorForegroundPrimaryOnBackground();
             }
         } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccent();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
         } else {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccent();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
@@ -42,9 +35,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (selectableView->Selected) {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->CheckBoxChecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]);
         } else {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->CheckBoxUnchecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]);
         }
         __super::onStateChanged(control);
     }
@@ -54,9 +47,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (selectableView->Selected) {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->RadioButtonChecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]);
         } else {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->RadioButtonUnchecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_RADIOBUTTON_UNCHECKED]);
         }
         __super::onStateChanged(control);
     }
@@ -71,7 +64,7 @@ namespace Ghurund::UI {
         row->Children = { imageView, space, textView };
         row->Alignment.vertical = Alignment::Vertical::CENTER;
         selectableView->Child = row;
-        root = selectableView;
+        Root = selectableView;
     }
 
     void CheckBoxRadioTextLayout::onStateChanged(Control& control) {
@@ -84,21 +77,21 @@ namespace Ghurund::UI {
             textView->TextColor = theme->getColorForegroundDisabledOnBackground();
         } else if (selectableView->Pressed) {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccentDark();
+                //imageView->Image->Tint = theme->getColorAccentDark();
             } else {
                 imageView->Image->Tint = theme->getColorForegroundPrimaryOnBackground();
             }
             textView->TextColor = theme->getColorForegroundPrimaryOnBackground();
         } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccent();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
             textView->TextColor = theme->getColorForegroundSecondaryOnBackground();
         } else {
             if (selectableView->Selected) {
-                imageView->Image->Tint = theme->getColorAccent();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             }
@@ -111,9 +104,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (selectableView->Selected) {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->CheckBoxChecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]);
         } else {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->CheckBoxUnchecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]);
         }
         __super::onStateChanged(control);
     }
@@ -123,9 +116,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (selectableView->Selected) {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->RadioButtonChecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]);
         } else {
-            imageView->Image = makeShared<BitmapImageDrawable>(theme->RadioButtonUnchecked);
+            imageView->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_RADIOBUTTON_UNCHECKED]);
         }
         __super::onStateChanged(control);
     }

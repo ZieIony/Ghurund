@@ -12,10 +12,12 @@ namespace Ghurund::UI {
     class TabContainerLayout:public Ghurund::UI::WidgetLayout {
     protected:
         SharedPointer<ControlContainer> container;
-        SharedPointer<RecyclerView<TabItem*, Tab>> tabContainer;
+        SharedPointer<RecyclerView> tabContainer;
 
     public:
-        virtual ~TabContainerLayout() = 0 {}
+        TabContainerLayout() {}
+
+        TabContainerLayout(Control *layout) {}
 
         inline ControlContainer* getContainer() {
             return container;
@@ -23,11 +25,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContainer)) ControlContainer* Container;
 
-        inline RecyclerView<TabItem*, Tab>* getTabContainer() {
+        inline RecyclerView* getTabContainer() {
             return tabContainer;
         }
 
-        __declspec(property(get = getTabContainer)) RecyclerView<TabItem*, Tab>* TabContainer;
+        __declspec(property(get = getTabContainer)) RecyclerView* TabContainer;
     };
 
     class TabContainerVerticalBottomLayout:public TabContainerLayout {

@@ -16,14 +16,20 @@ namespace Ghurund::UI {
         ImageView* imageView = nullptr;
 
     public:
+        CheckBoxRadioLayout() {}
+
+        CheckBoxRadioLayout(Control* layout) {
+            Root = layout;
+            setPointer(selectableView, (Ghurund::UI::SelectableView*)layout->find("selectable"));
+            setPointer(imageView, (Ghurund::UI::ImageView*)layout->find("image"));
+        }
+
         ~CheckBoxRadioLayout() {
             if (selectableView)
                 selectableView->release();
             if (imageView)
                 imageView->release();
         }
-
-        virtual void init() override;
 
         ImageView* getImageView() {
             return imageView;
@@ -42,6 +48,8 @@ namespace Ghurund::UI {
 
     class CheckBoxLayout:public CheckBoxRadioLayout {
     public:
+        using CheckBoxRadioLayout::CheckBoxRadioLayout;
+
         virtual void onStateChanged(Control& control) override;
     };
 

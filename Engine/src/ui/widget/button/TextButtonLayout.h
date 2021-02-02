@@ -11,28 +11,60 @@
 
 namespace Ghurund::UI {
 
-    class TextButtonLayout:public ButtonLayout, public BackgroundLayoutMixin, public BorderLayoutMixin, public TextLayoutMixin, public PaddingLayoutMixin {
+    class LayoutLoader;
+
+    class TextButtonLayout:public ButtonLayout, public TextLayoutMixin {
+    public:
+        virtual ~TextButtonLayout() = 0 {}
+    };
+
+    class TextButtonDefaultLayout:public TextButtonLayout, public BackgroundLayoutMixin, public PaddingLayoutMixin {
     private:
         SharedPointer<StackLayout> stack;
+        SharedPointer<Border> border;
+        SharedPointer<Clip> clip;
+        SharedPointer<Shadow> shadow;
 
     protected:
         SharedPointer<ClickResponseView> clickResponseView;
 
     public:
-        virtual void init() override;
+        TextButtonDefaultLayout(ResourceContext& context, LayoutLoader& loader);
 
         virtual void onThemeChanged(Control& control) override;
 
         virtual void onStateChanged(Control& control) override;
     };
 
-    class TextButtonFlatLayout:public TextButtonLayout {
+    class TextButtonFlatLayout:public TextButtonLayout, public BackgroundLayoutMixin, public PaddingLayoutMixin {
+    private:
+        SharedPointer<StackLayout> stack;
+        SharedPointer<Border> border;
+        SharedPointer<Clip> clip;
+
+    protected:
+        SharedPointer<ClickResponseView> clickResponseView;
+
     public:
+        TextButtonFlatLayout(ResourceContext& context, LayoutLoader& loader);
+
+        virtual void onThemeChanged(Control& control) override;
+
         virtual void onStateChanged(Control& control) override;
     };
 
-    class TextButtonAccentLayout:public TextButtonLayout {
+    class TextButtonAccentLayout:public TextButtonLayout, public BackgroundLayoutMixin, public PaddingLayoutMixin {
+    private:
+        SharedPointer<StackLayout> stack;
+        SharedPointer<Clip> clip;
+        SharedPointer<Shadow> shadow;
+
+    protected:
+        SharedPointer<ClickResponseView> clickResponseView;
+
     public:
+        TextButtonAccentLayout(ResourceContext& context, LayoutLoader& loader);
+
         virtual void onThemeChanged(Control& control) override;
 
         virtual void onStateChanged(Control& control) override;

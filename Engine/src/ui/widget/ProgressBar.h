@@ -82,9 +82,7 @@ namespace Ghurund::UI {
 
     class ProgressBarStyle:public Ghurund::UI::Style<ProgressBar> {
     public:
-        ProgressBarStyle(Theme& theme);
-
-        virtual void apply(ProgressBar& progressBar) const override;
+        virtual void onThemeChanged(ProgressBar& progressBar) const override;
 
         virtual void onStateChanged(ProgressBar& progressBar) const override;
     };

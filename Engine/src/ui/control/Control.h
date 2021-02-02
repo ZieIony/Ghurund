@@ -9,6 +9,7 @@
 #include "ui/PreferredSize.h"
 #include "application/Window.h"
 #include "ui/UIContext.h"
+#include "MouseEvents.h"
 
 #include "D2d1helper.h"
 #include <tinyxml2.h>
@@ -23,7 +24,7 @@ namespace Ghurund::UI {
 
     typedef std::function<bool(Control&)> StateHandler;
 
-    class Control: public Pointer, public Input::EventConsumer {
+    class Control: public Pointer, public Ghurund::Input::EventConsumer {
     private:
         ControlParent* parent = nullptr;
 
@@ -69,11 +70,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) {}
 
-        virtual bool onMouseButtonEvent(const Input::MouseButtonEventArgs& event) override {
-            if (focusable && event.Action == Input::MouseAction::DOWN && !Focused)
-                requestFocus();
-            return false;
-        }
+        virtual bool onMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) override;
 
         virtual ~Control() = 0 {
             delete name;
@@ -281,11 +278,6 @@ namespace Ghurund::UI {
             preferredSize.height = height;
         }
 
-        inline Control* withPreferredSize(const PreferredSize& size) {
-            setPreferredSize(size);
-            return this;
-        }
-
         __declspec(property(get = getPreferredSize, put = setPreferredSize)) PreferredSize& PreferredSize;
 
         inline const FloatSize& getMeasuredSize() const {
@@ -294,7 +286,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getMeasuredSize)) FloatSize& MeasuredSize;
 
-        inline bool canReceiveEvent(const Input::MouseEventArgs& event) {
+        inline bool canReceiveEvent(const Ghurund::Input::MouseEventArgs& event) {
             return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
         }
 

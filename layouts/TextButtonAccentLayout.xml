@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ClickableView name="clickable" preferredSize="wrap, wrap">
+		<StackLayout preferredSize="fill, fill"
+					 alignment="center, center">
+			<Shadow preferredSize="fill, fill"
+					name="shadow"
+					shape="roundRect, 2"/>
+			<Clip shape="roundRect, 2"
+				  name="clip"
+				  preferredSize="fill, fill">
+				<StackLayout preferredSize="fill, fill">
+					<ColorView color="theme://accent"
+							   name="background"/>
+					<ClickResponseView name="clickResponse"
+									   preferredSize="fill, fill"
+									   color="#3fffffff"/>
+					<PaddingContainer padding="8, 4"
+									  preferredSize="fill, fill"
+									  name="padding">
+						<StackLayout name="internal" alignment="center, center"
+									 preferredSize="fill, fill">
+							<TextBlock text="BUTTON"
+								   preferredSize="wrap, wrap"
+								   name="text"
+								   textColor="theme://onAccent"
+								   font="theme://button"/>
+						</StackLayout>
+					</PaddingContainer>
+				</StackLayout>
+			</Clip>
+		</StackLayout>
+	</ClickableView>
+</layout>

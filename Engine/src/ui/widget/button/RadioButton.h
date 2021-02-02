@@ -22,11 +22,11 @@ namespace Ghurund::UI {
         RadioButton(CheckBoxRadioLayout* layout);
 
         inline void setChecked(bool checked) {
-            Layout.SelectableView->Selected = checked;
+            Layout->SelectableView->Selected = checked;
         }
 
         inline bool isChecked() const {
-            return Layout.SelectableView->Selected;
+            return Layout->SelectableView->Selected;
         }
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;

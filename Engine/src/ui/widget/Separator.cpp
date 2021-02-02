@@ -2,7 +2,7 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    Separator::Separator(Style2<Separator>* style) {
+    Separator::Separator(Style<Separator>* style) {
         colorView = ghnew ColorView();
         Child = colorView;
         style->apply(*this);

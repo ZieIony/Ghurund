@@ -19,16 +19,22 @@ namespace Ghurund::UI {
 
         if (preferredSize.width == PreferredSize::Width::WRAP) {
             measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
-        } else if (preferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)preferredSize.width;
+        } else {
+            if (preferredSize.width == PreferredSize::Width::FILL) {
+                measuredSize.width = std::max(minSize.width, parentWidth);
+            } else {
+                measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
+            }
             textLayout->Release();
             makeLayout(measuredSize.width, parentHeight);
         }
 
         if (preferredSize.height == PreferredSize::Height::WRAP) {
             measuredSize.height = std::max(minSize.height, std::ceil(textMetrics.height));
-        } else if (preferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)preferredSize.height;
+        } else  if (preferredSize.height == PreferredSize::Height::FILL) {
+            measuredSize.height = std::max(minSize.height, parentHeight);
+        } else {
+            measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
         }
     }
 
@@ -61,9 +67,12 @@ namespace Ghurund::UI {
         auto textColorAttr = xml.FindAttribute("textColor");
         if (textColorAttr)
             TextColor = loader.loadColor(textColorAttr->Value());
-        auto fontAttr = xml.FindAttribute("font");
-        if (fontAttr)
-            TextStyle = loader.loadFont(context, fontAttr->Value());
+        auto textStyleAttr = xml.FindAttribute("textStyle");
+        if (textStyleAttr) {
+            Ghurund::UI::TextStyle* style = loader.loadFont(context, textStyleAttr->Value());
+            TextStyle = style;
+            style->release();
+        }
         return Status::OK;
     }
 }

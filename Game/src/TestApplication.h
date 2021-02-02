@@ -40,6 +40,7 @@ private:
     Theme* menuTheme;
     UIContext* context;
     ModuleTest test;
+    LayoutLoader layoutLoader;
 
     SharedPointer<FpsText> fps;
 
@@ -65,6 +66,7 @@ public:
         window->SwapChain = swapChain;
 
         theme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
+        layoutLoader.Theme = theme;
         menuTheme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
         context = ghnew UIContext(Graphics2D, *theme, *window);
 
@@ -90,21 +92,21 @@ public:
         splitLayout->Child1 = redSurface;
         splitLayout->Child2 = logWindow;
 
-        SharedPointer<TestRecycler> testRecycler = ghnew TestRecycler(ResourceManager, ResourceContext, *theme);
+        SharedPointer<TestRecycler> testRecycler = ghnew TestRecycler(ResourceManager, ResourceContext, layoutLoader, *theme);
         testRecycler->Name = "test recycler";
 
         SharedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
-        SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts();
+        SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(ResourceContext, layoutLoader);
 
         SharedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
         tabLayout->Name = "tabs";
 
-        SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext);
+        SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext, layoutLoader);
         column->Name = "controls tab";
 
         SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*this, ResourceContext, *theme, L"Game/layout.xml");
-        SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext);
-        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab();
+        SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext, layoutLoader);
+        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(ResourceContext, layoutLoader);
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {
@@ -118,8 +120,7 @@ public:
             ghnew TextTabItem(L"drag test", dragTestTab),
             ghnew TextTabItem(L"windows test", windowsTestTab)
         };
-        ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.clear();
-        ((TabContainerLayout&)tabLayout->Layout).TabContainer->Adapters.add(ghnew TextTabItemAdapter(*tabLayout, *theme));
+        tabLayout->Adapter = ghnew TextTabItemAdapter(*tabLayout, *theme);
         tabLayout->SelectedPosition = 0;
 
         SharedPointer<VerticalLayout> mainColumn = ghnew VerticalLayout();
@@ -128,7 +129,7 @@ public:
             BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
             BitmapImage* pasteIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/paste 18.png");
 
-            MenuBarPtr menuBar = ghnew MenuBar(*menuTheme);
+            MenuBarPtr menuBar = ghnew MenuBar(ResourceContext, layoutLoader , *menuTheme);
             menuBar->Name = "menu bar";
             menuBar->Items = {
                 ghnew ButtonMenuItem(L"File", [](Control&) {
@@ -164,6 +165,9 @@ public:
                 }),
                 ghnew ButtonMenuItem(L"Help", [](Control&) {
                     Logger::log(LogType::INFO, "Help clicked\n");
+                }),
+                ghnew ButtonMenuItem(L"Very long menu text", [](Control&) {
+                    Logger::log(LogType::INFO, "Very long menu text clicked\n");
                 })
             };
 

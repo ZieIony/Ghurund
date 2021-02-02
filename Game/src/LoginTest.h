@@ -17,7 +17,7 @@ using namespace Ghurund::Editor;
 
 class TestLoginScreen:public StackLayout {
 public:
-    TestLoginScreen(Ghurund::UI::Theme& theme, ResourceContext& resourceContext) {
+    TestLoginScreen(Ghurund::UI::Theme& theme, Ghurund::ResourceContext& context, LayoutLoader& loader) {
         Name = "login screen";
         Alignment = { Alignment::Horizontal::CENTER, Alignment::Vertical::CENTER };
 
@@ -27,13 +27,13 @@ public:
         {
             auto imageView = makeShared<ImageView>();
             imageView->PreferredSize.height = 200.0f;
-            imageView->Image = makeShared<BitmapImageDrawable>(BitmapImage::makeFromImage(resourceContext, L"images/test/strawberry.jpg"));
+            imageView->Image = makeShared<BitmapImageDrawable>(BitmapImage::makeFromImage(context, L"images/test/strawberry.jpg"));
 
             auto loginRow = makeShared<HorizontalLayout>();
             loginRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
                 auto loginIconView = makeShared<ImageView>();
-                SharedPointer<SvgImage> faceIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, L"icons/face 24.svg");
+                SharedPointer<SvgImage> faceIcon = context.ResourceManager.load<SvgImage>(context, L"icons/face 24.svg");
                 auto faceIconDrawable = makeShared<SvgImageDrawable>(faceIcon);
                 faceIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 loginIconView->Image = faceIconDrawable;
@@ -52,7 +52,7 @@ public:
             passwordRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
                 auto passwordIconView = makeShared<ImageView>();
-                SharedPointer<SvgImage> lockIcon = resourceContext.ResourceManager.load<SvgImage>(resourceContext, L"icons/lock 24.svg");
+                SharedPointer<SvgImage> lockIcon = context.ResourceManager.load<SvgImage>(context, L"icons/lock 24.svg");
                 auto passwordIconDrawable = makeShared<SvgImageDrawable>(lockIcon);
                 passwordIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 passwordIconView->Image = passwordIconDrawable;
@@ -70,10 +70,10 @@ public:
             auto buttonsRow = makeShared<HorizontalLayout>();
             buttonsRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
-                auto loginButton = makeShared<TextButton>();
+                auto loginButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(context, loader));
                 loginButton->PreferredSize.width = PreferredSize::Width::FILL;
                 loginButton->Text = L"LOGIN";
-                auto registerButton = makeShared<TextButton>();
+                auto registerButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(context, loader));
                 registerButton->PreferredSize.width = PreferredSize::Width::FILL;
                 registerButton->Text = L"REGISTER";
 

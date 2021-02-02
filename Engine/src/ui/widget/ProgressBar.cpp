@@ -24,20 +24,24 @@ namespace Ghurund::UI {
         }
     }
 
-    ProgressBarStyle::ProgressBarStyle(Theme& theme):Style<ProgressBar>(theme) {}
-
-    void ProgressBarStyle::apply(ProgressBar& progressBar) const {
-        progressBar.ProgressColor = theme.getColorAccent();
-        progressBar.BackgroundColor = theme.getColorControlNormal();
+    void ProgressBarStyle::onThemeChanged(ProgressBar& progressBar) const {
+        Ghurund::UI::Theme* theme = progressBar.Theme;
+        if (!theme)
+            return;
+        progressBar.ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
+        progressBar.BackgroundColor = theme->getColorControlNormal();
     }
 
     void ProgressBarStyle::onStateChanged(ProgressBar& progressBar) const {
+        Ghurund::UI::Theme* theme = progressBar.Theme;
+        if (!theme)
+            return;
         if (progressBar.Enabled) {
-            progressBar.ProgressColor = theme.getColorAccent();
-            progressBar.BackgroundColor = theme.getColorControlNormal();
+            progressBar.ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
+            progressBar.BackgroundColor = theme->getColorControlNormal();
         } else {
-            progressBar.ProgressColor = theme.getColorControlNormal();
-            progressBar.BackgroundColor = theme.getColorControlDisabled();
+            progressBar.ProgressColor = theme->getColorControlNormal();
+            progressBar.BackgroundColor = theme->getColorControlDisabled();
         }
     }
 }

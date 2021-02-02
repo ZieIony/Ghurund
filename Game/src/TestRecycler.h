@@ -12,12 +12,12 @@ using namespace Ghurund;
 class TestRecycler:public HorizontalLayout {
 private:
     List<StringObject*> items;
-    RecyclerView<StringObject*, Control>* recyclerView;
+    RecyclerView* recyclerView;
     VerticalScrollBar* scrollBar;
 
 public:
-    TestRecycler(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context, Ghurund::UI::Theme& theme) {
-        recyclerView = ghnew RecyclerView<StringObject*, Control>();
+    TestRecycler(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context, LayoutLoader& loader, Ghurund::UI::Theme& theme) {
+        recyclerView = ghnew RecyclerView();
         recyclerView->PreferredSize.width = PreferredSize::Width::FILL;
         scrollBar = ghnew VerticalScrollBar(theme);
         scrollBar->Name = "recycler scroll";
@@ -68,11 +68,13 @@ public:
             ghnew StringObjectItem(L"Lemon", L"Tree", lemonImage)
         };
         recyclerView->LayoutManager = ghnew VerticalLayoutManager();
-        recyclerView->Items = ghnew ListItemSource<StringObject*>(items);
-        recyclerView->Adapters = {
+        auto provider = ghnew AdapterChildrenProvider<StringObject*, Control>(*recyclerView);
+        provider->Adapters = {
             ghnew StringHeaderAdapter(theme),
-            ghnew StringItemAdapter(context, theme)
+            ghnew StringItemAdapter(context, loader, theme)
         };
+        provider->Items = ghnew ListItemSource<StringObject*>(items);
+        recyclerView->childrenProvider = provider;
 
         Children = { recyclerView, scrollBar };
     }

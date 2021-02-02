@@ -24,6 +24,8 @@ namespace Ghurund::UI {
         ControlContainer* container;
 
     public:
+        DropDownLayout(Control* control):theme(theme) {}
+
         DropDownLayout(Theme& theme):theme(theme) {
             border = ghnew Border();
             row = ghnew HorizontalLayout();
@@ -36,7 +38,7 @@ namespace Ghurund::UI {
             iconPadding->Padding.All = 4;
             row->Children = { container, iconPadding };
             stack->Children = { backgroundView, row, border };
-            root = stack;
+            Root = stack;
         }
 
         ~DropDownLayout() {

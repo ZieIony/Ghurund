@@ -5,26 +5,29 @@
 #include "PropertyRow.h"
 
 #include "ui/adapter/RecyclerView.h"
+#include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/layout/VerticalLayoutManager.h"
 
 namespace Ghurund::UI {
     class PropertyList:public ControlContainer {
     private:
-        RecyclerView<ObjectProperty*, PropertyRow>* recycler;
+        RecyclerView* recycler;
         List<ObjectProperty*> items;
         Object* item = nullptr;
 
     public:
         PropertyList() {
-            recycler = ghnew RecyclerView<ObjectProperty*, PropertyRow>();
+            recycler = ghnew RecyclerView();
             recycler->LayoutManager = ghnew VerticalLayoutManager();
-            recycler->Adapters = {
+            auto provider = ghnew AdapterChildrenProvider<ObjectProperty*, PropertyRow>(*recycler);
+            provider->Adapters = {
                 ghnew BoolPropertyRowAdapter(),
                 ghnew WStringPropertyRowAdapter(),
                 ghnew AStringPropertyRowAdapter(),
                 ghnew PropertyRowAdapter()
             };
-            recycler->Items = ghnew ListItemSource<ObjectProperty*>(items);
+            provider->Items = ghnew ListItemSource<ObjectProperty*>(items);
+            recycler->childrenProvider = provider;
             Child = recycler;
         }
 

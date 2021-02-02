@@ -1,16 +1,19 @@
 #pragma once
 
-#include "HoverableView.h"
+#include "ControlContainer.h"
 #include "MouseEvents.h"
 
 namespace Ghurund::UI {
-    class ClickableView:public HoverableView {
+    class ClickableView:public ControlContainer {
     private:
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
+
+        bool hovered = false;
         MousePressed buttons;
         Event<Control, MousePressedEventArgs> onPressed = Event<Control, MousePressedEventArgs>(*this);
         Event<Control, MouseClickedEventArgs> onClicked = Event<Control, MouseClickedEventArgs>(*this);
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableView))
                 .withConstructor(CONSTRUCTOR)
@@ -19,12 +22,19 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
-    protected:
         virtual bool onKeyEvent(const KeyEventArgs& event) override;
+
+        virtual bool onMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override;
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
     public:
+        inline bool isHovered() const {
+            return hovered;
+        }
+
+        __declspec(property(get = isHovered)) bool Hovered;
+        
         inline const MousePressed& isPressed() const {
             return buttons;
         }

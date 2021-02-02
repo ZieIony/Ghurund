@@ -16,23 +16,23 @@ namespace Ghurund::UI {
     public:
         Button(ButtonLayout* layout):Widget(layout) {
             Focusable = true;
-            Layout.ClickableView->OnStateChanged.add(OnStateChanged);
+            Layout->ClickableView->OnStateChanged.add(OnStateChanged);
         }
 
         inline bool isHovered() const {
-            return Layout.ClickableView->Hovered;
+            return Layout->ClickableView->Hovered;
         }
 
         __declspec(property(get = isHovered)) bool Hovered;
 
         inline const MousePressed& isPressed() const {
-            return Layout.ClickableView->Pressed;
+            return Layout->ClickableView->Pressed;
         }
 
         __declspec(property(get = isPressed)) MousePressed& Pressed;
 
         inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
-            return Layout.ClickableView->OnClicked;
+            return Layout->ClickableView->OnClicked;
         }
 
         __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;

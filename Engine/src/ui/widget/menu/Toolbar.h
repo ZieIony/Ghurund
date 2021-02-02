@@ -4,6 +4,7 @@
 #include "ToolbarLayout.h"
 
 #include "ui/style/Style.h"
+#include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"
 #include "ui/layout/LinearLayout.h"
@@ -22,12 +23,16 @@ namespace Ghurund::UI {
         }
 
     public:
-        Toolbar(ToolbarLayout* layout):Widget(layout) {
+        Toolbar(Ghurund::UI::Theme& theme, ToolbarLayout* layout):Widget(layout) {
             PreferredSize.height = PreferredSize::Height::WRAP;
-            Layout.RecyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
+            auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*layout->RecyclerView);
+            provider->Adapters.add(ghnew ButtonToolbarAdapter());
+            provider->Adapters.add(ghnew SeparatorToolbarAdapter(theme));
+            provider->Items = ghnew ListItemSource<MenuItem*>(items);
+            layout->RecyclerView->childrenProvider = provider;
         }
 
-        Toolbar(Ghurund::UI::Theme& theme):Toolbar(ghnew ToolbarLayout(theme)) {}
+        Toolbar(Ghurund::UI::Theme& theme):Toolbar(theme, ghnew ToolbarLayout(theme)) {}
 
         ~Toolbar() {
             items.deleteItems();

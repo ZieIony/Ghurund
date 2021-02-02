@@ -4,6 +4,7 @@
 #include "TreeRow.h"
 
 #include "ui/adapter/RecyclerView.h"
+#include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/layout/VerticalLayoutManager.h"
 
 namespace Ghurund::UI {
@@ -35,16 +36,18 @@ namespace Ghurund::UI {
 
     class TreeView:public ControlContainer {
     private:
-        RecyclerView<TreeItem*, TreeRow>* recycler;
+        RecyclerView* recycler;
         List<TreeItem*> items;
         TreeRowAdapter adapter;
 
     public:
         TreeView() {
-            recycler = ghnew RecyclerView<TreeItem*, TreeRow>();
+            recycler = ghnew RecyclerView();
             recycler->LayoutManager = ghnew VerticalLayoutManager();
-            recycler->Adapters.add(&adapter);
-            recycler->Items = ghnew ListItemSource<TreeItem*>(items);
+            auto provider = ghnew AdapterChildrenProvider<TreeItem*, TreeRow>(*recycler);
+            provider->Adapters.add(&adapter);
+            provider->Items = ghnew ListItemSource<TreeItem*>(items);
+            recycler->childrenProvider = provider;
             Child = recycler;
         }
 

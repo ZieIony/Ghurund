@@ -10,17 +10,17 @@
 
 namespace Ghurund::UI {
     class ButtonLayout:public WidgetLayout {
-    private:
+    protected:
         ClickableView* clickableView = nullptr;
 
     public:
+        ButtonLayout() {}
+
+        ButtonLayout(Control* layout) {}
+
         ~ButtonLayout() {
             if (clickableView)
                 clickableView->release();
-        }
-
-        virtual void init() {
-            clickableView = ghnew Ghurund::UI::ClickableView();
         }
 
         inline ClickableView* getClickableView() {

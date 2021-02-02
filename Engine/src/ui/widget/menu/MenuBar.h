@@ -9,6 +9,9 @@
 namespace Ghurund::UI {
     class MenuBar: public Widget<MenuBarLayout> {
     private:
+        List<MenuItem*> items;
+
+    protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(MenuBar))
                 .withSupertype(__super::GET_TYPE());
@@ -16,15 +19,10 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
-        List<MenuItem*> items;
-
     public:
-        MenuBar(MenuBarLayout* layout):Widget(layout) {
-            Layout.RecyclerView->Items = ghnew ListItemSource<MenuItem*>(items);
-            PreferredSize.height = PreferredSize::Height::WRAP;
-        }
+        MenuBar(Ghurund::ResourceContext& context, LayoutLoader& loader, MenuBarLayout* layout);
 
-        MenuBar(Ghurund::UI::Theme& theme):MenuBar(ghnew MenuBarLayout(theme)) {}
+        MenuBar(ResourceContext& context, LayoutLoader& loader, Ghurund::UI::Theme& theme):MenuBar(context, loader, ghnew MenuBarLayout(context, loader, theme)) {}
 
         ~MenuBar() {
             items.deleteItems();

@@ -25,12 +25,18 @@ namespace Ghurund::UI {
             textSecondaryFont->init(context.Graphics2D);
             TextStyles.set(Theme::TEXTSTYLE_TEXT_SECONDARY, textSecondaryFont);
 
-            checkBoxChecked = BitmapImage::makeFromImage(context, L"icons/checkbox checked 18.png");
-            checkBoxUnchecked = BitmapImage::makeFromImage(context, L"icons/checkbox unchecked 18.png");
-            radioButtonChecked = BitmapImage::makeFromImage(context, L"icons/radiobutton checked 18.png");
-            radioButtonUnchecked = BitmapImage::makeFromImage(context, L"icons/radiobutton unchecked 18.png");
-            arrowDown = BitmapImage::makeFromImage(context, L"icons/arrow down 18.png");
-            arrowUp = BitmapImage::makeFromImage(context, L"icons/arrow up 18.png");
+            SharedPointer<BitmapImage> checkBoxChecked = BitmapImage::makeFromImage(context, L"icons/checkbox checked 18.png");
+            Images.set(Theme::IMAGE_CHECKBOX_CHECKED, checkBoxChecked);
+            SharedPointer<BitmapImage> checkBoxUnchecked = BitmapImage::makeFromImage(context, L"icons/checkbox unchecked 18.png");
+            Images.set(Theme::IMAGE_CHECKBOX_UNCHECKED, checkBoxUnchecked);
+            SharedPointer<BitmapImage> radioButtonChecked = BitmapImage::makeFromImage(context, L"icons/radiobutton checked 18.png");
+            Images.set(Theme::IMAGE_RADIOBUTTON_CHECKED, radioButtonChecked);
+            SharedPointer<BitmapImage> radioButtonUnchecked = BitmapImage::makeFromImage(context, L"icons/radiobutton unchecked 18.png");
+            Images.set(Theme::IMAGE_RADIOBUTTON_UNCHECKED, radioButtonUnchecked);
+            SharedPointer<BitmapImage> arrowUp = BitmapImage::makeFromImage(context, L"icons/arrow up 18.png");
+            Images.set(Theme::IMAGE_ARROWUP, arrowUp);
+            SharedPointer<BitmapImage> arrowDown = BitmapImage::makeFromImage(context, L"icons/arrow down 18.png");
+            Images.set(Theme::IMAGE_ARROWDOWN, arrowDown);
         }
     };
 }

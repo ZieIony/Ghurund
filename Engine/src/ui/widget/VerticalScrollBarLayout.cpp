@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         topButton = ghnew ImageButton(topButtonLayout);
         topButtonLayout->PaddingContainer->Padding.All = 0;
         topButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        topButton->Image = makeShared<BitmapImageDrawable>(theme.ArrowUp);
+        topButton->Image = makeShared<BitmapImageDrawable>(theme.Images[Theme::IMAGE_ARROWUP]);
 
         barButton = ghnew ImageButton();
         barButton->PreferredSize = { PreferredSize::Width::FILL, 100.0f };
@@ -24,12 +24,12 @@ namespace Ghurund::UI {
         bottomButton = ghnew ImageButton(bottomButtonLayout);
         bottomButtonLayout->PaddingContainer->Padding.All = 0;
         bottomButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        bottomButton->Image = makeShared<BitmapImageDrawable>(theme.ArrowDown);
+        bottomButton->Image = makeShared<BitmapImageDrawable>(theme.Images[Theme::IMAGE_ARROWDOWN]);
 
         verticalLayout = ghnew VerticalLayout();
         verticalLayout->Children = { topButton, track, bottomButton };
         verticalLayout->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::FILL };
 
-        root = verticalLayout;
+        Root = verticalLayout;
     }
 }

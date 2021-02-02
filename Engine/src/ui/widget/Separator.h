@@ -18,7 +18,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        Separator(Style2<Separator>* style);
+        Separator(Style<Separator>* style);
 
         ~Separator() {
             colorView->release();

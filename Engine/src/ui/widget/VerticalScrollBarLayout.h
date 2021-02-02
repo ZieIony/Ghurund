@@ -18,6 +18,8 @@ namespace Ghurund::UI {
     public:
         VerticalScrollBarLayout(Theme& theme):theme(theme) {}
 
+        VerticalScrollBarLayout(Control* layout):theme(theme) {}
+
         virtual void init() override;
 
         inline ImageButton* getTopButton() {

@@ -80,7 +80,7 @@ namespace Ghurund::UI {
         }
     }
 
-    bool ControlGroup::dispatchKeyEvent(const Input::KeyEventArgs& event) {
+    bool ControlGroup::dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) {
         if (focusedChild && focusedChild->dispatchKeyEvent(event))
             return true;
         for (size_t i = 0; i < children.Size; i++) {
@@ -91,7 +91,7 @@ namespace Ghurund::UI {
         return __super::dispatchKeyEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseButtonEvent(const Input::MouseButtonEventArgs& event) {
+    bool ControlGroup::dispatchMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) {
         if (capturedChild) {
             auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
             return capturedChild->dispatchMouseButtonEvent(e);
@@ -105,7 +105,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseMotionEvent(const Input::MouseMotionEventArgs& event) {
+    bool ControlGroup::dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
         if (capturedChild) {
             auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
             return capturedChild->dispatchMouseMotionEvent(e);
@@ -120,13 +120,14 @@ namespace Ghurund::UI {
             Control* c = children.get(children.Size - i - 1);
             if (c->canReceiveEvent(event)) {
                 setPointer(previousReceiver, c);
-                return c->dispatchMouseMotionEvent(event.translate(-c->Position.x, -c->Position.y, true));
+                if (c->dispatchMouseMotionEvent(event.translate(-c->Position.x, -c->Position.y, true)))
+                    return true;
             }
         }
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseWheelEvent(const Input::MouseWheelEventArgs& event) {
+    bool ControlGroup::dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& event) {
         for (size_t i = 0; i < children.Size; i++) {
             Control* c = children.get(children.Size - i - 1);
             if (c->canReceiveEvent(event) && c->dispatchMouseWheelEvent(event.translate(-c->Position.x, -c->Position.y)))

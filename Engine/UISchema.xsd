@@ -19,6 +19,11 @@
 					<xs:element ref="LinearLayout"/>
 					<xs:element ref="StackLayout"/>
 					<xs:element ref="PaddingContainer"/>
+					<xs:element ref="ClickResponseView"/>
+					<xs:element ref="ClickableView"/>
+					<xs:element ref="SelectableView"/>
+					
+					<xs:element ref="CheckBox"/>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
@@ -96,13 +101,31 @@
 
 	<xs:simpleType name="Color">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="#(([0-9]|[a-f]){8})"/>
+			<xs:pattern value="theme:\/\/color\/.*|#(([0-9]|[a-f]){8})"/>
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="Font">
+	<xs:simpleType name="TextStyle">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="theme:\/\/.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Style">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="theme:\/\/style\/.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Layout">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="file:\/\/.*"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="Image">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="theme:\/\/image\/.*|file:\/\/.*"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -145,6 +168,11 @@
 						<xs:element ref="LinearLayout"/>
 						<xs:element ref="StackLayout"/>
 						<xs:element ref="PaddingContainer"/>
+						<xs:element ref="ClickResponseView"/>
+						<xs:element ref="ClickableView"/>
+						<xs:element ref="SelectableView"/>
+
+						<xs:element ref="CheckBox"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -157,7 +185,7 @@
 			<xs:extension base="Control">
 				<xs:sequence>
 					<xs:sequence>
-						<xs:choice minOccurs="1" maxOccurs="unbounded">
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
 							<xs:element ref="TextBlock"/>
 							<xs:element ref="ImageView"/>
 							<xs:element ref="Clip"/>
@@ -168,6 +196,11 @@
 							<xs:element ref="LinearLayout"/>
 							<xs:element ref="StackLayout"/>
 							<xs:element ref="PaddingContainer"/>
+							<xs:element ref="ClickResponseView"/>
+							<xs:element ref="ClickableView"/>
+							<xs:element ref="SelectableView"/>
+
+							<xs:element ref="CheckBox"/>
 						</xs:choice>
 					</xs:sequence>
 				</xs:sequence>
@@ -183,7 +216,7 @@
 			<xs:extension base="Control">
 				<xs:attribute name="text" type="xs:string"/>
 				<xs:attribute name="textColor" type="Color"/>
-				<xs:attribute name="font" type="Font"/>
+				<xs:attribute name="textStyle" type="TextStyle"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -192,7 +225,8 @@
 	<xs:complexType name="ImageView">
 		<xs:complexContent>
 			<xs:extension base="Control">
-				<xs:attribute name="image" type="xs:string"/>
+				<xs:attribute name="image" type="Image"/>
+				<xs:attribute name="imageTint" type="Color"/>
 				<xs:attribute name="scaleMode" type="ScaleMode"/>
 			</xs:extension>
 		</xs:complexContent>
@@ -273,4 +307,45 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="PaddingContainer" type="PaddingContainer"/>
+
+	<xs:complexType name="ClickResponseView">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="color" type="Color"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ClickResponseView" type="ClickResponseView"/>
+
+	<xs:complexType name="ClickableView">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ClickableView" type="ClickableView"/>
+
+	<xs:complexType name="SelectableView">
+		<xs:complexContent>
+			<xs:extension base="ClickableView"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="SelectableView" type="SelectableView"/>
+
+	<xs:complexType name="Widget">
+		<xs:complexContent>
+			<xs:extension base="Control">
+				<xs:attribute name="style" type="Style"/>
+				<xs:attribute name="layout" type="Layout"/>
+				<xs:attribute name="checked" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="CheckBox">
+		<xs:complexContent>
+			<xs:extension base="Widget"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="CheckBox" type="CheckBox"/>
+
 </xs:schema>

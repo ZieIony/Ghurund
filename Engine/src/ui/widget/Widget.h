@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Layout.h"
+#include "core/string/TextConversionUtils.h"
+#include "ui/LayoutLoader.h"
 #include "ui/style/Style.h"
 
 namespace Ghurund::UI {
@@ -11,12 +13,14 @@ namespace Ghurund::UI {
             LayoutType* widgetLayout = nullptr;
 
             EventHandler<Control> stateHandler = [this](Control& control) {
-                widgetLayout->onStateChanged(*this);
+                if (widgetLayout)
+                    widgetLayout->onStateChanged(*this);
                 return true;
             };
 
             EventHandler<Control> themeHandler = [this](Control& control) {
-                widgetLayout->onThemeChanged(*this);
+                if (widgetLayout)
+                    widgetLayout->onThemeChanged(*this);
                 return true;
             };
 
@@ -30,27 +34,61 @@ namespace Ghurund::UI {
             }
 
         public:
-            Widget(LayoutType* layout) {
+            Widget(LayoutType* layout = nullptr) {
                 OnStateChanged.add(stateHandler);
                 OnThemeChanged.add(themeHandler);
-                widgetLayout = layout;
-                widgetLayout->init();
-                Child = widgetLayout->Root;
+                Layout = layout;
             }
 
             ~Widget() = 0 {
                 delete widgetLayout;
+                widgetLayout = nullptr;
             }
 
-            inline LayoutType& getLayout() const {
-                return *widgetLayout;
+            inline LayoutType* getLayout() const {
+                return widgetLayout;
             }
 
-            __declspec(property(get = getLayout)) LayoutType& Layout;
+            virtual void setLayout(LayoutType* layout) {
+                if (widgetLayout) {
+                    Child = nullptr;
+                    delete widgetLayout;
+                }
+                widgetLayout = layout;
+                if (widgetLayout) {
+                    widgetLayout->init();
+                    Child = widgetLayout->Root;
+                }
+            }
+
+            __declspec(property(get = getLayout, put = setLayout)) LayoutType* Layout;
 
             virtual void onMeasure(float parentWidth, float parentHeight) override {
-                widgetLayout->Root->PreferredSize = preferredSize;
+                if (widgetLayout)
+                    widgetLayout->Root->PreferredSize = preferredSize;
                 __super::onMeasure(parentWidth, parentHeight);
+            }
+
+            virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override {
+                Status result = __super::load(loader, context, xml);
+                if (result != Status::OK)
+                    return result;
+                auto layoutAttr = xml.FindAttribute("layout");
+                if (layoutAttr) {
+                    WString s = toWideChar(AString(layoutAttr->Value()));
+                    uint32_t value = 0;
+                    const wchar_t* themeProtocol = L"file://";
+                    if (s.startsWith(themeProtocol)) {
+                        WString layoutPath = s.substring(lengthOf(themeProtocol));
+                        PointerList<Control*> controls = loader.load(context, layoutPath);
+                        if (!controls.Empty)
+                            Layout = ghnew LayoutType(controls[0]);
+                    }
+                }
+                //auto styleAttr = xml.FindAttribute("style");
+                //if (styleAttr)
+                    //= loader.loadColor(styleAttr->Value());
+                return Status::OK;
             }
 
             inline static const Ghurund::Type& TYPE = GET_TYPE();

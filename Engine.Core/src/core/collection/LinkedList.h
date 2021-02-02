@@ -341,42 +341,6 @@ namespace Ghurund {
             }
             size = 0;
         }
-
-        template<typename Value2>
-        inline LinkedList<Value2, AllocatorType> map(std::function<Value2(const Value&)> f) {
-            LinkedList<Value2, AllocatorType> list(size);
-            for (Value& item : *this)
-                list.add(f(item));
-        }
-
-        inline void forEach(std::function<void(Value&)> f) {
-            for (Value& item : *this)
-                f(item);
-        }
-
-        inline LinkedList<Value, AllocatorType> filter(std::function<bool(const Value&)> f) {
-            LinkedList<Value, AllocatorType> list;
-            for (Value& item : *this) {
-                if (f(item))
-                    list.add(item);
-            }
-        }
-
-        inline bool any(std::function<bool(const Value&)> f) {
-            for (Value& item : *this) {
-                if (f(item))
-                    return true;
-            }
-            return false;
-        }
-
-        inline bool all(std::function<bool(const Value&)> f) {
-            for (Value& item : *this) {
-                if (!f(item))
-                    return false;
-            }
-            return true;
-        }
     };
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<SelectableView name="selectable" preferredSize="wrap, wrap">
+		<LinearLayout preferredSize="fill, fill"
+					  orientation="horizontal">
+			<ImageView
+					name="image"
+					image="theme://image/checkBox_checked"
+					imageTint="theme://color/accent"/>
+			<Space preferredSize="4,4"/>
+			<TextBlock text="checkBox"
+					preferredSize="wrap, wrap"
+					name="text"
+					textColor="theme://color/onBackground"
+					textStyle="theme://textPrimary"/>
+		</LinearLayout>
+	</SelectableView>
+</layout>

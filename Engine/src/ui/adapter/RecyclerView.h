@@ -1,17 +1,20 @@
 #pragma once
 
 #include "ItemAdapter.h"
-#include "ItemSource.h"
-#include "AdapterChildrenProvider.h"
 
 #include "ui/control/ControlGroup.h"
 #include "ui/layout/LayoutManager.h"
 
 namespace Ghurund::UI {
-    template<class T, IsControl ControlType>
     class RecyclerView:public ControlGroup {
     private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<RecyclerView<T, ControlType>>();
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<RecyclerView>();
+
+        Event<Control> onScrolled = Event<Control>(*this);
+
+    protected:
+        LayoutManager* layoutManager = nullptr;
+
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RecyclerView))
                 .withConstructor(CONSTRUCTOR)
@@ -20,18 +23,11 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
-        Event<Control> onScrolled = Event<Control>(*this);
-
-    protected:
-        ItemSource<T>* items = nullptr;
-        LayoutManager* layoutManager = nullptr;
-        List<ItemAdapter<T, ControlType>*> adapters;
-        AdapterChildrenProvider<T, ControlType> childrenProvider = AdapterChildrenProvider(*this);
-
     public:
+        ChildrenProvider* childrenProvider;
+
         ~RecyclerView() {
-            adapters.deleteItems();
-            delete items;
+            delete childrenProvider;
             delete layoutManager;
         }
 
@@ -61,16 +57,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
 
-        inline ItemSource<T>* getItems() {
-            return items;
-        }
-
-        inline void setItems(ItemSource<T>* items) {
-            this->items = items;
-        }
-
-        __declspec(property(get = getItems, put = setItems)) ItemSource<T>* Items;
-
         inline LayoutManager* getLayoutManager() {
             return layoutManager;
         }
@@ -81,29 +67,18 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getLayoutManager, put = setLayoutManager)) LayoutManager* LayoutManager;
 
-        inline List<ItemAdapter<T, ControlType>*>& getAdapters() {
-            return adapters;
-        }
-
-        inline void setAdapters(const List<ItemAdapter<T, ControlType>*>& adapters) {
-            this->adapters.clear();
-            this->adapters.addAll(adapters);
-        }
-
-        __declspec(property(get = getAdapters, put = setAdapters)) List<ItemAdapter<T, ControlType>*>& Adapters;
-
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            if (layoutManager)
-                measuredSize = layoutManager->measure(*this, childrenProvider, parentWidth, parentHeight);
+            if (layoutManager && childrenProvider)
+                measuredSize = layoutManager->measure(*this, *childrenProvider, parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            if (layoutManager)
-                layoutManager->layout(*this, childrenProvider, x, y, width, height);
+            if (layoutManager && childrenProvider)
+                layoutManager->layout(*this, *childrenProvider, x, y, width, height);
         }
 
         virtual void onDraw(Canvas& canvas) override {
-            if (!layoutManager || !items)
+            if (!layoutManager)
                 return;
 
             canvas.save();
@@ -133,13 +108,13 @@ namespace Ghurund::UI {
         }
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
-            if (layoutManager) {
+            if (layoutManager && childrenProvider) {
                 if (args.Wheel == MouseWheel::VERTICAL) {
-                    layoutManager->scrollBy(*this, childrenProvider, 0, (float)args.Delta);
+                    layoutManager->scrollBy(*this, *childrenProvider, 0, (float)args.Delta);
                     onScrolled();
                     repaint();
                 } else {
-                    layoutManager->scrollBy(*this, childrenProvider, (float)args.Delta, 0);
+                    layoutManager->scrollBy(*this, *childrenProvider, (float)args.Delta, 0);
                     onScrolled();
                     repaint();
                 }

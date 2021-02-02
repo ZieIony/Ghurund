@@ -1,19 +1,14 @@
 #include "ImageView.h"
 #include "core/string/TextConversionUtils.h"
 
+#include "ui/LayoutLoader.h"
+
 namespace Ghurund::UI {
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
-        if (preferredSize.width == PreferredSize::Width::WRAP) {
-            measuredSize.width = std::max(minSize.width, image ? (float)image->PreferredSize.width : 0.0f);
-        } else if (preferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)preferredSize.width;
-        }
-
-        if (preferredSize.height == PreferredSize::Height::WRAP) {
-            measuredSize.height = std::max(minSize.height, image ? (float)image->PreferredSize.height : 0.0f);
-        } else if (preferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)preferredSize.height;
-        }
+        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
+        measuredSize.width = std::max(measuredSize.width, image ? (float)image->PreferredSize.width : 0.0f);
+        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+        measuredSize.height = std::max(measuredSize.height, image ? (float)image->PreferredSize.height : 0.0f);
     }
 
     void ImageView::onDraw(Canvas& canvas) {
@@ -92,12 +87,16 @@ namespace Ghurund::UI {
             return result;
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            WString imagePath = toWideChar(AString(imageAttr->Value()));
-            BitmapImage* image = BitmapImage::makeFromImage(context, imagePath);
+            BitmapImage* image = loader.loadImage(context, imageAttr->Value());
             if (!image)
                 return Status::INV_PARAM;
             Image = makeShared<BitmapImageDrawable>(image);
             image->release();
+        }
+        if (image) {
+            auto imageTintAttr = xml.FindAttribute("imageTint");
+            if (imageTintAttr)
+                Image->Tint = loader.loadColor(imageTintAttr->Value());
         }
         return Status::OK;
     }

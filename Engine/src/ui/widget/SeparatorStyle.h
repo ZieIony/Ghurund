@@ -6,7 +6,7 @@
 namespace Ghurund::UI {
     class Theme;
 
-    class SeparatorStyle:public Ghurund::UI::Style2<Separator> {
+    class SeparatorStyle:public Ghurund::UI::Style<Separator> {
     public:
         ~SeparatorStyle() = 0 {}
 

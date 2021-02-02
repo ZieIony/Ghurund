@@ -10,24 +10,29 @@ namespace Ghurund::UI {
                 group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
                 group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
-            if (c->PreferredSize.width != PreferredSize::Width::FILL) {
-                contentSize += (float)c->MeasuredSize.width;
-            } else {
+            if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 spreadCount++;
+            } else if (c->PreferredSize.width >= 0) {
+                contentSize += std::max(c->MinSize.width, (float)c->PreferredSize.width);
+            } else {
+                contentSize += c->MeasuredSize.width;
             }
         }
 
         float measuredwidth = 0;
-        if (group.PreferredSize.width == PreferredSize::Width::WRAP) {
-            for (Control* c : group.Children) {
-                if (c->PreferredSize.width != PreferredSize::Width::FILL)
-                    measuredwidth += (float)c->MeasuredSize.width;
-            }
-        } else if (group.PreferredSize.width != PreferredSize::Width::FILL) {
+        if (group.PreferredSize.width >= 0) {
             measuredwidth = (float)group.PreferredSize.width;
+        } else {
+            for (Control* c : group.Children) {
+                if (c->PreferredSize.width >= 0) {
+                    measuredwidth += std::max(c->MinSize.width, (float)c->PreferredSize.width);
+                } else {
+                    measuredwidth += c->MeasuredSize.width;
+                }
+            }
         }
 
-        return { measuredwidth, measureMaxHeight(group) };
+        return { std::max(group.MinSize.width, measuredwidth), measureMaxHeight(group) };
     }
 
     FloatSize LinearLayoutManager::measureVertical(ControlGroup& group, float parentWidth, float parentHeight) {
@@ -41,24 +46,29 @@ namespace Ghurund::UI {
                 group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
                 group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
             );
-            if (c->PreferredSize.height != PreferredSize::Height::FILL) {
-                contentSize += (float)c->MeasuredSize.height;
-            } else {
+            if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 spreadCount++;
+            } else if (c->PreferredSize.height >= 0) {
+                contentSize += std::max(c->MinSize.height, (float)c->PreferredSize.height);
+            } else {
+                contentSize += c->MeasuredSize.height;
             }
         }
 
         float measuredHeight = 0;
-        if (group.PreferredSize.height == PreferredSize::Height::WRAP) {
-            for (Control* c : group.Children) {
-                if (c->PreferredSize.height != PreferredSize::Height::FILL)
-                    measuredHeight += (float)c->MeasuredSize.height;
-            }
-        } else if (group.PreferredSize.height != PreferredSize::Height::FILL) {
+        if (group.PreferredSize.height >= 0) {
             measuredHeight = (float)group.PreferredSize.height;
+        } else {
+            for (Control* c : group.Children) {
+                if (c->PreferredSize.height >= 0) {
+                    measuredHeight += std::max(c->MinSize.height, (float)c->PreferredSize.height);
+                } else {
+                    measuredHeight += c->MeasuredSize.height;
+                }
+            }
         }
 
-        return { measureMaxWidth(group), measuredHeight };
+        return { measureMaxWidth(group), std::max(group.MinSize.height, measuredHeight) };
     }
 
     void LinearLayoutManager::layoutHorizontal(ControlGroup& group, float x, float y, float width, float height) {
@@ -77,14 +87,20 @@ namespace Ghurund::UI {
                 continue;
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
-                w = spaceLeft / spreadCount;
+                w = std::max(spaceLeft / spreadCount, c->MinSize.width);
+            } else if (c->PreferredSize.width >= 0) {
+                w = std::min((float)c->PreferredSize.width, width);
+                w = std::max(w, c->MinSize.width);
             } else {
                 w = std::min(c->MeasuredSize.width, width);
             }
 
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
-                h = height;
+                h = std::max(height, c->MinSize.height);
+            } else if (c->PreferredSize.height >= 0) {
+                h = std::min((float)c->PreferredSize.height, height);
+                h = std::max(h, c->MinSize.height);
             } else {
                 h = std::min((float)c->MeasuredSize.height, height);
             }
@@ -119,14 +135,20 @@ namespace Ghurund::UI {
                 continue;
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
-                w = width;
+                w = std::max(width, c->MinSize.height);
+            } else if (c->PreferredSize.width >= 0) {
+                w = std::min((float)c->PreferredSize.width, width);
+                w = std::max(w, c->MinSize.width);
             } else {
                 w = std::min((float)c->MeasuredSize.width, width);
             }
 
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
-                h = spaceLeft / spreadCount;
+                h = std::max(spaceLeft / spreadCount, c->MinSize.height);
+            } else if (c->PreferredSize.height >= 0) {
+                h = std::min((float)c->PreferredSize.height, height);
+                h = std::max(h, c->MinSize.height);
             } else {
                 h = std::min((float)c->MeasuredSize.height, height);
             }
@@ -152,7 +174,7 @@ namespace Ghurund::UI {
             return measureVertical(group, parentWidth, parentHeight);
         }
     }
-    
+
     void LinearLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
         if (orientation == Orientation::HORIZONTAL) {
             layoutHorizontal(group, x, y, width, height);

@@ -4,8 +4,13 @@
 
 namespace Ghurund::UI {
     class WidgetLayout {
-    protected:
+    private:
         Control* root = nullptr;
+
+    protected:
+        inline void setRoot(Control* control) {
+            setPointer(root, control);
+        }
 
     public:
         virtual ~WidgetLayout() = 0 {
@@ -15,11 +20,11 @@ namespace Ghurund::UI {
 
         virtual void init() {}
 
-        Control* getRoot() {
+        inline Control* getRoot() {
             return root;
         }
 
-        __declspec(property(get = getRoot)) Control* Root;
+        __declspec(property(get = getRoot, put = setRoot)) Control* Root;
 
         virtual void onThemeChanged(Control& control) {}
 

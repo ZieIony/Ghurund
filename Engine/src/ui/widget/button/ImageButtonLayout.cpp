@@ -12,8 +12,9 @@ namespace Ghurund::UI {
         stack->PreferredSize.height = PreferredSize::Height::WRAP;
         clickResponseView = makeShared<ClickResponseView>();
         stack->Children = { backgroundView, clickResponseView, border, paddingContainer };
+        clickableView = ghnew Ghurund::UI::ClickableView();
         ClickableView->Child = stack;
-        root = ClickableView;
+        Root = ClickableView;
     }
 
     void ImageButtonLayout::onThemeChanged(Control& control) {
@@ -35,7 +36,7 @@ namespace Ghurund::UI {
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
             if (imageView->Image)
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
-            border->Color = theme->getColorAccent();
+            border->Color = theme->Colors[Theme::COLOR_ACCENT];
             backgroundView->Color = theme->getColorControlNormal();
         } else {
             if (imageView->Image)
@@ -43,7 +44,6 @@ namespace Ghurund::UI {
             border->Color = theme->getColorForegroundPrimaryOnBackground();
             backgroundView->Color = theme->getColorControlNormal();
         }
-        clickResponseView->Pressed = ClickableView->Pressed;
     }
 
     void ImageButtonFlatLayout::onStateChanged(Control& control) {
@@ -58,13 +58,12 @@ namespace Ghurund::UI {
         } else if (ClickableView->Pressed || ClickableView->Hovered || control.Focused) {
             if (imageView->Image)
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
-            border->Color = theme->getColorAccent();
+            border->Color = theme->Colors[Theme::COLOR_ACCENT];
         } else {
             if (imageView->Image)
                 imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
             border->Color = 0;
         }
-        clickResponseView->Pressed = ClickableView->Pressed;
     }
 
 }

@@ -10,11 +10,11 @@ namespace Ghurund::UI {
         DropDown(DropDownLayout* layout):Widget(layout) {}
 
         inline Control* getContent() {
-            return Layout.Content;
+            return Layout->Content;
         }
 
         inline void setContent(Control* control) {
-            Layout.Content = control;
+            Layout->Content = control;
         }
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;

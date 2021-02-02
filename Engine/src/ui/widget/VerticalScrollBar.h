@@ -53,14 +53,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
-
-        virtual void onMeasure(float parentWidth, float parentHeight) override {
-            __super::onMeasure(parentWidth, parentHeight);
-        }
-
-        virtual void onLayout(float x, float y, float width, float height) override {
-            __super::onLayout(x, y, width, height);
-        }
     };
 
     typedef SharedPointer<VerticalScrollBar> VerticalScrollBarPtr;
