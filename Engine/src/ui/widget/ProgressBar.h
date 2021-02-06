@@ -26,8 +26,6 @@ namespace Ghurund::UI {
             PreferredSize.height = 4;
         }
 
-        ProgressBar(Style<ProgressBar>& style);
-
         inline float getProgress() const {
             return progress;
         }
@@ -80,10 +78,10 @@ namespace Ghurund::UI {
 
     class Theme;
 
-    class ProgressBarStyle:public Ghurund::UI::Style<ProgressBar> {
+    class ProgressBarStyle:public Ghurund::UI::Style {
     public:
-        virtual void onThemeChanged(ProgressBar& progressBar) const override;
+        virtual void onThemeChanged(Control& control) const override;
 
-        virtual void onStateChanged(ProgressBar& progressBar) const override;
+        virtual void onStateChanged(Control& control) const override;
     };
 }

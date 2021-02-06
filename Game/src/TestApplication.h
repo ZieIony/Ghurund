@@ -65,10 +65,10 @@ public:
         swapChain->init(Graphics, &Graphics2D, *window);
         window->SwapChain = swapChain;
 
-        theme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
-        layoutLoader.Theme = theme;
-        menuTheme = ghnew LightTheme(ResourceManager, ResourceContext, 0xff0078D7);
-        context = ghnew UIContext(Graphics2D, *theme, *window);
+        theme = ghnew LightTheme(ResourceContext, 0xff0078D7);
+        menuTheme = ghnew LightTheme(ResourceContext, 0xff0078D7);
+        context = ghnew UIContext(Graphics2D, *window);
+        layoutLoader.init(*theme, ResourceContext);
 
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
         canvas->init(Graphics2D);
@@ -78,7 +78,7 @@ public:
         window->RootView = rootView;
         Windows.add(window);
 
-        SharedPointer<ToolWindow> logWindow = ghnew ToolWindow(*theme);
+        SharedPointer<ToolWindow> logWindow = ghnew ToolWindow();
         SharedPointer<LogPanel> logPanel = ghnew LogPanel(ResourceContext, *theme);
         logWindow->Content = logPanel;
         logWindow->Title = L"Logs";
@@ -106,7 +106,7 @@ public:
 
         SharedPointer<LayoutEditorTab> layoutEditor = ghnew LayoutEditorTab(*this, ResourceContext, *theme, L"Game/layout.xml");
         SharedPointer<TestLoginScreen> loginTest = ghnew TestLoginScreen(*theme, ResourceContext, layoutLoader);
-        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(ResourceContext, layoutLoader);
+        SharedPointer<DragTestTab> dragTestTab = ghnew DragTestTab(layoutLoader);
         SharedPointer<WindowsTestTab> windowsTestTab = ghnew WindowsTestTab(*theme);
 
         tabLayout->Tabs = {
@@ -193,7 +193,7 @@ public:
             auto statusBarItems = makeShared<HorizontalLayout>();
             statusBarItems->Alignment = { Alignment::Horizontal::RIGHT, Alignment::Vertical::CENTER };
             statusBarItems->PreferredSize.height = PreferredSize::Height::WRAP;
-            fps = makeShared<FpsText>(theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY], theme->getColorForegroundPrimaryOnBackground(), Timer);
+            fps = makeShared<FpsText>(theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY], theme->ColorForegroundPrimaryOnBackground, Timer);
             statusBarItems->Children = { fps };
             statusBar->Children = { statusBarBackground, statusBarItems };
 

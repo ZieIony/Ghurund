@@ -17,10 +17,11 @@ namespace Preview {
 
     class PreviewWindow:public OverlappedWindow {
     private:
-        Theme* lightTheme, *darkTheme;
+        Theme* lightTheme, * darkTheme;
         UIContext* context;
         SharedPointer<StackLayout> container;
         SharedPointer<Ghurund::UI::RootView> rootView;
+        SharedPointer<CheckBox> themeCheckBox, enabledCheckBox;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -34,10 +35,10 @@ namespace Preview {
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = swapChain;
 
-            lightTheme = ghnew LightTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
-            darkTheme = ghnew DarkTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
-            context = ghnew UIContext(app.Graphics2D, *lightTheme, *this);
-            layoutLoader.Theme = lightTheme;
+            lightTheme = ghnew LightTheme(app.ResourceContext, 0xff0078D7);
+            darkTheme = ghnew DarkTheme(app.ResourceContext, 0xff0078D7);
+            context = ghnew UIContext(app.Graphics2D, *this);
+            layoutLoader.init(*lightTheme, app.ResourceContext);
 
             Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
             canvas->init(app.Graphics2D);
@@ -45,12 +46,25 @@ namespace Preview {
             rootView->Theme = lightTheme;
             rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
 
-            auto layout = layoutLoader.load(app.ResourceContext, L"Preview/layout.xml");
-            rootView->Child = layout[0];
+            PointerList<Control*> controls;
+            layoutLoader.load(L"Preview/layout.xml", controls);
+            rootView->Child = controls[0];
             container = (StackLayout*)rootView->find("container");
+            themeCheckBox = (CheckBox*)rootView->find("themeCheckBox");
+            themeCheckBox->OnCheckedChanged.add([this](CheckBox&) {
+                updateTheme();
+                rootView->repaint();
+                return true;
+            });
+            enabledCheckBox = (CheckBox*)rootView->find("enabledCheckBox");
+            enabledCheckBox->OnCheckedChanged.add([this](CheckBox& checkBox) {
+                container->Enabled = checkBox.Checked;
+                container->repaint();
+                return true;
+            });
 
             RootView = rootView;
-            
+
             DragDropEnabled = true;
             OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>* files) {
                 if (files && files->Size > 0) {
@@ -74,17 +88,17 @@ namespace Preview {
             delete darkTheme;
         }
 
-        /*void updateTheme() {
+        void updateTheme() {
             if (themeCheckBox->Checked) {
-                rootView->BackgroundColor = darkTheme->ColorBackground;
-                layoutLoader.Theme = darkTheme;
+                rootView->BackgroundColor = darkTheme->Colors[Theme::COLOR_BACKGR0UND];
+                layoutLoader.init(*darkTheme, layoutLoader.ResourceContext);
                 rootView->Theme = darkTheme;
             } else {
-                rootView->BackgroundColor = lightTheme->ColorBackground;
-                layoutLoader.Theme = lightTheme;
+                rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
+                layoutLoader.init(*lightTheme, layoutLoader.ResourceContext);
                 rootView->Theme = lightTheme;
             }
-        }*/
+        }
 
         void postLoadCallback(const FilePath& path) {
             loadCallback = [this, path]() {
@@ -102,7 +116,8 @@ namespace Preview {
         }
 
         void loadLayout(const Buffer& data) {
-            PointerList<Control*> controls = layoutLoader.load(app->ResourceContext, data);
+            PointerList<Control*> controls;
+            layoutLoader.load(data, controls);
             container->Children.clear();
             for (Control* control : controls)
                 container->Children.add(control);

@@ -81,13 +81,13 @@ namespace Ghurund::UI {
         canvas.restoreClipRect();
     }
     
-    Status ImageView::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status ImageView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            BitmapImage* image = loader.loadImage(context, imageAttr->Value());
+            BitmapImage* image = loader.loadImage(imageAttr->Value());
             if (!image)
                 return Status::INV_PARAM;
             Image = makeShared<BitmapImageDrawable>(image);

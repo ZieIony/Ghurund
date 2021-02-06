@@ -29,7 +29,7 @@ namespace Ghurund::UI {
         SharedPointer<ClickResponseView> clickResponseView;
 
     public:
-        TextButtonDefaultLayout(ResourceContext& context, LayoutLoader& loader);
+        TextButtonDefaultLayout(LayoutLoader& loader);
 
         virtual void onThemeChanged(Control& control) override;
 
@@ -46,7 +46,7 @@ namespace Ghurund::UI {
         SharedPointer<ClickResponseView> clickResponseView;
 
     public:
-        TextButtonFlatLayout(ResourceContext& context, LayoutLoader& loader);
+        TextButtonFlatLayout(LayoutLoader& loader);
 
         virtual void onThemeChanged(Control& control) override;
 
@@ -63,7 +63,7 @@ namespace Ghurund::UI {
         SharedPointer<ClickResponseView> clickResponseView;
 
     public:
-        TextButtonAccentLayout(ResourceContext& context, LayoutLoader& loader);
+        TextButtonAccentLayout(LayoutLoader& loader);
 
         virtual void onThemeChanged(Control& control) override;
 

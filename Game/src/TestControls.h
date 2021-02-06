@@ -43,7 +43,7 @@ public:
 
             auto p = makeShared<PaddingContainer>();
             p->Padding.All = 20;
-            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
+            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout( loader));
             hwButton->Text = L"HELLO WORLD";
             p->Child = hwButton;
 
@@ -52,14 +52,14 @@ public:
             SharedPointer<TextField> textField2 = ghnew TextField();
             textField2->Text = L"type here too";
 
-            SharedPointer<CheckBoxText> checkBox = ghnew CheckBoxText();
+            /*SharedPointer<CheckBox> checkBox = ghnew CheckBox();
             checkBox->Text = L"check me";
 
             RadioTextButtonPtr radioButton = ghnew RadioTextButton();
             radioButton->Text = L"option 1";
             RadioTextButtonPtr radioButton2 = ghnew RadioTextButton();
             radioButton2->Text = L"option 2";
-            radioGroup = { radioButton, radioButton2 };
+            radioGroup = { radioButton, radioButton2 };*/
 
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
@@ -72,14 +72,16 @@ public:
 
             player = ghnew MusicPlayer(theme);
 
-            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(context, loader));
+            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(loader));
             flatButton->Text = L"Submit";
-            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
+            TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
             accentButton->Text = L"OK";
 
-            SharedPointer<Separator> separator = ghnew Separator(ghnew HorizontalSeparatorStyle());
+            SharedPointer<Separator> separator = ghnew Separator();
+            separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_HORIZONTAL];
 
-            SharedPointer<ProgressBar> progressBar = ghnew ProgressBar(*theme.progressBarStyle);
+            SharedPointer<ProgressBar> progressBar = ghnew ProgressBar();
+            progressBar->Style = theme.Styles[Theme::STYLE_PROGRESSBAR];
             progressBar->Indeterminate = true;
 
             verticalLayout->Children = {
@@ -89,10 +91,10 @@ public:
                 textField,
                 textField2,
                 makeShared<Space>(),
-                checkBox,
+                /*checkBox,
                 makeShared<Space>(),
                 radioButton,
-                radioButton2,
+                radioButton2,*/
                 separator,
                 horizontalLayout,
                 makeShared<Space>(),

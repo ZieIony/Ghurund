@@ -2,57 +2,75 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    void TextBlockPrimaryStyle::onThemeChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockButtonStyle::onThemeChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
+        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_BUTTON];
     }
 
-    void TextBlockPrimaryStyle::onStateChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockButtonStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
-            return; 
-        if (!textView.Enabled) {
-            textView.TextColor = theme->ColorForegroundDisabledOnBackground;
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
         } else {
-            textView.TextColor = theme->ColorForegroundPrimaryOnBackground;
+            ((TextBlock&)control).TextColor = theme->ColorForegroundPrimaryOnBackground;
         }
     }
 
-    void TextBlockSecondaryStyle::onThemeChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockPrimaryStyle::onThemeChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
+        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
     }
 
-    void TextBlockSecondaryStyle::onStateChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockPrimaryStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        if (!textView.Enabled) {
-            textView.TextColor = theme->getColorForegroundDisabledOnBackground();
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
         } else {
-            textView.TextColor = theme->getColorForegroundSecondaryOnBackground();
+            ((TextBlock&)control).TextColor = theme->ColorForegroundPrimaryOnBackground;
         }
     }
 
-    void TextBlockHeaderStyle::onThemeChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockSecondaryStyle::onThemeChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        textView.TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
+        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
     }
 
-    void TextBlockHeaderStyle::onStateChanged(TextBlock& textView) const {
-        Ghurund::UI::Theme* theme = textView.Theme;
+    void TextBlockSecondaryStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        if (!textView.Enabled) {
-            textView.TextColor = theme->getColorForegroundDisabledOnBackground();
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
         } else {
-            textView.TextColor = theme->getColorForegroundSecondaryOnBackground();
+            ((TextBlock&)control).TextColor = theme->ColorForegroundSecondaryOnBackground;
+        }
+    }
+
+    void TextBlockHeaderStyle::onThemeChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_LIST_HEADER];
+    }
+
+    void TextBlockHeaderStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
+        } else {
+            ((TextBlock&)control).TextColor = theme->ColorForegroundSecondaryOnBackground;
         }
     }
 }

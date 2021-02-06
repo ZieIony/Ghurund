@@ -4,9 +4,10 @@
 #include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    TextButtonDefaultLayout::TextButtonDefaultLayout(ResourceContext& context, LayoutLoader& loader) {
-        auto layout = loader.load(context, FilePath(L"layouts/TextButtonDefaultLayout.xml"));
-        Root = layout[0];
+    TextButtonDefaultLayout::TextButtonDefaultLayout(LayoutLoader& loader) {
+        PointerList<Control*> controls;
+        loader.load(FilePath(L"layouts/TextButtonDefaultLayout.xml"), controls);
+        Root = controls[0];
         border = (Border*)Root->find(_T("border"));
         clip = (Clip*)Root->find(_T("clip"));
         shadow = (Shadow*)Root->find(_T("shadow"));
@@ -43,9 +44,10 @@ namespace Ghurund::UI {
         }
     }
 
-    TextButtonFlatLayout::TextButtonFlatLayout(ResourceContext& context, LayoutLoader& loader) {
-        auto layout = loader.load(context, FilePath(L"layouts/TextButtonFlatLayout.xml"));
-        Root = layout[0];
+    TextButtonFlatLayout::TextButtonFlatLayout(LayoutLoader& loader) {
+        PointerList<Control*> controls;
+        loader.load(FilePath(L"layouts/TextButtonFlatLayout.xml"), controls);
+        Root = controls[0];
         border = (Border*)Root->find(_T("border"));
         clip = (Clip*)Root->find(_T("clip"));
         paddingContainer = (Ghurund::UI::PaddingContainer*)Root->find(_T("padding"));
@@ -79,9 +81,10 @@ namespace Ghurund::UI {
         backgroundView->Color = 0;
     }
 
-    TextButtonAccentLayout::TextButtonAccentLayout(ResourceContext& context, LayoutLoader& loader) {
-        auto layout = loader.load(context, FilePath(L"layouts/TextButtonAccentLayout.xml"));
-        Root = layout[0];
+    TextButtonAccentLayout::TextButtonAccentLayout(LayoutLoader& loader) {
+        PointerList<Control*> controls;
+        loader.load(FilePath(L"layouts/TextButtonAccentLayout.xml"), controls);
+        Root = controls[0];
         clip = (Clip*)Root->find(_T("clip"));
         shadow = (Shadow*)Root->find(_T("shadow"));
         paddingContainer = (Ghurund::UI::PaddingContainer*)Root->find(_T("padding"));

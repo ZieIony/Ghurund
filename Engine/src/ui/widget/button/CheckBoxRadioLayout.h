@@ -57,35 +57,4 @@ namespace Ghurund::UI {
     public:
         virtual void onStateChanged(Control& control) override;
     };
-
-    class CheckBoxRadioTextLayout:public CheckBoxRadioLayout {
-    protected:
-        TextBlock* textView = nullptr;
-
-    public:
-        ~CheckBoxRadioTextLayout() {
-            if (textView)
-                textView->release();
-        }
-
-        virtual void init() override;
-
-        TextBlock* getTextBlock() {
-            return textView;
-        }
-
-        __declspec(property(get = getTextBlock)) TextBlock* TextBlock;
-
-        virtual void onStateChanged(Control& control) override;
-    };
-
-    class TextCheckBoxLayout:public CheckBoxRadioTextLayout {
-    public:
-        virtual void onStateChanged(Control& control) override;
-    };
-
-    class RadioTextButtonLayout:public CheckBoxRadioTextLayout {
-    public:
-        virtual void onStateChanged(Control& control) override;
-    };
 }

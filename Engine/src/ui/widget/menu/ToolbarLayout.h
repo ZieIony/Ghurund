@@ -10,17 +10,14 @@
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class Theme;
-
     class ToolbarLayout:public WidgetLayout {
     protected:
-        Theme& theme;
         SharedPointer<RecyclerView> recyclerView;
 
     public:
-        ToolbarLayout(Theme& theme):theme(theme) {}
+        ToolbarLayout() {}
 
-        ToolbarLayout(Control* control):theme(theme) {}
+        ToolbarLayout(Control* control) {}
 
         virtual void init() override;
 

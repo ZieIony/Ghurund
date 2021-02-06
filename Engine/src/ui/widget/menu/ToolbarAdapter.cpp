@@ -22,7 +22,8 @@ namespace Ghurund::UI {
     SeparatorToolbarAdapter::SeparatorToolbarAdapter(Theme& theme):theme(theme) {}
 
     Control* SeparatorToolbarAdapter::makeControl() const {
-        Separator* separator = ghnew Separator(theme.separatorStyle);
+        Separator* separator = ghnew Separator();
+        separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_HORIZONTAL];
         separator->PreferredSize.height = PreferredSize::Height::FILL;
         return separator;
     }

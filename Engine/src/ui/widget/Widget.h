@@ -4,6 +4,7 @@
 #include "core/string/TextConversionUtils.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Style.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     template<class LayoutType>
@@ -33,10 +34,12 @@ namespace Ghurund::UI {
                 return TYPE;
             }
 
+            virtual void onLayoutChanged() {}
+
         public:
             Widget(LayoutType* layout = nullptr) {
-                OnStateChanged.add(stateHandler);
-                OnThemeChanged.add(themeHandler);
+                StateChanged.add(stateHandler);
+                ThemeChanged.add(themeHandler);
                 Layout = layout;
             }
 
@@ -49,7 +52,9 @@ namespace Ghurund::UI {
                 return widgetLayout;
             }
 
-            virtual void setLayout(LayoutType* layout) {
+            inline void setLayout(LayoutType* layout) {
+                if (widgetLayout == layout)
+                    return;
                 if (widgetLayout) {
                     Child = nullptr;
                     delete widgetLayout;
@@ -59,6 +64,7 @@ namespace Ghurund::UI {
                     widgetLayout->init();
                     Child = widgetLayout->Root;
                 }
+                onLayoutChanged();
             }
 
             __declspec(property(get = getLayout, put = setLayout)) LayoutType* Layout;
@@ -69,25 +75,28 @@ namespace Ghurund::UI {
                 __super::onMeasure(parentWidth, parentHeight);
             }
 
-            virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override {
-                Status result = __super::load(loader, context, xml);
+            virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
+                Status result = __super::load(loader, xml);
                 if (result != Status::OK)
                     return result;
                 auto layoutAttr = xml.FindAttribute("layout");
                 if (layoutAttr) {
                     WString s = toWideChar(AString(layoutAttr->Value()));
                     uint32_t value = 0;
-                    const wchar_t* themeProtocol = L"file://";
-                    if (s.startsWith(themeProtocol)) {
-                        WString layoutPath = s.substring(lengthOf(themeProtocol));
-                        PointerList<Control*> controls = loader.load(context, layoutPath);
-                        if (!controls.Empty)
+                    const wchar_t* fileProtocol = L"file://";
+                    if (s.startsWith(fileProtocol)) {
+                        WString layoutPath = s.substring(lengthOf(fileProtocol));
+                        PointerList<Control*> controls;
+                        Status result = loader.load(layoutPath, controls);
+                        if (result != Status::OK)
+                            return result;
+                        if (!controls.Empty) {
                             Layout = ghnew LayoutType(controls[0]);
+                        } else {
+                            return Status::INV_PARAM;
+                        }
                     }
                 }
-                //auto styleAttr = xml.FindAttribute("style");
-                //if (styleAttr)
-                    //= loader.loadColor(styleAttr->Value());
                 return Status::OK;
             }
 

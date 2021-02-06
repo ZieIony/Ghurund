@@ -32,7 +32,7 @@ namespace Ghurund::UI {
             layout->RecyclerView->childrenProvider = provider;
         }
 
-        Toolbar(Ghurund::UI::Theme& theme):Toolbar(theme, ghnew ToolbarLayout(theme)) {}
+        Toolbar(Ghurund::UI::Theme& theme):Toolbar(theme, ghnew ToolbarLayout()) {}
 
         ~Toolbar() {
             items.deleteItems();

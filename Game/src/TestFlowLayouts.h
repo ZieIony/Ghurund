@@ -33,7 +33,7 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(ghnew TextButtonDefaultLayout(context, loader));
+                TextButtonPtr button = ghnew TextButton(ghnew TextButtonDefaultLayout(loader));
                 button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                 button->MinSize = FloatSize{ 60.0f, 60.0f };
                 flowLayout->Children.add(button);
@@ -61,7 +61,7 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
+                TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
                 button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                 flowLayout->Children.add(button);
             }

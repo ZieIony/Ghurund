@@ -59,10 +59,6 @@ namespace Ghurund::UI {
             TextColor = color;
         }
 
-        TextBlock(Style<TextBlock>* style) {
-            style->apply(*this);
-        }
-
         WString& getText() {
             return text;
         }
@@ -97,10 +93,7 @@ namespace Ghurund::UI {
             if (this->font == font)
                 return;
             setPointer(this->font, font);
-            if (textLayout) {
-                textLayout->Release();
-                textLayout = nullptr;
-            }
+            invalidate();
         }
 
         __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;
@@ -115,7 +108,7 @@ namespace Ghurund::UI {
             __super::invalidate();
         }
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

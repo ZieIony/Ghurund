@@ -2,40 +2,39 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    Separator::Separator(Style<Separator>* style) {
+    Separator::Separator() {
         colorView = ghnew ColorView();
         Child = colorView;
-        style->apply(*this);
     }
 
-    void SeparatorStyle::onStateChanged(Separator& separator) const {
-        Theme* theme = separator.Theme;
+    void SeparatorStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
         if (!theme)
             return;
-        if (separator.Enabled) {
-            separator.Color = theme->getColorControlNormal();
+        if (control.Enabled) {
+            ((Separator&)control).Color = theme->getColorControlNormal();
         } else {
-            separator.Color = theme->getColorControlDisabled();
+            ((Separator&)control).Color = theme->getColorControlDisabled();
         }
     }
 
-    void SeparatorStyle::onThemeChanged(Separator& separator) const {
-        separator.Thickness = 1;
+    void SeparatorStyle::onThemeChanged(Control& control) const {
+        ((Separator&)control).Thickness = 1;
     }
 
-    void HorizontalSeparatorStyle::onThemeChanged(Separator& separator) const {
-        __super::onThemeChanged(separator);
-        separator.PreferredSize.width = PreferredSize::Width::FILL;
-        separator.PreferredSize.height = PreferredSize::Height::WRAP;
-        separator.Padding.Vertical = 4;
-        separator.Padding.Horizontal = 0;
+    void SeparatorHorizontalStyle::onThemeChanged(Control& control) const {
+        __super::onThemeChanged(control);
+        control.PreferredSize.width = PreferredSize::Width::FILL;
+        control.PreferredSize.height = PreferredSize::Height::WRAP;
+        ((Separator&)control).Padding.Vertical = 4;
+        ((Separator&)control).Padding.Horizontal = 0;
     }
 
-    void VerticalSeparatorStyle::onThemeChanged(Separator& separator) const {
-        __super::onThemeChanged(separator);
-        separator.PreferredSize.width = PreferredSize::Width::WRAP;
-        separator.PreferredSize.height = PreferredSize::Height::FILL;
-        separator.Padding.Vertical = 0;
-        separator.Padding.Horizontal = 4;
+    void SeparatorVerticalStyle::onThemeChanged(Control& control) const {
+        __super::onThemeChanged(control);
+        control.PreferredSize.width = PreferredSize::Width::WRAP;
+        control.PreferredSize.height = PreferredSize::Height::FILL;
+        ((Separator&)control).Padding.Vertical = 0;
+        ((Separator&)control).Padding.Horizontal = 4;
     }
 }

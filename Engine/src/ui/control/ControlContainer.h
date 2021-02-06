@@ -9,8 +9,10 @@ namespace Ghurund::UI {
         bool previousReceiver = false;
 
     protected:
+        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ControlContainer>();
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
+                .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
@@ -56,6 +58,10 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
+        virtual void dispatchStateChanged() override;
+
+        virtual void dispatchThemeChanged() override;
+
         virtual void dispatchContextChanged() override;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
@@ -85,7 +91,7 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name);
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual String logTree();

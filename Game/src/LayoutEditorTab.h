@@ -50,12 +50,12 @@ namespace Ghurund::Editor {
             });
 
             propertiesPanel = ghnew PropertyPanel(context, theme);
-            propertiesWindow = ghnew ToolWindow(theme);
+            propertiesWindow = ghnew ToolWindow();
             propertiesWindow->Title = L"Properties";
             propertiesWindow->Content = propertiesPanel;
             propertiesWindow->PreferredSize.width = 200;
             widgetHierarchyPanel = ghnew WidgetHierarchyPanel(context, theme);
-            widgetHierarchyWindow = ghnew ToolWindow(theme);
+            widgetHierarchyWindow = ghnew ToolWindow();
             widgetHierarchyWindow->Title = L"Widget";
             widgetHierarchyWindow->Content = widgetHierarchyPanel;
             widgetHierarchyWindow->PreferredSize.width = 200;
@@ -79,7 +79,8 @@ namespace Ghurund::Editor {
         }
 
         void loadLayout(const Buffer& data) {
-            PointerList<Control*> controls = layoutLoader.load(context, data);
+            PointerList<Control*> controls;
+            layoutLoader.load(data, controls);
             layoutWorkspace->Children.clear();
             for (Control* control : controls)
                 layoutWorkspace->Children.add(control);

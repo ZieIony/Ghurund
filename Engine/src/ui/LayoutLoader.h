@@ -17,49 +17,58 @@ namespace Ghurund::UI {
     private:
         Map<AString, Type*> types;
         Theme* theme;
+        ResourceContext* context;
 
     public:
         LayoutLoader();
+
+        inline void init(Theme& theme, ResourceContext& context) {
+            this->theme = &theme;
+            this->context = &context;
+        }
 
         void registerClass(const Type& type) {
             if (type.extends(Control::TYPE))
                 types.set(type.Name, (Type*)&type);
         }
 
-        inline void setTheme(Theme* theme) {
-            this->theme = theme;
+        inline Theme& getTheme() {
+            return *theme;
         }
 
-        inline Theme* getTheme() {
-            return theme;
+        __declspec(property(get = getTheme)) Theme& Theme;
+
+        inline ResourceContext& getResourceContext() {
+            return *context;
         }
 
-        __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
+        __declspec(property(get = getResourceContext)) ResourceContext& ResourceContext;
 
-        PointerList<Control*> load(ResourceContext& context, const Buffer& data);
+        Status load(const Buffer& data, PointerList<Control*>& output);
 
-        PointerList<Control*> load(ResourceContext& context, const FilePath& path) {
+        Status load(const FilePath& path, PointerList<Control*>& output) {
             File file(path);
             if (!file.Exists)
-                return PointerList<Control*>();
-            if (file.read() == Status::OK)
-                return load(context, Buffer(file.Data, file.Size));
-            return PointerList<Control*>();
+                return Status::FILE_DOESNT_EXIST;
+            Status result = file.read();
+            if (result == Status::OK)
+                return load(Buffer(file.Data, file.Size), output);
+            return result;
         }
 
-        PointerList<Control*> loadControls(ResourceContext& context, const tinyxml2::XMLElement& xml);
+        PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
 
-        Control* loadControl(ResourceContext& context, const tinyxml2::XMLElement& xml);
+        Control* loadControl(const tinyxml2::XMLElement& xml);
 
-        Shape* loadShape(ResourceContext& context, const char* str);
+        Shape* loadShape(const char* str);
 
         uint32_t loadColor(const char* str);
 
-        BitmapImage* loadImage(ResourceContext& context, const char* str);
+        BitmapImage* loadImage(const char* str);
         
         WString loadText(const char* str);
 
-        TextStyle* loadFont(ResourceContext& context, const char* str);
+        TextStyle* loadFont(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
     };

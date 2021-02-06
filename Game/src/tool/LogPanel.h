@@ -21,7 +21,8 @@ namespace Ghurund::Editor {
     public:
         LogRow(Ghurund::UI::Theme& theme) {
             icon = ghnew ImageView();
-            text = ghnew TextBlock(theme.textViewPrimaryStyle);
+            text = ghnew TextBlock();
+            text->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
             Children = { icon, text };
             PreferredSize.height = PreferredSize::Height::WRAP;
         }

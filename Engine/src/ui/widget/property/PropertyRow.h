@@ -21,7 +21,8 @@ namespace Ghurund::UI {
             textView->PreferredSize.width = PreferredSize::Width::FILL;
             container = ghnew ControlContainer();
             container->PreferredSize.width = PreferredSize::Width::FILL;
-            SeparatorPtr separator = ghnew Separator(ghnew VerticalSeparatorStyle());
+            SeparatorPtr separator = ghnew Separator();
+            //separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_VERTICAL];
             Children = { textView, separator, container };
         }
 

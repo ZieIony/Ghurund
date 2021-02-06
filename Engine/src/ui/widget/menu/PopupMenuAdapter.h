@@ -66,7 +66,8 @@ namespace Ghurund::UI {
         }
 
         virtual Control* makeControl() const {
-            Separator* separator = ghnew Separator(ghnew HorizontalSeparatorStyle());
+            Separator* separator = ghnew Separator();
+            //SeparatorHorizontalStyle()
             separator->PreferredSize.width = PreferredSize::Width::FILL;
             return separator;
         }

@@ -71,6 +71,10 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
+        virtual void dispatchStateChanged() override;
+
+        virtual void dispatchThemeChanged() override;
+
         virtual void dispatchContextChanged() override;
 
         virtual void onUpdate(const uint64_t time) override {
@@ -90,7 +94,7 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name);
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual String logTree();

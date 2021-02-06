@@ -20,7 +20,7 @@ namespace Ghurund::Editor {
             textField->PreferredSize.width = PreferredSize::Width::FILL;
             Children = { hint, textField };
 
-            OnStateChanged.add([this](Control& control) {
+            StateChanged.add([this](Control& control) {
                 hint->Visible = Focused;
                 return true;
             });

@@ -8,7 +8,7 @@
 namespace Ghurund::UI {
     class DefaultTheme:public Ghurund::UI::Theme {
     public:
-        DefaultTheme(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context) {
+        DefaultTheme(Ghurund::ResourceContext& context) {
             auto buttonFont = Ghurund::makeShared<Ghurund::UI::TextStyle>(L"fonts/lato_medium.ttf", L"Lato Medium", 10.0f, FW_MEDIUM, false);
             buttonFont->init(context.Graphics2D);
             TextStyles.set(Theme::TEXTSTYLE_BUTTON, buttonFont);

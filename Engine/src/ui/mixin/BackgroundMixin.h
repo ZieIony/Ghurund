@@ -8,15 +8,15 @@ namespace Ghurund::UI {
         ColorView* backgroundView = nullptr;
 
     public:
-        void setBackgroundColor(unsigned int color) {
+        inline void setBackgroundColor(const Color& color) {
             backgroundView->Color = color;
         }
 
-        unsigned int getBackgroundColor() {
+        inline const Color& getBackgroundColor() {
             return backgroundView->Color;
         }
 
-        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) unsigned int BackgroundColor;
+        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) const Color& BackgroundColor;
     };
 
     class BackgroundLayoutMixin {
@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 
     public:
         BackgroundLayoutMixin() {
-            backgroundView = ghnew ColorView();
+            backgroundView = ghnew ColorView(0);
         }
 
         ~BackgroundLayoutMixin() {

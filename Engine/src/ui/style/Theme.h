@@ -8,10 +8,40 @@
 #include "ui/drawable/BitmapImage.h"
 #include "ui/widget/SeparatorStyle.h"
 #include "ui/widget/ProgressBar.h"
-#include "ui/widget/menu/ToolbarLayout.h"
-#include "ui/widget/tab/TabContainerLayout.h"
 
 namespace Ghurund::UI {
+    struct ColorKey {
+        const WString str;
+        ColorKey(const WString& str):str(str) {}
+        bool operator==(const ColorKey& other) const {
+            return str == other.str;
+        }
+    };
+
+    struct StyleKey {
+        const WString str;
+        StyleKey(const WString& str):str(str) {}
+        bool operator==(const StyleKey& other) const {
+            return str == other.str;
+        }
+    };
+
+    struct ImageKey {
+        const WString str;
+        ImageKey(const WString& str):str(str) {}
+        bool operator==(const ImageKey& other) const {
+            return str == other.str;
+        }
+    };
+
+    struct TextFormatKey {
+        const WString str;
+        TextFormatKey(const WString& str):str(str) {}
+        bool operator==(const TextFormatKey& other) const {
+            return str == other.str;
+        }
+    };
+
     class Theme {
     private:
         static const inline float emphasis_high = 0.87f;
@@ -29,40 +59,67 @@ namespace Ghurund::UI {
             return ((a & 0xff) << 24) | (color & 0xffffff);
         }
 
-        PointerMap<WString, TextStyle*> textStyles;
-        Map<WString, Color> colors;
-        PointerMap<WString, BitmapImage*> images;
+        Style* separatorHorizontalStyle = ghnew SeparatorHorizontalStyle();
+        Style* separatorVerticalStyle = ghnew SeparatorVerticalStyle();
+        Style* progressBarStyle = ghnew ProgressBarStyle();
+
+        Style* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
+        Style* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
+        Style* textViewHeaderStyle = ghnew TextBlockHeaderStyle();
+
+        Map<StyleKey, Style*> styles;
+        PointerMap<TextFormatKey, TextStyle*> textStyles;
+        Map<ColorKey, Color> colors;
+        PointerMap<ImageKey, BitmapImage*> images;
 
     public:
-        static inline const WString IMAGE_CHECKBOX_CHECKED = L"checkBox_checked";
-        static inline const WString IMAGE_CHECKBOX_UNCHECKED = L"checkBox_unchecked";
-        static inline const WString IMAGE_RADIOBUTTON_CHECKED = L"radioButton_checked";
-        static inline const WString IMAGE_RADIOBUTTON_UNCHECKED = L"radioButton_unchecked";
-        static inline const WString IMAGE_ARROWUP = L"arrowUp";
-        static inline const WString IMAGE_ARROWDOWN = L"arrowDown";
+        static inline const ImageKey IMAGE_CHECKBOX_CHECKED = WString(L"checkBox_checked");
+        static inline const ImageKey IMAGE_CHECKBOX_UNCHECKED = WString(L"checkBox_unchecked");
+        static inline const ImageKey IMAGE_RADIOBUTTON_CHECKED = WString(L"radioButton_checked");
+        static inline const ImageKey IMAGE_RADIOBUTTON_UNCHECKED = WString(L"radioButton_unchecked");
+        static inline const ImageKey IMAGE_ARROWUP = WString(L"arrowUp");
+        static inline const ImageKey IMAGE_ARROWDOWN = WString(L"arrowDown");
 
-        static inline const WString TEXTSTYLE_BUTTON = L"button";
-        static inline const WString TEXTSTYLE_LIST_HEADER = L"listHeader";
-        static inline const WString TEXTSTYLE_TEXT_PRIMARY = L"textPrimary";
-        static inline const WString TEXTSTYLE_TEXT_SECONDARY = L"textSecondary";
+        static inline const StyleKey STYLE_SEPARATOR_HORIZONTAL = WString(L"separator_horizontal");
+        static inline const StyleKey STYLE_SEPARATOR_VERTICAL = WString(L"separator_vertical");
+        static inline const StyleKey STYLE_PROGRESSBAR = WString(L"progressBar");
+        static inline const StyleKey STYLE_TEXTBLOCK_PRIMARY = WString(L"textBlock_primary");
+        static inline const StyleKey STYLE_TEXTBLOCK_SECONDARY = WString(L"textBlock_secondary");
+        static inline const StyleKey STYLE_TEXTBLOCK_HEADER = WString(L"textBlock_header");
 
-        static inline const WString COLOR_ERROR = L"error";
-        static inline const WString COLOR_BACKGR0UND = L"background";
-        static inline const WString COLOR_CONTROL = L"control";
-        static inline const WString COLOR_ACCENT = L"accent";
-        static inline const WString COLOR_ON_ERROR = L"onError";
-        static inline const WString COLOR_ON_BACKGR0UND = L"onBackground";
-        static inline const WString COLOR_ON_ACCENT = L"onAccent";
+        static inline const TextFormatKey TEXTSTYLE_BUTTON = WString(L"button");
+        static inline const TextFormatKey TEXTSTYLE_LIST_HEADER = WString(L"listHeader");
+        static inline const TextFormatKey TEXTSTYLE_TEXT_PRIMARY = WString(L"textPrimary");
+        static inline const TextFormatKey TEXTSTYLE_TEXT_SECONDARY = WString(L"textSecondary");
 
-        Style<Separator>* separatorStyle = ghnew HorizontalSeparatorStyle();
-        Style<ProgressBar>* progressBarStyle = ghnew ProgressBarStyle();
+        static inline const ColorKey COLOR_ERROR = WString(L"error");
+        static inline const ColorKey COLOR_BACKGR0UND = WString(L"background");
+        static inline const ColorKey COLOR_CONTROL = WString(L"control");
+        static inline const ColorKey COLOR_ACCENT = WString(L"accent");
+        static inline const ColorKey COLOR_ON_ERROR = WString(L"onError");
+        static inline const ColorKey COLOR_ON_BACKGR0UND = WString(L"onBackground");
+        static inline const ColorKey COLOR_ON_ACCENT = WString(L"onAccent");
 
-        Style<TextBlock>* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
-        Style<TextBlock>* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
-        Style<TextBlock>* textViewHeaderStyle = ghnew TextBlockHeaderStyle();
+        Theme() {
+            separatorHorizontalStyle = ghnew SeparatorHorizontalStyle();
+            separatorVerticalStyle = ghnew SeparatorVerticalStyle();
+            progressBarStyle = ghnew ProgressBarStyle();
+
+            textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
+            textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
+            textViewHeaderStyle = ghnew TextBlockHeaderStyle();
+
+            styles.set(STYLE_SEPARATOR_HORIZONTAL, separatorHorizontalStyle);
+            styles.set(STYLE_SEPARATOR_VERTICAL, separatorVerticalStyle);
+            styles.set(STYLE_PROGRESSBAR, progressBarStyle);
+            styles.set(STYLE_TEXTBLOCK_PRIMARY, textViewPrimaryStyle);
+            styles.set(STYLE_TEXTBLOCK_SECONDARY, textViewSecondaryStyle);
+            styles.set(STYLE_TEXTBLOCK_HEADER, textViewHeaderStyle);
+        }
 
         virtual ~Theme() {
-            delete separatorStyle;
+            delete separatorHorizontalStyle;
+            delete separatorVerticalStyle;
             delete progressBarStyle;
 
             delete textViewPrimaryStyle;
@@ -70,23 +127,29 @@ namespace Ghurund::UI {
             delete textViewHeaderStyle;
         }
 
-        inline PointerMap<WString, TextStyle*>& getTextStyles() {
+        inline Map<StyleKey, Style*>& getStyles() {
+            return styles;
+        }
+
+        __declspec(property(get = getStyles)) Map<StyleKey, Style*>& Styles;
+
+        inline PointerMap<TextFormatKey, TextStyle*>& getTextStyles() {
             return textStyles;
         }
 
-        __declspec(property(get = getTextStyles)) PointerMap<WString, TextStyle*>& TextStyles;
+        __declspec(property(get = getTextStyles)) PointerMap<TextFormatKey, TextStyle*>& TextStyles;
 
-        inline Map<WString, Color>& getColors() {
+        inline Map<ColorKey, Color>& getColors() {
             return colors;
         }
 
-        __declspec(property(get = getColors)) Map<WString, Color>& Colors;
+        __declspec(property(get = getColors)) Map<ColorKey, Color>& Colors;
 
-        inline PointerMap<WString, BitmapImage*>& getImages() {
+        inline PointerMap<ImageKey, BitmapImage*>& getImages() {
             return images;
         }
 
-        __declspec(property(get = getImages)) PointerMap<WString, BitmapImage*>& Images;
+        __declspec(property(get = getImages)) PointerMap<ImageKey, BitmapImage*>& Images;
 
         uint32_t getColorControlNormal() {
             return colorWithAlpha(state_normal, Colors[COLOR_CONTROL]);

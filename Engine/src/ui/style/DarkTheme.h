@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         static constexpr uint32_t color_background = 0xff121212;
         static constexpr uint32_t color_control = 0xffffffff;
 
-        DarkTheme(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context, uint32_t accent):DefaultTheme(resourceManager, context), color_accent(accent) {
+        DarkTheme(Ghurund::ResourceContext& context, uint32_t accent):DefaultTheme(context), color_accent(accent) {
             Colors.set(COLOR_ERROR, color_error);
             Colors.set(COLOR_BACKGR0UND, color_background);
             Colors.set(COLOR_CONTROL, color_control);

@@ -56,8 +56,8 @@ namespace Ghurund::UI {
             makeLayout(Size.width, Size.height);
     }
 
-    Status TextBlock::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         auto textAttr = xml.FindAttribute("text");
@@ -69,7 +69,7 @@ namespace Ghurund::UI {
             TextColor = loader.loadColor(textColorAttr->Value());
         auto textStyleAttr = xml.FindAttribute("textStyle");
         if (textStyleAttr) {
-            Ghurund::UI::TextStyle* style = loader.loadFont(context, textStyleAttr->Value());
+            Ghurund::UI::TextStyle* style = loader.loadFont(textStyleAttr->Value());
             TextStyle = style;
             style->release();
         }

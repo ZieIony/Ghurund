@@ -55,7 +55,7 @@ namespace Ghurund::UI {
     public:
         Tab(TabLayout* layout):Widget(layout) {
             Focusable = true;
-            Layout->SelectableView->OnStateChanged.add(OnStateChanged);
+            Layout->SelectableView->StateChanged.add(StateChanged);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

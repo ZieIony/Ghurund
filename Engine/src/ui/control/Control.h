@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MouseEvents.h"
+#include "application/Window.h"
 #include "core/Event.h"
 #include "core/SharedPointer.h"
 #include "input/EventConsumer.h"
@@ -7,9 +9,8 @@
 #include "input/Mouse.h"
 #include "ui/Canvas.h"
 #include "ui/PreferredSize.h"
-#include "application/Window.h"
 #include "ui/UIContext.h"
-#include "MouseEvents.h"
+#include "ui/style/Style.h"
 
 #include "D2d1helper.h"
 #include <tinyxml2.h>
@@ -47,7 +48,7 @@ namespace Ghurund::UI {
         }
 
     protected:
-        XMFLOAT2 position = { 0,0 }, scale = { 1,1 };
+        FloatPoint position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
         D2D1::Matrix3x2F transformation;
 
@@ -58,11 +59,24 @@ namespace Ghurund::UI {
 
         Theme* localTheme = nullptr;
         UIContext* context = nullptr;
+        Style* style = nullptr;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
-        Event<Control> onStateChanged = Event<Control>(*this);
-        Event<Control> onThemeChanged = Event<Control>(*this);
-        Event<Control> onContextChanged = Event<Control>(*this);
+        Event<Control> stateChanged = Event<Control>(*this);
+        Event<Control> themeChanged = Event<Control>(*this);
+        Event<Control> contextChanged = Event<Control>(*this);
+
+        inline void onStateChanged() {
+            stateChanged();
+            if (style)
+                style->onStateChanged(*this);
+        }
+
+        inline void onThemeChanged() {
+            themeChanged();
+            if (style)
+                style->onThemeChanged(*this);
+        }
 
         virtual void onMeasure(float parentWidth, float parentHeight);
 
@@ -79,24 +93,23 @@ namespace Ghurund::UI {
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        inline Event<Control>& getOnStateChanged() {
-            return onStateChanged;
+        inline Event<Control>& getStateChanged() {
+            return stateChanged;
         }
 
-        __declspec(property(get = getOnStateChanged)) Event<Control>& OnStateChanged;
+        __declspec(property(get = getStateChanged)) Event<Control>& StateChanged;
 
-        inline Event<Control>& getOnThemeChanged() {
-            return onThemeChanged;
+        inline Event<Control>& getThemeChanged() {
+            return themeChanged;
         }
 
-        __declspec(property(get = getOnThemeChanged)) Event<Control>& OnThemeChanged;
+        __declspec(property(get = getThemeChanged)) Event<Control>& ThemeChanged;
 
-
-        inline Event<Control>& getOnContextChanged() {
-            return onContextChanged;
+        inline Event<Control>& getContextChanged() {
+            return contextChanged;
         }
 
-        __declspec(property(get = getOnContextChanged)) Event<Control>& OnContextChanged;
+        __declspec(property(get = getContextChanged)) Event<Control>& ContextChanged;
 
         inline const AString* getName() const {
             return name;
@@ -132,19 +145,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isVisible, put = setVisible)) bool Visible;
 
-        inline bool isEnabled() const {
-            return enabled;
-        }
+        bool isEnabled() const;
 
         inline void setEnabled(bool enabled) {
             if (this->enabled == enabled)
                 return;
             this->enabled = enabled;
-            if (!enabled && Focused) {
+            if (!enabled && Focused)
                 clearFocus();
-            } else {
-                onStateChanged();
-            }
+            dispatchStateChanged();
         }
 
         __declspec(property(get = isEnabled, put = setEnabled)) bool Enabled;
@@ -187,11 +196,11 @@ namespace Ghurund::UI {
 
         virtual bool focusRight();
 
-        inline const XMFLOAT2& getPosition() const {
+        inline const FloatPoint& getPosition() const {
             return position;
         }
 
-        inline void setPosition(const XMFLOAT2& position) {
+        inline void setPosition(const FloatPoint& position) {
             this->position = position;
             transformationInvalid = true;
         }
@@ -202,7 +211,7 @@ namespace Ghurund::UI {
             transformationInvalid = true;
         }
 
-        __declspec(property(get = getPosition, put = setPosition)) const XMFLOAT2& Position;
+        __declspec(property(get = getPosition, put = setPosition)) const FloatPoint& Position;
 
         inline float getRotation() const {
             return rotation;
@@ -215,11 +224,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRotation, put = setRotation)) float Rotation;
 
-        inline const XMFLOAT2& getScale() const {
+        inline const FloatPoint& getScale() const {
             return scale;
         }
 
-        inline void setScale(const XMFLOAT2& scale) {
+        inline void setScale(const FloatPoint& scale) {
             this->scale = scale;
             transformationInvalid = true;
         }
@@ -230,7 +239,7 @@ namespace Ghurund::UI {
             transformationInvalid = true;
         }
 
-        __declspec(property(get = getScale, put = setScale)) XMFLOAT2& Scale;
+        __declspec(property(get = getScale, put = setScale)) FloatPoint& Scale;
 
         inline const D2D1::Matrix3x2F& getTransformation() const {
             return transformation;
@@ -298,6 +307,7 @@ namespace Ghurund::UI {
         inline void setParent(ControlParent* parent) {
             this->parent = parent;
             dispatchContextChanged();
+            dispatchThemeChanged();
         }
 
         inline ControlParent* getParent() const {
@@ -308,13 +318,7 @@ namespace Ghurund::UI {
 
         void setTheme(Theme* theme);
 
-        inline Theme* getTheme() {
-            if (localTheme)
-                return localTheme;
-            if (context)
-                return &context->Theme;
-            return nullptr;
-        }
+        Theme* getTheme();
 
         __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
@@ -323,6 +327,24 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getContext, put = setContext)) UIContext* Context;
+
+        inline void setStyle(Style* style) {
+            this->style = style;
+            if (style) {
+                style->onThemeChanged(*this);
+                style->onStateChanged(*this);
+            }
+        }
+
+        inline Style* getStyle() {
+            return style;
+        }
+
+        __declspec(property(get = getStyle, put = setStyle)) Style* Style;
+
+        virtual void dispatchStateChanged();
+
+        virtual void dispatchThemeChanged();
 
         virtual void dispatchContextChanged();
 
@@ -352,15 +374,15 @@ namespace Ghurund::UI {
             return nullptr;
         }
 
-        virtual XMFLOAT2 getPositionInWindow();
+        virtual FloatPoint getPositionInWindow();
 
-        __declspec(property(get = getPositionInWindow)) XMFLOAT2 PositionInWindow;
+        __declspec(property(get = getPositionInWindow)) FloatPoint PositionInWindow;
 
-        XMFLOAT2 getPositionOnScreen();
+        FloatPoint getPositionOnScreen();
 
-        __declspec(property(get = getPositionOnScreen)) XMFLOAT2 PositionOnScreen;
+        __declspec(property(get = getPositionOnScreen)) FloatPoint PositionOnScreen;
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml);
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml);
 
 #ifdef _DEBUG
         virtual String logTree();

@@ -2,6 +2,8 @@
 
 #include "core/logging/Logger.h"
 #include "input/Mouse.h"
+#include "ui/LayoutLoader.h"
+#include "ui/style/Theme.h"
 
 #include <regex>
 
@@ -34,9 +36,9 @@ namespace Ghurund::UI {
 
         static auto PROPERTY_FOCUSED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focused), [](Control& control, bool& value) {value = control.isFocused(); });
 
-        static auto PROPERTY_POSITION = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Position), [](Control& control, XMFLOAT2& value) {
+        static auto PROPERTY_POSITION = TypedProperty<Control, const FloatPoint>("const FloatPoint&", GH_STRINGIFY(Position), [](Control& control, FloatPoint& value) {
             value = control.Position;
-        }, [](Control& control, const XMFLOAT2& value) {
+        }, [](Control& control, const FloatPoint& value) {
             control.Position = value;
         });
 
@@ -46,9 +48,9 @@ namespace Ghurund::UI {
             control.Rotation = value;
         });
 
-        static auto PROPERTY_SCALE = TypedProperty<Control, const XMFLOAT2>("const XMFLOAT2&", GH_STRINGIFY(Scale), [](Control& control, XMFLOAT2& value) {
+        static auto PROPERTY_SCALE = TypedProperty<Control, const FloatPoint>("const FloatPoint&", GH_STRINGIFY(Scale), [](Control& control, FloatPoint& value) {
             value = control.Scale;
-        }, [](Control& control, const XMFLOAT2& value) {
+        }, [](Control& control, const FloatPoint& value) {
             control.Scale = value;
         });
 
@@ -101,6 +103,10 @@ namespace Ghurund::UI {
         if (focusable && event.Action == Ghurund::Input::MouseAction::DOWN && !Focused)
             requestFocus();
         return false;
+    }
+
+    bool Control::isEnabled() const {
+        return enabled && (!parent || parent->Enabled);
     }
 
     void Control::requestFocus() {
@@ -183,20 +189,33 @@ namespace Ghurund::UI {
     }
 
     void Control::setTheme(Ghurund::UI::Theme* theme) {
-        if (!theme || localTheme != theme) {
+        if (localTheme != theme) {
             localTheme = theme;
-            dispatchContextChanged();
+            dispatchThemeChanged();
         }
     }
 
-    void Control::dispatchContextChanged() {
-        Ghurund::UI::Theme* theme = Theme;
-        if (!context && parent)
-            context = parent->Context;
-        onContextChanged();
-        if (theme != Theme)
-            onThemeChanged();
+    Theme* Control::getTheme() {
+        if (localTheme)
+            return localTheme;
+        if (parent)
+            return parent->Theme;
+        return nullptr;
+    }
+
+    void Control::dispatchStateChanged() {
         onStateChanged();
+    }
+
+    void Control::dispatchThemeChanged() {
+        onThemeChanged();
+        onStateChanged();
+    }
+
+    void Control::dispatchContextChanged() {
+        if (parent)
+            context = parent->Context;
+        contextChanged();
     }
 
     void Control::repaint() {
@@ -249,7 +268,7 @@ namespace Ghurund::UI {
         canvas.restore();
     }
 
-    XMFLOAT2 Control::getPositionInWindow() {
+    FloatPoint Control::getPositionInWindow() {
         D2D1::Matrix3x2F matrix = D2D1::Matrix3x2F::Identity();
         Control* control = this;
         while (control) {
@@ -258,20 +277,20 @@ namespace Ghurund::UI {
         }
         D2D1_POINT_2F p = { 0,0 };
         matrix.TransformPoint(p);
-        return XMFLOAT2(p.x, p.y);
+        return FloatPoint{ p.x, p.y };
     }
 
-    XMFLOAT2 Control::getPositionOnScreen() {
+    FloatPoint Control::getPositionOnScreen() {
         auto pos = PositionInWindow;
         if (!context)
             return pos;
         Ghurund::Window& window = context->Window;
         POINT p = { (LONG)pos.x, (LONG)pos.y };
         ClientToScreen(window.Handle, &p);
-        return XMFLOAT2((float)p.x, (float)p.y);
+        return FloatPoint{ (float)p.x, (float)p.y };
     }
 
-    Status Control::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
+    Status Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         auto nameAttr = xml.FindAttribute("name");
         if (nameAttr)
             Name = nameAttr->Value();
@@ -309,6 +328,20 @@ namespace Ghurund::UI {
             if (std::regex_match(str, m, regex) && m[2].matched) {
                 minSize.width = (float)atof(m[1].str().c_str());
                 minSize.height = (float)atof(m[2].str().c_str());
+            }
+        }
+        auto styleAttr = xml.FindAttribute("style");
+        if (styleAttr) {
+            WString s = toWideChar(AString(styleAttr->Value()));
+            uint32_t value = 0;
+            const wchar_t* themeProtocol = L"theme://style/";
+            if (s.startsWith(themeProtocol)) {
+                WString styleKey = s.substring(lengthOf(themeProtocol));
+                if (loader.Theme.Styles.contains(styleKey)) {
+                    Style = loader.Theme.Styles[styleKey];
+                } else {
+                    Logger::log(LogType::WARNING, _T("missing style key {}\n"), styleKey);
+                }
             }
         }
         return Status::OK;

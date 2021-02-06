@@ -6,22 +6,22 @@
 namespace Ghurund::UI {
     class Theme;
 
-    class SeparatorStyle:public Ghurund::UI::Style<Separator> {
+    class SeparatorStyle:public Ghurund::UI::Style {
     public:
         ~SeparatorStyle() = 0 {}
 
-        virtual void onThemeChanged(Separator& separator) const override;
+        virtual void onThemeChanged(Control& separator) const override;
 
-        virtual void onStateChanged(Separator& separator) const override;
+        virtual void onStateChanged(Control& separator) const override;
     };
 
-    class HorizontalSeparatorStyle:public SeparatorStyle {
+    class SeparatorHorizontalStyle:public SeparatorStyle {
     public:
-        virtual void onThemeChanged(Separator& separator) const override;
+        virtual void onThemeChanged(Control& separator) const override;
     };
 
-    class VerticalSeparatorStyle:public SeparatorStyle {
+    class SeparatorVerticalStyle:public SeparatorStyle {
     public:
-        virtual void onThemeChanged(Separator& separator) const override;
+        virtual void onThemeChanged(Control& separator) const override;
     };
 }

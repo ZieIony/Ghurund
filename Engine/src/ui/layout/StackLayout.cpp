@@ -2,8 +2,8 @@
 #include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    Status Ghurund::UI::StackLayout::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status Ghurund::UI::StackLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         Ghurund::UI::Alignment a;

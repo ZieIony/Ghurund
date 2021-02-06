@@ -18,7 +18,8 @@ namespace Ghurund::Editor {
     public:
         MusicPlayer(Ghurund::UI::Theme& theme) {
             PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-            progressBar = ghnew ProgressBar(*theme.progressBarStyle);
+            progressBar = ghnew ProgressBar();
+            progressBar->Style = theme.Styles[Theme::STYLE_PROGRESSBAR];
 //            auto playIcon = makeShared<BitmapImage>("icons/play 18.png");
             playButton = ghnew ImageButton();
          //   playButton->Image = playIcon;

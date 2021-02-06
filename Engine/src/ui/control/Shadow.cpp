@@ -34,13 +34,13 @@ namespace Ghurund::UI {
         canvas.restore();
     }
 
-    Status Shadow::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status Shadow::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         auto shapeAttr = xml.FindAttribute("shape");
         if (shapeAttr)
-            Shape = loader.loadShape(context, shapeAttr->Value());
+            Shape = loader.loadShape(shapeAttr->Value());
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr)
             Color = loader.loadColor(colorAttr->Value());

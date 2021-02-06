@@ -5,19 +5,19 @@
 namespace Ghurund::UI {
     class Paint {
     private:
-        uint32_t color = 0;
+        Color color = 0;
         float thickness = 1.0f;
 
     public:
-        inline uint32_t getColor() const {
+        inline const Color& getColor() const {
             return color;
         }
 
-        inline void setColor(uint32_t color) {
+        inline void setColor(const Color& color) {
             this->color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
+        __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
         inline float getThickness() const {
             return thickness;

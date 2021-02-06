@@ -48,6 +48,7 @@ namespace Ghurund::UI {
         }
 
         inline void drawRect(float x, float y, float width, float height, const Paint& paint) {
+            uint32_t c = paint.Color;
             fillBrush->SetColor(D2D1::ColorF(paint.Color));
             fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
             deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), paint.Thickness);

@@ -70,10 +70,10 @@ public:
             auto buttonsRow = makeShared<HorizontalLayout>();
             buttonsRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
-                auto loginButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(context, loader));
+                auto loginButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(loader));
                 loginButton->PreferredSize.width = PreferredSize::Width::FILL;
                 loginButton->Text = L"LOGIN";
-                auto registerButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(context, loader));
+                auto registerButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(loader));
                 registerButton->PreferredSize.width = PreferredSize::Width::FILL;
                 registerButton->Text = L"REGISTER";
 

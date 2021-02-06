@@ -370,6 +370,7 @@
     <ClInclude Include="src\ui\widget\button\TextButton.h" />
     <ClInclude Include="src\ui\widget\button\TextButtonLayout.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
+    <ClInclude Include="src\ui\widget\ContentWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
     <ClInclude Include="src\ui\widget\Layout.h" />

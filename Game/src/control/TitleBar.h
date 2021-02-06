@@ -19,14 +19,13 @@ namespace Ghurund::Editor {
         SharedPointer<BitmapImage> closeIcon;
 
     public:
-        TitleBar(Ghurund::UI::Theme& theme) {
+        TitleBar() {
             PreferredSize.height = PreferredSize::Height::WRAP;
             row = ghnew HorizontalLayout();
             row->PreferredSize.height = PreferredSize::Height::WRAP;
             {
-                title = ghnew TextBlock(theme.textViewPrimaryStyle);
+                title = ghnew TextBlock();
                 title->PreferredSize.width = PreferredSize::Width::FILL;
-                title->TextColor = theme.getColorForegroundPrimaryOnAccent();
 //                closeIcon = ghnew BitmapImage(L"icons/close 18.png");
                 closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout());
               //  closeButton->Image = closeIcon;
@@ -34,8 +33,14 @@ namespace Ghurund::Editor {
             }
             row->Alignment.vertical = Alignment::Vertical::CENTER;
             row->Children = { title, closeButton };
-            backgroundView = ghnew ColorView(theme.Colors[Theme::COLOR_ACCENT]);
+            backgroundView = ghnew ColorView();
             Children = { backgroundView, row };
+            ThemeChanged.add([this](Control& control) {
+                title->TextColor = Theme->ColorForegroundPrimaryOnAccent;
+                title->Style = Theme->Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
+                backgroundView->Color = Theme->Colors[Theme::COLOR_ACCENT];
+                return true;
+            });
         }
 
         inline WString& getText() {

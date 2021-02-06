@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<StackLayout preferredSize="wrap, wrap">
-		<Shadow shape="roundRect,2"
-				preferredSize="fill, fill"/>
-		<ColorView preferredSize="fill, fill" color="theme://color/background"/>
+	<LinearLayout preferredSize="wrap, wrap">
 		<PaddingContainer padding="8">
 			<CheckBox preferredSize="wrap, wrap"
-					  enabled="true"
-					  layout="file://layouts/CheckBoxTextLayout.xml"
-					  checked="false"/>
+					  layout="file://layouts/CheckBoxLayout.xml"
+					  checked="false">
+				<TextBlock preferredSize="wrap, wrap"
+						   text="test"
+						  style="theme://style/textBlock_primary"/>
+			</CheckBox>
 		</PaddingContainer>
-	</StackLayout>
+	</LinearLayout>
 </layout>

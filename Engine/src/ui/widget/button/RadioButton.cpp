@@ -2,12 +2,15 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    RadioButton::RadioButton(CheckBoxRadioLayout* layout):Widget(layout) {
-        Layout->SelectableView->OnStateChanged.add(OnStateChanged);
-        Layout->SelectableView->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
-            Layout->SelectableView->Selected = true;
-            onCheckedChanged();
-            return true;
-        });
+    void RadioButton::onLayoutChanged() {
+        __super::onLayoutChanged();
+        if (Layout) {
+            Layout->SelectableView->StateChanged.add(StateChanged);
+            Layout->SelectableView->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
+                Layout->SelectableView->Selected = true;
+                onCheckedChanged();
+                return true;
+            });
+        }
     }
 }

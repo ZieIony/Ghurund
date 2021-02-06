@@ -29,8 +29,8 @@ namespace Ghurund::UI {
         }
     }
 
-    Status PaddingContainer::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status PaddingContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         auto paddingAttr = xml.FindAttribute("padding");

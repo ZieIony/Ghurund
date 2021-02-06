@@ -38,7 +38,7 @@ namespace Ghurund::UI {
             layoutManager.layout(*this, childrenProvider, x, y, width, height);
         }
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

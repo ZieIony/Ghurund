@@ -61,10 +61,10 @@ public:
         padding = ghnew PaddingContainer();
         {
             padding->PreferredSize.width = PreferredSize::Width::FILL;
-            padding->Padding.Horizontal = 16.0f;
-            padding->Padding.Vertical = 4.0f;
+            padding->Padding = { 16.0f, 4.0f };
 
-            tv = ghnew TextBlock(theme.textViewHeaderStyle);
+            tv = ghnew TextBlock();
+            tv->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_HEADER];
             tv->PreferredSize.width = PreferredSize::Width::FILL;
             padding->Child = tv;
 
@@ -102,8 +102,7 @@ public:
         SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
         {
             padding->PreferredSize.width = PreferredSize::Width::FILL;
-            padding->Padding.Horizontal = 16.0f;
-            padding->Padding.Vertical = 8.0f;
+            padding->Padding = { 16.0f, 8.0f };
 
             SharedPointer<HorizontalLayout> row = ghnew HorizontalLayout();
             {
@@ -123,11 +122,13 @@ public:
                     column->PreferredSize.height = PreferredSize::Height::WRAP;
                     column->Alignment.horizontal = Alignment::Horizontal::RIGHT;
 
-                    tv = ghnew TextBlock(theme.textViewPrimaryStyle);
+                    tv = ghnew TextBlock();
+                    tv->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
                     tv->PreferredSize.width = PreferredSize::Width::FILL;
-                    tv2 = ghnew TextBlock(theme.textViewSecondaryStyle);
+                    tv2 = ghnew TextBlock();
+                    tv->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_SECONDARY];
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(context, loader));
+                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
                     tb->Text = L"CANCEL";
                     column->Children = { tv, tv2, tb };
                 }

@@ -3,7 +3,7 @@
 
 namespace Ghurund::UI {
     Control* ButtonMenuBarAdapter::makeControl() const {
-        return ghnew TextButton(ghnew TextButtonFlatLayout(context, loader));
+        return ghnew TextButton(ghnew TextButtonFlatLayout(loader));
     }
     
     void ButtonMenuBarAdapter::bind(Control& control, MenuItem* const& item, size_t position) const {

@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     public:
         Button(ButtonLayout* layout):Widget(layout) {
             Focusable = true;
-            Layout->ClickableView->OnStateChanged.add(OnStateChanged);
+            Layout->ClickableView->StateChanged.add(StateChanged);
         }
 
         inline bool isHovered() const {

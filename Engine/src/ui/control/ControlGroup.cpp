@@ -66,6 +66,18 @@ namespace Ghurund::UI {
         return focusedChild && focusedChild->focusRight();
     }
 
+    void ControlGroup::dispatchStateChanged() {
+        __super::dispatchStateChanged();
+        for (Control* child : Children)
+            child->dispatchStateChanged();
+    }
+
+    void ControlGroup::dispatchThemeChanged() {
+        __super::dispatchThemeChanged();
+        for (Control* child : Children)
+            child->dispatchThemeChanged();
+    }
+
     void ControlGroup::dispatchContextChanged() {
         __super::dispatchContextChanged();
         for (Control* child : Children)
@@ -147,12 +159,12 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status ControlGroup::load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, context, xml);
+    Status ControlGroup::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        Status result = __super::load(loader, xml);
         if (result != Status::OK)
             return result;
         Children.clear();
-        Children.addAll(loader.loadControls(context, xml));
+        Children.addAll(loader.loadControls(xml));
         return Status::OK;
     }
 

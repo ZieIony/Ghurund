@@ -54,7 +54,8 @@ public:
                 imageView->Image = makeShared<BitmapImageDrawable>(image);
                 imageView->ScaleMode = (enum ImageScaleMode)i;
                 stack->Children = { imageView, border };
-                SharedPointer<TextBlock> textView = ghnew TextBlock(theme.textViewSecondaryStyle);
+                SharedPointer<TextBlock> textView = ghnew TextBlock();
+                textView->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_SECONDARY];
                 textView->Text = texts[i];
 
                 column->Children.addAll({

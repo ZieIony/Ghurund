@@ -2,10 +2,6 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    ProgressBar::ProgressBar(Style<ProgressBar>& style):ProgressBar() {
-        style.apply(*this);
-    }
-
     void ProgressBar::onDraw(Canvas& canvas) {
         if (indeterminate) {
             paint.Color = backgroundColor;
@@ -24,24 +20,24 @@ namespace Ghurund::UI {
         }
     }
 
-    void ProgressBarStyle::onThemeChanged(ProgressBar& progressBar) const {
-        Ghurund::UI::Theme* theme = progressBar.Theme;
+    void ProgressBarStyle::onThemeChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        progressBar.ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-        progressBar.BackgroundColor = theme->getColorControlNormal();
+        ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
+        ((ProgressBar&)control).BackgroundColor = theme->getColorControlNormal();
     }
 
-    void ProgressBarStyle::onStateChanged(ProgressBar& progressBar) const {
-        Ghurund::UI::Theme* theme = progressBar.Theme;
+    void ProgressBarStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        if (progressBar.Enabled) {
-            progressBar.ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-            progressBar.BackgroundColor = theme->getColorControlNormal();
+        if (control.Enabled) {
+            ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
+            ((ProgressBar&)control).BackgroundColor = theme->getColorControlNormal();
         } else {
-            progressBar.ProgressColor = theme->getColorControlNormal();
-            progressBar.BackgroundColor = theme->getColorControlDisabled();
+            ((ProgressBar&)control).ProgressColor = theme->getColorControlNormal();
+            ((ProgressBar&)control).BackgroundColor = theme->getColorControlDisabled();
         }
     }
 }

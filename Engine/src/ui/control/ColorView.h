@@ -19,21 +19,24 @@ namespace Ghurund::UI {
         }
 
     public:
-        ColorView(unsigned int color = 0x1b000000) {
+        ColorView() {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
+        }
+
+        ColorView(const Color& color):ColorView() {
             Color = color;
         }
 
-        inline unsigned int getColor() const {
+        inline const Color& getColor() {
             return paint.Color;
         }
 
-        inline void setColor(unsigned int color) {
+        inline void setColor(const Color& color) {
             paint.Color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) unsigned int Color;
+        __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
         virtual void onDraw(Canvas& canvas) {
             if (!paint.Color)
@@ -41,10 +44,10 @@ namespace Ghurund::UI {
             canvas.fillRect(0, 0, Size.width, Size.height, paint);
         }
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
-        
+
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }

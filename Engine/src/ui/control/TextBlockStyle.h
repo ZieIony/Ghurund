@@ -6,24 +6,31 @@
 namespace Ghurund::UI {
     class Theme;
 
-    class TextBlockPrimaryStyle:public Style<TextBlock> {
+    class TextBlockButtonStyle:public Style {
     public:
-        virtual void onThemeChanged(TextBlock& textView) const override;
+        virtual void onThemeChanged(Control& control) const override;
 
-        virtual void onStateChanged(TextBlock& textView) const override;
+        virtual void onStateChanged(Control& control) const override;
     };
 
-    class TextBlockSecondaryStyle:public Style<TextBlock> {
+    class TextBlockPrimaryStyle:public Style {
     public:
-        virtual void onThemeChanged(TextBlock& textView) const override;
+        virtual void onThemeChanged(Control& control) const override;
 
-        virtual void onStateChanged(TextBlock& textView) const override;
+        virtual void onStateChanged(Control& control) const override;
     };
 
-    class TextBlockHeaderStyle:public Style<TextBlock> {
+    class TextBlockSecondaryStyle:public Style {
     public:
-        virtual void onThemeChanged(TextBlock& textView) const override;
+        virtual void onThemeChanged(Control& control) const override;
 
-        virtual void onStateChanged(TextBlock& textView) const override;
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class TextBlockHeaderStyle:public Style {
+    public:
+        virtual void onThemeChanged(Control& control) const override;
+
+        virtual void onStateChanged(Control& control) const override;
     };
 }

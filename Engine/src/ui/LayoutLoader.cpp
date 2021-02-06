@@ -21,6 +21,7 @@ namespace Ghurund::UI {
         registerClass(ClickableView::TYPE);
         registerClass(SelectableView::TYPE);
         registerClass(ClickResponseView::TYPE);
+        registerClass(ControlContainer::TYPE);
         registerClass(PaddingContainer::TYPE);
         registerClass(LinearLayout::TYPE);
         registerClass(TextBlock::TYPE);
@@ -35,22 +36,24 @@ namespace Ghurund::UI {
         registerClass(CheckBox::TYPE);
     }
 
-    PointerList<Control*> LayoutLoader::load(ResourceContext& context, const Buffer& data) {
-        PointerList<Control*> list;
+    Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)data.Data, data.Size);
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
-        if (child && strcmp(child->Value(), "layout") == 0)
-            list.addAll(loadControls(context, *child));
-        return list;
+        if (child && strcmp(child->Value(), "layout") == 0) {
+            output.addAll(loadControls(*child));
+            return Status::OK;
+        } else {
+            return Logger::log(LogType::ERR0R, Status::INV_FORMAT, _T("missing 'layout' tag\n"));
+        }
     }
 
-    PointerList<Control*> LayoutLoader::loadControls(ResourceContext& context, const tinyxml2::XMLElement& xml) {
+    PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
         PointerList<Control*> list;
         const tinyxml2::XMLElement* child = xml.FirstChildElement();
         while (child != nullptr) {
-            Control* control = loadControl(context, *child);
+            Control* control = loadControl(*child);
             if (control) {
                 list.add(control);
                 control->release();
@@ -60,25 +63,25 @@ namespace Ghurund::UI {
         return list;
     }
 
-    Control* LayoutLoader::loadControl(ResourceContext& context, const tinyxml2::XMLElement& xml) {
+    Control* LayoutLoader::loadControl(const tinyxml2::XMLElement& xml) {
         const char* name = xml.Value();
         if (types.contains(name)) {
             Type* type = types.get(name);
             Control* control = (Control*)type->Constructor->newInstance();
-            control->load(*this, context, xml);
+            control->load(*this, xml);
             return control;
         }
         Logger::log(LogType::ERR0R, _T("Control type {} not registered in LayoutLoader.\n"), String(name));
         return nullptr;
     }
 
-    Shape* LayoutLoader::loadShape(ResourceContext& context, const char* str) {
+    Shape* LayoutLoader::loadShape(const char* str) {
         AString s = str;
         if (s == "rect") {
-            return ghnew Rect(context.Graphics2D);
+            return ghnew Rect(context->Graphics2D);
         } else if (s.startsWith("roundRect")) {
             float radius = (float)atof(s.substring(s.find(",") + 1).trim().Data);
-            return ghnew RoundRect(context.Graphics2D, radius);
+            return ghnew RoundRect(context->Graphics2D, radius);
         }
         return nullptr;
     }
@@ -106,13 +109,13 @@ namespace Ghurund::UI {
         return value;
     }
 
-    BitmapImage* LayoutLoader::loadImage(ResourceContext& context, const char* str) {
+    BitmapImage* LayoutLoader::loadImage(const char* str) {
         WString s = toWideChar(AString(str));
         const wchar_t* fileProtocol = L"file://";
         const wchar_t* themeProtocol = L"theme://image/";
         if (s.startsWith(fileProtocol)) {
             auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
-            return BitmapImage::makeFromImage(context, filePath);
+            return BitmapImage::makeFromImage(*context, filePath);
         } else if (s.startsWith(themeProtocol) && theme) {
             WString imageKey = s.substring(lengthOf(themeProtocol));
             if (theme->Images.contains(imageKey)) {
@@ -128,7 +131,7 @@ namespace Ghurund::UI {
         return toWideChar(AString(str));
     }
 
-    TextStyle* LayoutLoader::loadFont(ResourceContext& context, const char* str) {
+    TextStyle* LayoutLoader::loadFont(const char* str) {
         WString s = toWideChar(AString(str));
         const wchar_t* fileProtocol = L"file://";
         const wchar_t* themeProtocol = L"theme://";

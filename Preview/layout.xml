@@ -8,15 +8,24 @@
 						  preferredSize="fill, wrap">
 			<LinearLayout orientation="vertical"
 						  preferredSize="fill, wrap">
-				<TextBlock text="drop file here to open"
+				<CheckBox preferredSize="wrap, wrap"
+						  layout="file://layouts/CheckBoxLayout.xml"
+						  checked="true"
+						   name="enabledCheckBox">
+					<TextBlock text="enabled"
+						   style="theme://style/textBlock_primary"/>
+				</CheckBox>
+				<Space preferredSize="4,4"/>
+				<CheckBox preferredSize="wrap, wrap"
+						  layout="file://layouts/CheckBoxLayout.xml"
+						   name="themeCheckBox">
+					<TextBlock text="dark theme"
+							   style="theme://style/textBlock_primary"/>
+				</CheckBox>
+				<Space preferredSize="4,4"/>
+				<TextBlock text="drop a file here to open"
 						   preferredSize="wrap, wrap"
-						   textColor="#cf000000"
-						   font="theme://listHeader"/>
-				<!--<CheckBox text="dark theme"
-						   preferredSize="wrap, wrap"
-						   name="text"
-						   textColor="#cfffffff"
-						   font="theme://listHeader"/>-->
+						   style="theme://style/textBlock_secondary"/>
 			</LinearLayout>
 		</PaddingContainer>
 	</StackLayout>

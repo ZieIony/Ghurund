@@ -29,15 +29,15 @@ namespace Ghurund::UI {
             delete shape;
         }
 
-        inline uint32_t getColor() const {
+        inline const Color& getColor() const {
             return paint.Color;
         }
 
-        inline void setColor(uint32_t color) {
+        inline void setColor(const Color& color) {
             paint.Color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
+        __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
         inline Shape* getShape() {
             return shape;
@@ -68,7 +68,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        virtual Status load(LayoutLoader& loader, ResourceContext& context, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
