@@ -19,12 +19,12 @@ namespace Ghurund::UI {
             }
 
             virtual void onLayoutChanged() override {
-                container = (ControlContainer*)ControlContainer::find(_T("content"));
+                Control* control = ControlContainer::find(_T("content"));
+                if (control && control->Type.isOrExtends(ControlContainer::TYPE))
+                    container = (ControlContainer*)ControlContainer::find(_T("content"));
             }
 
         public:
-            ContentWidget(LayoutType* layout = nullptr):Widget<LayoutType>(layout) {}
-
             ~ContentWidget() = 0 {}
 
             inline void setContent(Control* control) {

@@ -2,6 +2,7 @@
 #include "core/string/TextConversionUtils.h"
 
 #include "ui/LayoutLoader.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
@@ -99,5 +100,61 @@ namespace Ghurund::UI {
                 Image->Tint = loader.loadColor(imageTintAttr->Value());
         }
         return Status::OK;
+    }
+
+    void ImageViewStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ImageView& imageView = ((ImageView&)control);
+        if (!imageView.Image)
+            return;
+        if (control.Enabled) {
+            imageView.Image->Alpha = 1.0f;
+        } else {
+            imageView.Image->Alpha = 0.38f;
+        }
+    }
+
+    void ImageViewOnBackgroundStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ImageView& imageView = ((ImageView&)control);
+        if (!imageView.Image)
+            return;
+        if (control.Enabled) {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
+        } else {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+        }
+    }
+
+    void ImageViewOnAccentStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ImageView& imageView = ((ImageView&)control);
+        if (!imageView.Image)
+            return;
+        if (control.Enabled) {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
+        } else {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+        }
+    }
+
+    void ImageViewAccentStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ImageView& imageView = ((ImageView&)control);
+        if (!imageView.Image)
+            return;
+        if (control.Enabled) {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
+        } else {
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+        }
     }
 }

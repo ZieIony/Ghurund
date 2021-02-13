@@ -4,7 +4,7 @@
 #include "ui/style/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
-#include "ui/widget/button/TextButton.h"
+#include "ui/widget/button/Button.h"
 #include "ui/layout/FlowLayout.h"
 
 using namespace Ghurund;
@@ -33,10 +33,16 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(ghnew TextButtonDefaultLayout(loader));
-                button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
-                button->MinSize = FloatSize{ 60.0f, 60.0f };
-                flowLayout->Children.add(button);
+                PointerList<Control*> controls;
+                if (loader.load(FilePath(L"layouts/ButtonLayout.xml"), controls) == Status::OK) {
+                    auto button = makeShared<Button>();
+                    button->Layout = ghnew ButtonLayout(controls[0]);
+                    auto buttonText = makeShared<TextBlock>();
+                    buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
+                    button->Content = buttonText;
+                    button->MinSize = FloatSize{ 60.0f, 60.0f };
+                    flowLayout->Children.add(button);
+                }
             }
 
             flowLayout->Children[4]->Visible = false;
@@ -61,9 +67,16 @@ public:
             column->Children.add(stack);
 
             for (size_t i = 0; i < 10; i++) {
-                TextButtonPtr button = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
-                button->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
-                flowLayout->Children.add(button);
+                PointerList<Control*> controls;
+                if (loader.load(FilePath(L"layouts/ButtonAccentLayout.xml"), controls) == Status::OK) {
+                    auto button = makeShared<Button>();
+                    button->Layout = ghnew ButtonLayout(controls[0]);
+                    auto buttonText = makeShared<TextBlock>();
+                    buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
+                    button->Content = buttonText;
+                    button->MinSize = FloatSize{ 60.0f, 60.0f };
+                    flowLayout->Children.add(button);
+                }
             }
 
             flowLayout->Children[4]->Visible = false;

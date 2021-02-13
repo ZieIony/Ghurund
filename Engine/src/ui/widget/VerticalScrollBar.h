@@ -11,7 +11,7 @@ namespace Ghurund::UI {
     private:
         uint32_t pressMousePos = 0;
         float pressBarPos = 0;
-        DragHelper dragHelper;
+        DragHelper* dragHelper = nullptr;
 
         float scroll = 0;
         float maxScroll = 100;
@@ -21,10 +21,29 @@ namespace Ghurund::UI {
 
         void updateScroll();
 
-    public:
-        VerticalScrollBar(VerticalScrollBarLayout* layout);
+    protected:
+        virtual void onLayoutChanged() override;
 
-        VerticalScrollBar(Ghurund::UI::Theme& theme):VerticalScrollBar(ghnew VerticalScrollBarLayout(theme)) {}
+        static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<VerticalScrollBar>();
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(VerticalScrollBar))
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
+    public:
+        VerticalScrollBar(VerticalScrollBarLayout* layout = nullptr) {
+            setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
+            Layout = layout;
+        };
+
+        VerticalScrollBar(LayoutLoader& loader):VerticalScrollBar(ghnew VerticalScrollBarLayout(loader)) {}
+
+        ~VerticalScrollBar() {
+            delete dragHelper;
+        }
 
         inline float getScroll() const {
             return scroll;
@@ -53,6 +72,12 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
+
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 
     typedef SharedPointer<VerticalScrollBar> VerticalScrollBarPtr;

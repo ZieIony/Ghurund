@@ -10,8 +10,9 @@ namespace Ghurund::UI {
         StackLayoutManager layoutManager;
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<StackLayout>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<StackLayout>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

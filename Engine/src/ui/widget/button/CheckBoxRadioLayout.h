@@ -8,27 +8,37 @@
 #include "ui/control/Space.h"
 #include "ui/widget/Layout.h"
 #include "ui/drawable/BitmapImage.h"
+#include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
     class CheckBoxRadioLayout:public Ghurund::UI::WidgetLayout {
     protected:
         SelectableView* selectableView = nullptr;
+        StateIndicator* stateIndicator = nullptr;
         ImageView* imageView = nullptr;
+        EventHandler<Control> stateHandler = [this](Control& control) {
+            if (selectableView->Pressed) {
+                stateIndicator->State = IndicatorState::PRESSED;
+            } else if (selectableView->Focused || selectableView->Hovered) {
+                stateIndicator->State = IndicatorState::FOCUSED;
+            } else {
+                stateIndicator->State = IndicatorState::NONE;
+            }
+            return true;
+        };
 
     public:
-        CheckBoxRadioLayout() {}
-
         CheckBoxRadioLayout(Control* layout) {
             Root = layout;
-            setPointer(selectableView, (Ghurund::UI::SelectableView*)layout->find("selectable"));
-            setPointer(imageView, (Ghurund::UI::ImageView*)layout->find("image"));
+            selectableView = (Ghurund::UI::SelectableView*)layout->find("selectable");
+            imageView = (Ghurund::UI::ImageView*)layout->find("image");
+            stateIndicator = (Ghurund::UI::StateIndicator*)layout->find("state");
+            selectableView->StateChanged.add(stateHandler);
         }
 
         ~CheckBoxRadioLayout() {
             if (selectableView)
-                selectableView->release();
-            if (imageView)
-                imageView->release();
+                selectableView->StateChanged.remove(stateHandler);
         }
 
         ImageView* getImageView() {
@@ -55,6 +65,8 @@ namespace Ghurund::UI {
 
     class RadioButtonLayout:public CheckBoxRadioLayout {
     public:
+        using CheckBoxRadioLayout::CheckBoxRadioLayout;
+
         virtual void onStateChanged(Control& control) override;
     };
 }

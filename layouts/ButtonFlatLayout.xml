@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ClickableControl name="clickable" preferredSize="fill, fill">
+		<Clip shape="roundRect, 2"
+				name="clip"
+				preferredSize="fill, fill">
+			<StackLayout>
+				<ColorView style="theme://style/colorView_background"
+							name="background"/>
+				<StateIndicator name="state" preferredSize="fill, fill"
+								style="theme://style/stateIndicator_accent"/>
+				<PaddingContainer padding="8, 4"
+									preferredSize="fill, fill"
+									name="padding">
+						<ControlContainer preferredSize="fill, fill"
+										  name="content"/>
+				</PaddingContainer>
+			</StackLayout>
+		</Clip>
+	</ClickableControl>
+</layout>

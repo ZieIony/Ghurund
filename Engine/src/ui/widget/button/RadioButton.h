@@ -6,13 +6,13 @@
 #include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
-    class RadioButton:public Widget<CheckBoxRadioLayout> {
+    class RadioButton:public ContentWidget<RadioButtonLayout> {
     private:
         Event<RadioButton> onCheckedChanged = Event<RadioButton>(*this);
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<RadioButton>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<RadioButton>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -23,10 +23,6 @@ namespace Ghurund::UI {
         virtual void onLayoutChanged() override;
 
     public:
-        RadioButton() {
-            Focusable = true;
-        }
-
         inline void setChecked(bool checked) {
             Layout->SelectableView->Selected = checked;
         }
@@ -37,7 +33,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;
 
-        Event<RadioButton>& getOnCheckedChanged() {
+        inline Event<RadioButton>& getOnCheckedChanged() {
             return onCheckedChanged;
         }
 

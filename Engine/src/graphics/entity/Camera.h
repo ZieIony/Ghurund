@@ -32,8 +32,8 @@ namespace Ghurund {
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Camera>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Camera>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

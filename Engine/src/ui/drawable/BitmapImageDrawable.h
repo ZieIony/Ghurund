@@ -22,9 +22,9 @@ namespace Ghurund::UI {
         virtual void onDraw(Canvas& canvas) override {
             auto dst = D2D1::RectF(position.x, position.y, position.x + size.width, position.y + size.height);
             if (Tint) {
-                canvas.drawImage(*image, dst, Tint);
+                canvas.drawImage(*image, dst, Tint, Alpha);
             } else {
-                canvas.drawImage(*image, dst);
+                canvas.drawImage(*image, dst, Alpha);
             }
         }
     };

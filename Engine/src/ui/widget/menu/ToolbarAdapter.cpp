@@ -4,11 +4,11 @@
 
 namespace Ghurund::UI {
     Control* ButtonToolbarAdapter::makeControl() const {
-        return ghnew ImageButton(ghnew ImageButtonFlatLayout());
+        return nullptr;// ghnew ImageButton(ghnew ImageButtonFlatLayout());
     }
     
     void ButtonToolbarAdapter::bind(Control& control, MenuItem* const& item, size_t position) const {
-        ImageButton& imageButton = (ImageButton&)control;
+        /*ImageButton& imageButton = (ImageButton&)control;
         ButtonMenuItem* menuItem = (ButtonMenuItem*)item;
         //imageButton.Name = menuItem->Text;
         imageButton.Image = makeShared<BitmapImageDrawable>(menuItem->Image);
@@ -16,7 +16,7 @@ namespace Ghurund::UI {
         imageButton.OnClicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);
             return true;
-        });
+        });*/
     }
     
     SeparatorToolbarAdapter::SeparatorToolbarAdapter(Theme& theme):theme(theme) {}

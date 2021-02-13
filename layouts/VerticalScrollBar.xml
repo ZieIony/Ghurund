@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<LinearLayout preferredSize="wrap, 200"
+				  orientation="vertical">
+		<Button layout="file://layouts/ButtonImageLayout.xml"
+				name="startButton">
+			<ImageView image="theme://image/arrowUp"
+					   style="theme://style/imageView_control"/>
+		</Button>
+		<StackLayout>
+			<ManualLayout name="track">
+				<Button layout="file://layouts/ButtonImageLayout.xml"
+						name="barButton"
+						preferredSize="fill, wrap"
+						minSize="0,20">
+					<ColorView color="theme://color/control"/>
+				</Button>
+			</ManualLayout>
+			<ClickableView preferredSize="fill, fill"
+						   name="clickableTrack"/>
+		</StackLayout>
+		<Button layout="file://layouts/ButtonImageLayout.xml"
+				name="endButton">
+			<ImageView image="theme://image/arrowDown"
+					   style="theme://style/imageView_control"/>
+		</Button>
+	</LinearLayout>
+</layout>

@@ -11,8 +11,8 @@ namespace Ghurund::UI {
         Event<CheckBox> onCheckedChanged = Event<CheckBox>(*this);
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<CheckBox>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<CheckBox>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -23,10 +23,6 @@ namespace Ghurund::UI {
         virtual void onLayoutChanged() override;
 
     public:
-        CheckBox() {
-            Focusable = true;
-        }
-
         inline void setChecked(bool checked) {
             Layout->SelectableView->Selected = checked;
         }

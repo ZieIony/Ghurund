@@ -8,6 +8,37 @@
 						  preferredSize="fill, wrap">
 			<LinearLayout orientation="vertical"
 						  preferredSize="fill, wrap">
+				<LinearLayout orientation="horizontal">
+					<PaddingContainer padding="0,4,4,4">
+						<Button layout="file://layouts/ButtonImageLayout.xml"
+								name="color1">
+							<ColorView color="#ffef5350"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="file://layouts/ButtonImageLayout.xml"
+								name="color2">
+							<ColorView color="#ff42a5f5"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="file://layouts/ButtonImageLayout.xml"
+								name="color3">
+							<ColorView color="#ffffca28"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="file://layouts/ButtonImageLayout.xml"
+								name="color4">
+							<ColorView color="#ff66bb6a"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+				</LinearLayout>
+				<Space preferredSize="4,4"/>
 				<CheckBox preferredSize="wrap, wrap"
 						  layout="file://layouts/CheckBoxLayout.xml"
 						  checked="true"

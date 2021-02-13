@@ -25,7 +25,7 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-        ((ProgressBar&)control).BackgroundColor = theme->getColorControlNormal();
+        ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_CONTROL];
     }
 
     void ProgressBarStyle::onStateChanged(Control& control) const {
@@ -34,10 +34,10 @@ namespace Ghurund::UI {
             return;
         if (control.Enabled) {
             ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-            ((ProgressBar&)control).BackgroundColor = theme->getColorControlNormal();
+            ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_CONTROL];
         } else {
-            ((ProgressBar&)control).ProgressColor = theme->getColorControlNormal();
-            ((ProgressBar&)control).BackgroundColor = theme->getColorControlDisabled();
+            ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_CONTROL];
+            ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_BACKGR0UND];
         }
     }
 }

@@ -7,15 +7,6 @@
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
     private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(FlowLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
-
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
         FlowLayoutManager layoutManager;
@@ -41,6 +32,16 @@ namespace Ghurund::UI {
                 }
             }
         }*/
+
+    protected:
+        static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(FlowLayout))
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
 
     public:
         inline bool getReverseLayout() const {

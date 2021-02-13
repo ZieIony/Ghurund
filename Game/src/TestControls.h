@@ -11,7 +11,7 @@
 #include "ui/widget/button/RadioButton.h"
 #include "ui/widget/button/RadioGroup.h"
 #include "ui/widget/button/ImageButton.h"
-#include "ui/widget/button/TextButton.h"
+#include "ui/widget/button/Button.h"
 #include "ui/widget/textfield/TextField.h"
 #include "ui/widget/ProgressBar.h"
 #include "ui/widget/menu/DropDown.h"
@@ -33,19 +33,24 @@ public:
         verticalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
 
         {
-            SharedPointer<TextStyle> latoLight = ghnew Ghurund::UI::TextStyle(L"fonts/lato_light.ttf", L"Lato Light", 40, FW_LIGHT, false);
+            SharedPointer<TextFormat> latoLight = ghnew Ghurund::UI::TextFormat(L"fonts/lato_light.ttf", L"Lato Light", 40, FW_LIGHT, false);
             latoLight->init(context.Graphics2D);
             SharedPointer<TextBlock> textView = ghnew TextBlock(L"big light text", latoLight);
             SharedPointer<TextView> textView2 = ghnew TextView();
             textView2->PreferredSize.width = PreferredSize::Width::FILL;
-            textView2->TextStyle = theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
+            textView2->TextFormat = theme.TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY];
             textView2->Text = L"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
             auto p = makeShared<PaddingContainer>();
             p->Padding.All = 20;
-            TextButtonPtr hwButton = ghnew TextButton(ghnew TextButtonAccentLayout( loader));
-            hwButton->Text = L"HELLO WORLD";
-            p->Child = hwButton;
+            PointerList<Control*> controls;
+            if (loader.load(FilePath(L"layouts/ButtonAccent.xml"), controls) == Status::OK) {
+                auto hwButton = makeShared<Button>(ghnew ButtonLayout(controls[0]));
+                auto hwButtonText = makeShared<TextBlock>();
+                hwButtonText->Text = L"HELLO WORLD";
+                hwButton->Content = hwButtonText;
+                p->Child = hwButton;
+            }
 
             SharedPointer<TextField> textField = ghnew TextField();
             textField->Text = L"type here";
@@ -72,10 +77,10 @@ public:
 
             player = ghnew MusicPlayer(theme);
 
-            TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(loader));
+            /*TextButtonPtr flatButton = ghnew TextButton(ghnew TextButtonFlatLayout(loader));
             flatButton->Text = L"Submit";
             TextButtonPtr accentButton = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
-            accentButton->Text = L"OK";
+            accentButton->Text = L"OK";*/
 
             SharedPointer<Separator> separator = ghnew Separator();
             separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_HORIZONTAL];
@@ -100,10 +105,10 @@ public:
                 makeShared<Space>(),
                 player,
                 makeShared<Space>(),
-                flatButton,
+                /*flatButton,
                 makeShared<Space>(),
                 accentButton,
-                makeShared<Space>(),
+                makeShared<Space>(),*/
                 progressBar
             };
         }

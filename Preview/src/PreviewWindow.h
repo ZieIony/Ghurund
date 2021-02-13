@@ -9,6 +9,7 @@
 #include "ui/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
+#include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 
 namespace Preview {
@@ -19,9 +20,10 @@ namespace Preview {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
-        SharedPointer<StackLayout> container;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        SharedPointer<CheckBox> themeCheckBox, enabledCheckBox;
+        StackLayout* container;
+        CheckBox* themeCheckBox, * enabledCheckBox;
+        Button* button1, * button2, * button3, * button4;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -62,6 +64,24 @@ namespace Preview {
                 container->repaint();
                 return true;
             });
+
+            auto colorClickHandler = [this](Control& control, const MouseClickedEventArgs& args) {
+                ColorView* colorView = (ColorView*)control.find(ColorView::TYPE);
+                darkTheme->Colors.set(Theme::COLOR_ACCENT, colorView->Color);
+                darkTheme->updateColors();
+                lightTheme->Colors.set(Theme::COLOR_ACCENT, colorView->Color);
+                lightTheme->updateColors();
+                rootView->dispatchThemeChanged();
+                return true;
+            };
+            button1 = (Button*)rootView->find("color1");
+            button1->OnClicked.add(colorClickHandler);
+            button2 = (Button*)rootView->find("color2");
+            button2->OnClicked.add(colorClickHandler);
+            button3 = (Button*)rootView->find("color3");
+            button3->OnClicked.add(colorClickHandler);
+            button4 = (Button*)rootView->find("color4");
+            button4->OnClicked.add(colorClickHandler);
 
             RootView = rootView;
 

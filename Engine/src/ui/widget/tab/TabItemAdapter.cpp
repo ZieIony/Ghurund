@@ -4,7 +4,7 @@
 
 namespace Ghurund::UI {
     Tab* TabItemAdapter::makeControl() const {
-        return ghnew Tab(ghnew TextTabLayout(theme));
+        return nullptr;// ghnew Tab(ghnew TextTabLayout(theme));
     }
 
     void TabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {

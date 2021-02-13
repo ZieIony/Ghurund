@@ -2,13 +2,11 @@
 
 #include "DropDownLayout.h"
 #include "ui/style/Theme.h"
-#include "ui/control/ClickableView.h"
+#include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
     class DropDown:public Widget<DropDownLayout> {
     public:
-        DropDown(DropDownLayout* layout):Widget(layout) {}
-
         inline Control* getContent() {
             return Layout->Content;
         }

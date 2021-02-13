@@ -8,14 +8,13 @@
 namespace Ghurund::UI {
     class RecyclerView:public ControlGroup {
     private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<RecyclerView>();
-
         Event<Control> onScrolled = Event<Control>(*this);
 
     protected:
         LayoutManager* layoutManager = nullptr;
 
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<RecyclerView>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RecyclerView))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

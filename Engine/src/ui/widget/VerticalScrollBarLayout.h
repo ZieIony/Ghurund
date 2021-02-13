@@ -2,31 +2,33 @@
 
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/ManualLayout.h"
-#include "ui/widget/button/ImageButton.h"
+#include "ui/widget/button/Button.h"
 
 namespace Ghurund::UI {
+    class LayoutLoader;
+
     class VerticalScrollBarLayout:public WidgetLayout {
     private:
-        Theme& theme;
-        SharedPointer<ImageButton> topButton;
-        SharedPointer<Button> barButton;
-        SharedPointer<ClickableView> clickableTrack;
-        ManualLayoutPtr track;
-        SharedPointer<ImageButton> bottomButton;
-        SharedPointer<VerticalLayout> verticalLayout;
+        Button* topButton;
+        Button* barButton;
+        ClickableControl* clickableTrack;
+        ManualLayout* track;
+        Button* bottomButton;
 
     public:
-        VerticalScrollBarLayout(Theme& theme):theme(theme) {}
+        VerticalScrollBarLayout(LayoutLoader& loader);
 
-        VerticalScrollBarLayout(Control* layout):theme(theme) {}
+        VerticalScrollBarLayout(Control* layout) {
+            Root = layout;
+        }
 
         virtual void init() override;
 
-        inline ImageButton* getTopButton() {
+        inline Button* getTopButton() {
             return topButton;
         }
 
-        __declspec(property(get = getTopButton)) ImageButton* TopButton;
+        __declspec(property(get = getTopButton)) Button* TopButton;
 
         inline Button* getBarButton() {
             return barButton;
@@ -34,11 +36,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBarButton)) Button* BarButton;
 
-        inline ClickableView* getClickableTrack() {
+        inline ClickableControl* getClickableTrack() {
             return clickableTrack;
         }
 
-        __declspec(property(get = getClickableTrack)) ClickableView* ClickableTrack;
+        __declspec(property(get = getClickableTrack)) ClickableControl* ClickableTrack;
 
         inline Control* getTrack() {
             return track;
@@ -46,10 +48,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTrack)) Control* Track;
 
-        inline ImageButton* getBottomButton() {
+        inline Button* getBottomButton() {
             return bottomButton;
         }
 
-        __declspec(property(get = getBottomButton)) ImageButton* BottomButton;
+        __declspec(property(get = getBottomButton)) Button* BottomButton;
     };
 }

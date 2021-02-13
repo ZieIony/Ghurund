@@ -7,7 +7,7 @@ namespace Ghurund::UI {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
         WString textToInsert(L"\r\n");
-        layoutEditor.insertTextAt(textLayout, text, absolutePosition, textToInsert, TextStyle);
+        layoutEditor.insertTextAt(textLayout, text, absolutePosition, textToInsert, TextFormat);
         setSelection(SetSelectionMode::AbsoluteLeading, absolutePosition + textToInsert.Size, false, false);
         repaint();
     }
@@ -113,7 +113,7 @@ namespace Ghurund::UI {
                 textToInsert.set(0, wchar_t(0xD800 + (charCode >> 10) - (0x10000 >> 10)));
                 textToInsert.add(wchar_t(0xDC00 + (charCode & 0x3FF)));
             }
-            layoutEditor.insertTextAt(textLayout, text, caretPosition + caretPositionOffset, textToInsert, TextStyle);
+            layoutEditor.insertTextAt(textLayout, text, caretPosition + caretPositionOffset, textToInsert, TextFormat);
             setSelection(SetSelectionMode::Right, textToInsert.Size, false, false);
 
             repaint();
@@ -143,6 +143,15 @@ namespace Ghurund::UI {
             setSelection(SetSelectionMode::RightChar, data->Length, true);
             repaint();
         }
+    }
+
+    const Ghurund::Type& TextField::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<TextField>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextField))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool TextField::dispatchKeyEvent(const KeyEventArgs& event) {

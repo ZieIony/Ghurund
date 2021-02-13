@@ -22,7 +22,7 @@ namespace Ghurund::Editor {
 
     public:
         PropertyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            objectTypeText = ghnew TextBlock(L"", theme.TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY]);
+            objectTypeText = ghnew TextBlock(L"", theme.TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY]);
             toolbar = ghnew Toolbar(theme);
             searchField = ghnew SearchField(context, theme);
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");

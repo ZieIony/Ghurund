@@ -110,34 +110,59 @@ namespace Ghurund::UI {
     }
 
     void Control::requestFocus() {
-        if (Focused || !focusable || !enabled)
+        if (Focused || !focusable || !enabled || !parent)
             return;
-        if (parent) {
-            parent->setFocus(this);
-            onStateChanged();
+
+        Control* c = this;
+        while (c->Parent) {
+            if (c->Parent->Focus == nullptr) {
+                c->Parent->setFocus(c);
+                c = c->Parent;
+            } else {
+                Control* f = c->Parent->Focus;
+                c->Parent->setFocus(c);
+                while (f->Focus) {
+                    Control* next = f->Focus;
+                    f->Focus->Parent->setFocus(nullptr);
+                    f = next;
+                }
+                c->Parent->dispatchStateChanged();
+                break;
+            }
         }
     }
 
     void Control::clearFocus() {
-        // TODO: this method requires to be called from a parent
-        Control* focus = Focus;
-        if (!focus)
+        if (!Focused)
             return;
-        if (focus->Parent) {
-            focus->Parent->clearChildFocus(this);
-            focus->onStateChanged();
+        Control* f = Focus;
+        if (!f)
+            return;
+        while (f) {
+            Control* next = f->Focus;
+            f->Parent->setFocus(nullptr);
+            f = next;
+        }
+        if (parent) {
+            parent->setFocus(nullptr);
+            ControlParent* p = parent;
+            while (p->Parent) {
+                p->setFocus(nullptr);
+                p = p->Parent;
+            }
+            p->dispatchStateChanged();
+        } else {
+            dispatchStateChanged();
         }
     }
 
     bool Control::isFocused() const {
-        // TODO: what about parent focus?
-        return parent && parent->Focus == this;//&& parent->Focused;
+        return parent && parent->Focus == this && parent->Focused;
     }
 
     bool Control::focusNext() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;
@@ -145,8 +170,7 @@ namespace Ghurund::UI {
 
     bool Control::focusPrevious() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;
@@ -154,8 +178,7 @@ namespace Ghurund::UI {
 
     bool Control::focusUp() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;
@@ -163,8 +186,7 @@ namespace Ghurund::UI {
 
     bool Control::focusDown() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;
@@ -172,8 +194,7 @@ namespace Ghurund::UI {
 
     bool Control::focusLeft() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;
@@ -181,8 +202,7 @@ namespace Ghurund::UI {
 
     bool Control::focusRight() {
         if (!Focused && Focusable && parent) {
-            parent->setFocus(this);
-            onStateChanged();
+            requestFocus();
             return true;
         }
         return false;

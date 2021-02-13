@@ -19,8 +19,8 @@ namespace Ghurund {
 		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
 	protected:
-		static inline const auto& CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
 		static const Ghurund::Type& GET_TYPE() {
+			static const auto CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
 			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TransformComponent))
 				.withConstructor(CONSTRUCTOR)
 				.withSupertype(__super::GET_TYPE());

@@ -17,8 +17,9 @@ namespace Ghurund::UI {
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ImageView>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ImageView>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -82,5 +83,25 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+    };
+
+    class ImageViewStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
+    };
+
+    class ImageViewOnBackgroundStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
+    };
+
+    class ImageViewOnAccentStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
+    };
+
+    class ImageViewAccentStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
     };
 }

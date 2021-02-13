@@ -1,6 +1,7 @@
 #include "ClickResponseView.h"
 
 #include "ui/LayoutLoader.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     void ClickResponseView::onUpdate(const uint64_t time) {
@@ -21,5 +22,19 @@ namespace Ghurund::UI {
         if (colorAttr)
             Color = loader.loadColor(colorAttr->Value());
         return Status::OK;
+    }
+    
+    void ClickResponseViewOnBackgroundStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ((ClickResponseView&)control).Color = theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
+    }
+    
+    void ClickResponseViewOnAccentStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        ((ClickResponseView&)control).Color = theme->Colors[Theme::COLOR_HIGHLIGHT_ONACCENT];
     }
 }

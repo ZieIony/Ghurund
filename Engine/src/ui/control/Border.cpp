@@ -1,5 +1,7 @@
 #include "Border.h"
+
 #include "ui/LayoutLoader.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
     void Border::onDraw(Canvas& canvas) {
@@ -26,5 +28,27 @@ namespace Ghurund::UI {
         if (thicknessAttr)
             Thickness = thicknessAttr->FloatValue();
         return Status::OK;
+    }
+    
+    void BorderOnBackgroundStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (control.Enabled) {
+            ((Border&)control).Color = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
+        } else {
+            ((Border&)control).Color = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+        }
+    }
+    
+    void BorderAccentStyle::onStateChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (control.Enabled) {
+            ((Border&)control).Color = theme->Colors[Theme::COLOR_ACCENT];
+        } else {
+            ((Border&)control).Color = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+        }
     }
 }

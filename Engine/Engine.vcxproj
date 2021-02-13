@@ -88,7 +88,7 @@
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\ui\Canvas.cpp" />
     <ClCompile Include="src\ui\control\Border.cpp" />
-    <ClCompile Include="src\ui\control\ClickableView.cpp" />
+    <ClCompile Include="src\ui\control\ClickableControl.cpp" />
     <ClCompile Include="src\ui\control\Clip.cpp" />
     <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
@@ -101,7 +101,7 @@
     <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
     <ClCompile Include="src\ui\drawable\SvgImage.cpp" />
-    <ClCompile Include="src\ui\font\TextStyle.cpp" />
+    <ClCompile Include="src\ui\font\TextFormat.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
     <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
@@ -117,11 +117,11 @@
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\Graphics2D.cpp" />
+    <ClCompile Include="src\ui\style\Theme.cpp" />
+    <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadioLayout.cpp" />
-    <ClCompile Include="src\ui\widget\button\ImageButtonLayout.cpp" />
     <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
-    <ClCompile Include="src\ui\widget\button\TextButtonLayout.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBar.cpp" />
@@ -132,13 +132,14 @@
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
     <ClCompile Include="src\ui\widget\Separator.cpp" />
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
+    <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainerLayout.cpp" />
     <ClCompile Include="src\ui\widget\tab\TextTabLayout.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\textfield\LayoutEditor.cpp" />
-    <ClCompile Include="src\ui\widget\textfield\TextField.cpp" />
-    <ClCompile Include="src\ui\widget\textfield\TextView.cpp" />
+    <ClCompile Include="src\ui\widget\text\LayoutEditor.cpp" />
+    <ClCompile Include="src\ui\widget\text\TextField.cpp" />
+    <ClCompile Include="src\ui\widget\text\TextView.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
@@ -283,7 +284,7 @@
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\style\DarkTheme.h" />
-    <ClInclude Include="src\ui\style\DefaultTheme.h" />
+    <ClInclude Include="src\ui\style\BaseTheme.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
@@ -336,7 +337,7 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\font\TextStyle.h" />
+    <ClInclude Include="src\ui\font\TextFormat.h" />
     <ClInclude Include="src\ui\Alignment.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
@@ -355,7 +356,7 @@
     <ClInclude Include="src\ui\Paint.h" />
     <ClInclude Include="src\ui\Property.h" />
     <ClInclude Include="src\ui\RootView.h" />
-    <ClInclude Include="src\ui\control\ClickableView.h" />
+    <ClInclude Include="src\ui\control\ClickableControl.h" />
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
@@ -363,15 +364,12 @@
     <ClInclude Include="src\ui\widget\button\ButtonLayout.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />
     <ClInclude Include="src\ui\widget\button\CheckBoxRadioLayout.h" />
-    <ClInclude Include="src\ui\widget\button\ImageButton.h" />
-    <ClInclude Include="src\ui\widget\button\ImageButtonLayout.h" />
     <ClInclude Include="src\ui\widget\button\RadioButton.h" />
     <ClInclude Include="src\ui\widget\button\RadioGroup.h" />
-    <ClInclude Include="src\ui\widget\button\TextButton.h" />
-    <ClInclude Include="src\ui\widget\button\TextButtonLayout.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
     <ClInclude Include="src\ui\widget\ContentWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
+    <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
     <ClInclude Include="src\ui\widget\Layout.h" />
     <ClInclude Include="src\ui\widget\menu\DropDown.h" />
@@ -403,12 +401,12 @@
     <ClInclude Include="src\ui\widget\tab\TextTabLayout.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
     <ClInclude Include="src\application\Clipboard.h" />
-    <ClInclude Include="src\ui\widget\textfield\DrawingEffect.h" />
-    <ClInclude Include="src\ui\widget\textfield\LayoutEditor.h" />
-    <ClInclude Include="src\ui\widget\textfield\SetSelectionMode.h" />
-    <ClInclude Include="src\ui\widget\textfield\TextField.h" />
+    <ClInclude Include="src\ui\widget\text\DrawingEffect.h" />
+    <ClInclude Include="src\ui\widget\text\LayoutEditor.h" />
+    <ClInclude Include="src\ui\widget\text\SetSelectionMode.h" />
+    <ClInclude Include="src\ui\widget\text\TextField.h" />
     <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
-    <ClInclude Include="src\ui\widget\textfield\TextView.h" />
+    <ClInclude Include="src\ui\widget\text\TextView.h" />
     <ClInclude Include="src\ui\widget\tree\TreeView.h" />
     <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRow.h" />
@@ -419,12 +417,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="src\ui\ui.md" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Engine.UI.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="src\ui\widget\textfield\license.txt" />
+    <Text Include="src\ui\widget\text\license.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

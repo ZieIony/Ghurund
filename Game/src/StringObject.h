@@ -128,8 +128,10 @@ public:
                     tv2 = ghnew TextBlock();
                     tv->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_SECONDARY];
                     tv2->PreferredSize.width = PreferredSize::Width::FILL;
-                    TextButtonPtr tb = ghnew TextButton(ghnew TextButtonAccentLayout(loader));
-                    tb->Text = L"CANCEL";
+                    auto tb = makeShared<Button>();
+                    auto tbt = makeShared<TextBlock>();
+                    tb->Content = tbt;
+                    tbt->Text = L"CANCEL";
                     column->Children = { tv, tv2, tb };
                 }
 

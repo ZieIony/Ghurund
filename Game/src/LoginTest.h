@@ -7,7 +7,7 @@
 #include "ui/layout/StackLayout.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/textfield/TextField.h"
-#include <ui/widget/button/TextButton.h>
+#include <ui/widget/button/Button.h>
 #include <ui/drawable/BitmapImageDrawable.h>
 #include <ui/drawable/SvgImageDrawable.h>
 
@@ -70,10 +70,10 @@ public:
             auto buttonsRow = makeShared<HorizontalLayout>();
             buttonsRow->PreferredSize.height = PreferredSize::Height::WRAP;
             {
-                auto loginButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(loader));
+                /*auto loginButton = makeShared<Button>(ghnew ButtonLayout(loader));
                 loginButton->PreferredSize.width = PreferredSize::Width::FILL;
                 loginButton->Text = L"LOGIN";
-                auto registerButton = makeShared<TextButton>(ghnew TextButtonAccentLayout(loader));
+                auto registerButton = makeShared<Button>(ghnew ButtonLayout(loader));
                 registerButton->PreferredSize.width = PreferredSize::Width::FILL;
                 registerButton->Text = L"REGISTER";
 
@@ -83,7 +83,7 @@ public:
                     makeShared<Space>(16.0f),
                     registerButton,
                     makeShared<Space>(8.0f)
-                };
+                };*/
             }
 
             layout->Children = {

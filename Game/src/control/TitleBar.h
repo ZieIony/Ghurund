@@ -36,9 +36,12 @@ namespace Ghurund::Editor {
             backgroundView = ghnew ColorView();
             Children = { backgroundView, row };
             ThemeChanged.add([this](Control& control) {
-                title->TextColor = Theme->ColorForegroundPrimaryOnAccent;
-                title->Style = Theme->Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
-                backgroundView->Color = Theme->Colors[Theme::COLOR_ACCENT];
+                UI::Theme* theme = Theme;
+                if (!theme)
+                    return false;
+                title->TextColor = theme->ColorForegroundPrimaryOnAccent;
+                title->Style = theme->Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
+                backgroundView->Color = theme->Colors[Theme::COLOR_ACCENT];
                 return true;
             });
         }

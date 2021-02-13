@@ -1,4 +1,4 @@
-#include "TextStyle.h"
+#include "TextFormat.h"
 #include "ui/Canvas.h"
 #include "core/logging/Logger.h"
 #include "ui/Graphics2D.h"
@@ -6,10 +6,10 @@
 #include <commdlg.h>
 
 namespace Ghurund::UI {
-    TextStyle::TextStyle(const WString& file, const WString& family, float size, unsigned int weight, bool italic, const WString& locale)
+    TextFormat::TextFormat(const WString& file, const WString& family, float size, unsigned int weight, bool italic, const WString& locale)
         :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
 
-    TextStyle::TextStyle(IDWriteTextLayout* textLayout, UINT32 position) {
+    TextFormat::TextFormat(IDWriteTextLayout* textLayout, UINT32 position) {
         Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
         textLayout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
         strikethrough = hasStrikethrough;
     }
 
-    Status TextStyle::init(Graphics2D& graphics2d) {
+    Status TextFormat::init(Graphics2D& graphics2d) {
         IDWriteFontCollection* fontCollection;
         if (FAILED(graphics2d.FontLoader->createFontCollection(file, &fontCollection)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "createFontCollection failed\n");

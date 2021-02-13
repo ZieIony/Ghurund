@@ -32,18 +32,18 @@ namespace Ghurund {
             built = false;
         }
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Script>();
+    protected:
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Script>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Script))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
-
-    protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext &context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
         Script():arguments(Array<void*>(0)) {

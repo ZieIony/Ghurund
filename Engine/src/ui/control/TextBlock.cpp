@@ -5,8 +5,8 @@
 
 namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
-        if (!font) {
-            Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its font is null\n", text);
+        if (!textFormat) {
+            Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textFormat is null\n", text);
             __super::onMeasure(parentWidth, parentHeight);
             return;
         }
@@ -48,10 +48,10 @@ namespace Ghurund::UI {
         __super::dispatchContextChanged();
         if (!Theme)
             return;
-        if (!TextStyle)
-            TextStyle = Theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
+        if (!TextFormat)
+            TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
         if (!TextColor)
-            TextColor = Theme->ColorForegroundPrimaryOnBackground;
+            TextColor = Theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
         if (!textLayout && Size.width > 0 && Size.height > 0)
             makeLayout(Size.width, Size.height);
     }
@@ -61,17 +61,16 @@ namespace Ghurund::UI {
         if (result != Status::OK)
             return result;
         auto textAttr = xml.FindAttribute("text");
-        if (textAttr) {
+        if (textAttr)
             Text = loader.loadText(textAttr->Value());
-        }
         auto textColorAttr = xml.FindAttribute("textColor");
         if (textColorAttr)
             TextColor = loader.loadColor(textColorAttr->Value());
-        auto textStyleAttr = xml.FindAttribute("textStyle");
-        if (textStyleAttr) {
-            Ghurund::UI::TextStyle* style = loader.loadFont(textStyleAttr->Value());
-            TextStyle = style;
-            style->release();
+        auto textFormatAttr = xml.FindAttribute("textFormat");
+        if (textFormatAttr) {
+            Ghurund::UI::TextFormat* format = loader.loadTextFormat(textFormatAttr->Value());
+            TextFormat = format;
+            format->release();
         }
         return Status::OK;
     }

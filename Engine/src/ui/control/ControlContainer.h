@@ -9,8 +9,8 @@ namespace Ghurund::UI {
         bool previousReceiver = false;
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ControlContainer>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ControlContainer>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -90,6 +90,8 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& event) override;
 
         virtual Control* find(const String& name);
+
+        virtual Control* find(const Ghurund::Type& type);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

@@ -2,11 +2,11 @@
 
 #include "ui/Orientation.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/control/ClickableView.h"
+#include "ui/control/ClickableControl.h"
 #include "ui/layout/LinearLayout.h"
 
 namespace Ghurund::UI {
-    class Splitter:public ClickableView {
+    class Splitter:public ClickableControl {
     private:
         Orientation orientation;
 

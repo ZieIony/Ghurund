@@ -18,34 +18,12 @@ namespace Ghurund::UI {
                 capturedChild->release();
         }
 
-        void clearChildFocus(Control* stop) {
-            focusedChild = nullptr;
-            if (Parent) {
-                if (this != stop)
-                    Parent->clearChildFocus(stop);
-                onStateChanged();
-            }
-        }
-
         void setFocus(Control* control) {
-            Control* focus = Focus;
-            if (focus)
-                focus->clearFocus();
             setPointer(focusedChild, control);
-            if (Focused)
-                return;
-            if (Parent) {
-                Parent->setFocus(this);
-                onStateChanged();
-            }
         }
 
         virtual Control* getFocus() override {
-            if (Focusable)
-                return this;
-            if (focusedChild)
-                return focusedChild->getFocus();
-            return nullptr;
+            return focusedChild;
         }
 
         virtual void setCapturedChild(Control* control) {

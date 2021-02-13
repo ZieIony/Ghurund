@@ -28,15 +28,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
 
-        inline TextStyle* getFont() {
-            return textView->TextStyle;
+        inline TextFormat* getFont() {
+            return textView->TextFormat;
         }
 
-        inline void setFont(TextStyle* font) {
-            textView->TextStyle = font;
+        inline void setFont(TextFormat* textFormat) {
+            textView->TextFormat = textFormat;
         }
 
-        __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;
+        __declspec(property(get = getFont, put = setFont)) TextFormat* TextFormat;
     };
 
     class TextLayoutMixin {

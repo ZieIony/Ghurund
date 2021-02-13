@@ -21,7 +21,7 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, TextStyle* font) {
+    void LayoutEditor::copySinglePropertyRange(IDWriteTextLayout* oldLayout, UINT32 startPosForOld, IDWriteTextLayout* newLayout, UINT32 startPosForNew, UINT32 length, TextFormat* textFormat) {
         // Copies a single range of similar properties, from one old layout
         // to a new one.
 
@@ -34,13 +34,13 @@ namespace Ghurund::UI {
         if (fontCollection)
             fontCollection->Release();
 
-        if (font) {
-            newLayout->SetFontFamilyName(font->FamilyName.Data, range);
-            newLayout->SetLocaleName(font->Locale.Data, range);
-            newLayout->SetFontWeight((DWRITE_FONT_WEIGHT)font->Weight, range);
-            newLayout->SetFontStyle(font->Italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL, range);
+        if (textFormat) {
+            newLayout->SetFontFamilyName(textFormat->FamilyName.Data, range);
+            newLayout->SetLocaleName(textFormat->Locale.Data, range);
+            newLayout->SetFontWeight((DWRITE_FONT_WEIGHT)textFormat->Weight, range);
+            newLayout->SetFontStyle(textFormat->Italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL, range);
             //newLayout->SetFontStretch(font->fontStretch, range);
-            newLayout->SetFontSize(font->Size, range);
+            newLayout->SetFontSize(textFormat->Size, range);
             //newLayout->SetUnderline(font->hasUnderline, range);
             //newLayout->SetStrikethrough(font->hasStrikethrough, range);
         } else {
@@ -126,7 +126,7 @@ namespace Ghurund::UI {
         }
     }
 
-    Status LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, const WString& textToInsert, TextStyle* font) {
+    Status LayoutEditor::insertTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, const WString& textToInsert, TextFormat* textFormat) {
         if (currentLayout)
             currentLayout->AddRef();
         IDWriteTextLayout* oldLayout = currentLayout;
@@ -154,7 +154,7 @@ namespace Ghurund::UI {
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout);
 
                 // Inserted text
-                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, textToInsert.Size, font);
+                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, textToInsert.Size, textFormat);
 
                 // Last block (if it exists)
                 copyRangedProperties(oldLayout, position, oldTextLength, textToInsert.Size, newLayout);

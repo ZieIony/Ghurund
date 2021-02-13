@@ -37,10 +37,9 @@ namespace Ghurund::UI {
             virtual void onLayoutChanged() {}
 
         public:
-            Widget(LayoutType* layout = nullptr) {
+            Widget() {
                 StateChanged.add(stateHandler);
                 ThemeChanged.add(themeHandler);
-                Layout = layout;
             }
 
             ~Widget() = 0 {
@@ -76,7 +75,7 @@ namespace Ghurund::UI {
             }
 
             virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
-                Status result = __super::load(loader, xml);
+                Status result = Control::load(loader, xml);
                 if (result != Status::OK)
                     return result;
                 auto layoutAttr = xml.FindAttribute("layout");

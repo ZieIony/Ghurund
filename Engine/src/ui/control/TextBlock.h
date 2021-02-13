@@ -1,23 +1,14 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/font/TextStyle.h"
+#include "ui/font/TextFormat.h"
 #include "ui/style/Style.h"
 #include "ui/Graphics2D.h"
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     private:
-        TextStyle* font = nullptr;
-
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<TextBlock>();
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        TextFormat* textFormat = nullptr;
 
     protected:
         WString text;
@@ -26,8 +17,8 @@ namespace Ghurund::UI {
         IDWriteTextLayout* textLayout = nullptr;
 
         ~TextBlock() {
-            if (font)
-                font->release();
+            if (textFormat)
+                textFormat->release();
             if (textLayout)
                 textLayout->Release();
         }
@@ -36,7 +27,7 @@ namespace Ghurund::UI {
             Context->Graphics.DWriteFactory->CreateTextLayout(
                 text.Data,
                 (UINT32)text.Size,
-                TextStyle->TextFormat,
+                TextFormat->Format,
                 width,
                 height,
                 &textLayout
@@ -47,15 +38,24 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
+        static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<TextBlock>();
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
     public:
         TextBlock() {
             text = L"text";
         }
 
-        TextBlock(const WString& text, TextStyle* font, uint32_t color = 0xde000000) {
-            font->addReference();
+        TextBlock(const WString& text, TextFormat* textFormat, uint32_t color = 0xde000000) {
+            textFormat->addReference();
             this->text = text;
-            this->font = font;
+            this->textFormat = textFormat;
             TextColor = color;
         }
 
@@ -63,7 +63,7 @@ namespace Ghurund::UI {
             return text;
         }
 
-        void setText(const WString& text) {
+        inline void setText(const WString& text) {
             if (this->text == text)
                 return;
             this->text = text;
@@ -85,18 +85,18 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextColor, put = setTextColor)) unsigned int TextColor;
 
-        inline TextStyle* getFont() {
-            return font;
+        inline TextFormat* getFont() {
+            return textFormat;
         }
 
-        inline void setFont(TextStyle* font) {
-            if (this->font == font)
+        inline void setFont(TextFormat* textFormat) {
+            if (this->textFormat == textFormat)
                 return;
-            setPointer(this->font, font);
+            setPointer(this->textFormat, textFormat);
             invalidate();
         }
 
-        __declspec(property(get = getFont, put = setFont)) TextStyle* TextStyle;
+        __declspec(property(get = getFont, put = setFont)) TextFormat* TextFormat;
 
         void dispatchContextChanged();
 

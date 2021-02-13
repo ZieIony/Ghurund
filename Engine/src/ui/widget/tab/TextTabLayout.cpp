@@ -4,7 +4,7 @@
 namespace Ghurund::UI {
     void TextTabLayout::init() {
         stack = ghnew StackLayout();
-        textView->TextStyle = theme.TextStyles[Theme::TEXTSTYLE_BUTTON];
+        textView->TextFormat = theme.TextFormats[Theme::TEXTFORMAT_BUTTON];
         paddingContainer->Child = textView;
         paddingContainer->Padding.All = 4;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
@@ -17,23 +17,23 @@ namespace Ghurund::UI {
 
     void TextTabLayout::onStateChanged(Control& control) {
         if (!control.Enabled) {
-            TextBlock->TextColor = theme.getColorForegroundDisabledOnBackground();
+            TextBlock->TextColor = theme.Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
             backgroundView->Color = 0;
             border->Color = 0;
         } else if (selectableView->Selected) {
             backgroundView->Color = theme.Colors[Theme::COLOR_ACCENT];
             border->Color = 0;
-            TextBlock->TextColor = theme.getColorForegroundPrimaryOnAccent();
+            TextBlock->TextColor = theme.Colors[Theme::COLOR_PRIMARY_ONACCENT];
         } else if (selectableView->Pressed) {
-            TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
+            TextBlock->TextColor = theme.Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
             backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
             //border->Color = theme.getColorAccentDark();
         } else if (selectableView->Hovered || control.Focused) {
-            TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
+            TextBlock->TextColor = theme.Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
             backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
             border->Color = theme.Colors[Theme::COLOR_ACCENT];
         } else {
-            TextBlock->TextColor = theme.getColorForegroundPrimaryOnBackground();
+            TextBlock->TextColor = theme.Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
             backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
             border->Color = 0;
         }

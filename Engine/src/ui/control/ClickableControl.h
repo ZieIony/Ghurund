@@ -4,10 +4,8 @@
 #include "MouseEvents.h"
 
 namespace Ghurund::UI {
-    class ClickableView:public ControlContainer {
+    class ClickableControl:public ControlContainer {
     private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ClickableView>();
-
         bool hovered = false;
         MousePressed buttons;
         Event<Control, MousePressedEventArgs> onPressed = Event<Control, MousePressedEventArgs>(*this);
@@ -15,7 +13,8 @@ namespace Ghurund::UI {
 
     protected:
         static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableView))
+            static const auto CONSTRUCTOR = NoArgsConstructor<ClickableControl>();
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableControl))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
@@ -29,6 +28,10 @@ namespace Ghurund::UI {
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
     public:
+        ClickableControl() {
+            Focusable = true;
+        }
+
         inline bool isHovered() const {
             return hovered;
         }

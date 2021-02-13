@@ -2,28 +2,28 @@
 
 #include "Theme.h"
 #include "resource/ResourceManager.h"
-#include "ui/font/TextStyle.h"
+#include "ui/font/TextFormat.h"
 #include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
-    class DefaultTheme:public Ghurund::UI::Theme {
+    class BaseTheme:public Ghurund::UI::Theme {
     public:
-        DefaultTheme(Ghurund::ResourceContext& context) {
-            auto buttonFont = Ghurund::makeShared<Ghurund::UI::TextStyle>(L"fonts/lato_medium.ttf", L"Lato Medium", 10.0f, FW_MEDIUM, false);
+        BaseTheme(Ghurund::ResourceContext& context) {
+            auto buttonFont = Ghurund::makeShared<Ghurund::UI::TextFormat>(L"fonts/lato_medium.ttf", L"Lato Medium", 10.0f, FW_MEDIUM, false);
             buttonFont->init(context.Graphics2D);
-            TextStyles.set(Theme::TEXTSTYLE_BUTTON, buttonFont);
+            TextFormats.set(Theme::TEXTFORMAT_BUTTON, buttonFont);
 
-            auto listHeaderFont = Ghurund::makeShared<Ghurund::UI::TextStyle>(L"fonts/lato_light.ttf", L"Lato Light", 14.0f, FW_LIGHT, false);
+            auto listHeaderFont = Ghurund::makeShared<Ghurund::UI::TextFormat>(L"fonts/lato_light.ttf", L"Lato Light", 14.0f, FW_LIGHT, false);
             listHeaderFont->init(context.Graphics2D);
-            TextStyles.set(Theme::TEXTSTYLE_LIST_HEADER, listHeaderFont);
+            TextFormats.set(Theme::TEXTFORMAT_LIST_HEADER, listHeaderFont);
 
-            auto textPrimaryFont = Ghurund::makeShared<Ghurund::UI::TextStyle>(L"fonts/lato_regular.ttf", L"Lato", 11.0f, FW_REGULAR, false);
+            auto textPrimaryFont = Ghurund::makeShared<Ghurund::UI::TextFormat>(L"fonts/lato_regular.ttf", L"Lato", 11.0f, FW_REGULAR, false);
             textPrimaryFont->init(context.Graphics2D);
-            TextStyles.set(Theme::TEXTSTYLE_TEXT_PRIMARY, textPrimaryFont);
+            TextFormats.set(Theme::TEXTFORMAT_TEXT_PRIMARY, textPrimaryFont);
 
-            auto textSecondaryFont = Ghurund::makeShared<Ghurund::UI::TextStyle>(L"fonts/lato_regular.ttf", L"Lato", 10.0f, FW_REGULAR, false);
+            auto textSecondaryFont = Ghurund::makeShared<Ghurund::UI::TextFormat>(L"fonts/lato_regular.ttf", L"Lato", 10.0f, FW_REGULAR, false);
             textSecondaryFont->init(context.Graphics2D);
-            TextStyles.set(Theme::TEXTSTYLE_TEXT_SECONDARY, textSecondaryFont);
+            TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
             SharedPointer<BitmapImage> checkBoxChecked = BitmapImage::makeFromImage(context, L"icons/checkbox checked 18.png");
             Images.set(Theme::IMAGE_CHECKBOX_CHECKED, checkBoxChecked);

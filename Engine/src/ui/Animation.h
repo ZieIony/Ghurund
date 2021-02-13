@@ -1,67 +1,73 @@
 #pragma once
 
-#include <time.h>
+#include "core/Event.h"
+
 #include <algorithm>
-#include <functional>
 
 namespace Ghurund::UI {
     class Animation {
     private:
-        unsigned long duration = 200;
-        time_t startTime = 0;
-        std::function<void(float)> onProgressChanged;
+        uint64_t duration = 200;
+        uint64_t startTime = 0, currentTime;
+        Event<Animation> progressChanged = Event<Animation>(*this);
+        bool running = false;
 
     public:
-        Animation(std::function<void(float)> onProgressChanged) {
-            this->onProgressChanged = onProgressChanged;
-        }
-
         void start() {
-            if (!Started) {
-                startTime = time(0);
-                onProgressChanged(Progress);
-            }
+            startTime = 0;
+            running = true;
         }
 
-        void update() {
-            if (Started && !Finished) {
-                onProgressChanged(Progress);
-            }
+        void update(uint64_t time) {
+            if (!Running)
+                return;
+            if (startTime == 0)
+                startTime = time;
+            currentTime = time;
+            progressChanged();
+            if (Finished)
+                running = false;
         }
 
         void finish() {
             if (!Finished) {
-                startTime = time(0) - duration;
-                onProgressChanged(Progress);
+                startTime = currentTime - duration;
+                progressChanged();
             }
         }
 
+        Event<Animation>& getProgressChanged() {
+            return progressChanged;
+        }
+
+        __declspec(property(get = getProgressChanged)) Event<Animation>& ProgressChanged;
+
         inline float getProgress() const {
-            return std::max(0.0f, std::min((float)(time(0) - startTime) / duration, 1.0f));
+            return std::max(0.0f, std::min((float)(currentTime - startTime) / duration, 1.0f));
         }
 
         __declspec(property(get = getProgress)) float Progress;
 
-        inline bool isStarted() const {
-            return startTime > 0 && time(0) <= startTime + duration;
+        inline bool isRunning() const {
+            return running;
         }
 
-        __declspec(property(get = isStarted)) bool Started;
+        __declspec(property(get = isRunning)) bool Running;
 
         inline bool isFinished() const {
-            return startTime > 0 && time(0) > startTime + duration;
+            return running && currentTime > startTime + duration;
         }
 
         __declspec(property(get = isFinished)) bool Finished;
 
-        inline unsigned long getDuration()const {
+        inline uint64_t getDuration() const {
             return duration;
         }
 
-        inline void setDuration(unsigned long duration) {
+        inline void setDuration(uint64_t duration) {
             this->duration = duration;
         }
 
-        __declspec(property(get = getDuration, put = setDuration)) unsigned long Duration;
+        __declspec(property(get = getDuration, put = setDuration)) uint64_t Duration;
     };
 }

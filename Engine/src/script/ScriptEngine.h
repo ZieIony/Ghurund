@@ -50,8 +50,9 @@ namespace Ghurund {
             Logger::log(type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
         }
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

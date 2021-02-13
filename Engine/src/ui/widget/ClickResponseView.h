@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ui/control/ClickableView.h"
+#include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
-    class ClickResponseView:public ClickableView {
+    class ClickResponseView:public ClickableControl {
     private:
         uint64_t startTime = 0;
         uint32_t length = 150;
@@ -12,17 +12,13 @@ namespace Ghurund::UI {
         uint32_t color;
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ClickResponseView>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ClickResponseView>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickResponseView))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
-        }
-
-        virtual bool onMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override {
-            return false;
         }
 
     public:
@@ -56,5 +52,15 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+    };
+
+    class ClickResponseViewOnBackgroundStyle:public Style {
+    public:
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class ClickResponseViewOnAccentStyle:public Style {
+    public:
+        virtual void onStateChanged(Control& control) const override;
     };
 }

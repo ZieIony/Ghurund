@@ -1,35 +1,19 @@
 #include "VerticalScrollBarLayout.h"
-#include "ui/style/Theme.h"
+#include "ui/LayoutLoader.h"
 #include "ui/drawable/BitmapImageDrawable.h"
 
 namespace Ghurund::UI {
+    VerticalScrollBarLayout::VerticalScrollBarLayout(LayoutLoader& loader) {
+        PointerList<Control*> controls;
+        if (loader.load(FilePath(L"layouts/VerticalScrollBar.xml"), controls) == Status::OK)
+            Root = controls[0];
+    }
+
     void VerticalScrollBarLayout::init() {
-        auto topButtonLayout = ghnew ImageButtonFlatLayout();
-        topButton = ghnew ImageButton(topButtonLayout);
-        topButtonLayout->PaddingContainer->Padding.All = 0;
-        topButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        topButton->Image = makeShared<BitmapImageDrawable>(theme.Images[Theme::IMAGE_ARROWUP]);
-
-        barButton = ghnew ImageButton();
-        barButton->PreferredSize = { PreferredSize::Width::FILL, 100.0f };
-
-        clickableTrack = ghnew ClickableView();
-        clickableTrack->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-
-        track = ghnew ManualLayout();
-        track->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-        track->Children = { clickableTrack, barButton };
-
-        auto bottomButtonLayout = ghnew ImageButtonFlatLayout();
-        bottomButton = ghnew ImageButton(bottomButtonLayout);
-        bottomButtonLayout->PaddingContainer->Padding.All = 0;
-        bottomButton->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
-        bottomButton->Image = makeShared<BitmapImageDrawable>(theme.Images[Theme::IMAGE_ARROWDOWN]);
-
-        verticalLayout = ghnew VerticalLayout();
-        verticalLayout->Children = { topButton, track, bottomButton };
-        verticalLayout->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::FILL };
-
-        Root = verticalLayout;
+        topButton = (Button*)Root->find("startButton");
+        barButton = (Button*)Root->find("barButton");
+        clickableTrack = (ClickableControl*)Root->find("clickableTrack");
+        track = (ManualLayout*)Root->find("track");
+        bottomButton = (Button*)Root->find("endButton");
     }
 }

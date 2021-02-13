@@ -8,25 +8,25 @@ namespace Ghurund::UI {
         if (!theme || !imageView->Image)
             return;
         if (!control.Enabled) {
-            imageView->Image->Tint = theme->getColorForegroundDisabledOnBackground();
+            imageView->Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else if (selectableView->Pressed) {
             if (selectableView->Selected) {
                 //imageView->Image->Tint = theme->getColorAccentDark();
                 imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
-                imageView->Image->Tint = theme->getColorForegroundPrimaryOnBackground();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
             }
         } else if (selectableView->Hovered || selectableView->Focused) {
             if (selectableView->Selected) {
                 imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
-                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
             }
         } else {
             if (selectableView->Selected) {
                 imageView->Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
             } else {
-                imageView->Image->Tint = theme->getColorForegroundSecondaryOnBackground();
+                imageView->Image->Tint = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
             }
         }
     }

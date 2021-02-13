@@ -20,6 +20,10 @@ namespace Ghurund::Input {
         List<WindowMessage> events;
 
     public:
+        Input() {
+            memset(keys, 0, sizeof(bool) * 256);
+        }
+
         inline void addEvent(const WindowMessage& msg) {
             events.add(msg);
         }

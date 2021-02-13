@@ -52,10 +52,14 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        virtual void onLayoutChanged() override {
+            if (Layout)
+                Layout->SelectableView->StateChanged.add(StateChanged);
+        }
+
     public:
-        Tab(TabLayout* layout):Widget(layout) {
+        Tab() {
             Focusable = true;
-            Layout->SelectableView->StateChanged.add(StateChanged);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

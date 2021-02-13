@@ -14,8 +14,14 @@ namespace Ghurund::UI {
                     prevFocusedChild = nullptr;
                 }
             } else {
-                setPointer(prevFocusedChild, Focus);
-                clearFocus();
+                Control* focus = Focus;
+                if (focus) {
+                    while (focus->Focus)
+                        focus = focus->Focus;
+                    setPointer(prevFocusedChild, focus);
+                    clearFocus();
+                }
+
             }
             return true;
         });

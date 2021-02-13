@@ -24,8 +24,9 @@ namespace Ghurund {
 
         XMFLOAT4* clearColor = nullptr;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Renderer>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Renderer>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Renderer))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

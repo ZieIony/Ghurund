@@ -4,8 +4,6 @@
 #include "ui/style/Style.h"
 
 namespace Ghurund::UI {
-    class Theme;
-
     class TextBlockButtonStyle:public Style {
     public:
         virtual void onThemeChanged(Control& control) const override;
@@ -31,6 +29,26 @@ namespace Ghurund::UI {
     public:
         virtual void onThemeChanged(Control& control) const override;
 
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class TextBlockButtonOnAccentStyle:public TextBlockButtonStyle {
+    public:
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class TextBlockPrimaryOnAccentStyle:public TextBlockPrimaryStyle {
+    public:
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class TextBlockSecondaryOnAccentStyle:public TextBlockSecondaryStyle {
+    public:
+        virtual void onStateChanged(Control& control) const override;
+    };
+
+    class TextBlockHeaderOnAccentStyle:public TextBlockHeaderStyle {
+    public:
         virtual void onStateChanged(Control& control) const override;
     };
 }

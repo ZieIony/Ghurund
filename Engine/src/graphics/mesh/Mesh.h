@@ -28,16 +28,6 @@ namespace Ghurund {
     typedef uint32_t vindex_t;
 
     class Mesh:public Resource {
-	private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Mesh>();
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Mesh))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
-
     protected:
         void* vertices = nullptr;
         unsigned int vertexSize;
@@ -65,6 +55,15 @@ namespace Ghurund {
 
         virtual unsigned int getVersion()const {
             return 1;
+        }
+
+        static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Mesh>();
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Mesh))
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
         }
 
     public:

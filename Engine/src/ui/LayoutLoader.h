@@ -10,7 +10,7 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
-    class TextStyle;
+    class TextFormat;
     class Theme;
 
     class LayoutLoader {
@@ -68,7 +68,7 @@ namespace Ghurund::UI {
         
         WString loadText(const char* str);
 
-        TextStyle* loadFont(const char* str);
+        TextFormat* loadTextFormat(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
     };

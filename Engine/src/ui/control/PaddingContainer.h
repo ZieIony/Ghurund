@@ -9,8 +9,8 @@ namespace Ghurund::UI {
         Padding padding;
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

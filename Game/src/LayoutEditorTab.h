@@ -23,7 +23,7 @@ namespace Ghurund::Editor {
         SharedPointer<ToolWindow> widgetHierarchyWindow;
         SharedPointer<WidgetHierarchyPanel> widgetHierarchyPanel;
         SharedPointer<StackLayout> layoutWorkspace;
-        SharedPointer<TextButton> reloadLayout;
+        SharedPointer<Button> reloadLayout;
         LayoutLoader layoutLoader;
         FileWatcher fileWatcher;
         ResourceContext& context;

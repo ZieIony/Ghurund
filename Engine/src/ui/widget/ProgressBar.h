@@ -11,8 +11,9 @@ namespace Ghurund::UI {
         unsigned int progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
         Paint paint;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ProgressBar>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ProgressBar>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

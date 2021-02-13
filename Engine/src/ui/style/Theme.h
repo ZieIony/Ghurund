@@ -3,9 +3,13 @@
 #include "core/SharedPointer.h"
 
 #include "ui/style/Style.h"
+#include "ui/control/Border.h"
+#include "ui/control/Shadow.h"
 #include "ui/control/Control.h"
 #include "ui/control/TextBlockStyle.h"
+#include "ui/control/ImageView.h"
 #include "ui/drawable/BitmapImage.h"
+#include "ui/widget/ClickResponseView.h"
 #include "ui/widget/SeparatorStyle.h"
 #include "ui/widget/ProgressBar.h"
 
@@ -51,24 +55,39 @@ namespace Ghurund::UI {
         static const inline float highlight = 0.25f;
 
         static const inline float state_normal = 0.12f;
-        static const inline float state_activated = 0.4f;
-        static const inline float state_disabled = 0.08f;
+        //static const inline float state_activated = 0.4f;
+        //static const inline float state_disabled = 0.08f;
 
-        constexpr uint32_t colorWithAlpha(float alpha, uint32_t color) const {
-            uint32_t a = (uint32_t)(alpha * 0xff);
-            return ((a & 0xff) << 24) | (color & 0xffffff);
-        }
+        SeparatorHorizontalStyle separatorHorizontalStyle;
+        SeparatorVerticalStyle separatorVerticalStyle;
+        ProgressBarStyle progressBarStyle;
 
-        Style* separatorHorizontalStyle = ghnew SeparatorHorizontalStyle();
-        Style* separatorVerticalStyle = ghnew SeparatorVerticalStyle();
-        Style* progressBarStyle = ghnew ProgressBarStyle();
+        TextBlockButtonStyle textViewButtonStyle;
+        TextBlockPrimaryStyle textViewPrimaryStyle;
+        TextBlockSecondaryStyle textViewSecondaryStyle;
+        TextBlockHeaderStyle textViewHeaderStyle;
+        TextBlockButtonOnAccentStyle textViewButtonOnAccentStyle;
+        TextBlockPrimaryOnAccentStyle textViewPrimaryOnAccentStyle;
+        TextBlockSecondaryOnAccentStyle textViewSecondaryOnAccentStyle;
+        TextBlockHeaderOnAccentStyle textViewHeaderOnAccentStyle;
 
-        Style* textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
-        Style* textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
-        Style* textViewHeaderStyle = ghnew TextBlockHeaderStyle();
+        ColorViewControlStyle colorViewControlStyle;
+        ColorViewAccentStyle colorViewAccentStyle;
+        ColorViewBackgroundStyle colorViewBackgroundStyle;
+
+        ImageViewStyle imageViewStyle;
+        ImageViewOnBackgroundStyle imageViewOnBackgroundStyle;
+        ImageViewOnAccentStyle imageViewOnAccentStyle;
+        ImageViewAccentStyle imageViewAccentStyle;
+
+        BorderOnBackgroundStyle borderOnBackgroundStyle;
+        BorderAccentStyle borderAccentStyle;
+        ShadowButtonStyle shadowButtonStyle;
+        ClickResponseViewOnBackgroundStyle clickResponseViewOnBackgroundStyle;
+        ClickResponseViewOnAccentStyle clickResponseViewOnAccentStyle;
 
         Map<StyleKey, Style*> styles;
-        PointerMap<TextFormatKey, TextStyle*> textStyles;
+        PointerMap<TextFormatKey, TextFormat*> textFormats;
         Map<ColorKey, Color> colors;
         PointerMap<ImageKey, BitmapImage*> images;
 
@@ -83,49 +102,52 @@ namespace Ghurund::UI {
         static inline const StyleKey STYLE_SEPARATOR_HORIZONTAL = WString(L"separator_horizontal");
         static inline const StyleKey STYLE_SEPARATOR_VERTICAL = WString(L"separator_vertical");
         static inline const StyleKey STYLE_PROGRESSBAR = WString(L"progressBar");
+        static inline const StyleKey STYLE_TEXTBLOCK_BUTTON = WString(L"textBlock_button");
         static inline const StyleKey STYLE_TEXTBLOCK_PRIMARY = WString(L"textBlock_primary");
         static inline const StyleKey STYLE_TEXTBLOCK_SECONDARY = WString(L"textBlock_secondary");
         static inline const StyleKey STYLE_TEXTBLOCK_HEADER = WString(L"textBlock_header");
+        static inline const StyleKey STYLE_TEXTBLOCK_BUTTON_ONACCENT = WString(L"textBlock_button_onAccent");
+        static inline const StyleKey STYLE_TEXTBLOCK_PRIMARY_ONACCENT = WString(L"textBlock_primary_onAccent");
+        static inline const StyleKey STYLE_TEXTBLOCK_SECONDARY_ONACCENT = WString(L"textBlock_secondary_onAccent");
+        static inline const StyleKey STYLE_TEXTBLOCK_HEADER_ONACCENT = WString(L"textBlock_header_onAccent");
+        static inline const StyleKey STYLE_COLORVIEW_BACKGROUND = WString(L"colorView_background");
+        static inline const StyleKey STYLE_COLORVIEW_CONTROL = WString(L"colorView_control");
+        static inline const StyleKey STYLE_COLORVIEW_ACCENT = WString(L"colorView_accent");
+        static inline const StyleKey STYLE_IMAGEVIEW = WString(L"imageView");
+        static inline const StyleKey STYLE_IMAGEVIEW_ONBACKGROUND = WString(L"imageView_onBackground");
+        static inline const StyleKey STYLE_IMAGEVIEW_ONACCENT = WString(L"imageView_onAccent");
+        static inline const StyleKey STYLE_IMAGEVIEW_ACCENT = WString(L"imageView_accent");
+        static inline const StyleKey STYLE_BORDER_ONBACKGROUND = WString(L"border_onBackground");
+        static inline const StyleKey STYLE_BORDER_ACCENT = WString(L"border_accent");
+        static inline const StyleKey STYLE_SHADOW_BUTTON = WString(L"shadow_button");
+        static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONBACKGROUND = WString(L"clickResponseView_onBackground");
+        static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONACCENT = WString(L"clickResponseView_onAccent");
 
-        static inline const TextFormatKey TEXTSTYLE_BUTTON = WString(L"button");
-        static inline const TextFormatKey TEXTSTYLE_LIST_HEADER = WString(L"listHeader");
-        static inline const TextFormatKey TEXTSTYLE_TEXT_PRIMARY = WString(L"textPrimary");
-        static inline const TextFormatKey TEXTSTYLE_TEXT_SECONDARY = WString(L"textSecondary");
+        static inline const TextFormatKey TEXTFORMAT_BUTTON = WString(L"button");
+        static inline const TextFormatKey TEXTFORMAT_LIST_HEADER = WString(L"listHeader");
+        static inline const TextFormatKey TEXTFORMAT_TEXT_PRIMARY = WString(L"textPrimary");
+        static inline const TextFormatKey TEXTFORMAT_TEXT_SECONDARY = WString(L"textSecondary");
 
-        static inline const ColorKey COLOR_ERROR = WString(L"error");
+        // base
         static inline const ColorKey COLOR_BACKGR0UND = WString(L"background");
-        static inline const ColorKey COLOR_CONTROL = WString(L"control");
+        static inline const ColorKey COLOR_FOREGROUND_ONBACKGROUND = WString(L"foreground_onBackground");
+        static inline const ColorKey COLOR_FOREGROUND_ONACCENT = WString(L"foreground_onAccent");
         static inline const ColorKey COLOR_ACCENT = WString(L"accent");
-        static inline const ColorKey COLOR_ON_ERROR = WString(L"onError");
-        static inline const ColorKey COLOR_ON_BACKGR0UND = WString(L"onBackground");
-        static inline const ColorKey COLOR_ON_ACCENT = WString(L"onAccent");
 
-        Theme() {
-            separatorHorizontalStyle = ghnew SeparatorHorizontalStyle();
-            separatorVerticalStyle = ghnew SeparatorVerticalStyle();
-            progressBarStyle = ghnew ProgressBarStyle();
+        // generated
+        static inline const ColorKey COLOR_CONTROL = WString(L"control");
+        static inline const ColorKey COLOR_PRIMARY_ONBACKGROUND = WString(L"primary_onBackground");
+        static inline const ColorKey COLOR_SECONDARY_ONBACKGROUND = WString(L"secondary_onBackground");
+        static inline const ColorKey COLOR_DISABLED_ONBACKGROUND = WString(L"disabled_onBackground");
+        static inline const ColorKey COLOR_HIGHLIGHT_ONBACKGROUND = WString(L"highlight_onBackground");
+        static inline const ColorKey COLOR_PRIMARY_ONACCENT = WString(L"primary_onAccent");
+        static inline const ColorKey COLOR_SECONDARY_ONACCENT = WString(L"secondary_onAccent");
+        static inline const ColorKey COLOR_DISABLED_ONACCENT = WString(L"disabled_onAccent");
+        static inline const ColorKey COLOR_HIGHLIGHT_ONACCENT = WString(L"highlight_onAccent");
 
-            textViewPrimaryStyle = ghnew TextBlockPrimaryStyle();
-            textViewSecondaryStyle = ghnew TextBlockSecondaryStyle();
-            textViewHeaderStyle = ghnew TextBlockHeaderStyle();
+        Theme();
 
-            styles.set(STYLE_SEPARATOR_HORIZONTAL, separatorHorizontalStyle);
-            styles.set(STYLE_SEPARATOR_VERTICAL, separatorVerticalStyle);
-            styles.set(STYLE_PROGRESSBAR, progressBarStyle);
-            styles.set(STYLE_TEXTBLOCK_PRIMARY, textViewPrimaryStyle);
-            styles.set(STYLE_TEXTBLOCK_SECONDARY, textViewSecondaryStyle);
-            styles.set(STYLE_TEXTBLOCK_HEADER, textViewHeaderStyle);
-        }
-
-        virtual ~Theme() {
-            delete separatorHorizontalStyle;
-            delete separatorVerticalStyle;
-            delete progressBarStyle;
-
-            delete textViewPrimaryStyle;
-            delete textViewSecondaryStyle;
-            delete textViewHeaderStyle;
-        }
+        void updateColors();
 
         inline Map<StyleKey, Style*>& getStyles() {
             return styles;
@@ -133,11 +155,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getStyles)) Map<StyleKey, Style*>& Styles;
 
-        inline PointerMap<TextFormatKey, TextStyle*>& getTextStyles() {
-            return textStyles;
+        inline PointerMap<TextFormatKey, TextFormat*>& getTextStyles() {
+            return textFormats;
         }
 
-        __declspec(property(get = getTextStyles)) PointerMap<TextFormatKey, TextStyle*>& TextStyles;
+        __declspec(property(get = getTextStyles)) PointerMap<TextFormatKey, TextFormat*>& TextFormats;
 
         inline Map<ColorKey, Color>& getColors() {
             return colors;
@@ -150,98 +172,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getImages)) PointerMap<ImageKey, BitmapImage*>& Images;
-
-        uint32_t getColorControlNormal() {
-            return colorWithAlpha(state_normal, Colors[COLOR_CONTROL]);
-        }
-
-        __declspec(property(get = getColorControlNormal)) uint32_t ColorControlNormal;
-
-        uint32_t getColorControlDisabled() {
-            return colorWithAlpha(state_disabled, Colors[COLOR_CONTROL]);
-        }
-
-        __declspec(property(get = getColorControlDisabled)) uint32_t ColorControlDisabled;
-
-        uint32_t getColorControlActivated() {
-            return colorWithAlpha(state_activated, Colors[COLOR_CONTROL]);
-        }
-
-        __declspec(property(get = getColorControlActivated)) uint32_t ColorControlActivated;
-
-        uint32_t getColorForegroundPrimaryOnError() {
-            return colorWithAlpha(emphasis_high, Colors[COLOR_ON_ERROR]);
-        }
-
-        __declspec(property(get = getColorForegroundPrimaryOnError)) uint32_t ColorForegroundPrimaryOnError;
-
-        uint32_t getColorForegroundPrimaryOnBackground() {
-            return colorWithAlpha(emphasis_high, Colors[COLOR_ON_BACKGR0UND]);
-        }
-
-        __declspec(property(get = getColorForegroundPrimaryOnBackground)) uint32_t ColorForegroundPrimaryOnBackground;
-
-        uint32_t getColorForegroundPrimaryOnAccent() {
-            return colorWithAlpha(emphasis_high, Colors[COLOR_ON_ACCENT]);
-        }
-
-        __declspec(property(get = getColorForegroundPrimaryOnAccent)) uint32_t ColorForegroundPrimaryOnAccent;
-
-        uint32_t getColorForegroundSecondaryOnError() {
-            return colorWithAlpha(emphasis_medium, Colors[COLOR_ON_ERROR]);
-        }
-
-        __declspec(property(get = getColorForegroundSecondaryOnError)) uint32_t ColorForegroundSecondaryOnError;
-
-        uint32_t getColorForegroundSecondaryOnBackground() {
-            return colorWithAlpha(emphasis_medium, Colors[COLOR_ON_BACKGR0UND]);
-        }
-
-        __declspec(property(get = getColorForegroundSecondaryOnBackground)) uint32_t ColorForegroundSecondaryOnBackground;
-
-        uint32_t getColorForegroundSecondaryOnAccent() {
-            return colorWithAlpha(emphasis_medium, Colors[COLOR_ON_ACCENT]);
-        }
-
-        __declspec(property(get = getColorForegroundSecondaryOnAccent)) uint32_t ColorForegroundSecondaryOnAccent;
-
-        uint32_t getColorForegroundDisabledOnError() {
-            return colorWithAlpha(emphasis_disabled, Colors[COLOR_ON_ERROR]);
-        }
-
-        __declspec(property(get = getColorForegroundDisabledOnError)) uint32_t ColorForegroundDisabledOnError;
-
-        uint32_t getColorForegroundDisabledOnBackground() {
-            return colorWithAlpha(emphasis_disabled, Colors[COLOR_ON_BACKGR0UND]);
-        }
-
-        __declspec(property(get = getColorForegroundDisabledOnBackground)) uint32_t ColorForegroundDisabledOnBackground;
-
-        uint32_t getColorForegroundDisabledOnAccent() {
-            return colorWithAlpha(emphasis_disabled, Colors[COLOR_ON_ACCENT]);
-        }
-
-        __declspec(property(get = getColorForegroundDisabledOnAccent)) uint32_t ColorForegroundDisabledOnAccent;
-
-        // highlights
-
-        uint32_t getColorHighlightOnError() {
-            return colorWithAlpha(highlight, Colors[COLOR_ON_ERROR]);
-        }
-
-        __declspec(property(get = getColorHighlightOnError)) uint32_t ColorHighlightOnError;
-
-        uint32_t getColorHighlightOnBackground() {
-            return colorWithAlpha(highlight, Colors[COLOR_ACCENT]);
-        }
-
-        __declspec(property(get = getColorHighlightOnBackground)) uint32_t ColorHighlightOnBackground;
-
-        uint32_t getColorHighlightOnAccent() {
-            return colorWithAlpha(highlight, Colors[COLOR_ON_ACCENT]);
-        }
-
-        __declspec(property(get = getColorHighlightOnAccent)) uint32_t ColorHighlightOnAccent;
-
     };
 }

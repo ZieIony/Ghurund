@@ -33,28 +33,31 @@ namespace Ghurund::UI {
         }
     }
 
-    VerticalScrollBar::VerticalScrollBar(VerticalScrollBarLayout* layout):Widget(layout), dragHelper(DragHelper(*layout->BarButton)) {
-        setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
+    void VerticalScrollBar::onLayoutChanged() {
+        __super::onLayoutChanged();
+        if (dragHelper)
+            delete dragHelper;
+        dragHelper = ghnew DragHelper(*Layout->BarButton);
 
-        layout->TopButton->OnClicked.add([this, layout](Control&, const MouseClickedEventArgs&) {
+        Layout->TopButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll -= 10;
             if (scroll != prevScroll) {
-                layout->Track->repaint();
+                Layout->Track->repaint();
                 OnScrolled();
             }
             return true;
         });
-        layout->BottomButton->OnClicked.add([this, layout](Control&, const MouseClickedEventArgs&) {
+        Layout->BottomButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll += 10;
             if (scroll != prevScroll) {
-                layout->Track->repaint();
+                Layout->Track->repaint();
                 OnScrolled();
             }
             return true;
         });
-        dragHelper.OnDragged.add([this](Control& control) {
+        dragHelper->OnDragged.add([this](Control& control) {
             updateScroll();
             OnScrolled();
             return true;

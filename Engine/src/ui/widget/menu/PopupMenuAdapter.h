@@ -9,7 +9,7 @@
 #include "ui/control/TextBlock.h"
 
 namespace Ghurund::UI {
-    class ButtonPopupMenuRow:public ClickableView {
+    class ButtonPopupMenuRow:public ClickableControl {
     private:
         SharedPointer<ImageView> icon;
         SharedPointer<TextBlock> text;

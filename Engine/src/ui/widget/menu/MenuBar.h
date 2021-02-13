@@ -9,9 +9,12 @@
 namespace Ghurund::UI {
     class MenuBar: public Widget<MenuBarLayout> {
     private:
+        ButtonMenuBarAdapter* adapter;
         List<MenuItem*> items;
 
     protected:
+        virtual void onLayoutChanged() override;
+
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(MenuBar))
                 .withSupertype(__super::GET_TYPE());
@@ -20,9 +23,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        MenuBar(Ghurund::ResourceContext& context, LayoutLoader& loader, MenuBarLayout* layout);
-
-        MenuBar(ResourceContext& context, LayoutLoader& loader, Ghurund::UI::Theme& theme):MenuBar(context, loader, ghnew MenuBarLayout(context, loader, theme)) {}
+        MenuBar(LayoutLoader& loader);
 
         ~MenuBar() {
             items.deleteItems();

@@ -80,26 +80,26 @@ namespace Ghurund::UI {
 
         inline void drawLine(float x1, float y1, float x2, float y2, const Paint& paint) {}
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst) {
-            deviceContext->DrawBitmap(image.Data, dst);
+        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst, float alpha = 1.0f) {
+            deviceContext->DrawBitmap(image.Data, dst, alpha);
         }
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst, int32_t tintColor) {
+        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst, int32_t tintColor, float alpha = 1.0f) {
             tintEffect->SetInput(0, image.Data);
             Color color(tintColor);
-            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A, color.R, color.G, color.B, 0);
+            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
             tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
             deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
         }
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst) {
-            deviceContext->DrawBitmap(image.Data, dst, 1, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, src);
+        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, float alpha = 1.0f) {
+            deviceContext->DrawBitmap(image.Data, dst, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, src);
         }
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, int32_t tintColor) {
+        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, int32_t tintColor, float alpha = 1.0f) {
             tintEffect->SetInput(0, image.Data);
             Color color(tintColor);
-            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A, color.R, color.G, color.B, 0);
+            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
             tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
             deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
         }

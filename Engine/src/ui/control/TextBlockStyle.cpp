@@ -6,7 +6,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_BUTTON];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_BUTTON];
     }
 
     void TextBlockButtonStyle::onStateChanged(Control& control) const {
@@ -14,9 +14,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (!control.Enabled) {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundPrimaryOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
         }
     }
 
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
     }
 
     void TextBlockPrimaryStyle::onStateChanged(Control& control) const {
@@ -32,9 +32,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (!control.Enabled) {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundPrimaryOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
         }
     }
 
@@ -42,7 +42,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_TEXT_SECONDARY];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY];
     }
 
     void TextBlockSecondaryStyle::onStateChanged(Control& control) const {
@@ -50,9 +50,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (!control.Enabled) {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundSecondaryOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
         }
     }
 
@@ -60,7 +60,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextStyle = theme->TextStyles[Theme::TEXTSTYLE_LIST_HEADER];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_LIST_HEADER];
     }
 
     void TextBlockHeaderStyle::onStateChanged(Control& control) const {
@@ -68,9 +68,53 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (!control.Enabled) {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundDisabledOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else {
-            ((TextBlock&)control).TextColor = theme->ColorForegroundSecondaryOnBackground;
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
+        }
+    }
+
+    void TextBlockButtonOnAccentStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
+        } else {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_PRIMARY_ONACCENT];
+        }
+    }
+
+    void TextBlockPrimaryOnAccentStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
+        } else {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_PRIMARY_ONACCENT];
+        }
+    }
+
+    void TextBlockSecondaryOnAccentStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
+        } else {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_SECONDARY_ONACCENT];
+        }
+    }
+
+    void TextBlockHeaderOnAccentStyle::onStateChanged(Control& control) const {
+        Ghurund::UI::Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        if (!control.Enabled) {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
+        } else {
+            ((TextBlock&)control).TextColor = theme->Colors[Theme::COLOR_SECONDARY_ONACCENT];
         }
     }
 }

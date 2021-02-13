@@ -22,8 +22,10 @@ namespace Ghurund::UI {
         uint32_t caretPositionOffset = 0;
         bool pressed = false;
 
-        Ghurund::UI::TextStyle* currentFont = nullptr;
+        Ghurund::UI::TextFormat* currentFont = nullptr;
         uint32_t currentColor = 0;
+
+        ~TextView();
 
         DWRITE_TEXT_RANGE getSelectionRange();
 
@@ -48,16 +50,9 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-    public:
-        ~TextView() {
-            if (textSelectionEffect)
-                textSelectionEffect->Release();
-            if (imageSelectionEffect)
-                imageSelectionEffect->Release();
-            if (caretBackgroundEffect)
-                caretBackgroundEffect->Release();
-        }
+        static const Ghurund::Type& GET_TYPE();
 
+    public:
         inline CursorDrawable* getCursorDrawable() {
             return cursorDrawable;
         }
@@ -78,30 +73,16 @@ namespace Ghurund::UI {
 
         virtual void dispatchContextChanged() override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
-            if (event.Button == MouseButton::LEFT) {
-                if (event.Action == MouseAction::DOWN) {
-                    pressed = true;
-                    setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input.isShiftDown());
-                } else {
-                    pressed = false;
-                }
-            }
-            return __super::dispatchMouseButtonEvent(event);
-        }
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
-            if (event.Action == KeyAction::DOWN && event.Key == 'C' && Context->Window.Input.isControlDown()) {
-                copyToClipboard();
-                return true;
-            }
-            return __super::dispatchKeyEvent(event);
-        }
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
-            if (pressed)
-                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, true);
-            return __super::dispatchMouseMotionEvent(event);
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
         }
     };
 }

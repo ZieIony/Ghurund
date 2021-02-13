@@ -9,8 +9,9 @@ namespace Ghurund::UI {
         Paint paint;
         Ghurund::UI::Shape* shape = nullptr;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Border>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Border>();
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -75,5 +76,15 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+    };
+
+    class BorderOnBackgroundStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
+    };
+
+    class BorderAccentStyle:public Style {
+    public:
+        void onStateChanged(Control& control) const;
     };
 }

@@ -7,8 +7,6 @@ namespace Ghurund::UI {
     bool ControlGroup::focusNext() {
         if (__super::focusNext())
             return true;
-        if (Focusable)
-            return false;
         size_t i = 0;
         if (focusedChild)
             i = Children.indexOf(focusedChild);
@@ -22,8 +20,6 @@ namespace Ghurund::UI {
     bool ControlGroup::focusPrevious() {
         if (__super::focusPrevious())
             return true;
-        if (Focusable)
-            return false;
         size_t i = Children.Size - 1;
         if (focusedChild)
             i = Children.indexOf(focusedChild);
@@ -37,32 +33,24 @@ namespace Ghurund::UI {
     bool ControlGroup::focusUp() {
         if (__super::focusUp())
             return true;
-        if (Focusable)
-            return false;
         return focusedChild && focusedChild->focusUp();
     }
 
     bool ControlGroup::focusDown() {
         if (__super::focusDown())
             return true;
-        if (Focusable)
-            return false;
         return focusedChild && focusedChild->focusDown();
     }
 
     bool ControlGroup::focusLeft() {
         if (__super::focusLeft())
             return true;
-        if (Focusable)
-            return false;
         return focusedChild && focusedChild->focusLeft();
     }
 
     bool ControlGroup::focusRight() {
         if (__super::focusRight())
             return true;
-        if (Focusable)
-            return false;
         return focusedChild && focusedChild->focusRight();
     }
 
@@ -93,8 +81,8 @@ namespace Ghurund::UI {
     }
 
     bool ControlGroup::dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) {
-        if (focusedChild && focusedChild->dispatchKeyEvent(event))
-            return true;
+        if (focusedChild)
+            return focusedChild->dispatchKeyEvent(event);
         for (size_t i = 0; i < children.Size; i++) {
             Control* c = children.get(children.Size - i - 1);
             if (c->dispatchKeyEvent(event))
@@ -153,6 +141,17 @@ namespace Ghurund::UI {
             return this;
         for (Control* c : children) {
             Control* result = c->find(name);
+            if (result)
+                return result;
+        }
+        return nullptr;
+    }
+
+    Control* ControlGroup::find(const Ghurund::Type& type) {
+        if (Type == type)
+            return this;
+        for (Control* c : children) {
+            Control* result = c->find(type);
             if (result)
                 return result;
         }

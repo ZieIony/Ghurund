@@ -12,9 +12,9 @@ namespace Ghurund::UI {
         if (!theme)
             return;
         if (control.Enabled) {
-            ((Separator&)control).Color = theme->getColorControlNormal();
+            ((Separator&)control).Color = theme->Colors[Theme::COLOR_CONTROL];
         } else {
-            ((Separator&)control).Color = theme->getColorControlDisabled();
+            ((Separator&)control).Color = theme->Colors[Theme::COLOR_BACKGR0UND];
         }
     }
 

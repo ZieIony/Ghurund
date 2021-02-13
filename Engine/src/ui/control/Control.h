@@ -59,7 +59,7 @@ namespace Ghurund::UI {
 
         Theme* localTheme = nullptr;
         UIContext* context = nullptr;
-        Style* style = nullptr;
+        const Style* style = nullptr;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
         Event<Control> stateChanged = Event<Control>(*this);
@@ -171,7 +171,7 @@ namespace Ghurund::UI {
         __declspec(property(get = isFocusable, put = setFocusable)) bool Focusable;
 
         virtual Control* getFocus() {
-            return focusable ? this : nullptr;
+            return nullptr;
         }
 
         __declspec(property(get = getFocus)) Control* Focus;
@@ -328,7 +328,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContext, put = setContext)) UIContext* Context;
 
-        inline void setStyle(Style* style) {
+        inline void setStyle(const Style* style) {
             this->style = style;
             if (style) {
                 style->onThemeChanged(*this);
@@ -336,11 +336,11 @@ namespace Ghurund::UI {
             }
         }
 
-        inline Style* getStyle() {
+        inline const Style* getStyle() {
             return style;
         }
 
-        __declspec(property(get = getStyle, put = setStyle)) Style* Style;
+        __declspec(property(get = getStyle, put = setStyle)) const Style* Style;
 
         virtual void dispatchStateChanged();
 
@@ -370,6 +370,12 @@ namespace Ghurund::UI {
 
         virtual Control* find(const String& name) {
             if (this->name && this->name->operator==(name))
+                return this;
+            return nullptr;
+        }
+
+        virtual Control* find(const Ghurund::Type& type) {
+            if (Type == type)
                 return this;
             return nullptr;
         }

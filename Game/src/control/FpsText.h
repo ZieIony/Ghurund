@@ -12,7 +12,7 @@ namespace Ghurund::Editor {
         const Timer& timer;
 
     public:
-        FpsText(Ghurund::UI::TextStyle* font, uint32_t color, const Timer& timer):TextBlock(L"", font, color), timer(timer) {}
+        FpsText(Ghurund::UI::TextFormat* textFormat, uint32_t color, const Timer& timer):TextBlock(L"", textFormat, color), timer(timer) {}
 
         virtual void onUpdate(const uint64_t time) override {
             avgValue.set(1.0f / timer.FrameTime);

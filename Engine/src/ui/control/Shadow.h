@@ -12,8 +12,9 @@ namespace Ghurund::UI {
         BitmapImage* image;
         ID2D1SolidColorBrush* fillBrush = nullptr;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Shadow>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Shadow>();
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Shadow))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -61,8 +62,8 @@ namespace Ghurund::UI {
             return radius;
         }
 
-        inline void setRadius(float thickness) {
-            radius = thickness;
+        inline void setRadius(float radius) {
+            this->radius = radius;
         }
 
         __declspec(property(get = getRadius, put = setRadius)) float Radius;
@@ -77,6 +78,17 @@ namespace Ghurund::UI {
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
+        }
+    };
+
+    class ShadowButtonStyle:public Style {
+    public:
+        virtual void onStateChanged(Control& control) const override {
+            if (control.Enabled) {
+                ((Shadow&)control).Radius = 2;
+            } else {
+                ((Shadow&)control).Radius = 0;
+            }
         }
     };
 }

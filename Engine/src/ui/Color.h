@@ -83,4 +83,17 @@ namespace Ghurund::UI {
             return value;
         }
     };
+
+    constexpr uint32_t colorWithAlpha(float alpha, uint32_t color) {
+        uint32_t a = (uint32_t)(alpha * 0xff);
+        return ((a & 0xff) << 24) | (color & 0xffffff);
+    }
+
+    constexpr uint32_t lerpColors(uint32_t color, uint32_t color2, float amount) {
+        uint32_t a = (uint32_t)(((color >> 24) & 0xff) * (1 - amount) + ((color2 >> 24) & 0xff) * amount);
+        uint32_t r = (uint32_t)(((color >> 16) & 0xff) * (1 - amount) + ((color2 >> 16) & 0xff) * amount);
+        uint32_t g = (uint32_t)(((color >> 8) & 0xff) * (1 - amount) + ((color2 >> 8) & 0xff) * amount);
+        uint32_t b = (uint32_t)((color & 0xff) * (1 - amount) + (color2 & 0xff) * amount);
+        return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
+    }
 }

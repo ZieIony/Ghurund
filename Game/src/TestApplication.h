@@ -1,8 +1,6 @@
 ﻿#include "core/MathUtils.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/widget/button/TextButton.h"
-#include "ui/widget/button/ImageButton.h"
 #include "ui/control/Space.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
@@ -193,7 +191,7 @@ public:
             auto statusBarItems = makeShared<HorizontalLayout>();
             statusBarItems->Alignment = { Alignment::Horizontal::RIGHT, Alignment::Vertical::CENTER };
             statusBarItems->PreferredSize.height = PreferredSize::Height::WRAP;
-            fps = makeShared<FpsText>(theme->TextStyles[Theme::TEXTSTYLE_TEXT_PRIMARY], theme->ColorForegroundPrimaryOnBackground, Timer);
+            fps = makeShared<FpsText>(theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY], theme->ColorForegroundPrimaryOnBackground, Timer);
             statusBarItems->Children = { fps };
             statusBar->Children = { statusBarBackground, statusBarItems };
 

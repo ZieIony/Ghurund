@@ -14,8 +14,8 @@ namespace Ghurund {
         Physics::PhysicsSystem physicsSystem;
         DrawingSystem drawingSystem;
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<Scene>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<Scene>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Scene))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

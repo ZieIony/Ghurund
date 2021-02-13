@@ -2,6 +2,15 @@
 #include "application/Clipboard.h"
 
 namespace Ghurund::UI {
+    TextView::~TextView() {
+        if (textSelectionEffect)
+            textSelectionEffect->Release();
+        if (imageSelectionEffect)
+            imageSelectionEffect->Release();
+        if (caretBackgroundEffect)
+            caretBackgroundEffect->Release();
+    }
+
     DWRITE_TEXT_RANGE TextView::getSelectionRange() {
         uint32_t caretBegin = caretAnchor;
         uint32_t caretEnd = caretPosition + caretPositionOffset;
@@ -89,7 +98,7 @@ namespace Ghurund::UI {
             currentFont->release();
 
         if (textLayout) {
-            currentFont = ghnew Ghurund::UI::TextStyle(textLayout, currentPos);
+            currentFont = ghnew Ghurund::UI::TextFormat(textLayout, currentPos);
 
             IUnknown* drawingEffect = nullptr;
             textLayout->GetDrawingEffect(currentPos, &drawingEffect);
@@ -100,9 +109,9 @@ namespace Ghurund::UI {
             } else {
                 currentColor = 0;
             }
-        } else if (TextStyle) {
-            TextStyle->addReference();
-            currentFont = TextStyle;
+        } else if (TextFormat) {
+            TextFormat->addReference();
+            currentFont = TextFormat;
         }
     }
 
@@ -375,12 +384,38 @@ namespace Ghurund::UI {
         __super::dispatchContextChanged();
         if (!Theme)
             return;
-        textSelectionEffect = ghnew DrawingEffect(Theme->ColorHighlightOnBackground);
-        imageSelectionEffect = ghnew DrawingEffect(Theme->ColorHighlightOnBackground);
-        caretBackgroundEffect = ghnew DrawingEffect(Theme->ColorForegroundPrimaryOnBackground);
+        textSelectionEffect = ghnew DrawingEffect(Theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND]);
+        imageSelectionEffect = ghnew DrawingEffect(Theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND]);
+        caretBackgroundEffect = ghnew DrawingEffect(Theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND]);
         if (!cursorDrawable)
             CursorDrawable = ghnew Ghurund::UI::CursorDrawable();
         updateCaretFormatting();
+    }
+
+    bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+        if (event.Button == MouseButton::LEFT) {
+            if (event.Action == MouseAction::DOWN) {
+                pressed = true;
+                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input.isShiftDown());
+            } else {
+                pressed = false;
+            }
+        }
+        return __super::dispatchMouseButtonEvent(event);
+    }
+
+    bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {
+        if (event.Action == KeyAction::DOWN && event.Key == 'C' && Context->Window.Input.isControlDown()) {
+            copyToClipboard();
+            return true;
+        }
+        return __super::dispatchKeyEvent(event);
+    }
+
+    bool TextView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
+        if (pressed)
+            setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, true);
+        return __super::dispatchMouseMotionEvent(event);
     }
 
     void TextView::onDraw(Canvas& canvas) {
@@ -420,5 +455,14 @@ namespace Ghurund::UI {
 
         paint.Color = TextColor;
         canvas.drawText(textLayout, 0, 0, paint);
+    }
+    
+    const Ghurund::Type& TextView::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<TextView>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextView))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 }

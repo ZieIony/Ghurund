@@ -9,31 +9,47 @@
 #include "ui/control/TextBlock.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/layout/LinearLayout.h"
+#include "ui/layout/ManualLayout.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/style/Theme.h"
 #include "ui/widget/ClickResponseView.h"
+#include "ui/widget/StateIndicator.h"
+#include "ui/widget/VerticalScrollBar.h"
+#include "ui/widget/button/Button.h"
 #include "ui/widget/button/CheckBox.h"
+#include "ui/widget/button/RadioButton.h"
+#include "ui/widget/text/TextView.h"
+#include "ui/widget/text/TextField.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
-        registerClass(ClickableView::TYPE);
+        registerClass(ClickableControl::TYPE);
         registerClass(SelectableView::TYPE);
         registerClass(ClickResponseView::TYPE);
-        registerClass(ControlContainer::TYPE);
-        registerClass(PaddingContainer::TYPE);
-        registerClass(LinearLayout::TYPE);
+        registerClass(StateIndicator::TYPE);
+        registerClass(TextBlock::TYPE);
+        registerClass(TextView::TYPE);
+        registerClass(TextField::TYPE);
         registerClass(TextBlock::TYPE);
         registerClass(ImageView::TYPE);
-        registerClass(StackLayout::TYPE);
         registerClass(Clip::TYPE);
         registerClass(Border::TYPE);
         registerClass(Shadow::TYPE);
         registerClass(Space::TYPE);
         registerClass(ColorView::TYPE);
 
+        registerClass(ControlContainer::TYPE);
+        registerClass(PaddingContainer::TYPE);
+        registerClass(LinearLayout::TYPE);
+        registerClass(StackLayout::TYPE);
+        registerClass(ManualLayout::TYPE);
+
+        registerClass(Button::TYPE);
         registerClass(CheckBox::TYPE);
+        registerClass(RadioButton::TYPE);
+        registerClass(VerticalScrollBar::TYPE);
     }
 
     Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {
@@ -131,17 +147,17 @@ namespace Ghurund::UI {
         return toWideChar(AString(str));
     }
 
-    TextStyle* LayoutLoader::loadFont(const char* str) {
+    TextFormat* LayoutLoader::loadTextFormat(const char* str) {
         WString s = toWideChar(AString(str));
         const wchar_t* fileProtocol = L"file://";
         const wchar_t* themeProtocol = L"theme://";
         if (s.startsWith(fileProtocol)) {
             auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
-            //auto font = ghnew TextStyle()
+            //auto textFormat = ghnew TextFormat()
         } else if (s.startsWith(themeProtocol) && theme) {
             WString fontKey = s.substring(lengthOf(themeProtocol));
-            if (theme->TextStyles.contains(fontKey)) {
-                TextStyle* style = theme->TextStyles[fontKey];
+            if (theme->TextFormats.contains(fontKey)) {
+                TextFormat* style = theme->TextFormats[fontKey];
                 style->addReference();
                 return style;
             }

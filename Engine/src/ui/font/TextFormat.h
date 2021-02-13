@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     class Control;
     class Graphics2D;
 
-    class TextStyle:public Pointer {
+    class TextFormat:public Pointer {
     private:
         WString file;
         WString familyName;
@@ -28,9 +28,9 @@ namespace Ghurund::UI {
         ComPtr<IDWriteTextFormat> textFormat;
 
     public:
-        TextStyle(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us");
+        TextFormat(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us");
 
-        TextStyle(IDWriteTextLayout* textLayout, UINT32 position);
+        TextFormat(IDWriteTextLayout* textLayout, UINT32 position);
 
         Status init(Graphics2D& graphics2d);
 
@@ -82,10 +82,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getLocale)) const WString& Locale;
 
-        inline IDWriteTextFormat* getTextFormat() {
+        inline IDWriteTextFormat* getFormat() {
             return textFormat.Get();
         }
 
-        __declspec(property(get = getTextFormat)) IDWriteTextFormat* TextFormat;
+        __declspec(property(get = getFormat)) IDWriteTextFormat* Format;
     };
 }

@@ -1,38 +1,30 @@
 #pragma once
 
 #include "ButtonLayout.h"
-#include "ui/widget/Widget.h"
+#include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
-    class Button:public Widget<ButtonLayout> {
+    class Button:public ContentWidget<ButtonLayout> {
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Button))
-                .withSupertype(__super::GET_TYPE());
+        static const Ghurund::Type& GET_TYPE();
 
-            return TYPE;
-        }
+        virtual void onLayoutChanged() override;
 
     public:
-        Button(ButtonLayout* layout):Widget(layout) {
-            Focusable = true;
-            Layout->ClickableView->StateChanged.add(StateChanged);
-        }
-
         inline bool isHovered() const {
-            return Layout->ClickableView->Hovered;
+            return Layout->ClickableControl->Hovered;
         }
 
         __declspec(property(get = isHovered)) bool Hovered;
 
         inline const MousePressed& isPressed() const {
-            return Layout->ClickableView->Pressed;
+            return Layout->ClickableControl->Pressed;
         }
 
         __declspec(property(get = isPressed)) MousePressed& Pressed;
 
         inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
-            return Layout->ClickableView->OnClicked;
+            return Layout->ClickableControl->OnClicked;
         }
 
         __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;

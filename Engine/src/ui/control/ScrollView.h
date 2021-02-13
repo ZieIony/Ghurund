@@ -7,18 +7,19 @@
 namespace Ghurund::UI {
     class ScrollView:public ControlContainer {
     private:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ScrollView>();
+        XMFLOAT2 scroll = { 0.0f, 0.0f };
+        XMFLOAT2 maxScroll = { 0.0f, 0.0f };
+        Event<Control> onScrolled = Event<Control>(*this);
+
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ScrollView>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScrollView))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
-
-        XMFLOAT2 scroll = { 0.0f, 0.0f };
-        XMFLOAT2 maxScroll = { 0.0f, 0.0f };
-        Event<Control> onScrolled = Event<Control>(*this);
 
     public:
         inline const XMFLOAT2& getScroll() const {

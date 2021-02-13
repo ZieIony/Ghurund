@@ -16,14 +16,23 @@
 					<xs:element ref="Shadow"/>
 					<xs:element ref="Space"/>
 					<xs:element ref="ColorView"/>
-					<xs:element ref="LinearLayout"/>
-					<xs:element ref="StackLayout"/>
 					<xs:element ref="PaddingContainer"/>
 					<xs:element ref="ClickResponseView"/>
-					<xs:element ref="ClickableView"/>
+					<xs:element ref="StatusIndicator"/>
+					<xs:element ref="ClickableControl"/>
 					<xs:element ref="SelectableView"/>
-					
+
+					<xs:element ref="LinearLayout"/>
+					<xs:element ref="StackLayout"/>
+					<xs:element ref="ManualLayout"/>
+					<xs:element ref="ControlContainer"/>
+
 					<xs:element ref="CheckBox"/>
+					<xs:element ref="RadioButton"/>
+					<xs:element ref="Button"/>
+					<xs:element ref="VerticalScrollBar"/>
+					<xs:element ref="TextView"/>
+					<xs:element ref="TextField"/>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
@@ -105,7 +114,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="TextStyle">
+	<xs:simpleType name="TextFormat">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="theme:\/\/.*"/>
 		</xs:restriction>
@@ -150,6 +159,7 @@
 		<xs:attribute name="focusable" type="xs:boolean"/>
 		<xs:attribute name="minSize" type="Size"/>
 		<xs:attribute name="preferredSize" type="PreferredSize"/>
+		<xs:attribute name="style" type="Style"/>
 	</xs:complexType>
 	<xs:element name="Control" type="Control"/>
 
@@ -157,7 +167,7 @@
 		<xs:complexContent>
 			<xs:extension base="Control">
 				<xs:sequence>
-					<xs:choice>
+					<xs:choice minOccurs="0">
 						<xs:element ref="TextBlock"/>
 						<xs:element ref="ImageView"/>
 						<xs:element ref="Clip"/>
@@ -165,14 +175,23 @@
 						<xs:element ref="Shadow"/>
 						<xs:element ref="Space"/>
 						<xs:element ref="ColorView"/>
-						<xs:element ref="LinearLayout"/>
-						<xs:element ref="StackLayout"/>
 						<xs:element ref="PaddingContainer"/>
 						<xs:element ref="ClickResponseView"/>
-						<xs:element ref="ClickableView"/>
+						<xs:element ref="StatusIndicator"/>
+						<xs:element ref="ClickableControl"/>
 						<xs:element ref="SelectableView"/>
 
+						<xs:element ref="LinearLayout"/>
+						<xs:element ref="StackLayout"/>
+						<xs:element ref="ManualLayout"/>
+						<xs:element ref="ControlContainer"/>
+
 						<xs:element ref="CheckBox"/>
+						<xs:element ref="RadioButton"/>
+						<xs:element ref="Button"/>
+						<xs:element ref="VerticalScrollBar"/>
+						<xs:element ref="TextView"/>
+						<xs:element ref="TextField"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -193,14 +212,23 @@
 							<xs:element ref="Shadow"/>
 							<xs:element ref="Space"/>
 							<xs:element ref="ColorView"/>
-							<xs:element ref="LinearLayout"/>
-							<xs:element ref="StackLayout"/>
 							<xs:element ref="PaddingContainer"/>
 							<xs:element ref="ClickResponseView"/>
-							<xs:element ref="ClickableView"/>
+							<xs:element ref="StatusIndicator"/>
+							<xs:element ref="ClickableControl"/>
 							<xs:element ref="SelectableView"/>
 
+							<xs:element ref="LinearLayout"/>
+							<xs:element ref="StackLayout"/>
+							<xs:element ref="ManualLayout"/>
+							<xs:element ref="ControlContainer"/>
+
 							<xs:element ref="CheckBox"/>
+							<xs:element ref="RadioButton"/>
+							<xs:element ref="Button"/>
+							<xs:element ref="VerticalScrollBar"/>
+							<xs:element ref="TextView"/>
+							<xs:element ref="TextField"/>
 						</xs:choice>
 					</xs:sequence>
 				</xs:sequence>
@@ -216,7 +244,7 @@
 			<xs:extension base="Control">
 				<xs:attribute name="text" type="xs:string"/>
 				<xs:attribute name="textColor" type="Color"/>
-				<xs:attribute name="textStyle" type="TextStyle"/>
+				<xs:attribute name="textFormat" type="TextFormat"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -280,6 +308,13 @@
 	</xs:complexType>
 	<xs:element name="ColorView" type="ColorView"/>
 
+	<xs:complexType name="StatusIndicator">
+		<xs:complexContent>
+			<xs:extension base="ColorView"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="StatusIndicator" type="StatusIndicator"/>
+
 	<xs:complexType name="LinearLayout">
 		<xs:complexContent>
 			<xs:extension base="ControlGroup">
@@ -299,6 +334,15 @@
 	</xs:complexType>
 	<xs:element name="StackLayout" type="StackLayout"/>
 
+	<xs:complexType name="ManualLayout">
+		<xs:complexContent>
+			<xs:extension base="ControlGroup">
+				<xs:attribute name="alignment" type="Alignment"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ManualLayout" type="ManualLayout"/>
+
 	<xs:complexType name="PaddingContainer">
 		<xs:complexContent>
 			<xs:extension base="ControlContainer">
@@ -317,16 +361,16 @@
 	</xs:complexType>
 	<xs:element name="ClickResponseView" type="ClickResponseView"/>
 
-	<xs:complexType name="ClickableView">
+	<xs:complexType name="ClickableControl">
 		<xs:complexContent>
 			<xs:extension base="ControlContainer"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="ClickableView" type="ClickableView"/>
+	<xs:element name="ClickableControl" type="ClickableControl"/>
 
 	<xs:complexType name="SelectableView">
 		<xs:complexContent>
-			<xs:extension base="ClickableView"/>
+			<xs:extension base="ClickableControl"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="SelectableView" type="SelectableView"/>
@@ -334,6 +378,15 @@
 	<xs:complexType name="Widget">
 		<xs:complexContent>
 			<xs:extension base="Control">
+				<xs:attribute name="layout" type="Layout"/>
+				<xs:attribute name="checked" type="xs:boolean"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="ContentWidget">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer">
 				<xs:attribute name="style" type="Style"/>
 				<xs:attribute name="layout" type="Layout"/>
 				<xs:attribute name="checked" type="xs:boolean"/>
@@ -343,9 +396,44 @@
 
 	<xs:complexType name="CheckBox">
 		<xs:complexContent>
-			<xs:extension base="Widget"/>
+			<xs:extension base="ContentWidget"/>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="CheckBox" type="CheckBox"/>
+
+	<xs:complexType name="RadioButton">
+		<xs:complexContent>
+			<xs:extension base="ContentWidget"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RadioButton" type="RadioButton"/>
+
+	<xs:complexType name="Button">
+		<xs:complexContent>
+			<xs:extension base="ContentWidget"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Button" type="Button"/>
+
+	<xs:complexType name="VerticalScrollBar">
+		<xs:complexContent>
+			<xs:extension base="Widget"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="VerticalScrollBar" type="VerticalScrollBar"/>
+
+	<xs:complexType name="TextView">
+		<xs:complexContent>
+			<xs:extension base="TextBlock"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TextView" type="TextView"/>
+
+	<xs:complexType name="TextField">
+		<xs:complexContent>
+			<xs:extension base="TextView"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TextField" type="TextField"/>
 
 </xs:schema>

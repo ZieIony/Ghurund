@@ -15,12 +15,19 @@ namespace Ghurund::UI {
         List<TabItem*> tabs;
         AdapterChildrenProvider<TabItem*, Tab>* provider;
 
+    protected:
+        virtual void onLayoutChanged() override {
+            if (!Layout)
+                return;
+            provider = ghnew AdapterChildrenProvider<TabItem*, Tab>(*Layout->TabContainer);
+            provider->Items = ghnew ListItemSource<TabItem*>(tabs);
+            Layout->TabContainer->childrenProvider = provider;
+        }
+
     public:
         class LayoutVerticalBottom;
 
-        TabContainer(TabContainerLayout* layout);
-
-        TabContainer(Ghurund::UI::Theme& theme):TabContainer(ghnew TabContainerVerticalBottomLayout(theme)) {}
+        TabContainer();
 
         ~TabContainer();
 

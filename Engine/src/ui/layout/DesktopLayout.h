@@ -11,8 +11,9 @@ namespace Ghurund::UI {
         ManualLayoutManager layoutManager;
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<DesktopLayout>();
+    protected:
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<DesktopLayout>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(DesktopLayout))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

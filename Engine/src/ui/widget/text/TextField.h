@@ -37,6 +37,11 @@ namespace Ghurund::UI {
             return (ch & 0xFC00) == 0xDC00;
         }
 
+    protected:
+        static const Ghurund::Type& GET_TYPE();
+
+        ~TextField() {}
+
     public:
         TextField() {
             Focusable = true;
@@ -59,7 +64,11 @@ namespace Ghurund::UI {
         }
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-    };
 
-    typedef SharedPointer<TextField> TextFieldPtr;
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
+    };
 }

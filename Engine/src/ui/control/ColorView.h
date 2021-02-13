@@ -9,8 +9,8 @@ namespace Ghurund::UI {
         Paint paint;
 
     protected:
-        static inline const auto& CONSTRUCTOR = NoArgsConstructor<ColorView>();
         static const Ghurund::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = NoArgsConstructor<ColorView>();
             static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
@@ -51,5 +51,20 @@ namespace Ghurund::UI {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+    };
+
+    class ColorViewBackgroundStyle:public Style {
+
+        virtual void onThemeChanged(Control& control) const;
+    };
+
+    class ColorViewControlStyle:public Style {
+
+        virtual void onThemeChanged(Control& control) const;
+    };
+
+    class ColorViewAccentStyle:public Style {
+
+        virtual void onThemeChanged(Control& control) const;
     };
 }

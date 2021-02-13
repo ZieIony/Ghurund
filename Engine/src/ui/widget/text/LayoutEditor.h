@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui/Graphics2D.h"
-#include "ui/font/TextStyle.h"
+#include "ui/font/TextFormat.h"
 
 namespace Ghurund::UI {
     class LayoutEditor {
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
             IDWriteTextLayout* newLayout,
             UINT32 startPosForNew,
             UINT32 length,
-            TextStyle* font = nullptr
+            TextFormat* textFormat = nullptr
         );
 
         UINT32 calculateRangeLengthAt(IDWriteTextLayout* layout, UINT32 pos);
@@ -40,7 +40,7 @@ namespace Ghurund::UI {
             WString& text,
             UINT32 position,
             const WString& textToInsert,
-            TextStyle* font = nullptr
+            TextFormat* textFormat = nullptr
         );
 
         Status removeTextAt(IDWriteTextLayout*& currentLayout, WString& text, UINT32 position, UINT32 lengthToRemove);

@@ -6,48 +6,36 @@ namespace Ghurund::UI {
     bool ControlContainer::focusNext() {
         if (__super::focusNext())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusNext();
     }
 
     bool ControlContainer::focusPrevious() {
         if (__super::focusPrevious())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusPrevious();
     }
 
     bool ControlContainer::focusUp() {
         if (__super::focusUp())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusUp();
     }
 
     bool ControlContainer::focusDown() {
         if (__super::focusDown())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusDown();
     }
 
     bool ControlContainer::focusLeft() {
         if (__super::focusLeft())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusLeft();
     }
 
     bool ControlContainer::focusRight() {
         if (__super::focusRight())
             return true;
-        if (Focusable)
-            return false;
         return child && child->focusRight();
     }
 
@@ -77,27 +65,11 @@ namespace Ghurund::UI {
             );
         }
 
-        if (preferredSize.width >= 0) {
-            measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        } else if (child) {
-            if (child->PreferredSize.width >= 0) {
-                measuredSize.width = std::max(child->MinSize.width, (float)child->PreferredSize.width);
-            } else {
-                measuredSize.width = child->MeasuredSize.width;
-            }
-        } else {
-            measuredSize.width = minSize.width;
-        }
-        if (preferredSize.height >= 0) {
-            measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
-        } else if (child) {
-            if (child->PreferredSize.height >= 0) {
-                measuredSize.height = std::max(child->MinSize.height, (float)child->PreferredSize.height);
-            } else {
-                measuredSize.height = child->MeasuredSize.height;
-            }
-        } else {
-            measuredSize.height = minSize.height;
+        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
+        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+        if (child) {
+            measuredSize.width = std::max(measuredSize.width, child->MeasuredSize.width);
+            measuredSize.height = std::max(measuredSize.height, child->MeasuredSize.height);
         }
     }
 
@@ -141,6 +113,14 @@ namespace Ghurund::UI {
             return this;
         if (child)
             return child->find(name);
+        return nullptr;
+    }
+
+    Control* ControlContainer::find(const Ghurund::Type& type) {
+        if (Type==type)
+            return this;
+        if (child)
+            return child->find(type);
         return nullptr;
     }
 
