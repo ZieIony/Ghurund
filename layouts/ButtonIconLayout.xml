@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ClickableControl name="clickable" preferredSize="fill, fill">
+		<StackLayout>
+			<StateIndicator name="state" preferredSize="fill, fill"
+							style="theme://style/stateIndicator_onBackground"/>
+			<ControlContainer preferredSize="fill, fill"
+								name="container"/>
+		</StackLayout>
+	</ClickableControl>
+</layout>

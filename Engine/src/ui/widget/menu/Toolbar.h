@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        Toolbar(Ghurund::UI::Theme& theme, ToolbarLayout* layout):Widget(layout) {
+        Toolbar(Ghurund::UI::Theme& theme, ToolbarLayout* layout) {
             PreferredSize.height = PreferredSize::Height::WRAP;
             auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*layout->RecyclerView);
             provider->Adapters.add(ghnew ButtonToolbarAdapter());

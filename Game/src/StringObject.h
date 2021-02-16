@@ -10,6 +10,7 @@
 #include "ui/drawable/BitmapImageDrawable.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/ClickResponseView.h"
+#include "ui/widget/button/Button.h"
 #include "ui/style/Theme.h"
 
 using namespace Ghurund;
@@ -77,7 +78,7 @@ public:
         colorView->release();
     }
 
-    Ghurund::WString& getText() {
+    const Ghurund::WString& getText() {
         return tv->Text;
     }
 
@@ -138,7 +139,7 @@ public:
                 row->Children = { clip, makeShared<Space>(16.0f), column };
             }
             padding->Child = row;
-            SharedPointer<ClickResponseView> responseView = ghnew ClickResponseView(theme.ColorHighlightOnBackground);
+            SharedPointer<ClickResponseView> responseView = ghnew ClickResponseView();
 
             Children = { colorView, responseView, padding };
         }

@@ -5,14 +5,19 @@
 namespace Ghurund::UI {
     Status BitmapImage::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         Status result;
-        image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
-        if (filterStatus(result, options) != Status::OK)
+        if (image)
+            image->release();
+        image = ghnew Ghurund::Image();
+        result = image->load(context, workingDir, stream, options);
+        if (filterStatus(result, options) != Status::OK) {
+            image->release();
             return result;
+        }
         return init(context.Graphics2D, *image);
     }
 
     Status BitmapImage::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        return context.ResourceManager.save(*image, context, workingDir, stream, options);
+        return image->save(context, workingDir, stream, options);
     }
 
     Status BitmapImage::init(Ghurund::UI::Graphics2D& graphics2d, Ghurund::Image& image) {

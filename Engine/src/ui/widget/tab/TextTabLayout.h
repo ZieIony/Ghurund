@@ -17,13 +17,11 @@ namespace Ghurund::UI {
         StackLayout* stack;
 
     public:
-        TextTabLayout(Theme& theme):theme(theme) {}
+        TextTabLayout(Theme& theme);
 
         ~TextTabLayout() {
             stack->release();
         }
-
-        virtual void init() override;
 
         void onStateChanged(Control& control);
     };

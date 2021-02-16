@@ -3,8 +3,6 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    const Ghurund::UI::Style& StateIndicator::DEFAULT_STYLE = StateIndicatorStyle();
-
     const Ghurund::Type& StateIndicator::GET_TYPE() {
         static const auto CONSTRUCTOR = NoArgsConstructor<StateIndicator>();
         static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
@@ -32,7 +30,7 @@ namespace Ghurund::UI {
             Color = pressedColor;
         } else {
             animation.ProgressChanged.add([this](Animation& animation) {
-                Color = lerpColors(prevColor, 0, animation.Progress);
+                Color = lerpColors(prevColor, idleColor, animation.Progress);
                 return true;
             });
         }
@@ -40,12 +38,23 @@ namespace Ghurund::UI {
         animation.start();
     }
 
-    void StateIndicatorStyle::onThemeChanged(Control& control) const {
+    void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {
         Theme* theme = control.Theme;
         if (!theme)
             return;
         StateIndicator& indicator = (StateIndicator&)control;
         indicator.focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
-        indicator.pressedColor = indicator.focusedColor * 2;
+        indicator.pressedColor = ((indicator.focusedColor >> 24) * 2) << 24 | indicator.focusedColor & 0xffffff;
+        indicator.idleColor = indicator.focusedColor & 0xffffff;
+    }
+
+    void StateIndicatorOnAccentStyle::onThemeChanged(Control& control) const {
+        Theme* theme = control.Theme;
+        if (!theme)
+            return;
+        StateIndicator& indicator = (StateIndicator&)control;
+        indicator.focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONACCENT];
+        indicator.pressedColor = ((indicator.focusedColor >> 24) * 2) << 24 | indicator.focusedColor & 0xffffff;
+        indicator.idleColor = indicator.focusedColor & 0xffffff;
     }
 }

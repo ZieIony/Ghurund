@@ -9,10 +9,4 @@ namespace Ghurund::UI {
 
         return TYPE;
     }
-    
-    void Button::onLayoutChanged() {
-        __super::onLayoutChanged();
-        if (Layout)
-            Layout->ClickableControl->StateChanged.add(StateChanged);
-    }
 }

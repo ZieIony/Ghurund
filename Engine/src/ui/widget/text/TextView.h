@@ -50,9 +50,13 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
+        virtual void onThemeChanged() override;
+
         static const Ghurund::Type& GET_TYPE();
 
     public:
+        TextView();
+
         inline CursorDrawable* getCursorDrawable() {
             return cursorDrawable;
         }
@@ -71,11 +75,9 @@ namespace Ghurund::UI {
 
         void copyToClipboard();
 
-        virtual void dispatchContextChanged() override;
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 

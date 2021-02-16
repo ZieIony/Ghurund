@@ -10,9 +10,9 @@
 #include "ui/widget/button/CheckBoxRadioLayout.h"
 #include "ui/widget/button/RadioButton.h"
 #include "ui/widget/button/RadioGroup.h"
-#include "ui/widget/button/ImageButton.h"
 #include "ui/widget/button/Button.h"
-#include "ui/widget/textfield/TextField.h"
+#include "ui/widget/button/Button.h"
+#include "ui/widget/text/TextField.h"
 #include "ui/widget/ProgressBar.h"
 #include "ui/widget/menu/DropDown.h"
 
@@ -45,7 +45,8 @@ public:
             p->Padding.All = 20;
             PointerList<Control*> controls;
             if (loader.load(FilePath(L"layouts/ButtonAccent.xml"), controls) == Status::OK) {
-                auto hwButton = makeShared<Button>(ghnew ButtonLayout(controls[0]));
+                auto hwButton = makeShared<Button>();
+                hwButton->Layout = ghnew ButtonLayout(controls[0]);
                 auto hwButtonText = makeShared<TextBlock>();
                 hwButtonText->Text = L"HELLO WORLD";
                 hwButton->Content = hwButtonText;
@@ -69,9 +70,9 @@ public:
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             for (size_t i : {0, 1, 2, 3}) {
-                SharedPointer<ImageButton> imageButton = ghnew ImageButton();
+                SharedPointer<Button> imageButton = ghnew Button();
                 SharedPointer<BitmapImage> saveIcon = BitmapImage::makeFromImage(context, L"icons/icon save 32.png");
-                imageButton->Image = makeShared<BitmapImageDrawable>(saveIcon);
+                //imageButton->Image = makeShared<BitmapImageDrawable>(saveIcon);
                 horizontalLayout->Children.add(imageButton);
             }
 

@@ -30,25 +30,25 @@ namespace Ghurund::UI {
             delete layoutManager;
         }
 
-        inline const XMFLOAT2& getScroll() const {
+        inline const FloatPoint& getScroll() const {
             return layoutManager->Scroll;
         }
 
-        inline void setScroll(const XMFLOAT2& scroll) {
+        inline void setScroll(const FloatPoint& scroll) {
             setScroll(scroll.x, scroll.y);
         }
 
         inline void setScroll(float x, float y) {
-            layoutManager->Scroll = { x,y };
+            layoutManager->Scroll = { x, y };
         }
 
-        __declspec(property(get = getScroll, put = setScroll)) const XMFLOAT2& Scroll;
+        __declspec(property(get = getScroll, put = setScroll)) const FloatPoint& Scroll;
 
-        inline const XMFLOAT2& getMaxScroll() const {
+        inline const FloatPoint& getMaxScroll() const {
             return layoutManager->MaxScroll;
         }
 
-        __declspec(property(get = getMaxScroll)) const XMFLOAT2& MaxScroll;
+        __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
 
         inline Event<Control>& getOnScrolled() {
             return onScrolled;
@@ -94,7 +94,7 @@ namespace Ghurund::UI {
             if (!layoutManager)
                 return false;
 
-            const XMFLOAT2& scroll = layoutManager->Scroll;
+            const FloatPoint& scroll = layoutManager->Scroll;
             return __super::dispatchMouseButtonEvent(event.translate(-scroll.x, -scroll.y, event.Inside));
         }
 
@@ -102,7 +102,7 @@ namespace Ghurund::UI {
             if (!layoutManager)
                 return false;
 
-            const XMFLOAT2& scroll = layoutManager->Scroll;
+            const FloatPoint& scroll = layoutManager->Scroll;
             return __super::dispatchMouseMotionEvent(event.translate(-scroll.x, -scroll.y, event.Inside));
         }
 

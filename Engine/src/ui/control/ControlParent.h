@@ -26,10 +26,20 @@ namespace Ghurund::UI {
             return focusedChild;
         }
 
+        __declspec(property(get = getFocus, put = setFocus)) Control* Focus;
+
         virtual void setCapturedChild(Control* control) {
             setPointer(capturedChild, control);
             if (Parent)
-                Parent->setCapturedChild(control ? this : nullptr);
+                Parent->CapturedChild = (control ? this : nullptr);
         }
+
+        __declspec(property(put = setCapturedChild)) Control* CapturedChild;
+
+#ifdef _DEBUG
+        virtual void validate() override {
+            _ASSERTE(!focusedChild || focusedChild->Parent == this);
+        }
+#endif
     };
 }

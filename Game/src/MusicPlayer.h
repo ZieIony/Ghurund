@@ -3,7 +3,7 @@
 #include "audio/Sound.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/ProgressBar.h"
-#include "ui/widget/button/ImageButton.h"
+#include "ui/widget/button/Button.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
@@ -11,8 +11,8 @@ namespace Ghurund::Editor {
     class MusicPlayer:public VerticalLayout {
     private:
         SharedPointer<ProgressBar> progressBar;
-        SharedPointer<ImageButton> playButton;
-        SharedPointer<ImageButton> stopButton;
+        SharedPointer<Button> playButton;
+        SharedPointer<Button> stopButton;
         SharedPointer<Audio::Sound> sound;
 
     public:
@@ -21,10 +21,10 @@ namespace Ghurund::Editor {
             progressBar = ghnew ProgressBar();
             progressBar->Style = theme.Styles[Theme::STYLE_PROGRESSBAR];
 //            auto playIcon = makeShared<BitmapImage>("icons/play 18.png");
-            playButton = ghnew ImageButton();
+            playButton = ghnew Button();
          //   playButton->Image = playIcon;
        //     auto stopIcon = makeShared<BitmapImage>("icons/stop 18.png");
-            stopButton = ghnew ImageButton();
+            stopButton = ghnew Button();
         //    stopButton->Image = stopIcon;
             SharedPointer<HorizontalLayout> buttons = ghnew HorizontalLayout();
             buttons->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };

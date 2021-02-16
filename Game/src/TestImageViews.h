@@ -18,7 +18,7 @@ public:
     TestImageViews(ResourceContext& context, Ghurund::UI::Theme& theme) {
         scrollView = ghnew ScrollView();
         scrollView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-        scrollBar = ghnew VerticalScrollBar(theme);
+        scrollBar = ghnew VerticalScrollBar();
         scrollBar->OnScrolled.add([this](Control& control) {
             scrollView->Scroll = { 0.0f, scrollBar->Scroll };
             scrollView->repaint();

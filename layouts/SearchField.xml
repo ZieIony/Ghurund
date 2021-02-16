@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<LinearLayout preferredSize="fill, wrap"
+				  alignment="center, center">
+		<PaddingContainer padding="4">
+			<ImageView image="file://~/icons/search 18.png"
+				   enabled="false"
+				   style="theme://style/imageView_onBackground"/>
+		</PaddingContainer>
+		<TextField preferredSize="fill, wrap"
+				   style="theme://style/textBlock_primary"/>
+		<Button layout="file://ButtonIconLayout.xml">
+			<PaddingContainer padding="4">
+				<ImageView image="file://~/icons/close 18.png"
+						   style="theme://style/imageView_onBackground"/>
+			</PaddingContainer>
+		</Button>
+	</LinearLayout>
+</layout>

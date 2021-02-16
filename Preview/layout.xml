@@ -10,37 +10,38 @@
 						  preferredSize="fill, wrap">
 				<LinearLayout orientation="horizontal">
 					<PaddingContainer padding="0,4,4,4">
-						<Button layout="file://layouts/ButtonImageLayout.xml"
+						<Button layout="file://~/layouts/ButtonImageLayout.xml"
 								name="color1">
-							<ColorView color="#ffef5350"
+							<ColorView color="#ffd32f2f"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://layouts/ButtonImageLayout.xml"
+						<Button layout="file://~/layouts/ButtonImageLayout.xml"
 								name="color2">
-							<ColorView color="#ff42a5f5"
+							<ColorView color="#ff1976d2"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://layouts/ButtonImageLayout.xml"
+						<Button layout="file://~/layouts/ButtonImageLayout.xml"
 								name="color3">
-							<ColorView color="#ffffca28"
+							<ColorView color="#ffffa000"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://layouts/ButtonImageLayout.xml"
+						<Button layout="file://~/layouts/ButtonImageLayout.xml"
 								name="color4">
-							<ColorView color="#ff66bb6a"
+							<ColorView color="#ff388e3c"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 				</LinearLayout>
 				<Space preferredSize="4,4"/>
 				<CheckBox preferredSize="wrap, wrap"
-						  layout="file://layouts/CheckBoxLayout.xml"
+						  style="theme://style/checkBox"
+						  layout="file://~/layouts/CheckBoxLayout.xml"
 						  checked="true"
 						   name="enabledCheckBox">
 					<TextBlock text="enabled"
@@ -48,7 +49,8 @@
 				</CheckBox>
 				<Space preferredSize="4,4"/>
 				<CheckBox preferredSize="wrap, wrap"
-						  layout="file://layouts/CheckBoxLayout.xml"
+						  style="theme://style/checkBox"
+						  layout="file://~/layouts/CheckBoxLayout.xml"
 						   name="themeCheckBox">
 					<TextBlock text="dark theme"
 							   style="theme://style/textBlock_primary"/>

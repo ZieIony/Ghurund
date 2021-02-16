@@ -59,7 +59,7 @@ namespace Ghurund::UI {
             TextColor = color;
         }
 
-        WString& getText() {
+        const WString& getText() {
             return text;
         }
 
@@ -73,7 +73,7 @@ namespace Ghurund::UI {
             }
         }
 
-        __declspec(property(get = getText, put = setText)) WString& Text;
+        __declspec(property(get = getText, put = setText)) const WString& Text;
 
         inline unsigned int getTextColor() const {
             return textColor;

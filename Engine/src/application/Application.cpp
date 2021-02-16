@@ -75,7 +75,7 @@ namespace Ghurund {
         //parameterManager->initDefaultTextures(*resourceContext);
 
         functionQueue = ghnew Ghurund::FunctionQueue();
-        
+
         renderer = ghnew Ghurund::Renderer();
         result = renderer->init(*resourceContext);
         if (result != Status::OK)
@@ -138,6 +138,8 @@ namespace Ghurund {
             }
 
             for (auto window : windows) {
+                if (window->Size.width == 0 && window->Size.height == 0)
+                    continue;
                 if (window->SwapChain) {
                     Frame& frame = window->SwapChain->CurrentFrame;
                     CommandList& commandList = renderer->startFrame(frame);

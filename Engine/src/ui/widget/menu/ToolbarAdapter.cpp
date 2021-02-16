@@ -12,8 +12,8 @@ namespace Ghurund::UI {
         ButtonMenuItem* menuItem = (ButtonMenuItem*)item;
         //imageButton.Name = menuItem->Text;
         imageButton.Image = makeShared<BitmapImageDrawable>(menuItem->Image);
-        imageButton.OnClicked.clear();
-        imageButton.OnClicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
+        imageButton.Clicked.clear();
+        imageButton.Clicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);
             return true;
         });*/

@@ -1,13 +1,13 @@
 #pragma once
 
 #include "PropertyRow.h"
-#include "ui/widget/textfield/TextField.h"
+#include "ui/widget/text/TextField.h"
 
 namespace Ghurund::UI {
     template<class StringType>
     class StringPropertyRow: public PropertyRow {
     private:
-        TextFieldPtr textField;
+        SharedPointer<TextField> textField;
 
     public:
         StringPropertyRow() {
@@ -19,15 +19,15 @@ namespace Ghurund::UI {
             Content = textField;
         }
 
-        inline StringType& getValue() {
+        inline const StringType& getValue() {
             return textField->Text;
         }
 
-        inline void setValue(StringType& text) {
+        inline void setValue(const StringType& text) {
             textField->Text = text;
         }
 
-        __declspec(property(get = getValue, put = setValue)) StringType& Value;
+        __declspec(property(get = getValue, put = setValue)) const StringType& Value;
     };
 
     template<class StringType>

@@ -18,11 +18,7 @@ namespace Ghurund::UI {
     public:
         VerticalScrollBarLayout(LayoutLoader& loader);
 
-        VerticalScrollBarLayout(Control* layout) {
-            Root = layout;
-        }
-
-        virtual void init() override;
+        VerticalScrollBarLayout(Control* layout):WidgetLayout(layout) {}
 
         inline Button* getTopButton() {
             return topButton;

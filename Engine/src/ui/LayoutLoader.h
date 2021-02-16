@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/collection/Stack.h"
 #include "core/io/FilePath.h"
 #include "core/reflection/Type.h"
 #include "core/string/AStringView.h"
@@ -18,8 +19,12 @@ namespace Ghurund::UI {
         Map<AString, Type*> types;
         Theme* theme;
         ResourceContext* context;
+        Stack<DirectoryPath> workingDir;
 
     public:
+        static inline const wchar_t* FILE_PROTOCOL = L"file://";
+        static inline const wchar_t* THEME_PROTOCOL = L"theme://";
+
         LayoutLoader();
 
         inline void init(Theme& theme, ResourceContext& context) {
@@ -44,17 +49,20 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getResourceContext)) ResourceContext& ResourceContext;
 
+        inline const DirectoryPath& getWorkingDirectory() {
+            return workingDir.top();
+        }
+
+        inline void setWorkingDirectory(const DirectoryPath& path) {
+            workingDir.clear();
+            workingDir.push(path);
+        }
+
+        __declspec(property(get = getWorkingDirectory, put = setWorkingDirectory)) const DirectoryPath& WorkingDirectory;
+
         Status load(const Buffer& data, PointerList<Control*>& output);
 
-        Status load(const FilePath& path, PointerList<Control*>& output) {
-            File file(path);
-            if (!file.Exists)
-                return Status::FILE_DOESNT_EXIST;
-            Status result = file.read();
-            if (result == Status::OK)
-                return load(Buffer(file.Data, file.Size), output);
-            return result;
-        }
+        Status load(const FilePath& path, PointerList<Control*>& output);
 
         PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
 
@@ -71,5 +79,7 @@ namespace Ghurund::UI {
         TextFormat* loadTextFormat(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
+
+        WString getPath(const WString& path);
     };
 }

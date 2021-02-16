@@ -2,6 +2,7 @@
 
 #include "control/TitleBar.h"
 
+#include "core/logging/Logger.h"
 #include "ui/style/Theme.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ImageView.h"
@@ -37,7 +38,7 @@ namespace Ghurund::Editor {
 
         __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
-        WString& getText() {
+        const WString& getText() {
             return text->Text;
         }
 
@@ -45,7 +46,7 @@ namespace Ghurund::Editor {
             this->text->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) WString& Text;
+        __declspec(property(get = getText, put = setText)) const WString& Text;
     };
 
     struct Log {

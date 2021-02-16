@@ -2,6 +2,7 @@
 
 #include "core/logging/Logger.h"
 #include "input/Mouse.h"
+#include "ui/Cursor.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
 
@@ -116,14 +117,14 @@ namespace Ghurund::UI {
         Control* c = this;
         while (c->Parent) {
             if (c->Parent->Focus == nullptr) {
-                c->Parent->setFocus(c);
+                c->Parent->Focus = c;
                 c = c->Parent;
             } else {
                 Control* f = c->Parent->Focus;
-                c->Parent->setFocus(c);
+                c->Parent->Focus = c;
                 while (f->Focus) {
                     Control* next = f->Focus;
-                    f->Focus->Parent->setFocus(nullptr);
+                    f->Focus->Parent->Focus = nullptr;
                     f = next;
                 }
                 c->Parent->dispatchStateChanged();
@@ -133,21 +134,21 @@ namespace Ghurund::UI {
     }
 
     void Control::clearFocus() {
-        if (!Focused)
+        if (!parent)
             return;
-        Control* f = Focus;
+        Control* f = parent->Focus;
         if (!f)
             return;
         while (f) {
             Control* next = f->Focus;
-            f->Parent->setFocus(nullptr);
+            f->Parent->Focus = nullptr;
             f = next;
         }
         if (parent) {
-            parent->setFocus(nullptr);
+            parent->Focus = nullptr;
             ControlParent* p = parent;
             while (p->Parent) {
-                p->setFocus(nullptr);
+                p->Focus = nullptr;
                 p = p->Parent;
             }
             p->dispatchStateChanged();
@@ -310,6 +311,15 @@ namespace Ghurund::UI {
         return FloatPoint{ (float)p.x, (float)p.y };
     }
 
+    bool Control::dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
+        bool result = __super::dispatchMouseMotionEvent(event);
+        if (!result && cursor) {
+            cursor->set();
+            return true;
+        }
+        return result;
+    }
+
     Status Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         auto nameAttr = xml.FindAttribute("name");
         if (nameAttr)
@@ -371,6 +381,10 @@ namespace Ghurund::UI {
     String Control::logTree() {
         return fmt::format(_T("{}: {}, ref: {}\n"), Type.Name, Name ? *Name : String(_T("[unnamed]")), ReferenceCount).c_str();
     }
-#endif
 
+    void Control::validate() {
+        _ASSERTE(ReferenceCount < 1000);
+        _ASSERTE(!parent || parent->ReferenceCount < 1000);
+    }
+#endif
 }

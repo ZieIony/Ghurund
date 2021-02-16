@@ -138,9 +138,9 @@ namespace Ghurund::UI {
         if (!imageView.Image)
             return;
         if (control.Enabled) {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONACCENT];
         } else {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
         }
     }
 

@@ -18,7 +18,7 @@
 					<xs:element ref="ColorView"/>
 					<xs:element ref="PaddingContainer"/>
 					<xs:element ref="ClickResponseView"/>
-					<xs:element ref="StatusIndicator"/>
+					<xs:element ref="StateIndicator"/>
 					<xs:element ref="ClickableControl"/>
 					<xs:element ref="SelectableView"/>
 
@@ -33,6 +33,9 @@
 					<xs:element ref="VerticalScrollBar"/>
 					<xs:element ref="TextView"/>
 					<xs:element ref="TextField"/>
+					<xs:element ref="TreeView"/>
+					<xs:element ref="Toolbar"/>
+					<xs:element ref="PropertyList"/>
 				</xs:choice>
 			</xs:sequence>
 		</xs:complexType>
@@ -177,7 +180,7 @@
 						<xs:element ref="ColorView"/>
 						<xs:element ref="PaddingContainer"/>
 						<xs:element ref="ClickResponseView"/>
-						<xs:element ref="StatusIndicator"/>
+						<xs:element ref="StateIndicator"/>
 						<xs:element ref="ClickableControl"/>
 						<xs:element ref="SelectableView"/>
 
@@ -192,6 +195,9 @@
 						<xs:element ref="VerticalScrollBar"/>
 						<xs:element ref="TextView"/>
 						<xs:element ref="TextField"/>
+						<xs:element ref="TreeView"/>
+						<xs:element ref="Toolbar"/>
+						<xs:element ref="PropertyList"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -214,7 +220,7 @@
 							<xs:element ref="ColorView"/>
 							<xs:element ref="PaddingContainer"/>
 							<xs:element ref="ClickResponseView"/>
-							<xs:element ref="StatusIndicator"/>
+							<xs:element ref="StateIndicator"/>
 							<xs:element ref="ClickableControl"/>
 							<xs:element ref="SelectableView"/>
 
@@ -229,6 +235,9 @@
 							<xs:element ref="VerticalScrollBar"/>
 							<xs:element ref="TextView"/>
 							<xs:element ref="TextField"/>
+							<xs:element ref="TreeView"/>
+							<xs:element ref="Toolbar"/>
+							<xs:element ref="PropertyList"/>
 						</xs:choice>
 					</xs:sequence>
 				</xs:sequence>
@@ -308,12 +317,12 @@
 	</xs:complexType>
 	<xs:element name="ColorView" type="ColorView"/>
 
-	<xs:complexType name="StatusIndicator">
+	<xs:complexType name="StateIndicator">
 		<xs:complexContent>
 			<xs:extension base="ColorView"/>
 		</xs:complexContent>
 	</xs:complexType>
-	<xs:element name="StatusIndicator" type="StatusIndicator"/>
+	<xs:element name="StateIndicator" type="StateIndicator"/>
 
 	<xs:complexType name="LinearLayout">
 		<xs:complexContent>
@@ -435,5 +444,26 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="TextField" type="TextField"/>
+
+	<xs:complexType name="Toolbar">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="Toolbar" type="Toolbar"/>
+
+	<xs:complexType name="TreeView">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TreeView" type="TreeView"/>
+
+	<xs:complexType name="PropertyList">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="PropertyList" type="PropertyList"/>
 
 </xs:schema>

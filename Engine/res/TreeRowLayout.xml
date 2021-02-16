@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlContainer>
+		<ClickableControl name="clickable">
+			<StackLayout>
+				<StateIndicator name="state" preferredSize="fill, wrap"
+								style="theme://style/stateIndicator_accent"/>
+				<LinearLayout preferredSize="fill, wrap">
+					<ImageView image="file://~/icons/arrow right 18.png"
+							   style="theme://style/imageView_onBackground"/>
+					<ControlContainer name="container"
+							  preferredSize="fill, wrap"/>
+				</LinearLayout>
+			</StackLayout>
+		</ClickableControl>
+	</ControlContainer>
+</layout>

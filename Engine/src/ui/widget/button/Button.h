@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ButtonLayout.h"
+#include "ui/control/ClickableControl.h"
 #include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
@@ -8,26 +9,24 @@ namespace Ghurund::UI {
     protected:
         static const Ghurund::Type& GET_TYPE();
 
-        virtual void onLayoutChanged() override;
-
     public:
         inline bool isHovered() const {
-            return Layout->ClickableControl->Hovered;
+            return Layout->Clickable->Hovered;
         }
 
         __declspec(property(get = isHovered)) bool Hovered;
 
         inline const MousePressed& isPressed() const {
-            return Layout->ClickableControl->Pressed;
+            return Layout->Clickable->Pressed;
         }
 
         __declspec(property(get = isPressed)) MousePressed& Pressed;
 
-        inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
-            return Layout->ClickableControl->OnClicked;
+        inline Event<Control, MouseClickedEventArgs>& getClicked() {
+            return Layout->Clickable->Clicked;
         }
 
-        __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;
+        __declspec(property(get = getClicked)) Event<Control, MouseClickedEventArgs>& Clicked;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

@@ -13,9 +13,16 @@ namespace Ghurund::UI {
         }
 
         measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        measuredSize.width = std::max(measuredSize.width, padding.left + padding.right + (Child ? (float)Child->MeasuredSize.width : 0.0f));
         measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
-        measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom + (Child ? (float)Child->MeasuredSize.height : 0.0f));
+        if (Child) {
+            float childWidth = (float)Child->PreferredSize.width >= 0 ? (float)Child->PreferredSize.width : Child->MeasuredSize.width;
+            measuredSize.width = std::max(measuredSize.width, padding.left + padding.right + childWidth);
+            float childHeight = (float)Child->PreferredSize.height >= 0 ? (float)Child->PreferredSize.height : Child->MeasuredSize.height;
+            measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom + childHeight);
+        } else {
+            measuredSize.width = std::max(measuredSize.width, padding.left + padding.right);
+            measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom);
+        }
     }
 
     void PaddingContainer::onLayout(float x, float y, float width, float height) {

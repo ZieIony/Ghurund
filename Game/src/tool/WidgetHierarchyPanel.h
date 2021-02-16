@@ -24,7 +24,7 @@ namespace Ghurund::Editor {
         WidgetHierarchyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
             objectTypeText = ghnew TextBlock(L"", theme.TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY]);
             toolbar = ghnew Toolbar(theme);
-            searchField = ghnew SearchField(context, theme);
+            searchField = ghnew SearchField();
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             toolbar->Items = {
@@ -37,7 +37,7 @@ namespace Ghurund::Editor {
             };
             treeView = ghnew TreeView();
             treeView->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            SharedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
+            /*SharedPointer<ColorView> separator = ghnew ColorView(theme.getColorForegroundDisabledOnBackground());
             separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
             Children = {
                 toolbar,
@@ -45,7 +45,7 @@ namespace Ghurund::Editor {
                 separator,
                 objectTypeText,
                 treeView
-            };
+            };*/
         }
 
         inline void setControl(Control* item) {

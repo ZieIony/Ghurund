@@ -2,15 +2,16 @@
 
 #include "ui/Animation.h"
 #include "ui/control/ColorView.h"
+#include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
     enum class IndicatorState {
         NONE, FOCUSED, PRESSED
     };
 
-    class StateIndicator:public ColorView {
+    class StateIndicator:public Control {
     private:
-        static const Ghurund::UI::Style& DEFAULT_STYLE;
+        Paint paint;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
@@ -20,11 +21,11 @@ namespace Ghurund::UI {
         Ghurund::UI::Color prevColor = 0;
 
     public:
+        Ghurund::UI::Color idleColor = 0;
         Ghurund::UI::Color focusedColor = 0;
         Ghurund::UI::Color pressedColor = 0;
 
         StateIndicator() {
-            style = &DEFAULT_STYLE;
             animation.Duration = 150;
         }
 
@@ -36,6 +37,22 @@ namespace Ghurund::UI {
             animation.update(time);
         }
 
+        inline const Color& getColor() {
+            return paint.Color;
+        }
+
+        inline void setColor(const Color& color) {
+            paint.Color = color;
+        }
+
+        __declspec(property(get = getColor, put = setColor)) const Color& Color;
+
+        virtual void onDraw(Canvas& canvas) {
+            if (!paint.Color)
+                return;
+            canvas.fillRect(0, 0, Size.width, Size.height, paint);
+        }
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
@@ -43,7 +60,12 @@ namespace Ghurund::UI {
         }
     };
 
-    class StateIndicatorStyle:public Style {
+    class StateIndicatorOnBackgroundStyle:public Style {
+    public:
+        virtual void onThemeChanged(Control& control) const override;
+    };
+
+    class StateIndicatorOnAccentStyle:public Style {
     public:
         virtual void onThemeChanged(Control& control) const override;
     };

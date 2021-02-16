@@ -60,16 +60,18 @@ namespace Ghurund::UI {
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
         if (child) {
             child->measure(
-                PreferredSize.width >= 0 ? (float)PreferredSize.width : parentWidth,
-                PreferredSize.height >= 0 ? (float)PreferredSize.height : parentHeight
+                preferredSize.width >= 0 ? (float)preferredSize.width : parentWidth,
+                preferredSize.height >= 0 ? (float)preferredSize.height : parentHeight
             );
         }
 
         measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
         measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
         if (child) {
-            measuredSize.width = std::max(measuredSize.width, child->MeasuredSize.width);
-            measuredSize.height = std::max(measuredSize.height, child->MeasuredSize.height);
+            float childWidth = (float)child->PreferredSize.width >= 0 ? (float)child->PreferredSize.width : child->MeasuredSize.width;
+            measuredSize.width = std::max(measuredSize.width, childWidth);
+            float childHeight = (float)child->PreferredSize.height >= 0 ? (float)child->PreferredSize.height : child->MeasuredSize.height;
+            measuredSize.height = std::max(measuredSize.height, childHeight);
         }
     }
 
@@ -117,7 +119,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlContainer::find(const Ghurund::Type& type) {
-        if (Type==type)
+        if (Type == type)
             return this;
         if (child)
             return child->find(type);

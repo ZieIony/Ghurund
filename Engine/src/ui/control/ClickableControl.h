@@ -44,17 +44,17 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isPressed)) const MousePressed& Pressed;
 
-        inline Event<Control, MousePressedEventArgs>& getOnPressed() {
+        inline Event<Control, MousePressedEventArgs>& getPressed() {
             return onPressed;
         }
 
-        __declspec(property(get = getOnPressed)) Event<Control, MousePressedEventArgs>& OnPressed;
+        __declspec(property(get = getPressed)) Event<Control, MousePressedEventArgs>& Pressed;
 
-        inline Event<Control, MouseClickedEventArgs>& getOnClicked() {
+        inline Event<Control, MouseClickedEventArgs>& getClicked() {
             return onClicked;
         }
 
-        __declspec(property(get = getOnClicked)) Event<Control, MouseClickedEventArgs>& OnClicked;
+        __declspec(property(get = getClicked)) Event<Control, MouseClickedEventArgs>& Clicked;
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

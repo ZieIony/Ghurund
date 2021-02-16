@@ -1,12 +1,56 @@
 #pragma once
 
 #include "Theme.h"
+
 #include "resource/ResourceManager.h"
-#include "ui/font/TextFormat.h"
-#include "ui/drawable/BitmapImage.h"
+#include "ui/control/Border.h"
+#include "ui/control/Shadow.h"
+#include "ui/control/Control.h"
+#include "ui/control/TextBlockStyle.h"
+#include "ui/control/ImageView.h"
+#include "ui/widget/ClickResponseView.h"
+#include "ui/widget/SeparatorStyle.h"
+#include "ui/widget/ProgressBar.h"
+#include "ui/widget/StateIndicator.h"
+#include "ui/widget/button/CheckBox.h"
+#include "ui/widget/button/RadioButton.h"
 
 namespace Ghurund::UI {
     class BaseTheme:public Ghurund::UI::Theme {
+    private:
+        CheckBoxStyle checkBoxStyle;
+        RadioButtonStyle radioButtonStyle;
+
+        SeparatorHorizontalStyle separatorHorizontalStyle;
+        SeparatorVerticalStyle separatorVerticalStyle;
+        ProgressBarStyle progressBarStyle;
+
+        TextBlockButtonStyle textViewButtonStyle;
+        TextBlockPrimaryStyle textViewPrimaryStyle;
+        TextBlockSecondaryStyle textViewSecondaryStyle;
+        TextBlockHeaderStyle textViewHeaderStyle;
+        TextBlockButtonOnAccentStyle textViewButtonOnAccentStyle;
+        TextBlockPrimaryOnAccentStyle textViewPrimaryOnAccentStyle;
+        TextBlockSecondaryOnAccentStyle textViewSecondaryOnAccentStyle;
+        TextBlockHeaderOnAccentStyle textViewHeaderOnAccentStyle;
+
+        ColorViewControlStyle colorViewControlStyle;
+        ColorViewAccentStyle colorViewAccentStyle;
+        ColorViewBackgroundStyle colorViewBackgroundStyle;
+
+        ImageViewStyle imageViewStyle;
+        ImageViewOnBackgroundStyle imageViewOnBackgroundStyle;
+        ImageViewOnAccentStyle imageViewOnAccentStyle;
+        ImageViewAccentStyle imageViewAccentStyle;
+
+        BorderOnBackgroundStyle borderOnBackgroundStyle;
+        BorderAccentStyle borderAccentStyle;
+        ShadowButtonStyle shadowButtonStyle;
+        ClickResponseViewOnBackgroundStyle clickResponseViewOnBackgroundStyle;
+        ClickResponseViewOnAccentStyle clickResponseViewOnAccentStyle;
+        StateIndicatorOnBackgroundStyle stateIndicatorOnBackgroundStyle;
+        StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
+
     public:
         BaseTheme(Ghurund::ResourceContext& context) {
             auto buttonFont = Ghurund::makeShared<Ghurund::UI::TextFormat>(L"fonts/lato_medium.ttf", L"Lato Medium", 10.0f, FW_MEDIUM, false);
@@ -37,6 +81,34 @@ namespace Ghurund::UI {
             Images.set(Theme::IMAGE_ARROWUP, arrowUp);
             SharedPointer<BitmapImage> arrowDown = BitmapImage::makeFromImage(context, L"icons/arrow down 18.png");
             Images.set(Theme::IMAGE_ARROWDOWN, arrowDown);
+
+            Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
+            Styles.set(STYLE_RADIOBUTTON, &radioButtonStyle);
+            Styles.set(STYLE_SEPARATOR_HORIZONTAL, &separatorHorizontalStyle);
+            Styles.set(STYLE_SEPARATOR_VERTICAL, &separatorVerticalStyle);
+            Styles.set(STYLE_PROGRESSBAR, &progressBarStyle);
+            Styles.set(STYLE_TEXTBLOCK_BUTTON, &textViewButtonStyle);
+            Styles.set(STYLE_TEXTBLOCK_PRIMARY, &textViewPrimaryStyle);
+            Styles.set(STYLE_TEXTBLOCK_SECONDARY, &textViewSecondaryStyle);
+            Styles.set(STYLE_TEXTBLOCK_HEADER, &textViewHeaderStyle);
+            Styles.set(STYLE_TEXTBLOCK_BUTTON_ONACCENT, &textViewButtonOnAccentStyle);
+            Styles.set(STYLE_TEXTBLOCK_PRIMARY_ONACCENT, &textViewPrimaryOnAccentStyle);
+            Styles.set(STYLE_TEXTBLOCK_SECONDARY_ONACCENT, &textViewSecondaryOnAccentStyle);
+            Styles.set(STYLE_TEXTBLOCK_HEADER_ONACCENT, &textViewHeaderOnAccentStyle);
+            Styles.set(STYLE_COLORVIEW_BACKGROUND, &colorViewBackgroundStyle);
+            Styles.set(STYLE_COLORVIEW_CONTROL, &colorViewControlStyle);
+            Styles.set(STYLE_COLORVIEW_ACCENT, &colorViewAccentStyle);
+            Styles.set(STYLE_IMAGEVIEW, &imageViewStyle);
+            Styles.set(STYLE_IMAGEVIEW_ONBACKGROUND, &imageViewOnBackgroundStyle);
+            Styles.set(STYLE_IMAGEVIEW_ONACCENT, &imageViewOnAccentStyle);
+            Styles.set(STYLE_IMAGEVIEW_ACCENT, &imageViewAccentStyle);
+            Styles.set(STYLE_BORDER_ONBACKGROUND, &borderOnBackgroundStyle);
+            Styles.set(STYLE_BORDER_ACCENT, &borderAccentStyle);
+            Styles.set(STYLE_SHADOW_BUTTON, &shadowButtonStyle);
+            Styles.set(STYLE_CLICKRESPONSEVIEW_ONBACKGROUND, &clickResponseViewOnBackgroundStyle);
+            Styles.set(STYLE_CLICKRESPONSEVIEW_ONACCENT, &clickResponseViewOnAccentStyle);
+            Styles.set(STYLE_STATEINDICATOR_ONBACKGROUND, &stateIndicatorOnBackgroundStyle);
+            Styles.set(STYLE_STATEINDICATOR_ONACCENT, &stateIndicatorOnAccentStyle);
         }
     };
 }

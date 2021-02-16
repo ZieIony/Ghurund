@@ -6,6 +6,7 @@ namespace Ghurund::UI {
     RootView::RootView(UIContext& context, Canvas& canvas) {
         this->canvas = &canvas;
         this->context = &context;
+        Cursor = &Cursor::ARROW;
         this->context->Window.OnFocusedChanged.add([this](Ghurund::Window& window) {
             if (!window.Visible || Focused) {
                 if (prevFocusedChild) {
@@ -21,8 +22,10 @@ namespace Ghurund::UI {
                     setPointer(prevFocusedChild, focus);
                     clearFocus();
                 }
-
             }
+#ifdef _DEBUG
+            validate();
+#endif
             return true;
         });
     }
@@ -77,10 +80,12 @@ namespace Ghurund::UI {
             auto position = capturedChild->PositionInWindow;
             bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.width &&
                 event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.height;
-            return capturedChild->dispatchMouseButtonEvent(event.translate(-position.x, -position.y, inside));
+            auto result = capturedChild->dispatchMouseButtonEvent(event.translate(-position.x, -position.y, inside));
+            return result;
         }
 
-        return __super::dispatchMouseButtonEvent(event);
+        auto r = __super::dispatchMouseButtonEvent(event);
+        return r;
     }
 
     bool RootView::dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {
@@ -91,8 +96,6 @@ namespace Ghurund::UI {
             return capturedChild->dispatchMouseMotionEvent(event.translate(-position.x, -position.y, inside));
         }
 
-        if (!__super::dispatchMouseMotionEvent(event))
-            Cursor::ARROW.set();
-        return true;
+        return __super::dispatchMouseMotionEvent(event);
     }
 };

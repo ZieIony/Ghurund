@@ -20,6 +20,7 @@ namespace Ghurund::UI {
 
     class Control;
     class ControlParent;
+    class Cursor;
     class Theme;
     class LayoutLoader;
 
@@ -28,6 +29,7 @@ namespace Ghurund::UI {
     class Control: public Pointer, public Ghurund::Input::EventConsumer {
     private:
         ControlParent* parent = nullptr;
+        const Cursor* cursor = nullptr;
 
         FloatSize size = { 0, 0 };  // what was finally mediated
 
@@ -66,13 +68,13 @@ namespace Ghurund::UI {
         Event<Control> themeChanged = Event<Control>(*this);
         Event<Control> contextChanged = Event<Control>(*this);
 
-        inline void onStateChanged() {
+        virtual void onStateChanged() {
             stateChanged();
             if (style)
                 style->onStateChanged(*this);
         }
 
-        inline void onThemeChanged() {
+        virtual void onThemeChanged() {
             themeChanged();
             if (style)
                 style->onThemeChanged(*this);
@@ -306,8 +308,10 @@ namespace Ghurund::UI {
 
         inline void setParent(ControlParent* parent) {
             this->parent = parent;
-            dispatchContextChanged();
-            dispatchThemeChanged();
+            if (parent) {
+                dispatchContextChanged();
+                dispatchThemeChanged();
+            }
         }
 
         inline ControlParent* getParent() const {
@@ -315,6 +319,16 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getParent, put = setParent)) ControlParent* Parent;
+
+        inline const Cursor* getCursor() {
+            return cursor;
+        }
+
+        inline void setCursor(const Cursor* cursor) {
+            this->cursor = cursor;
+        }
+
+        __declspec(property(get = getCursor, put = setCursor)) const Cursor* Cursor;
 
         void setTheme(Theme* theme);
 
@@ -388,10 +402,14 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPositionOnScreen)) FloatPoint PositionOnScreen;
 
+        virtual bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override;
+
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml);
 
 #ifdef _DEBUG
         virtual String logTree();
+
+        virtual void validate();
 #endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

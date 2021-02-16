@@ -10,8 +10,4 @@ namespace Ghurund {
     struct FloatSize {
         float width, height;
     };
-
-    struct FloatPoint {
-        float x, y;
-    };
 }

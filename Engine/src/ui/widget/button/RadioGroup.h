@@ -6,7 +6,7 @@ namespace Ghurund::UI {
     class RadioGroup {
     private:
         PointerList<RadioButton*> buttons;
-        std::function<bool(RadioButton&)> checkedHandler = [this](RadioButton& sender) {
+        std::function<bool(CheckBoxRadio&)> checkedHandler = [this](CheckBoxRadio& sender) {
             for (auto b : buttons) {
                 if (b != &sender)
                     b->Checked = false;
@@ -23,13 +23,13 @@ namespace Ghurund::UI {
 
         inline void add(RadioButton* button) {
             buttons.add(button);
-            button->OnCheckedChanged.add(checkedHandler);
+            button->CheckedChanged.add(checkedHandler);
         }
 
         inline void addAll(const std::initializer_list<RadioButton*>& buttons) {
             for (RadioButton* b : buttons) {
                 this->buttons.add(b);
-                b->OnCheckedChanged.add(checkedHandler);
+                b->CheckedChanged.add(checkedHandler);
             }
         }
 
@@ -41,12 +41,12 @@ namespace Ghurund::UI {
 
         inline void remove(RadioButton* button) {
             buttons.remove(button);
-            button->OnCheckedChanged.clear();
+            button->CheckedChanged.clear();
         }
 
         inline void clear() {
             for (RadioButton* b : buttons)
-                b->OnCheckedChanged.clear();
+                b->CheckedChanged.clear();
             buttons.clear();
         }
     };

@@ -120,15 +120,11 @@
     <ClCompile Include="src\ui\style\Theme.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
-    <ClCompile Include="src\ui\widget\button\CheckBoxRadioLayout.cpp" />
+    <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
     <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
-    <ClCompile Include="src\ui\widget\menu\MenuBar.cpp" />
-    <ClCompile Include="src\ui\widget\menu\MenuBarAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\menu\MenuBarLayout.cpp" />
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\menu\ToolbarLayout.cpp" />
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
     <ClCompile Include="src\ui\widget\Separator.cpp" />
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
@@ -140,6 +136,7 @@
     <ClCompile Include="src\ui\widget\text\LayoutEditor.cpp" />
     <ClCompile Include="src\ui\widget\text\TextField.cpp" />
     <ClCompile Include="src\ui\widget\text\TextView.cpp" />
+    <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
@@ -298,6 +295,7 @@
     <ClInclude Include="src\ui\Graphics2D.h" />
     <ClInclude Include="src\ui\style\LightTheme.h" />
     <ClInclude Include="src\ui\UIContext.h" />
+    <ClInclude Include="src\ui\widget\button\CheckBoxRadio.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
@@ -361,9 +359,7 @@
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
-    <ClInclude Include="src\ui\widget\button\ButtonLayout.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\button\CheckBoxRadioLayout.h" />
     <ClInclude Include="src\ui\widget\button\RadioButton.h" />
     <ClInclude Include="src\ui\widget\button\RadioGroup.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
@@ -374,9 +370,6 @@
     <ClInclude Include="src\ui\widget\Layout.h" />
     <ClInclude Include="src\ui\widget\menu\DropDown.h" />
     <ClInclude Include="src\ui\widget\menu\DropDownLayout.h" />
-    <ClInclude Include="src\ui\widget\menu\MenuBar.h" />
-    <ClInclude Include="src\ui\widget\menu\MenuBarAdapter.h" />
-    <ClInclude Include="src\ui\widget\menu\MenuBarLayout.h" />
     <ClInclude Include="src\ui\widget\menu\MenuItem.h" />
     <ClInclude Include="src\ui\widget\menu\PopupMenu.h" />
     <ClInclude Include="src\ui\widget\menu\PopupMenuAdapter.h" />
@@ -407,6 +400,7 @@
     <ClInclude Include="src\ui\widget\text\TextField.h" />
     <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
     <ClInclude Include="src\ui\widget\text\TextView.h" />
+    <ClInclude Include="src\ui\widget\tree\TreeRowAdapter.h" />
     <ClInclude Include="src\ui\widget\tree\TreeView.h" />
     <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRow.h" />
@@ -416,14 +410,21 @@
     <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="packages.config" />
-    <None Include="src\ui\ui.md" />
+    <None Include="src\ui\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="Engine.UI.natvis" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="src\ui\widget\text\license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\ButtonLayout.xml" />
+    <Xml Include="res\CheckBoxLayout.xml" />
+    <Xml Include="res\ScrollBarLayout.xml" />
+    <Xml Include="res\TreeRowLayout.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -486,10 +487,11 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
@@ -515,6 +517,10 @@
       <EnableModules>true</EnableModules>
       <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <CustomBuildStep>
+      <Command>$(SolutionDir)BindingGenerator\bin\Debug\BindingGenerator.exe $(ProjectDir)res $(ProjectDir)generated</Command>
+      <Outputs>$(ProjectDir)generated</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

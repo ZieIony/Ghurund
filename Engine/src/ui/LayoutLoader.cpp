@@ -20,11 +20,13 @@
 #include "ui/widget/button/RadioButton.h"
 #include "ui/widget/text/TextView.h"
 #include "ui/widget/text/TextField.h"
+#include "ui/widget/tree/TreeView.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
+        workingDir.push(DirectoryPath(L"."));
         registerClass(ClickableControl::TYPE);
         registerClass(SelectableView::TYPE);
         registerClass(ClickResponseView::TYPE);
@@ -50,6 +52,7 @@ namespace Ghurund::UI {
         registerClass(CheckBox::TYPE);
         registerClass(RadioButton::TYPE);
         registerClass(VerticalScrollBar::TYPE);
+        registerClass(TreeView::TYPE);
     }
 
     Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {
@@ -65,14 +68,40 @@ namespace Ghurund::UI {
         }
     }
 
+    Status LayoutLoader::load(const FilePath& path, PointerList<Control*>& output) {
+        File file(path);
+        if (!file.Exists)
+            return Status::FILE_DOESNT_EXIST;
+        Status result = file.read();
+        if (result == Status::OK) {
+            workingDir.push(path.Directory);
+            result = load(Buffer(file.Data, file.Size), output);
+            workingDir.pop();
+        }
+        return result;
+    }
+
     PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
         PointerList<Control*> list;
         const tinyxml2::XMLElement* child = xml.FirstChildElement();
         while (child != nullptr) {
-            Control* control = loadControl(*child);
-            if (control) {
-                list.add(control);
-                control->release();
+            if (strcmp(child->Value(), "include") == 0) {
+                auto layoutAttr = child->FindAttribute("layout");
+                if (layoutAttr) {
+                    WString s = toWideChar(AString(layoutAttr->Value()));
+                    if (s.startsWith(FILE_PROTOCOL)) {
+                        PointerList<Control*> controls;
+                        Status result = load(getPath(s), controls);
+                        if (result == Status::OK)
+                            list.addAll(controls);
+                    }
+                }
+            } else {
+                Control* control = loadControl(*child);
+                if (control) {
+                    list.add(control);
+                    control->release();
+                }
             }
             child = child->NextSiblingElement();
         }
@@ -81,7 +110,21 @@ namespace Ghurund::UI {
 
     Control* LayoutLoader::loadControl(const tinyxml2::XMLElement& xml) {
         const char* name = xml.Value();
-        if (types.contains(name)) {
+        if (strcmp(name, "include") == 0) {
+            auto layoutAttr = xml.FindAttribute("layout");
+            if (layoutAttr) {
+                WString s = toWideChar(AString(layoutAttr->Value()));
+                if (s.startsWith(FILE_PROTOCOL)) {
+                    PointerList<Control*> controls;
+                    Status result = load(getPath(s), controls);
+                    if (result == Status::OK && !controls.Empty) {
+                        Control* control = controls[0];
+                        control->addReference();
+                        return control;
+                    }
+                }
+            }
+        } else if (types.contains(name)) {
             Type* type = types.get(name);
             Control* control = (Control*)type->Constructor->newInstance();
             control->load(*this, xml);
@@ -127,11 +170,9 @@ namespace Ghurund::UI {
 
     BitmapImage* LayoutLoader::loadImage(const char* str) {
         WString s = toWideChar(AString(str));
-        const wchar_t* fileProtocol = L"file://";
         const wchar_t* themeProtocol = L"theme://image/";
-        if (s.startsWith(fileProtocol)) {
-            auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
-            return BitmapImage::makeFromImage(*context, filePath);
+        if (s.startsWith(FILE_PROTOCOL)) {
+            return BitmapImage::makeFromImage(*context, getPath(s));
         } else if (s.startsWith(themeProtocol) && theme) {
             WString imageKey = s.substring(lengthOf(themeProtocol));
             if (theme->Images.contains(imageKey)) {
@@ -149,10 +190,8 @@ namespace Ghurund::UI {
 
     TextFormat* LayoutLoader::loadTextFormat(const char* str) {
         WString s = toWideChar(AString(str));
-        const wchar_t* fileProtocol = L"file://";
-        const wchar_t* themeProtocol = L"theme://";
-        if (s.startsWith(fileProtocol)) {
-            auto filePath = FilePath(s.substring(lengthOf(fileProtocol)));
+        const wchar_t* themeProtocol = L"theme://textFormat/";
+        if (s.startsWith(FILE_PROTOCOL)) {
             //auto textFormat = ghnew TextFormat()
         } else if (s.startsWith(themeProtocol) && theme) {
             WString fontKey = s.substring(lengthOf(themeProtocol));
@@ -195,5 +234,13 @@ namespace Ghurund::UI {
         }
 
         return Status::OK;
+    }
+
+    WString LayoutLoader::getPath(const WString& path) {
+        WStringView sView = WStringView(path).substring(lengthOf(FILE_PROTOCOL));
+        if (sView.startsWith(L"~/"))
+            return FilePath(sView.substring(lengthOf(L"~/")));
+        auto fileName = fmt::format(L"{}/{}", WorkingDirectory.toString().Data, sView);
+        return WString(fileName.c_str());
     }
 }

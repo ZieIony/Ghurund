@@ -2,17 +2,15 @@
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<SelectableView name="selectable" preferredSize="wrap, wrap">
 		<StackLayout>
-			<StateIndicator name="state"/>
-			<LinearLayout preferredSize="fill, fill"
-					  alignment="center, center"
-					  orientation="horizontal">
+			<StateIndicator name="state" preferredSize="fill, fill"/>
+			<LinearLayout alignment="center, center"
+						  orientation="horizontal">
 				<ImageView
 						name="image"
-						image="theme://image/radioButton_checked"
-						imageTint="theme://color/accent"/>
+						image="theme://image/radioButton_checked"/>
 				<Space preferredSize="4,4"/>
-				<ControlContainer preferredSize="wrap, wrap"
-								  name="content"/>
+				<ControlContainer preferredSize="fill, wrap"
+								  name="container"/>
 			</LinearLayout>
 		</StackLayout>
 	</SelectableView>

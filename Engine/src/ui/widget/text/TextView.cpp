@@ -1,5 +1,8 @@
 #include "TextView.h"
+
 #include "application/Clipboard.h"
+#include "ui/Cursor.h"
+#include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
     TextView::~TextView() {
@@ -380,8 +383,7 @@ namespace Ghurund::UI {
         Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.startPosition, selectionRange.length));
     }
 
-    void TextView::dispatchContextChanged() {
-        __super::dispatchContextChanged();
+    void TextView::onThemeChanged() {
         if (!Theme)
             return;
         textSelectionEffect = ghnew DrawingEffect(Theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND]);
@@ -392,18 +394,6 @@ namespace Ghurund::UI {
         updateCaretFormatting();
     }
 
-    bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-        if (event.Button == MouseButton::LEFT) {
-            if (event.Action == MouseAction::DOWN) {
-                pressed = true;
-                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input.isShiftDown());
-            } else {
-                pressed = false;
-            }
-        }
-        return __super::dispatchMouseButtonEvent(event);
-    }
-
     bool TextView::dispatchKeyEvent(const KeyEventArgs& event) {
         if (event.Action == KeyAction::DOWN && event.Key == 'C' && Context->Window.Input.isControlDown()) {
             copyToClipboard();
@@ -412,9 +402,24 @@ namespace Ghurund::UI {
         return __super::dispatchKeyEvent(event);
     }
 
+    bool TextView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
+        if (event.Button == MouseButton::LEFT) {
+            if (event.Action == MouseAction::DOWN) {
+                pressed = true;
+                setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, Context->Window.Input.isShiftDown());
+                Parent->CapturedChild = this;
+            } else {
+                pressed = false;
+                Parent->CapturedChild = nullptr;
+            }
+        }
+        return __super::dispatchMouseButtonEvent(event);
+    }
+
     bool TextView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (pressed)
             setSelectionFromPoint((float)event.Position.x, (float)event.Position.y, true);
+
         return __super::dispatchMouseMotionEvent(event);
     }
 
@@ -464,5 +469,9 @@ namespace Ghurund::UI {
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
+    }
+    
+    TextView::TextView() {
+        Cursor = &Cursor::IBEAM;
     }
 }

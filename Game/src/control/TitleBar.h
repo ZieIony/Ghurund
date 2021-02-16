@@ -5,55 +5,45 @@
 #include "ui/layout/StackLayout.h"
 #include "ui/control/ColorView.h"
 #include "ui/control/TextBlock.h"
-#include "ui/widget/button/ImageButton.h"
+#include "ui/widget/button/Button.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
 
-    class TitleBar:public StackLayout {
+    class TitleBarLayout:public WidgetLayout {
     private:
-        SharedPointer<ColorView> backgroundView;
-        SharedPointer<HorizontalLayout> row;
-        SharedPointer<ImageButton> closeButton;
         SharedPointer<TextBlock> title;
-        SharedPointer<BitmapImage> closeIcon;
+        SharedPointer<Button> closeButton;
 
     public:
-        TitleBar() {
-            PreferredSize.height = PreferredSize::Height::WRAP;
-            row = ghnew HorizontalLayout();
-            row->PreferredSize.height = PreferredSize::Height::WRAP;
-            {
-                title = ghnew TextBlock();
-                title->PreferredSize.width = PreferredSize::Width::FILL;
-//                closeIcon = ghnew BitmapImage(L"icons/close 18.png");
-                closeButton = ghnew ImageButton(ghnew ImageButtonFlatLayout());
-              //  closeButton->Image = closeIcon;
-                //closeButton->Image->Tint = theme.getColorForegroundPrimaryOnAccent();
-            }
-            row->Alignment.vertical = Alignment::Vertical::CENTER;
-            row->Children = { title, closeButton };
-            backgroundView = ghnew ColorView();
-            Children = { backgroundView, row };
-            ThemeChanged.add([this](Control& control) {
-                UI::Theme* theme = Theme;
-                if (!theme)
-                    return false;
-                title->TextColor = theme->ColorForegroundPrimaryOnAccent;
-                title->Style = theme->Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
-                backgroundView->Color = theme->Colors[Theme::COLOR_ACCENT];
-                return true;
-            });
+        TitleBarLayout(Control* control) {
+            title = (TextBlock*)control->find("title");
+            closeButton = (Button*)control->find("close");
         }
 
-        inline WString& getText() {
-            return title->Text;
+        inline TextBlock* getTitle() {
+            return title;
+        }
+
+        __declspec(property(get = getTitle)) TextBlock* Title;
+
+        inline Button* getCloseButton() {
+            return closeButton;
+        }
+
+        __declspec(property(get = getCloseButton)) Button* CloseButton;
+    };
+
+    class TitleBar:public Widget<TitleBarLayout> {
+    public:
+        inline const WString& getText() {
+            return Layout->Title->Text;
         }
 
         inline void setText(const WString& text) {
-            title->Text = text;
+            Layout->Title->Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) WString& Text;
+        __declspec(property(get = getText, put = setText)) const WString& Text;
     };
 }

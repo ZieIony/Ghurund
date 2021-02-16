@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -144,6 +144,8 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ImageLayout.h" />
+    <ClInclude Include="src\LayoutLayout.h" />
     <ClInclude Include="src\PreviewApplication.h" />
     <ClInclude Include="src\PreviewWindow.h" />
   </ItemGroup>

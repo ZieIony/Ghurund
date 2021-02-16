@@ -40,6 +40,9 @@ namespace Ghurund::UI {
         List<TreeItem*> items;
         TreeRowAdapter adapter;
 
+    protected:
+        static const Ghurund::Type& GET_TYPE();
+
     public:
         TreeView() {
             recycler = ghnew RecyclerView();
@@ -55,6 +58,11 @@ namespace Ghurund::UI {
             recycler->release();
         }
 
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 
     typedef SharedPointer<TreeView> TreeViewPtr;

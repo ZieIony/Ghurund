@@ -17,9 +17,12 @@ namespace Ghurund::UI {
     public:
         ToolbarLayout() {}
 
-        ToolbarLayout(Control* control) {}
-
-        virtual void init() override;
+        ToolbarLayout(Control* control) {
+            recyclerView = ghnew Ghurund::UI::RecyclerView();
+            recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
+            recyclerView->LayoutManager = ghnew HorizontalLayoutManager();
+            Root = recyclerView;
+        }
 
         inline RecyclerView* getRecyclerView() {
             return recyclerView;

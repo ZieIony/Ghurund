@@ -6,8 +6,8 @@
 namespace Ghurund::UI {
     class LayoutManager {
     protected:
-        XMFLOAT2 scroll = { 0,0 };
-        XMFLOAT2 maxScroll = { 0.0f, 0.0f };
+        FloatPoint scroll = { 0,0 };
+        FloatPoint maxScroll = { 0.0f, 0.0f };
 
         inline float measureMaxWidth(ControlGroup& group) {
             float measuredWidth = 0;
@@ -46,23 +46,23 @@ namespace Ghurund::UI {
     public:
         virtual ~LayoutManager() = 0 {}
 
-        inline const XMFLOAT2& getScroll() const {
+        inline const FloatPoint& getScroll() const {
             return scroll;
         }
 
-        inline void setScroll(const XMFLOAT2& scroll) {
+        inline void setScroll(const FloatPoint& scroll) {
             this->scroll = scroll;
         }
 
-        __declspec(property(get = getScroll, put = setScroll)) const XMFLOAT2& Scroll;
+        __declspec(property(get = getScroll, put = setScroll)) const FloatPoint& Scroll;
 
         virtual void scrollBy(ControlGroup& group, ChildrenProvider& provider, float dx, float dy) {}
 
-        inline const XMFLOAT2& getMaxScroll() const {
+        inline const FloatPoint& getMaxScroll() const {
             return maxScroll;
         }
 
-        __declspec(property(get = getMaxScroll)) const XMFLOAT2& MaxScroll;
+        __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
 
         virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
             for (Control* c : group.Children) {

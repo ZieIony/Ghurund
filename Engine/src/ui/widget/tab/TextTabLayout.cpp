@@ -2,7 +2,7 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    void TextTabLayout::init() {
+    TextTabLayout::TextTabLayout(Theme& theme):theme(theme) {
         stack = ghnew StackLayout();
         textView->TextFormat = theme.TextFormats[Theme::TEXTFORMAT_BUTTON];
         paddingContainer->Child = textView;

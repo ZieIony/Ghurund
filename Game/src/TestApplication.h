@@ -8,7 +8,6 @@
 #include "core/SharedPointer.h"
 #include "ui/widget/menu/MenuItem.h"
 #include "ui/widget/menu/Toolbar.h"
-#include "ui/widget/menu/MenuBar.h"
 #include "ui/widget/tab/TabContainer.h"
 #include "ui/widget/SplitLayout.h"
 #include "TestRecycler.h"
@@ -96,7 +95,7 @@ public:
         SharedPointer<TestImageViews> testImageViews = ghnew TestImageViews(ResourceContext, *theme);
         SharedPointer<TestFlowLayouts> testFlowLayouts = ghnew TestFlowLayouts(ResourceContext, layoutLoader);
 
-        SharedPointer<TabContainer> tabLayout = ghnew TabContainer(*theme);
+        SharedPointer<TabContainer> tabLayout = ghnew TabContainer();
         tabLayout->Name = "tabs";
 
         SharedPointer<TestControls> column = ghnew TestControls(*theme, ResourceManager, ResourceContext, layoutLoader);
@@ -127,7 +126,7 @@ public:
             BitmapImage* cutIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/cut 18.png");
             BitmapImage* pasteIcon = BitmapImage::makeFromImage(ResourceContext, L"icons/paste 18.png");
 
-            MenuBarPtr menuBar = ghnew MenuBar(ResourceContext, layoutLoader , *menuTheme);
+            /*MenuBarPtr menuBar = ghnew MenuBar(layoutLoader);
             menuBar->Name = "menu bar";
             menuBar->Items = {
                 ghnew ButtonMenuItem(L"File", [](Control&) {
@@ -167,7 +166,7 @@ public:
                 ghnew ButtonMenuItem(L"Very long menu text", [](Control&) {
                     Logger::log(LogType::INFO, "Very long menu text clicked\n");
                 })
-            };
+            };*/
 
             SharedPointer<Toolbar> toolbar = ghnew Toolbar(*theme);
             toolbar->Name = "toolbar";
@@ -191,11 +190,11 @@ public:
             auto statusBarItems = makeShared<HorizontalLayout>();
             statusBarItems->Alignment = { Alignment::Horizontal::RIGHT, Alignment::Vertical::CENTER };
             statusBarItems->PreferredSize.height = PreferredSize::Height::WRAP;
-            fps = makeShared<FpsText>(theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY], theme->ColorForegroundPrimaryOnBackground, Timer);
-            statusBarItems->Children = { fps };
+            //fps = makeShared<FpsText>(theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY], theme->ColorForegroundPrimaryOnBackground, Timer);
+            //statusBarItems->Children = { fps };
             statusBar->Children = { statusBarBackground, statusBarItems };
 
-            mainColumn->Children = { menuBar, toolbar, tabLayout, statusBar };
+            mainColumn->Children = { /*menuBar,*/ toolbar, tabLayout, statusBar };
         }
         rootView->Child = mainColumn;
 

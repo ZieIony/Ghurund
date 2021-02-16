@@ -139,7 +139,7 @@ namespace Ghurund::UI {
 
         WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
         if (data) {
-            layoutEditor.insertTextAt(textLayout, Text, caretPosition + caretPositionOffset, *data);
+            layoutEditor.insertTextAt(textLayout, text, caretPosition + caretPositionOffset, *data);
             setSelection(SetSelectionMode::RightChar, data->Length, true);
             repaint();
         }

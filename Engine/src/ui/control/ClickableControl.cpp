@@ -27,7 +27,7 @@ namespace Ghurund::UI {
             onStateChanged();
         }
 
-        return false;
+        return hovered;
     }
 
     bool ClickableControl::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -35,12 +35,12 @@ namespace Ghurund::UI {
             return true;
         if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
             buttons[event.Button] = true;
-            setCapturedChild(this);
+            Parent->CapturedChild = this;
             onStateChanged();
             return onPressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs));
         } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
             buttons[event.Button] = false;
-            setCapturedChild(nullptr);
+            Parent->CapturedChild = nullptr;
             onStateChanged();
             return onClicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside));
         }

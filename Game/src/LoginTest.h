@@ -6,7 +6,7 @@
 #include "ui/control/Space.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/widget/textfield/TextField.h"
+#include "ui/widget/text/TextField.h"
 #include <ui/widget/button/Button.h>
 #include <ui/drawable/BitmapImageDrawable.h>
 #include <ui/drawable/SvgImageDrawable.h>
@@ -35,7 +35,7 @@ public:
                 auto loginIconView = makeShared<ImageView>();
                 SharedPointer<SvgImage> faceIcon = context.ResourceManager.load<SvgImage>(context, L"icons/face 24.svg");
                 auto faceIconDrawable = makeShared<SvgImageDrawable>(faceIcon);
-                faceIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
+                //faceIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 loginIconView->Image = faceIconDrawable;
                 auto loginTextField = makeShared<TextField>();
 
@@ -54,7 +54,7 @@ public:
                 auto passwordIconView = makeShared<ImageView>();
                 SharedPointer<SvgImage> lockIcon = context.ResourceManager.load<SvgImage>(context, L"icons/lock 24.svg");
                 auto passwordIconDrawable = makeShared<SvgImageDrawable>(lockIcon);
-                passwordIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
+                //passwordIconDrawable->Tint = theme.ColorForegroundSecondaryOnBackground;
                 passwordIconView->Image = passwordIconDrawable;
                 auto passwordTextField = makeShared<TextField>();
 

@@ -1,31 +1,17 @@
 #pragma once
 
+#include "TreeRowLayout.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ImageView.h"
 #include "ui/layout/LinearLayout.h"
+#include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
-    class TreeRow:public HorizontalLayout {
+    class TreeRow:public ContentWidget<TreeRowLayout> {
     private:
-        SharedPointer<ImageView> imageView;
-        SharedPointer<ControlContainer> container;
+        TreeItem* item;
 
     public:
-        TreeRow() {
-            imageView = ghnew ImageView();
-            container = ghnew ControlContainer();
-            container->PreferredSize.width = PreferredSize::Width::FILL;
-            Children = { imageView, container };
-        }
 
-        inline Control* getContent() {
-            return container->Child;
-        }
-
-        inline void setContent(Control* control) {
-            container->Child = control;
-        }
-
-        __declspec(property(get = getContent, put = setContent)) Control* Content;
     };
 }

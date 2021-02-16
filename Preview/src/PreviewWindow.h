@@ -53,13 +53,13 @@ namespace Preview {
             rootView->Child = controls[0];
             container = (StackLayout*)rootView->find("container");
             themeCheckBox = (CheckBox*)rootView->find("themeCheckBox");
-            themeCheckBox->OnCheckedChanged.add([this](CheckBox&) {
+            themeCheckBox->CheckedChanged.add([this](CheckBoxRadio&) {
                 updateTheme();
                 rootView->repaint();
                 return true;
             });
             enabledCheckBox = (CheckBox*)rootView->find("enabledCheckBox");
-            enabledCheckBox->OnCheckedChanged.add([this](CheckBox& checkBox) {
+            enabledCheckBox->CheckedChanged.add([this](CheckBoxRadio& checkBox) {
                 container->Enabled = checkBox.Checked;
                 container->repaint();
                 return true;
@@ -75,13 +75,13 @@ namespace Preview {
                 return true;
             };
             button1 = (Button*)rootView->find("color1");
-            button1->OnClicked.add(colorClickHandler);
+            button1->Clicked.add(colorClickHandler);
             button2 = (Button*)rootView->find("color2");
-            button2->OnClicked.add(colorClickHandler);
+            button2->Clicked.add(colorClickHandler);
             button3 = (Button*)rootView->find("color3");
-            button3->OnClicked.add(colorClickHandler);
+            button3->Clicked.add(colorClickHandler);
             button4 = (Button*)rootView->find("color4");
-            button4->OnClicked.add(colorClickHandler);
+            button4->Clicked.add(colorClickHandler);
 
             RootView = rootView;
 
@@ -126,7 +126,13 @@ namespace Preview {
                 if (!file.Exists)
                     return;
                 if (file.read() == Status::OK) {
-                    loadLayout(Buffer(file.Data, file.Size));
+                    layoutLoader.WorkingDirectory = path.Directory;
+                    Buffer buffer(file.Data, file.Size);
+                    if (path.FileName.endsWith(L".xml")) {
+                        loadLayout(buffer);
+                    } else {
+                        loadImage(buffer);
+                    }
                 } else {
                     app->FunctionQueue.post(loadCallback);
                 }
@@ -144,12 +150,22 @@ namespace Preview {
             container->invalidate();
         }
 
+        void loadImage(const Buffer& data) {
+            auto image = makeShared<BitmapImage>();
+            MemoryInputStream stream(data.Data, data.Size);
+            DirectoryPath baseDir(L".");
+            image->load(app->ResourceContext, baseDir, stream);
+            auto imageView = makeShared<ImageView>();
+            imageView->Image = ghnew BitmapImageDrawable(image);
+            container->Children = { imageView };
+            container->invalidate();
+        }
+
         void watchFile(FilePath& filePath) {
             this->filePath = ghnew FilePath(filePath);
             fileWatcher.addFile(filePath, [this](const FilePath& path, const FileChange& change) {
-                if (change == FileChange::RENAMED_TO || change == FileChange::MODIFIED) {
+                if (change == FileChange::RENAMED_TO || change == FileChange::MODIFIED)
                     postLoadCallback(path);
-                }
             });
         }
     };

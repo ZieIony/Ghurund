@@ -19,7 +19,7 @@ public:
     TestRecycler(Ghurund::ResourceManager& resourceManager, Ghurund::ResourceContext& context, LayoutLoader& loader, Ghurund::UI::Theme& theme) {
         recyclerView = ghnew RecyclerView();
         recyclerView->PreferredSize.width = PreferredSize::Width::FILL;
-        scrollBar = ghnew VerticalScrollBar(theme);
+        scrollBar = ghnew VerticalScrollBar();
         scrollBar->Name = "recycler scroll";
         scrollBar->OnScrolled.add([this](Control& control) {
             recyclerView->Scroll = { 0.0f, scrollBar->Scroll };

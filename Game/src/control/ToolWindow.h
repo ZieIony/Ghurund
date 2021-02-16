@@ -42,7 +42,7 @@ namespace Ghurund::Editor {
 
         __declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        inline WString& getTitle() {
+        inline const WString& getTitle() {
             return titleBar->Text;
         }
 
@@ -50,6 +50,6 @@ namespace Ghurund::Editor {
             titleBar->Text = text;
         }
 
-        __declspec(property(get = getTitle, put = setTitle)) WString& Title;
+        __declspec(property(get = getTitle, put = setTitle)) const WString& Title;
     };
 }

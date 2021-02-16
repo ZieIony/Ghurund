@@ -39,7 +39,7 @@ namespace Ghurund::UI {
             delete dragHelper;
         dragHelper = ghnew DragHelper(*Layout->BarButton);
 
-        Layout->TopButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
+        Layout->TopButton->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll -= 10;
             if (scroll != prevScroll) {
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
             }
             return true;
         });
-        Layout->BottomButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
+        Layout->BottomButton->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll += 10;
             if (scroll != prevScroll) {

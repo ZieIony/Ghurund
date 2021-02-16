@@ -38,9 +38,7 @@ namespace Ghurund::UI {
         Theme& theme;
 
     public:
-        TabContainerVerticalBottomLayout(Theme& theme):theme(theme) {}
-
-        virtual void init() override;
+        TabContainerVerticalBottomLayout(Theme& theme);
 
         inline ColorView* getSeparator() {
             return separator;

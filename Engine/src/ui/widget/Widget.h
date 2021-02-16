@@ -59,10 +59,8 @@ namespace Ghurund::UI {
                     delete widgetLayout;
                 }
                 widgetLayout = layout;
-                if (widgetLayout) {
-                    widgetLayout->init();
+                if (widgetLayout)
                     Child = widgetLayout->Root;
-                }
                 onLayoutChanged();
             }
 
@@ -82,11 +80,9 @@ namespace Ghurund::UI {
                 if (layoutAttr) {
                     WString s = toWideChar(AString(layoutAttr->Value()));
                     uint32_t value = 0;
-                    const wchar_t* fileProtocol = L"file://";
-                    if (s.startsWith(fileProtocol)) {
-                        WString layoutPath = s.substring(lengthOf(fileProtocol));
+                    if (s.startsWith(LayoutLoader::FILE_PROTOCOL)) {
                         PointerList<Control*> controls;
-                        Status result = loader.load(layoutPath, controls);
+                        Status result = loader.load(loader.getPath(s), controls);
                         if (result != Status::OK)
                             return result;
                         if (!controls.Empty) {

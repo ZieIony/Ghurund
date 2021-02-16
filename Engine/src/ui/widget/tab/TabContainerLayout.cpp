@@ -1,10 +1,10 @@
 #include "TabContainerLayout.h"
+
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    void TabContainerVerticalBottomLayout::init() {
+    TabContainerVerticalBottomLayout::TabContainerVerticalBottomLayout(Theme& theme):theme(theme) {
         VerticalLayout* column = ghnew VerticalLayout();
         container = ghnew ControlContainer();
         container->PreferredSize.width = PreferredSize::Width::FILL;

@@ -18,21 +18,15 @@ namespace Ghurund::UI {
                 return TYPE;
             }
 
-            virtual void onLayoutChanged() override {
-                Control* control = ControlContainer::find(_T("content"));
-                if (control && control->Type.isOrExtends(ControlContainer::TYPE))
-                    container = (ControlContainer*)ControlContainer::find(_T("content"));
-            }
-
         public:
             ~ContentWidget() = 0 {}
 
             inline void setContent(Control* control) {
-                container->Child = control;
+                Widget<LayoutType>::Layout->Container->Child = control;
             }
 
             inline Control* getContent() {
-                return container->Child;
+                return Widget<LayoutType>::Layout->Container->Child;
             }
 
             __declspec(property(get = getContent, put = setContent)) Control* Content;
@@ -41,7 +35,7 @@ namespace Ghurund::UI {
                 Status result = __super::load(loader, xml);
                 if (result != Status::OK)
                     return result;
-                if (container && xml.FirstChildElement())
+                if (Widget<LayoutType>::Layout->Container && xml.FirstChildElement())
                     Content = loader.loadControl(*xml.FirstChildElement());
                 return Status::OK;
             }

@@ -13,12 +13,12 @@
 					<ColorView style="theme://style/colorView_accent"
 							   name="background"/>
 					<StateIndicator name="state" preferredSize="fill, fill"
-									style="theme://style/stateIndicator_accent"/>
+									style="theme://style/stateIndicator_onAccent"/>
 					<PaddingContainer padding="8, 4"
 									  preferredSize="fill, fill"
 									  name="padding">
 							<ControlContainer preferredSize="fill, fill"
-											  name="content"/>
+											  name="container"/>
 					</PaddingContainer>
 				</StackLayout>
 			</Clip>

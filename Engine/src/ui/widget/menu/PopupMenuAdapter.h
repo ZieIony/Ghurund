@@ -34,8 +34,8 @@ namespace Ghurund::UI {
         void bind(ButtonMenuItem& item) {
 //            icon->Image = item.Image;
             text->Text = item.Text;
-            OnClicked.clear();
-            OnClicked.add([&item](Control& sender, const MouseClickedEventArgs& args) {
+            Clicked.clear();
+            Clicked.add([&item](Control& sender, const MouseClickedEventArgs& args) {
                 item.ClickEventHandler(sender);
                 return true;
             });

@@ -2,16 +2,10 @@
 
 #include "core/SharedPointer.h"
 
-#include "ui/style/Style.h"
-#include "ui/control/Border.h"
-#include "ui/control/Shadow.h"
-#include "ui/control/Control.h"
-#include "ui/control/TextBlockStyle.h"
-#include "ui/control/ImageView.h"
+#include "ui/Color.h"
 #include "ui/drawable/BitmapImage.h"
-#include "ui/widget/ClickResponseView.h"
-#include "ui/widget/SeparatorStyle.h"
-#include "ui/widget/ProgressBar.h"
+#include "ui/font/TextFormat.h"
+#include "ui/style/Style.h"
 
 namespace Ghurund::UI {
     struct ColorKey {
@@ -58,34 +52,6 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        SeparatorHorizontalStyle separatorHorizontalStyle;
-        SeparatorVerticalStyle separatorVerticalStyle;
-        ProgressBarStyle progressBarStyle;
-
-        TextBlockButtonStyle textViewButtonStyle;
-        TextBlockPrimaryStyle textViewPrimaryStyle;
-        TextBlockSecondaryStyle textViewSecondaryStyle;
-        TextBlockHeaderStyle textViewHeaderStyle;
-        TextBlockButtonOnAccentStyle textViewButtonOnAccentStyle;
-        TextBlockPrimaryOnAccentStyle textViewPrimaryOnAccentStyle;
-        TextBlockSecondaryOnAccentStyle textViewSecondaryOnAccentStyle;
-        TextBlockHeaderOnAccentStyle textViewHeaderOnAccentStyle;
-
-        ColorViewControlStyle colorViewControlStyle;
-        ColorViewAccentStyle colorViewAccentStyle;
-        ColorViewBackgroundStyle colorViewBackgroundStyle;
-
-        ImageViewStyle imageViewStyle;
-        ImageViewOnBackgroundStyle imageViewOnBackgroundStyle;
-        ImageViewOnAccentStyle imageViewOnAccentStyle;
-        ImageViewAccentStyle imageViewAccentStyle;
-
-        BorderOnBackgroundStyle borderOnBackgroundStyle;
-        BorderAccentStyle borderAccentStyle;
-        ShadowButtonStyle shadowButtonStyle;
-        ClickResponseViewOnBackgroundStyle clickResponseViewOnBackgroundStyle;
-        ClickResponseViewOnAccentStyle clickResponseViewOnAccentStyle;
-
         Map<StyleKey, Style*> styles;
         PointerMap<TextFormatKey, TextFormat*> textFormats;
         Map<ColorKey, Color> colors;
@@ -99,6 +65,8 @@ namespace Ghurund::UI {
         static inline const ImageKey IMAGE_ARROWUP = WString(L"arrowUp");
         static inline const ImageKey IMAGE_ARROWDOWN = WString(L"arrowDown");
 
+        static inline const StyleKey STYLE_CHECKBOX = WString(L"checkBox");
+        static inline const StyleKey STYLE_RADIOBUTTON = WString(L"radioButton");
         static inline const StyleKey STYLE_SEPARATOR_HORIZONTAL = WString(L"separator_horizontal");
         static inline const StyleKey STYLE_SEPARATOR_VERTICAL = WString(L"separator_vertical");
         static inline const StyleKey STYLE_PROGRESSBAR = WString(L"progressBar");
@@ -122,6 +90,8 @@ namespace Ghurund::UI {
         static inline const StyleKey STYLE_SHADOW_BUTTON = WString(L"shadow_button");
         static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONBACKGROUND = WString(L"clickResponseView_onBackground");
         static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONACCENT = WString(L"clickResponseView_onAccent");
+        static inline const StyleKey STYLE_STATEINDICATOR_ONBACKGROUND = WString(L"stateIndicator_onBackground");
+        static inline const StyleKey STYLE_STATEINDICATOR_ONACCENT = WString(L"stateIndicator_onAccent");
 
         static inline const TextFormatKey TEXTFORMAT_BUTTON = WString(L"button");
         static inline const TextFormatKey TEXTFORMAT_LIST_HEADER = WString(L"listHeader");
@@ -144,8 +114,6 @@ namespace Ghurund::UI {
         static inline const ColorKey COLOR_SECONDARY_ONACCENT = WString(L"secondary_onAccent");
         static inline const ColorKey COLOR_DISABLED_ONACCENT = WString(L"disabled_onAccent");
         static inline const ColorKey COLOR_HIGHLIGHT_ONACCENT = WString(L"highlight_onAccent");
-
-        Theme();
 
         void updateColors();
 

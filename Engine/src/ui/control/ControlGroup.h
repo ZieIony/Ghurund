@@ -100,6 +100,12 @@ namespace Ghurund::UI {
 
 #ifdef _DEBUG
         virtual String logTree();
+
+        virtual void validate() override {
+            __super::validate();
+            for (Control* child : children)
+                child->validate();
+        }
 #endif
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

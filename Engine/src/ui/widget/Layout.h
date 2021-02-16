@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/control/Control.h"
+#include "ui/control/ControlContainer.h"
 
 namespace Ghurund::UI {
     class WidgetLayout {
@@ -13,12 +13,17 @@ namespace Ghurund::UI {
         }
 
     public:
+        WidgetLayout() {}
+
+        WidgetLayout(Control* control) {
+            root = control;
+            root->addReference();
+        }
+
         virtual ~WidgetLayout() = 0 {
             if (root)
                 root->release();
         }
-
-        virtual void init() {}
 
         inline Control* getRoot() {
             return root;
@@ -29,5 +34,27 @@ namespace Ghurund::UI {
         virtual void onThemeChanged(Control& control) {}
 
         virtual void onStateChanged(Control& control) {}
+    };
+
+    class ContainerLayout:public WidgetLayout {
+    private:
+        ControlContainer* container = nullptr;
+
+        inline void setContainer(ControlContainer* container) {
+            this->container = container;
+        }
+
+    public:
+        ContainerLayout() {}
+
+        ContainerLayout(Control* control):WidgetLayout(control) {
+            container = (ControlContainer*)control->find("container");
+        }
+
+        inline ControlContainer* getContainer() {
+            return container;
+        }
+
+        __declspec(property(get = getContainer)) ControlContainer* Container;
     };
 }

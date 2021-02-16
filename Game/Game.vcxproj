@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="src\control\FpsText.h" />
     <ClInclude Include="src\control\SearchField.h" />
+    <ClInclude Include="src\control\SearchFieldLayout.h" />
     <ClInclude Include="src\DragTestTab.h" />
     <ClInclude Include="src\LayoutEditorTab.h" />
     <ClInclude Include="src\LoginTest.h" />
