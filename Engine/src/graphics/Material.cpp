@@ -3,9 +3,18 @@
 #include "resource/ResourceManager.h"
 #include "core/SharedPointer.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
-	Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    const Ghurund::Type& Material::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Material>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Material))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+    Status Material::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         Status result;
         shader = context.ResourceManager.load<Ghurund::Shader>(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)

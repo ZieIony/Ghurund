@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/SharedPointer.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/layout/StackLayoutManager.h"
 
@@ -11,14 +10,7 @@ namespace Ghurund::UI {
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<StackLayout>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         inline Alignment& getAlignment() {
@@ -47,6 +39,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef SharedPointer<StackLayout> StackLayoutPtr;
 }

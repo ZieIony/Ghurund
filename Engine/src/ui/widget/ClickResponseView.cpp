@@ -1,9 +1,20 @@
 #include "ClickResponseView.h"
 
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& ClickResponseView::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ClickResponseView>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickResponseView))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void ClickResponseView::onUpdate(const uint64_t time) {
         if (Pressed)
             startTime = time;
@@ -12,6 +23,12 @@ namespace Ghurund::UI {
         finishedAnimating = percent == 0;
         int32_t alpha = (int32_t)(percent * ((color >> 24) & 0xff));
         paint.Color = ((alpha & 0xff) << 24) | (color & 0xffffff);
+    }
+
+    void ClickResponseView::onDraw(Canvas& canvas) {
+        canvas.fillRect(0, 0, Size.width, Size.height, paint);
+        if (!finishedAnimating)
+            repaint();
     }
     
     Status ClickResponseView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

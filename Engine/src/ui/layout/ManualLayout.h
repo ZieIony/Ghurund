@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ManualLayoutManager.h"
-#include "core/SharedPointer.h"
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
@@ -11,14 +10,7 @@ namespace Ghurund::UI {
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ManualLayout>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ManualLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
@@ -35,6 +27,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef SharedPointer<ManualLayout> ManualLayoutPtr;
 }

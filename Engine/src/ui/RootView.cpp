@@ -1,6 +1,7 @@
 #include "RootView.h"
 
 #include "ui/Cursor.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
     RootView::RootView(UIContext& context, Canvas& canvas) {
@@ -30,8 +31,20 @@ namespace Ghurund::UI {
         });
     }
 
+    RootView::~RootView() {
+        delete canvas;
+    }
+
     void RootView::invalidate() {
         needsLayout = true;
+    }
+
+    void RootView::draw() {
+        canvas->beginPaint();
+        if (backgroundColor)
+            canvas->clear(backgroundColor);
+        draw(*canvas);
+        canvas->endPaint();
     }
 
     bool RootView::dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) {

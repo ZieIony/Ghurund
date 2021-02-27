@@ -1,9 +1,24 @@
 #include "TextBlock.h"
-#include "ui/style/Theme.h"
-#include "ui/LayoutLoader.h"
+
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "ui/Canvas.h"
+#include "ui/LayoutLoader.h"
+#include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
+    void TextBlock::makeLayout(float width, float height) {
+        Context->Graphics.DWriteFactory->CreateTextLayout(
+            text.Data,
+            (UINT32)text.Size,
+            TextFormat->Format,
+            width,
+            height,
+            &textLayout
+        );
+    }
+
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
         if (!textFormat) {
             Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textFormat is null\n", text);
@@ -42,6 +57,15 @@ namespace Ghurund::UI {
         paint.Color = TextColor;
         if (textLayout)
             canvas.drawText(textLayout, 0, 0, paint);
+    }
+
+    const Ghurund::Type& TextBlock::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<TextBlock>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     void TextBlock::dispatchContextChanged() {

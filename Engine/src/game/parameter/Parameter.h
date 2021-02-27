@@ -1,24 +1,18 @@
 #pragma once
 
-#include "core/string/AString.h"
-#include "editor/ObservableObject.h"
 #include "ParameterId.h"
 #include "core/Pointer.h"
+#include "core/string/AString.h"
+#include "editor/ObservableObject.h"
 
 namespace Ghurund {
     class Parameter: public Pointer, public ObservableObject {
-    private:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Parameter))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
-
     protected:
         const AString constantName;
         const ParameterType& type;
         bool empty;
+
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Parameter(const AString& constantName, const ParameterType& type):constantName(constantName), type(type) {}

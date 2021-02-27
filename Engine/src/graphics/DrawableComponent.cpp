@@ -1,5 +1,7 @@
 #include "DrawableComponent.h"
+
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status DrawableComponent::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -28,5 +30,14 @@ namespace Ghurund {
 			return result;
 		result = context.ResourceManager.save(*material, context, workingDir, stream, options);
 		return filterStatus(result, options);
+	}
+	
+	const Ghurund::Type& DrawableComponent::GET_TYPE() {
+		static const auto CONSTRUCTOR = NoArgsConstructor<DrawableComponent>();
+		static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(DrawableComponent))
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
 	}
 }

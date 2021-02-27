@@ -8,8 +8,8 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        CheckBoxRadio& checkBoxRadio = (CheckBoxRadio&)control;
-        CheckBoxLayout* layout = checkBoxRadio.Layout;
+        Widget<CheckBoxBinding>& checkBoxRadio = (Widget<CheckBoxBinding>&)control;
+        CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (!control.Enabled) {
             layout->Image->Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
         } else if (layout->Selectable->Pressed) {
@@ -34,28 +34,4 @@ namespace Ghurund::UI {
         }
     }
     
-    const Ghurund::Type& CheckBoxRadio::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<CheckBoxRadio>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
-    void CheckBoxRadio::onLayoutChanged() {
-        __super::onLayoutChanged();
-        if (Layout)
-            Layout->Selectable->StateChanged.add(StateChanged);
-    }
-
-    Status CheckBoxRadio::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
-        auto checkedAttr = xml.FindAttribute("checked");
-        if (checkedAttr)
-            Checked = checkedAttr->BoolValue();
-        return Status::OK;
-    }
 }

@@ -32,9 +32,7 @@ namespace Ghurund::UI {
         SelectableView* selectableView;
 
     public:
-        TabLayout() {}
-
-        TabLayout(Control* control) {}
+        TabLayout(Control* control):WidgetLayout(control) {}
 
         inline SelectableView* getSelectableView() {
             return selectableView;

@@ -8,13 +8,7 @@ namespace Ghurund {
         bool enabled = true;
 
 	protected:
-		static const Ghurund::Type& GET_TYPE() {
-			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Component))
-				.withModifiers(TypeModifier::ABSTRACT)
-				.withSupertype(__super::GET_TYPE());
-
-			return TYPE;
-		}
+		static const Ghurund::Type& GET_TYPE();
 
 	public:
 		bool isEnabled() {

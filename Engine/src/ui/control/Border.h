@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Control.h"
+#include "ui/Paint.h"
 #include "ui/Shape.h"
 
 namespace Ghurund::UI {
@@ -10,14 +11,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Shape* shape = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Border>();
-            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Border(unsigned int color = 0x1f000000) {
@@ -64,7 +58,7 @@ namespace Ghurund::UI {
         virtual void onLayout(float x, float y, float width, float height) override {
             __super::onLayout(x, y, width, height);
             if (shape)
-                shape->Bounds = D2D1::RectF(Thickness / 2, Thickness / 2, width - Thickness / 2, height - Thickness / 2);
+                shape->Bounds = FloatRect{ Thickness / 2, Thickness / 2, width - Thickness / 2, height - Thickness / 2 };
         }
 
         virtual void onDraw(Canvas& canvas) override;

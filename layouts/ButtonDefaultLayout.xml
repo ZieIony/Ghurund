@@ -5,16 +5,16 @@
 					 alignment="center, center">
 			<Shadow preferredSize="fill, fill"
 					name="shadow"
-					style="theme://style/shadow_button"
+					style="theme://style/Shadow_button"
 					shape="roundRect, 2"/>
 			<Clip shape="roundRect, 2"
 				  name="clip"
 				  preferredSize="fill, fill">
 				<StackLayout preferredSize="fill, fill">
-					<ColorView style="theme://style/colorView_control"
+					<ColorView style="theme://style/ColorView_control"
 							   name="background"/>
 					<StateIndicator name="state" preferredSize="fill, fill"
-									style="theme://style/stateIndicator_onBackground"/>
+									style="theme://style/StateIndicator_onBackground"/>
 					<PaddingContainer padding="8, 4"
 									  preferredSize="fill, fill"
 									  name="padding">

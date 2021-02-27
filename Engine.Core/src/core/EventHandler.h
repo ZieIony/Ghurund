@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/collection/List.h"
-
 #include <functional>
 
 namespace Ghurund {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Color.h"
 #include "core/string/String.h"
 
 namespace Ghurund::UI {

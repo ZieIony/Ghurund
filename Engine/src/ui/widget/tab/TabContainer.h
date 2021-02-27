@@ -3,12 +3,13 @@
 #include "TabItemAdapter.h"
 #include "core/SharedPointer.h"
 #include "ui/adapter/AdapterChildrenProvider.h"
+#include "ui/adapter/RecyclerView.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/Widget.h"
-#include "TabContainerLayout.h"
+#include "TabContainerBinding.h"
 
 namespace Ghurund::UI {
-    class TabContainer:public Widget<TabContainerLayout> {
+    class TabContainer:public Widget<TabContainerBinding> {
     private:
         size_t selectedPosition = 0;
         Tab* selectedTab = nullptr;
@@ -19,9 +20,9 @@ namespace Ghurund::UI {
         virtual void onLayoutChanged() override {
             if (!Layout)
                 return;
-            provider = ghnew AdapterChildrenProvider<TabItem*, Tab>(*Layout->TabContainer);
+            provider = ghnew AdapterChildrenProvider<TabItem*, Tab>(*Layout->Tabs);
             provider->Items = ghnew ListItemSource<TabItem*>(tabs);
-            Layout->TabContainer->childrenProvider = provider;
+            Layout->Tabs->childrenProvider = provider;
         }
 
     public:
@@ -53,8 +54,8 @@ namespace Ghurund::UI {
             if (selectedTab)
                 selectedTab->Layout->SelectableView->Selected = false;
             this->selectedPosition = position;
-            if (Layout->TabContainer->Children.Size > position) {
-                setPointer(selectedTab, (Tab*)Layout->TabContainer->Children[position]);
+            if (Layout->Tabs->Children.Size > position) {
+                setPointer(selectedTab, (Tab*)Layout->Tabs->Children[position]);
                 selectedTab->Layout->SelectableView->Selected = true;
             }
             TabItem* tab = tabs[position];

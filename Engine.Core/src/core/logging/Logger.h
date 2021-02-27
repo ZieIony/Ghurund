@@ -1,23 +1,25 @@
 #pragma once
 
+#include "Common.h"
 #include "Status.h"
 #include "core/Noncopyable.h"
 #include "core/threading/CriticalSection.h"
-#include "LogType.h"
-#include "Formatter.h"
 
 #include "fmt/core.h"
 
-#include <dbghelp.h>
+struct _SYMBOL_INFO;
 
 namespace Ghurund {
     __interface LogOutput;
 
+    enum class LogType {
+        INFO, WARNING, ERR0R
+    };
+
     class Logger:public Noncopyable {
     private:
         static HANDLE process;
-        static SYMBOL_INFO* symbol;
-        static IMAGEHLP_LINE line;
+        static _SYMBOL_INFO* symbol;
         static CriticalSection criticalSection;
         static LogType filterLevel;
 
@@ -50,7 +52,7 @@ namespace Ghurund {
 
         template<typename... Args>
         static void log(LogType type, const tchar* format, Args&& ... args) {
-            if (((int)type.Value) < (int)filterLevel.Value)
+            if (((int)type) < (int)filterLevel)
                 return;
 
             logVA(type, format, args...);
@@ -58,7 +60,7 @@ namespace Ghurund {
 
         template<typename... Args>
         static Status log(LogType type, const Status status, const tchar* format, Args&& ... args) {
-            if (((int)type.Value) < (int)filterLevel.Value)
+            if (((int)type) < (int)filterLevel)
                 return status;
 
             logVA(type, format, args...);

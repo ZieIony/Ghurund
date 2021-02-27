@@ -2,6 +2,7 @@
 
 #include "core/Pointer.h"
 
+#include <stdint.h>
 #include <windows.h>
 
 namespace Ghurund {
@@ -17,14 +18,8 @@ namespace Ghurund {
         double time = 0.0f, frameTime = 0.0f;
         uint64_t timeMs, frameTimeMs;
 
-        inline static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Timer>();
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Timer))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+    protected:
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Timer();

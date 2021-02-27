@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui/adapter/ItemAdapter.h"
+#include "ui/drawable/BitmapImage.h"
 #include "ui/widget/Separator.h"
 
 namespace Ghurund::UI {

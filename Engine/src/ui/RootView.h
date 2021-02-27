@@ -14,9 +14,7 @@ namespace Ghurund::UI {
     public:
         RootView(UIContext& context, Canvas& canvas);
 
-        ~RootView() {
-            delete canvas;
-        }
+        ~RootView();
 
         inline uint32_t getBackgroundColor() const {
             return backgroundColor;
@@ -44,13 +42,7 @@ namespace Ghurund::UI {
 
         using Control::draw;
 
-        inline void draw() {
-            canvas->beginPaint();
-            if (backgroundColor)
-                canvas->clear(backgroundColor);
-            draw(*canvas);
-            canvas->endPaint();
-        }
+        void draw();
 
         virtual bool dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) override;
 

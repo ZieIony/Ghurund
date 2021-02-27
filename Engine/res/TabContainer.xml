@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
+	<LinearLayout orientation="vertical">
+		<ControlContainer name="container"/>
+		<ColorView preferredSize="fill, 2" style="theme://style/colorView_accent"/>
+		<RecyclerView name="tabs" preferredSize="fill, wrap"/>
+	</LinearLayout>
+</layout>

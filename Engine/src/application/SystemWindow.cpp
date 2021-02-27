@@ -1,7 +1,9 @@
-#include "Application.h"
 #include "SystemWindow.h"
+
+#include "Application.h"
 #include "WindowType.h"
 #include "graphics/SwapChain.h"
+#include "core/reflection/TypeBuilder.h"
 #include "ui/RootView.h"
 
 #include <time.h>
@@ -84,6 +86,13 @@ namespace Ghurund {
         }
 
         return DefWindowProc(handle, msg, wParam, lParam);
+    }
+
+    const Ghurund::Type& SystemWindow::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     SystemWindow::SystemWindow(HWND handle, const WindowClass& type, Ghurund::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {

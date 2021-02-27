@@ -1,6 +1,19 @@
 #include "ClickableControl.h"
 
+#include "core/reflection/TypeBuilder.h"
+
+#include <Windows.h>
+
 namespace Ghurund::UI {
+    const Ghurund::Type& ClickableControl::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ClickableControl>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableControl))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     bool ClickableControl::onKeyEvent(const KeyEventArgs& event) {
         if (event.Key == VK_SPACE || event.Key == VK_RETURN) {
             if (event.Action == KeyAction::DOWN) {

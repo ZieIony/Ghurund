@@ -37,14 +37,7 @@ namespace Ghurund::Physics {
         PxPvdTransport* transport = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Physics>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Physics))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(Object::TYPE);
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Physics() {

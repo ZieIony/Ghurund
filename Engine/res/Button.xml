@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
 	<ClickableControl name="clickable" preferredSize="wrap, wrap">
 		<StackLayout preferredSize="fill, fill"
 					 alignment="center, center">

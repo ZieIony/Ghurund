@@ -1,4 +1,7 @@
 #include "ScriptEngine.h"
+
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 #include "script/bindings/ScriptBindings.h"
 #include "script/bindings/CameraScriptBindings.h"
 #include "script/bindings/Float3ScriptBindings.h"
@@ -8,6 +11,28 @@
 #include "script/bindings/SceneScriptBindings.h"
 
 namespace Ghurund {
+    void ScriptEngine::messageCallback(const asSMessageInfo* msg, void* param) {
+        LogType type = LogType::ERR0R;
+        if (msg->type == asMSGTYPE_WARNING)
+            type = LogType::WARNING;
+        else if (msg->type == asMSGTYPE_INFORMATION)
+            type = LogType::INFO;
+        Logger::log(type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
+    }
+
+    const Ghurund::Type& ScriptEngine::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    void ScriptEngine::log(const std::string& str) {
+        Logger::log(LogType::INFO, str.c_str());
+    }
+
     Status ScriptEngine::init(Timer& timer) {
         this->timer = &timer;
 

@@ -1,5 +1,6 @@
 #include "FilePath.h"
 
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
 #include <Shlwapi.h>

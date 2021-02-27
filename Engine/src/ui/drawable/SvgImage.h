@@ -1,10 +1,9 @@
 #pragma once
 
+#include "core/math/Size.h"
 #include "graphics/texture/Image.h"
-#include "core/Size.h"
 
-#include <dxgi1_6.h>
-#include <d2d1_3.h>
+struct ID2D1SvgDocument;
 
 namespace Ghurund::UI {
     using namespace DirectX;
@@ -17,24 +16,14 @@ namespace Ghurund::UI {
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<SvgImage>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SvgImage))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~SvgImage() {
             finalize();
         }
 
-        void finalize() {
-            if (svgDocument != nullptr)
-                svgDocument->Release();
-        }
+        void finalize();
 
         virtual void invalidate() {
             finalize();
@@ -52,12 +41,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getData)) ID2D1SvgDocument* Data;
 
-        inline FloatSize getSize() {
-            if (!svgDocument)
-                return { 0,0 };
-            auto size = svgDocument->GetViewportSize();
-            return { size.width, size.height };
-        }
+        FloatSize getSize();
 
         __declspec(property(get = getSize)) FloatSize Size;
 

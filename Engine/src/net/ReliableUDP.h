@@ -7,7 +7,6 @@
 #include "Connection.h"
 #include "core/Noncopyable.h"
 #include "core/collection/List.h"
-#include "core/logging/Logger.h"
 
 #include <CRC.h>
 

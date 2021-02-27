@@ -87,6 +87,7 @@ namespace Ghurund::UI {
             Styles.set(STYLE_SEPARATOR_HORIZONTAL, &separatorHorizontalStyle);
             Styles.set(STYLE_SEPARATOR_VERTICAL, &separatorVerticalStyle);
             Styles.set(STYLE_PROGRESSBAR, &progressBarStyle);
+            Styles.set(STYLE_TEXTBLOCK, &textViewPrimaryStyle);
             Styles.set(STYLE_TEXTBLOCK_BUTTON, &textViewButtonStyle);
             Styles.set(STYLE_TEXTBLOCK_PRIMARY, &textViewPrimaryStyle);
             Styles.set(STYLE_TEXTBLOCK_SECONDARY, &textViewSecondaryStyle);

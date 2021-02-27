@@ -3,6 +3,7 @@
 #include "Common.h"
 #include <Windows.h>
 
+#include "core/string/String.h"
 #include "core/string/TextUtils.h"
 
 namespace Ghurund {
@@ -53,6 +54,14 @@ namespace Ghurund {
     inline tchar* toTchar(const wchar_t* src, unsigned int codePage = CP_ACP) {
         return copyStr(src);
     }
+
+    inline String toTchar(const WString& src, unsigned int codePage = CP_ACP) {
+        return String(src);
+    }
+
+    inline String toTchar(const AString& src, unsigned int codePage = CP_ACP) {
+        return toWideChar(src);
+    }
 #else
     inline tchar* toTchar(const wchar_t* src, unsigned int codePage = CP_ACP) {
         int length = (int)wcslen(src);
@@ -67,6 +76,14 @@ namespace Ghurund {
 
     inline tchar* toTchar(const char* src, unsigned int codePage = CP_ACP) {
         return copyStr(src);
+    }
+
+    inline String toTchar(const WString& src, unsigned int codePage = CP_ACP) {
+        return toMultiByte(src);
+    }
+
+    inline String toTchar(const AString& src, unsigned int codePage = CP_ACP) {
+        return String(src);
     }
 #endif
 

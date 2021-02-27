@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Control.h"
+#include "ui/Paint.h"
 #include "ui/font/TextFormat.h"
 #include "ui/style/Style.h"
-#include "ui/Graphics2D.h"
+
+struct IDWriteTextLayout;
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
@@ -23,29 +25,13 @@ namespace Ghurund::UI {
                 textLayout->Release();
         }
 
-        void makeLayout(float width, float height) {
-            Context->Graphics.DWriteFactory->CreateTextLayout(
-                text.Data,
-                (UINT32)text.Size,
-                TextFormat->Format,
-                width,
-                height,
-                &textLayout
-            );
-        }
+        void makeLayout(float width, float height);
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
 
         virtual void onDraw(Canvas& canvas) override;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<TextBlock>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         TextBlock() {

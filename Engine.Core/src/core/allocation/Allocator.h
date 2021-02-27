@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Buffer.h"
+#include <stdint.h>
 
 namespace Ghurund {
     typedef uint64_t memory_t;

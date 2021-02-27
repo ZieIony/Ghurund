@@ -1,6 +1,17 @@
 #include "Renderer.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund {
+    const Ghurund::Type& Renderer::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Renderer>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Renderer))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     Status Renderer::init(ResourceContext& resourceContext) {
         this->graphics = &resourceContext.Graphics;
         this->parameterManager = &resourceContext.ParameterManager;

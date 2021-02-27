@@ -1,11 +1,21 @@
 #include "ParameterManager.h"
+
 #include "ValueParameter.h"
 #include "TextureParameter.h"
 #include "core/SharedPointer.h"
-#include "resource/ResourceContext.h"
+#include "core/reflection/TypeBuilder.h"
 #include "graphics/texture/Textures.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
+    const Ghurund::Type& ParameterManager::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ParameterManager>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
+            .withConstructor(CONSTRUCTOR);
+
+        return TYPE;
+    }
+
     ParameterManager::ParameterManager() {
         float defaultFloat = 0;
         XMFLOAT2 defaultFloat2 = {0,0};

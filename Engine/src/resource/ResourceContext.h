@@ -28,12 +28,7 @@ namespace Ghurund {
 
     class ResourceContext: public Object {
     private:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceContext))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     protected:
         Graphics& graphics;

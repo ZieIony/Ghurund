@@ -1,17 +1,15 @@
 #pragma once
 
 #include "Common.h"
-#include "core/string/String.h"
-#include "core/SharedPointer.h"
-#include "core/Size.h"
 #include "Status.h"
+#include "core/Pointer.h"
+#include "core/string/String.h"
+#include "core/math/Size.h"
 
-#include <dwrite.h>
-#include <wrl.h>
+struct IDWriteTextFormat;
+struct IDWriteTextLayout;
 
 namespace Ghurund::UI {
-    using Microsoft::WRL::ComPtr;
-
     class Canvas;
     class Control;
     class Graphics2D;
@@ -25,12 +23,14 @@ namespace Ghurund::UI {
         uint32_t weight = 400, stretch = 0;
         WString locale;
 
-        ComPtr<IDWriteTextFormat> textFormat;
+        IDWriteTextFormat* textFormat = nullptr;
 
     public:
         TextFormat(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us");
 
-        TextFormat(IDWriteTextLayout* textLayout, UINT32 position);
+        TextFormat(IDWriteTextLayout* textLayout, uint32_t position);
+
+        ~TextFormat();
 
         Status init(Graphics2D& graphics2d);
 
@@ -83,7 +83,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getLocale)) const WString& Locale;
 
         inline IDWriteTextFormat* getFormat() {
-            return textFormat.Get();
+            return textFormat;
         }
 
         __declspec(property(get = getFormat)) IDWriteTextFormat* Format;

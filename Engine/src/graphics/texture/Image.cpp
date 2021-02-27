@@ -4,6 +4,7 @@
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 #include <Shlwapi.h>
 #include <wrl.h>
@@ -346,5 +347,14 @@ namespace Ghurund {
         delete[] data;
 
         return Status::OK;
+    }
+    
+    const Ghurund::Type& Image::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Image>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Image))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 }

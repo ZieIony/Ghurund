@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layout.h"
-#include "core/string/TextConversionUtils.h"
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Style.h"
 #include "ui/style/Theme.h"
@@ -51,14 +51,14 @@ namespace Ghurund::UI {
                 return widgetLayout;
             }
 
-            inline void setLayout(LayoutType* layout) {
-                if (widgetLayout == layout)
+            inline void setLayout(std::unique_ptr<LayoutType> layout) {
+                if (widgetLayout == layout.get())
                     return;
                 if (widgetLayout) {
                     Child = nullptr;
                     delete widgetLayout;
                 }
-                widgetLayout = layout;
+                widgetLayout = layout.release();
                 if (widgetLayout)
                     Child = widgetLayout->Root;
                 onLayoutChanged();
@@ -77,22 +77,20 @@ namespace Ghurund::UI {
                 if (result != Status::OK)
                     return result;
                 auto layoutAttr = xml.FindAttribute("layout");
-                if (layoutAttr) {
-                    WString s = toWideChar(AString(layoutAttr->Value()));
-                    uint32_t value = 0;
-                    if (s.startsWith(LayoutLoader::FILE_PROTOCOL)) {
-                        PointerList<Control*> controls;
-                        Status result = loader.load(loader.getPath(s), controls);
-                        if (result != Status::OK)
-                            return result;
-                        if (!controls.Empty) {
-                            Layout = ghnew LayoutType(controls[0]);
-                        } else {
-                            return Status::INV_PARAM;
-                        }
-                    }
+                if (!layoutAttr && !loader.Theme.Layouts.contains(&Type))
+                    return Status::INV_PARAM;
+
+                AString s = layoutAttr ? layoutAttr->Value() : loader.Theme.Layouts.get(&Type);
+                uint32_t value = 0;
+                PointerList<Control*> controls;
+                result = loader.load(loader.getPath(s), controls);
+                if (result != Status::OK)
+                    return result;
+                if (!controls.Empty) {
+                    Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(controls[0]));
+                    return Status::OK;
                 }
-                return Status::OK;
+                return Status::INV_PARAM;
             }
 
             inline static const Ghurund::Type& TYPE = GET_TYPE();

@@ -9,14 +9,7 @@ namespace Ghurund::UI {
         Shape* shape = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Clip>();
-            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Clip))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Clip() {
@@ -36,7 +29,7 @@ namespace Ghurund::UI {
         virtual void onLayout(float x, float y, float width, float height) override {
             __super::onLayout(x, y, width, height);
             if (shape)
-                shape->Bounds = D2D1::RectF(0, 0, width, height);
+                shape->Bounds = FloatRect{ 0, 0, width, height };
         }
 
         virtual void onDraw(Canvas& canvas) override;

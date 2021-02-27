@@ -5,7 +5,7 @@
 			<ControlContainer preferredSize="fill, fill"
 								name="container"/>
 			<StateIndicator name="state" preferredSize="fill, fill"
-							style="theme://style/stateIndicator_onAccent"/>
+							style="theme://style/StateIndicator_onAccent"/>
 		</StackLayout>
 	</ClickableControl>
 </layout>

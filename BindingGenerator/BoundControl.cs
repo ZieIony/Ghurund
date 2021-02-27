@@ -1,8 +1,9 @@
 ﻿namespace BindingGenerator
 {
-    class BoundField
+    class BoundControl
     {
         public string Name;
         public string Type;
+        public string Namespace = "Ghurund::UI";
     }
 }

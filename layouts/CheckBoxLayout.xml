@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<SelectableView name="selectable" preferredSize="wrap, wrap">
-		<StackLayout>
-			<StateIndicator name="state" preferredSize="fill, fill"
-							style="theme://style/stateIndicator_onBackground"/>
-			<LinearLayout alignment="center, center"
-						  orientation="horizontal">
-				<ImageView
-						name="image"
-						image="theme://image/checkBox_checked"/>
-				<Space preferredSize="4,4"/>
-				<ControlContainer preferredSize="fill, wrap"
-								  name="container"/>
-			</LinearLayout>
-		</StackLayout>
+		<LinearLayout alignment="center, center"
+					  orientation="horizontal">
+			<StackLayout alignment="center, center" preferredSize="18, 18">
+				<PaddingContainer padding="-4"  preferredSize="fill, fill">
+					<Clip shape="roundRect, 2">
+						<StateIndicator name="state" preferredSize="fill, fill"
+										style="theme://style/StateIndicator_onBackground"/>
+					</Clip>
+				</PaddingContainer>
+				<ImageView name="image"
+						   image="theme://image/checkBox_checked"/>
+			</StackLayout>
+			<Space preferredSize="4,4"/>
+			<ControlContainer preferredSize="fill, wrap"
+							  name="container"/>
+		</LinearLayout>
 	</SelectableView>
 </layout>

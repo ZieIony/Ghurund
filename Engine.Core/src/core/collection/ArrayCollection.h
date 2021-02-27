@@ -3,6 +3,8 @@
 #include "CollectionWithCapacity.h"
 #include "core/allocation/SimpleAllocator.h"
 
+#include <initializer_list>
+
 namespace Ghurund {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class ArrayCollection:public CollectionWithCapacity {

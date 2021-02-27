@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Control.h"
-#include "core/SharedPointer.h"
+#include "ui/Paint.h"
 
 namespace Ghurund::UI {
     class ColorView:public Control {
@@ -9,14 +9,7 @@ namespace Ghurund::UI {
         Paint paint;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ColorView>();
-            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ColorView() {
@@ -38,11 +31,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
-        virtual void onDraw(Canvas& canvas) {
-            if (!paint.Color)
-                return;
-            canvas.fillRect(0, 0, Size.width, Size.height, paint);
-        }
+        virtual void onDraw(Canvas& canvas);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

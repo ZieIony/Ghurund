@@ -1,6 +1,8 @@
 #include "BitmapImage.h"
-#include "resource/ResourceContext.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "ui/Graphics2D.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund::UI {
     Status BitmapImage::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -18,6 +20,26 @@ namespace Ghurund::UI {
 
     Status BitmapImage::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         return image->save(context, workingDir, stream, options);
+    }
+
+    const Ghurund::Type& BitmapImage::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<BitmapImage>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BitmapImage))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    void BitmapImage::finalize() {
+        if (bitmapImage)
+            bitmapImage->Release();
+        if (image)
+            image->release();
+    }
+
+    bool BitmapImage::isValid() {
+        return bitmapImage && image && image->Valid && __super::Valid;
     }
 
     Status BitmapImage::init(Ghurund::UI::Graphics2D& graphics2d, Ghurund::Image& image) {
@@ -51,5 +73,21 @@ namespace Ghurund::UI {
         Valid = true;
 
         return Status::OK;
+    }
+
+    IntSize BitmapImage::getSize() {
+        if (!image)
+            return { 0,0 };
+        return { image->Width, image->Height };
+    }
+    
+    BitmapImage* BitmapImage::makeFromImage(ResourceContext& context, const FilePath& imagePath) {
+        Ghurund::Image* image = context.ResourceManager.load<Ghurund::Image>(context, imagePath);
+        if (image == nullptr)
+            return nullptr;
+        BitmapImage* texture = ghnew BitmapImage();
+        texture->init(context.Graphics2D, *image);
+        image->release();
+        return texture;
     }
 }

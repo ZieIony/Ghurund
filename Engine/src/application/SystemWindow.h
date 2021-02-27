@@ -38,12 +38,7 @@ namespace Ghurund {
         Event<Ghurund::Window, Array<FilePath*>*> onDragEntered = Event<Ghurund::Window, Array<FilePath*>*>(*this);
         Event<Ghurund::Window, Array<FilePath*>*> onDropped = Event<Ghurund::Window, Array<FilePath*>*>(*this);
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         SystemWindow(HWND handle, const WindowClass& type, Ghurund::Timer& timer);

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "HeapAllocator.h"
 #include "core/collection/Map.h"
 #include "core/Pointer.h"
-#include "HeapAllocator.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -11,8 +11,6 @@
 #include "d3dx12.h"
 #pragma warning(pop)
 
-#include <wrl.h>
-
 namespace Ghurund {
     class GPUResourcePointer:public Pointer {
     private:
@@ -20,12 +18,7 @@ namespace Ghurund {
         void* address;
         ID3D12Resource *resource;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(GPUResourcePointer))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         GPUResourcePointer(HeapAllocator *allocator, void* address, ID3D12Resource *resource){

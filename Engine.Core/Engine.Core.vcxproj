@@ -19,16 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\io\DirectoryPath.cpp" />
     <ClCompile Include="src\core\io\File.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />
+    <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
     <ClCompile Include="src\core\string\AString.cpp" />
     <ClCompile Include="src\core\string\WString.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
+    <ClCompile Include="src\core\threading\Task.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
     <ClCompile Include="src\core\io\FileUtils.cpp" />
     <ClCompile Include="src\core\logging\Logger.cpp" />
@@ -44,7 +45,6 @@
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />
-    <ClInclude Include="src\core\logging\LogType.h" />
     <ClInclude Include="src\core\allocation\AllocatorMap.h" />
     <ClInclude Include="src\core\collection\Array.h" />
     <ClInclude Include="src\core\collection\ObservableList.h" />
@@ -52,6 +52,8 @@
     <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\EventHandler.h" />
+    <ClInclude Include="src\core\math\Matrix3x2.h" />
+    <ClInclude Include="src\core\math\Rect.h" />
     <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
@@ -98,7 +100,7 @@
     <ClInclude Include="src\core\threading\WorkerThread.h" />
     <ClInclude Include="src\core\io\FileUtils.h" />
     <ClInclude Include="src\core\NamedObject.h" />
-    <ClInclude Include="src\core\MathUtils.h" />
+    <ClInclude Include="src\core\math\MathUtils.h" />
     <ClInclude Include="src\core\io\DirectoryPath.h" />
     <ClInclude Include="src\core\io\FilePath.h" />
     <ClInclude Include="src\core\io\Path.h" />
@@ -106,7 +108,7 @@
     <ClInclude Include="src\core\string\TextUtils.h" />
     <ClInclude Include="src\ui\control\CheckableView.h" />
     <ClInclude Include="src\ui\control\Column.h" />
-    <ClInclude Include="src\core\Point.h" />
+    <ClInclude Include="src\core\math\Point.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
     <ClInclude Include="src\ui\control\ListView.h" />
     <ClInclude Include="src\ui\control\Row.h" />
@@ -119,7 +121,7 @@
     <ClInclude Include="src\ui\control\Stack.h" />
     <ClInclude Include="src\ui\layout\LayoutInflater.h" />
     <ClInclude Include="src\ui\Property.h" />
-    <ClInclude Include="src\core\Size.h" />
+    <ClInclude Include="src\core\math\Size.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />

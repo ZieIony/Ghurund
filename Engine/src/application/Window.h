@@ -6,8 +6,8 @@
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "input/EventConsumer.h"
-#include "core/Point.h"
-#include "core/Size.h"
+#include "core/math/Point.h"
+#include "core/math/Size.h"
 
 #include <Windows.h>
 
@@ -60,13 +60,7 @@ namespace Ghurund {
             return false;
         }
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Window))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Window(Window* parent = nullptr):parameters(PointerArray<Parameter*>(1)) {

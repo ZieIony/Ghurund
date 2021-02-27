@@ -69,14 +69,7 @@ namespace Ghurund {
         FilePath encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         inline static const wchar_t* const ENGINE_LIB_NAME = L"engine";

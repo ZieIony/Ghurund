@@ -1,15 +1,14 @@
-﻿#include "core/MathUtils.h"
-#include "ui/layout/StackLayout.h"
+﻿#include "ui/layout/StackLayout.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/RootView.h"
 #include "ui/LayoutLoader.h"
 
 #include "PreviewWindow.h"
 
-using namespace Ghurund;
-using namespace Ghurund::UI;
-
 namespace Preview {
+    using namespace Ghurund;
+    using namespace Ghurund::UI;
+
     class PreviewApplication:public Application {
     public:
         void onInit() {

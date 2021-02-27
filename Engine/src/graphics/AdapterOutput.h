@@ -30,12 +30,7 @@ namespace Ghurund {
             delete[] modes;
         }
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(AdapterOutput))
-                .withSupertype(Object::TYPE);
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         AdapterOutput(ComPtr<IDXGIOutput> output) {

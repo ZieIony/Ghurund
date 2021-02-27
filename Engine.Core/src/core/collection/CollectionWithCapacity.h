@@ -2,6 +2,8 @@
 
 #include "Collection.h"
 
+#include <type_traits>
+
 namespace Ghurund {
     class CollectionWithCapacity:public Collection {
     protected:

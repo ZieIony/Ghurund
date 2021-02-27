@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-
 namespace Ghurund::UI {
     struct PreferredSize {
     private:
@@ -23,10 +21,10 @@ namespace Ghurund::UI {
             static const Width& FILL;
 
             Width(float v) {
-                this->value = std::max(0.0f, v);
+                this->value = v > 0 ? v : 0.0f;
             }
 
-            operator float() const {
+            inline operator float() const {
                 return value;
             }
 
@@ -52,10 +50,10 @@ namespace Ghurund::UI {
             static const Height& FILL;
 
             Height(float v) {
-                this->value = std::max(0.0f, v);
+                this->value = v > 0 ? v : 0.0f;
             }
 
-            operator float() const {
+            inline operator float() const {
                 return value;
             }
 

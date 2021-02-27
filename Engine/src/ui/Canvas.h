@@ -3,14 +3,19 @@
 #include "Color.h"
 #include "Paint.h"
 #include "Shape.h"
-#include "ui/drawable/BitmapImage.h"
-#include "ui/drawable/SvgImage.h"
+#include "core/math/Rect.h"
+
+#include "Graphics2D.h"
 
 namespace Ghurund {
     class SwapChain;
 }
 
 namespace Ghurund::UI {
+    using namespace Ghurund;
+
+    class BitmapImage;
+    class SvgImage;
 
     class Canvas {
     private:
@@ -60,12 +65,6 @@ namespace Ghurund::UI {
             deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
         }
 
-        inline void fillRect(D2D1_RECT_F rect, const Paint& paint) {
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
-            deviceContext->FillRectangle(rect, fillBrush.Get());
-        }
-
         inline void drawShape(Shape& shape, const Paint& paint) {
             fillBrush->SetColor(D2D1::ColorF(paint.Color));
             fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
@@ -80,41 +79,17 @@ namespace Ghurund::UI {
 
         inline void drawLine(float x1, float y1, float x2, float y2, const Paint& paint) {}
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst, float alpha = 1.0f) {
-            deviceContext->DrawBitmap(image.Data, dst, alpha);
-        }
+        void drawImage(BitmapImage& image, const FloatRect& dst, float alpha = 1.0f);
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& dst, int32_t tintColor, float alpha = 1.0f) {
-            tintEffect->SetInput(0, image.Data);
-            Color color(tintColor);
-            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
-            tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
-            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
-        }
+        void drawImage(BitmapImage& image, const FloatRect& dst, int32_t tintColor, float alpha = 1.0f);
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, float alpha = 1.0f) {
-            deviceContext->DrawBitmap(image.Data, dst, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, src);
-        }
+        void drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f);
 
-        inline void drawImage(BitmapImage& image, const D2D1_RECT_F& src, const D2D1_RECT_F& dst, int32_t tintColor, float alpha = 1.0f) {
-            tintEffect->SetInput(0, image.Data);
-            Color color(tintColor);
-            D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
-            tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
-            deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
-        }
+        void drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, int32_t tintColor, float alpha = 1.0f);
 
-        inline void drawImage(SvgImage& image) {
-            deviceContext->DrawSvgDocument(image.Data);
-        }
+        void drawImage(SvgImage& image);
 
-        inline void drawShadow(BitmapImage& image, float radius, int32_t shadowColor) {
-            shadowEffect->SetInput(0, image.Data);
-            Color color(shadowColor);
-            shadowEffect->SetValue(D2D1_SHADOW_PROP_COLOR, color.Vector);
-            shadowEffect->SetValue(D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION, radius);
-            deviceContext->DrawImage(shadowEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);
-        }
+        void drawShadow(BitmapImage& image, float radius, int32_t shadowColor);
 
         inline void drawText(IDWriteTextLayout* layout, float x, float y, const Paint& paint) {
             fillBrush->SetColor(D2D1::ColorF(paint.Color));
@@ -135,6 +110,7 @@ namespace Ghurund::UI {
         inline void save() {
             matrixStack.add(matrixStack[matrixStack.Size - 1]);
         }
+
         inline void restore() {
             matrixStack.removeAt(matrixStack.Size - 1);
             deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
@@ -144,7 +120,7 @@ namespace Ghurund::UI {
             ComPtr<ID2D1Layer> pLayer;
             D2D_SIZE_F size = { shape.Bounds.right - shape.Bounds.left, shape.Bounds.bottom - shape.Bounds.top };
             deviceContext->CreateLayer(&size, &pLayer);
-            deviceContext->PushLayer(D2D1::LayerParameters(shape.Bounds, shape.Path), pLayer.Get());
+            deviceContext->PushLayer(D2D1::LayerParameters(D2D_RECT_F{ shape.Bounds.left, shape.Bounds.top, shape.Bounds.right, shape.Bounds.bottom }, shape.Path), pLayer.Get());
         }
 
         inline void restoreClipShape() {

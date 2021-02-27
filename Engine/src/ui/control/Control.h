@@ -1,19 +1,27 @@
 #pragma once
 
+#include "Status.h"
 #include "MouseEvents.h"
-#include "application/Window.h"
+#include "core/Pointer.h"
 #include "core/Event.h"
-#include "core/SharedPointer.h"
+#include "core/math/Matrix3x2.h"
+#include "core/math/Size.h"
 #include "input/EventConsumer.h"
-#include "input/Keyboard.h"
-#include "input/Mouse.h"
-#include "ui/Canvas.h"
 #include "ui/PreferredSize.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
 
-#include "D2d1helper.h"
-#include <tinyxml2.h>
+namespace tinyxml2 {
+    class XMLElement;
+}
+
+namespace Ghurund {
+    class AString;
+}
+
+namespace Ghurund::Input {
+    class MouseMotionEventArgs;
+}
 
 namespace Ghurund::UI {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
@@ -23,8 +31,7 @@ namespace Ghurund::UI {
     class Cursor;
     class Theme;
     class LayoutLoader;
-
-    typedef std::function<bool(Control&)> StateHandler;
+    class Canvas;
 
     class Control: public Pointer, public Ghurund::Input::EventConsumer {
     private:
@@ -41,18 +48,12 @@ namespace Ghurund::UI {
 
         bool transformationInvalid = true;
 
-        inline void rebuildTransformation() {
-            transformation = D2D1::Matrix3x2F::Translation(std::round(-size.width / 2), std::round(-size.height / 2))
-                * D2D1::Matrix3x2F::Rotation(rotation)
-                * D2D1::Matrix3x2F::Scale(scale.x, scale.y)
-                * D2D1::Matrix3x2F::Translation(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
-            transformationInvalid = false;
-        }
+        void rebuildTransformation();
 
     protected:
         FloatPoint position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
-        D2D1::Matrix3x2F transformation;
+        Matrix3x2 transformation;
 
         FloatSize minSize = { 0,0 };
         PreferredSize preferredSize;   // what the user wants
@@ -88,9 +89,7 @@ namespace Ghurund::UI {
 
         virtual bool onMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& event) override;
 
-        virtual ~Control() = 0 {
-            delete name;
-        }
+        virtual ~Control() = 0;
 
         static const Ghurund::Type& GET_TYPE();
 
@@ -117,18 +116,9 @@ namespace Ghurund::UI {
             return name;
         }
 
-        inline void setName(const AString* name) {
-            if (this->name)
-                delete this->name;
-            if (name)
-                this->name = ghnew AString(*name);
-        }
+        void setName(const AString* name);
 
-        inline void setName(const AString& name) {
-            if (this->name)
-                delete this->name;
-            this->name = ghnew AString(name);
-        }
+        void setName(const AString& name);
 
         __declspec(property(get = getName, put = setName)) AString* Name;
 
@@ -243,11 +233,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScale, put = setScale)) FloatPoint& Scale;
 
-        inline const D2D1::Matrix3x2F& getTransformation() const {
+        inline const Matrix3x2& getTransformation() const {
             return transformation;
         }
 
-        __declspec(property(get = getTransformation)) const D2D1::Matrix3x2F& Transformation;
+        __declspec(property(get = getTransformation)) const Matrix3x2& Transformation;
 
         inline FloatSize& getMinSize() {
             return minSize;
@@ -382,17 +372,9 @@ namespace Ghurund::UI {
 
         void draw(Canvas& canvas);
 
-        virtual Control* find(const String& name) {
-            if (this->name && this->name->operator==(name))
-                return this;
-            return nullptr;
-        }
+        virtual Control* find(const AString& name);
 
-        virtual Control* find(const Ghurund::Type& type) {
-            if (Type == type)
-                return this;
-            return nullptr;
-        }
+        virtual Control* find(const Ghurund::Type& type);
 
         virtual FloatPoint getPositionInWindow();
 
@@ -404,11 +386,9 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) override;
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+        virtual Status load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml);
 
 #ifdef _DEBUG
-        virtual String logTree();
-
         virtual void validate();
 #endif
 

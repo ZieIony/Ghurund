@@ -1,9 +1,6 @@
 #pragma once
 
 #include "application/SystemWindow.h"
-#include "core/MathUtils.h"
-#include "ui/layout/StackLayout.h"
-#include "ui/control/PaddingContainer.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
@@ -11,6 +8,9 @@
 #include "ui/style/DarkTheme.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
+#include "ui/Canvas.h"
+
+#include "LayoutBinding.h"
 
 namespace Preview {
     using namespace Ghurund;
@@ -21,9 +21,7 @@ namespace Preview {
         Theme* lightTheme, * darkTheme;
         UIContext* context;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        StackLayout* container;
-        CheckBox* themeCheckBox, * enabledCheckBox;
-        Button* button1, * button2, * button3, * button4;
+        ControlGroup* container;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -49,17 +47,16 @@ namespace Preview {
             rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
 
             PointerList<Control*> controls;
-            layoutLoader.load(L"Preview/layout.xml", controls);
-            rootView->Child = controls[0];
-            container = (StackLayout*)rootView->find("container");
-            themeCheckBox = (CheckBox*)rootView->find("themeCheckBox");
-            themeCheckBox->CheckedChanged.add([this](CheckBoxRadio&) {
-                updateTheme();
+            layoutLoader.load(L"Preview/res/layout.xml", controls);
+            LayoutBinding binding(controls[0]);
+            rootView->Child = binding.Root;
+            container = binding.Container;
+            binding.ThemeCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
+                updateTheme(checkBox);
                 rootView->repaint();
                 return true;
             });
-            enabledCheckBox = (CheckBox*)rootView->find("enabledCheckBox");
-            enabledCheckBox->CheckedChanged.add([this](CheckBoxRadio& checkBox) {
+            binding.EnabledCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
                 container->Enabled = checkBox.Checked;
                 container->repaint();
                 return true;
@@ -74,14 +71,10 @@ namespace Preview {
                 rootView->dispatchThemeChanged();
                 return true;
             };
-            button1 = (Button*)rootView->find("color1");
-            button1->Clicked.add(colorClickHandler);
-            button2 = (Button*)rootView->find("color2");
-            button2->Clicked.add(colorClickHandler);
-            button3 = (Button*)rootView->find("color3");
-            button3->Clicked.add(colorClickHandler);
-            button4 = (Button*)rootView->find("color4");
-            button4->Clicked.add(colorClickHandler);
+            binding.Color1->Clicked.add(colorClickHandler);
+            binding.Color2->Clicked.add(colorClickHandler);
+            binding.Color3->Clicked.add(colorClickHandler);
+            binding.Color4->Clicked.add(colorClickHandler);
 
             RootView = rootView;
 
@@ -108,8 +101,8 @@ namespace Preview {
             delete darkTheme;
         }
 
-        void updateTheme() {
-            if (themeCheckBox->Checked) {
+        void updateTheme(CheckBox& checkBox) {
+            if (checkBox.Checked) {
                 rootView->BackgroundColor = darkTheme->Colors[Theme::COLOR_BACKGR0UND];
                 layoutLoader.init(*darkTheme, layoutLoader.ResourceContext);
                 rootView->Theme = darkTheme;

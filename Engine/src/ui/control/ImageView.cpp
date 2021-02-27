@@ -1,10 +1,20 @@
 #include "ImageView.h"
-#include "core/string/TextConversionUtils.h"
 
+#include "core/reflection/TypeBuilder.h"
+#include "ui/Canvas.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& ImageView::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ImageView>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
         measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
         measuredSize.width = std::max(measuredSize.width, image ? (float)image->PreferredSize.width : 0.0f);

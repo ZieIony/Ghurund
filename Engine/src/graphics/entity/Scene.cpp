@@ -1,4 +1,6 @@
 #include "Scene.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {
@@ -24,5 +26,14 @@ namespace Ghurund {
 				return result;
 		}
 		return Status::OK;
+	}
+	
+	const Ghurund::Type& Scene::GET_TYPE() {
+		static const auto CONSTRUCTOR = NoArgsConstructor<Scene>();
+		static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Scene))
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
 	}
 }

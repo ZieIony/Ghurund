@@ -1,9 +1,18 @@
 #include "ResourceContext.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "graphics/CommandList.h"
 
 #include <wincodec.h>
 
 namespace Ghurund {
+    const Ghurund::Type& ResourceContext::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceContext))
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     ResourceContext::~ResourceContext() {
         if (wicFactory)
             wicFactory->Release();

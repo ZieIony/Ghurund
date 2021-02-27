@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI"
+		data="TabItem" source="ui/widget/tab/TabItem.h">
+	<SelectableView name="selectable">
+		<StackLayout>
+			<StateIndicator name="state" preferredSize="fill, fill"
+							style="theme://style/stateIndicator_onBackground"/>
+			<Border style="theme://style/border_onBackground"/>
+			<PaddingContainer padding="8, 4">
+				<TextBlock name="text" text=".Text" style="theme://style/textBlock_button"/>
+			</PaddingContainer>
+		</StackLayout>
+	</SelectableView>
+</layout>

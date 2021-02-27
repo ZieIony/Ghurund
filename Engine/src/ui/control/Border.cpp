@@ -1,9 +1,20 @@
 #include "Border.h"
 
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& Border::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Border>();
+        static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void Border::onDraw(Canvas& canvas) {
         if (!Color || Thickness < 0.1f)
             return;

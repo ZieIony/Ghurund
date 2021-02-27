@@ -9,39 +9,9 @@ namespace Ghurund::UI {
         FloatPoint scroll = { 0,0 };
         FloatPoint maxScroll = { 0.0f, 0.0f };
 
-        inline float measureMaxWidth(ControlGroup& group) {
-            float measuredWidth = 0;
-            if (group.PreferredSize.width >= 0) {
-                measuredWidth = (float)group.PreferredSize.width;
-            } else {
-                for (Control* c : group.Children) {
-                    if (c->PreferredSize.width >= 0) {
-                        measuredWidth = std::max(measuredWidth, (float)c->PreferredSize.width);
-                        measuredWidth = std::max(measuredWidth, c->MinSize.width);
-                    } else {
-                        measuredWidth = std::max(measuredWidth, c->MeasuredSize.width);
-                    }
-                }
-            }
-            return std::max(group.MinSize.width, measuredWidth);
-        }
+        float measureMaxWidth(ControlGroup& group);
 
-        inline float measureMaxHeight(ControlGroup& group) {
-            float measuredHeight = 0;
-            if (group.PreferredSize.height >= 0) {
-                measuredHeight = (float)group.PreferredSize.height;
-            } else {
-                for (Control* c : group.Children) {
-                    if (c->PreferredSize.width >= 0) {
-                        measuredHeight = std::max(measuredHeight, (float)c->PreferredSize.height);
-                        measuredHeight = std::max(measuredHeight, c->MinSize.height);
-                    } else {
-                        measuredHeight = std::max(measuredHeight, c->MeasuredSize.height);
-                    }
-                }
-            }
-            return std::max(group.MinSize.height, measuredHeight);
-        }
+        float measureMaxHeight(ControlGroup& group);
 
     public:
         virtual ~LayoutManager() = 0 {}

@@ -1,5 +1,6 @@
 #include "ConstantBuffer.h"
 
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund {

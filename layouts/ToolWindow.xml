@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<StackLayout preferredSize="200, 400">
-		<ColorView style="colorView_background"/>
+		<ColorView style="theme://style/ColorView_background"/>
 		<PaddingContainer padding="1">
 		<LinearLayout orientation="vertical">
 			<include layout="file://TitleBar.xml"/>
 			<include layout="file://ToolBar.xml"/>
 			<include layout="file://SearchField.xml"/>
-			<ColorView style="theme://style/colorView_control"
+			<ColorView style="theme://style/ColorView_control"
 					   preferredSize="fill, 1"/>
 			<ControlContainer name="container"
 							  preferredSize="fill, fill"/>
 		</LinearLayout>
 		</PaddingContainer>
-		<Border style="theme://style/border_onBackground"/>
+		<Border style="theme://style/Border_onBackground"/>
 	</StackLayout>
 </layout>

@@ -6,7 +6,9 @@
 #include "resource/ResourceManager.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status Shader::makeRootSignature() {
@@ -165,6 +167,14 @@ namespace Ghurund {
 #ifdef _DEBUG
         delete[] reported;
 #endif
+    }
+
+    const Ghurund::Type& Shader::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Shader::~Shader() {

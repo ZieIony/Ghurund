@@ -9,13 +9,13 @@
 #include <fcntl.h>
 #include <process.h>
 #include <tchar.h>
+#include <dbghelp.h>
 
 namespace Ghurund {
     using namespace std;
 
     HANDLE Logger::process = {};
-    SYMBOL_INFO* Logger::symbol = nullptr;
-    IMAGEHLP_LINE Logger::line;
+    _SYMBOL_INFO* Logger::symbol = nullptr;
     CriticalSection Logger::criticalSection;
     LogType Logger::filterLevel = LogType::INFO;
     LogOutput* Logger::logOutput = nullptr;
@@ -29,6 +29,8 @@ namespace Ghurund {
     }
 
     std::basic_string<tchar> Logger::getFileLine(address_t address) {
+        IMAGEHLP_LINE line;
+        line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
         DWORD64 displacement = 0;
         if (!SymFromAddr(process, address, &displacement, symbol))
             return fmt::format(_T("[{}]: "), address);
@@ -65,8 +67,6 @@ namespace Ghurund {
             symbol = (SYMBOL_INFO*)(ghnew char[symbolStructSize]);
             symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
             symbol->MaxNameLen = MAX_SYM_NAME;
-
-            line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
         }
 
         if (output) {

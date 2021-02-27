@@ -5,14 +5,13 @@
 		<PaddingContainer padding="4">
 			<ImageView image="file://~/icons/search 18.png"
 				   enabled="false"
-				   style="theme://style/imageView_onBackground"/>
+				   style="theme://style/ImageView_onBackground"/>
 		</PaddingContainer>
-		<TextField preferredSize="fill, wrap"
-				   style="theme://style/textBlock_primary"/>
+		<TextField preferredSize="fill, wrap"/>
 		<Button layout="file://ButtonIconLayout.xml">
 			<PaddingContainer padding="4">
 				<ImageView image="file://~/icons/close 18.png"
-						   style="theme://style/imageView_onBackground"/>
+						   style="theme://style/ImageView_onBackground"/>
 			</PaddingContainer>
 		</Button>
 	</LinearLayout>

@@ -1,5 +1,6 @@
 #include "Ghurund.h"
 #include "core/io/DirectoryPath.h"
+#include "core/logging/Formatter.h"
 
 #include "PreviewApplication.h"
 
@@ -14,6 +15,7 @@
 #pragma comment(lib, "GhurundEngine_32.lib")
 #endif
 
+using namespace Ghurund;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
 #ifdef _DEBUG

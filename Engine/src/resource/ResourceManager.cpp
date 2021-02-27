@@ -1,7 +1,9 @@
 #include "ResourceManager.h"
 
-#include "core/logging/Logger.h"
 #include "application/Timer.h"
+#include "core/logging/Formatter.h"
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 #include <functional>
 
@@ -65,6 +67,15 @@ namespace Ghurund {
         } else {
             return relativePath;
         }
+    }
+
+    const Ghurund::Type& ResourceManager::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     ResourceManager::ResourceManager() {

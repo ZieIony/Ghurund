@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Common.h"
+
 #include "core/allocation/Allocator.h"
 
 namespace Ghurund {

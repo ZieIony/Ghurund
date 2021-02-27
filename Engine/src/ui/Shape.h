@@ -1,31 +1,35 @@
 #pragma once
 
-#include "ui/Graphics2D.h"
+#include "core/math/Rect.h"
+
+struct ID2D1Geometry;
 
 namespace Ghurund::UI {
+    class Graphics2D;
+
     class Shape {
     protected:
-        ComPtr<ID2D1Geometry> path;
-        D2D_RECT_F bounds;
+        ID2D1Geometry* path = nullptr;
+        FloatRect bounds;
 
     public:
-        virtual ~Shape() = 0 {}
+        virtual ~Shape() = 0;
 
         inline ID2D1Geometry* getPath() {
-            return path.Get();
+            return path;
         }
 
         __declspec(property(get = getPath)) ID2D1Geometry* Path;
 
-        inline const D2D_RECT_F& getBounds() const {
+        inline const FloatRect& getBounds() const {
             return bounds;
         }
 
-        virtual void setBounds(const D2D_RECT_F& bounds) {
+        virtual void setBounds(const FloatRect& bounds) {
             this->bounds = bounds;
         }
 
-        __declspec(property(get = getBounds, put = setBounds)) const D2D_RECT_F& Bounds;
+        __declspec(property(get = getBounds, put = setBounds)) const FloatRect& Bounds;
     };
 
     class Rect:public Shape {
@@ -35,7 +39,7 @@ namespace Ghurund::UI {
     public:
         Rect(Graphics2D& graphics2d):graphics2d(&graphics2d) {}
 
-        virtual void setBounds(const D2D_RECT_F& bounds) override;
+        virtual void setBounds(const FloatRect& bounds) override;
     };
 
     class RoundRect:public Shape {
@@ -56,6 +60,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
 
-        virtual void setBounds(const D2D_RECT_F& bounds) override;
+        virtual void setBounds(const FloatRect& bounds) override;
     };
 }

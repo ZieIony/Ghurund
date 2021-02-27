@@ -3,7 +3,7 @@
 	<ClickableControl name="clickable" preferredSize="fill, fill">
 		<StackLayout>
 			<StateIndicator name="state" preferredSize="fill, fill"
-							style="theme://style/stateIndicator_onBackground"/>
+							style="theme://style/StateIndicator_onBackground"/>
 			<ControlContainer preferredSize="fill, fill"
 								name="container"/>
 		</StackLayout>

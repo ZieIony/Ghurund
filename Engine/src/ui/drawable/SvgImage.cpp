@@ -1,4 +1,6 @@
 #include "SvgImage.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "resource/ResourceContext.h"
 #include "ui/Graphics2D.h"
 
@@ -23,5 +25,26 @@ namespace Ghurund::UI {
 
     Status SvgImage::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         return Status::NOT_SUPPORTED;
+    }
+
+    const Ghurund::Type& SvgImage::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<SvgImage>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SvgImage))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+    
+    void SvgImage::finalize() {
+        if (svgDocument != nullptr)
+            svgDocument->Release();
+    }
+    
+    FloatSize SvgImage::getSize() {
+        if (!svgDocument)
+            return { 0,0 };
+        auto size = svgDocument->GetViewportSize();
+        return { size.width, size.height };
     }
 }

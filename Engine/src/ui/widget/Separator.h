@@ -10,12 +10,7 @@ namespace Ghurund::UI {
         ColorView* colorView;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Separator))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Separator();
@@ -60,6 +55,4 @@ namespace Ghurund::UI {
             return TYPE;
         }
     };
-
-    typedef SharedPointer<Separator> SeparatorPtr;
 }

@@ -2,7 +2,18 @@
 #include "ui/LayoutLoader.h"
 #include "core/logging/Logger.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund::UI {
+    const Ghurund::Type& ControlContainer::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ControlContainer>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     bool ControlContainer::focusNext() {
         if (__super::focusNext())
             return true;
@@ -110,7 +121,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlContainer::find(const String& name) {
+    Control* ControlContainer::find(const AString& name) {
         if (this->Name && this->Name->operator==(name))
             return this;
         if (child)
@@ -140,22 +151,4 @@ namespace Ghurund::UI {
         }
         return Status::OK;
     }
-
-#ifdef _DEBUG
-    String ControlContainer::logTree() {
-        String log = __super::logTree();
-        if (child) {
-            auto array = child->logTree().split(_T("\n"));
-            if (!array.Empty) {
-                String& s = array[0];
-                log.add(fmt::format(_T(" + {}\n"), s).c_str());
-            }
-            for (size_t i = 1; i < array.Size; i++) {
-                String& s = array[i];
-                log.add(fmt::format(_T("   {}\n"), s).c_str());
-            }
-        }
-        return log;
-    }
-#endif
 }

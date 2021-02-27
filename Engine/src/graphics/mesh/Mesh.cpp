@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "resource/ResourceContext.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
@@ -118,6 +119,15 @@ namespace Ghurund {
         stream.write<XMFLOAT3>(boundingBox.Extents);
 
         return Status::OK;
+    }
+
+    const Ghurund::Type& Mesh::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Mesh>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Mesh))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Mesh::~Mesh() {

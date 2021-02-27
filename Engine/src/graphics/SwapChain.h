@@ -32,14 +32,7 @@ namespace Ghurund {
         DXGI_FORMAT format;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<SwapChain>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(Object::TYPE);
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~SwapChain() {

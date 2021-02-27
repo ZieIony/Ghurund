@@ -97,8 +97,16 @@ namespace Ghurund {
             return v == str || (lengthOf(str) == Length && memcmp(v, str, Length * sizeof(T)) == 0);
         }
 
-        operator const T* ()const {
-            return v;
+        GenericStringView& operator=(GenericStringView&& other) noexcept {
+            if (this == &other)
+                return *this;
+
+            v = other.v;
+            size = other.size;
+            other.v = nullptr;
+            other.size = 0;
+
+            return *this;
         }
 
         size_t find(const T* str, size_t start = 0) const {

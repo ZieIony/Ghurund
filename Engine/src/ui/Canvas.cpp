@@ -2,6 +2,8 @@
 
 #include "core/logging/Logger.h"
 #include "graphics/SwapChain.h"
+#include "ui/drawable/BitmapImage.h"
+#include "ui/drawable/SvgImage.h"
 
 namespace Ghurund::UI {
     Status Canvas::init(Graphics2D& graphics2d) {
@@ -27,5 +29,44 @@ namespace Ghurund::UI {
         if (matrixStack.Size != 1)
             Logger::log(LogType::INFO, _T("mismatched calls to Canvas::save() and Canvas::restore()\n"));
         matrixStack.clear();
+    }
+    
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& dst, float alpha) {
+        D2D1_RECT_F d = { dst.left, dst.top, dst.right, dst.bottom };
+        deviceContext->DrawBitmap(image.Data, d, alpha);
+    }
+    
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& dst, int32_t tintColor, float alpha) {
+        tintEffect->SetInput(0, image.Data);
+        Color color(tintColor);
+        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
+        tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
+        deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
+    }
+    
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, float alpha) {
+        D2D1_RECT_F s = { src.left, src.top, src.right, src.bottom };
+        D2D1_RECT_F d = { dst.left, dst.top, dst.right, dst.bottom };
+        deviceContext->DrawBitmap(image.Data, d, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, s);
+    }
+    
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, int32_t tintColor, float alpha) {
+        tintEffect->SetInput(0, image.Data);
+        Color color(tintColor);
+        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
+        tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
+        deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
+    }
+    
+    void Canvas::drawImage(SvgImage& image) {
+        deviceContext->DrawSvgDocument(image.Data);
+    }
+    
+    void Canvas::drawShadow(BitmapImage& image, float radius, int32_t shadowColor) {
+        shadowEffect->SetInput(0, image.Data);
+        Color color(shadowColor);
+        shadowEffect->SetValue(D2D1_SHADOW_PROP_COLOR, color.Vector);
+        shadowEffect->SetValue(D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION, radius);
+        deviceContext->DrawImage(shadowEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);
     }
 }

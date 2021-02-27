@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EventHandler.h"
+#include "core/collection/List.h"
 
 namespace Ghurund {
     template <class...> class Event;

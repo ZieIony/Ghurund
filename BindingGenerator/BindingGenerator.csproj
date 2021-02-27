@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoundValue.cs" />
     <Compile Include="Generator.cs" />
-    <Compile Include="BoundField.cs" />
+    <Compile Include="BoundControl.cs" />
+    <Compile Include="Layout.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

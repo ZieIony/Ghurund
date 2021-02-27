@@ -4,6 +4,8 @@
 #include "Status.h"
 #include "core/Pointer.h"
 
+#include <stdint.h>
+
 namespace Ghurund {
     enum class LoadOption {
         DEFAULT = 0, DONT_WATCH = 1
@@ -57,13 +59,7 @@ namespace Ghurund {
         Status writeHeader(MemoryOutputStream& stream) const;
         Status readHeader(MemoryInputStream& stream);
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Resource() = default;

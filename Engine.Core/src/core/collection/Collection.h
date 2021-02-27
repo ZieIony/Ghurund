@@ -2,10 +2,6 @@
 
 #include "Common.h"
 
-#include <algorithm>
-#undef min
-#undef max
-
 namespace Ghurund {
     class Collection {
     protected:

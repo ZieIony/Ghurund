@@ -1,7 +1,7 @@
 #include "RenderTarget.h"
-#include "core/MathUtils.h"
-#include "ui/Graphics2D.h"
 #include "core/logging/Logger.h"
+#include "core/math/MathUtils.h"
+#include "ui/Graphics2D.h"
 
 namespace Ghurund {
     Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {

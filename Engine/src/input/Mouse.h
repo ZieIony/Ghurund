@@ -1,7 +1,7 @@
 #pragma once
 
 #include "EventArgs.h"
-#include "core/Point.h"
+#include "core/math/Point.h"
 
 namespace Ghurund::Input {
     enum class MouseButton {

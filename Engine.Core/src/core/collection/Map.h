@@ -2,6 +2,8 @@
 
 #include "CollectionWithCapacity.h"
 
+#include <exception>
+
 namespace Ghurund {
 
     template<class Key, class Value> class Map :public CollectionWithCapacity {

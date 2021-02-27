@@ -2,6 +2,7 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status TransformComponent::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -16,5 +17,14 @@ namespace Ghurund {
 		stream.write<XMFLOAT3>(rotation);
 		stream.write<XMFLOAT3>(scale);
 		return Status::OK;
+	}
+	
+	const Ghurund::Type& TransformComponent::GET_TYPE() {
+		static const auto CONSTRUCTOR = NoArgsConstructor<TransformComponent>();
+		static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TransformComponent))
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
 	}
 }

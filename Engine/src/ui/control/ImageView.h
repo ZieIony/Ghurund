@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Control.h"
-#include "core/SharedPointer.h"
 #include "ui/Alignment.h"
 #include "ui/drawable/Drawable.h"
 #include <ui/drawable/BitmapImageDrawable.h>
@@ -18,14 +17,7 @@ namespace Ghurund::UI {
         Alignment gravity;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ImageView>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ImageView(ImageDrawable* image = nullptr) {

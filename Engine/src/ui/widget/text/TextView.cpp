@@ -1,6 +1,7 @@
 #include "TextView.h"
 
 #include "application/Clipboard.h"
+#include "core/reflection/TypeBuilder.h"
 #include "ui/Cursor.h"
 #include "ui/control/ControlParent.h"
 

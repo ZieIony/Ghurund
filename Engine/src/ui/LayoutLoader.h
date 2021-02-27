@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/collection/Stack.h"
+#include "core/collection/PointerList.h"
 #include "core/io/FilePath.h"
 #include "core/reflection/Type.h"
 #include "core/string/AStringView.h"
@@ -10,20 +11,26 @@
 
 #include <tinyxml2.h>
 
+namespace Ghurund{
+    class Buffer;
+}
+
 namespace Ghurund::UI {
     class TextFormat;
     class Theme;
+    class Shape;
+    class BitmapImage;
 
     class LayoutLoader {
     private:
-        Map<AString, Type*> types;
+        Map<AString, const Type*> types;
         Theme* theme;
         ResourceContext* context;
         Stack<DirectoryPath> workingDir;
 
     public:
-        static inline const wchar_t* FILE_PROTOCOL = L"file://";
-        static inline const wchar_t* THEME_PROTOCOL = L"theme://";
+        static inline const char* FILE_PROTOCOL = "file://";
+        static inline const char* THEME_PROTOCOL = "theme://";
 
         LayoutLoader();
 
@@ -34,7 +41,7 @@ namespace Ghurund::UI {
 
         void registerClass(const Type& type) {
             if (type.extends(Control::TYPE))
-                types.set(type.Name, (Type*)&type);
+                types.set(type.Name, &type);
         }
 
         inline Theme& getTheme() {
@@ -80,6 +87,6 @@ namespace Ghurund::UI {
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 
-        WString getPath(const WString& path);
+        WString getPath(const AString& path);
     };
 }

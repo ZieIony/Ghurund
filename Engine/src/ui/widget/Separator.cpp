@@ -1,7 +1,16 @@
 #include "SeparatorStyle.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& Separator::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Separator))
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     Separator::Separator() {
         colorView = ghnew ColorView();
         Child = colorView;

@@ -2,9 +2,9 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    TextTabLayout::TextTabLayout(Theme& theme):theme(theme) {
+    TextTabLayout::TextTabLayout(Theme& theme):TabLayout(nullptr), theme(theme) {
         stack = ghnew StackLayout();
-        textView->TextFormat = theme.TextFormats[Theme::TEXTFORMAT_BUTTON];
+        /*textView->TextFormat = theme.TextFormats[Theme::TEXTFORMAT_BUTTON];
         paddingContainer->Child = textView;
         paddingContainer->Padding.All = 4;
         stack->PreferredSize.width = PreferredSize::Width::WRAP;
@@ -12,11 +12,11 @@ namespace Ghurund::UI {
         stack->Children = { backgroundView, border, paddingContainer };
         selectableView = ghnew Ghurund::UI::SelectableView();
         selectableView->Child = stack;
-        Root = selectableView;
+        Root = selectableView;*/
     }
 
     void TextTabLayout::onStateChanged(Control& control) {
-        if (!control.Enabled) {
+        /*if (!control.Enabled) {
             TextBlock->TextColor = theme.Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
             backgroundView->Color = 0;
             border->Color = 0;
@@ -36,6 +36,6 @@ namespace Ghurund::UI {
             TextBlock->TextColor = theme.Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
             backgroundView->Color = theme.Colors[Theme::COLOR_BACKGR0UND];
             border->Color = 0;
-        }
+        }*/
     }
 }

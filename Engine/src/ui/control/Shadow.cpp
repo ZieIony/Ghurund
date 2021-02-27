@@ -1,8 +1,35 @@
 #include "Shadow.h"
-#include "ui/LayoutLoader.h"
+
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "ui/LayoutLoader.h"
+#include "ui/Canvas.h"
+#include "ui/drawable/BitmapImage.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& Shadow::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Shadow>();
+        static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Shadow))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    Shadow::Shadow(unsigned int color) {
+        preferredSize.width = PreferredSize::Width::FILL;
+        preferredSize.height = PreferredSize::Height::FILL;
+        Color = color;
+        image = ghnew BitmapImage();
+    }
+
+    Shadow::~Shadow() {
+        if (fillBrush)
+            fillBrush->Release();
+        image->release();
+        delete shape;
+    }
+
     void Shadow::onLayout(float x, float y, float width, float height) {
         __super::onLayout(x, y, width, height);
         auto deviceContext = Context->Graphics.DeviceContext;
@@ -20,7 +47,7 @@ namespace Ghurund::UI {
         deviceContext->Clear();
         if (!shape)
             shape = ghnew Rect(Context->Graphics);
-        shape->Bounds = D2D1::RectF(ceil(radius), ceil(radius), width + ceil(radius), height + ceil(radius));
+        shape->Bounds = FloatRect{ ceil(radius), ceil(radius), width + ceil(radius), height + ceil(radius) };
         deviceContext->FillGeometry(shape->Path, fillBrush);
         deviceContext->EndDraw();
     }

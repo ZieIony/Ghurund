@@ -1,9 +1,20 @@
 #include "PaddingContainer.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 
 #include <regex>
 
 namespace Ghurund::UI {
+    const Ghurund::Type& PaddingContainer::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void PaddingContainer::onMeasure(float parentWidth, float parentHeight) {
         if (Child) {
             Child->measure(

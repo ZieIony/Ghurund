@@ -4,6 +4,7 @@
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ClickableControl.h"
 #include "ui/layout/LinearLayout.h"
+#include "core/SharedPointer.h"
 
 namespace Ghurund::UI {
     class Splitter:public ClickableControl {

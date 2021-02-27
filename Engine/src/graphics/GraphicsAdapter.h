@@ -27,12 +27,7 @@ namespace Ghurund {
             return outputs.Size > 0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
         }
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Adapter))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         GraphicsAdapter(ComPtr<IDXGIAdapter1> adapter) {

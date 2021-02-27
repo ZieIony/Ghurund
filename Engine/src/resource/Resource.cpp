@@ -2,7 +2,9 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     LoadOption operator |(LoadOption lhs, LoadOption rhs) {
@@ -49,6 +51,14 @@ namespace Ghurund {
         if (stream.readUInt() != getVersion())
             return Status::WRONG_RESOURCE_VERSION;
         return Status::OK;
+    }
+
+    const Ghurund::Type& Resource::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
+            .withModifiers(TypeModifier::ABSTRACT)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Resource::~Resource() {

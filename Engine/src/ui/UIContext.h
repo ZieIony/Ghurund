@@ -1,8 +1,11 @@
 #pragma once
 
+namespace Ghurund {
+    class Window;
+}
+
 namespace Ghurund::UI {
     class Graphics2D;
-    class Window;
 
     class UIContext {
     private:

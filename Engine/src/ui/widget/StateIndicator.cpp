@@ -1,6 +1,8 @@
 #include "StateIndicator.h"
 
+#include "core/reflection/TypeBuilder.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& StateIndicator::GET_TYPE() {
@@ -36,6 +38,12 @@ namespace Ghurund::UI {
         }
         this->state = state;
         animation.start();
+    }
+
+    void StateIndicator::onDraw(Canvas& canvas) {
+        if (!paint.Color)
+            return;
+        canvas.fillRect(0, 0, Size.width, Size.height, paint);
     }
 
     void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {

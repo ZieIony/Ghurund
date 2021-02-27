@@ -1,9 +1,10 @@
 #include "Sound.h"
 
-#include "resource/ResourceContext.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "resource/ResourceContext.h"
 
 #include <Shlwapi.h>
 
@@ -132,6 +133,15 @@ namespace Ghurund::Audio {
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to select audio stream\n"));
 
         return readSamples(sourceReader, streamIndex);
+    }
+
+    const Ghurund::Type& Sound::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Sound>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Sound))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
 	Status Sound::play() {

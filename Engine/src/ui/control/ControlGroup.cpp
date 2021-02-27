@@ -1,9 +1,20 @@
 #include "ControlGroup.h"
-#include "ui/LayoutLoader.h"
-#include "ui/Alignment.h"
+
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "ui/Alignment.h"
+#include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& ControlGroup::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ControlGroup>();
+        static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     bool ControlGroup::focusNext() {
         if (__super::focusNext())
             return true;
@@ -136,7 +147,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlGroup::find(const String& name) {
+    Control* ControlGroup::find(const AString& name) {
         if (this->Name && this->Name->operator==(name))
             return this;
         for (Control* c : children) {
@@ -166,26 +177,4 @@ namespace Ghurund::UI {
         Children.addAll(loader.loadControls(xml));
         return Status::OK;
     }
-
-#ifdef _DEBUG
-    String ControlGroup::logTree() {
-        String log = __super::logTree();
-        for (Control* child : children) {
-            auto array = child->logTree().split(_T("\n"));
-            if (!array.Empty) {
-                String& s = array[0];
-                log.add(fmt::format(_T(" + {}\n"), s).c_str());
-            }
-            for (size_t i = 1; i < array.Size; i++) {
-                String& s = array[i];
-                if (children[children.Size - 1] == child) {
-                    log.add(fmt::format(_T("   {}\n"), s).c_str());
-                } else {
-                    log.add(fmt::format(_T(" | {}\n"), s).c_str());
-                }
-            }
-        }
-        return log;
-    }
-#endif
 }

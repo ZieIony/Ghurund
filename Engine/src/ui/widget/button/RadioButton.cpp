@@ -22,6 +22,7 @@ namespace Ghurund::UI {
                 CheckedChanged();
                 return true;
             });
+            Layout->Selectable->StateChanged.add(stateHandler);
         }
     }
 
@@ -29,8 +30,8 @@ namespace Ghurund::UI {
         Theme* theme = control.Theme;
         if (!theme)
             return;
-        CheckBoxRadio& checkBoxRadio = (CheckBoxRadio&)control;
-        CheckBoxLayout* layout = checkBoxRadio.Layout;
+        RadioButton& checkBoxRadio = (RadioButton&)control;
+        CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout->Selectable->Selected) {
             layout->Image->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]);
         } else {

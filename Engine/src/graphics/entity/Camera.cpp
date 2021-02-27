@@ -1,8 +1,9 @@
 #include "Camera.h"
 
-#include "script/ScriptEngine.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/reflection/TypeBuilder.h"
+#include "script/ScriptEngine.h"
 
 namespace Ghurund {
 	void Camera::rebuild() {
@@ -213,5 +214,14 @@ namespace Ghurund {
         stream.writeBoolean(pers);
 
         return Status::OK;
+    }
+    
+    const Ghurund::Type& Camera::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Camera>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 }

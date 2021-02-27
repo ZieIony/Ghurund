@@ -1,9 +1,10 @@
 #include "Texture.h"
 
-#include "resource/ResourceContext.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
 	Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -16,6 +17,15 @@ namespace Ghurund {
 
     Status Texture::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         return context.ResourceManager.save(*image, context, workingDir, stream, options);
+    }
+
+    const Ghurund::Type& Texture::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Texture>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Texture))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Status Texture::init(ResourceContext &context, Ghurund::Image &image) {

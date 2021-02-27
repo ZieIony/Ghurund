@@ -3,7 +3,7 @@
 #include "CheckBoxRadio.h"
 
 namespace Ghurund::UI {
-    class RadioButton:public CheckBoxRadio {
+    class RadioButton:public CheckBoxRadio<RadioButton> {
     protected:
         static const Ghurund::Type& GET_TYPE();
 

@@ -4,15 +4,15 @@
 #include "core/collection/PointerList.h"
 
 namespace Ghurund::UI {
-    class ChildrenList {
+    class ControlList {
     private:
         PointerList<Control*> children;
         ControlParent& owner;
 
     public:
-        ChildrenList(ControlParent& owner):owner(owner) {}
+        ControlList(ControlParent& owner):owner(owner) {}
 
-        ~ChildrenList() {
+        ~ControlList() {
             clear();
         }
 

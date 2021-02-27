@@ -13,14 +13,7 @@ namespace Ghurund::UI {
     protected:
         LayoutManager* layoutManager = nullptr;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<RecyclerView>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RecyclerView))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ChildrenProvider* childrenProvider;
@@ -76,51 +69,13 @@ namespace Ghurund::UI {
                 layoutManager->layout(*this, *childrenProvider, x, y, width, height);
         }
 
-        virtual void onDraw(Canvas& canvas) override {
-            if (!layoutManager)
-                return;
+        virtual void onDraw(Canvas& canvas) override;
 
-            canvas.save();
-            canvas.clipRect(0, 0, Size.width, Size.height);
-            auto& scroll = layoutManager->Scroll;
-            canvas.translate(scroll.x, scroll.y);
-            for (Control* c : Children)
-                c->draw(canvas);
-            canvas.restoreClipRect();
-            canvas.restore();
-        }
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event);
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
-            if (!layoutManager)
-                return false;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event);
 
-            const FloatPoint& scroll = layoutManager->Scroll;
-            return __super::dispatchMouseButtonEvent(event.translate(-scroll.x, -scroll.y, event.Inside));
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-            if (!layoutManager)
-                return false;
-
-            const FloatPoint& scroll = layoutManager->Scroll;
-            return __super::dispatchMouseMotionEvent(event.translate(-scroll.x, -scroll.y, event.Inside));
-        }
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
-            if (layoutManager && childrenProvider) {
-                if (args.Wheel == MouseWheel::VERTICAL) {
-                    layoutManager->scrollBy(*this, *childrenProvider, 0, (float)args.Delta);
-                    onScrolled();
-                    repaint();
-                } else {
-                    layoutManager->scrollBy(*this, *childrenProvider, (float)args.Delta, 0);
-                    onScrolled();
-                    repaint();
-                }
-            }
-
-            return OnMouseWheel(args);
-        }
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args);
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

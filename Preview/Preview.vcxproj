@@ -78,9 +78,10 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Preview\generated;$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
+    <CustomBuildAfterTargets>PreBuildEvent</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -124,6 +125,13 @@
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>$(SolutionDir)BindingGenerator\bin\Debug\BindingGenerator.exe $(ProjectDir)res $(ProjectDir)generated</Command>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -144,10 +152,14 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="generated\LayoutBinding.h" />
     <ClInclude Include="src\ImageLayout.h" />
     <ClInclude Include="src\LayoutLayout.h" />
     <ClInclude Include="src\PreviewApplication.h" />
     <ClInclude Include="src\PreviewWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="res\layout.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

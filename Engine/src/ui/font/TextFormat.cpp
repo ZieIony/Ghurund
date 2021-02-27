@@ -1,15 +1,17 @@
 #include "TextFormat.h"
-#include "ui/Canvas.h"
+
 #include "core/logging/Logger.h"
 #include "ui/Graphics2D.h"
 
 #include <commdlg.h>
+#include <dwrite.h>
+#include <wrl.h>
 
 namespace Ghurund::UI {
     TextFormat::TextFormat(const WString& file, const WString& family, float size, unsigned int weight, bool italic, const WString& locale)
         :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
 
-    TextFormat::TextFormat(IDWriteTextLayout* textLayout, UINT32 position) {
+    TextFormat::TextFormat(IDWriteTextLayout* textLayout, uint32_t position) {
         Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
         textLayout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
@@ -41,6 +43,11 @@ namespace Ghurund::UI {
         BOOL hasStrikethrough;
         textLayout->GetStrikethrough(position, &hasStrikethrough);
         strikethrough = hasStrikethrough;
+    }
+
+    TextFormat::~TextFormat() {
+        if (textFormat)
+            textFormat->Release();
     }
 
     Status TextFormat::init(Graphics2D& graphics2d) {

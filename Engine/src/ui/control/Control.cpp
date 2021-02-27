@@ -1,14 +1,22 @@
 #include "ControlParent.h"
 
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 #include "input/Mouse.h"
 #include "ui/Cursor.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 #include <regex>
+#include "Control.h"
 
 namespace Ghurund::UI {
+
+    Control::~Control() {
+        delete name;
+    }
 
     const Ghurund::Type& Control::GET_TYPE() {
         static auto PROPERTY_NAME = TypedProperty<Control, const AString*>(GH_STRINGIFY(AString*), GH_STRINGIFY(Name), [](Control& control, const AString*& value) {
@@ -90,6 +98,29 @@ namespace Ghurund::UI {
             .withProperty(PROPERTY_MEASUREDSIZE);
 
         return TYPE;
+    }
+
+    void Control::setName(const AString* name) {
+        if (this->name)
+            delete this->name;
+        if (name)
+            this->name = ghnew AString(*name);
+    }
+
+    void Control::setName(const AString& name) {
+        if (this->name)
+            delete this->name;
+        this->name = ghnew AString(name);
+    }
+
+    void Control::rebuildTransformation() {
+        D2D1::Matrix3x2F matrix = D2D1::Matrix3x2F::Translation(std::round(-size.width / 2), std::round(-size.height / 2))
+            * D2D1::Matrix3x2F::Rotation(rotation)
+            * D2D1::Matrix3x2F::Scale(scale.x, scale.y)
+            * D2D1::Matrix3x2F::Translation(std::round(position.x + size.width / 2), std::round(position.y + size.height / 2));
+        // TODO: remove this cast
+        transformation = *(Matrix3x2*)&matrix;
+        transformationInvalid = false;
     }
 
     /*
@@ -259,10 +290,11 @@ namespace Ghurund::UI {
         if (needsLayout || size.width != width || size.height != height) {
             transformationInvalid = true;
 #ifdef _DEBUG
+            /*const char* name = Name ? Name->Data : "[unnamed]";
             if (width < minSize.width || height < minSize.height)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, Name ? *Name : String("[unnamed]"));
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, name);
             if (width == 0 || height == 0)
-                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, Name ? *Name : String("[unnamed]"));
+                Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, name);*/
 #endif
             size.width = width;
             size.height = height;
@@ -276,24 +308,36 @@ namespace Ghurund::UI {
         if (size.width == 0 || size.height == 0)
             return;
 #ifdef _DEBUG
-        if (!Theme) {
-            Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : String("[unnamed]"));
-            return;
-        }
+        /*        if (!Theme) {
+                    Logger::log(LogType::WARNING, _T("cannot draw Control ({}: {}) because its theme is null\n"), Type.Name, Name ? *Name : String("[unnamed]"));
+                    return;
+                }*/
 #endif
         if (transformationInvalid)
             rebuildTransformation();
         canvas.save();
-        canvas.transform(transformation);
+        canvas.transform(*(D2D1::Matrix3x2F*)&transformation);
         onDraw(canvas);
         canvas.restore();
+    }
+
+    Control* Control::find(const AString& name) {
+        if (this->name && this->name->operator==(name))
+            return this;
+        return nullptr;
+    }
+
+    Control* Control::find(const Ghurund::Type& type) {
+        if (Type == type)
+            return this;
+        return nullptr;
     }
 
     FloatPoint Control::getPositionInWindow() {
         D2D1::Matrix3x2F matrix = D2D1::Matrix3x2F::Identity();
         Control* control = this;
         while (control) {
-            matrix = matrix * control->Transformation;
+            //matrix = matrix * control->Transformation;
             control = control->Parent;
         }
         D2D1_POINT_2F p = { 0,0 };
@@ -362,26 +406,24 @@ namespace Ghurund::UI {
         }
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
-            WString s = toWideChar(AString(styleAttr->Value()));
+            AString s = styleAttr->Value();
             uint32_t value = 0;
-            const wchar_t* themeProtocol = L"theme://style/";
+            const char* themeProtocol = "theme://style/";
             if (s.startsWith(themeProtocol)) {
-                WString styleKey = s.substring(lengthOf(themeProtocol));
+                StyleKey styleKey = s.substring(lengthOf(themeProtocol));
                 if (loader.Theme.Styles.contains(styleKey)) {
                     Style = loader.Theme.Styles[styleKey];
                 } else {
-                    Logger::log(LogType::WARNING, _T("missing style key {}\n"), styleKey);
+                    Logger::log(LogType::WARNING, _T("missing style key {}\n"), styleKey.str);
                 }
             }
+        } else if (loader.Theme.Styles.contains(StyleKey(Type.Name))) {
+            Style = loader.Theme.Styles[StyleKey(Type.Name)];
         }
         return Status::OK;
     }
 
 #ifdef _DEBUG
-    String Control::logTree() {
-        return fmt::format(_T("{}: {}, ref: {}\n"), Type.Name, Name ? *Name : String(_T("[unnamed]")), ReferenceCount).c_str();
-    }
-
     void Control::validate() {
         _ASSERTE(ReferenceCount < 1000);
         _ASSERTE(!parent || parent->ReferenceCount < 1000);

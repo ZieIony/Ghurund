@@ -1,9 +1,26 @@
 #include "ColorView.h"
 
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& ColorView::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ColorView>();
+        static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    void ColorView::onDraw(Canvas& canvas) {
+        if (!paint.Color)
+            return;
+        canvas.fillRect(0, 0, Size.width, Size.height, paint);
+    }
+
     Status ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         Status result = __super::load(loader, xml);
         if (result != Status::OK)

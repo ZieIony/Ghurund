@@ -2,7 +2,6 @@
 
 #include "ControlPool.h"
 
-#include "core/Object.h"
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {

@@ -1,9 +1,10 @@
 #include "Entity.h"
-#include "core/reflection/Type.h"
-#include "resource/ResourceContext.h"
+
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
 
@@ -35,6 +36,15 @@ namespace Ghurund {
             c->save(context, workingDir, stream, options);
         }
         return Status::OK;
+    }
+
+    const Ghurund::Type& Entity::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Entity>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Entity))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
 }

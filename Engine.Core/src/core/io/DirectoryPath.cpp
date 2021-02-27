@@ -1,5 +1,6 @@
 #include "DirectoryPath.h"
 
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
 #include <tchar.h>

@@ -1,13 +1,31 @@
 #pragma once
 
-#include "ButtonLayout.h"
+#include "ButtonBinding.h"
 #include "ui/control/ClickableControl.h"
-#include "ui/widget/ContentWidget.h"
+#include "ui/widget/ContainerWidget.h"
+#include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
-    class Button:public ContentWidget<ButtonLayout> {
+    class Button:public ContainerWidget<ButtonBinding> {
     protected:
         static const Ghurund::Type& GET_TYPE();
+
+        EventHandler<Control> stateHandler = [this](Control& control) {
+            if (Layout->Clickable->Pressed) {
+                Layout->State->State = IndicatorState::PRESSED;
+            } else if (Layout->Clickable->Focused || Layout->Clickable->Hovered) {
+                Layout->State->State = IndicatorState::FOCUSED;
+            } else {
+                Layout->State->State = IndicatorState::NONE;
+            }
+            return true;
+        };
+
+        virtual void onLayoutChanged() override {
+            __super::onLayoutChanged();
+            if (Layout)
+                Layout->Clickable->StateChanged.add(stateHandler);
+        }
 
     public:
         inline bool isHovered() const {

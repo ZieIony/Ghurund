@@ -4,8 +4,11 @@
 #include "graphics/Fence.h"
 #include "graphics/texture/Image.h"
 
-#include <dxgi1_6.h>
-#include <d2d1_3.h>
+struct ID2D1Bitmap1;
+
+namespace Ghurund {
+    class Image;
+}
 
 namespace Ghurund::UI {
     using namespace DirectX;
@@ -20,14 +23,7 @@ namespace Ghurund::UI {
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<BitmapImage>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BitmapImage))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         DescriptorHandle descHandle;
@@ -36,12 +32,7 @@ namespace Ghurund::UI {
             finalize();
         }
 
-        void finalize() {
-            if (bitmapImage)
-                bitmapImage->Release();
-            if (image)
-                image->release();
-        }
+        void finalize();
 
         virtual void invalidate() {
             finalize();
@@ -50,9 +41,7 @@ namespace Ghurund::UI {
             __super::invalidate();
         }
 
-        virtual bool isValid() {
-            return bitmapImage && image && image->Valid && __super::Valid;
-        }
+        virtual bool isValid();
 
         Status init(Ghurund::UI::Graphics2D& graphics2d, Image& image);
 
@@ -70,11 +59,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getData)) ID2D1Bitmap1* Data;
 
-        inline IntSize getSize() {
-            if (!image)
-                return { 0,0 };
-            return { image->Width, image->Height };
-        }
+        IntSize getSize();
 
         __declspec(property(get = getSize)) IntSize Size;
 
@@ -91,14 +76,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        static BitmapImage* makeFromImage(ResourceContext& context, const FilePath& imagePath) {
-            Ghurund::Image* image = context.ResourceManager.load<Ghurund::Image>(context, imagePath);
-            if (image == nullptr)
-                return nullptr;
-            BitmapImage* texture = ghnew BitmapImage();
-            texture->init(context.Graphics2D, *image);
-            image->release();
-            return texture;
-        }
+        static BitmapImage* makeFromImage(ResourceContext& context, const FilePath& imagePath);
     };
 }

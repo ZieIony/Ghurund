@@ -1,8 +1,18 @@
 #include "LinearLayout.h"
 
+#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& LinearLayout::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<LinearLayout>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(LinearLayout))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     bool LinearLayout::focusUp() {
         if (__super::focusUp())
             return true;

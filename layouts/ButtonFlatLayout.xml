@@ -5,10 +5,10 @@
 				name="clip"
 				preferredSize="fill, fill">
 			<StackLayout>
-				<ColorView style="theme://style/colorView_background"
+				<ColorView style="theme://style/ColorView_background"
 							name="background"/>
 				<StateIndicator name="state" preferredSize="fill, fill"
-								style="theme://style/stateIndicator_onBackground"/>
+								style="theme://style/StateIndicator_onBackground"/>
 				<PaddingContainer padding="8, 4"
 									preferredSize="fill, fill"
 									name="padding">

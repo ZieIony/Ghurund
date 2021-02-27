@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ui/Paint.h"
 #include "ui/style/Style.h"
 #include "ui/control/Control.h"
 
@@ -12,14 +13,7 @@ namespace Ghurund::UI {
         Paint paint;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ProgressBar>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ProgressBar() {

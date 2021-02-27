@@ -30,8 +30,8 @@ namespace Ghurund::UI {
         Theme* theme = control.Theme;
         if (!theme)
             return;
-        CheckBoxRadio& checkBoxRadio = (CheckBoxRadio&)control;
-        CheckBoxLayout* layout = checkBoxRadio.Layout;
+        CheckBox& checkBoxRadio = (CheckBox&)control;
+        CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout->Selectable->Selected) {
             layout->Image->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]);
         } else {

@@ -13,8 +13,6 @@ namespace Ghurund::Physics {
 
 	class RigidBodyComponent :public Component {
 	private:
-        inline static const char* CLASS_NAME = GH_STRINGIFY(RigidBodyComponent);
-        
         TransformComponent& transformComponent;
 		PxShape* shape = nullptr;
 
@@ -22,12 +20,7 @@ namespace Ghurund::Physics {
 			safeRelease2(shape);
 		}
 
-		static const Ghurund::Type& GET_TYPE() {
-			static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME)
-				.withSupertype(__super::GET_TYPE());
-
-			return TYPE;
-		}
+		static const Ghurund::Type& GET_TYPE();
 
 	protected:
 		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

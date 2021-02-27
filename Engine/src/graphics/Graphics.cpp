@@ -1,5 +1,7 @@
 #include "Graphics.h"
+
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 #include <D3Dcompiler.h>
 
@@ -22,6 +24,15 @@ namespace Ghurund {
         adapters.add(ghnew GraphicsAdapter(adapter));
 
         return adapters.Size>0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
+    }
+
+    const Ghurund::Type& Graphics::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Graphics>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Graphics))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Status Graphics::init() {

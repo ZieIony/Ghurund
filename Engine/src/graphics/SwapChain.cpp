@@ -1,10 +1,21 @@
 #include "SwapChain.h"
+
 #include "Graphics.h"
 #include "application/SystemWindow.h"
-#include "ui/Graphics2D.h"
+#include "core/reflection/TypeBuilder.h"
 #include "core/logging/Logger.h"
+#include "ui/Graphics2D.h"
 
 namespace Ghurund {
+    const Ghurund::Type& SwapChain::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<SwapChain>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(Object::TYPE);
+
+        return TYPE;
+    }
+
     Status SwapChain::init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {
         this->graphics = &graphics;
         this->graphics2d = graphics2d;

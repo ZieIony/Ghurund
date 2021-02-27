@@ -34,12 +34,12 @@ namespace Ghurund::UI {
         }
 
     public:
-        VerticalScrollBar(VerticalScrollBarLayout* layout = nullptr) {
+        VerticalScrollBar(std::unique_ptr<VerticalScrollBarLayout> layout = nullptr) {
             setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
-            Layout = layout;
+            Layout = std::move(layout);
         };
 
-        VerticalScrollBar(LayoutLoader& loader):VerticalScrollBar(ghnew VerticalScrollBarLayout(loader)) {}
+        VerticalScrollBar(LayoutLoader& loader):VerticalScrollBar(std::unique_ptr<VerticalScrollBarLayout>(ghnew VerticalScrollBarLayout(loader))) {}
 
         ~VerticalScrollBar() {
             delete dragHelper;

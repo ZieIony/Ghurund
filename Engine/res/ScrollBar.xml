@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
 	<LinearLayout preferredSize="200, wrap"
 				  orientation="horizontal">
 		<Button layout="file://layouts/ButtonImageLayout.xml">

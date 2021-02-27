@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ControlContainer.h"
-#include "MouseEvents.h"
 
 namespace Ghurund::UI {
     class ClickableControl:public ControlContainer {
@@ -12,14 +11,7 @@ namespace Ghurund::UI {
         Event<Control, MouseClickedEventArgs> onClicked = Event<Control, MouseClickedEventArgs>(*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ClickableControl>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableControl))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
         virtual bool onKeyEvent(const KeyEventArgs& event) override;
 

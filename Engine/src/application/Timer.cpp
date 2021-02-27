@@ -1,6 +1,17 @@
 #include "Timer.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund {
+    const Ghurund::Type& Timer::GET_TYPE() {
+        static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Timer>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Timer))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     Timer::Timer() {
         QueryPerformanceCounter(&startFrame);
         QueryPerformanceFrequency(&frequency);

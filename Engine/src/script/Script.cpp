@@ -1,9 +1,12 @@
 #include "Script.h"
+
 #include "ScriptEngine.h"
-#include "resource/ResourceContext.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -18,6 +21,15 @@ namespace Ghurund {
         stream.writeASCII(entryPoint.Data);
         stream.writeASCII(source.Data);
         return Status::OK;
+    }
+
+    const Ghurund::Type& Script::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<Script>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Script))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     Status Script::build(ScriptEngine& engine) {

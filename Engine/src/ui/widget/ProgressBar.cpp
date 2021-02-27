@@ -1,7 +1,18 @@
 #include "ProgressBar.h"
+
+#include "core/reflection/TypeBuilder.h"
 #include "ui/style/Theme.h"
+#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Type& ProgressBar::GET_TYPE() {
+        static const auto CONSTRUCTOR = NoArgsConstructor<ProgressBar>();
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
     void ProgressBar::onDraw(Canvas& canvas) {
         if (indeterminate) {
             paint.Color = backgroundColor;

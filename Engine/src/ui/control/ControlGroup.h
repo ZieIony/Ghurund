@@ -1,25 +1,16 @@
 #pragma once
 
-#include "ChildrenList.h"
+#include "ControlList.h"
 #include "ControlParent.h"
-#include "input/Keyboard.h"
-#include "input/Mouse.h"
 
 namespace Ghurund::UI {
     class ControlGroup:public ControlParent {
     private:
-        ChildrenList children;
+        ControlList children;
         Control* previousReceiver = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ControlGroup>();
-            static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     protected:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
@@ -44,11 +35,11 @@ namespace Ghurund::UI {
                 previousReceiver->release();
         }
 
-        inline ChildrenList& getChildren() {
+        inline ControlList& getChildren() {
             return children;
         }
 
-        inline const ChildrenList& getChildren() const {
+        inline const ControlList& getChildren() const {
             return children;
         }
 
@@ -57,7 +48,7 @@ namespace Ghurund::UI {
             children.addAll(controls);
         }
 
-        __declspec(property(get = getChildren, put = setChildren)) ChildrenList& Children;
+        __declspec(property(get = getChildren, put = setChildren)) ControlList& Children;
 
         virtual bool focusNext() override;
 
@@ -92,15 +83,13 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& event) override;
 
-        virtual Control* find(const String& name);
+        virtual Control* find(const AString& name);
 
         virtual Control* find(const Ghurund::Type& type);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
-        virtual String logTree();
-
         virtual void validate() override {
             __super::validate();
             for (Control* child : children)

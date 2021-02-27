@@ -1,6 +1,8 @@
 #pragma once
 
+#include "core/String/AString.h"
 #include "ui/control/ControlContainer.h"
+#include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
     class WidgetLayout {
@@ -56,5 +58,27 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getContainer)) ControlContainer* Container;
+    };
+
+    class GroupLayout:public WidgetLayout {
+    private:
+        ControlGroup* container = nullptr;
+
+        inline void setContainer(ControlGroup* container) {
+            this->container = container;
+        }
+
+    public:
+        GroupLayout() {}
+
+        GroupLayout(Control* control):WidgetLayout(control) {
+            container = (ControlGroup*)control->find("container");
+        }
+
+        inline ControlGroup* getContainer() {
+            return container;
+        }
+
+        __declspec(property(get = getContainer)) ControlGroup* Container;
     };
 }

@@ -1,13 +1,12 @@
 #pragma once
 
 #include "Object.h"
-#include "core/reflection/Type.h"
 
 namespace Ghurund {
 
     class Pointer: public Object {
     private:
-        uint32_t referenceCount = 1;
+        unsigned int referenceCount = 1;
 
 #ifdef _DEBUG
         void checkReferenceCount();
@@ -18,13 +17,7 @@ namespace Ghurund {
 
         virtual ~Pointer() = 0;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         Pointer() {}
@@ -54,9 +47,6 @@ namespace Ghurund {
             return TYPE;
         }
     };
-
-    template<class T>
-    concept IsPointer = std::is_base_of<Pointer, T>::value;
 
     template<class Type>
     void setPointer(Type*& pointer, Type* pointer2) {

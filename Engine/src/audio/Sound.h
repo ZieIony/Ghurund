@@ -23,15 +23,6 @@ namespace Ghurund::Audio {
         Status readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
         Status loadData(ResourceContext& context, MemoryInputStream& stream, LoadOption options);
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Sound>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Sound))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
-
     protected:
         virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
 
@@ -42,6 +33,8 @@ namespace Ghurund::Audio {
         virtual unsigned int getVersion() const {
             return 0;
         }
+
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Sound() {

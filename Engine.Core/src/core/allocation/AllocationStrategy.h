@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Allocator.h"
+#include "Common.h"
 
 #include <algorithm>
 #undef min

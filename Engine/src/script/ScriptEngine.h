@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/logging/Logger.h"
 #include "StringFactory.h"
 #include "core/Object.h"
 #include "application/Timer.h"
@@ -41,24 +40,10 @@ namespace Ghurund {
         std::atomic<unsigned int> moduleIndex = 0;
         Timer* timer;
 
-        static void messageCallback(const asSMessageInfo* msg, void* param) {
-            LogType type = LogType::ERR0R;
-            if (msg->type == asMSGTYPE_WARNING)
-                type = LogType::WARNING;
-            else if (msg->type == asMSGTYPE_INFORMATION)
-                type = LogType::INFO;
-            Logger::log(type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
-        }
+        static void messageCallback(const asSMessageInfo* msg, void* param);
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~ScriptEngine() {
@@ -66,9 +51,7 @@ namespace Ghurund {
                 engine->ShutDownAndRelease();
         }
 
-        static void log(const std::string& str) {
-            Logger::log(LogType::INFO, str.c_str());
-        }
+        static void log(const std::string& str);
 
         Status init(Timer& timer);
 

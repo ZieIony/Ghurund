@@ -1,6 +1,9 @@
 #include "Pointer.h"
+
 #include "core/collection/List.h"
+#include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 #include <typeinfo>
 #include <tchar.h>
@@ -25,5 +28,13 @@ namespace Ghurund {
             }
         }
 #endif
+    }
+    
+    const Ghurund::Type& Pointer::GET_TYPE() {
+        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
+            .withModifiers(TypeModifier::ABSTRACT)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 }

@@ -1,17 +1,24 @@
 #pragma once
 
-#include "CheckBoxLayout.h"
+#include "CheckBoxBinding.h"
 #include "ui/control/SelectableView.h"
-#include "ui/widget/ContentWidget.h"
+#include "ui/widget/ContainerWidget.h"
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
-    class CheckBoxRadio:public ContentWidget<CheckBoxLayout> {
+    template<typename CheckBoxRadioType>
+    class CheckBoxRadio:public ContainerWidget<CheckBoxBinding> {
     private:
-        Event<CheckBoxRadio> onCheckedChanged = Event<CheckBoxRadio>(*this);
+        Event<CheckBoxRadioType> onCheckedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
+                .withModifiers(TypeModifier::ABSTRACT)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
 
         EventHandler<Control> stateHandler = [this](Control& control) {
             if (Layout->Selectable->Pressed) {
@@ -23,8 +30,6 @@ namespace Ghurund::UI {
             }
             return true;
         };
-
-        virtual void onLayoutChanged() override;
 
     public:
         inline void setChecked(bool checked) {
@@ -38,13 +43,21 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;
 
-        inline Event<CheckBoxRadio>& getCheckedChanged() {
+        inline Event<CheckBoxRadioType>& getCheckedChanged() {
             return onCheckedChanged;
         }
 
-        __declspec(property(get = getCheckedChanged)) Event<CheckBoxRadio>& CheckedChanged;
+        __declspec(property(get = getCheckedChanged)) Event<CheckBoxRadioType>& CheckedChanged;
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
+            Status result = __super::load(loader, xml);
+            if (result != Status::OK)
+                return result;
+            auto checkedAttr = xml.FindAttribute("checked");
+            if (checkedAttr)
+                Checked = checkedAttr->BoolValue();
+            return Status::OK;
+        }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

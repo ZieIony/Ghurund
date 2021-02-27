@@ -8,7 +8,7 @@
 				<ControlContainer preferredSize="fill, fill"
 									name="container"/>
 				<StateIndicator name="state" preferredSize="fill, fill"
-								style="theme://style/stateIndicator_accent"/>
+								style="theme://style/StateIndicator_onAccent"/>
 			</StackLayout>
 		</Clip>
 	</ClickableControl>

@@ -14,12 +14,7 @@ namespace Ghurund {
         float refreshRate;
         DXGI_FORMAT format;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(DisplayMode))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         DisplayMode(DXGI_MODE_DESC mode) {

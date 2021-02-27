@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ui/Paint.h"
 #include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
@@ -12,14 +13,7 @@ namespace Ghurund::UI {
         uint32_t color;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<ClickResponseView>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickResponseView))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ClickResponseView(uint32_t color = 0x3fffffff) {
@@ -39,11 +33,7 @@ namespace Ghurund::UI {
 
         virtual void onUpdate(const uint64_t time) override;
 
-        virtual void onDraw(Canvas& canvas) override {
-            canvas.fillRect(0, 0, Size.width, Size.height, paint);
-            if (!finishedAnimating)
-                repaint();
-        }
+        virtual void onDraw(Canvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

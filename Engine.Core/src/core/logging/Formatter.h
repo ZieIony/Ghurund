@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Enum.h"
 #include "core/io/DirectoryPath.h"
 #include "core/io/FilePath.h"
 #include "core/string/String.h"

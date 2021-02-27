@@ -3,7 +3,11 @@
 #include "Control.h"
 #include "ui/Shape.h"
 
+struct ID2D1SolidColorBrush;
+
 namespace Ghurund::UI {
+    class BitmapImage;
+
     class Shadow: public Control {
     private:
         unsigned int color;
@@ -13,29 +17,12 @@ namespace Ghurund::UI {
         ID2D1SolidColorBrush* fillBrush = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Shadow>();
-            static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Shadow))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
-        Shadow(unsigned int color = 0xaf000000) {
-            preferredSize.width = PreferredSize::Width::FILL;
-            preferredSize.height = PreferredSize::Height::FILL;
-            Color = color;
-            image = ghnew BitmapImage();
-        }
+        Shadow(unsigned int color = 0xaf000000);
 
-        ~Shadow() {
-            if (fillBrush)
-                fillBrush->Release();
-            image->release();
-            delete shape;
-        }
+        ~Shadow();
 
         inline uint32_t getColor() const {
             return color;

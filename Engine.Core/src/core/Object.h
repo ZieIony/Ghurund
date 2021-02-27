@@ -1,16 +1,11 @@
 #pragma once
 
-#include "core/reflection/TypeBuilder.h"
-
 namespace Ghurund {
+    class Type;
+
     class Object {
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Object))
-                .withModifiers(TypeModifier::ABSTRACT);
-
-            return TYPE;
-        }
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         virtual ~Object() {}   // gives a common destructor to all deriving classes

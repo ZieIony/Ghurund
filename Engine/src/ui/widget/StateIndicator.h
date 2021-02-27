@@ -47,11 +47,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
-        virtual void onDraw(Canvas& canvas) {
-            if (!paint.Color)
-                return;
-            canvas.fillRect(0, 0, Size.width, Size.height, paint);
-        }
+        virtual void onDraw(Canvas& canvas);
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

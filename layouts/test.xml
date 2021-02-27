@@ -5,54 +5,38 @@
 		<LinearLayout preferredSize="wrap, wrap"
 			  alignment="center, center">
 			<PaddingContainer padding="8">
-				<CheckBox preferredSize="wrap, wrap"
-						  layout="file://CheckBoxLayout.xml"
-						  style="theme://style/checkBox"
-						  checked="false">
-					<TextBlock text="checkBox"
-							  style="theme://style/textBlock_primary"/>
+				<CheckBox>
+					<TextBlock text="checkBox"/>
 				</CheckBox>
 			</PaddingContainer>
 			<PaddingContainer padding="8">
-				<RadioButton preferredSize="wrap, wrap"
-						  layout="file://RadioButtonLayout.xml"
-						  style="theme://style/radioButton"
-						  checked="false">
-					<TextBlock text="radioButton"
-							  style="theme://style/textBlock_primary"/>
+				<RadioButton>
+					<TextBlock text="radioButton"/>
 				</RadioButton>
 			</PaddingContainer>
 			<PaddingContainer padding="8">
-				<RadioButton preferredSize="wrap, wrap"
-							  layout="file://RadioButtonLayout.xml"
-							style="theme://style/radioButton"
-							  checked="false">
-					<TextBlock text="radioButton"
-							  style="theme://style/textBlock_primary"/>
+				<RadioButton>
+					<TextBlock text="radioButton"/>
 				</RadioButton>
 			</PaddingContainer>
 		</LinearLayout>
 		<LinearLayout preferredSize="wrap, wrap"
 				  alignment="center, center">
 			<PaddingContainer padding="8">
-				<Button preferredSize="wrap, wrap"
-						  layout="file://ButtonDefaultLayout.xml">
-					<TextBlock preferredSize="wrap, wrap"
-							   text="DEFAULT"
-							  style="theme://style/textBlock_button"/>
+				<Button>
+					<TextBlock text="CANCEL"
+							  style="theme://style/TextBlock_button"/>
 				</Button>
 			</PaddingContainer>
 			<PaddingContainer padding="8">
-				<Button preferredSize="wrap, wrap"
-						  layout="file://ButtonAccentLayout.xml">
+				<Button layout="file://ButtonAccentLayout.xml">
 					<LinearLayout alignment="center, center">
 						<ImageView preferredSize="24,24"
-								   style="theme://style/imageView"
 								   image="file://~/images/test/melon.jpg"/>
 						<Space preferredSize="4,4"/>
 						<TextBlock preferredSize="wrap, wrap"
 								   text="accent"
-								  style="theme://style/textBlock_primary_onAccent"/>
+								  style="theme://style/TextBlock_primary_onAccent"/>
 					</LinearLayout>
 				</Button>
 			</PaddingContainer>
@@ -60,12 +44,10 @@
 				<Button preferredSize="100, wrap"
 						  layout="file://ButtonFlatLayout.xml">
 					<LinearLayout alignment="center, center">
-						<TextBlock preferredSize="wrap, wrap"
-							   text="FLAT"
-							  style="theme://style/textBlock_button"/>
+						<TextBlock text="FLAT"
+							  style="theme://style/TextBlock_button"/>
 						<Space preferredSize="fill,4"/>
 						<ImageView preferredSize="24,24"
-								   style="theme://style/imageView"
 								   image="file://~/images/test/watermelon.jpg"/>
 					</LinearLayout>
 				</Button>
@@ -74,9 +56,8 @@
 				<Button preferredSize="100, wrap"
 						  layout="file://~/layouts/ButtonOutlinedLayout.xml">
 					<LinearLayout alignment="center, center">
-						<TextBlock preferredSize="wrap, wrap"
-							   text="OUTLINED"
-							  style="theme://style/textBlock_button"/>
+						<TextBlock text="OUTLINED"
+							  style="theme://style/TextBlock_button"/>
 					</LinearLayout>
 				</Button>
 			</PaddingContainer>
@@ -87,20 +68,18 @@
 		</PaddingContainer>
 		<StackLayout preferredSize="wrap,wrap">
 			<Border shape="roundRect, 2"
-					style="theme://style/border_onBackground"/>
+					style="theme://style/Border_onBackground"/>
 			<PaddingContainer padding="8">
 				<TextView text="TextView lorem ipsum dolor"
-						  style="theme://style/textBlock_primary"
 						  minSize="200,0"/>
 			</PaddingContainer>
 		</StackLayout>
 		<Space/>
 		<StackLayout preferredSize="wrap,wrap">
 			<Border shape="roundRect, 2"
-					style="theme://style/border_onBackground"/>
+					style="theme://style/Border_onBackground"/>
 			<PaddingContainer padding="8">
 				<TextField text="TextField lorem ipsum dolor"
-						   style="theme://style/textBlock_primary"
 						   minSize="200,0"/>
 			</PaddingContainer>
 		</StackLayout>

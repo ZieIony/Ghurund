@@ -26,6 +26,7 @@
 					<xs:element ref="StackLayout"/>
 					<xs:element ref="ManualLayout"/>
 					<xs:element ref="ControlContainer"/>
+					<xs:element ref="RecyclerView"/>
 
 					<xs:element ref="CheckBox"/>
 					<xs:element ref="RadioButton"/>
@@ -36,8 +37,14 @@
 					<xs:element ref="TreeView"/>
 					<xs:element ref="Toolbar"/>
 					<xs:element ref="PropertyList"/>
+					<xs:element ref="TabContainer"/>
+
+					<xs:element ref="include"/>
 				</xs:choice>
 			</xs:sequence>
+			<xs:attribute name="data" type="xs:string"/>
+			<xs:attribute name="source" type="xs:string"/>
+			<xs:attribute name="namespace" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -153,6 +160,11 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:complexType name="include">
+		<xs:attribute name="layout" type="xs:string"/>
+	</xs:complexType>
+	<xs:element name="include" type="include"/>
+
 	<!-- base controls -->
 
 	<xs:complexType name="Control">
@@ -188,6 +200,7 @@
 						<xs:element ref="StackLayout"/>
 						<xs:element ref="ManualLayout"/>
 						<xs:element ref="ControlContainer"/>
+						<xs:element ref="RecyclerView"/>
 
 						<xs:element ref="CheckBox"/>
 						<xs:element ref="RadioButton"/>
@@ -198,6 +211,9 @@
 						<xs:element ref="TreeView"/>
 						<xs:element ref="Toolbar"/>
 						<xs:element ref="PropertyList"/>
+						<xs:element ref="TabContainer"/>
+
+						<xs:element ref="include"/>
 					</xs:choice>
 				</xs:sequence>
 			</xs:extension>
@@ -228,6 +244,7 @@
 							<xs:element ref="StackLayout"/>
 							<xs:element ref="ManualLayout"/>
 							<xs:element ref="ControlContainer"/>
+							<xs:element ref="RecyclerView"/>
 
 							<xs:element ref="CheckBox"/>
 							<xs:element ref="RadioButton"/>
@@ -238,6 +255,9 @@
 							<xs:element ref="TreeView"/>
 							<xs:element ref="Toolbar"/>
 							<xs:element ref="PropertyList"/>
+							<xs:element ref="TabContainer"/>
+
+							<xs:element ref="include"/>
 						</xs:choice>
 					</xs:sequence>
 				</xs:sequence>
@@ -352,6 +372,13 @@
 	</xs:complexType>
 	<xs:element name="ManualLayout" type="ManualLayout"/>
 
+	<xs:complexType name="RecyclerView">
+		<xs:complexContent>
+			<xs:extension base="Control"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="RecyclerView" type="RecyclerView"/>
+
 	<xs:complexType name="PaddingContainer">
 		<xs:complexContent>
 			<xs:extension base="ControlContainer">
@@ -465,5 +492,14 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="PropertyList" type="PropertyList"/>
+
+	<xs:complexType name="TabContainer">
+		<xs:complexContent>
+			<xs:extension base="ContentWidget">
+				<xs:attribute name="tabLayout" type="Layout"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="TabContainer" type="TabContainer"/>
 
 </xs:schema>

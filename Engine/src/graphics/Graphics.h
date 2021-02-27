@@ -25,14 +25,8 @@ namespace Ghurund {
 
         Status initAdapters();
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Graphics>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Graphics))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+    protected:
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Graphics() {

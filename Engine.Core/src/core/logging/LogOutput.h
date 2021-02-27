@@ -3,7 +3,6 @@
 #include "Status.h"
 #include "core/Enum.h"
 #include "core/string/String.h"
-#include "LogType.h"
 
 #include <functional>
 
