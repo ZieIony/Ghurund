@@ -1,8 +1,10 @@
 #pragma once
 
+#include "core/Enum.h"
 #include "core/Event.h"
 #include "core/NamedObject.h"
 #include "core/Object.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class Window;

@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "FileChange.h"
-
-#include <tchar.h>
 
 namespace Ghurund {
 

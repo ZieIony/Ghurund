@@ -3,8 +3,6 @@
 #include "Noncopyable.h"
 #include "core/collection/Map.h"
 
-#include <initializer_list>
-
 namespace Ghurund {
 
     template<class Type, class Type2>

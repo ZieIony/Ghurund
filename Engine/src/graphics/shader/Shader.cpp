@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "Shader.h"
 
 #include "core/SharedPointer.h"
@@ -6,9 +7,6 @@
 #include "resource/ResourceManager.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status Shader::makeRootSignature() {

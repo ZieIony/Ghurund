@@ -1,7 +1,5 @@
 #pragma once
 
-#include <algorithm>
-
 namespace Ghurund {
     class MemoryStream {
     protected:

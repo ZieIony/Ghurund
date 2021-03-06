@@ -2,7 +2,6 @@
 
 #include "Texture.h"
 #include "core/SharedPointer.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund {
     class Textures {

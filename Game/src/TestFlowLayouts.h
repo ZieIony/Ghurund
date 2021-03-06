@@ -4,8 +4,13 @@
 #include "ui/style/Theme.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/control/ScrollView.h"
+#include "ui/control/PaddingContainer.h"
+#include "ui/control/Border.h"
 #include "ui/widget/button/Button.h"
 #include "ui/layout/FlowLayout.h"
+#include "ui/layout/StackLayout.h"
+#include <ui/control/TextBlock.h>
+#include <ui/control/Space.h>
 
 using namespace Ghurund;
 using namespace Ghurund::UI;
@@ -19,7 +24,7 @@ public:
         Child = column;
 
         {
-            StackLayoutPtr stack = ghnew StackLayout();
+            auto stack = makeShared<StackLayout>();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
             SharedPointer<Border> border = ghnew Border();
             SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
@@ -36,9 +41,9 @@ public:
                 PointerList<Control*> controls;
                 if (loader.load(FilePath(L"layouts/ButtonLayout.xml"), controls) == Status::OK) {
                     auto button = makeShared<Button>();
-                    button->Layout = ghnew ButtonLayout(controls[0]);
+                    button->Layout = std::unique_ptr<ButtonBinding>(ghnew ButtonBinding(controls[0]));
                     auto buttonText = makeShared<TextBlock>();
-                    buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
+                    //buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                     button->Content = buttonText;
                     button->MinSize = FloatSize{ 60.0f, 60.0f };
                     flowLayout->Children.add(button);
@@ -52,7 +57,7 @@ public:
         column->Children.add(SharedPointer<Space>(ghnew Space()));
 
         {
-            StackLayoutPtr stack = ghnew StackLayout();
+            SharedPointer<StackLayout> stack = ghnew StackLayout();
             stack->PreferredSize.height = PreferredSize::Height::WRAP;
             SharedPointer<Border> border = ghnew Border();
             SharedPointer<PaddingContainer> padding = ghnew PaddingContainer();
@@ -70,9 +75,9 @@ public:
                 PointerList<Control*> controls;
                 if (loader.load(FilePath(L"layouts/ButtonAccentLayout.xml"), controls) == Status::OK) {
                     auto button = makeShared<Button>();
-                    button->Layout = ghnew ButtonLayout(controls[0]);
+                    button->Layout = std::unique_ptr<ButtonBinding>(ghnew ButtonBinding(controls[0]));
                     auto buttonText = makeShared<TextBlock>();
-                    buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
+                    //buttonText->Text = fmt::format(L"test {}", (unsigned int)(i + 1)).c_str();
                     button->Content = buttonText;
                     button->MinSize = FloatSize{ 60.0f, 60.0f };
                     flowLayout->Children.add(button);

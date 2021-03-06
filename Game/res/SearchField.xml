@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
 	<LinearLayout preferredSize="fill, wrap"
 				  alignment="center, center">
 		<PaddingContainer padding="4">
@@ -7,8 +7,13 @@
 				   enabled="false"
 				   style="theme://style/ImageView_onBackground"/>
 		</PaddingContainer>
-		<TextField preferredSize="fill, wrap"/>
-		<Button layout="file://ButtonIconLayout.xml">
+		<StackLayout preferredSize="fill, wrap">
+			<TextBlock name="hint" preferredSize="fill, wrap"
+					   style="theme://style/TextBlock_secondary"/>
+			<TextField name="queryField" preferredSize="fill, wrap"
+					   style="theme://style/TextBlock_primary"/>
+		</StackLayout>
+		<Button name="closeButton" layout="file://ButtonIconLayout.xml">
 			<PaddingContainer padding="4">
 				<ImageView image="file://~/icons/close 18.png"
 						   style="theme://style/ImageView_onBackground"/>

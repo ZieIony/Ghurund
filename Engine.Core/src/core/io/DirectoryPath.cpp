@@ -1,9 +1,8 @@
+#include "ghcpch.h"
 #include "DirectoryPath.h"
 
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
-
-#include <tchar.h>
 
 namespace Ghurund {
     DirectoryPath::DirectoryPath(const WString& path):Path(path) {

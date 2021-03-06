@@ -1,5 +1,7 @@
-#include "graphics/Materials.h"
+#include "ghpch.h"
 #include "DrawableComponents.h"
+
+#include "graphics/Materials.h"
 #include "core/SharedPointer.h"
 #include "graphics/mesh/CubeMesh.h"
 #include "graphics/mesh/SphereMesh.h"

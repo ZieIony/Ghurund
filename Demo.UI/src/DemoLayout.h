@@ -6,6 +6,7 @@
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include <ui/widget/tab/TabContainer.h>
+#include <ui/widget/tree/TreeView.h>
 
 namespace Demo {
     using namespace Ghurund::UI;

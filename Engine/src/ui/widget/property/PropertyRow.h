@@ -7,6 +7,7 @@
 #include "ui/control/TextBlock.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/Separator.h"
+#include <core/string/TextConversionUtils.h>
 
 namespace Ghurund::UI {
     class PropertyRow: public HorizontalLayout {
@@ -21,7 +22,7 @@ namespace Ghurund::UI {
             textView->PreferredSize.width = PreferredSize::Width::FILL;
             container = ghnew ControlContainer();
             container->PreferredSize.width = PreferredSize::Width::FILL;
-            SeparatorPtr separator = ghnew Separator();
+            auto separator = makeShared<Separator>();
             //separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_VERTICAL];
             Children = { textView, separator, container };
         }

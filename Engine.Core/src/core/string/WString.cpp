@@ -1,6 +1,5 @@
+#include "ghcpch.h"
 #include "WString.h"
-
-#include <Windows.h>
 
 namespace Ghurund {
     Array<WString> WString::split(const wchar_t* d) const {

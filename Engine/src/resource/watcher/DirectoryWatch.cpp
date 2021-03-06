@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "DirectoryWatch.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
+
 #include "core/threading/FunctionQueue.h"
 
 namespace Ghurund {
@@ -10,7 +10,7 @@ namespace Ghurund {
             FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data + offset);
             WString fileName(fni.FileName, fni.FileNameLength / sizeof(wchar_t));
 
-            if (files.contains(fileName)) {
+            if (files.containsKey(fileName)) {
                 DWORD action = fni.Action;
                 const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
                 auto filePath = FilePath(directory, fileName);

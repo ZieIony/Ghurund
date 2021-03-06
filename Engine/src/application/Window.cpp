@@ -1,8 +1,5 @@
+#include "ghpch.h"
 #include "Window.h"
-
-#include "core/reflection/TypeBuilder.h"
-
-#include <DirectXMath.h>
 
 namespace Ghurund {
     using namespace DirectX;

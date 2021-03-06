@@ -1,3 +1,4 @@
+#include "ghcpch.h"
 #include "Pointer.h"
 
 #include "core/collection/List.h"
@@ -6,7 +7,6 @@
 #include "core/reflection/TypeBuilder.h"
 
 #include <typeinfo>
-#include <tchar.h>
 
 namespace Ghurund {
 #ifdef _DEBUG

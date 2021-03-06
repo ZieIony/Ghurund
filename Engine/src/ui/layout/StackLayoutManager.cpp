@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "StackLayoutManager.h"
 
 namespace Ghurund::UI {

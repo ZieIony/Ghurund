@@ -50,7 +50,7 @@ namespace Ghurund {
 		template<class Type> void loadInternal(Type*& resource, ResourceContext& context, const FilePath& path, Status* result, LoadOption options) {
 			FilePath decodedPath = decodePath(path);
 			resource = get<Type>(decodedPath);
-			Status loadResult = Status::ALREADY_LOADED;
+            Status loadResult;
 			if (resource == nullptr) {
 				resource = makeResource<Type>(context);
 				loadResult = loadInternal(*resource, context, decodedPath, options);
@@ -58,7 +58,10 @@ namespace Ghurund {
 					resource->release();
 					resource = nullptr;
 				}
-			}
+            } else {
+                resource->addReference();
+                loadResult = Status::ALREADY_LOADED;
+            }
 			if (result != nullptr)
 				*result = loadResult;
 		}
@@ -156,7 +159,7 @@ namespace Ghurund {
 		template<class Type = Resource> Type* get(const WString & fileName) {
 			section.enter();
 			Resource* resource = nullptr;
-			size_t index = resources.findKey(fileName);
+			size_t index = resources.indexOfKey(fileName);
 			if (index != resources.Size)
 				resource = resources.getValue(index);
 			section.leave();

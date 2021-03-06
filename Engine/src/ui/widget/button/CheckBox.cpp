@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "CheckBox.h"
 
 #include "ui/control/ImageView.h"

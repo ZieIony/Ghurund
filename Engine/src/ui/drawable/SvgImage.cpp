@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "SvgImage.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "resource/ResourceContext.h"
 #include "ui/Graphics2D.h"
 

@@ -47,7 +47,7 @@ public:
             column->PreferredSize.height = PreferredSize::Height::WRAP;
             SharedPointer<BitmapImage> image = BitmapImage::makeFromImage(context, L"images/test/watermelon.jpg");
             for (unsigned int i = 0; i < 4; i++) {
-                StackLayoutPtr stack = ghnew StackLayout();
+                SharedPointer<StackLayout> stack = ghnew StackLayout();
                 stack->PreferredSize = { 200, 120 };
                 SharedPointer<Border> border = ghnew Border();
                 SharedPointer<ImageView> imageView = ghnew ImageView();

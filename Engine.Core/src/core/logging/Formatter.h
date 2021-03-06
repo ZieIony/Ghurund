@@ -7,8 +7,6 @@
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
 
-#include <fmt/format.h>
-
 template <>
 struct fmt::formatter<Ghurund::AString> {
     template <typename FormatContext>

@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "Timer.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& Timer::GET_TYPE() {

@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "Input.h"
+
 #include "application/SystemWindow.h"
 
 namespace Ghurund::Input {

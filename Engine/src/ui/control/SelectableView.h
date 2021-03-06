@@ -29,7 +29,7 @@ namespace Ghurund::UI {
         }
 
     private:
-        //inline static const Property& SELECTED = TypedProperty<SelectableView, bool>(
+        //inline static const TypeProperty& SELECTED = TypedProperty<SelectableView, bool>(
          //   GH_STRINGIFY(bool), "selected", &isSelected, &setSelected);
     };
 }

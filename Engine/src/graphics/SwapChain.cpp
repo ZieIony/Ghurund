@@ -1,9 +1,8 @@
+#include "ghpch.h"
 #include "SwapChain.h"
 
 #include "Graphics.h"
 #include "application/SystemWindow.h"
-#include "core/reflection/TypeBuilder.h"
-#include "core/logging/Logger.h"
 #include "ui/Graphics2D.h"
 
 namespace Ghurund {

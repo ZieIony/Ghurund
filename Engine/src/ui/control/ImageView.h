@@ -38,6 +38,12 @@ namespace Ghurund::UI {
             setPointer(this->image, image);
         }
 
+        inline void setImage(BitmapImage* image) {
+            if(this->image)
+                this->image->release();
+            this->image = ghnew BitmapImageDrawable(image);
+        }
+
         inline ImageDrawable* getImage() {
             return image;
         }

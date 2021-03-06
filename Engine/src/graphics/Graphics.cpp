@@ -1,7 +1,5 @@
+#include "ghpch.h"
 #include "Graphics.h"
-
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 #include <D3Dcompiler.h>
 

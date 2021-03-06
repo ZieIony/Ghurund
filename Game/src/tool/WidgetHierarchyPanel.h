@@ -7,6 +7,7 @@
 #include "ui/control/TextBlock.h"
 #include "ui/widget/tree/TreeView.h"
 #include "ui/widget/menu/Toolbar.h"
+#include <core/string/TextConversionUtils.h>
 
 namespace Ghurund::Editor {
     using namespace Ghurund;
@@ -23,7 +24,7 @@ namespace Ghurund::Editor {
     public:
         WidgetHierarchyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
             objectTypeText = ghnew TextBlock(L"", theme.TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY]);
-            toolbar = ghnew Toolbar(theme);
+            toolbar = ghnew Toolbar();
             searchField = ghnew SearchField();
             sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
             categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");

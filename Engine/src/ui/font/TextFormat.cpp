@@ -1,11 +1,10 @@
+#include "ghpch.h"
 #include "TextFormat.h"
 
-#include "core/logging/Logger.h"
 #include "ui/Graphics2D.h"
 
 #include <commdlg.h>
 #include <dwrite.h>
-#include <wrl.h>
 
 namespace Ghurund::UI {
     TextFormat::TextFormat(const WString& file, const WString& family, float size, unsigned int weight, bool italic, const WString& locale)

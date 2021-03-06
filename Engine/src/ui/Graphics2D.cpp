@@ -1,8 +1,8 @@
+#include "ghpch.h"
 #include "Graphics2D.h"
 
 #include "graphics/Graphics.h"
 #include "graphics/buffer/RenderTarget.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     Status Graphics2D::init(Graphics& graphics) {

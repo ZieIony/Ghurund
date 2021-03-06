@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "LayoutLoader.h"
 
 #include "ui/control/Clip.h"
@@ -23,8 +24,6 @@
 #include "ui/widget/tree/TreeView.h"
 #include "ui/widget/tab/TabContainer.h"
 #include "core/string/TextConversionUtils.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
@@ -49,6 +48,7 @@ namespace Ghurund::UI {
         registerClass(LinearLayout::TYPE);
         registerClass(StackLayout::TYPE);
         registerClass(ManualLayout::TYPE);
+        registerClass(RecyclerView::TYPE);
 
         registerClass(Button::TYPE);
         registerClass(CheckBox::TYPE);
@@ -128,7 +128,7 @@ namespace Ghurund::UI {
                     }
                 }
             }
-        } else if (types.contains(name)) {
+        } else if (types.containsKey(name)) {
             const Type* type = types.get(name);
             Control* control = (Control*)type->Constructor->newInstance();
             control->load(*this, xml);
@@ -164,8 +164,8 @@ namespace Ghurund::UI {
                 }
             }
         } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            ColorKey colorKey = s.substring(lengthOf(THEME_PROTOCOL));
-            if (theme->Colors.contains(colorKey))
+            ColorKey colorKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"color/"));
+            if (theme->Colors.containsKey(colorKey))
                 return theme->Colors[colorKey];
         }
         return value;
@@ -176,8 +176,8 @@ namespace Ghurund::UI {
         if (s.startsWith(FILE_PROTOCOL)) {
             return BitmapImage::makeFromImage(*context, getPath(s));
         } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL));
-            if (theme->Images.contains(imageKey)) {
+            ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"image/"));
+            if (theme->Images.containsKey(imageKey)) {
                 BitmapImage* image = theme->Images[imageKey];
                 image->addReference();
                 return image;
@@ -196,7 +196,7 @@ namespace Ghurund::UI {
             //auto textFormat = ghnew TextFormat()
         } else if (s.startsWith(THEME_PROTOCOL) && theme) {
             TextFormatKey textFormatKey = s.substring(lengthOf(THEME_PROTOCOL));
-            if (theme->TextFormats.contains(textFormatKey)) {
+            if (theme->TextFormats.containsKey(textFormatKey) + lengthOf(L"textFormat/")) {
                 TextFormat* style = theme->TextFormats[textFormatKey];
                 style->addReference();
                 return style;
@@ -239,7 +239,7 @@ namespace Ghurund::UI {
 
     WString LayoutLoader::getPath(const AString& path) {
         AStringView sView = AStringView(path);
-        if(sView.startsWith(FILE_PROTOCOL))
+        if (sView.startsWith(FILE_PROTOCOL))
             sView = sView.substring(lengthOf(FILE_PROTOCOL));
         if (sView.startsWith("~/"))
             return FilePath(toWideChar(AString(sView.substring(lengthOf("~/")).Data)));

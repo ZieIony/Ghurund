@@ -1,5 +1,4 @@
-#pragma once
-
+#include "ghpch.h"
 #include "SphereMesh.h"
 
 namespace Ghurund {

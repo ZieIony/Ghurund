@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "DragHelper.h"
 
 namespace Ghurund::UI {

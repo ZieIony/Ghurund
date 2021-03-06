@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "PreferredSize.h"
 
 namespace Ghurund::UI {

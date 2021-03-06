@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "Application.h"
+
 #include "audio/Audio.h"
 #include "core/threading/FunctionQueue.h"
 #include "game/parameter/ParameterManager.h"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<LinearLayout namespace="Ghurund::Editor" orientation="vertical">
+		<SplitLayout lockedChild="child2">
+			<SplitLayout lockedChild="child1">
+				<ToolWindow preferredSize="200,fill" title="Hierarchy">
+					<WidgetHierarchyPanel namespace="Ghurund::Editor" name="hierarchy"/>
+				</ToolWindow>
+				<StackLayout name="workspace"/>
+			</SplitLayout>
+			<ToolWindow preferredSize="200,fill" title="Properties">
+				<PropertiesPanel namespace="Ghurund::Editor" name="properties"/>
+			</ToolWindow>
+		</SplitLayout>
+	</LinearLayout>
+</layout>

@@ -1,6 +1,7 @@
+#include "ghpch.h"
 #include "Client.h"
+
 #include "ClientMessage.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund::Net {
     Status Client::getMessageSize(void* data, size_t size, size_t& messageSize) {

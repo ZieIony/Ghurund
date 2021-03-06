@@ -21,8 +21,8 @@ namespace Ghurund {
             k = (Key*)ghnew char[sizeof(Key) * capacity];
             v = (Value*)ghnew char[sizeof(Value) * capacity];
             for (size_t i = 0; i < size; i++) {
-                k[i] = t1.k[i];
-                v[i] = t1.v[i];
+                new (k + i) Key(t1.k[i]);
+                new (v + i) Value(t1.v[i]);
             }
         }
 
@@ -121,22 +121,6 @@ namespace Ghurund {
             return v[i];
         }
 
-        inline size_t findKey(const Key& key) const {
-            for (size_t i = 0; i < size; i++) {
-                if (k[i] == key)
-                    return i;
-            }
-            return size;
-        }
-
-        inline size_t findValue(const Value& value) const {
-            for (size_t i = 0; i < size; i++) {
-                if (v[i] == value)
-                    return i;
-            }
-            return size;
-        }
-
         inline Value& get(const Key& key) const {
             for (size_t i = 0; i < size; i++) {
                 if (k[i] == key)
@@ -172,16 +156,32 @@ namespace Ghurund {
             return v + size;
         }
 
-        inline size_t indexOf(const Key& item) const {
-            for (size_t i = 0; i < size; i++)
-                if (k[i] == item)
+        inline size_t indexOfKey(const Key& key) const {
+            for (size_t i = 0; i < size; i++) {
+                if (k[i] == key)
                     return i;
+            }
             return size;
         }
 
-        inline bool contains(const Key& item) const {
+        inline size_t indexOfValue(const Value& value) const {
+            for (size_t i = 0; i < size; i++) {
+                if (v[i] == value)
+                    return i;
+            }
+            return size;
+        }
+
+        inline bool containsKey(const Key& item) const {
             for (size_t i = 0; i < size; i++)
                 if (k[i] == item)
+                    return true;
+            return false;
+        }
+
+        inline bool containsValue(const Value& item) const {
+            for (size_t i = 0; i < size; i++)
+                if (v[i] == item)
                     return true;
             return false;
         }

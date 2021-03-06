@@ -1,7 +1,7 @@
+#include "ghpch.h"
 #include "ThumbnailRenderer.h"
 
 #include "CameraUtils.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& ThumbnailRenderer::GET_TYPE() {

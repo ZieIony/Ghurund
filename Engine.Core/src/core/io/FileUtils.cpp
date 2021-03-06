@@ -1,7 +1,6 @@
+#include "ghcpch.h"
 #include "Common.h"
 #include "core/io/FileUtils.h"
-
-#include <windows.h>
 
 namespace Ghurund {
 	Status readFile(const wchar_t* name, void*& data, size_t& size) {

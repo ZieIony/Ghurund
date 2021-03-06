@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ToolbarAdapter.h"
-#include "ToolbarLayout.h"
+#include "ToolbarBinding.h"
 
 #include "ui/style/Style.h"
 #include "ui/adapter/AdapterChildrenProvider.h"
@@ -9,9 +9,10 @@
 #include "ui/control/ColorView.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/HorizontalLayoutManager.h"
+#include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class Toolbar: public Widget<ToolbarLayout> {
+    class Toolbar: public Widget<ToolbarBinding> {
     private:
         List<MenuItem*> items;
 
@@ -22,17 +23,18 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
-    public:
-        Toolbar(Ghurund::UI::Theme& theme, ToolbarLayout* layout) {
-            PreferredSize.height = PreferredSize::Height::WRAP;
-            auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*layout->RecyclerView);
+        virtual void onLayoutChanged() override {
+            auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*Layout->Recycler);
             provider->Adapters.add(ghnew ButtonToolbarAdapter());
-            provider->Adapters.add(ghnew SeparatorToolbarAdapter(theme));
+            //provider->Adapters.add(ghnew SeparatorToolbarAdapter(theme));
             provider->Items = ghnew ListItemSource<MenuItem*>(items);
-            layout->RecyclerView->childrenProvider = provider;
+            Layout->Recycler->childrenProvider = provider;
         }
 
-        Toolbar(Ghurund::UI::Theme& theme):Toolbar(theme, ghnew ToolbarLayout()) {}
+    public:
+        Toolbar() {
+            PreferredSize.height = PreferredSize::Height::WRAP;
+        }
 
         ~Toolbar() {
             items.deleteItems();

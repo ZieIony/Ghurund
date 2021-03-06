@@ -1,9 +1,8 @@
+#include "ghpch.h"
 #include "Sound.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 #include "resource/ResourceContext.h"
 
 #include <Shlwapi.h>

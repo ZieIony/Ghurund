@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "Space.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& Space::GET_TYPE() {

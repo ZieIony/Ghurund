@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "LayoutManager.h"
-
-#include <algorithm>
 
 namespace Ghurund::UI {
     float LayoutManager::measureMaxWidth(ControlGroup& group) {

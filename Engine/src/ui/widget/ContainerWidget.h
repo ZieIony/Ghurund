@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Widget.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     template<class LayoutType>

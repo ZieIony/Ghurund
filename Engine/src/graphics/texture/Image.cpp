@@ -1,13 +1,11 @@
+#include "ghpch.h"
 #include "Image.h"
 
 #include "resource/ResourceContext.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 #include <Shlwapi.h>
-#include <wrl.h>
 
 namespace Ghurund {
 	DXGI_FORMAT Image::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {

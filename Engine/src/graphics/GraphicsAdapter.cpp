@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "GraphicsAdapter.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& GraphicsAdapter::GET_TYPE() {

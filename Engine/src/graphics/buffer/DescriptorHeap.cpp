@@ -1,6 +1,7 @@
+#include "ghpch.h"
 #include "DescriptorHeap.h"
+
 #include "graphics/Graphics.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund {
 

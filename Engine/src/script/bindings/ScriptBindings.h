@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/string/AString.h"
-#include "core/logging/Formatter.h"
 
 #include "angelscript.h"
 

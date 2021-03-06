@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "ProgressBar.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 

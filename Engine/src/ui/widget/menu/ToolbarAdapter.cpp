@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "ToolbarAdapter.h"
+
 #include "ui/style/Theme.h"
 #include "ui/drawable/BitmapImageDrawable.h"
 

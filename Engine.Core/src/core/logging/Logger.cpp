@@ -1,14 +1,13 @@
+#include "ghcpch.h"
 #include "core/logging/Logger.h"
 
 #include "Common.h"
 
 #include "LogOutput.h"
 
-#include <iostream>
 #include <io.h>
 #include <fcntl.h>
 #include <process.h>
-#include <tchar.h>
 #include <dbghelp.h>
 
 namespace Ghurund {

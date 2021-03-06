@@ -35,6 +35,9 @@
     <ClCompile Include="src\ecs\EntityGroup.cpp" />
     <ClCompile Include="src\game\parameter\Parameter.cpp" />
     <ClCompile Include="src\game\TransformComponent.cpp" />
+    <ClCompile Include="src\ghpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\graphics\AdapterOutput.cpp" />
     <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\graphics\DisplayMode.cpp" />
@@ -161,6 +164,7 @@
     <ClInclude Include="generated\ScrollBarBinding.h" />
     <ClInclude Include="generated\TabBinding.h" />
     <ClInclude Include="generated\TabContainerBinding.h" />
+    <ClInclude Include="generated\ToolbarBinding.h" />
     <ClInclude Include="generated\TreeRowBinding.h" />
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ChildWindow.h" />
@@ -174,6 +178,7 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
     <ClInclude Include="src\input\EventArgs.h" />
@@ -391,7 +396,6 @@
     <ClInclude Include="src\ui\widget\menu\PopupMenuAdapter.h" />
     <ClInclude Include="src\ui\widget\menu\Toolbar.h" />
     <ClInclude Include="src\ui\widget\menu\ToolbarAdapter.h" />
-    <ClInclude Include="src\ui\widget\menu\ToolbarLayout.h" />
     <ClInclude Include="src\ui\widget\ProgressBar.h">
       <FileType>Document</FileType>
     </ClInclude>
@@ -441,6 +445,7 @@
     <Xml Include="res\ScrollBar.xml" />
     <Xml Include="res\Tab.xml" />
     <Xml Include="res\TabContainer.xml" />
+    <Xml Include="res\Toolbar.xml" />
     <Xml Include="res\TreeRow.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -510,6 +515,8 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
@@ -534,6 +541,8 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>true</EnableModules>
       <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
     </ClCompile>
     <CustomBuildStep>
       <Command>

@@ -1,10 +1,8 @@
+#include "ghpch.h"
 #include "Resource.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     LoadOption operator |(LoadOption lhs, LoadOption rhs) {

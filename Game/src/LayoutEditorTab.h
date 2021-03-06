@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LayoutEditorBinding.h"
 #include "control/ToolWindow.h"
 #include "tool/PropertyPanel.h"
 #include "tool/WidgetHierarchyPanel.h"
@@ -13,30 +14,21 @@
 #include "resource/watcher/FileWatcher.h"
 #include "application/Application.h"
 
-using namespace Ghurund;
-using namespace Ghurund::UI;
-
 namespace Ghurund::Editor {
-    class LayoutEditorTab:public ControlContainer {
-        SharedPointer<ToolWindow> propertiesWindow;
-        SharedPointer<PropertyPanel> propertiesPanel;
-        SharedPointer<ToolWindow> widgetHierarchyWindow;
-        SharedPointer<WidgetHierarchyPanel> widgetHierarchyPanel;
-        SharedPointer<StackLayout> layoutWorkspace;
-        SharedPointer<Button> reloadLayout;
+    using namespace Ghurund;
+    using namespace Ghurund::UI;
+
+    class LayoutEditorTab:public Widget<LayoutEditorBinding> {
         LayoutLoader layoutLoader;
         FileWatcher fileWatcher;
-        ResourceContext& context;
-        Application& app;
+        Application* app = nullptr;
         std::function<void()> loadCallback;
 
     public:
-        LayoutEditorTab(Application& app, ResourceContext& context, Ghurund::UI::Theme& theme, const FilePath& filePath):app(app), context(context) {
-            Name = "editor tab";
-
-            fileWatcher.addFile(filePath, [this, &app](const FilePath& path, const FileChange& change) {
+        /*void loadLayout(const FilePath& filePath) {
+            fileWatcher.addFile(filePath, [this](const FilePath& path, const FileChange& change) {
                 if (change == FileChange::RENAMED_TO || change == FileChange::MODIFIED) {
-                    loadCallback = [this, &app, path]() {
+                    loadCallback = [this, path]() {
                         File file(path);
                         if (!file.Exists)
                             return;
@@ -49,43 +41,19 @@ namespace Ghurund::Editor {
                 }
             });
 
-            propertiesPanel = ghnew PropertyPanel(context, theme);
-            propertiesWindow = ghnew ToolWindow();
-            propertiesWindow->Title = L"Properties";
-            propertiesWindow->Content = propertiesPanel;
-            propertiesWindow->PreferredSize.width = 200;
-            widgetHierarchyPanel = ghnew WidgetHierarchyPanel(context, theme);
-            widgetHierarchyWindow = ghnew ToolWindow();
-            widgetHierarchyWindow->Title = L"Widget";
-            widgetHierarchyWindow->Content = widgetHierarchyPanel;
-            widgetHierarchyWindow->PreferredSize.width = 200;
-
-            layoutWorkspace = ghnew StackLayout();
             File file(filePath);
             file.read();
             loadLayout(Buffer(file.Data, file.Size));
-
-            SharedPointer<SplitLayout> widgetHierarchySplit = ghnew SplitLayout();
-            widgetHierarchySplit->Orientation = Orientation::HORIZONTAL;
-            SharedPointer<SplitLayout> propertiesSplit = ghnew SplitLayout();
-            propertiesSplit->Orientation = Orientation::HORIZONTAL;
-            widgetHierarchySplit->Child1 = widgetHierarchyWindow;
-            widgetHierarchySplit->Child2 = propertiesSplit;
-            widgetHierarchySplit->LockedChild = LockedChild::CHILD_1;
-            propertiesSplit->Child1 = layoutWorkspace;
-            propertiesSplit->Child2 = propertiesWindow;
-            propertiesSplit->LockedChild = LockedChild::CHILD_2;
-            Child = widgetHierarchySplit;
         }
 
         void loadLayout(const Buffer& data) {
             PointerList<Control*> controls;
             layoutLoader.load(data, controls);
-            layoutWorkspace->Children.clear();
+            Layout->Workspace->Children.clear();
             for (Control* control : controls)
-                layoutWorkspace->Children.add(control);
-            propertiesPanel->Item = layoutWorkspace;
-            layoutWorkspace->invalidate();
-        }
+                Layout->Workspace->Children.add(control);
+            Layout->Properties->Item = Layout->Workspace;
+            Layout->Workspace->invalidate();
+        }*/
     };
 }

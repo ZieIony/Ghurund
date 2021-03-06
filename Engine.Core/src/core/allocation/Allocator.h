@@ -1,7 +1,5 @@
 #pragma once
 
-#include <stdint.h>
-
 namespace Ghurund {
     typedef uint64_t memory_t;
 

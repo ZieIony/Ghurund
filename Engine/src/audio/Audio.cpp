@@ -1,7 +1,5 @@
+#include "ghpch.h"
 #include "Audio.h"
-
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund::Audio {
     Status Audio::init() {

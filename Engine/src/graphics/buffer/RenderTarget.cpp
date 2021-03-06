@@ -1,5 +1,6 @@
+#include "ghpch.h"
 #include "RenderTarget.h"
-#include "core/logging/Logger.h"
+
 #include "core/math/MathUtils.h"
 #include "ui/Graphics2D.h"
 

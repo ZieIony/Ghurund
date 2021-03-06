@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
+	<StackLayout preferredSize="fill, wrap">
+		<ColorView style="theme://style/ColorView_control"/>
+		<LinearLayout orientation="horizontal" preferredSize="fill, wrap">
+			<RecyclerView name="recycler" preferredSize="fill, wrap"/>
+			<Button name="more" visible="false" layout="file://~/layouts/ButtonIconLayout.xml">
+				<PaddingContainer padding="0,4">
+					<ImageView image="file://~/icons/more 18.png"
+							   style="theme://style/ImageView_onBackground"/>
+				</PaddingContainer>
+			</Button>
+		</LinearLayout>
+	</StackLayout>
+</layout>

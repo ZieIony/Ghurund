@@ -1,7 +1,6 @@
+#include "ghpch.h"
 #include "CompilerInclude.h"
 
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 #include "core/io/File.h"
 
 namespace Ghurund {

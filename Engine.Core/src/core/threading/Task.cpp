@@ -1,3 +1,4 @@
+#include "ghcpch.h"
 #include "Task.h"
 
 #include "core/reflection/TypeBuilder.h"

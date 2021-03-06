@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "Shape.h"
 #include "Graphics2D.h"
 

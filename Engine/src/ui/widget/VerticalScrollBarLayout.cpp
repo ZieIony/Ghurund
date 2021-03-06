@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "VerticalScrollBarLayout.h"
+
 #include "ui/LayoutLoader.h"
 #include "ui/drawable/BitmapImageDrawable.h"
 

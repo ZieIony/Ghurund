@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "BitmapImageDrawable.h"
 
 #include "BitmapImage.h"

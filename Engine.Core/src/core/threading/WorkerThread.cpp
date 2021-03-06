@@ -1,3 +1,4 @@
+#include "ghcpch.h"
 #include "WorkerThread.h"
 
 namespace Ghurund {

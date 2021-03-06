@@ -23,12 +23,6 @@ namespace Ghurund {
             listeners.add(listener);
         }
 
-        inline void add(Event<SenderType>& event) {
-            add([&event](SenderType& sender) {
-                return event();
-            });
-        }
-
         inline void remove(const EventHandler<SenderType>& listener) {
             size_t i = listeners.indexOf(listener);
             if (i == listeners.Size)
@@ -42,7 +36,7 @@ namespace Ghurund {
 
         inline bool invoke() {
             bool result = false;
-            for (auto listener : listeners)
+            for (auto& listener : listeners)
                 result |= listener(owner);
             return result;
         }
@@ -55,7 +49,7 @@ namespace Ghurund {
     template<class SenderType, class Type>
     class Event<SenderType, Type> {
     private:
-        List<std::function<bool(SenderType& sender, const Type& args)>> listeners;
+        List<EventHandler<SenderType, Type>> listeners;
         SenderType& owner;
 
     public:
@@ -69,12 +63,6 @@ namespace Ghurund {
             listeners.add(listener);
         }
 
-        inline void add(Event<SenderType, Type>& event) {
-            add([&event](SenderType& sender) {
-                return event();
-            });
-        }
-
         inline void remove(const EventHandler<SenderType, Type>& listener) {
             listeners.remove(listener);
         }
@@ -85,7 +73,7 @@ namespace Ghurund {
 
         bool invoke(const Type& args) {
             bool result = false;
-            for (auto listener : listeners)
+            for (auto& listener : listeners)
                 result |= listener(owner, args);
             return result;
         }

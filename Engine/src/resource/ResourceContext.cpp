@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "ResourceContext.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "graphics/CommandList.h"
 
 #include <wincodec.h>

@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "BitmapImage.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "ui/Graphics2D.h"
 #include "resource/ResourceContext.h"
 
@@ -82,9 +82,12 @@ namespace Ghurund::UI {
     }
     
     BitmapImage* BitmapImage::makeFromImage(ResourceContext& context, const FilePath& imagePath) {
-        Ghurund::Image* image = context.ResourceManager.load<Ghurund::Image>(context, imagePath);
-        if (image == nullptr)
+        Status result;
+        Ghurund::Image* image = context.ResourceManager.load<Ghurund::Image>(context, imagePath, &result);
+        if (filterStatus(result, LoadOption::DEFAULT) != Status::OK) {
+            image->release();
             return nullptr;
+        }
         BitmapImage* texture = ghnew BitmapImage();
         texture->init(context.Graphics2D, *image);
         image->release();

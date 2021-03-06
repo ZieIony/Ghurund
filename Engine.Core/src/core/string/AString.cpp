@@ -1,6 +1,5 @@
+#include "ghcpch.h"
 #include "AString.h"
-
-#include <Windows.h>
 
 namespace Ghurund {
     Array<AString> AString::split(const char* d) const {

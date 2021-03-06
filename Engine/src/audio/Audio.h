@@ -3,8 +3,6 @@
 #include "Common.h"
 #include "Status.h"
 
-#include <DirectXMath.h>
-
 #include <wrl\client.h>
 
 #include <xaudio2.h>

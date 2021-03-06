@@ -87,7 +87,7 @@ namespace Ghurund {
         }
 
         DescriptorHandle allocate(Graphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
-            if (!heapMap.contains(type)) {
+            if (!heapMap.containsKey(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);
                 heapMap.set(type, dh);

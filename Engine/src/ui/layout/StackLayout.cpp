@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "StackLayout.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {

@@ -8,8 +8,6 @@
 #include "core/collection/List.h"
 
 #include <thread>
-#include <time.h>
-#include <winsock2.h>
 
 namespace Ghurund::Net {
     class Client:public ReliableUDP {

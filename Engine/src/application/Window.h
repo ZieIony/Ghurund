@@ -9,8 +9,6 @@
 #include "core/math/Point.h"
 #include "core/math/Size.h"
 
-#include <Windows.h>
-
 namespace Ghurund::Input {
     class Input;
 }

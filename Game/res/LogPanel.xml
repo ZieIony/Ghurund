@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<LinearLayout namespace="Ghurund::Editor" orientation="vertical">
+		<Toolbar name="toolbar"/>
+		<RecyclerView name="recycler"/>
+	</LinearLayout>
+</layout>

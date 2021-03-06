@@ -2,7 +2,8 @@
 
 #include "graphics/shader/Shader.h"
 #include "core/string/TextUtils.h"
-#include "core/logging/Logger.h"
+
+#include <fmt/format.h>
 
 namespace Ghurund {
     class Shaders {

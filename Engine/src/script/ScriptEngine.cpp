@@ -1,7 +1,6 @@
+#include "ghpch.h"
 #include "ScriptEngine.h"
 
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 #include "script/bindings/ScriptBindings.h"
 #include "script/bindings/CameraScriptBindings.h"
 #include "script/bindings/Float3ScriptBindings.h"

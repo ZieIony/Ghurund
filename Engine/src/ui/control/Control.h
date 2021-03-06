@@ -61,7 +61,6 @@ namespace Ghurund::UI {
         bool needsLayout = true;
 
         Theme* localTheme = nullptr;
-        UIContext* context = nullptr;
         const Style* style = nullptr;
 
         Event<Control> onSizeChanged = Event<Control>(*this);
@@ -243,6 +242,10 @@ namespace Ghurund::UI {
             return minSize;
         }
 
+        inline const FloatSize& getMinSize() const {
+            return minSize;
+        }
+
         inline void setMinSize(const FloatSize& size) {
             this->minSize = size;
         }
@@ -267,6 +270,10 @@ namespace Ghurund::UI {
         __declspec(property(get = getOnSizeChanged)) Event<Control>& OnSizeChanged;
 
         inline PreferredSize& getPreferredSize() {
+            return preferredSize;
+        }
+
+        inline const PreferredSize& getPreferredSize() const {
             return preferredSize;
         }
 
@@ -296,13 +303,7 @@ namespace Ghurund::UI {
             return x >= position.x && x < position.x + size.width && y >= position.y && y < position.y + size.height;
         }
 
-        inline void setParent(ControlParent* parent) {
-            this->parent = parent;
-            if (parent) {
-                dispatchContextChanged();
-                dispatchThemeChanged();
-            }
-        }
+        void setParent(ControlParent* parent);
 
         inline ControlParent* getParent() const {
             return parent;
@@ -326,11 +327,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
-        inline UIContext* getContext() {
-            return context;
-        }
+        virtual UIContext* getContext();
 
-        __declspec(property(get = getContext, put = setContext)) UIContext* Context;
+        __declspec(property(get = getContext)) UIContext* Context;
 
         inline void setStyle(const Style* style) {
             this->style = style;

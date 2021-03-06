@@ -1,6 +1,7 @@
+#include "ghpch.h"
 #include "FileWatcher.h"
+
 #include "core/io/File.h"
-#include "core/logging/Logger.h"
 
 #include <process.h>
 
@@ -23,7 +24,7 @@ namespace Ghurund {
     void FileWatcher::addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler) {
         WString dir = path.Directory;
 
-        if (!watches.contains(dir)) {
+        if (!watches.containsKey(dir)) {
             DirectoryWatch* watch = ghnew DirectoryWatch(path.Directory);
             watches.set(dir, watch);
 
@@ -38,7 +39,7 @@ namespace Ghurund {
     void FileWatcher::removeFile(const FilePath& path) {
         WString dir = path.Directory;
 
-        if (!watches.contains(dir))
+        if (!watches.containsKey(dir))
             return;
 
         DirectoryWatch* watch = watches[dir];

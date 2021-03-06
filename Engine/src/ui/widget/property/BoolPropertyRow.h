@@ -13,7 +13,7 @@ namespace Ghurund::UI {
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
             horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
             checkBox = ghnew CheckBox();
-            checkBox->CheckedChanged.add([this](CheckBoxRadio& checkBox) {
+            checkBox->CheckedChanged.add([this](CheckBox& checkBox) {
                 return OnValueChanged();
             });
             horizontalLayout->Children = { checkBox };

@@ -1,10 +1,11 @@
 #pragma once
 
+#include "PropertyPanelBinding.h"
 #include "control/SearchField.h"
 #include "control/ToolWindow.h"
 
-#include "ui/style/Theme.h"
 #include "ui/control/TextBlock.h"
+#include "ui/widget/Widget.h"
 #include "ui/widget/property/PropertyList.h"
 #include "ui/widget/menu/Toolbar.h"
 
@@ -12,22 +13,14 @@ using namespace Ghurund;
 using namespace Ghurund::UI;
 
 namespace Ghurund::Editor {
-    class PropertyPanel:public VerticalLayout {
+    class PropertyPanel:public Widget<PropertyPanelBinding> {
     private:
-        SharedPointer<Toolbar> toolbar;
-        SharedPointer<SearchField> searchField;
-        SharedPointer<TextBlock> objectTypeText;
-        PropertyListPtr propertyList;
         BitmapImage* sortIcon, * categoryIcon;
 
-    public:
-        PropertyPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            objectTypeText = ghnew TextBlock(L"", theme.TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY]);
-            toolbar = ghnew Toolbar(theme);
-            searchField = ghnew SearchField();
-            sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
-            categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
-            toolbar->Items = {
+        virtual void onLayoutChanged() override {
+            //sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
+            //categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
+            Layout->Toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, L"sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
@@ -35,22 +28,12 @@ namespace Ghurund::Editor {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
-            propertyList = ghnew PropertyList();
-            propertyList->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            SharedPointer<ColorView> separator = makeShared<ColorView>();
-            separator->PreferredSize = { PreferredSize::Width::FILL, 1 };
-            Children = {
-                toolbar,
-                searchField,
-                separator,
-                objectTypeText,
-                propertyList
-            };
         }
 
+    public:
         inline void setItem(Object* item) {
-            propertyList->Item = item;
-            objectTypeText->Text = toWideChar(item->Type.Name);
+            Layout->PropertyList->Item = item;
+            Layout->ObjectType->Text = toWideChar(AString(item->Type.Name));
         }
 
         __declspec(property(put = setItem)) Object* Item;

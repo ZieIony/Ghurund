@@ -3,7 +3,6 @@
 #include "core/allocation/Allocator.h"
 
 #include <cassert>
-#include <functional>
 #include <iterator>
 
 namespace Ghurund {

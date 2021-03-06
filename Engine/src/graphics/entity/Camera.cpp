@@ -1,8 +1,8 @@
+#include "ghpch.h"
 #include "Camera.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/reflection/TypeBuilder.h"
 #include "script/ScriptEngine.h"
 
 namespace Ghurund {

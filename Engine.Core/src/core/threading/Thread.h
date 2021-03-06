@@ -3,7 +3,6 @@
 #include "core/threading/CriticalSection.h"
 #include "core/reflection/Type.h"
 
-#include <functional>
 #include <process.h>
 #include <queue>
 

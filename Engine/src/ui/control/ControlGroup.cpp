@@ -1,7 +1,6 @@
+#include "ghpch.h"
 #include "ControlGroup.h"
 
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 #include "ui/Alignment.h"
 #include "ui/LayoutLoader.h"
 

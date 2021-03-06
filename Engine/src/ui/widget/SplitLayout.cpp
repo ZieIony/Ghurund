@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "SplitLayout.h"
 
 #include "ui/Cursor.h"

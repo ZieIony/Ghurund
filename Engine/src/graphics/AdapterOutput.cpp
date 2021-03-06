@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "AdapterOutput.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& AdapterOutput::GET_TYPE() {

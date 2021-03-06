@@ -1,8 +1,5 @@
+#include "ghpch.h"
 #include "Physics.h"
-
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Physics {
     const Ghurund::Type& Physics::GET_TYPE() {

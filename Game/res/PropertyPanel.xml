@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<LinearLayout namespace="Ghurund::Editor" orientation="vertical">
+		<Toolbar name="toolbar"/>
+		<SearchField namespace="Ghurund::Editor" name="searchField"/>
+		<ColorView style="theme://style/ColorView_control"
+				   preferredSize="fill, 1"/>
+		<TextBlock name="objectType" preferredSize="fill, wrap"
+					   style="theme://style/TextBlock_secondary"/>
+		<PropertyList name="propertyList"/>
+	</LinearLayout>
+</layout>

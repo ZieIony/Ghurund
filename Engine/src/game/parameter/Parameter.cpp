@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "Parameter.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& Parameter::GET_TYPE() {

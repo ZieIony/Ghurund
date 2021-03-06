@@ -6,26 +6,31 @@
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
-    class Button:public ContainerWidget<ButtonBinding> {
-    protected:
-        static const Ghurund::Type& GET_TYPE();
-
+    class ButtonLayout:public ButtonBinding {
+    private:
         EventHandler<Control> stateHandler = [this](Control& control) {
-            if (Layout->Clickable->Pressed) {
-                Layout->State->State = IndicatorState::PRESSED;
-            } else if (Layout->Clickable->Focused || Layout->Clickable->Hovered) {
-                Layout->State->State = IndicatorState::FOCUSED;
+            if (Clickable->Pressed) {
+                State->State = IndicatorState::PRESSED;
+            } else if (Clickable->Focused || Clickable->Hovered) {
+                State->State = IndicatorState::FOCUSED;
             } else {
-                Layout->State->State = IndicatorState::NONE;
+                State->State = IndicatorState::NONE;
             }
             return true;
         };
 
-        virtual void onLayoutChanged() override {
-            __super::onLayoutChanged();
-            if (Layout)
-                Layout->Clickable->StateChanged.add(stateHandler);
+    public:
+        ButtonLayout(Control* control):ButtonBinding(control) {
+            Clickable->StateChanged.add(stateHandler);
         }
+    };
+
+    class Button:public ContainerWidget<ButtonLayout> {
+    private:
+        Event<Button, MouseClickedEventArgs> clicked = Event<Button, MouseClickedEventArgs>(*this);
+
+    protected:
+        static const Ghurund::Type& GET_TYPE();
 
     public:
         inline bool isHovered() const {

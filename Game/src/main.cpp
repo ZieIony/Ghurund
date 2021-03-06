@@ -21,7 +21,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     _____________________checkMemory();
 
     Logger::init();
-    Logger::log(LogType::INFO, "working dir: {}\n", DirectoryPath(L".").AbsolutePath);
 
     HANDLE singleInstanceMutex = CreateMutex(nullptr, true, "Ghurund::Game");
     bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
@@ -29,7 +28,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
     if (alreadyRunning) {
         MessageBox(nullptr, _T("Application is already running."), "Ghurund::Game", MB_OK | MB_ICONEXCLAMATION);
     } else {
-        TestApplication application;
+        Game::TestApplication application;
         Settings settings;
         settings.parse(cmdLine);
         application.run(&settings);

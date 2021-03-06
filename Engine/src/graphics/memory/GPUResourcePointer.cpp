@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "GPUResourcePointer.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& GPUResourcePointer::GET_TYPE() {

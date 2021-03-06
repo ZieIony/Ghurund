@@ -1,8 +1,5 @@
+#include "ghpch.h"
 #include "ClickableControl.h"
-
-#include "core/reflection/TypeBuilder.h"
-
-#include <Windows.h>
 
 namespace Ghurund::UI {
     const Ghurund::Type& ClickableControl::GET_TYPE() {

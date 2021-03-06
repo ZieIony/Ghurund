@@ -1,3 +1,4 @@
+#include "ghpch.h"
 /*#include "Scene.h"
 
 #include "resource/ResourceContext.h"

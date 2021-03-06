@@ -1,11 +1,7 @@
+#include "ghpch.h"
 #include "ResourceManager.h"
 
 #include "application/Timer.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
-
-#include <functional>
 
 namespace Ghurund {
     Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {

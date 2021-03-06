@@ -44,7 +44,7 @@ namespace Ghurund::UI {
             if (item) {
                 Ghurund::Type* type = (Ghurund::Type*)&item->Type;
                 while (true) {
-                    for (Property* p : type->Properties)
+                    for (TypeProperty* p : type->Properties)
                         items.add(ghnew ObjectProperty(*item, *p));
                     if (!type->Supertype)
                         break;

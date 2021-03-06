@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "Networking.h"
-
-#include "core/logging/Logger.h"
 
 namespace Ghurund::Net {
     Status Networking::init() {

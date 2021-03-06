@@ -1,6 +1,5 @@
+#include "ghcpch.h"
 #include "File.h"
-
-#include <Windows.h>
 
 namespace Ghurund {
     bool File::exists() const {

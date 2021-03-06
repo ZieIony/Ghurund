@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
 	<StackLayout preferredSize="200, wrap">
 		<ColorView style="theme://style/ColorView_accent"/>
 		<LinearLayout preferredSize="wrap, wrap"
 					  alignment="center, center">
 			<Space preferredSize="4,4"/>
 			<TextBlock preferredSize="fill, wrap"
-					   text="title"
+					   text="title" name="title"
 					   style="theme://style/TextBlock_primary_onAccent"/>
 			<Space preferredSize="4,4"/>
-			<Button name="close" layout="file://ButtonIconOnAccentLayout.xml">
+			<Button name="closeButton" layout="file://ButtonIconOnAccentLayout.xml">
 				<PaddingContainer padding="4,2,4,2">
 					<ImageView image="file://~/icons/close 18.png"
 							   style="theme://style/ImageView_onAccent"/>

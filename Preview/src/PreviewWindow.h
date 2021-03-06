@@ -37,8 +37,8 @@ namespace Preview {
 
             lightTheme = ghnew LightTheme(app.ResourceContext, 0xff0078D7);
             darkTheme = ghnew DarkTheme(app.ResourceContext, 0xff0078D7);
-            context = ghnew UIContext(app.Graphics2D, *this);
             layoutLoader.init(*lightTheme, app.ResourceContext);
+            context = ghnew UIContext(app.Graphics2D, *this, layoutLoader);
 
             Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
             canvas->init(app.Graphics2D);

@@ -1,9 +1,9 @@
+#include "ghpch.h"
 #include "ParameterManager.h"
 
 #include "ValueParameter.h"
 #include "TextureParameter.h"
 #include "core/SharedPointer.h"
-#include "core/reflection/TypeBuilder.h"
 #include "graphics/texture/Textures.h"
 #include "resource/ResourceContext.h"
 

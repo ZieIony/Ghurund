@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "ScrollView.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {

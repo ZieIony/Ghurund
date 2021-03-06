@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "RigidBodyComponent.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	const Ghurund::Type& Physics::RigidBodyComponent::GET_TYPE() {

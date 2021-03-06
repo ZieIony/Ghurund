@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "Canvas.h"
 
-#include "core/logging/Logger.h"
 #include "graphics/SwapChain.h"
 #include "ui/drawable/BitmapImage.h"
 #include "ui/drawable/SvgImage.h"

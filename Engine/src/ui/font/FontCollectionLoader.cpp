@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "FontCollectionLoader.h"
+
 #include "FontFileEnumerator.h"
 
 namespace Ghurund::UI {

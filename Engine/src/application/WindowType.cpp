@@ -1,9 +1,10 @@
+#include "ghpch.h"
+#include "WindowType.h"
+
 #include "SystemWindow.h"
 #include "input/Keyboard.h"
 #include "input/Mouse.h"
-#include "WindowType.h"
 
-#include <fmt/core.h>
 #include <windowsx.h>
 
 namespace Ghurund {

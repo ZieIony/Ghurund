@@ -1,7 +1,7 @@
+#include "ghpch.h"
 #include "Mesh.h"
+
 #include "resource/ResourceContext.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {

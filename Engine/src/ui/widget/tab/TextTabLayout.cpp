@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "TextTabLayout.h"
+
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {

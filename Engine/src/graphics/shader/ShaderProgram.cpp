@@ -1,7 +1,7 @@
+#include "ghpch.h"
 #include "ShaderProgram.h"
+
 #include "CompilerInclude.h"
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status ShaderProgram::compile(const char *code, char **outErrorMessages, const wchar_t* fileName) {

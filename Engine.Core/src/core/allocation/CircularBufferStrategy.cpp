@@ -1,3 +1,4 @@
+#include "ghcpch.h"
 #include "CircularBufferStrategy.h"
 
 #include "core/logging/Formatter.h"

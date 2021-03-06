@@ -7,7 +7,6 @@
 #include "ui/control/TextBlock.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/widget/button/CheckBox.h"
-#include "ui/widget/button/CheckBoxRadioLayout.h"
 #include "ui/widget/button/RadioButton.h"
 #include "ui/widget/button/RadioGroup.h"
 #include "ui/widget/button/Button.h"
@@ -46,7 +45,7 @@ public:
             PointerList<Control*> controls;
             if (loader.load(FilePath(L"layouts/ButtonAccent.xml"), controls) == Status::OK) {
                 auto hwButton = makeShared<Button>();
-                hwButton->Layout = ghnew ButtonLayout(controls[0]);
+                hwButton->Layout = std::unique_ptr<ButtonBinding>(ghnew ButtonBinding(controls[0]));
                 auto hwButtonText = makeShared<TextBlock>();
                 hwButtonText->Text = L"HELLO WORLD";
                 hwButton->Content = hwButtonText;

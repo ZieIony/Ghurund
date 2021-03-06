@@ -30,12 +30,12 @@ namespace Ghurund::Editor {
             buttons->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
             buttons->Children = { playButton, stopButton };
             Children = { progressBar, buttons };
-            playButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
+            playButton->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
                 sound->play();
                 repaint();
                 return true;
             });
-            stopButton->OnClicked.add([this](Control&, const MouseClickedEventArgs&) {
+            stopButton->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
                 sound->stop();
                 return true;
             });

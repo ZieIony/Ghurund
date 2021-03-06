@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "Component.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	const Ghurund::Type& Component::GET_TYPE() {

@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "ManualLayout.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& ManualLayout::GET_TYPE() {

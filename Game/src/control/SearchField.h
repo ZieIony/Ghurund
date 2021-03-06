@@ -1,13 +1,14 @@
 #pragma once
 
 #include "SearchFieldLayout.h"
+#include "ui/widget/ContainerWidget.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
 
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Editor);
 
-    class SearchField:public ContentWidget<SearchFieldLayout> {
+    class SearchField:public Widget<SearchFieldLayout> {
     protected:
         static const Ghurund::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = NoArgsConstructor<SearchField>();

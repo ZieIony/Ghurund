@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "WindowFrame.h"
 
 #include "ui/Cursor.h"

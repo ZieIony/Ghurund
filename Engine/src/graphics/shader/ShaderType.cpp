@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "ShaderType.h"
 
 namespace Ghurund {

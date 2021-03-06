@@ -1,8 +1,6 @@
+#include "ghpch.h"
 #include "TextBlock.h"
 
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 #include "ui/Canvas.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Theme.h"

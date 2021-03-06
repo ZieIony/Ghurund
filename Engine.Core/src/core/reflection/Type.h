@@ -4,6 +4,8 @@
 #include "Property.h"
 #include "TypeModifier.h"
 #include "core/collection/List.h"
+#include "core/collection/Map.h"
+#include "core/string/AString.h"
 
 namespace Ghurund {
 	class Type {
@@ -14,7 +16,7 @@ namespace Ghurund {
 		const char* name;
         const size_t size;
         const Type* supertype;
-        const List<Property*> properties;
+        const Map<AString, List<Property*>> properties;
 
 		static List<Type>& getTypes() {
 			static List<Type> types;
@@ -22,7 +24,7 @@ namespace Ghurund {
 		}
 
     public:
-        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, List<Property*>& properties):
+        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, Map<AString, List<Property*>>& properties):
             modifiers(modifiers), size(size), properties(properties) {
             this->constructor = constructor;
             this->_namespace = _namespace;
@@ -76,11 +78,11 @@ namespace Ghurund {
 
         __declspec(property(get = getModifiers)) const TypeModifier Modifiers;
 
-        const List<Property*>& getProperties() const {
+        const Map<AString, List<Property*>>& getProperties() const {
             return properties;
         }
 
-        __declspec(property(get = getProperties)) const List<Property*>& Properties;
+        __declspec(property(get = getProperties)) const Map<AString, List<Property*>>& Properties;
 
 		bool operator==(const Type& type) const {
 			return constructor == type.constructor && strcmp(_namespace, type._namespace) == 0 && strcmp(name, type.name) == 0;

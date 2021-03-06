@@ -15,7 +15,7 @@ namespace Ghurund {
 		}
 
 		inline Allocator* get(const Type& type) {
-			size_t index = allocators.findKey((Type*)& type);
+			size_t index = allocators.indexOfKey((Type*)& type);
 			if (index == allocators.Size)
 				return nullptr;
 			return allocators.getValue(index);

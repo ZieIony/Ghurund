@@ -15,7 +15,7 @@ namespace Ghurund {
         }
 
         inline bool isMapped(const GameAction& action) const {
-            return keyMap.contains(action.Value);
+            return keyMap.containsKey(action.Value);
         }
 
         inline int get(const GameAction& action) const {

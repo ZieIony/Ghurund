@@ -17,23 +17,6 @@ namespace Ghurund::UI {
         }
     };
 
-    template<class T>
-    class TreeItemSource:public ItemSource<TreeItem*> {
-    private:
-        List<T>& list;
-
-    public:
-        TreeItemSource(List<T>& list):list(list) {}
-
-        virtual size_t getSize() const override {
-            return list.Size;
-        }
-
-        virtual T& get(size_t position) const override {
-            return list.get(position);
-        }
-    };
-
     class TreeView:public ControlContainer {
     private:
         RecyclerView* recycler;

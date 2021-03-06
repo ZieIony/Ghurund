@@ -2,7 +2,6 @@
 
 #include "core/threading/CriticalSection.h"
 
-#include <functional>
 #include <queue>
 
 namespace Ghurund {

@@ -1,6 +1,7 @@
+#include "ghpch.h"
 #include "Server.h"
+
 #include "ServerMessage.h"
-#include "core/logging/Logger.h"
 
 #include "Ws2tcpip.h"
 

@@ -6,16 +6,16 @@ namespace Ghurund::UI {
     class ObjectProperty {
     private:
         Object& owner;
-        Property& property;
+        TypeProperty& property;
 
     public:
-        ObjectProperty(Object& owner, Property& property):owner(owner), property(property) {}
+        ObjectProperty(Object& owner, TypeProperty& property):owner(owner), property(property) {}
 
-        Property& getProperty() {
+        TypeProperty& getProperty() {
             return property;
         }
 
-        __declspec(property(get = getProperty)) Property& Property;
+        __declspec(property(get = getProperty)) TypeProperty& Property;
 
         void get(void** value) {
             property.get(&owner, value);

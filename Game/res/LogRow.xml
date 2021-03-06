@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<LinearLayout preferredSize="fill, wrap"
+				  alignment="center, center">
+		<ImageView name="icon"
+				   style="theme://style/ImageView_onBackground"/>
+		<Space preferredSize="4,4"/>
+		<TextBlock name="text" preferredSize="fill, wrap"
+				   style="theme://style/TextBlock_secondary"/>
+	</LinearLayout>
+</layout>

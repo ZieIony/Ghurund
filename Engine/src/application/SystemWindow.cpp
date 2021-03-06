@@ -1,9 +1,9 @@
+#include "ghpch.h"
 #include "SystemWindow.h"
 
 #include "Application.h"
 #include "WindowType.h"
 #include "graphics/SwapChain.h"
-#include "core/reflection/TypeBuilder.h"
 #include "ui/RootView.h"
 
 #include <time.h>

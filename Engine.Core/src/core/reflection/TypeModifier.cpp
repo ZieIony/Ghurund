@@ -1,6 +1,5 @@
+#include "ghcpch.h"
 #include "TypeModifier.h"
-
-#include <type_traits>
 
 namespace Ghurund {
     TypeModifier operator |(TypeModifier lhs, TypeModifier rhs) {

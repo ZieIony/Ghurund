@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "SelectableView.h"
-
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& SelectableView::GET_TYPE() {

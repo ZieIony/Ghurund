@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<StackLayout preferredSize="200, 400">
+		<ColorView style="theme://style/ColorView_background"/>
+		<PaddingContainer padding="1">
+			<LinearLayout orientation="vertical">
+				<TitleBar namespace="Ghurund::Editor" name="titleBar"/>
+				<Toolbar name="toolbar"/>
+				<SearchField name="searchField"/>
+				<ColorView style="theme://style/ColorView_control"
+						   preferredSize="fill, 1"/>
+				<ControlContainer name="container"
+								  preferredSize="fill, fill"/>
+			</LinearLayout>
+		</PaddingContainer>
+		<Border style="theme://style/Border_onBackground"/>
+	</StackLayout>
+</layout>

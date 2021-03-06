@@ -1,7 +1,5 @@
+#include "ghpch.h"
 #include "Socket.h"
-
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund::Net {
     Status Socket::init(::SOCKET id, const tchar* address, uint16_t port) {

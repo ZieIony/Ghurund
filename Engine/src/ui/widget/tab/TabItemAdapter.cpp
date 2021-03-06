@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "TabContainer.h"
+
 #include "TextTabLayout.h"
 #include "ui/style/Theme.h"
 

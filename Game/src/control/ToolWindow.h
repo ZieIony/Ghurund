@@ -1,53 +1,22 @@
 #pragma once
 
 #include "TitleBar.h"
+#include "ToolWindowBinding.h"
 
 #include "ui/layout/StackLayout.h"
+#include "ui/widget/ContainerWidget.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
 
-    class ToolWindow:public StackLayout {
-    private:
-        SharedPointer<TitleBar> titleBar;
-        SharedPointer<Border> border;
-        SharedPointer<ControlContainer> container;
-
+    class ToolWindow:public ContainerWidget<ToolWindowBinding> {
     public:
-        ToolWindow() {
-            titleBar = ghnew TitleBar();
-            border = ghnew Border();
-            border->Thickness = 1;
-            container = ghnew ControlContainer();
-            container->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            SharedPointer<PaddingContainer> paddingContainer = ghnew PaddingContainer();
-            paddingContainer->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            paddingContainer->Padding.All = 1;
-            SharedPointer<VerticalLayout> verticalLayout = ghnew VerticalLayout();
-            verticalLayout->Children = { titleBar, container };
-            paddingContainer->Child = verticalLayout;
-            Children = {
-                paddingContainer,
-                border
-            };
-        }
-
-        inline Control* getContent() {
-            return container->Child;
-        }
-
-        inline void setContent(Control* control) {
-            container->Child = control;
-        }
-
-        __declspec(property(get = getContent, put = setContent)) Control* Content;
-
         inline const WString& getTitle() {
-            return titleBar->Text;
+            return Layout->TitleBar->Text;
         }
 
         inline void setTitle(const WString& text) {
-            titleBar->Text = text;
+            Layout->TitleBar->Text = text;
         }
 
         __declspec(property(get = getTitle, put = setTitle)) const WString& Title;

@@ -3,8 +3,6 @@
 #include "Pointer.h"
 #include "Common.h"
 
-#include <type_traits>
-
 namespace Ghurund {
     template<class T>
     concept IsPointer = std::is_base_of<Pointer, T>::value;

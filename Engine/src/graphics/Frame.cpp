@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "Frame.h"
+
 #include "Graphics.h"
 
 namespace Ghurund {

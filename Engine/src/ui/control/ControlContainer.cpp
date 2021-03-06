@@ -1,8 +1,7 @@
+#include "ghpch.h"
 #include "ControlContainer.h"
-#include "ui/LayoutLoader.h"
-#include "core/logging/Logger.h"
 
-#include "core/reflection/TypeBuilder.h"
+#include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& ControlContainer::GET_TYPE() {

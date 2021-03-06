@@ -1,8 +1,7 @@
+#include "ghpch.h"
 #include "ControlParent.h"
 
-#include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/TypedProperty.h"
 #include "input/Mouse.h"
 #include "ui/Cursor.h"
 #include "ui/LayoutLoader.h"
@@ -10,7 +9,6 @@
 #include "ui/Canvas.h"
 
 #include <regex>
-#include "Control.h"
 
 namespace Ghurund::UI {
 
@@ -19,67 +17,18 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Type& Control::GET_TYPE() {
-        static auto PROPERTY_NAME = TypedProperty<Control, const AString*>(GH_STRINGIFY(AString*), GH_STRINGIFY(Name), [](Control& control, const AString*& value) {
-            value = control.Name;
-        }, [](Control& control, const AString* const& value) {
-            control.Name = value;
-        });
-
-        static auto PROPERTY_VISIBLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Visible), [](Control& control, bool& value) {
-            value = control.Visible;
-        }, [](Control& control, const bool& value) {
-            control.Visible = value;
-        });
-
-        static auto PROPERTY_ENABLED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Enabled), [](Control& control, bool& value) {
-            value = control.Enabled;
-        }, [](Control& control, const bool& value) {
-            control.Enabled = value;
-        });
-
-        static auto PROPERTY_FOCUSABLE = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focusable), [](Control& control, bool& value) {
-            value = control.Focusable;
-        }, [](Control& control, const bool& value) {
-            control.Focusable = value;
-        });
-
-        static auto PROPERTY_FOCUSED = TypedProperty<Control, bool>("bool", GH_STRINGIFY(Focused), [](Control& control, bool& value) {value = control.isFocused(); });
-
-        static auto PROPERTY_POSITION = TypedProperty<Control, const FloatPoint>("const FloatPoint&", GH_STRINGIFY(Position), [](Control& control, FloatPoint& value) {
-            value = control.Position;
-        }, [](Control& control, const FloatPoint& value) {
-            control.Position = value;
-        });
-
-        static auto PROPERTY_ROTATION = TypedProperty<Control, float>("float", GH_STRINGIFY(Rotation), [](Control& control, float& value) {
-            value = control.Rotation;
-        }, [](Control& control, const float& value) {
-            control.Rotation = value;
-        });
-
-        static auto PROPERTY_SCALE = TypedProperty<Control, const FloatPoint>("const FloatPoint&", GH_STRINGIFY(Scale), [](Control& control, FloatPoint& value) {
-            value = control.Scale;
-        }, [](Control& control, const FloatPoint& value) {
-            control.Scale = value;
-        });
-
-        static auto PROPERTY_MINSIZE = TypedProperty<Control, FloatSize>(GH_STRINGIFY(FloatSize&), GH_STRINGIFY(MinSize), [](Control& control, FloatSize& value) {
-            value = control.MinSize;
-        }, [](Control& control, const FloatSize& value) {
-            control.MinSize = value;
-        });
-
-        static auto PROPERTY_SIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), [](Control& control, FloatSize& value) {
-            value = control.Size;
-        });
-
-        static auto PROPERTY_PREFERREDSIZE = TypedProperty<Control, Ghurund::UI::PreferredSize>(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), [](Control& control, Ghurund::UI::PreferredSize& value) {
-            value = control.PreferredSize;
-        });
-
-        static auto PROPERTY_MEASUREDSIZE = TypedProperty<Control, const FloatSize>(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), [](Control& control, FloatSize& value) {
-            value = control.MeasuredSize;
-        });
+        static auto PROPERTY_NAME = TypedProperty<Control, const AString*>(GH_STRINGIFY(AString*), GH_STRINGIFY(Name), &getName, &setName);
+        static auto PROPERTY_VISIBLE = BoolProperty<Control>(GH_STRINGIFY(Visible), &isVisible, &setVisible);
+        static auto PROPERTY_ENABLED = BoolProperty<Control>(GH_STRINGIFY(Enabled), &isEnabled, &setEnabled);
+        static auto PROPERTY_FOCUSABLE = BoolProperty<Control>(GH_STRINGIFY(Focusable), &isFocusable, &setFocusable);
+        static auto PROPERTY_FOCUSED = BoolProperty<Control>(GH_STRINGIFY(Focused), &isFocused);
+        static auto PROPERTY_POSITION = TypedProperty(GH_STRINGIFY(FloatPoint), GH_STRINGIFY(Rotation), &getPosition, &setPosition);
+        static auto PROPERTY_ROTATION = TypedProperty(GH_STRINGIFY(float), GH_STRINGIFY(Rotation), &getRotation, &setRotation);
+        static auto PROPERTY_SCALE = TypedProperty(GH_STRINGIFY(FloatPoint), GH_STRINGIFY(Scale), &getScale, &setScale);
+        static auto PROPERTY_MINSIZE = TypedProperty(GH_STRINGIFY(FloatSize), GH_STRINGIFY(MinSize), &getMinSize, &setMinSize);
+        static auto PROPERTY_SIZE = TypedProperty(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), &getSize);
+        static auto PROPERTY_PREFERREDSIZE = TypedProperty(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), &getPreferredSize, &setPreferredSize);
+        static auto PROPERTY_MEASUREDSIZE = TypedProperty(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), &getMeasuredSize);
 
         static Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Control))
             .withModifiers(TypeModifier::ABSTRACT)
@@ -240,6 +189,16 @@ namespace Ghurund::UI {
         return false;
     }
 
+    void Control::setParent(ControlParent* parent) {
+        bool contextChanged = parent && Context != parent->Context;
+        bool themeChanged = parent && Theme != parent->Theme;
+        this->parent = parent;
+        if (contextChanged)
+            dispatchContextChanged();
+        if (themeChanged)
+            dispatchThemeChanged();
+    }
+
     void Control::setTheme(Ghurund::UI::Theme* theme) {
         if (localTheme != theme) {
             localTheme = theme;
@@ -255,6 +214,12 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
+    UIContext* Control::getContext() {
+        if (parent)
+            return parent->Context;
+        return nullptr;
+    }
+
     void Control::dispatchStateChanged() {
         onStateChanged();
     }
@@ -265,8 +230,6 @@ namespace Ghurund::UI {
     }
 
     void Control::dispatchContextChanged() {
-        if (parent)
-            context = parent->Context;
         contextChanged();
     }
 
@@ -347,6 +310,7 @@ namespace Ghurund::UI {
 
     FloatPoint Control::getPositionOnScreen() {
         auto pos = PositionInWindow;
+        UIContext* context = Context;
         if (!context)
             return pos;
         Ghurund::Window& window = context->Window;
@@ -371,6 +335,9 @@ namespace Ghurund::UI {
         auto enabledAttr = xml.FindAttribute("enabled");
         if (enabledAttr)
             Enabled = enabledAttr->BoolValue();
+        auto visibleAttr = xml.FindAttribute("visible");
+        if (visibleAttr)
+            Visible = visibleAttr->BoolValue();
         auto preferredSizeAttr = xml.FindAttribute("preferredSize");
         if (preferredSizeAttr) {
             AString size = preferredSizeAttr->Value();
@@ -411,13 +378,13 @@ namespace Ghurund::UI {
             const char* themeProtocol = "theme://style/";
             if (s.startsWith(themeProtocol)) {
                 StyleKey styleKey = s.substring(lengthOf(themeProtocol));
-                if (loader.Theme.Styles.contains(styleKey)) {
+                if (loader.Theme.Styles.containsKey(styleKey)) {
                     Style = loader.Theme.Styles[styleKey];
                 } else {
                     Logger::log(LogType::WARNING, _T("missing style key {}\n"), styleKey.str);
                 }
             }
-        } else if (loader.Theme.Styles.contains(StyleKey(Type.Name))) {
+        } else if (loader.Theme.Styles.containsKey(StyleKey(Type.Name))) {
             Style = loader.Theme.Styles[StyleKey(Type.Name)];
         }
         return Status::OK;

@@ -20,6 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
+    <ClCompile Include="src\ghcpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghcpch.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="src\core\io\DirectoryPath.cpp" />
     <ClCompile Include="src\core\io\File.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />
@@ -54,8 +58,11 @@
     <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\math\Matrix3x2.h" />
     <ClInclude Include="src\core\math\Rect.h" />
+    <ClInclude Include="src\core\Observable.h" />
+    <ClInclude Include="src\core\ObservableHandler.h" />
     <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
+    <ClInclude Include="src\core\reflection\TypedProperty.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\string\AString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
@@ -93,6 +100,7 @@
     </ClInclude>
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\ghcpch.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\threading\Task.h" />
     <ClInclude Include="src\core\threading\Thread.h" />
@@ -224,6 +232,8 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>true</EnableModules>
       <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghcpch.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

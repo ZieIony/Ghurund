@@ -1,8 +1,10 @@
+#include "ghpch.h"
+#include "scriptmath.h"
+
 #include <assert.h>
 #include <math.h>
 #include <float.h>
 #include <string.h>
-#include "scriptmath.h"
 
 BEGIN_AS_NAMESPACE
 

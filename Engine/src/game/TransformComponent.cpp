@@ -1,8 +1,8 @@
+#include "ghpch.h"
 #include "TransformComponent.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
 	Status TransformComponent::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

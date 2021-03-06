@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "ParameterProvider.h"
+
 #include "TextureParameter.h"
 #include "core/SharedPointer.h"
 #include "resource/ResourceContext.h"
@@ -6,7 +8,6 @@
 #include "graphics/texture/Texture.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status ParameterProvider::loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {

@@ -1,10 +1,10 @@
+#include "ghcpch.h"
 #include "FilePath.h"
 
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
 #include <Shlwapi.h>
-#include <tchar.h>
 
 namespace Ghurund {
     FilePath::FilePath(const WString& path):Path(path) {

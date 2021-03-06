@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "Scene.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "resource/ResourceContext.h"
 
 namespace Ghurund {

@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "TextBlockStyle.h"
+
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {

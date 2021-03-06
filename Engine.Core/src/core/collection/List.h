@@ -3,7 +3,6 @@
 #include "ArrayCollection.h"
 
 #include <cassert>
-#include <functional>
 
 namespace Ghurund {
     template<typename Value, typename AllocatorType = SimpleAllocator>

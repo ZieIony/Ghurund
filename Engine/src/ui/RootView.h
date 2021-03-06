@@ -10,6 +10,7 @@ namespace Ghurund::UI {
         uint32_t backgroundColor = 0;
         Control* prevFocusedChild = nullptr;
         Control* capturedChild = nullptr;
+        UIContext* context = nullptr;
 
     public:
         RootView(UIContext& context, Canvas& canvas);
@@ -32,6 +33,10 @@ namespace Ghurund::UI {
 
         virtual void setCapturedChild(Control* control) override {
             this->capturedChild = control;
+        }
+
+        virtual UIContext* getContext() override {
+            return context;
         }
 
         virtual void repaint() {

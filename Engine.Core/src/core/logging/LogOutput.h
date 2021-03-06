@@ -4,8 +4,6 @@
 #include "core/Enum.h"
 #include "core/string/String.h"
 
-#include <functional>
-
 namespace Ghurund {
     __interface LogOutput {
         virtual void log(LogType type, const tchar* str, size_t length) = 0;

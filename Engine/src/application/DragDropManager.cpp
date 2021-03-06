@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "DragDropManager.h"
+
 #include "SystemWindow.h"
 
 #include <oleidl.h>

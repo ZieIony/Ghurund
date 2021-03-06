@@ -1,14 +1,13 @@
 #pragma once
 
 #include "core/collection/BufferedValue.h"
+#include "core/logging/Logger.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
-#include "core/logging/Logger.h"
 #include "Frame.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
-#include <wrl.h>
 
 namespace Ghurund::UI {
     class Graphics2D;

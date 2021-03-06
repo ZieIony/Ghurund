@@ -8,8 +8,6 @@
 #pragma warning (disable : 4521)	// multiple copy constructors specified
 #pragma warning (disable : 4238)	// nonstandard extension used : class rvalue used as lvalue
 
-#include <stdint.h>
-
 #ifdef _DEBUG
 #include <crtdbg.h>
 #define ghnew new(_NORMAL_BLOCK, __FILE__, __LINE__)

@@ -1,4 +1,6 @@
+#include "ghpch.h"
 #include "CameraController.h"
+
 #include "application/SystemWindow.h"
 
 namespace Ghurund {

@@ -1,5 +1,6 @@
+#include "ghpch.h"
 #include "GPUResourceFactory.h"
-#include "core/logging/Logger.h"
+
 #include "core/math/MathUtils.h"
 #include "graphics/Graphics.h"
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include <Windows.h>
 
 #include "core/string/String.h"
 #include "core/string/TextUtils.h"

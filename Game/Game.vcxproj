@@ -79,7 +79,7 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\src;$(SolutionDir)Engine.Core\src;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projekty\GhurundEngine12\Game\generated;D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\generated;$(SolutionDir)Engine\src;$(SolutionDir)Engine.Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -148,6 +148,13 @@
     <ClCompile Include="src\Module.ixx" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="generated\LogPanelBinding.h" />
+    <ClInclude Include="generated\LogRowBinding.h" />
+    <ClInclude Include="generated\PropertyPanelBinding.h" />
+    <ClInclude Include="generated\SearchFieldBinding.h" />
+    <ClInclude Include="generated\TestRowBinding.h" />
+    <ClInclude Include="generated\TitleBarBinding.h" />
+    <ClInclude Include="generated\ToolWindowBinding.h" />
     <ClInclude Include="src\control\FpsText.h" />
     <ClInclude Include="src\control\SearchField.h" />
     <ClInclude Include="src\control\SearchFieldLayout.h" />
@@ -155,6 +162,7 @@
     <ClInclude Include="src\LayoutEditorTab.h" />
     <ClInclude Include="src\LoginTest.h" />
     <ClInclude Include="src\MusicPlayer.h" />
+    <ClInclude Include="src\TestRowAdapter.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
     <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\StringObject.h" />

@@ -14,6 +14,8 @@ namespace BindingGenerator
             {
                 string layoutClass = Path.GetFileNameWithoutExtension(file).Substring(0, 1).ToUpper() + Path.GetFileNameWithoutExtension(file).Substring(1) + "Binding";
                 string inputLayout = Path.Combine(input, file);
+                if (!Directory.Exists(output))
+                    Directory.CreateDirectory(output);
                 string outputHeader = Path.Combine(output, layoutClass + ".h");
                 if (new FileInfo(inputLayout).LastWriteTimeUtc.Ticks > new FileInfo(outputHeader).LastWriteTimeUtc.Ticks)
                     generateBinding(layoutClass, inputLayout, outputHeader);

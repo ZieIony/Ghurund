@@ -1,7 +1,8 @@
+#include "ghpch.h"
 #include "HeapAllocator.h"
+
 #include "graphics/Graphics.h"
 #include "core/allocation/CircularBufferStrategy.h"
-#include "core/logging/Logger.h"
 #include "core/math/MathUtils.h"
 
 namespace Ghurund {

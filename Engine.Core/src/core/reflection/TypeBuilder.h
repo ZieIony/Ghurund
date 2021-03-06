@@ -11,9 +11,11 @@ namespace Ghurund {
         const char* name;
         Type* supertype = nullptr;
         size_t size;
-        List<Property*> properties;
+        Map<AString, List<Property*>> properties;
 
     public:
+        static const inline AString DEFAULT_GROUP = "default";
+
         TypeBuilder(const char* _namespace, const char* name) {
             this->_namespace = _namespace;
             this->name = name;
@@ -35,8 +37,12 @@ namespace Ghurund {
             return *this;
         }
 
-        TypeBuilder withProperty(Property& property) {
-            properties.add(&property);
+        TypeBuilder withProperty(const Property& property, const AString& group = DEFAULT_GROUP) {
+            size_t i = properties.indexOfKey(group);
+            if (i == properties.Size)
+                properties.set(group, List<Property*>());
+
+            properties.getValue(i).add((Property*)&property);
             return *this;
         }
 

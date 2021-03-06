@@ -52,7 +52,7 @@ namespace Ghurund::UI {
 
         virtual void onLayoutChanged() override {
             if (Layout)
-                Layout->SelectableView->StateChanged.add(StateChanged);
+                Layout->SelectableView->StateChanged.add([this](Control& control) { return StateChanged(); });
         }
 
     public:

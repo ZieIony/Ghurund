@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LogRowBinding.h"
+#include "LogPanelBinding.h"
 #include "control/TitleBar.h"
 
 #include "core/logging/Logger.h"
@@ -14,36 +16,24 @@
 using namespace Ghurund;
 
 namespace Ghurund::Editor {
-    class LogRow:public HorizontalLayout {
-    private:
-        SharedPointer<ImageView> icon;
-        SharedPointer<TextBlock> text;
-
+    class LogRow:public Widget<LogRowBinding> {
     public:
-        LogRow(Ghurund::UI::Theme& theme) {
-            icon = ghnew ImageView();
-            text = ghnew TextBlock();
-            text->Style = theme.Styles[Theme::STYLE_TEXTBLOCK_PRIMARY];
-            Children = { icon, text };
-            PreferredSize.height = PreferredSize::Height::WRAP;
-        }
-
         inline ImageDrawable* getImage() {
-            return icon->Image;
+            return Layout->Icon->Image;
         }
 
         inline void setImage(ImageDrawable* image) {
-            icon->Image = image;
+            Layout->Icon->Image = image;
         }
 
         __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
 
         const WString& getText() {
-            return text->Text;
+            return Layout->Text->Text;
         }
 
         void setText(const WString& text) {
-            this->text->Text = text;
+            Layout->Text->Text = text;
         }
 
         __declspec(property(get = getText, put = setText)) const WString& Text;
@@ -62,7 +52,7 @@ namespace Ghurund::Editor {
         LogItemAdapter(Theme& theme):theme(theme) {}
 
         virtual LogRow* makeControl() const override {
-            return ghnew LogRow(theme);
+            return ghnew LogRow();
         }
 
         virtual void bind(LogRow& control, const Log& item, size_t position) const override {
@@ -71,20 +61,16 @@ namespace Ghurund::Editor {
         }
     };
 
-    class LogPanel:public VerticalLayout {
+    class LogPanel:public Widget<LogPanelBinding> {
     private:
-        SharedPointer<Toolbar> toolbar;
-        SharedPointer<RecyclerView> logRecycler;
         BitmapImage* sortIcon, * categoryIcon;
 
         List<Log> items;
 
-    public:
-        LogPanel(ResourceContext& context, Ghurund::UI::Theme& theme) {
-            toolbar = ghnew Toolbar(theme);
-            sortIcon = BitmapImage::makeFromImage(context, L"icons/sort 18.png");
-            categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
-            toolbar->Items = {
+        virtual void onLayoutChanged() override {
+            //sortIcon = BitmapImage::makeFromImage(Context->Graphics, L"icons/sort 18.png");
+            //categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
+            Layout->Toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, L"sort", [](Control&) {
                        Logger::log(LogType::INFO, "sort clicked\n");
                    }),
@@ -92,18 +78,18 @@ namespace Ghurund::Editor {
                        Logger::log(LogType::INFO, "category clicked\n");
                    })
             };
-            logRecycler = ghnew RecyclerView();
-            logRecycler->LayoutManager = ghnew VerticalLayoutManager();
-            auto provider = ghnew AdapterChildrenProvider<Log, LogRow>(*logRecycler);
-            provider->Adapters.add(ghnew LogItemAdapter(theme));
+
+            Layout->Recycler->LayoutManager = ghnew VerticalLayoutManager();
+            auto provider = ghnew AdapterChildrenProvider<Log, LogRow>(*Layout->Recycler);
+            provider->Adapters.add(ghnew LogItemAdapter(*Theme));
             provider->Items = ghnew ListItemSource<Log>(items);
-            logRecycler->childrenProvider = provider;
-            Children = { toolbar, logRecycler };
+            Layout->Recycler->childrenProvider = provider;
         }
 
+    public:
         void addLog(LogType logType, const WString& message) {
             items.add({ logType, message });
-            logRecycler->invalidate();
+            Layout->Recycler->invalidate();
         }
     };
 }

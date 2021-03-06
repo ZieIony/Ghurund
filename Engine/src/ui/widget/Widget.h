@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Layout.h"
+#include "core/string/TextConversionUtils.h"
 #include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/Style.h"
@@ -13,18 +14,6 @@ namespace Ghurund::UI {
         private:
             LayoutType* widgetLayout = nullptr;
 
-            EventHandler<Control> stateHandler = [this](Control& control) {
-                if (widgetLayout)
-                    widgetLayout->onStateChanged(*this);
-                return true;
-            };
-
-            EventHandler<Control> themeHandler = [this](Control& control) {
-                if (widgetLayout)
-                    widgetLayout->onThemeChanged(*this);
-                return true;
-            };
-
         protected:
             static const Ghurund::Type& GET_TYPE() {
                 static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
@@ -36,12 +25,43 @@ namespace Ghurund::UI {
 
             virtual void onLayoutChanged() {}
 
-        public:
-            Widget() {
-                StateChanged.add(stateHandler);
-                ThemeChanged.add(themeHandler);
+            virtual void onStateChanged() override {
+                __super::onStateChanged();
+                if (widgetLayout)
+                    widgetLayout->onStateChanged(*this);
             }
 
+            virtual void onThemeChanged() override {
+                if (!widgetLayout)
+                    Layout = std::unique_ptr<LayoutType>(makeDefaultLayout());
+                if (widgetLayout)
+                    widgetLayout->onThemeChanged(*this);
+                if (!style)
+                    Style = makeDefaultStyle();
+                __super::onThemeChanged();
+            }
+
+            virtual LayoutType* makeDefaultLayout() {
+                if (!Theme || !Context)
+                    return nullptr;
+                PointerList<Control*> controls;
+                FilePath layoutPath = toWideChar(Theme->Layouts.get(&Type));
+                if (Context->LayoutLoader.load(layoutPath, controls) == Status::OK)
+                    return ghnew LayoutType(controls[0]);
+                return nullptr;
+            }
+
+            virtual Ghurund::UI::Style* makeDefaultStyle() {
+                if (!Theme || !Context)
+                    return nullptr;
+                PointerList<Control*> controls;
+                size_t index = Theme->Styles.indexOfKey(StyleKey(Type.Name));
+                if (index == Theme->Styles.Size)
+                    return nullptr;
+                return Theme->Styles.getValue(index);
+            }
+
+        public:
             ~Widget() = 0 {
                 delete widgetLayout;
                 widgetLayout = nullptr;
@@ -59,8 +79,11 @@ namespace Ghurund::UI {
                     delete widgetLayout;
                 }
                 widgetLayout = layout.release();
-                if (widgetLayout)
+                if (widgetLayout) {
                     Child = widgetLayout->Root;
+                    widgetLayout->onThemeChanged(*this);
+                    widgetLayout->onStateChanged(*this);
+                }
                 onLayoutChanged();
             }
 
@@ -77,7 +100,7 @@ namespace Ghurund::UI {
                 if (result != Status::OK)
                     return result;
                 auto layoutAttr = xml.FindAttribute("layout");
-                if (!layoutAttr && !loader.Theme.Layouts.contains(&Type))
+                if (!layoutAttr && !loader.Theme.Layouts.containsKey(&Type))
                     return Status::INV_PARAM;
 
                 AString s = layoutAttr ? layoutAttr->Value() : loader.Theme.Layouts.get(&Type);

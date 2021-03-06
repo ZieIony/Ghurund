@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "ParameterId.h"
-
-#include <tchar.h>
 
 namespace Ghurund {
     const ParameterId ParameterId::VIEWPORT_SIZE = ParameterId(ParameterIdEnum::VIEWPORT_SIZE, _T("VIEWPORT_SIZE"), "viewportSize", ParameterType::FLOAT2);

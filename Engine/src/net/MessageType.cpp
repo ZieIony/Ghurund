@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "MessageType.h"
-
-#include <tchar.h>
 
 namespace Ghurund::Net {
     const MessageType MessageType::RELIABLE = MessageType(MessageTypeEnum::RELIABLE, _T("reliable"));

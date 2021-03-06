@@ -1,6 +1,6 @@
+#include "ghpch.h"
 #include "Clip.h"
 
-#include "core/reflection/TypeBuilder.h"
 #include "ui/Canvas.h"
 #include "ui/LayoutLoader.h"
 

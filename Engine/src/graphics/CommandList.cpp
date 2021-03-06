@@ -1,6 +1,5 @@
+#include "ghpch.h"
 #include "CommandList.h"
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Type& CommandList::GET_TYPE() {

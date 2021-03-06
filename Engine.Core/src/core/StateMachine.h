@@ -4,8 +4,6 @@
 #include "core/collection/List.h"
 #include "core/threading/CriticalSection.h"
 
-#include <functional>
-
 namespace Ghurund {
     template<class T> class StateMachine {
     private:

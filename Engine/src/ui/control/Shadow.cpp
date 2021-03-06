@@ -1,7 +1,6 @@
+#include "ghpch.h"
 #include "Shadow.h"
 
-#include "core/logging/Logger.h"
-#include "core/reflection/TypeBuilder.h"
 #include "ui/LayoutLoader.h"
 #include "ui/Canvas.h"
 #include "ui/drawable/BitmapImage.h"

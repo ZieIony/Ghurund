@@ -6,7 +6,7 @@ namespace Ghurund::UI {
     class RadioGroup {
     private:
         PointerList<RadioButton*> buttons;
-        std::function<bool(CheckBoxRadio&)> checkedHandler = [this](CheckBoxRadio& sender) {
+        std::function<bool(RadioButton&)> checkedHandler = [this](RadioButton& sender) {
             for (auto b : buttons) {
                 if (b != &sender)
                     b->Checked = false;

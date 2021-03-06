@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "CompilationTarget.h"
 
 namespace Ghurund {

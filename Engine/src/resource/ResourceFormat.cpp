@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "ResourceFormat.h"
 
 namespace Ghurund {

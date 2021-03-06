@@ -2,8 +2,7 @@
 
 #include "core/Pointer.h"
 
-#include <stdint.h>
-#include <windows.h>
+#include <Windows.h>
 
 namespace Ghurund {
     typedef LONGLONG ticks_t;

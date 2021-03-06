@@ -1,3 +1,4 @@
+#include "ghcpch.h"
 #include "FunctionQueue.h"
 
 #include "core/logging/Formatter.h"

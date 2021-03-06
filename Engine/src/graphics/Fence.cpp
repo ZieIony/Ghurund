@@ -1,6 +1,7 @@
+#include "ghpch.h"
 #include "Fence.h"
+
 #include "Graphics.h"
-#include "core/logging/Logger.h"
 
 namespace Ghurund {
     Status Fence::init(ID3D12Device *device) {
