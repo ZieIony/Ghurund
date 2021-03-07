@@ -27,25 +27,45 @@ namespace Ghurund::UI {
             return r;
         }
 
-        __declspec(property(get = getR)) float R;
+        inline void setR(float r) {
+            this->r = std::max(0.0f, std::min(r, 1.0f));
+            value = (uint32_t)(this->r * 255) | (value & 0xffffff00);
+        }
+
+        __declspec(property(get = getR, put = setR)) float R;
 
         inline float getG() const {
             return g;
         }
 
-        __declspec(property(get = getG)) float G;
+        inline void setG(float g) {
+            this->g = std::max(0.0f, std::min(g, 1.0f));
+            value = ((uint32_t)(this->g * 255) << 8) | (value & 0xffff00ff);
+        }
+
+        __declspec(property(get = getG, put = setG)) float G;
 
         inline float getB() const {
             return b;
         }
 
-        __declspec(property(get = getB)) float B;
+        inline void setB(float b) {
+            this->b = std::max(0.0f, std::min(b, 1.0f));
+            value = ((uint32_t)(this->b * 255) << 16) | (value & 0xff00ffff);
+        }
+
+        __declspec(property(get = getB, put = setB)) float B;
 
         inline float getA() const {
             return a;
         }
 
-        __declspec(property(get = getA)) float A;
+        inline void setA(float a) {
+            this->a = std::max(0.0f, std::min(a, 1.0f));
+            value = ((uint32_t)(this->a * 255) << 24) | (value & 0xffffff);
+        }
+
+        __declspec(property(get = getA, put = setA)) float A;
 
         inline uint32_t getValue() const {
             return value;
@@ -70,6 +90,11 @@ namespace Ghurund::UI {
             g = vector.y;
             b = vector.z;
             a = vector.w;
+            uint32_t ai = ((uint32_t)(a * 255) & 0xff) << 24;
+            uint32_t ri = ((uint32_t)(g * 255) & 0xff) << 16;
+            uint32_t gi = ((uint32_t)(b * 255) & 0xff) << 8;
+            uint32_t bi = (uint32_t)(a * 255) & 0xff;
+            value = ai | ri | gi | bi;
         }
 
         __declspec(property(get = getVector, put = setVector)) D2D_VECTOR_4F Vector;

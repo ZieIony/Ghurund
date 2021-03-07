@@ -11,21 +11,21 @@ namespace Ghurund::UI {
 
     class StateIndicator:public Control {
     private:
-        Paint paint;
+        Color color;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
 
         Animation animation;
         IndicatorState state = IndicatorState::NONE;
-        Ghurund::UI::Color prevColor = 0;
+        Color prevColor = 0;
 
     public:
-        Ghurund::UI::Color idleColor = 0;
-        Ghurund::UI::Color focusedColor = 0;
-        Ghurund::UI::Color pressedColor = 0;
+        Color idleColor = 0;
+        Color focusedColor = 0;
+        Color pressedColor = 0;
 
-        StateIndicator() {
+        StateIndicator():color(0) {
             animation.Duration = 150;
         }
 
@@ -38,11 +38,11 @@ namespace Ghurund::UI {
         }
 
         inline const Color& getColor() {
-            return paint.Color;
+            return color;
         }
 
         inline void setColor(const Color& color) {
-            paint.Color = color;
+            this->color = color;
         }
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Paint.h"
+#include "ui/Color.h"
 #include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
@@ -8,28 +8,26 @@ namespace Ghurund::UI {
     private:
         uint64_t startTime = 0;
         uint32_t length = 150;
-        Paint paint;
         bool finishedAnimating = true;
-        uint32_t color;
+        Color color;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        ClickResponseView(uint32_t color = 0x3fffffff) {
+        ClickResponseView(const Color& color = 0x3fffffff):color(color) {
             PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-            this->color = color;
         }
 
-        inline uint32_t getColor() const {
+        inline const Color& getColor() const {
             return color;
         }
 
-        inline void setColor(uint32_t color) {
+        inline void setColor(const Color& color) {
             this->color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
+        __declspec(property(get = getColor, put = setColor)) const Ghurund::UI::Color& Color;
 
         virtual void onUpdate(const uint64_t time) override;
 

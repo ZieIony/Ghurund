@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Paint.h"
+#include "ui/Color.h"
 #include "ui/style/Style.h"
 #include "ui/control/Control.h"
 
@@ -9,8 +9,7 @@ namespace Ghurund::UI {
     private:
         float progress = 0.0f;
         bool indeterminate = false;
-        unsigned int progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
-        Paint paint;
+        Color progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
@@ -42,25 +41,25 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isIndeterminate, put = setIndeterminate)) bool Indeterminate;
 
-        inline unsigned int getBackgroundColor() const {
+        inline const Color& getBackgroundColor() const {
             return backgroundColor;
         }
 
-        inline void setBackgroundColor(unsigned int color) {
+        inline void setBackgroundColor(const Color& color) {
             backgroundColor = color;
         }
 
-        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) unsigned int BackgroundColor;
+        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) const Color& BackgroundColor;
 
-        inline unsigned int getProgressColor() const {
+        inline const Color& getProgressColor() const {
             return progressColor;
         }
 
-        inline void setProgressColor(unsigned int color) {
+        inline void setProgressColor(const Color& color) {
             progressColor = color;
         }
 
-        __declspec(property(get = getProgressColor, put = setProgressColor)) unsigned int ProgressColor;
+        __declspec(property(get = getProgressColor, put = setProgressColor)) const Color& ProgressColor;
 
         virtual void onDraw(Canvas& canvas) override;
 

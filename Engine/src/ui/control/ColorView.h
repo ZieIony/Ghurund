@@ -1,32 +1,28 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Paint.h"
+#include "ui/Color.h"
 
 namespace Ghurund::UI {
     class ColorView:public Control {
     private:
-        Paint paint;
+        Color color;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        ColorView() {
+        ColorView(const Color& color = 0x1f000000):color(color) {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
         }
 
-        ColorView(const Color& color):ColorView() {
-            Color = color;
-        }
-
         inline const Color& getColor() {
-            return paint.Color;
+            return color;
         }
 
         inline void setColor(const Color& color) {
-            paint.Color = color;
+            this->color = color;
         }
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;

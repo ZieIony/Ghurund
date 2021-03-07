@@ -52,9 +52,8 @@ namespace Ghurund::UI {
     }
 
     void TextBlock::onDraw(Canvas& canvas) {
-        paint.Color = TextColor;
         if (textLayout)
-            canvas.drawText(textLayout, 0, 0, paint);
+            canvas.drawText(textLayout, 0, 0, textColor);
     }
 
     const Ghurund::Type& TextBlock::GET_TYPE() {

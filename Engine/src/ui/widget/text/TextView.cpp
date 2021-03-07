@@ -441,8 +441,8 @@ namespace Ghurund::UI {
                 canvas.AntialiasingEnabled = false;
 
                 for (const DWRITE_HIT_TEST_METRICS& htm : hitTestMetrics) {
-                    paint.Color = textSelectionEffect->getColor();
-                    canvas.fillRect(htm.left, htm.top, htm.width, htm.height, paint);
+                    textColor = textSelectionEffect->getColor();
+                    canvas.fillRect(htm.left, htm.top, htm.width, htm.height, textColor);
                 }
 
                 canvas.AntialiasingEnabled = true;
@@ -459,8 +459,7 @@ namespace Ghurund::UI {
             }
         }
 
-        paint.Color = TextColor;
-        canvas.drawText(textLayout, 0, 0, paint);
+        canvas.drawText(textLayout, 0, 0, textColor);
     }
     
     const Ghurund::Type& TextView::GET_TYPE() {

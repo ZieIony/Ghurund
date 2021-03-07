@@ -371,7 +371,6 @@
     <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\control\Stack.h" />
     <ClInclude Include="src\ui\layout\LayoutInflater.h" />
-    <ClInclude Include="src\ui\Paint.h" />
     <ClInclude Include="src\ui\Property.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\control\ClickableControl.h" />

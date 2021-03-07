@@ -36,9 +36,8 @@ namespace Ghurund::UI {
         deviceContext->DrawBitmap(image.Data, d, alpha);
     }
     
-    void Canvas::drawImage(BitmapImage& image, const FloatRect& dst, int32_t tintColor, float alpha) {
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& dst, const Color& color, float alpha) {
         tintEffect->SetInput(0, image.Data);
-        Color color(tintColor);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
@@ -50,9 +49,8 @@ namespace Ghurund::UI {
         deviceContext->DrawBitmap(image.Data, d, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, s);
     }
     
-    void Canvas::drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, int32_t tintColor, float alpha) {
+    void Canvas::drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha) {
         tintEffect->SetInput(0, image.Data);
-        Color color(tintColor);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
@@ -62,9 +60,8 @@ namespace Ghurund::UI {
         deviceContext->DrawSvgDocument(image.Data);
     }
     
-    void Canvas::drawShadow(BitmapImage& image, float radius, int32_t shadowColor) {
+    void Canvas::drawShadow(BitmapImage& image, float radius, const Color& color) {
         shadowEffect->SetInput(0, image.Data);
-        Color color(shadowColor);
         shadowEffect->SetValue(D2D1_SHADOW_PROP_COLOR, color.Vector);
         shadowEffect->SetValue(D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION, radius);
         deviceContext->DrawImage(shadowEffect.Get(), D2D1_INTERPOLATION_MODE_LINEAR);

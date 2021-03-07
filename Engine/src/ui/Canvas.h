@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Color.h"
-#include "Paint.h"
 #include "Shape.h"
 #include "core/math/Rect.h"
 
@@ -52,48 +51,41 @@ namespace Ghurund::UI {
             deviceContext->Clear(D2D1::ColorF(color));
         }
 
-        inline void drawRect(float x, float y, float width, float height, const Paint& paint) {
-            uint32_t c = paint.Color;
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
-            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), paint.Thickness);
+        inline void drawRect(float x, float y, float width, float height, const Color& color, float thickness) {
+            fillBrush->SetColor(D2D1::ColorF(color));
+            fillBrush->SetOpacity(color.A);
+            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness);
         }
 
-        inline void fillRect(float x, float y, float width, float height, const Paint& paint) {
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
+        inline void fillRect(float x, float y, float width, float height, const Color& color) {
+            fillBrush->SetColor(D2D1::ColorF(color));
+            fillBrush->SetOpacity(color.A);
             deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
         }
 
-        inline void drawShape(Shape& shape, const Paint& paint) {
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
-            deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), paint.Thickness);
+        inline void drawShape(Shape& shape, const Color& color, float thickness) {
+            fillBrush->SetColor(D2D1::ColorF(color));
+            fillBrush->SetOpacity(color.A);
+            deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), thickness);
         }
 
-        inline void drawShadow(Shape& shape, const Paint& paint) {
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
-            deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), paint.Thickness);
-        }
-
-        inline void drawLine(float x1, float y1, float x2, float y2, const Paint& paint) {}
+        inline void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness) {}
 
         void drawImage(BitmapImage& image, const FloatRect& dst, float alpha = 1.0f);
 
-        void drawImage(BitmapImage& image, const FloatRect& dst, int32_t tintColor, float alpha = 1.0f);
+        void drawImage(BitmapImage& image, const FloatRect& dst, const Color& color, float alpha = 1.0f);
 
         void drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f);
 
-        void drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, int32_t tintColor, float alpha = 1.0f);
+        void drawImage(BitmapImage& image, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f);
 
         void drawImage(SvgImage& image);
 
-        void drawShadow(BitmapImage& image, float radius, int32_t shadowColor);
+        void drawShadow(BitmapImage& image, float radius, const Color& color);
 
-        inline void drawText(IDWriteTextLayout* layout, float x, float y, const Paint& paint) {
-            fillBrush->SetColor(D2D1::ColorF(paint.Color));
-            fillBrush->SetOpacity((paint.Color >> 24) / 255.0f);
+        inline void drawText(IDWriteTextLayout* layout, float x, float y, const Color& color) {
+            fillBrush->SetColor(D2D1::ColorF(color));
+            fillBrush->SetOpacity(color.A);
             deviceContext->DrawTextLayout(D2D1::Point2F(x, y), layout, fillBrush.Get());
         }
 

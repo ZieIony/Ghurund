@@ -1,23 +1,23 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Paint.h"
+#include "ui/Color.h"
 #include "ui/Shape.h"
 
 namespace Ghurund::UI {
     class Border: public Control {
     private:
-        Paint paint;
+        Color color;
+        float thickness = 1.0f;
         Ghurund::UI::Shape* shape = nullptr;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        Border(unsigned int color = 0x1f000000) {
+        Border(const Color& color = 0x1f000000):color(color) {
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
-            Color = color;
         }
 
         ~Border() {
@@ -25,11 +25,11 @@ namespace Ghurund::UI {
         }
 
         inline const Color& getColor() const {
-            return paint.Color;
+            return color;
         }
 
         inline void setColor(const Color& color) {
-            paint.Color = color;
+            this->color = color;
         }
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;
@@ -46,11 +46,11 @@ namespace Ghurund::UI {
         __declspec(property(get = getShape, put = setShape)) Shape* Shape;
 
         inline float getThickness() const {
-            return paint.Thickness;
+            return thickness;
         }
 
         inline void setThickness(float thickness) {
-            paint.Thickness = thickness;
+            this->thickness = thickness;
         }
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;

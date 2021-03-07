@@ -19,9 +19,9 @@ namespace Ghurund::UI {
         if (!Color || Thickness < 0.1f)
             return;
         if (shape) {
-            canvas.drawShape(*shape, paint);
+            canvas.drawShape(*shape, color, thickness);
         } else {
-            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.width - Thickness, Size.height - Thickness, paint);
+            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.width - Thickness, Size.height - Thickness, color, thickness);
         }
     }
 

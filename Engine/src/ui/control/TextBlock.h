@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Paint.h"
+#include "ui/Color.h"
 #include "ui/font/TextFormat.h"
 #include "ui/style/Style.h"
 
@@ -14,8 +14,7 @@ namespace Ghurund::UI {
 
     protected:
         WString text;
-        uint32_t textColor = 0xdd000000;
-        Paint paint;
+        Color textColor = 0xdd000000;
         IDWriteTextLayout* textLayout = nullptr;
 
         ~TextBlock() {

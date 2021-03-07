@@ -7,25 +7,24 @@
 namespace Ghurund::UI {
     class CursorDrawable: public Drawable {
     private:
-        Paint paint;
+        Color color;
         float blinkTime;
         bool visible = true;
 
     public:
-        CursorDrawable(uint32_t color = 0x7f000000, float width = 2.0f, float blinkTime = 2.0f):blinkTime(blinkTime) {
-            Color = color;
+        CursorDrawable(const Color& color = 0x7f000000, float width = 2.0f, float blinkTime = 2.0f):blinkTime(blinkTime), color(color) {
             preferredSize.width = PreferredSize::Width(width);
         }
 
-        inline void setColor(uint32_t color) {
-            paint.Color = color;
+        inline void setColor(const Color& color) {
+            this->color = color;
         }
 
-        inline uint32_t getColor() const {
-            return paint.Color;
+        inline const Color& getColor() const {
+            return this->color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
+        __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
         virtual void update(const uint64_t time) override {
             visible = fmod(time, blinkTime) < blinkTime / 2;
@@ -33,7 +32,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override {
             if (visible)
-                canvas.fillRect(0, 0, size.width, size.height, paint);
+                canvas.fillRect(0, 0, size.width, size.height, color);
             owner->repaint();
         }
     };

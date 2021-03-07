@@ -16,9 +16,7 @@ namespace Ghurund::UI {
     }
 
     void ColorView::onDraw(Canvas& canvas) {
-        if (!paint.Color)
-            return;
-        canvas.fillRect(0, 0, Size.width, Size.height, paint);
+        canvas.fillRect(0, 0, Size.width, Size.height, color);
     }
 
     Status ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

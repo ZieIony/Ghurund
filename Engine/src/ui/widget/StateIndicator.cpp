@@ -41,9 +41,7 @@ namespace Ghurund::UI {
     }
 
     void StateIndicator::onDraw(Canvas& canvas) {
-        if (!paint.Color)
-            return;
-        canvas.fillRect(0, 0, Size.width, Size.height, paint);
+        canvas.fillRect(0, 0, Size.width, Size.height, color);
     }
 
     void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {
