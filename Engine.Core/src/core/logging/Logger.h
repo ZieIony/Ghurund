@@ -2,6 +2,8 @@
 
 #include "Common.h"
 #include "Status.h"
+#include "LogType.h"
+#include "LogOutput.h"
 #include "core/Noncopyable.h"
 #include "core/threading/CriticalSection.h"
 
@@ -10,18 +12,12 @@
 struct _SYMBOL_INFO;
 
 namespace Ghurund {
-    __interface LogOutput;
-
-    enum class LogType {
-        INFO, WARNING, ERR0R
-    };
-
     class Logger:public Noncopyable {
     private:
         static HANDLE process;
         static _SYMBOL_INFO* symbol;
         static CriticalSection criticalSection;
-        static LogType filterLevel;
+        static LogTypeEnum filterLevel;
 
         static LogOutput* logOutput;
 
@@ -31,40 +27,34 @@ namespace Ghurund {
 
         template<typename... Args>
         static void logVA(LogType type, const tchar* formatStr, Args&& ... args) {
+            if (((int)type.Value) < (int)filterLevel)
+                return;
+
             std::basic_string<tchar> fileLine = getFileLine(getAddress());
-
             std::basic_string<tchar> message = fmt::format(formatStr, args...);
-            std::basic_string<tchar> log = fileLine + message;
 
-            writeLog(type, log.c_str(), log.size());
+            criticalSection.enter();
+            logOutput->log({ type, fileLine.c_str(), message.c_str() });
+            criticalSection.leave();
         }
 
-        static void writeLog(LogType type, const tchar* str, size_t length);
-
     public:
-        static void init(LogOutput* output = nullptr);
+        static void init(std::unique_ptr<LogOutput> output = nullptr);
 
         static void uninit();
 
         static void setFilter(const LogType& level) {
-            filterLevel = level;
+            filterLevel = level.Value;
         }
 
         template<typename... Args>
         static void log(LogType type, const tchar* format, Args&& ... args) {
-            if (((int)type) < (int)filterLevel)
-                return;
-
             logVA(type, format, args...);
         }
 
         template<typename... Args>
         static Status log(LogType type, const Status status, const tchar* format, Args&& ... args) {
-            if (((int)type) < (int)filterLevel)
-                return status;
-
             logVA(type, format, args...);
-
             return status;
         }
     };

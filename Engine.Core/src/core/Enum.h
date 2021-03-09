@@ -2,6 +2,7 @@
 
 #include "Noncopyable.h"
 #include "core/collection/Map.h"
+#include "core/string/AString.h"
 
 namespace Ghurund {
 
@@ -12,12 +13,12 @@ namespace Ghurund {
     class EnumValues:public Noncopyable {
     private:
         Map<Type, Type2*> values;
-        Map<tchar*, Type2*> valuesByName;
+        Map<AString, Type2*> valuesByName;
 
         EnumValues(const std::initializer_list<const Type2*> list) {
             for (auto it = list.begin(); it != list.end(); ++it) {
                 values.set((*it)->Value, (Type2*)(*it));
-                valuesByName.set((tchar*)(*it)->Name, (Type2*)(*it));
+                valuesByName.set((*it)->Name, (Type2*)(*it));
             }
         }
 
@@ -33,7 +34,7 @@ namespace Ghurund {
             return *values.getValue(index);
         }
 
-        inline const Type2& operator[](const tchar* name) const {
+        inline const Type2& operator[](const AString& name) const {
             return *valuesByName.get(name);
         }
 
@@ -64,12 +65,11 @@ namespace Ghurund {
     class Enum {
     private:
 		EnumValueType value;
-        const char* name;
+        const AString name;
 
     protected:
-        Enum(EnumValueType value, const char* name) {
+        Enum(EnumValueType value, const AString& name):name(name) {
             this->value = value;
-            this->name = name;
         }
 
     public:
@@ -79,11 +79,11 @@ namespace Ghurund {
 
         __declspec(property(get = getValue)) EnumValueType Value;
 
-        inline const char* getName() const {
+        inline const AString& getName() const {
             return name;
         }
 
-        __declspec(property(get = getName)) const char* Name;
+        __declspec(property(get = getName)) const AString& Name;
 
         inline bool operator==(const Enum& type) const {
             return this->value == type.value;

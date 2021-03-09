@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
+    <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghcpch.h</PrecompiledHeaderFile>
@@ -48,6 +49,7 @@
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
+    <ClInclude Include="src\core\logging\Log.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />
     <ClInclude Include="src\core\allocation\AllocatorMap.h" />
     <ClInclude Include="src\core\collection\Array.h" />
@@ -56,6 +58,7 @@
     <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\EventHandler.h" />
+    <ClInclude Include="src\core\logging\LogType.h" />
     <ClInclude Include="src\core\math\Matrix3x2.h" />
     <ClInclude Include="src\core\math\Rect.h" />
     <ClInclude Include="src\core\Observable.h" />

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
+	<LinearLayout orientation="vertical">
+		<LinearLayout orientation="horizontal">
+			<CheckBox name="expandButton" style="theme://style/CheckBox_expandable">
+				<ControlContainer name="titleContainer"/>
+			</CheckBox>
+		</LinearLayout>
+		<ControlContainer name="container"/>
+	</LinearLayout>
+</layout>

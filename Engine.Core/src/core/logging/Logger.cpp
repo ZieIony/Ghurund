@@ -3,8 +3,6 @@
 
 #include "Common.h"
 
-#include "LogOutput.h"
-
 #include <io.h>
 #include <fcntl.h>
 #include <process.h>
@@ -16,7 +14,7 @@ namespace Ghurund {
     HANDLE Logger::process = {};
     _SYMBOL_INFO* Logger::symbol = nullptr;
     CriticalSection Logger::criticalSection;
-    LogType Logger::filterLevel = LogType::INFO;
+    LogTypeEnum Logger::filterLevel = LogType::INFO.Value;
     LogOutput* Logger::logOutput = nullptr;
 
     address_t Logger::getAddress() {
@@ -32,29 +30,23 @@ namespace Ghurund {
         line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
         DWORD64 displacement = 0;
         if (!SymFromAddr(process, address, &displacement, symbol))
-            return fmt::format(_T("[{}]: "), address);
+            return fmt::format(_T("[{}]"), address);
 
         DWORD displacement2 = 0;
         if (!SymGetLineFromAddr(process, address, &displacement2, &line))
-            return fmt::format(_T("[{}:{}]: "), address, symbol->Name);
+            return fmt::format(_T("[{}:{}]"), address, symbol->Name);
 
-        return fmt::format(_T("{0}({1:d}): [{2:x} {3}(..)] "), line.FileName, line.LineNumber, address, symbol->Name);
+        return fmt::format(_T("{0}({1:d}): [{2:x} {3}(..)]"), line.FileName, line.LineNumber, address, symbol->Name);
     }
 
-    void Logger::writeLog(LogType type, const tchar* str, size_t length) {
-        criticalSection.enter();
-        logOutput->log(type, str, length);
-        criticalSection.leave();
-    }
-
-    void Logger::init(LogOutput* output) {
+    void Logger::init(std::unique_ptr<LogOutput> output) {
         if (logOutput)
             uninit();
 
 #ifdef _DEBUG
-        filterLevel = LogType::INFO;
+        filterLevel = LogType::INFO.Value;
 #else
-        filterLevel = LogType::ERR0R;
+        filterLevel = LogType::ERR0R.Value;
 #endif
 
         if (symbol == nullptr) {
@@ -69,7 +61,7 @@ namespace Ghurund {
         }
 
         if (output) {
-            logOutput = output;
+            logOutput = output.release();
         } else {
             logOutput = ghnew SystemConsoleLogOutput();
         }

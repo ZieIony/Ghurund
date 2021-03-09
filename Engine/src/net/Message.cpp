@@ -7,9 +7,8 @@ namespace Ghurund::Net {
         bool valid = this->crc == crc;
 #ifdef _DEBUG
         if (!valid) {
-            tchar* name = toTchar(MessageType::VALUES[type].Name);
+            String name = toTchar(MessageType::VALUES[type].Name);
             Logger::log(LogType::INFO, _T("invalid crc {} vs id:{}, type:{}, crc:{}, msg:{}\n"), crc, id, name, crc, messageType);
-            delete[] name;
         }
 #endif
         return valid;

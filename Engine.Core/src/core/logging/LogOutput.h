@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Log.h"
 #include "Status.h"
 #include "core/Enum.h"
 #include "core/string/String.h"
 
 namespace Ghurund {
     __interface LogOutput {
-        virtual void log(LogType type, const tchar* str, size_t length) = 0;
+        virtual void log(const Log& log) = 0;
     };
 
     class CustomConsoleLogOutput : public LogOutput {
@@ -27,8 +28,12 @@ namespace Ghurund {
             FreeConsole();
         }
 
-        virtual void log(LogType type, const tchar* str, size_t length) override {
-            WriteConsole(debugOutput, str, (DWORD)length, nullptr, nullptr);
+        virtual void log(const Log& log) override {
+            SetConsoleTextAttribute(debugOutput, log.type.StyleCode);
+            WriteConsole(debugOutput, log.fileLine.Data, (DWORD)log.fileLine.Length, nullptr, nullptr);
+            WriteConsole(debugOutput, ": ", 2, nullptr, nullptr);
+            WriteConsole(debugOutput, log.message.Data, (DWORD)log.message.Length, nullptr, nullptr);
+            SetConsoleTextAttribute(debugOutput, LogType::INFO.StyleCode);
         }
     };
 
@@ -41,8 +46,10 @@ namespace Ghurund {
 #endif
         }
 
-        virtual void log(LogType type, const tchar* str, size_t length) override {
-            OutputDebugString(str);
+        virtual void log(const Log& log) override {
+            OutputDebugString(log.fileLine.Data);
+            OutputDebugString(": ");
+            OutputDebugString(log.message.Data);
         }
     };
 
@@ -60,22 +67,24 @@ namespace Ghurund {
             CloseHandle(file);
         }
 
-        virtual void log(LogType type, const tchar* str, size_t length) override {
+        virtual void log(const Log& log) override {
             unsigned long bytes;
-            WriteFile(file, str, (DWORD)(length * sizeof(tchar)), &bytes, nullptr);
+            WriteFile(file, log.fileLine.Data, (DWORD)(log.fileLine.Length * sizeof(tchar)), &bytes, nullptr);
+            WriteFile(file, L": ", (DWORD)(2 * sizeof(tchar)), &bytes, nullptr);
+            WriteFile(file, log.message.Data, (DWORD)(log.message.Length * sizeof(tchar)), &bytes, nullptr);
         }
     };
 
     class CallbackLogOutput : public LogOutput {
     private:
-        std::function<void(LogType, const tchar*)> onLogged;
+        std::function<void(const Log&)> onLogged;
 
     public:
-        CallbackLogOutput(std::function<void(LogType, const tchar*)> onLogged): onLogged(onLogged) {
+        CallbackLogOutput(std::function<void(const Log&)> onLogged): onLogged(onLogged) {
         }
 
-        virtual void log(LogType type, const tchar* str, size_t length) override {
-            onLogged(type, str);
+        virtual void log(const Log& log) override {
+            onLogged(log);
         }
     };
 }

@@ -11,12 +11,12 @@
 
 namespace Ghurund {
     void ScriptEngine::messageCallback(const asSMessageInfo* msg, void* param) {
-        LogType type = LogType::ERR0R;
+        const LogType* type = &LogType::ERR0R;
         if (msg->type == asMSGTYPE_WARNING)
-            type = LogType::WARNING;
+            type = &LogType::WARNING;
         else if (msg->type == asMSGTYPE_INFORMATION)
-            type = LogType::INFO;
-        Logger::log(type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
+            type = &LogType::INFO;
+        Logger::log(*type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
     }
 
     const Ghurund::Type& ScriptEngine::GET_TYPE() {
