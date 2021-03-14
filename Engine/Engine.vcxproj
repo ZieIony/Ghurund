@@ -142,6 +142,7 @@
     <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
+    <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
     <ClCompile Include="src\ui\widget\Separator.cpp" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="generated\ButtonBinding.h" />
     <ClInclude Include="generated\CheckBoxBinding.h" />
+    <ClInclude Include="generated\ExpandableContainerBinding.h" />
     <ClInclude Include="generated\ScrollBarBinding.h" />
     <ClInclude Include="generated\TabBinding.h" />
     <ClInclude Include="generated\TabContainerBinding.h" />
@@ -382,9 +384,8 @@
     <ClInclude Include="src\ui\widget\button\RadioButton.h" />
     <ClInclude Include="src\ui\widget\button\RadioGroup.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\ContainerWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
-    <ClInclude Include="src\ui\widget\GroupWidget.h" />
+    <ClInclude Include="src\ui\widget\ExpandableContainer.h" />
     <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
     <ClInclude Include="src\ui\widget\Layout.h" />
@@ -439,6 +440,7 @@
     <Text Include="src\ui\widget\text\license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="res\ExpandableContainer.xml" />
     <Xml Include="res\Button.xml" />
     <Xml Include="res\CheckBox.xml" />
     <Xml Include="res\ScrollBar.xml" />
@@ -550,7 +552,8 @@
       </Outputs>
     </CustomBuildStep>
     <PreBuildEvent>
-      <Command>$(SolutionDir)BindingGenerator\bin\Debug\BindingGenerator.exe $(ProjectDir)res $(ProjectDir)generated</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

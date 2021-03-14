@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 #endif
     _____________________checkMemory();
 
-    Logger::init(std::unique_ptr<LogOutput>(ghnew CustomConsoleLogOutput(_T("Logs"))));
+    Logger::init();
     Logger::log(LogType::INFO, _T("working dir: {}\n"), Ghurund::DirectoryPath(L".").AbsolutePath);
 
     HANDLE singleInstanceMutex = CreateMutex(nullptr, true, _T("Preview::PreviewApplication"));

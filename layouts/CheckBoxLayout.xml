@@ -15,7 +15,7 @@
 			</StackLayout>
 			<Space preferredSize="4,4"/>
 			<ControlContainer preferredSize="fill, wrap"
-							  name="container"/>
+							  name="content"/>
 		</LinearLayout>
 	</SelectableView>
 </layout>

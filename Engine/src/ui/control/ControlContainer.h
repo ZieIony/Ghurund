@@ -28,6 +28,8 @@ namespace Ghurund::UI {
         }
 
         inline void setChild(Control* child) {
+            if (this->child == child)
+                return;
             if (Focused)
                 clearFocus();
             if (this->child)

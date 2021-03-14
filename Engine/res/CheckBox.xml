@@ -11,7 +11,7 @@
 						imageTint="theme://color/accent"/>
 				<Space preferredSize="4,4"/>
 				<ControlContainer preferredSize="wrap, wrap"
-								  name="container"/>
+								  name="content"/>
 			</LinearLayout>
 		</StackLayout>
 	</SelectableView>

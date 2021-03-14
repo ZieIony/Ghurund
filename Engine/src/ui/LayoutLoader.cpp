@@ -14,6 +14,7 @@
 #include "ui/layout/StackLayout.h"
 #include "ui/style/Theme.h"
 #include "ui/widget/ClickResponseView.h"
+#include "ui/widget/ExpandableContainer.h"
 #include "ui/widget/StateIndicator.h"
 #include "ui/widget/VerticalScrollBar.h"
 #include "ui/widget/button/Button.h"
@@ -56,6 +57,7 @@ namespace Ghurund::UI {
         registerClass(VerticalScrollBar::TYPE);
         registerClass(TreeView::TYPE);
         registerClass(TabContainer::TYPE);
+        registerClass(ExpandableContainer::TYPE);
     }
 
     Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {

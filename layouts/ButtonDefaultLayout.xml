@@ -19,7 +19,7 @@
 									  preferredSize="fill, fill"
 									  name="padding">
 							<ControlContainer preferredSize="wrap, wrap"
-											  name="container"/>
+											  name="content"/>
 					</PaddingContainer>
 				</StackLayout>
 			</Clip>

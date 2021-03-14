@@ -9,6 +9,7 @@
 #include "ui/control/TextBlockStyle.h"
 #include "ui/control/ImageView.h"
 #include "ui/widget/ClickResponseView.h"
+#include "ui/widget/ExpandableContainer.h"
 #include "ui/widget/SeparatorStyle.h"
 #include "ui/widget/ProgressBar.h"
 #include "ui/widget/StateIndicator.h"
@@ -19,6 +20,7 @@ namespace Ghurund::UI {
     class BaseTheme:public Ghurund::UI::Theme {
     private:
         CheckBoxStyle checkBoxStyle;
+        ExpandableCheckBoxStyle expandableCheckBoxStyle;
         RadioButtonStyle radioButtonStyle;
 
         SeparatorHorizontalStyle separatorHorizontalStyle;
@@ -81,8 +83,11 @@ namespace Ghurund::UI {
             Images.set(Theme::IMAGE_ARROWUP, arrowUp);
             SharedPointer<BitmapImage> arrowDown = BitmapImage::makeFromImage(context, L"icons/arrow down 18.png");
             Images.set(Theme::IMAGE_ARROWDOWN, arrowDown);
+            SharedPointer<BitmapImage> arrowRight = BitmapImage::makeFromImage(context, L"icons/arrow right 18.png");
+            Images.set(Theme::IMAGE_ARROWRIGHT, arrowRight);
 
             Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
+            Styles.set(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);
             Styles.set(STYLE_RADIOBUTTON, &radioButtonStyle);
             Styles.set(STYLE_SEPARATOR_HORIZONTAL, &separatorHorizontalStyle);
             Styles.set(STYLE_SEPARATOR_VERTICAL, &separatorVerticalStyle);

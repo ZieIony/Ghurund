@@ -67,8 +67,10 @@ namespace Ghurund::UI {
         static inline const ImageKey IMAGE_RADIOBUTTON_UNCHECKED = AString("radioButton_unchecked");
         static inline const ImageKey IMAGE_ARROWUP = AString("arrowUp");
         static inline const ImageKey IMAGE_ARROWDOWN = AString("arrowDown");
+        static inline const ImageKey IMAGE_ARROWRIGHT = AString("arrowRight");
 
         static inline const StyleKey STYLE_CHECKBOX = StyleKey("CheckBox");
+        static inline const StyleKey STYLE_CHECKBOX_EXPANDABLE = StyleKey("CheckBox_expandable");
         static inline const StyleKey STYLE_RADIOBUTTON = StyleKey("RadioButton");
         static inline const StyleKey STYLE_SEPARATOR_HORIZONTAL = StyleKey("Separator_horizontal");
         static inline const StyleKey STYLE_SEPARATOR_VERTICAL = StyleKey("Separator_vertical");
@@ -118,6 +120,8 @@ namespace Ghurund::UI {
         static inline const ColorKey COLOR_SECONDARY_ONACCENT = ColorKey("secondary_onAccent");
         static inline const ColorKey COLOR_DISABLED_ONACCENT = ColorKey("disabled_onAccent");
         static inline const ColorKey COLOR_HIGHLIGHT_ONACCENT = ColorKey("highlight_onAccent");
+
+        Theme();
 
         virtual ~Theme() {}
 

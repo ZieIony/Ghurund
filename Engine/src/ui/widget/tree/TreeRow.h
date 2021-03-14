@@ -4,10 +4,10 @@
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ImageView.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/widget/ContainerWidget.h"
+#include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class TreeRow:public ContainerWidget<TreeRowBinding> {
+    class TreeRow:public Widget<TreeRowBinding> {
     private:
         TreeItem* item;
 

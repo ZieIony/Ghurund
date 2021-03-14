@@ -2,12 +2,12 @@
 
 #include "CheckBoxBinding.h"
 #include "ui/control/SelectableView.h"
-#include "ui/widget/ContainerWidget.h"
+#include "ui/widget/Widget.h"
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
     template<typename CheckBoxRadioType>
-    class CheckBoxRadio:public ContainerWidget<CheckBoxBinding> {
+    class CheckBoxRadio:public Widget<CheckBoxBinding> {
     private:
         Event<CheckBoxRadioType> onCheckedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
 

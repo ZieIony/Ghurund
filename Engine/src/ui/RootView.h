@@ -12,6 +12,28 @@ namespace Ghurund::UI {
         Control* capturedChild = nullptr;
         UIContext* context = nullptr;
 
+        EventHandler<Window> focusChangedHandler = [this](Ghurund::Window& window) {
+            if (!window.Visible || Focused) {
+                if (prevFocusedChild) {
+                    prevFocusedChild->requestFocus();
+                    prevFocusedChild->release();
+                    prevFocusedChild = nullptr;
+                }
+            } else {
+                Control* focus = Focus;
+                if (focus) {
+                    while (focus->Focus)
+                        focus = focus->Focus;
+                    setPointer(prevFocusedChild, focus);
+                    clearFocus();
+                }
+            }
+#ifdef _DEBUG
+            validate();
+#endif
+            return true;
+        };
+
     public:
         RootView(UIContext& context, Canvas& canvas);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ContainerWidget.h"
+#include "Widget.h"
 #include "ExpandableContainerBinding.h"
 #include "button/Button.h"
 #include "button/CheckBox.h"
@@ -8,30 +8,24 @@
 #include "ui/control/ImageView.h"
 
 namespace Ghurund::UI {
-    class ExpandableContainer:public ContainerWidget<ExpandableContainerBinding> {
+    class ExpandableContainer:public BindingWidget<ExpandableContainerBinding<ExpandableContainer>, ExpandableContainer> {
     private:
+        friend class ExpandableContainerBinding<ExpandableContainer>;
+
         Event<ExpandableContainer> expandedChanged = *this;
         bool expanded;
+        EventHandler<CheckBox> checkedChangedHandler = [this](CheckBox&) {
+            Expanded = !Expanded;
+            expandedChanged();
+            return true;
+        };
 
     protected:
         static const Ghurund::Type& GET_TYPE();
 
-        virtual void onLayoutChanged() override {
-            if (!Layout)
-                return;
-            Layout->ExpandButton->Checked = expanded;
-            Layout->ExpandButton->CheckedChanged.add([this](CheckBox& control) {
-                Expanded = control.Checked;
-                expandedChanged();
-                return true;
-            });
-            dispatchStateChanged();
-        }
-
     public:
         inline void setExpanded(bool expanded) {
             this->expanded = expanded;
-            Layout->ExpandButton->Checked = expanded;
             onStateChanged();
         }
 
@@ -61,14 +55,12 @@ namespace Ghurund::UI {
             return Layout->Content;
         }
 
-        inline void setHeader(Control* header) {
-            Layout->Header = header;
+        inline void setContent(Control* content) {
+            Layout->Content = content;
         }
 
-        __declspec(property(get = getHeader, put = setHeader)) Control* Header;
+        __declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-        
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {

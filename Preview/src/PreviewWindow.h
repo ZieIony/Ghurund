@@ -21,7 +21,7 @@ namespace Preview {
         Theme* lightTheme, * darkTheme;
         UIContext* context;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        ControlGroup* container;
+        LayoutBinding* binding;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -48,17 +48,16 @@ namespace Preview {
 
             PointerList<Control*> controls;
             layoutLoader.load(L"Preview/res/layout.xml", controls);
-            LayoutBinding binding(controls[0]);
-            rootView->Child = binding.Root;
-            container = binding.Container;
-            binding.ThemeCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
+            binding = ghnew LayoutBinding(controls[0]);
+            rootView->Child = binding->Root;
+            binding->ThemeCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
                 updateTheme(checkBox);
                 rootView->repaint();
                 return true;
             });
-            binding.EnabledCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
-                container->Enabled = checkBox.Checked;
-                container->repaint();
+            binding->EnabledCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
+                binding->Container->Enabled = checkBox.Checked;
+                binding->Container->repaint();
                 return true;
             });
 
@@ -71,10 +70,10 @@ namespace Preview {
                 rootView->dispatchThemeChanged();
                 return true;
             };
-            binding.Color1->Clicked.add(colorClickHandler);
-            binding.Color2->Clicked.add(colorClickHandler);
-            binding.Color3->Clicked.add(colorClickHandler);
-            binding.Color4->Clicked.add(colorClickHandler);
+            binding->Color1->Clicked.add(colorClickHandler);
+            binding->Color2->Clicked.add(colorClickHandler);
+            binding->Color3->Clicked.add(colorClickHandler);
+            binding->Color4->Clicked.add(colorClickHandler);
 
             RootView = rootView;
 
@@ -95,6 +94,8 @@ namespace Preview {
         }
 
         ~PreviewWindow() {
+            RootView = nullptr;
+            rootView->release();
             delete filePath;
             delete context;
             delete lightTheme;
@@ -137,10 +138,10 @@ namespace Preview {
         void loadLayout(const Buffer& data) {
             PointerList<Control*> controls;
             layoutLoader.load(data, controls);
-            container->Children.clear();
+            binding->Container->Children.clear();
             for (Control* control : controls)
-                container->Children.add(control);
-            container->invalidate();
+                binding->Container->Children.add(control);
+            binding->Container->invalidate();
         }
 
         void loadImage(const Buffer& data) {
@@ -150,8 +151,8 @@ namespace Preview {
             image->load(app->ResourceContext, baseDir, stream);
             auto imageView = makeShared<ImageView>();
             imageView->Image = ghnew BitmapImageDrawable(image);
-            container->Children = { imageView };
-            container->invalidate();
+            binding->Container->Children = { imageView };
+            binding->Container->invalidate();
         }
 
         void watchFile(FilePath& filePath) {

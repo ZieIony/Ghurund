@@ -13,7 +13,7 @@
 									preferredSize="fill, fill"
 									name="padding">
 						<ControlContainer preferredSize="fill, fill"
-										  name="container"/>
+										  name="content"/>
 				</PaddingContainer>
 			</StackLayout>
 		</Clip>

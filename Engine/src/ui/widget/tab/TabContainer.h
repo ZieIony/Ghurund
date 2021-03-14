@@ -59,7 +59,7 @@ namespace Ghurund::UI {
                 selectedTab->Layout->SelectableView->Selected = true;
             }
             TabItem* tab = tabs[position];
-            Layout->Container->Child = tab->content;
+            Layout->Content = tab->content;
             tab->content->invalidate();
         }
 

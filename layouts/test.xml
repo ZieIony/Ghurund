@@ -2,24 +2,31 @@
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<LinearLayout orientation="vertical" preferredSize="wrap, wrap"
 				  alignment="center, center">
-		<LinearLayout preferredSize="wrap, wrap"
-			  alignment="center, center">
-			<PaddingContainer padding="8">
-				<CheckBox>
-					<TextBlock text="checkBox"/>
-				</CheckBox>
-			</PaddingContainer>
-			<PaddingContainer padding="8">
-				<RadioButton>
-					<TextBlock text="radioButton"/>
-				</RadioButton>
-			</PaddingContainer>
-			<PaddingContainer padding="8">
-				<RadioButton>
-					<TextBlock text="radioButton"/>
-				</RadioButton>
-			</PaddingContainer>
-		</LinearLayout>
+		<StackLayout preferredSize="wrap, wrap">
+			<ColorView preferredSize="fill, fill"/>
+			<ExpandableContainer preferredSize="fill, 100">
+				<ExpandableContainer.Header>
+					<TextBlock text="check boxes and radio buttons"/>
+				</ExpandableContainer.Header>
+				<LinearLayout preferredSize="fill, 100" alignment="center, center">
+					<PaddingContainer padding="8">
+						<CheckBox>
+							<TextBlock text="checkBox"/>
+						</CheckBox>
+					</PaddingContainer>
+					<PaddingContainer padding="8">
+						<RadioButton>
+							<TextBlock text="radioButton"/>
+						</RadioButton>
+					</PaddingContainer>
+					<PaddingContainer padding="8">
+						<RadioButton>
+							<TextBlock text="radioButton"/>
+						</RadioButton>
+					</PaddingContainer>
+				</LinearLayout>
+			</ExpandableContainer>
+		</StackLayout>
 		<LinearLayout preferredSize="wrap, wrap"
 				  alignment="center, center">
 			<PaddingContainer padding="8">

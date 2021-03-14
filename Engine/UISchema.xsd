@@ -50,6 +50,28 @@
 
 	<!-- attributes -->
 
+	<xs:simpleType name="boolRef">
+		<xs:annotation>
+			<xs:documentation>
+				'true', 'false', or a property name preceded with a dot ('.').
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="true|false|\.[a-zA-Z_]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="EventHandler">
+		<xs:annotation>
+			<xs:documentation>
+				A property name preceded with a plus ('+').
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\+[a-zA-Z_]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
 	<xs:simpleType name="Size">
 		<xs:annotation>
 			<xs:documentation>
@@ -169,9 +191,9 @@
 
 	<xs:complexType name="Control">
 		<xs:attribute name="name" type="xs:string"/>
-		<xs:attribute name="enabled" type="xs:boolean"/>
-		<xs:attribute name="visible" type="xs:boolean"/>
-		<xs:attribute name="focusable" type="xs:boolean"/>
+		<xs:attribute name="enabled" type="boolRef"/>
+		<xs:attribute name="visible" type="boolRef"/>
+		<xs:attribute name="focusable" type="boolRef"/>
 		<xs:attribute name="minSize" type="Size"/>
 		<xs:attribute name="preferredSize" type="PreferredSize"/>
 		<xs:attribute name="style" type="Style"/>
@@ -216,6 +238,7 @@
 						<xs:element ref="include"/>
 					</xs:choice>
 				</xs:sequence>
+				<xs:attribute name="child" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -415,7 +438,6 @@
 		<xs:complexContent>
 			<xs:extension base="Control">
 				<xs:attribute name="layout" type="Layout"/>
-				<xs:attribute name="checked" type="xs:boolean"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -424,22 +446,26 @@
 		<xs:complexContent>
 			<xs:extension base="ControlContainer">
 				<xs:attribute name="style" type="Style"/>
-				<xs:attribute name="layout" type="Layout"/>
-				<xs:attribute name="checked" type="xs:boolean"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 
 	<xs:complexType name="CheckBox">
 		<xs:complexContent>
-			<xs:extension base="ContentWidget"/>
+			<xs:extension base="ContentWidget">
+				<xs:attribute name="checked" type="boolRef"/>
+				<xs:attribute name="checkedChanged" type="EventHandler"/>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="CheckBox" type="CheckBox"/>
 
 	<xs:complexType name="RadioButton">
 		<xs:complexContent>
-			<xs:extension base="ContentWidget"/>
+			<xs:extension base="ContentWidget">
+				<xs:attribute name="checked" type="boolRef"/>
+				<xs:attribute name="checkedChanged" type="EventHandler"/>
+			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="RadioButton" type="RadioButton"/>

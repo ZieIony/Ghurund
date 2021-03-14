@@ -25,17 +25,9 @@ namespace Ghurund::UI {
 
             virtual void onLayoutChanged() {}
 
-            virtual void onStateChanged() override {
-                __super::onStateChanged();
-                if (widgetLayout)
-                    widgetLayout->onStateChanged(*this);
-            }
-
             virtual void onThemeChanged() override {
                 if (!widgetLayout)
                     Layout = std::unique_ptr<LayoutType>(makeDefaultLayout());
-                if (widgetLayout)
-                    widgetLayout->onThemeChanged(*this);
                 if (!style)
                     Style = makeDefaultStyle();
                 __super::onThemeChanged();
@@ -45,7 +37,10 @@ namespace Ghurund::UI {
                 if (!Theme || !Context)
                     return nullptr;
                 PointerList<Control*> controls;
-                FilePath layoutPath = toWideChar(Theme->Layouts.get(&Type));
+                size_t layoutIndex = Theme->Layouts.indexOfKey(&Type);
+                if (layoutIndex == Theme->Layouts.Size)
+                    return nullptr;
+                FilePath layoutPath = toWideChar(Theme->Layouts.getValue(layoutIndex));
                 if (Context->LayoutLoader.load(layoutPath, controls) == Status::OK)
                     return ghnew LayoutType(controls[0]);
                 return nullptr;
@@ -72,19 +67,15 @@ namespace Ghurund::UI {
             }
 
             inline void setLayout(std::unique_ptr<LayoutType> layout) {
-                if (widgetLayout == layout.get())
-                    return;
                 if (widgetLayout) {
                     Child = nullptr;
                     delete widgetLayout;
                 }
                 widgetLayout = layout.release();
-                if (widgetLayout) {
+                if (widgetLayout)
                     Child = widgetLayout->Root;
-                    widgetLayout->onThemeChanged(*this);
-                    widgetLayout->onStateChanged(*this);
-                }
                 onLayoutChanged();
+                dispatchStateChanged();
             }
 
             __declspec(property(get = getLayout, put = setLayout)) LayoutType* Layout;
@@ -93,6 +84,24 @@ namespace Ghurund::UI {
                 if (widgetLayout)
                     widgetLayout->Root->PreferredSize = preferredSize;
                 __super::onMeasure(parentWidth, parentHeight);
+            }
+
+            virtual Control* find(const AString& name) {
+                Control* baseFind = Control::find(name);
+                if (baseFind)
+                    return baseFind;
+                if (Layout)
+                    return Layout->find(name);
+                return nullptr;
+            }
+
+            virtual Control* find(const Ghurund::Type& type) {
+                Control* baseFind = Control::find(type);
+                if (baseFind)
+                    return baseFind;
+                if (Layout)
+                    return Layout->find(type);
+                return nullptr;
             }
 
             virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
@@ -109,13 +118,45 @@ namespace Ghurund::UI {
                 result = loader.load(loader.getPath(s), controls);
                 if (result != Status::OK)
                     return result;
-                if (!controls.Empty) {
+                if (!controls.Empty)
                     Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(controls[0]));
-                    return Status::OK;
-                }
+                if (Layout)
+                    return Layout->loadContent(loader, xml);
                 return Status::INV_PARAM;
             }
 
+            inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+            virtual const Ghurund::Type& getType() const override {
+                return TYPE;
+            }
+    };
+
+    template<class LayoutType, class DataType>
+    requires std::is_base_of<BindingLayout<DataType>, LayoutType>::value
+        class BindingWidget:public Widget<LayoutType> {
+        protected:
+            static const Ghurund::Type& GET_TYPE() {
+                static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BindingWidget))
+                    .withModifiers(TypeModifier::ABSTRACT)
+                    .withSupertype(__super::GET_TYPE());
+
+                return TYPE;
+            }
+
+            virtual void onStateChanged() override {
+                __super::onStateChanged();
+                if (Widget<LayoutType>::Layout) {
+                    Widget<LayoutType>::Layout->bind((DataType&)getData());
+                    Widget<LayoutType>::Layout->Root->invalidate();
+                }
+            }
+
+            virtual DataType& getData() {
+                return (DataType&)*this;
+            }
+
+        public:
             inline static const Ghurund::Type& TYPE = GET_TYPE();
 
             virtual const Ghurund::Type& getType() const override {

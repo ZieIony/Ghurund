@@ -5,7 +5,7 @@
 			<StateIndicator name="state" preferredSize="fill, fill"
 							style="theme://style/StateIndicator_onBackground"/>
 			<ControlContainer preferredSize="fill, fill"
-								name="container"/>
+								name="content"/>
 		</StackLayout>
 	</ClickableControl>
 </layout>

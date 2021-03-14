@@ -9,7 +9,7 @@
 					<StateIndicator name="state" preferredSize="fill, fill"
 									style="theme://style/stateIndicator_onBackground"/>
 					<ControlContainer preferredSize="wrap, wrap"
-										name="container"/>
+										name="content"/>
 				</StackLayout>
 			</Clip>
 		</StackLayout>

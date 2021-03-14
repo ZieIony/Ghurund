@@ -6,6 +6,14 @@
 			<TreeView name="tree" preferredSize="200, fill"/>
 			<TabContainer name="tabs" layout="file://~/layouts/TabContainerLeftLayout.xml"
 				   tabLayout="file://~/layouts/TabTextLayout.xml" preferredSize="fill, fill"/>
+			<ExpandableContainer>
+				<ExpandableContainer.Header>
+
+				</ExpandableContainer.Header>
+				<ExpandableContainer.Content>
+
+				</ExpandableContainer.Content>
+			</ExpandableContainer>
 		</LinearLayout>
 		<PaddingContainer padding="8, 4"
 						  preferredSize="fill, wrap">

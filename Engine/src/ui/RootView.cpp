@@ -9,30 +9,11 @@ namespace Ghurund::UI {
         this->canvas = &canvas;
         this->context = &context;
         Cursor = &Cursor::ARROW;
-        this->context->Window.OnFocusedChanged.add([this](Ghurund::Window& window) {
-            if (!window.Visible || Focused) {
-                if (prevFocusedChild) {
-                    prevFocusedChild->requestFocus();
-                    prevFocusedChild->release();
-                    prevFocusedChild = nullptr;
-                }
-            } else {
-                Control* focus = Focus;
-                if (focus) {
-                    while (focus->Focus)
-                        focus = focus->Focus;
-                    setPointer(prevFocusedChild, focus);
-                    clearFocus();
-                }
-            }
-#ifdef _DEBUG
-            validate();
-#endif
-            return true;
-        });
+        this->context->Window.OnFocusedChanged.add(focusChangedHandler);
     }
 
     RootView::~RootView() {
+        this->context->Window.OnFocusedChanged.remove(focusChangedHandler);
         delete canvas;
     }
 

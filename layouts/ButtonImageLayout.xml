@@ -6,7 +6,7 @@
 				preferredSize="fill, fill">
 			<StackLayout>
 				<ControlContainer preferredSize="fill, fill"
-									name="container"/>
+									name="content"/>
 				<StateIndicator name="state" preferredSize="fill, fill"
 								style="theme://style/StateIndicator_onAccent"/>
 			</StackLayout>

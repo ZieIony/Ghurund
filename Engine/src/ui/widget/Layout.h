@@ -33,52 +33,26 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRoot, put = setRoot)) Control* Root;
 
-        virtual void onThemeChanged(Control& control) {}
+        virtual Control* find(const AString& name) {
+            return nullptr;
+        }
 
-        virtual void onStateChanged(Control& control) {}
+        virtual Control* find(const Ghurund::Type& type) {
+            return nullptr;
+        }
+
+        virtual Status loadContent(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+            return Status::OK;
+        }
     };
 
-    class ContainerLayout:public WidgetLayout {
-    private:
-        ControlContainer* container = nullptr;
-
-        inline void setContainer(ControlContainer* container) {
-            this->container = container;
-        }
-
+    template<class DataType>
+    class BindingLayout:public WidgetLayout {
     public:
-        ContainerLayout() {}
+        BindingLayout() {}
 
-        ContainerLayout(Control* control):WidgetLayout(control) {
-            container = (ControlContainer*)control->find("container");
-        }
+        BindingLayout(Control* control):WidgetLayout(control) {}
 
-        inline ControlContainer* getContainer() {
-            return container;
-        }
-
-        __declspec(property(get = getContainer)) ControlContainer* Container;
-    };
-
-    class GroupLayout:public WidgetLayout {
-    private:
-        ControlGroup* container = nullptr;
-
-        inline void setContainer(ControlGroup* container) {
-            this->container = container;
-        }
-
-    public:
-        GroupLayout() {}
-
-        GroupLayout(Control* control):WidgetLayout(control) {
-            container = (ControlGroup*)control->find("container");
-        }
-
-        inline ControlGroup* getContainer() {
-            return container;
-        }
-
-        __declspec(property(get = getContainer)) ControlGroup* Container;
+        virtual void bind(DataType& data) {}
     };
 }

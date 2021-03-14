@@ -8,7 +8,7 @@
 				<LinearLayout preferredSize="fill, wrap">
 					<ImageView image="file://~/icons/arrow right 18.png"
 							   style="theme://style/imageView_onBackground"/>
-					<ControlContainer name="container"
+					<ControlContainer name="content"
 							  preferredSize="fill, wrap"/>
 				</LinearLayout>
 			</StackLayout>
