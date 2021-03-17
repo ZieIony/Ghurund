@@ -24,7 +24,7 @@
     <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\application\SystemWindow.cpp" />
     <ClCompile Include="src\application\Window.cpp" />
-    <ClCompile Include="src\application\WindowType.cpp" />
+    <ClCompile Include="src\application\WindowClass.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\application\Timer.cpp" />
@@ -171,11 +171,13 @@
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ChildWindow.h" />
     <ClInclude Include="src\application\DragDropManager.h" />
+    <ClInclude Include="src\application\Layer.h" />
+    <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\WindowMessage.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\SystemWindow.h" />
     <ClInclude Include="src\application\Window.h" />
-    <ClInclude Include="src\application\WindowType.h" />
+    <ClInclude Include="src\application\WindowClass.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
@@ -183,7 +185,7 @@
     <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
-    <ClInclude Include="src\input\EventArgs.h" />
+    <ClInclude Include="src\input\InputEventArgs.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
     <ClInclude Include="src\net\MessageType.h" />
@@ -322,6 +324,7 @@
     <ClInclude Include="src\ui\Graphics2D.h" />
     <ClInclude Include="src\ui\style\LightTheme.h" />
     <ClInclude Include="src\ui\UIContext.h" />
+    <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ui\widget\button\CheckBoxRadio.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />

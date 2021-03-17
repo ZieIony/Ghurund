@@ -98,8 +98,7 @@ namespace Ghurund::UI {
         while (c->Parent) {
             if (c->Parent->Focus == nullptr) {
                 c->Parent->Focus = c;
-                c = c->Parent;
-            } else {
+            } else if (c->Parent->Focus != c) {
                 Control* f = c->Parent->Focus;
                 c->Parent->Focus = c;
                 while (f->Focus) {
@@ -109,7 +108,11 @@ namespace Ghurund::UI {
                 }
                 c->Parent->dispatchStateChanged();
                 break;
+            } else {
+                c->dispatchStateChanged();
+                return;
             }
+            c = c->Parent;
         }
     }
 

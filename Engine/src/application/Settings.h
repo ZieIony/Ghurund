@@ -2,14 +2,14 @@
 
 #include "Common.h"
 #include "core/collection/Map.h"
-#include "core/string/String.h"
 #include "core/io/File.h"
+#include "core/math/Size.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class Settings {
     public:
-        unsigned int width, height;
-
+        IntSize windowSize;
         bool windowed;
 
         Settings() {
@@ -17,8 +17,7 @@ namespace Ghurund {
         }
 
         void reset() {
-            width = 800;
-            height = 600;
+            windowSize = { 800, 600 };
             windowed = true;
         }
 

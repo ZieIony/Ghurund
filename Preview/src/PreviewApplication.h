@@ -16,7 +16,7 @@ namespace Preview {
 
             window->initParameters(ParameterManager);
 
-            window->Size = { Settings.width, Settings.height };
+            window->Size = Settings.windowSize;
 
             Windows.add(window);
             window->OnClosed.add([this](Ghurund::Window& window) {
@@ -25,7 +25,6 @@ namespace Preview {
                 return true;
             });
 
-            window->Visible = true;
             window->activate();
         }
     };

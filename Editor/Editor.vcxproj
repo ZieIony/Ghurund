@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{89C8EDBB-26B6-4D6A-B3EE-7D825BF0A85B}</ProjectGuid>
-    <RootNamespace>Game</RootNamespace>
+    <RootNamespace>Editor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Editor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -79,9 +80,9 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>D:\projekty\GhurundEngine12\Game\generated;D:\projekty\GhurundEngine12\Game\src;$(SolutionDir)Engine\generated;$(SolutionDir)Engine\src;$(SolutionDir)Engine.Core\src;$(IncludePath)</IncludePath>
+    <IncludePath>D:\projekty\GhurundEngine12\Editor\generated;D:\projekty\GhurundEngine12\Editor\src;$(SolutionDir)Engine\generated;$(SolutionDir)Engine\src;$(SolutionDir)Engine.Core\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
-    <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
+    <SourcePath>D:\projekty\GhurundEngine12\Editor\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
@@ -145,7 +146,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Module.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generated\LogPanelBinding.h" />
@@ -158,25 +158,14 @@
     <ClInclude Include="src\control\FpsText.h" />
     <ClInclude Include="src\control\SearchField.h" />
     <ClInclude Include="src\control\SearchFieldLayout.h" />
-    <ClInclude Include="src\DragTestTab.h" />
-    <ClInclude Include="src\LayoutEditorTab.h" />
-    <ClInclude Include="src\LoginTest.h" />
-    <ClInclude Include="src\MusicPlayer.h" />
-    <ClInclude Include="src\TestRowAdapter.h" />
+    <ClInclude Include="src\EditorWindow.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
     <ClInclude Include="src\MainMenu.h" />
-    <ClInclude Include="src\StringObject.h" />
-    <ClInclude Include="src\TestApplication.h" />
-    <ClInclude Include="src\TestControls.h" />
-    <ClInclude Include="src\TestFlowLayouts.h" />
-    <ClInclude Include="src\TestLevel.h" />
-    <ClInclude Include="src\TestRecycler.h" />
-    <ClInclude Include="src\TestImageViews.h" />
+    <ClInclude Include="src\EditorApplication.h" />
     <ClInclude Include="src\control\TitleBar.h" />
     <ClInclude Include="src\control\ToolWindow.h" />
     <ClInclude Include="src\tool\PropertyPanel.h" />
     <ClInclude Include="src\tool\WidgetHierarchyPanel.h" />
-    <ClInclude Include="src\WindowsTestTab.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

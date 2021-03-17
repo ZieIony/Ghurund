@@ -53,17 +53,6 @@ namespace Ghurund {
 
         virtual void onUninit() {};
 
-        /*virtual void client(const void *buffer, unsigned int size){
-            if(currentFrame)
-                currentFrame->client(buffer, size);
-        };
-
-        virtual void server(const Socket *socket, const void *buffer, unsigned int size){
-            if(currentFrame)
-                currentFrame->server(socket, buffer, size);
-        };*/
-
-
     public:
         virtual ~Application() {}
 
@@ -72,8 +61,6 @@ namespace Ghurund {
         inline void quit() {
             PostQuitMessage(0);
         }
-
-        void reset();
 
         inline const Settings& getSettings() const {
             return settings;

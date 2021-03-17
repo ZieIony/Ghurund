@@ -4,12 +4,12 @@
 
 namespace Ghurund::Input {
 
-    class EventArgs {
+    class InputEventArgs {
     protected:
         uint64_t time;
 
     public:
-        EventArgs(uint64_t time) {
+        InputEventArgs(uint64_t time) {
             this->time = time;
         }
 
@@ -19,6 +19,6 @@ namespace Ghurund::Input {
 
         __declspec(property(get = getTimeMs)) uint64_t TimeMs;
 
-        virtual ~EventArgs() = 0 {}
+        virtual ~InputEventArgs() = 0 {}
     };
 }

@@ -2,31 +2,15 @@
 #include "RootView.h"
 
 #include "ui/Cursor.h"
-#include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    RootView::RootView(UIContext& context, Canvas& canvas) {
-        this->canvas = &canvas;
+    RootView::RootView(UIContext& context) {
         this->context = &context;
         Cursor = &Cursor::ARROW;
-        this->context->Window.OnFocusedChanged.add(focusChangedHandler);
-    }
-
-    RootView::~RootView() {
-        this->context->Window.OnFocusedChanged.remove(focusChangedHandler);
-        delete canvas;
     }
 
     void RootView::invalidate() {
         needsLayout = true;
-    }
-
-    void RootView::draw() {
-        canvas->beginPaint();
-        if (backgroundColor)
-            canvas->clear(backgroundColor);
-        draw(*canvas);
-        canvas->endPaint();
     }
 
     bool RootView::dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& event) {
@@ -39,18 +23,19 @@ namespace Ghurund::UI {
         if (event.Key == VK_TAB) {
             if (GetKeyState(VK_SHIFT) & 0x8000) {
                 if (!focusPrevious() && Focus) {
-                    clearFocus();
+                    findFocus()->clearFocus();
                     focusPrevious();
                 }
             } else {
                 if (!focusNext() && Focus) {
-                    clearFocus();
+                    findFocus()->clearFocus();
                     focusNext();
                 }
             }
             return true;
         } else if (event.Key == VK_ESCAPE) {
-            clearFocus();
+            if (Focus)
+                findFocus()->clearFocus();
             if (capturedChild) {
                 capturedChild->dispatchMouseButtonEvent(Ghurund::Input::MouseButtonEventArgs({ -1,-1 }, Ghurund::Input::MouseAction::UP, Ghurund::Input::MouseButton::VIRTUAL, event.TimeMs, false));
                 capturedChild->release();
@@ -79,8 +64,7 @@ namespace Ghurund::UI {
             return result;
         }
 
-        auto r = __super::dispatchMouseButtonEvent(event);
-        return r;
+        return __super::dispatchMouseButtonEvent(event);
     }
 
     bool RootView::dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& event) {

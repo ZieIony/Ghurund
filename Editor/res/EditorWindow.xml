@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::Editor">
+	<LinearLayout>
+		<MainMenu name="mainMenu"/>
+		<Toolbar name="mainToolbar"/>
+		<ControlContainer name="content"/>
+		<LinearLayout name="statusBar" orientation="horizontal" preferredSize="fill, wrap"/>
+	</LinearLayout>
+</layout>

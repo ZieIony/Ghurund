@@ -3,10 +3,7 @@
 #include "DragDropManager.h"
 #include "Window.h"
 #include "input/Input.h"
-
-namespace Ghurund::UI {
-    class RootView;
-}
+#include "LayerList.h"
 
 namespace Ghurund {
     class SystemWindow;
@@ -30,7 +27,7 @@ namespace Ghurund {
         SwapChain* swapChain = nullptr;
         Input::Input input;
         Ghurund::Timer& timer;
-        Ghurund::UI::RootView* rootView = nullptr;
+        LayerList layers;
 
         DragDropManager* dragDropManager = nullptr;
         Event<Ghurund::Window> onDraggedOver = Event<Ghurund::Window>(*this);
@@ -38,10 +35,25 @@ namespace Ghurund {
         Event<Ghurund::Window, Array<FilePath*>*> onDragEntered = Event<Ghurund::Window, Array<FilePath*>*>(*this);
         Event<Ghurund::Window, Array<FilePath*>*> onDropped = Event<Ghurund::Window, Array<FilePath*>*>(*this);
 
+    protected:
+        virtual bool onSizeChangedEvent() override {
+            layers.Size = Size;
+            return true;
+        }
+
+        virtual bool onFocusedChangedEvent() override {
+            if (Focused) {
+                layers.restoreFocus();
+            } else {
+                layers.clearFocus();
+            }
+            return true;
+        }
+
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        SystemWindow(HWND handle, const WindowClass& type, Ghurund::Timer& timer);
+        SystemWindow(const WindowClass& type, Ghurund::Timer& timer);
 
         ~SystemWindow();
 
@@ -62,13 +74,11 @@ namespace Ghurund {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        inline Ghurund::UI::RootView* getRootView() {
-            return rootView;
+        inline LayerList &getLayers() {
+            return layers;
         }
 
-        void setRootView(Ghurund::UI::RootView* rootView);
-
-        __declspec(property(get = getRootView, put = setRootView)) Ghurund::UI::RootView* RootView;
+        __declspec(property(get = getLayers)) LayerList& Layers;
 
         inline SwapChain* getSwapChain() {
             return swapChain;
@@ -141,7 +151,8 @@ namespace Ghurund {
             RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);
         }
 
-        virtual void activate() const override {
+        virtual void activate() override {
+            Visible = true;
             SetActiveWindow(handle);
         }
 
@@ -155,27 +166,14 @@ namespace Ghurund {
 
         virtual void onUpdate(const uint64_t time) override;
 
-        virtual void onPaint();
+        virtual Status onPaint() override {
+            return layers.draw();
+        }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
-    };
-
-    class OverlappedWindow:public SystemWindow {
-    public:
-        OverlappedWindow(Ghurund::Timer& timer);
-    };
-
-    class FullscreenWindow:public SystemWindow {
-    public:
-        FullscreenWindow(Ghurund::Timer& timer);
-    };
-
-    class PopupWindow:public SystemWindow {
-    public:
-        PopupWindow(Ghurund::Timer& timer);
     };
 }

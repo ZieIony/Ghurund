@@ -12,9 +12,6 @@
 #include "script/ScriptEngine.h"
 #include "ui/Graphics2D.h"
 
-#include "WindowType.h"
-#include "ui/RootView.h"
-#include "ui/Canvas.h"
 #include "SystemWindow.h"
 
 #include "net/Networking.h"
@@ -148,9 +145,7 @@ namespace Ghurund {
                     //levelManager.draw(commandList);
                     frame.flush();
 
-                    graphics2d->beginPaint(frame.RenderTarget);
-                    window->onPaint();
-                    if (graphics2d->endPaint() != Status::OK)
+                    if (window->onPaint() != Status::OK)
                         break;
 
                     if (renderer->finishFrame(frame) != Status::OK)
@@ -158,7 +153,8 @@ namespace Ghurund {
                     if (window->SwapChain->present() != Status::OK)
                         break;
                 } else {
-                    window->onPaint();
+                    if (window->onPaint() != Status::OK)
+                        break;
                 }
             }
         }
@@ -180,10 +176,5 @@ namespace Ghurund {
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
-    }
-
-    void Application::reset() {
-        onUninit();
-        onInit();
     }
 }

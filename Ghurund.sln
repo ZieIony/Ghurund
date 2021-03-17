@@ -10,7 +10,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Engine\Engine.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Core", "Engine.Core\Engine.Core.vcxproj", "{D4EE5946-F2FB-47DE-93D3-5B27B9BCEBC9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game", "Game\Game.vcxproj", "{89C8EDBB-26B6-4D6A-B3EE-7D825BF0A85B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "Editor\Editor.vcxproj", "{89C8EDBB-26B6-4D6A-B3EE-7D825BF0A85B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC} = {86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC}
 	EndProjectSection

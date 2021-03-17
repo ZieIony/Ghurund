@@ -167,6 +167,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFocus)) Control* Focus;
 
+        inline Control* findFocus() {
+            Control* focus = Focus;
+            if (focus) {
+                while (focus->Focus)
+                    focus = focus->Focus;
+            }
+            return focus;
+        }
+
         void requestFocus();
 
         void clearFocus();

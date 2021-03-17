@@ -20,7 +20,7 @@ namespace Ghurund {
 
     class Timer;
 
-    class Window: public ParameterProvider, public NamedObject, public Object, public Input::EventConsumer {
+    class Window:public ParameterProvider, public NamedObject, public Object, public Input::EventConsumer {
     private:
         WString title;
         bool visible = false;
@@ -51,7 +51,10 @@ namespace Ghurund {
         }
 
         virtual void onUpdate(const uint64_t time) {}
-        virtual void onPaint() {}
+
+        virtual Status onPaint() {
+            return Status::OK;
+        }
 
         Event<Window> onClosed = *this;
         virtual bool onClosedEvent() {
@@ -144,7 +147,7 @@ namespace Ghurund {
             size = { w, h };
         }
 
-        __declspec(property(get = getSize, put = setSize)) IntSize& Size;
+        __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
 
         virtual bool isFocused() const {
             return false;
@@ -154,7 +157,7 @@ namespace Ghurund {
 
         virtual void refresh() const {}
 
-        virtual void activate() const {}
+        virtual void activate() {}
 
         inline Window* getParent() {
             return parent;

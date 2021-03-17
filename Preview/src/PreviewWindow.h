@@ -1,6 +1,7 @@
 #pragma once
 
 #include "application/SystemWindow.h"
+#include "application/WindowClass.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
@@ -9,6 +10,7 @@
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include "ui/Canvas.h"
+#include "ui/UILayer.h"
 
 #include "LayoutBinding.h"
 
@@ -16,7 +18,7 @@ namespace Preview {
     using namespace Ghurund;
     using namespace Ghurund::UI;
 
-    class PreviewWindow:public OverlappedWindow {
+    class PreviewWindow:public SystemWindow {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
@@ -29,7 +31,7 @@ namespace Preview {
         Application* app;
 
     public:
-        PreviewWindow(Application& app):OverlappedWindow(app.Timer) {
+        PreviewWindow(Application& app):SystemWindow(WindowClass::WINDOWED, app.Timer) {
             this->app = &app;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
@@ -40,11 +42,8 @@ namespace Preview {
             layoutLoader.init(*lightTheme, app.ResourceContext);
             context = ghnew UIContext(app.Graphics2D, *this, layoutLoader);
 
-            Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
-            canvas->init(app.Graphics2D);
-            rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
+            rootView = ghnew Ghurund::UI::RootView(*context);
             rootView->Theme = lightTheme;
-            rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
 
             PointerList<Control*> controls;
             layoutLoader.load(L"Preview/res/layout.xml", controls);
@@ -75,7 +74,7 @@ namespace Preview {
             binding->Color3->Clicked.add(colorClickHandler);
             binding->Color4->Clicked.add(colorClickHandler);
 
-            RootView = rootView;
+            Layers.add(ghnew UILayer(app.Graphics2D, *swapChain, rootView));
 
             DragDropEnabled = true;
             OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>* files) {
@@ -94,8 +93,7 @@ namespace Preview {
         }
 
         ~PreviewWindow() {
-            RootView = nullptr;
-            rootView->release();
+            Layers.clear();
             delete filePath;
             delete context;
             delete lightTheme;
@@ -104,11 +102,9 @@ namespace Preview {
 
         void updateTheme(CheckBox& checkBox) {
             if (checkBox.Checked) {
-                rootView->BackgroundColor = darkTheme->Colors[Theme::COLOR_BACKGR0UND];
                 layoutLoader.init(*darkTheme, layoutLoader.ResourceContext);
                 rootView->Theme = darkTheme;
             } else {
-                rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
                 layoutLoader.init(*lightTheme, layoutLoader.ResourceContext);
                 rootView->Theme = lightTheme;
             }

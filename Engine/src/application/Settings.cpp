@@ -9,9 +9,9 @@ namespace Ghurund {
             if (keyVal.Size != 2)
                 return;
             if (keyVal[0] == "width")
-                width = _ttoi(keyVal[1].getData());
+                windowSize.width = _ttoi(keyVal[1].getData());
             if (keyVal[0] == "height")
-                height = _ttoi(keyVal[1].getData());
+                windowSize.height = _ttoi(keyVal[1].getData());
             if (keyVal[0] == "windowed")
                 windowed = keyVal[1] == "true";
         }

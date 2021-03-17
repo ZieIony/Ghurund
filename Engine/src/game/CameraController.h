@@ -6,6 +6,8 @@
 #include "input/Input.h"
 
 namespace Ghurund {
+    class SystemWindow;
+
     class CameraController: public Input::EventConsumer {
     public:
         enum class Mode {

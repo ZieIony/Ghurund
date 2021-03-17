@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EventArgs.h"
+#include "InputEventArgs.h"
 #include "core/math/Point.h"
 
 namespace Ghurund::Input {
@@ -16,13 +16,13 @@ namespace Ghurund::Input {
         DOWN, UP
     };
 
-    class MouseEventArgs:public EventArgs {
+    class MouseEventArgs:public InputEventArgs {
     private:
         IntPoint position;
         bool inside;
 
     public:
-        MouseEventArgs(const IntPoint& pos, uint64_t time, bool inside):EventArgs(time), position(pos), inside(inside) {}
+        MouseEventArgs(const IntPoint& pos, uint64_t time, bool inside):InputEventArgs(time), position(pos), inside(inside) {}
 
         inline const IntPoint& getPosition() const {
             return position;

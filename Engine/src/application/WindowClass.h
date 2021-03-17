@@ -25,7 +25,7 @@ namespace Ghurund {
 
         static const EnumValues<WindowClassEnum, WindowClass> VALUES;
 
-        WindowClass(WindowClassEnum value, const tchar* name, DWORD exStyle, DWORD dwStyle, UINT style);
+        WindowClass(WindowClassEnum value, const AString& name, DWORD exStyle, DWORD dwStyle, UINT style);
 
         ~WindowClass(){
             UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);

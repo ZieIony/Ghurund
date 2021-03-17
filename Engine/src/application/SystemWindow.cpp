@@ -2,7 +2,7 @@
 #include "SystemWindow.h"
 
 #include "Application.h"
-#include "WindowType.h"
+#include "WindowClass.h"
 #include "graphics/SwapChain.h"
 #include "ui/RootView.h"
 
@@ -95,8 +95,8 @@ namespace Ghurund {
         return TYPE;
     }
 
-    SystemWindow::SystemWindow(HWND handle, const WindowClass& type, Ghurund::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {
-        this->handle = handle;
+    SystemWindow::SystemWindow(const WindowClass& type, Ghurund::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {
+        this->handle = type.create();
 
         WindowData* windowData = ghnew WindowData(this);
         SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)windowData);
@@ -110,20 +110,9 @@ namespace Ghurund {
         delete windowData;
         SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)nullptr);
 
-        if (rootView)
-            rootView->release();
         if (handle)
             DestroyWindow(handle);
         delete swapChain;
-    }
-
-    void SystemWindow::setRootView(Ghurund::UI::RootView* rootView) {
-        setPointer(this->rootView, rootView);
-
-        if (rootView) {
-            rootView->PreferredSize = { (float)Size.width, (float)Size.height };
-            rootView->invalidate();
-        }
     }
 
     void SystemWindow::setPosition(int x, int y) {
@@ -146,10 +135,7 @@ namespace Ghurund {
 
             if (swapChain)
                 swapChain->resize(Size.width, Size.height);
-            if (rootView) {
-                rootView->PreferredSize = { (float)Size.width, (float)Size.height };
-                rootView->invalidate();
-            }
+            layers.Size = Size;
 
             SetWindowPos(handle, 0, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
         }
@@ -173,52 +159,29 @@ namespace Ghurund {
     }
 
     bool SystemWindow::onKeyEvent(const Input::KeyEventArgs& args) {
-        if (rootView)
-            rootView->dispatchKeyEvent(args);
-        return true;
+        return layers.dispatchKeyEvent(args);
     }
 
     bool SystemWindow::onMouseButtonEvent(const Input::MouseButtonEventArgs& args) {
-        if (rootView->dispatchMouseButtonEvent(args) && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
+        bool consumed = layers.dispatchMouseButtonEvent(args);
+        if (consumed && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
             SetCapture(handle);
         } else {
             ReleaseCapture();
         }
-        return true;
+        return consumed;
     }
 
     bool SystemWindow::onMouseMotionEvent(const Input::MouseMotionEventArgs& args) {
-        if (rootView)
-            rootView->dispatchMouseMotionEvent(args);
-        return true;
+        return layers.dispatchMouseMotionEvent(args);
     }
 
     bool SystemWindow::onMouseWheelEvent(const Input::MouseWheelEventArgs& args) {
-        if (rootView)
-            rootView->dispatchMouseWheelEvent(args);
-        return true;
+        return layers.dispatchMouseWheelEvent(args);
     }
 
     void SystemWindow::onUpdate(const uint64_t time) {
         input.dispatchEvents(time, *this);
-        if (rootView) {
-            rootView->onUpdate(time);
-            rootView->measure((float)Size.width, (float)Size.height);
-            rootView->layout(0, 0, (float)Size.width, (float)Size.height);
-        }
+        layers.update(time);
     }
-
-    void SystemWindow::onPaint() {
-        if (rootView)
-            rootView->draw();
-    }
-
-    OverlappedWindow::OverlappedWindow(Ghurund::Timer& timer)
-        : SystemWindow(WindowClass::WINDOWED.create(), WindowClass::WINDOWED, timer) {}
-
-    FullscreenWindow::FullscreenWindow(Ghurund::Timer& timer)
-        : SystemWindow(WindowClass::FULLSCREEN.create(), WindowClass::FULLSCREEN, timer) {}
-
-    PopupWindow::PopupWindow(Ghurund::Timer& timer)
-        : SystemWindow(WindowClass::POPUP.create(), WindowClass::POPUP, timer) {}
 }

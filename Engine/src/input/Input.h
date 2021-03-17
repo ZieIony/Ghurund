@@ -6,10 +6,6 @@
 #include "EventConsumer.h"
 #include "application/WindowMessage.h"
 
-namespace Ghurund {
-    class SystemWindow;
-}
-
 namespace Ghurund::Input {
 
     class Input {
@@ -28,7 +24,7 @@ namespace Ghurund::Input {
             events.add(msg);
         }
 
-        void dispatchEvents(uint64_t time, SystemWindow& window);
+        void dispatchEvents(uint64_t time, EventConsumer& consumer);
 
         inline bool isShiftDown() {
             return keys[VK_SHIFT];

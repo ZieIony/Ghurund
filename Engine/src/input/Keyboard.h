@@ -1,19 +1,19 @@
 #pragma once
 
-#include "EventArgs.h"
+#include "InputEventArgs.h"
 
 namespace Ghurund::Input {
     enum class KeyAction {
         DOWN, UP, CHAR
     };
 
-    class KeyEventArgs:public EventArgs {
+    class KeyEventArgs:public InputEventArgs {
     private:
         KeyAction action;
         int key;
 
     public:
-        KeyEventArgs(KeyAction action, int key, uint64_t time):EventArgs(time) {
+        KeyEventArgs(KeyAction action, int key, uint64_t time):InputEventArgs(time) {
             this->action = action;
             this->key = key;
         }

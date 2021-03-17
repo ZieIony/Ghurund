@@ -1,5 +1,5 @@
 #include "ghpch.h"
-#include "WindowType.h"
+#include "WindowClass.h"
 
 #include "SystemWindow.h"
 #include "input/Keyboard.h"
@@ -8,9 +8,9 @@
 #include <windowsx.h>
 
 namespace Ghurund {
-    const WindowClass WindowClass::WINDOWED = WindowClass(WindowClassEnum::WINDOWED, _T("WINDOWED"), WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, 0);
-    const WindowClass WindowClass::FULLSCREEN = WindowClass(WindowClassEnum::FULLSCREEN, _T("FULLSCREEN"), WS_EX_APPWINDOW, WS_POPUP | WS_EX_TOPMOST, 0);
-    const WindowClass WindowClass::POPUP = WindowClass(WindowClassEnum::POPUP, _T("POPUP"), WS_EX_NOACTIVATE, WS_POPUP, CS_DROPSHADOW);
+    const WindowClass WindowClass::WINDOWED = WindowClass(WindowClassEnum::WINDOWED, "WINDOWED", WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, 0);
+    const WindowClass WindowClass::FULLSCREEN = WindowClass(WindowClassEnum::FULLSCREEN, "FULLSCREEN", WS_EX_APPWINDOW, WS_POPUP | WS_EX_TOPMOST, 0);
+    const WindowClass WindowClass::POPUP = WindowClass(WindowClassEnum::POPUP, "POPUP", WS_EX_NOACTIVATE, WS_POPUP, CS_DROPSHADOW);
 
     const EnumValues<WindowClassEnum, WindowClass> WindowClass::VALUES = {
         &WindowClass::WINDOWED,
@@ -18,7 +18,7 @@ namespace Ghurund {
         &WindowClass::POPUP
     };
 
-    WindowClass::WindowClass(WindowClassEnum value, const tchar* name, DWORD exStyle, DWORD dwStyle, UINT style):Enum<WindowClassEnum, WindowClass>(value, name) {
+    WindowClass::WindowClass(WindowClassEnum value, const AString& name, DWORD exStyle, DWORD dwStyle, UINT style):Enum<WindowClassEnum, WindowClass>(value, name) {
         this->exStyle = exStyle;
         this->dwStyle = dwStyle;
         className = fmt::format(_T("Ghurund{}"), name).c_str();

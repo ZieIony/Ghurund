@@ -1,6 +1,6 @@
 #include "Ghurund.h"
 
-#include "TestApplication.h"
+#include "EditorApplication.h"
 
 #include "Dxgi1_6.h"
 #include <dxgidebug.h>
@@ -22,13 +22,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
 
     Logger::init();
 
-    HANDLE singleInstanceMutex = CreateMutex(nullptr, true, "Ghurund::Game");
+    HANDLE singleInstanceMutex = CreateMutex(nullptr, true, "Ghurund::Editor");
     bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
 
     if (alreadyRunning) {
-        MessageBox(nullptr, _T("Application is already running."), "Ghurund::Game", MB_OK | MB_ICONEXCLAMATION);
+        MessageBox(nullptr, _T("Application is already running."), "Ghurund::Editor", MB_OK | MB_ICONEXCLAMATION);
     } else {
-        Game::TestApplication application;
+        Ghurund::Editor::EditorApplication application;
         Settings settings;
         settings.parse(cmdLine);
         application.run(&settings);
