@@ -1,8 +1,8 @@
 #include "ghpch.h"
 #include "SvgImage.h"
 
+#include "graphics/Graphics2D.h"
 #include "resource/ResourceContext.h"
-#include "ui/Graphics2D.h"
 
 #include <Shlwapi.h>
 

@@ -2,6 +2,7 @@
 #include "ParameterProvider.h"
 
 #include "TextureParameter.h"
+#include "ValueParameter.h"
 #include "core/SharedPointer.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"

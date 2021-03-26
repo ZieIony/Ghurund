@@ -3,16 +3,15 @@
 
 #include "audio/Audio.h"
 #include "core/threading/FunctionQueue.h"
+#include "core/window/SystemWindow.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/Graphics.h"
+#include "graphics/Graphics2D.h"
 #include "graphics/Renderer.h"
 #include "physics/Physics.h"
 #include "resource/ResourceContext.h"
 #include "resource/ResourceManager.h"
 #include "script/ScriptEngine.h"
-#include "ui/Graphics2D.h"
-
-#include "SystemWindow.h"
 
 #include "net/Networking.h"
 
@@ -35,7 +34,7 @@ namespace Ghurund {
         if (result != Status::OK)
             return result;
 
-        graphics2d = ghnew Ghurund::UI::Graphics2D();
+        graphics2d = ghnew Ghurund::Graphics2D();
         result = graphics2d->init(*graphics);
         if (result != Status::OK)
             return result;
@@ -133,7 +132,7 @@ namespace Ghurund {
                 scriptEngine->update(time);
 
                 for (auto window : windows)
-                    window->onUpdate(time);
+                    window->update(time);
             }
 
             for (auto window : windows) {
@@ -145,7 +144,7 @@ namespace Ghurund {
                     //levelManager.draw(commandList);
                     frame.flush();
 
-                    if (window->onPaint() != Status::OK)
+                    if (window->paint() != Status::OK)
                         break;
 
                     if (renderer->finishFrame(frame) != Status::OK)
@@ -153,7 +152,7 @@ namespace Ghurund {
                     if (window->SwapChain->present() != Status::OK)
                         break;
                 } else {
-                    if (window->onPaint() != Status::OK)
+                    if (window->paint() != Status::OK)
                         break;
                 }
             }

@@ -12,15 +12,13 @@ namespace Preview {
     class PreviewApplication:public Application {
     public:
         void onInit() {
-            SystemWindow* window = ghnew PreviewWindow(*this);
-
-            window->initParameters(ParameterManager);
+            auto window = ghnew PreviewWindow(*this);
 
             window->Size = Settings.windowSize;
 
             Windows.add(window);
             window->OnClosed.add([this](Ghurund::Window& window) {
-                Windows.remove((SystemWindow*)&window);
+                Windows.remove((PreviewWindow*)&window);
                 delete &window;
                 return true;
             });

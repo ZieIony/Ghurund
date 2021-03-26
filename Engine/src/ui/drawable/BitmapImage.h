@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/math/Size.h"
 #include "graphics/Graphics.h"
 #include "graphics/Fence.h"
 #include "graphics/texture/Image.h"
@@ -43,9 +44,9 @@ namespace Ghurund::UI {
 
         virtual bool isValid();
 
-        Status init(Ghurund::UI::Graphics2D& graphics2d, Image& image);
+        Status init(Ghurund::Graphics2D& graphics2d, Image& image);
 
-        Status init(Ghurund::UI::Graphics2D& graphics2d, IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
+        Status init(Ghurund::Graphics2D& graphics2d, IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
         inline Image* getImage() {
             return image;

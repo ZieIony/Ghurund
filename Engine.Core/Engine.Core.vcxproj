@@ -20,7 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
+    <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
+    <ClCompile Include="src\core\Timer.cpp" />
+    <ClCompile Include="src\core\window\DragDropManager.cpp" />
+    <ClCompile Include="src\core\window\SystemWindow.cpp" />
+    <ClCompile Include="src\core\window\Window.cpp" />
+    <ClCompile Include="src\core\window\WindowClass.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghcpch.h</PrecompiledHeaderFile>
@@ -48,6 +54,11 @@
     <ClInclude Include="src\core\collection\Queue.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
+    <ClInclude Include="src\core\input\EventConsumer.h" />
+    <ClInclude Include="src\core\input\Input.h" />
+    <ClInclude Include="src\core\input\InputEventArgs.h" />
+    <ClInclude Include="src\core\input\Keyboard.h" />
+    <ClInclude Include="src\core\input\Mouse.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
     <ClInclude Include="src\core\logging\Log.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />
@@ -103,6 +114,16 @@
     </ClInclude>
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\Timer.h" />
+    <ClInclude Include="src\core\window\ChildWindow.h" />
+    <ClInclude Include="src\core\window\Clipboard.h" />
+    <ClInclude Include="src\core\window\DragDropManager.h" />
+    <ClInclude Include="src\core\window\Layer.h" />
+    <ClInclude Include="src\core\window\LayerList.h" />
+    <ClInclude Include="src\core\window\SystemWindow.h" />
+    <ClInclude Include="src\core\window\Window.h" />
+    <ClInclude Include="src\core\window\WindowClass.h" />
+    <ClInclude Include="src\core\window\WindowMessage.h" />
     <ClInclude Include="src\ghcpch.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\threading\Task.h" />

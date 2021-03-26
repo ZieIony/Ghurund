@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Array.h"
+#include "core/Pointer.h"
 
 namespace Ghurund {
     template<class Value>

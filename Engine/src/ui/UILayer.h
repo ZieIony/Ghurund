@@ -1,14 +1,16 @@
 #pragma once
 
-#include "RootView.h"
-#include "application/Layer.h"
+#include "ui/Canvas.h"
+#include "ui/RootView.h"
+#include "core/window/Layer.h"
+#include "graphics/Graphics2d.h"
 
 namespace Ghurund::UI {
     class UILayer:public Layer {
     private:
         Graphics2D& graphics;
         SwapChain& swapChain;
-        Ghurund::UI::Canvas* canvas;
+        Canvas* canvas;
         RootView* rootView;
 
     protected:
@@ -19,8 +21,8 @@ namespace Ghurund::UI {
 
     public:
         UILayer(Graphics2D& graphics, SwapChain& swapChain, RootView* rootView):graphics(graphics), swapChain(swapChain) {
-            canvas = ghnew Ghurund::UI::Canvas();
-            canvas->init(graphics);
+            canvas = ghnew Canvas();
+            canvas->init(graphics.DeviceContext);
             this->rootView = rootView;
             rootView->addReference();
         }
@@ -30,19 +32,19 @@ namespace Ghurund::UI {
             delete canvas;
         }
 
-        virtual bool dispatchKeyEvent(const Ghurund::Input::KeyEventArgs& args) {
+        virtual bool dispatchKeyEvent(const Ghurund::KeyEventArgs& args) {
             return rootView->dispatchKeyEvent(args);
         }
 
-        virtual bool dispatchMouseButtonEvent(const Ghurund::Input::MouseButtonEventArgs& args) {
+        virtual bool dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& args) {
             return rootView->dispatchMouseButtonEvent(args);
         }
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::Input::MouseMotionEventArgs& args) {
+        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& args) {
             return rootView->dispatchMouseMotionEvent(args);
         }
 
-        virtual bool dispatchMouseWheelEvent(const Ghurund::Input::MouseWheelEventArgs& args) {
+        virtual bool dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& args) {
             return rootView->dispatchMouseWheelEvent(args);
         }
 

@@ -1,5 +1,6 @@
 #include "ghpch.h"
 #include "ConstantBuffer.h"
+#include "game/parameter/ValueParameter.h"
 
 namespace Ghurund {
     ConstantBuffer::ConstantBuffer(Graphics& graphics, ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility) :

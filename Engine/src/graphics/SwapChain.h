@@ -9,20 +9,17 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 
-namespace Ghurund::UI {
-    class Graphics2D;
-}
-
 namespace Ghurund {
     using namespace Microsoft::WRL;
 
     class Graphics;
+    class Graphics2D;
     class SystemWindow;
 
     class SwapChain:public Object {
     private:
         Graphics* graphics;
-        Ghurund::UI::Graphics2D* graphics2d;
+        Ghurund::Graphics2D* graphics2d;
         ComPtr<IDXGISwapChain3> swapChain;
         Frame* frames;
         uint32_t frameCount;
@@ -38,7 +35,7 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount = 3);
+        Status init(Graphics& graphics, Ghurund::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount = 3);
 
         Status initBuffers();
 

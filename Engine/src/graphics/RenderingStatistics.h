@@ -1,7 +1,7 @@
 #pragma once
 
+#include "core/Timer.h"
 #include "editor/ObservableObject.h"
-#include "application/Timer.h"
 
 namespace Ghurund {
     class RenderingStatistics:public ObservableObject {

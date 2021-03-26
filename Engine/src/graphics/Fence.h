@@ -1,6 +1,5 @@
 #pragma once
 
-#include "application/Window.h"
 #include "core/NamedObject.h"
 
 #include <d3d12.h>

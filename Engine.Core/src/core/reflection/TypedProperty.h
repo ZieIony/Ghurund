@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Property.h"
+
 namespace Ghurund {
     template<class OwnerType, class PropType>
     class TypedProperty:public Property {

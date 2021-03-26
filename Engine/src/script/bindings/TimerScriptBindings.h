@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ScriptBindings.h"
-#include "application/Timer.h"
+#include "core/Timer.h"
 
 namespace Ghurund {
 

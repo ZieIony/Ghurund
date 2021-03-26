@@ -17,11 +17,11 @@ namespace Ghurund::UI {
     }
 
     void BitmapImageDrawable::onDraw(Canvas& canvas) {
-        auto dst = FloatRect{ position.x, position.y, position.x + size.width, position.y + size.height };
+        auto dst = FloatRect{ 0, 0, size.width, size.height };
         if (Tint) {
-            canvas.drawImage(*image, dst, Tint, Alpha);
+            canvas.drawImage(image->Data, dst, Tint, Alpha);
         } else {
-            canvas.drawImage(*image, dst, Alpha);
+            canvas.drawImage(image->Data, dst, Alpha);
         }
     }
 }

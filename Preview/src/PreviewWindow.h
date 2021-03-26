@@ -1,9 +1,9 @@
 #pragma once
 
-#include "application/SystemWindow.h"
-#include "application/WindowClass.h"
-#include "ui/RootView.h"
 #include "application/Application.h"
+#include "application/ApplicationWindow.h"
+#include "core/window/WindowClass.h"
+#include "ui/RootView.h"
 #include "ui/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
@@ -18,7 +18,7 @@ namespace Preview {
     using namespace Ghurund;
     using namespace Ghurund::UI;
 
-    class PreviewWindow:public SystemWindow {
+    class PreviewWindow:public ApplicationWindow {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
@@ -31,16 +31,16 @@ namespace Preview {
         Application* app;
 
     public:
-        PreviewWindow(Application& app):SystemWindow(WindowClass::WINDOWED, app.Timer) {
+        PreviewWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
             this->app = &app;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
-            SwapChain = swapChain;
+            SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
-            lightTheme = ghnew LightTheme(app.ResourceContext, 0xff0078D7);
-            darkTheme = ghnew DarkTheme(app.ResourceContext, 0xff0078D7);
-            layoutLoader.init(*lightTheme, app.ResourceContext);
-            context = ghnew UIContext(app.Graphics2D, *this, layoutLoader);
+            lightTheme = ghnew LightTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, 0xff0078D7);
+            darkTheme = ghnew DarkTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, 0xff0078D7);
+            layoutLoader.init(*lightTheme);
+            context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, layoutLoader);
 
             rootView = ghnew Ghurund::UI::RootView(*context);
             rootView->Theme = lightTheme;
@@ -102,10 +102,10 @@ namespace Preview {
 
         void updateTheme(CheckBox& checkBox) {
             if (checkBox.Checked) {
-                layoutLoader.init(*darkTheme, layoutLoader.ResourceContext);
+                layoutLoader.init(*darkTheme);
                 rootView->Theme = darkTheme;
             } else {
-                layoutLoader.init(*lightTheme, layoutLoader.ResourceContext);
+                layoutLoader.init(*lightTheme);
                 rootView->Theme = lightTheme;
             }
         }
@@ -141,14 +141,14 @@ namespace Preview {
         }
 
         void loadImage(const Buffer& data) {
-            auto image = makeShared<BitmapImage>();
+            /*auto image = makeShared<BitmapImage>();
             MemoryInputStream stream(data.Data, data.Size);
             DirectoryPath baseDir(L".");
             image->load(app->ResourceContext, baseDir, stream);
             auto imageView = makeShared<ImageView>();
             imageView->Image = ghnew BitmapImageDrawable(image);
             binding->Container->Children = { imageView };
-            binding->Container->invalidate();
+            binding->Container->invalidate();*/
         }
 
         void watchFile(FilePath& filePath) {

@@ -20,14 +20,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
-    <ClCompile Include="src\application\DragDropManager.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
-    <ClCompile Include="src\application\SystemWindow.cpp" />
-    <ClCompile Include="src\application\Window.cpp" />
-    <ClCompile Include="src\application\WindowClass.cpp" />
+    <ClCompile Include="src\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
-    <ClCompile Include="src\application\Timer.cpp" />
     <ClCompile Include="src\ecs\Component.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\game\CameraController.cpp" />
@@ -76,7 +72,6 @@
     <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
     <ClCompile Include="src\graphics\SwapChain.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
-    <ClCompile Include="src\input\Input.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
     <ClCompile Include="src\net\Networking.cpp" />
@@ -97,100 +92,31 @@
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
-    <ClCompile Include="src\ui\Canvas.cpp" />
-    <ClCompile Include="src\ui\control\Border.cpp" />
-    <ClCompile Include="src\ui\control\ClickableControl.cpp" />
-    <ClCompile Include="src\ui\control\Clip.cpp" />
-    <ClCompile Include="src\ui\control\ColorView.cpp" />
-    <ClCompile Include="src\ui\control\Control.cpp" />
-    <ClCompile Include="src\ui\control\ControlContainer.cpp" />
-    <ClCompile Include="src\ui\control\ControlGroup.cpp" />
-    <ClCompile Include="src\ui\control\ImageView.cpp" />
-    <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
-    <ClCompile Include="src\ui\control\ScrollView.cpp" />
-    <ClCompile Include="src\ui\control\SelectableView.cpp" />
-    <ClCompile Include="src\ui\control\Shadow.cpp" />
-    <ClCompile Include="src\ui\control\Space.cpp" />
-    <ClCompile Include="src\ui\control\TextBlock.cpp" />
-    <ClCompile Include="src\ui\control\TextBlockStyle.cpp" />
+    <ClCompile Include="src\graphics\Graphics2D.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapImageDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\SvgImage.cpp" />
-    <ClCompile Include="src\ui\font\TextFormat.cpp" />
-    <ClCompile Include="src\ui\Cursor.cpp" />
-    <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
-    <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
-    <ClCompile Include="src\ui\LayoutLoader.cpp" />
-    <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
-    <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\ManualLayout.cpp" />
-    <ClCompile Include="src\ui\layout\ManualLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\StackLayout.cpp" />
-    <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
-    <ClCompile Include="src\ui\PreferredSize.cpp" />
-    <ClCompile Include="src\ui\RootView.cpp" />
-    <ClCompile Include="src\ui\Shape.cpp" />
-    <ClCompile Include="src\ui\Graphics2D.cpp" />
-    <ClCompile Include="src\ui\style\Theme.cpp" />
-    <ClCompile Include="src\ui\widget\button\Button.cpp" />
-    <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
-    <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
-    <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
-    <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
-    <ClCompile Include="src\ui\widget\DragHelper.cpp" />
-    <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />
-    <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
-    <ClCompile Include="src\ui\widget\Separator.cpp" />
-    <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
-    <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
-    <ClCompile Include="src\ui\widget\tab\TextTabLayout.cpp" />
-    <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
-    <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\text\LayoutEditor.cpp" />
-    <ClCompile Include="src\ui\widget\text\TextField.cpp" />
-    <ClCompile Include="src\ui\widget\text\TextView.cpp" />
-    <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
-    <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
-    <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
-    <ClCompile Include="src\ui\window\WindowFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generated\ButtonBinding.h" />
-    <ClInclude Include="generated\CheckBoxBinding.h" />
-    <ClInclude Include="generated\ExpandableContainerBinding.h" />
-    <ClInclude Include="generated\ScrollBarBinding.h" />
-    <ClInclude Include="generated\TabBinding.h" />
-    <ClInclude Include="generated\TabContainerBinding.h" />
-    <ClInclude Include="generated\ToolbarBinding.h" />
-    <ClInclude Include="generated\TreeRowBinding.h" />
     <ClInclude Include="src\application\Application.h" />
-    <ClInclude Include="src\application\ChildWindow.h" />
-    <ClInclude Include="src\application\DragDropManager.h" />
-    <ClInclude Include="src\application\Layer.h" />
-    <ClInclude Include="src\application\LayerList.h" />
-    <ClInclude Include="src\application\WindowMessage.h" />
     <ClInclude Include="src\application\Settings.h" />
-    <ClInclude Include="src\application\SystemWindow.h" />
-    <ClInclude Include="src\application\Window.h" />
-    <ClInclude Include="src\application\WindowClass.h" />
+    <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\ui\drawable\BitmapImage.h" />
+    <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
+    <ClInclude Include="src\ui\drawable\SvgImage.h" />
+    <ClInclude Include="src\ui\drawable\SvgImageDrawable.h" />
+    <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
     <ClInclude Include="src\graphics\DisplayMode.h" />
-    <ClInclude Include="src\input\InputEventArgs.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
     <ClInclude Include="src\net\MessageType.h" />
     <ClInclude Include="src\net\Networking.h" />
-    <ClInclude Include="src\application\Timer.h" />
     <ClInclude Include="src\ecs\Component.h" />
     <ClInclude Include="src\ecs\System.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
@@ -261,11 +187,7 @@
     <ClInclude Include="src\graphics\texture\Texture.h" />
     <ClInclude Include="src\graphics\mesh\Vertex.h" />
     <ClInclude Include="src\graphics\texture\Textures.h" />
-    <ClInclude Include="src\input\EventConsumer.h" />
-    <ClInclude Include="src\input\Input.h" />
-    <ClInclude Include="src\input\Keyboard.h" />
     <ClInclude Include="src\game\KeyMap.h" />
-    <ClInclude Include="src\input\Mouse.h" />
     <ClInclude Include="src\net\ReliableUDP.h" />
     <ClInclude Include="src\net\ServerMessage.h" />
     <ClInclude Include="src\physics\PhysicsComponent.h" />
@@ -293,66 +215,13 @@
     <ClInclude Include="src\script\ScriptEngine.h" />
     <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
-    <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
-    <ClInclude Include="src\ui\Animation.h" />
-    <ClInclude Include="src\ui\Color.h" />
-    <ClInclude Include="src\ui\control\Border.h" />
-    <ClInclude Include="src\ui\Canvas.h" />
-    <ClInclude Include="src\ui\control\ControlList.h" />
     <ClInclude Include="src\ui\control\CheckableView.h" />
-    <ClInclude Include="src\ui\control\ChildrenProvider.h" />
-    <ClInclude Include="src\ui\control\Clip.h" />
-    <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Column.h" />
-    <ClInclude Include="src\ui\control\Control.h" />
-    <ClInclude Include="src\ui\control\ControlContainer.h" />
-    <ClInclude Include="src\ui\control\ControlParent.h" />
-    <ClInclude Include="src\ui\adapter\ControlPool.h" />
-    <ClInclude Include="src\ui\control\MouseEvents.h" />
-    <ClInclude Include="src\ui\style\DarkTheme.h" />
-    <ClInclude Include="src\ui\style\BaseTheme.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImage.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
-    <ClInclude Include="src\ui\control\Shadow.h" />
-    <ClInclude Include="src\ui\drawable\SvgImage.h" />
-    <ClInclude Include="src\ui\drawable\SvgImageDrawable.h" />
-    <ClInclude Include="src\ui\font\FontCollectionLoader.h" />
-    <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
-    <ClInclude Include="src\ui\LayoutLoader.h" />
-    <ClInclude Include="src\ui\layout\DesktopLayout.h" />
-    <ClInclude Include="src\ui\Shape.h" />
-    <ClInclude Include="src\ui\Graphics2D.h" />
-    <ClInclude Include="src\ui\style\LightTheme.h" />
-    <ClInclude Include="src\ui\UIContext.h" />
-    <ClInclude Include="src\ui\UILayer.h" />
-    <ClInclude Include="src\ui\widget\button\CheckBoxRadio.h" />
-    <ClInclude Include="src\ui\widget\ClickResponseView.h" />
-    <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
-    <ClInclude Include="src\ui\layout\FlowLayout.h" />
-    <ClInclude Include="src\ui\adapter\ItemAdapter.h" />
-    <ClInclude Include="src\ui\adapter\ItemSource.h" />
-    <ClInclude Include="src\ui\layout\LinearLayout.h" />
-    <ClInclude Include="src\ui\adapter\RecyclerView.h" />
-    <ClInclude Include="src\ui\control\SelectableView.h" />
-    <ClInclude Include="src\ui\layout\ManualLayout.h" />
-    <ClInclude Include="src\ui\layout\ManualLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\StackLayout.h" />
-    <ClInclude Include="src\ui\control\TextBlockStyle.h" />
-    <ClInclude Include="src\ui\drawable\Drawable.h" />
-    <ClInclude Include="src\ui\layout\FlowLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\HorizontalLayoutManager.h" />
+    <ClInclude Include="src\graphics\Graphics2D.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
-    <ClInclude Include="src\ui\layout\LayoutManager.h" />
     <ClInclude Include="src\ui\control\ListView.h" />
-    <ClInclude Include="src\ui\control\PaddingContainer.h" />
     <ClInclude Include="src\ui\control\Row.h" />
-    <ClInclude Include="src\ui\control\ScrollView.h" />
-    <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\control\Surface.h" />
-    <ClInclude Include="src\ui\control\TextBlock.h" />
-    <ClInclude Include="src\ui\Cursor.h" />
-    <ClInclude Include="src\ui\control\ImageView.h" />
-    <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
@@ -365,92 +234,18 @@
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\font\TextFormat.h" />
-    <ClInclude Include="src\ui\Alignment.h" />
-    <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
     <ClInclude Include="src\ui\MenuItem.h" />
-    <ClInclude Include="src\ui\Orientation.h" />
-    <ClInclude Include="src\ui\Padding.h" />
-    <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\control\Stack.h" />
     <ClInclude Include="src\ui\layout\LayoutInflater.h" />
     <ClInclude Include="src\ui\Property.h" />
-    <ClInclude Include="src\ui\RootView.h" />
-    <ClInclude Include="src\ui\control\ClickableControl.h" />
-    <ClInclude Include="src\ui\style\Style.h" />
-    <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
-    <ClInclude Include="src\ui\widget\button\Button.h" />
-    <ClInclude Include="src\ui\widget\button\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\button\RadioButton.h" />
-    <ClInclude Include="src\ui\widget\button\RadioGroup.h" />
     <ClInclude Include="src\ui\widget\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\DragHelper.h" />
-    <ClInclude Include="src\ui\widget\ExpandableContainer.h" />
-    <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
-    <ClInclude Include="src\ui\widget\Layout.h" />
-    <ClInclude Include="src\ui\widget\menu\DropDown.h" />
-    <ClInclude Include="src\ui\widget\menu\DropDownLayout.h" />
-    <ClInclude Include="src\ui\widget\menu\MenuItem.h" />
-    <ClInclude Include="src\ui\widget\menu\PopupMenu.h" />
-    <ClInclude Include="src\ui\widget\menu\PopupMenuAdapter.h" />
-    <ClInclude Include="src\ui\widget\menu\Toolbar.h" />
-    <ClInclude Include="src\ui\widget\menu\ToolbarAdapter.h" />
-    <ClInclude Include="src\ui\widget\ProgressBar.h">
-      <FileType>Document</FileType>
-    </ClInclude>
-    <ClInclude Include="src\ui\widget\property\BoolPropertyRow.h" />
-    <ClInclude Include="src\ui\widget\property\ObjectProperty.h" />
-    <ClInclude Include="src\ui\widget\property\PropertyList.h" />
-    <ClInclude Include="src\ui\widget\property\PropertyRow.h" />
-    <ClInclude Include="src\ui\widget\property\StringPropertyRow.h" />
-    <ClInclude Include="src\ui\widget\Separator.h" />
-    <ClInclude Include="src\ui\widget\SeparatorStyle.h" />
-    <ClInclude Include="src\ui\widget\SplitLayout.h" />
-    <ClInclude Include="src\ui\widget\tab\Tab.h" />
-    <ClInclude Include="src\ui\widget\tab\TabContainer.h" />
-    <ClInclude Include="src\ui\widget\tab\TabItemAdapter.h" />
-    <ClInclude Include="src\ui\widget\tab\TextTabLayout.h" />
     <ClInclude Include="src\ui\widget\TextButton.h" />
-    <ClInclude Include="src\application\Clipboard.h" />
-    <ClInclude Include="src\ui\widget\text\DrawingEffect.h" />
-    <ClInclude Include="src\ui\widget\text\LayoutEditor.h" />
-    <ClInclude Include="src\ui\widget\text\SetSelectionMode.h" />
-    <ClInclude Include="src\ui\widget\text\TextField.h" />
     <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
-    <ClInclude Include="src\ui\widget\text\TextView.h" />
-    <ClInclude Include="src\ui\widget\tree\TreeRowAdapter.h" />
-    <ClInclude Include="src\ui\widget\tree\TreeView.h" />
-    <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
-    <ClInclude Include="src\ui\widget\tree\TreeRow.h" />
-    <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
-    <ClInclude Include="src\ui\widget\VerticalScrollBarLayout.h" />
-    <ClInclude Include="src\ui\widget\Widget.h" />
-    <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".gitignore" />
     <None Include="packages.config" />
-    <None Include="src\ui\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="Engine.UI.natvis" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="src\ui\widget\text\license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="res\ExpandableContainer.xml" />
-    <Xml Include="res\Button.xml" />
-    <Xml Include="res\CheckBox.xml" />
-    <Xml Include="res\ScrollBar.xml" />
-    <Xml Include="res\Tab.xml" />
-    <Xml Include="res\TabContainer.xml" />
-    <Xml Include="res\Toolbar.xml" />
-    <Xml Include="res\TreeRow.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -513,7 +308,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.UI\src;$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

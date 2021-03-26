@@ -1,7 +1,7 @@
 #pragma once
 
-#include "application/Window.h"
 #include "core/NamedObject.h"
+#include "core/window/Window.h"
 #include "graphics/CommandList.h"
 #include "graphics/texture/Image.h"
 #include "resource/ResourceContext.h"
@@ -14,11 +14,9 @@
 #include <d2d1_3.h>
 #include <d3d11on12.h>
 
-namespace Ghurund::UI {
-    class Graphics2D;
-}
-
 namespace Ghurund {
+    class Graphics2D;
+
     class RenderTarget: public NamedObject {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
@@ -46,7 +44,7 @@ namespace Ghurund {
 
         Status init(Graphics& graphics, unsigned int width, unsigned int height, DXGI_FORMAT format);
 
-        Status init2D(Ghurund::UI::Graphics2D& graphics2d);
+        Status init2D(Ghurund::Graphics2D& graphics2d);
 
         void uninit();
 

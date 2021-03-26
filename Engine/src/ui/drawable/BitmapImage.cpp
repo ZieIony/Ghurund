@@ -1,7 +1,7 @@
 #include "ghpch.h"
 #include "BitmapImage.h"
 
-#include "ui/Graphics2D.h"
+#include "graphics/Graphics2D.h"
 #include "resource/ResourceContext.h"
 
 namespace Ghurund::UI {
@@ -42,7 +42,7 @@ namespace Ghurund::UI {
         return bitmapImage && image && image->Valid && __super::Valid;
     }
 
-    Status BitmapImage::init(Ghurund::UI::Graphics2D& graphics2d, Ghurund::Image& image) {
+    Status BitmapImage::init(Ghurund::Graphics2D& graphics2d, Ghurund::Image& image) {
         setPointer(this->image, &image);
 
         D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
@@ -58,7 +58,7 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    Status BitmapImage::init(Ghurund::UI::Graphics2D& graphics2d, IntSize size, DXGI_FORMAT format) {
+    Status BitmapImage::init(Ghurund::Graphics2D& graphics2d, IntSize size, DXGI_FORMAT format) {
         if (image)
             image->release();
 

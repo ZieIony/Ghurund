@@ -2,7 +2,7 @@
 #include "RenderTarget.h"
 
 #include "core/math/MathUtils.h"
-#include "ui/Graphics2D.h"
+#include "graphics/Graphics2D.h"
 
 namespace Ghurund {
     Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
@@ -58,7 +58,7 @@ namespace Ghurund {
         return init(graphics, texture);
     }
 
-    Status RenderTarget::init2D(Ghurund::UI::Graphics2D& graphics2d) {
+    Status RenderTarget::init2D(Ghurund::Graphics2D& graphics2d) {
         D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
         if (FAILED(graphics2d.Device11->CreateWrappedResource(texture, &d3d11Flags, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_RENDER_TARGET, IID_PPV_ARGS(&wrappedRenderTarget))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateWrappedResource failed\n");

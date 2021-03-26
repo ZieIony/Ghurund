@@ -2,8 +2,8 @@
 #include "SwapChain.h"
 
 #include "Graphics.h"
-#include "application/SystemWindow.h"
-#include "ui/Graphics2D.h"
+#include "Graphics2D.h"
+#include "core/window/SystemWindow.h"
 
 namespace Ghurund {
     const Ghurund::Type& SwapChain::GET_TYPE() {
@@ -15,7 +15,7 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status SwapChain::init(Graphics& graphics, Ghurund::UI::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {
+    Status SwapChain::init(Graphics& graphics, Ghurund::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {
         this->graphics = &graphics;
         this->graphics2d = graphics2d;
         this->window = &window;

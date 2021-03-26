@@ -2,11 +2,13 @@
 #include "Shader.h"
 
 #include "core/SharedPointer.h"
-#include "game/parameter/TextureParameter.h"
-#include "graphics/texture/Texture.h"
-#include "resource/ResourceManager.h"
+#include "core/collection/PointerArray.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "game/parameter/TextureParameter.h"
+#include "game/parameter/ValueParameter.h"
+#include "graphics/texture/Texture.h"
+#include "resource/ResourceManager.h"
 
 namespace Ghurund {
 	Status Shader::makeRootSignature() {

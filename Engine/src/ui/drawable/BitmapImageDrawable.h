@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Drawable.h"
+#include "ui/drawable/Drawable.h"
 
 namespace Ghurund::UI {
     class BitmapImage;

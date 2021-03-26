@@ -1,8 +1,9 @@
 #pragma once
 
-#include "core/collection/List.h"
+#include "core/collection/PointerArray.h"
 #include "core/SharedPointer.h"
 #include "game/parameter/ParameterManager.h"
+#include "game/parameter/ParameterProvider.h"
 #include "graphics/buffer/DynamicBuffer.h"
 #include "graphics/shader/ConstantBufferField.h"
 #include "graphics/shader/ShaderConstant.h"

@@ -2,7 +2,7 @@
 
 #include "StringFactory.h"
 #include "core/Object.h"
-#include "application/Timer.h"
+#include "core/Timer.h"
 #include "Script.h"
 #include "core/collection/PointerList.h"
 #include "ecs/System.h"

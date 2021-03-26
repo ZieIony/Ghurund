@@ -4,10 +4,10 @@
 #include "game/parameter/ParameterManager.h"
 #include "graphics/Renderer.h"
 #include "graphics/entity/Scene.h"
-#include "input/EventConsumer.h"
+#include "core/input/EventConsumer.h"
 
 namespace Ghurund {
-    class Level:public Input::EventConsumer {
+    class Level:public EventConsumer {
     private:
         PointerList<Scene*> scenes;
 

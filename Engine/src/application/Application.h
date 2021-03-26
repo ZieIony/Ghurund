@@ -1,10 +1,10 @@
 #pragma once
 
+#include "ApplicationWindow.h"
 #include "Settings.h"
-#include "Timer.h"
-#include "Window.h"
 
 #include "core/Noncopyable.h"
+#include "core/Timer.h"
 #include "game/LevelManager.h"
 
 namespace Ghurund::Net {
@@ -19,13 +19,13 @@ namespace Ghurund {
     class ParameterManager;
     class Timer;
     class ResourceContext;
-    class UI::Graphics2D;
+    class Graphics2D;
     class Physics::Physics;
     class FunctionQueue;
 
     class Application:public Noncopyable {
     private:
-        List<SystemWindow*> windows;
+        List<ApplicationWindow*> windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
         Net::Networking* networking;
@@ -33,7 +33,7 @@ namespace Ghurund {
         Graphics* graphics;
         Audio::Audio* audio;
         Physics::Physics* physics;
-        Ghurund::UI::Graphics2D* graphics2d;
+        Ghurund::Graphics2D* graphics2d;
 
         ResourceManager* resourceManager;
         ResourceContext* resourceContext, * asyncResourceContext;
@@ -68,11 +68,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSettings)) const Settings& Settings;
 
-        inline List<SystemWindow*>& getWindows() {
+        inline List<ApplicationWindow*>& getWindows() {
             return windows;
         }
 
-        __declspec(property(get = getWindows)) List<SystemWindow*>& Windows;
+        __declspec(property(get = getWindows)) List<ApplicationWindow*>& Windows;
 
         FunctionQueue& getFunctionQueue() {
             return *functionQueue;
@@ -152,10 +152,10 @@ namespace Ghurund {
 
         __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
 
-        inline Ghurund::UI::Graphics2D& getGraphics2D() {
+        inline Ghurund::Graphics2D& getGraphics2D() {
             return *graphics2d;
         }
 
-        __declspec(property(get = getGraphics2D)) Ghurund::UI::Graphics2D& Graphics2D;
+        __declspec(property(get = getGraphics2D)) Ghurund::Graphics2D& Graphics2D;
     };
 }
