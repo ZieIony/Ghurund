@@ -78,6 +78,7 @@
 					style="theme://style/Border_onBackground"/>
 			<PaddingContainer padding="8">
 				<TextView text="TextView lorem ipsum dolor"
+						   style="theme://style/TextBlock_primary"
 						  minSize="200,0"/>
 			</PaddingContainer>
 		</StackLayout>
@@ -87,6 +88,7 @@
 					style="theme://style/Border_onBackground"/>
 			<PaddingContainer padding="8">
 				<TextField text="TextField lorem ipsum dolor"
+						   style="theme://style/TextBlock_primary"
 						   minSize="200,0"/>
 			</PaddingContainer>
 		</StackLayout>

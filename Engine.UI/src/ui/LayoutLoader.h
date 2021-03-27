@@ -6,22 +6,26 @@
 #include "core/io/FilePath.h"
 #include "core/reflection/Type.h"
 #include "core/string/AStringView.h"
-#include "ui/control/Control.h"
 #include "ui/Alignment.h"
+#include "ui/IResourceLoader.h"
+#include "ui/control/Control.h"
+#include "ui/drawable/ImageDrawable.h"
 
 #include <tinyxml2.h>
+#include <d2d1_3.h>
 
 namespace Ghurund::UI {
     class TextFormat;
     class Theme;
     class Shape;
-    class BitmapImage;
 
     class LayoutLoader {
     private:
         Map<AString, const Type*> types;
-        Theme* theme;
+        Theme* theme = nullptr;
+        ID2D1Factory6* d2dFactory = nullptr;
         Stack<DirectoryPath> workingDir;
+        IResourceLoader* resourceLoader = nullptr;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
@@ -29,8 +33,13 @@ namespace Ghurund::UI {
 
         LayoutLoader();
 
-        inline void init(Theme& theme) {
+        virtual ~LayoutLoader() {}
+
+        inline void init(Theme& theme, ID2D1Factory6& d2dFactory, IResourceLoader& resourceLoader) {
             this->theme = &theme;
+            this->d2dFactory = &d2dFactory;
+            this->d2dFactory = &d2dFactory;
+            this->resourceLoader = &resourceLoader;
         }
 
         void registerClass(const Type& type) {
@@ -55,9 +64,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWorkingDirectory, put = setWorkingDirectory)) const DirectoryPath& WorkingDirectory;
 
-        virtual Pointer* loadResource() {
-            return nullptr;
-        }
+        ImageDrawable* loadDrawable(const char* str);
 
         Status load(const Buffer& data, PointerList<Control*>& output);
 
@@ -71,8 +78,6 @@ namespace Ghurund::UI {
 
         uint32_t loadColor(const char* str);
 
-        BitmapImage* loadImage(const char* str);
-        
         WString loadText(const char* str);
 
         TextFormat* loadTextFormat(const char* str);

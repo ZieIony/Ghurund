@@ -51,8 +51,8 @@ namespace Ghurund::UI {
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);
     }
     
-    void Canvas::drawImage(ID2D1SvgDocument* svgDocument) {
-        deviceContext->DrawSvgDocument(svgDocument);
+    void Canvas::drawImage(ID2D1SvgDocument& svgDocument) {
+        deviceContext->DrawSvgDocument(&svgDocument);
     }
     
     void Canvas::drawShadow(ID2D1Bitmap1* bitmapImage, float radius, const Color& color) {

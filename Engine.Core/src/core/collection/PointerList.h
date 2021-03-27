@@ -70,11 +70,10 @@ namespace Ghurund {
         }
 
         inline void clear() {
-            size_t s = List<Value>::size;
-            List<Value>::clear();
-            for (size_t i = 0; i < s; i++)
+            for (size_t i = 0; i < List<Value>::size; i++)
                 if (List<Value>::v[i] != nullptr)
                     List<Value>::v[i]->release();
+            Collection::clear();
         }
     };
 }

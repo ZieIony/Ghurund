@@ -2,6 +2,11 @@
 
 #include "Object.h"
 
+#ifdef _DEBUG
+#include "core/StackTrace.h"
+#include "core/collection/List.h"
+#endif
+
 namespace Ghurund {
 
     class Pointer: public Object {
@@ -9,6 +14,10 @@ namespace Ghurund {
         unsigned int referenceCount = 1;
 
 #ifdef _DEBUG
+        static List<Pointer*> pointers;
+
+        List<StackTrace::Entry> stacktrace;
+
         void checkReferenceCount();
 #endif
 
@@ -20,7 +29,7 @@ namespace Ghurund {
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        Pointer() {}
+        Pointer();
 
         inline void addReference() {
             referenceCount++;
@@ -41,11 +50,19 @@ namespace Ghurund {
 
         __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
 
+        virtual Pointer* clone() {
+            return nullptr;
+        }
+
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+
+#ifdef _DEBUG
+        static void dumpPointers();
+#endif
     };
 
     template<class Type>

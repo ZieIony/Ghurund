@@ -11,7 +11,7 @@ template <>
 struct fmt::formatter<Ghurund::AString> {
     template <typename FormatContext>
     auto format(const Ghurund::AString& s, FormatContext& ctx) {
-        Ghurund::String str = Ghurund::toTchar(s.Data);
+        Ghurund::String str = Ghurund::toTchar(s);
         return format_to(ctx.out(), "{s}", str.Data);
     }
 
@@ -27,10 +27,8 @@ template <>
 struct fmt::formatter<Ghurund::WString> {
     template <typename FormatContext>
     auto format(const Ghurund::WString& s, FormatContext& ctx) {
-        const tchar* str = Ghurund::toTchar(s.Data);
-        auto f = format_to(ctx.out(), "{s}", str);
-        delete[] str;
-        return f;
+        Ghurund::String str = Ghurund::toTchar(s);
+        return format_to(ctx.out(), "{s}", str.Data);
     }
 
     constexpr auto parse(format_parse_context& ctx) {

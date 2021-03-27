@@ -78,6 +78,12 @@ namespace Ghurund {
             a.deallocate(v);
         }
 
+        inline void clear() {
+            for (size_t i = 0; i < size; i++)
+                v[i].~Value();
+            __super::clear();
+        }
+
         inline Value* begin() {
             return v;
         }

@@ -80,17 +80,4 @@ namespace Ghurund::UI {
             return { 0,0 };
         return { image->Width, image->Height };
     }
-    
-    BitmapImage* BitmapImage::makeFromImage(ResourceContext& context, const FilePath& imagePath) {
-        Status result;
-        Ghurund::Image* image = context.ResourceManager.load<Ghurund::Image>(context, imagePath, &result);
-        if (filterStatus(result, LoadOption::DEFAULT) != Status::OK) {
-            image->release();
-            return nullptr;
-        }
-        BitmapImage* texture = ghnew BitmapImage();
-        texture->init(context.Graphics2D, *image);
-        image->release();
-        return texture;
-    }
 }

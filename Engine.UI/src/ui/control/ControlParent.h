@@ -28,7 +28,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFocus, put = setFocus)) Control* Focus;
 
-        virtual void setCapturedChild(Control* control) {
+        inline void setCapturedChild(Control* control) {
             setPointer(capturedChild, control);
             if (Parent)
                 Parent->CapturedChild = (control ? this : nullptr);

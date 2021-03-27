@@ -14,9 +14,6 @@ namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund;
 
-    class BitmapImage;
-    class SvgImage;
-
     class Canvas {
         ComPtr<ID2D1SolidColorBrush> fillBrush;
         ComPtr<ID2D1SolidColorBrush> strokeBrush;
@@ -78,7 +75,7 @@ namespace Ghurund::UI {
 
         void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f);
 
-        void drawImage(ID2D1SvgDocument* svgDocument);
+        void drawImage(ID2D1SvgDocument& svgDocument);
 
         void drawShadow(ID2D1Bitmap1* bitmapImage, float radius, const Color& color);
 

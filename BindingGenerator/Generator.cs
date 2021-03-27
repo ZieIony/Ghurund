@@ -125,12 +125,18 @@ namespace BindingGenerator {
                     if (control.Name == "content")
                         contentProperty = "Content";
                     streamWriter.Write($@"                {elseIf}if (strcmp(childElement->Name(), ""{layoutClass}.{propertyName}"") == 0) {{
-                    {propertyName} = loader.loadControls(*childElement)[0];
+                    auto controls = loader.loadControls(*childElement);
+                    if (!controls.Empty)
+                        {propertyName} = controls[0];
 ");
                     elseIf = "} else ";
                 }
                 streamWriter.Write($@"                }} else if (!{contentProperty}) {{
-                    { contentProperty } = loader.loadControl(*childElement);
+                    auto control = loader.loadControl(*childElement);
+                    if (control) {{
+                        { contentProperty } = control;
+                        control->release();
+                    }}
                 }}
                 childElement = childElement->NextSiblingElement();
             }}

@@ -4,7 +4,7 @@
 #include "core/collection/PointerMap.h"
 
 #include "ui/Color.h"
-#include "ui/drawable/Drawable.h"
+#include "ui/drawable/ImageDrawable.h"
 #include "ui/text/TextFormat.h"
 #include "ui/style/Style.h"
 
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
         Map<StyleKey, Style*> styles;
         PointerMap<TextFormatKey, TextFormat*> textFormats;
         Map<ColorKey, Color> colors;
-        PointerMap<ImageKey, Drawable*> images;
+        PointerMap<ImageKey, ImageDrawable*> images;
         
         // xml reader doesn't support wchar_t
         Map<const Type*, AString> layouts;
@@ -134,11 +134,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getStyles)) Map<StyleKey, Style*>& Styles;
 
-        inline PointerMap<TextFormatKey, TextFormat*>& getTextStyles() {
+        inline PointerMap<TextFormatKey, TextFormat*>& getTextFormats() {
             return textFormats;
         }
 
-        __declspec(property(get = getTextStyles)) PointerMap<TextFormatKey, TextFormat*>& TextFormats;
+        __declspec(property(get = getTextFormats)) PointerMap<TextFormatKey, TextFormat*>& TextFormats;
 
         inline Map<ColorKey, Color>& getColors() {
             return colors;
@@ -146,11 +146,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColors)) Map<ColorKey, Color>& Colors;
 
-        inline PointerMap<ImageKey, Drawable*>& getImages() {
+        inline PointerMap<ImageKey, ImageDrawable*>& getImages() {
             return images;
         }
 
-        __declspec(property(get = getImages)) PointerMap<ImageKey, Drawable*>& Images;
+        __declspec(property(get = getImages)) PointerMap<ImageKey, ImageDrawable*>& Images;
 
         inline Map<const Type*, AString>& getLayouts() {
             return layouts;

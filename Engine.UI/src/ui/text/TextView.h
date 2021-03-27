@@ -48,6 +48,11 @@ namespace Ghurund::UI {
     public:
         TextView();
 
+        ~TextView() {
+            if (cursorDrawable)
+                cursorDrawable->release();
+        }
+
         inline CursorDrawable* getCursorDrawable() {
             return cursorDrawable;
         }

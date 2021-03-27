@@ -2,7 +2,7 @@
 
 #include "Control.h"
 #include "ui/Alignment.h"
-#include "ui/drawable/Drawable.h"
+#include "ui/drawable/ImageDrawable.h"
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {

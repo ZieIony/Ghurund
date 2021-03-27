@@ -5,33 +5,30 @@
 #include "LogType.h"
 #include "LogOutput.h"
 #include "core/Noncopyable.h"
+#include "core/StackTrace.h"
 #include "core/threading/CriticalSection.h"
 
 #include "fmt/core.h"
-
-struct _SYMBOL_INFO;
 
 namespace Ghurund {
     class Logger:public Noncopyable {
     private:
         static HANDLE process;
-        static _SYMBOL_INFO* symbol;
         static CriticalSection criticalSection;
         static LogTypeEnum filterLevel;
 
         static LogOutput* logOutput;
 
-        static address_t getAddress();
-
-        static std::basic_string<tchar> getFileLine(address_t address);
-
         template<typename... Args>
-        static void logVA(LogType type, const tchar* formatStr, Args&& ... args) {
+        static void logVA(const LogType& type, const tchar* format, Args&& ... args) {
             if (((int)type.Value) < (int)filterLevel)
                 return;
 
-            std::basic_string<tchar> fileLine = getFileLine(getAddress());
-            std::basic_string<tchar> message = fmt::format(formatStr, args...);
+            StackTrace stacktrace(GetCurrentProcess());
+            StackTrace::Entry entry = stacktrace[2];
+
+            std::basic_string<tchar> fileLine = fmt::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+            std::basic_string<tchar> message = fmt::format(format, args...);
 
             criticalSection.enter();
             logOutput->log({ type, fileLine.c_str(), message.c_str() });
@@ -48,14 +45,25 @@ namespace Ghurund {
         }
 
         template<typename... Args>
-        static void log(LogType type, const tchar* format, Args&& ... args) {
+        static void log(const LogType& type, const tchar* format, Args&& ... args) {
             logVA(type, format, args...);
         }
 
         template<typename... Args>
-        static Status log(LogType type, const Status status, const tchar* format, Args&& ... args) {
+        static Status log(const LogType& type, const Status status, const tchar* format, Args&& ... args) {
             logVA(type, format, args...);
             return status;
+        }
+
+        template<typename... Args>
+        static void print(const LogType& type, const tchar* format, Args&& ... args) {
+            if (((int)type.Value) < (int)filterLevel)
+                return;
+
+            std::basic_string<tchar> message = fmt::format(format, args...);
+            criticalSection.enter();
+            logOutput->log({ type, "", message.c_str() });
+            criticalSection.leave();
         }
     };
 

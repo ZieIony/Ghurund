@@ -40,6 +40,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, 
         application.run(&settings);
     }
 
+#ifdef _DEBUG
+    Pointer::dumpPointers();
+#endif
     CloseHandle(singleInstanceMutex);
 
     Logger::uninit();

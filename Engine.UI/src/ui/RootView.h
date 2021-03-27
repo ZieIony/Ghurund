@@ -7,12 +7,16 @@ namespace Ghurund::UI {
     class RootView: public ControlContainer {
     private:
         Control* prevFocusedChild = nullptr;
-        Control* capturedChild = nullptr;
         UIContext* context = nullptr;
         bool focused = false;
 
     public:
         RootView(UIContext& context);
+
+        ~RootView() {
+            if (prevFocusedChild)
+                prevFocusedChild->release();
+        }
 
         virtual bool isFocused() const override {
             return focused;
@@ -38,10 +42,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = isFocused, put = setFocused)) bool Focused;
-
-        virtual void setCapturedChild(Control* control) override {
-            this->capturedChild = control;
-        }
 
         virtual UIContext* getContext() override {
             return context;

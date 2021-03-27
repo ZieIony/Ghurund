@@ -78,6 +78,7 @@
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypedProperty.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
+    <ClInclude Include="src\core\StackTrace.h" />
     <ClInclude Include="src\core\string\AString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
     <ClInclude Include="src\core\collection\BufferedValue.h" />

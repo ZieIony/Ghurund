@@ -100,11 +100,10 @@ namespace Ghurund::UI {
             return result;
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            /*BitmapImage* image = loader.loadImage(imageAttr->Value());
-            if (!image)
-                return Status::INV_PARAM;
-            Image = makeShared<BitmapImageDrawable>(image);
-            image->release();*/
+            auto image = loader.loadDrawable(imageAttr->Value());
+            Image = image;
+            if (image)
+                image->release();
         }
         if (image) {
             auto imageTintAttr = xml.FindAttribute("imageTint");

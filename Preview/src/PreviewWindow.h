@@ -3,8 +3,9 @@
 #include "application/Application.h"
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
-#include "ui/RootView.h"
 #include "ui/LayoutLoader.h"
+#include "ui/ResourceLoader.h"
+#include "ui/RootView.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
 #include <ui/widget/button/Button.h>
@@ -24,6 +25,7 @@ namespace Preview {
         UIContext* context;
         SharedPointer<Ghurund::UI::RootView> rootView;
         LayoutBinding* binding;
+        ResourceLoader* resourceLoader;
         LayoutLoader layoutLoader;
         FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
@@ -37,9 +39,10 @@ namespace Preview {
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
-            lightTheme = ghnew LightTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, 0xff0078D7);
-            darkTheme = ghnew DarkTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, 0xff0078D7);
-            layoutLoader.init(*lightTheme);
+            resourceLoader = ghnew ResourceLoader(app.ResourceContext);
+            lightTheme = ghnew LightTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader, 0xff0078D7);
+            darkTheme = ghnew DarkTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader, 0xff0078D7);
+            layoutLoader.init(*lightTheme, *app.Graphics2D.Factory, *resourceLoader);
             context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, layoutLoader);
 
             rootView = ghnew Ghurund::UI::RootView(*context);
@@ -94,18 +97,20 @@ namespace Preview {
 
         ~PreviewWindow() {
             Layers.clear();
+            delete binding;
             delete filePath;
             delete context;
             delete lightTheme;
             delete darkTheme;
+            delete resourceLoader;
         }
 
         void updateTheme(CheckBox& checkBox) {
             if (checkBox.Checked) {
-                layoutLoader.init(*darkTheme);
+                layoutLoader.init(*darkTheme, *app->Graphics2D.Factory, *resourceLoader);
                 rootView->Theme = darkTheme;
             } else {
-                layoutLoader.init(*lightTheme);
+                layoutLoader.init(*lightTheme, *app->Graphics2D.Factory, *resourceLoader);
                 rootView->Theme = lightTheme;
             }
         }
@@ -121,7 +126,7 @@ namespace Preview {
                     if (path.FileName.endsWith(L".xml")) {
                         loadLayout(buffer);
                     } else {
-                        loadImage(buffer);
+                        loadDrawable(buffer);
                     }
                 } else {
                     app->FunctionQueue.post(loadCallback);
@@ -140,7 +145,7 @@ namespace Preview {
             binding->Container->invalidate();
         }
 
-        void loadImage(const Buffer& data) {
+        void loadDrawable(const Buffer& data) {
             /*auto image = makeShared<BitmapImage>();
             MemoryInputStream stream(data.Data, data.Size);
             DirectoryPath baseDir(L".");

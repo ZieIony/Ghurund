@@ -119,6 +119,7 @@
     <ClInclude Include="src\ui\control\SelectableView.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\control\Space.h" />
+    <ClInclude Include="src\ui\drawable\ImageDrawable.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextBlockStyle.h" />
     <ClInclude Include="src\ui\Cursor.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
     <ClInclude Include="src\ui\UIContext.h" />
+    <ClInclude Include="src\ui\IResourceLoader.h" />
     <ClInclude Include="src\ui\widget\Button.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />

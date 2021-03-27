@@ -2,22 +2,13 @@
 
 #include "ui/control/Control.h"
 
-#include <DirectXMath.h>
-
 namespace Ghurund::UI {
-    using namespace DirectX;
-
     class Drawable:public Pointer {
     protected:
         FloatSize size = { 0, 0 };
         PreferredSize preferredSize;
 
         Control* owner = nullptr;
-
-        ~Drawable() {
-            if (owner)
-                owner->release();
-        }
 
     public:
         inline FloatSize& getSize() {
@@ -46,7 +37,7 @@ namespace Ghurund::UI {
         }
 
         inline void setOwner(Control* owner) {
-            setPointer(this->owner, owner);
+            this->owner = owner;
         }
 
         __declspec(property(get = getOwner, put = setOwner)) Control* Owner;
@@ -58,32 +49,5 @@ namespace Ghurund::UI {
         void draw(Canvas& canvas) {
             onDraw(canvas);
         }
-    };
-
-    class ImageDrawable:public Drawable {
-    private:
-        uint32_t tint = 0;
-        float alpha = 1.0f;
-
-    public:
-        inline void setTint(const uint32_t color) {
-            this->tint = color;
-        }
-
-        inline uint32_t getTint() const {
-            return tint;
-        }
-
-        __declspec(property(get = getTint, put = setTint)) uint32_t Tint;
-
-        inline void setAlpha(const float alpha) {
-            this->alpha = alpha;
-        }
-
-        inline float getAlpha() const {
-            return alpha;
-        }
-
-        __declspec(property(get = getAlpha, put = setAlpha)) float Alpha;
     };
 }

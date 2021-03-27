@@ -61,6 +61,18 @@ namespace Ghurund::UI {
         registerClass(ExpandableContainer::TYPE);
     }
 
+    ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
+        AString s = str;
+        if (s.startsWith(FILE_PROTOCOL)) {
+            return resourceLoader->loadDrawable(getPath(str));
+        } else if (s.startsWith(THEME_PROTOCOL) && theme) {
+            ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"image/"));
+            if (theme->Images.containsKey(imageKey))
+                return (ImageDrawable*)theme->Images[imageKey]->clone();
+        }
+        return nullptr;
+    }
+
     Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)data.Data, data.Size);
@@ -142,13 +154,13 @@ namespace Ghurund::UI {
     }
 
     Shape* LayoutLoader::loadShape(const char* str) {
-        /*AString s = str;
+        AString s = str;
         if (s == "rect") {
-            return ghnew Rect(context->Graphics2D);
+            return ghnew Rect(d2dFactory);
         } else if (s.startsWith("roundRect")) {
             float radius = (float)atof(s.substring(s.find(",") + 1).trim().Data);
-            return ghnew RoundRect(context->Graphics2D, radius);
-        }*/
+            return ghnew RoundRect(d2dFactory, radius);
+        }
         return nullptr;
     }
 
@@ -172,21 +184,6 @@ namespace Ghurund::UI {
                 return theme->Colors[colorKey];
         }
         return value;
-    }
-
-    BitmapImage* LayoutLoader::loadImage(const char* str) {
-        /*AString s = str;
-        if (s.startsWith(FILE_PROTOCOL)) {
-            return BitmapImage::makeFromImage(*context, getPath(s));
-        } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"image/"));
-            if (theme->Images.containsKey(imageKey)) {
-                BitmapImage* image = theme->Images[imageKey];
-                image->addReference();
-                return image;
-            }
-        }*/
-        return nullptr;
     }
 
     WString LayoutLoader::loadText(const char* str) {

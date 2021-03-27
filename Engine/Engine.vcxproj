@@ -105,6 +105,7 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\ui\ResourceLoader.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
     <ClInclude Include="src\ui\drawable\SvgImage.h" />

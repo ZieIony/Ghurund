@@ -2,6 +2,7 @@
 
 #include "Theme.h"
 
+#include "ui/IResourceLoader.h"
 #include "ui/control/Border.h"
 #include "ui/control/Shadow.h"
 #include "ui/control/Control.h"
@@ -54,7 +55,7 @@ namespace Ghurund::UI {
         StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
     public:
-        BaseTheme(FontCollectionLoader& fontLoader, IDWriteFactory& dwriteFactory) {
+        BaseTheme(FontCollectionLoader& fontLoader, IDWriteFactory& dwriteFactory, IResourceLoader& resourceLoader) {
             auto buttonFont = Ghurund::makeShared<TextFormat>(L"fonts/lato_medium.ttf", L"Lato Medium", 10.0f, FW_MEDIUM, false);
             buttonFont->init(fontLoader, dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_BUTTON, buttonFont);
@@ -71,20 +72,20 @@ namespace Ghurund::UI {
             textSecondaryFont->init(fontLoader, dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
-            /*SharedPointer<Drawable> checkBoxChecked = BitmapImage::makeFromImage(context, L"icons/checkbox checked 18.png");
+            SharedPointer<ImageDrawable> checkBoxChecked = resourceLoader.loadDrawable(L"icons/checkbox checked 18.png");
             Images.set(Theme::IMAGE_CHECKBOX_CHECKED, checkBoxChecked);
-            SharedPointer<Drawable> checkBoxUnchecked = BitmapImage::makeFromImage(context, L"icons/checkbox unchecked 18.png");
+            SharedPointer<ImageDrawable> checkBoxUnchecked = resourceLoader.loadDrawable(L"icons/checkbox unchecked 18.png");
             Images.set(Theme::IMAGE_CHECKBOX_UNCHECKED, checkBoxUnchecked);
-            SharedPointer<Drawable> radioButtonChecked = BitmapImage::makeFromImage(context, L"icons/radiobutton checked 18.png");
+            SharedPointer<ImageDrawable> radioButtonChecked = resourceLoader.loadDrawable(L"icons/radiobutton checked 18.png");
             Images.set(Theme::IMAGE_RADIOBUTTON_CHECKED, radioButtonChecked);
-            SharedPointer<Drawable> radioButtonUnchecked = BitmapImage::makeFromImage(context, L"icons/radiobutton unchecked 18.png");
+            SharedPointer<ImageDrawable> radioButtonUnchecked = resourceLoader.loadDrawable(L"icons/radiobutton unchecked 18.png");
             Images.set(Theme::IMAGE_RADIOBUTTON_UNCHECKED, radioButtonUnchecked);
-            SharedPointer<Drawable> arrowUp = BitmapImage::makeFromImage(context, L"icons/arrow up 18.png");
+            SharedPointer<ImageDrawable> arrowUp = resourceLoader.loadDrawable(L"icons/arrow up 18.png");
             Images.set(Theme::IMAGE_ARROWUP, arrowUp);
-            SharedPointer<Drawable> arrowDown = BitmapImage::makeFromImage(context, L"icons/arrow down 18.png");
+            SharedPointer<ImageDrawable> arrowDown = resourceLoader.loadDrawable(L"icons/arrow down 18.png");
             Images.set(Theme::IMAGE_ARROWDOWN, arrowDown);
-            SharedPointer<Drawable> arrowRight = BitmapImage::makeFromImage(context, L"icons/arrow right 18.png");
-            Images.set(Theme::IMAGE_ARROWRIGHT, arrowRight);*/
+            SharedPointer<ImageDrawable> arrowRight = resourceLoader.loadDrawable(L"icons/arrow right 18.png");
+            Images.set(Theme::IMAGE_ARROWRIGHT, arrowRight);
 
             Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
             Styles.set(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);

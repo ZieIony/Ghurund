@@ -24,6 +24,14 @@ namespace Ghurund::UI {
         WString locale;
         IDWriteTextFormat* format = nullptr;
 
+    protected:
+        const Ghurund::Type& GET_TYPE() {
+            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextFormat))
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
     public:
         TextFormat(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
             :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
@@ -85,5 +93,9 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getFormat)) IDWriteTextFormat* Format;
+
+        virtual const Ghurund::Type& getType() const override {
+            return TYPE;
+        }
     };
 }

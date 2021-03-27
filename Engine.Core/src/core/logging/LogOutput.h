@@ -30,8 +30,10 @@ namespace Ghurund {
 
         virtual void log(const Log& log) override {
             SetConsoleTextAttribute(debugOutput, log.type.StyleCode);
-            WriteConsole(debugOutput, log.fileLine.Data, (DWORD)log.fileLine.Length, nullptr, nullptr);
-            WriteConsole(debugOutput, ": ", 2, nullptr, nullptr);
+            if (!log.fileLine.Empty) {
+                WriteConsole(debugOutput, log.fileLine.Data, (DWORD)log.fileLine.Length, nullptr, nullptr);
+                WriteConsole(debugOutput, ": ", 2, nullptr, nullptr);
+            }
             WriteConsole(debugOutput, log.message.Data, (DWORD)log.message.Length, nullptr, nullptr);
             SetConsoleTextAttribute(debugOutput, LogType::INFO.StyleCode);
         }
@@ -47,8 +49,10 @@ namespace Ghurund {
         }
 
         virtual void log(const Log& log) override {
-            OutputDebugString(log.fileLine.Data);
-            OutputDebugString(": ");
+            if (!log.fileLine.Empty) {
+                OutputDebugString(log.fileLine.Data);
+                OutputDebugString(": ");
+            }
             OutputDebugString(log.message.Data);
         }
     };
@@ -69,8 +73,10 @@ namespace Ghurund {
 
         virtual void log(const Log& log) override {
             unsigned long bytes;
-            WriteFile(file, log.fileLine.Data, (DWORD)(log.fileLine.Length * sizeof(tchar)), &bytes, nullptr);
-            WriteFile(file, L": ", (DWORD)(2 * sizeof(tchar)), &bytes, nullptr);
+            if (!log.fileLine.Empty) {
+                WriteFile(file, log.fileLine.Data, (DWORD)(log.fileLine.Length * sizeof(tchar)), &bytes, nullptr);
+                WriteFile(file, L": ", (DWORD)(2 * sizeof(tchar)), &bytes, nullptr);
+            }
             WriteFile(file, log.message.Data, (DWORD)(log.message.Length * sizeof(tchar)), &bytes, nullptr);
         }
     };

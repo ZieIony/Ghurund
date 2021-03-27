@@ -38,6 +38,11 @@ namespace Ghurund::UI {
             Format = format;
         }
 
+        ~TextLayout() {
+            if (format)
+                format->release();
+        }
+
         inline const IntSize& getSize() const {
             return size;
         }
