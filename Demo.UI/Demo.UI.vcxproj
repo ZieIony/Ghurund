@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Demo.UI\generated;$(SolutionDir)Demo.UI\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine\generated;$(SolutionDir)Engine.UI\generated;$(SolutionDir)Engine.UI\src;$(SolutionDir)Engine.Core\src;$(SolutionDir)Demo.UI\generated;$(SolutionDir)Demo.UI\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -145,14 +145,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generated\LayoutBinding.h" />
+    <ClInclude Include="generated\TestRecyclerBinding.h" />
+    <ClInclude Include="generated\TestRowBinding.h" />
     <ClInclude Include="src\DemoApplication.h" />
     <ClInclude Include="src\DemoLayout.h" />
     <ClInclude Include="src\DemoWindow.h" />
+    <ClInclude Include="src\TestRecycler.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="res\layout.xml" />
     <Xml Include="res\TabIconLayout.xml" />
     <Xml Include="res\buttonsTab.xml" />
+    <Xml Include="res\TestRecycler.xml" />
+    <Xml Include="res\TestRow.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

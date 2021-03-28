@@ -38,7 +38,6 @@ namespace Ghurund::UI {
         inline void init(Theme& theme, ID2D1Factory6& d2dFactory, IResourceLoader& resourceLoader) {
             this->theme = &theme;
             this->d2dFactory = &d2dFactory;
-            this->d2dFactory = &d2dFactory;
             this->resourceLoader = &resourceLoader;
         }
 
@@ -51,7 +50,11 @@ namespace Ghurund::UI {
             return *theme;
         }
 
-        __declspec(property(get = getTheme)) Theme& Theme;
+        inline void setTheme(Theme& theme) {
+            this->theme = &theme;
+        }
+
+        __declspec(property(get = getTheme, put = setTheme)) Theme& Theme;
 
         inline const DirectoryPath& getWorkingDirectory() {
             return workingDir.top();

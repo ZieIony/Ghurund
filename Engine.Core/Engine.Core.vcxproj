@@ -119,8 +119,6 @@
     <ClInclude Include="src\core\window\ChildWindow.h" />
     <ClInclude Include="src\core\window\Clipboard.h" />
     <ClInclude Include="src\core\window\DragDropManager.h" />
-    <ClInclude Include="src\core\window\Layer.h" />
-    <ClInclude Include="src\core\window\LayerList.h" />
     <ClInclude Include="src\core\window\SystemWindow.h" />
     <ClInclude Include="src\core\window\Window.h" />
     <ClInclude Include="src\core\window\WindowClass.h" />

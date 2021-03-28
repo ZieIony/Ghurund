@@ -2,6 +2,7 @@
 
 #include "TextMetrics.h"
 #include "TextFormat.h"
+#include "core/math/Size.h"
 #include "ui/Canvas.h"
 #include "ui/text/DrawingEffect.h"
 

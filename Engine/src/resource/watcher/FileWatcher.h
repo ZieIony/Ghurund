@@ -24,5 +24,13 @@ namespace Ghurund {
 
         void removeFile(const FilePath& path);
 
+        void clearFiles() {
+            while (!watches.Empty) {
+                auto& key = watches.getKey(0);
+                DirectoryWatch* watch = watches.getValue(0);
+                watches.remove(key);
+                delete watch;
+            }
+        }
     };
 }

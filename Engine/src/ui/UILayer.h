@@ -2,14 +2,13 @@
 
 #include "ui/Canvas.h"
 #include "ui/RootView.h"
-#include "core/window/Layer.h"
+#include "application/Layer.h"
 #include "graphics/Graphics2d.h"
 
 namespace Ghurund::UI {
     class UILayer:public Layer {
     private:
         Graphics2D& graphics;
-        SwapChain& swapChain;
         Canvas* canvas;
         RootView* rootView;
 
@@ -20,7 +19,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        UILayer(Graphics2D& graphics, SwapChain& swapChain, RootView* rootView):graphics(graphics), swapChain(swapChain) {
+        UILayer(Graphics2D& graphics, RootView* rootView):graphics(graphics) {
             canvas = ghnew Canvas();
             canvas->init(graphics.DeviceContext);
             this->rootView = rootView;
@@ -54,8 +53,8 @@ namespace Ghurund::UI {
             rootView->layout(0, 0, (float)Size.width, (float)Size.height);
         }
 
-        virtual Status draw() override {
-            graphics.beginPaint(swapChain.CurrentFrame.RenderTarget);
+        virtual Status draw(RenderTarget& renderTarget) override {
+            graphics.beginPaint(renderTarget);
             canvas->beginPaint();
             rootView->draw(*canvas);
             canvas->endPaint();

@@ -33,10 +33,12 @@ namespace Ghurund {
     HRESULT DragDropManager::DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) {
         Array<FilePath*>* files = getFiles(pDataObj);
 
-        window.OnDragEntered(files);
+        if (files) {
+            window.OnDragEntered(*files);
 
-        files->deleteItems();
-        delete files;
+            files->deleteItems();
+            delete files;
+        }
 
         return S_OK;
     }
@@ -54,10 +56,12 @@ namespace Ghurund {
     HRESULT DragDropManager::Drop(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) {
         Array<FilePath*>* files = getFiles(pDataObj);
 
-        window.OnDropped(files);
+        if (files) {
+            window.OnDropped(*files);
 
-        files->deleteItems();
-        delete files;
+            files->deleteItems();
+            delete files;
+        }
 
         return S_OK;
     }

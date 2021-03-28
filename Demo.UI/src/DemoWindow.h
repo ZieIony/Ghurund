@@ -1,6 +1,7 @@
 #pragma once
 
-#include "application/SystemWindow.h"
+#include "application/ApplicationWindow.h"
+#include "core/window/WindowClass.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
 #include "ui/LayoutLoader.h"
@@ -10,6 +11,7 @@
 #include <ui/widget/button/CheckBox.h>
 #include <ui/widget/tab/TabContainer.h>
 #include "ui/Canvas.h"
+#include "ui/UILayer.h"
 
 #include "LayoutBinding.h"
 #include <DemoLayout.h>
@@ -18,7 +20,7 @@ namespace Demo {
     using namespace Ghurund;
     using namespace Ghurund::UI;
 
-    class DemoWindow:public OverlappedWindow {
+    class DemoWindow:public ApplicationWindow {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
@@ -31,11 +33,11 @@ namespace Demo {
         Application* app;
 
     public:
-        DemoWindow(Application& app):OverlappedWindow(app.Timer) {
+        DemoWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
             this->app = &app;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
-            SwapChain = swapChain;
+            SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
             lightTheme = ghnew LightTheme(app.ResourceContext, 0xff0078D7);
             darkTheme = ghnew DarkTheme(app.ResourceContext, 0xff0078D7);
@@ -43,11 +45,12 @@ namespace Demo {
             context = ghnew UIContext(app.Graphics2D, *this, layoutLoader);
 
             Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
-            canvas->init(app.Graphics2D);
+            canvas->init(app.Graphics2D.DeviceContext);
             rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
             rootView->Theme = lightTheme;
             rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
-            RootView = rootView;
+
+            Layers.add(ghnew UILayer(app.Graphics2D, *swapChain, rootView));
 
             postLoadCallback(L"Demo.UI/res/layout.xml");
         }

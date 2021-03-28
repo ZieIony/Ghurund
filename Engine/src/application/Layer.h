@@ -4,6 +4,7 @@
 #include "core/input/Keyboard.h"
 #include "core/input/Mouse.h"
 #include "core/math/Size.h"
+#include "graphics/buffer/RenderTarget.h"
 
 namespace Ghurund {
     class Layer {
@@ -66,7 +67,7 @@ namespace Ghurund {
 
         virtual void update(const uint64_t time) {}
 
-        virtual Status draw() {
+        virtual Status draw(RenderTarget& renderTarget) {
             return Status::OK;
         }
     };

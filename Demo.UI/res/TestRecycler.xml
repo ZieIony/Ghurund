@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Demo">
+	<LinearLayout orientation="horizontal">
+		<RecyclerView name="recycler"/>
+		<VerticalScrollBar name="scrollBar"/>
+	</LinearLayout>
+</layout>

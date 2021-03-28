@@ -99,8 +99,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
+    <ClInclude Include="src\application\Layer.h" />
+    <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\Settings.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
+    <ClInclude Include="src\application\WindowCloseAction.h" />
+    <ClInclude Include="src\application\WindowList.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />

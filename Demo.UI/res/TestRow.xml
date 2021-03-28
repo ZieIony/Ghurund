@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" data="TestRowData" source="TestRowData.h">
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<ClickableControl preferredSize="fill, wrap">
 		<StackLayout preferredSize="fill, wrap">
 			<ColorView style="theme://style/ColorView_background"/>

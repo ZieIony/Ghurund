@@ -2,6 +2,7 @@
 
 #include "ApplicationWindow.h"
 #include "Settings.h"
+#include "WindowList.h"
 
 #include "core/Noncopyable.h"
 #include "core/Timer.h"
@@ -25,7 +26,7 @@ namespace Ghurund {
 
     class Application:public Noncopyable {
     private:
-        List<ApplicationWindow*> windows;
+        WindowList windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
         Net::Networking* networking;
@@ -68,11 +69,11 @@ namespace Ghurund {
 
         __declspec(property(get = getSettings)) const Settings& Settings;
 
-        inline List<ApplicationWindow*>& getWindows() {
+        inline WindowList& getWindows() {
             return windows;
         }
 
-        __declspec(property(get = getWindows)) List<ApplicationWindow*>& Windows;
+        __declspec(property(get = getWindows)) WindowList& Windows;
 
         FunctionQueue& getFunctionQueue() {
             return *functionQueue;

@@ -17,9 +17,9 @@ namespace Ghurund {
             clear();
         }
 
-        inline void add(Layer* layer) {
-            layers.add(layer);
+        inline void add(std::unique_ptr<Layer> layer) {
             layer->Size = size;
+            layers.add(layer.release());
         }
 
         inline void remove(Layer* layer) {
@@ -111,9 +111,9 @@ namespace Ghurund {
                 layer->update(time);
         }
 
-        inline Status draw() {
+        inline Status draw(RenderTarget& renderTarget) {
             for (Layer* layer : layers) {
-                Status result = layer->draw();
+                Status result = layer->draw(renderTarget);
                 if (result != Status::OK)
                     return result;
             }

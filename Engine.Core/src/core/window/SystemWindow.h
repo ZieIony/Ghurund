@@ -3,7 +3,6 @@
 #include "DragDropManager.h"
 #include "Window.h"
 #include "core/input/Input.h"
-#include "LayerList.h"
 
 namespace Ghurund {
     class SystemWindow;
@@ -30,8 +29,8 @@ namespace Ghurund {
         DragDropManager* dragDropManager = nullptr;
         Event<Ghurund::Window> onDraggedOver = Event<Ghurund::Window>(*this);
         Event<Ghurund::Window> onDragLeft = Event<Ghurund::Window>(*this);
-        Event<Ghurund::Window, Array<FilePath*>*> onDragEntered = Event<Ghurund::Window, Array<FilePath*>*>(*this);
-        Event<Ghurund::Window, Array<FilePath*>*> onDropped = Event<Ghurund::Window, Array<FilePath*>*>(*this);
+        Event<Ghurund::Window, Array<FilePath*>&> onDragEntered = Event<Ghurund::Window, Array<FilePath*>&>(*this);
+        Event<Ghurund::Window, Array<FilePath*>&> onDropped = Event<Ghurund::Window, Array<FilePath*>&>(*this);
 
     protected:
         static const Ghurund::Type& GET_TYPE();
@@ -103,17 +102,17 @@ namespace Ghurund {
 
         __declspec(property(get = getOnDragLeft)) Event<Ghurund::Window>& OnDragLeft;
 
-        Event<Ghurund::Window, Array<FilePath*>*>& getOnDragEntered() {
+        Event<Ghurund::Window, Array<FilePath*>&>& getOnDragEntered() {
             return onDragEntered;
         }
 
-        __declspec(property(get = getOnDragEntered)) Event<Ghurund::Window, Array<FilePath*>*>& OnDragEntered;
+        __declspec(property(get = getOnDragEntered)) Event<Ghurund::Window, Array<FilePath*>&>& OnDragEntered;
 
-        Event<Ghurund::Window, Array<FilePath*>*>& getOnDropped() {
+        Event<Ghurund::Window, Array<FilePath*>&>& getOnDropped() {
             return onDropped;
         }
 
-        __declspec(property(get = getOnDropped)) Event<Ghurund::Window, Array<FilePath*>*>& OnDropped;
+        __declspec(property(get = getOnDropped)) Event<Ghurund::Window, Array<FilePath*>&>& OnDropped;
 
         virtual void refresh() const override {
             RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);

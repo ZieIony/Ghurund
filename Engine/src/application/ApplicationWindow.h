@@ -1,5 +1,6 @@
 #pragma once
 
+#include "LayerList.h"
 #include "core/window/SystemWindow.h"
 #include "core/input/Input.h"
 #include "graphics/SwapChain.h"
@@ -56,7 +57,7 @@ namespace Ghurund {
         virtual void update(const uint64_t time) override;
 
         virtual Status paint() override {
-            return layers.draw();
+            return layers.draw(swapChain->CurrentFrame.RenderTarget);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

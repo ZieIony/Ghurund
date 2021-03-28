@@ -76,7 +76,7 @@ namespace Ghurund {
             return handle;
         }
 
-        __declspec(property(get = getHandler)) HANDLE Handle;
+        __declspec(property(get = getHandle)) HANDLE Handle;
     };
 
     class APCThread:public Thread {
@@ -91,7 +91,7 @@ namespace Ghurund {
     public:
 
         void post(PAPCFUNC apc, ULONG_PTR data) {
-            QueueUserAPC(apc, getHandle(), data);
+            QueueUserAPC(apc, Handle, data);
         }
 
         void run() {
