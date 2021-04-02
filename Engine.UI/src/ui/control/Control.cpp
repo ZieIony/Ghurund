@@ -1,7 +1,6 @@
 #include "ghuipch.h"
 #include "ControlParent.h"
 
-#include "core/reflection/TypedProperty.h"
 #include "core/input/Mouse.h"
 #include "ui/Cursor.h"
 #include "ui/LayoutLoader.h"
@@ -14,39 +13,6 @@ namespace Ghurund::UI {
 
     Control::~Control() {
         delete name;
-    }
-
-    const Ghurund::Type& Control::GET_TYPE() {
-        static auto PROPERTY_NAME = TypedProperty<Control, const AString*>(GH_STRINGIFY(AString*), GH_STRINGIFY(Name), &getName, &setName);
-        static auto PROPERTY_VISIBLE = BoolProperty<Control>(GH_STRINGIFY(Visible), &isVisible, &setVisible);
-        static auto PROPERTY_ENABLED = BoolProperty<Control>(GH_STRINGIFY(Enabled), &isEnabled, &setEnabled);
-        static auto PROPERTY_FOCUSABLE = BoolProperty<Control>(GH_STRINGIFY(Focusable), &isFocusable, &setFocusable);
-        static auto PROPERTY_FOCUSED = BoolProperty<Control>(GH_STRINGIFY(Focused), &isFocused);
-        static auto PROPERTY_POSITION = TypedProperty(GH_STRINGIFY(FloatPoint), GH_STRINGIFY(Rotation), &getPosition, &setPosition);
-        static auto PROPERTY_ROTATION = TypedProperty(GH_STRINGIFY(float), GH_STRINGIFY(Rotation), &getRotation, &setRotation);
-        static auto PROPERTY_SCALE = TypedProperty(GH_STRINGIFY(FloatPoint), GH_STRINGIFY(Scale), &getScale, &setScale);
-        static auto PROPERTY_MINSIZE = TypedProperty(GH_STRINGIFY(FloatSize), GH_STRINGIFY(MinSize), &getMinSize, &setMinSize);
-        static auto PROPERTY_SIZE = TypedProperty(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(Size), &getSize);
-        static auto PROPERTY_PREFERREDSIZE = TypedProperty(GH_STRINGIFY(PreferredSize&), GH_STRINGIFY(PreferredSize), &getPreferredSize, &setPreferredSize);
-        static auto PROPERTY_MEASUREDSIZE = TypedProperty(GH_STRINGIFY(const FloatSize&), GH_STRINGIFY(MeasuredSize), &getMeasuredSize);
-
-        static Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Control))
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(__super::TYPE)
-            .withProperty(PROPERTY_NAME)
-            .withProperty(PROPERTY_ENABLED)
-            .withProperty(PROPERTY_FOCUSABLE)
-            .withProperty(PROPERTY_FOCUSED)
-            .withProperty(PROPERTY_VISIBLE)
-            .withProperty(PROPERTY_POSITION)
-            .withProperty(PROPERTY_ROTATION)
-            .withProperty(PROPERTY_SCALE)
-            .withProperty(PROPERTY_MINSIZE)
-            .withProperty(PROPERTY_SIZE)
-            .withProperty(PROPERTY_PREFERREDSIZE)
-            .withProperty(PROPERTY_MEASUREDSIZE);
-
-        return TYPE;
     }
 
     void Control::setName(const AString* name) {

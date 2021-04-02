@@ -1,36 +1,42 @@
 #pragma once
 
-#include "core/Event.h"
-#include "ui/widget/Widget.h"
 #include "LayoutBinding.h"
+#include "ui/widget/Widget.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
-#include <ui/widget/tab/TabContainer.h>
-#include <ui/widget/tree/TreeView.h>
+#include "ui/layout/StackLayout.h"
 
 namespace Demo {
     using namespace Ghurund::UI;
 
     enum class ThemeType {
-        LIGHT, DARK
+        Dark, Light
     };
 
     class DemoLayout:public Widget<LayoutBinding> {
+    private:
+        Event<DemoLayout, ThemeType> themeChanged = *this;
+
     protected:
         virtual void onLayoutChanged() override {
+            if (!Layout)
+                return;
             Layout->ThemeCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
-                themeTypeChanged(checkBox.Checked ? ThemeType::DARK : ThemeType::LIGHT);
+                themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
+                repaint();
                 return true;
             });
             Layout->EnabledCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
-                Layout->Tabs->Enabled = checkBox.Checked;
-                repaint();
+                Layout->Container->Enabled = checkBox.Checked;
+                Layout->Container->repaint();
                 return true;
             });
 
             auto colorClickHandler = [this](Control& control, const MouseClickedEventArgs& args) {
                 ColorView* colorView = (ColorView*)control.find(ColorView::TYPE);
-                colorChanged(colorView->Color);
+                Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color);
+                Theme->updateColors();
+                dispatchThemeChanged();
                 return true;
             };
             Layout->Color1->Clicked.add(colorClickHandler);
@@ -40,7 +46,16 @@ namespace Demo {
         }
 
     public:
-        Event<DemoLayout, Color> colorChanged = *this;
-        Event<DemoLayout, ThemeType> themeTypeChanged = *this;
+        inline Event<DemoLayout, ThemeType>& getThemeChanged() {
+            return themeChanged;
+        }
+
+        __declspec(property(get = getThemeChanged)) Event<DemoLayout, ThemeType>& ThemeChanged;
+
+        inline StackLayout* getContainer() {
+            return Layout->Container;
+        }
+
+        __declspec(property(get = getContainer)) StackLayout* Container;
     };
 }

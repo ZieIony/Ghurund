@@ -3,13 +3,14 @@
 #include "ControlContainer.h"
 #include "ui/Shape.h"
 
+#include "reflection_56ef6c21_c7b6_4db4_bacc_5b39dd5e824a.h"
+
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
+        reflection_56ef6c21_c7b6_4db4_bacc_5b39dd5e824a
+
     private:
         Shape* shape = nullptr;
-
-    protected:
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Clip() {
@@ -24,7 +25,7 @@ namespace Ghurund::UI {
             this->shape = shape;
         }
 
-        __declspec(property(get = getShape, put = setShape)) Shape* Shape;
+        __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;
 
         virtual void onLayout(float x, float y, float width, float height) override {
             __super::onLayout(x, y, width, height);
@@ -35,11 +36,5 @@ namespace Ghurund::UI {
         virtual void onDraw(Canvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 }

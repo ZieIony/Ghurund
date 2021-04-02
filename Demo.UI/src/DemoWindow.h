@@ -1,20 +1,17 @@
 #pragma once
 
+#include "application/Application.h"
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
-#include "ui/RootView.h"
-#include "application/Application.h"
 #include "ui/LayoutLoader.h"
+#include "ui/ResourceLoader.h"
+#include "ui/RootView.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
-#include <ui/widget/button/Button.h>
-#include <ui/widget/button/CheckBox.h>
-#include <ui/widget/tab/TabContainer.h>
 #include "ui/Canvas.h"
 #include "ui/UILayer.h"
 
-#include "LayoutBinding.h"
-#include <DemoLayout.h>
+#include "DemoLayout.h"
 
 namespace Demo {
     using namespace Ghurund;
@@ -24,10 +21,10 @@ namespace Demo {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
+        SharedPointer<DemoLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        TabContainer* tabs;
+        ResourceLoader* resourceLoader;
         LayoutLoader layoutLoader;
-        FilePath* filePath = nullptr;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
         Application* app;
@@ -39,47 +36,53 @@ namespace Demo {
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
-            lightTheme = ghnew LightTheme(app.ResourceContext, 0xff0078D7);
-            darkTheme = ghnew DarkTheme(app.ResourceContext, 0xff0078D7);
-            layoutLoader.init(*lightTheme, app.ResourceContext);
-            context = ghnew UIContext(app.Graphics2D, *this, layoutLoader);
+            resourceLoader = ghnew ResourceLoader(app.ResourceContext);
+            lightTheme = ghnew LightTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader);
+            darkTheme = ghnew DarkTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader);
+            layoutLoader.init(*lightTheme, *app.Graphics2D.Factory, *resourceLoader);
+            context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, layoutLoader);
 
-            Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
-            canvas->init(app.Graphics2D.DeviceContext);
-            rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
-            rootView->Theme = lightTheme;
-            rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
+            rootView = ghnew Ghurund::UI::RootView(*context);
 
-            Layers.add(ghnew UILayer(app.Graphics2D, *swapChain, rootView));
+            PointerList<Control*> controls;
+            layoutLoader.load(L"Demo.UI/res/layout.xml", controls);
+            previewLayout = ghnew DemoLayout();
+            previewLayout->Theme = lightTheme;
+            previewLayout->Layout = std::make_unique<LayoutBinding>(controls[0]);
+            rootView->Child = previewLayout;
+            previewLayout->ThemeChanged.add([this](DemoLayout& previewLayout, ThemeType type) {
+                updateTheme(type);
+                return true;
+            });
 
-            postLoadCallback(L"Demo.UI/res/layout.xml");
+            Layers.add(std::unique_ptr<Layer>(ghnew UILayer(app.Graphics2D, rootView)));
+
+            DragDropEnabled = true;
+            OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>& files) {
+                fileWatcher.clearFiles();
+                FilePath& path = *files[0];
+                postLoadCallback(path);
+                watchFile(path);
+                return true;
+            });
         }
 
         ~DemoWindow() {
-            delete filePath;
+            Layers.clear();
             delete context;
             delete lightTheme;
             delete darkTheme;
+            delete resourceLoader;
         }
 
-        void updateTheme(const ThemeType& themeType) {
-            if (themeType == ThemeType::DARK) {
-                rootView->BackgroundColor = darkTheme->Colors[Theme::COLOR_BACKGR0UND];
-                layoutLoader.init(*darkTheme, layoutLoader.ResourceContext);
-                rootView->Theme = darkTheme;
+        void updateTheme(ThemeType type) {
+            if (type == ThemeType::Dark) {
+                layoutLoader.Theme = *darkTheme;
+                previewLayout->Theme = darkTheme;
             } else {
-                rootView->BackgroundColor = lightTheme->Colors[Theme::COLOR_BACKGR0UND];
-                layoutLoader.init(*lightTheme, layoutLoader.ResourceContext);
-                rootView->Theme = lightTheme;
+                layoutLoader.Theme = *lightTheme;
+                previewLayout->Theme = lightTheme;
             }
-        }
-
-        void setThemeColor(const Color& color) {
-            darkTheme->Colors.set(Theme::COLOR_ACCENT, color);
-            darkTheme->updateColors();
-            lightTheme->Colors.set(Theme::COLOR_ACCENT, color);
-            lightTheme->updateColors();
-            rootView->dispatchThemeChanged();
         }
 
         void postLoadCallback(const FilePath& path) {
@@ -90,7 +93,11 @@ namespace Demo {
                 if (file.read() == Status::OK) {
                     layoutLoader.WorkingDirectory = path.Directory;
                     Buffer buffer(file.Data, file.Size);
-                    loadLayout(buffer);
+                    if (path.FileName.endsWith(L".xml")) {
+                        loadLayout(buffer);
+                    } else {
+                        loadDrawable(buffer);
+                    }
                 } else {
                     app->FunctionQueue.post(loadCallback);
                 }
@@ -101,26 +108,25 @@ namespace Demo {
 
         void loadLayout(const Buffer& data) {
             PointerList<Control*> controls;
-            if (layoutLoader.load(data, controls) == Status::OK) {
-                auto layout = makeShared<DemoLayout>();
-                layout->Layout = std::unique_ptr<LayoutBinding>(ghnew LayoutBinding(controls[0]));
-                rootView->Child = layout;
-                rootView->invalidate();
+            layoutLoader.load(data, controls);
+            previewLayout->Container->Children.clear();
+            for (Control* control : controls)
+                previewLayout->Container->Children.add(control);
+            previewLayout->Container->invalidate();
+        }
 
-                layout->themeTypeChanged.add([this](DemoLayout&, const ThemeType& themeType) {
-                    updateTheme(themeType);
-                    rootView->repaint();
-                    return true;
-                });
-                layout->colorChanged.add([this](DemoLayout&, const Color& color) {
-                    setThemeColor(color);
-                    return true;
-                });
-            }
+        void loadDrawable(const Buffer& data) {
+            /*auto image = makeShared<BitmapImage>();
+            MemoryInputStream stream(data.Data, data.Size);
+            DirectoryPath baseDir(L".");
+            image->load(app->ResourceContext, baseDir, stream);
+            auto imageView = makeShared<ImageView>();
+            imageView->Image = ghnew BitmapImageDrawable(image);
+            binding->Container->Children = { imageView };
+            binding->Container->invalidate();*/
         }
 
         void watchFile(FilePath& filePath) {
-            this->filePath = ghnew FilePath(filePath);
             fileWatcher.addFile(filePath, [this](const FilePath& path, const FileChange& change) {
                 if (change == FileChange::RENAMED_TO || change == FileChange::MODIFIED)
                     postLoadCallback(path);

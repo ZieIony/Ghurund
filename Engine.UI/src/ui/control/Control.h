@@ -7,6 +7,7 @@
 #include "core/math/Matrix3x2.h"
 #include "core/math/Size.h"
 #include "core/input/EventConsumer.h"
+#include "ui/Cursor.h"
 #include "ui/PreferredSize.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
@@ -24,12 +25,17 @@ namespace Ghurund::UI {
 
     class Control;
     class ControlParent;
-    class Cursor;
     class Theme;
     class LayoutLoader;
     class Canvas;
+}
 
+#include "reflection_2fee3104_7174_41c1_9c27_f92511f100b7.h"
+
+namespace Ghurund::UI {
     class Control: public Pointer, public Ghurund::EventConsumer {
+        reflection_2fee3104_7174_41c1_9c27_f92511f100b7
+
     private:
         ControlParent* parent = nullptr;
         const Cursor* cursor = nullptr;
@@ -82,8 +88,6 @@ namespace Ghurund::UI {
 
         virtual ~Control() = 0;
 
-        static const Ghurund::Type& GET_TYPE();
-
     public:
         inline Event<Control>& getStateChanged() {
             return stateChanged;
@@ -111,7 +115,7 @@ namespace Ghurund::UI {
 
         void setName(const AString& name);
 
-        __declspec(property(get = getName, put = setName)) AString* Name;
+        __declspec(property(get = getName, put = setName)) const AString* Name;
 
         inline bool isVisible() const {
             return visible;
@@ -226,7 +230,7 @@ namespace Ghurund::UI {
             position.y = y;
         }
 
-        __declspec(property(get = getScale, put = setScale)) FloatPoint& Scale;
+        __declspec(property(get = getScale, put = setScale)) const FloatPoint& Scale;
 
         inline const Matrix3x2& getTransformation() const {
             return transformation;
@@ -234,11 +238,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTransformation)) const Matrix3x2& Transformation;
 
-        inline FloatSize& getMinSize() {
+        inline const FloatSize& getMinSize() const {
             return minSize;
         }
 
-        inline const FloatSize& getMinSize() const {
+        inline FloatSize& getMinSize() {
             return minSize;
         }
 
@@ -251,7 +255,7 @@ namespace Ghurund::UI {
             minSize.height = abs(height);
         }
 
-        __declspec(property(get = getMinSize, put = setMinSize)) FloatSize& MinSize;
+        __declspec(property(get = getMinSize, put = setMinSize)) const FloatSize& MinSize;
 
         inline const FloatSize& getSize() const {
             return size;
@@ -265,11 +269,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnSizeChanged)) Event<Control>& OnSizeChanged;
 
-        inline PreferredSize& getPreferredSize() {
+        inline const PreferredSize& getPreferredSize() const {
             return preferredSize;
         }
 
-        inline const PreferredSize& getPreferredSize() const {
+        inline PreferredSize& getPreferredSize() {
             return preferredSize;
         }
 
@@ -282,7 +286,7 @@ namespace Ghurund::UI {
             preferredSize.height = height;
         }
 
-        __declspec(property(get = getPreferredSize, put = setPreferredSize)) PreferredSize& PreferredSize;
+        __declspec(property(get = getPreferredSize, put = setPreferredSize)) const Ghurund::UI::PreferredSize& PreferredSize;
 
         inline const FloatSize& getMeasuredSize() const {
             return measuredSize;
@@ -315,13 +319,13 @@ namespace Ghurund::UI {
             this->cursor = cursor;
         }
 
-        __declspec(property(get = getCursor, put = setCursor)) const Cursor* Cursor;
+        __declspec(property(get = getCursor, put = setCursor)) const Ghurund::UI::Cursor* Cursor;
 
         void setTheme(Theme* theme);
 
         Theme* getTheme();
 
-        __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
+        __declspec(property(get = getTheme, put = setTheme)) Ghurund::UI::Theme* Theme;
 
         virtual UIContext* getContext();
 
@@ -339,7 +343,7 @@ namespace Ghurund::UI {
             return style;
         }
 
-        __declspec(property(get = getStyle, put = setStyle)) const Style* Style;
+        __declspec(property(get = getStyle, put = setStyle)) const Ghurund::UI::Style* Style;
 
         virtual void dispatchStateChanged();
 
@@ -386,12 +390,6 @@ namespace Ghurund::UI {
 #ifdef _DEBUG
         virtual void validate();
 #endif
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 
     template<class T>

@@ -2,7 +2,7 @@
 
 namespace Ghurund {
     enum class TypeModifier {
-        ABSTRACT = 1
+        ABSTRACT = 1, TEMPLATE = 2
     };
 
     TypeModifier operator |(TypeModifier lhs, TypeModifier rhs);

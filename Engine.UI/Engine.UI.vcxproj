@@ -82,14 +82,6 @@
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generated\ButtonBinding.h" />
-    <ClInclude Include="generated\CheckBoxBinding.h" />
-    <ClInclude Include="generated\ExpandableContainerBinding.h" />
-    <ClInclude Include="generated\ScrollBarBinding.h" />
-    <ClInclude Include="generated\TabBinding.h" />
-    <ClInclude Include="generated\TabContainerBinding.h" />
-    <ClInclude Include="generated\ToolbarBinding.h" />
-    <ClInclude Include="generated\TreeRowBinding.h" />
     <ClInclude Include="src\ghuipch.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
@@ -295,7 +287,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.Core\src;$(ProjectDir)generated/reflection;$(ProjectDir)generated/bindings;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine.UI_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

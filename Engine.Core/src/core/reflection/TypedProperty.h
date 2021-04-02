@@ -6,8 +6,8 @@ namespace Ghurund {
     template<class OwnerType, class PropType>
     class TypedProperty:public Property {
     protected:
-        typedef PropType(OwnerType::* Getter)() const;
-        typedef void (OwnerType::* Setter)(PropType);
+        typedef std::function<PropType(OwnerType&)> Getter;
+        typedef std::function<void(OwnerType&, PropType)> Setter;
 
     private:
         Getter getter = nullptr;
@@ -20,12 +20,12 @@ namespace Ghurund {
             readOnly = !setter;
         }
 
-        PropType get(OwnerType& owner) {
-            return owner.*getter();
+        inline PropType get(OwnerType& owner) {
+            return getter(owner);
         }
 
-        void set(OwnerType& owner, PropType& value) {
-            (owner.*setter)(value);
+        inline void set(OwnerType& owner, PropType value) {
+            setter(owner, value);
         }
     };
 

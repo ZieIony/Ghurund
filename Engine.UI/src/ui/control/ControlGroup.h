@@ -26,8 +26,7 @@ namespace Ghurund::UI {
 
     public:
         ControlGroup():children(*this) {
-            PreferredSize.width = PreferredSize::Width::FILL;
-            PreferredSize.height = PreferredSize::Height::FILL;
+            PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
         ~ControlGroup() {

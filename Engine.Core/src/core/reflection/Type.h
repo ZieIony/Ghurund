@@ -16,7 +16,7 @@ namespace Ghurund {
 		const char* name;
         const size_t size;
         const Type* supertype;
-        const Map<AString, List<Property*>> properties;
+        const Map<AString, Property*> properties;
 
 		static List<Type>& getTypes() {
 			static List<Type> types;
@@ -24,7 +24,7 @@ namespace Ghurund {
 		}
 
     public:
-        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, Map<AString, List<Property*>>& properties):
+        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, Map<AString, Property*>& properties):
             modifiers(modifiers), size(size), properties(properties) {
             this->constructor = constructor;
             this->_namespace = _namespace;
@@ -78,11 +78,11 @@ namespace Ghurund {
 
         __declspec(property(get = getModifiers)) const TypeModifier Modifiers;
 
-        const Map<AString, List<Property*>>& getProperties() const {
+        const Map<AString, Property*>& getProperties() const {
             return properties;
         }
 
-        __declspec(property(get = getProperties)) const Map<AString, List<Property*>>& Properties;
+        __declspec(property(get = getProperties)) const Map<AString, Property*>& Properties;
 
 		bool operator==(const Type& type) const {
 			return constructor == type.constructor && strcmp(_namespace, type._namespace) == 0 && strcmp(name, type.name) == 0;

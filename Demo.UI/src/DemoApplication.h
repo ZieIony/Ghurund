@@ -13,20 +13,9 @@ namespace Demo {
     class DemoApplication:public Application {
     public:
         void onInit() {
-            SystemWindow* window = ghnew DemoWindow(*this);
-
-            window->initParameters(ParameterManager);
-
-            window->Size = { Settings.width, Settings.height };
-
+            ApplicationWindow* window = ghnew DemoWindow(*this);
+            window->Size = Settings.windowSize;
             Windows.add(window);
-            window->OnClosed.add([this](Ghurund::Window& window) {
-                Windows.remove((SystemWindow*)&window);
-                delete &window;
-                return true;
-            });
-
-            window->Visible = true;
             window->activate();
         }
     };

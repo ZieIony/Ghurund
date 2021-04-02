@@ -11,11 +11,9 @@ namespace Ghurund {
         const char* name;
         Type* supertype = nullptr;
         size_t size;
-        Map<AString, List<Property*>> properties;
+        Map<AString, Property*> properties;
 
     public:
-        static const inline AString DEFAULT_GROUP = "default";
-
         TypeBuilder(const char* _namespace, const char* name) {
             this->_namespace = _namespace;
             this->name = name;
@@ -32,17 +30,18 @@ namespace Ghurund {
             return *this;
         }
 
+        TypeBuilder withModifier(TypeModifier modifier) {
+            this->modifiers = this->modifiers | modifier;
+            return *this;
+        }
+
         TypeBuilder withSupertype(const Type& supertype) {
             this->supertype = (Type*)&supertype;
             return *this;
         }
 
-        TypeBuilder withProperty(const Property& property, const AString& group = DEFAULT_GROUP) {
-            size_t i = properties.indexOfKey(group);
-            if (i == properties.Size)
-                properties.set(group, List<Property*>());
-
-            properties.getValue(i).add((Property*)&property);
+        TypeBuilder withProperty(const Property& property) {
+            properties.set(property.Name, (Property*)&property);
             return *this;
         }
 

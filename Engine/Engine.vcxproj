@@ -313,7 +313,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Engine.UI\src;$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.UI\generated\reflection;$(SolutionDir)Engine.UI\src;$(SolutionDir)Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

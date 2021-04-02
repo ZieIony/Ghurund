@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Engine.UI\generated;$(SolutionDir)Engine.UI\src;$(SolutionDir)Preview\generated;$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Engine.UI\generated\bindings;$(SolutionDir)Engine.UI\generated\reflection;$(SolutionDir)Engine.UI\src;$(SolutionDir)Preview\generated;$(SolutionDir)Engine\generated;$(SolutionDir)Engine.Core\src;$(SolutionDir)Preview\src;$(SolutionDir)Engine\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
     <CustomBuildAfterTargets>PreBuildEvent</CustomBuildAfterTargets>

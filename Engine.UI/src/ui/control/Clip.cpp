@@ -5,15 +5,6 @@
 #include "ui/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& Clip::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Clip>();
-        static const Ghurund::Type& TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Clip))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     void Clip::onDraw(Canvas& canvas) {
         if (shape) {
             canvas.clipShape(*shape);

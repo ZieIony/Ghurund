@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Demo">
-	<StackLayout preferredSize="fill, fill"
-					alignment="left, bottom">
-		<LinearLayout>
-			<TreeView name="tree" preferredSize="200, fill"/>
-			<TabContainer name="tabs" layout="file://~/layouts/TabContainerLeftLayout.xml"
-				   tabLayout="file://~/layouts/TabTextLayout.xml" preferredSize="fill, fill"/>
-			<ExpandableContainer>
-				<ExpandableContainer.Header>
-
-				</ExpandableContainer.Header>
-				<ExpandableContainer.Content>
-
-				</ExpandableContainer.Content>
-			</ExpandableContainer>
-		</LinearLayout>
+	<StackLayout alignment="left, bottom">
+		<ColorView style="theme://style/ColorView_background"/>
+		<StackLayout name="container"
+					 alignment="center, center"/>
 		<PaddingContainer padding="8, 4"
 						  preferredSize="fill, wrap">
 			<LinearLayout orientation="vertical"
