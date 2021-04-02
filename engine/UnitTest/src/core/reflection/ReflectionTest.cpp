@@ -18,13 +18,13 @@ namespace UnitTest {
     protected:
         static const Ghurund::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = NoArgsConstructor<TestClass>();
-            static const auto valProp = UInt32Property<TestClass>("val", &getVal);
+            static const auto valProp = TypedProperty<TestClass, uint32_t>("uint32_t", "val", &getVal);
             static const auto textProp = TypedProperty<TestClass, const char*>("string", "text", &getText, &setText);
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TestClass))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE())
                 .withProperty(valProp)
-                .withProperty(textProp, "group");
+                .withProperty(textProp);
 
             return TYPE;
         }

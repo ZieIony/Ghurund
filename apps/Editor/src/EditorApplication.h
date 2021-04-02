@@ -1,6 +1,5 @@
 ﻿#include "core/math/MathUtils.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/layout/LinearLayout.h"
 #include "ui/control/Space.h"
 #include "ui/RootView.h"
 #include "application/Application.h"

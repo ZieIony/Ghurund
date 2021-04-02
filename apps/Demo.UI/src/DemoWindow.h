@@ -11,17 +11,17 @@
 #include "ui/Canvas.h"
 #include "ui/UILayer.h"
 
-#include "PreviewLayout.h"
+#include "DemoLayout.h"
 
-namespace Preview {
+namespace Demo {
     using namespace Ghurund;
     using namespace Ghurund::UI;
 
-    class PreviewWindow:public ApplicationWindow {
+    class DemoWindow:public ApplicationWindow {
     private:
         Theme* lightTheme, * darkTheme;
         UIContext* context;
-        SharedPointer<PreviewLayout> previewLayout;
+        SharedPointer<DemoLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
         ResourceLoader* resourceLoader;
         LayoutLoader layoutLoader;
@@ -30,7 +30,7 @@ namespace Preview {
         Application* app;
 
     public:
-        PreviewWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
+        DemoWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
             this->app = &app;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
@@ -45,12 +45,12 @@ namespace Preview {
             rootView = ghnew Ghurund::UI::RootView(*context);
 
             PointerList<Control*> controls;
-            layoutLoader.load(L"Preview/res/layout.xml", controls);
-            previewLayout = ghnew PreviewLayout();
+            layoutLoader.load(L"apps/Demo.UI/res/layout.xml", controls);
+            previewLayout = ghnew DemoLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(controls[0]);
             rootView->Child = previewLayout;
-            previewLayout->ThemeChanged.add([this](PreviewLayout& previewLayout, ThemeType type) {
+            previewLayout->ThemeChanged.add([this](DemoLayout& previewLayout, ThemeType type) {
                 updateTheme(type);
                 return true;
             });
@@ -67,7 +67,7 @@ namespace Preview {
             });
         }
 
-        ~PreviewWindow() {
+        ~DemoWindow() {
             Layers.clear();
             delete context;
             delete lightTheme;
