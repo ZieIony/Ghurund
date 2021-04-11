@@ -17,42 +17,27 @@ namespace Ghurund {
     private:
         DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
-        Buffer* imageData = nullptr;
-
-        DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
-
-        WICPixelFormatGUID getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB = nullptr) const;
-
-        WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
-
-        int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat);
+        Buffer imageData;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
-
         static const Ghurund::Type& GET_TYPE();
 
     public:
         Image() {}
 
-        Image(Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format):
-            imageData(ghnew Buffer(data)),
-            width(width),
-            height(height),
-            format(format),
-            pixelSize(getDXGIFormatBitsPerPixel(format) / 8),
-            rowPitch((uint32_t)(data.Size / height)) {
+        void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
+            imageData = data;
+            this->width = width;
+            this->height = height;
+            this->format = format;
+            this->pixelSize = pixelSize;
+            rowPitch = ((uint32_t)(data.Size / height));
 
             Valid = true;
         }
 
-        ~Image() {
-            delete imageData;
-        }
-
         Buffer& getData() {
-            return *imageData;
+            return imageData;
         }
 
         __declspec(property(get = getData)) Buffer& Data;

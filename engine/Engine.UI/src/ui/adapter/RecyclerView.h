@@ -12,12 +12,11 @@ namespace Ghurund::UI {
 
     protected:
         LayoutManager* layoutManager = nullptr;
+        ChildrenProvider* childrenProvider = nullptr;
 
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        ChildrenProvider* childrenProvider;
-
         ~RecyclerView() {
             delete childrenProvider;
             delete layoutManager;
@@ -53,20 +52,36 @@ namespace Ghurund::UI {
             return layoutManager;
         }
 
-        inline void setLayoutManager(LayoutManager* layoutManager) {
-            this->layoutManager = layoutManager;
+        inline void setLayoutManager(std::unique_ptr<LayoutManager> layoutManager) {
+            delete this->layoutManager;
+            this->layoutManager = layoutManager.release();
+            if (this->LayoutManager && childrenProvider)
+                this->layoutManager->setGroup(*this, *childrenProvider);
         }
 
         __declspec(property(get = getLayoutManager, put = setLayoutManager)) LayoutManager* LayoutManager;
 
+        inline ChildrenProvider* getChildrenProvider() {
+            return childrenProvider;
+        }
+
+        inline void setChildrenProvider(std::unique_ptr<ChildrenProvider> childrenProvider) {
+            delete this->childrenProvider;
+            this->childrenProvider = childrenProvider.release();
+            if (LayoutManager && this->childrenProvider)
+                layoutManager->setGroup(*this, *this->childrenProvider);
+        }
+
+        __declspec(property(get = getChildrenProvider, put = setChildrenProvider)) ChildrenProvider* ChildrenProvider;
+
         virtual void onMeasure(float parentWidth, float parentHeight) override {
             if (layoutManager && childrenProvider)
-                measuredSize = layoutManager->measure(*this, *childrenProvider, parentWidth, parentHeight);
+                measuredSize = layoutManager->measure(parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
             if (layoutManager && childrenProvider)
-                layoutManager->layout(*this, *childrenProvider, x, y, width, height);
+                layoutManager->layout(x, y, width, height);
         }
 
         virtual void onDraw(Canvas& canvas) override;

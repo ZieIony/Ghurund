@@ -2,13 +2,13 @@
 #include "ManualLayoutManager.h"
 
 namespace Ghurund::UI {
-    const FloatSize ManualLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
-        __super::measure(group, provider, parentWidth, parentHeight);
-        return { measureMaxWidth(group), measureMaxHeight(group) };
+    const FloatSize ManualLayoutManager::measure(float parentWidth, float parentHeight) {
+        __super::measure(parentWidth, parentHeight);
+        return { measureMaxWidth(), measureMaxHeight() };
     }
 
-    void ManualLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
-        for (Control* c : group.Children) {
+    void ManualLayoutManager::layout(float x, float y, float width, float height) {
+        for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
 

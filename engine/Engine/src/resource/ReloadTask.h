@@ -3,26 +3,25 @@
 #include "Resource.h"
 
 namespace Ghurund {
-    class ResourceManager;
-
     class ReloadTask {
     private:
-        ResourceContext &context;
-        Resource *resource;
+        ResourceManager& resourceManager;
+        Loader& loader;
+        Resource& resource;
+        LoadOption loadOption;
 
     public:
-        ReloadTask(ResourceContext &context, Resource &resource):context(context) {
-            this->resource = &resource;
+        ReloadTask(ResourceManager& resourceManager, Loader& loader, Resource& resource, LoadOption loadOption)
+            :resourceManager(resourceManager), loader(loader), resource(resource), loadOption(loadOption) {}
+
+        Resource& getResource() {
+            return resource;
         }
 
-        Resource &getResource() {
-            return *resource;
-        }
-
-        __declspec(property(get = getResource)) Resource &Resource;
+        __declspec(property(get = getResource)) Resource& Resource;
 
         void execute() {
-            resource->reload(context);
+            //loader.load(resourceManager, stream, resource, loadOption);
         }
     };
 }

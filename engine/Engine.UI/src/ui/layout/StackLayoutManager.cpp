@@ -2,13 +2,13 @@
 #include "StackLayoutManager.h"
 
 namespace Ghurund::UI {
-    const FloatSize StackLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
-        __super::measure(group, provider, parentWidth, parentHeight);
-        return { measureMaxWidth(group), measureMaxHeight(group) };
+    const FloatSize StackLayoutManager::measure(float parentWidth, float parentHeight) {
+        __super::measure(parentWidth, parentHeight);
+        return { measureMaxWidth(), measureMaxHeight() };
     }
 
-    void StackLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
-        for (Control* c : group.Children) {
+    void StackLayoutManager::layout(float x, float y, float width, float height) {
+        for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
             float w;

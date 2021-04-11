@@ -11,7 +11,7 @@ namespace Ghurund {
 
     class Pointer: public Object {
     private:
-        unsigned int referenceCount = 1;
+        mutable unsigned int referenceCount = 1;
 
 #ifdef _DEBUG
         static List<Pointer*> pointers;

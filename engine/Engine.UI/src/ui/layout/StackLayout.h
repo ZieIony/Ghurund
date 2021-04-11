@@ -13,6 +13,10 @@ namespace Ghurund::UI {
         static const Ghurund::Type& GET_TYPE();
 
     public:
+        StackLayout() {
+            layoutManager.setGroup(*this, childrenProvider);
+        }
+
         inline Alignment& getAlignment() {
             return layoutManager.alignment;
         }
@@ -24,11 +28,11 @@ namespace Ghurund::UI {
         __declspec(property(get = getAlignment, put = setAlignment)) Alignment& Alignment;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, childrenProvider, x, y, width, height);
+            layoutManager.layout(x, y, width, height);
         }
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;

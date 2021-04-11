@@ -71,6 +71,7 @@
     <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
     <ClCompile Include="src\graphics\SwapChain.cpp" />
+    <ClCompile Include="src\graphics\texture\ImageLoader.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
@@ -82,9 +83,6 @@
     <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\physics\RigidBodyComponent.cpp" />
     <ClCompile Include="src\resource\ResourceContext.cpp" />
-    <ClCompile Include="src\resource\watcher\DirectoryWatch.cpp" />
-    <ClCompile Include="src\resource\watcher\FileChange.cpp" />
-    <ClCompile Include="src\resource\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\resource\Resource.cpp" />
     <ClCompile Include="src\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\resource\ResourceManager.cpp" />
@@ -109,6 +107,8 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\graphics\texture\ImageLoader.h" />
+    <ClInclude Include="src\resource\Loader.h" />
     <ClInclude Include="src\ui\ResourceLoader.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
@@ -200,11 +200,9 @@
     <ClInclude Include="src\physics\Physics.h" />
     <ClInclude Include="src\game\parameter\Parameter.h" />
     <ClInclude Include="src\physics\PhysicsSystem.h" />
-    <ClInclude Include="src\resource\LibraryList.h" />
     <ClInclude Include="src\resource\ReloadTask.h" />
     <ClInclude Include="src\resource\ResourceContext.h" />
     <ClInclude Include="src\resource\ResourceFormat.h" />
-    <ClInclude Include="src\resource\watcher\FileChange.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
     <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
@@ -227,7 +225,6 @@
     <ClInclude Include="src\ui\control\ListView.h" />
     <ClInclude Include="src\ui\control\Row.h" />
     <ClInclude Include="src\ui\control\Surface.h" />
-    <ClInclude Include="src\resource\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\net\Client.h" />
@@ -235,7 +232,6 @@
     <ClInclude Include="src\net\Message.h" />
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\Socket.h" />
-    <ClInclude Include="src\resource\watcher\FileWatcher.h" />
     <ClInclude Include="src\resource\Resource.h" />
     <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />

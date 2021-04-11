@@ -5,28 +5,43 @@
 namespace Ghurund {
     class Buffer {
     private:
-        uint8_t *data;
+        uint8_t* data;
         size_t size, capacity;
 
     public:
+        Buffer() {
+            data = nullptr;
+            size = 0;
+            capacity = 0;
+        }
+
         Buffer(size_t capacity) {
             data = ghnew uint8_t[capacity];
             this->size = capacity;
             this->capacity = capacity;
         }
 
-        Buffer(const void *data, size_t size) {
+        Buffer(const void* data, size_t size) {
             this->data = ghnew uint8_t[size];
             this->size = size;
             this->capacity = size;
             memcpy(this->data, data, size);
         }
 
-        Buffer(const Buffer &buffer) {
-            data = ghnew uint8_t[buffer.size];
-            size = buffer.size;
-            capacity = buffer.capacity;
-            memcpy(data, buffer.data, size);
+        Buffer(const Buffer& other) {
+            data = ghnew uint8_t[other.size];
+            size = other.size;
+            capacity = other.capacity;
+            memcpy(data, other.data, size);
+        }
+
+        Buffer(Buffer&& other) {
+            data = other.data;
+            size = other.size;
+            capacity = other.capacity;
+            other.data = nullptr;
+            other.size = 0;
+            other.capacity = 0;
         }
 
         ~Buffer() {
@@ -41,7 +56,7 @@ namespace Ghurund {
             return data;
         }
 
-        __declspec(property(get = getData)) uint8_t *Data;
+        __declspec(property(get = getData)) uint8_t* Data;
 
         size_t getSize() const {
             return size;
@@ -66,6 +81,29 @@ namespace Ghurund {
                 this->data = ghnew uint8_t[size];
             }
             memcpy(this->data, data, size);
+        }
+
+        inline Buffer& operator=(const Buffer& other) {
+            if (this == &other)
+                return *this;
+
+            setData(other.data, other.size);
+
+            return *this;
+        }
+
+        inline Buffer& operator=(Buffer&& other) {
+            if (this == &other)
+                return *this;
+
+            data = other.data;
+            size = other.size;
+            capacity = other.capacity;
+            other.data = nullptr;
+            other.size = 0;
+            other.capacity = 0;
+
+            return *this;
         }
 
         void zero() {

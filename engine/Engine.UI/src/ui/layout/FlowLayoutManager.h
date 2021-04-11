@@ -9,20 +9,20 @@ namespace Ghurund::UI {
 
     class FlowLayoutManager:public LayoutManager {
     private:
-        void layoutFlowingControlsRight(ControlGroup& group, float width);
+        void layoutFlowingControlsRight(float width);
 
-        void layoutFlowingControlsLeft(ControlGroup& group, float width);
+        void layoutFlowingControlsLeft(float width);
 
-        float measureWidth(ControlGroup& group);
+        float measureWidth();
 
-        float measureHeight(ControlGroup& group, float width);
+        float measureHeight(float width);
 
     public:
         bool reverseLayout = false;
         Spacing spacing;
 
-        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
 
-        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) override;
+        virtual void layout(float x, float y, float width, float height) override;
     };
 }

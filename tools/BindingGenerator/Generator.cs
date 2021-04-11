@@ -47,7 +47,7 @@ namespace BindingGenerator {
                 streamWriter.Write("}\r\n\r\n");
             }
 
-            string baseClass = hasBinding ? $"BindingLayout<Data>" : "WidgetLayout";
+            string baseClass = "WidgetLayout";
 
             streamWriter.Write($"namespace {layout.Namespace} {{\r\n");
 

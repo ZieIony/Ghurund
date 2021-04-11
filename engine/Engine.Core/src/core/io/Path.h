@@ -13,7 +13,25 @@ namespace Ghurund {
             this->path.replace(L'/', L'\\');
         }
 
+        Path(Path&& path) noexcept {
+            this->path = std::move(path.path);
+        }
+
         virtual ~Path() = 0 {}
+
+        Path& operator=(const Path& other) {
+            if (this == &other)
+                return *this;
+            path = other.path;
+            return *this;
+        }
+
+        Path& operator=(Path&& other) noexcept {
+            if (this == &other)
+                return *this;
+            path = other.path;
+            return *this;
+        }
 
         const WString &toString() const {
             return path;

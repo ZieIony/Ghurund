@@ -2,12 +2,12 @@
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
 	<LinearLayout preferredSize="200, wrap"
 				  orientation="horizontal">
-		<Button layout="file://layouts/ButtonImageLayout.xml">
+		<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml">
 			<ImageView image="theme://image/arrowUp"/>
 		</Button>
 		<StackLayout>
 			<ManualLayout>
-				<Button layout="file://layouts/ButtonOutlinedLayout.xml"
+				<Button layout="lib://Ghurund/layouts/ButtonOutlinedLayout.xml"
 						preferredSize="wrap, fill"
 						minSize="20,0"/>
 			</ManualLayout>
@@ -15,7 +15,7 @@
 				<ColorView color="#3fff0000"/>
 			</ClickableControl>
 		</StackLayout>
-		<Button layout="file://layouts/ButtonImageLayout.xml">
+		<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml">
 			<ImageView image="theme://image/arrowDown"/>
 		</Button>
 	</LinearLayout>

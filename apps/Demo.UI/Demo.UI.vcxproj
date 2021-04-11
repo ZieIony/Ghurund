@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)engine\Engine\generated;$(SolutionDir)engine\Engine.UI\generated\bindings;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine\src;$(ProductionDir)generated;$(ProductionDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)engine\Engine\generated;$(SolutionDir)engine\Engine.UI\generated\bindings;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine\src;$(ProductionDir)generated\bindings;$(ProductionDir)src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Game\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -123,6 +123,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <AdditionalDependencies>Pathcch.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,9 +145,6 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generated\LayoutBinding.h" />
-    <ClInclude Include="generated\TestRecyclerBinding.h" />
-    <ClInclude Include="generated\TestRowBinding.h" />
     <ClInclude Include="src\DemoApplication.h" />
     <ClInclude Include="src\DemoLayout.h" />
     <ClInclude Include="src\DemoWindow.h" />

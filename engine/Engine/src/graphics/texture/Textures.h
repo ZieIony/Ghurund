@@ -9,7 +9,7 @@ namespace Ghurund {
         Textures() = delete;
 
         static Texture* make(ResourceContext& context, const wchar_t* fileName) {
-            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
+            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
             return makeFromImage(context, FilePath(path));
         }
 

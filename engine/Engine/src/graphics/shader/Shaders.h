@@ -11,7 +11,7 @@ namespace Ghurund {
         Shaders() = delete;
 
         static Shader* load(ResourceContext& context, const wchar_t* fileName) {
-            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL_PREFIX, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
+            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
             return context.ResourceManager.load<Shader>(context, FilePath(path));
         }
 

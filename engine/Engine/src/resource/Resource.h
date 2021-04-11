@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Loader.h"
 #include "ResourceFormat.h"
 #include "Status.h"
 #include "core/Pointer.h"
@@ -7,23 +8,6 @@
 #include <stdint.h>
 
 namespace Ghurund {
-    enum class LoadOption {
-        DEFAULT = 0, DONT_WATCH = 1
-    };
-
-    LoadOption operator |(LoadOption lhs, LoadOption rhs);
-
-    bool operator &(LoadOption lhs, LoadOption rhs);
-
-    enum class SaveOption {
-        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2, FORMAT_JPG = 4, FORMAT_PNG = 8
-    };
-
-    SaveOption operator |(SaveOption lhs, SaveOption rhs);
-
-    bool operator &(SaveOption lhs, SaveOption rhs);
-
-
     Status filterStatus(Status result, LoadOption option);
     Status filterStatus(Status result, SaveOption option);
 
@@ -49,8 +33,13 @@ namespace Ghurund {
     protected:
         DataSize dataSize;
 
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) = 0;
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const = 0;
+        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            return Status::NOT_IMPLEMENTED;
+        };
+
+        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            return Status::NOT_IMPLEMENTED;
+        };
 
         virtual unsigned int getVersion() const {
             return 0;

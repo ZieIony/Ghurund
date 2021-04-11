@@ -45,14 +45,4 @@ namespace Ghurund::UI {
             return Status::OK;
         }
     };
-
-    template<class DataType>
-    class BindingLayout:public WidgetLayout {
-    public:
-        BindingLayout() {}
-
-        BindingLayout(Control* control):WidgetLayout(control) {}
-
-        virtual void bind(DataType& data) {}
-    };
 }

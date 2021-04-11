@@ -16,13 +16,14 @@ namespace Ghurund::UI {
         List<TabItem*> tabs;
         AdapterChildrenProvider<TabItem*, Tab>* provider;
 
+        typedef SingleAdapterChildrenProvider<TabItem*, Tab, TabItemAdapter> TabChildrenProvider;
+
     protected:
         virtual void onLayoutChanged() override {
             if (!Layout)
                 return;
-            provider = ghnew AdapterChildrenProvider<TabItem*, Tab>(*Layout->Tabs);
-            provider->Items = ghnew ListItemSource<TabItem*>(tabs);
-            Layout->Tabs->childrenProvider = provider;
+            provider = ghnew TabChildrenProvider();
+            Layout->Tabs->ChildrenProvider = std::unique_ptr<ChildrenProvider>(provider);
         }
 
     public:
@@ -33,7 +34,7 @@ namespace Ghurund::UI {
         ~TabContainer();
 
         inline List<TabItem*>& getTabs() {
-            return tabs;
+            return provider->ItemSource.Items;
         }
 
         inline void setTabs(const List<TabItem*>& tabs) {
@@ -42,13 +43,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getTabs, put = setTabs)) List<TabItem*>& Tabs;
-
-        inline void setAdapter(TabItemAdapter* adapter) {
-            provider->Adapters.deleteItems();
-            provider->Adapters.add(adapter);
-        }
-
-        __declspec(property(put = setAdapter)) TabItemAdapter* Adapter;
 
         inline void setSelectedPosition(size_t position) {
             if (selectedTab)

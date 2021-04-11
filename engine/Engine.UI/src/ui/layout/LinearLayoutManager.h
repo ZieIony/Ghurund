@@ -12,20 +12,20 @@ namespace Ghurund::UI {
         float contentSize = 0.0f;
         unsigned int spreadCount;
 
-        FloatSize measureHorizontal(ControlGroup& group, float parentWidth, float parentHeight);
+        FloatSize measureHorizontal(float parentWidth, float parentHeight);
 
-        FloatSize measureVertical(ControlGroup& group, float parentWidth, float parentHeight);
+        FloatSize measureVertical(float parentWidth, float parentHeight);
 
-        void layoutHorizontal(ControlGroup& group, float x, float y, float width, float height);
+        void layoutHorizontal(float x, float y, float width, float height);
 
-        void layoutVertical(ControlGroup& group, float x, float y, float width, float height);
+        void layoutVertical(float x, float y, float width, float height);
 
     public:
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
 
-        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
 
-        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) override;
+        virtual void layout(float x, float y, float width, float height) override;
     };
 }

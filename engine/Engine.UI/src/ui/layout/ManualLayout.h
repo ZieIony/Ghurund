@@ -14,11 +14,11 @@ namespace Ghurund::UI {
 
     public:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, childrenProvider, x, y, width, height);
+            layoutManager.layout(x, y, width, height);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

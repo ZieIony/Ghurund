@@ -244,7 +244,8 @@ namespace Ghurund {
         }
 
         Buffer* buffer = ghnew Buffer(mappedMemory, (size_t)imageSize);
-        image = ghnew Image(*buffer, (uint32_t)desc.Width, (uint32_t)desc.Height, desc.Format);
+        image = ghnew Image();
+        //image->init(*buffer, (uint32_t)desc.Width, (uint32_t)desc.Height, desc.Format);
         delete buffer;
         stagingTexture->Unmap(0, &writeRange);
 

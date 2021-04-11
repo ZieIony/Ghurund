@@ -8,13 +8,22 @@ namespace Ghurund::UI {
     protected:
         FloatPoint scroll = { 0,0 };
         FloatPoint maxScroll = { 0.0f, 0.0f };
+        ControlGroup* group = nullptr;
+        ChildrenProvider* provider = nullptr;
 
-        float measureMaxWidth(ControlGroup& group);
+        float measureMaxWidth();
 
-        float measureMaxHeight(ControlGroup& group);
+        float measureMaxHeight();
 
     public:
         virtual ~LayoutManager() = 0 {}
+
+        void setGroup(ControlGroup& group, ChildrenProvider& provider) {
+            this->group = &group;
+            this->provider = &provider;
+            scroll = { 0, 0 };
+            maxScroll = { 0, 0 };
+        }
 
         inline const FloatPoint& getScroll() const {
             return scroll;
@@ -26,7 +35,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScroll, put = setScroll)) const FloatPoint& Scroll;
 
-        virtual void scrollBy(ControlGroup& group, ChildrenProvider& provider, float dx, float dy) {}
+        virtual void scrollBy(float dx, float dy) {}
 
         inline const FloatPoint& getMaxScroll() const {
             return maxScroll;
@@ -34,16 +43,40 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
 
-        virtual const FloatSize measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
-            for (Control* c : group.Children) {
+        virtual bool focusNext() {
+            return group->focusNext();
+        }
+
+        virtual bool focusPrevious() {
+            return group->focusPrevious();
+        }
+
+        virtual bool focusUp() {
+            return group->focusUp();
+        }
+
+        virtual bool focusDown() {
+            return group->focusDown();
+        }
+
+        virtual bool focusLeft() {
+            return group->focusLeft();
+        }
+
+        virtual bool focusRight() {
+            return group->focusRight();
+        }
+
+        virtual const FloatSize measure(float parentWidth, float parentHeight) {
+            for (Control* c : group->Children) {
                 c->measure(
-                    group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
-                    group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
+                    group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
+                    group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
                 );
             }
             return { 0,0 };
         }
 
-        virtual void layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) = 0;
+        virtual void layout(float x, float y, float width, float height) = 0;
     };
 }

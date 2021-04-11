@@ -1,6 +1,8 @@
-#include "ghpch.h"
+#include "ghcpch.h"
 #include "DirectoryWatch.h"
 
+#include "core/logging/Formatter.h"
+#include "core/logging/Logger.h"
 #include "core/threading/FunctionQueue.h"
 
 namespace Ghurund {
@@ -13,8 +15,7 @@ namespace Ghurund {
             if (files.containsKey(fileName)) {
                 DWORD action = fni.Action;
                 const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
-                auto filePath = FilePath(directory, fileName);
-                Logger::log(LogType::INFO, _T("file changed: {}, action: {}\n"), filePath.FileName, change.Name);
+                auto filePath = directory / FilePath(fileName);
                 files[fileName](filePath, change);
             }
 

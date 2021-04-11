@@ -29,7 +29,6 @@
 
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader() {
-        workingDir.push(DirectoryPath(L"."));
         registerClass(ClickableControl::TYPE);
         registerClass(SelectableView::TYPE);
         registerClass(ClickResponseView::TYPE);
@@ -92,11 +91,8 @@ namespace Ghurund::UI {
         if (!file.Exists)
             return Status::FILE_DOESNT_EXIST;
         Status result = file.read();
-        if (result == Status::OK) {
-            workingDir.push(path.Directory);
+        if (result == Status::OK)
             result = load(Buffer(file.Data, file.Size), output);
-            workingDir.pop();
-        }
         return result;
     }
 
@@ -241,9 +237,6 @@ namespace Ghurund::UI {
         AStringView sView = AStringView(path);
         if (sView.startsWith(FILE_PROTOCOL))
             sView = sView.substring(lengthOf(FILE_PROTOCOL));
-        if (sView.startsWith("~/"))
-            return FilePath(toWideChar(AString(sView.substring(lengthOf("~/")).Data)));
-        auto fileName = fmt::format(L"{}/{}", WorkingDirectory.toString().Data, toWideChar(AString(sView.Data)).Data);
-        return WString(fileName.c_str());
+        return toWideChar(AString(sView.Data));
     }
 }

@@ -8,5 +8,6 @@ namespace BindingGenerator {
         public List<BoundValue> Values { get; internal set; }
         public List<BoundEvent> Events { get; internal set; }
         public string Namespace { get; internal set; } = "Bindings";
+        public string Type { get; internal set; }
     }
 }

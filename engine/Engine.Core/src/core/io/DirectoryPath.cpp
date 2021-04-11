@@ -5,22 +5,45 @@
 #include "core/logging/Logger.h"
 
 namespace Ghurund {
-    DirectoryPath::DirectoryPath(const WString& path):Path(path) {
-        DWORD attributes = GetFileAttributesW(path.Data);
-
-        if (attributes != INVALID_FILE_ATTRIBUTES && !(attributes & FILE_ATTRIBUTE_DIRECTORY))
-            Logger::log(LogType::ERR0R, _T("invalid directory path {}\n"), path);
-
-        if (!path.endsWith(L"/") && !path.endsWith(L"\\"))
-            this->path.add(L'\\');
-    }
-
     DirectoryPath DirectoryPath::getAbsolutePath() const {
         DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr) + path.Size + 2); // slash and string terminator
-        wchar_t* fullPath = ghnew wchar_t[bufferLength];
+        wchar_t fullPath[MAX_PATH];
         GetFullPathNameW(path.Data, bufferLength, fullPath, nullptr);
         DirectoryPath absolutePath(fullPath);
-        delete[] fullPath;
         return absolutePath;
+    }
+
+    List<DirectoryPath> DirectoryPath::getDirectories() const {
+        List<DirectoryPath> directories;
+        WIN32_FIND_DATAW ffd;
+        HANDLE hFind = INVALID_HANDLE_VALUE;
+
+        hFind = FindFirstFileW(path.Data, &ffd);
+
+        do {
+            if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                directories.add(combine(DirectoryPath(ffd.cFileName)));
+        } while (FindNextFileW(hFind, &ffd) != 0);
+
+        FindClose(hFind);
+
+        return directories;
+    }
+
+    List<FilePath> DirectoryPath::getFiles() const {
+        List<FilePath> directories;
+        WIN32_FIND_DATAW ffd;
+        HANDLE hFind = INVALID_HANDLE_VALUE;
+
+        hFind = FindFirstFileW(path.Data, &ffd);
+
+        do {
+            if (!(ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                directories.add(combine(FilePath(ffd.cFileName)));
+        } while (FindNextFileW(hFind, &ffd) != 0);
+
+        FindClose(hFind);
+
+        return directories;
     }
 }

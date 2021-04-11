@@ -45,7 +45,7 @@ namespace Preview {
             rootView = ghnew Ghurund::UI::RootView(*context);
 
             PointerList<Control*> controls;
-            layoutLoader.load(L"apps/Preview/res/layout.xml", controls);
+            layoutLoader.load(FilePath(L"apps/Preview/res/layout.xml"), controls);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(controls[0]);
@@ -91,7 +91,7 @@ namespace Preview {
                 if (!file.Exists)
                     return;
                 if (file.read() == Status::OK) {
-                    layoutLoader.WorkingDirectory = path.Directory;
+                    //layoutLoader.WorkingDirectory = path.Directory;
                     Buffer buffer(file.Data, file.Size);
                     if (path.FileName.endsWith(L".xml")) {
                         loadLayout(buffer);

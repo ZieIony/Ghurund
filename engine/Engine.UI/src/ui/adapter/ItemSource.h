@@ -15,20 +15,24 @@ namespace Ghurund::UI {
         virtual T& get(size_t position) const = 0;
     };
 
-    template<class T>
+    template<class T, class ListType = List<T>>
     class ListItemSource:public ItemSource<T> {
     private:
-        List<T>& list;
+        ListType items;
 
     public:
-        ListItemSource(List<T>& list):list(list) {}
-
         virtual size_t getSize() const override {
-            return list.Size;
+            return items.Size;
         }
 
         virtual T& get(size_t position) const override {
-            return list.get(position);
+            return items.get(position);
         }
+
+        inline ListType& getItems() {
+            return items;
+        }
+
+        __declspec(property(get = getItems)) ListType& Items;
     };
 }

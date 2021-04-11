@@ -47,11 +47,11 @@ namespace Ghurund::UI {
     bool RecyclerView::dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
         if (layoutManager && childrenProvider) {
             if (args.Wheel == MouseWheel::VERTICAL) {
-                layoutManager->scrollBy(*this, *childrenProvider, 0, (float)args.Delta);
+                layoutManager->scrollBy(0, (float)args.Delta);
                 onScrolled();
                 repaint();
             } else {
-                layoutManager->scrollBy(*this, *childrenProvider, (float)args.Delta, 0);
+                layoutManager->scrollBy((float)args.Delta, 0);
                 onScrolled();
                 repaint();
             }

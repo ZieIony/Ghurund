@@ -72,19 +72,19 @@ namespace Ghurund::UI {
             textSecondaryFont->init(fontLoader, dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
-            SharedPointer<ImageDrawable> checkBoxChecked = resourceLoader.loadDrawable(L"icons/checkbox checked 18.png");
+            SharedPointer<ImageDrawable> checkBoxChecked = resourceLoader.loadDrawable(FilePath(L"icons/checkbox checked 18.png"));
             Images.set(Theme::IMAGE_CHECKBOX_CHECKED, checkBoxChecked);
-            SharedPointer<ImageDrawable> checkBoxUnchecked = resourceLoader.loadDrawable(L"icons/checkbox unchecked 18.png");
+            SharedPointer<ImageDrawable> checkBoxUnchecked = resourceLoader.loadDrawable(FilePath(L"icons/checkbox unchecked 18.png"));
             Images.set(Theme::IMAGE_CHECKBOX_UNCHECKED, checkBoxUnchecked);
-            SharedPointer<ImageDrawable> radioButtonChecked = resourceLoader.loadDrawable(L"icons/radiobutton checked 18.png");
+            SharedPointer<ImageDrawable> radioButtonChecked = resourceLoader.loadDrawable(FilePath(L"icons/radiobutton checked 18.png"));
             Images.set(Theme::IMAGE_RADIOBUTTON_CHECKED, radioButtonChecked);
-            SharedPointer<ImageDrawable> radioButtonUnchecked = resourceLoader.loadDrawable(L"icons/radiobutton unchecked 18.png");
+            SharedPointer<ImageDrawable> radioButtonUnchecked = resourceLoader.loadDrawable(FilePath(L"icons/radiobutton unchecked 18.png"));
             Images.set(Theme::IMAGE_RADIOBUTTON_UNCHECKED, radioButtonUnchecked);
-            SharedPointer<ImageDrawable> arrowUp = resourceLoader.loadDrawable(L"icons/arrow up 18.png");
+            SharedPointer<ImageDrawable> arrowUp = resourceLoader.loadDrawable(FilePath(L"icons/arrow up 18.png"));
             Images.set(Theme::IMAGE_ARROWUP, arrowUp);
-            SharedPointer<ImageDrawable> arrowDown = resourceLoader.loadDrawable(L"icons/arrow down 18.png");
+            SharedPointer<ImageDrawable> arrowDown = resourceLoader.loadDrawable(FilePath(L"icons/arrow down 18.png"));
             Images.set(Theme::IMAGE_ARROWDOWN, arrowDown);
-            SharedPointer<ImageDrawable> arrowRight = resourceLoader.loadDrawable(L"icons/arrow right 18.png");
+            SharedPointer<ImageDrawable> arrowRight = resourceLoader.loadDrawable(FilePath(L"icons/arrow right 18.png"));
             Images.set(Theme::IMAGE_ARROWRIGHT, arrowRight);
 
             Styles.set(STYLE_CHECKBOX, &checkBoxStyle);

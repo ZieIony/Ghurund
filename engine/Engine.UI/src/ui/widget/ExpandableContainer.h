@@ -7,7 +7,7 @@
 #include "ui/control/ImageView.h"
 
 namespace Ghurund::UI {
-    class ExpandableContainer:public BindingWidget<ExpandableContainerBinding<ExpandableContainer>, ExpandableContainer> {
+    class ExpandableContainer:public BindingWidget<ExpandableContainer, ExpandableContainerBinding<ExpandableContainer>> {
     private:
         friend class ExpandableContainerBinding<ExpandableContainer>;
 

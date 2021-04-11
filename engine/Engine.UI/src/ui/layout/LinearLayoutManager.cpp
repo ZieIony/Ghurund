@@ -2,14 +2,14 @@
 #include "LinearLayoutManager.h"
 
 namespace Ghurund::UI {
-    FloatSize LinearLayoutManager::measureHorizontal(ControlGroup& group, float parentWidth, float parentHeight) {
+    FloatSize LinearLayoutManager::measureHorizontal(float parentWidth, float parentHeight) {
         contentSize = 0.0f;
         spreadCount = 0;
 
-        for (Control* c : group.Children) {
+        for (Control* c : group->Children) {
             c->measure(
-                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
+                group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
+                group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
             );
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 spreadCount++;
@@ -21,10 +21,10 @@ namespace Ghurund::UI {
         }
 
         float measuredwidth = 0;
-        if (group.PreferredSize.width >= 0) {
-            measuredwidth = (float)group.PreferredSize.width;
+        if (group->PreferredSize.width >= 0) {
+            measuredwidth = (float)group->PreferredSize.width;
         } else {
-            for (Control* c : group.Children) {
+            for (Control* c : group->Children) {
                 if (c->PreferredSize.width >= 0) {
                     measuredwidth += std::max(c->MinSize.width, (float)c->PreferredSize.width);
                 } else {
@@ -33,19 +33,19 @@ namespace Ghurund::UI {
             }
         }
 
-        return { std::max(group.MinSize.width, measuredwidth), measureMaxHeight(group) };
+        return { std::max(group->MinSize.width, measuredwidth), measureMaxHeight() };
     }
 
-    FloatSize LinearLayoutManager::measureVertical(ControlGroup& group, float parentWidth, float parentHeight) {
+    FloatSize LinearLayoutManager::measureVertical(float parentWidth, float parentHeight) {
         contentSize = 0.0f;
         spreadCount = 0;
 
-        for (Control* c : group.Children) {
+        for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
             c->measure(
-                group.PreferredSize.width >= 0 ? (float)group.PreferredSize.width : parentWidth,
-                group.PreferredSize.height >= 0 ? (float)group.PreferredSize.height : parentHeight
+                group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
+                group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
             );
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 spreadCount++;
@@ -57,10 +57,10 @@ namespace Ghurund::UI {
         }
 
         float measuredHeight = 0;
-        if (group.PreferredSize.height >= 0) {
-            measuredHeight = (float)group.PreferredSize.height;
+        if (group->PreferredSize.height >= 0) {
+            measuredHeight = (float)group->PreferredSize.height;
         } else {
-            for (Control* c : group.Children) {
+            for (Control* c : group->Children) {
                 if (c->PreferredSize.height >= 0) {
                     measuredHeight += std::max(c->MinSize.height, (float)c->PreferredSize.height);
                 } else {
@@ -69,10 +69,10 @@ namespace Ghurund::UI {
             }
         }
 
-        return { measureMaxWidth(group), std::max(group.MinSize.height, measuredHeight) };
+        return { measureMaxWidth(), std::max(group->MinSize.height, measuredHeight) };
     }
 
-    void LinearLayoutManager::layoutHorizontal(ControlGroup& group, float x, float y, float width, float height) {
+    void LinearLayoutManager::layoutHorizontal(float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, width - contentSize);
         float currentX;
         if (alignment.horizontal == Alignment::Horizontal::LEFT || spreadCount > 0) {
@@ -83,7 +83,7 @@ namespace Ghurund::UI {
             currentX = spaceLeft;
         }
 
-        for (Control* c : group.Children) {
+        for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
             float w;
@@ -120,7 +120,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void LinearLayoutManager::layoutVertical(ControlGroup& group, float x, float y, float width, float height) {
+    void LinearLayoutManager::layoutVertical(float x, float y, float width, float height) {
         float spaceLeft = std::max(0.0f, height - contentSize);
         float currentY = 0.0f;
         if (alignment.vertical == Alignment::Vertical::TOP || spreadCount > 0) {
@@ -131,7 +131,7 @@ namespace Ghurund::UI {
             currentY = spaceLeft;
         }
 
-        for (Control* c : group.Children) {
+        for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
             float w;
@@ -168,19 +168,19 @@ namespace Ghurund::UI {
         }
     }
 
-    const FloatSize LinearLayoutManager::measure(ControlGroup& group, ChildrenProvider& provider, float parentWidth, float parentHeight) {
+    const FloatSize LinearLayoutManager::measure(float parentWidth, float parentHeight) {
         if (orientation == Orientation::HORIZONTAL) {
-            return measureHorizontal(group, parentWidth, parentHeight);
+            return measureHorizontal(parentWidth, parentHeight);
         } else {
-            return measureVertical(group, parentWidth, parentHeight);
+            return measureVertical(parentWidth, parentHeight);
         }
     }
 
-    void LinearLayoutManager::layout(ControlGroup& group, ChildrenProvider& provider, float x, float y, float width, float height) {
+    void LinearLayoutManager::layout(float x, float y, float width, float height) {
         if (orientation == Orientation::HORIZONTAL) {
-            layoutHorizontal(group, x, y, width, height);
+            layoutHorizontal(x, y, width, height);
         } else {
-            layoutVertical(group, x, y, width, height);
+            layoutVertical(x, y, width, height);
         }
     }
 }

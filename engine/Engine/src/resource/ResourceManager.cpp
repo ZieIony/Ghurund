@@ -4,13 +4,28 @@
 #include "core/Timer.h"
 
 namespace Ghurund {
-    Status ResourceManager::loadInternal(Resource& resource, ResourceContext& context, const FilePath& path, LoadOption options) {
-        Status result = resource.load(context, path, nullptr, options);
+    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, LoadOption options) {
+        File* file;
+        if (path.toString().startsWith(LIB_PROTOCOL)) {
+            WString libName = path.toString().substring(lengthOf(LIB_PROTOCOL), path.toString().find(L"\\", lengthOf(LIB_PROTOCOL)) - lengthOf(LIB_PROTOCOL));
+            WString fileName = path.toString().substring(path.toString().find(L"\\", lengthOf(LIB_PROTOCOL)));
+            file = libraries.get(libName)->getFile(fileName);
+        } else {
+            file = ghnew File(path);
+            if (!file->Exists) {
+                delete file;
+                return Status::FILE_DOESNT_EXIST;
+            }
+        }
+
+        MemoryInputStream stream(file->Data, file->Size);
+        Status result = loader.load(*this, stream, resource, options);
+        delete file;
         if (result != Status::OK)
             return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
 
-        if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
-            watcher.addFile(path, [this, &resource, &context](const FilePath& path, const FileChange& fileChange) {
+        /*if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
+            watcher.addFile(path, [this, &loader, &resource](const FilePath& path, const FileChange& fileChange) {
                 if (fileChange == FileChange::MODIFIED) {
                     section.enter();
                     bool found = false;
@@ -22,47 +37,15 @@ namespace Ghurund {
                     }
                     if (!found) {
                         resource.Valid = false;
-                        reloadQueue.add(ghnew ReloadTask(context, resource));
+                        reloadQueue.add(ghnew ReloadTask(loader, resource));
                     }
                     section.leave();
                 }
-                });
-        }
+            });
+        }*/
         add(resource);
 
         return Status::OK;
-    }
-
-    FilePath ResourceManager::decodePath(const WString& fileName, const DirectoryPath* workingDir) const {
-        if (fileName.startsWith(LIB_PROTOCOL_PREFIX)) {
-            WString libName = fileName.substring(lengthOf(LIB_PROTOCOL_PREFIX), fileName.find(L"\\", lengthOf(LIB_PROTOCOL_PREFIX)) - lengthOf(LIB_PROTOCOL_PREFIX));
-            FilePath libPath(libraries.get(libName)->Path, fileName.substring(lengthOf(LIB_PROTOCOL_PREFIX) + 1 + libName.Length));
-            return libPath.AbsolutePath;
-        } else if (workingDir) {
-            return FilePath(*workingDir, fileName).AbsolutePath;
-        } else {
-            return fileName;
-        }
-    }
-
-    FilePath ResourceManager::encodePath(const FilePath& resourcePath, const DirectoryPath& workingDir) const {
-        FilePath relativePath = resourcePath.getRelativePath(workingDir);
-        if (relativePath.toString().startsWith(L"..")) {
-            size_t libIndex = libraries.findFile(resourcePath);
-            if (libIndex != libraries.Size) {
-                WString libPathString = LIB_PROTOCOL_PREFIX;
-                libPathString.add(libraries.get(libIndex).Name.Data);
-                libPathString.add(L"\\");
-                libPathString.add(resourcePath.getRelativePath(libraries.get(libIndex).Path).toString().Data);
-                return libPathString;
-            } else {
-                if (relativePath == resourcePath)
-                    Logger::log(LogType::WARNING, _T("Resource path is absolute: %s\n"), resourcePath);
-                return resourcePath;
-            }
-        } else {
-            return relativePath;
-        }
     }
 
     const Ghurund::Type& ResourceManager::GET_TYPE() {
@@ -79,6 +62,11 @@ namespace Ghurund {
     }
 
     ResourceManager::~ResourceManager() {
+        for (size_t i = 0; i < loaders.Size; i++) {
+            Loader* loader = loaders.getValue(i);
+            loaders.remove(loaders.getKey(i));
+            delete loader;
+        }
         loadingThread.finish();
     }
 
@@ -119,14 +107,14 @@ namespace Ghurund {
     }
 
     Status ResourceManager::save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
-		size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
-		stream.writeUInt((uint32_t)index);
+        size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
+        stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
             return resource.save(context, workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
-            stream.writeUnicode(encodePath(*resource.Path, workingDir).toString().Data);
+            stream.writeUnicode(resource.Path->toString().Data);
             return resource.save(context, *resource.Path, options);
         }
     }

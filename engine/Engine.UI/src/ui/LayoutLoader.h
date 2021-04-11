@@ -24,7 +24,6 @@ namespace Ghurund::UI {
         Map<AString, const Type*> types;
         Theme* theme = nullptr;
         ID2D1Factory6* d2dFactory = nullptr;
-        Stack<DirectoryPath> workingDir;
         IResourceLoader* resourceLoader = nullptr;
 
     public:
@@ -55,17 +54,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getTheme, put = setTheme)) Theme& Theme;
-
-        inline const DirectoryPath& getWorkingDirectory() {
-            return workingDir.top();
-        }
-
-        inline void setWorkingDirectory(const DirectoryPath& path) {
-            workingDir.clear();
-            workingDir.push(path);
-        }
-
-        __declspec(property(get = getWorkingDirectory, put = setWorkingDirectory)) const DirectoryPath& WorkingDirectory;
 
         ImageDrawable* loadDrawable(const char* str);
 

@@ -21,6 +21,9 @@
   <ItemGroup>
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
+    <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
+    <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
+    <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
@@ -54,11 +57,19 @@
     <ClInclude Include="src\core\collection\Queue.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
+    <ClInclude Include="src\core\Concepts.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />
     <ClInclude Include="src\core\input\Keyboard.h" />
     <ClInclude Include="src\core\input\Mouse.h" />
+    <ClInclude Include="src\core\io\DirectoryLibrary.h" />
+    <ClInclude Include="src\core\io\FileLibrary.h" />
+    <ClInclude Include="src\core\io\Library.h" />
+    <ClInclude Include="src\core\io\LibraryList.h" />
+    <ClInclude Include="src\core\io\watcher\DirectoryWatch.h" />
+    <ClInclude Include="src\core\io\watcher\FileChange.h" />
+    <ClInclude Include="src\core\io\watcher\FileWatcher.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
     <ClInclude Include="src\core\logging\Log.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />

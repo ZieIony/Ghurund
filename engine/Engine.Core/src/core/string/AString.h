@@ -17,18 +17,13 @@ namespace Ghurund {
 
         std::strong_ordering operator<=>(const AString& string) const;
 
-        using GenericString<char>::operator=;
-
         AString& operator=(const AString& string) {
-            size = string.size;
-            initial = string.initial;
-            capacity = string.capacity;
-            char* prevV = v;
-            char* stringV = string.v;
-            v = new char[capacity];
-            memcpy(v, stringV, size * sizeof(char));
-            hash = string.hash;
-            delete[] prevV;
+            GenericString<char>::operator=(string);
+            return *this;
+        }
+
+        AString& operator=(AString&& string) {
+            GenericString<char>::operator=(string);
             return *this;
         }
 

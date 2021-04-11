@@ -3,6 +3,7 @@
 #include "FileChange.h"
 #include "core/Buffer.h"
 #include "core/collection/Map.h"
+#include "core/io/DirectoryPath.h"
 #include "core/io/FilePath.h"
 #include "core/math/MathUtils.h"
 #include "core/threading/WorkerThread.h"

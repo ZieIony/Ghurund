@@ -251,6 +251,19 @@ namespace Ghurund {
             return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(T)) == 0;
         }
 
+        GenericString& operator=(const GenericString<T>& string) {
+            size = string.size;
+            initial = string.initial;
+            capacity = string.capacity;
+            T* prevV = v;
+            T* stringV = string.v;
+            v = new T[capacity];
+            memcpy(v, stringV, size * sizeof(T));
+            hash = string.hash;
+            delete[] prevV;
+            return *this;
+        }
+
         GenericString& operator=(GenericString&& other) noexcept {
             if (this == &other)
                 return *this;

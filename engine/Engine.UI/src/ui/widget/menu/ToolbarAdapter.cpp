@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         return nullptr;// ghnew ImageButton(ghnew ImageButtonFlatLayout());
     }
     
-    void ButtonToolbarAdapter::bind(Control& control, MenuItem* const& item, size_t position) const {
+    void ButtonToolbarAdapter::bind(Control& control, MenuItem*& item, size_t position) const {
         /*ImageButton& imageButton = (ImageButton&)control;
         ButtonMenuItem* menuItem = (ButtonMenuItem*)item;
         //imageButton.Name = menuItem->Text;
