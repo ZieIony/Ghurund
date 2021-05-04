@@ -5,7 +5,7 @@
 
 #include <dxgi1_6.h>
 #include <d2d1_3.h>
-#include <dwrite.h>
+#include <dwrite_3.h>
 #include <d3d11on12.h>
 #include <wrl.h>
 
@@ -25,12 +25,11 @@ namespace Ghurund {
         ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> m_d3d11DeviceContext;
         ComPtr<ID3D11On12Device> m_d3d11On12Device;
-        ComPtr<IDWriteFactory> m_dwriteFactory;
+        ComPtr<IDWriteFactory5> m_dwriteFactory;
         ComPtr<ID2D1Factory6> m_d2dFactory;
         ComPtr<ID2D1Device5> m_d2dDevice;
         UIState state = UIState::IDLE;
         RenderTarget* currentTarget = nullptr;
-        FontCollectionLoader* fontLoader = nullptr;
 
     public:
         ~Graphics2D() {
@@ -61,17 +60,11 @@ namespace Ghurund {
 
         __declspec(property(get = getFactory)) ID2D1Factory6* Factory;
 
-        inline IDWriteFactory* getDWriteFactory() {
+        inline IDWriteFactory5* getDWriteFactory() {
             return m_dwriteFactory.Get();
         };
 
-        __declspec(property(get = getDWriteFactory)) IDWriteFactory* DWriteFactory;
-
-        inline FontCollectionLoader* getFontLoader() {
-            return fontLoader;
-        }
-
-        __declspec(property(get = getFontLoader)) FontCollectionLoader* FontLoader;
+        __declspec(property(get = getDWriteFactory)) IDWriteFactory5* DWriteFactory;
 
         inline UIState getState() const {
             return state;

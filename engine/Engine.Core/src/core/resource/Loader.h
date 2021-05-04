@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Status.h"
+#include "core/allocation/Allocator.h"
 #include "core/io/MemoryStream.h"
 
 namespace Ghurund {

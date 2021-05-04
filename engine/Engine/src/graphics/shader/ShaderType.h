@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "core/collection/List.h"
 #include "ConstantBuffer.h"
 #include "Sampler.h"

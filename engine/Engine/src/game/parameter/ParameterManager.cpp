@@ -5,7 +5,6 @@
 #include "TextureParameter.h"
 #include "core/SharedPointer.h"
 #include "graphics/texture/Textures.h"
-#include "resource/ResourceContext.h"
 
 namespace Ghurund {
     const Ghurund::Type& ParameterManager::GET_TYPE() {
@@ -85,16 +84,16 @@ namespace Ghurund {
         parameters.add(normalTextureParameter);
     }
 
-    void ParameterManager::initDefaultTextures(ResourceContext& context) {
-        SharedPointer<Texture> diffuseTexture = Textures::makeDefaultDiffuse(context);
+    void ParameterManager::initDefaultTextures(ResourceManager& manager, Graphics& graphics, CommandList& commandList) {
+        SharedPointer<Texture> diffuseTexture = Textures::makeDefaultDiffuse(graphics, commandList, manager);
         TextureParameter* diffuseTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::DIFFUSE_TEXTURE.Value];
         diffuseTextureParameter->Value = diffuseTexture;
 
-        SharedPointer<Texture> specularTexture = Textures::makeDefaultSpecular(context);
+        SharedPointer<Texture> specularTexture = Textures::makeDefaultSpecular(graphics, commandList, manager);
         TextureParameter* specularTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::SPECULAR_TEXTURE.Value];
         specularTextureParameter->Value = specularTexture;
 
-        SharedPointer<Texture> normalTexture = Textures::makeDefaultNormal(context);
+        SharedPointer<Texture> normalTexture = Textures::makeDefaultNormal(graphics, commandList, manager);
         TextureParameter* normalTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::NORMAL_TEXTURE.Value];
         normalTextureParameter->Value = normalTexture;
     }

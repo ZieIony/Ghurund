@@ -8,7 +8,7 @@
 #include "game/parameter/ParameterManager.h"
 #include "ecs/Component.h"
 #include "editor/ObservableObject.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "script/Script.h"
 
 #include <DirectXCollision.h>
@@ -24,8 +24,8 @@ namespace Ghurund {
         friend class EntityList;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         static const Ghurund::Type& GET_TYPE();
 

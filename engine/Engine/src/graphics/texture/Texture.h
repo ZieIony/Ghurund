@@ -14,8 +14,8 @@ namespace Ghurund {
         Image* image = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
         static const Ghurund::Type& GET_TYPE();
 
@@ -43,7 +43,7 @@ namespace Ghurund {
             return image != nullptr && image->Valid && __super::Valid;
         }
 
-        Status init(ResourceContext& context, Image& image);
+        Status init(Graphics& graphics, CommandList& commandList, Image& image);
 
         inline Image* getImage() {
             return image;

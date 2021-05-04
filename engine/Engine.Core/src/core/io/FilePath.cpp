@@ -8,10 +8,11 @@
 
 namespace Ghurund {
     DirectoryPath FilePath::getDirectory() const {
-        wchar_t* pathCopy = ghnew wchar_t[path.Length];
-        PathCchRemoveFileSpec(pathCopy, path.Length);
+        wchar_t* pathCopy = ghnew wchar_t[path.Size];
+        memcpy(pathCopy, path.Data, path.Size);
+        PathCchRemoveFileSpec(pathCopy, path.Size);
         DirectoryPath dir = WString(pathCopy);
-        delete pathCopy;
+        delete[] pathCopy;
         return dir;
     }
 

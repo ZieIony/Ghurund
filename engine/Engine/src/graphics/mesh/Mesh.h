@@ -4,8 +4,8 @@
 #include "graphics/Graphics.h"
 #include "graphics/CommandList.h"
 #include "Vertex.h"
-#include "resource/Resource.h"
-#include "resource/ResourceManager.h"
+#include "core/resource/Resource.h"
+#include "core/resource/ResourceManager.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -46,12 +46,12 @@ namespace Ghurund {
         BoundingBox boundingBox;
 		PxGeometry* geometry;
 
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
 
-        Status loadObj(ResourceContext& context, MemoryInputStream& stream);
-        Status loadMesh(ResourceContext& context, MemoryInputStream& stream);
+        Status loadObj(MemoryInputStream& stream);
+        Status loadMesh(MemoryInputStream& stream);
 
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         virtual unsigned int getVersion()const {
             return 1;

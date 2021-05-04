@@ -239,15 +239,7 @@ namespace Ghurund {
             return hash == string.hash && size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(T)) == 0;
         }
 
-        bool operator==(const GenericString& string) {
-            return hash == string.hash && size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(T)) == 0;
-        }
-
         bool operator==(const T* str) const {
-            return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(T)) == 0;
-        }
-
-        bool operator==(const T* str) {
             return lengthOf(str) == Length && memcmp(v, str, Length * sizeof(T)) == 0;
         }
 

@@ -2,7 +2,7 @@
 
 #include "RigidBodyComponent.h"
 #include "ecs/Entity.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "physics/Physics.h"
 
 #pragma warning(push, 0)

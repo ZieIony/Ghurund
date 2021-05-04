@@ -3,7 +3,7 @@
 #include "Audio.h"
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 
 namespace Ghurund::Audio {
     enum class PlaybackState {
@@ -21,14 +21,10 @@ namespace Ghurund::Audio {
 
         Status setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
         Status readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
-        Status loadData(ResourceContext& context, MemoryInputStream& stream, LoadOption options);
+        Status loadData(MemoryInputStream& stream, LoadOption options);
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
-            return Status::NOT_IMPLEMENTED;
-        }
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
 
         virtual unsigned int getVersion() const {
             return 0;

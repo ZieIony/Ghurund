@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ecs/Component.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 
 #include <DirectXMath.h>
 
@@ -14,9 +14,9 @@ namespace Ghurund {
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
 
-		virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+		virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
 
-		virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+		virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
 	protected:
 		static const Ghurund::Type& GET_TYPE();

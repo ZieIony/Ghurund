@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics/mesh/Mesh.h"
-#include "resource/ResourceManager.h"
+#include "core/resource/ResourceManager.h"
 
 namespace Ghurund {
     class ConeMesh: public Mesh {

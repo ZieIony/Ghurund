@@ -32,15 +32,9 @@ namespace Ghurund {
             return combine(dir);
         }
 
-        inline FilePath combine(const FilePath& file) const {
-            wchar_t destPath[MAX_PATH];
-            PathCchCombine(destPath, MAX_PATH, path.Data, file.toString().Data);
-            return FilePath(destPath);
-        }
+        FilePath combine(const FilePath& file) const;
 
-        inline FilePath operator/(const FilePath& file) const {
-            return combine(file);
-        }
+        FilePath operator/(const FilePath& file) const;
 
         List<DirectoryPath> getDirectories() const;
 

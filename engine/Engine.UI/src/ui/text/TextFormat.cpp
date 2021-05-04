@@ -8,26 +8,22 @@
 
 namespace Ghurund::UI {
     TextFormat::~TextFormat() {
+        font->release();
         if (format)
             format->Release();
     }
 
-    Status TextFormat::init(FontCollectionLoader& fontLoader, IDWriteFactory& dwriteFactory) {
-        IDWriteFontCollection* fontCollection;
-        if (FAILED(fontLoader.createFontCollection(file, &fontCollection)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "createFontCollection failed\n");
+    Status TextFormat::init(IDWriteFactory5& dwriteFactory) {
         if (FAILED(dwriteFactory.CreateTextFormat(
-            familyName.Data,
-            fontCollection,
+            font->FamilyName.Data,
+            font->Collection,
             (DWRITE_FONT_WEIGHT)weight,
             italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL,
             DWRITE_FONT_STRETCH_NORMAL,
             size * 96.0f / 72.0f,
-            locale.getData(),
+            locale.Data,
             &format)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateTextFormat failed\n");
-        // TODO: reuse fontCollection
-        fontCollection->Release();
 
         if (FAILED(format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "SetTextAlignment failed\n");

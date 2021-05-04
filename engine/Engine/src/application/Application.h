@@ -12,14 +12,16 @@ namespace Ghurund::Net {
     class Networking;
 }
 
+namespace Ghurund::Audio {
+    class Audio;
+}
+
 namespace Ghurund {
     class Graphics;
-    class Audio::Audio;
     class Renderer;
     class ScriptEngine;
     class ParameterManager;
     class Timer;
-    class ResourceContext;
     class Graphics2D;
     class Physics::Physics;
     class FunctionQueue;
@@ -37,7 +39,6 @@ namespace Ghurund {
         Ghurund::Graphics2D* graphics2d;
 
         ResourceManager* resourceManager;
-        ResourceContext* resourceContext, * asyncResourceContext;
         ParameterManager* parameterManager;
         Timer* timer;
         ScriptEngine* scriptEngine;
@@ -110,18 +111,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
-
-        inline ResourceContext& getResourceContext() {
-            return *resourceContext;
-        }
-
-        __declspec(property(get = getResourceContext)) ResourceContext& ResourceContext;
-
-        inline Ghurund::ResourceContext& getAsyncResourceContext() {
-            return *asyncResourceContext;
-        }
-
-        __declspec(property(get = getAsyncResourceContext)) Ghurund::ResourceContext& AsyncResourceContext;
 
         inline ParameterManager& getParameterManager() {
             return *parameterManager;

@@ -204,10 +204,9 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status RenderTarget::capture(ResourceContext& context, Image*& image) {
-        ID3D12Device* device = context.Graphics.Device;
-        IWICImagingFactory* pWIC = context.ImageFactory;
-        ID3D12CommandQueue* commandQueue = context.Graphics.DirectQueue;
+    Status RenderTarget::capture(Graphics& graphics, Image*& image) {
+        ID3D12Device* device = graphics.Device;
+        ID3D12CommandQueue* commandQueue = graphics.DirectQueue;
 
         const auto desc = texture->GetDesc();
 
@@ -220,7 +219,7 @@ namespace Ghurund {
         UINT64 dstRowPitch = (fpRowPitch + 255) & ~0xFF;
 
         ComPtr<ID3D12Resource> stagingTexture;
-        Status result = captureTexture(context.Graphics, commandQueue, dstRowPitch, desc, stagingTexture);
+        Status result = captureTexture(graphics, commandQueue, dstRowPitch, desc, stagingTexture);
         if (result != Status::OK)
             return result;
 

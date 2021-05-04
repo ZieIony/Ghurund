@@ -25,6 +25,9 @@
     <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
+    <ClCompile Include="src\core\resource\Resource.cpp" />
+    <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
+    <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
     <ClCompile Include="src\core\window\SystemWindow.cpp" />
@@ -89,6 +92,11 @@
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypedProperty.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
+    <ClInclude Include="src\core\resource\Loader.h" />
+    <ClInclude Include="src\core\resource\ReloadTask.h" />
+    <ClInclude Include="src\core\resource\Resource.h" />
+    <ClInclude Include="src\core\resource\ResourceFormat.h" />
+    <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\StackTrace.h" />
     <ClInclude Include="src\core\string\AString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />

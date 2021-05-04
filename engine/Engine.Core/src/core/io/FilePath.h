@@ -2,8 +2,12 @@
 
 #include "Path.h"
 
+#include <Windows.h>
 #include <pathcch.h>
 #include <Shlwapi.h>
+
+#pragma comment(lib, "Shlwapi.lib")
+#pragma comment(lib, "Pathcch.lib")
 
 namespace Ghurund {
     class DirectoryPath;
@@ -41,11 +45,11 @@ namespace Ghurund {
 
         inline const WString& getFileName() const {
             if (fileName.Empty) {
-                wchar_t* pathCopy = ghnew wchar_t[path.Length];
-                memcpy(pathCopy, path.Data, path.Length * sizeof(wchar_t));
+                wchar_t* pathCopy = ghnew wchar_t[path.Size];
+                memcpy(pathCopy, path.Data, path.Size * sizeof(wchar_t));
                 PathStripPathW(pathCopy);
                 fileName = pathCopy;
-                delete pathCopy;
+                delete[] pathCopy;
             }
             return fileName;
         }

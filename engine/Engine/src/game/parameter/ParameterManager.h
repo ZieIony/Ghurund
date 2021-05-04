@@ -7,7 +7,9 @@
 
 namespace Ghurund {
 
-    class ResourceContext;
+    class Graphics;
+    class CommandList;
+    class ResourceManager;
 
     class ParameterManager: public Object {
     private:
@@ -18,7 +20,7 @@ namespace Ghurund {
     public:
         ParameterManager();
 
-        void initDefaultTextures(ResourceContext& context);
+        void initDefaultTextures(ResourceManager& manager, Graphics& graphics, CommandList& commandList);
 
         PointerList<Parameter*>& getParameters() {
             return parameters;

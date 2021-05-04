@@ -10,28 +10,28 @@
 						  preferredSize="fill, wrap">
 				<LinearLayout orientation="horizontal">
 					<PaddingContainer padding="0,4,4,4">
-						<Button layout="file://~/layouts/ButtonImageLayout.xml"
+						<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml"
 								name="color1">
 							<ColorView color="#ffd32f2f"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://~/layouts/ButtonImageLayout.xml"
+						<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml"
 								name="color2">
 							<ColorView color="#ff1976d2"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://~/layouts/ButtonImageLayout.xml"
+						<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml"
 								name="color3">
 							<ColorView color="#ffffa000"
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
 					<PaddingContainer padding="4">
-						<Button layout="file://~/layouts/ButtonImageLayout.xml"
+						<Button layout="lib://Ghurund/layouts/ButtonImageLayout.xml"
 								name="color4">
 							<ColorView color="#ff388e3c"
 									   preferredSize="24,24"/>

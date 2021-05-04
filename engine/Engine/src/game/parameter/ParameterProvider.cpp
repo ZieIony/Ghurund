@@ -4,15 +4,14 @@
 #include "TextureParameter.h"
 #include "ValueParameter.h"
 #include "core/SharedPointer.h"
-#include "resource/ResourceContext.h"
-#include "resource/ResourceManager.h"
+#include "core/resource/ResourceManager.h"
 #include "graphics/texture/Texture.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 
 namespace Ghurund {
-    Status ParameterProvider::loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        size_t paramCount = stream.readUInt();
+    Status ParameterProvider::loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+      /*  size_t paramCount = stream.readUInt();
         for (size_t i = 0; i < paramCount; i++) {
             char* name = stream.readASCII();
             Parameter* p = getParameter(name);
@@ -35,11 +34,12 @@ namespace Ghurund {
             }
         }
 
-        return Status::OK;
+        return Status::OK;*/
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status ParameterProvider::saveParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        List<Parameter*> paramsToSave;
+    Status ParameterProvider::saveParameters(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+       /* List<Parameter*> paramsToSave;
         for (Parameter* p : Parameters) {
             if (p->Empty)
                 continue;
@@ -61,6 +61,7 @@ namespace Ghurund {
             }
         }
 
-        return Status::OK;
+        return Status::OK;*/
+        return Status::NOT_IMPLEMENTED;
     }
 }

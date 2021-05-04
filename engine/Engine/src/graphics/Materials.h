@@ -9,31 +9,31 @@ namespace Ghurund {
     private:
         Materials() = delete;
 
-        static Material* makeWithShader(Shader *shader, ResourceContext& context);
+        static Material* makeWithShader(Shader *shader, ParameterManager& parameterManager);
 
     public:
-        static Material* makeBasic(ResourceContext& context, Texture* texture = nullptr);
+        static Material* makeBasic(ResourceManager& manager, ParameterManager& parameterManager, Texture* texture = nullptr);
 
-        static Material* makeBasicLight(ResourceContext& context, Texture* diffuseTexture = nullptr, Texture* specularTexture = nullptr, Texture* normalTexture = nullptr);
+        static Material* makeBasicLight(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture = nullptr, Texture* specularTexture = nullptr, Texture* normalTexture = nullptr);
 
-        static Material* makeToon(ResourceContext& context, Texture* texture = nullptr);
+        static Material* makeToon(ResourceManager& manager, ParameterManager& parameterManager, Texture* texture = nullptr);
 
-        static Material* makeChecker(ResourceContext& context);
+        static Material* makeChecker(ResourceManager& manager, Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager);
 
-        static Material* makeWireframe(ResourceContext& context);
+        static Material* makeWireframe(ResourceManager& manager, ParameterManager& parameterManager);
 
-        static Material* makeOutline(ResourceContext& context);
+        static Material* makeOutline(ResourceManager& manager, ParameterManager& parameterManager);
 
-        static Material* makeNormals(ResourceContext& context);
+        static Material* makeNormals(ResourceManager& manager, ParameterManager& parameterManager);
 
-        static Material* makeInvalid(ResourceContext& context);
+        static Material* makeInvalid(ResourceManager& manager, ParameterManager& parameterManager);
 
-        static Material* makeLightPass(ResourceContext& context);
+        static Material* makeLightPass(ResourceManager& manager, ParameterManager& parameterManager);
 
-        static Material* makeUi(ResourceContext& context);
+        static Material* makeUi(ResourceManager& manager, ParameterManager& parameterManager);
 
-		static Material* makeBasicSky(ResourceContext& context);
+		static Material* makeBasicSky(ResourceManager& manager, ParameterManager& parameterManager);
 
-		static Material* makeAdvancedSky(ResourceContext& context);
+		static Material* makeAdvancedSky(ResourceManager& manager, ParameterManager& parameterManager);
 	};
 }

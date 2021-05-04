@@ -8,7 +8,7 @@
 #include "game/parameter/TextureParameter.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/texture/Texture.h"
-#include "resource/ResourceManager.h"
+#include "core/resource/ResourceManager.h"
 
 namespace Ghurund {
 	Status Shader::makeRootSignature() {
@@ -181,12 +181,12 @@ namespace Ghurund {
         finalize();
     }
 
-    void Shader::reload(ResourceContext& context) {
+    void Shader::reload() {
         size_t paramCount = this->parameters ? this->parameters->Size : 0;
         PointerArray<Parameter*> parameters(paramCount);
         if (this->parameters)
             this->parameters->copyTo(parameters);
-        __super::reload(context);
+        __super::reload();
         if (this->parameters) {
             for (Parameter* p2 : parameters) {
                 if (p2->Empty)
@@ -257,8 +257,8 @@ namespace Ghurund {
         return result;
     }
 
-    Status Shader::build(ResourceContext& context, char** output) {
-        Status result;
+    Status Shader::build(char** output) {
+        /*Status result;
         if (!compiled)
             if ((result = compile(output)) != Status::OK)
                 return result;
@@ -266,7 +266,8 @@ namespace Ghurund {
         initConstants(context.ParameterManager);
         if ((result = makeRootSignature()) != Status::OK)
             return result;
-        return makePipelineState(supportsTransparency);
+        return makePipelineState(supportsTransparency);*/
+        return Status::NOT_IMPLEMENTED;
     }
 
     void Shader::initParameters(ParameterManager& parameterManager) {
@@ -378,7 +379,7 @@ namespace Ghurund {
         reflector->Release();
     }
 
-    Status Shader::loadShd(ResourceContext& context, MemoryInputStream& stream) {
+    Status Shader::loadShd(MemoryInputStream& stream) {
         Status result;
 
         result = readHeader(stream);
@@ -401,29 +402,31 @@ namespace Ghurund {
             setSourceCode(stream.readASCII());
 
         supportsTransparency = stream.readBoolean();
-        Graphics& graphics = context.Graphics;
+       /* Graphics& graphics = context.Graphics;
         initConstants(context.ParameterManager);
         if ((result = makeRootSignature()) != Status::OK)
             return result;
         if ((result = makePipelineState(supportsTransparency)) != Status::OK)
-            return result;
+            return result;*/
 
-        return Status::OK;
+       // return Status::OK;
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Shader::loadHlsl(ResourceContext& context, MemoryInputStream& stream) {
+    Status Shader::loadHlsl(MemoryInputStream& stream) {
         AString sourceCode((const char*)stream.Data, stream.Size);
         setSourceCode(sourceCode.getData());
 
         supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
-        this->graphics = &context.Graphics;
+        //this->graphics = &context.Graphics;
 
-        return build(context);
+        //return build(context);
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Shader::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        this->graphics = &context.Graphics;
+    Status Shader::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        /*this->graphics = &context.Graphics;
         Status result;
 
         if (Path) {
@@ -450,10 +453,11 @@ namespace Ghurund {
 
         initParameters(context.ParameterManager);
 
-        return result;
+        return result;*/
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Shader::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Shader::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.writeBoolean(compiled);

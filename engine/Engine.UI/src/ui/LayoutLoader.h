@@ -5,9 +5,9 @@
 #include "core/collection/PointerList.h"
 #include "core/io/FilePath.h"
 #include "core/reflection/Type.h"
+#include "core/resource/ResourceManager.h"
 #include "core/string/AStringView.h"
 #include "ui/Alignment.h"
-#include "ui/IResourceLoader.h"
 #include "ui/control/Control.h"
 #include "ui/drawable/ImageDrawable.h"
 
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         Map<AString, const Type*> types;
         Theme* theme = nullptr;
         ID2D1Factory6* d2dFactory = nullptr;
-        IResourceLoader* resourceLoader = nullptr;
+        ResourceManager* resourceManager = nullptr;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
@@ -34,10 +34,10 @@ namespace Ghurund::UI {
 
         virtual ~LayoutLoader() {}
 
-        inline void init(Theme& theme, ID2D1Factory6& d2dFactory, IResourceLoader& resourceLoader) {
+        inline void init(Theme& theme, ID2D1Factory6& d2dFactory, ResourceManager& resourceManager) {
             this->theme = &theme;
             this->d2dFactory = &d2dFactory;
-            this->resourceLoader = &resourceLoader;
+            this->resourceManager = &resourceManager;
         }
 
         void registerClass(const Type& type) {

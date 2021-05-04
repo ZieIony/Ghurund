@@ -17,7 +17,7 @@ namespace UnitTest {
     public:
 
         TEST_METHOD(Message_size) {
-            Assert::AreEqual(6ull, sizeof(Ghurund::Net::Message));
+            Assert::AreEqual(7ull, sizeof(Ghurund::Net::Message));
             Assert::AreEqual(7ull, sizeof(Ghurund::Net::ClientMessage));
             Assert::AreEqual(7ull, sizeof(Ghurund::Net::ServerMessage));
         }

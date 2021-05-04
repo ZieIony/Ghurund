@@ -1,10 +1,8 @@
 #include "ghpch.h"
 /*#include "Scene.h"
 
-#include "resource/ResourceContext.h"
-
 namespace Ghurund {
-    Status EntityGroup::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    Status EntityGroup::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         size_t size = stream.readUInt();
         for (size_t i = 0; i < size; i++) {
             Status result;

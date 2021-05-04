@@ -1,7 +1,6 @@
 #include "ghpch.h"
 #include "Image.h"
 
-#include "resource/ResourceContext.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 

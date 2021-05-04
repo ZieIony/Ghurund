@@ -36,7 +36,7 @@ namespace Ghurund::UI {
             fontCollection->Release();
 
         if (textFormat) {
-            newLayout->SetFontFamilyName(textFormat->FamilyName.Data, range);
+            newLayout->SetFontFamilyName(textFormat->Font->FamilyName.Data, range);
             newLayout->SetLocaleName(textFormat->Locale.Data, range);
             newLayout->SetFontWeight((DWRITE_FONT_WEIGHT)textFormat->Weight, range);
             newLayout->SetFontStyle(textFormat->Italic ? DWRITE_FONT_STYLE_ITALIC : DWRITE_FONT_STYLE_NORMAL, range);
@@ -320,7 +320,7 @@ namespace Ghurund::UI {
         return Color;
     }
 
-    TextFormat* TextLayout::getFormat(uint32_t position) {
+  /*  TextFormat* TextLayout::getFormat(uint32_t position) {
         Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
         layout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
@@ -351,8 +351,8 @@ namespace Ghurund::UI {
         //strikethrough = hasStrikethrough;
 
         // TODO: this method returns a new Pointer object
-        return ghnew Ghurund::UI::TextFormat(L"", fontFamilyName.begin(), size, fontWeight, fontStyle == DWRITE_FONT_STYLE_ITALIC, localeName.begin());
-    }
+        return ghnew Ghurund::UI::TextFormat(fontFamilyName.begin(), size, fontWeight, fontStyle == DWRITE_FONT_STYLE_ITALIC, localeName.begin());
+    }*/
 
     TextMetrics TextLayout::getMetrics() {
         DWRITE_TEXT_METRICS dwriteMetrics;

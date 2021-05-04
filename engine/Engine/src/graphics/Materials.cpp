@@ -4,34 +4,34 @@
 #include "game/parameter/TextureParameter.h"
 
 namespace Ghurund {
-    Material* Materials::makeWithShader(Shader* shader, ResourceContext& context) {
+    Material* Materials::makeWithShader(Shader* shader, ParameterManager& parameterManager) {
         Material* material = nullptr;
         if (shader) {
             material = ghnew Material(shader);
-            material->initParameters(context.ParameterManager);
+            material->initParameters(parameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeBasic(ResourceContext& context, Texture* diffuseTexture) {
+    Material* Materials::makeBasic(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader = Shaders::loadBasic(context);
+        SharedPointer<Shader> shader = Shaders::loadBasic(manager);
         if (shader) {
             material = ghnew Material(shader);
             if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
             }
-            material->initParameters(context.ParameterManager);
+            material->initParameters(parameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeBasicLight(ResourceContext& context, Texture* diffuseTexture, Texture* specularTexture, Texture* normalTexture) {
+    Material* Materials::makeBasicLight(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture, Texture* specularTexture, Texture* normalTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader = Shaders::loadBasicLight(context);
+        SharedPointer<Shader> shader = Shaders::loadBasicLight(manager);
         if (shader) {
             material = ghnew Material(shader);
             if (diffuseTexture) {
@@ -46,78 +46,78 @@ namespace Ghurund {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::NORMAL_TEXTURE.ConstantName);
                 diffuse->setValue(normalTexture);
             }
-            material->initParameters(context.ParameterManager);
+            material->initParameters(parameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeToon(ResourceContext& context, Texture* diffuseTexture) {
+    Material* Materials::makeToon(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader = Shaders::loadToon(context);
+        SharedPointer<Shader> shader = Shaders::loadToon(manager);
         if (shader) {
             material = ghnew Material(shader);
             if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
             }
-            material->initParameters(context.ParameterManager);
+            material->initParameters(parameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeChecker(ResourceContext& context) {
+    Material* Materials::makeChecker(ResourceManager& manager, Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader = Shaders::loadBasic(context);
+        SharedPointer<Shader> shader = Shaders::loadBasic(manager);
         if (shader) {
             material = ghnew Material(shader);
-            SharedPointer<Texture> texture = Textures::makeChecker(context);
-            TextureParameter *diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
+            SharedPointer<Texture> texture = Textures::makeChecker(graphics, commandList, manager);
+            TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             diffuse->setValue(texture);
-            material->initParameters(context.ParameterManager);
+            material->initParameters(parameterManager);
             material->Valid = true;
         }
         return material;
     }
 
-    Material* Materials::makeWireframe(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadWireframe(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeWireframe(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadWireframe(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-    Material* Materials::makeOutline(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadOutline(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeOutline(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadOutline(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-    Material* Materials::makeNormals(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadNormals(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeNormals(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadNormals(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-    Material* Materials::makeInvalid(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadInvalid(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeInvalid(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadInvalid(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-    Material* Materials::makeLightPass(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadLightPass(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeLightPass(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadLightPass(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-    Material* Materials::makeUi(ResourceContext& context) {
-        SharedPointer<Shader> shader = Shaders::loadUi(context);
-        return makeWithShader(shader, context);
+    Material* Materials::makeUi(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadUi(manager);
+        return makeWithShader(shader, parameterManager);
     }
 
-	Material* Materials::makeBasicSky(ResourceContext& context) {
-		SharedPointer<Shader> shader = Shaders::loadBasicSky(context);
-		return makeWithShader(shader, context);
-	}
+    Material* Materials::makeBasicSky(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadBasicSky(manager);
+        return makeWithShader(shader, parameterManager);
+    }
 
-	Material* Materials::makeAdvancedSky(ResourceContext& context) {
-		SharedPointer<Shader> shader = Shaders::loadAdvancedSky(context);
-		return makeWithShader(shader, context);
-	}
+    Material* Materials::makeAdvancedSky(ResourceManager& manager, ParameterManager& parameterManager) {
+        SharedPointer<Shader> shader = Shaders::loadAdvancedSky(manager);
+        return makeWithShader(shader, parameterManager);
+    }
 }

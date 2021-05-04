@@ -82,10 +82,6 @@
     <ClCompile Include="src\net\Socket.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\physics\RigidBodyComponent.cpp" />
-    <ClCompile Include="src\resource\ResourceContext.cpp" />
-    <ClCompile Include="src\resource\Resource.cpp" />
-    <ClCompile Include="src\resource\ResourceFormat.cpp" />
-    <ClCompile Include="src\resource\ResourceManager.cpp" />
     <ClCompile Include="src\game\parameter\ParameterId.cpp" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
@@ -108,8 +104,7 @@
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
     <ClInclude Include="src\graphics\texture\ImageLoader.h" />
-    <ClInclude Include="src\resource\Loader.h" />
-    <ClInclude Include="src\ui\ResourceLoader.h" />
+    <ClInclude Include="src\ui\drawable\BitmapImageLoader.h" />
     <ClInclude Include="src\ui\drawable\BitmapImage.h" />
     <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
     <ClInclude Include="src\ui\drawable\SvgImage.h" />
@@ -200,9 +195,6 @@
     <ClInclude Include="src\physics\Physics.h" />
     <ClInclude Include="src\game\parameter\Parameter.h" />
     <ClInclude Include="src\physics\PhysicsSystem.h" />
-    <ClInclude Include="src\resource\ReloadTask.h" />
-    <ClInclude Include="src\resource\ResourceContext.h" />
-    <ClInclude Include="src\resource\ResourceFormat.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
     <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
@@ -232,8 +224,6 @@
     <ClInclude Include="src\net\Message.h" />
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\Socket.h" />
-    <ClInclude Include="src\resource\Resource.h" />
-    <ClInclude Include="src\resource\ResourceManager.h" />
     <ClInclude Include="src\game\parameter\ParameterManager.h" />
     <ClInclude Include="src\ui\MenuItem.h" />
     <ClInclude Include="src\ui\control\Stack.h" />

@@ -4,7 +4,6 @@
 #include "core/window/Window.h"
 #include "graphics/CommandList.h"
 #include "graphics/texture/Image.h"
-#include "resource/ResourceContext.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -105,6 +104,6 @@ namespace Ghurund {
             texture->SetName(name.Data);
         }
 
-        Status capture(ResourceContext& context, Image*& image);
+        Status capture(Graphics& graphics, Image*& image);
     };
 }

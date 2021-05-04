@@ -1,35 +1,31 @@
 #pragma once
 
+#include "Status.h"
+#include "core/collection/PointerList.h"
+#include "core/io/FilePath.h"
 #include "core/string/String.h"
+#include "ui/font/Font.h"
 
-#include <dwrite.h>
+#include <dwrite_3.h>
 
 namespace Ghurund::UI {
     class FontFileEnumerator: public IDWriteFontFileEnumerator {
     private:
         ULONG refCount = 1;
-
-        IDWriteFactory* dwriteFactory = nullptr;
+        void const* data;
+        UINT32 size;
         IDWriteFontFile* currentFile = nullptr;
-        WString fontFilePath;
-        size_t nextIndex = 0;
+        size_t index = 0;
+        IDWriteFactory& factory;
+        IDWriteInMemoryFontFileLoader& fontFileLoader;
 
     public:
-        FontFileEnumerator(IDWriteFactory* factory, const WString& fontFilePath);
+        FontFileEnumerator(IDWriteFactory& factory, IDWriteInMemoryFontFileLoader& fontFileLoader, void const* data, UINT32 size): factory(factory), fontFileLoader(fontFileLoader), data(data), size(size) {}
 
-        ~FontFileEnumerator() {
-            if (currentFile)
-                currentFile->Release();
-            if (dwriteFactory)
-                dwriteFactory->Release();
-        }
-
-        // IUnknown methods
         virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID iid, void** ppvObject);
         virtual ULONG STDMETHODCALLTYPE AddRef();
         virtual ULONG STDMETHODCALLTYPE Release();
 
-        // IDWriteFontFileEnumerator methods
         virtual HRESULT STDMETHODCALLTYPE MoveNext(OUT BOOL* hasCurrentFile);
         virtual HRESULT STDMETHODCALLTYPE GetCurrentFontFile(OUT IDWriteFontFile** fontFile);
     };

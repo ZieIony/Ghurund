@@ -4,16 +4,16 @@
 #include "ScriptEngine.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "resource/ResourceContext.h"
 
 namespace Ghurund {
-    Status Script::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        EntryPoint = stream.readASCII();
+    Status Script::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        /*EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();
-        return build(context.ScriptEngine);
+        return build(context.ScriptEngine);*/
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Script::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Script::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         if (entryPoint.Length == 0 || source.Length == 0)
             return Status::INV_STATE;
         stream.writeASCII(entryPoint.Data);

@@ -1,16 +1,15 @@
 #pragma once
 
-#include "resource/Resource.h"
-#include "core/collection/List.h"
+#include "CompilationTarget.h"
 #include "ConstantBuffer.h"
 #include "Sampler.h"
+#include "ShaderProgram.h"
+#include "ShaderType.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
-#include "ShaderType.h"
-#include "resource/ResourceManager.h"
-#include "CompilationTarget.h"
-#include "ShaderProgram.h"
-#include "resource/ResourceContext.h"
+#include "core/collection/List.h"
+#include "core/resource/Resource.h"
+#include "core/resource/ResourceManager.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -55,16 +54,16 @@ namespace Ghurund {
         void initConstants(ParameterManager& parameterManager);
         void initConstants(ParameterManager& parameterManager, ShaderProgram& program);
 
-        Status loadShd(ResourceContext& context, MemoryInputStream& stream);
-        Status loadHlsl(ResourceContext& context, MemoryInputStream& stream);
+        Status loadShd(MemoryInputStream& stream);
+        Status loadHlsl(MemoryInputStream& stream);
 
         void finalize();
 
         static const Ghurund::Type& GET_TYPE();
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
         virtual unsigned int getVersion() const override {
             return 0;
@@ -73,9 +72,9 @@ namespace Ghurund {
     public:
         ~Shader();
 
-        virtual void reload(ResourceContext& context);
+        virtual void reload() override;
 
-        virtual void invalidate();
+        virtual void invalidate() override;
 
         virtual bool isValid() const {
             return pipelineState != nullptr && rootSignature != nullptr && compiled && __super::isValid();
@@ -83,7 +82,7 @@ namespace Ghurund {
 
         Status compile(char** output = nullptr);
 
-        Status build(ResourceContext& context, char** output = nullptr);
+        Status build(char** output = nullptr);
 
         virtual void initParameters(ParameterManager& parameterManager) override;
 

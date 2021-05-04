@@ -29,7 +29,7 @@ namespace Ghurund {
 				parameterCameraPosition->release();
 		}
 
-		void init(ResourceContext& context, Camera* camera) {
+		void init(Camera* camera) {
 			mesh = ghnew SphereMesh();
 			mesh->init(context.Graphics, context.CommandList, 3);
 

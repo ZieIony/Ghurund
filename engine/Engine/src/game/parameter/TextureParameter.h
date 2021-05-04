@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Parameter.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "graphics/texture/Texture.h"
 
 namespace Ghurund {

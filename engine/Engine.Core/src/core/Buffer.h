@@ -35,7 +35,7 @@ namespace Ghurund {
             memcpy(data, other.data, size);
         }
 
-        Buffer(Buffer&& other) {
+        Buffer(Buffer&& other) noexcept {
             data = other.data;
             size = other.size;
             capacity = other.capacity;
@@ -74,12 +74,13 @@ namespace Ghurund {
 
         __declspec(property(get = getCapacity)) size_t Capacity;
 
-        inline void setData(uint8_t* data, size_t size) {
+        inline void setData(const void* data, size_t size) {
             if (size > capacity) {
                 delete[] this->data;
                 this->capacity = size;
                 this->data = ghnew uint8_t[size];
             }
+            this->size = size;
             memcpy(this->data, data, size);
         }
 
@@ -92,7 +93,7 @@ namespace Ghurund {
             return *this;
         }
 
-        inline Buffer& operator=(Buffer&& other) {
+        inline Buffer& operator=(Buffer&& other) noexcept {
             if (this == &other)
                 return *this;
 

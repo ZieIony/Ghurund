@@ -19,14 +19,14 @@ namespace Ghurund {
         }
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            __super::loadInternal(context, workingDir, stream, options);
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            //__super::loadInternal(context, workingDir, stream, options);
 
             return Status::NOT_IMPLEMENTED;
         }
 
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            __super::saveInternal(context, workingDir, stream, options);
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            //__super::saveInternal(context, workingDir, stream, options);
 
             return Status::NOT_IMPLEMENTED;
         }

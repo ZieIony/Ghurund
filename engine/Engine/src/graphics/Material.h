@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics/shader/Shader.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 
 namespace Ghurund {
     class Material:public Resource, public ParameterProvider {
@@ -24,8 +24,8 @@ namespace Ghurund {
             return 0;
         }
 
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
 

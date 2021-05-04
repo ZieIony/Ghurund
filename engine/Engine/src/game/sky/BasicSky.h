@@ -6,7 +6,7 @@
 namespace Ghurund {
 	/*class BasicSky :public Sky {
 	public:
-		void init(ResourceContext& context, Ghurund::Camera* camera) {
+		void init(Ghurund::Camera* camera) {
 			__super::init(context, camera);
 
 			material = Materials::makeBasicSky(context);

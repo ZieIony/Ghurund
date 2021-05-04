@@ -4,7 +4,6 @@
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
 #include "ui/LayoutLoader.h"
-#include "ui/ResourceLoader.h"
 #include "ui/RootView.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
@@ -12,6 +11,7 @@
 #include "ui/UILayer.h"
 
 #include "PreviewLayout.h"
+#include <ui/font/FontLoader.h>
 
 namespace Preview {
     using namespace Ghurund;
@@ -23,7 +23,6 @@ namespace Preview {
         UIContext* context;
         SharedPointer<PreviewLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        ResourceLoader* resourceLoader;
         LayoutLoader layoutLoader;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
@@ -36,15 +35,20 @@ namespace Preview {
             swapChain->init(app.Graphics, &app.Graphics2D, *this);
             SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
-            resourceLoader = ghnew ResourceLoader(app.ResourceContext);
-            lightTheme = ghnew LightTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader);
-            darkTheme = ghnew DarkTheme(*app.Graphics2D.FontLoader, *app.Graphics2D.DWriteFactory, *resourceLoader);
-            layoutLoader.init(*lightTheme, *app.Graphics2D.Factory, *resourceLoader);
+            app.ResourceManager.Libraries.add(L"Ghurund", FilePath(L"."));
+
+            auto fontLoader = ghnew FontLoader(*app.Graphics2D.DWriteFactory);
+            fontLoader->init();
+            app.ResourceManager.registerLoader(Font::TYPE, std::unique_ptr<FontLoader>(fontLoader));
+
+            lightTheme = ghnew LightTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
+            darkTheme = ghnew DarkTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
+            layoutLoader.init(*lightTheme, *app.Graphics2D.Factory, app.ResourceManager);
             context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, layoutLoader);
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            PointerList<Control*> controls;
+            /*PointerList<Control*> controls;
             layoutLoader.load(FilePath(L"apps/Preview/res/layout.xml"), controls);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
@@ -64,7 +68,7 @@ namespace Preview {
                 postLoadCallback(path);
                 watchFile(path);
                 return true;
-            });
+            });*/
         }
 
         ~PreviewWindow() {
@@ -72,7 +76,6 @@ namespace Preview {
             delete context;
             delete lightTheme;
             delete darkTheme;
-            delete resourceLoader;
         }
 
         void updateTheme(ThemeType type) {

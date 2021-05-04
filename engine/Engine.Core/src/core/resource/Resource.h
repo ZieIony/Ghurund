@@ -4,6 +4,8 @@
 #include "ResourceFormat.h"
 #include "Status.h"
 #include "core/Pointer.h"
+#include "core/io/DirectoryPath.h"
+#include "core/io/FilePath.h"
 
 #include <stdint.h>
 
@@ -20,24 +22,22 @@ namespace Ghurund {
     class MemoryInputStream;
     class MemoryOutputStream;
     class File;
-    class FilePath;
-    class DirectoryPath;
 
     class Resource: public Pointer {
     private:
         bool valid = false;
         FilePath* path = nullptr;
 
-        Status saveInternal(ResourceContext& context, File& file, SaveOption options) const;
+        Status saveInternal(File& file, SaveOption options) const;
 
     protected:
         DataSize dataSize;
 
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             return Status::NOT_IMPLEMENTED;
         };
 
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
             return Status::NOT_IMPLEMENTED;
         };
 
@@ -51,27 +51,25 @@ namespace Ghurund {
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        Resource() = default;
-
         ~Resource();
 
-        Status load(ResourceContext& context, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceContext& context, const FilePath& path, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceContext& context, File& file, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
+        Status load(size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(const FilePath& path, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(File& file, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
+        Status load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
-        Status save(ResourceContext& context, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(ResourceContext& context, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
+        Status save(SaveOption options = SaveOption::DEFAULT) const;
+        Status save(const FilePath& path, SaveOption options = SaveOption::DEFAULT);
 
         // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(ResourceContext& context, File& file, SaveOption options = SaveOption::DEFAULT);
-        Status save(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(File& file, SaveOption options = SaveOption::DEFAULT);
+        Status save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
-        virtual void reload(ResourceContext& context) {
+        virtual void reload() {
             valid = true;
             invalidate();
             addReference();
-            load(context);
+            load();
             release();
         }
 

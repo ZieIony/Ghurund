@@ -21,8 +21,8 @@ namespace Ghurund {
         Event<ParameterProvider> onParametersChanged = Event<ParameterProvider>(*this);
 
     protected:
-        Status loadParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        Status saveParameters(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        Status loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        Status saveParameters(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
         virtual ~ParameterProvider() = default;

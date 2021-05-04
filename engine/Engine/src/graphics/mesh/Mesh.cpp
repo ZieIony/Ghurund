@@ -1,11 +1,9 @@
 #include "ghpch.h"
 #include "Mesh.h"
 
-#include "resource/ResourceContext.h"
-
 namespace Ghurund {
-	Status Mesh::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
-        if (Path) {
+	Status Mesh::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
+        /*if (Path) {
             if (Path->toString().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
             } else if (Path->toString().endsWith(ResourceFormat::MESH.getExtension())) {
@@ -24,10 +22,11 @@ namespace Ghurund {
                 return Status::UNKNOWN_FORMAT;
         }
 
-        return result;
+        return result;*/
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Mesh::loadObj(ResourceContext& context, MemoryInputStream& stream) {
+    Status Mesh::loadObj(MemoryInputStream& stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
@@ -82,10 +81,11 @@ namespace Ghurund {
         computeBoundingBox();
         generateTangents();
 
-        return init(context.Graphics, context.CommandList);
+        //return init(context.Graphics, context.CommandList);
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Mesh::loadMesh(ResourceContext& context, MemoryInputStream& stream) {
+    Status Mesh::loadMesh(MemoryInputStream& stream) {
         Status result = readHeader(stream);
         if (result != Status::OK)
             return result;
@@ -103,10 +103,11 @@ namespace Ghurund {
         XMFLOAT3 extents = stream.read<XMFLOAT3>();
         boundingBox = DirectX::BoundingBox(center, extents);
 
-        return init(context.Graphics, context.CommandList);
+        //return init(context.Graphics, context.CommandList);
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Mesh::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status Mesh::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);

@@ -25,7 +25,7 @@ namespace Ghurund {
             delete frame;
         }
 
-        void init(ResourceContext& context, uint32_t width, uint32_t height);
+        void init(uint32_t width, uint32_t height);
 
         Status render(DrawableComponent& entity, Image*& image);
         Status render(Mesh& mesh, Image*& image);

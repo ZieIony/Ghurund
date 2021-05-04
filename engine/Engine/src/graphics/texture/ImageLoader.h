@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Image.h"
-#include "resource/Loader.h"
+#include "core/resource/Loader.h"
 
 namespace Ghurund {
     class ImageLoader:public Loader {

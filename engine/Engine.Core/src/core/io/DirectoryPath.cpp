@@ -46,4 +46,15 @@ namespace Ghurund {
 
         return directories;
     }
+
+    FilePath DirectoryPath::combine(const FilePath& file) const {
+        wchar_t destPath[MAX_PATH];
+        PathCchCombine(destPath, MAX_PATH, path.Data, file.toString().Data);
+        return FilePath(destPath);
+    }
+
+    FilePath DirectoryPath::operator/(const FilePath& file) const {
+        return combine(file);
+    }
+
 }

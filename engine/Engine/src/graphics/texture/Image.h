@@ -2,7 +2,7 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 
-#include "resource/ResourceManager.h"
+#include "core/resource/ResourceManager.h"
 
 #pragma warning(push, 0)
 #include <dxgi1_4.h>
@@ -23,8 +23,6 @@ namespace Ghurund {
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        Image() {}
-
         void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
             imageData = data;
             this->width = width;

@@ -12,16 +12,16 @@ namespace Ghurund {
 
         return TYPE;
     }
-    void ThumbnailRenderer::init(ResourceContext& context, uint32_t width, uint32_t height) {
-        this->resourceContext = &context;
+    void ThumbnailRenderer::init(uint32_t width, uint32_t height) {
+        /*this->resourceContext = &context;
 
         camera = ghnew Camera();
         camera->initParameters(context.ParameterManager);
         camera->setScreenSize(width, height);
 
-        /*step = ghnew RenderStep();
+        / *step = ghnew RenderStep();
         step->initParameters(context.ParameterManager);
-        step->Camera = camera;*/
+        step->Camera = camera;* /
 
         renderer = ghnew Renderer();
         XMFLOAT4 color = XMFLOAT4(0.5f, 0.5f, 0.5f, 1);
@@ -37,18 +37,19 @@ namespace Ghurund {
         D3D12_RECT scissorRect = D3D12_RECT{0, 0, static_cast<LONG>(width), static_cast<LONG>(height)};
         frame->init(context.Graphics, viewport, scissorRect, renderTarget, depthBuffer);
 
-        renderer->init(context);
+        renderer->init(context);*/
     }
 
     Status ThumbnailRenderer::render(DrawableComponent& entity, Image*& image) {
-        CameraUtils::lookAtEntity(*camera, entity);
+        /*CameraUtils::lookAtEntity(*camera, entity);
 
 		CommandList& commandList = renderer->startFrame(*frame);
 		//renderer->draw(entity, commandList);
 		renderer->finishFrame(*frame);
         frame->CommandList.wait();
 
-        return renderTarget->capture(*resourceContext, image);
+        return renderTarget->capture(*resourceContext, image);*/
+        return Status::NOT_IMPLEMENTED;
     }
 
     Status ThumbnailRenderer::render(Mesh& mesh, Image*& image) {

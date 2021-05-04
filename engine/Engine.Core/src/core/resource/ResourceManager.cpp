@@ -1,14 +1,18 @@
-#include "ghpch.h"
+#include "ghcpch.h"
 #include "ResourceManager.h"
 
 #include "core/Timer.h"
+#include "core/logging/Formatter.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, LoadOption options) {
         File* file;
-        if (path.toString().startsWith(LIB_PROTOCOL)) {
-            WString libName = path.toString().substring(lengthOf(LIB_PROTOCOL), path.toString().find(L"\\", lengthOf(LIB_PROTOCOL)) - lengthOf(LIB_PROTOCOL));
-            WString fileName = path.toString().substring(path.toString().find(L"\\", lengthOf(LIB_PROTOCOL)));
+        WString pathString = path.toString();
+        size_t protocolLength = lengthOf(LIB_PROTOCOL);
+        if (pathString.startsWith(LIB_PROTOCOL)) {
+            WString libName = pathString.substring(protocolLength, pathString.find(L"\\", protocolLength) - protocolLength);
+            WString fileName = pathString.substring(pathString.find(L"\\", protocolLength));
             file = libraries.get(libName)->getFile(fileName);
         } else {
             file = ghnew File(path);
@@ -18,7 +22,9 @@ namespace Ghurund {
             }
         }
 
+        file->read();
         MemoryInputStream stream(file->Data, file->Size);
+        resource.Path = &path;
         Status result = loader.load(*this, stream, resource, options);
         delete file;
         if (result != Status::OK)
@@ -94,28 +100,28 @@ namespace Ghurund {
         section.leave();
     }
 
-    Status ResourceManager::save(Resource& resource, ResourceContext& context, SaveOption options) {
-        return resource.save(context, options);
+    Status ResourceManager::save(Resource& resource, SaveOption options) {
+        return resource.save(options);
     }
 
-    Status ResourceManager::save(Resource& resource, ResourceContext& context, const FilePath& path, SaveOption options) {
-        return resource.save(context, path, options);
+    Status ResourceManager::save(Resource& resource, const FilePath& path, SaveOption options) {
+        return resource.save(path, options);
     }
 
-    Status ResourceManager::save(Resource& resource, ResourceContext& context, File& file, SaveOption options) {
-        return resource.save(context, file, options);
+    Status ResourceManager::save(Resource& resource, File& file, SaveOption options) {
+        return resource.save(file, options);
     }
 
-    Status ResourceManager::save(Resource& resource, ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
         size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
         stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary
-            return resource.save(context, workingDir, stream, options);
+            return resource.save(workingDir, stream, options);
         } else {
             stream.writeBoolean(false); // file reference
             stream.writeUnicode(resource.Path->toString().Data);
-            return resource.save(context, *resource.Path, options);
+            return resource.save(*resource.Path, options);
         }
     }
 

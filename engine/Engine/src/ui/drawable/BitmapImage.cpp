@@ -2,26 +2,8 @@
 #include "BitmapImage.h"
 
 #include "graphics/Graphics2D.h"
-#include "resource/ResourceContext.h"
 
 namespace Ghurund::UI {
-    Status BitmapImage::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        Status result;
-        if (image)
-            image->release();
-        image = ghnew Ghurund::Image();
-        result = image->load(context, workingDir, stream, options);
-        if (filterStatus(result, options) != Status::OK) {
-            image->release();
-            return result;
-        }
-        return init(context.Graphics2D, *image);
-    }
-
-    Status BitmapImage::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        return image->save(context, workingDir, stream, options);
-    }
-
     const Ghurund::Type& BitmapImage::GET_TYPE() {
         static const auto CONSTRUCTOR = NoArgsConstructor<BitmapImage>();
         static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BitmapImage))

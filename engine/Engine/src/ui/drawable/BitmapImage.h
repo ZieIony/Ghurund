@@ -1,8 +1,9 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include "graphics/Graphics.h"
+#include "graphics/Graphics2D.h"
 #include "graphics/Fence.h"
+#include "graphics/buffer/DescriptorHeap.h"
 #include "graphics/texture/Image.h"
 
 struct ID2D1Bitmap1;
@@ -21,9 +22,6 @@ namespace Ghurund::UI {
         ID2D1Bitmap1* bitmapImage = nullptr;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
-
         static const Ghurund::Type& GET_TYPE();
 
     public:
@@ -77,6 +75,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
 
-        static BitmapImage* makeFromImage(ResourceContext& context, const FilePath& imagePath);
+        static BitmapImage* makeFromImage(const FilePath& imagePath);
     };
 }

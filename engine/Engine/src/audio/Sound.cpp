@@ -3,13 +3,12 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "resource/ResourceContext.h"
 
 #include <Shlwapi.h>
 
 namespace Ghurund::Audio {
-	Status Sound::loadInternal(ResourceContext &context, const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
-        Status result = loadData(context, stream, options);
+	Status Sound::loadInternal(const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
+        /*Status result = loadData(context, stream, options);
         if(result!=Status::OK)
             return result;
 
@@ -21,7 +20,7 @@ namespace Ghurund::Audio {
         audioBuffer.pAudioData = (BYTE* const)&audioData[0];
         audioBuffer.pContext = nullptr;
         audioBuffer.Flags = XAUDIO2_END_OF_STREAM;
-        audioBuffer.LoopCount = XAUDIO2_NO_LOOP_REGION;
+        audioBuffer.LoopCount = XAUDIO2_NO_LOOP_REGION;*/
 
         return Status::OK;
     }
@@ -88,8 +87,8 @@ namespace Ghurund::Audio {
         return Status::OK;
     }
 
-    Status Sound::loadData(ResourceContext &context, MemoryInputStream & stream, LoadOption options) {
-        Audio &audio = context.Audio;
+    Status Sound::loadData(MemoryInputStream & stream, LoadOption options) {
+        /*Audio &audio = context.Audio;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, (UINT)stream.Size);
         ComPtr<IMFByteStream> spMFByteStream = nullptr;
@@ -131,7 +130,8 @@ namespace Ghurund::Audio {
         if(FAILED(sourceReader->SetStreamSelection(streamIndex, true)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to select audio stream\n"));
 
-        return readSamples(sourceReader, streamIndex);
+        return readSamples(sourceReader, streamIndex);*/
+        return Status::OK;
     }
 
     const Ghurund::Type& Sound::GET_TYPE() {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 
 namespace Ghurund {
 	class Component:public Resource {

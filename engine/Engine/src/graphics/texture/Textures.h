@@ -8,34 +8,34 @@ namespace Ghurund {
     private:
         Textures() = delete;
 
-        static Texture* make(ResourceContext& context, const wchar_t* fileName) {
-            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
-            return makeFromImage(context, FilePath(path));
+        static Texture* make(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const wchar_t* fileName) {
+            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName);
+            return makeFromImage(graphics, commandList, manager, FilePath(path.c_str()));
         }
 
     public:
-        static Texture* makeDefaultDiffuse(ResourceContext& context) {
-            return make(context, L"/textures/diffuse.png");
+        static Texture* makeDefaultDiffuse(Graphics& graphics, CommandList& commandList, ResourceManager& manager) {
+            return make(graphics, commandList, manager, L"/textures/diffuse.png");
         }
 
-        static Texture* makeDefaultSpecular(ResourceContext& context) {
-            return make(context, L"/textures/specular.png");
+        static Texture* makeDefaultSpecular(Graphics& graphics, CommandList& commandList, ResourceManager& manager) {
+            return make(graphics, commandList, manager, L"/textures/specular.png");
         }
 
-        static Texture* makeDefaultNormal(ResourceContext& context) {
-            return make(context, L"/textures/normal.png");
+        static Texture* makeDefaultNormal(Graphics& graphics, CommandList& commandList, ResourceManager& manager) {
+            return make(graphics, commandList, manager, L"/textures/normal.png");
         }
 
-        static Texture* makeChecker(ResourceContext& context) {
-            return make(context, L"/textures/checker.png");
+        static Texture* makeChecker(Graphics& graphics, CommandList& commandList, ResourceManager& manager) {
+            return make(graphics, commandList, manager, L"/textures/checker.png");
         }
 
-        static Texture* makeFromImage(ResourceContext& context, const FilePath& imagePath) {
-            Image* image = context.ResourceManager.load<Image>(context, imagePath);
+        static Texture* makeFromImage(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const FilePath& imagePath) {
+            Image* image = manager.load<Image>(imagePath);
             if (image == nullptr)
                 return nullptr;
             Texture* texture = ghnew Texture();
-            texture->init(context, *image);
+            texture->init(graphics, commandList, *image);
             image->release();
             return texture;
         }

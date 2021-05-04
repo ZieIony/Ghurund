@@ -3,19 +3,20 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "resource/ResourceContext.h"
 
 namespace Ghurund {
-	Status Texture::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        Status result;
+	Status Texture::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        /*Status result;
         image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)
             return result;
-        return init(context, *image);
+        return init(context, *image);*/
+        return Status::NOT_IMPLEMENTED;
     }
 
-    Status Texture::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        return context.ResourceManager.save(*image, context, workingDir, stream, options);
+    Status Texture::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        //return context.ResourceManager.save(*image, context, workingDir, stream, options);
+        return Status::NOT_IMPLEMENTED;
     }
 
     const Ghurund::Type& Texture::GET_TYPE() {
@@ -27,9 +28,7 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Texture::init(ResourceContext &context, Ghurund::Image &image) {
-        Graphics &graphics = context.Graphics;
-        CommandList &commandList = context.CommandList;
+    Status Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::Image &image) {
         if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
 

@@ -1,28 +1,13 @@
 #include "ghuipch.h"
 #include "FontCollectionLoader.h"
-
 #include "FontFileEnumerator.h"
 
+#include "core/SharedPointer.h"
+
 namespace Ghurund::UI {
-    Status FontCollectionLoader::createFontCollection(const WString& fontFilePath, OUT IDWriteFontCollection** result) {
-        *result = nullptr;
-
-        WString absolutePath = FilePath(fontFilePath).AbsolutePath;
-        size_t collectionKey = files.indexOf(absolutePath);
-        if (collectionKey == files.Size) {
-            files.add(absolutePath);
-            collectionKey = files.Size - 1;
-        }
-        UINT32 keySize = sizeof(collectionKey);
-
-        if (FAILED(dwriteFactory->CreateCustomFontCollection(this, &collectionKey, keySize, result)))
-            return Status::CALL_FAIL;
-
-        return Status::OK;
-    }
-    
     HRESULT STDMETHODCALLTYPE FontCollectionLoader::QueryInterface(REFIID iid, void** ppvObject) {
-        if (iid == IID_IUnknown || iid == __uuidof(IDWriteFontCollectionLoader)) {
+        if (iid == IID_IUnknown
+            || iid == __uuidof(IDWriteFontCollectionLoader)) {
             *ppvObject = this;
             AddRef();
             return S_OK;
@@ -50,20 +35,7 @@ namespace Ghurund::UI {
         UINT32 collectionKeySize,
         OUT IDWriteFontFileEnumerator** fontFileEnumerator
     ) {
-        *fontFileEnumerator = nullptr;
-
-        if (collectionKeySize % sizeof(UINT) != 0)
-            return E_INVALIDARG;
-
-        size_t const* mfCollectionKey = (size_t const*)collectionKey;
-        UINT32 const mfKeySize = collectionKeySize;
-
-        FontFileEnumerator* enumerator = new(std::nothrow) FontFileEnumerator(factory, files[*mfCollectionKey]);
-        if (!enumerator)
-            return E_OUTOFMEMORY;
-
-        *fontFileEnumerator = enumerator;
-
+        *fontFileEnumerator = ghnew FontFileEnumerator(this->factory, fontFileLoader, collectionKey, collectionKeySize);
         return S_OK;
     }
 }

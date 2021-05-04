@@ -11,9 +11,9 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Renderer::init(ResourceContext& resourceContext) {
-        this->graphics = &resourceContext.Graphics;
-        this->parameterManager = &resourceContext.ParameterManager;
+    Status Renderer::init(Graphics& graphics, ParameterManager& parameterManager) {
+        this->graphics = &graphics;
+        this->parameterManager = &parameterManager;
 
         /*for(int i = 0; i<FRAME_COUNT; i++) {
             postprocessRenderTarget[i] = ghnew RenderTarget();

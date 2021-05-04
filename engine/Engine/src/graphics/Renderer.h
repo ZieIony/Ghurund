@@ -7,8 +7,7 @@
 
 #include "core/Object.h"
 #include "graphics/entity/Scene.h"
-#include "resource/ResourceManager.h"
-#include "resource/ResourceContext.h"
+#include "core/resource/ResourceManager.h"
 
 namespace Ghurund {
     class Renderer: public Object {
@@ -35,7 +34,7 @@ namespace Ghurund {
             delete clearColor;
         }
 
-        Status init(ResourceContext& resourceContext);
+        Status init(Graphics& graphics, ParameterManager& parameterManager);
 
         void uninit();
 

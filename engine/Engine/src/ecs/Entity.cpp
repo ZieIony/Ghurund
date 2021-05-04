@@ -3,12 +3,11 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "resource/ResourceContext.h"
 
 namespace Ghurund {
 
-    Status Entity::loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        Name = stream.readUnicode();
+    Status Entity::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        /*Name = stream.readUnicode();
         uint32_t componentCount = stream.readUInt();
         for (uint32_t i = 0; i < componentCount; i++) {
             const char* typeNamespace = stream.readASCII();
@@ -22,18 +21,18 @@ namespace Ghurund {
             if (!type->Constructor)
                 return Logger::log(LogType::ERR0R, Status::MISSING_CONSTRUCTOR, _T("Type {}::{} is missing a constructor.\n"), typeNamespace, typeName);
             Component* obj = (Component*)type->Constructor->newInstance(*allocator);
-        }
+        }*/
         return Status::OK;
     }
 
-    Status Entity::saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        stream.writeUnicode(Name.Data);
+    Status Entity::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+        /*stream.writeUnicode(Name.Data);
         stream.writeUInt((uint32_t)components.Size);
         for (Component* c : components) {
             stream.writeASCII(c->Type.Namespace);
             stream.writeASCII(c->Type.Name);
             c->save(context, workingDir, stream, options);
-        }
+        }*/
         return Status::OK;
     }
 

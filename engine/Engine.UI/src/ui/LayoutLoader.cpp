@@ -63,7 +63,7 @@ namespace Ghurund::UI {
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
         AString s = str;
         if (s.startsWith(FILE_PROTOCOL)) {
-            return resourceLoader->loadDrawable(getPath(str));
+            return nullptr;// resourceLoader->loadDrawable(getPath(str));
         } else if (s.startsWith(THEME_PROTOCOL) && theme) {
             ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"image/"));
             if (theme->Images.containsKey(imageKey))

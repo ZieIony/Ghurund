@@ -5,7 +5,7 @@
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
 #include "ecs/Entity.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "game/TransformComponent.h"
 
 namespace Ghurund {
@@ -29,8 +29,8 @@ namespace Ghurund {
         PointerArray<Parameter*> parameters;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
         static const Ghurund::Type& GET_TYPE();
 

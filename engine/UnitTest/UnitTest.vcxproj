@@ -166,6 +166,7 @@
     <ClCompile Include="src\core\collection\TreeTest.cpp" />
     <ClCompile Include="src\core\collection\BagTest.cpp" />
     <ClCompile Include="src\core\collection\LinkedListTest.cpp" />
+    <ClCompile Include="src\core\io\PathTest.cpp" />
     <ClCompile Include="src\core\reflection\ReflectionTest.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\net\MessageTest.cpp" />

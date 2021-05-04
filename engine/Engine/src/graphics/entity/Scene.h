@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ecs/Entity.h"
-#include "resource/Resource.h"
+#include "core/resource/Resource.h"
 #include "physics/Physics.h"
 #include "physics/PhysicsSystem.h"
 #include "graphics/DrawingSystem.h"
@@ -15,8 +15,8 @@ namespace Ghurund {
         DrawingSystem drawingSystem;
 
     protected:
-        virtual Status loadInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual Status saveInternal(ResourceContext& context, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
+        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
         static const Ghurund::Type& GET_TYPE();
 
@@ -24,10 +24,10 @@ namespace Ghurund {
 
         Scene() {}
 
-        inline void init(ResourceContext& context) {
+        /*inline void init(ResourceContext& context) {
             drawingSystem.init(context.Graphics);
             drawingSystem.initParameters(context.ParameterManager);
-        }
+        }*/
 
         inline void setCamera(Camera* camera) {
             drawingSystem.Camera = camera;

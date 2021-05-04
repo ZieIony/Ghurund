@@ -16,8 +16,7 @@ namespace Ghurund::UI {
 
     class TextFormat:public Pointer {
     private:
-        WString file;
-        WString familyName;
+        Font* font;
         float size;
         bool italic = false, underline = false, strikethrough = false;
         uint32_t weight = 400, stretch = 0;
@@ -33,18 +32,21 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextFormat(const WString& file, const WString& family, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
-            :file(file), familyName(family), size(size), weight(weight), italic(italic), locale(locale) {}
+        TextFormat(Font* font, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
+            :size(size), weight(weight), italic(italic), locale(locale) {
+            this->font = font;
+            font->addReference();
+        }
 
         ~TextFormat();
 
-        Status init(FontCollectionLoader& fontLoader, IDWriteFactory& dwriteFactory);
+        Status init(IDWriteFactory5& dwriteFactory);
 
-        inline const WString& getFamilyName() const {
-            return familyName;
+        inline Font* getFont() {
+            return font;
         }
 
-        __declspec(property(get = getFamilyName)) const WString& FamilyName;
+        __declspec(property(get = getFont)) Font* Font;
 
         inline float getSize() const {
             return size;

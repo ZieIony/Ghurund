@@ -9,8 +9,7 @@
 #include "graphics/Graphics2D.h"
 #include "graphics/Renderer.h"
 #include "physics/Physics.h"
-#include "resource/ResourceContext.h"
-#include "resource/ResourceManager.h"
+#include "core/resource/ResourceManager.h"
 #include "script/ScriptEngine.h"
 
 #include "net/Networking.h"
@@ -61,21 +60,12 @@ namespace Ghurund {
         resourceManager = ghnew Ghurund::ResourceManager();
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
 
-        resourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
-        result = resourceContext->init();
-        if (result != Status::OK)
-            return result;
-
-        asyncResourceContext = ghnew Ghurund::ResourceContext(*graphics, *graphics2d, *audio, *parameterManager, *scriptEngine, *physics, *resourceManager);
-        result = asyncResourceContext->init();
-        if (result != Status::OK)
-            return result;
         //parameterManager->initDefaultTextures(*resourceContext);
 
         functionQueue = ghnew Ghurund::FunctionQueue();
 
         renderer = ghnew Ghurund::Renderer();
-        result = renderer->init(*resourceContext);
+        result = renderer->init(*graphics, *parameterManager);
         if (result != Status::OK)
             return result;
 
@@ -91,8 +81,6 @@ namespace Ghurund {
 
         delete timer;
         delete parameterManager;
-        delete asyncResourceContext;
-        delete resourceContext;
         delete resourceManager;
 
         delete functionQueue;

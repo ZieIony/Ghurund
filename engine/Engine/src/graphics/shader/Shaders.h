@@ -10,54 +10,54 @@ namespace Ghurund {
     private:
         Shaders() = delete;
 
-        static Shader* load(ResourceContext& context, const wchar_t* fileName) {
+        static Shader* load(ResourceManager& manager, const wchar_t* fileName) {
             auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
-            return context.ResourceManager.load<Shader>(context, FilePath(path));
+            return manager.load<Shader>(FilePath(path));
         }
 
     public:
-        static Shader* loadBasic(ResourceContext& context) {
-            return load(context, L"/shaders/basic.hlsl");
+        static Shader* loadBasic(ResourceManager& manager) {
+            return load(manager, L"/shaders/basic.hlsl");
         }
 
-        static Shader* loadBasicLight(ResourceContext& context) {
-            return load(context, L"/shaders/basicLight.hlsl");
+        static Shader* loadBasicLight(ResourceManager& manager) {
+            return load(manager, L"/shaders/basicLight.hlsl");
         }
 
-        static Shader* loadToon(ResourceContext& context) {
-            return load(context, L"/shaders/toon.hlsl");
+        static Shader* loadToon(ResourceManager& manager) {
+            return load(manager, L"/shaders/toon.hlsl");
         }
 
-        static Shader* loadWireframe(ResourceContext& context) {
-            return load(context, L"/shaders/wireframe.hlsl");
+        static Shader* loadWireframe(ResourceManager& manager) {
+            return load(manager, L"/shaders/wireframe.hlsl");
         }
 
-        static Shader* loadOutline(ResourceContext& context) {
-            return load(context, L"/shaders/outline.hlsl");
+        static Shader* loadOutline(ResourceManager& manager) {
+            return load(manager, L"/shaders/outline.hlsl");
         }
 
-        static Shader* loadNormals(ResourceContext& context) {
-            return load(context, L"/shaders/normals.hlsl");
+        static Shader* loadNormals(ResourceManager& manager) {
+            return load(manager, L"/shaders/normals.hlsl");
         }
 
-        static Shader* loadInvalid(ResourceContext& context) {
-            return load(context, L"/shaders/invalid.hlsl");
+        static Shader* loadInvalid(ResourceManager& manager) {
+            return load(manager, L"/shaders/invalid.hlsl");
         }
 
-        static Shader* loadLightPass(ResourceContext& context) {
-            return load(context, L"/shaders/lightPass.hlsl");
+        static Shader* loadLightPass(ResourceManager& manager) {
+            return load(manager, L"/shaders/lightPass.hlsl");
         }
 
-        static Shader* loadUi(ResourceContext& context) {
-            return load(context, L"/shaders/ui.hlsl");
+        static Shader* loadUi(ResourceManager& manager) {
+            return load(manager, L"/shaders/ui.hlsl");
         }
 
-        static Shader* loadBasicSky(ResourceContext& context) {
-            return load(context, L"/shaders/basicSky.hlsl");
+        static Shader* loadBasicSky(ResourceManager& manager) {
+            return load(manager, L"/shaders/basicSky.hlsl");
         }
 
-        static Shader* loadAdvancedSky(ResourceContext& context) {
-            return load(context, L"/shaders/advancedSky.hlsl");
+        static Shader* loadAdvancedSky(ResourceManager& manager) {
+            return load(manager, L"/shaders/advancedSky.hlsl");
         }
     };
 }

@@ -1,21 +1,16 @@
 #include "ghuipch.h"
 #include "FontFileEnumerator.h"
 
-namespace Ghurund::UI {
-    FontFileEnumerator::FontFileEnumerator(IDWriteFactory* factory, const WString& fontFilePath):fontFilePath(fontFilePath) {
-        if (factory) {
-            factory->AddRef();
-            dwriteFactory = factory;
-        }
-    }
+#include <core/SharedPointer.h>
 
+namespace Ghurund::UI {
     HRESULT STDMETHODCALLTYPE FontFileEnumerator::QueryInterface(REFIID iid, void** ppvObject) {
         if (iid == IID_IUnknown || iid == __uuidof(IDWriteFontFileEnumerator)) {
             *ppvObject = this;
             AddRef();
             return S_OK;
         } else {
-            *ppvObject = NULL;
+            *ppvObject = nullptr;
             return E_NOINTERFACE;
         }
     }
@@ -39,16 +34,16 @@ namespace Ghurund::UI {
             currentFile = nullptr;
         }
 
-        if (nextIndex == 0) {
-            HRESULT hr = dwriteFactory->CreateFontFileReference(fontFilePath.getData(), NULL, &currentFile);
+        if (index != 0)
+            return S_OK;
 
-            if (SUCCEEDED(hr)) {
-                *hasCurrentFile = TRUE;
-                nextIndex++;
-            }
+        HRESULT hr = fontFileLoader.CreateInMemoryFontFileReference(&factory, data, size, &fontFileLoader, &currentFile);
 
+        if (FAILED(hr))
             return hr;
-        }
+
+        *hasCurrentFile = TRUE;
+        index++;
 
         return S_OK;
     }
