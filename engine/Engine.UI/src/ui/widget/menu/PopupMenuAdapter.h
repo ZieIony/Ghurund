@@ -6,7 +6,7 @@
 #include "ui/control/ImageView.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/control/TextBlock.h"
+#include "ui/text/TextBlock.h"
 
 namespace Ghurund::UI {
     class ButtonPopupMenuRow:public ClickableControl {
@@ -44,10 +44,6 @@ namespace Ghurund::UI {
 
     class ButtonPopupMenuAdapter:public ItemAdapter<MenuItem*, Control> {
     public:
-        virtual bool canHandleItem(MenuItem* const& item, size_t position) const override {
-            return item->type == MenuItemType::BUTTON;
-        }
-
         virtual Control* makeControl() const {
             return ghnew ButtonPopupMenuRow();
         }
@@ -61,10 +57,6 @@ namespace Ghurund::UI {
 
     class SeparatorPopupMenuAdapter:public ItemAdapter<MenuItem*, Control> {
     public:
-        virtual bool canHandleItem(MenuItem* const& item, size_t position) const override {
-            return item->type == MenuItemType::SEPARATOR;
-        }
-
         virtual Control* makeControl() const {
             Separator* separator = ghnew Separator();
             //SeparatorHorizontalStyle()

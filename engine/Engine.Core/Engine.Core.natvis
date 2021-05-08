@@ -4,7 +4,10 @@
 		<DisplayString>{v,s}</DisplayString>
 	</Type>
 	<Type Name="Ghurund::WString">
-		<DisplayString>L{v,su}</DisplayString>
+		<DisplayString>{v,su}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::Path">
+		<DisplayString>{path}</DisplayString>
 	</Type>
 	<Type Name="Ghurund::List&lt;*&gt;">
 		<DisplayString>{{size={size} capacity={capacity}}}</DisplayString>

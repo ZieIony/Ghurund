@@ -1,14 +1,16 @@
 #pragma once
 
 #include "core/math/Size.h"
-#include "graphics/texture/Image.h"
+#include "ui/image/Image.h"
 
 struct ID2D1SvgDocument;
 
-namespace Ghurund::UI {
-    using namespace DirectX;
+#include "reflection_7471ad87_25b0_4e74_9cd4_92dc567fe17c.h"
 
-    class SvgImage:public Resource {
+namespace Ghurund::UI {
+    class SvgDocument:public Resource {
+        reflection_7471ad87_25b0_4e74_9cd4_92dc567fe17c
+
     private:
         ID2D1SvgDocument* svgDocument = nullptr;
 
@@ -16,10 +18,8 @@ namespace Ghurund::UI {
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
-        static const Ghurund::Type& GET_TYPE();
-
     public:
-        ~SvgImage() {
+        ~SvgDocument() {
             finalize();
         }
 
@@ -45,17 +45,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize)) FloatSize Size;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
-
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::SVG };
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"svg", true, false)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

@@ -7,6 +7,7 @@
 #include "ui/control/Shadow.h"
 #include "ui/control/Control.h"
 #include "ui/control/ImageView.h"
+#include "ui/drawable/BitmapDrawable.h"
 #include "ui/text/TextBlockStyle.h"
 #include "ui/text/TextFormat.h"
 #include "ui/widget/ClickResponseView.h"
@@ -55,15 +56,16 @@ namespace Ghurund::UI {
         StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
         void loadImage(ResourceManager& resourceManager, const ImageKey& key, const FilePath& path) {
-            /*SharedPointer<Image> image = resourceManager.load<Image>(path);
-            SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapImageDrawable(image);
-            Images.set(key, imageDrawable);*/
+            Status result;
+            SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, &result);
+            SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
+            Images.set(key, imageDrawable);
         }
 
     public:
         BaseTheme(IDWriteFactory5& dwriteFactory, ResourceManager& resourceManager) {
-            SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(FilePath(L"fonts/lato_medium.ttf"));
-            SharedPointer<Font> latoLightFont = resourceManager.load<Font>(FilePath(L"fonts/lato_light.ttf"));
+            SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
+            SharedPointer<Font> latoLightFont = resourceManager.load<Font>(FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
 
             auto buttonFont = Ghurund::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
             buttonFont->init(dwriteFactory);
@@ -81,13 +83,13 @@ namespace Ghurund::UI {
             textSecondaryFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
-            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_CHECKED, FilePath(L"icons/checkbox checked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_UNCHECKED, FilePath(L"icons/checkbox unchecked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_CHECKED, FilePath(L"icons/radiobutton checked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_UNCHECKED, FilePath(L"icons/radiobutton unchecked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWUP, FilePath(L"icons/arrow up 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWDOWN, FilePath(L"icons/arrow down 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWRIGHT, FilePath(L"icons/arrow right 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_CHECKED, FilePath(L"lib://Ghurund/icons\\checkbox checked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_UNCHECKED, FilePath(L"lib://Ghurund/icons\\checkbox unchecked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_CHECKED, FilePath(L"lib://Ghurund/icons\\radiobutton checked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_UNCHECKED, FilePath(L"lib://Ghurund/icons\\radiobutton unchecked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWUP, FilePath(L"lib://Ghurund/icons\\arrow up 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWDOWN, FilePath(L"lib://Ghurund/icons\\arrow down 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWRIGHT, FilePath(L"lib://Ghurund/icons\\arrow right 18.png"));
 
             Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
             Styles.set(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);

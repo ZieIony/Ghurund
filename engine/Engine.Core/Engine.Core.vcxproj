@@ -26,7 +26,6 @@
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
-    <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />

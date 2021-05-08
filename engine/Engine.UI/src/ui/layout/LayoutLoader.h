@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Layout.h"
 #include "core/Buffer.h"
 #include "core/collection/Stack.h"
 #include "core/collection/PointerList.h"
 #include "core/io/FilePath.h"
 #include "core/reflection/Type.h"
+#include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"
 #include "core/string/AStringView.h"
 #include "ui/Alignment.h"
@@ -19,26 +21,23 @@ namespace Ghurund::UI {
     class Theme;
     class Shape;
 
-    class LayoutLoader {
+    class LayoutLoader:public Loader {
     private:
-        Map<AString, const Type*> types;
+        ID2D1Factory6& d2dFactory;
+        ResourceManager& resourceManager;
         Theme* theme = nullptr;
-        ID2D1Factory6* d2dFactory = nullptr;
-        ResourceManager* resourceManager = nullptr;
+        Map<AString, const Type*> types;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
-        static inline const char* THEME_PROTOCOL = "theme://";
+        static inline const char* THEME_STYLE = "theme://style/";
+        static inline const char* THEME_COLOR = "theme://color/";
+        static inline const char* THEME_IMAGE = "theme://image/";
+        static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
-        LayoutLoader();
+        LayoutLoader(ID2D1Factory6& d2dFactory, ResourceManager& resourceManager, Theme& theme);
 
         virtual ~LayoutLoader() {}
-
-        inline void init(Theme& theme, ID2D1Factory6& d2dFactory, ResourceManager& resourceManager) {
-            this->theme = &theme;
-            this->d2dFactory = &d2dFactory;
-            this->resourceManager = &resourceManager;
-        }
 
         void registerClass(const Type& type) {
             if (type.extends(Control::TYPE))
@@ -55,11 +54,19 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTheme, put = setTheme)) Theme& Theme;
 
+        inline ResourceManager& getResourceManager() {
+            return resourceManager;
+        }
+
+        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
+
         ImageDrawable* loadDrawable(const char* str);
 
-        Status load(const Buffer& data, PointerList<Control*>& output);
+        virtual Status load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) override;
 
-        Status load(const FilePath& path, PointerList<Control*>& output);
+        virtual Status save(Ghurund::ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const override {
+            return Status::NOT_IMPLEMENTED;
+        }
 
         PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
 

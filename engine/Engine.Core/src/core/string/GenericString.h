@@ -144,9 +144,37 @@ namespace Ghurund {
         }
 
         inline void replace(T from, T to) {
-            for (size_t i = 0; i < size; i++)
-                if (v[i] == from)
+            bool updated = false;
+            for (size_t i = 0; i < size; i++) {
+                if (v[i] == from) {
                     v[i] = to;
+                    updated = true;
+                }
+            }
+            if (updated)
+                computeHash();
+        }
+
+        inline void replace(const T* from, const T* to) {
+            bool updated = false;
+            size_t fromLength = lengthOf(from);
+            size_t toLength = lengthOf(to);
+            size_t next = 0;
+            while (true) {
+                next = find(from, next);
+                if (next >= size)
+                    break;
+                if (toLength != fromLength) {
+                    fit(size + toLength - fromLength);
+                    memcpy(v + next + toLength, v + next + fromLength, (size - next - fromLength) * sizeof(T));
+                    size += toLength - fromLength;
+                }
+                memcpy(v + next, to, toLength * sizeof(T));
+                next += toLength;
+                updated = true;
+            }
+            if (updated)
+                computeHash();
         }
 
         inline void insert(size_t pos, T str) {

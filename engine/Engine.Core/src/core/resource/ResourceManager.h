@@ -96,13 +96,13 @@ namespace Ghurund {
             task->release();
         }
 
-        template<class Type> Type* load(File& file, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* load(const File& file, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Type* resource;
             loadInternal(resource, file.Path, result, options);
             return resource;
         }
 
-        template<class Type> Type* loadAsync(File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* loadAsync(const File& file, std::function<void(Type*, Status)> onLoaded = nullptr, LoadOption options = LoadOption::DEFAULT) {
             FilePath& path = file.Path;
             Task* task = ghnew Task(file.Path, [this, path, onLoaded, options] {
                 Type* resource;
@@ -145,10 +145,10 @@ namespace Ghurund {
             return nullptr;
         }
 
-        Status save(Resource& resource, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource& resource, const FilePath& path, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource& resource, File& file, SaveOption options = SaveOption::DEFAULT);
-        Status save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT);
+        Status save(Resource& resource, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(Resource& resource, const FilePath& path, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(Resource& resource, File& file, SaveOption options = SaveOption::DEFAULT) const;
+        Status save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
         template<class Type = Resource> Type* get(const WString& fileName) {
             section.enter();

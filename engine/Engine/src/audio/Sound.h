@@ -88,11 +88,13 @@ namespace Ghurund::Audio {
             return TYPE;
         }
 
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::WAV };
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"wav", true, false)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

@@ -3,7 +3,7 @@
 #include "graphics/Graphics.h"
 #include "graphics/Fence.h"
 #include "graphics/CommandList.h"
-#include "Image.h"
+#include "ui/image/Image.h"
 
 namespace Ghurund {
     class Texture:public Resource {
@@ -11,7 +11,7 @@ namespace Ghurund {
 		ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
 
-        Image* image = nullptr;
+        Ghurund::UI::Image* image = nullptr;
 
     protected:
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
@@ -43,13 +43,13 @@ namespace Ghurund {
             return image != nullptr && image->Valid && __super::Valid;
         }
 
-        Status init(Graphics& graphics, CommandList& commandList, Image& image);
+        Status init(Graphics& graphics, CommandList& commandList, Ghurund::UI::Image& image);
 
-        inline Image* getImage() {
+        inline Ghurund::UI::Image* getImage() {
             return image;
         }
 
-        __declspec(property(get = getImage)) Image* Image;
+        __declspec(property(get = getImage)) Ghurund::UI::Image* Image;
 
         void set(CommandList& commandList, unsigned int index) {
             commandList.addResourceRef(textureResource.Get());
@@ -64,11 +64,15 @@ namespace Ghurund {
             return TYPE;
         }
 
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::JPG};
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"jpg", true, true),
+                ResourceFormat(L"jpeg", true, true),
+                ResourceFormat(L"png", true, true)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

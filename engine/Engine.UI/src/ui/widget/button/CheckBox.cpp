@@ -25,7 +25,7 @@ namespace Ghurund::UI {
             Layout->Selectable->StateChanged.add(stateHandler);
         }
     }
-    
+
     void CheckBoxStyle::onStateChanged(Control& control) const {
         Theme* theme = control.Theme;
         if (!theme)
@@ -33,11 +33,18 @@ namespace Ghurund::UI {
         CheckBox& checkBoxRadio = (CheckBox&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout->Selectable->Selected) {
-            layout->Image->Image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]->clone();
+            size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_CHECKED);
+            if (index != theme->Images.Size) {
+                ImageDrawable* image = theme->Images.getValue(index);
+                layout->Image->Image = (ImageDrawable*)image->clone();
+            }
         } else {
-            layout->Image->Image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]->clone();
+            size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_UNCHECKED);
+            if (index != theme->Images.Size) {
+                ImageDrawable* image = theme->Images.getValue(index);
+                layout->Image->Image = (ImageDrawable*)image->clone();
+            }
         }
-        layout->Image->Image->release();
         __super::onStateChanged(control);
     }
 }

@@ -24,11 +24,11 @@ namespace Ghurund::UI {
         }
 
         virtual void onLayoutChanged() override {
-            auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*Layout->Recycler);
+            /*auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*Layout->Recycler);
             provider->Adapters.add(ghnew ButtonToolbarAdapter());
             //provider->Adapters.add(ghnew SeparatorToolbarAdapter(theme));
             provider->Items = ghnew ListItemSource<MenuItem*>(items);
-            Layout->Recycler->childrenProvider = provider;
+            Layout->Recycler->childrenProvider = provider;*/
         }
 
     public:

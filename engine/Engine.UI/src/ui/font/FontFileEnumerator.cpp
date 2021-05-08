@@ -37,7 +37,7 @@ namespace Ghurund::UI {
         if (index != 0)
             return S_OK;
 
-        HRESULT hr = fontFileLoader.CreateInMemoryFontFileReference(&factory, data, size, &fontFileLoader, &currentFile);
+        HRESULT hr = fontFileLoader.CreateInMemoryFontFileReference(&factory, data, size, nullptr, &currentFile);
 
         if (FAILED(hr))
             return hr;

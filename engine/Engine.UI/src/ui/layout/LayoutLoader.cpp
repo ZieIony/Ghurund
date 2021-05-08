@@ -26,9 +26,13 @@
 #include "ui/widget/tree/TreeView.h"
 #include "ui/widget/tab/TabContainer.h"
 #include "core/string/TextConversionUtils.h"
+#include "core/logging/Formatter.h"
 
 namespace Ghurund::UI {
-    LayoutLoader::LayoutLoader() {
+    LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::ResourceManager& resourceManager, Ghurund::UI::Theme& theme)
+        :d2dFactory(d2dFactory), resourceManager(resourceManager) {
+        this->theme = &theme;
+
         registerClass(ClickableControl::TYPE);
         registerClass(SelectableView::TYPE);
         registerClass(ClickResponseView::TYPE);
@@ -62,38 +66,29 @@ namespace Ghurund::UI {
 
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
         AString s = str;
+        s.replace('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
             return nullptr;// resourceLoader->loadDrawable(getPath(str));
-        } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            ImageKey imageKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"image/"));
+        } else if (s.startsWith(THEME_IMAGE) && theme) {
+            ImageKey imageKey = s.substring(lengthOf(THEME_IMAGE));
             if (theme->Images.containsKey(imageKey))
                 return (ImageDrawable*)theme->Images[imageKey]->clone();
         }
         return nullptr;
     }
 
-    Status LayoutLoader::load(const Buffer& data, PointerList<Control*>& output) {
+    Status LayoutLoader::load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) {
         tinyxml2::XMLDocument doc;
-        doc.Parse((const char*)data.Data, data.Size);
+        doc.Parse((const char*)stream.Data, stream.Size);
+        Layout& layout = (Layout&)resource;
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         if (child && strcmp(child->Value(), "layout") == 0) {
-            output.clear();
-            output.addAll(loadControls(*child));
+            layout.Controls.addAll(loadControls(*child));
             return Status::OK;
         } else {
             return Logger::log(LogType::ERR0R, Status::INV_FORMAT, _T("missing 'layout' tag\n"));
         }
-    }
-
-    Status LayoutLoader::load(const FilePath& path, PointerList<Control*>& output) {
-        File file(path);
-        if (!file.Exists)
-            return Status::FILE_DOESNT_EXIST;
-        Status result = file.read();
-        if (result == Status::OK)
-            result = load(Buffer(file.Data, file.Size), output);
-        return result;
     }
 
     PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
@@ -104,11 +99,10 @@ namespace Ghurund::UI {
                 auto layoutAttr = child->FindAttribute("layout");
                 if (layoutAttr) {
                     AString s = layoutAttr->Value();
+                    s.replace('\\', '/');
                     if (s.startsWith(FILE_PROTOCOL)) {
-                        PointerList<Control*> controls;
-                        Status result = load(getPath(s), controls);
-                        if (result == Status::OK)
-                            list.addAll(controls);
+                        SharedPointer<Layout> layout = resourceManager.load<Layout>(getPath(s));
+                        list.addAll(layout->Controls);
                     }
                 }
             } else {
@@ -129,11 +123,11 @@ namespace Ghurund::UI {
             auto layoutAttr = xml.FindAttribute("layout");
             if (layoutAttr) {
                 AString s = layoutAttr->Value();
+                s.replace('\\', '/');
                 if (s.startsWith(FILE_PROTOCOL)) {
-                    PointerList<Control*> controls;
-                    Status result = load(getPath(s), controls);
-                    if (result == Status::OK && !controls.Empty) {
-                        Control* control = controls[0];
+                    SharedPointer<Layout> layout = resourceManager.load<Layout>(getPath(s));
+                    if (!layout->Controls.Empty) {
+                        Control* control = layout->Controls[0];
                         control->addReference();
                         return control;
                     }
@@ -162,6 +156,7 @@ namespace Ghurund::UI {
 
     uint32_t LayoutLoader::loadColor(const char* str) {
         AString s = str;
+        s.replace('\\', '/');
         uint32_t value = 0;
         if (s.startsWith("#")) {
             s = s.toLowerCase();
@@ -174,8 +169,8 @@ namespace Ghurund::UI {
                     return 0;
                 }
             }
-        } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            ColorKey colorKey = s.substring(lengthOf(THEME_PROTOCOL) + lengthOf(L"color/"));
+        } else if (s.startsWith(THEME_COLOR) && theme) {
+            ColorKey colorKey = s.substring(lengthOf(THEME_COLOR));
             if (theme->Colors.containsKey(colorKey))
                 return theme->Colors[colorKey];
         }
@@ -188,11 +183,12 @@ namespace Ghurund::UI {
 
     TextFormat* LayoutLoader::loadTextFormat(const char* str) {
         AString s = str;
+        s.replace('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
             //auto textFormat = ghnew TextFormat()
-        } else if (s.startsWith(THEME_PROTOCOL) && theme) {
-            TextFormatKey textFormatKey = s.substring(lengthOf(THEME_PROTOCOL));
-            if (theme->TextFormats.containsKey(textFormatKey) + lengthOf(L"textFormat/")) {
+        } else if (s.startsWith(THEME_TEXTFORMAT) && theme) {
+            TextFormatKey textFormatKey = s.substring(lengthOf(THEME_TEXTFORMAT));
+            if (theme->TextFormats.containsKey(textFormatKey)) {
                 TextFormat* style = theme->TextFormats[textFormatKey];
                 style->addReference();
                 return style;

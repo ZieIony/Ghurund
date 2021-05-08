@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/collection/BufferedValue.h"
-#include "core/logging/Logger.h"
 #include "graphics/buffer/RenderTarget.h"
 #include "graphics/buffer/DepthBuffer.h"
 #include "Frame.h"
@@ -47,19 +46,7 @@ namespace Ghurund {
 
         __declspec(property(get = getCurrentFrame)) Frame& CurrentFrame;
 
-        Status present() {
-            currentFrame++;
-            currentFrame %= frameCount;
-
-            HRESULT hr = swapChain->Present(1, 0);
-            if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
-                return Logger::log(LogType::ERR0R, Status::DEVICE_LOST, _T("swapChain->Present() failed\n"));
-            } else if (FAILED(hr)) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
-            }
-
-            return Status::OK;
-        }
+        Status present();
 
         void resize(unsigned int width, unsigned int height);
 

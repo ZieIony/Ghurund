@@ -9,7 +9,7 @@ namespace Ghurund::UI {
     private:
         IDWriteFactory5& factory;
         FontCollectionLoader* fontCollectionLoader = nullptr;
-        IDWriteInMemoryFontFileLoader* fontFileLoader;
+        IDWriteInMemoryFontFileLoader* fontFileLoader = nullptr;
 
     public:
         FontLoader(IDWriteFactory5& factory):factory(factory) {}
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
         Status init();
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) const override;
+        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) override;
 
         virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const override {
             return Status::NOT_IMPLEMENTED;

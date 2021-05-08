@@ -3,7 +3,7 @@
 #include "ui/control/Space.h"
 #include "ui/RootView.h"
 #include "application/Application.h"
-#include "application/SystemWindow.h"
+#include "core/window/SystemWindow.h"
 #include "core/SharedPointer.h"
 #include "ui/widget/menu/MenuItem.h"
 #include "ui/widget/menu/Toolbar.h"
@@ -12,7 +12,7 @@
 #include "tool/LogPanel.h"
 #include "ui/widget/menu/PopupMenu.h"
 #include "audio/Sound.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 
 #include "control/FpsText.h"
@@ -25,20 +25,9 @@ namespace Ghurund::Editor {
     class EditorApplication:public Application {
     public:
         void onInit() {
-            SystemWindow* window = ghnew EditorWindow(*this);
-
-            window->initParameters(ParameterManager);
-
-            window->Size = { Settings.width, Settings.height };
-
+            auto window = ghnew EditorWindow(*this);
+            window->Size = Settings.windowSize;
             Windows.add(window);
-            window->OnClosed.add([this](Ghurund::Window& window) {
-                Windows.remove((SystemWindow*)&window);
-                delete& window;
-                return true;
-            });
-
-            window->Visible = true;
             window->activate();
         }
     };

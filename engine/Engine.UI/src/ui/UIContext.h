@@ -3,6 +3,7 @@
 #include <dwrite.h>
 
 namespace Ghurund {
+    class ResourceManager;
     class Window;
 }
 
@@ -13,11 +14,11 @@ namespace Ghurund::UI {
     private:
         IDWriteFactory& dwriteFactory;
         Ghurund::Window& window;
-        LayoutLoader& loader;
+        ResourceManager& manager;
 
     public:
-        UIContext(IDWriteFactory& dwriteFactory, Ghurund::Window& window, LayoutLoader& loader):
-            dwriteFactory(dwriteFactory), window(window), loader(loader) {}
+        UIContext(IDWriteFactory& dwriteFactory, Ghurund::Window& window, ResourceManager& manager):
+            dwriteFactory(dwriteFactory), window(window), manager(manager) {}
 
         inline IDWriteFactory& getDWriteFactory() {
             return dwriteFactory;
@@ -31,10 +32,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWindow)) Ghurund::Window& Window;
 
-        inline LayoutLoader& getLayoutLoader() {
-            return loader;
+        inline ResourceManager& getResourceManager() {
+            return manager;
         }
 
-        __declspec(property(get = getLayoutLoader)) LayoutLoader& LayoutLoader;
+        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
     };
 }

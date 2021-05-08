@@ -2,7 +2,7 @@
 #include "TextBlock.h"
 
 #include "ui/Canvas.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/text/TextMetrics.h"
 

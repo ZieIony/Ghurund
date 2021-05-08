@@ -8,7 +8,8 @@
 
 namespace Ghurund::UI {
     TextFormat::~TextFormat() {
-        font->release();
+        if (font)
+            font->release();
         if (format)
             format->Release();
     }

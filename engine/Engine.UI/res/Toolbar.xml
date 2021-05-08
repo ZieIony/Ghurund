@@ -4,10 +4,10 @@
 		<ColorView style="theme://style/ColorView_control"/>
 		<LinearLayout orientation="horizontal" preferredSize="fill, wrap">
 			<RecyclerView name="recycler" preferredSize="fill, wrap"/>
-			<Button name="more" visible="false" layout="lib://Ghurund/layouts/ButtonIconLayout.xml">
+			<Button name="more" visible="false" layout="lib://Ghurund\layouts\ButtonIconLayout.xml">
 				<PaddingContainer padding="0,4">
 					<ImageView image="lib://Ghurund/icons/more 18.png"
-							   style="theme://style/ImageView_onBackground"/>
+							   style="theme://style\ImageView_onBackground"/>
 				</PaddingContainer>
 			</Button>
 		</LinearLayout>

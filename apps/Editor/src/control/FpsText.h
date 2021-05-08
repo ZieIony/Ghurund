@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ui/control/TextBlock.h"
 #include "core/collection/AverageValue.h"
+#include "ui/text/TextBlock.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;
@@ -12,7 +12,7 @@ namespace Ghurund::Editor {
         const Timer& timer;
 
     public:
-        FpsText(Ghurund::UI::TextFormat* textFormat, uint32_t color, const Timer& timer):TextBlock(L"", textFormat, color), timer(timer) {}
+        FpsText(Ghurund::UI::TextFormat* textFormat, uint32_t color, const Timer& timer):TextBlock(L"", color, textFormat), timer(timer) {}
 
         virtual void onUpdate(const uint64_t time) override {
             avgValue.set(1.0f / timer.FrameTime);

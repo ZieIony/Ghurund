@@ -2,14 +2,15 @@
 
 #include "ControlParent.h"
 
+#include "reflection_7282a015_e8fb_4b3d_8043_b8385baa2863.h"
+
 namespace Ghurund::UI {
     class ControlContainer: public ControlParent {
+        reflection_7282a015_e8fb_4b3d_8043_b8385baa2863
+
     private:
         Control* child = nullptr;
         bool previousReceiver = false;
-
-    protected:
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~ControlContainer() {
@@ -97,11 +98,5 @@ namespace Ghurund::UI {
                 child->validate();
         }
 #endif
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 }

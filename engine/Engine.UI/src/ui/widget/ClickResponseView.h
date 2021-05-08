@@ -3,16 +3,17 @@
 #include "ui/Color.h"
 #include "ui/control/ClickableControl.h"
 
+#include "reflection_7f742ab5_7dc1_4e2e_936a_007825ea62a5.h"
+
 namespace Ghurund::UI {
     class ClickResponseView:public ClickableControl {
+        reflection_7f742ab5_7dc1_4e2e_936a_007825ea62a5
+
     private:
         uint64_t startTime = 0;
         uint32_t length = 150;
         bool finishedAnimating = true;
         Color color;
-
-    protected:
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         ClickResponseView(const Color& color = 0x3fffffff):color(color) {
@@ -34,12 +35,6 @@ namespace Ghurund::UI {
         virtual void onDraw(Canvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 
     class ClickResponseViewOnBackgroundStyle:public Style {

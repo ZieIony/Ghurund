@@ -76,9 +76,9 @@ namespace Ghurund::UI {
             CheckBox& checkBoxRadio = (CheckBox&)control;
             CheckBoxBinding* layout = checkBoxRadio.Layout;
             /*if (layout->Selectable->Selected) {
-                layout->Image->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_ARROWDOWN]);
+                layout->Image->Image = makeShared<BitmapDrawable>(theme->Images[Theme::IMAGE_ARROWDOWN]);
             } else {
-                layout->Image->Image = makeShared<BitmapImageDrawable>(theme->Images[Theme::IMAGE_ARROWRIGHT]);
+                layout->Image->Image = makeShared<BitmapDrawable>(theme->Images[Theme::IMAGE_ARROWRIGHT]);
             }*/
             __super::onStateChanged(control);
         }

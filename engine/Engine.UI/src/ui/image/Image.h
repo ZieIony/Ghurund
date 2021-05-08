@@ -10,17 +10,17 @@
 
 #include <wincodec.h>
 
-namespace Ghurund {
-    using namespace DirectX;
+#include "reflection_4db8630b_3fe3_4f0c_b730_e1ec12b0e449.h"
+
+namespace Ghurund::UI {
 
     class Image: public Resource {
+        reflection_4db8630b_3fe3_4f0c_b730_e1ec12b0e449
+
     private:
         DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
         Buffer imageData;
-
-    protected:
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
@@ -70,17 +70,15 @@ namespace Ghurund {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
-
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::JPG, (ResourceFormat*)&ResourceFormat::JPEG, (ResourceFormat*)&ResourceFormat::PNG };
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"jpg", true, true),
+                ResourceFormat(L"jpeg", true, true),
+                ResourceFormat(L"png", true, true)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

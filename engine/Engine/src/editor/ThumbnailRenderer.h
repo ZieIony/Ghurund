@@ -1,7 +1,7 @@
 #pragma once
 
 #include "graphics/Renderer.h"
-#include "graphics/texture/Image.h"
+#include "ui/image/Image.h"
 
 namespace Ghurund {
     class ThumbnailRenderer:public Object {
@@ -27,9 +27,9 @@ namespace Ghurund {
 
         void init(uint32_t width, uint32_t height);
 
-        Status render(DrawableComponent& entity, Image*& image);
-        Status render(Mesh& mesh, Image*& image);
-        Status render(Material& material, Image*& image);
+        Status render(DrawableComponent& entity, Ghurund::UI::Image*& image);
+        Status render(Mesh& mesh, Ghurund::UI::Image*& image);
+        Status render(Material& material, Ghurund::UI::Image*& image);
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

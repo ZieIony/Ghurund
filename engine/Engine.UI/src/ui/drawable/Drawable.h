@@ -2,8 +2,35 @@
 
 #include "ui/control/Control.h"
 
+#include "reflection_f4049b37_46e5_4d04_adcf_cbdd4d2d3efb.h"
+
 namespace Ghurund::UI {
     class Drawable:public Pointer {
+    protected:
+        static const Ghurund::Type& GET_TYPE() {
+
+            static auto PROPERTY_SIZE = Ghurund::TypedProperty<Drawable, FloatSize&>("FloatSize&", "Size", (FloatSize & (Drawable::*)()) & getSize, (void(Drawable::*)(const FloatSize&)) & setSize);
+            static auto PROPERTY_PREFERREDSIZE = Ghurund::TypedProperty<Drawable, const Ghurund::UI::PreferredSize&>("const PreferredSize&", "PreferredSize", (Ghurund::UI::PreferredSize & (Drawable::*)()) & getPreferredSize);
+            static auto PROPERTY_OWNER = Ghurund::TypedProperty<Drawable, Control*>("Control*", "Owner", (Control * (Drawable::*)()) & getOwner, (void(Drawable::*)(Control*)) & setOwner);
+
+            static const Ghurund::Type TYPE = Ghurund::TypeBuilder("Ghurund::UI", "Drawable")
+                .withProperty(PROPERTY_SIZE)
+                .withProperty(PROPERTY_PREFERREDSIZE)
+                .withProperty(PROPERTY_OWNER)
+                .withModifier(TypeModifier::ABSTRACT)
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
+    public:
+        inline static const Ghurund::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Type& getType() const override {
+
+            return TYPE;
+        }
+
     protected:
         FloatSize size = { 0, 0 };
         PreferredSize preferredSize;

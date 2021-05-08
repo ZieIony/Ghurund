@@ -33,8 +33,8 @@ namespace BindingGenerator {
             // includes
             streamWriter.Write(@"#pragma once
 
-#include ""ui/LayoutLoader.h""
-#include ""ui/widget/Layout.h""
+#include ""ui/layout/LayoutLoader.h""
+#include ""ui/widget/WidgetLayout.h""
 
 ");
 

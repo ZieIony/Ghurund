@@ -8,11 +8,15 @@
 namespace Ghurund {
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, LoadOption options) {
         File* file;
-        WString pathString = path.toString();
+        WString pathString = WString(path.toString());
         size_t protocolLength = lengthOf(LIB_PROTOCOL);
         if (pathString.startsWith(LIB_PROTOCOL)) {
-            WString libName = pathString.substring(protocolLength, pathString.find(L"\\", protocolLength) - protocolLength);
-            WString fileName = pathString.substring(pathString.find(L"\\", protocolLength));
+            pathString.replace(L'\\', L'/');
+            size_t separatorIndex = pathString.find(L"/", protocolLength);
+            if (separatorIndex == pathString.Size)
+                return Status::INV_PATH;
+            WString libName = pathString.substring(protocolLength, separatorIndex - protocolLength);
+            WString fileName = pathString.substring(separatorIndex + 1);
             file = libraries.get(libName)->getFile(fileName);
         } else {
             file = ghnew File(path);
@@ -49,7 +53,8 @@ namespace Ghurund {
                 }
             });
         }*/
-        add(resource);
+        if (!(options & LoadOption::DONT_CACHE))
+            add(resource);
 
         return Status::OK;
     }
@@ -100,19 +105,19 @@ namespace Ghurund {
         section.leave();
     }
 
-    Status ResourceManager::save(Resource& resource, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, SaveOption options) const {
         return resource.save(options);
     }
 
-    Status ResourceManager::save(Resource& resource, const FilePath& path, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, const FilePath& path, SaveOption options) const {
         return resource.save(path, options);
     }
 
-    Status ResourceManager::save(Resource& resource, File& file, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, File& file, SaveOption options) const {
         return resource.save(file, options);
     }
 
-    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) {
+    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
         stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {

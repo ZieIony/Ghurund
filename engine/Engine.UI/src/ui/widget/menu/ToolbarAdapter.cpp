@@ -12,7 +12,7 @@ namespace Ghurund::UI {
         /*ImageButton& imageButton = (ImageButton&)control;
         ButtonMenuItem* menuItem = (ButtonMenuItem*)item;
         //imageButton.Name = menuItem->Text;
-        imageButton.Image = makeShared<BitmapImageDrawable>(menuItem->Image);
+        imageButton.Image = makeShared<BitmapDrawable>(menuItem->Image);
         imageButton.Clicked.clear();
         imageButton.Clicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);

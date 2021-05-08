@@ -2,14 +2,13 @@
 #include "TextMessage.h"
 
 #include "ui/control/Space.h"
-#include "ui/widget/button/TextButton.h"
 #include "ui/layout/LinearLayout.h"
 #include "net/Networking.h"
 
 namespace Messenger {
     using namespace Ghurund::Net;
 
-    MessengerWindow::MessengerWindow(Application& app):OverlappedWindow(app.Timer) {
+    MessengerWindow::MessengerWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
         this->app = &app;
         Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
         swapChain->init(app.Graphics, &app.Graphics2D, *this);

@@ -1,7 +1,7 @@
-#include "ghpch.h"
+#include "ghuipch.h"
 #include "ImageLoader.h"
 
-namespace Ghurund {
+namespace Ghurund::UI {
     DXGI_FORMAT ImageLoader::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
         if (wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
@@ -144,7 +144,7 @@ namespace Ghurund {
         return -1;
     }
     
-    Status ImageLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) const {
+    Status ImageLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
         IWICFormatConverter* wicConverter = nullptr;

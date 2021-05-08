@@ -63,7 +63,6 @@
     <ClCompile Include="src\graphics\DrawableComponent.cpp" />
     <ClCompile Include="src\graphics\shader\CompilerInclude.cpp" />
     <ClCompile Include="src\graphics\shader\ConstantBuffer.cpp" />
-    <ClCompile Include="src\graphics\texture\Image.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\shader\CompilationTarget.cpp" />
@@ -71,7 +70,6 @@
     <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
     <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
     <ClCompile Include="src\graphics\SwapChain.cpp" />
-    <ClCompile Include="src\graphics\texture\ImageLoader.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
@@ -87,9 +85,6 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\graphics\Graphics2D.cpp" />
-    <ClCompile Include="src\ui\drawable\BitmapImage.cpp" />
-    <ClCompile Include="src\ui\drawable\BitmapImageDrawable.cpp" />
-    <ClCompile Include="src\ui\drawable\SvgImage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
@@ -103,12 +98,6 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
-    <ClInclude Include="src\graphics\texture\ImageLoader.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImageLoader.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImage.h" />
-    <ClInclude Include="src\ui\drawable\BitmapImageDrawable.h" />
-    <ClInclude Include="src\ui\drawable\SvgImage.h" />
-    <ClInclude Include="src\ui\drawable\SvgImageDrawable.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
@@ -157,7 +146,6 @@
     <ClInclude Include="src\graphics\Postprocess.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
-    <ClInclude Include="src\graphics\texture\Image.h" />
     <ClInclude Include="src\graphics\entity\Light.h" />
     <ClInclude Include="src\graphics\Materials.h" />
     <ClInclude Include="src\graphics\mesh\ConeMesh.h" />

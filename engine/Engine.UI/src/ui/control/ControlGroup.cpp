@@ -2,7 +2,7 @@
 #include "ControlGroup.h"
 
 #include "ui/Alignment.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
     const Ghurund::Type& ControlGroup::GET_TYPE() {

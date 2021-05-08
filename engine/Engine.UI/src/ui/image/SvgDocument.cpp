@@ -1,13 +1,12 @@
-#include "ghpch.h"
-#include "SvgImage.h"
-
-#include "graphics/Graphics2D.h"
+#include "ghuipch.h"
+#include "SvgDocument.h"
 
 #include <Shlwapi.h>
+#include <d2d1svg.h>
 
 namespace Ghurund::UI {
-    Status SvgImage::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
+    Status SvgDocument::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
         //context.Graphics2D.DeviceContext->CreateSvgDocument(memStream.Get(), D2D1::SizeF(100, 100), &svgDocument);
         ID2D1SvgElement* root;
         svgDocument->GetRoot(&root);
@@ -22,25 +21,16 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    Status SvgImage::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status SvgDocument::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         return Status::NOT_SUPPORTED;
     }
-
-    const Ghurund::Type& SvgImage::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<SvgImage>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SvgImage))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
     
-    void SvgImage::finalize() {
+    void SvgDocument::finalize() {
         if (svgDocument != nullptr)
             svgDocument->Release();
     }
     
-    FloatSize SvgImage::getSize() {
+    FloatSize SvgDocument::getSize() {
         if (!svgDocument)
             return { 0,0 };
         auto size = svgDocument->GetViewportSize();

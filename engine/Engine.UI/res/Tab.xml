@@ -4,10 +4,10 @@
 	<SelectableView name="selectable">
 		<StackLayout>
 			<StateIndicator name="state" preferredSize="fill, fill"
-							style="theme://style/stateIndicator_onBackground"/>
-			<Border style="theme://style/border_onBackground"/>
+							style="theme://style\stateIndicator_onBackground"/>
+			<Border style="theme://style\border_onBackground"/>
 			<PaddingContainer padding="8, 4">
-				<TextBlock name="text" text=".Text" style="theme://style/textBlock_button"/>
+				<TextBlock name="text" text=".Text" style="theme://style\textBlock_button"/>
 			</PaddingContainer>
 		</StackLayout>
 	</SelectableView>

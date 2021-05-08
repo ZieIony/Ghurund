@@ -122,11 +122,14 @@ namespace Ghurund {
             return TYPE;
         }
 
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = { (ResourceFormat*)&ResourceFormat::SHADER, (ResourceFormat*)&ResourceFormat::HLSL };
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"shader", true, true),
+                ResourceFormat(L"hlsl", true, false)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "Shadow.h"
 
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {

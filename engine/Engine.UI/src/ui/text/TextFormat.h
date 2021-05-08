@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 
     class TextFormat:public Pointer {
     private:
-        Font* font;
+        Font* font = nullptr;
         float size;
         bool italic = false, underline = false, strikethrough = false;
         uint32_t weight = 400, stretch = 0;
@@ -36,6 +36,12 @@ namespace Ghurund::UI {
             :size(size), weight(weight), italic(italic), locale(locale) {
             this->font = font;
             font->addReference();
+        }
+
+        TextFormat(IDWriteTextFormat* format, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
+            :size(size), weight(weight), italic(italic), locale(locale) {
+            this->format = format;
+            format->AddRef();
         }
 
         ~TextFormat();

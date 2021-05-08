@@ -1,20 +1,11 @@
 #include "ghuipch.h"
 #include "ClickResponseView.h"
 
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ClickResponseView::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<ClickResponseView>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickResponseView))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     void ClickResponseView::onUpdate(const uint64_t time) {
         if (Pressed)
             startTime = time;

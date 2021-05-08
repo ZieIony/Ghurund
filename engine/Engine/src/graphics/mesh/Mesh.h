@@ -107,11 +107,14 @@ namespace Ghurund {
             return TYPE;
         }
 
-        static const Array<ResourceFormat*>& getFormats() {
-            static const Array<ResourceFormat*> formats = {(ResourceFormat*)& ResourceFormat::MESH, (ResourceFormat*)& ResourceFormat::OBJ};
+        static const Array<ResourceFormat>& getFormats() {
+            static const Array<ResourceFormat> formats = {
+                ResourceFormat(L"mesh", true, true),
+                ResourceFormat(L"obj", true, false)
+            };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/PointerList.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/control/ControlContainer.h"
 
 namespace Preview {

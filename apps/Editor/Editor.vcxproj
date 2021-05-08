@@ -80,7 +80,7 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)generated;$(ProjectDir)src;$(SolutionDir)engine\Engine\generated;$(SolutionDir)engine\Engine\src;$(SolutionDir)engine\Engine.Core\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)generated;$(ProjectDir)src;$(SolutionDir)engine\Engine\generated;$(SolutionDir)engine\Engine\src;$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine.UI\generated\bindings;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Editor\src;$(SourcePath)</SourcePath>
   </PropertyGroup>

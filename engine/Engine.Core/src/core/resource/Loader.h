@@ -6,7 +6,7 @@
 
 namespace Ghurund {
     enum class LoadOption {
-        DEFAULT = 0, DONT_WATCH = 1
+        DEFAULT = 0, DONT_WATCH = 1, DONT_CACHE = 2
     };
 
     LoadOption operator |(LoadOption lhs, LoadOption rhs);
@@ -38,7 +38,7 @@ namespace Ghurund {
             return (T*)T::TYPE.Constructor->newInstance();
         }
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) const = 0;
+        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) = 0;
         virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const = 0;
     };
 }

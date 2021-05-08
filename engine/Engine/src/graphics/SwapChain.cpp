@@ -4,6 +4,8 @@
 #include "Graphics.h"
 #include "Graphics2D.h"
 #include "core/window/SystemWindow.h"
+#include "core/logging/Logger.h"
+#include "core/logging/Formatter.h"
 
 namespace Ghurund {
     const Ghurund::Type& SwapChain::GET_TYPE() {
@@ -80,6 +82,20 @@ namespace Ghurund {
             commandList.wait();
         delete[] frames;
         frames = nullptr;
+    }
+
+    Status SwapChain::present() {
+        currentFrame++;
+        currentFrame %= frameCount;
+
+        HRESULT hr = swapChain->Present(1, 0);
+        if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
+            return Logger::log(LogType::ERR0R, Status::DEVICE_LOST, _T("swapChain->Present() failed\n"));
+        } else if (FAILED(hr)) {
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
+        }
+
+        return Status::OK;
     }
 
     void SwapChain::resize(unsigned int width, unsigned int height) {

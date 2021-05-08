@@ -3,7 +3,7 @@
 
 #include "core/input/Mouse.h"
 #include "ui/Cursor.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
@@ -330,19 +330,20 @@ namespace Ghurund::UI {
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
             AString s = styleAttr->Value();
+            s.replace('\\', '/');
             uint32_t value = 0;
-            const char* themeProtocol = "theme://style/";
-            if (s.startsWith(themeProtocol)) {
-                StyleKey styleKey = s.substring(lengthOf(themeProtocol));
+            if (s.startsWith(LayoutLoader::THEME_STYLE)) {
+                StyleKey styleKey = s.substring(lengthOf(LayoutLoader::THEME_STYLE));
                 if (loader.Theme.Styles.containsKey(styleKey)) {
                     Style = loader.Theme.Styles[styleKey];
                 } else {
-                    Logger::log(LogType::WARNING, _T("missing style key {}\n"), styleKey.str);
+                    Logger::log(LogType::WARNING, _T("invalid style key {}\n"), styleKey.str);
                 }
             }
         } else if (loader.Theme.Styles.containsKey(StyleKey(Type.Name))) {
             Style = loader.Theme.Styles[StyleKey(Type.Name)];
         }
+
         return Status::OK;
     }
 

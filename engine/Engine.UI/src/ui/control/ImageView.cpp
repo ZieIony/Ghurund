@@ -2,7 +2,7 @@
 #include "ImageView.h"
 
 #include "ui/Canvas.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
@@ -105,7 +105,7 @@ namespace Ghurund::UI {
             if (image)
                 image->release();
         }
-        if (image) {
+        if (this->image) {
             auto imageTintAttr = xml.FindAttribute("imageTint");
             if (imageTintAttr)
                 Image->Tint = loader.loadColor(imageTintAttr->Value());

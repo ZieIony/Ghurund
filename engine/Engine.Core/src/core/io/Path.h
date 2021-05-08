@@ -9,9 +9,9 @@ namespace Ghurund {
         WString path;
 
     public:
-        Path(const WString &path):path(path) {
-            this->path.replace(L'/', L'\\');
-        }
+        static const inline wchar_t SEPARATOR = L'\\';
+
+        Path(const WString &path):path(path) {}
 
         Path(Path&& path) noexcept {
             this->path = std::move(path.path);

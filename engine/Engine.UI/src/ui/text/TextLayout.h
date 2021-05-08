@@ -23,7 +23,6 @@ namespace Ghurund::UI {
 
         ComPtr<ID2D1SolidColorBrush> fillBrush;
         IDWriteTextLayout* layout = nullptr;
-        IDWriteFactory* factory;
         bool valid = false;
 
         void copySinglePropertyRange(IDWriteTextLayout* oldLayout, uint32_t startPosForOld, IDWriteTextLayout* newLayout, uint32_t startPosForNew, uint32_t length, TextFormat* textFormat = nullptr);

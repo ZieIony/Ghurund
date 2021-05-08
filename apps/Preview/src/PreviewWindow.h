@@ -3,15 +3,18 @@
 #include "application/Application.h"
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
-#include "ui/LayoutLoader.h"
-#include "ui/RootView.h"
-#include "ui/style/LightTheme.h"
-#include "ui/style/DarkTheme.h"
 #include "ui/Canvas.h"
 #include "ui/UILayer.h"
+#include "ui/RootView.h"
+#include "ui/layout/Layout.h"
+#include "ui/layout/LayoutLoader.h"
+#include "ui/style/LightTheme.h"
+#include "ui/style/DarkTheme.h"
 
 #include "PreviewLayout.h"
-#include <ui/font/FontLoader.h>
+#include "ui/font/FontLoader.h"
+#include "ui/image/BitmapLoader.h"
+#include "ui/image/ImageLoader.h"
 
 namespace Preview {
     using namespace Ghurund;
@@ -19,11 +22,11 @@ namespace Preview {
 
     class PreviewWindow:public ApplicationWindow {
     private:
+        LayoutLoader* layoutLoader;
         Theme* lightTheme, * darkTheme;
         UIContext* context;
         SharedPointer<PreviewLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
-        LayoutLoader layoutLoader;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
         Application* app;
@@ -40,19 +43,25 @@ namespace Preview {
             auto fontLoader = ghnew FontLoader(*app.Graphics2D.DWriteFactory);
             fontLoader->init();
             app.ResourceManager.registerLoader(Font::TYPE, std::unique_ptr<FontLoader>(fontLoader));
+            auto imageLoader = ghnew ImageLoader();
+            imageLoader->init();
+            app.ResourceManager.registerLoader(Image::TYPE, std::unique_ptr<ImageLoader>(imageLoader));
+            auto bitmapLoader = ghnew BitmapLoader(*imageLoader, *app.Graphics2D.DeviceContext);
+            app.ResourceManager.registerLoader(Bitmap::TYPE, std::unique_ptr<BitmapLoader>(bitmapLoader));
 
             lightTheme = ghnew LightTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
             darkTheme = ghnew DarkTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
-            layoutLoader.init(*lightTheme, *app.Graphics2D.Factory, app.ResourceManager);
-            context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, layoutLoader);
+            context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, app.ResourceManager);
+
+            layoutLoader = ghnew LayoutLoader(*app.Graphics2D.Factory, app.ResourceManager, *lightTheme);
+            app.ResourceManager.registerLoader(Layout::TYPE, std::unique_ptr<LayoutLoader>(layoutLoader));
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            /*PointerList<Control*> controls;
-            layoutLoader.load(FilePath(L"apps/Preview/res/layout.xml"), controls);
+            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
-            previewLayout->Layout = std::make_unique<LayoutBinding>(controls[0]);
+            previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
             rootView->Child = previewLayout;
             previewLayout->ThemeChanged.add([this](PreviewLayout& previewLayout, ThemeType type) {
                 updateTheme(type);
@@ -68,11 +77,12 @@ namespace Preview {
                 postLoadCallback(path);
                 watchFile(path);
                 return true;
-            });*/
+            });
         }
 
         ~PreviewWindow() {
             Layers.clear();
+            delete layoutLoader;
             delete context;
             delete lightTheme;
             delete darkTheme;
@@ -80,10 +90,10 @@ namespace Preview {
 
         void updateTheme(ThemeType type) {
             if (type == ThemeType::Dark) {
-                layoutLoader.Theme = *darkTheme;
+                layoutLoader->Theme = *darkTheme;
                 previewLayout->Theme = darkTheme;
             } else {
-                layoutLoader.Theme = *lightTheme;
+                layoutLoader->Theme = *lightTheme;
                 previewLayout->Theme = lightTheme;
             }
         }
@@ -94,12 +104,10 @@ namespace Preview {
                 if (!file.Exists)
                     return;
                 if (file.read() == Status::OK) {
-                    //layoutLoader.WorkingDirectory = path.Directory;
-                    Buffer buffer(file.Data, file.Size);
                     if (path.FileName.endsWith(L".xml")) {
-                        loadLayout(buffer);
+                        loadLayout(file);
                     } else {
-                        loadDrawable(buffer);
+                        loadDrawable(file);
                     }
                 } else {
                     app->FunctionQueue.post(loadCallback);
@@ -109,22 +117,21 @@ namespace Preview {
             app->FunctionQueue.post(loadCallback);
         }
 
-        void loadLayout(const Buffer& data) {
-            PointerList<Control*> controls;
-            layoutLoader.load(data, controls);
+        void loadLayout(const File& file) {
+            SharedPointer<Layout> layout = app->ResourceManager.load<Layout>(file);
             previewLayout->Container->Children.clear();
-            for (Control* control : controls)
+            for (Control* control : layout->Controls)
                 previewLayout->Container->Children.add(control);
             previewLayout->Container->invalidate();
         }
 
-        void loadDrawable(const Buffer& data) {
-            /*auto image = makeShared<BitmapImage>();
+        void loadDrawable(const File& file) {
+            /*auto image = makeShared<Bitmap>();
             MemoryInputStream stream(data.Data, data.Size);
             DirectoryPath baseDir(L".");
             image->load(app->ResourceContext, baseDir, stream);
             auto imageView = makeShared<ImageView>();
-            imageView->Image = ghnew BitmapImageDrawable(image);
+            imageView->Image = ghnew BitmapDrawable(image);
             binding->Container->Children = { imageView };
             binding->Container->invalidate();*/
         }

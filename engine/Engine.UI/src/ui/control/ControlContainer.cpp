@@ -1,18 +1,9 @@
 #include "ghuipch.h"
 #include "ControlContainer.h"
 
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ControlContainer::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ControlContainer>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlContainer))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     bool ControlContainer::focusNext() {
         if (__super::focusNext())
             return true;

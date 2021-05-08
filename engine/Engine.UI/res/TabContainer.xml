@@ -2,7 +2,7 @@
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
 	<LinearLayout orientation="vertical">
 		<ControlContainer name="content"/>
-		<ColorView preferredSize="fill, 2" style="theme://style/colorView_accent"/>
+		<ColorView preferredSize="fill, 2" style="theme://style\colorView_accent"/>
 		<RecyclerView name="tabs" preferredSize="fill, wrap"/>
 	</LinearLayout>
 </layout>

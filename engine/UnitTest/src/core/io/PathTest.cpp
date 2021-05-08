@@ -19,7 +19,7 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(FilePath_test) {
-        auto path = FilePath(L"dir/file.png");
+        auto path = FilePath(L"dir\\file.png");
 
         Assert::AreEqual(L"file.png", path.FileName.Data);
         Assert::AreEqual(L"dir", path.Directory.toString().Data);
@@ -27,15 +27,19 @@ public:
         auto path2 = FilePath(path);
         Assert::AreEqual(path, path2);
 
-        path2 = WString(L"dir/file.jpg");
+        path2 = WString(L"dir\\file.jpg");
         Assert::AreEqual(L"dir\\file.jpg", path2.toString().Data);
         Assert::AreNotEqual(path, path2);
     }
 
-    TEST_METHOD(DirectoryPath_test) {
+    TEST_METHOD(DirectoryPath_combine) {
         auto dir = DirectoryPath(L"dir");
         auto path = dir / FilePath(L"file.png");
         Assert::AreEqual(L"dir\\file.png", path.toString().Data);
+
+        auto dir2 = DirectoryPath(L".");
+        auto path2 = dir2 / FilePath(L"dir\\file.png");
+        Assert::AreEqual(L"dir\\file.png", path2.toString().Data);
     }
     };
 }

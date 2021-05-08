@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Layout.h"
+#include "WidgetLayout.h"
 #include "core/Concepts.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/reflection/TypeBuilder.h"
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Style.h"
 #include "ui/style/Theme.h"
 
@@ -41,8 +41,9 @@ namespace Ghurund::UI {
             if (layoutIndex == Theme->Layouts.Size)
                 return nullptr;
             FilePath layoutPath = toWideChar(Theme->Layouts.getValue(layoutIndex));
-            if (Context->LayoutLoader.load(layoutPath, controls) == Status::OK)
-                return ghnew LayoutType(controls[0]);
+            SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, LoadOption::DONT_CACHE);
+            if (layout && !layout->Controls.Empty)
+                return ghnew LayoutType(layout->Controls[0]);
             return nullptr;
         }
 
@@ -114,12 +115,11 @@ namespace Ghurund::UI {
 
             AString s = layoutAttr ? layoutAttr->Value() : loader.Theme.Layouts.get(&Type);
             uint32_t value = 0;
-            PointerList<Control*> controls;
-            result = loader.load(loader.getPath(s), controls);
+            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(s), &result, LoadOption::DONT_CACHE);
             if (result != Status::OK)
                 return result;
-            if (!controls.Empty)
-                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(controls[0]));
+            if (layout && !layout->Controls.Empty)
+                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(layout->Controls[0]));
             if (Layout)
                 return Layout->loadContent(loader, xml);
             return Status::INV_PARAM;

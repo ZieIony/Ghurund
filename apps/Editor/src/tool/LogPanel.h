@@ -8,9 +8,10 @@
 #include "ui/style/Theme.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ImageView.h"
-#include "ui/control/TextBlock.h"
+#include "ui/image/Bitmap.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/VerticalLayoutManager.h"
+#include "ui/text/TextBlock.h"
 #include "ui/widget/menu/Toolbar.h"
 
 using namespace Ghurund;
@@ -55,7 +56,7 @@ namespace Ghurund::Editor {
             return ghnew LogRow();
         }
 
-        virtual void bind(LogRow& control, const Log& item, size_t position) const override {
+        virtual void bind(LogRow& control, Log& item, size_t position) const override {
             //logRow.Image = log->image;
             control.Text = item.text;
         }
@@ -63,12 +64,12 @@ namespace Ghurund::Editor {
 
     class LogPanel:public Widget<LogPanelBinding> {
     private:
-        BitmapImage* sortIcon, * categoryIcon;
+        Bitmap* sortIcon, * categoryIcon;
 
         List<Log> items;
 
         virtual void onLayoutChanged() override {
-            //sortIcon = BitmapImage::makeFromImage(Context->Graphics, L"icons/sort 18.png");
+            /*//sortIcon = BitmapImage::makeFromImage(Context->Graphics, L"icons/sort 18.png");
             //categoryIcon = BitmapImage::makeFromImage(context, L"icons/category 18.png");
             Layout->Toolbar->Items = {
                    ghnew ButtonMenuItem(sortIcon, L"sort", [](Control&) {
@@ -83,7 +84,7 @@ namespace Ghurund::Editor {
             auto provider = ghnew AdapterChildrenProvider<Log, LogRow>(*Layout->Recycler);
             provider->Adapters.add(ghnew LogItemAdapter(*Theme));
             provider->Items = ghnew ListItemSource<Log>(items);
-            Layout->Recycler->childrenProvider = provider;
+            Layout->Recycler->childrenProvider = provider;*/
         }
 
     public:

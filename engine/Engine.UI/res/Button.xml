@@ -7,7 +7,7 @@
 				  preferredSize="fill, fill">
 				<StackLayout preferredSize="fill, fill">
 					<StateIndicator name="state" preferredSize="fill, fill"
-									style="theme://style/stateIndicator_onBackground"/>
+									style="theme://style\stateIndicator_onBackground"/>
 					<ControlContainer preferredSize="wrap, wrap"
 										name="content"/>
 				</StackLayout>

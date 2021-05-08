@@ -3,7 +3,7 @@
 #include "core/NamedObject.h"
 #include "core/window/Window.h"
 #include "graphics/CommandList.h"
-#include "graphics/texture/Image.h"
+#include "ui/image/Image.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -104,6 +104,6 @@ namespace Ghurund {
             texture->SetName(name.Data);
         }
 
-        Status capture(Graphics& graphics, Image*& image);
+        Status capture(Graphics& graphics, Ghurund::UI::Image*& image);
     };
 }

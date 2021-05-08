@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TitleBarBinding.h"
-#include "ui/control/TextBlock.h"
+#include "ui/text/TextBlock.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::UI;

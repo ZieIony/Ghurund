@@ -7,8 +7,8 @@
 						  orientation="horizontal">
 				<ImageView
 						name="image"
-						image="theme://image/checkBox_checked"
-						imageTint="theme://color/accent"/>
+						image="theme://image\checkBox_checked"
+						imageTint="theme://color\accent"/>
 				<Space preferredSize="4,4"/>
 				<ControlContainer preferredSize="wrap, wrap"
 								  name="content"/>

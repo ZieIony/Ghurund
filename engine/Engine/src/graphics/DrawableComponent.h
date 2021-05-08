@@ -92,12 +92,14 @@ namespace Ghurund {
 			statistics.trianglesRendered += mesh->IndexCount / 3;
 		}
 
-		static const Array<ResourceFormat*>& getFormats() {
-			static const Array<ResourceFormat*> formats = { (ResourceFormat*)& ResourceFormat::MODEL };
+		static const Array<ResourceFormat>& getFormats() {
+			static const Array<ResourceFormat> formats = {
+				ResourceFormat(L"model", true, true)
+			};
 			return formats;
 		}
 
-		__declspec(property(get = getFormats)) Array<ResourceFormat*>& Formats;
+		__declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
 
 		bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {
 			return mesh->intersects(pos, dir, dist);

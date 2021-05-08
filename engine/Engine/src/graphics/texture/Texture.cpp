@@ -28,7 +28,7 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::Image &image) {
+    Status Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::UI::Image &image) {
         if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
 

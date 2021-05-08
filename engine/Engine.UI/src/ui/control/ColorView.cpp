@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "ColorView.h"
 
-#include "ui/LayoutLoader.h"
+#include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
