@@ -29,9 +29,8 @@
 #include "core/logging/Formatter.h"
 
 namespace Ghurund::UI {
-    LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::ResourceManager& resourceManager, Ghurund::UI::Theme& theme)
+    LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::ResourceManager& resourceManager)
         :d2dFactory(d2dFactory), resourceManager(resourceManager) {
-        this->theme = &theme;
 
         registerClass(ClickableControl::TYPE);
         registerClass(SelectableView::TYPE);

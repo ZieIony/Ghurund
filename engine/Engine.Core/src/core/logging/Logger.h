@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Formatter.h"
 #include "Status.h"
 #include "LogType.h"
 #include "LogOutput.h"

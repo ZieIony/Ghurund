@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
+    <ClInclude Include="src\application\Feature.h" />
     <ClInclude Include="src\application\Layer.h" />
     <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\Settings.h" />
@@ -98,6 +99,7 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\ui\UIFeature.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\AdapterOutput.h" />
@@ -287,7 +289,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>GhurundEngine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

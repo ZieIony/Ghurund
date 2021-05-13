@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "Status.h"
+#include "application/Feature.h"
 
 #include <wrl\client.h>
 
@@ -17,11 +18,15 @@
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfuuid")
 
+#include "reflection_08c20e05_8779_4620_93c4_d7dbd043fcf2.h"
+
 namespace Ghurund::Audio {
     using namespace DirectX;
     using Microsoft::WRL::ComPtr;
 
-    class Audio {
+    class Audio:public Feature {
+        reflection_08c20e05_8779_4620_93c4_d7dbd043fcf2
+
     private:
         ComPtr<IXAudio2> device;
         IXAudio2MasteringVoice* masteringVoice = nullptr;
@@ -31,12 +36,9 @@ namespace Ghurund::Audio {
         X3DAUDIO_LISTENER listener = { };	// player's position
 
     public:
-        ~Audio() {
-            uninit();
-        }
+        virtual Status init() override;
 
-        Status init();
-        void uninit();
+        virtual void uninit() override;
 
         ComPtr<IXAudio2> getDevice() {
             return device;

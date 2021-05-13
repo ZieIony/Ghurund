@@ -73,11 +73,6 @@ namespace Ghurund {
     }
 
     ResourceManager::~ResourceManager() {
-        for (size_t i = 0; i < loaders.Size; i++) {
-            Loader* loader = loaders.getValue(i);
-            loaders.remove(loaders.getKey(i));
-            delete loader;
-        }
         loadingThread.finish();
     }
 

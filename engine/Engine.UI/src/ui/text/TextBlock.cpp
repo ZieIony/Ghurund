@@ -8,7 +8,7 @@
 
 namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
-        textLayout.Size = { (uint32_t)parentWidth, (uint32_t)parentHeight };
+        textLayout.Size = { parentWidth, parentHeight };
         if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
             Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textLayout is invalid\n", Text);
             __super::onMeasure(parentWidth, parentHeight);
@@ -25,7 +25,7 @@ namespace Ghurund::UI {
             } else {
                 measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
             }
-            textLayout.Size = { (uint32_t)measuredSize.width, (uint32_t)parentHeight };
+            textLayout.Size = { measuredSize.width, parentHeight };
             if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
                 Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textLayout is invalid\n", Text);
                 __super::onMeasure(parentWidth, parentHeight);
@@ -64,7 +64,7 @@ namespace Ghurund::UI {
         if (!TextColor)
             TextColor = Theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
         if (Size.width > 0 && Size.height > 0)
-            textLayout.Size = { (uint32_t)Size.width, (uint32_t)Size.height };
+            textLayout.Size = { Size.width, Size.height };
     }
 
     Status TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

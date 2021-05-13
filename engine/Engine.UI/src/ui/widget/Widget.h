@@ -14,6 +14,18 @@ namespace Ghurund::UI {
     private:
         LayoutType* widgetLayout = nullptr;
 
+        Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml, const AString& pathStr) {
+            Status result;
+            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &result, LoadOption::DONT_CACHE);
+            if (result != Status::OK)
+                return result;
+            if (layout && !layout->Controls.Empty)
+                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(layout->Controls[0]));
+            if (Layout)
+                return Layout->loadContent(loader, xml);
+            return Status::INV_PARAM;
+        }
+
     protected:
         static const Ghurund::Type& GET_TYPE() {
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
@@ -110,18 +122,13 @@ namespace Ghurund::UI {
             if (result != Status::OK)
                 return result;
             auto layoutAttr = xml.FindAttribute("layout");
-            if (!layoutAttr && !loader.Theme.Layouts.containsKey(&Type))
-                return Status::INV_PARAM;
-
-            AString s = layoutAttr ? layoutAttr->Value() : loader.Theme.Layouts.get(&Type);
-            uint32_t value = 0;
-            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(s), &result, LoadOption::DONT_CACHE);
-            if (result != Status::OK)
-                return result;
-            if (layout && !layout->Controls.Empty)
-                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(layout->Controls[0]));
-            if (Layout)
-                return Layout->loadContent(loader, xml);
+            if (layoutAttr) {
+                return load(loader, xml, layoutAttr->Value());
+            } else if (loader.Theme) {
+                size_t index = loader.Theme->Layouts.indexOfKey(&Type);
+                if (index != loader.Theme->Layouts.Size)
+                    return load(loader, xml, loader.Theme->Layouts.getValue(index));
+            }
             return Status::INV_PARAM;
         }
 

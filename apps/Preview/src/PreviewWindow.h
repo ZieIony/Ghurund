@@ -4,6 +4,7 @@
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
 #include "ui/Canvas.h"
+#include "ui/UIFeature.h"
 #include "ui/UILayer.h"
 #include "ui/RootView.h"
 #include "ui/layout/Layout.h"
@@ -22,39 +23,25 @@ namespace Preview {
 
     class PreviewWindow:public ApplicationWindow {
     private:
-        LayoutLoader* layoutLoader;
         Theme* lightTheme, * darkTheme;
         UIContext* context;
         SharedPointer<PreviewLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
-        Application* app;
 
     public:
-        PreviewWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
-            this->app = &app;
+        PreviewWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
+            UIFeature* uiFeature = ((UIFeature*)(Feature*)app.Features.get(UIFeature::TYPE));
+            Graphics2D& graphics2d = uiFeature->Graphics2D;
             Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
-            swapChain->init(app.Graphics, &app.Graphics2D, *this);
+            swapChain->init(app.Graphics, &graphics2d, *this);
             SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
-            app.ResourceManager.Libraries.add(L"Ghurund", FilePath(L"."));
-
-            auto fontLoader = ghnew FontLoader(*app.Graphics2D.DWriteFactory);
-            fontLoader->init();
-            app.ResourceManager.registerLoader(Font::TYPE, std::unique_ptr<FontLoader>(fontLoader));
-            auto imageLoader = ghnew ImageLoader();
-            imageLoader->init();
-            app.ResourceManager.registerLoader(Image::TYPE, std::unique_ptr<ImageLoader>(imageLoader));
-            auto bitmapLoader = ghnew BitmapLoader(*imageLoader, *app.Graphics2D.DeviceContext);
-            app.ResourceManager.registerLoader(Bitmap::TYPE, std::unique_ptr<BitmapLoader>(bitmapLoader));
-
-            lightTheme = ghnew LightTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
-            darkTheme = ghnew DarkTheme(*app.Graphics2D.DWriteFactory, app.ResourceManager);
-            context = ghnew UIContext(*app.Graphics2D.DWriteFactory, *this, app.ResourceManager);
-
-            layoutLoader = ghnew LayoutLoader(*app.Graphics2D.Factory, app.ResourceManager, *lightTheme);
-            app.ResourceManager.registerLoader(Layout::TYPE, std::unique_ptr<LayoutLoader>(layoutLoader));
+            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
+            darkTheme = ghnew DarkTheme(*graphics2d.DWriteFactory, app.ResourceManager);
+            context = ghnew UIContext(*graphics2d.DWriteFactory, *this, app.ResourceManager);
+            uiFeature->Theme = lightTheme;
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
@@ -68,7 +55,7 @@ namespace Preview {
                 return true;
             });
 
-            Layers.add(std::unique_ptr<Layer>(ghnew UILayer(app.Graphics2D, rootView)));
+            Layers.add(std::unique_ptr<Layer>(ghnew UILayer(graphics2d, rootView)));
 
             DragDropEnabled = true;
             OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>& files) {
@@ -82,18 +69,18 @@ namespace Preview {
 
         ~PreviewWindow() {
             Layers.clear();
-            delete layoutLoader;
             delete context;
             delete lightTheme;
             delete darkTheme;
         }
 
         void updateTheme(ThemeType type) {
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get(Layout::TYPE);
             if (type == ThemeType::Dark) {
-                layoutLoader->Theme = *darkTheme;
+                layoutLoader->Theme = darkTheme;
                 previewLayout->Theme = darkTheme;
             } else {
-                layoutLoader->Theme = *lightTheme;
+                layoutLoader->Theme = lightTheme;
                 previewLayout->Theme = lightTheme;
             }
         }
@@ -110,15 +97,15 @@ namespace Preview {
                         loadDrawable(file);
                     }
                 } else {
-                    app->FunctionQueue.post(loadCallback);
+                    Application.FunctionQueue.post(loadCallback);
                 }
             };
 
-            app->FunctionQueue.post(loadCallback);
+            Application.FunctionQueue.post(loadCallback);
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<Layout> layout = app->ResourceManager.load<Layout>(file);
+            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file);
             previewLayout->Container->Children.clear();
             for (Control* control : layout->Controls)
                 previewLayout->Container->Children.add(control);

@@ -8,8 +8,6 @@ namespace Ghurund {
 }
 
 namespace Ghurund::UI {
-    class LayoutLoader;
-
     class UIContext {
     private:
         IDWriteFactory& dwriteFactory;

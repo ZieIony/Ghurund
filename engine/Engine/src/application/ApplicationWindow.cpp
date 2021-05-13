@@ -1,5 +1,6 @@
 #include "ghpch.h"
 #include "ApplicationWindow.h"
+#include "Application.h"
 
 #include <windowsx.h>
 
@@ -19,6 +20,8 @@ namespace Ghurund {
         }
         return true;
     }
+
+    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {}
 
     bool ApplicationWindow::onKeyEvent(const KeyEventArgs& args) {
         return layers.dispatchKeyEvent(args);

@@ -94,11 +94,11 @@ namespace Ghurund::UI {
         return true;
     }
 
-    bool TextView::setSelection(SetSelectionMode moveMode, UINT32 advance, bool extendSelection, bool updateCaretFormat) {
-        UINT32 line = UINT32_MAX;
-        UINT32 absolutePosition = caretPosition + caretPositionOffset;
-        UINT32 oldAbsolutePosition = absolutePosition;
-        UINT32 oldCaretAnchor = caretAnchor;
+    bool TextView::setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat) {
+        uint32_t line = UINT32_MAX;
+        uint32_t absolutePosition = caretPosition + caretPositionOffset;
+        uint32_t oldAbsolutePosition = absolutePosition;
+        uint32_t oldCaretAnchor = caretAnchor;
 
         switch (moveMode) {
         case SetSelectionMode::Left:

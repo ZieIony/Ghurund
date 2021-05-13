@@ -31,6 +31,8 @@ namespace Ghurund {
     public:
         Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
+        virtual ~Loader() = 0 {}
+
         template<class T>
         T* makeResource() {
             if (allocator)

@@ -35,14 +35,14 @@ namespace Ghurund::UI {
         if (layout->Selectable->Selected) {
             size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_CHECKED);
             if (index != theme->Images.Size) {
-                ImageDrawable* image = theme->Images.getValue(index);
-                layout->Image->Image = (ImageDrawable*)image->clone();
+                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
+                layout->Image->Image = image;
             }
         } else {
             size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_UNCHECKED);
             if (index != theme->Images.Size) {
-                ImageDrawable* image = theme->Images.getValue(index);
-                layout->Image->Image = (ImageDrawable*)image->clone();
+                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
+                layout->Image->Image = image;
             }
         }
         __super::onStateChanged(control);

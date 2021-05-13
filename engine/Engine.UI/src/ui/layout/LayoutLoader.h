@@ -35,7 +35,7 @@ namespace Ghurund::UI {
         static inline const char* THEME_IMAGE = "theme://image/";
         static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
-        LayoutLoader(ID2D1Factory6& d2dFactory, ResourceManager& resourceManager, Theme& theme);
+        LayoutLoader(ID2D1Factory6& d2dFactory, ResourceManager& resourceManager);
 
         virtual ~LayoutLoader() {}
 
@@ -44,15 +44,15 @@ namespace Ghurund::UI {
                 types.set(type.Name, &type);
         }
 
-        inline Theme& getTheme() {
-            return *theme;
+        inline Theme* getTheme() {
+            return theme;
         }
 
-        inline void setTheme(Theme& theme) {
-            this->theme = &theme;
+        inline void setTheme(Theme* theme) {
+            this->theme = theme;
         }
 
-        __declspec(property(get = getTheme, put = setTheme)) Theme& Theme;
+        __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
         inline ResourceManager& getResourceManager() {
             return resourceManager;

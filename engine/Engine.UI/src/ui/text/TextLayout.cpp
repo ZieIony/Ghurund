@@ -12,7 +12,7 @@ namespace Ghurund::UI {
             formatSource = format->Format;
         }
 
-        if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (UINT32)text.Length, formatSource, size.width, size.height, &newLayout)))
+        if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.width, size.height, &newLayout)))
             return Status::CALL_FAIL;
 
         if (layout)
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
 
             Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
             localeName.set(0, '\0');
-            oldLayout->GetLocaleName(startPosForOld, localeName.begin(), localeName.Size);
+            oldLayout->GetLocaleName(startPosForOld, localeName.begin(), (uint32_t)localeName.Size);
             newLayout->SetLocaleName(localeName.begin(), range);
         }
 
@@ -213,7 +213,7 @@ namespace Ghurund::UI {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
-        uint32_t oldTextLength = text.Length;
+        uint32_t oldTextLength = (uint32_t)text.Length;
         position = std::min(position, (uint32_t)text.Size);
 
         text.insert(position, textToInsert.Data, textToInsert.Size);
@@ -228,23 +228,23 @@ namespace Ghurund::UI {
             // For each property, get the position range and apply it to the old text.
             if (position == 0) {
                 // Inserted text
-                copySinglePropertyRange(oldLayout, 0, newLayout, 0, textToInsert.Size);
+                copySinglePropertyRange(oldLayout, 0, newLayout, 0, (uint32_t)textToInsert.Size);
 
                 // The rest of the text
-                copyRangedProperties(oldLayout, 0, oldTextLength, textToInsert.Size, newLayout);
+                copyRangedProperties(oldLayout, 0, oldTextLength, (uint32_t)textToInsert.Size, newLayout);
             } else {
                 // 1st block
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout);
 
                 // Inserted text
-                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, textToInsert.Size, format);
+                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, (uint32_t)textToInsert.Size, format);
 
                 // Last block (if it exists)
-                copyRangedProperties(oldLayout, position, oldTextLength, textToInsert.Size, newLayout);
+                copyRangedProperties(oldLayout, position, oldTextLength, (uint32_t)textToInsert.Size, newLayout);
             }
 
             // Copy trailing end.
-            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, text.Length, UINT32_MAX);
+            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
         }
 
         if (oldLayout)
@@ -257,7 +257,7 @@ namespace Ghurund::UI {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
-        uint32_t oldTextLength = text.Length;
+        uint32_t oldTextLength = (uint32_t)text.Length;
 
         text.remove(position, lengthToRemove);
 
@@ -278,7 +278,7 @@ namespace Ghurund::UI {
                 // Last block (if it exists, we increment past the deleted text)
                 copyRangedProperties(oldLayout, position + lengthToRemove, oldTextLength, lengthToRemove, newLayout, true);
             }
-            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, text.Length, UINT32_MAX);
+            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
         }
 
         if (oldLayout)

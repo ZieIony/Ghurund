@@ -7,6 +7,8 @@
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
 
+#include <fmt/format.h>
+
 template <>
 struct fmt::formatter<Ghurund::AString> {
     template <typename FormatContext>
@@ -18,7 +20,7 @@ struct fmt::formatter<Ghurund::AString> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin(), end = ctx.end();
         if (it != end && *it != '}')
-            throw format_error("invalid format");
+            throw fmt::v7::format_error("invalid format");
         return it;
     }
 };
@@ -34,7 +36,7 @@ struct fmt::formatter<Ghurund::WString> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin(), end = ctx.end();
         if (it != end && *it != '}')
-            throw format_error("invalid format");
+            throw fmt::v7::format_error("invalid format");
         return it;
     }
 };
@@ -52,7 +54,7 @@ struct fmt::formatter<Ghurund::AStringView> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin(), end = ctx.end();
         if (it != end && *it != '}')
-            throw format_error("invalid format");
+            throw fmt::v7::format_error("invalid format");
         return it;
     }
 };
@@ -70,7 +72,7 @@ struct fmt::formatter<Ghurund::WStringView> {
     constexpr auto parse(format_parse_context& ctx) {
         auto it = ctx.begin(), end = ctx.end();
         if (it != end && *it != '}')
-            throw format_error("invalid format");
+            throw fmt::v7::format_error("invalid format");
         return it;
     }
 };

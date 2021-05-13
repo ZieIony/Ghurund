@@ -2,15 +2,15 @@
 
 #include "Server.h"
 #include "Client.h"
-#include "core/Object.h"
+#include "application/Feature.h"
+
+#include "reflection_84c7ff0b_6884_47b3_9cf6_5c7939b247ae.h"
 
 namespace Ghurund::Net {
-    class Networking:public Object, public Noncopyable {
-    public:
-        ~Networking() {
-            uninit();
-        }
+    class Networking:public Feature, public Noncopyable {
+        reflection_84c7ff0b_6884_47b3_9cf6_5c7939b247ae
 
+    public:
         Status init();
 
         void uninit() {

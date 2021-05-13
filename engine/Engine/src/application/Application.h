@@ -3,27 +3,17 @@
 #include "ApplicationWindow.h"
 #include "Settings.h"
 #include "WindowList.h"
+#include "application/Feature.h"
 
 #include "core/Noncopyable.h"
+#include "core/SharedPointer.h"
 #include "core/Timer.h"
-#include "game/LevelManager.h"
-
-namespace Ghurund::Net {
-    class Networking;
-}
-
-namespace Ghurund::Audio {
-    class Audio;
-}
 
 namespace Ghurund {
     class Graphics;
     class Renderer;
-    class ScriptEngine;
     class ParameterManager;
     class Timer;
-    class Graphics2D;
-    class Physics::Physics;
     class FunctionQueue;
 
     class Application:public Noncopyable {
@@ -31,20 +21,16 @@ namespace Ghurund {
         WindowList windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
 
-        Net::Networking* networking;
         Settings settings;
         Graphics* graphics;
-        Audio::Audio* audio;
-        Physics::Physics* physics;
-        Ghurund::Graphics2D* graphics2d;
 
         ResourceManager* resourceManager;
         ParameterManager* parameterManager;
         Timer* timer;
-        ScriptEngine* scriptEngine;
 
         Renderer* renderer;
-        LevelManager levelManager;
+
+        Map<Type, SharedPointer<Feature>> features;
 
         Status init();
         void handleMessages();
@@ -82,29 +68,11 @@ namespace Ghurund {
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-        inline Net::Networking& getNetworking() {
-            return *networking;
-        }
-
-        __declspec(property(get = getNetworking)) Net::Networking& Networking;
-
         inline Graphics& getGraphics() {
             return *graphics;
         }
 
         __declspec(property(get = getGraphics)) Graphics& Graphics;
-
-        Audio::Audio& getAudio() {
-            return *audio;
-        }
-
-        __declspec(property(get = getAudio)) Audio::Audio& Audio;
-
-        Physics::Physics& getPhysics() {
-            return *physics;
-        }
-
-        __declspec(property(get = getPhysics)) Physics::Physics& Physics;
 
         inline ResourceManager& getResourceManager() {
             return *resourceManager;
@@ -124,28 +92,16 @@ namespace Ghurund {
 
         __declspec(property(get = getTimer)) Timer& Timer;
 
-        inline LevelManager& getLevelManager() {
-            return levelManager;
-        }
-
-        __declspec(property(get = getLevelManager)) LevelManager& LevelManager;
-
         inline Renderer& getRenderer() {
             return *renderer;
         }
 
         __declspec(property(get = getRenderer)) Renderer& Renderer;
 
-        inline ScriptEngine& getScriptEngine() {
-            return *scriptEngine;
+        inline Map<Type, SharedPointer<Feature>>& getFeatures() {
+            return features;
         }
 
-        __declspec(property(get = getScriptEngine)) ScriptEngine& ScriptEngine;
-
-        inline Ghurund::Graphics2D& getGraphics2D() {
-            return *graphics2d;
-        }
-
-        __declspec(property(get = getGraphics2D)) Ghurund::Graphics2D& Graphics2D;
+        __declspec(property(get = getFeatures)) Map<Type, SharedPointer<Feature>>& Features;
     };
 }

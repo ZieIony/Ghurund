@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StringFactory.h"
-#include "core/Object.h"
+#include "application/Feature.h"
 #include "core/Timer.h"
 #include "Script.h"
 #include "core/collection/PointerList.h"
@@ -31,8 +31,12 @@
 
 #endif
 
+#include "reflection_c98597c1_bb96_4ddc_92c4_079c395065da.h"
+
 namespace Ghurund {
-    class ScriptEngine: public Object, public System<ScriptComponent> {
+    class ScriptEngine: public Feature, public System<ScriptComponent> {
+        reflection_c98597c1_bb96_4ddc_92c4_079c395065da
+
     private:
 		asIScriptEngine* engine = nullptr;
         asIScriptModule* mod = nullptr;
@@ -42,18 +46,17 @@ namespace Ghurund {
 
         static void messageCallback(const asSMessageInfo* msg, void* param);
 
-    protected:
-        static const Ghurund::Type& GET_TYPE();
-
     public:
-        ~ScriptEngine() {
-            if (engine)
-                engine->ShutDownAndRelease();
-        }
+        ScriptEngine(Timer& timer):timer(&timer) {}
 
         static void log(const std::string& str);
 
-        Status init(Timer& timer);
+        virtual Status init() override;
+
+        virtual void uninit() override {
+            if (engine)
+                engine->ShutDownAndRelease();
+        }
 
         asIScriptModule* makeModule() {
             string moduleName("module");
@@ -66,11 +69,5 @@ namespace Ghurund {
         }
 
         void update(const uint64_t time);
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Loader.h"
+#include "LoaderCollection.h"
 
 #include "core/Noncopyable.h"
 #include "core/Object.h"
@@ -22,7 +23,7 @@ namespace Ghurund {
         PointerMap<WString, Resource*> resources;
         LibraryList libraries;
         CriticalSection section;
-        Map<const Ghurund::Type*, Loader*> loaders;
+        LoaderCollection loaders;
 
         WorkerThread loadingThread;
         List<ReloadTask*> reloadQueue;
@@ -37,7 +38,7 @@ namespace Ghurund {
             resource = get<Type>(path);
             Status loadResult;
             if (resource == nullptr) {
-                Loader* loader = loaders.get(&Type::TYPE);
+                Loader* loader = loaders.get(Type::TYPE);
                 [[likely]]
                 if (loader) {
                     resource = loader->makeResource<Type>();
@@ -66,14 +67,11 @@ namespace Ghurund {
 
         ~ResourceManager();
 
-        inline void registerLoader(const Ghurund::Type& type, std::unique_ptr<Loader> loader) {
-            if (loaders.containsKey(&type)) {
-                Loader* loader = loaders.get(&type);
-                loaders.remove(&type);
-                delete loader;
-            }
-            loaders.set(&type, loader.release());
+        inline LoaderCollection& getLoaders() {
+            return loaders;
         }
+
+        __declspec(property(get = getLoaders)) LoaderCollection& Loaders;
 
         void reload();
 

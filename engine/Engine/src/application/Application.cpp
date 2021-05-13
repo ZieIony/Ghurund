@@ -20,42 +20,15 @@ namespace Ghurund {
     Status Application::init() {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
-        networking = ghnew Net::Networking();
-        Status result = networking->init();
-        if (result != Status::OK) {
-            uninit();
-            return result;
-        }
-
         // engine
         graphics = ghnew Ghurund::Graphics();
-        result = graphics->init();
-        if (result != Status::OK)
-            return result;
-
-        graphics2d = ghnew Ghurund::Graphics2D();
-        result = graphics2d->init(*graphics);
-        if (result != Status::OK)
-            return result;
-
-        audio = ghnew Audio::Audio();
-        result = audio->init();
-        if (result != Status::OK)
-            return result;
-
-        physics = ghnew Physics::Physics();
-        result = physics->init();
+        Status result = graphics->init();
         if (result != Status::OK)
             return result;
 
         parameterManager = ghnew Ghurund::ParameterManager();
 
         timer = ghnew Ghurund::Timer();
-
-        scriptEngine = ghnew Ghurund::ScriptEngine();
-        result = scriptEngine->init(*timer);
-        if (result != Status::OK)
-            return result;
 
         resourceManager = ghnew Ghurund::ResourceManager();
         resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
@@ -69,13 +42,20 @@ namespace Ghurund {
         if (result != Status::OK)
             return result;
 
+        for (Feature* f : features) {
+            Status result = f->init();
+            if (result != Status::OK)
+                return result;
+        }
+
         return Status::OK;
     }
 
     void Application::uninit() {
         windows.clear();
 
-        delete scriptEngine;
+        for (Feature* f : features)
+            f->uninit();
 
         delete renderer;
 
@@ -84,12 +64,8 @@ namespace Ghurund {
         delete resourceManager;
 
         delete functionQueue;
-        delete physics;
-        delete audio;
-        delete graphics2d;
         delete graphics;
 
-        delete networking;
         OleUninitialize();
         CoUninitialize();
     }
@@ -117,7 +93,8 @@ namespace Ghurund {
             timer->tick();
             while (time + DT_MS < timer->TimeMs) {
                 time += DT_MS;
-                scriptEngine->update(time);
+                // TODO: per window
+                //scriptEngine->update(time);
 
                 for (auto window : windows)
                     window->update(time);

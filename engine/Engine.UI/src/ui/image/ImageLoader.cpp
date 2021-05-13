@@ -200,17 +200,25 @@ namespace Ghurund::UI {
 
         imageData = ghnew Buffer(imageSize);
 
+        Status result = Status::OK;
         if (imageConverted) {
-            if (FAILED(wicConverter->CopyPixels(0, rowPitch, imageSize, imageData->Data)))
-                return Status::CALL_FAIL;
+            if (FAILED(wicConverter->CopyPixels(0, rowPitch, imageSize, imageData->Data))) {
+                result = Status::CALL_FAIL;
+                goto cleanup;
+            }
         } else {
-            if (FAILED(wicFrame->CopyPixels(0, rowPitch, imageSize, imageData->Data)))
-                return Status::CALL_FAIL;
+            if (FAILED(wicFrame->CopyPixels(0, rowPitch, imageSize, imageData->Data))) {
+                result = Status::CALL_FAIL;
+                goto cleanup;
+            }
         }
 
         ((Image&)resource).init(*imageData, width, height, format, pixelSize);
 
-        return Status::OK;
+cleanup:
+        delete imageData;
+
+        return result;
     }
     
     Status ImageLoader::save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const {

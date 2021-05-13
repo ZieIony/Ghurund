@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 
     class TextLayout {
     private:
-        IntSize size;
+        FloatSize size;
         Color color;
         WString text;
         TextFormat* format = nullptr;
@@ -43,22 +43,22 @@ namespace Ghurund::UI {
                 format->release();
         }
 
-        inline const IntSize& getSize() const {
+        inline const FloatSize& getSize() const {
             return size;
         }
 
-        inline void setSize(const IntSize& size) {
+        inline void setSize(const FloatSize& size) {
             setSize(size.width, size.height);
         }
 
-        virtual void setSize(uint32_t w, uint32_t h) {
+        virtual void setSize(float w, float h) {
             if (size.width != w || size.height != h) {
                 size = { w, h };
                 valid = false;
             }
         }
 
-        __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
+        __declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
 
         inline void setColor(const Color& color) {
             this->color = color;

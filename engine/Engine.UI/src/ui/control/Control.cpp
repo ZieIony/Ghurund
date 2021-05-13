@@ -334,14 +334,16 @@ namespace Ghurund::UI {
             uint32_t value = 0;
             if (s.startsWith(LayoutLoader::THEME_STYLE)) {
                 StyleKey styleKey = s.substring(lengthOf(LayoutLoader::THEME_STYLE));
-                if (loader.Theme.Styles.containsKey(styleKey)) {
-                    Style = loader.Theme.Styles[styleKey];
+                if (!loader.Theme) {
+                    return Status::INV_PARAM;
+                } else if (loader.Theme->Styles.containsKey(styleKey)) {
+                    Style = loader.Theme->Styles[styleKey];
                 } else {
                     Logger::log(LogType::WARNING, _T("invalid style key {}\n"), styleKey.str);
                 }
             }
-        } else if (loader.Theme.Styles.containsKey(StyleKey(Type.Name))) {
-            Style = loader.Theme.Styles[StyleKey(Type.Name)];
+        } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
+            Style = loader.Theme->Styles[StyleKey(Type.Name)];
         }
 
         return Status::OK;

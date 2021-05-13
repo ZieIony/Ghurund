@@ -67,7 +67,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getCursorDrawable, put = setCursorDrawable)) CursorDrawable* CursorDrawable;
 
-        bool setSelection(SetSelectionMode moveMode, UINT32 advance, bool extendSelection, bool updateCaretFormat = true);
+        bool setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat = true);
 
         void copyToClipboard();
 

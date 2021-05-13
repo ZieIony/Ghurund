@@ -6,11 +6,11 @@
 
 namespace Ghurund::UI {
     void TextField::onReturn() {
-        UINT32 absolutePosition = caretPosition + caretPositionOffset;
+        uint32_t absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
         WString textToInsert(L"\r\n");
         textLayout.insertTextAt(Context->DWriteFactory, absolutePosition, textToInsert);
-        setSelection(SetSelectionMode::AbsoluteLeading, absolutePosition + textToInsert.Size, false, false);
+        setSelection(SetSelectionMode::AbsoluteLeading, (uint32_t)(absolutePosition + textToInsert.Size), false, false);
         repaint();
     }
 
@@ -116,7 +116,7 @@ namespace Ghurund::UI {
                 textToInsert.add(wchar_t(0xDC00 + (charCode & 0x3FF)));
             }
             textLayout.insertTextAt(Context->DWriteFactory, caretPosition + caretPositionOffset, textToInsert);
-            setSelection(SetSelectionMode::Right, textToInsert.Size, false, false);
+            setSelection(SetSelectionMode::Right, (uint32_t)textToInsert.Size, false, false);
 
             repaint();
         }
@@ -142,7 +142,7 @@ namespace Ghurund::UI {
         WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
         if (data) {
             textLayout.insertTextAt(Context->DWriteFactory, caretPosition + caretPositionOffset, *data);
-            setSelection(SetSelectionMode::RightChar, data->Length, true);
+            setSelection(SetSelectionMode::RightChar, (uint32_t)data->Length, true);
             repaint();
         }
     }

@@ -2,15 +2,6 @@
 #include "Physics.h"
 
 namespace Ghurund::Physics {
-    const Ghurund::Type& Physics::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Physics>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Physics))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
-
-        return TYPE;
-    }
-
     Status Physics::init() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
         if (!foundation)

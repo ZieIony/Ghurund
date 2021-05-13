@@ -6,10 +6,13 @@
 #include "graphics/SwapChain.h"
 
 namespace Ghurund {
+    class Application;
+
     class ApplicationWindow: public SystemWindow {
     private:
         SwapChain* swapChain = nullptr;
         LayerList layers;
+        Application& app;
 
     protected:
         static const Ghurund::Type& GET_TYPE();
@@ -17,7 +20,7 @@ namespace Ghurund {
         virtual bool onFocusedChangedEvent() override;
 
     public:
-        ApplicationWindow(const WindowClass& type, Ghurund::Timer& timer):SystemWindow(type, timer) {}
+        ApplicationWindow(const WindowClass& type, Application& app);
 
         ~ApplicationWindow() {
             delete swapChain;
@@ -45,6 +48,12 @@ namespace Ghurund {
                 swapChain->resize(w, h);
             layers.Size = Size;
         }
+
+        inline Application& getApplication() {
+            return app;
+        }
+
+        __declspec(property(get = getApplication)) Application& Application;
 
         virtual bool onKeyEvent(const KeyEventArgs& args) override;
 

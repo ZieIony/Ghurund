@@ -1,6 +1,7 @@
 #include "ghpch.h"
 #include "ScriptEngine.h"
 
+#include "application/Application.h"
 #include "script/bindings/ScriptBindings.h"
 #include "script/bindings/CameraScriptBindings.h"
 #include "script/bindings/Float3ScriptBindings.h"
@@ -19,22 +20,11 @@ namespace Ghurund {
         Logger::log(*type, _T("%hs (%d, %d): %hs\n"), String(msg->section), msg->row, msg->col, String(msg->message));
     }
 
-    const Ghurund::Type& ScriptEngine::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ScriptEngine>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     void ScriptEngine::log(const std::string& str) {
         Logger::log(LogType::INFO, str.c_str());
     }
 
-    Status ScriptEngine::init(Timer& timer) {
-        this->timer = &timer;
-
+    Status ScriptEngine::init() {
         engine = asCreateScriptEngine();
         engine->SetMessageCallback(asFUNCTION(messageCallback), 0, asCALL_CDECL);
 

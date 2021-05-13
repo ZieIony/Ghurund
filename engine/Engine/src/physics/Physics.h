@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Status.h"
-#include "core/Object.h"
+#include "application/Feature.h"
 
 #pragma warning(push, 0)
 #include <PxFoundation.h>
@@ -24,10 +24,18 @@
 #pragma comment(lib, "PhysXPvdSDK_static_32.lib")
 #endif
 
+namespace Ghurund {
+    class Application;
+}
+
+#include "reflection_a03568f5_3f80_416f_aafa_4cf87e702942.h"
+
 namespace Ghurund::Physics {
     using namespace physx;
 
-    class Physics:public Object {
+    class Physics:public Feature {
+        reflection_a03568f5_3f80_416f_aafa_4cf87e702942
+
     private:
         PxDefaultErrorCallback defaultErrorCallback;
         PxDefaultAllocator defaultAllocatorCallback;
@@ -36,11 +44,10 @@ namespace Ghurund::Physics {
         PxPvd* visualDebugger = nullptr;
         PxPvdTransport* transport = nullptr;
 
-    protected:
-        static const Ghurund::Type& GET_TYPE();
-
     public:
-        ~Physics() {
+        virtual Status init() override;
+
+        virtual void uninit() override {
             if (physics)
                 physics->release();
             if (transport)
@@ -51,16 +58,8 @@ namespace Ghurund::Physics {
                 foundation->release();
         }
 
-        Status init();
-
         PxPhysics& get() {
             return *physics;
-        }
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
         }
     };
 
