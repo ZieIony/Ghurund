@@ -11,7 +11,7 @@ namespace Ghurund::UI {
             fontFileLoader->Release();
         }
     }
-    
+
     Status FontLoader::init() {
         if (FAILED(factory.CreateInMemoryFontFileLoader(&fontFileLoader)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateInMemoryFontFileLoader failed\n");
@@ -22,8 +22,8 @@ namespace Ghurund::UI {
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "RegisterFontCollectionLoader failed\n");
         return Status::OK;
     }
-    
-    Status FontLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) {
+
+    Status FontLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format, LoadOption options) {
         Font& font = (Font&)resource;
         IDWriteFontCollection* collection = nullptr;
         if (FAILED(factory.CreateCustomFontCollection(fontCollectionLoader, stream.Data, (UINT32)stream.Size, &collection)))

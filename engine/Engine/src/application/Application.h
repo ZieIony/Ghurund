@@ -3,7 +3,7 @@
 #include "ApplicationWindow.h"
 #include "Settings.h"
 #include "WindowList.h"
-#include "application/Feature.h"
+#include "application/FeatureCollection.h"
 
 #include "core/Noncopyable.h"
 #include "core/SharedPointer.h"
@@ -30,7 +30,7 @@ namespace Ghurund {
 
         Renderer* renderer;
 
-        Map<Type, SharedPointer<Feature>> features;
+        FeatureCollection features;
 
         Status init();
         void handleMessages();
@@ -98,10 +98,10 @@ namespace Ghurund {
 
         __declspec(property(get = getRenderer)) Renderer& Renderer;
 
-        inline Map<Type, SharedPointer<Feature>>& getFeatures() {
+        inline FeatureCollection& getFeatures() {
             return features;
         }
 
-        __declspec(property(get = getFeatures)) Map<Type, SharedPointer<Feature>>& Features;
+        __declspec(property(get = getFeatures)) FeatureCollection& Features;
     };
 }

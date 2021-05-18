@@ -14,20 +14,27 @@ namespace Ghurund {
 
     class FilePath:public Path {
     private:
-        mutable WString fileName;
+        WString fileName, extension;
 
     public:
-        FilePath(const WString& path):Path(path) {}
+        FilePath(const WString& path):Path(path),
+            fileName(PathFindFileNameW(path.Data)),
+            extension(PathFindExtensionW(path.Data)) {}
 
-        FilePath(const FilePath& other):Path(other.path) {}
+        FilePath(const FilePath& other):Path(other.path),
+            fileName(other.fileName),
+            extension(other.extension) {}
 
-        FilePath(FilePath&& other) noexcept:Path(std::move(other)) {}
+        FilePath(FilePath&& other) noexcept:Path(std::move(other)),
+            fileName(std::move(other.fileName)),
+            extension(std::move(other.extension)) {}
 
         FilePath& operator=(const FilePath& other) {
             if (this == &other)
                 return *this;
             Path::operator=(other);
             fileName = other.fileName;
+            extension = other.extension;
             return *this;
         }
 
@@ -36,6 +43,7 @@ namespace Ghurund {
                 return *this;
             Path::operator=(other);
             fileName = std::move(other.fileName);
+            extension = std::move(other.extension);
             return *this;
         }
 
@@ -44,17 +52,16 @@ namespace Ghurund {
         __declspec(property(get = getDirectory)) DirectoryPath Directory;
 
         inline const WString& getFileName() const {
-            if (fileName.Empty) {
-                wchar_t* pathCopy = ghnew wchar_t[path.Size];
-                memcpy(pathCopy, path.Data, path.Size * sizeof(wchar_t));
-                PathStripPathW(pathCopy);
-                fileName = pathCopy;
-                delete[] pathCopy;
-            }
             return fileName;
         }
 
         __declspec(property(get = getFileName)) const WString& FileName;
+
+        inline const WString& getExtension() const {
+            return extension;
+        }
+
+        __declspec(property(get = getExtension)) const WString& Extension;
 
         FilePath getRelativePath(const DirectoryPath& dir) const;
 

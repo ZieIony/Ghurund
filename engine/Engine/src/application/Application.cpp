@@ -25,6 +25,9 @@ namespace Ghurund {
         Status result = graphics->init();
         if (result != Status::OK)
             return result;
+        result = graphics->initDevice(*graphics->Adapters[0]);
+        if (result != Status::OK)
+            return result;
 
         parameterManager = ghnew Ghurund::ParameterManager();
 
@@ -101,25 +104,8 @@ namespace Ghurund {
             }
 
             for (auto window : windows) {
-                if (window->Size.width == 0 && window->Size.height == 0)
-                    continue;
-                if (window->SwapChain) {
-                    Frame& frame = window->SwapChain->CurrentFrame;
-                    CommandList& commandList = renderer->startFrame(frame);
-                    //levelManager.draw(commandList);
-                    frame.flush();
-
-                    if (window->paint() != Status::OK)
-                        break;
-
-                    if (renderer->finishFrame(frame) != Status::OK)
-                        break;
-                    if (window->SwapChain->present() != Status::OK)
-                        break;
-                } else {
-                    if (window->paint() != Status::OK)
-                        break;
-                }
+                if (window->paint() != Status::OK)
+                    break;
             }
         }
 

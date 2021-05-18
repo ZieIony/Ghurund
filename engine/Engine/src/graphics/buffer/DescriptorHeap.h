@@ -3,7 +3,7 @@
 #include "core/collection/List.h"
 #include "core/collection/Map.h"
 #include "core/threading/CriticalSection.h"
-#include "graphics/GraphicsAdapter.h"
+#include "graphics/adapter/GraphicsAdapter.h"
 
 #include <d3d12.h>
 

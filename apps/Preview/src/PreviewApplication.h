@@ -5,7 +5,7 @@ namespace Preview {
     class PreviewApplication:public Ghurund::Application {
     public:
         PreviewApplication() {
-            Features.set(UIFeature::TYPE, ghnew UIFeature(*this));
+            Features.add<UIFeature>(ghnew UIFeature(*this));
         }
 
         void onInit() {

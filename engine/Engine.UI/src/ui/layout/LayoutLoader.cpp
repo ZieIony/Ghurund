@@ -76,7 +76,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status LayoutLoader::load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) {
+    Status LayoutLoader::load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat * format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
         Layout& layout = (Layout&)resource;

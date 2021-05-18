@@ -106,5 +106,13 @@ namespace Ghurund {
         virtual const Ghurund::Type& getType() const override {
             return TYPE;
         }
+
+        inline static const Array<ResourceFormat>& FORMATS = {};
+
+        virtual const Array<ResourceFormat>& getFormats() const {
+            return FORMATS;
+        }
+
+        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

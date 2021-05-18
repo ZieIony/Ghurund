@@ -9,8 +9,12 @@
 #include "graphics/entity/Scene.h"
 #include "core/resource/ResourceManager.h"
 
+#include "reflection_46d71a27_5bac_4460_86a7_87a3a5b8fa83.h"
+
 namespace Ghurund {
     class Renderer: public Object {
+        reflection_46d71a27_5bac_4460_86a7_87a3a5b8fa83
+
     private:
 		//Model* fullScreenQuad = nullptr;
         Material* lightPassMaterial = nullptr;
@@ -22,9 +26,6 @@ namespace Ghurund {
         RenderingStatistics stats;
 
         XMFLOAT4* clearColor = nullptr;
-
-    protected:
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         ~Renderer() {
@@ -69,11 +70,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 }

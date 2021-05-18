@@ -34,9 +34,9 @@
     <ClCompile Include="src\ghpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\graphics\AdapterOutput.cpp" />
+    <ClCompile Include="src\graphics\adapter\AdapterOutput.cpp" />
     <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
-    <ClCompile Include="src\graphics\DisplayMode.cpp" />
+    <ClCompile Include="src\graphics\adapter\DisplayMode.cpp" />
     <ClCompile Include="src\graphics\entity\Camera.cpp" />
     <ClCompile Include="src\game\GameAction.cpp" />
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
@@ -50,7 +50,7 @@
     <ClCompile Include="src\graphics\Fence.cpp" />
     <ClCompile Include="src\graphics\Frame.cpp" />
     <ClCompile Include="src\graphics\Graphics.cpp" />
-    <ClCompile Include="src\graphics\GraphicsAdapter.cpp" />
+    <ClCompile Include="src\graphics\adapter\GraphicsAdapter.cpp" />
     <ClCompile Include="src\graphics\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\memory\GPUResourcePointer.cpp" />
@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\Feature.h" />
+    <ClInclude Include="src\application\FeatureCollection.h" />
     <ClInclude Include="src\application\Layer.h" />
     <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\Settings.h" />
@@ -102,8 +103,8 @@
     <ClInclude Include="src\ui\UIFeature.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ghpch.h" />
-    <ClInclude Include="src\graphics\AdapterOutput.h" />
-    <ClInclude Include="src\graphics\DisplayMode.h" />
+    <ClInclude Include="src\graphics\adapter\AdapterOutput.h" />
+    <ClInclude Include="src\graphics\adapter\DisplayMode.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
     <ClInclude Include="src\net\MessageType.h" />
@@ -134,7 +135,7 @@
     <ClInclude Include="src\graphics\entity\Scene.h" />
     <ClInclude Include="src\game\parameter\ParameterType.h" />
     <ClInclude Include="src\game\parameter\ValueParameter.h" />
-    <ClInclude Include="src\graphics\GraphicsAdapter.h" />
+    <ClInclude Include="src\graphics\adapter\GraphicsAdapter.h" />
     <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
     <ClInclude Include="src\graphics\entity\Camera.h" />
     <ClInclude Include="src\graphics\CommandList.h" />

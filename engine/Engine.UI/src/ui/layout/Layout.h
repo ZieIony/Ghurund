@@ -19,5 +19,13 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getControls)) PointerList<Control*>& Controls;
+
+        static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
+
+        virtual const Array<ResourceFormat>& getFormats() const override {
+            return FORMATS;
+        }
     };
 }

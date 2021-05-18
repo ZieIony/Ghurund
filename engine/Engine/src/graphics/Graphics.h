@@ -1,10 +1,13 @@
 #pragma once
 
-#include "core/collection/List.h"
 #include "core/Object.h"
-#include "graphics/GraphicsAdapter.h"
+#include "core/collection/List.h"
+#include "core/reflection/Type.h"
+#include "graphics/adapter/GraphicsAdapter.h"
 #include "graphics/buffer/DescriptorHeap.h"
 #include "graphics/memory/GPUResourceFactory.h"
+
+#include "reflection_a4b79cbf_50fe_4728_bfbe_1ab44dd54d18.h"
 
 namespace Ghurund {
     using namespace DirectX;
@@ -13,6 +16,8 @@ namespace Ghurund {
     class CommandList;
 
     class Graphics: public Object {
+        reflection_a4b79cbf_50fe_4728_bfbe_1ab44dd54d18
+
     private:
         ID3D12Device* device;
         ID3D12CommandQueue* directQueue = nullptr, * computeQueue = nullptr, * copyQueue = nullptr;
@@ -25,16 +30,16 @@ namespace Ghurund {
 
         Status initAdapters();
 
-    protected:
-        static const Ghurund::Type& GET_TYPE();
-
     public:
         ~Graphics() {
+            uninitDevice();
             uninit();
         }
 
         Status init();
+        Status initDevice(GraphicsAdapter& adapter);
 
+        void uninitDevice();
         void uninit();
 
         ID3D12Device* getDevice() {
@@ -77,18 +82,12 @@ namespace Ghurund {
             return allocator;
         }
 
-        __declspec(property(get = getDescriptorAllocator)) DescriptorAllocator& DescriptorAllocator;
+        __declspec(property(get = getDescriptorAllocator)) Ghurund::DescriptorAllocator& DescriptorAllocator;
 
         GPUResourceFactory& getResourceFactory() {
             return *resourceFactory;
         }
 
         __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
     };
 }

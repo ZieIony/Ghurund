@@ -57,7 +57,7 @@ namespace Ghurund::UI {
 
         void loadImage(ResourceManager& resourceManager, const ImageKey& key, const FilePath& path) {
             Status result;
-            SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, &result);
+            SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
             SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
             Images.set(key, imageDrawable);
         }

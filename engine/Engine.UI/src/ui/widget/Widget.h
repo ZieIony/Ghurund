@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 
         Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml, const AString& pathStr) {
             Status result;
-            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &result, LoadOption::DONT_CACHE);
+            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
             if (result != Status::OK)
                 return result;
             if (layout && !layout->Controls.Empty)
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
             if (layoutIndex == Theme->Layouts.Size)
                 return nullptr;
             FilePath layoutPath = toWideChar(Theme->Layouts.getValue(layoutIndex));
-            SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, nullptr, LoadOption::DONT_CACHE);
             if (layout && !layout->Controls.Empty)
                 return ghnew LayoutType(layout->Controls[0]);
             return nullptr;

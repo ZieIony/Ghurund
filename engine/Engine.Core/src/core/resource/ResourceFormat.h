@@ -1,13 +1,15 @@
 #pragma once
 
+#include "core/string/WString.h"
+
 namespace Ghurund {
     class ResourceFormat {
     private:
-        const wchar_t* extension = nullptr;
+        WString extension;
         bool save, load;
 
     public:
-        ResourceFormat(const wchar_t* extension, bool save, bool load) {
+        ResourceFormat(const WString& extension, bool save, bool load) {
             this->extension = extension;
             this->save = save;
             this->load = load;
@@ -19,9 +21,11 @@ namespace Ghurund {
             this->load = format.load;
         }
 
-        const wchar_t* getExtension() const {
+        const WString& getExtension() const {
             return extension;
         }
+
+        __declspec(property(get = getExtension)) const WString& Extension;
 
         bool canSave() const {
             return save;
@@ -29,6 +33,10 @@ namespace Ghurund {
 
         bool canLoad() const {
             return load;
+        }
+
+        bool operator==(const ResourceFormat& format) const {
+            return extension == format.extension && save == format.save && load == format.load;
         }
     };
 }

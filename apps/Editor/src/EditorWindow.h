@@ -25,16 +25,9 @@ namespace Ghurund::Editor {
         Theme* lightTheme, * darkTheme;
         UIContext* context;
         EditorWindowBinding* binding;
-        Application* app;
 
     public:
-        EditorWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
-            this->app = &app;
-            Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
-            swapChain->init(app.Graphics, &app.Graphics2D, *this);
-            SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
-
-            app.ResourceManager.Libraries.add(L"Ghurund", FilePath(L"."));
+        EditorWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
             /*
             auto fontLoader = ghnew FontLoader(*app.Graphics2D.DWriteFactory);
             fontLoader->init();

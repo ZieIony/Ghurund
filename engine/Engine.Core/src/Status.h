@@ -11,6 +11,7 @@ namespace Ghurund {
         LOADER_MISSING,
         FILE_DOESNT_EXIST,
         FILE_EXISTS,
+        FILE_EMPTY,
         INV_PATH,
         UNKNOWN_FORMAT,
         INV_FORMAT,

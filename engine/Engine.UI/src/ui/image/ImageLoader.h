@@ -29,8 +29,8 @@ namespace Ghurund::UI {
             return Status::OK;
         }
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) override;
+        virtual Status load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override;
 
-        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const override;
+        virtual Status save(Ghurund::ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override;
     };
 }

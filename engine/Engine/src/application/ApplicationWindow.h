@@ -5,18 +5,20 @@
 #include "core/input/Input.h"
 #include "graphics/SwapChain.h"
 
+#include "reflection_877c7fb3_5824_4c07_b617_0772d5149da1.h"
+
 namespace Ghurund {
     class Application;
 
     class ApplicationWindow: public SystemWindow {
+        reflection_877c7fb3_5824_4c07_b617_0772d5149da1
+
     private:
         SwapChain* swapChain = nullptr;
         LayerList layers;
         Application& app;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
-
         virtual bool onFocusedChangedEvent() override;
 
     public:
@@ -26,15 +28,11 @@ namespace Ghurund {
             delete swapChain;
         }
 
-        inline SwapChain* getSwapChain() {
-            return swapChain;
+        inline SwapChain& getSwapChain() {
+            return *swapChain;
         }
 
-        inline void setSwapChain(std::unique_ptr<SwapChain> swapChain) {
-            this->swapChain = swapChain.release();
-        }
-
-        __declspec(property(get = getSwapChain, put = setSwapChain)) SwapChain* SwapChain;
+        __declspec(property(get = getSwapChain)) Ghurund::SwapChain& SwapChain;
 
         inline LayerList& getLayers() {
             return layers;
@@ -44,8 +42,7 @@ namespace Ghurund {
 
         virtual void setSize(uint32_t w, uint32_t h) {
             __super::setSize(w, h);
-            if (swapChain)
-                swapChain->resize(w, h);
+            swapChain->resize(w, h);
             layers.Size = Size;
         }
 
@@ -53,7 +50,7 @@ namespace Ghurund {
             return app;
         }
 
-        __declspec(property(get = getApplication)) Application& Application;
+        __declspec(property(get = getApplication)) Ghurund::Application& Application;
 
         virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
@@ -65,14 +62,6 @@ namespace Ghurund {
 
         virtual void update(const uint64_t time) override;
 
-        virtual Status paint() override {
-            return layers.draw(swapChain->CurrentFrame.RenderTarget);
-        }
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
-        }
+        virtual Status paint() override;
     };
 }

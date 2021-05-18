@@ -1,17 +1,12 @@
 #include "ghpch.h"
 #include "ApplicationWindow.h"
 #include "Application.h"
+#include "graphics/Renderer.h"
 
 #include <windowsx.h>
+#include <ui/UIFeature.h>
 
 namespace Ghurund {
-    const Ghurund::Type& ApplicationWindow::GET_TYPE() {
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ApplicationWindow))
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     bool ApplicationWindow::onFocusedChangedEvent() {
         if (Focused) {
             layers.restoreFocus();
@@ -21,7 +16,15 @@ namespace Ghurund {
         return true;
     }
 
-    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {}
+    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {
+        Graphics2D* graphics2d = nullptr;
+        UIFeature* uiFeature = app.Features.get<UIFeature>();
+        if (uiFeature) {
+            graphics2d = &uiFeature->Graphics2D;
+            swapChain = ghnew Ghurund::SwapChain();
+        }
+        swapChain->init(app.Graphics, graphics2d, *this);
+    }
 
     bool ApplicationWindow::onKeyEvent(const KeyEventArgs& args) {
         return layers.dispatchKeyEvent(args);
@@ -48,6 +51,24 @@ namespace Ghurund {
     void ApplicationWindow::update(const uint64_t time) {
         __super::update(time);
         layers.update(time);
+    }
+
+    Status ApplicationWindow::paint() {
+        if (Size.width == 0 && Size.height == 0)
+            return Status::OK;
+        Frame& frame = swapChain->CurrentFrame;
+        CommandList& commandList = app.Renderer.startFrame(frame);
+        //levelManager.draw(commandList);
+        frame.flush();
+
+        Status result = layers.draw(swapChain->CurrentFrame.RenderTarget);
+        if (result != Status::OK)
+            return result;
+
+        result = app.Renderer.finishFrame(frame);
+        if (result != Status::OK)
+            return result;
+        return swapChain->present();
     }
 
 }

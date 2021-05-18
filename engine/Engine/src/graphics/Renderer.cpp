@@ -2,15 +2,6 @@
 #include "Renderer.h"
 
 namespace Ghurund {
-    const Ghurund::Type& Renderer::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Renderer>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Renderer))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
-
     Status Renderer::init(Graphics& graphics, ParameterManager& parameterManager) {
         this->graphics = &graphics;
         this->parameterManager = &parameterManager;

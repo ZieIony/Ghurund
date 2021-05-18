@@ -46,7 +46,11 @@ namespace ReflectionGenerator {
                     name = typeName,
                     supertype = match.Groups["supertype"].Value,
                     isAbstract = content.Contains(") = 0;") || content.Contains(") const = 0;") || content.Contains(") = 0 {"),
-                    hasNoArgsConstructor = content.Contains(typeName + "() {") || content.Contains(typeName + "() = default") || !content.Contains(typeName + "(")
+                    hasNoArgsConstructor = content.Contains(" " + typeName + "() {")
+                    || content.Contains(" " + typeName + "();")
+                    || content.Contains(" " + typeName + "():")
+                    || content.Contains(" " + typeName + "() = default")
+                    || !content.Contains(" " + typeName + "(")
                 };
                 string reflectionInclude = match.Groups["reflection"].Value;
                 string guid = reflectionInclude;

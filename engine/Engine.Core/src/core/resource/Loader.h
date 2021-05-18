@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ResourceFormat.h"
 #include "Status.h"
 #include "core/allocation/Allocator.h"
 #include "core/io/MemoryStream.h"
@@ -14,7 +15,7 @@ namespace Ghurund {
     bool operator &(LoadOption lhs, LoadOption rhs);
 
     enum class SaveOption {
-        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2, FORMAT_JPG = 4, FORMAT_PNG = 8
+        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2
     };
 
     SaveOption operator |(SaveOption lhs, SaveOption rhs);
@@ -40,7 +41,7 @@ namespace Ghurund {
             return (T*)T::TYPE.Constructor->newInstance();
         }
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) = 0;
-        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const = 0;
+        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) = 0;
+        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const = 0;
     };
 }

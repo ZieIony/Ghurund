@@ -32,11 +32,8 @@ namespace Preview {
 
     public:
         PreviewWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
-            UIFeature* uiFeature = ((UIFeature*)(Feature*)app.Features.get(UIFeature::TYPE));
+            UIFeature* uiFeature = app.Features.get<UIFeature>();
             Graphics2D& graphics2d = uiFeature->Graphics2D;
-            Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
-            swapChain->init(app.Graphics, &graphics2d, *this);
-            SwapChain = std::unique_ptr<Ghurund::SwapChain>(swapChain);
 
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
             darkTheme = ghnew DarkTheme(*graphics2d.DWriteFactory, app.ResourceManager);
@@ -45,7 +42,7 @@ namespace Preview {
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);

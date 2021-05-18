@@ -144,12 +144,12 @@ namespace Ghurund::UI {
         return -1;
     }
     
-    Status ImageLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) {
+    Status ImageLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format, LoadOption options) {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
         IWICFormatConverter* wicConverter = nullptr;
 
-        DXGI_FORMAT format;
+        DXGI_FORMAT giFormat;
         uint32_t width, height, pixelSize, rowPitch;
         Buffer* imageData = nullptr;
 
@@ -171,15 +171,15 @@ namespace Ghurund::UI {
 
         // TODO: implement sRGB
 
-        format = getDXGIFormatFromWICFormat(pixelFormat);
+        giFormat = getDXGIFormatFromWICFormat(pixelFormat);
 
-        if (format == DXGI_FORMAT_UNKNOWN) {
+        if (giFormat == DXGI_FORMAT_UNKNOWN) {
             WICPixelFormatGUID convertToPixelFormat = convertToWICFormat(pixelFormat);
 
             if (convertToPixelFormat == GUID_WICPixelFormatDontCare)
                 return Status::CALL_FAIL;
 
-            format = getDXGIFormatFromWICFormat(convertToPixelFormat);
+            giFormat = getDXGIFormatFromWICFormat(convertToPixelFormat);
 
             if (FAILED(imageFactory->CreateFormatConverter(&wicConverter)))
                 return Status::CALL_FAIL;
@@ -194,7 +194,7 @@ namespace Ghurund::UI {
             imageConverted = true;
         }
 
-        pixelSize = getDXGIFormatBitsPerPixel(format) / 8;
+        pixelSize = getDXGIFormatBitsPerPixel(giFormat) / 8;
         rowPitch = width * pixelSize;
         int imageSize = rowPitch * height;
 
@@ -213,7 +213,7 @@ namespace Ghurund::UI {
             }
         }
 
-        ((Image&)resource).init(*imageData, width, height, format, pixelSize);
+        ((Image&)resource).init(*imageData, width, height, giFormat, pixelSize);
 
 cleanup:
         delete imageData;
@@ -221,13 +221,13 @@ cleanup:
         return result;
     }
     
-    Status ImageLoader::save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const {
+    Status ImageLoader::save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format, SaveOption options) const {
         if (resource.Type != Image::TYPE)
             return Status::WRONG_RESOURCE_TYPE;
 
         Image& image = (Image&)resource;
 
-        GUID guidContainerFormat = options & SaveOption::FORMAT_PNG ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
+        GUID guidContainerFormat = (!format || *format == Image::FORMAT_PNG) ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
 
         UINT64 dstRowPitch = image.Data.Size / image.Height;// (fpRowPitch + 255) & ~0xFF;
 

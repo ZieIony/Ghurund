@@ -21,17 +21,16 @@ namespace Messenger {
     private:
         Theme* theme;
         UIContext* context;
-        Application* app;
         Server server;
         Client client;
         SharedPointer<TextBlock> status;
         SharedPointer<TextBlock> clientCount;
 
     public:
-        MessengerWindow(Application& app);
+        MessengerWindow(Ghurund::Application& app);
 
         ~MessengerWindow();
 
-        virtual void onUpdate(const uint64_t time) override;
+        virtual void update(const uint64_t time) override;
     };
 }

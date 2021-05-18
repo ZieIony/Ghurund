@@ -1,26 +1,28 @@
 #include "MessengerWindow.h"
 #include "TextMessage.h"
+#include "core/window/WindowClass.h"
 
 #include "ui/control/Space.h"
 #include "ui/layout/LinearLayout.h"
 #include "net/Networking.h"
 
+#include <ranges>
+#include "ui/UIFeature.h"
+
 namespace Messenger {
     using namespace Ghurund::Net;
+    using namespace std::ranges;
 
-    MessengerWindow::MessengerWindow(Application& app):ApplicationWindow(WindowClass::WINDOWED, app.Timer) {
-        this->app = &app;
-        Ghurund::SwapChain* swapChain = ghnew Ghurund::SwapChain();
-        swapChain->init(app.Graphics, &app.Graphics2D, *this);
-        SwapChain = swapChain;
-
+    MessengerWindow::MessengerWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
+        UIFeature* uiFeature = app.Features.get<UIFeature>();
+        Graphics2D& graphics2d = uiFeature->Graphics2D;
         const uint16_t port = 52109;
 
         theme = ghnew LightTheme(app.ResourceManager, app.ResourceContext, 0xff0078D7);
-        context = ghnew UIContext(app.Graphics2D, *theme, *this);
+        context = ghnew UIContext(graphics2d, *theme, *this);
 
         Ghurund::UI::Canvas* canvas = ghnew Ghurund::UI::Canvas();
-        canvas->init(app.Graphics2D);
+        canvas->init(graphics2d);
         SharedPointer<Ghurund::UI::RootView> rootView = ghnew Ghurund::UI::RootView(*context, *canvas);
 
         status = makeShared<TextBlock>();
@@ -109,7 +111,7 @@ namespace Messenger {
         delete theme;
     }
 
-    void MessengerWindow::onUpdate(const uint64_t time) {
+    void MessengerWindow::update(const uint64_t time) {
         if (server.Hosting) {
             server.update(time);
             clientCount->Text = fmt::format(L"server: {} client(s)", server.Connections.count([](Connection* c) {
@@ -120,6 +122,6 @@ namespace Messenger {
             clientCount->Text = fmt::format(L"client: {}", client.Connected).c_str();
         }
         clientCount->invalidate();
-        __super::onUpdate(time);
+        __super::update(time);
     }
 }

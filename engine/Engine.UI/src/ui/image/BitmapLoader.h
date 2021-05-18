@@ -11,19 +11,19 @@ namespace Ghurund::UI {
     public:
         BitmapLoader(ImageLoader& imageLoader, ID2D1DeviceContext5& deviceContext):imageLoader(imageLoader), deviceContext(deviceContext) {}
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, LoadOption options) override {
+        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override {
             Bitmap& bitmap = (Bitmap&)resource;
             Image* image = ghnew Image();
-            Status result = imageLoader.load(manager, stream, *image, options);
+            Status result = imageLoader.load(manager, stream, *image, format, options);
             if (result == Status::OK)
                 bitmap.init(deviceContext, *image);
             image->release();
             return result;
         }
 
-        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, SaveOption options) const override {
+        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
             Bitmap& bitmap = (Bitmap&)resource;
-            return imageLoader.save(manager, stream, *bitmap.Image, options);
+            return imageLoader.save(manager, stream, *bitmap.Image, format, options);
         }
     };
 }

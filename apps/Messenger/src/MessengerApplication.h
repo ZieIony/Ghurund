@@ -1,31 +1,35 @@
-﻿#include "core/MathUtils.h"
-#include "ui/layout/StackLayout.h"
-#include "ui/control/PaddingContainer.h"
-#include "ui/RootView.h"
-#include "ui/LayoutLoader.h"
-
-#include "MessengerWindow.h"
-
-using namespace Ghurund;
-using namespace Ghurund::UI;
+﻿#include "MessengerWindow.h"
+#include "ui/UIFeature.h"
+#include "net/Networking.h"
 
 namespace Messenger {
+    using namespace Ghurund;
+    using namespace Ghurund::UI;
+    using namespace Ghurund::Net;
+
     class MessengerApplication:public Application {
+    private:
+        Theme* lightTheme;
+
     public:
+        MessengerApplication() {
+            auto uiFeature = ghnew UIFeature(*this);
+            Features.add<UIFeature>(uiFeature);
+            Graphics2D& graphics2d = uiFeature->Graphics2D;
+            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, ResourceManager);
+            uiFeature->Theme = lightTheme;
+
+            Features.add<Networking>(ghnew Networking());
+        }
+
+        ~MessengerApplication() {
+            delete lightTheme;
+        }
+
         void onInit() {
-            SystemWindow* window = ghnew MessengerWindow(*this);
-
-            window->initParameters(ParameterManager);
-
-            window->Size = { Settings.width, Settings.height };
-
+            auto window = ghnew MessengerWindow(*this);
+            window->Size = Settings.windowSize;
             Windows.add(window);
-            window->OnClosed.add([this](Ghurund::Window& window) {
-                Windows.remove((SystemWindow*)&window);
-                delete &window;
-                return true;
-            });
-
             window->Visible = true;
             window->activate();
         }

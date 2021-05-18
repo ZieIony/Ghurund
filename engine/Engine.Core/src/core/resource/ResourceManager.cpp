@@ -6,7 +6,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
-    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, LoadOption options) {
+    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options) {
         File* file;
         WString pathString = WString(path.toString());
         size_t protocolLength = lengthOf(LIB_PROTOCOL);
@@ -26,13 +26,23 @@ namespace Ghurund {
             }
         }
 
-        file->read();
-        MemoryInputStream stream(file->Data, file->Size);
-        resource.Path = &path;
-        Status result = loader.load(*this, stream, resource, options);
-        delete file;
+        Status result = file->read();
         if (result != Status::OK)
             return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
+
+        result = loadInternal(loader, resource, *file, format, options);
+        delete file;
+        return result;
+    }
+
+    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const File& file, const ResourceFormat* format, LoadOption options) {
+        if (file.Size == 0)
+            return Logger::log(LogType::ERR0R, Status::FILE_EMPTY, _T("file is empty: {}\n"), file.Path);
+        MemoryInputStream stream(file.Data, file.Size);
+        resource.Path = &file.Path;
+        Status result = loadInternal(loader, resource, stream, format, options);
+        if (result != Status::OK)
+            return result;
 
         /*if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &loader, &resource](const FilePath& path, const FileChange& fileChange) {
@@ -55,6 +65,22 @@ namespace Ghurund {
         }*/
         if (!(options & LoadOption::DONT_CACHE))
             add(resource);
+
+        return Status::OK;
+    }
+
+    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
+        if (!format) {
+            for (ResourceFormat& f : resource.Formats) {
+                if (f.Extension == resource.Path->Extension && f.canLoad()) {
+                    format = &f;
+                    break;
+                }
+            }
+        }
+        Status result = loader.load(*this, stream, resource, format, options);
+        if (result != Status::OK)
+            return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), *resource.Path);
 
         return Status::OK;
     }
@@ -100,19 +126,19 @@ namespace Ghurund {
         section.leave();
     }
 
-    Status ResourceManager::save(Resource& resource, SaveOption options) const {
+    Status ResourceManager::save(Resource& resource, const ResourceFormat* format, SaveOption options) const {
         return resource.save(options);
     }
 
-    Status ResourceManager::save(Resource& resource, const FilePath& path, SaveOption options) const {
+    Status ResourceManager::save(Resource& resource, const FilePath& path, const ResourceFormat* format, SaveOption options) const {
         return resource.save(path, options);
     }
 
-    Status ResourceManager::save(Resource& resource, File& file, SaveOption options) const {
+    Status ResourceManager::save(Resource& resource, File& file, const ResourceFormat* format, SaveOption options) const {
         return resource.save(file, options);
     }
 
-    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format, SaveOption options) const {
         size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
         stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {

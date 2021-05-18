@@ -70,15 +70,14 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"jpg", true, true),
-                ResourceFormat(L"jpeg", true, true),
-                ResourceFormat(L"png", true, true)
-            };
-            return formats;
-        }
+        static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", true, true);
+        static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", true, true);
+        static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", true, true);
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+
+        virtual const Array<ResourceFormat>& getFormats() const override {
+            return FORMATS;
+        }
     };
 }

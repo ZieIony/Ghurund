@@ -48,5 +48,14 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getCollection)) IDWriteFontCollection* Collection;
+
+        static const inline ResourceFormat FORMAT_TTF = ResourceFormat(L"ttf", true, false);
+        static const inline ResourceFormat FORMAT_OTF = ResourceFormat(L"otf", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_TTF, FORMAT_OTF };
+
+        virtual const Array<ResourceFormat>& getFormats() const override {
+            return FORMATS;
+        }
     };
 }
