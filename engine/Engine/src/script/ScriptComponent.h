@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ecs/Component.h"
 #include "Script.h"
 
 namespace Ghurund {
-    class ScriptComponent:public Component {
+    class ScriptComponent {
     private:
         Ghurund::Script* script = nullptr;
 

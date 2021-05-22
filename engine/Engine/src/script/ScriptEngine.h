@@ -5,7 +5,6 @@
 #include "core/Timer.h"
 #include "Script.h"
 #include "core/collection/PointerList.h"
-#include "ecs/System.h"
 #include "ScriptComponent.h"
 
 #include <atomic>
@@ -34,7 +33,7 @@
 #include "reflection_c98597c1_bb96_4ddc_92c4_079c395065da.h"
 
 namespace Ghurund {
-    class ScriptEngine: public Feature, public System<ScriptComponent> {
+    class ScriptEngine: public Feature {
         reflection_c98597c1_bb96_4ddc_92c4_079c395065da
 
     private:

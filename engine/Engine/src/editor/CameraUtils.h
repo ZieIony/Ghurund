@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/entity/Camera.h"
+#include "game/entity/camera/Camera.h"
 #include "graphics/DrawableComponent.h"
 
 namespace Ghurund {

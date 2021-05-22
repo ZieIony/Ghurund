@@ -1,7 +1,6 @@
 #pragma once
 
-#include "ecs/Component.h"
-#include "game/TransformComponent.h"
+#include "game/entity/TransformComponent.h"
 #include "game/parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
@@ -10,7 +9,7 @@
 #include <DirectXCollision.h>
 
 namespace Ghurund {
-	class DrawableComponent:public Component, public ParameterProvider {
+	class DrawableComponent:public ParameterProvider {
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
@@ -27,20 +26,14 @@ namespace Ghurund {
 		Material* material = nullptr;
 		List<Entity*> entities;
 
-		virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-		virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
-
-		static const Ghurund::Type& GET_TYPE();
-
 	public:
 
 		~DrawableComponent() {
 			finalize();
 		}
 
-		virtual void invalidate() override {
+		virtual void invalidate() {
 			finalize();
-			__super::invalidate();
 		}
 
 		Mesh* getMesh() const {
@@ -75,8 +68,8 @@ namespace Ghurund {
 			return material->Parameters;
 		}
 
-		virtual bool isValid() const override {
-			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid && __super::Valid;
+		virtual bool isValid() const {
+			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
 		void draw(Graphics& graphics, CommandList& commandList) {
@@ -154,12 +147,6 @@ namespace Ghurund {
 
 		void cull(BoundingFrustum& frustum) {
 			culled = CullingEnabled && frustum.Contains(transformedBoundingBox) == ContainmentType::DISJOINT;
-		}
-
-		inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-		virtual const Ghurund::Type& getType() const override {
-			return TYPE;
 		}
 	};
 }

@@ -6,7 +6,6 @@
 #include "SwapChain.h"
 
 #include "core/Object.h"
-#include "graphics/entity/Scene.h"
 #include "core/resource/ResourceManager.h"
 
 #include "reflection_46d71a27_5bac_4460_86a7_87a3a5b8fa83.h"

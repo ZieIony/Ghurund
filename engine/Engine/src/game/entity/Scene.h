@@ -1,17 +1,19 @@
 #pragma once
 
-#include "ecs/Entity.h"
 #include "core/resource/Resource.h"
 #include "physics/Physics.h"
 #include "physics/PhysicsSystem.h"
+#include "game/entity/camera/Camera.h"
 #include "graphics/DrawingSystem.h"
+
+#include <entt.hpp>
 
 namespace Ghurund {
     class Scene:public Resource {
     private:
+        entt::registry entityRegistry;
+
         PointerList<Entity*> entities;
-        TransformSystem transformSystem;
-        Physics::PhysicsSystem physicsSystem;
         DrawingSystem drawingSystem;
 
     protected:
@@ -45,24 +47,13 @@ namespace Ghurund {
 
         __declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
 
-        inline TransformSystem& getTransformSystem() {
-            return transformSystem;
-        }
-
-        __declspec(property(get = getTransformSystem)) TransformSystem& TransformSystem;
-
         inline DrawingSystem& getGraphicsSystem() {
             return drawingSystem;
         }
 
         __declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
 
-        inline void transform() {
-            transformSystem.update(0);
-        }
-
         inline void render(CommandList& commandList) {
-            drawingSystem.draw(commandList, transformSystem);
         }
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();

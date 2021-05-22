@@ -2,11 +2,12 @@
 #include "CameraController.h"
 
 #include "core/window/SystemWindow.h"
+#include <game/entity/camera/CameraComponent.h>
 
 namespace Ghurund {
 	using namespace std;
 
-	CameraController::CameraController(Camera& camera, SystemWindow* window) :camera(camera) {
+	CameraController::CameraController(CameraEntity& cameraEntity, SystemWindow* window) :cameraEntity(cameraEntity) {
 		modeMap.set(MouseButton::LEFT, Mode::ORBIT);
 		modeMap.set(MouseButton::MIDDLE, Mode::PAN);
 		modeMap.set(MouseButton::RIGHT, Mode::ROTATE);
@@ -40,18 +41,20 @@ namespace Ghurund {
 
 	bool CameraController::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
 		if (pressed) {
+			Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
+			TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
 			Mode mode = modeMap.get(pressedButton);
 			if (mode == CameraController::Mode::ORBIT) {
 				XMFLOAT3 rotation = camera.getRotation();
-				camera.setOrbit(rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
+				camera.setOrbit(transformComponent, rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
 			} else if (mode == CameraController::Mode::PAN) {
-				camera.pan((float)event.Delta.x, (float)event.Delta.y);
+				camera.pan(transformComponent, (float)event.Delta.x, (float)event.Delta.y);
 			} else if (mode == CameraController::Mode::ZOOM) {
 				if (camera.getDistance() > event.Delta.y)
-					camera.zoom((float)-event.Delta.y);
+					camera.zoom(transformComponent, (float)-event.Delta.y);
 			} else {
 				XMFLOAT3 rotation = camera.getRotation();
-				camera.setRotation(rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
+				camera.setRotation(transformComponent, rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
 			}
 		}
 
@@ -59,10 +62,12 @@ namespace Ghurund {
 	}
 
 	bool CameraController::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
+		Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
+		TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
 		if (camera.getDistance() > event.Delta) {
-			camera.zoom((float)event.Delta);
+			camera.zoom(transformComponent, (float)event.Delta);
 		} else {
-			camera.zoom(camera.getDistance() - DIST_EPSILON);
+			camera.zoom(transformComponent, camera.getDistance() - DIST_EPSILON);
 		}
 		return true;
 	}

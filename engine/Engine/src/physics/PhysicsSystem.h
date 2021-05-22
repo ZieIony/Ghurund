@@ -1,7 +1,5 @@
 #pragma once
 
-#include "RigidBodyComponent.h"
-#include "ecs/Entity.h"
 #include "core/resource/Resource.h"
 #include "physics/Physics.h"
 
@@ -13,7 +11,7 @@
 namespace Ghurund::Physics {
 	using namespace physx;
 
-	class PhysicsSystem :System<RigidBodyComponent> {
+	class PhysicsSystem {
 	private:
 		PxDefaultCpuDispatcher* dispatcher = nullptr;
 		PxScene* scene = nullptr;
@@ -26,10 +24,6 @@ namespace Ghurund::Physics {
 			sceneDesc.cpuDispatcher = dispatcher;
 			sceneDesc.filterShader = PxDefaultSimulationFilterShader;
 			scene = physics.get().createScene(sceneDesc);
-		}
-
-		RigidBodyComponent* makeComponent(TransformComponent& component) {
-			return ghnew RigidBodyComponent(component);
 		}
 
 		void update(float dt) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/entity/camera/Camera.h"
 #include "graphics/Renderer.h"
 #include "ui/image/Image.h"
 

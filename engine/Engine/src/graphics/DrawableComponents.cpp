@@ -14,7 +14,6 @@ namespace Ghurund {
 		model->Mesh = mesh;
 		model->Material = &material;
         model->initParameters(parameterManager);
-        model->Valid = true;
 
         return model;
     }
@@ -26,7 +25,6 @@ namespace Ghurund {
 		model->Mesh = mesh;
 		model->Material = &material;
         model->initParameters(parameterManager);
-        model->Valid = true;
 
         return model;
     }
@@ -38,7 +36,6 @@ namespace Ghurund {
         model->Mesh = mesh;
         model->Material = &material;
         model->initParameters(parameterManager);
-        model->Valid = true;
 
         return model;
     }
@@ -50,7 +47,6 @@ namespace Ghurund {
         model->Mesh = mesh;
         model->Material = &material;
         model->initParameters(parameterManager);
-        model->Valid = true;
 
         return model;
     }
@@ -62,7 +58,6 @@ namespace Ghurund {
         model->Mesh = mesh;
         model->Material = &material;
         model->initParameters(parameterManager);
-        model->Valid = true;
 
         return model;
     }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ScriptBindings.h"
-#include "graphics/entity/Light.h"
+#include "game/entity/light/Light.h"
 
 namespace Ghurund {
 

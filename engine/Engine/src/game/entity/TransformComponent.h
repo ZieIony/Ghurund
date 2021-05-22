@@ -1,25 +1,15 @@
 #pragma once
 
-#include "ecs/Component.h"
-#include "core/resource/Resource.h"
-
 #include <DirectXMath.h>
 
 namespace Ghurund {
 	using namespace DirectX;
 
-	class TransformComponent :public Component {
+	class TransformComponent {
 	private:
 		XMFLOAT3 position = {};
 		XMFLOAT3 rotation = {}, scale = { 1,1,1 };
 		XMFLOAT4X4 world;
-
-		virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-
-		virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
-
-	protected:
-		static const Ghurund::Type& GET_TYPE();
 
 	public:
 		inline void update() {
@@ -40,14 +30,12 @@ namespace Ghurund {
 
 		void setPosition(const XMFLOAT3& pos) {
 			this->position = pos;
-			//notifyObjectChanged();
 		}
 
 		void setPosition(float x, float y, float z) {
 			this->position.x = x;
 			this->position.y = y;
 			this->position.z = z;
-			//notifyObjectChanged();
 		}
 
 		inline const XMFLOAT3& getPosition() const {
@@ -59,14 +47,12 @@ namespace Ghurund {
 
 		void setRotation(const XMFLOAT3& rotation) {
 			this->rotation = rotation;
-			//notifyObjectChanged();
 		}
 
 		void setRotation(float yaw, float pitch, float roll) {
 			this->rotation.x = yaw;
 			this->rotation.y = pitch;
 			this->rotation.z = roll;
-			//notifyObjectChanged();
 		}
 
 		inline const XMFLOAT3& getRotation() const {
@@ -77,14 +63,12 @@ namespace Ghurund {
 
 		void setScale(const XMFLOAT3& scale) {
 			this->scale = scale;
-			//notifyObjectChanged();
 		}
 
 		void setScale(float x, float y, float z) {
 			this->scale.x = x;
 			this->scale.y = y;
 			this->scale.z = z;
-			//notifyObjectChanged();
 		}
 
 		inline const XMFLOAT3& getScale() const {
@@ -92,11 +76,5 @@ namespace Ghurund {
 		}
 
 		__declspec(property(get = getScale, put = setScale)) XMFLOAT3& Scale;
-
-		inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-		virtual const Ghurund::Type& getType() const override {
-			return TYPE;
-		}
 	};
 }

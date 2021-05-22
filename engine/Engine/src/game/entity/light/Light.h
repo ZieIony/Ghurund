@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Target.h"
-#include "ecs/Entity.h"
+#include "game/entity/Entity.h"
 
 namespace Ghurund {
-    class Light: public Entity, public ParameterProvider {
+    class Light: public Pointer, public ParameterProvider {
     private:
-		Target* target;
         PointerArray<Parameter*> parameters;
 
         static const Ghurund::Type& GET_TYPE() {
@@ -33,18 +31,7 @@ namespace Ghurund {
 
     public:
         Light():parameters(PointerArray<Parameter*>(0)) {
-            Name = L"light";
         }
-
-        inline void setTarget(Target* target) {
-            this->target = target;
-        }
-
-        inline const Target* getTarget() const {
-            return target;
-        }
-
-        __declspec(property(get = getTarget, put = setTarget)) Target* Target;
 
         virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;

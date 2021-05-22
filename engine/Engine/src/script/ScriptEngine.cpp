@@ -50,12 +50,12 @@ namespace Ghurund {
     }
 
     void ScriptEngine::update(const uint64_t time) {
-        for (ScriptComponent* c : Components) {
+        /*for (ScriptComponent* c : Components) {
 			if (!c->Enabled)
 				continue;
 			Script* s = c->Script;
             if (s->Valid)
                 s->execute();
-        }
+        }*/
     }
 }

@@ -8,7 +8,7 @@ namespace Ghurund {
     class ModelScriptBindings:ScriptBindings<DrawableComponent> {
     public:
         static void registerClass(asIScriptEngine& engine) {
-            ScriptBindings<DrawableComponent>::registerRefClass(engine, DrawableComponent::TYPE.Name);
+            //ScriptBindings<DrawableComponent>::registerRefClass(engine, DrawableComponent::TYPE.Name);
         }
     };
 

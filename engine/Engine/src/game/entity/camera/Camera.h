@@ -1,19 +1,17 @@
 #pragma once
 
 #include "core/io/MemoryStream.h"
+#include "core/resource/Resource.h"
+#include "game/entity/Entity.h"
+#include "game/entity/TransformComponent.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
 #include "graphics/Graphics.h"
-#include "ecs/Entity.h"
-#include "core/resource/Resource.h"
-#include "game/TransformComponent.h"
 
 namespace Ghurund {
 
-    class Camera: public Entity, public ParameterProvider {
+    class Camera: public Pointer, public ParameterProvider {
     private:
-        TransformComponent* transformComponent;
-		
 		XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, viewProjInv, facing;
         XMINT2 screenSize;
@@ -38,10 +36,6 @@ namespace Ghurund {
 
         Camera();
 
-		~Camera() {
-			transformComponent->release();
-		}
-
         virtual void initParameters(ParameterManager& parameterManager);
 
         virtual void updateParameters();
@@ -50,7 +44,7 @@ namespace Ghurund {
             return parameters;
         }
 
-        void rebuild();
+        void rebuild(TransformComponent& transformComponent);
 
         void calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir) const;
 
@@ -162,13 +156,12 @@ namespace Ghurund {
 
         inline void setPerspective(bool pers) {
             this->pers = pers;
-            notifyObjectChanged();
         }
 
         __declspec(property(get = getPerspective, put = setPerspective)) bool Perspective;
 
-        void setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
-        void setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist = 1.0f, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
+        void setPositionTargetUp(TransformComponent& transformComponent, const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
+        void setPositionDirectionDistanceUp(TransformComponent& transformComponent, const XMFLOAT3& pos, const XMFLOAT3& dir, float dist = 1.0f, const XMFLOAT3& up = XMFLOAT3(0, 1, 0));
 
         inline XMFLOAT3 getRotation() const {
             float currentYaw = (float)(atan2(dir.x, dir.z) + XM_PI);
@@ -178,12 +171,12 @@ namespace Ghurund {
             return XMFLOAT3(currentYaw, currentPitch, currentRoll);
         }
 
-        void setRotation(float yaw, float pitch, float roll = 0.0f);
-        void setOrbit(float yaw, float pitch, float roll = 0.0f);
-        void rotate(float yaw, float pitch, float roll = 0.0f);
-        void orbit(float yaw, float pitch, float roll = 0.0f);
-        void pan(float x, float y);
-        void zoom(float z);
+        void setRotation(TransformComponent& transformComponent, float yaw, float pitch, float roll = 0.0f);
+        void setOrbit(TransformComponent& transformComponent, float yaw, float pitch, float roll = 0.0f);
+        void rotate(TransformComponent& transformComponent, float yaw, float pitch, float roll = 0.0f);
+        void orbit(TransformComponent& transformComponent, float yaw, float pitch, float roll = 0.0f);
+        void pan(TransformComponent& transformComponent, float x, float y);
+        void zoom(TransformComponent& transformComponent, float z);
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

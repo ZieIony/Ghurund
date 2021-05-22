@@ -1,9 +1,9 @@
 #pragma once
 
-#include "graphics/entity/Camera.h"
 #include "core/input/EventConsumer.h"
-#include "KeyMap.h"
 #include "core/input/Input.h"
+#include "game/KeyMap.h"
+#include "game/entity/camera/CameraEntity.h"
 
 namespace Ghurund {
     class SystemWindow;
@@ -15,17 +15,17 @@ namespace Ghurund {
         };
 
     private:
-        Camera& camera;
+        CameraEntity& cameraEntity;
         Map<MouseButton, Mode> modeMap;
         bool pressed = false;
         MouseButton pressedButton = MouseButton::LEFT;
-        float rotateSensivity = 1.0f / 5 * XM_PI / 180;
+        float rotateSensivity = 1.0f / 5 * DirectX::XM_PI / 180;
         static constexpr float DIST_EPSILON = 0.01f;
         SystemWindow* window;
         KeyMap keyMap;
 
     public:
-        CameraController(Camera& camera, SystemWindow* window = nullptr);
+        CameraController(CameraEntity& camera, SystemWindow* window = nullptr);
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
