@@ -15,15 +15,15 @@ public:
     TEST_METHOD(Range_inc) {
         auto range = Range<size_t>(0, 3);
         auto iterator = range.begin();
-        Assert::AreEqual(0ull, *iterator);
+        Assert::AreEqual((size_t)0, *iterator);
         iterator++;
-        Assert::AreEqual(1ull, *iterator);
+        Assert::AreEqual((size_t)1, *iterator);
         iterator++;
-        Assert::AreEqual(2ull, *iterator);
+        Assert::AreEqual((size_t)2, *iterator);
         iterator++;
-        Assert::AreEqual(3ull, *iterator);
+        Assert::AreEqual((size_t)3, *iterator);
         iterator++;
-        Assert::AreEqual(4ull, *iterator);
+        Assert::AreEqual((size_t)4, *iterator);
         Assert::IsTrue(range.end() == iterator);
     }
 
@@ -43,11 +43,11 @@ public:
     TEST_METHOD(Range_inc_step) {
         auto range = Range<size_t>(0, 3, 2);
         auto iterator = range.begin();
-        Assert::AreEqual(0ull, *iterator);
+        Assert::AreEqual((size_t)0, *iterator);
         iterator++;
-        Assert::AreEqual(2ull, *iterator);
+        Assert::AreEqual((size_t)2, *iterator);
         iterator++;
-        Assert::AreEqual(4ull, *iterator);
+        Assert::AreEqual((size_t)4, *iterator);
         Assert::IsTrue(range.end() == iterator);
     }
 
@@ -69,13 +69,13 @@ public:
     TEST_METHOD(Range_dec_unsigned) {
         auto range = Range<size_t>(3, 0, 1);
         auto iterator = range.begin();
-        Assert::AreEqual(3ull, *iterator);
+        Assert::AreEqual((size_t)3, *iterator);
         iterator++;
-        Assert::AreEqual(2ull, *iterator);
+        Assert::AreEqual((size_t)2, *iterator);
         iterator++;
-        Assert::AreEqual(1ull, *iterator);
+        Assert::AreEqual((size_t)1, *iterator);
         iterator++;
-        Assert::AreEqual(0ull, *iterator);
+        Assert::AreEqual((size_t)0, *iterator);
         iterator++;
         Assert::AreEqual((size_t)-1, *iterator);
         Assert::IsTrue(range.end() == iterator);

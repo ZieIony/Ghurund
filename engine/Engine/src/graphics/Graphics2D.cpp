@@ -46,11 +46,11 @@ namespace Ghurund {
             &m_d3d11DeviceContext,
             nullptr
         )))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "D3D11On12CreateDevice failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D3D11On12CreateDevice failed\n"));
 
         // Query the 11On12 device from the 11 device.
         if (FAILED(d3d11Device.As(&m_d3d11On12Device)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "cast to 11On12 device failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("cast to 11On12 device failed\n"));
 
 #if defined(_DEBUG)
         // Filter a debug error coming from the 11on12 layer.
@@ -75,24 +75,24 @@ namespace Ghurund {
             filter.DenyList.pIDList = denyIds;
 
             if (FAILED(infoQueue->PushStorageFilter(&filter)))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "PushStorageFilter failed\n");
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("PushStorageFilter failed\n"));
         }
 #endif
 
         ComPtr<IDXGIDevice> dxgiDevice;
         if (FAILED(m_d3d11On12Device.As(&dxgiDevice)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "m_d3d11On12Device.As(&dxgiDevice) failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("m_d3d11On12Device.As(&dxgiDevice) failed\n"));
 
         if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory6), &d2dFactoryOptions, &m_d2dFactory)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "D2D1CreateFactory failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D2D1CreateFactory failed\n"));
         if (FAILED(m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateDevice failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDevice failed\n"));
 
         if (FAILED(m_d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &deviceContext)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateDeviceContext failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDeviceContext failed\n"));
 
         if (FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory5), &m_dwriteFactory)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "DWriteCreateFactory failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("DWriteCreateFactory failed\n"));
 
         return Status::OK;
     }
@@ -110,7 +110,7 @@ namespace Ghurund {
     Status Graphics2D::beginPaint(RenderTarget& target) {
 #ifdef _DEBUG
         if (state != UIState::IDLE)
-            Logger::log(LogType::WARNING, Status::INV_STATE, "UI is not in IDLE state\n");
+            Logger::log(LogType::WARNING, Status::INV_STATE, _T("UI is not in IDLE state\n"));
 #endif
         currentTarget = &target;
         deviceContext->SetTarget(currentTarget->Target2D);
@@ -127,12 +127,12 @@ namespace Ghurund {
     Status Graphics2D::endPaint() {
 #ifdef _DEBUG
         if (state != UIState::RECORDING)
-            Logger::log(LogType::WARNING, Status::INV_STATE, "UI is not in RECORDING state\n");
+            Logger::log(LogType::WARNING, Status::INV_STATE, _T("UI is not in RECORDING state\n"));
 #endif
 
         HRESULT endDrawResult = deviceContext->EndDraw();
         if (FAILED(endDrawResult))
-            return Logger::log(LogType::WARNING, Status::CALL_FAIL, "ID2D1DeviceContext2::EndDraw() failed with code {}\n", endDrawResult);
+            return Logger::log(LogType::WARNING, Status::CALL_FAIL, _T("ID2D1DeviceContext2::EndDraw() failed with code {}\n"), endDrawResult);
 
         auto wrappedTarget = currentTarget->WrappedTarget;
         m_d3d11On12Device->ReleaseWrappedResources(&wrappedTarget, 1);

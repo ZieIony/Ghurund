@@ -7,13 +7,11 @@
 #include <queue>
 
 namespace Ghurund {
-    class Thread {
+    class Thread:public NamedObject
+    {
     private:
         HANDLE handle = INVALID_HANDLE_VALUE;
         DWORD threadId = 0;
-        bool finishing = false;
-        CriticalSection section;
-        HANDLE event;
 
         static DWORD WINAPI threadMain(void* arg) {
             Thread* thread = (Thread*)arg;
@@ -22,81 +20,38 @@ namespace Ghurund {
         }
 
     protected:
-        virtual void wakeUp() {}
-
         virtual void run() = 0;
 
     public:
-
-        Thread() {
-            event = CreateEvent(nullptr, false, false, nullptr);
-        }
-
-        ~Thread() {
+        virtual ~Thread() {
             if (handle != INVALID_HANDLE_VALUE)
                 finish();
         }
 
-        void start() {
+        inline void start() {
             handle = CreateThread(NULL, 0, threadMain, this, 0, &threadId);
         }
 
-        void wait(DWORD ms = INFINITE) {
-            WaitForSingleObjectEx(event, ms, true);
-        }
-
-        void notify() {
-            SetEvent(event);
-        }
-
-        bool isFinishing() {
-            section.enter();
-            bool result = finishing;
-            section.leave();
-            return result;
-        }
-
-        void finish() {
-            section.enter();
-            finishing = true;
-            wakeUp();
-            section.leave();
+        virtual void finish() {
             WaitForSingleObject(handle, INFINITE);
             CloseHandle(handle);
             handle = INVALID_HANDLE_VALUE;
         }
 
-        DWORD getId() {
+        inline void join() {
+            WaitForSingleObject(handle, INFINITE);
+        }
+
+        inline DWORD getId() {
             return threadId;
         }
 
         __declspec(property(get = getId)) DWORD Id;
 
-        HANDLE getHandle() {
+        inline HANDLE getHandle() {
             return handle;
         }
 
         __declspec(property(get = getHandle)) HANDLE Handle;
-    };
-
-    class APCThread:public Thread {
-    private:
-        static void CALLBACK wake(__in  ULONG_PTR arg) {}
-
-    protected:
-        virtual void wakeUp() {
-            post(&wake, 0);
-        }
-
-    public:
-
-        void post(PAPCFUNC apc, ULONG_PTR data) {
-            QueueUserAPC(apc, Handle, data);
-        }
-
-        void run() {
-            while (!isFinishing())
-                ::SleepEx(INFINITE, true);
-        }
     };
 }

@@ -138,7 +138,7 @@ namespace Ghurund::UI {
             control->load(*this, xml);
             return control;
         }
-        Logger::log(LogType::ERR0R, _T("Control type {} not registered in LayoutLoader.\n"), String(name));
+        Logger::log(LogType::ERR0R, _T("Control type {} not registered in LayoutLoader.\n"), convertText<char, tchar>(AString(name)));
         return nullptr;
     }
 
@@ -177,7 +177,7 @@ namespace Ghurund::UI {
     }
 
     WString LayoutLoader::loadText(const char* str) {
-        return toWideChar(AString(str));
+        return convertText<char, wchar_t>(AString(str));
     }
 
     TextFormat* LayoutLoader::loadTextFormat(const char* str) {
@@ -232,6 +232,6 @@ namespace Ghurund::UI {
         AStringView sView = AStringView(path);
         if (sView.startsWith(FILE_PROTOCOL))
             sView = sView.substring(lengthOf(FILE_PROTOCOL));
-        return toWideChar(AString(sView.Data));
+        return convertText<char, wchar_t>(AString(sView.Data));
     }
 }

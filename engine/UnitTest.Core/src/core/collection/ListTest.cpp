@@ -27,7 +27,7 @@ public:
             TestAllocator a;
             List<uint32_t, TestAllocator&> list(a);
 
-            Assert::AreEqual(list.Size, 0ull);
+            Assert::AreEqual(list.Size, (size_t)0);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, true);
             Assert::AreEqual(a.Allocations, 1);
@@ -37,7 +37,7 @@ public:
         {
             List<TestClass> list;
 
-            Assert::AreEqual(list.Size, 0ull);
+            Assert::AreEqual(list.Size, (size_t)0);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, true);
         }
@@ -48,8 +48,8 @@ public:
         {
             List<uint32_t> list(20);
 
-            Assert::AreEqual(list.Size, 0ull);
-            Assert::AreEqual(list.Capacity, 20ull);
+            Assert::AreEqual(list.Size, (size_t)0);
+            Assert::AreEqual(list.Capacity, (size_t)20);
             Assert::AreEqual(list.Empty, true);
         }
         _____________________checkMemory();
@@ -57,8 +57,8 @@ public:
         {
             List<TestClass> list(20);
 
-            Assert::AreEqual(list.Size, 0ull);
-            Assert::AreEqual(list.Capacity, 20ull);
+            Assert::AreEqual(list.Size, (size_t)0);
+            Assert::AreEqual(list.Capacity, (size_t)20);
             Assert::AreEqual(list.Empty, true);
         }
         _____________________checkMemory();
@@ -68,7 +68,7 @@ public:
         List<uint32_t> testList = { 1, 2, 3 };
         List<uint32_t> list = List<uint32_t>(testList);
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3ull);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -81,7 +81,7 @@ public:
         List<uint32_t> testList = { 1, 2, 3 };
         List<uint32_t> list = std::move(testList);
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -93,7 +93,7 @@ public:
     TEST_METHOD(List_constructorInitializer) {
         List<uint32_t> list = { 1, 2, 3 };
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -135,7 +135,7 @@ public:
         List<uint32_t> list;
         list = std::move(testList);
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -149,7 +149,7 @@ public:
             List<uint32_t> list;
             list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
             Assert::AreEqual(list[0], 1u);
@@ -163,7 +163,7 @@ public:
         List<uint32_t> list;
         list.add(1);
 
-        Assert::AreEqual(list.Size, 1ull);
+        Assert::AreEqual(list.Size, (size_t)1);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -174,7 +174,7 @@ public:
         List<uint32_t> list;
         list.addAll({ 1, 2, 3 });
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -188,14 +188,14 @@ public:
         const List<uint32_t> testList = { 1, 2, 3 };
         list.addAll(testList);
 
-        Assert::AreEqual(testList.Size, 3ull);
+        Assert::AreEqual(testList.Size, (size_t)3);
         Assert::AreEqual(testList.Capacity >= list.Size, true);
         Assert::AreEqual(testList.Empty, false);
         Assert::AreEqual(testList[0], 1u);
         Assert::AreEqual(testList[1], 2u);
         Assert::AreEqual(testList[2], 3u);
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -210,7 +210,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         list.insert(1, 4);
 
-        Assert::AreEqual(list.Size, 4ull);
+        Assert::AreEqual(list.Size, (size_t)4);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -224,7 +224,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         list.set(1, 4);
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -238,7 +238,7 @@ public:
             List<uint32_t> list = { 1, 2, 3 };
             auto val = list.get(1);
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
             Assert::AreEqual(list[0], 1u);
@@ -258,7 +258,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         uint32_t& val = list[1];
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -277,7 +277,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         list.remove(2);
 
-        Assert::AreEqual(list.Size, 2ull);
+        Assert::AreEqual(list.Size, (size_t)2);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -289,7 +289,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         list.removeAt(2);
 
-        Assert::AreEqual(list.Size, 2ull);
+        Assert::AreEqual(list.Size, (size_t)2);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::AreEqual(list[0], 1u);
@@ -301,7 +301,7 @@ public:
         List<uint32_t> list = { 1, 2, 3,4,5,6,7,8 };
         list.removeAll({ 2,4,1 });
 
-        Assert::AreEqual(list.Size, 5ull);
+        Assert::AreEqual(list.Size, (size_t)5);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
 
@@ -316,7 +316,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
 
@@ -329,7 +329,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             const List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
 
@@ -344,21 +344,21 @@ public:
         {
             List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list.indexOf(2), 1ull);
-            Assert::AreEqual(list.indexOf(4), 3ull);
+            Assert::AreEqual(list.indexOf(2), (size_t)1);
+            Assert::AreEqual(list.indexOf(4), (size_t)3);
         }
 
         {
             const List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list.indexOf(2), 1ull);
-            Assert::AreEqual(list.indexOf(4), 3ull);
+            Assert::AreEqual(list.indexOf(2), (size_t)1);
+            Assert::AreEqual(list.indexOf(4), (size_t)3);
         }
         _____________________checkMemory();
     }
@@ -367,7 +367,7 @@ public:
         {
             List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
             Assert::IsTrue(list.contains(1));
@@ -377,7 +377,7 @@ public:
         {
             const List<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, 3ull);
+            Assert::AreEqual(list.Size, (size_t)3);
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
             Assert::IsTrue(list.contains(1));
@@ -390,7 +390,7 @@ public:
         List<uint32_t> list = { 1, 2, 3 };
         List<uint32_t> list2 = { 1, 2, 3 };
 
-        Assert::AreEqual(list.Size, 3ull);
+        Assert::AreEqual(list.Size, (size_t)3);
         Assert::AreEqual(list.Capacity >= list.Size, true);
         Assert::AreEqual(list.Empty, false);
         Assert::IsTrue(list == list2);

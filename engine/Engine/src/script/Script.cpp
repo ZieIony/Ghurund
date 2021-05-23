@@ -60,7 +60,7 @@ namespace Ghurund {
         int r = ctx->Execute();
         if (r != asEXECUTION_FINISHED) {
             if (r == asEXECUTION_EXCEPTION) {
-                Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), String(ctx->GetExceptionString()));
+                Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), convertText<char, tchar>(AString(ctx->GetExceptionString())));
                 return Status::SCRIPT_EXCEPTION;
             }
         }

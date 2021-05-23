@@ -52,7 +52,7 @@ namespace Ghurund::UI {
             size_t layoutIndex = Theme->Layouts.indexOfKey(&Type);
             if (layoutIndex == Theme->Layouts.Size)
                 return nullptr;
-            FilePath layoutPath = toWideChar(Theme->Layouts.getValue(layoutIndex));
+            FilePath layoutPath = convertText<char, wchar_t>(Theme->Layouts.getValue(layoutIndex));
             SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, nullptr, LoadOption::DONT_CACHE);
             if (layout && !layout->Controls.Empty)
                 return ghnew LayoutType(layout->Controls[0]);

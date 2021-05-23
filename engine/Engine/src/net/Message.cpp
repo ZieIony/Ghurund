@@ -7,7 +7,7 @@ namespace Ghurund::Net {
         bool valid = this->crc == crc;
 #ifdef _DEBUG
         if (!valid) {
-            String name = toTchar(MessageType::VALUES[type].Name);
+            String name = convertText<char, tchar>(MessageType::VALUES[type].Name);
             Logger::log(LogType::INFO, _T("invalid crc {} vs id:{}, type:{}, crc:{}, msg:{}\n"), crc, id, name, crc, messageType);
         }
 #endif
@@ -15,10 +15,11 @@ namespace Ghurund::Net {
     }
     
     String Message::toString() const {
-        return fmt::format(_T("{{ crc:{}, type:{}, id:{}, msg:{} }}"), crc, type, id, messageType).c_str();
+        String name = convertText<char, tchar>(MessageType::VALUES[type].Name);
+        return std::format(_T("{{ crc:{}, type:{}, id:{}, msg:{} }}"), crc, name, id, messageType).c_str();
     }
     
     String MessageItem::toString() const {
-        return fmt::format(_T("{{ time:{}, retry:{}, size:{}, msg:{} }}"), time, retryCount, messageSize, ((Ghurund::Net::Message*)messageData)->toString()).c_str();
+        return std::format(_T("{{ time:{}, retry:{}, size:{}, msg:{} }}"), time, retryCount, messageSize, ((Ghurund::Net::Message*)messageData)->toString()).c_str();
     }
 }

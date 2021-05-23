@@ -3,11 +3,11 @@
 
 namespace Ghurund {
 
-    const FileChange& FileChange::ADDED = FileChange(FileChangeEnum::ADDED, _T("added"));
-    const FileChange& FileChange::REMOVED = FileChange(FileChangeEnum::REMOVED, _T("removed"));
-    const FileChange& FileChange::MODIFIED = FileChange(FileChangeEnum::MODIFIED, _T("modified"));
-    const FileChange& FileChange::RENAMED_FROM = FileChange(FileChangeEnum::RENAMED_FROM, _T("renamed from"));
-    const FileChange& FileChange::RENAMED_TO = FileChange(FileChangeEnum::RENAMED_TO, _T("renamed to"));
+    const FileChange& FileChange::ADDED = FileChange(FileChangeEnum::ADDED, "added");
+    const FileChange& FileChange::REMOVED = FileChange(FileChangeEnum::REMOVED, "removed");
+    const FileChange& FileChange::MODIFIED = FileChange(FileChangeEnum::MODIFIED, "modified");
+    const FileChange& FileChange::RENAMED_FROM = FileChange(FileChangeEnum::RENAMED_FROM, "renamed from");
+    const FileChange& FileChange::RENAMED_TO = FileChange(FileChangeEnum::RENAMED_TO, "renamed to");
 
     const EnumValues<FileChangeEnum, FileChange> FileChange::VALUES = {
         &FileChange::ADDED,

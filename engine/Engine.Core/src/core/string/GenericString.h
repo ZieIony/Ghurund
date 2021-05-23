@@ -1,6 +1,7 @@
 #pragma once
 
-#include "core/string/TextUtils.h"
+#include "TextUtils.h"
+#include "core/collection/Array.h"
 
 #include <algorithm>
 #undef min
@@ -8,7 +9,8 @@
 
 namespace Ghurund {
 
-    template <class T> class GenericString {
+    template<typename T>
+    class GenericString {
     private:
         const static size_t INITIAL_CAPACITY = 10;
 
@@ -358,5 +360,65 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getHash)) int Hash;
+
+        std::strong_ordering operator<=>(const GenericString<T>& string) const {
+            int order = lexicographicalStrCompare<T>(v, string.Data);
+            if (order < 0) {
+                return std::strong_ordering::less;
+            } else if (order > 0) {
+                return std::strong_ordering::greater;
+            } else {
+                return std::strong_ordering::equal;
+            }
+        }
+
+        inline GenericString<T> substring(size_t start) const {
+            return GenericString<T>(v + start);
+        }
+
+        inline GenericString<T> substring(size_t start, size_t length) const {
+            return GenericString<T>(v + start, length);
+        }
+
+        Array<GenericString<T>> split(const T* d) const {
+            List<GenericString<T>> list;
+            size_t index = 0;
+            size_t strSize = lengthOf(d);
+            while (index < Length) {
+                size_t nextIndex = find(d, index);
+                if (nextIndex == index) {
+                } else if (nextIndex == size) {
+                    GenericString<T> str = substring(index, size - index - 1);
+                    list.add(str);
+                    break;
+                } else {
+                    GenericString<T> str = substring(index, nextIndex - index);
+                    list.add(str);
+                }
+                index = nextIndex + strSize;
+            }
+            return list;
+        }
+
+        inline GenericString<T> toLowerCase() const {
+            GenericString<T> copy(*this);
+            for (size_t i = 0; i < Length; i++)
+                copy.v[i] = Ghurund::toLowerCase<T>(copy.v[i]);
+            return copy;
+        }
+
+        inline GenericString<T> toUpperCase() const {
+            GenericString<T> copy(*this);
+            for (size_t i = 0; i < Length; i++)
+                copy.v[i] = Ghurund::toUpperCase<T>(copy.v[i]);
+            return copy;
+        }
+
+        inline GenericString<T> trim() const {
+            size_t i, j, l = Length;
+            for (i = 0; i < l && isSpace<T>(v[i]); i++);
+            for (j = l; j > i && isSpace<T>(v[j]); j--);
+            return GenericString<T>(v + i, j - i);
+        }
     };
 }

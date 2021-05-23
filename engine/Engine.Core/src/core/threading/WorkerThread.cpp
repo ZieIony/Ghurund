@@ -1,85 +1,28 @@
 #include "ghcpch.h"
 #include "WorkerThread.h"
 
+#include "core/logging/Logger.h"
+
 namespace Ghurund {
-    void WorkerThread::post(Task* task, long delayMs) {
-        /*section.enter();
-        timer.tick();
-        task->addReference();
-        time_t time = (time_t)(timer.Time * 1000);
-        task->time = time + delayMs;
-        for (size_t i = 0; i < queue.Size; i++) {
-            Task* t = queue[i];
-            if (t->time < task->time) {
-                queue.insert(i, task);
-                section.leave();
-                notify();
-                return;
-            }
-        }
-        queue.add(task);
-        section.leave();
-        notify();*/
-    }
-
-    void WorkerThread::remove(const WString& taskName) {
-        section.enter();
-        for (size_t i = 0; i < queue.Size; i++) {
-            if (queue[i]->Name == taskName) {
-                Task* task = queue[i];
-                queue.removeAt(i);
-                task->release();
-                break;
-            }
-        }
-        section.leave();
-    }
-
-    void WorkerThread::remove(Task* task) {
-        section.enter();
-        queue.remove(task);
-        task->release();
-        section.leave();
-    }
-
-    /**
-    * Gets a copy of tasks queued for execution at the time of the getTasks() call.
-    */
-    Array<Task*>* WorkerThread::getTasks() {
-        section.enter();
-        Array<Task*>* tasks = new Array<Task*>(queue.Size);
-        size_t i = 0;
-        for (size_t i = 0; i < queue.Size; i++) {
-            Task* task = queue[i];
-            task->addReference();
-            tasks->set(i, task);
-        }
-        section.leave();
-        return tasks;
-    }
-
     void WorkerThread::run() {
-        /*while (!isFinishing()) {
-            wait();
+        running.test_and_set();
+        while (true) {
+            waitable.wait();
+            busy.test_and_set();
             while (true) {
+                if (!running.test())
+                    return;
                 section.enter();
-                if (queue.Empty) {
-                    section.leave();
+                if (queue.Empty)
                     break;
-                }
-                timer.tick();
-                time_t time = (time_t)(timer.Time * 1000);
-                Task* task = queue.get(0);
-                if (task->time > time) {
-                    section.leave();
-                    wait((DWORD)(task->time - time));
-                } else {
-                    queue.removeAt(0);
-                    section.leave();
-                    task->run();
-                    task->release();
-                }
+                SharedPointer<Task> task = queue.front();
+                queue.remove();
+                section.leave();
+                Logger::print(LogType::INFO, _T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+                task->run();
+                Logger::print(LogType::INFO, _T("finished task '{}' on thread '{}'\n"), task->Name, Name);
             }
-        }*/
+            busy.clear();
+        }
     }
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/string/AString.h"
+#include "core/string/String.h"
 
 #include <dbghelp.h>
 
@@ -17,7 +17,8 @@ namespace Ghurund {
     public:
         struct Entry {
             uint64_t address = 0;
-            AString name, fileName;
+            AString name;
+            WString fileName;
             uint32_t fileLine = 0;
         };
 
@@ -31,7 +32,7 @@ namespace Ghurund {
         }
 
         ~StackTrace() {
-            delete[] (uint8_t*)symbol;
+            delete[](uint8_t*)symbol;
         }
 
         inline uint16_t getSize() const {
@@ -50,10 +51,10 @@ namespace Ghurund {
                 entry.name = AString(symbol->Name, symbol->NameLen);
             }
 
-            IMAGEHLP_LINE line;
-            line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
             DWORD displacement2 = 0;
-            if (SymGetLineFromAddr(process, address, &displacement2, &line)) {
+            IMAGEHLP_LINEW64 line;  // IMAGEHLP_LINEW uses char instead of wchar_t
+            line.SizeOfStruct = sizeof(IMAGEHLP_LINEW64);
+            if (SymGetLineFromAddrW64(process, address, &displacement2, &line)) {
                 entry.fileName = line.FileName;
                 entry.fileLine = line.LineNumber;
             }

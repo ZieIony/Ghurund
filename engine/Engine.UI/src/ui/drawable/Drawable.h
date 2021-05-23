@@ -2,8 +2,6 @@
 
 #include "ui/control/Control.h"
 
-#include "reflection_f4049b37_46e5_4d04_adcf_cbdd4d2d3efb.h"
-
 namespace Ghurund::UI {
     class Drawable:public Pointer {
     protected:

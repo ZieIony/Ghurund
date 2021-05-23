@@ -2,11 +2,11 @@
 
 #include "ControlParent.h"
 
-#include "reflection_7282a015_e8fb_4b3d_8043_b8385baa2863.h"
+#include "reflection_6cd843c9_baef_42ed_8438_114be2efc99b.h"
 
 namespace Ghurund::UI {
     class ControlContainer: public ControlParent {
-        reflection_7282a015_e8fb_4b3d_8043_b8385baa2863
+        reflection_6cd843c9_baef_42ed_8438_114be2efc99b
 
     private:
         Control* child = nullptr;

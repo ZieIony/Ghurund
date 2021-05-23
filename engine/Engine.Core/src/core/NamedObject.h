@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/string/WString.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class NamedObject {
@@ -8,7 +8,7 @@ namespace Ghurund {
         WString name;
 
     public:
-        virtual ~NamedObject() = default;
+        virtual ~NamedObject() = 0 {};
 
         virtual void setName(const WString& name) {
             this->name = name;

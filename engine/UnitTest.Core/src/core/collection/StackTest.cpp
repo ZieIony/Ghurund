@@ -19,7 +19,7 @@ public:
     TEST_METHOD(Stack_constructor) {
         Stack<uint32_t> stack;
 
-        Assert::AreEqual(stack.Size, 0ull);
+        Assert::AreEqual(stack.Size, (size_t)0);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, true);
         _____________________checkMemory();
@@ -28,8 +28,8 @@ public:
     TEST_METHOD(Stack_constructorInitial) {
         Stack<uint32_t> stack(20);
 
-        Assert::AreEqual(stack.Size, 0ull);
-        Assert::AreEqual(stack.Capacity, 20ull);
+        Assert::AreEqual(stack.Size, (size_t)0);
+        Assert::AreEqual(stack.Capacity, (size_t)20);
         Assert::AreEqual(stack.Empty, true);
         _____________________checkMemory();
     }
@@ -53,7 +53,7 @@ public:
         Stack<uint32_t> testStack = testList;
         Stack<uint32_t> stack = std::move(testStack);
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         auto i = testList.begin();
@@ -67,7 +67,7 @@ public:
         std::initializer_list<uint32_t> testList = { 1, 2, 3 };
         Stack<uint32_t> stack = testList;
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         auto i = testList.begin();
@@ -113,7 +113,7 @@ public:
         Stack<uint32_t> stack;
         stack = std::move(testStack);
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         auto i = testList.begin();
@@ -128,7 +128,7 @@ public:
         Stack<uint32_t> stack;
         stack = testList;
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         auto i = testList.begin();
@@ -142,7 +142,7 @@ public:
         Stack<uint32_t> stack;
         stack.push(1);
 
-        Assert::AreEqual(stack.Size, 1ull);
+        Assert::AreEqual(stack.Size, (size_t)1);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         Assert::AreEqual(stack.top(), 1u);
@@ -154,7 +154,7 @@ public:
         Stack<uint32_t> stack;
         stack.pushAll(testList);
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         auto i = testList.begin();
@@ -169,12 +169,12 @@ public:
         const Stack<uint32_t> testStack = { 1, 2, 3 };
         stack.pushAll(testStack);
 
-        Assert::AreEqual(testStack.Size, 3ull);
+        Assert::AreEqual(testStack.Size, (size_t)3);
         Assert::AreEqual(testStack.Capacity >= stack.Size, true);
         Assert::AreEqual(testStack.Empty, false);
         Assert::AreEqual(stack, { 1, 2, 3 });
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         Assert::AreEqual(stack, { 1, 2, 3 });
@@ -187,7 +187,7 @@ public:
         Stack<uint32_t> stack = { 1, 2, 3 };
         uint32_t val = stack.pop();
 
-        Assert::AreEqual(stack.Size, 2ull);
+        Assert::AreEqual(stack.Size, (size_t)2);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         Assert::AreEqual(stack, { 1, 2 });
@@ -200,7 +200,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
 
@@ -213,7 +213,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             const Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
 
@@ -228,21 +228,21 @@ public:
         {
             Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
-            Assert::AreEqual(stack.indexOf(2), 1ull);
-            Assert::AreEqual(stack.indexOf(4), 3ull);
+            Assert::AreEqual(stack.indexOf(2), (size_t)1);
+            Assert::AreEqual(stack.indexOf(4), (size_t)3);
         }
 
         {
             const Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
-            Assert::AreEqual(stack.indexOf(2), 1ull);
-            Assert::AreEqual(stack.indexOf(4), 3ull);
+            Assert::AreEqual(stack.indexOf(2), (size_t)1);
+            Assert::AreEqual(stack.indexOf(4), (size_t)3);
         }
         _____________________checkMemory();
     }
@@ -251,7 +251,7 @@ public:
         {
             Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
             Assert::IsTrue(stack.contains(1));
@@ -261,7 +261,7 @@ public:
         {
             const Stack<uint32_t> stack = { 1, 2, 3 };
 
-            Assert::AreEqual(stack.Size, 3ull);
+            Assert::AreEqual(stack.Size, (size_t)3);
             Assert::AreEqual(stack.Capacity >= stack.Size, true);
             Assert::AreEqual(stack.Empty, false);
             Assert::IsTrue(stack.contains(1));
@@ -274,7 +274,7 @@ public:
         Stack<uint32_t> stack = { 1, 2, 3 };
         Stack<uint32_t> stack2 = { 1, 2, 3 };
 
-        Assert::AreEqual(stack.Size, 3ull);
+        Assert::AreEqual(stack.Size, (size_t)3);
         Assert::AreEqual(stack.Capacity >= stack.Size, true);
         Assert::AreEqual(stack.Empty, false);
         Assert::IsTrue(stack == stack2);

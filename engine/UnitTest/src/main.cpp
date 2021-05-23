@@ -1,3 +1,5 @@
+#include "pch.h"
+
 #ifdef _WIN64
 #pragma comment(lib, "GhurundEngine.Core_64.lib")
 #pragma comment(lib, "GhurundEngine_64.lib")

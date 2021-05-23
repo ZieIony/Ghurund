@@ -4,7 +4,6 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Kernel32.lib")
-#pragma comment(lib, "Dbghelp.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "d3d12.lib")
@@ -12,20 +11,17 @@
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "D3D11.lib")
-#pragma comment(lib, "tinyxml2.lib")
 
 #ifdef _DEBUG
-#pragma comment(lib, "fmtd.lib")
+#pragma comment(lib, "tinyxml2d.lib")
 #else
-#pragma comment(lib, "fmt.lib")
+#pragma comment(lib, "tinyxml2.lib")
 #endif
 
 #ifdef _WIN64
-#pragma comment(lib, "GhurundEngine.Core_64.lib")
 #pragma comment(lib, "GhurundEngine.UI_64.lib")
 #pragma comment(lib, "GhurundEngine_64.lib")
 #else
-#pragma comment(lib, "GhurundEngine.Core_32.lib")
 #pragma comment(lib, "GhurundEngine.UI_32.lib")
 #pragma comment(lib, "GhurundEngine_32.lib")
 #endif
@@ -44,7 +40,7 @@ namespace Ghurund {
 #endif
 
         {
-            Type application;
+            Type application = {};
             application.run(&settings);
         }
 

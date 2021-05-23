@@ -4,7 +4,7 @@
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
     Ghurund::Settings settings;
-    settings.parse(cmdLine);
+    settings.parse(GetCommandLine());
     Ghurund::main<Preview::PreviewApplication>(settings);
     return 0;
 }

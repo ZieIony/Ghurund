@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/allocation/Allocator.h"
+#include "core/allocation/SimpleAllocator.h"
 
 #include <cassert>
 #include <iterator>
@@ -31,6 +31,11 @@ namespace Ghurund {
             Node<Value>* node;
 
         public:
+            using iterator_category = std::forward_iterator_tag;
+            using difference_type = ptrdiff_t;
+            using value_type = Value;
+
+            Iterator():node(nullptr) {}
             Iterator(Node<Value>* node):node(node) {}
 
             inline bool operator==(const Iterator<Value>& other) const {
@@ -64,19 +69,27 @@ namespace Ghurund {
                 return Iterator(node->prev);
             }
 
-            inline Value& operator*() {
+            inline Value& operator*() const {
                 return node->data;
             }
+
+            inline Value* operator->() { return &node->data; }
         };
 
         LinkedList(AllocatorType a = AllocatorType()):a(a) {}
 
-        LinkedList(const LinkedList<Value, AllocatorType>& other):a(other.a) {
+        LinkedList(const LinkedList& other) : a(other.a) {
             for (const Value& item : other)
                 add(item);
         }
 
-        template<typename IteratorType>
+        template<typename CollectionType>
+        LinkedList(const CollectionType& other, AllocatorType a = AllocatorType()) : a(a) {
+            for (const Value& item : other)
+                add(item);
+        }
+
+        template<std::forward_iterator IteratorType>
         LinkedList(IteratorType& begin, IteratorType& end, AllocatorType a = AllocatorType()) : a(a) {
             for (IteratorType& iter = begin; iter < end; ++iter)
                 add(*iter);
@@ -101,6 +114,16 @@ namespace Ghurund {
             clear();
         }
 
+        template<typename CollectionType>
+        LinkedList<Value, AllocatorType>& operator=(const CollectionType& other) {
+            if (this == &other)
+                return *this;
+            clear();
+            for (const Value& item : other)
+                add(item);
+            return *this;
+        }
+
         LinkedList<Value, AllocatorType>& operator=(const LinkedList<Value, AllocatorType>& other) {
             if (this == &other)
                 return *this;
@@ -122,13 +145,13 @@ namespace Ghurund {
             return *this;
         }
 
-        inline size_t getSize()const {
+        inline size_t getSize() const {
             return size;
         }
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline bool isEmpty()const {
+        inline bool isEmpty() const {
             return size == 0;
         }
 
@@ -148,13 +171,14 @@ namespace Ghurund {
             size++;
         }
 
-        template<typename IteratorType>
-        inline void addAll(IteratorType& begin, IteratorType& end) {
+        template<std::forward_iterator IteratorType>
+        inline void addAll(IteratorType begin, IteratorType end) {
             for (IteratorType& iter = begin; iter < end; ++iter)
                 add(*iter);
         }
 
-        inline void addAll(const LinkedList<Value, AllocatorType>& list) {
+        template<typename CollectionType>
+        inline void addAll(const CollectionType& list) {
             for (const Value& item : list)
                 add(item);
         }
@@ -254,6 +278,34 @@ namespace Ghurund {
                 last = node->prev;
             if (node->next)
                 node->next->prev = node->prev;
+            if (node->prev)
+                node->prev->next = node->next;
+            node->~Node<Value>();
+            a.deallocate(node);
+            size--;
+        }
+
+        inline Value& front() const {
+            return first->data;
+        }
+
+        inline Value& back() const {
+            return last->data;
+        }
+
+        inline void removeFront() {
+            Node<Value>* node = first;
+            first = node->next;
+            if (node->next)
+                node->next->prev = node->prev;
+            node->~Node<Value>();
+            a.deallocate(node);
+            size--;
+        }
+
+        inline void removeBack() {
+            Node<Value>* node = last;
+            last = node->prev;
             if (node->prev)
                 node->prev->next = node->next;
             node->~Node<Value>();

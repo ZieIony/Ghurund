@@ -8,7 +8,7 @@ namespace Ghurund {
         static const Ghurund::Type& GET_TYPE();
 
     public:
-        virtual ~Object() {}   // gives a common destructor to all deriving classes
+        virtual ~Object() = 0 {}   // gives a common destructor to all deriving classes
 
         inline static const Ghurund::Type& TYPE = GET_TYPE();
 

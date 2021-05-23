@@ -15,7 +15,7 @@ namespace Ghurund {
     void Pointer::checkReferenceCount() {
         if (referenceCount == 0) {
             const auto& info = typeid(*this);
-            Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, TYPE.Name, String(info.name()), referenceCount);
+            Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, AString(TYPE.Name), AString(info.name()), referenceCount);
         }
     }
 #endif
@@ -27,9 +27,9 @@ namespace Ghurund {
         if (referenceCount) {
             const auto& info = typeid(*this);
             if (referenceCount == 1) {
-                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (address_t)this, TYPE.Name, String(info.name()));
+                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (address_t)this, AString(TYPE.Name), AString(info.name()));
             } else {
-                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount={}. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (address_t)this, TYPE.Name, String(info.name()), referenceCount);
+                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount={}. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (address_t)this, AString(TYPE.Name), AString(info.name()), referenceCount);
             }
         }
 #endif
@@ -61,7 +61,7 @@ namespace Ghurund {
             Logger::log(LogType::INFO, _T("allocated pointers:\n"));
             for (Pointer* p : pointers) {
                 const auto& info = typeid(*p);
-                Logger::print(LogType::INFO, _T("[{:#x}] {} ({}) refCount={}\n"), (address_t)p, p->getType().Name, String(info.name()), p->ReferenceCount);
+                Logger::print(LogType::INFO, _T("[{:#x}] {} ({}) refCount={}\n"), (address_t)p, AString(p->getType().Name), AString(info.name()), p->ReferenceCount);
                 for (StackTrace::Entry& e : p->stacktrace)
                     Logger::print(LogType::INFO, _T("{0}({1:d}): [{2:#x} {3}(..)]\n"), e.fileName, e.fileLine, e.address, e.name);
                 Logger::print(LogType::INFO, _T("\n"));

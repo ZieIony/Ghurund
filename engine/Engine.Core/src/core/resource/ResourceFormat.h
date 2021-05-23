@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/string/WString.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class ResourceFormat {

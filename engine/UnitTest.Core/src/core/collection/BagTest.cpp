@@ -26,7 +26,7 @@ public:
         {
             Bag<uint32_t> bag;
 
-            Assert::AreEqual(bag.Size, 0ull);
+            Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
             Assert::AreEqual(bag.Empty, true);
         }
@@ -35,7 +35,7 @@ public:
         {
             Bag<TestClass> bag;
 
-            Assert::AreEqual(bag.Size, 0ull);
+            Assert::AreEqual(bag.Size, (size_t)0);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
             Assert::AreEqual(bag.Empty, true);
         }
@@ -46,8 +46,8 @@ public:
         {
             Bag<uint32_t> bag(20);
 
-            Assert::AreEqual(bag.Size, 0ull);
-            Assert::AreEqual(bag.Capacity, 20ull);
+            Assert::AreEqual(bag.Size, (size_t)0);
+            Assert::AreEqual(bag.Capacity, (size_t)20);
             Assert::AreEqual(bag.Empty, true);
         }
         _____________________checkMemory();
@@ -55,8 +55,8 @@ public:
         {
             Bag<TestClass> bag(20);
 
-            Assert::AreEqual(bag.Size, 0ull);
-            Assert::AreEqual(bag.Capacity, 20ull);
+            Assert::AreEqual(bag.Size, (size_t)0);
+            Assert::AreEqual(bag.Capacity, (size_t)20);
             Assert::AreEqual(bag.Empty, true);
         }
         _____________________checkMemory();
@@ -66,7 +66,7 @@ public:
         Bag<uint32_t> testBag = { 1, 2, 3 };
         Bag<uint32_t> bag = Bag<uint32_t>(testBag);
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -77,7 +77,7 @@ public:
         Bag<uint32_t> testBag = { 1, 2, 3 };
         Bag<uint32_t> bag = std::move(testBag);
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -87,7 +87,7 @@ public:
     TEST_METHOD(Bag_constructor_initializer) {
         Bag<uint32_t> bag = { 1, 2, 3 };
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -97,7 +97,7 @@ public:
     TEST_METHOD(Bag_constructor_initializerWithDuplicates) {
         Bag<uint32_t> bag = { 1, 2, 3, 2, 1 };
 
-        Assert::AreEqual(bag.Size, 5ull);
+        Assert::AreEqual(bag.Size, (size_t)5);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -133,7 +133,7 @@ public:
         Bag<uint32_t> bag;
         bag = std::move(testBag);
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -145,7 +145,7 @@ public:
             Bag<uint32_t> bag;
             bag = { 1, 2, 3 };
 
-            Assert::AreEqual(bag.Size, 3ull);
+            Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
             Assert::AreEqual(bag.Empty, false);
             Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -157,7 +157,7 @@ public:
         Bag<uint32_t> bag;
         bag.add(1);
 
-        Assert::AreEqual(bag.Size, 1ull);
+        Assert::AreEqual(bag.Size, (size_t)1);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1 }));
@@ -168,7 +168,7 @@ public:
         Bag<uint32_t> bag;
         bag.addAll({ 1, 2, 3 });
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -180,12 +180,12 @@ public:
         const Bag<uint32_t> testBag = { 1, 2, 3 };
         bag.addAll(testBag);
 
-        Assert::AreEqual(testBag.Size, 3ull);
+        Assert::AreEqual(testBag.Size, (size_t)3);
         Assert::AreEqual(testBag.Capacity >= bag.Size, true);
         Assert::AreEqual(testBag.Empty, false);
         Assert::IsTrue(collectionContains(testBag, { 1, 2, 3 }));
 
-        Assert::AreEqual(bag.Size, 3ull);
+        Assert::AreEqual(bag.Size, (size_t)3);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -199,12 +199,12 @@ public:
         const List<uint32_t> testList = { 1, 2, 3, 2, 1 };
         bag.addAll(testList);
 
-        Assert::AreEqual(testList.Size, 5ull);
+        Assert::AreEqual(testList.Size, (size_t)5);
         Assert::AreEqual(testList.Capacity >= bag.Size, true);
         Assert::AreEqual(testList.Empty, false);
         Assert::IsTrue(collectionContains(testList, { 1, 2, 3 }));
 
-        Assert::AreEqual(bag.Size, 5ull);
+        Assert::AreEqual(bag.Size, (size_t)5);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 2, 3 }));
@@ -215,7 +215,7 @@ public:
         Bag<uint32_t> bag = { 1, 2, 3 };
         bag.remove(2);
 
-        Assert::AreEqual(bag.Size, 2ull);
+        Assert::AreEqual(bag.Size, (size_t)2);
         Assert::AreEqual(bag.Capacity >= bag.Size, true);
         Assert::AreEqual(bag.Empty, false);
         Assert::IsTrue(collectionContains(bag, { 1, 3 }));
@@ -227,7 +227,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             Bag<uint32_t> bag = { 1, 2, 3 };
 
-            Assert::AreEqual(bag.Size, 3ull);
+            Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
             Assert::AreEqual(bag.Empty, false);
             Assert::IsTrue(collectionContains(bag, testVector));
@@ -237,7 +237,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             const Bag<uint32_t> bag = { 1, 2, 3 };
 
-            Assert::AreEqual(bag.Size, 3ull);
+            Assert::AreEqual(bag.Size, (size_t)3);
             Assert::AreEqual(bag.Capacity >= bag.Size, true);
             Assert::AreEqual(bag.Empty, false);
             Assert::IsTrue(collectionContains(bag, testVector));

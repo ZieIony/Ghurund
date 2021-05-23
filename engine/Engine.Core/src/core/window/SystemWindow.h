@@ -16,7 +16,7 @@ namespace Ghurund {
         WindowData(SystemWindow* w):window(w) {}
     };
 
-    LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
+    LRESULT CALLBACK windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
 
     class SystemWindow: public Window {
     private:

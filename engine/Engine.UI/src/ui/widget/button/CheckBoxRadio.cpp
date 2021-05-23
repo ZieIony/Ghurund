@@ -11,6 +11,8 @@ namespace Ghurund::UI {
             return;
         Widget<CheckBoxBinding>& checkBoxRadio = (Widget<CheckBoxBinding>&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
+        if (!layout)
+            return;
         if (!layout->Image->Image)
             return;
         if (!control.Enabled) {

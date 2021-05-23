@@ -5,11 +5,11 @@
 
 #include <dwrite_3.h>
 
-#include "reflection_46e5e19d_74d7_4800_af96_b064e3336b89.h"
+#include "reflection_ec6e0676_cd0a_4e7a_9a93_27e9a33a9919.h"
 
 namespace Ghurund::UI {
     class Font:public Resource {
-        reflection_46e5e19d_74d7_4800_af96_b064e3336b89
+        reflection_ec6e0676_cd0a_4e7a_9a93_27e9a33a9919
 
     private:
         WString familyName;

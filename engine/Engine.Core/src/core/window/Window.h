@@ -171,7 +171,7 @@ namespace Ghurund {
             return onSizeChanged;
         }
 
-        __declspec(property(get = getOnSizeChanged)) Event<Window>& onSizeChanged;
+        __declspec(property(get = getOnSizeChanged)) Event<Window>& OnSizeChanged;
 
         inline bool dispatchSizeChangedEvent() {
             bool result = onSizeChangedEvent();

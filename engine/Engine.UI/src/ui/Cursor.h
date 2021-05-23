@@ -35,7 +35,7 @@ namespace Ghurund::UI {
 
         static const EnumValues<CursorEnum, Cursor> VALUES;
 
-        Cursor(CursorEnum value, const tchar* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
+        Cursor(CursorEnum value, const char* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
             handle = LoadCursor(nullptr, resource);
         }
 

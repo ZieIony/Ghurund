@@ -3,7 +3,7 @@
 #include "GenericString.h"
 
 namespace Ghurund {
-    template<class T>
+    template<typename T>
     class GenericStringView {
     protected:
         const T* v;
@@ -200,5 +200,21 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getHash)) int Hash;
+
+        inline GenericStringView<T> substring(size_t start) const {
+            return GenericStringView<T>(v + start);
+        }
+
+        inline GenericStringView<T> substring(size_t start, size_t length) const {
+            return GenericStringView<T>(v + start, length);
+        }
+
+        inline GenericStringView<T> trim() const {
+            size_t i, j, l = Length;
+            for (i = 0; i < l && isSpace<T>(v[i]); i++);
+            for (j = l; j > i && isSpace<T>(v[j]); j--);
+            return GenericStringView<T>(v + i, j - i);
+        }
+
     };
 }

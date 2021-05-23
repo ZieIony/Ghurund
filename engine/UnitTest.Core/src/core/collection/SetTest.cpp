@@ -25,7 +25,7 @@ public:
         {
             Set<uint32_t> set;
 
-            Assert::AreEqual(set.Size, 0ull);
+            Assert::AreEqual(set.Size, (size_t)0);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, true);
         }
@@ -34,7 +34,7 @@ public:
         {
             Set<TestClass> set;
 
-            Assert::AreEqual(set.Size, 0ull);
+            Assert::AreEqual(set.Size, (size_t)0);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, true);
         }
@@ -45,8 +45,8 @@ public:
         {
             Set<uint32_t> set(20);
 
-            Assert::AreEqual(set.Size, 0ull);
-            Assert::AreEqual(set.Capacity, 20ull);
+            Assert::AreEqual(set.Size, (size_t)0);
+            Assert::AreEqual(set.Capacity, (size_t)20);
             Assert::AreEqual(set.Empty, true);
         }
         _____________________checkMemory();
@@ -54,8 +54,8 @@ public:
         {
             Set<TestClass> set(20);
 
-            Assert::AreEqual(set.Size, 0ull);
-            Assert::AreEqual(set.Capacity, 20ull);
+            Assert::AreEqual(set.Size, (size_t)0);
+            Assert::AreEqual(set.Capacity, (size_t)20);
             Assert::AreEqual(set.Empty, true);
         }
         _____________________checkMemory();
@@ -65,7 +65,7 @@ public:
         Set<uint32_t> testSet = { 1, 2, 3 };
         Set<uint32_t> set = Set<uint32_t>(testSet);
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -77,7 +77,7 @@ public:
         Set<uint32_t> testSet = { 1, 2, 3 };
         Set<uint32_t> set = std::move(testSet);
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -88,7 +88,7 @@ public:
     TEST_METHOD(Set_constructor_initializer) {
         Set<uint32_t> set = { 1, 2, 3 };
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -99,7 +99,7 @@ public:
     TEST_METHOD(Set_constructor_initializerWithDuplicates) {
         Set<uint32_t> set = { 1, 2, 3, 2, 1 };
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -138,7 +138,7 @@ public:
         Set<uint32_t> set;
         set = std::move(testSet);
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -151,7 +151,7 @@ public:
             Set<uint32_t> set;
             set = { 1, 2, 3 };
 
-            Assert::AreEqual(set.Size, 3ull);
+            Assert::AreEqual(set.Size, (size_t)3);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, false);
             for (auto val : { 1, 2, 3 })
@@ -164,7 +164,7 @@ public:
         Set<uint32_t> set;
         set.add(1);
 
-        Assert::AreEqual(set.Size, 1ull);
+        Assert::AreEqual(set.Size, (size_t)1);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1 })
@@ -176,7 +176,7 @@ public:
         Set<uint32_t> set;
         set.addAll({ 1, 2, 3 });
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -189,13 +189,13 @@ public:
         const Set<uint32_t> testSet = { 1, 2, 3 };
         set.addAll(testSet);
 
-        Assert::AreEqual(testSet.Size, 3ull);
+        Assert::AreEqual(testSet.Size, (size_t)3);
         Assert::AreEqual(testSet.Capacity >= set.Size, true);
         Assert::AreEqual(testSet.Empty, false);
         for (auto val : { 1, 2, 3 })
             Assert::IsTrue(set.contains(val));
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -210,13 +210,13 @@ public:
         const List<uint32_t> testList = { 1, 2, 3, 2, 1 };
         set.addAll(testList);
 
-        Assert::AreEqual(testList.Size, 5ull);
+        Assert::AreEqual(testList.Size, (size_t)5);
         Assert::AreEqual(testList.Capacity >= set.Size, true);
         Assert::AreEqual(testList.Empty, false);
         for (auto val : { 1, 2, 3, 2, 1 })
             Assert::IsTrue(testList.contains(val));
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 2, 3 })
@@ -228,7 +228,7 @@ public:
         Set<uint32_t> set = { 1, 2, 3 };
         set.remove(2);
 
-        Assert::AreEqual(set.Size, 2ull);
+        Assert::AreEqual(set.Size, (size_t)2);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         for (auto val : { 1, 3 })
@@ -241,7 +241,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             Set<uint32_t> set = { 1, 2, 3 };
 
-            Assert::AreEqual(set.Size, 3ull);
+            Assert::AreEqual(set.Size, (size_t)3);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, false);
 
@@ -254,7 +254,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             const Set<uint32_t> set = { 1, 2, 3 };
 
-            Assert::AreEqual(set.Size, 3ull);
+            Assert::AreEqual(set.Size, (size_t)3);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, false);
 
@@ -269,7 +269,7 @@ public:
         {
             Set<uint32_t> set = { 1, 2, 3 };
 
-            Assert::AreEqual(set.Size, 3ull);
+            Assert::AreEqual(set.Size, (size_t)3);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, false);
             Assert::IsTrue(set.contains(1));
@@ -279,7 +279,7 @@ public:
         {
             const Set<uint32_t> set = { 1, 2, 3 };
 
-            Assert::AreEqual(set.Size, 3ull);
+            Assert::AreEqual(set.Size, (size_t)3);
             Assert::AreEqual(set.Capacity >= set.Size, true);
             Assert::AreEqual(set.Empty, false);
             Assert::IsTrue(set.contains(1));
@@ -292,7 +292,7 @@ public:
         Set<uint32_t> set = { 1, 2, 3 };
         Set<uint32_t> set2 = { 1, 2, 3 };
 
-        Assert::AreEqual(set.Size, 3ull);
+        Assert::AreEqual(set.Size, (size_t)3);
         Assert::AreEqual(set.Capacity >= set.Size, true);
         Assert::AreEqual(set.Empty, false);
         Assert::IsTrue(set == set2);

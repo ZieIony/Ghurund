@@ -42,7 +42,7 @@ namespace Preview {
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);

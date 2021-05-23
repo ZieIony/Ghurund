@@ -17,7 +17,6 @@ To build your own version you need the following tools.
  - [DirectX 12](https://docs.microsoft.com/en-us/windows/desktop/direct3d12/directx-12-programming-environment-set-up)
  - [PhysX](https://github.com/NVIDIAGameWorks/PhysX)
  - [AngelScript](https://www.angelcode.com/angelscript/downloads.html)
- - [fmt](https://fmt.dev/)
  - [TinyXML-2](http://www.grinninglizard.com/tinyxml2)
  - [CRC](https://github.com/d-bahr/CRCpp)
 

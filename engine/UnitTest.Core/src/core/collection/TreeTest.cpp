@@ -26,7 +26,7 @@ public:
         {
             Tree<uint32_t> tree;
 
-            Assert::AreEqual(tree.Size, 0ull);
+            Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
             Assert::IsTrue(tree.verify());
         }
@@ -35,7 +35,7 @@ public:
         {
             Tree<TestClass> tree;
 
-            Assert::AreEqual(tree.Size, 0ull);
+            Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
             Assert::IsTrue(tree.verify());
         }
@@ -46,7 +46,7 @@ public:
         Tree<uint32_t> testTree = { 1, 2, 3 };
         Tree<uint32_t> tree = Tree<uint32_t>(testTree);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -58,7 +58,7 @@ public:
         Tree<uint32_t> testTree = { 1, 2, 3 };
         Tree<uint32_t> tree = std::move(testTree);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -69,7 +69,7 @@ public:
     TEST_METHOD(Tree_constructorInitializer) {
         Tree<uint32_t> tree = { 1, 2, 3 };
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -95,7 +95,7 @@ public:
         Tree<uint32_t> tree;
         tree = std::move(testTree);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -108,7 +108,7 @@ public:
             Tree<uint32_t> tree;
             tree = { 1, 2, 3 };
 
-            Assert::AreEqual(tree.Size, 3ull);
+            Assert::AreEqual(tree.Size, (size_t)3);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(1u));
             Assert::IsTrue(tree.contains(2u));
@@ -121,7 +121,7 @@ public:
         Tree<uint32_t> tree;
         tree.add(1);
 
-        Assert::AreEqual(tree.Size, 1ull);
+        Assert::AreEqual(tree.Size, (size_t)1);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.verify());
@@ -132,7 +132,7 @@ public:
         Tree<uint32_t> tree;
         tree.addAll({ 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 });
 
-        Assert::AreEqual(tree.Size, 10ull);
+        Assert::AreEqual(tree.Size, (size_t)10);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(20u));
@@ -146,13 +146,13 @@ public:
         const List<uint32_t> testList = { 1, 2, 3 };
         tree.addAll(testList);
 
-        Assert::AreEqual(testList.Size, 3ull);
+        Assert::AreEqual(testList.Size, (size_t)3);
         Assert::AreEqual(testList.Empty, false);
         Assert::IsTrue(testList.contains(1u));
         Assert::IsTrue(testList.contains(2u));
         Assert::IsTrue(testList.contains(3u));
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -167,7 +167,7 @@ public:
         const std::initializer_list<uint32_t> testList = { 1, 2, 3 };
         tree.addAll(testList);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -182,7 +182,7 @@ public:
         const std::initializer_list<uint32_t> testList = { 1, 2, 3, 3 };
         tree.addAll(testList);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -216,7 +216,7 @@ public:
             Assert::IsTrue(tree.verify());
             tree.remove(4);
 
-            Assert::AreEqual(tree.Size, 0ull);
+            Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
             Assert::IsFalse(tree.contains(1u));
             Assert::IsFalse(tree.contains(2u));
@@ -245,7 +245,7 @@ public:
             Assert::IsTrue(tree.verify());
             tree.remove(4);
 
-            Assert::AreEqual(tree.Size, 8ull);
+            Assert::AreEqual(tree.Size, (size_t)8);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(12u));
             Assert::IsTrue(tree.contains(76u));
@@ -256,7 +256,7 @@ public:
             Tree<uint32_t> tree = { 1, 2 };
             tree.remove(2);
 
-            Assert::AreEqual(tree.Size, 1ull);
+            Assert::AreEqual(tree.Size, (size_t)1);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(1u));
             Assert::IsFalse(tree.contains(2u));
@@ -266,7 +266,7 @@ public:
             Tree<uint32_t> tree = { 1 };
             tree.remove(1);
 
-            Assert::AreEqual(tree.Size, 0ull);
+            Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
             Assert::IsFalse(tree.contains(1u));
             Assert::IsTrue(tree.verify());
@@ -278,7 +278,7 @@ public:
         Tree<uint32_t> tree = { 1, 2, 3 };
         tree.remove(4);
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree.contains(1u));
         Assert::IsTrue(tree.contains(2u));
@@ -293,7 +293,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             Tree<uint32_t> tree = { 1, 2, 3 };
 
-            Assert::AreEqual(tree.Size, 3ull);
+            Assert::AreEqual(tree.Size, (size_t)3);
             Assert::AreEqual(tree.Empty, false);
 
             size_t i = 0;
@@ -305,7 +305,7 @@ public:
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             const Tree<uint32_t> tree = { 1, 2, 3 };
 
-            Assert::AreEqual(tree.Size, 3ull);
+            Assert::AreEqual(tree.Size, (size_t)3);
             Assert::AreEqual(tree.Empty, false);
 
             size_t i = 0;
@@ -319,7 +319,7 @@ public:
         {
             Tree<uint32_t> tree = { 1, 2, 3 };
 
-            Assert::AreEqual(tree.Size, 3ull);
+            Assert::AreEqual(tree.Size, (size_t)3);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(1));
             Assert::IsFalse(tree.contains(4));
@@ -328,7 +328,7 @@ public:
         {
             const Tree<uint32_t> tree = { 1, 2, 3 };
 
-            Assert::AreEqual(tree.Size, 3ull);
+            Assert::AreEqual(tree.Size, (size_t)3);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(1));
             Assert::IsFalse(tree.contains(4));
@@ -340,7 +340,7 @@ public:
         Tree<uint32_t> tree = { 1, 2, 3 };
         Tree<uint32_t> tree2 = { 1, 2, 3 };
 
-        Assert::AreEqual(tree.Size, 3ull);
+        Assert::AreEqual(tree.Size, (size_t)3);
         Assert::AreEqual(tree.Empty, false);
         Assert::IsTrue(tree == tree2);
         _____________________checkMemory();

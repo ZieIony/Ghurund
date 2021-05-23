@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/String/AString.h"
+#include "core/string/String.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ControlGroup.h"
 

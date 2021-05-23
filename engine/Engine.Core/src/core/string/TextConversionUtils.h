@@ -3,10 +3,20 @@
 #include "Common.h"
 
 #include "core/string/String.h"
-#include "core/string/TextUtils.h"
 
 namespace Ghurund {
-    inline char* toMultiByte(const wchar_t* src, unsigned int codePage = CP_ACP) {
+    template<typename FromChar, typename ToChar>
+    inline ToChar* convertText(const FromChar* src, unsigned int codePage = CP_ACP) {
+        return nullptr;
+    }
+
+    template<typename FromChar, typename ToChar>
+    inline GenericString<ToChar> convertText(const GenericString<FromChar>& src, unsigned int codePage = CP_ACP) {
+        return GenericString<ToChar>();
+    }
+
+    template<>
+    inline char* convertText(const wchar_t* src, unsigned int codePage) {
         int length = (int)wcslen(src);
         int size = WideCharToMultiByte(codePage, 0, src, length, nullptr, 0, nullptr, nullptr);
         if (!size)
@@ -17,14 +27,16 @@ namespace Ghurund {
         return dest;
     }
 
-    inline char* toMultiByte(const char* src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline char* convertText(const char* src, unsigned int codePage) {
         return copyStr(src);
     }
 
-    inline AString toMultiByte(const WString& src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline AString convertText(const WString& src, unsigned int codePage) {
         int size = WideCharToMultiByte(codePage, 0, src.Data, (int)src.Length, nullptr, 0, nullptr, nullptr);
         if (!size)
-            return nullptr;
+            return AString();
 
         char* dest = ghnew char[size + 1];
         WideCharToMultiByte(codePage, 0, src.Data, (int)src.Size, dest, (int)(size + 1), nullptr, nullptr);
@@ -33,60 +45,13 @@ namespace Ghurund {
         return str;
     }
 
-    inline AString toMultiByte(const AString& src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline AString convertText(const AString& src, unsigned int codePage) {
         return AString(src);
     }
 
-#ifdef UNICODE
-    inline tchar* toTchar(const char* src, unsigned int codePage = CP_ACP) {
-        int length = (int)strlen(src);
-
-        int size = MultiByteToWideChar(codePage, 0, src, length, nullptr, 0);
-        if (!size)
-            return nullptr;
-
-        tchar* dest = ghnew tchar[size + 1];
-        MultiByteToWideChar(codePage, 0, src, length + 1, dest, (int)(size + 1));
-        return dest;
-    }
-
-    inline tchar* toTchar(const wchar_t* src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-
-    inline String toTchar(const WString& src, unsigned int codePage = CP_ACP) {
-        return String(src);
-    }
-
-    inline String toTchar(const AString& src, unsigned int codePage = CP_ACP) {
-        return toWideChar(src);
-    }
-#else
-    inline tchar* toTchar(const wchar_t* src, unsigned int codePage = CP_ACP) {
-        int length = (int)wcslen(src);
-        int size = WideCharToMultiByte(codePage, 0, src, length, nullptr, 0, nullptr, nullptr);
-        if (!size)
-            return nullptr;
-
-        tchar* dest = ghnew tchar[size + 1];
-        WideCharToMultiByte(codePage, 0, src, length + 1, dest, (int)(size + 1), nullptr, nullptr);
-        return dest;
-    }
-
-    inline tchar* toTchar(const char* src, unsigned int codePage = CP_ACP) {
-        return copyStr(src);
-    }
-
-    inline String toTchar(const WString& src, unsigned int codePage = CP_ACP) {
-        return toMultiByte(src);
-    }
-
-    inline String toTchar(const AString& src, unsigned int codePage = CP_ACP) {
-        return String(src);
-    }
-#endif
-
-    inline wchar_t* toWideChar(const char* src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline wchar_t* convertText(const char* src, unsigned int codePage) {
         int length = (int)strlen(src);
 
         int size = MultiByteToWideChar(codePage, 0, src, length, nullptr, 0);
@@ -98,14 +63,16 @@ namespace Ghurund {
         return dest;
     }
 
-    inline WString toWideChar(const WString& src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline WString convertText(const WString& src, unsigned int codePage) {
         return WString(src);
     }
 
-    inline WString toWideChar(const AString& src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline WString convertText(const AString& src, unsigned int codePage) {
         int size = MultiByteToWideChar(codePage, 0, src.Data, (int)src.Length, nullptr, 0);
         if (!size)
-            return nullptr;
+            return WString();
 
         wchar_t* dest = ghnew wchar_t[size + 1];
         MultiByteToWideChar(codePage, 0, src.Data, (int)src.Size, dest, (int)(size + 1));
@@ -114,8 +81,8 @@ namespace Ghurund {
         return str;
     }
 
-    inline wchar_t* toWideChar(const wchar_t* src, unsigned int codePage = CP_ACP) {
+    template<>
+    inline wchar_t* convertText(const wchar_t* src, unsigned int codePage) {
         return copyStr(src);
     }
-
 }

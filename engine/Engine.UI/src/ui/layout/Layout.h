@@ -4,11 +4,11 @@
 #include "core/resource/Resource.h"
 #include "ui/control/Control.h"
 
-#include "reflection_cd0693ee_78df_4af5_8047_ae9f4f2a44af.h"
+#include "reflection_79e1bf91_c323_405a_a25a_3007c1650e21.h"
 
 namespace Ghurund::UI {
     class Layout:public Resource {
-        reflection_cd0693ee_78df_4af5_8047_ae9f4f2a44af
+        reflection_79e1bf91_c323_405a_a25a_3007c1650e21
 
     private:
         PointerList<Control*> controls;

@@ -5,12 +5,14 @@
 #include "core/Enum.h"
 #include "core/string/String.h"
 
+#include <functional>
+
 namespace Ghurund {
     __interface LogOutput {
         virtual void log(const Log& log) = 0;
     };
 
-    class CustomConsoleLogOutput : public LogOutput {
+    class CustomConsoleLogOutput: public LogOutput {
     private:
         String name;
         HANDLE debugOutput;
@@ -39,9 +41,30 @@ namespace Ghurund {
         }
     };
 
-    class SystemConsoleLogOutput : public LogOutput {
+    class StandardConsoleLogOutput: public LogOutput {
+    private:
+        String name;
+        HANDLE debugOutput;
+
     public:
-        SystemConsoleLogOutput() {
+        StandardConsoleLogOutput() {
+            debugOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+        }
+
+        virtual void log(const Log& log) override {
+            SetConsoleTextAttribute(debugOutput, log.type.StyleCode);
+            if (!log.fileLine.Empty) {
+                WriteConsole(debugOutput, log.fileLine.Data, (DWORD)log.fileLine.Length, nullptr, nullptr);
+                WriteConsole(debugOutput, ": ", 2, nullptr, nullptr);
+            }
+            WriteConsole(debugOutput, log.message.Data, (DWORD)log.message.Length, nullptr, nullptr);
+            SetConsoleTextAttribute(debugOutput, LogType::INFO.StyleCode);
+        }
+    };
+
+    class DebugConsoleLogOutput : public LogOutput {
+    public:
+        DebugConsoleLogOutput() {
 #ifdef UNICODE
             //_setmode(_fileno(stdout), _O_U16TEXT);
             SetConsoleOutputCP(65001);
@@ -51,7 +74,7 @@ namespace Ghurund {
         virtual void log(const Log& log) override {
             if (!log.fileLine.Empty) {
                 OutputDebugString(log.fileLine.Data);
-                OutputDebugString(": ");
+                OutputDebugString(_T(": "));
             }
             OutputDebugString(log.message.Data);
         }

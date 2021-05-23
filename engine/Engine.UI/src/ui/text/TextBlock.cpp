@@ -10,7 +10,7 @@ namespace Ghurund::UI {
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
         textLayout.Size = { parentWidth, parentHeight };
         if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
-            Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textLayout is invalid\n", Text);
+            Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
             __super::onMeasure(parentWidth, parentHeight);
             return;
         }
@@ -27,7 +27,7 @@ namespace Ghurund::UI {
             }
             textLayout.Size = { measuredSize.width, parentHeight };
             if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
-                Logger::log(LogType::WARNING, "TextBlock ({}) was not measured, because its textLayout is invalid\n", Text);
+                Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
                 __super::onMeasure(parentWidth, parentHeight);
                 return;
             }

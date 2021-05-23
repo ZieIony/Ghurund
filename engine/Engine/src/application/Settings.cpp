@@ -8,12 +8,12 @@ namespace Ghurund {
             Array<String> keyVal = commands[i].split(_T("="));
             if (keyVal.Size != 2)
                 return;
-            if (keyVal[0] == "width")
+            if (keyVal[0] == _T("width"))
                 windowSize.width = _ttoi(keyVal[1].getData());
-            if (keyVal[0] == "height")
+            if (keyVal[0] == _T("height"))
                 windowSize.height = _ttoi(keyVal[1].getData());
-            if (keyVal[0] == "windowed")
-                windowed = keyVal[1] == "true";
+            if (keyVal[0] == _T("windowed"))
+                windowed = keyVal[1] == _T("true");
         }
     }
 }

@@ -5,7 +5,7 @@
 #include "TypeModifier.h"
 #include "core/collection/List.h"
 #include "core/collection/Map.h"
-#include "core/string/AString.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
 	class Type {

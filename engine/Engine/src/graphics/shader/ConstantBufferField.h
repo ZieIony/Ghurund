@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/string/AString.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     struct ConstantBufferField {

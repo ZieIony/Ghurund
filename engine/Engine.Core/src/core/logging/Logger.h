@@ -9,7 +9,7 @@
 #include "core/StackTrace.h"
 #include "core/threading/CriticalSection.h"
 
-#include "fmt/core.h"
+#include <format>
 
 namespace Ghurund {
     class Logger:public Noncopyable {
@@ -28,8 +28,8 @@ namespace Ghurund {
             StackTrace stacktrace(GetCurrentProcess());
             StackTrace::Entry entry = stacktrace[2];
 
-            std::basic_string<tchar> fileLine = fmt::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
-            std::basic_string<tchar> message = fmt::format(format, args...);
+            std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+            std::basic_string<tchar> message = std::format(format, args...);
 
             criticalSection.enter();
             logOutput->log({ type, fileLine.c_str(), message.c_str() });
@@ -61,9 +61,9 @@ namespace Ghurund {
             if (((int)type.Value) < (int)filterLevel)
                 return;
 
-            std::basic_string<tchar> message = fmt::format(format, args...);
+            std::basic_string<tchar> message = std::format(format, args...);
             criticalSection.enter();
-            logOutput->log({ type, "", message.c_str() });
+            logOutput->log({ type, _T(""), message.c_str() });
             criticalSection.leave();
         }
     };

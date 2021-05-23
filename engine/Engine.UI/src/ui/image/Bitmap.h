@@ -5,13 +5,13 @@
 
 #include <d2d1_3.h>
 
-#include "reflection_4bf3b8d2_fe5c_4027_8f30_7830caee3be9.h"
+#include "reflection_027d46a4_8616_44d3_950f_7adeab521d44.h"
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
 
     class Bitmap:public Resource {
-        reflection_4bf3b8d2_fe5c_4027_8f30_7830caee3be9
+        reflection_027d46a4_8616_44d3_950f_7adeab521d44
 
     private:
         Image* image = nullptr;

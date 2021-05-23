@@ -14,12 +14,12 @@ namespace Ghurund::UI {
 
     Status FontLoader::init() {
         if (FAILED(factory.CreateInMemoryFontFileLoader(&fontFileLoader)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateInMemoryFontFileLoader failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateInMemoryFontFileLoader failed\n"));
         if (FAILED(factory.RegisterFontFileLoader(fontFileLoader)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "RegisterFontFileLoader failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("RegisterFontFileLoader failed\n"));
         fontCollectionLoader = ghnew FontCollectionLoader(factory, *fontFileLoader);
         if (FAILED(factory.RegisterFontCollectionLoader(fontCollectionLoader)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "RegisterFontCollectionLoader failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("RegisterFontCollectionLoader failed\n"));
         return Status::OK;
     }
 

@@ -29,6 +29,14 @@ typedef unsigned long address_t;
 
 #define GH_STRINGIFY(t) #t
 
+#pragma comment(lib, "Dbghelp.lib")
+
+#ifdef _WIN64
+#pragma comment(lib, "GhurundEngine.Core_64.lib")
+#else
+#pragma comment(lib, "GhurundEngine.Core_32.lib")
+#endif
+
 namespace Ghurund {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund);
 

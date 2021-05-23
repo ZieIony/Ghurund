@@ -10,12 +10,12 @@
 
 #include <wincodec.h>
 
-#include "reflection_4db8630b_3fe3_4f0c_b730_e1ec12b0e449.h"
+#include "reflection_7103238f_73b0_463d_bc7f_54055f691499.h"
 
 namespace Ghurund::UI {
 
     class Image: public Resource {
-        reflection_4db8630b_3fe3_4f0c_b730_e1ec12b0e449
+        reflection_7103238f_73b0_463d_bc7f_54055f691499
 
     private:
         DXGI_FORMAT format;

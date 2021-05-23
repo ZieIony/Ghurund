@@ -32,17 +32,19 @@ namespace Ghurund::UI {
             return;
         CheckBox& checkBoxRadio = (CheckBox&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
-        if (layout->Selectable->Selected) {
-            size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_CHECKED);
-            if (index != theme->Images.Size) {
-                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
-                layout->Image->Image = image;
-            }
-        } else {
-            size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_UNCHECKED);
-            if (index != theme->Images.Size) {
-                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
-                layout->Image->Image = image;
+        if (layout) {
+            if (layout->Selectable->Selected) {
+                size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_CHECKED);
+                if (index != theme->Images.Size) {
+                    SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
+                    layout->Image->Image = image;
+                }
+            } else {
+                size_t index = theme->Images.indexOfKey(Theme::IMAGE_CHECKBOX_UNCHECKED);
+                if (index != theme->Images.Size) {
+                    SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images.getValue(index)->clone();
+                    layout->Image->Image = image;
+                }
             }
         }
         __super::onStateChanged(control);

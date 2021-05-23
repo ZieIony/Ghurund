@@ -7,10 +7,10 @@ namespace Ghurund::UI {
 
         deviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
         if (FAILED(deviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &fillBrush)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateSolidColorBrush failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateSolidColorBrush failed\n"));
 
         if(FAILED(deviceContext->CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateEffect failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateEffect failed\n"));
 
         deviceContext->CreateEffect(CLSID_D2D1Shadow, &shadowEffect);
 

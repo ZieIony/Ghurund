@@ -1,13 +1,16 @@
 #pragma once
 
-#include "WString.h"
-#include "AString.h"
+#include "GenericString.h"
 
 namespace Ghurund {
 
 #ifdef UNICODE
-    typedef WString String;
+    typedef GenericString<wchar_t> String;
 #else
-    typedef AString String;
+    typedef GenericString<char> String;
 #endif
+
+    typedef GenericString<wchar_t> WString;
+    typedef GenericString<char> AString;
+    typedef GenericString<tchar> TString;
 }

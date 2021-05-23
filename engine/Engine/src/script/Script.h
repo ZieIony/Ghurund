@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/resource/Resource.h"
-#include "core/string/AString.h"
+#include "core/string/String.h"
 
 #include "angelscript.h"
 

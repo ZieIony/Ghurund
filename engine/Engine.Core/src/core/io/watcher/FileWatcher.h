@@ -5,7 +5,7 @@
 #include "core/string/String.h"
 #include "core/collection/List.h"
 #include "core/threading/FunctionQueue.h"
-#include "core/threading/Thread.h"
+#include "core/threading/APCThread.h"
 
 namespace Ghurund {
     class FileWatcher {

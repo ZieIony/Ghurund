@@ -1,12 +1,16 @@
 #pragma once
 
-#include "AStringView.h"
-#include "WStringView.h"
+#include "GenericStringView.h"
 
 namespace Ghurund {
+
 #ifdef UNICODE
-    typedef WStringView StringView;
+    typedef GenericStringView<wchar_t> StringView;
 #else
-    typedef AStringView StringView;
+    typedef GenericStringView<char> StringView;
 #endif
+
+    typedef GenericStringView<wchar_t> WStringView;
+    typedef GenericStringView<char> AStringView;
+    typedef GenericStringView<tchar> TStringView;
 }

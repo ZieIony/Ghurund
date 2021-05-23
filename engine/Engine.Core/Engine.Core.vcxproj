@@ -27,6 +27,7 @@
     <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
+    <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
     <ClCompile Include="src\core\window\SystemWindow.cpp" />
@@ -41,8 +42,6 @@
     <ClCompile Include="src\core\io\FilePath.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
-    <ClCompile Include="src\core\string\AString.cpp" />
-    <ClCompile Include="src\core\string\WString.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\Task.cpp" />
@@ -60,6 +59,7 @@
     <ClInclude Include="src\core\collection\Range.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
+    <ClInclude Include="src\core\collection\TreeMap.h" />
     <ClInclude Include="src\core\Concepts.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
@@ -99,10 +99,8 @@
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\StackTrace.h" />
-    <ClInclude Include="src\core\string\AString.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
     <ClInclude Include="src\core\collection\BufferedValue.h" />
-    <ClInclude Include="src\core\string\AStringView.h" />
     <ClInclude Include="src\core\string\GenericString.h" />
     <ClInclude Include="src\core\collection\HashMap.h" />
     <ClInclude Include="src\core\collection\PointerArray.h" />
@@ -111,7 +109,6 @@
     <ClInclude Include="src\core\string\GenericStringView.h" />
     <ClInclude Include="src\core\string\String.h" />
     <ClInclude Include="src\core\string\StringView.h" />
-    <ClInclude Include="src\core\string\WString.h" />
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
     <ClInclude Include="src\core\allocation\Allocator.h" />
@@ -126,7 +123,10 @@
     <ClInclude Include="src\core\io\MemoryStream.h" />
     <ClInclude Include="src\core\collection\List.h" />
     <ClInclude Include="src\core\collection\Map.h" />
-    <ClInclude Include="src\core\string\WStringView.h" />
+    <ClInclude Include="src\core\SystemInfo.h" />
+    <ClInclude Include="src\core\threading\APCThread.h" />
+    <ClInclude Include="src\core\threading\ConcurrentTaskQueue.h" />
+    <ClInclude Include="src\core\threading\ConditionVariable.h" />
     <ClInclude Include="src\core\threading\CriticalSection.h" />
     <ClInclude Include="src\core\threading\FunctionQueue.h" />
     <ClInclude Include="src\core\Object.h" />
@@ -135,7 +135,11 @@
     </ClInclude>
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\threading\Waitable.h" />
+    <ClInclude Include="src\core\threading\ThreadPoolExecutor.h" />
     <ClInclude Include="src\core\Timer.h" />
+    <ClInclude Include="src\core\Translations.h" />
+    <ClInclude Include="src\core\TypeWrapper.h" />
     <ClInclude Include="src\core\window\ChildWindow.h" />
     <ClInclude Include="src\core\window\Clipboard.h" />
     <ClInclude Include="src\core\window\DragDropManager.h" />
@@ -197,27 +201,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -228,15 +232,19 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libs.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libs.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libs.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\libs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -262,6 +270,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>

@@ -11,7 +11,7 @@
 #include <windowsx.h>
 
 namespace Ghurund {
-    LRESULT windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam) {
+    LRESULT CALLBACK windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam) {
         WindowData* windowData = (WindowData*)GetWindowLongPtr(handle, GWLP_USERDATA);
         if (!windowData)
             return DefWindowProc(handle, msg, wParam, lParam);

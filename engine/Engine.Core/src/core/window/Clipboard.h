@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Window.h"
-#include "core/string/WString.h"
+#include "core/string/String.h"
 
 namespace Ghurund {
     class Clipboard {

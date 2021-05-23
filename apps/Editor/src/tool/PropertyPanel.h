@@ -33,7 +33,7 @@ namespace Ghurund::Editor {
     public:
         inline void setItem(Object* item) {
             Layout->PropertyList->Item = item;
-            Layout->ObjectType->Text = toWideChar(AString(item->Type.Name));
+            Layout->ObjectType->Text = convertText(AString(item->Type.Name));
         }
 
         __declspec(property(put = setItem)) Object* Item;

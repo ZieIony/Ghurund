@@ -8,7 +8,7 @@
 #include "core/reflection/Type.h"
 #include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"
-#include "core/string/AStringView.h"
+#include "core/string/StringView.h"
 #include "ui/Alignment.h"
 #include "ui/control/Control.h"
 #include "ui/drawable/ImageDrawable.h"

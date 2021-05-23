@@ -16,7 +16,7 @@ namespace Ghurund {
         const char* fileNameA = nullptr;
         if (fileName) {
             localShaderDir = FilePath(fileName).Directory.toString().Data;
-            fileNameA = toMultiByte(fileName);
+            fileNameA = convertText<wchar_t, char>(fileName);
         }
         CompilerInclude include(localShaderDir, L"shaders/");
         const char *targetText = makeCompilationTarget();
@@ -35,7 +35,7 @@ namespace Ghurund {
                     result = Status::ENTRY_POINT_NOT_FOUND;
                 } else {
                     result = Status::COMPILATION_ERROR;
-                    Logger::log(LogType::ERR0R, result, _T("Error while compiling shader:\n%hs\n"), errorMessages.getData());
+                    Logger::log(LogType::ERR0R, result, _T("Error while compiling shader:\n%hs\n"), convertText<char, wchar_t>(errorMessages));
                     if(outErrorMessages != nullptr) {
                         *outErrorMessages = ghnew char[errorBlob->GetBufferSize()];
                         memcpy(*outErrorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());

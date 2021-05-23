@@ -18,12 +18,12 @@ namespace Ghurund {
             AddRef();
         }
 
-        HRESULT DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
+        virtual HRESULT STDMETHODCALLTYPE DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override;
 
-        HRESULT DragLeave();
+        virtual HRESULT STDMETHODCALLTYPE DragLeave() override;
 
-        HRESULT DragOver(DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
+        virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override;
 
-        HRESULT Drop(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect);
+        virtual HRESULT STDMETHODCALLTYPE Drop(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override;
     };
 }

@@ -3,7 +3,7 @@
 #include "graphics/shader/Shader.h"
 #include "core/string/TextUtils.h"
 
-#include <fmt/format.h>
+#include <format>
 
 namespace Ghurund {
     class Shaders {
@@ -11,7 +11,7 @@ namespace Ghurund {
         Shaders() = delete;
 
         static Shader* load(ResourceManager& manager, const wchar_t* fileName) {
-            auto path = fmt::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
+            auto path = std::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName).c_str();
             return manager.load<Shader>(FilePath(path));
         }
 

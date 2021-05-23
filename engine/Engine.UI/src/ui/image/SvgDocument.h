@@ -5,11 +5,11 @@
 
 struct ID2D1SvgDocument;
 
-#include "reflection_7471ad87_25b0_4e74_9cd4_92dc567fe17c.h"
+#include "reflection_12024f78_7790_4d0a_b601_cbe9e12bace9.h"
 
 namespace Ghurund::UI {
     class SvgDocument:public Resource {
-        reflection_7471ad87_25b0_4e74_9cd4_92dc567fe17c
+        reflection_12024f78_7790_4d0a_b601_cbe9e12bace9
 
     private:
         ID2D1SvgDocument* svgDocument = nullptr;

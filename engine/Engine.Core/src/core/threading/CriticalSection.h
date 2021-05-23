@@ -10,7 +10,7 @@ namespace Ghurund {
             InitializeCriticalSection(&section);
         }
 
-        CriticalSection(CriticalSection &cs) = delete;
+        CriticalSection(CriticalSection &other) = delete;
 
         ~CriticalSection() {
             DeleteCriticalSection(&section);
@@ -26,6 +26,24 @@ namespace Ghurund {
 
         inline void leave() {
             LeaveCriticalSection(&section);
+        }
+
+        inline CRITICAL_SECTION* operator&() {
+            return &section;
+        }
+    };
+
+    class SectionLock {
+    private:
+        CriticalSection& section;
+
+    public:
+        SectionLock(CriticalSection& section):section(section) {
+            section.enter();
+        }
+
+        ~SectionLock() {
+            section.leave();
         }
     };
 }

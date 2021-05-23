@@ -13,7 +13,7 @@ namespace Ghurund {
             if (!shaderDir)
                 return E_FAIL;
             fullPath = shaderDir;
-            const wchar_t* str = toWideChar(pFileName);
+            const wchar_t* str = convertText<char, wchar_t>(pFileName);
             fullPath.add(str);
             delete[] str;
             break;
@@ -23,7 +23,7 @@ namespace Ghurund {
             if (!systemDir)
                 return E_FAIL;
             fullPath = systemDir;
-            const wchar_t* str = toWideChar(pFileName);
+            const wchar_t* str = convertText<char, wchar_t>(pFileName);
             fullPath.add(str);
             delete[] str;
             break;

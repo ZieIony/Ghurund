@@ -2,12 +2,10 @@
 
 #include "Pointer.h"
 #include "Common.h"
+#include "Concepts.h"
 
 namespace Ghurund {
-    template<class T>
-    concept IsPointer = std::is_base_of<Pointer, T>::value;
-
-    template<IsPointer T>
+    template<typename T>
     class SharedPointer {
     private:
         T* pointer = nullptr;
@@ -15,8 +13,8 @@ namespace Ghurund {
     public:
         SharedPointer() {}
 
-        SharedPointer(const SharedPointer& sp) {
-            pointer = sp.pointer;
+        SharedPointer(const SharedPointer& other) {
+            pointer = other.pointer;
             if (pointer)
                 pointer->addReference();
         }
@@ -28,6 +26,14 @@ namespace Ghurund {
         ~SharedPointer() {
             if (pointer)
                 pointer->release();
+        }
+
+        T& operator*() {
+            return *pointer;
+        }
+
+        T* operator&() {
+            return pointer;
         }
 
         operator T* () {
@@ -49,13 +55,17 @@ namespace Ghurund {
             return *this;
         }
 
-        SharedPointer<T>& operator=(const SharedPointer<T>& sp) {
-            setPointer(pointer, sp.pointer);
+        SharedPointer<T>& operator=(const SharedPointer<T>& other) {
+            setPointer(pointer, other.pointer);
             return *this;
+        }
+
+        bool operator==(const SharedPointer<T>& other) const {
+            return pointer == other.pointer;
         }
     };
 
-    template<IsPointer T, typename... Args>
+    template<typename T, typename... Args>
     SharedPointer<T> makeShared(Args&&... args) {
         return ghnew T(std::forward<Args>(args)...);
     }

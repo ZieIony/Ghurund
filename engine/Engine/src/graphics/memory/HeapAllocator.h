@@ -22,7 +22,7 @@ namespace Ghurund {
         AllocationStrategy* strategy;
 
     public:
-        HeapAllocator(Graphics& graphics, size_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(Graphics& graphics, memory_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
             if (heap != nullptr)
@@ -30,12 +30,16 @@ namespace Ghurund {
             delete strategy;
         }
 
-        inline void* allocate(size_t size) {
+        inline void* allocate(memory_t size) {
             return (void*)strategy->allocate(size);
         }
 
         inline void deallocate(void* mem) {
-            strategy->deallocate((size_t)mem);
+            strategy->deallocate((memory_t)mem);
+        }
+
+        inline bool canAllocate(memory_t size) const {
+            return true;    // TODO: check GPU memory left
         }
 
         ID3D12Heap* getHeap() {

@@ -2,11 +2,11 @@
 
 #include "Control.h"
 
-#include "reflection_718b3d8f_c238_4e88_a9a3_263adce33482.h"
+#include "reflection_aec4988d_4e4d_4c8b_b378_60031135efc2.h"
 
 namespace Ghurund::UI {
     class ControlParent:public Control {
-        reflection_718b3d8f_c238_4e88_a9a3_263adce33482
+        reflection_aec4988d_4e4d_4c8b_b378_60031135efc2
 
     protected:
         friend class Control;

@@ -16,10 +16,6 @@ namespace tinyxml2 {
     class XMLElement;
 }
 
-namespace Ghurund {
-    class AString;
-}
-
 namespace Ghurund::UI {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
 
@@ -30,11 +26,11 @@ namespace Ghurund::UI {
     class Canvas;
 }
 
-#include "reflection_2fee3104_7174_41c1_9c27_f92511f100b7.h"
+#include "reflection_5b322b77_aa84_42ae_a6f0_3a0cca258226.h"
 
 namespace Ghurund::UI {
     class Control: public Pointer, public Ghurund::EventConsumer {
-        reflection_2fee3104_7174_41c1_9c27_f92511f100b7
+        reflection_5b322b77_aa84_42ae_a6f0_3a0cca258226
 
     private:
         ControlParent* parent = nullptr;

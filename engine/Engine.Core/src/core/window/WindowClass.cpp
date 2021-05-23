@@ -22,7 +22,7 @@ namespace Ghurund {
     WindowClass::WindowClass(WindowClassEnum value, const AString& name, DWORD exStyle, DWORD dwStyle, UINT style):Enum<WindowClassEnum, WindowClass>(value, name) {
         this->exStyle = exStyle;
         this->dwStyle = dwStyle;
-        className = fmt::format("Ghurund{}", name).c_str();
+        className = std::format(_T("Ghurund{}"), name).c_str();
 
         hInst = GetModuleHandle(0);
 
@@ -43,7 +43,7 @@ namespace Ghurund {
     }
 
     HWND WindowClass::create() const {
-        return CreateWindowEx(exStyle, windowClass.lpszClassName, "Ghurund", dwStyle, 0, 0, 0, 0, nullptr, nullptr, windowClass.hInstance, nullptr);
+        return CreateWindowEx(exStyle, windowClass.lpszClassName, _T("Ghurund"), dwStyle, 0, 0, 0, 0, nullptr, nullptr, windowClass.hInstance, nullptr);
     }
 
 }

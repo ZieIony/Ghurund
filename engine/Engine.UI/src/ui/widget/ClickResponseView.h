@@ -3,11 +3,11 @@
 #include "ui/Color.h"
 #include "ui/control/ClickableControl.h"
 
-#include "reflection_7f742ab5_7dc1_4e2e_936a_007825ea62a5.h"
+#include "reflection_145c55ab_4bd6_40a4_8a64_467ec3f3427c.h"
 
 namespace Ghurund::UI {
     class ClickResponseView:public ClickableControl {
-        reflection_7f742ab5_7dc1_4e2e_936a_007825ea62a5
+        reflection_145c55ab_4bd6_40a4_8a64_467ec3f3427c
 
     private:
         uint64_t startTime = 0;

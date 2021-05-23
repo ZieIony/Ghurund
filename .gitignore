@@ -17,6 +17,7 @@ packages
 test
 WidgetTest
 AS_DEBUG
+libs
 
 # User-specific files
 *.suo

@@ -14,4 +14,4 @@
 #include <tchar.h>
 #include <Windows.h>
 
-#include <fmt/format.h>
+#include <format>

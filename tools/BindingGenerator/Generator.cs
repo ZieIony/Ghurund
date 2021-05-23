@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Xml;
+using Utils;
 
 namespace BindingGenerator {
     class Generator {
-        public void generateBindings(List<string> files, string input, string output) {
+        public void generateBindings(FileInfo[] files, DirectoryInfo output) {
             Console.WriteLine("Generating bindings");
-            foreach (string file in files) {
-                string layoutClass = Path.GetFileNameWithoutExtension(file).Substring(0, 1).ToUpper() + Path.GetFileNameWithoutExtension(file).Substring(1);
-                string inputLayout = Path.Combine(input, file);
-                if (!Directory.Exists(output))
-                    Directory.CreateDirectory(output);
-                string outputHeader = Path.Combine(output, layoutClass + "Binding.h");
-                if (new FileInfo(inputLayout).LastWriteTimeUtc.Ticks > new FileInfo(outputHeader).LastWriteTimeUtc.Ticks) {
-                    generateBinding(layoutClass, inputLayout, outputHeader);
+            foreach (FileInfo file in files) {
+                string layoutClass = file.GetNameWithoutExtension().Substring(0, 1).ToUpper() + file.GetNameWithoutExtension().Substring(1);
+                if (!output.Exists)
+                    output.Create();
+                var outputHeader = new FileInfo(Path.Combine(output.FullName, layoutClass + "Binding.h"));
+                if (file.LastWriteTimeUtc.Ticks > outputHeader.LastWriteTimeUtc.Ticks) {
+                    GenerateBinding(layoutClass, file, outputHeader);
                 } else {
                     Console.WriteLine(outputHeader + " (no changes, skipped)");
                 }
@@ -23,11 +22,11 @@ namespace BindingGenerator {
             Console.WriteLine("Done");
         }
 
-        private void generateBinding(string layoutClass, string input, string output) {
-            Layout layout = readLayout(input);
-            bool hasBinding = layout.Values.Count + layout.Events.Count > 0;
+        private void GenerateBinding(string layoutClass, FileInfo input, FileInfo output) {
+            Layout layout = new Layout();
+            layout.Read(input);
 
-            FileStream bindingStream = File.Create(output);
+            FileStream bindingStream = output.Create();
             StreamWriter streamWriter = new StreamWriter(bindingStream, Encoding.ASCII);
 
             // includes
@@ -52,7 +51,7 @@ namespace BindingGenerator {
             streamWriter.Write($"namespace {layout.Namespace} {{\r\n");
 
             // layout class
-            if (hasBinding) {
+            if (layout.HasBinding) {
                 streamWriter.Write($@"    template<class Data>
     class {layoutClass}Binding:public Ghurund::UI::{baseClass} {{
 ");
@@ -192,7 +191,7 @@ namespace BindingGenerator {
             }
 
             // binding
-            if (hasBinding) {
+            if (layout.HasBinding) {
                 streamWriter.Write($@"
         inline void bind(Data& data) {{
 ");
@@ -214,68 +213,5 @@ namespace BindingGenerator {
             Console.WriteLine(output);
         }
 
-        private Layout readLayout(string path) {
-            var layout = new Layout {
-                Controls = new List<BoundControl>(),
-                Containers = new List<BoundControl>(),
-                Values = new List<BoundValue>(),
-                Events = new List<BoundEvent>(),
-                Types = new Dictionary<string, HashSet<string>>()
-            };
-            XmlReader xReader = XmlReader.Create(new StreamReader(File.OpenRead(path)));
-
-            while (xReader.Read()) {
-                switch (xReader.NodeType) {
-                    case XmlNodeType.Element:
-                        if (xReader.Name == "layout") {
-                            string attr3 = xReader.GetAttribute("namespace");
-                            if (attr3 != null) {
-                                layout.Namespace = attr3;
-                            }
-                        } else {
-                            string attr = xReader.GetAttribute("name");
-                            if (attr != null) {
-                                BoundControl boundControl = new BoundControl {
-                                    Type = xReader.Name,
-                                    Name = attr
-                                };
-                                string namespaceAttr = xReader.GetAttribute("namespace");
-                                if (namespaceAttr != null)
-                                    boundControl.Namespace = namespaceAttr;
-                                if (boundControl.Type == "ControlContainer") {
-                                    layout.Containers.Add(boundControl);
-                                } else {
-                                    layout.Controls.Add(boundControl);
-                                }
-                                if (!layout.Types.ContainsKey(boundControl.Namespace))
-                                    layout.Types.Add(boundControl.Namespace, new HashSet<string>());
-                                layout.Types[boundControl.Namespace].Add(boundControl.Type);
-                                for (int i = 0; i < xReader.AttributeCount; i++) {
-                                    xReader.MoveToAttribute(i);
-                                    if (xReader.Value.StartsWith(".")) {
-                                        layout.Values.Add(new BoundValue {
-                                            Control = boundControl.Name,
-                                            Property = xReader.Name.Substring(0, 1).ToUpper() + xReader.Name.Substring(1),
-                                            Value = xReader.Value.Substring(1)
-                                        });
-                                    } else if (xReader.Value.StartsWith("+")) {
-                                        layout.Events.Add(new BoundEvent {
-                                            Control = boundControl.Name,
-                                            Event = xReader.Name.Substring(0, 1).ToUpper() + xReader.Name.Substring(1),
-                                            Handler = xReader.Value.Substring(1)
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                        break;
-                    case XmlNodeType.Attribute:
-                        if (xReader.Value.StartsWith(".")) {
-                        }
-                        break;
-                }
-            }
-            return layout;
-        }
     }
 }

@@ -3,11 +3,11 @@
 #include "ControlContainer.h"
 #include "ui/Shape.h"
 
-#include "reflection_56ef6c21_c7b6_4db4_bacc_5b39dd5e824a.h"
+#include "reflection_41ff1f3a_5073_416e_9f76_74d0e31bdf85.h"
 
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
-        reflection_56ef6c21_c7b6_4db4_bacc_5b39dd5e824a
+        reflection_41ff1f3a_5073_416e_9f76_74d0e31bdf85
 
     private:
         Shape* shape = nullptr;

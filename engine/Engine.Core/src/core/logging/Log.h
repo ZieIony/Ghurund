@@ -5,7 +5,7 @@
 
 namespace Ghurund {
     struct Log {
-        LogType type = LogType::INFO;
+        const LogType& type = LogType::INFO;
         String fileLine, message;
     };
 }

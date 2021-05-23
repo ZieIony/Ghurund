@@ -2,7 +2,7 @@
 
 #include "ParameterId.h"
 #include "core/Pointer.h"
-#include "core/string/AString.h"
+#include "core/string/String.h"
 #include "editor/ObservableObject.h"
 
 namespace Ghurund {

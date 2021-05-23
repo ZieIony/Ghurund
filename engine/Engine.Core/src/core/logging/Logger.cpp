@@ -33,7 +33,7 @@ namespace Ghurund {
         if (output) {
             logOutput = output.release();
         } else {
-            logOutput = ghnew SystemConsoleLogOutput();
+            logOutput = ghnew DebugConsoleLogOutput();
         }
     }
 

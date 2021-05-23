@@ -51,7 +51,7 @@ namespace Ghurund::Editor {
 
         inline void setControl(Control* item) {
             //treeView->Item = item;
-            objectTypeText->Text = toWideChar(item->Type.Name);
+            objectTypeText->Text = convertText(item->Type.Name);
         }
 
         __declspec(property(put = setControl)) Control* Control;

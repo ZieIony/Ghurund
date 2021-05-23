@@ -7,123 +7,122 @@
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
 
-#include <fmt/format.h>
+#include <format>
 
 template <>
-struct fmt::formatter<Ghurund::AString> {
+struct std::formatter<Ghurund::AString, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::AString& s, FormatContext& ctx) {
-        Ghurund::String str = Ghurund::toTchar(s);
-        return format_to(ctx.out(), "{s}", str.Data);
-    }
-
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw fmt::v7::format_error("invalid format");
-        return it;
+        return std::formatter<const char*, char>::format(s.Data, ctx);
     }
 };
 
 template <>
-struct fmt::formatter<Ghurund::WString> {
+struct std::formatter<Ghurund::AString, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::AString& s, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(Ghurund::convertText<char, wchar_t>(s).Data, ctx);
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::WString, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::WString& s, FormatContext& ctx) {
-        Ghurund::String str = Ghurund::toTchar(s);
-        return format_to(ctx.out(), "{s}", str.Data);
-    }
-
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw fmt::v7::format_error("invalid format");
-        return it;
+        return std::formatter<const char*, char>::format(Ghurund::convertText<wchar_t, char>(s).Data, ctx);
     }
 };
 
 template <>
-struct fmt::formatter<Ghurund::AStringView> {
+struct std::formatter<Ghurund::WString, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::WString& s, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(s.Data, ctx);
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::AStringView, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::AStringView& s, FormatContext& ctx) {
-        const char* str = Ghurund::toTchar(s.Data);
-        auto f = format_to(ctx.out(), "{s}", str);
-        delete[] str;
-        return f;
-    }
-
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw fmt::v7::format_error("invalid format");
-        return it;
+        return std::formatter<const char*, char>::format(s.Data, ctx);
     }
 };
 
 template <>
-struct fmt::formatter<Ghurund::WStringView> {
+struct std::formatter<Ghurund::AStringView, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::AStringView& s, FormatContext& ctx) {
+        const wchar_t* str = Ghurund::convertText<char, wchar_t>(s.Data);
+        auto f = std::formatter<const wchar_t*, wchar_t>::format(str, ctx);
+        delete[] str;
+        return f;
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::WStringView, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::WStringView& s, FormatContext& ctx) {
-        const tchar* str = Ghurund::toTchar(s.Data);
-        auto f = format_to(ctx.out(), "{s}", str);
+        const char* str = Ghurund::convertText<wchar_t, char>(s.Data);
+        auto f = std::formatter<const char*, char>::format(str, ctx);
         delete[] str;
         return f;
-    }
-
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw fmt::v7::format_error("invalid format");
-        return it;
     }
 };
 
 template <>
-struct fmt::formatter<Ghurund::DirectoryPath> {
+struct std::formatter<Ghurund::WStringView, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::WStringView& s, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(s.Data, ctx);
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::DirectoryPath, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::DirectoryPath& s, FormatContext& ctx) {
-        const tchar* str = Ghurund::toTchar(s.toString().Data);
-        auto f = format_to(ctx.out(), "{s}", str);
-        delete[] str;
-        return f;
-    }
-
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw format_error("invalid format");
-        return it;
+        return std::formatter<const char*, char>::format(Ghurund::convertText<wchar_t, char>(s.toString()).Data, ctx);
     }
 };
 
 template <>
-struct fmt::formatter<Ghurund::FilePath> {
+struct std::formatter<Ghurund::DirectoryPath, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::DirectoryPath& s, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(s.toString().Data, ctx);
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::FilePath, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::FilePath& s, FormatContext& ctx) {
-        const tchar* str = Ghurund::toTchar(s.toString().Data);
-        auto f = format_to(ctx.out(), "{s}", str);
-        delete[] str;
-        return f;
+        return std::formatter<const char*, char>::format(Ghurund::convertText<wchar_t, char>(s.toString()).Data, ctx);
     }
+};
 
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw format_error("invalid format");
-        return it;
+template <>
+struct std::formatter<Ghurund::FilePath, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::FilePath& s, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(s.toString().Data, ctx);
     }
 };
 
 template <class EnumValueType, class EnumType>
-struct fmt::formatter<Ghurund::Enum<EnumValueType, EnumType>> {
+struct std::formatter<Ghurund::Enum<EnumValueType, EnumType>, char>:std::formatter<const wchar_t*, char> {
     template <typename FormatContext>
     auto format(const Ghurund::Enum<EnumValueType, EnumType>& e, FormatContext& ctx) {
-        return format_to(ctx.out(), "{s}", e.Name);
+        return std::formatter<const char*, char>::format(e.Name.Data, ctx);
     }
+};
 
-    constexpr auto parse(format_parse_context& ctx) {
-        auto it = ctx.begin(), end = ctx.end();
-        if (it != end && *it != '}')
-            throw format_error("invalid format");
-        return it;
+template <class EnumValueType, class EnumType>
+struct std::formatter<Ghurund::Enum<EnumValueType, EnumType>, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::Enum<EnumValueType, EnumType>& e, FormatContext& ctx) {
+        return std::formatter<const wchar_t*, wchar_t>::format(Ghurund::convertText<char, wchar_t>(e.Name).Data, ctx);
     }
 };

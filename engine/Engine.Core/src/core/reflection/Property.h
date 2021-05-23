@@ -16,7 +16,7 @@ namespace Ghurund {
         bool readOnly;
 
     public:
-        Property(const char* typeName, const char* propertyName, const char* group = DEFAULT_GROUP):typeName(typeName), propertyName(propertyName), group(group) {}
+        Property(const char* typeName, const char* propertyName, const char* group = DEFAULT_GROUP, bool readOnly = false):typeName(typeName), propertyName(propertyName), group(group), readOnly(readOnly) {}
 
         virtual ~Property() = 0 {}
 

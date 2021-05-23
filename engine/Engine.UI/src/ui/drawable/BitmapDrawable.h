@@ -4,11 +4,11 @@
 #include "ui/drawable/ImageDrawable.h"
 #include "ui/image/Bitmap.h"
 
-#include "reflection_897fba2b_a23c_460d_83e4_21c3247f53cc.h"
+#include "reflection_6cfe1e10_6ed4_4830_b2be_97752c7b6470.h"
 
 namespace Ghurund::UI {
     class BitmapDrawable:public ImageDrawable {
-        reflection_897fba2b_a23c_460d_83e4_21c3247f53cc
+        reflection_6cfe1e10_6ed4_4830_b2be_97752c7b6470
 
     private:
         Bitmap* image;

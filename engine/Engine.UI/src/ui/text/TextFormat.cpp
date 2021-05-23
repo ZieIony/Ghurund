@@ -24,13 +24,13 @@ namespace Ghurund::UI {
             size * 96.0f / 72.0f,
             locale.Data,
             &format)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateTextFormat failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateTextFormat failed\n"));
 
         if (FAILED(format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "SetTextAlignment failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("SetTextAlignment failed\n"));
 
         if (FAILED(format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, "SetParagraphAlignment failed\n");
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("SetParagraphAlignment failed\n"));
 
         return Status::OK;
     }
