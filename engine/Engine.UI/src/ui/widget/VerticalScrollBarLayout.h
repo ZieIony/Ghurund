@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     class LayoutLoader;
 
-    class VerticalScrollBarLayout:public WidgetLayout {
+    class VerticalScrollBarLayout:public LayoutBinding {
     private:
         Button* topButton;
         Button* barButton;
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
     public:
         VerticalScrollBarLayout(LayoutLoader& loader);
 
-        VerticalScrollBarLayout(Control* layout):WidgetLayout(layout) {}
+        VerticalScrollBarLayout(Control* layout):LayoutBinding(layout) {}
 
         inline Button* getTopButton() {
             return topButton;

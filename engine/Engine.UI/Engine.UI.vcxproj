@@ -184,7 +184,7 @@
     <ClInclude Include="src\ui\widget\DragHelper.h" />
     <ClInclude Include="src\ui\widget\ExpandableContainer.h" />
     <ClInclude Include="src\ui\widget\ImageButton.h" />
-    <ClInclude Include="src\ui\widget\WidgetLayout.h" />
+    <ClInclude Include="src\ui\widget\LayoutBinding.h" />
     <ClInclude Include="src\ui\widget\menu\DropDown.h" />
     <ClInclude Include="src\ui\widget\menu\DropDownLayout.h" />
     <ClInclude Include="src\ui\widget\menu\MenuItem.h" />

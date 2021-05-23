@@ -74,6 +74,9 @@ namespace Ghurund {
     }
 
     void Application::run(const Ghurund::Settings* settings) {
+        if (running)
+            return;
+
         if (settings)
             this->settings = *settings;
 
@@ -83,6 +86,7 @@ namespace Ghurund {
         }
 
         onInit();
+        running = true;
 
         timer->tick();
         uint64_t time = timer->TimeMs;
@@ -109,6 +113,7 @@ namespace Ghurund {
             }
         }
 
+        running = false;
         onUninit();
         uninit();
     }

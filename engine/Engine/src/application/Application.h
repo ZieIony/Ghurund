@@ -20,6 +20,7 @@ namespace Ghurund {
     private:
         WindowList windows;
         Ghurund::FunctionQueue* functionQueue = nullptr;
+        bool running = false;
 
         Settings settings;
         Graphics* graphics;
@@ -43,6 +44,12 @@ namespace Ghurund {
 
     public:
         virtual ~Application() {}
+
+        inline bool isRunning() {
+            return running;
+        }
+
+        __declspec(property(get = isRunning)) bool Running;
 
         void run(const Settings* val = nullptr);
 

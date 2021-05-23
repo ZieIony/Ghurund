@@ -14,7 +14,7 @@ namespace Messenger {
     using namespace std::ranges;
 
     MessengerWindow::MessengerWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
-        UIFeature* uiFeature = app.Features.get<UIFeature>();
+        /*UIFeature* uiFeature = app.Features.get<UIFeature>();
         Graphics2D& graphics2d = uiFeature->Graphics2D;
         const uint16_t port = 52109;
 
@@ -102,7 +102,7 @@ namespace Messenger {
 
         rootView->Theme = theme;
         rootView->BackgroundColor = theme->ColorBackground;
-        RootView = rootView;
+        RootView = rootView;*/
     }
 
     MessengerWindow::~MessengerWindow() {
@@ -112,7 +112,7 @@ namespace Messenger {
     }
 
     void MessengerWindow::update(const uint64_t time) {
-        if (server.Hosting) {
+        /*if (server.Hosting) {
             server.update(time);
             clientCount->Text = fmt::format(L"server: {} client(s)", server.Connections.count([](Connection* c) {
                 return c->Connected;
@@ -121,7 +121,7 @@ namespace Messenger {
             client.update(time);
             clientCount->Text = fmt::format(L"client: {}", client.Connected).c_str();
         }
-        clientCount->invalidate();
+        clientCount->invalidate();*/
         __super::update(time);
     }
 }

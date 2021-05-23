@@ -5,7 +5,7 @@
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
-    class WidgetLayout {
+    class LayoutBinding {
     private:
         Control* root = nullptr;
 
@@ -15,14 +15,14 @@ namespace Ghurund::UI {
         }
 
     public:
-        WidgetLayout() {}
+        LayoutBinding() {}
 
-        WidgetLayout(Control* control) {
+        LayoutBinding(Control* control) {
             root = control;
             root->addReference();
         }
 
-        virtual ~WidgetLayout() = 0 {
+        virtual ~LayoutBinding() = 0 {
             if (root)
                 root->release();
         }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WidgetLayout.h"
+#include "LayoutBinding.h"
 #include "core/Concepts.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/reflection/TypeBuilder.h"
@@ -9,7 +9,7 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    template<Derived<WidgetLayout> LayoutType>
+    template<Derived<LayoutBinding> LayoutType>
     class Widget:public ControlContainer {
     private:
         LayoutType* widgetLayout = nullptr;
@@ -145,7 +145,7 @@ namespace Ghurund::UI {
     };
 
     template<typename Type, typename ItemType>
-    concept BindingLayout = Derived<Type, WidgetLayout> && requires(Type layout, ItemType & data) {
+    concept BindingLayout = Derived<Type, LayoutBinding> && requires(Type layout, ItemType & data) {
         layout.bind(data);
     };
 

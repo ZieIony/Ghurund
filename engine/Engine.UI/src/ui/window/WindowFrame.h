@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) override;
     };
 
-    class WindowContainerLayout:public WidgetLayout {
+    class WindowContainerLayout:public LayoutBinding {
     public:
         WindowContainerLayout() {}
         WindowContainerLayout(Control* control) {}

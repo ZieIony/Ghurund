@@ -1,12 +1,8 @@
-﻿#include "core/math/MathUtils.h"
-#include "EditorWindow.h"
+﻿#include "EditorWindow.h"
 #include "ui/UIFeature.h"
 
 namespace Ghurund::Editor {
-    using namespace Ghurund;
-    using namespace Ghurund::UI;
-
-    class EditorApplication:public Application {
+    class EditorApplication:public Ghurund::Application {
     public:
         EditorApplication() {
             Features.add<UIFeature>(ghnew UIFeature(*this));

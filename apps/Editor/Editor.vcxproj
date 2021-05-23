@@ -80,7 +80,7 @@
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)generated;$(ProjectDir)src;$(SolutionDir)engine\Engine\generated\reflection;$(SolutionDir)engine\Engine\src;$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine.UI\generated\bindings;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)generated\bindings;$(ProjectDir)src;$(SolutionDir)engine\Engine\generated\reflection;$(SolutionDir)engine\Engine\src;$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine.UI\generated\bindings;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)$(Configuration);$(LibraryPath)</LibraryPath>
     <SourcePath>D:\projekty\GhurundEngine12\Editor\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
@@ -148,17 +148,19 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="generated\LogPanelBinding.h" />
-    <ClInclude Include="generated\LogRowBinding.h" />
-    <ClInclude Include="generated\PropertyPanelBinding.h" />
-    <ClInclude Include="generated\SearchFieldBinding.h" />
-    <ClInclude Include="generated\TestRowBinding.h" />
-    <ClInclude Include="generated\TitleBarBinding.h" />
-    <ClInclude Include="generated\ToolWindowBinding.h" />
+    <ClInclude Include="generated\bindings\EditorWindowBinding.h" />
+    <ClInclude Include="generated\bindings\LayoutEditorBinding.h" />
+    <ClInclude Include="generated\bindings\LogPanelBinding.h" />
+    <ClInclude Include="generated\bindings\LogRowBinding.h" />
+    <ClInclude Include="generated\bindings\PropertyPanelBinding.h" />
+    <ClInclude Include="generated\bindings\SearchFieldBinding.h" />
+    <ClInclude Include="generated\bindings\TitleBarBinding.h" />
+    <ClInclude Include="generated\bindings\ToolWindowBinding.h" />
     <ClInclude Include="src\control\FpsText.h" />
     <ClInclude Include="src\control\SearchField.h" />
     <ClInclude Include="src\control\SearchFieldLayout.h" />
     <ClInclude Include="src\EditorWindow.h" />
+    <ClInclude Include="src\EditorLayout.h" />
     <ClInclude Include="src\tool\LogPanel.h" />
     <ClInclude Include="src\MainMenu.h" />
     <ClInclude Include="src\EditorApplication.h" />

@@ -27,12 +27,12 @@ namespace Ghurund::UI {
         TextTabItem(const WString& text, Control* content):TabItem(content), text(text) {}
     };
 
-    class TabLayout:public WidgetLayout {
+    class TabLayout:public LayoutBinding {
     protected:
         SelectableView* selectableView;
 
     public:
-        TabLayout(Control* control):WidgetLayout(control) {}
+        TabLayout(Control* control):LayoutBinding(control) {}
 
         inline SelectableView* getSelectableView() {
             return selectableView;

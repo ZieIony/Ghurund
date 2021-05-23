@@ -34,7 +34,7 @@ namespace BindingGenerator {
             streamWriter.Write(@"#pragma once
 
 #include ""ui/layout/LayoutLoader.h""
-#include ""ui/widget/WidgetLayout.h""
+#include ""ui/widget/LayoutBinding.h""
 
 ");
 
@@ -47,7 +47,7 @@ namespace BindingGenerator {
                 streamWriter.Write("}\r\n\r\n");
             }
 
-            string baseClass = "WidgetLayout";
+            string baseClass = "LayoutBinding";
 
             streamWriter.Write($"namespace {layout.Namespace} {{\r\n");
 
@@ -114,7 +114,7 @@ namespace BindingGenerator {
 
                 // load content
                 streamWriter.Write($@"
-        virtual Status loadContent(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {{
+        virtual Status loadContent(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {{
             auto childElement = xml.FirstChildElement();
             while (childElement) {{
 ");
@@ -146,7 +146,7 @@ namespace BindingGenerator {
 
 
                 streamWriter.Write(@"
-        virtual Control* find(const AString& name) override {
+        virtual Ghurund::UI::Control* find(const Ghurund::AString& name) override {
 ");
                 for (int i = 0; i < layout.Containers.Count - 1; i++) {
                     BoundControl control = layout.Containers[i];
@@ -168,7 +168,7 @@ namespace BindingGenerator {
 ");
 
                 streamWriter.Write(@"
-        virtual Control* find(const Ghurund::Type& type) override {
+        virtual Ghurund::UI::Control* find(const Ghurund::Type& type) override {
 ");
                 for (int i = 0; i < layout.Containers.Count - 1; i++) {
                     BoundControl control = layout.Containers[i];
