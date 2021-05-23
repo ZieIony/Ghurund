@@ -57,6 +57,7 @@
     <ClInclude Include="src\core\collection\CollectionWithCapacity.h" />
     <ClInclude Include="src\core\collection\LinkedList.h" />
     <ClInclude Include="src\core\collection\Queue.h" />
+    <ClInclude Include="src\core\collection\Range.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\Concepts.h" />
