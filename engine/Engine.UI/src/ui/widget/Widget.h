@@ -9,14 +9,16 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     template<Derived<LayoutBinding> LayoutType>
     class Widget:public ControlContainer {
     private:
         LayoutType* widgetLayout = nullptr;
 
-        Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml, const AString& pathStr) {
+        Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml, const Ghurund::Core::AString& pathStr) {
             Status result;
-            SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+            Ghurund::Core::SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
             if (result != Status::OK)
                 return result;
             if (layout && !layout->Controls.Empty)
@@ -27,8 +29,8 @@ namespace Ghurund::UI {
         }
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Widget))
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Widget>(NAMESPACE_NAME, GH_STRINGIFY(Widget))
                 .withModifiers(TypeModifier::ABSTRACT)
                 .withSupertype(__super::GET_TYPE());
 
@@ -108,7 +110,7 @@ namespace Ghurund::UI {
             return nullptr;
         }
 
-        virtual Control* find(const Ghurund::Type& type) {
+        virtual Control* find(const Ghurund::Core::Type& type) {
             Control* baseFind = Control::find(type);
             if (baseFind)
                 return baseFind;
@@ -132,9 +134,9 @@ namespace Ghurund::UI {
             return Status::INV_PARAM;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };
@@ -155,8 +157,8 @@ namespace Ghurund::UI {
         DataType* data;
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(BindingWidget))
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<BindingWidget>(NAMESPACE_NAME, GH_STRINGIFY(BindingWidget))
                 .withModifiers(TypeModifier::ABSTRACT)
                 .withSupertype(__super::GET_TYPE());
 
@@ -180,9 +182,9 @@ namespace Ghurund::UI {
             }
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

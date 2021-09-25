@@ -9,12 +9,15 @@
 #include "core/SharedPointer.h"
 #include "core/Timer.h"
 
+namespace Ghurund::Core {
+    class Timer;
+    class FunctionQueue;
+}
+
 namespace Ghurund {
     class Graphics;
     class Renderer;
     class ParameterManager;
-    class Timer;
-    class FunctionQueue;
 
     class Application:public Noncopyable {
     private:
@@ -111,4 +114,9 @@ namespace Ghurund {
 
         __declspec(property(get = getFeatures)) FeatureCollection& Features;
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Application>();
 }

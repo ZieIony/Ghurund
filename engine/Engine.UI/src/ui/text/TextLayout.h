@@ -16,9 +16,9 @@ namespace Ghurund::UI {
 
     class TextLayout {
     private:
-        FloatSize size;
+        Ghurund::Core::FloatSize size;
         Color color;
-        WString text;
+        Ghurund::Core::WString text;
         TextFormat* format = nullptr;
 
         ComPtr<ID2D1SolidColorBrush> fillBrush;
@@ -34,7 +34,7 @@ namespace Ghurund::UI {
         void copyGlobalProperties(IDWriteTextLayout* oldLayout, IDWriteTextLayout* newLayout);
 
     public:
-        TextLayout(const WString& text, const Color& color, TextFormat* format):text(text), color(color) {
+        TextLayout(const Ghurund::Core::WString& text, const Color& color, TextFormat* format):text(text), color(color) {
             Format = format;
         }
 
@@ -43,11 +43,11 @@ namespace Ghurund::UI {
                 format->release();
         }
 
-        inline const FloatSize& getSize() const {
+        inline const Ghurund::Core::FloatSize& getSize() const {
             return size;
         }
 
-        inline void setSize(const FloatSize& size) {
+        inline void setSize(const Ghurund::Core::FloatSize& size) {
             setSize(size.width, size.height);
         }
 
@@ -58,7 +58,7 @@ namespace Ghurund::UI {
             }
         }
 
-        __declspec(property(get = getSize, put = setSize)) const FloatSize& Size;
+        __declspec(property(get = getSize, put = setSize)) const Ghurund::Core::FloatSize& Size;
 
         inline void setColor(const Color& color) {
             this->color = color;
@@ -72,18 +72,18 @@ namespace Ghurund::UI {
 
         Ghurund::UI::Color getColor(uint32_t pos);
 
-        inline const WString& getText() const {
+        inline const Ghurund::Core::WString& getText() const {
             return text;
         }
 
-        inline void setText(const WString& text) {
+        inline void setText(const Ghurund::Core::WString& text) {
             if (this->text != text) {
                 this->text = text;
                 valid = false;
             }
         }
 
-        __declspec(property(get = getText, put = setText)) const WString& Text;
+        __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
 
         inline TextFormat* getFormat() {
             return format;
@@ -103,17 +103,17 @@ namespace Ghurund::UI {
 
         HitTestMetrics hitTestTextPosition(uint32_t textPosition, bool isTrailingHit, float* pointX, float* pointY);
 
-        Array<HitTestMetrics> hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY);
+        Ghurund::Core::Array<HitTestMetrics> hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY);
 
         HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit);
 
-        Array<Ghurund::UI::LineMetrics> getLineMetrics();
+        Ghurund::Core::Array<Ghurund::UI::LineMetrics> getLineMetrics();
 
-        __declspec(property(get = getLineMetrics)) Array<Ghurund::UI::LineMetrics> LineMetrics;
+        __declspec(property(get = getLineMetrics)) Ghurund::Core::Array<Ghurund::UI::LineMetrics> LineMetrics;
 
-        Array<Ghurund::UI::ClusterMetrics> getClusterMetrics();;
+        Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> getClusterMetrics();;
 
-        __declspec(property(get = getClusterMetrics)) Array<Ghurund::UI::ClusterMetrics> ClusterMetrics;
+        __declspec(property(get = getClusterMetrics)) Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> ClusterMetrics;
 
         inline void invalidate() {
             valid = false;
@@ -125,7 +125,7 @@ namespace Ghurund::UI {
             canvas.drawText(*layout, x, y, color);
         }
 
-        Status insertTextAt(IDWriteFactory& dwriteFactory, uint32_t position, const WString& textToInsert);
+        Status insertTextAt(IDWriteFactory& dwriteFactory, uint32_t position, const Ghurund::Core::WString& textToInsert);
 
         Status removeTextAt(IDWriteFactory& dwriteFactory, uint32_t position, uint32_t lengthToRemove);
     };

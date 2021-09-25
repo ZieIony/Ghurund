@@ -5,6 +5,8 @@
 #include <algorithm>
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class Animation {
     private:
         uint64_t duration = 200;

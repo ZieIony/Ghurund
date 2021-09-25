@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Clipboard {
     private:
         Clipboard() = delete;

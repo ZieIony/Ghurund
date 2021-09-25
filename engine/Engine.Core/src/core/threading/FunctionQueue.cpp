@@ -4,7 +4,7 @@
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void FunctionQueue::post(std::function<void()> function) {
         if (function == nullptr) {
             Logger::log(LogType::WARNING, _T("Empty function posted to function queue\n"));

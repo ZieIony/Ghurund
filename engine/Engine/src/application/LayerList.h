@@ -121,3 +121,8 @@ namespace Ghurund {
         }
     };
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<LayerList>();
+}

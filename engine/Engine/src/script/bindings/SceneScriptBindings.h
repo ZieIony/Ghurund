@@ -8,7 +8,7 @@ namespace Ghurund {
     class SceneScriptBindings:ScriptBindings<Scene> {
     public:
         static void registerClass(asIScriptEngine& engine) {
-            ScriptBindings<Scene>::registerRefClass(engine, Scene::TYPE.Name);
+            ScriptBindings<Scene>::registerRefClass(engine, Scene::TYPE.Name.Data);
         }
     };
 

@@ -1,64 +1,83 @@
 #pragma once
 
 #include "Constructor.h"
-#include "Property.h"
+#include "BaseProperty.h"
+#include "Method.h"
 #include "TypeModifier.h"
 #include "core/collection/List.h"
-#include "core/collection/Map.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
-	class Type {
-	private:
-		const BaseConstructor* constructor;
+namespace Ghurund::Core {
+    class Type:public NamedObject<char> {
+    private:
         const TypeModifier modifiers;
-		const char* _namespace;
-		const char* name;
+        const AString _namespace;
         const size_t size;
         const Type* supertype;
-        const Map<AString, Property*> properties;
+        const List<BaseConstructor*> constructors;
+        const List<BaseProperty*> properties;
+        const List<BaseMethod*> methods;
 
-		static List<Type>& getTypes() {
-			static List<Type> types;
-			return types;
-		}
+        static List<Type>& getTypes() {
+            static List<Type> types;
+            return types;
+        }
 
     public:
-        Type(const BaseConstructor* constructor, TypeModifier modifiers, const char* _namespace, const char* name, size_t size, Type* supertype, Map<AString, Property*>& properties):
-            modifiers(modifiers), size(size), properties(properties) {
-            this->constructor = constructor;
-            this->_namespace = _namespace;
-            this->name = name;
-            this->supertype = supertype;
+        Type(const char* name, size_t size): NamedObject<char>(name), modifiers((TypeModifier)0), size(size) {
+            getTypes().add(*this);
+        }
 
+        Type(const char* _namespace, const char* name, size_t size):
+            NamedObject<char>(name),
+            _namespace(_namespace),
+            modifiers((TypeModifier)0),
+            size(size)
+        {
+            getTypes().add(*this);
+        }
+
+        Type(
+            const AString& _namespace,
+            const AString& name,
+            size_t size,
+            TypeModifier modifiers,
+            Type* supertype,
+            List<BaseConstructor*>& constructors,
+            List<BaseProperty*>& properties,
+            List<BaseMethod*>& methods
+        ):
+            NamedObject<char>(name),
+            constructors(constructors),
+            modifiers(modifiers),
+            _namespace(_namespace),
+            size(size),
+            supertype(supertype),
+            properties(properties),
+            methods(methods)
+        {
             getTypes().add(*this);
         }
 
         static Type* fromName(const char* _namespace, const char* name) {
             for (Type& type : TYPES) {
-                if (strcmp(type.Namespace, _namespace) == 0 && strcmp(type.Name, name) == 0)
+                if (type.Namespace == _namespace && type.Name == name)
                     return &type;
             }
             return nullptr;
         }
 
-		const BaseConstructor* getConstructor() const {
-			return constructor;
-		}
-
-		__declspec(property(get = getConstructor)) BaseConstructor* Constructor;
-
-		const char* getNamespace() const {
-			return _namespace;
-		}
-
-		__declspec(property(get = getNamespace)) const char* Namespace;
-
-        const char* getName() const {
-            return name;
+        const List<BaseConstructor*> getConstructors() const {
+            return constructors;
         }
 
-        __declspec(property(get = getName)) const char* Name;
+        __declspec(property(get = getConstructors)) List<BaseConstructor*>& Constructors;
+
+        const AString& getNamespace() const {
+            return _namespace;
+        }
+
+        __declspec(property(get = getNamespace)) const AString& Namespace;
 
         const size_t getSize() const {
             return size;
@@ -78,17 +97,23 @@ namespace Ghurund {
 
         __declspec(property(get = getModifiers)) const TypeModifier Modifiers;
 
-        const Map<AString, Property*>& getProperties() const {
+        const List<BaseProperty*>& getProperties() const {
             return properties;
         }
 
-        __declspec(property(get = getProperties)) const Map<AString, Property*>& Properties;
+        __declspec(property(get = getProperties)) const List<BaseProperty*>& Properties;
 
-		bool operator==(const Type& type) const {
-			return constructor == type.constructor && strcmp(_namespace, type._namespace) == 0 && strcmp(name, type.name) == 0;
-		}
+        const List<BaseMethod*>& getMethods() const {
+            return methods;
+        }
 
-		inline static const List<Type>& TYPES = getTypes();
+        __declspec(property(get = getMethods)) const List<BaseMethod*>& Methods;
+
+        bool operator==(const Type& type) const {
+            return _namespace == type._namespace && __super::operator==(type);
+        }
+
+        inline static const List<Type>& TYPES = getTypes();
 
         bool isOrExtends(const Type& type) const {
             Type* st = (Type*)this;
@@ -110,4 +135,9 @@ namespace Ghurund {
             return false;
         }
     };
+
+    template<typename T>
+    const Type& getType() {
+        return T::TYPE;
+    }
 }

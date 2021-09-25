@@ -3,7 +3,7 @@
 
 #include "core/logging/Logger.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void WorkerThread::run() {
         running.test_and_set();
         while (true) {

@@ -14,15 +14,17 @@
 #include <wrl.h>
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Graphics;
 
-    class HeapAllocator:public Allocator {
+    class HeapAllocator:public Allocator<uint64_t> {
     public:
         ID3D12Heap* heap = nullptr;
-        AllocationStrategy* strategy;
+        AllocationStrategy<uint64_t>* strategy;
 
     public:
-        HeapAllocator(Graphics& graphics, memory_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(Graphics& graphics, uint64_t size, AllocationStrategy<uint64_t>* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
             if (heap != nullptr)
@@ -30,16 +32,12 @@ namespace Ghurund {
             delete strategy;
         }
 
-        inline void* allocate(memory_t size) {
+        inline void* allocate(uint64_t size) {
             return (void*)strategy->allocate(size);
         }
 
         inline void deallocate(void* mem) {
-            strategy->deallocate((memory_t)mem);
-        }
-
-        inline bool canAllocate(memory_t size) const {
-            return true;    // TODO: check GPU memory left
+            strategy->deallocate((uint64_t)mem);
         }
 
         ID3D12Heap* getHeap() {

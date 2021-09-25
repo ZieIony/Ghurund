@@ -3,7 +3,7 @@
 #include "DirectoryPath.h"
 #include "Library.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     /*
     * a file folder with resources
     */

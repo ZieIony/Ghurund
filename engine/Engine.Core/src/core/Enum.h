@@ -4,7 +4,7 @@
 #include "core/collection/Map.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     template<class Type, class Type2>
     class Enum;

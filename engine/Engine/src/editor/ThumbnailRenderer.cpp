@@ -4,9 +4,9 @@
 #include "CameraUtils.h"
 
 namespace Ghurund {
-    const Ghurund::Type& ThumbnailRenderer::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ThumbnailRenderer>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ThumbnailRenderer))
+    const Ghurund::Core::Type& ThumbnailRenderer::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ThumbnailRenderer>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ThumbnailRenderer>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ThumbnailRenderer))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

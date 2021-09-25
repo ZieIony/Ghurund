@@ -2,7 +2,7 @@
 #include "LinearLayoutManager.h"
 
 namespace Ghurund::UI {
-    FloatSize LinearLayoutManager::measureHorizontal(float parentWidth, float parentHeight) {
+    Ghurund::Core::FloatSize LinearLayoutManager::measureHorizontal(float parentWidth, float parentHeight) {
         contentSize = 0.0f;
         spreadCount = 0;
 
@@ -36,7 +36,7 @@ namespace Ghurund::UI {
         return { std::max(group->MinSize.width, measuredwidth), measureMaxHeight() };
     }
 
-    FloatSize LinearLayoutManager::measureVertical(float parentWidth, float parentHeight) {
+    Ghurund::Core::FloatSize LinearLayoutManager::measureVertical(float parentWidth, float parentHeight) {
         contentSize = 0.0f;
         spreadCount = 0;
 

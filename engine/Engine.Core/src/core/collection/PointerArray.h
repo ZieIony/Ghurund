@@ -3,7 +3,7 @@
 #include "Array.h"
 #include "core/Pointer.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Value>
     class PointerArray:public Array<Value> {
     public:

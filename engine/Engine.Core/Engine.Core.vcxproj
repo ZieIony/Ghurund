@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
+    <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
@@ -60,6 +60,7 @@
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\collection\TreeMap.h" />
+    <ClInclude Include="src\core\collection\TypeCollection.h" />
     <ClInclude Include="src\core\Concepts.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
@@ -88,9 +89,12 @@
     <ClInclude Include="src\core\math\Rect.h" />
     <ClInclude Include="src\core\Observable.h" />
     <ClInclude Include="src\core\ObservableHandler.h" />
-    <ClInclude Include="src\core\reflection\Property.h" />
+    <ClInclude Include="src\core\reflection\BaseProperty.h" />
+    <ClInclude Include="src\core\reflection\Method.h" />
+    <ClInclude Include="src\core\reflection\Parameter.h" />
+    <ClInclude Include="src\core\reflection\StandardTypes.h" />
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
-    <ClInclude Include="src\core\reflection\TypedProperty.h" />
+    <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
@@ -124,6 +128,7 @@
     <ClInclude Include="src\core\collection\List.h" />
     <ClInclude Include="src\core\collection\Map.h" />
     <ClInclude Include="src\core\SystemInfo.h" />
+    <ClInclude Include="src\core\TypeSequence.h" />
     <ClInclude Include="src\core\threading\APCThread.h" />
     <ClInclude Include="src\core\threading\ConcurrentTaskQueue.h" />
     <ClInclude Include="src\core\threading\ConditionVariable.h" />
@@ -249,7 +254,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine.Core_32</TargetName>
+    <TargetName>Ghurund.Core_32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
@@ -258,7 +263,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
-    <TargetName>GhurundEngine.Core_64</TargetName>
+    <TargetName>Ghurund.Core_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

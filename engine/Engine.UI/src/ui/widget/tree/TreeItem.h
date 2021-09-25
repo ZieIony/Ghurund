@@ -6,7 +6,7 @@ namespace Ghurund::UI {
     class TreeItem {
     public:
         TreeItem* parent = nullptr;
-        List<TreeItem*> children;
+        Ghurund::Core::List<TreeItem*> children;
 
         inline uint32_t getDepth() {
             uint32_t depth = 0;

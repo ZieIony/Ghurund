@@ -26,3 +26,11 @@ namespace Ghurund::UI {
         colors.set(COLOR_HIGHLIGHT_ONACCENT, colorWithAlpha(highlight, Colors[COLOR_FOREGROUND_ONACCENT]));
     }
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Theme>() {
+        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Theme", sizeof(Ghurund::UI::Theme));
+        return TYPE;
+    }
+}

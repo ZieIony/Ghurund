@@ -7,7 +7,7 @@
 
 #include <functional>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     __interface LogOutput {
         virtual void log(const Log& log) = 0;
     };

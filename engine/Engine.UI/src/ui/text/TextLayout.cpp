@@ -73,7 +73,7 @@ namespace Ghurund::UI {
             oldLayout->GetStrikethrough(startPosForOld, &value);
             newLayout->SetStrikethrough(value, range);
 
-            Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
+            Ghurund::Core::Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
             localeName.set(0, '\0');
             oldLayout->GetLocaleName(startPosForOld, localeName.begin(), (uint32_t)localeName.Size);
             newLayout->SetLocaleName(localeName.begin(), range);
@@ -135,15 +135,15 @@ namespace Ghurund::UI {
         };
     }
 
-    Array<HitTestMetrics> TextLayout::hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY) {
+    Ghurund::Core::Array<HitTestMetrics> TextLayout::hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY) {
         UINT32 actualHitTestCount = 0;
 
         layout->HitTestTextRange(textPosition, textLength, 0, 0, nullptr, 0, &actualHitTestCount);
 
-        Array<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
+        Ghurund::Core::Array<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
         layout->HitTestTextRange(textPosition, textLength, 0, 0, hitTestMetrics.begin(), (UINT32)hitTestMetrics.Size, &actualHitTestCount);
 
-        Array<HitTestMetrics> hitTestMetrics2(actualHitTestCount);
+        Ghurund::Core::Array<HitTestMetrics> hitTestMetrics2(actualHitTestCount);
         for (size_t i = 0; i < actualHitTestCount; i++) {
             hitTestMetrics2[i] = HitTestMetrics{
                 hitTestMetrics[i].textPosition,
@@ -173,12 +173,12 @@ namespace Ghurund::UI {
         *isTrailingHit = isTrailingHit2 == TRUE;
     }
 
-    Array<Ghurund::UI::LineMetrics> TextLayout::getLineMetrics() {
+    Ghurund::Core::Array<Ghurund::UI::LineMetrics> TextLayout::getLineMetrics() {
         uint32_t lineCount = 0;
         layout->GetLineMetrics(nullptr, 0, &lineCount);
-        Array<DWRITE_LINE_METRICS> dwriteLineMetrics(lineCount);
+        Ghurund::Core::Array<DWRITE_LINE_METRICS> dwriteLineMetrics(lineCount);
         layout->GetLineMetrics(dwriteLineMetrics.begin(), lineCount, &lineCount);
-        Array<Ghurund::UI::LineMetrics> lineMetrics(lineCount);
+        Ghurund::Core::Array<Ghurund::UI::LineMetrics> lineMetrics(lineCount);
         for (size_t i = 0; i < lineMetrics.Size; i++) {
             lineMetrics[i] = Ghurund::UI::LineMetrics{
                 dwriteLineMetrics[i].length,
@@ -192,14 +192,14 @@ namespace Ghurund::UI {
         return lineMetrics;
     }
 
-    Array<Ghurund::UI::ClusterMetrics> TextLayout::getClusterMetrics() {
+    Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> TextLayout::getClusterMetrics() {
         UINT32 clusterCount;
         layout->GetClusterMetrics(nullptr, 0, &clusterCount);
 
-        Array<DWRITE_CLUSTER_METRICS> dwriteClusterMetrics(clusterCount);
+        Ghurund::Core::Array<DWRITE_CLUSTER_METRICS> dwriteClusterMetrics(clusterCount);
         layout->GetClusterMetrics(dwriteClusterMetrics.begin(), clusterCount, &clusterCount);
 
-        Array<Ghurund::UI::ClusterMetrics> clusterMetrics(clusterCount);
+        Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> clusterMetrics(clusterCount);
         for (size_t i = 0; i < clusterMetrics.Size; i++) {
             clusterMetrics[i] = Ghurund::UI::ClusterMetrics{
                 dwriteClusterMetrics[i].length,
@@ -209,7 +209,7 @@ namespace Ghurund::UI {
         return clusterMetrics;
     }
 
-    Status TextLayout::insertTextAt(IDWriteFactory& dwriteFactory, uint32_t position, const WString& textToInsert) {
+    Status TextLayout::insertTextAt(IDWriteFactory& dwriteFactory, uint32_t position, const Ghurund::Core::WString& textToInsert) {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
@@ -321,11 +321,11 @@ namespace Ghurund::UI {
     }
 
     TextFormat* TextLayout::getFormat(uint32_t position) {
-        Array<wchar_t> fontFamilyName(100);
+        Ghurund::Core::Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
         layout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
 
-        Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
+        Ghurund::Core::Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
         localeName.set(0, L'\0');
         layout->GetLocaleName(position, localeName.begin(), (UINT32)localeName.Size);
 

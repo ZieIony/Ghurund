@@ -2,7 +2,7 @@
 
 #include "core/allocation/Allocator.h"
 
-class TestAllocator:public Ghurund::Allocator {
+class TestAllocator:public Ghurund::Core::Allocator<size_t> {
 private:
     int allocations = 0;
 
@@ -13,7 +13,7 @@ public:
 
     __declspec(property(get = getAllocations)) int Allocations;
 
-    inline void* allocate(Ghurund::memory_t size) {
+    inline void* allocate(size_t size) {
         allocations++;
         return operator new((size_t)size, _NORMAL_BLOCK, __FILE__, __LINE__);
     }
@@ -23,7 +23,7 @@ public:
         operator delete(obj);
     }
 
-    inline bool canAllocate(Ghurund::memory_t size) const {
+    inline bool canAllocate(size_t size) const {
         return true;
     }
 };

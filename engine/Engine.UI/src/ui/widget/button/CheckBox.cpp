@@ -5,9 +5,9 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& CheckBox::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<CheckBox>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
+    const Ghurund::Core::Type& CheckBox::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<CheckBox>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBox>(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

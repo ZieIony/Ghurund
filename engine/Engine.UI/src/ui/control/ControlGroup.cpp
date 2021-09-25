@@ -5,9 +5,9 @@
 #include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ControlGroup::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<ControlGroup>();
-        static Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
+    const Ghurund::Core::Type& ControlGroup::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ControlGroup>();
+        static Ghurund::Core::Type TYPE = TypeBuilder<ControlGroup>(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -90,7 +90,7 @@ namespace Ghurund::UI {
         }
     }
 
-    bool ControlGroup::dispatchKeyEvent(const Ghurund::KeyEventArgs& event) {
+    bool ControlGroup::dispatchKeyEvent(const KeyEventArgs& event) {
         if (focusedChild)
             return focusedChild->dispatchKeyEvent(event);
         for (size_t i = 0; i < children.Size; i++) {
@@ -101,7 +101,7 @@ namespace Ghurund::UI {
         return __super::dispatchKeyEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) {
+    bool ControlGroup::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (capturedChild) {
             auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
             return capturedChild->dispatchMouseButtonEvent(e);
@@ -115,7 +115,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+    bool ControlGroup::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (capturedChild) {
             auto e = event.translate(-capturedChild->Position.x, -capturedChild->Position.y, capturedChild->canReceiveEvent(event));
             return capturedChild->dispatchMouseMotionEvent(e);
@@ -137,7 +137,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    bool ControlGroup::dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& event) {
+    bool ControlGroup::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
         for (size_t i = 0; i < children.Size; i++) {
             Control* c = children.get(children.Size - i - 1);
             if (c->canReceiveEvent(event) && c->dispatchMouseWheelEvent(event.translate(-c->Position.x, -c->Position.y)))
@@ -146,7 +146,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlGroup::find(const AString& name) {
+    Control* ControlGroup::find(const Ghurund::Core::AString& name) {
         if (this->Name && this->Name->operator==(name))
             return this;
         for (Control* c : children) {
@@ -157,7 +157,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Control* ControlGroup::find(const Ghurund::Type& type) {
+    Control* ControlGroup::find(const Ghurund::Core::Type& type) {
         if (Type == type)
             return this;
         for (Control* c : children) {

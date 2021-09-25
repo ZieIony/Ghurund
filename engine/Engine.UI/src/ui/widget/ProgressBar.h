@@ -5,6 +5,8 @@
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class ProgressBar:public Control {
     private:
         float progress = 0.0f;
@@ -12,7 +14,7 @@ namespace Ghurund::UI {
         Color progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ProgressBar() {
@@ -63,9 +65,9 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

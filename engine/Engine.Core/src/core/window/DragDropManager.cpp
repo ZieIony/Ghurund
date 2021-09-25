@@ -6,7 +6,7 @@
 #include <oleidl.h>
 #include <shellapi.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     Array<FilePath*>* DragDropManager::getFiles(IDataObject* pDataObj) {
         FORMATETC fmte = { CF_HDROP, NULL, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
         STGMEDIUM stgm;

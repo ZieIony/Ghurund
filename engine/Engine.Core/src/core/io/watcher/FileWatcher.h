@@ -7,7 +7,7 @@
 #include "core/threading/FunctionQueue.h"
 #include "core/threading/APCThread.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class FileWatcher {
     private:
         APCThread thread;

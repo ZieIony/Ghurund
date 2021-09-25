@@ -18,14 +18,20 @@
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfuuid")
 
-#include "reflection_08c20e05_8779_4620_93c4_d7dbd043fcf2.h"
-
 namespace Ghurund::Audio {
     using namespace DirectX;
     using Microsoft::WRL::ComPtr;
+    using namespace Ghurund::Core;
 
     class Audio:public Feature {
-        reflection_08c20e05_8779_4620_93c4_d7dbd043fcf2
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         ComPtr<IXAudio2> device;

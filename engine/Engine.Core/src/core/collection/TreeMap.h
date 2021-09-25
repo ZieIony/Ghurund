@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value>
     class Queue:LinkedList {
 

@@ -12,9 +12,9 @@ namespace Ghurund::UI {
         float contentSize = 0.0f;
         unsigned int spreadCount;
 
-        FloatSize measureHorizontal(float parentWidth, float parentHeight);
+        Ghurund::Core::FloatSize measureHorizontal(float parentWidth, float parentHeight);
 
-        FloatSize measureVertical(float parentWidth, float parentHeight);
+        Ghurund::Core::FloatSize measureVertical(float parentWidth, float parentHeight);
 
         void layoutHorizontal(float x, float y, float width, float height);
 
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
 
-        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
+        virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) override;
 
         virtual void layout(float x, float y, float width, float height) override;
     };

@@ -5,7 +5,7 @@
 #include <cassert>
 #include <iterator>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class LinkedList {
     private:

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
 	template<typename T>
 	class TypeWrapper {
 	private:

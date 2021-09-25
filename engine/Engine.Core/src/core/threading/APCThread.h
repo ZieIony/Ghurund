@@ -2,7 +2,7 @@
 
 #include "Thread.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class APCThread:public Thread {
     private:
         static void CALLBACK wake(__in  ULONG_PTR arg) {}

@@ -4,7 +4,7 @@
 
 #include <exception>
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     template<class Key, class Value> class Map :public CollectionWithCapacity {
     protected:

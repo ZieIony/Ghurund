@@ -2,8 +2,8 @@
 
 #include "Allocator.h"
 
-namespace Ghurund {
-    class SimpleAllocator:public Allocator {
+namespace Ghurund::Core {
+    class SimpleAllocator:public Allocator<size_t> {
     public:
         SimpleAllocator() {}
 
@@ -19,11 +19,11 @@ namespace Ghurund {
             return *this;
         }
 
-        inline void* allocate(memory_t size) {
+        inline void* allocate(size_t size) {
 #ifdef _DEBUG
-            return operator new((size_t)size, _NORMAL_BLOCK, __FILE__, __LINE__);
+            return operator new(size, _NORMAL_BLOCK, __FILE__, __LINE__);
 #else
-            return operator new((size_t)size);
+            return operator new(size);
 #endif
         }
 
@@ -31,7 +31,7 @@ namespace Ghurund {
             operator delete(obj);
         }
 
-        inline bool canAllocate(memory_t size) const {
+        inline bool canAllocate(size_t size) const {
             return true;
         }
     };

@@ -7,9 +7,19 @@
 #include "core/collection/List.h"
 #endif
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     class Pointer: public Object {
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getType() const override {
+            return TYPE;
+        }
+
     private:
         mutable unsigned int referenceCount = 1;
 
@@ -25,8 +35,6 @@ namespace Ghurund {
         Pointer(const Pointer& pointer) = delete;
 
         virtual ~Pointer() = 0;
-
-        static const Ghurund::Type& GET_TYPE();
 
     public:
         Pointer();
@@ -52,12 +60,6 @@ namespace Ghurund {
 
         virtual Pointer* clone() {
             return nullptr;
-        }
-
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Type& getType() const override {
-            return TYPE;
         }
 
 #ifdef _DEBUG

@@ -3,9 +3,9 @@
 
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
-    const Ghurund::Type& Object::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Object))
+namespace Ghurund::Core {
+    const Ghurund::Core::Type& Object::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Object>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Object))
             .withModifiers(TypeModifier::ABSTRACT);
 
         return TYPE;

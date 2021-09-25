@@ -8,7 +8,7 @@
 #include "ui/widget/button/CheckBox.h"
 
 namespace Preview {
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace Ghurund::UI;
 
     class LayoutLayout:public ControlContainer {

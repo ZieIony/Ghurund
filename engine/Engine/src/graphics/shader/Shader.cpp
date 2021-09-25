@@ -169,8 +169,9 @@ namespace Ghurund {
 #endif
     }
 
-    const Ghurund::Type& Shader::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, CLASS_NAME)
+    const Ghurund::Core::Type& Shader::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Shader>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Shader>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Shader))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

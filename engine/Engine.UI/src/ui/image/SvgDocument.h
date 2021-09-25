@@ -3,20 +3,41 @@
 #include "core/math/Size.h"
 #include "ui/image/Image.h"
 
-struct ID2D1SvgDocument;
+#include <d2d1svg.h>
 
-#include "reflection_12024f78_7790_4d0a_b601_cbe9e12bace9.h"
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<ID2D1SvgDocument>();
+}
 
 namespace Ghurund::UI {
-    class SvgDocument:public Resource {
-        reflection_12024f78_7790_4d0a_b601_cbe9e12bace9
+    using namespace Ghurund::Core;
+
+    class SvgDocument:public Ghurund::Core::Resource {
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         ID2D1SvgDocument* svgDocument = nullptr;
 
     protected:
-        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
+        virtual Status loadInternal(
+            const Ghurund::Core::DirectoryPath& workingDir,
+            Ghurund::Core::MemoryInputStream& stream,
+            Ghurund::Core::LoadOption options
+        );
+
+        virtual Status saveInternal(
+            const Ghurund::Core::DirectoryPath& workingDir,
+            Ghurund::Core::MemoryOutputStream& stream,
+            Ghurund::Core::SaveOption options
+        ) const;
 
     public:
         ~SvgDocument() {
@@ -41,17 +62,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getData)) ID2D1SvgDocument* Data;
 
-        FloatSize getSize();
+        Ghurund::Core::FloatSize getSize();
 
-        __declspec(property(get = getSize)) FloatSize Size;
+        __declspec(property(get = getSize)) Ghurund::Core::FloatSize Size;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"svg", true, false)
-            };
+        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() {
+            static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = { Ghurund::Core::ResourceFormat(L"svg", true, false) };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+        __declspec(property(get = getFormats)) Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& Formats;
     };
 }

@@ -3,6 +3,7 @@
 #include "ui/Alignment.h"
 #include "ui/Orientation.h"
 #include "ui/layout/FlowLayoutManager.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
@@ -34,14 +35,7 @@ namespace Ghurund::UI {
         }*/
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<FlowLayout>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(FlowLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         inline bool getReverseLayout() const {
@@ -85,20 +79,20 @@ namespace Ghurund::UI {
         __declspec(property(get = getOrientation, put = setOrientation)) Orientation Orientation;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, childrenProvider, x, y, width, height);
+            layoutManager.layout(x, y, width, height);
         }
 
-        bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+        bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
             return __super::dispatchMouseMotionEvent(event);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

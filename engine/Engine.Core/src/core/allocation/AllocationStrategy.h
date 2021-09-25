@@ -3,37 +3,38 @@
 #include "Allocator.h"
 #include "Common.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
+    template<typename T = size_t>
     class AllocationStrategy {
     protected:
-        memory_t size, allocated = 0;
-        memory_t alignAddress, alignSize;
+        T size, allocated = 0;
+        T alignAddress, alignSize;
 
     public:
         virtual ~AllocationStrategy() {}
 
-        void init(memory_t size, memory_t alignAddress = 1, memory_t alignSize = 1) {
+        inline void init(T size, T alignAddress = 1, T alignSize = 1) {
             this->size = std::max(size, alignSize);
             this->alignAddress = alignAddress;
             this->alignSize = alignSize;
         }
 
-        virtual memory_t allocate(memory_t size) = 0;
-        virtual void deallocate(memory_t) = 0;
+        virtual T allocate(T size) = 0;
+        virtual void deallocate(T) = 0;
 
-		inline memory_t getSize() const {
+		inline T getSize() const {
             return size;
         }
 
-        __declspec(property(get = getSize)) memory_t Size;
+        __declspec(property(get = getSize)) T Size;
 
-		inline memory_t getAllocated() const {
+		inline T getAllocated() const {
 			return allocated;
 		}
 
-        __declspec(property(get = getAllocated)) memory_t Allocated;
+        __declspec(property(get = getAllocated)) T Allocated;
 
-		inline bool canAllocate(memory_t size) const {
+		inline bool canAllocate(T size) const {
 			return align<>(allocated, alignAddress) + align<>(size, alignSize) <= Size;
 		}
     };

@@ -3,10 +3,10 @@
 
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
-    const Ghurund::Type& Timer::GET_TYPE() {
-        static const BaseConstructor& CONSTRUCTOR = NoArgsConstructor<Timer>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Timer))
+namespace Ghurund::Core {
+    const Ghurund::Core::Type& Timer::GET_TYPE() {
+        static const auto& CONSTRUCTOR = Constructor<Timer>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Timer>(NAMESPACE_NAME, GH_STRINGIFY(Timer))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

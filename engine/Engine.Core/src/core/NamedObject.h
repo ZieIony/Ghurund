@@ -2,22 +2,31 @@
 
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
+    template<typename CharT>
     class NamedObject {
     private:
-        WString name;
+        GenericString<CharT> name;
 
     public:
+        NamedObject() {}
+
+        NamedObject(const GenericString<CharT>& name):name(name) {}
+
         virtual ~NamedObject() = 0 {};
 
-        virtual void setName(const WString& name) {
+        virtual void setName(const GenericString<CharT>& name) {
             this->name = name;
         }
 
-        virtual const WString& getName() const {
+        virtual const GenericString<CharT>& getName() const {
             return name;
         }
 
-        __declspec(property(get = getName, put = setName)) const WString& Name;
+        __declspec(property(get = getName, put = setName)) const GenericString<CharT>& Name;
+
+        bool operator==(const NamedObject<CharT>& other) const {
+            return Name == other.Name == 0;
+        }
     };
 }

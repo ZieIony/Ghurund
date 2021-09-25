@@ -1,9 +1,38 @@
 #include "ghpch.h"
 #include "Graphics.h"
 
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/Property.h"
+#include "DirectXTypes.h"
+
 #include <D3Dcompiler.h>
 
 namespace Ghurund {
+    const Ghurund::Core::Type& Graphics::GET_TYPE() {
+        static auto PROPERTY_DEVICE = Ghurund::ReadOnlyProperty<Graphics, ID3D12Device*>("Device", (ID3D12Device * (Graphics::*)()) & getDevice);
+        static auto PROPERTY_DIRECTQUEUE = Ghurund::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("DirectQueue", (ID3D12CommandQueue * (Graphics::*)()) & getDirectQueue);
+        static auto PROPERTY_COMPUTEQUEUE = Ghurund::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("ComputeQueue", (ID3D12CommandQueue * (Graphics::*)()) & getComputeQueue);
+        static auto PROPERTY_COPYQUEUE = Ghurund::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("CopyQueue", (ID3D12CommandQueue * (Graphics::*)()) & getCopyQueue);
+        static auto PROPERTY_FACTORY = Ghurund::ReadOnlyProperty<Graphics, IDXGIFactory4*>("Factory", (IDXGIFactory4 * (Graphics::*)()) & getFactory);
+        static auto PROPERTY_DESCRIPTORALLOCATOR = Ghurund::ReadOnlyProperty<Graphics, Ghurund::DescriptorAllocator&>("DescriptorAllocator", (Ghurund::DescriptorAllocator & (Graphics::*)()) & getDescriptorAllocator);
+        static auto PROPERTY_RESOURCEFACTORY = Ghurund::ReadOnlyProperty<Graphics, GPUResourceFactory&>("ResourceFactory", (GPUResourceFactory & (Graphics::*)()) & getResourceFactory);
+
+        static const auto CONSTRUCTOR = Constructor<Graphics>();
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics>("Ghurund", "Graphics")
+            .withProperty(PROPERTY_DEVICE)
+            .withProperty(PROPERTY_DIRECTQUEUE)
+            .withProperty(PROPERTY_COMPUTEQUEUE)
+            .withProperty(PROPERTY_COPYQUEUE)
+            .withProperty(PROPERTY_FACTORY)
+            .withProperty(PROPERTY_DESCRIPTORALLOCATOR)
+            .withProperty(PROPERTY_RESOURCEFACTORY)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     Status Graphics::initAdapters() {
         ComPtr<IDXGIAdapter1> adapter;
 

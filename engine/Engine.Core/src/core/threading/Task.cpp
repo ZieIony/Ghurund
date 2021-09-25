@@ -3,9 +3,9 @@
 
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
-    const Ghurund::Type& Task::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Task))
+namespace Ghurund::Core {
+    const Ghurund::Core::Type& Task::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Task>(NAMESPACE_NAME, GH_STRINGIFY(Task))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

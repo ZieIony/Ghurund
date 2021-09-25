@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         ColorView* colorView;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Separator();
@@ -49,9 +49,9 @@ namespace Ghurund::UI {
             __super::onLayout(x, y, width, height);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

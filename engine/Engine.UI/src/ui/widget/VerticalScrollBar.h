@@ -24,9 +24,9 @@ namespace Ghurund::UI {
     protected:
         virtual void onLayoutChanged() override;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<VerticalScrollBar>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(VerticalScrollBar))
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = Constructor<VerticalScrollBar>();
+            static const Ghurund::Core::Type TYPE = TypeBuilder<VerticalScrollBar>(NAMESPACE_NAME, GH_STRINGIFY(VerticalScrollBar))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());
 
@@ -73,9 +73,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

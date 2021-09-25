@@ -7,9 +7,9 @@
 #include "graphics/texture/Textures.h"
 
 namespace Ghurund {
-    const Ghurund::Type& ParameterManager::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ParameterManager>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
+    const Ghurund::Core::Type& ParameterManager::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ParameterManager>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ParameterManager>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
             .withConstructor(CONSTRUCTOR);
 
         return TYPE;

@@ -5,9 +5,9 @@
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ScrollView::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ScrollView>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ScrollView))
+    const Ghurund::Core::Type& ScrollView::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ScrollView>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScrollView>(NAMESPACE_NAME, GH_STRINGIFY(ScrollView))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -40,7 +40,7 @@ namespace Ghurund::UI {
     }
     
     bool ScrollView::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (event.Action == KeyAction::DOWN && event.Key == VK_NEXT) {
+        if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_NEXT) {
             FloatPoint prevScroll = scroll;
             if (Child && Child->Size.height == Size.height) {
                 Scroll = { Scroll.x + Size.width, Scroll.y };
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
                 }
             }
             return true;
-        } else if (event.Action == KeyAction::DOWN && event.Key == VK_PRIOR) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_PRIOR) {
             FloatPoint prevScroll = scroll;
             if (Child && Child->Size.height == Size.height) {
                 Scroll = { Scroll.x - Size.width, Scroll.y };
@@ -72,7 +72,7 @@ namespace Ghurund::UI {
                 }
             }
             return true;
-        } else if (event.Action == KeyAction::DOWN && event.Key == VK_HOME) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_HOME) {
             FloatPoint prevScroll = scroll;
             Scroll = { 0.0f,0.0f };
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
@@ -80,7 +80,7 @@ namespace Ghurund::UI {
                 OnScrolled();
             }
             return true;
-        } else if (event.Action == KeyAction::DOWN && event.Key == VK_END) {
+        } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_END) {
             FloatPoint prevScroll = scroll;
             Scroll = MaxScroll;
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {

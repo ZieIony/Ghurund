@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     struct Matrix3x2 {
         union {
             struct {

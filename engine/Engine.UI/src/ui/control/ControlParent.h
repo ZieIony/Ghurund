@@ -2,11 +2,16 @@
 
 #include "Control.h"
 
-#include "reflection_aec4988d_4e4d_4c8b_b378_60031135efc2.h"
-
 namespace Ghurund::UI {
     class ControlParent:public Control {
-        reflection_aec4988d_4e4d_4c8b_b378_60031135efc2
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     protected:
         friend class Control;

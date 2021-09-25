@@ -4,11 +4,18 @@
 #include "Client.h"
 #include "application/Feature.h"
 
-#include "reflection_84c7ff0b_6884_47b3_9cf6_5c7939b247ae.h"
-
 namespace Ghurund::Net {
+    using namespace Ghurund::Core;
+
     class Networking:public Feature, public Noncopyable {
-        reflection_84c7ff0b_6884_47b3_9cf6_5c7939b247ae
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     public:
         Status init();

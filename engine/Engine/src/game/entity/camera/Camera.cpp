@@ -207,9 +207,9 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    const Ghurund::Type& Camera::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Camera>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Camera))
+    const Ghurund::Core::Type& Camera::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Camera>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Camera))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

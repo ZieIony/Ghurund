@@ -12,7 +12,7 @@
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
 
     class Canvas {
         ComPtr<ID2D1SolidColorBrush> fillBrush;

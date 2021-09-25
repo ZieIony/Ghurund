@@ -4,7 +4,7 @@
 
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     typedef LONGLONG ticks_t;
 
     class Timer:public Object {
@@ -18,7 +18,7 @@ namespace Ghurund {
         uint64_t timeMs, frameTimeMs;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Timer();
@@ -75,9 +75,9 @@ namespace Ghurund {
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

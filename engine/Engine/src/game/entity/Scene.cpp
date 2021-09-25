@@ -26,9 +26,9 @@ namespace Ghurund {
 		return Status::OK;
 	}
 	
-	const Ghurund::Type& Scene::GET_TYPE() {
-		static const auto CONSTRUCTOR = NoArgsConstructor<Scene>();
-		static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Scene))
+	const Ghurund::Core::Type& Scene::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<Scene>();
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Scene))
 			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 

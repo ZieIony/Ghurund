@@ -5,7 +5,7 @@
 
 #include <process.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void FileWatcher::readChangesProc(ULONG_PTR arg) {
         DirectoryWatch* watch = (DirectoryWatch*)arg;
         watch->readChanges();

@@ -2,7 +2,7 @@
 #include "Common.h"
 #include "core/io/FileUtils.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 	Status readFile(const wchar_t* name, void*& data, size_t& size) {
 		HANDLE handle = CreateFileW(name, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 		DWORD derr = GetLastError();

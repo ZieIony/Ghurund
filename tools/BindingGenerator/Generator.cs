@@ -167,7 +167,7 @@ namespace BindingGenerator {
 ");
 
                 streamWriter.Write(@"
-        virtual Ghurund::UI::Control* find(const Ghurund::Type& type) override {
+        virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type) override {
 ");
                 for (int i = 0; i < layout.Containers.Count - 1; i++) {
                     BoundControl control = layout.Containers[i];

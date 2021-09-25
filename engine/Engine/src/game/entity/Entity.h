@@ -5,6 +5,8 @@
 #include <entt.hpp>
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Entity:public Pointer {
     public:
         class ComponentCollection {

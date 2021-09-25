@@ -3,7 +3,7 @@
 #include "InputEventArgs.h"
 #include "core/math/Point.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class MouseButton {
         LEFT, MIDDLE, RIGHT, VIRTUAL
     };

@@ -7,6 +7,8 @@
 #include "ui/text/TextMetrics.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
         textLayout.Size = { parentWidth, parentHeight };
         if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
@@ -46,9 +48,9 @@ namespace Ghurund::UI {
         textLayout.draw(canvas, 0, 0);
     }
 
-    const Ghurund::Type& TextBlock::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<TextBlock>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
+    const Ghurund::Core::Type& TextBlock::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<TextBlock>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

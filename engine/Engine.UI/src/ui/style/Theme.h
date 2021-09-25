@@ -10,32 +10,32 @@
 
 namespace Ghurund::UI {
     struct ColorKey {
-        const AString str;
-        ColorKey(const AString& str):str(str) {}
+        const Ghurund::Core::AString str;
+        ColorKey(const Ghurund::Core::AString& str):str(str) {}
         bool operator==(const ColorKey& other) const {
             return str == other.str;
         }
     };
 
     struct StyleKey {
-        const AString str;
-        StyleKey(const AString& str):str(str) {}
+        const Ghurund::Core::AString str;
+        const StyleKey(const Ghurund::Core::AString& str):str(str) {}
         bool operator==(const StyleKey& other) const {
             return str == other.str;
         }
     };
 
     struct ImageKey {
-        const AString str;
-        ImageKey(const AString& str):str(str) {}
+        const Ghurund::Core::AString str;
+        ImageKey(const Ghurund::Core::AString& str):str(str) {}
         bool operator==(const ImageKey& other) const {
             return str == other.str;
         }
     };
 
     struct TextFormatKey {
-        const AString str;
-        TextFormatKey(const AString& str):str(str) {}
+        const Ghurund::Core::AString str;
+        TextFormatKey(const Ghurund::Core::AString& str):str(str) {}
         bool operator==(const TextFormatKey& other) const {
             return str == other.str;
         }
@@ -53,22 +53,22 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        Map<StyleKey, Style*> styles;
+        Ghurund::Core::Map<StyleKey, Style*> styles;
         PointerMap<TextFormatKey, TextFormat*> textFormats;
-        Map<ColorKey, Color> colors;
+        Ghurund::Core::Map<ColorKey, Color> colors;
         PointerMap<ImageKey, ImageDrawable*> images;
         
         // xml reader doesn't support wchar_t
-        Map<const Type*, AString> layouts;
+        Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString> layouts;
 
     public:
-        static inline const ImageKey IMAGE_CHECKBOX_CHECKED = AString("checkBox_checked");
-        static inline const ImageKey IMAGE_CHECKBOX_UNCHECKED = AString("checkBox_unchecked");
-        static inline const ImageKey IMAGE_RADIOBUTTON_CHECKED = AString("radioButton_checked");
-        static inline const ImageKey IMAGE_RADIOBUTTON_UNCHECKED = AString("radioButton_unchecked");
-        static inline const ImageKey IMAGE_ARROWUP = AString("arrowUp");
-        static inline const ImageKey IMAGE_ARROWDOWN = AString("arrowDown");
-        static inline const ImageKey IMAGE_ARROWRIGHT = AString("arrowRight");
+        static inline const ImageKey IMAGE_CHECKBOX_CHECKED = ImageKey("checkBox_checked");
+        static inline const ImageKey IMAGE_CHECKBOX_UNCHECKED = ImageKey("checkBox_unchecked");
+        static inline const ImageKey IMAGE_RADIOBUTTON_CHECKED = ImageKey("radioButton_checked");
+        static inline const ImageKey IMAGE_RADIOBUTTON_UNCHECKED = ImageKey("radioButton_unchecked");
+        static inline const ImageKey IMAGE_ARROWUP = ImageKey("arrowUp");
+        static inline const ImageKey IMAGE_ARROWDOWN = ImageKey("arrowDown");
+        static inline const ImageKey IMAGE_ARROWRIGHT = ImageKey("arrowRight");
 
         static inline const StyleKey STYLE_CHECKBOX = StyleKey("CheckBox");
         static inline const StyleKey STYLE_CHECKBOX_EXPANDABLE = StyleKey("CheckBox_expandable");
@@ -128,11 +128,11 @@ namespace Ghurund::UI {
 
         void updateColors();
 
-        inline Map<StyleKey, Style*>& getStyles() {
+        inline Ghurund::Core::Map<StyleKey, Style*>& getStyles() {
             return styles;
         }
 
-        __declspec(property(get = getStyles)) Map<StyleKey, Style*>& Styles;
+        __declspec(property(get = getStyles)) Ghurund::Core::Map<StyleKey, Style*>& Styles;
 
         inline PointerMap<TextFormatKey, TextFormat*>& getTextFormats() {
             return textFormats;
@@ -140,11 +140,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextFormats)) PointerMap<TextFormatKey, TextFormat*>& TextFormats;
 
-        inline Map<ColorKey, Color>& getColors() {
+        inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
             return colors;
         }
 
-        __declspec(property(get = getColors)) Map<ColorKey, Color>& Colors;
+        __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color>& Colors;
 
         inline PointerMap<ImageKey, ImageDrawable*>& getImages() {
             return images;
@@ -152,10 +152,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getImages)) PointerMap<ImageKey, ImageDrawable*>& Images;
 
-        inline Map<const Type*, AString>& getLayouts() {
+        inline Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() {
             return layouts;
         }
 
-        __declspec(property(get = getLayouts)) Map<const Type*, AString>& Layouts;
+        __declspec(property(get = getLayouts)) Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& Layouts;
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Theme>();
 }

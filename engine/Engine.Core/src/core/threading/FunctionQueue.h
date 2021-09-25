@@ -4,7 +4,7 @@
 
 #include <queue>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class FunctionQueue {
     private:
         std::queue<std::function<void()>> queue;

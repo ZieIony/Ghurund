@@ -4,23 +4,21 @@
 
 #include "core/allocation/Allocator.h"
 
-namespace Ghurund {
-	class Object;
+namespace Ghurund::Core {
+    __interface BaseConstructor {};
 
-	__interface BaseConstructor {
-		Object* newInstance() const;
-		Object* newInstance(Allocator& allocator) const;
-	};
+    template <class T>
+    class BaseTypeConstructor:public BaseConstructor {};
 
-	template <class T>
-	class NoArgsConstructor :public BaseConstructor {
-	public:
-		virtual T* newInstance() const override {
-			return ghnew T();
-		}
+    template <class T, typename... ArgsT>
+    class Constructor:public BaseTypeConstructor<T> {
+    public:
+        T* invoke(ArgsT... args) const {
+            return ghnew T(args...);
+        }
 
-		virtual T* newInstance(Allocator& allocator) const override {
-			return new (allocator)T();
-		}
-	};
+        T* invoke(Allocator<size_t>& allocator, ArgsT... args) const {
+            return new (allocator)T(args...);
+        }
+    };
 }

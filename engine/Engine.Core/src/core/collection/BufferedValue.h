@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Value>class BufferedValue {
     protected:
         size_t size;

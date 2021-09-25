@@ -5,7 +5,7 @@
 #include "core/threading/CriticalSection.h"
 #include "core/threading/Task.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ConcurrentTaskQueue {
     private:
         Queue<SharedPointer<Task>> queue;

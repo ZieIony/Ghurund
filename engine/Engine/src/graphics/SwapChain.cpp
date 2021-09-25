@@ -8,9 +8,9 @@
 #include "core/logging/Formatter.h"
 
 namespace Ghurund {
-    const Ghurund::Type& SwapChain::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<SwapChain>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
+    const Ghurund::Core::Type& SwapChain::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<SwapChain>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SwapChain>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(Object::TYPE);
 

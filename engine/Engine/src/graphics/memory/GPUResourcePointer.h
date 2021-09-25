@@ -12,13 +12,15 @@
 #pragma warning(pop)
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class GPUResourcePointer:public Pointer {
     private:
         HeapAllocator* allocator;
         void* address;
         ID3D12Resource *resource;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         GPUResourcePointer(HeapAllocator *allocator, void* address, ID3D12Resource *resource){
@@ -32,9 +34,9 @@ namespace Ghurund {
             allocator->deallocate(address);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type&getType() const override {
+        virtual const Ghurund::Core::Type&getType() const override {
             return TYPE;
         }
     };

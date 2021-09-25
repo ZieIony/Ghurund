@@ -6,9 +6,9 @@
 #include <regex>
 
 namespace Ghurund::UI {
-    const Ghurund::Type& PaddingContainer::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<PaddingContainer>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
+    const Ghurund::Core::Type& PaddingContainer::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<PaddingContainer>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<PaddingContainer>(NAMESPACE_NAME, GH_STRINGIFY(PaddingContainer))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

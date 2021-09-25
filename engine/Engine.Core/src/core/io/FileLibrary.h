@@ -2,7 +2,7 @@
 
 #include "Library.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     /*
     * stored in a file
     */

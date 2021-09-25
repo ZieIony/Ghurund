@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class List:public ArrayCollection<Value, AllocatorType> {
     private:

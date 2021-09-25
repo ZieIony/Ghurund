@@ -12,3 +12,8 @@ namespace Ghurund::UI {
         virtual void onStateChanged(Control& control) const {}
     };
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Style>();
+}

@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     Status filterStatus(Status result, LoadOption option);
     Status filterStatus(Status result, SaveOption option);
 
@@ -48,7 +48,7 @@ namespace Ghurund {
         Status writeHeader(MemoryOutputStream& stream) const;
         Status readHeader(MemoryInputStream& stream);
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ~Resource();
@@ -101,9 +101,9 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) const DataSize& Size;*/
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

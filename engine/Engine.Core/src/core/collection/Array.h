@@ -3,7 +3,7 @@
 #include "Collection.h"
 #include "List.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Value> class Array:public Collection {
     protected:
         Value* v;

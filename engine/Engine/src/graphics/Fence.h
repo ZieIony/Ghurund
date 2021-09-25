@@ -8,8 +8,9 @@
 
 namespace Ghurund {
     using namespace Microsoft::WRL;
+    using namespace Ghurund::Core;
 
-    class Fence: public NamedObject {
+    class Fence: public NamedObject<wchar_t> {
     private:
         HANDLE fenceEvent = INVALID_HANDLE_VALUE;
         ComPtr<ID3D12Fence> fence;

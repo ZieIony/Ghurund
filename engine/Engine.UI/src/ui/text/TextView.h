@@ -8,6 +8,8 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class TextView:public TextBlock {
     private:
         Color textSelectionEffect = 0;
@@ -43,7 +45,7 @@ namespace Ghurund::UI {
 
         virtual void onThemeChanged() override;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         TextView();
@@ -77,9 +79,9 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

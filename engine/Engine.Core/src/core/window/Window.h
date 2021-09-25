@@ -9,14 +9,14 @@
 #include "core/math/Point.h"
 #include "core/math/Size.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
         unsigned int width, height;
     };
 
     class Timer;
 
-    class Window:public NamedObject, public Object, public EventConsumer {
+    class Window:public Object, public EventConsumer {
     private:
         WString title;
         bool visible = false;
@@ -51,7 +51,7 @@ namespace Ghurund {
             return false;
         }
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Window(Window* parent = nullptr) {
@@ -89,11 +89,11 @@ namespace Ghurund {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        virtual Ghurund::Input& getInput() {
+        virtual Ghurund::Core::Input& getInput() {
             return parent->Input;
         }
 
-        __declspec(property(get = getInput)) Ghurund::Input& Input;
+        __declspec(property(get = getInput)) Ghurund::Core::Input& Input;
 
         virtual Timer& getTimer() const {
             return parent->Timer;
@@ -209,9 +209,9 @@ namespace Ghurund {
             return Status::OK;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

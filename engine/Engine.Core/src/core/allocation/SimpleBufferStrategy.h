@@ -2,7 +2,7 @@
 
 #include "AllocationStrategy.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class SimpleBufferStrategy:public AllocationStrategy {
     private:
         List<Allocation> allocations;

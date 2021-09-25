@@ -3,7 +3,7 @@
 #include "Common.h"
 #include <DirectXMath.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     using namespace DirectX;
 
     inline XMFLOAT4 makeColor(unsigned int color) {

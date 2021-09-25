@@ -6,7 +6,7 @@
 #include <tchar.h>
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename CharType>
     inline bool isSpace(CharType c) {
         return false;

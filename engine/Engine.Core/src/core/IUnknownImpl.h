@@ -2,7 +2,7 @@
 
 #include <Unknwn.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template <typename InterfaceChain>
     class ComBase: public InterfaceChain {
     private:

@@ -3,6 +3,7 @@
 
 namespace Ghurund::UI {
     Status Canvas::init(ID2D1DeviceContext5* deviceContext) {
+        using namespace Ghurund::Core;
         this->deviceContext = deviceContext;
 
         deviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
@@ -21,6 +22,7 @@ namespace Ghurund::UI {
     }
 
     void Canvas::endPaint() {
+        using namespace Ghurund::Core;
         if (matrixStack.Size != 1)
             Logger::log(LogType::INFO, _T("mismatched calls to Canvas::save() and Canvas::restore()\n"));
         matrixStack.clear();

@@ -2,7 +2,7 @@
 
 #include "ArrayCollection.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class Stack:public ArrayCollection<Value, AllocatorType> {
     private:

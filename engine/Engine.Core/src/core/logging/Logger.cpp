@@ -9,7 +9,7 @@
 #include <process.h>
 #include <dbghelp.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     using namespace std;
 
     HANDLE Logger::process;

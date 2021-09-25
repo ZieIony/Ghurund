@@ -4,9 +4,9 @@
 #include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& StackLayout::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<StackLayout>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
+    const Ghurund::Core::Type& StackLayout::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<StackLayout>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<StackLayout>(NAMESPACE_NAME, GH_STRINGIFY(StackLayout))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

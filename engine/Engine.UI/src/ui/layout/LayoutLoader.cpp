@@ -29,38 +29,38 @@
 #include "core/logging/Formatter.h"
 
 namespace Ghurund::UI {
-    LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::ResourceManager& resourceManager)
+    LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::Core::ResourceManager& resourceManager)
         :d2dFactory(d2dFactory), resourceManager(resourceManager) {
 
-        registerClass(ClickableControl::TYPE);
-        registerClass(SelectableView::TYPE);
-        registerClass(ClickResponseView::TYPE);
-        registerClass(StateIndicator::TYPE);
-        registerClass(TextBlock::TYPE);
-        registerClass(TextView::TYPE);
-        registerClass(TextField::TYPE);
-        registerClass(TextBlock::TYPE);
-        registerClass(ImageView::TYPE);
-        registerClass(Clip::TYPE);
-        registerClass(Border::TYPE);
-        registerClass(Shadow::TYPE);
-        registerClass(Space::TYPE);
-        registerClass(ColorView::TYPE);
+        registerClass<ClickableControl>();
+        registerClass<SelectableView>();
+        registerClass<ClickResponseView>();
+        registerClass<StateIndicator>();
+        registerClass<TextBlock>();
+        registerClass<TextView>();
+        registerClass<TextField>();
+        registerClass<TextBlock>();
+        registerClass<ImageView>();
+        registerClass<Clip>();
+        registerClass<Border>();
+        registerClass<Shadow>();
+        registerClass<Space>();
+        registerClass<ColorView>();
 
-        registerClass(ControlContainer::TYPE);
-        registerClass(PaddingContainer::TYPE);
-        registerClass(LinearLayout::TYPE);
-        registerClass(StackLayout::TYPE);
-        registerClass(ManualLayout::TYPE);
-        registerClass(RecyclerView::TYPE);
+        registerClass<ControlContainer>();
+        registerClass<PaddingContainer>();
+        registerClass<LinearLayout>();
+        registerClass<StackLayout>();
+        registerClass<ManualLayout>();
+        registerClass<RecyclerView>();
 
-        registerClass(Button::TYPE);
-        registerClass(CheckBox::TYPE);
-        registerClass(RadioButton::TYPE);
-        registerClass(VerticalScrollBar::TYPE);
-        registerClass(TreeView::TYPE);
-        registerClass(TabContainer::TYPE);
-        registerClass(ExpandableContainer::TYPE);
+        registerClass<Button>();
+        registerClass<CheckBox>();
+        registerClass<RadioButton>();
+        registerClass<VerticalScrollBar>();
+        registerClass<TreeView>();
+        registerClass<TabContainer>();
+        registerClass<ExpandableContainer>();
     }
 
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status LayoutLoader::load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat * format, LoadOption options) {
+    Status LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat * format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
         Layout& layout = (Layout&)resource;
@@ -133,8 +133,7 @@ namespace Ghurund::UI {
                 }
             }
         } else if (types.containsKey(name)) {
-            const Type* type = types.get(name);
-            Control* control = (Control*)type->Constructor->newInstance();
+            Control* control = types.get(name)();
             control->load(*this, xml);
             return control;
         }

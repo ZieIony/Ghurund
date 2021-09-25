@@ -8,7 +8,7 @@
 
 #include <typeinfo>
 
-namespace Ghurund {
+namespace Ghurund::Core {
 #ifdef _DEBUG
     List<Pointer*> Pointer::pointers;
 
@@ -35,8 +35,8 @@ namespace Ghurund {
 #endif
     }
 
-    const Ghurund::Type& Pointer::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
+    const Ghurund::Core::Type& Pointer::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(Pointer))
             .withModifiers(TypeModifier::ABSTRACT)
             .withSupertype(__super::GET_TYPE());
 

@@ -3,7 +3,7 @@
 #include "CollectionWithCapacity.h"
 #include "core/allocation/SimpleAllocator.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class ArrayCollection:public CollectionWithCapacity {
     protected:

@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     class InputEventArgs {
     protected:

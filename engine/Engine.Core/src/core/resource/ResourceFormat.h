@@ -2,7 +2,7 @@
 
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ResourceFormat {
     private:
         WString extension;

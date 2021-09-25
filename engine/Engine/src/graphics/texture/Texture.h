@@ -17,7 +17,7 @@ namespace Ghurund {
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         DescriptorHandle descHandle;
@@ -58,9 +58,9 @@ namespace Ghurund {
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-		virtual const Ghurund::Type& getType() const override {
+		virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

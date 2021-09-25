@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "Input.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void Input::dispatchEvents(uint64_t time, EventConsumer& consumer) {
         while (!events.Empty) {
             WindowMessage wm = events[0];

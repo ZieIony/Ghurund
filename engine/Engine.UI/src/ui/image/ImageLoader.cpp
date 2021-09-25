@@ -144,14 +144,20 @@ namespace Ghurund::UI {
         return -1;
     }
     
-    Status ImageLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format, LoadOption options) {
+    Status ImageLoader::load(
+        Ghurund::Core::ResourceManager& manager,
+        Ghurund::Core::MemoryInputStream& stream,
+        Ghurund::Core::Resource& resource,
+        const Ghurund::Core::ResourceFormat* format,
+        Ghurund::Core::LoadOption options
+    ) {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
         IWICFormatConverter* wicConverter = nullptr;
 
         DXGI_FORMAT giFormat;
         uint32_t width, height, pixelSize, rowPitch;
-        Buffer* imageData = nullptr;
+        Ghurund::Core::Buffer* imageData = nullptr;
 
         bool imageConverted = false;
 
@@ -198,7 +204,7 @@ namespace Ghurund::UI {
         rowPitch = width * pixelSize;
         int imageSize = rowPitch * height;
 
-        imageData = ghnew Buffer(imageSize);
+        imageData = ghnew Ghurund::Core::Buffer(imageSize);
 
         Status result = Status::OK;
         if (imageConverted) {
@@ -221,7 +227,13 @@ cleanup:
         return result;
     }
     
-    Status ImageLoader::save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format, SaveOption options) const {
+    Status ImageLoader::save(
+        Ghurund::Core::ResourceManager& manager,
+        Ghurund::Core::MemoryOutputStream& stream,
+        Ghurund::Core::Resource& resource,
+        const Ghurund::Core::ResourceFormat* format,
+        Ghurund::Core::SaveOption options
+    ) const {
         if (resource.Type != Image::TYPE)
             return Status::WRONG_RESOURCE_TYPE;
 

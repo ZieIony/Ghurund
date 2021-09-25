@@ -1,18 +1,18 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Type;
 
     class Object {
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         virtual ~Object() = 0 {}   // gives a common destructor to all deriving classes
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const {
+        virtual const Ghurund::Core::Type& getType() const {
             return TYPE;
         }
 

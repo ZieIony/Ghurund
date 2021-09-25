@@ -16,8 +16,8 @@ namespace Ghurund::UI {
     private:
         List<MenuItem*> items;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Toolbar))
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Toolbar))
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
@@ -51,9 +51,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

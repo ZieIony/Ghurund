@@ -1,9 +1,38 @@
 #include "ghuipch.h"
 #include "Bitmap.h"
 
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/StandardTypes.h"
+#include "core/reflection/Property.h"
+
 #include <d2d1_3.h>
 
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<ID2D1Bitmap1>() {
+        static Type TYPE = Type("", "ID2D1Bitmap1", sizeof(ID2D1Bitmap1*));
+        return TYPE;
+    }
+}
+
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& Bitmap::GET_TYPE() {
+        static auto PROPERTY_IMAGE = ReadOnlyProperty<Bitmap, Ghurund::UI::Image*>("Image", &getImage);
+        static auto PROPERTY_DATA = ReadOnlyProperty<Bitmap, ID2D1Bitmap1*>("Data", &getData);
+        static auto PROPERTY_SIZE = ReadOnlyProperty<Bitmap, IntSize>("Size", &getSize);
+
+        static const auto CONSTRUCTOR = Constructor<Bitmap>();
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>(Ghurund::UI::NAMESPACE_NAME, "Bitmap")
+            .withProperty(PROPERTY_IMAGE)
+            .withProperty(PROPERTY_DATA)
+            .withProperty(PROPERTY_SIZE)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void Bitmap::finalize() {
         if (bitmapImage)
             bitmapImage->Release();
@@ -31,7 +60,7 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    Status Bitmap::init(ID2D1DeviceContext5& deviceContext, IntSize size, DXGI_FORMAT format) {
+    Status Bitmap::init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format) {
         if (image)
             image->release();
 
@@ -48,7 +77,7 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    IntSize Bitmap::getSize() {
+    Ghurund::Core::IntSize Bitmap::getSize() {
         if (!image)
             return { 0,0 };
         return { image->Width, image->Height };

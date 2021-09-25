@@ -134,9 +134,9 @@ namespace Ghurund::Audio {
         return Status::OK;
     }
 
-    const Ghurund::Type& Sound::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Sound>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Sound))
+    const Ghurund::Core::Type& Sound::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Sound>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Sound))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

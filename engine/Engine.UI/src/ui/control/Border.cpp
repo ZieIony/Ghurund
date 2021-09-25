@@ -6,9 +6,9 @@
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& Border::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Border>();
-        static const Ghurund::Type& TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Border))
+    const Ghurund::Core::Type& Border::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Border>();
+        static const Ghurund::Core::Type& TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

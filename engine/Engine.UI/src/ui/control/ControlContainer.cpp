@@ -1,9 +1,25 @@
 #include "ghuipch.h"
 #include "ControlContainer.h"
 
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/Property.h"
 #include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& ControlContainer::GET_TYPE() {
+
+        static auto PROPERTY_CHILD = Property<ControlContainer, Control*>("Child", (Control*(ControlContainer::*)())&getChild, (void(ControlContainer::*)(Control*))&setChild);
+
+        static const auto CONSTRUCTOR = Constructor<ControlContainer>();
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ControlContainer>(Ghurund::UI::NAMESPACE_NAME, "ControlContainer")
+            .withProperty(PROPERTY_CHILD)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     bool ControlContainer::focusNext() {
         if (__super::focusNext())
             return true;
@@ -76,13 +92,13 @@ namespace Ghurund::UI {
         }
     }
 
-    bool ControlContainer::dispatchKeyEvent(const Ghurund::KeyEventArgs& event) {
+    bool ControlContainer::dispatchKeyEvent(const KeyEventArgs& event) {
         if (child && child->dispatchKeyEvent(event))
             return true;
         return __super::dispatchKeyEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) {
+    bool ControlContainer::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (child
             && (capturedChild || child->canReceiveEvent(event))
             && child->dispatchMouseButtonEvent(event.translate(-child->Position.x, -child->Position.y, true)))
@@ -90,7 +106,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseButtonEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+    bool ControlContainer::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (child) {
             if (capturedChild || child->canReceiveEvent(event)) {
                 previousReceiver = true;
@@ -105,7 +121,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    bool ControlContainer::dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& event) {
+    bool ControlContainer::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
         if (child && child->canReceiveEvent(event) && child->dispatchMouseWheelEvent(event.translate(-child->Position.x, -child->Position.y)))
             return true;
         return __super::dispatchMouseWheelEvent(event);
@@ -119,7 +135,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Control* ControlContainer::find(const Ghurund::Type& type) {
+    Control* ControlContainer::find(const Ghurund::Core::Type& type) {
         if (Type == type)
             return this;
         if (child)

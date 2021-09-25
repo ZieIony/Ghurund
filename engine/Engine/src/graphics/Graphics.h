@@ -7,16 +7,22 @@
 #include "graphics/buffer/DescriptorHeap.h"
 #include "graphics/memory/GPUResourceFactory.h"
 
-#include "reflection_a4b79cbf_50fe_4728_bfbe_1ab44dd54d18.h"
-
 namespace Ghurund {
     using namespace DirectX;
     using namespace Microsoft::WRL;
+    using namespace Ghurund::Core;
 
     class CommandList;
 
     class Graphics: public Object {
-        reflection_a4b79cbf_50fe_4728_bfbe_1ab44dd54d18
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         ID3D12Device* device;

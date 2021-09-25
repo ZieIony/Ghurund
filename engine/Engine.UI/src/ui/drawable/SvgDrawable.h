@@ -1,18 +1,19 @@
 #pragma once
 
-#include "SvgDocument.h"
 #include "ui/Canvas.h"
 #include "ui/drawable/ImageDrawable.h"
-
-#include "reflection_ffc4b987_f4e4_4547_a9d1_7793f5bf7bae.h"
-
-#include "reflection_aaa31ff7_a95b_448b_bd25_d3980f8a5458.h"
-
-#include "reflection_ae6220df_a63e_4f87_8662_d4b6bc82788c.h"
+#include "ui/image/SvgDocument.h"
 
 namespace Ghurund::UI {
     class SvgDrawable:public ImageDrawable {
-        reflection_ae6220df_a63e_4f87_8662_d4b6bc82788c
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         SvgDocument* image;

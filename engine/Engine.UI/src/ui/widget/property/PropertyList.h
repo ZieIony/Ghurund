@@ -42,13 +42,13 @@ namespace Ghurund::UI {
         inline void setItem(Object* item) {
             items.clear();
             if (item) {
-                Ghurund::Type* type = (Ghurund::Type*)&item->Type;
+                Ghurund::Core::Type* type = (Ghurund::Core::Type*)&item->Type;
                 while (true) {
                     for (TypeProperty* p : type->Properties)
                         items.add(ghnew ObjectProperty(*item, *p));
                     if (!type->Supertype)
                         break;
-                    type = (Ghurund::Type*)type->Supertype;
+                    type = (Ghurund::Core::Type*)type->Supertype;
                 }
             }
             this->item = item;

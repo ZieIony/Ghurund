@@ -3,7 +3,7 @@
 #include "Set.h"
 #include "core/Pointer.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Value> class PointerSet :public Set<Value> {
     public:
         PointerSet() {}

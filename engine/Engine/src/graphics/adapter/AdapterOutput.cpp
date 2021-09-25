@@ -2,8 +2,8 @@
 #include "AdapterOutput.h"
 
 namespace Ghurund {
-    const Ghurund::Type& AdapterOutput::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(AdapterOutput))
+    const Ghurund::Core::Type& AdapterOutput::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<AdapterOutput>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(AdapterOutput))
             .withSupertype(Object::TYPE);
 
         return TYPE;

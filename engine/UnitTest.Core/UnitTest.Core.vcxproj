@@ -188,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\collection\TestAllocator.h" />
+    <ClInclude Include="src\core\reflection\TestClass.h" />
     <ClInclude Include="src\TestUtils.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>

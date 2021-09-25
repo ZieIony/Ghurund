@@ -3,11 +3,16 @@
 #include "ControlContainer.h"
 #include "ui/Shape.h"
 
-#include "reflection_41ff1f3a_5073_416e_9f76_74d0e31bdf85.h"
-
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
-        reflection_41ff1f3a_5073_416e_9f76_74d0e31bdf85
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         Shape* shape = nullptr;

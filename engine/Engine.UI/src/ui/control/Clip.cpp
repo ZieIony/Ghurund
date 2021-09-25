@@ -3,8 +3,23 @@
 
 #include "ui/Canvas.h"
 #include "ui/layout/LayoutLoader.h"
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/Property.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& Clip::GET_TYPE() {
+        static auto PROPERTY_SHAPE = Property<Clip, Ghurund::UI::Shape*>("Shape", (Ghurund::UI::Shape * (Clip::*)()) & getShape, (void(Clip::*)(Ghurund::UI::Shape*)) & setShape);
+
+        static const auto CONSTRUCTOR = Constructor<Clip>();
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Clip>("Ghurund::UI", "Clip")
+            .withProperty(PROPERTY_SHAPE)
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void Clip::onDraw(Canvas& canvas) {
         if (shape) {
             canvas.clipShape(*shape);

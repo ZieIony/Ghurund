@@ -4,7 +4,7 @@
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     DirectoryPath DirectoryPath::getAbsolutePath() const {
         DWORD bufferLength = (DWORD)(GetCurrentDirectory(0, nullptr) + path.Size + 2); // slash and string terminator
         wchar_t fullPath[MAX_PATH];

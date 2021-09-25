@@ -2,7 +2,7 @@
 
 #include <functional>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template <class...> class EventHandler;
 
     template<class SenderType>

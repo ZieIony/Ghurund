@@ -4,6 +4,15 @@
 #include "graphics/Graphics.h"
 #include "graphics/buffer/RenderTarget.h"
 
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Graphics2D>() {
+        static Type TYPE = Type(Ghurund::NAMESPACE_NAME, "Graphics2D", sizeof(Graphics2D));
+        return TYPE;
+    }
+}
+
 namespace Ghurund {
     Status Graphics2D::init(Graphics& graphics) {
         UINT d3d11DeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;

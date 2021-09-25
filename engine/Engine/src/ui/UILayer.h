@@ -31,19 +31,19 @@ namespace Ghurund::UI {
             delete canvas;
         }
 
-        virtual bool dispatchKeyEvent(const Ghurund::KeyEventArgs& args) {
+        virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
             return rootView->dispatchKeyEvent(args);
         }
 
-        virtual bool dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& args) {
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
             return rootView->dispatchMouseButtonEvent(args);
         }
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& args) {
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
             return rootView->dispatchMouseMotionEvent(args);
         }
 
-        virtual bool dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& args) {
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
             return rootView->dispatchMouseWheelEvent(args);
         }
 

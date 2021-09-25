@@ -10,20 +10,30 @@
 
 #include <wincodec.h>
 
-#include "reflection_7103238f_73b0_463d_bc7f_54055f691499.h"
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<DXGI_FORMAT>();
+}
 
 namespace Ghurund::UI {
 
-    class Image: public Resource {
-        reflection_7103238f_73b0_463d_bc7f_54055f691499
+    class Image: public Ghurund::Core::Resource {
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         DXGI_FORMAT format;
         uint32_t width, height, pixelSize, rowPitch;
-        Buffer imageData;
+        Ghurund::Core::Buffer imageData;
 
     public:
-        void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
+        void init(const Ghurund::Core::Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
             imageData = data;
             this->width = width;
             this->height = height;
@@ -34,11 +44,11 @@ namespace Ghurund::UI {
             Valid = true;
         }
 
-        Buffer& getData() {
+        Ghurund::Core::Buffer& getData() {
             return imageData;
         }
 
-        __declspec(property(get = getData)) Buffer& Data;
+        __declspec(property(get = getData)) Ghurund::Core::Buffer& Data;
 
         DXGI_FORMAT getFormat() {
             return format;
@@ -70,13 +80,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-        static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", true, true);
-        static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", true, true);
-        static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", true, true);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
 
-        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+        inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
 
-        virtual const Array<ResourceFormat>& getFormats() const override {
+        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
             return FORMATS;
         }
     };

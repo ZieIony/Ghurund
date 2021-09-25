@@ -5,9 +5,11 @@
 #include "game/KeyMap.h"
 #include "game/entity/camera/CameraEntity.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class SystemWindow;
+}
 
+namespace Ghurund {
     class CameraController: public EventConsumer {
     public:
         enum class Mode {

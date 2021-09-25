@@ -7,7 +7,7 @@
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     LoadOption operator |(LoadOption lhs, LoadOption rhs) {
         return (LoadOption)((std::underlying_type<LoadOption>::type)lhs | (std::underlying_type<LoadOption>::type)rhs);
     }
@@ -37,7 +37,7 @@ namespace Ghurund {
     }
 
     Status Resource::writeHeader(MemoryOutputStream& stream) const {
-        unsigned int hash = hashCode(Type.Name);
+        unsigned int hash = hashCode(Type.Name.Data);
         stream.writeUInt(hash);
         stream.writeUInt(getVersion());
         return Status::OK;
@@ -46,7 +46,7 @@ namespace Ghurund {
     Status Resource::readHeader(MemoryInputStream& stream) {
         if (stream.Size < stream.BytesRead + sizeof(unsigned int) * 2)
             return Status::UNEXPECTED_EOF;
-        unsigned int hash = hashCode(Type.Name);
+        unsigned int hash = hashCode(Type.Name.Data);
         if (stream.readUInt() != hash)
             return Status::WRONG_RESOURCE_TYPE;
         if (stream.readUInt() != getVersion())
@@ -54,8 +54,8 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    const Ghurund::Type& Resource::GET_TYPE() {
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Resource))
+    const Ghurund::Core::Type& Resource::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Resource>(NAMESPACE_NAME, GH_STRINGIFY(Resource))
             .withModifiers(TypeModifier::ABSTRACT)
             .withSupertype(__super::GET_TYPE());
 

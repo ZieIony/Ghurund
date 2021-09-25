@@ -32,13 +32,13 @@ typedef unsigned long address_t;
 #pragma comment(lib, "Dbghelp.lib")
 
 #ifdef _WIN64
-#pragma comment(lib, "GhurundEngine.Core_64.lib")
+#pragma comment(lib, "Ghurund.Core_64.lib")
 #else
-#pragma comment(lib, "GhurundEngine.Core_32.lib")
+#pragma comment(lib, "Ghurund.Core_32.lib")
 #endif
 
-namespace Ghurund {
-    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund);
+namespace Ghurund::Core {
+    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Core);
 
     template<class Type> inline Type align(Type value, Type alignment) {
         return (value + alignment - 1) & ~(alignment - 1);

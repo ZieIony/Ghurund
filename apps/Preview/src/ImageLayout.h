@@ -5,7 +5,7 @@
 #include "ui/control/ControlContainer.h"
 
 namespace Preview {
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace Ghurund::UI;
 
     class ImageLayout:public ControlContainer {

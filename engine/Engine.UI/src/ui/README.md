@@ -1,6 +1,6 @@
 ### Ghurund.UI
 
-Ghurund.UI is an even-based, retained-mode UI rendered with Direct2D. Controls, layouts and widgets, are organized in a tree hierarchy. Ghurund.UI handles focus, text editing, mouse and keyboard interaction, and many other usual things you would expect a UI library to handle.
+Ghurund.UI is an event-based, retained-mode UI rendered with Direct2D. Controls, layouts and widgets, are organized in a tree hierarchy. Ghurund.UI handles focus, text editing, mouse and keyboard interaction, and many other usual things you would expect a UI library to handle.
 
 ##### Controls and hierarchy
 

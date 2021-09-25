@@ -11,7 +11,7 @@
 
 #include <format>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Logger:public Noncopyable {
     private:
         static HANDLE process;

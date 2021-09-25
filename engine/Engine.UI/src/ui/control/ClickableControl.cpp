@@ -3,9 +3,9 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ClickableControl::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ClickableControl>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ClickableControl))
+    const Ghurund::Core::Type& ClickableControl::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ClickableControl>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ClickableControl>(NAMESPACE_NAME, GH_STRINGIFY(ClickableControl))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -27,7 +27,7 @@ namespace Ghurund::UI {
         return false;
     }
 
-    bool ClickableControl::onMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+    bool ClickableControl::onMouseMotionEvent(const MouseMotionEventArgs& event) {
         bool in = event.Position.x >= 0 && event.Position.x < Size.width&&
             event.Position.y >= 0 && event.Position.y < Size.height;
         if (in && !hovered) {

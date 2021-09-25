@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/reflection/Type.h"
+
 #include <stdint.h>
 
 namespace Ghurund::UI {
@@ -101,4 +103,9 @@ namespace Ghurund::UI {
         uint32_t b = (uint32_t)((color & 0xff) * (1 - amount) + (color2 & 0xff) * amount);
         return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
     }
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Color>();
 }

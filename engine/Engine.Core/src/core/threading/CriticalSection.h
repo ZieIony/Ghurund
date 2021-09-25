@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class CriticalSection {
     private:
         CRITICAL_SECTION section;

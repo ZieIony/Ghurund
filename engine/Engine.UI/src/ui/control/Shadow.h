@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         float radius = 2.0f;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Shadow(unsigned int color = 0xaf000000);
@@ -55,9 +55,9 @@ namespace Ghurund::UI {
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

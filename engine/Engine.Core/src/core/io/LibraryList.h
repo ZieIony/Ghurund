@@ -4,7 +4,7 @@
 #include "FileLibrary.h"
 #include "core/collection/Map.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class LibraryList {
     private:
         List<Library*> libs;

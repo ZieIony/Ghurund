@@ -5,6 +5,8 @@
 #include "core/collection/List.h"
 
 namespace Ghurund::Net {
+    using namespace Ghurund::Core;
+
     class Connection {
     private:
         Socket socket;

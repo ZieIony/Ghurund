@@ -5,9 +5,9 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& StateIndicator::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<StateIndicator>();
-        static const Ghurund::Type& TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
+    const Ghurund::Core::Type& StateIndicator::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<StateIndicator>();
+        static const Ghurund::Core::Type& TYPE = TypeBuilder<StateIndicator>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

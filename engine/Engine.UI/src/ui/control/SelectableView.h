@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         bool selected = false;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         inline bool isSelected() const {
@@ -22,9 +22,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isSelected, put = setSelected)) bool Selected;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

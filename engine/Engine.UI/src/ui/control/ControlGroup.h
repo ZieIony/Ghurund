@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         Control* previousReceiver = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     protected:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
@@ -74,17 +74,17 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        virtual bool dispatchKeyEvent(const Ghurund::KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
-        virtual Control* find(const AString& name);
+        virtual Control* find(const Ghurund::Core::AString& name);
 
-        virtual Control* find(const Ghurund::Type& type);
+        virtual Control* find(const Ghurund::Core::Type& type);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
@@ -96,9 +96,9 @@ namespace Ghurund::UI {
         }
 #endif
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return GET_TYPE();
         }
     };

@@ -2,7 +2,7 @@
 
 #include "GenericString.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename T>
     class GenericStringView {
     protected:

@@ -6,15 +6,19 @@
 #include "ParameterManager.h"
 #include "Status.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ResourceContext;
     class ResourceManager;
     class DirectoryPath;
     class MemoryInputStream;
     class MemoryOutputStream;
-    
+
     enum class LoadOption;
     enum class SaveOption;
+}
+
+namespace Ghurund {
+    using namespace Ghurund::Core;
 
     class ParameterProvider {
     private:

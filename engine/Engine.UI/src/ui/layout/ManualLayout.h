@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
@@ -21,9 +21,9 @@ namespace Ghurund::UI {
             layoutManager.layout(x, y, width, height);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

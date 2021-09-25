@@ -3,7 +3,7 @@
 #include "PropertyHandler.h"
 #include "core/collection/List.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Type>
     class Observable {
     private:

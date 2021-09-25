@@ -4,7 +4,7 @@
 #include "ui/Cursor.h"
 
 namespace Ghurund::UI {
-    bool WindowFrame::dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+    bool WindowFrame::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (!__super::dispatchMouseMotionEvent(event)) {
             auto& pos = event.Position;
             if (pos.x < Padding.left && pos.y < Padding.top || pos.x >= Size.width - Padding.right && pos.y >= Size.height - Padding.bottom) {

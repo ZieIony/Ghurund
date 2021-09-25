@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     struct FloatRect {
         float left, top, right, bottom;
     };

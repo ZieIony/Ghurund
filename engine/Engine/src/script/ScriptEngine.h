@@ -30,11 +30,16 @@
 
 #endif
 
-#include "reflection_c98597c1_bb96_4ddc_92c4_079c395065da.h"
-
 namespace Ghurund {
     class ScriptEngine: public Feature {
-        reflection_c98597c1_bb96_4ddc_92c4_079c395065da
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
 		asIScriptEngine* engine = nullptr;

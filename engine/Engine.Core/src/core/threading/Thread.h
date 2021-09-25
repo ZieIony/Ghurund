@@ -6,9 +6,8 @@
 #include <process.h>
 #include <queue>
 
-namespace Ghurund {
-    class Thread:public NamedObject
-    {
+namespace Ghurund::Core {
+    class Thread:public NamedObject<char> {
     private:
         HANDLE handle = INVALID_HANDLE_VALUE;
         DWORD threadId = 0;

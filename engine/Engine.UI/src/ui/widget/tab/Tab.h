@@ -22,9 +22,9 @@ namespace Ghurund::UI {
 
     class TextTabItem:public TabItem {
     public:
-        WString text;
+        Ghurund::Core::WString text;
 
-        TextTabItem(const WString& text, Control* content):TabItem(content), text(text) {}
+        TextTabItem(const Ghurund::Core::WString& text, Control* content):TabItem(content), text(text) {}
     };
 
     class TabLayout:public LayoutBinding {
@@ -43,8 +43,8 @@ namespace Ghurund::UI {
 
     class Tab:public Widget<TabLayout> {
     private:
-        static const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Tab))
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Tab>(NAMESPACE_NAME, GH_STRINGIFY(Tab))
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
@@ -60,9 +60,9 @@ namespace Ghurund::UI {
             Focusable = true;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

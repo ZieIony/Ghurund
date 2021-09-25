@@ -3,7 +3,7 @@
 #include "List.h"
 #include "core/Event.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Value>
     class ObservableList:public List<Value> {
     private:

@@ -2,7 +2,7 @@
 
 #include <atomic>
 
-namespace Ghurund {
+namespace Ghurund::Core {
 	typedef uint32_t id_t;
 
 	template<class T> class IdObject {

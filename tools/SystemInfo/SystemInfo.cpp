@@ -2,7 +2,7 @@
 #include "core/logging/Logger.h"
 #include <core/threading/ThreadPoolExecutor.h>
 
-using namespace Ghurund;
+using namespace Ghurund::Core;
 
 int main() {
     Logger::init(std::unique_ptr<LogOutput>(ghnew StandardConsoleLogOutput()));

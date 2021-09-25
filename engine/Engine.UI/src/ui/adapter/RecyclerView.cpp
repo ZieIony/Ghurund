@@ -5,9 +5,9 @@
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& RecyclerView::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<RecyclerView>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RecyclerView))
+    const Ghurund::Core::Type& RecyclerView::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<RecyclerView>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RecyclerView>(NAMESPACE_NAME, GH_STRINGIFY(RecyclerView))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

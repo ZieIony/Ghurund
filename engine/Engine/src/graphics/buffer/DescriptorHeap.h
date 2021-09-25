@@ -8,6 +8,8 @@
 #include <d3d12.h>
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Graphics;
 
     class DescriptorHandle {

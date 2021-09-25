@@ -5,6 +5,8 @@
 #include "ui/image/Image.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class ThumbnailRenderer:public Object {
     private:
 		Camera* camera = nullptr;
@@ -16,7 +18,7 @@ namespace Ghurund {
         ResourceContext* resourceContext = nullptr;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ~ThumbnailRenderer() {
@@ -32,9 +34,9 @@ namespace Ghurund {
         Status render(Mesh& mesh, Ghurund::UI::Image*& image);
         Status render(Material& material, Ghurund::UI::Image*& image);
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

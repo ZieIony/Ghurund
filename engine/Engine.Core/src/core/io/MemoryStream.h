@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class MemoryStream {
     protected:
         size_t pointer = 0;

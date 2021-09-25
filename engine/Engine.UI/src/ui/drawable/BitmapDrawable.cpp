@@ -4,8 +4,16 @@
 #include "core/math/Rect.h"
 #include "ui/Canvas.h"
 #include "ui/image/Bitmap.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& BitmapDrawable::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<BitmapDrawable>(Ghurund::UI::NAMESPACE_NAME, "BitmapDrawable")
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     BitmapDrawable::BitmapDrawable(Bitmap* image) {
         this->image = image;
         image->addReference();

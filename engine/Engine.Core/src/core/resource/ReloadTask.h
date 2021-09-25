@@ -2,7 +2,7 @@
 
 #include "Resource.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ReloadTask {
     private:
         ResourceManager& resourceManager;

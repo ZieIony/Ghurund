@@ -6,7 +6,7 @@
 #include "EventConsumer.h"
 #include "core/window/WindowMessage.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     class Input {
     private:

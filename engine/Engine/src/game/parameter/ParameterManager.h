@@ -5,17 +5,20 @@
 #include "core/collection/PointerList.h"
 #include "core/Object.h"
 
+namespace Ghurund::Core {
+    class ResourceManager;
+}
+
 namespace Ghurund {
 
     class Graphics;
     class CommandList;
-    class ResourceManager;
 
     class ParameterManager: public Object {
     private:
 		PointerList<Parameter*> parameters;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ParameterManager();
@@ -37,9 +40,9 @@ namespace Ghurund {
             return nullptr;
         }
 
-		inline static const Ghurund::Type& TYPE = GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

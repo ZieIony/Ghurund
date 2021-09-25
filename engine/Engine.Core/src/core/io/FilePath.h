@@ -9,7 +9,7 @@
 #pragma comment(lib, "Shlwapi.lib")
 #pragma comment(lib, "Pathcch.lib")
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class DirectoryPath;
 
     class FilePath:public Path {

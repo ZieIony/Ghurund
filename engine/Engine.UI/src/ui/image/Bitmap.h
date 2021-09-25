@@ -5,13 +5,26 @@
 
 #include <d2d1_3.h>
 
-#include "reflection_027d46a4_8616_44d3_950f_7adeab521d44.h"
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<ID2D1Bitmap1>();
+}
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
+    using namespace Ghurund::Core;
 
-    class Bitmap:public Resource {
-        reflection_027d46a4_8616_44d3_950f_7adeab521d44
+    class Bitmap:public Ghurund::Core::Resource {
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getType() const override {
+
+            return TYPE;
+        }
 
     private:
         Image* image = nullptr;
@@ -35,7 +48,7 @@ namespace Ghurund::UI {
 
         Status init(ID2D1DeviceContext5& deviceContext, Image& image);
 
-        Status init(ID2D1DeviceContext5& deviceContext, IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
+        Status init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
         inline Image* getImage() {
             return image;
@@ -49,19 +62,19 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getData)) ID2D1Bitmap1* Data;
 
-        IntSize getSize();
+        Ghurund::Core::IntSize getSize();
 
-        __declspec(property(get = getSize)) IntSize Size;
+        __declspec(property(get = getSize)) Ghurund::Core::IntSize Size;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"jpg", true, true),
-                ResourceFormat(L"jpeg", true, true),
-                ResourceFormat(L"png", true, true)
+        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() {
+            static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = {
+                Ghurund::Core::ResourceFormat(L"jpg", true, true),
+                Ghurund::Core::ResourceFormat(L"jpeg", true, true),
+                Ghurund::Core::ResourceFormat(L"png", true, true)
             };
             return formats;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+        __declspec(property(get = getFormats)) Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& Formats;
     };
 }

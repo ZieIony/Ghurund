@@ -4,7 +4,7 @@
 #include "core/io/FilePath.h"
 #include <core/io/File.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Library {
     private:
         WString name;

@@ -4,7 +4,9 @@
 #include "core/resource/Loader.h"
 
 namespace Ghurund::UI {
-    class ImageLoader:public Loader {
+    using namespace Ghurund::Core;
+
+    class ImageLoader:public Ghurund::Core::Loader {
     private:
         IWICImagingFactory* imageFactory;
 
@@ -29,8 +31,20 @@ namespace Ghurund::UI {
             return Status::OK;
         }
 
-        virtual Status load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override;
+        virtual Status load(
+            Ghurund::Core::ResourceManager& manager,
+            Ghurund::Core::MemoryInputStream& stream,
+            Ghurund::Core::Resource& resource,
+            const Ghurund::Core::ResourceFormat* format = nullptr,
+            Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
+        ) override;
 
-        virtual Status save(Ghurund::ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override;
+        virtual Status save(
+            Ghurund::Core::ResourceManager& manager,
+            Ghurund::Core::MemoryOutputStream& stream,
+            Ghurund::Core::Resource& resource,
+            const Ghurund::Core::ResourceFormat* format = nullptr,
+            Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
+        ) const override;
     };
 }

@@ -5,6 +5,8 @@
 #include "core/window/Clipboard.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     void TextField::onReturn() {
         uint32_t absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
@@ -62,7 +64,7 @@ namespace Ghurund::UI {
     void TextField::onKeyPress(UINT32 keyCode) {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
 
-        Ghurund::Input& input = Context->Window.Input;
+        Input& input = Context->Window.Input;
         if (keyCode == VK_RETURN) {
             onReturn();
         } else if (keyCode == VK_BACK) {
@@ -147,9 +149,9 @@ namespace Ghurund::UI {
         }
     }
 
-    const Ghurund::Type& TextField::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<TextField>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextField))
+    const Ghurund::Core::Type& TextField::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<TextField>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextField>(NAMESPACE_NAME, GH_STRINGIFY(TextField))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

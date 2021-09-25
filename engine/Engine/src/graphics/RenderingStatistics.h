@@ -15,7 +15,7 @@ namespace Ghurund {
         size_t trianglesRendered = 0;
         size_t materialChanges = 0;
 
-        Timer timer;
+        Ghurund::Core::Timer timer;
 
     public:
         double getRenderingTime() const {
@@ -63,4 +63,9 @@ namespace Ghurund {
             notifyObjectChanged();
         }
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<RenderingStatistics>();
 }

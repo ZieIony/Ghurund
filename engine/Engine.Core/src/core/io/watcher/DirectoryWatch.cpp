@@ -5,7 +5,7 @@
 #include "core/logging/Logger.h"
 #include "core/threading/FunctionQueue.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void DirectoryWatch::fileChanged(Buffer& buffer) {
         int offset = 0;
         while (true) {

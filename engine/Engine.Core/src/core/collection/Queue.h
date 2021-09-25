@@ -3,7 +3,7 @@
 #include "LinkedList.h"
 #include "core/Concepts.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
     class Queue {
     private:

@@ -4,7 +4,7 @@
 #include "core/collection/List.h"
 #include "core/threading/CriticalSection.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class T> class StateMachine {
     private:
         template<class T> struct State {

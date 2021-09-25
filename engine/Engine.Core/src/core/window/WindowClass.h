@@ -6,7 +6,7 @@
 #include "core/Object.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Window;
 
     enum class WindowClassEnum {

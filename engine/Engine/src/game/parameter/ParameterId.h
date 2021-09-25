@@ -4,6 +4,8 @@
 #include "core/Enum.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     enum class ParameterIdEnum {
         VIEWPORT_SIZE,
         OUTLINE_COLOR,

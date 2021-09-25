@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     struct WindowMessage {
         unsigned int code;
         WPARAM wParam;

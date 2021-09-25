@@ -4,7 +4,7 @@
 #include "core/collection/List.h"
 #include "core/io/FilePath.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class SystemWindow;
 
     class DECLSPEC_UUID("796c4f9e-698f-42d4-ae90-3a9c4cb79b99") DragDropManager: public ComBase<QiList<IDropTarget>> {

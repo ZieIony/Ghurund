@@ -9,8 +9,18 @@
 #include "script/bindings/LightScriptBindings.h"
 #include "script/bindings/ModelScriptBindings.h"
 #include "script/bindings/SceneScriptBindings.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
+
+    const Ghurund::Core::Type& ScriptEngine::GET_TYPE() {
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>("Ghurund", "ScriptEngine")
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void ScriptEngine::messageCallback(const asSMessageInfo* msg, void* param) {
         const LogType* type = &LogType::ERR0R;
         if (msg->type == asMSGTYPE_WARNING)
@@ -51,9 +61,9 @@ namespace Ghurund {
 
     void ScriptEngine::update(const uint64_t time) {
         /*for (ScriptComponent* c : Components) {
-			if (!c->Enabled)
-				continue;
-			Script* s = c->Script;
+            if (!c->Enabled)
+                continue;
+            Script* s = c->Script;
             if (s->Valid)
                 s->execute();
         }*/

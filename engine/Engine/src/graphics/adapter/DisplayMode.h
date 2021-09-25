@@ -8,13 +8,15 @@
 #include "core/Object.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class DisplayMode: public Object {
     private:
         unsigned int width, height;
         float refreshRate;
         DXGI_FORMAT format;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         DisplayMode(DXGI_MODE_DESC mode) {
@@ -40,9 +42,9 @@ namespace Ghurund {
             return format;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

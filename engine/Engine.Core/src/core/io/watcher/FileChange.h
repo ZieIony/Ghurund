@@ -4,7 +4,7 @@
 
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class FileChangeEnum {
         ADDED = FILE_ACTION_ADDED,
         REMOVED = FILE_ACTION_REMOVED,

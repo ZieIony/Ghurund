@@ -9,12 +9,12 @@
 
 #include <functional>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class ExecutionStatus {
         NOT_STARTED, IN_PROGRESS, SUCCEEDED, SKIPPED, FAILED
     };
 
-    class Task:public Pointer, public NamedObject {
+    class Task:public Pointer, public NamedObject<wchar_t> {
     private:
         std::function<Status()> function;
         List<SharedPointer<Task>> dependencies;
@@ -22,7 +22,7 @@ namespace Ghurund {
         ExecutionStatus executionStatus = ExecutionStatus::NOT_STARTED;
         Event<Task, ExecutionStatus> statusChanged = *this;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Task(std::function<Status()> function):function(function) {}
@@ -32,9 +32,9 @@ namespace Ghurund {
             this->function = function;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 
@@ -89,11 +89,11 @@ namespace Ghurund {
 
         __declspec(property(get = getTag, put = setTag)) void* Tag;
 
-        inline Event<Task, Ghurund::ExecutionStatus>& getOnExecutionStatusChanged() {
+        inline Event<Task, Ghurund::Core::ExecutionStatus>& getOnExecutionStatusChanged() {
             return statusChanged;
         }
 
-        __declspec(property(get = getOnExecutionStatusChanged)) Event<Task, Ghurund::ExecutionStatus>& OnExecutionStatusChanged;
+        __declspec(property(get = getOnExecutionStatusChanged)) Event<Task, Ghurund::Core::ExecutionStatus>& OnExecutionStatusChanged;
     };
 
     class TaskGroup {

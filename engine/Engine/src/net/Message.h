@@ -8,6 +8,8 @@
 #include <CRC.h>
 
 namespace Ghurund::Net {
+    using namespace Ghurund::Core;
+
 #pragma pack(push, 1)
     struct Message {
         uint32_t crc;

@@ -8,7 +8,7 @@
 
 #include <windowsx.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     const WindowClass WindowClass::WINDOWED = WindowClass(WindowClassEnum::WINDOWED, "WINDOWED", WS_EX_APPWINDOW, WS_OVERLAPPEDWINDOW, 0);
     const WindowClass WindowClass::FULLSCREEN = WindowClass(WindowClassEnum::FULLSCREEN, "FULLSCREEN", WS_EX_APPWINDOW, WS_POPUP | WS_EX_TOPMOST, 0);
     const WindowClass WindowClass::POPUP = WindowClass(WindowClassEnum::POPUP, "POPUP", WS_EX_NOACTIVATE, WS_POPUP, CS_DROPSHADOW);

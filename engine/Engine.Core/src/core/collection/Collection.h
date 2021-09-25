@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Collection {
     protected:
         size_t size;

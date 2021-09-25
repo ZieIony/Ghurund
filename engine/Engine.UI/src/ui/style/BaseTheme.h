@@ -55,41 +55,41 @@ namespace Ghurund::UI {
         StateIndicatorOnBackgroundStyle stateIndicatorOnBackgroundStyle;
         StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
-        void loadImage(ResourceManager& resourceManager, const ImageKey& key, const FilePath& path) {
+        void loadImage(Ghurund::Core::ResourceManager& resourceManager, const ImageKey& key, const Ghurund::Core::FilePath& path) {
             Status result;
-            SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
-            SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
+            Ghurund::Core::SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
+            Ghurund::Core::SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
             Images.set(key, imageDrawable);
         }
 
     public:
-        BaseTheme(IDWriteFactory5& dwriteFactory, ResourceManager& resourceManager) {
-            SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
-            SharedPointer<Font> latoLightFont = resourceManager.load<Font>(FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
+        BaseTheme(IDWriteFactory5& dwriteFactory, Ghurund::Core::ResourceManager& resourceManager) {
+            Ghurund::Core::SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
+            Ghurund::Core::SharedPointer<Font> latoLightFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
 
-            auto buttonFont = Ghurund::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
+            auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
             buttonFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_BUTTON, buttonFont);
 
-            auto listHeaderFont = Ghurund::makeShared<TextFormat>(latoLightFont, 14.0f, FW_LIGHT);
+            auto listHeaderFont = Ghurund::Core::makeShared<TextFormat>(latoLightFont, 14.0f, FW_LIGHT);
             listHeaderFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_LIST_HEADER, listHeaderFont);
 
-            auto textPrimaryFont = Ghurund::makeShared<TextFormat>(latoMediumFont, 11.0f, FW_REGULAR);
+            auto textPrimaryFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 11.0f, FW_REGULAR);
             textPrimaryFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_TEXT_PRIMARY, textPrimaryFont);
 
-            auto textSecondaryFont = Ghurund::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_REGULAR);
+            auto textSecondaryFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_REGULAR);
             textSecondaryFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
-            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_CHECKED, FilePath(L"lib://Ghurund/icons\\checkbox checked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_UNCHECKED, FilePath(L"lib://Ghurund/icons\\checkbox unchecked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_CHECKED, FilePath(L"lib://Ghurund/icons\\radiobutton checked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_UNCHECKED, FilePath(L"lib://Ghurund/icons\\radiobutton unchecked 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWUP, FilePath(L"lib://Ghurund/icons\\arrow up 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWDOWN, FilePath(L"lib://Ghurund/icons\\arrow down 18.png"));
-            loadImage(resourceManager, Theme::IMAGE_ARROWRIGHT, FilePath(L"lib://Ghurund/icons\\arrow right 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_CHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox checked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_CHECKBOX_UNCHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox unchecked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_CHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\radiobutton checked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_RADIOBUTTON_UNCHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\radiobutton unchecked 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWUP, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow up 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWDOWN, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow down 18.png"));
+            loadImage(resourceManager, Theme::IMAGE_ARROWRIGHT, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow right 18.png"));
 
             Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
             Styles.set(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);

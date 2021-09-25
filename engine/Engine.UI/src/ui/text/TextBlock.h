@@ -17,22 +17,22 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         TextBlock():textLayout(L"text", 0xdd000000, nullptr) {}
 
-        TextBlock(const WString& text, uint32_t color = 0xde000000, TextFormat* textFormat = nullptr):textLayout(text, color, textFormat) {}
+        TextBlock(const Ghurund::Core::WString& text, uint32_t color = 0xde000000, TextFormat* textFormat = nullptr):textLayout(text, color, textFormat) {}
 
-        const WString& getText() {
+        const Ghurund::Core::WString& getText() {
             return textLayout.Text;
         }
 
-        inline void setText(const WString& text) {
+        inline void setText(const Ghurund::Core::WString& text) {
             textLayout.Text = text;
         }
 
-        __declspec(property(get = getText, put = setText)) const WString& Text;
+        __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
 
         inline const Color& getTextColor() const {
             return textLayout.Color;
@@ -58,9 +58,9 @@ namespace Ghurund::UI {
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

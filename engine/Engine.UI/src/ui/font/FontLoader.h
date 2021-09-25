@@ -5,6 +5,8 @@
 #include "ui/font/FontCollectionLoader.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class FontLoader:public Loader {
     private:
         IDWriteFactory5& factory;
@@ -18,9 +20,21 @@ namespace Ghurund::UI {
 
         Status init();
 
-        virtual Status load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override;
+        virtual Status load(
+            Ghurund::Core::ResourceManager& manager,
+            MemoryInputStream& stream,
+            Resource& resource,
+            const ResourceFormat* format = nullptr,
+            LoadOption options = LoadOption::DEFAULT
+        ) override;
 
-        virtual Status save(Ghurund::ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
+        virtual Status save(
+            Ghurund::Core::ResourceManager& manager,
+            MemoryOutputStream& stream,
+            Resource& resource,
+            const ResourceFormat* format = nullptr,
+            SaveOption options = SaveOption::DEFAULT
+        ) const override {
             return Status::NOT_IMPLEMENTED;
         }
     };

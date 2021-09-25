@@ -2,26 +2,29 @@
 
 #include "Type.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
+    template<class T>
     class TypeBuilder {
     private:
-        BaseConstructor* constructor = nullptr;
         TypeModifier modifiers = (TypeModifier)0;
         const char* _namespace;
         const char* name;
         Type* supertype = nullptr;
         size_t size;
-        Map<AString, Property*> properties;
+        List<BaseConstructor*> constructors;
+        List<BaseProperty*> properties;
+        List<BaseMethod*> methods;
 
     public:
         TypeBuilder(const char* _namespace, const char* name) {
             this->_namespace = _namespace;
             this->name = name;
-            size = sizeof(Type);
+            size = sizeof(T);
         }
 
-        TypeBuilder withConstructor(const BaseConstructor& constructor) {
-            this->constructor = (BaseConstructor*)&constructor;
+        template<typename... ArgsT>
+        TypeBuilder withConstructor(const Constructor<T, ArgsT...>& constructor) {
+            constructors.add((BaseConstructor*)&constructor);
             return *this;
         }
 
@@ -40,13 +43,19 @@ namespace Ghurund {
             return *this;
         }
 
-        TypeBuilder withProperty(const Property& property) {
-            properties.set(property.Name, (Property*)&property);
+        TypeBuilder withProperty(const BaseProperty& property) {
+            properties.add((BaseProperty*)&property);
+            return *this;
+        }
+
+        template<typename ReturnT, typename... ArgsT>
+        TypeBuilder withMethod(const Method<T, ReturnT, ArgsT...>& method) {
+            methods.add((BaseTypeMethod<T>*)&method);
             return *this;
         }
 
         operator Type() {
-            return Type(constructor, modifiers, _namespace, name, size, supertype, properties);
+            return Type(_namespace, name, size, modifiers, supertype, constructors, properties, methods);
         }
     };
 }

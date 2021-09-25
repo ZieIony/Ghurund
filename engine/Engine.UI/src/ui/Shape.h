@@ -7,6 +7,8 @@
 struct ID2D1Geometry;
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class Shape {
     protected:
         ID2D1Geometry* path = nullptr;
@@ -62,4 +64,9 @@ namespace Ghurund::UI {
 
         virtual void setBounds(const FloatRect& bounds) override;
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Shape>();
 }

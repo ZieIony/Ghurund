@@ -2,11 +2,17 @@
 
 #include "ControlParent.h"
 
-#include "reflection_6cd843c9_baef_42ed_8438_114be2efc99b.h"
-
 namespace Ghurund::UI {
     class ControlContainer: public ControlParent {
-        reflection_6cd843c9_baef_42ed_8438_114be2efc99b
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getType() const override {
+            return TYPE;
+        }
 
     private:
         Control* child = nullptr;
@@ -77,24 +83,24 @@ namespace Ghurund::UI {
                 child->draw(canvas);
         }
 
-        virtual bool dispatchKeyEvent(const Ghurund::KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual bool dispatchMouseWheelEvent(const Ghurund::MouseWheelEventArgs& event) override;
+        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
-        virtual Control* find(const AString& name);
+        virtual Control* find(const Ghurund::Core::AString& name);
 
-        virtual Control* find(const Ghurund::Type& type);
+        virtual Control* find(const Ghurund::Core::Type& type);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual void validate() override {
             __super::validate();
-            if(child)
+            if (child)
                 child->validate();
         }
 #endif

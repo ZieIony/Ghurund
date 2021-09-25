@@ -4,7 +4,7 @@
 
 #include <dbghelp.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class StackTrace {
     private:
         static const inline uint16_t MAX_FRAMES_TO_CAPTURE = 64;

@@ -6,9 +6,9 @@
 #include "core/SharedPointer.h"
 
 namespace Ghurund {
-    const Ghurund::Type& Material::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Material>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Material))
+    const Ghurund::Core::Type& Material::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Material>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Material>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Material))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

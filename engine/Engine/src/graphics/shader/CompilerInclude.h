@@ -7,6 +7,8 @@
 #pragma warning(pop)
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class CompilerInclude:public ID3DInclude {
         wchar_t *shaderDir, *systemDir;
 

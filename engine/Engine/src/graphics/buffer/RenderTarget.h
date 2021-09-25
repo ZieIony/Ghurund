@@ -16,7 +16,7 @@
 namespace Ghurund {
     class Graphics2D;
 
-    class RenderTarget: public NamedObject {
+    class RenderTarget: public NamedObject<wchar_t> {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
         ID3D12Resource* texture = nullptr;

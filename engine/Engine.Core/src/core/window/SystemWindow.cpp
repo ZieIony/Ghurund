@@ -10,7 +10,7 @@
 #include <shellapi.h>
 #include <windowsx.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     LRESULT CALLBACK windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam) {
         WindowData* windowData = (WindowData*)GetWindowLongPtr(handle, GWLP_USERDATA);
         if (!windowData)
@@ -88,14 +88,14 @@ namespace Ghurund {
         return DefWindowProc(handle, msg, wParam, lParam);
     }
 
-    const Ghurund::Type& SystemWindow::GET_TYPE() {
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
+    const Ghurund::Core::Type& SystemWindow::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SystemWindow>(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    SystemWindow::SystemWindow(const WindowClass& type, Ghurund::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {
+    SystemWindow::SystemWindow(const WindowClass& type, Ghurund::Core::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {
         this->handle = type.create();
 
         WindowData* windowData = ghnew WindowData(this);

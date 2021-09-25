@@ -5,9 +5,9 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& RadioButton::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<RadioButton>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
+    const Ghurund::Core::Type& RadioButton::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<RadioButton>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RadioButton>(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

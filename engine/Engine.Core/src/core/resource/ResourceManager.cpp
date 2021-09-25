@@ -5,7 +5,7 @@
 #include "core/logging/Formatter.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options) {
         File* file;
         WString pathString = WString(path.toString());
@@ -85,9 +85,9 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    const Ghurund::Type& ResourceManager::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ResourceManager>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
+    const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ResourceManager>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -139,7 +139,7 @@ namespace Ghurund {
     }
 
     Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format, SaveOption options) const {
-        size_t index = Ghurund::Type::TYPES.indexOf(resource.getType());
+        size_t index = Ghurund::Core::Type::TYPES.indexOf(resource.getType());
         stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary

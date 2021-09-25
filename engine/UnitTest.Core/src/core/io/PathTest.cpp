@@ -7,13 +7,13 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
-    template<> static std::wstring ToString<Ghurund::FilePath>(const Ghurund::FilePath& t) {
+    template<> static std::wstring ToString<Ghurund::Core::FilePath>(const Ghurund::Core::FilePath& t) {
         return t.toString().Data;
     }
 }
 
 namespace UnitTest {
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
 
     TEST_CLASS(PathTest) {
 public:

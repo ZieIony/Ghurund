@@ -21,9 +21,9 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    const Ghurund::Type& Script::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Script>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Script))
+    const Ghurund::Core::Type& Script::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Script>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Script>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Script))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

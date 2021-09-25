@@ -4,7 +4,7 @@
 
 #include <cassert>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     /**
     * Doesn't guarantee order, cannot have duplicates
     */

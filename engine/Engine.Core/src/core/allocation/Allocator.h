@@ -1,24 +1,26 @@
 #pragma once
 
-namespace Ghurund {
-    typedef uint64_t memory_t;
-
+namespace Ghurund::Core {
+    template<typename T>
     __interface Allocator {
-        void* allocate(memory_t size);
+        void* allocate(T size);
         void deallocate(void*);
-        bool canAllocate(memory_t size) const;
+        bool canAllocate(T size) const;
     };
 
+    template<typename T>
     struct Allocation {
-        memory_t size;
-        memory_t address;
+        T size;
+        T address;
     };
 }
 
-inline void* operator new(size_t size, Ghurund::Allocator& allocator) {
+template<typename T>
+inline void* operator new(size_t size, Ghurund::Core::Allocator<T>& allocator) {
     return allocator.allocate(size);
 }
 
-inline void operator delete(void* ptr, Ghurund::Allocator& allocator) {
+template<typename T>
+inline void operator delete(void* ptr, Ghurund::Core::Allocator<T>& allocator) {
     allocator.deallocate(ptr);
 }

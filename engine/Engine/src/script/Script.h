@@ -5,10 +5,15 @@
 
 #include "angelscript.h"
 
-namespace Ghurund {
-    class ScriptEngine;
+namespace Ghurund::Core {
     class ResourceManager;
     class ResourceContext;
+}
+
+namespace Ghurund {
+    using namespace Ghurund::Core;
+
+    class ScriptEngine;
 
     class Script:public Resource {
     private:
@@ -36,7 +41,7 @@ namespace Ghurund {
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Script():arguments(Array<void*>(0)) {
@@ -106,9 +111,9 @@ namespace Ghurund {
             return ctx->GetReturnObject();
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

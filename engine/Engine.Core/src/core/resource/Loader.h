@@ -4,8 +4,9 @@
 #include "Status.h"
 #include "core/allocation/Allocator.h"
 #include "core/io/MemoryStream.h"
+#include "core/reflection/Constructor.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class LoadOption {
         DEFAULT = 0, DONT_WATCH = 1, DONT_CACHE = 2
     };
@@ -27,18 +28,19 @@ namespace Ghurund {
 
     class Loader {
     private:
-        Allocator* allocator;
+        Allocator<size_t>* allocator;
 
     public:
-        Loader(Allocator* allocator = nullptr):allocator(allocator) {}
+        Loader(Allocator<size_t>* allocator = nullptr):allocator(allocator) {}
 
         virtual ~Loader() = 0 {}
 
         template<class T>
         T* makeResource() {
+            Constructor<T>* constructor = (Constructor<T>*)T::TYPE.Constructors.get(0);
             if (allocator)
-                return (T*)T::TYPE.Constructor->newInstance(*allocator);
-            return (T*)T::TYPE.Constructor->newInstance();
+                return (T*)constructor->invoke(*allocator);
+            return (T*)constructor->invoke();
         }
 
         virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) = 0;

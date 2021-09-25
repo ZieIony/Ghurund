@@ -10,7 +10,7 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace std;
 
     TEST_CLASS(StackTest) {

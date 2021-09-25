@@ -81,3 +81,8 @@ namespace Ghurund {
         Status endPaint();
     };
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Graphics2D>();
+}

@@ -11,6 +11,8 @@
 struct IDWriteTextFormat;
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class Canvas;
     class Control;
 
@@ -20,25 +22,25 @@ namespace Ghurund::UI {
         float size;
         bool italic = false, underline = false, strikethrough = false;
         uint32_t weight = 400, stretch = 0;
-        WString locale;
+        Ghurund::Core::WString locale;
         IDWriteTextFormat* format = nullptr;
 
     protected:
-        const Ghurund::Type& GET_TYPE() {
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextFormat))
+        const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormat>(NAMESPACE_NAME, GH_STRINGIFY(TextFormat))
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
         }
 
     public:
-        TextFormat(Font* font, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
+        TextFormat(Font* font, float size, unsigned int weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
             :size(size), weight(weight), italic(italic), locale(locale) {
             this->font = font;
             font->addReference();
         }
 
-        TextFormat(IDWriteTextFormat* format, float size, unsigned int weight = 400, bool italic = false, const WString& locale = L"en-us")
+        TextFormat(IDWriteTextFormat* format, float size, unsigned int weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
             :size(size), weight(weight), italic(italic), locale(locale) {
             this->format = format;
             format->AddRef();
@@ -90,11 +92,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getStretch)) uint32_t Stretch;
 
-        inline const WString& getLocale() const {
+        inline const Ghurund::Core::WString& getLocale() const {
             return locale;
         }
 
-        __declspec(property(get = getLocale)) const WString& Locale;
+        __declspec(property(get = getLocale)) const Ghurund::Core::WString& Locale;
 
         inline IDWriteTextFormat* getFormat() {
             return format;
@@ -102,7 +104,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFormat)) IDWriteTextFormat* Format;
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

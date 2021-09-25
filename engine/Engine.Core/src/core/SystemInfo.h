@@ -5,7 +5,7 @@
 #include <Windows.h>
 #include <psapi.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class SystemInfo {
     private:
         SystemInfo() = delete;

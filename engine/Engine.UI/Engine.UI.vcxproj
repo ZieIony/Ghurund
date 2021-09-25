@@ -24,6 +24,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghuipch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
+    <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\control\Border.cpp" />
     <ClCompile Include="src\ui\control\ClickableControl.cpp" />
     <ClCompile Include="src\ui\control\Clip.cpp" />
@@ -31,18 +32,27 @@
     <ClCompile Include="src\ui\control\Control.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
+    <ClCompile Include="src\ui\control\ControlParent.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
     <ClCompile Include="src\ui\control\SelectableView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\control\Space.cpp" />
+    <ClCompile Include="src\ui\drawable\Drawable.cpp" />
+    <ClCompile Include="src\ui\drawable\SvgDrawable.cpp" />
+    <ClCompile Include="src\ui\font\Font.cpp" />
     <ClCompile Include="src\ui\image\Bitmap.cpp" />
     <ClCompile Include="src\ui\drawable\BitmapDrawable.cpp" />
+    <ClCompile Include="src\ui\image\Image.cpp" />
     <ClCompile Include="src\ui\image\ImageLoader.cpp" />
     <ClCompile Include="src\ui\image\SvgDocument.cpp" />
     <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
     <ClCompile Include="src\ui\font\FontLoader.cpp" />
+    <ClCompile Include="src\ui\layout\DesktopLayout.cpp" />
+    <ClCompile Include="src\ui\layout\FlowLayout.cpp" />
+    <ClCompile Include="src\ui\layout\Layout.cpp" />
+    <ClCompile Include="src\ui\style\Style.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
@@ -66,6 +76,7 @@
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextField.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />
+    <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
@@ -297,7 +308,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\bindings;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine.UI_32</TargetName>
+    <TargetName>Ghurund.UI_32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
@@ -306,7 +317,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated/reflection;$(ProjectDir)generated/bindings;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
-    <TargetName>GhurundEngine.UI_64</TargetName>
+    <TargetName>Ghurund.UI_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

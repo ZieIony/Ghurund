@@ -6,10 +6,64 @@
 #include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/StandardTypes.h"
+#include "core/reflection/Property.h"
 
 #include <regex>
 
 namespace Ghurund::UI {
+
+    const Ghurund::Core::Type& Control::GET_TYPE() {
+        static auto PROPERTY_NAME = Property<Control, const AString*>("Name", (AString * (Control::*)()) & getName, (void(Control::*)(const AString*)) & setName);
+        static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
+        static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
+        static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
+        static auto PROPERTY_FOCUS = ReadOnlyProperty<Control, Control*>("Focus", (Control * (Control::*)()) & getFocus);
+        static auto PROPERTY_FOCUSED = ReadOnlyProperty<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
+        static auto PROPERTY_POSITION = Property<Control, const FloatPoint&>("Position", (FloatPoint & (Control::*)()) & getPosition, (void(Control::*)(const FloatPoint&)) & setPosition);
+        static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
+        static auto PROPERTY_SCALE = Property<Control, const FloatPoint&>("Scale", (FloatPoint & (Control::*)()) & getScale, (void(Control::*)(const FloatPoint&)) & setScale);
+        static auto PROPERTY_TRANSFORMATION = ReadOnlyProperty<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
+        static auto PROPERTY_MINSIZE = Property<Control, const FloatSize&>("MinSize", (FloatSize & (Control::*)()) & getMinSize, (void(Control::*)(const FloatSize&)) & setMinSize);
+        static auto PROPERTY_SIZE = ReadOnlyProperty<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
+        static auto PROPERTY_PREFERREDSIZE = Property<Control, const Ghurund::UI::PreferredSize&>("PreferredSize", (Ghurund::UI::PreferredSize & (Control::*)()) & getPreferredSize, (void(Control::*)(const Ghurund::UI::PreferredSize&)) & setPreferredSize);
+        static auto PROPERTY_MEASUREDSIZE = ReadOnlyProperty<Control, FloatSize&>("MeasuredSize", (FloatSize & (Control::*)()) & getMeasuredSize);
+        static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
+        static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
+        static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
+        static auto PROPERTY_CONTEXT = ReadOnlyProperty<Control, UIContext*>("Context", (UIContext * (Control::*)()) & getContext);
+        static auto PROPERTY_STYLE = Property<Control, const Ghurund::UI::Style*>("Style", (Ghurund::UI::Style * (Control::*)()) & getStyle, (void(Control::*)(const Ghurund::UI::Style*)) & setStyle);
+        static auto PROPERTY_POSITIONINWINDOW = ReadOnlyProperty<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
+        static auto PROPERTY_POSITIONONSCREEN = ReadOnlyProperty<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Control>("Ghurund::UI", "Control")
+            .withProperty(PROPERTY_NAME)
+            .withProperty(PROPERTY_VISIBLE)
+            .withProperty(PROPERTY_ENABLED)
+            .withProperty(PROPERTY_FOCUSABLE)
+            .withProperty(PROPERTY_FOCUS)
+            .withProperty(PROPERTY_FOCUSED)
+            .withProperty(PROPERTY_POSITION)
+            .withProperty(PROPERTY_ROTATION)
+            .withProperty(PROPERTY_SCALE)
+            .withProperty(PROPERTY_TRANSFORMATION)
+            .withProperty(PROPERTY_MINSIZE)
+            .withProperty(PROPERTY_SIZE)
+            .withProperty(PROPERTY_PREFERREDSIZE)
+            .withProperty(PROPERTY_MEASUREDSIZE)
+            .withProperty(PROPERTY_PARENT)
+            .withProperty(PROPERTY_CURSOR)
+            .withProperty(PROPERTY_THEME)
+            .withProperty(PROPERTY_CONTEXT)
+            .withProperty(PROPERTY_STYLE)
+            .withProperty(PROPERTY_POSITIONINWINDOW)
+            .withProperty(PROPERTY_POSITIONONSCREEN)
+            .withModifier(TypeModifier::ABSTRACT)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
 
     Control::~Control() {
         delete name;
@@ -36,8 +90,8 @@ namespace Ghurund::UI {
         measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
     }
 
-    bool Control::onMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) {
-        if (focusable && event.Action == Ghurund::MouseAction::DOWN && !Focused) {
+    bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
+        if (focusable && event.Action == MouseAction::DOWN && !Focused) {
             requestFocus();
             return true;
         }
@@ -247,7 +301,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Control* Control::find(const Ghurund::Type& type) {
+    Control* Control::find(const Ghurund::Core::Type& type) {
         if (Type == type)
             return this;
         return nullptr;
@@ -269,13 +323,13 @@ namespace Ghurund::UI {
         UIContext* context = Context;
         if (!context)
             return pos;
-        Ghurund::Window& window = context->Window;
+        Window& window = context->Window;
         POINT p = { (LONG)pos.x, (LONG)pos.y };
         //ClientToScreen(window.Handle, &p);
         return FloatPoint{ (float)p.x, (float)p.y };
     }
 
-    bool Control::dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) {
+    bool Control::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         bool result = __super::dispatchMouseMotionEvent(event);
         if (!result && cursor) {
             cursor->set();

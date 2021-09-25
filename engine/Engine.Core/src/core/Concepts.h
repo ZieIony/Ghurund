@@ -3,7 +3,7 @@
 #include <type_traits>
 #include <iterator>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template <class T, class U>
     concept Derived = std::is_base_of<U, T>::value;
 

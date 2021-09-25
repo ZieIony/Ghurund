@@ -17,7 +17,7 @@ namespace Ghurund::UI {
     const Cursor Cursor::UPARROW = Cursor(CursorEnum::UPARROW, "UPARROW", IDC_UPARROW);
     const Cursor Cursor::WAIT = Cursor(CursorEnum::WAIT, "WAIT", IDC_WAIT);
 
-    const EnumValues<CursorEnum, Cursor> Cursor::VALUES = {
+    const Ghurund::Core::EnumValues<CursorEnum, Cursor> Cursor::VALUES = {
         &Cursor::APPSTARTING,
         &Cursor::ARROW,
         &Cursor::CROSS,
@@ -33,4 +33,12 @@ namespace Ghurund::UI {
         &Cursor::UPARROW,
         &Cursor::WAIT
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Cursor>() {
+        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Cursor", sizeof(Ghurund::UI::Cursor));
+        return TYPE;
+    }
 }

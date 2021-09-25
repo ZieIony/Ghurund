@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class CollectionWithCapacity:public Collection {
     protected:
         size_t initial;

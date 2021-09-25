@@ -6,9 +6,9 @@
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ColorView::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<ColorView>();
-        static const Ghurund::Type& TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
+    const Ghurund::Core::Type& ColorView::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ColorView>();
+        static const Ghurund::Core::Type& TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

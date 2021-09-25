@@ -20,12 +20,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\Application.cpp" />
+    <ClCompile Include="src\application\Feature.cpp" />
+    <ClCompile Include="src\application\LayerList.cpp" />
     <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
+    <ClCompile Include="src\DirectXTypes.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\game\entity\camera\CameraController.cpp" />
+    <ClCompile Include="src\game\entity\light\Light.cpp" />
     <ClCompile Include="src\game\parameter\Parameter.cpp" />
     <ClCompile Include="src\ghpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -56,6 +60,7 @@
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\graphics\shader\CompilerInclude.cpp" />
     <ClCompile Include="src\graphics\shader\ConstantBuffer.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -66,6 +71,7 @@
     <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
     <ClCompile Include="src\graphics\SwapChain.cpp" />
     <ClCompile Include="src\graphics\texture\Texture.cpp" />
+    <ClCompile Include="src\MathTypes.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
     <ClCompile Include="src\net\Networking.cpp" />
@@ -79,6 +85,7 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\graphics\Graphics2D.cpp" />
+    <ClCompile Include="src\ui\UIFeature.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\application\Application.h" />
@@ -93,12 +100,14 @@
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
+    <ClInclude Include="src\DirectXTypes.h" />
     <ClInclude Include="src\game\entity\camera\CameraComponent.h" />
     <ClInclude Include="src\game\entity\camera\CameraEntity.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\entity\light\LightComponent.h" />
     <ClInclude Include="src\game\entity\light\LightEntity.h" />
     <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\MathTypes.h" />
     <ClInclude Include="src\ui\UIFeature.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ghpch.h" />
@@ -277,7 +286,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine_32</TargetName>
+    <TargetName>Ghurund.Engine_32</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
@@ -286,7 +295,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
-    <TargetName>GhurundEngine_64</TargetName>
+    <TargetName>Ghurund.Engine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <CustomBuildBeforeTargets>
     </CustomBuildBeforeTargets>

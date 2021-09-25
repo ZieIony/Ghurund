@@ -4,11 +4,17 @@
 #include "ui/drawable/ImageDrawable.h"
 #include "ui/image/Bitmap.h"
 
-#include "reflection_6cfe1e10_6ed4_4830_b2be_97752c7b6470.h"
-
 namespace Ghurund::UI {
     class BitmapDrawable:public ImageDrawable {
-        reflection_6cfe1e10_6ed4_4830_b2be_97752c7b6470
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getType() const override {
+            return TYPE;
+        }
 
     private:
         Bitmap* image;

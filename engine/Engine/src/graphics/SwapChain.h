@@ -8,12 +8,15 @@
 #include <d3d12.h>
 #include <dxgi1_4.h>
 
+namespace Ghurund::Core {
+    class SystemWindow;
+}
+
 namespace Ghurund {
     using namespace Microsoft::WRL;
 
     class Graphics;
     class Graphics2D;
-    class SystemWindow;
 
     class SwapChain:public Object {
     private:
@@ -27,7 +30,7 @@ namespace Ghurund {
         DXGI_FORMAT format;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ~SwapChain() {
@@ -50,9 +53,9 @@ namespace Ghurund {
 
         void resize(unsigned int width, unsigned int height);
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

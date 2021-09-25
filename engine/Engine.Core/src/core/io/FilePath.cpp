@@ -6,7 +6,7 @@
 
 #include <Shlwapi.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     DirectoryPath FilePath::getDirectory() const {
         wchar_t* pathCopy = ghnew wchar_t[path.Size];
         memcpy(pathCopy, path.Data, path.Size);

@@ -4,6 +4,7 @@
 #include "core/collection/Map.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
 
     class KeyMap {
     private:

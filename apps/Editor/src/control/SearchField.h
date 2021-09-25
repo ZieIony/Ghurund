@@ -11,7 +11,7 @@ namespace Ghurund::Editor {
     class SearchField:public Widget<SearchFieldLayout> {
     protected:
         static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<SearchField>();
+            static const auto CONSTRUCTOR = Constructor<SearchField>();
             static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(SearchField))
                 .withConstructor(CONSTRUCTOR)
                 .withSupertype(__super::GET_TYPE());

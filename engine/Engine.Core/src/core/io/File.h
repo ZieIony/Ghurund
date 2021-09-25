@@ -5,7 +5,7 @@
 #include "FilePath.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class File {
     private:
         FilePath path;

@@ -4,9 +4,9 @@
 #include "ui/layout/LayoutLoader.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& LinearLayout::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<LinearLayout>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(LinearLayout))
+    const Ghurund::Core::Type& LinearLayout::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<LinearLayout>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<LinearLayout>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(LinearLayout))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

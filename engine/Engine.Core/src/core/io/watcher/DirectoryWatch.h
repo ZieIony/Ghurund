@@ -9,7 +9,7 @@
 #include "core/threading/WorkerThread.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class DirectoryWatch {
     private:
         HANDLE dirHandle;

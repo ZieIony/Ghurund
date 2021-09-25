@@ -19,9 +19,9 @@ namespace Ghurund {
         return Status::NOT_IMPLEMENTED;
     }
 
-    const Ghurund::Type& Texture::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<Texture>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Texture))
+    const Ghurund::Core::Type& Texture::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Texture>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Texture>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Texture))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

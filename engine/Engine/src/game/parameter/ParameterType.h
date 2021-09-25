@@ -3,6 +3,7 @@
 #include "core/Enum.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
 
     enum class ParameterTypeEnum {
         INT, INT2, FLOAT, FLOAT2, FLOAT3, MATRIX, COLOR, TEXTURE

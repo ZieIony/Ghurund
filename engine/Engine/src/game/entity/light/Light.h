@@ -1,20 +1,19 @@
 #pragma once
 
 #include "game/entity/Entity.h"
+#include "game/parameter/Parameter.h"
+#include "game/parameter/ParameterProvider.h"
+#include "core/collection/PointerArray.h"
+#include "core/resource/ResourceFormat.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Light: public Pointer, public ParameterProvider {
     private:
         PointerArray<Parameter*> parameters;
 
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<Light>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Light))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     protected:
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -30,23 +29,20 @@ namespace Ghurund {
         }
 
     public:
-        Light():parameters(PointerArray<Parameter*>(0)) {
-        }
+        Light():parameters(PointerArray<Parameter*>(0)) {}
 
         virtual const PointerArray<Parameter*>& getParameters() const override {
             return parameters;
         }
 
-		inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 
         static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"light", true, true)
-            };
+            static const Array<ResourceFormat> formats = { ResourceFormat(L"light", true, true) };
             return formats;
         }
 

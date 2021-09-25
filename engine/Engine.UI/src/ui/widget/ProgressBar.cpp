@@ -5,14 +5,15 @@
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ProgressBar::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<ProgressBar>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
+    const Ghurund::Core::Type& ProgressBar::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ProgressBar>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ProgressBar>(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
+
     void ProgressBar::onDraw(Canvas& canvas) {
         if (indeterminate) {
             canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor);

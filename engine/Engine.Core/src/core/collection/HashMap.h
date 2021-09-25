@@ -2,7 +2,7 @@
 
 #include "Map.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     template<class Key, class Value>
     class HashMap:public Map<Key, Value> {

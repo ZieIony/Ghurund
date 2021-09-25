@@ -7,6 +7,8 @@
 #include <ws2tcpip.h>
 
 namespace Ghurund::Net {
+    using namespace Ghurund::Core;
+
     class Socket {
     private:
         ::SOCKET id = INVALID_SOCKET;

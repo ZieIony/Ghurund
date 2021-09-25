@@ -17,8 +17,6 @@ namespace tinyxml2 {
 }
 
 namespace Ghurund::UI {
-    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI);
-
     class Control;
     class ControlParent;
     class Theme;
@@ -26,32 +24,39 @@ namespace Ghurund::UI {
     class Canvas;
 }
 
-#include "reflection_5b322b77_aa84_42ae_a6f0_3a0cca258226.h"
-
 namespace Ghurund::UI {
-    class Control: public Pointer, public Ghurund::EventConsumer {
-        reflection_5b322b77_aa84_42ae_a6f0_3a0cca258226
+    using namespace Ghurund::Core;
+
+    class Control: public Pointer, public EventConsumer {
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         ControlParent* parent = nullptr;
         const Cursor* cursor = nullptr;
 
-        FloatSize size = { 0, 0 };  // what was finally mediated
+        Ghurund::Core::FloatSize size = { 0, 0 };  // what was finally mediated
 
         bool visible = true;
         bool enabled = true;
         bool focusable = false;
 
-        AString* name = nullptr;
+        Ghurund::Core::AString* name = nullptr;
 
     protected:
         FloatPoint position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
-        Matrix3x2 transformation;
+        Ghurund::Core::Matrix3x2 transformation;
 
-        FloatSize minSize = { 0,0 };
+        Ghurund::Core::FloatSize minSize = { 0,0 };
         PreferredSize preferredSize;   // what the user wants
-        FloatSize measuredSize;  // what the view wants
+        Ghurund::Core::FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
 
         Theme* localTheme = nullptr;
@@ -80,7 +85,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) {}
 
-        virtual bool onMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) override;
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual ~Control() = 0;
 
@@ -103,15 +108,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getContextChanged)) Event<Control>& ContextChanged;
 
-        inline const AString* getName() const {
+        inline const Ghurund::Core::AString* getName() const {
             return name;
         }
 
-        void setName(const AString* name);
+        void setName(const Ghurund::Core::AString* name);
 
-        void setName(const AString& name);
+        void setName(const Ghurund::Core::AString& name);
 
-        __declspec(property(get = getName, put = setName)) const AString* Name;
+        __declspec(property(get = getName, put = setName)) const Ghurund::Core::AString* Name;
 
         inline bool isVisible() const {
             return visible;
@@ -228,21 +233,21 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getScale, put = setScale)) const FloatPoint& Scale;
 
-        inline const Matrix3x2& getTransformation() const {
+        inline const Ghurund::Core::Matrix3x2& getTransformation() const {
             return transformation;
         }
 
-        __declspec(property(get = getTransformation)) const Matrix3x2& Transformation;
+        __declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
-        inline const FloatSize& getMinSize() const {
+        inline const Ghurund::Core::FloatSize& getMinSize() const {
             return minSize;
         }
 
-        inline FloatSize& getMinSize() {
+        inline Ghurund::Core::FloatSize& getMinSize() {
             return minSize;
         }
 
-        inline void setMinSize(const FloatSize& size) {
+        inline void setMinSize(const Ghurund::Core::FloatSize& size) {
             this->minSize = size;
         }
 
@@ -251,13 +256,13 @@ namespace Ghurund::UI {
             minSize.height = abs(height);
         }
 
-        __declspec(property(get = getMinSize, put = setMinSize)) const FloatSize& MinSize;
+        __declspec(property(get = getMinSize, put = setMinSize)) const Ghurund::Core::FloatSize& MinSize;
 
-        inline const FloatSize& getSize() const {
+        inline const Ghurund::Core::FloatSize& getSize() const {
             return size;
         }
 
-        __declspec(property(get = getSize)) FloatSize& Size;
+        __declspec(property(get = getSize)) Ghurund::Core::FloatSize& Size;
 
         inline Event<Control>& getOnSizeChanged() {
             return onSizeChanged;
@@ -284,13 +289,13 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPreferredSize, put = setPreferredSize)) const Ghurund::UI::PreferredSize& PreferredSize;
 
-        inline const FloatSize& getMeasuredSize() const {
+        inline const Ghurund::Core::FloatSize& getMeasuredSize() const {
             return measuredSize;
         }
 
-        __declspec(property(get = getMeasuredSize)) FloatSize& MeasuredSize;
+        __declspec(property(get = getMeasuredSize)) Ghurund::Core::FloatSize& MeasuredSize;
 
-        inline bool canReceiveEvent(const Ghurund::MouseEventArgs& event) {
+        inline bool canReceiveEvent(const MouseEventArgs& event) {
             return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
         }
 
@@ -367,9 +372,9 @@ namespace Ghurund::UI {
 
         void draw(Canvas& canvas);
 
-        virtual Control* find(const AString& name);
+        virtual Control* find(const Ghurund::Core::AString& name);
 
-        virtual Control* find(const Ghurund::Type& type);
+        virtual Control* find(const Ghurund::Core::Type& type);
 
         virtual FloatPoint getPositionInWindow();
 
@@ -379,7 +384,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPositionOnScreen)) FloatPoint PositionOnScreen;
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
         virtual Status load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml);
 

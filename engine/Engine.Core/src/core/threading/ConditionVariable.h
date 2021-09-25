@@ -4,7 +4,7 @@
 
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ConditionVariable {
     private:
         CONDITION_VARIABLE variable;

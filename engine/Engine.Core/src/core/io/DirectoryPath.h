@@ -2,7 +2,7 @@
 
 #include "FilePath.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     class DirectoryPath:public Path {
     public:

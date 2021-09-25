@@ -17,16 +17,18 @@
 #include <d2d1_3.h>
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class TextFormat;
     class Theme;
     class Shape;
 
-    class LayoutLoader:public Loader {
+    class LayoutLoader:public Ghurund::Core::Loader {
     private:
         ID2D1Factory6& d2dFactory;
-        ResourceManager& resourceManager;
+        Ghurund::Core::ResourceManager& resourceManager;
         Theme* theme = nullptr;
-        Map<AString, const Type*> types;
+        Ghurund::Core::Map<Ghurund::Core::AString, std::function<Control*()>> types;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
@@ -35,13 +37,15 @@ namespace Ghurund::UI {
         static inline const char* THEME_IMAGE = "theme://image/";
         static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
-        LayoutLoader(ID2D1Factory6& d2dFactory, ResourceManager& resourceManager);
+        LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::Core::ResourceManager& resourceManager);
 
         virtual ~LayoutLoader() {}
 
-        void registerClass(const Type& type) {
-            if (type.extends(Control::TYPE))
-                types.set(type.Name, &type);
+        template<class T>
+        void registerClass() {
+            types.set(T::TYPE.Name, []() {
+                return ghnew T();
+            });
         }
 
         inline Theme* getTheme() {
@@ -54,17 +58,29 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
-        inline ResourceManager& getResourceManager() {
+        inline Ghurund::Core::ResourceManager& getResourceManager() {
             return resourceManager;
         }
 
-        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
+        __declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
         ImageDrawable* loadDrawable(const char* str);
 
-        virtual Status load(Ghurund::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override;
+        virtual Status load(
+            Ghurund::Core::ResourceManager& manager,
+            Ghurund::Core::MemoryInputStream& stream,
+            Ghurund::Core::Resource& resource,
+            const Ghurund::Core::ResourceFormat* format = nullptr,
+            Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
+        ) override;
 
-        virtual Status save(Ghurund::ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
+        virtual Status save(
+            Ghurund::Core::ResourceManager& manager,
+            Ghurund::Core::MemoryOutputStream& stream,
+            Ghurund::Core::Resource& resource,
+            const Ghurund::Core::ResourceFormat* format = nullptr,
+            Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
+        ) const override {
             return Status::NOT_IMPLEMENTED;
         }
 
@@ -76,12 +92,12 @@ namespace Ghurund::UI {
 
         uint32_t loadColor(const char* str);
 
-        WString loadText(const char* str);
+        Ghurund::Core::WString loadText(const char* str);
 
         TextFormat* loadTextFormat(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 
-        WString getPath(const AString& path);
+        Ghurund::Core::WString getPath(const Ghurund::Core::AString& path);
     };
 }

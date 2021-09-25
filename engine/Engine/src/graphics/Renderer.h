@@ -8,11 +8,16 @@
 #include "core/Object.h"
 #include "core/resource/ResourceManager.h"
 
-#include "reflection_46d71a27_5bac_4460_86a7_87a3a5b8fa83.h"
-
 namespace Ghurund {
     class Renderer: public Object {
-        reflection_46d71a27_5bac_4460_86a7_87a3a5b8fa83
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
 		//Model* fullScreenQuad = nullptr;

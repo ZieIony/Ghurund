@@ -70,3 +70,8 @@ namespace Ghurund::UI {
         Height height = Height::WRAP;
     };
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::PreferredSize>();
+}

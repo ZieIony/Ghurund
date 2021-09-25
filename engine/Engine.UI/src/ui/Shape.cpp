@@ -22,3 +22,11 @@ namespace Ghurund::UI {
         __super::setBounds(bounds);
     }
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Shape>() {
+        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Shape", sizeof(Ghurund::UI::Shape));
+        return TYPE;
+    }
+}

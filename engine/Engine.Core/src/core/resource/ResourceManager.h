@@ -17,7 +17,7 @@
 #include "core/io/watcher/FileWatcher.h"
 #include "core/threading/WorkerThread.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ResourceManager:public Noncopyable, public Object {
     private:
         FileWatcher watcher;
@@ -40,7 +40,7 @@ namespace Ghurund {
         Status loadInternal(Loader& loader, Resource& resource, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options);
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         inline static const wchar_t* const ENGINE_LIB_NAME = L"Ghurund";
@@ -126,7 +126,7 @@ namespace Ghurund {
 
         template<class Type = Resource> Type* load(const DirectoryPath& workingDir, MemoryInputStream& stream, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
             /*size_t index = stream.readUInt();
-            const Ghurund::Type& type = Ghurund::Type::TYPES[index];
+            const Ghurund::Core::Type& type = Ghurund::Core::Type::TYPES[index];
             Type* resource = makeResource<Type>(context, type);
 
             Status loadResult;
@@ -190,9 +190,9 @@ namespace Ghurund {
 
         __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

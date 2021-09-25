@@ -7,7 +7,7 @@
 #undef min
 #undef max
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     template<typename T>
     class GenericString {
@@ -403,14 +403,14 @@ namespace Ghurund {
         inline GenericString<T> toLowerCase() const {
             GenericString<T> copy(*this);
             for (size_t i = 0; i < Length; i++)
-                copy.v[i] = Ghurund::toLowerCase<T>(copy.v[i]);
+                copy.v[i] = Ghurund::Core::toLowerCase<T>(copy.v[i]);
             return copy;
         }
 
         inline GenericString<T> toUpperCase() const {
             GenericString<T> copy(*this);
             for (size_t i = 0; i < Length; i++)
-                copy.v[i] = Ghurund::toUpperCase<T>(copy.v[i]);
+                copy.v[i] = Ghurund::Core::toUpperCase<T>(copy.v[i]);
             return copy;
         }
 

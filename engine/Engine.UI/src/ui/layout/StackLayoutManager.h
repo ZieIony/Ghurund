@@ -10,7 +10,7 @@ namespace Ghurund::UI {
     public:
         Alignment alignment;
 
-        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
+        virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) override;
 
         virtual void layout(float x, float y, float width, float height) override;
     };

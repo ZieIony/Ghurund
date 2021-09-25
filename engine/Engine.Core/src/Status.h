@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class Status {
         OK, INV_PARAM, INV_STATE, CALL_FAIL, IO, NOT_IMPLEMENTED, ALREADY_LOADED, UNKNOWN,
         

@@ -13,7 +13,7 @@ namespace Ghurund {
         FINISHED    // can be only reset
     };
 
-    class CommandList: public NamedObject, public Pointer {
+    class CommandList: public NamedObject<wchar_t>, public Pointer {
     private:
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
@@ -28,7 +28,7 @@ namespace Ghurund {
         PointerList<Pointer*> pointerRefs;
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
 
@@ -71,9 +71,9 @@ namespace Ghurund {
             commandList->ResourceBarrier(1, &barrier);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 

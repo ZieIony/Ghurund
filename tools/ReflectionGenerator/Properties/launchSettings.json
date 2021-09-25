@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ReflectionGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "input=\"src\" output=\"generated\\reflection\"",
+      "workingDirectory": "C:\\projekty\\Ghurund\\engine\\Engine.UI"
+    }
+  }
+}

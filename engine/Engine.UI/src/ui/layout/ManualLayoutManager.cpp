@@ -2,7 +2,7 @@
 #include "ManualLayoutManager.h"
 
 namespace Ghurund::UI {
-    const FloatSize ManualLayoutManager::measure(float parentWidth, float parentHeight) {
+    const Ghurund::Core::FloatSize ManualLayoutManager::measure(float parentWidth, float parentHeight) {
         __super::measure(parentWidth, parentHeight);
         return { measureMaxWidth(), measureMaxHeight() };
     }

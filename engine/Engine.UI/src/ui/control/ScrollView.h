@@ -9,10 +9,10 @@ namespace Ghurund::UI {
     private:
         FloatPoint scroll = { 0.0f, 0.0f };
         FloatPoint maxScroll = { 0.0f, 0.0f };
-        Event<Control> onScrolled = Event<Control>(*this);
+        Event<Control> onScrolled = { *this };
 
     protected:
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         inline const FloatPoint& getScroll() const {
@@ -64,9 +64,9 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event);
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

@@ -3,6 +3,8 @@
 #include "core/Enum.h"
 
 namespace Ghurund {
+	using namespace Ghurund::Core;
+
 	enum class GameActionEnum {
 		GO_FORWARD, GO_BACKWARDS, STRAFE_LEFT, STRAFE_RIGHT, FLOAT_UP, FLOAT_DOWN, RUN
 	};

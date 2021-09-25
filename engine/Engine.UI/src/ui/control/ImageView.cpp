@@ -6,9 +6,9 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
-    const Ghurund::Type& ImageView::GET_TYPE() {
-        static const auto CONSTRUCTOR = Ghurund::NoArgsConstructor<ImageView>();
-        static const Ghurund::Type TYPE = Ghurund::TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
+    const Ghurund::Core::Type& ImageView::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<ImageView>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

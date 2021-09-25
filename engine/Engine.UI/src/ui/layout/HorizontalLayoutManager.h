@@ -76,7 +76,7 @@ namespace Ghurund::UI {
             }
         }
 
-        virtual const FloatSize measure(float parentWidth, float parentHeight) {
+        virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) {
             if (group->PreferredSize.width == PreferredSize::Width::FILL &&
                 group->PreferredSize.height == PreferredSize::Height::FILL)
                 return { 0,0 };
@@ -85,7 +85,7 @@ namespace Ghurund::UI {
                 return { (float)group->PreferredSize.width, (float)group->PreferredSize.height };
             }
 
-            FloatSize measuredSize = { 0,0 };
+            Ghurund::Core::FloatSize measuredSize = { 0,0 };
             size_t i = indexFirst;
             while (i < provider->getChildCount()) {
                 Control* control = provider->getChild(i);

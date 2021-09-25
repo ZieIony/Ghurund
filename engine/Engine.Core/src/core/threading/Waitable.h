@@ -2,7 +2,7 @@
 
 #include <Windows.h>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Waitable {
     private:
         HANDLE event;

@@ -5,14 +5,26 @@
 
 #include <dwrite_3.h>
 
-#include "reflection_ec6e0676_cd0a_4e7a_9a93_27e9a33a9919.h"
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<IDWriteFontCollection>();
+}
 
 namespace Ghurund::UI {
-    class Font:public Resource {
-        reflection_ec6e0676_cd0a_4e7a_9a93_27e9a33a9919
+    using namespace Ghurund::Core;
+
+    class Font:public Ghurund::Core::Resource {
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
-        WString familyName;
+        Ghurund::Core::WString familyName;
         IDWriteFontCollection* collection = nullptr;
 
     public:
@@ -37,11 +49,11 @@ namespace Ghurund::UI {
             return Status::OK;
         }
 
-        const WString& getFamilyName() const {
+        const Ghurund::Core::WString& getFamilyName() const {
             return familyName;
         }
 
-        __declspec(property(get = getFamilyName)) const WString& FamilyName;
+        __declspec(property(get = getFamilyName)) const Ghurund::Core::WString& FamilyName;
 
         IDWriteFontCollection* getCollection() {
             return collection;
@@ -49,12 +61,12 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getCollection)) IDWriteFontCollection* Collection;
 
-        static const inline ResourceFormat FORMAT_TTF = ResourceFormat(L"ttf", true, false);
-        static const inline ResourceFormat FORMAT_OTF = ResourceFormat(L"otf", true, false);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_TTF = Ghurund::Core::ResourceFormat(L"ttf", true, false);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_OTF = Ghurund::Core::ResourceFormat(L"otf", true, false);
 
-        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_TTF, FORMAT_OTF };
+        inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_TTF, FORMAT_OTF };
 
-        virtual const Array<ResourceFormat>& getFormats() const override {
+        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
             return FORMATS;
         }
     };

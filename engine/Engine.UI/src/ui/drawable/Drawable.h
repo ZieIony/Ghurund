@@ -1,46 +1,34 @@
 #pragma once
 
 #include "ui/control/Control.h"
+#include "core/reflection/TypeBuilder.h"
+#include "core/reflection/StandardTypes.h"
+#include "core/reflection/Property.h"
 
 namespace Ghurund::UI {
     class Drawable:public Pointer {
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-
-            static auto PROPERTY_SIZE = Ghurund::TypedProperty<Drawable, FloatSize&>("FloatSize&", "Size", (FloatSize & (Drawable::*)()) & getSize, (void(Drawable::*)(const FloatSize&)) & setSize);
-            static auto PROPERTY_PREFERREDSIZE = Ghurund::TypedProperty<Drawable, const Ghurund::UI::PreferredSize&>("const PreferredSize&", "PreferredSize", (Ghurund::UI::PreferredSize & (Drawable::*)()) & getPreferredSize);
-            static auto PROPERTY_OWNER = Ghurund::TypedProperty<Drawable, Control*>("Control*", "Owner", (Control * (Drawable::*)()) & getOwner, (void(Drawable::*)(Control*)) & setOwner);
-
-            static const Ghurund::Type TYPE = Ghurund::TypeBuilder("Ghurund::UI", "Drawable")
-                .withProperty(PROPERTY_SIZE)
-                .withProperty(PROPERTY_PREFERREDSIZE)
-                .withProperty(PROPERTY_OWNER)
-                .withModifier(TypeModifier::ABSTRACT)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
-
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
 
     protected:
-        FloatSize size = { 0, 0 };
+        Ghurund::Core::FloatSize size = { 0, 0 };
         PreferredSize preferredSize;
 
         Control* owner = nullptr;
 
     public:
-        inline FloatSize& getSize() {
+        inline Ghurund::Core::FloatSize& getSize() {
             return size;
         }
 
-        inline void setSize(const FloatSize& size) {
+        inline void setSize(const Ghurund::Core::FloatSize& size) {
             this->size = size;
         }
 
@@ -49,7 +37,7 @@ namespace Ghurund::UI {
             size.height = height;
         }
 
-        __declspec(property(get = getSize, put = setSize)) FloatSize& Size;
+        __declspec(property(get = getSize, put = setSize)) Ghurund::Core::FloatSize& Size;
 
         inline const PreferredSize& getPreferredSize() const {
             return preferredSize;

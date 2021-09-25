@@ -6,6 +6,7 @@
 
 namespace Ghurund {
     using namespace Microsoft::WRL;
+    using namespace Ghurund::Core;
 
     class AdapterOutput: public Object {
     private:
@@ -30,7 +31,7 @@ namespace Ghurund {
             delete[] modes;
         }
 
-        static const Ghurund::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         AdapterOutput(ComPtr<IDXGIOutput> output) {
@@ -54,9 +55,9 @@ namespace Ghurund {
             return displayModes;
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

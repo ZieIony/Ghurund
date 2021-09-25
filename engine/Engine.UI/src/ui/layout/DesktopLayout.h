@@ -4,6 +4,7 @@
 
 #include "ui/Alignment.h"
 #include "ui/control/ControlGroup.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI {
     class DesktopLayout:public ControlGroup {
@@ -12,27 +13,20 @@ namespace Ghurund::UI {
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
 
     protected:
-        static const Ghurund::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = NoArgsConstructor<DesktopLayout>();
-            static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(DesktopLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(*this, childrenProvider, parentWidth, parentHeight);
+            measuredSize = layoutManager.measure(parentWidth, parentHeight);
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(*this, childrenProvider, x, y, width, height);
+            layoutManager.layout(x, y, width, height);
         }
 
-        inline static const Ghurund::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
-        virtual const Ghurund::Type& getType() const override {
+        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
     };

@@ -3,6 +3,7 @@
 #include "core/Enum.h"
 
 namespace Ghurund::Net {
+    using namespace Ghurund::Core;
 
     enum class MessageTypeEnum:uint8_t {
         RELIABLE, CONFIRM, UPDATE, REFRESH

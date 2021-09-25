@@ -3,7 +3,7 @@
 #include "EventHandler.h"
 #include "core/collection/List.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template <class...> class Event;
 
     template<class SenderType>

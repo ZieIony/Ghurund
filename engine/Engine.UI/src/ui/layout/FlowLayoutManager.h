@@ -3,6 +3,8 @@
 #include "LayoutManager.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     struct Spacing {
         float horizontal = 0.0f, vertical = 0.0f;
     };

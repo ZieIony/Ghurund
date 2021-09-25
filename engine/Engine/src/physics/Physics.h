@@ -28,13 +28,18 @@ namespace Ghurund {
     class Application;
 }
 
-#include "reflection_a03568f5_3f80_416f_aafa_4cf87e702942.h"
-
 namespace Ghurund::Physics {
     using namespace physx;
 
     class Physics:public Feature {
-        reflection_a03568f5_3f80_416f_aafa_4cf87e702942
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         PxDefaultErrorCallback defaultErrorCallback;

@@ -2,7 +2,7 @@
 
 #include "Common.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Buffer {
     private:
         uint8_t* data;

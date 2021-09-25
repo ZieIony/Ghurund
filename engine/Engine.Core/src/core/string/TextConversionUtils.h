@@ -4,7 +4,7 @@
 
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename FromChar, typename ToChar>
     inline ToChar* convertText(const FromChar* src, unsigned int codePage = CP_ACP) {
         return nullptr;

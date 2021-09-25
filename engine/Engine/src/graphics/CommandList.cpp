@@ -2,9 +2,9 @@
 #include "CommandList.h"
 
 namespace Ghurund {
-    const Ghurund::Type& CommandList::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<CommandList>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(CommandList))
+    const Ghurund::Core::Type& CommandList::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<CommandList>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CommandList>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(CommandList))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

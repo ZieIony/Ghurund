@@ -2,7 +2,7 @@
 
 #include "GenericStringView.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
 #ifdef UNICODE
     typedef GenericStringView<wchar_t> StringView;

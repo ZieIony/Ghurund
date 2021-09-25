@@ -1,7 +1,21 @@
 #include "ghpch.h"
 #include "Physics.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund::Physics {
+
+    const Ghurund::Core::Type& Physics::GET_TYPE() {
+
+        static const auto CONSTRUCTOR = Constructor<Physics>();
+
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>("Ghurund::Physics", "Physics")
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     Status Physics::init() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
         if (!foundation)

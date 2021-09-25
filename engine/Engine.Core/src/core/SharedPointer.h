@@ -4,7 +4,7 @@
 #include "Common.h"
 #include "Concepts.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<typename T>
     class SharedPointer {
     private:

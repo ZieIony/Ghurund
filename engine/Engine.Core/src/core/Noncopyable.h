@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class Noncopyable {
     public:
         Noncopyable() = default;

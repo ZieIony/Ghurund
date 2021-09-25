@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-	<Type Name="Ghurund::AString">
+	<Type Name="Ghurund::Core::AString">
 		<DisplayString>{v,s}</DisplayString>
 	</Type>
-	<Type Name="Ghurund::WString">
+	<Type Name="Ghurund::Core::WString">
 		<DisplayString>{v,su}</DisplayString>
 	</Type>
-	<Type Name="Ghurund::Path">
+	<Type Name="Ghurund::Core::Path">
 		<DisplayString>{path}</DisplayString>
 	</Type>
-	<Type Name="Ghurund::List&lt;*&gt;">
+	<Type Name="Ghurund::Core::List&lt;*&gt;">
 		<DisplayString>{{size={size} capacity={capacity}}}</DisplayString>
 		<Expand>
 			<ArrayItems>
@@ -18,7 +18,7 @@
 			</ArrayItems>
 		</Expand>
 	</Type>
-	<Type Name="Ghurund::Map&lt;*,*&gt;">
+	<Type Name="Ghurund::Core::Map&lt;*,*&gt;">
 		<DisplayString>{{size={size} capacity={capacity}}}</DisplayString>
 		<Expand>
 			<ArrayItems>
@@ -27,7 +27,7 @@
 			</ArrayItems>
 		</Expand>
 	</Type>
-	<Type Name="Ghurund::Property">
+	<Type Name="Ghurund::Core::Property">
 		<DisplayString>{{name={propertyName} type={typeName}}}</DisplayString>
 	</Type>
 </AutoVisualizer>

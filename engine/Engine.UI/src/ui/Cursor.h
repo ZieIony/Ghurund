@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         WAIT    // Wait
     };
 
-    class Cursor :public Enum<CursorEnum, Cursor> {
+    class Cursor :public Ghurund::Core::Enum<CursorEnum, Cursor> {
     private:
         HCURSOR handle;
 
@@ -33,7 +33,7 @@ namespace Ghurund::UI {
             HAND, HELP, IBEAM, NO, SIZEALL, SIZENESW,
             SIZENS, SIZENWSE, SIZEWE, UPARROW, WAIT;
 
-        static const EnumValues<CursorEnum, Cursor> VALUES;
+        static const Ghurund::Core::EnumValues<CursorEnum, Cursor> VALUES;
 
         Cursor(CursorEnum value, const char* name, const tchar* resource):Enum<CursorEnum, Cursor>(value, name) {
             handle = LoadCursor(nullptr, resource);
@@ -49,4 +49,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getHandle)) HCURSOR Handle;
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Cursor>();
 }

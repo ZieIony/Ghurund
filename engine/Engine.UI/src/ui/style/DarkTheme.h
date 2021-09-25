@@ -13,7 +13,7 @@ namespace Ghurund::UI {
         static constexpr uint32_t color_foreground_onBackground = 0xffffffff;
         static constexpr uint32_t color_foreground_onAccent = 0xffffffff;
 
-        DarkTheme(IDWriteFactory5& dwriteFactory, ResourceManager& resourceManager, const Color& accent = 0xff0078D7):BaseTheme(dwriteFactory, resourceManager), color_accent(accent) {
+        DarkTheme(IDWriteFactory5& dwriteFactory, Ghurund::Core::ResourceManager& resourceManager, const Color& accent = 0xff0078D7):BaseTheme(dwriteFactory, resourceManager), color_accent(accent) {
             Colors.set(COLOR_BACKGR0UND, color_background);
             Colors.set(COLOR_ACCENT, color_accent);
             Colors.set(COLOR_FOREGROUND_ONBACKGROUND, color_foreground_onBackground);

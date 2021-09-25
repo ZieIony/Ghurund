@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "File.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     bool File::exists() const {
         DWORD attributes = GetFileAttributesW(path.toString().Data);
 

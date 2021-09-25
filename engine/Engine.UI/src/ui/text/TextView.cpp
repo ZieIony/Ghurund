@@ -396,9 +396,9 @@ namespace Ghurund::UI {
         textLayout.draw(canvas, 0, 0);
     }
 
-    const Ghurund::Type& TextView::GET_TYPE() {
-        static const auto CONSTRUCTOR = NoArgsConstructor<TextView>();
-        static const Ghurund::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(TextView))
+    const Ghurund::Core::Type& TextView::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<TextView>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, GH_STRINGIFY(TextView))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

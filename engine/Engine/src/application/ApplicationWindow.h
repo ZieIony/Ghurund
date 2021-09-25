@@ -5,13 +5,20 @@
 #include "core/input/Input.h"
 #include "graphics/SwapChain.h"
 
-#include "reflection_877c7fb3_5824_4c07_b617_0772d5149da1.h"
-
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Application;
 
-    class ApplicationWindow: public SystemWindow {
-        reflection_877c7fb3_5824_4c07_b617_0772d5149da1
+    class ApplicationWindow: public Ghurund::Core::SystemWindow {
+#pragma region reflection
+    protected:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+    public:
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+#pragma endregion
 
     private:
         SwapChain* swapChain = nullptr;

@@ -7,6 +7,8 @@
 #include "core/SharedPointer.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class Splitter:public ClickableControl {
     private:
         Orientation orientation;

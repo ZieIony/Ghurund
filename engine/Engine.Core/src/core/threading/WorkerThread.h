@@ -8,7 +8,7 @@
 #include "core/collection/List.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class WorkerThread:public Thread {
     private:
         Queue<SharedPointer<Task>> queue;

@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "FileChange.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     const FileChange& FileChange::ADDED = FileChange(FileChangeEnum::ADDED, "added");
     const FileChange& FileChange::REMOVED = FileChange(FileChangeEnum::REMOVED, "removed");

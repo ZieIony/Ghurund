@@ -3,6 +3,8 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class DragHelper {
     private:
         FloatPoint pressControlPos = {};

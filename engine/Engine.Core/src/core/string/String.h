@@ -2,7 +2,7 @@
 
 #include "GenericString.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
 #ifdef UNICODE
     typedef GenericString<wchar_t> String;

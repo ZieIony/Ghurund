@@ -33,11 +33,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRoot, put = setRoot)) Control* Root;
 
-        virtual Control* find(const AString& name) {
+        virtual Control* find(const Ghurund::Core::AString& name) {
             return nullptr;
         }
 
-        virtual Control* find(const Ghurund::Type& type) {
+        virtual Control* find(const Ghurund::Core::Type& type) {
             return nullptr;
         }
 

@@ -18,7 +18,7 @@
 #include "ui/image/ImageLoader.h"
 
 namespace Preview {
-    using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace Ghurund::UI;
 
     class PreviewWindow:public ApplicationWindow {

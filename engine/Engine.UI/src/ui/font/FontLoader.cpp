@@ -23,7 +23,13 @@ namespace Ghurund::UI {
         return Status::OK;
     }
 
-    Status FontLoader::load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format, LoadOption options) {
+    Status FontLoader::load(
+        Ghurund::Core::ResourceManager& manager,
+        MemoryInputStream& stream,
+        Resource& resource,
+        const ResourceFormat* format,
+        LoadOption options
+    ) {
         Font& font = (Font&)resource;
         IDWriteFontCollection* collection = nullptr;
         if (FAILED(factory.CreateCustomFontCollection(fontCollectionLoader, stream.Data, (UINT32)stream.Size, &collection)))

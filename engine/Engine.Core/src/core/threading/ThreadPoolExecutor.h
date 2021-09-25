@@ -10,7 +10,7 @@
 
 #include <format>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class ThreadPoolExecutor {
     private:
         struct TaskExecution {

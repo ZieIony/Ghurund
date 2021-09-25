@@ -53,10 +53,10 @@ namespace Ghurund::UI {
 
         virtual void invalidate();
 
-        virtual bool dispatchKeyEvent(const Ghurund::KeyEventArgs& event) override;
+        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
-        virtual bool dispatchMouseButtonEvent(const Ghurund::MouseButtonEventArgs& event) override;
+        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual bool dispatchMouseMotionEvent(const Ghurund::MouseMotionEventArgs& event) override;
+        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
     };
 }

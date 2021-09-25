@@ -2,7 +2,7 @@
 
 #include <deque>
 
-namespace Ghurund {
+namespace Ghurund::Core {
     template<class Type> class Value {
     public:
         virtual void set(Type value) = 0;

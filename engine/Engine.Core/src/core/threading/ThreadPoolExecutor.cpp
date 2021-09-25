@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "ThreadPoolExecutor.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
 
     void ThreadPoolExecutor::PoolThread::run() {
         while (true) {
@@ -76,7 +76,7 @@ namespace Ghurund {
     ThreadPoolExecutor::ThreadPoolExecutor(uint8_t poolSize) {
         for (uint8_t i = 0; i < poolSize; i++) {
             auto thread = ghnew PoolThread(*this);
-            thread->Name = WString(std::format(L"{}", i).c_str());
+            thread->Name = std::format("{}", i).c_str();
             threads.add(thread);
             waitingThreads.add(thread);
             thread->start();

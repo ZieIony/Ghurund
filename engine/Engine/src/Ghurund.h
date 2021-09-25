@@ -28,7 +28,7 @@
 
 namespace Ghurund {
     template<Derived<Application> Type>
-    static void main(const Ghurund::Settings& settings = Ghurund::Settings(), std::unique_ptr<LogOutput> logOutput = nullptr) {
+    static void main(const Ghurund::Settings& settings = Ghurund::Settings(), std::unique_ptr<Ghurund::Core::LogOutput> logOutput = nullptr) {
 #ifdef _DEBUG
         _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
         _____________________checkMemory();
@@ -57,9 +57,9 @@ namespace Ghurund {
 
     template<Derived<Application> Type>
     static void main(
-        const String& instanceName,
+        const Ghurund::Core::String& instanceName,
         const Ghurund::Settings& settings = Ghurund::Settings(),
-        std::unique_ptr<LogOutput> logOutput = nullptr
+        std::unique_ptr<Ghurund::Core::LogOutput> logOutput = nullptr
     ) {
         HANDLE singleInstanceMutex = CreateMutex(nullptr, true, instanceName.Data);
         bool alreadyRunning = GetLastError() == ERROR_ALREADY_EXISTS;
