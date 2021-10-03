@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Utils;
+using BindingGenerator;
 
 namespace BindingGenerator {
     class Generator {

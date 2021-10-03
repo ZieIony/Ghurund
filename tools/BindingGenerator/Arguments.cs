@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Utils {
+namespace BindingGenerator {
     public class Arguments {
         Dictionary<string, string> arguments = new Dictionary<string, string>();
 
