@@ -41,7 +41,7 @@ namespace Demo {
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Demo.UI/res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
             demoLayout = ghnew DemoLayout();
             demoLayout->Theme = lightTheme;
             demoLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);

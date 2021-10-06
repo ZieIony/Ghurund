@@ -1,9 +1,16 @@
 #pragma once
 
+#include "core/string/FixedString.h"
+
 #include <stdint.h>
 #include <compare>
 
 namespace Ghurund::Core {
+    /**
+     * @brief Provides increasing values of type T for each call
+     * @tparam Owner a type to identify template concretization
+     * @tparam T type of the provided value
+    */
     template<typename Owner, typename T>
     class Sequence {
     private:
@@ -15,6 +22,12 @@ namespace Ghurund::Core {
         }
     };
 
+    /**
+     * @brief Provides increasing values of type T for each new Args combination
+     * @tparam Owner 
+     * @tparam T 
+     * @tparam ...Args 
+    */
     template<typename Owner, typename T, typename... Args>
     class TypeSequence {
     private:
@@ -29,17 +42,6 @@ namespace Ghurund::Core {
         constexpr operator T() const {
             return value();
         }
-    };
-
-    template<size_t N>
-    struct FixedString {
-        char elems[N];
-
-        constexpr FixedString(char const (&s)[N]) {
-            std::copy_n(s, N, elems);
-        }
-
-        constexpr std::strong_ordering operator<=>(FixedString const&) const = default;
     };
 
     template<typename Owner, typename T, FixedString name>

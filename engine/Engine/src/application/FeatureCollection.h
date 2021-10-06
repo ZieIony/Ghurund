@@ -8,6 +8,7 @@
 namespace Ghurund {
     class FeatureCollection {
     private:
+        // TODO: replace with TypeMap
         Map<Type, SharedPointer<Feature>> map;
 
     public:

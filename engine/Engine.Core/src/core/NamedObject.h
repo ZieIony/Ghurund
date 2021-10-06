@@ -26,7 +26,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getName, put = setName)) const GenericString<CharT>& Name;
 
         bool operator==(const NamedObject<CharT>& other) const {
-            return Name == other.Name == 0;
+            return Name == other.Name;
         }
     };
 }

@@ -60,8 +60,9 @@
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\collection\TreeMap.h" />
-    <ClInclude Include="src\core\collection\TypeCollection.h" />
+    <ClInclude Include="src\core\collection\TypeMap.h" />
     <ClInclude Include="src\core\Concepts.h" />
+    <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />

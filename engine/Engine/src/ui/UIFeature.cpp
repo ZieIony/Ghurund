@@ -29,26 +29,26 @@ namespace Ghurund {
         result = fontLoader->init();
         if (result != Status::OK)
             return result;
-        app.ResourceManager.Loaders.add(Font::TYPE, std::unique_ptr<FontLoader>(fontLoader));
+        app.ResourceManager.Loaders.set<Font>(std::unique_ptr<FontLoader>(fontLoader));
         auto imageLoader = ghnew ImageLoader();
         result = imageLoader->init();
         if (result != Status::OK)
             return result;
-        app.ResourceManager.Loaders.add(Image::TYPE, std::unique_ptr<ImageLoader>(imageLoader));
+        app.ResourceManager.Loaders.set<Image>(std::unique_ptr<ImageLoader>(imageLoader));
         auto bitmapLoader = ghnew BitmapLoader(*imageLoader, *graphics2d->DeviceContext);
-        app.ResourceManager.Loaders.add(Bitmap::TYPE, std::unique_ptr<BitmapLoader>(bitmapLoader));
+        app.ResourceManager.Loaders.set<Bitmap>(std::unique_ptr<BitmapLoader>(bitmapLoader));
         auto layoutLoader = ghnew LayoutLoader(*graphics2d->Factory, app.ResourceManager);
-        app.ResourceManager.Loaders.add(Layout::TYPE, std::unique_ptr<LayoutLoader>(layoutLoader));
-        this->layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get(Layout::TYPE);
+        app.ResourceManager.Loaders.set<Layout>(std::unique_ptr<LayoutLoader>(layoutLoader));
+        this->layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
 
         return Status::OK;
     }
     
     void UIFeature::uninit() {
-        app.ResourceManager.Loaders.remove(Layout::TYPE);
-        app.ResourceManager.Loaders.remove(Bitmap::TYPE);
-        app.ResourceManager.Loaders.remove(Image::TYPE);
-        app.ResourceManager.Loaders.remove(Font::TYPE);
+        app.ResourceManager.Loaders.remove<Layout>();
+        app.ResourceManager.Loaders.remove<Bitmap>();
+        app.ResourceManager.Loaders.remove<Image>();
+        app.ResourceManager.Loaders.remove<Font>();
         delete graphics2d;
         graphics2d = nullptr;
     }

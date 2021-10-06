@@ -2,36 +2,39 @@
 
 #include "core/resource/Loader.h"
 #include "core/reflection/Type.h"
-#include "core/collection/Map.h"
+#include "core/collection/TypeMap.h"
 
 #include <memory>
 
 namespace Ghurund::Core {
     class LoaderCollection {
     private:
-        Map<const Ghurund::Core::Type*, Loader*> loaders;
+        TypeMap<LoaderCollection, Loader*> loaders;
 
     public:
         ~LoaderCollection() {
-            for (size_t i = 0; i < loaders.Size; i++)
-                delete loaders.getValue(i);
+            for (auto i = loaders.begin(); i != loaders.end(); i++)
+                delete* i;
+            loaders.clear();
         }
 
-        inline void add(const Ghurund::Core::Type& type, std::unique_ptr<Loader> loader) {
-            remove(type);
-            loaders.set(&type, loader.release());
+        template<typename T>
+        inline void set(std::unique_ptr<Loader> loader) {
+            loaders.set<T>(loader.release());
         }
 
-        inline Loader* get(const Ghurund::Core::Type& type) {
-            return loaders.get(&type);
+        template<typename T>
+        inline Loader* get() {
+            if (loaders.containsKey<T>())
+                return loaders.get<T>();
+            return nullptr;
         }
 
-        inline void remove(const Ghurund::Core::Type& type) {
-            if (loaders.containsKey(&type)) {
-                Loader* loader = loaders.get(&type);
-                loaders.remove(&type);
-                delete loader;
-            }
+        template<typename T>
+        inline void remove() {
+            Loader* loader = loaders.get<T>();
+            loaders.remove<T>();
+            delete loader;
         }
     };
 }

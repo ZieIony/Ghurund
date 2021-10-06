@@ -167,8 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="generated\LayoutBinding.h" />
-    <ClInclude Include="src\ImageLayout.h" />
-    <ClInclude Include="src\LayoutLayout.h" />
     <ClInclude Include="src\PreviewApplication.h" />
     <ClInclude Include="src\PreviewLayout.h" />
     <ClInclude Include="src\PreviewWindow.h" />

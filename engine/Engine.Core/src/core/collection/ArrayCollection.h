@@ -10,27 +10,6 @@ namespace Ghurund::Core {
         Value* v;
         AllocatorType a;
 
-        inline void resize(size_t c) {
-            capacity = c;
-            Value* other = (Value*)a.allocate(sizeof(Value) * capacity);
-            if (c >= size) {
-                for (size_t i = 0; i < size; i++) {
-                    new (other + i) Value(v[i]);
-                    v[i].~Value();
-                }
-            } else {
-                for (size_t i = 0; i < c; i++) {
-                    new (other + i) Value(v[i]);
-                    v[i].~Value();
-                }
-                for (size_t i = c; i < size; i++)
-                    v[i].~Value();
-                size = c;
-            }
-            a.deallocate(v);
-            v = other;
-        }
-
         inline bool operator==(const ArrayCollection<Value, AllocatorType>& other) const {
             if (__super::operator!=(other))
                 return false;
@@ -76,6 +55,27 @@ namespace Ghurund::Core {
             for (size_t i = 0; i < size; i++)
                 v[i].~Value();
             a.deallocate(v);
+        }
+
+        inline void resize(size_t c) {
+            capacity = c;
+            Value* other = (Value*)a.allocate(sizeof(Value) * capacity);
+            if (c >= size) {
+                for (size_t i = 0; i < size; i++) {
+                    new (other + i) Value(v[i]);
+                    v[i].~Value();
+                }
+            } else {
+                for (size_t i = 0; i < c; i++) {
+                    new (other + i) Value(v[i]);
+                    v[i].~Value();
+                }
+                for (size_t i = c; i < size; i++)
+                    v[i].~Value();
+                size = c;
+            }
+            a.deallocate(v);
+            v = other;
         }
 
         inline void clear() {

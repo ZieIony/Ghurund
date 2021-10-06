@@ -13,17 +13,25 @@
 #pragma comment(lib, "D3D11.lib")
 
 #ifdef _DEBUG
+#ifdef _WIN64
+#pragma comment(lib, "tinyxml2d64.lib")
+#else
 #pragma comment(lib, "tinyxml2d.lib")
+#endif
+#else
+#ifdef _WIN64
+#pragma comment(lib, "tinyxml264.lib")
 #else
 #pragma comment(lib, "tinyxml2.lib")
 #endif
+#endif
 
 #ifdef _WIN64
-#pragma comment(lib, "GhurundEngine.UI_64.lib")
-#pragma comment(lib, "GhurundEngine_64.lib")
+#pragma comment(lib, "Ghurund.UI_64.lib")
+#pragma comment(lib, "Ghurund.Engine_64.lib")
 #else
-#pragma comment(lib, "GhurundEngine.UI_32.lib")
-#pragma comment(lib, "GhurundEngine_32.lib")
+#pragma comment(lib, "Ghurund.UI_32.lib")
+#pragma comment(lib, "Ghurund.Engine_32.lib")
 #endif
 
 namespace Ghurund {

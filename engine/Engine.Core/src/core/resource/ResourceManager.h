@@ -62,7 +62,7 @@ namespace Ghurund::Core {
             Type* resource = get<Type>(path);
             Status loadResult;
             if (resource == nullptr) {
-                Loader* loader = loaders.get(Type::TYPE);
+                Loader* loader = loaders.get<Type>();
                 [[likely]]
                 if (loader) {
                     resource = loader->makeResource<Type>();
@@ -95,7 +95,7 @@ namespace Ghurund::Core {
             Type* resource = get<Type>(file.Path);
             Status loadResult;
             if (resource == nullptr) {
-                Loader* loader = loaders.get(Type::TYPE);
+                Loader* loader = loaders.get<Type>();
                 [[likely]]
                 if (loader) {
                     resource = loader->makeResource<Type>();

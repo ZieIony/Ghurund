@@ -36,10 +36,9 @@ namespace Ghurund {
     ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {
         Graphics2D* graphics2d = nullptr;
         UIFeature* uiFeature = app.Features.get<UIFeature>();
-        if (uiFeature) {
+        if (uiFeature)
             graphics2d = &uiFeature->Graphics2D;
-            swapChain = ghnew Ghurund::SwapChain();
-        }
+        swapChain = ghnew Ghurund::SwapChain();
         swapChain->init(app.Graphics, graphics2d, *this);
     }
 

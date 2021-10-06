@@ -18,6 +18,7 @@
 #include "ui/image/ImageLoader.h"
 
 namespace Preview {
+    using namespace Ghurund;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
 
@@ -42,7 +43,7 @@ namespace Preview {
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
-            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
@@ -52,7 +53,7 @@ namespace Preview {
                 return true;
             });
 
-            Layers.add(std::unique_ptr<Layer>(ghnew UILayer(graphics2d, rootView)));
+            Layers.add(std::make_unique<UILayer>(graphics2d, rootView));
 
             DragDropEnabled = true;
             OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>& files) {
@@ -72,7 +73,7 @@ namespace Preview {
         }
 
         void updateTheme(ThemeType type) {
-            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get(Layout::TYPE);
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
             if (type == ThemeType::Dark) {
                 layoutLoader->Theme = darkTheme;
                 previewLayout->Theme = darkTheme;

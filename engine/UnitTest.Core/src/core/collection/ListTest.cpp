@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <core/Timer.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -395,6 +396,23 @@ public:
         Assert::AreEqual(list.Empty, false);
         Assert::IsTrue(list == list2);
         _____________________checkMemory();
+    }
+
+    TEST_METHOD(List_performance) {
+        Timer timer;
+        timer.tick();
+        List<uint32_t> list;
+        for (size_t i = 0; i < 100000; i++)
+            list.add(i);
+        timer.tick();
+        auto timeList = timer.FrameTimeMs;
+        timer.tick();
+        std::vector<uint32_t> vector;
+        for (size_t i = 0; i < 100000; i++)
+            vector.push_back(i);
+        timer.tick();
+        auto timeVector = timer.FrameTimeMs;
+        Assert::IsTrue(timeList < timeVector);
     }
     };
 }

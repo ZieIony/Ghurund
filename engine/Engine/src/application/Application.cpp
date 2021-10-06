@@ -133,3 +133,11 @@ namespace Ghurund {
         }
     }
 }
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Application>() {
+        static Type TYPE = Type(Ghurund::NAMESPACE_NAME, "Application", sizeof(Application));
+        return TYPE;
+    }
+}

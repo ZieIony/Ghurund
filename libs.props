@@ -4,7 +4,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <IncludePath>E:\Ghurund\libs\CRCpp\inc;E:\Ghurund\libs\entt\single_include\entt;E:\Ghurund\libs\tinyxml2;$(SolutionDir)libs\angelscript_2.33.0\sdk\angelscript\include;$(SolutionDir)libs\PhysX\pxshared\include;$(SolutionDir)libs\PhysX\physx\include;$(SolutionDir)libs</IncludePath>
-    <LibraryPath>E:\Ghurund\libs\angelscript_2.33.0\sdk\angelscript\lib;E:\Ghurund\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release;E:\Ghurund\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug;E:\Ghurund\libs\PhysX\physx\bin\win.x86_32.vc141.mt\release;E:\Ghurund\libs\PhysX\physx\bin\win.x86_32.vc141.mt\debug;E:\Ghurund\libs\tinyxml2\vs\Debug;E:\Ghurund\libs\tinyxml2\vs\Release;$(LibraryPath)</LibraryPath>
+    <LibraryPath>E:\Ghurund\libs\angelscript_2.33.0\sdk\angelscript\lib;E:\Ghurund\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release;E:\Ghurund\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug;E:\Ghurund\libs\PhysX\physx\bin\win.x86_32.vc141.mt\release;E:\Ghurund\libs\PhysX\physx\bin\win.x86_32.vc141.mt\debug;E:\Ghurund\libs\tinyxml2\vs\x64\Debug;E:\Ghurund\libs\tinyxml2\vs\Debug;E:\Ghurund\libs\tinyxml2\vs\x64\Release;E:\Ghurund\libs\tinyxml2\vs\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
