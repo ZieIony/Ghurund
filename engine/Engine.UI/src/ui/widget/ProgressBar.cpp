@@ -16,36 +16,25 @@ namespace Ghurund::UI {
 
     void ProgressBar::onDraw(Canvas& canvas) {
         if (indeterminate) {
-            canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor);
-            canvas.fillRect(Size.width * progress, 0, Size.width * cos(progress * 6.28f) / 2 + 0.5f, Size.height, progressColor);
+            canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor->getValue(*this));
+            canvas.fillRect(Size.width * progress, 0, Size.width * cos(progress * 6.28f) / 2 + 0.5f, Size.height, progressColor->getValue(*this));
             progress += 0.01f;
             if (progress > 1.0f)
                 progress--;
             repaint();
         } else {
-            canvas.fillRect(Size.width * progress, 0, Size.width, Size.height, backgroundColor);
-            canvas.fillRect(0, 0, Size.width * progress, Size.height, progressColor);
+            canvas.fillRect(Size.width * progress, 0, Size.width, Size.height, backgroundColor->getValue(*this));
+            canvas.fillRect(0, 0, Size.width * progress, Size.height, progressColor->getValue(*this));
         }
     }
 
-    void ProgressBarStyle::onThemeChanged(Control& control) const {
-        Ghurund::UI::Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-        ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_CONTROL];
-    }
-
-    void ProgressBarStyle::onStateChanged(Control& control) const {
-        Ghurund::UI::Theme* theme = control.Theme;
-        if (!theme)
-            return;
+    void ProgressBarStyle::onStateChanged(ProgressBar& control) const {
         if (control.Enabled) {
-            ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_ACCENT];
-            ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_CONTROL];
+            control.ProgressColor = ColorRef(Theme::COLOR_ACCENT);
+            control.BackgroundColor = ColorRef(Theme::COLOR_CONTROL);
         } else {
-            ((ProgressBar&)control).ProgressColor = theme->Colors[Theme::COLOR_CONTROL];
-            ((ProgressBar&)control).BackgroundColor = theme->Colors[Theme::COLOR_BACKGR0UND];
+            control.ProgressColor = ColorRef(Theme::COLOR_CONTROL);
+            control.BackgroundColor = ColorRef(Theme::COLOR_BACKGR0UND);
         }
     }
 }

@@ -7,6 +7,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 #include <typeinfo>
+#include <format>
 
 namespace Ghurund::Core {
 #ifdef _DEBUG
@@ -51,6 +52,10 @@ namespace Ghurund::Core {
         for (uint16_t i = 1; i < stacktrace.Size - 6; i++)
             this->stacktrace.add(stacktrace[i]);
 #endif
+    }
+
+    String Pointer::toString() const {
+        return String(std::format(_T("{} (refs: {})"), __super::toString(), referenceCount).c_str());
     }
 
 #ifdef _DEBUG

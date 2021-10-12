@@ -16,7 +16,10 @@ namespace Ghurund {
         handle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
         graphics.getDevice()->CreateRenderTargetView(texture, nullptr, handle);
         this->texture = texture;
-
+        this->texture->AddRef();
+        auto textureDesc = texture->GetDesc();
+        this->width = textureDesc.Width;
+        this->height = textureDesc.Height;
 #ifdef _DEBUG
         rtvHeap->SetName(L"rtvHeap");
         texture->SetName(L"renderTarget");
@@ -25,8 +28,10 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    Status RenderTarget::init(Graphics& graphics, unsigned int width, unsigned int height, DXGI_FORMAT format) {
+    Status RenderTarget::init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
         this->format = format;
+        this->width = width;
+        this->height = height;
 
         CD3DX12_HEAP_PROPERTIES heapProperty(D3D12_HEAP_TYPE_DEFAULT);
 
@@ -52,9 +57,9 @@ namespace Ghurund {
 
         resourceDesc.Format = format;
         clearVal.Format = format;
+        ID3D12Resource* texture = nullptr;
         if (FAILED(graphics.Device->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("init RenderTarget with internal texture failed\n"));
-
         return init(graphics, texture);
     }
 
@@ -70,15 +75,19 @@ namespace Ghurund {
         D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
             D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
             D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
-        if (FAILED(graphics2d.DeviceContext->CreateBitmapFromDxgiSurface(surface.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf())))
+        if (FAILED(graphics2d.DeviceContext.CreateBitmapFromDxgiSurface(surface.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf())))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateBitmapFromDxgiSurface failed\n"));
 
         return Status::OK;
     }
 
     void RenderTarget::uninit() {
-        wrappedRenderTarget.Reset();
+        width = 0;
+        height = 0;
+        format = DXGI_FORMAT_UNKNOWN;
         d2dRenderTarget.Reset();
+        wrappedRenderTarget.Reset();
+
         if (rtvHeap) {
             rtvHeap->Release();
             rtvHeap = nullptr;
@@ -249,5 +258,16 @@ namespace Ghurund {
         stagingTexture->Unmap(0, &writeRange);
 
         return Status::OK;
+    }
+}
+
+namespace Ghurund::Core {
+    template<>
+    String toString(const RenderTarget& renderTarget) {
+        return String(std::format(
+            _T("RenderTarget: {{{{\n    WrappedTarget (refs: {})\n    Target2D (refs: {})\n}}}}\n"),
+            getRefCount(*renderTarget.WrappedTarget),
+            getRefCount(*renderTarget.Target2D)
+        ).c_str());
     }
 }

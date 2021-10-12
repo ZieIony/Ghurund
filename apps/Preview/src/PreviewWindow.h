@@ -39,7 +39,8 @@ namespace Preview {
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
             darkTheme = ghnew DarkTheme(*graphics2d.DWriteFactory, app.ResourceManager);
             context = ghnew UIContext(*graphics2d.DWriteFactory, *this, app.ResourceManager);
-            uiFeature->Theme = lightTheme;
+            LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
+            layoutLoader->Theme = lightTheme;
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 
@@ -103,7 +104,7 @@ namespace Preview {
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file);
+            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file, nullptr, nullptr, LoadOption::DONT_CACHE);
             previewLayout->Container->Children.clear();
             for (Control* control : layout->Controls)
                 previewLayout->Container->Children.add(control);

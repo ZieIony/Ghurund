@@ -32,7 +32,14 @@ namespace Ghurund {
         ApplicationWindow(const WindowClass& type, Application& app);
 
         ~ApplicationWindow() {
+            uninit();
+        }
+
+        Status init();
+
+        inline void uninit() {
             delete swapChain;
+            swapChain = nullptr;
         }
 
         inline SwapChain& getSwapChain() {

@@ -11,6 +11,22 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged(Control& control) const {}
     };
+
+    template<class T>
+    class TypedStyle:public Style {
+    public:
+        virtual void onThemeChanged(Control& control) const override {
+            onThemeChanged((T&)control);
+        }
+
+        virtual void onStateChanged(Control& control) const override {
+            onStateChanged((T&)control);
+        }
+
+        virtual void onThemeChanged(T& control) const {}
+
+        virtual void onStateChanged(T& control) const {}
+    };
 }
 
 namespace Ghurund::Core {

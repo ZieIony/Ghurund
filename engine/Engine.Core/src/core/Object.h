@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/string/String.h"
+
 namespace Ghurund::Core {
     class Type;
 
@@ -17,5 +19,11 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getType)) const Type &Type;
+
+        virtual Object* clone() const {
+            return nullptr;
+        }
+
+        virtual String toString() const;
     };
 }

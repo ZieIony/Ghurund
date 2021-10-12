@@ -33,13 +33,15 @@ namespace Ghurund {
         return true;
     }
 
-    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {
+    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {}
+
+    Status ApplicationWindow::init() {
         Graphics2D* graphics2d = nullptr;
         UIFeature* uiFeature = app.Features.get<UIFeature>();
         if (uiFeature)
             graphics2d = &uiFeature->Graphics2D;
         swapChain = ghnew Ghurund::SwapChain();
-        swapChain->init(app.Graphics, graphics2d, *this);
+        return swapChain->init(app.Graphics, graphics2d, *this);
     }
 
     bool ApplicationWindow::onKeyEvent(const KeyEventArgs& args) {
@@ -70,14 +72,14 @@ namespace Ghurund {
     }
 
     Status ApplicationWindow::paint() {
-        if (Size.width == 0 && Size.height == 0)
+        if (Size.width == 0 || Size.height == 0)
             return Status::OK;
         Frame& frame = swapChain->CurrentFrame;
         CommandList& commandList = app.Renderer.startFrame(frame);
         //levelManager.draw(commandList);
         frame.flush();
 
-        Status result = layers.draw(swapChain->CurrentFrame.RenderTarget);
+        Status result = layers.draw(frame.RenderTarget);
         if (result != Status::OK)
             return result;
 

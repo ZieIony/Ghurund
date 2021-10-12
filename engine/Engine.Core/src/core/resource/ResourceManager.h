@@ -21,7 +21,7 @@ namespace Ghurund::Core {
     class ResourceManager:public Noncopyable, public Object {
     private:
         FileWatcher watcher;
-        PointerMap<WString, Resource*> resources;
+        Map<WString, SharedPointer<Resource>> resources;
         LibraryList libraries;
         CriticalSection section;
         LoaderCollection loaders;

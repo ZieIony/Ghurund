@@ -8,11 +8,12 @@ namespace Ghurund::Editor {
             Features.add<UIFeature>(ghnew UIFeature(*this));
         }
 
-        void onInit() {
+        virtual Status onInit() override {
             auto window = ghnew EditorWindow(*this);
             window->Size = Settings.windowSize;
             Windows.add(window);
             window->activate();
+            return Status::OK;
         }
     };
 }

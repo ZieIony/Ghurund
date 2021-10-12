@@ -24,7 +24,9 @@ namespace Ghurund::UI {
         ComPtr<ID2D1Effect> floodEffect;
 
     public:
-        Status init(ID2D1DeviceContext5* deviceContext);
+        Status init(ID2D1DeviceContext5& deviceContext);
+
+        void uninit();
 
         inline bool isAntialiasingEnabled() {
             return deviceContext->GetAntialiasMode() == D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;

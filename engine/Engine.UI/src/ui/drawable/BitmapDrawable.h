@@ -26,7 +26,7 @@ namespace Ghurund::UI {
 
         virtual void onDraw(Canvas& canvas) override;
 
-        virtual BitmapDrawable* clone() override {
+        virtual BitmapDrawable* clone() const override {
             return ghnew BitmapDrawable(image);
         }
     };

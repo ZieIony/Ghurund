@@ -1,31 +1,37 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Color.h"
+#include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
     class ColorView:public Control {
     private:
-        Color color;
+        ColorAttr* color = nullptr;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        ColorView(const Color& color = 0x1f000000):color(color) {
+        ColorView(const ColorAttr& color = ColorRef(Theme::COLOR_CONTROL)) {
+            Color = color;
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
         }
 
-        inline const Color& getColor() {
-            return color;
+        ~ColorView() {
+            delete color;
         }
 
-        inline void setColor(const Color& color) {
-            this->color = color;
+        inline const ColorAttr& getColor() const {
+            return *color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) const Color& Color;
+        inline void setColor(const ColorAttr& color) {
+            delete this->color;
+            this->color = (ColorAttr*)color.clone();
+        }
+
+        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
         virtual void onDraw(Canvas& canvas);
 
@@ -38,18 +44,18 @@ namespace Ghurund::UI {
         }
     };
 
-    class ColorViewBackgroundStyle:public Style {
+    class ColorViewBackgroundStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(Control& control) const;
+        virtual void onThemeChanged(ColorView& control) const;
     };
 
-    class ColorViewControlStyle:public Style {
+    class ColorViewControlStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(Control& control) const;
+        virtual void onThemeChanged(ColorView& control) const;
     };
 
-    class ColorViewAccentStyle:public Style {
+    class ColorViewAccentStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(Control& control) const;
+        virtual void onThemeChanged(ColorView& control) const;
     };
 }

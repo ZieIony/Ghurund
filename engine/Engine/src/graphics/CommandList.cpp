@@ -12,10 +12,17 @@ namespace Ghurund {
     }
 
     CommandList::~CommandList() {
-        if (state == CommandListState::RECORDING)
+        if (state == CommandListState::RECORDING) {
+            commandList->OMSetRenderTargets(0, 0, true, 0);
             finish();
+        }
         if (state == CommandListState::CLOSED)
             wait();
+
+        // https://github.com/Microsoft/DirectX-Graphics-Samples/issues/261
+        fence.signal(commandQueue);
+        fence.wait(commandQueue);
+
         if (pipelineState != nullptr)
             pipelineState->Release();
         if (rootSignature != nullptr)

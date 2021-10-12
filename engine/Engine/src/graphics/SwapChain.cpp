@@ -40,11 +40,11 @@ namespace Ghurund {
         if (FAILED(swapChain1.As(&swapChain)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain1.As() failed\n"));
 
-        return initBuffers();
+        return Status::OK;
     }
 
     Status SwapChain::initBuffers() {
-        if (window->Size.width == 0 || window->Size.height == 0)
+        if (frames || window->Size.width == 0 || window->Size.height == 0)
             return Status::INV_STATE;
 
         D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.width, (float)window->Size.height,0,1 };
@@ -54,7 +54,6 @@ namespace Ghurund {
         for (unsigned int i = 0; i < frameCount; i++) {
             ID3D12Resource* renderTargetBuffer;
             swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargetBuffer));
-
             RenderTarget* renderTarget = ghnew RenderTarget();
             renderTarget->init(*graphics, renderTargetBuffer);
             if (graphics2d)
@@ -64,6 +63,7 @@ namespace Ghurund {
             depthBuffer->init(*graphics, window->Size.width, window->Size.height);
 
             frames[i].init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
+            renderTargetBuffer->Release();
         }
 
         return Status::OK;
@@ -73,15 +73,9 @@ namespace Ghurund {
         if (frames == nullptr)
             return;
 
-        Ghurund::CommandList& commandList = CurrentFrame.CommandList;
-        if (commandList.State == CommandListState::RECORDING) {
-            commandList.get()->OMSetRenderTargets(0, 0, true, 0);
-            commandList.finish();
-        }
-        if (commandList.State == CommandListState::CLOSED)
-            commandList.wait();
         delete[] frames;
         frames = nullptr;
+        currentFrame = 0;
     }
 
     Status SwapChain::present() {
@@ -98,11 +92,17 @@ namespace Ghurund {
         return Status::OK;
     }
 
-    void SwapChain::resize(unsigned int width, unsigned int height) {
+    Status SwapChain::resize(unsigned int width, unsigned int height) {
         uninitBuffers();
-        if (width > 0 && height > 0)
-            swapChain->ResizeBuffers(frameCount, width, height, format, 0);
-        initBuffers();
+        graphics2d->flush();
+        if (width > 0 && height > 0) {
+            HRESULT hr = swapChain->ResizeBuffers(frameCount, width, height, format, 0);
+            if (FAILED(hr))
+                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->ResizeBuffers() failed\n"));
+            initBuffers();
+        }
+
+        return Status::OK;
     }
 
 }

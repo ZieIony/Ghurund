@@ -2,23 +2,33 @@
 #include "Canvas.h"
 
 namespace Ghurund::UI {
-    Status Canvas::init(ID2D1DeviceContext5* deviceContext) {
+    Status Canvas::init(ID2D1DeviceContext5& deviceContext) {
         using namespace Ghurund::Core;
-        this->deviceContext = deviceContext;
+        this->deviceContext = &deviceContext;
 
-        deviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
-        if (FAILED(deviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &fillBrush)))
+        deviceContext.SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
+        if (FAILED(deviceContext.CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &fillBrush)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateSolidColorBrush failed\n"));
 
-        if(FAILED(deviceContext->CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect)))
+        if(FAILED(deviceContext.CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateEffect failed\n"));
 
-        deviceContext->CreateEffect(CLSID_D2D1Shadow, &shadowEffect);
+        deviceContext.CreateEffect(CLSID_D2D1Shadow, &shadowEffect);
 
-        deviceContext->CreateEffect(CLSID_D2D1Flood, &floodEffect);
+        deviceContext.CreateEffect(CLSID_D2D1Flood, &floodEffect);
         floodEffect->SetValue(D2D1_FLOOD_PROP_COLOR, D2D1::Vector4F(1.0f, 1.0f, 1.0f, 1.0f));
 
         return Status::OK;
+    }
+
+    void Canvas::uninit() {
+        fillBrush.Reset();
+        strokeBrush.Reset();
+        matrixStack.clear();
+        deviceContext = nullptr;
+        tintEffect.Reset();
+        shadowEffect.Reset();
+        floodEffect.Reset();
     }
 
     void Canvas::endPaint() {

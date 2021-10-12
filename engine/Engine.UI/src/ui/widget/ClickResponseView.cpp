@@ -8,13 +8,13 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ClickResponseView::GET_TYPE() {
         static auto CONSTRUCTOR = Constructor<ClickResponseView>();
-        static auto CONSTRUCTOR_COLOR = Constructor<ClickResponseView, const Ghurund::UI::Color&>();
-        static auto PROPERTY_COLOR = Property<ClickResponseView, const Ghurund::UI::Color&>("Color", &getColor, &setColor);
+        //static auto CONSTRUCTOR_COLOR = Constructor<ClickResponseView, const Ghurund::UI::Color&>();
+        //static auto PROPERTY_COLOR = Property<ClickResponseView, const Ghurund::UI::Color&>("Color", &getColor, &setColor);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<ClickResponseView>(Ghurund::UI::NAMESPACE_NAME, "ClickResponseView")
-            .withProperty(PROPERTY_COLOR)
+            //.withProperty(PROPERTY_COLOR)
             .withConstructor(CONSTRUCTOR)
-            .withConstructor(CONSTRUCTOR_COLOR)
+            //.withConstructor(CONSTRUCTOR_COLOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -26,11 +26,13 @@ namespace Ghurund::UI {
         uint32_t dt = (uint32_t)(time - startTime);
         float percent = 1 - std::min(dt, length) / (float)length;
         finishedAnimating = percent == 0;
-        color.A = percent;
+        alpha = percent;
     }
 
     void ClickResponseView::onDraw(Canvas& canvas) {
-        canvas.fillRect(0, 0, Size.width, Size.height, color);
+        Ghurund::UI::Color c = color->getValue(*this);
+        c.A = alpha;
+        canvas.fillRect(0, 0, Size.width, Size.height, c);
         if (!finishedAnimating)
             repaint();
     }
@@ -41,21 +43,15 @@ namespace Ghurund::UI {
             return result;
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr)
-            Color = loader.loadColor(colorAttr->Value());
+            Color = *loader.loadColor(colorAttr->Value());
         return Status::OK;
     }
     
     void ClickResponseViewOnBackgroundStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ClickResponseView&)control).Color = theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
+        ((ClickResponseView&)control).Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONBACKGROUND);
     }
     
     void ClickResponseViewOnAccentStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ClickResponseView&)control).Color = theme->Colors[Theme::COLOR_HIGHLIGHT_ONACCENT];
+        ((ClickResponseView&)control).Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONACCENT);
     }
 }

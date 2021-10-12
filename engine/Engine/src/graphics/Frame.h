@@ -16,10 +16,10 @@ namespace Ghurund {
     class Frame {
     private:
         CommandList* commandList;
-        D3D12_VIEWPORT viewport;
-        D3D12_RECT scissorRect;
-        RenderTarget* renderTarget;
-        DepthBuffer* depthBuffer;
+        D3D12_VIEWPORT viewport = {};
+        D3D12_RECT scissorRect = {};
+        RenderTarget* renderTarget = nullptr;
+        DepthBuffer* depthBuffer = nullptr;
 
     public:
         Frame() {

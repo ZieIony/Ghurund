@@ -37,7 +37,8 @@ namespace Demo {
 
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
             context = ghnew UIContext(*graphics2d.DWriteFactory, *this, app.ResourceManager);
-            uiFeature->Theme = lightTheme;
+            LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
+            layoutLoader->Theme = lightTheme;
 
             rootView = ghnew Ghurund::UI::RootView(*context);
 

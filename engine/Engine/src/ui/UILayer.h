@@ -54,11 +54,17 @@ namespace Ghurund::UI {
         }
 
         virtual Status draw(RenderTarget& renderTarget) override {
-            graphics.beginPaint(renderTarget);
-            canvas->beginPaint();
-            rootView->draw(*canvas);
-            canvas->endPaint();
-            return graphics.endPaint();
+            if (graphics.beginPaint(renderTarget) == Status::OK) {
+                canvas->beginPaint();
+                rootView->draw(*canvas);
+                canvas->endPaint();
+            }
+            Status result = graphics.endPaint(renderTarget);
+            if (result != Status::OK) {
+                canvas->uninit();
+                canvas->init(graphics.DeviceContext);
+            }
+            return result;
         }
     };
 }

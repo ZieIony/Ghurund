@@ -16,7 +16,8 @@ namespace Ghurund::UI {
     }
 
     void Border::onDraw(Canvas& canvas) {
-        if (!Color || Thickness < 0.1f)
+        uint32_t color = Color.getValue(*this);
+        if (!color || Thickness < 0.1f)
             return;
         if (shape) {
             canvas.drawShape(*shape, color, thickness);
@@ -34,32 +35,26 @@ namespace Ghurund::UI {
             Shape = loader.loadShape(shapeAttr->Value());
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr)
-            Color = loader.loadColor(colorAttr->Value());
+            Color = *loader.loadColor(colorAttr->Value());
         auto thicknessAttr = xml.FindAttribute("thickness");
         if (thicknessAttr)
             Thickness = thicknessAttr->FloatValue();
         return Status::OK;
     }
     
-    void BorderOnBackgroundStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
+    void BorderOnBackgroundStyle::onStateChanged(Border& control) const {
         if (control.Enabled) {
-            ((Border&)control).Color = theme->Colors[Theme::COLOR_SECONDARY_ONBACKGROUND];
+            control.Color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND);
         } else {
-            ((Border&)control).Color = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+            control.Color = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
         }
     }
     
-    void BorderAccentStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
+    void BorderAccentStyle::onStateChanged(Border& control) const {
         if (control.Enabled) {
-            ((Border&)control).Color = theme->Colors[Theme::COLOR_ACCENT];
+            control.Color = ColorRef(Theme::COLOR_ACCENT);
         } else {
-            ((Border&)control).Color = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+            control.Color = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
         }
     }
 }

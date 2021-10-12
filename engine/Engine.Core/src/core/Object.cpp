@@ -1,7 +1,10 @@
 #include "ghcpch.h"
 #include "Object.h"
 
+#include "core/logging/Formatter.h"
 #include "core/reflection/TypeBuilder.h"
+
+#include <format>
 
 namespace Ghurund::Core {
     const Ghurund::Core::Type& Object::GET_TYPE() {
@@ -9,5 +12,9 @@ namespace Ghurund::Core {
             .withModifiers(TypeModifier::ABSTRACT);
 
         return TYPE;
+    }
+    
+    String Object::toString() const {
+        return String(std::format(_T("{}::{}"), Type.Namespace, _T("::"), Type.Name).c_str());
     }
 }

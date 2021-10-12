@@ -32,9 +32,9 @@ namespace Preview {
                 return true;
             });
 
-            auto colorClickHandler = [this](Control& control, const MouseClickedEventArgs& args) {
-                ColorView* colorView = (ColorView*)control.find(ColorView::TYPE);
-                Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color);
+            auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
+                ColorView* colorView = button.find<ColorView>();
+                Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color.getValue(*colorView));
                 Theme->updateColors();
                 dispatchThemeChanged();
                 return true;

@@ -2,15 +2,16 @@
 
 #include "TextFormat.h"
 #include "TextLayout.h"
-#include "ui/Color.h"
 #include "ui/control/Control.h"
 #include "ui/style/Style.h"
+#include "ui/style/ColorAttr.h"
 
 struct IDWriteTextLayout;
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     protected:
+        ColorAttr* color = nullptr;
         TextLayout textLayout;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
@@ -20,9 +21,21 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        TextBlock():textLayout(L"text", 0xdd000000, nullptr) {}
+        TextBlock():textLayout(L"text", 0xdd000000, nullptr) {
+            TextColor = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND);
+        }
 
-        TextBlock(const Ghurund::Core::WString& text, uint32_t color = 0xde000000, TextFormat* textFormat = nullptr):textLayout(text, color, textFormat) {}
+        TextBlock(
+            const Ghurund::Core::WString& text,
+            const ColorAttr& color = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND),
+            TextFormat* textFormat = nullptr
+        ):textLayout(text, 0xdd000000, textFormat) {
+            TextColor = color;
+        }
+
+        ~TextBlock() {
+            delete color;
+        }
 
         const Ghurund::Core::WString& getText() {
             return textLayout.Text;
@@ -34,15 +47,16 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
 
-        inline const Color& getTextColor() const {
-            return textLayout.Color;
+        inline const ColorAttr& getTextColor() const {
+            return *color;
         }
 
-        inline void setTextColor(const Color& color) {
-            textLayout.Color = color;
+        inline void setTextColor(const ColorAttr& color) {
+            delete this->color;
+            this->color = (ColorAttr*)color.clone();
         }
 
-        __declspec(property(get = getTextColor, put = setTextColor)) const Color& TextColor;
+        __declspec(property(get = getTextColor, put = setTextColor)) const ColorAttr& TextColor;
 
         inline TextFormat* getTextFormat() {
             return textLayout.Format;

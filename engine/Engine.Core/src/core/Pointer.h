@@ -58,9 +58,7 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
 
-        virtual Pointer* clone() {
-            return nullptr;
-        }
+        virtual String toString() const override;
 
 #ifdef _DEBUG
         static void dumpPointers();

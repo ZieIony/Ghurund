@@ -1,13 +1,13 @@
 #pragma once
 
 #include "Control.h"
-#include "ui/Color.h"
 #include "ui/Shape.h"
+#include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
     class Border: public Control {
     private:
-        Color color;
+        ColorAttr* color = nullptr;
         float thickness = 1.0f;
         Ghurund::UI::Shape* shape = nullptr;
 
@@ -15,24 +15,27 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        Border(const Color& color = 0x1f000000):color(color) {
+        Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) {
+            Color = color;
             preferredSize.width = PreferredSize::Width::FILL;
             preferredSize.height = PreferredSize::Height::FILL;
         }
 
         ~Border() {
             delete shape;
+            delete color;
         }
 
-        inline const Color& getColor() const {
-            return color;
+        inline const ColorAttr& getColor() const {
+            return *color;
         }
 
-        inline void setColor(const Color& color) {
-            this->color = color;
+        inline void setColor(const ColorAttr& color) {
+            delete this->color;
+            this->color = (ColorAttr*)color.clone();
         }
 
-        __declspec(property(get = getColor, put = setColor)) const Color& Color;
+        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
         inline Shape* getShape() {
             return shape;
@@ -72,13 +75,13 @@ namespace Ghurund::UI {
         }
     };
 
-    class BorderOnBackgroundStyle:public Style {
+    class BorderOnBackgroundStyle:public TypedStyle<Border> {
     public:
-        void onStateChanged(Control& control) const;
+        void onStateChanged(Border& control) const;
     };
 
-    class BorderAccentStyle:public Style {
+    class BorderAccentStyle:public TypedStyle<Border> {
     public:
-        void onStateChanged(Control& control) const;
+        void onStateChanged(Border& control) const;
     };
 }

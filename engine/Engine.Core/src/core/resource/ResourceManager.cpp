@@ -7,7 +7,7 @@
 
 namespace Ghurund::Core {
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options) {
-        File* file;
+        std::unique_ptr<File> file;
         WString pathString = WString(path.toString());
         size_t protocolLength = lengthOf(LIB_PROTOCOL);
         if (pathString.startsWith(LIB_PROTOCOL)) {
@@ -17,22 +17,18 @@ namespace Ghurund::Core {
                 return Status::INV_PATH;
             WString libName = pathString.substring(protocolLength, separatorIndex - protocolLength);
             WString fileName = pathString.substring(separatorIndex + 1);
-            file = libraries.get(libName)->getFile(fileName);
+            file.reset(libraries.get(libName)->getFile(fileName));
         } else {
-            file = ghnew File(path);
-            if (!file->Exists) {
-                delete file;
+            file.reset(ghnew File(path));
+            if (!file->Exists)
                 return Status::FILE_DOESNT_EXIST;
-            }
         }
 
         Status result = file->read();
         if (result != Status::OK)
             return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
 
-        result = loadInternal(loader, resource, *file, format, options);
-        delete file;
-        return result;
+        return loadInternal(loader, resource, *file, format, options);
     }
 
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const File& file, const ResourceFormat* format, LoadOption options) {
@@ -153,6 +149,7 @@ namespace Ghurund::Core {
 
     void ResourceManager::add(Resource& resource) {
         section.enter();
+        resource.addReference();
         resources.set(*resource.Path, &resource);
         section.leave();
     }

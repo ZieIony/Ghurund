@@ -89,6 +89,8 @@ namespace Ghurund::UI {
         canvas.clipRect(0, 0, Size.width, Size.height);
         canvas.save();
         canvas.translate(dst.left, dst.top);
+        if (Tint)
+            image->Tint = Tint->getValue(*this);
         image->draw(canvas);
         canvas.restore();
         canvas.restoreClipRect();
@@ -108,15 +110,12 @@ namespace Ghurund::UI {
         if (this->image) {
             auto imageTintAttr = xml.FindAttribute("imageTint");
             if (imageTintAttr)
-                Image->Tint = loader.loadColor(imageTintAttr->Value());
+                Tint = std::unique_ptr<ColorAttr>(loader.loadColor(imageTintAttr->Value()));
         }
         return Status::OK;
     }
 
     void ImageViewStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
         ImageView& imageView = ((ImageView&)control);
         if (!imageView.Image)
             return;
@@ -128,44 +127,29 @@ namespace Ghurund::UI {
     }
 
     void ImageViewOnBackgroundStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
         ImageView& imageView = ((ImageView&)control);
-        if (!imageView.Image)
-            return;
         if (control.Enabled) {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND));
         } else {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
         }
     }
 
     void ImageViewOnAccentStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
         ImageView& imageView = ((ImageView&)control);
-        if (!imageView.Image)
-            return;
         if (control.Enabled) {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_PRIMARY_ONACCENT];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONACCENT));
         } else {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONACCENT];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONACCENT));
         }
     }
 
     void ImageViewAccentStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
         ImageView& imageView = ((ImageView&)control);
-        if (!imageView.Image)
-            return;
         if (control.Enabled) {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_ACCENT];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
         } else {
-            imageView.Image->Tint = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+            imageView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Ghurund {
         commandList->wait();
         commandList->reset();
 
-        commandList->get()->OMSetRenderTargets(1, &renderTarget->getHandle(), FALSE, &depthBuffer->getHandle());
+        commandList->get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
         renderTarget->start(*commandList);
 
         commandList->get()->RSSetViewports(1, &viewport);

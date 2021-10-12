@@ -152,11 +152,11 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    uint32_t LayoutLoader::loadColor(const char* str) {
+    ColorAttr* LayoutLoader::loadColor(const char* str) {
         AString s = str;
         s.replace('\\', '/');
-        uint32_t value = 0;
         if (s.startsWith("#")) {
+            uint32_t value = 0;
             s = s.toLowerCase();
             for (size_t i = 1; i < s.Length; i++) {
                 if (s[i] >= '0' && s[i] <= '9') {
@@ -167,12 +167,11 @@ namespace Ghurund::UI {
                     return 0;
                 }
             }
+            return ghnew ColorValue(value);
         } else if (s.startsWith(THEME_COLOR) && theme) {
-            ColorKey colorKey = s.substring(lengthOf(THEME_COLOR));
-            if (theme->Colors.containsKey(colorKey))
-                return theme->Colors[colorKey];
+            return ghnew ColorRef(ColorKey(s.substring(lengthOf(THEME_COLOR))));
         }
-        return value;
+        return nullptr;
     }
 
     WString LayoutLoader::loadText(const char* str) {

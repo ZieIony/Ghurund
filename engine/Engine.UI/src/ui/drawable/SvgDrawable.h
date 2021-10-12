@@ -30,7 +30,7 @@ namespace Ghurund::UI {
             canvas.drawImage(*image->Data);
         }
 
-        virtual SvgDrawable* clone() override {
+        virtual SvgDrawable* clone() const override {
             return ghnew SvgDrawable(image);
         }
     };

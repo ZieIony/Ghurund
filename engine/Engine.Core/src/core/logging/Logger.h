@@ -8,6 +8,7 @@
 #include "core/Noncopyable.h"
 #include "core/StackTrace.h"
 #include "core/threading/CriticalSection.h"
+#include "core/Object.h"
 
 #include <format>
 
@@ -68,4 +69,12 @@ namespace Ghurund::Core {
         }
     };
 
+    template<typename T>
+    String toString(const T& obj) {
+        const Type& type = getType<T>();
+        return String(std::format(_T("{}::{}"), type.Namespace, _T("::"), type.Name).c_str());
+    }
+
+    template<>
+    String toString(const Object& obj);
 }

@@ -20,13 +20,13 @@ namespace Ghurund {
 
     class SwapChain:public Object {
     private:
-        Graphics* graphics;
+        Graphics* graphics = nullptr;
         Ghurund::Graphics2D* graphics2d;
         ComPtr<IDXGISwapChain3> swapChain;
-        Frame* frames;
+        Frame* frames = nullptr;
         uint32_t frameCount;
         size_t currentFrame = 0;
-        SystemWindow* window;
+        SystemWindow* window = nullptr;
         DXGI_FORMAT format;
 
     protected:
@@ -51,7 +51,7 @@ namespace Ghurund {
 
         Status present();
 
-        void resize(unsigned int width, unsigned int height);
+        Status resize(unsigned int width, unsigned int height);
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

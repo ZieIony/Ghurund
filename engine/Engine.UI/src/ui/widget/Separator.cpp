@@ -17,13 +17,10 @@ namespace Ghurund::UI {
     }
 
     void SeparatorStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
         if (control.Enabled) {
-            ((Separator&)control).Color = theme->Colors[Theme::COLOR_CONTROL];
+            ((Separator&)control).Color = ColorRef(Theme::COLOR_CONTROL);
         } else {
-            ((Separator&)control).Color = theme->Colors[Theme::COLOR_BACKGR0UND];
+            ((Separator&)control).Color = ColorRef(Theme::COLOR_BACKGR0UND);
         }
     }
 

@@ -20,8 +20,10 @@ namespace Ghurund {
             commandList.get()->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
         }
 
-        D3D12_CPU_DESCRIPTOR_HANDLE &getHandle() {
+        inline D3D12_CPU_DESCRIPTOR_HANDLE &getHandle() {
             return handle;
         }
+
+        __declspec(property(get = getHandle)) D3D12_CPU_DESCRIPTOR_HANDLE& Handle;
     };
 }

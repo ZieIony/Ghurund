@@ -139,6 +139,7 @@
     <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
     <ClInclude Include="src\ui\font\FontLoader.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
+    <ClInclude Include="src\ui\style\ColorAttr.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextBlockStyle.h" />
     <ClInclude Include="src\ui\Cursor.h" />

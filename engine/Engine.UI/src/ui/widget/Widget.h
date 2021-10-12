@@ -119,6 +119,8 @@ namespace Ghurund::UI {
             return nullptr;
         }
 
+        using Control::find;
+
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             Status result = Control::load(loader, xml);
             if (result != Status::OK)
@@ -154,7 +156,7 @@ namespace Ghurund::UI {
     template<class DataType, BindingLayout<DataType> LayoutType>
     class BindingWidget:public Widget<LayoutType> {
     private:
-        DataType* data;
+        DataType* data = nullptr;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE() {

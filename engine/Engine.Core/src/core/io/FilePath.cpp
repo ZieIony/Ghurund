@@ -8,8 +8,7 @@
 
 namespace Ghurund::Core {
     DirectoryPath FilePath::getDirectory() const {
-        wchar_t* pathCopy = ghnew wchar_t[path.Size];
-        memcpy(pathCopy, path.Data, path.Size);
+        wchar_t* pathCopy = copyStr(path.Data);
         PathCchRemoveFileSpec(pathCopy, path.Size);
         DirectoryPath dir = WString(pathCopy);
         delete[] pathCopy;

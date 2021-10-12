@@ -221,7 +221,7 @@ namespace Ghurund::UI {
         }
     }
 
-    Theme* Control::getTheme() {
+    Theme* Control::getTheme() const {
         if (localTheme)
             return localTheme;
         if (parent)

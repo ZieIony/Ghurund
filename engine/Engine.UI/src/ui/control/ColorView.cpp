@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     }
 
     void ColorView::onDraw(Canvas& canvas) {
-        canvas.fillRect(0, 0, Size.width, Size.height, color);
+        canvas.fillRect(0, 0, Size.width, Size.height, color->getValue(*this));
     }
 
     Status ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
@@ -24,29 +24,23 @@ namespace Ghurund::UI {
         if (result != Status::OK)
             return result;
         auto colorAttr = xml.FindAttribute("color");
-        if (colorAttr)
-            Color = loader.loadColor(colorAttr->Value());
+        if (colorAttr) {
+            auto color = loader.loadColor(colorAttr->Value());
+            Color = *color;
+            delete color;
+        }
         return Status::OK;
     }
 
-    void ColorViewBackgroundStyle::onThemeChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ColorView&)control).Color = theme->Colors[Theme::COLOR_BACKGR0UND];
+    void ColorViewBackgroundStyle::onThemeChanged(ColorView& control) const {
+        control.Color = ColorRef(Theme::COLOR_BACKGR0UND);
     }
 
-    void ColorViewControlStyle::onThemeChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ColorView&)control).Color = theme->Colors[Theme::COLOR_CONTROL];
+    void ColorViewControlStyle::onThemeChanged(ColorView& control) const {
+        control.Color = ColorRef(Theme::COLOR_CONTROL);
     }
 
-    void ColorViewAccentStyle::onThemeChanged(Control& control) const {
-        Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        ((ColorView&)control).Color = theme->Colors[Theme::COLOR_ACCENT];
+    void ColorViewAccentStyle::onThemeChanged(ColorView& control) const {
+        control.Color = ColorRef(Theme::COLOR_ACCENT);
     }
 }

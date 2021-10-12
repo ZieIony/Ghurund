@@ -17,7 +17,8 @@ namespace Messenger {
             Features.add<UIFeature>(uiFeature);
             Graphics2D& graphics2d = uiFeature->Graphics2D;
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, ResourceManager);
-            uiFeature->Theme = lightTheme;
+            LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Layout>();
+            layoutLoader->Theme = lightTheme;
 
             Features.add<Networking>(ghnew Networking());
         }
@@ -26,12 +27,13 @@ namespace Messenger {
             delete lightTheme;
         }
 
-        void onInit() {
+        virtual Status onInit() override {
             auto window = ghnew MessengerWindow(*this);
             window->Size = Settings.windowSize;
             Windows.add(window);
             window->Visible = true;
             window->activate();
+            return Status::OK;
         }
     };
 }

@@ -20,6 +20,7 @@ namespace Ghurund::Core {
         }
 
         void run() {
+            running = true;
             while (running)
                 ::SleepEx(INFINITE, true);
         }

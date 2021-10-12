@@ -45,6 +45,7 @@ namespace Ghurund::UI {
     }
 
     void TextBlock::onDraw(Canvas& canvas) {
+        textLayout.Color = color->getValue(*this);
         textLayout.draw(canvas, 0, 0);
     }
 
@@ -63,8 +64,6 @@ namespace Ghurund::UI {
             return;
         if (!TextFormat)
             TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
-        if (!TextColor)
-            TextColor = Theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
         if (Size.width > 0 && Size.height > 0)
             textLayout.Size = { Size.width, Size.height };
     }
@@ -78,7 +77,7 @@ namespace Ghurund::UI {
             Text = loader.loadText(textAttr->Value());
         auto textColorAttr = xml.FindAttribute("textColor");
         if (textColorAttr)
-            TextColor = loader.loadColor(textColorAttr->Value());
+            TextColor = *loader.loadColor(textColorAttr->Value());
         auto textFormatAttr = xml.FindAttribute("textFormat");
         if (textFormatAttr) {
             Ghurund::UI::TextFormat* format = loader.loadTextFormat(textFormatAttr->Value());

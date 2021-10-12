@@ -10,7 +10,7 @@ namespace Ghurund {
     protected:
         const AString constantName;
         const ParameterType& type;
-        bool empty;
+        bool empty = true;
 
         static const Ghurund::Core::Type& GET_TYPE();
 

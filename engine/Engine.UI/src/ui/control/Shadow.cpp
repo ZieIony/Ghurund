@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    Shadow::Shadow(unsigned int color) {
+    Shadow::Shadow(const ColorAttr& color) {
         preferredSize.width = PreferredSize::Width::FILL;
         preferredSize.height = PreferredSize::Height::FILL;
         Color = color;
@@ -22,6 +22,7 @@ namespace Ghurund::UI {
 
     Shadow::~Shadow() {
         delete shape;
+        delete color;
     }
 
     void Shadow::onLayout(float x, float y, float width, float height) {
@@ -64,7 +65,7 @@ namespace Ghurund::UI {
             Shape = loader.loadShape(shapeAttr->Value());
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr)
-            Color = loader.loadColor(colorAttr->Value());
+            Color = *loader.loadColor(colorAttr->Value());
         auto radiusAttr = xml.FindAttribute("radius");
         if (radiusAttr)
             Radius = radiusAttr->FloatValue();

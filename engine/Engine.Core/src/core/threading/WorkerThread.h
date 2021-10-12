@@ -24,7 +24,7 @@ namespace Ghurund::Core {
         }
 
         virtual void finish() override {
-            running.test_and_set();
+            running.clear();
             waitable.notify();
             __super::finish();
         }

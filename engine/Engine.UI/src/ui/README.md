@@ -29,14 +29,11 @@ The following code shows a state handler for TextBlock:
 ```C++
 struct TextBlockButtonStyle: public Style {
 	virtual void onStateChanged(Control& control) const override {
-		Ghurund::UI::Theme* theme = control.Theme;
-		if (!theme)
-			return;
 		TextBlock& textBlock = (TextBlock&)control;
 		if (control.Enabled) {
-			textBlock.TextColor = theme->Colors[Theme::COLOR_PRIMARY_ONBACKGROUND];
+			textBlock.TextColor = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND);
 		} else {
-			textBlock.TextColor = theme->Colors[Theme::COLOR_DISABLED_ONBACKGROUND];
+			textBlock.TextColor = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
 		}
 	}
 };

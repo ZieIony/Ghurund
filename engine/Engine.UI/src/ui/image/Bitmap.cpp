@@ -61,8 +61,10 @@ namespace Ghurund::UI {
     }
 
     Status Bitmap::init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format) {
-        if (image)
+        if (image) {
             image->release();
+            image = nullptr;
+        }
 
         D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
             D2D1_BITMAP_OPTIONS_TARGET,

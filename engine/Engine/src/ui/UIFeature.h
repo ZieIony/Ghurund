@@ -24,8 +24,6 @@ namespace Ghurund {
     private:
         Application& app;
         Ghurund::Graphics2D* graphics2d = nullptr;
-        Theme* theme = nullptr;
-        LayoutLoader* layoutLoader = nullptr;
 
     public:
         UIFeature(Application& app):app(app) {}
@@ -39,16 +37,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getGraphics2D)) Ghurund::Graphics2D& Graphics2D;
-
-        inline Theme* getTheme() {
-            return layoutLoader ? layoutLoader->Theme : nullptr;
-        }
-
-        inline void setTheme(Theme* theme) {
-            if (layoutLoader)
-                layoutLoader->Theme = theme;
-        }
-
-        __declspec(property(get = getTheme, put = setTheme)) Ghurund::UI::Theme* Theme;
     };
 }

@@ -41,7 +41,9 @@ namespace Ghurund {
         void uninit();
 
     protected:
-        virtual void onInit() {};
+        virtual Status onInit() {
+            return Status::OK;
+        };
 
         virtual void onUninit() {};
 

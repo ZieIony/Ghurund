@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ui/Color.h"
-#include "ui/style/Style.h"
 #include "ui/control/Control.h"
+#include "ui/style/ColorAttr.h"
+#include "ui/style/Style.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -11,15 +11,24 @@ namespace Ghurund::UI {
     private:
         float progress = 0.0f;
         bool indeterminate = false;
-        Color progressColor = 0xffff0000, backgroundColor = 0xff00ff00;
+        ColorAttr* progressColor = nullptr;
+        ColorAttr* backgroundColor = nullptr;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        ProgressBar() {
+        ProgressBar(
+            const ColorAttr& progressColor = ColorRef(Theme::COLOR_ACCENT),
+            const ColorAttr& backgroundColor = ColorRef(Theme::COLOR_CONTROL))
+        {
             PreferredSize.width = PreferredSize::Width::FILL;
             PreferredSize.height = 4;
+        }
+
+        ~ProgressBar() {
+            delete progressColor;
+            delete backgroundColor;
         }
 
         inline float getProgress() const {
@@ -43,25 +52,27 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isIndeterminate, put = setIndeterminate)) bool Indeterminate;
 
-        inline const Color& getBackgroundColor() const {
-            return backgroundColor;
+        inline const ColorAttr& getBackgroundColor() const {
+            return *backgroundColor;
         }
 
-        inline void setBackgroundColor(const Color& color) {
-            backgroundColor = color;
+        inline void setBackgroundColor(const ColorAttr& color) {
+            delete backgroundColor;
+            backgroundColor = (ColorAttr*)color.clone();
         }
 
-        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) const Color& BackgroundColor;
+        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) const ColorAttr& BackgroundColor;
 
-        inline const Color& getProgressColor() const {
-            return progressColor;
+        inline const ColorAttr& getProgressColor() const {
+            return *progressColor;
         }
 
-        inline void setProgressColor(const Color& color) {
-            progressColor = color;
+        inline void setProgressColor(const ColorAttr& color) {
+            delete progressColor;
+            progressColor = (ColorAttr*)color.clone();
         }
 
-        __declspec(property(get = getProgressColor, put = setProgressColor)) const Color& ProgressColor;
+        __declspec(property(get = getProgressColor, put = setProgressColor)) const ColorAttr& ProgressColor;
 
         virtual void onDraw(Canvas& canvas) override;
 
@@ -72,12 +83,8 @@ namespace Ghurund::UI {
         }
     };
 
-    class Theme;
-
-    class ProgressBarStyle:public Ghurund::UI::Style {
+    class ProgressBarStyle:public TypedStyle<ProgressBar> {
     public:
-        virtual void onThemeChanged(Control& control) const override;
-
-        virtual void onStateChanged(Control& control) const override;
+        virtual void onStateChanged(ProgressBar& control) const override;
     };
 }

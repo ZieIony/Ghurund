@@ -3,6 +3,7 @@
 #include "Control.h"
 #include "ui/Alignment.h"
 #include "ui/drawable/ImageDrawable.h"
+#include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
     enum class ImageScaleMode {
@@ -12,6 +13,7 @@ namespace Ghurund::UI {
     class ImageView: public Control {
     private:
         ImageDrawable* image = nullptr;
+        ColorAttr* tint = nullptr;
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
@@ -31,6 +33,7 @@ namespace Ghurund::UI {
         ~ImageView() {
             if (image)
                 image->release();
+            delete this->tint;
         }
 
         inline void setImage(ImageDrawable* image) {
@@ -42,6 +45,21 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getImage, put = setImage)) ImageDrawable* Image;
+
+        inline void setTint(std::unique_ptr<ColorAttr> color) {
+            delete this->tint;
+            if (color) {
+                this->tint = color.release();
+            } else {
+                this->tint = nullptr;
+            }
+        }
+
+        inline const ColorAttr* getTint() const {
+            return tint;
+        }
+
+        __declspec(property(get = getTint, put = setTint)) const ColorAttr* Tint;
 
         inline void setScaleMode(ImageScaleMode mode) {
             this->scaleMode = mode;
@@ -78,21 +96,21 @@ namespace Ghurund::UI {
 
     class ImageViewStyle:public Style {
     public:
-        void onStateChanged(Control& control) const;
+        virtual void onStateChanged(Control& control) const override;
     };
 
     class ImageViewOnBackgroundStyle:public Style {
     public:
-        void onStateChanged(Control& control) const;
+        virtual void onStateChanged(Control& control) const override;
     };
 
     class ImageViewOnAccentStyle:public Style {
     public:
-        void onStateChanged(Control& control) const;
+        virtual void onStateChanged(Control& control) const override;
     };
 
     class ImageViewAccentStyle:public Style {
     public:
-        void onStateChanged(Control& control) const;
+        virtual void onStateChanged(Control& control) const override;
     };
 }

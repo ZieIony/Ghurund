@@ -96,4 +96,10 @@ namespace Ghurund {
 
         __declspec(property(get = getResourceFactory)) GPUResourceFactory& ResourceFactory;
     };
+
+    template<typename T>
+    ULONG getRefCount(T& object) {
+        object.AddRef();
+        return object.Release();
+    }
 }

@@ -12,6 +12,7 @@
 #include "ui/Alignment.h"
 #include "ui/control/Control.h"
 #include "ui/drawable/ImageDrawable.h"
+#include "ui/style/ColorAttr.h"
 
 #include <tinyxml2.h>
 #include <d2d1_3.h>
@@ -90,7 +91,7 @@ namespace Ghurund::UI {
 
         Shape* loadShape(const char* str);
 
-        uint32_t loadColor(const char* str);
+        ColorAttr* loadColor(const char* str);
 
         Ghurund::Core::WString loadText(const char* str);
 

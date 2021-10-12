@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/Color.h"
+#include "ui/style/ColorAttr.h"
 #include "ui/control/ClickableControl.h"
 
 namespace Ghurund::UI {
@@ -17,27 +17,34 @@ namespace Ghurund::UI {
 #pragma endregion
 
     private:
+        inline static const auto DEFAULT_COLOR = ColorValue(0x1f000000);
+
         uint64_t startTime = 0;
         uint32_t length = 150;
         bool finishedAnimating = true;
-        Color color;
+        ColorAttr* color = nullptr;
+        float alpha = 1.0f;
 
     public:
-        ClickResponseView(const Color& color = 0x3fffffff):color(color) {
+        ClickResponseView(const ColorAttr& color = DEFAULT_COLOR) {
+            Color = color;
             PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
-#pragma region property Color
-        inline const Color& getColor() const {
-            return color;
+        ~ClickResponseView() {
+            delete color;
         }
 
-        inline void setColor(const Color& color) {
-            this->color = color;
+        inline const ColorAttr& getColor() const {
+            return *color;
         }
-#pragma endregion
 
-        __declspec(property(get = getColor, put = setColor)) const Ghurund::UI::Color& Color;
+        inline void setColor(const ColorAttr& color) {
+            delete this->color;
+            this->color = (ColorAttr*)color.clone();
+        }
+
+        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
         virtual void onUpdate(const uint64_t time) override;
 

@@ -324,7 +324,7 @@ namespace Ghurund::UI {
 
         void setTheme(Theme* theme);
 
-        Theme* getTheme();
+        Theme* getTheme() const;
 
         __declspec(property(get = getTheme, put = setTheme)) Ghurund::UI::Theme* Theme;
 
@@ -373,6 +373,11 @@ namespace Ghurund::UI {
         void draw(Canvas& canvas);
 
         virtual Control* find(const Ghurund::Core::AString& name);
+
+        template<class T>
+        inline T* find() {
+            return (T*)find(T::TYPE);
+        }
 
         virtual Control* find(const Ghurund::Core::Type& type);
 

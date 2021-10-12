@@ -171,6 +171,10 @@ namespace Ghurund::Core {
     
     void Resource::setPath(const FilePath* path) {
         delete this->path;
-        this->path = ghnew FilePath(*path);
+        if (path) {
+            this->path = ghnew FilePath(*path);
+        } else {
+            this->path = nullptr;
+        }
     }
 }

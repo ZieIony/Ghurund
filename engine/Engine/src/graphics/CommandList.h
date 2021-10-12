@@ -5,6 +5,8 @@
 #include "core/NamedObject.h"
 #include "core/collection/PointerList.h"
 
+#include <format>
+
 namespace Ghurund {
     enum class CommandListState {
         INVALID,
@@ -84,6 +86,10 @@ namespace Ghurund {
 
         void addPointerRef(Pointer* resource) {
             pointerRefs.add(resource);
+        }
+
+        virtual String toString() const override {
+            return String(std::format(_T("{}: {\n}\n"), __super::toString()).c_str());
         }
     };
 }

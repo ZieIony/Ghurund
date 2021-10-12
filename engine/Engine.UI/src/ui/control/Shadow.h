@@ -2,11 +2,12 @@
 
 #include "Control.h"
 #include "ui/Shape.h"
+#include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
     class Shadow: public Control {
     private:
-        unsigned int color;
+        ColorAttr* color = nullptr;
         Ghurund::UI::Shape* shape = nullptr;
         float radius = 2.0f;
 
@@ -14,19 +15,20 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        Shadow(unsigned int color = 0xaf000000);
+        Shadow(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND));
 
         ~Shadow();
 
-        inline uint32_t getColor() const {
-            return color;
+        inline const ColorAttr& getColor() const {
+            return *color;
         }
 
-        inline void setColor(uint32_t color) {
-            this->color = color;
+        inline void setColor(const ColorAttr& color) {
+            delete this->color;
+            this->color = (ColorAttr*)color.clone();
         }
 
-        __declspec(property(get = getColor, put = setColor)) uint32_t Color;
+        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
         inline Shape* getShape() {
             return shape;
@@ -62,14 +64,10 @@ namespace Ghurund::UI {
         }
     };
 
-    class ShadowButtonStyle:public Style {
+    class ShadowButtonStyle:public TypedStyle<Shadow> {
     public:
-        virtual void onStateChanged(Control& control) const override {
-            if (control.Enabled) {
-                ((Shadow&)control).Radius = 2;
-            } else {
-                ((Shadow&)control).Radius = 0;
-            }
+        virtual void onStateChanged(Shadow& control) const override {
+            control.Radius = control.Enabled ? 2.0f : 0.0f;
         }
     };
 }

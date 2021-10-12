@@ -56,6 +56,7 @@ namespace Ghurund {
 
     void Application::uninit() {
         windows.clear();
+        resourceManager->clear();
 
         for (Feature* f : features)
             f->uninit();
@@ -85,7 +86,11 @@ namespace Ghurund {
             return;
         }
 
-        onInit();
+        if (onInit() != Status::OK) {
+            onUninit();
+            uninit();
+            return;
+        }
         running = true;
 
         timer->tick();

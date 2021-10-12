@@ -29,7 +29,6 @@ namespace Ghurund {
         ComPtr<ID2D1Factory6> m_d2dFactory;
         ComPtr<ID2D1Device5> m_d2dDevice;
         UIState state = UIState::IDLE;
-        RenderTarget* currentTarget = nullptr;
 
     public:
         ~Graphics2D() {
@@ -42,11 +41,11 @@ namespace Ghurund {
 
         __declspec(property(get = getDevice)) ID2D1Device5* Device;
 
-        inline ID2D1DeviceContext5* getDeviceContext() {
-            return deviceContext.Get();
+        inline ID2D1DeviceContext5& getDeviceContext() {
+            return *deviceContext.Get();
         };
 
-        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5* DeviceContext;
+        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5& DeviceContext;
 
         inline ID3D11On12Device* getDevice11() {
             return m_d3d11On12Device.Get();
@@ -78,7 +77,11 @@ namespace Ghurund {
 
         Status beginPaint(RenderTarget& target);
 
-        Status endPaint();
+        Status endPaint(RenderTarget& target);
+
+        void flush() {
+            m_d3d11DeviceContext->Flush();
+        }
     };
 }
 

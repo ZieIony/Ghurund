@@ -25,7 +25,7 @@ namespace Ghurund::Core {
         WString dir = path.Directory;
 
         if (!watches.containsKey(dir)) {
-            DirectoryWatch* watch = ghnew DirectoryWatch(path.Directory);
+            DirectoryWatch* watch = ghnew DirectoryWatch(dir);
             watches.set(dir, watch);
 
             watch->addFile(path, fileChangedHandler);

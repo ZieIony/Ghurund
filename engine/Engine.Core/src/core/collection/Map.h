@@ -79,6 +79,14 @@ namespace Ghurund::Core {
             v = v1;
         }
 
+        inline void clear() {
+            for (size_t i = 0; i < size; i++) {
+                k[i].~Key();
+                v[i].~Value();
+            }
+            __super::clear();
+        }
+
         inline void set(const Key& key, const Value& value) {
             for (size_t i = 0; i < size; i++) {
                 if (k[i] == key) {

@@ -23,6 +23,7 @@ namespace Ghurund {
     }
 
     Status Fence::signal(ID3D12CommandQueue * commandQueue) {
+        fenceValue++;
         if(FAILED(commandQueue->Signal(fence.Get(), fenceValue))) {
             Logger::log(LogType::ERR0R, _T("commandQueue->Signal() failed\n"));
             return Status::CALL_FAIL;
@@ -39,8 +40,6 @@ namespace Ghurund {
             }
             WaitForSingleObject(fenceEvent, INFINITE);
         }
-
-        fenceValue++;
 
         return Status::OK;
     }

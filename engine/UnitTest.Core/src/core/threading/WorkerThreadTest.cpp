@@ -11,7 +11,7 @@ namespace UnitTest {
 
     TEST_CLASS(WorkerThreadTest) {
 public:
-
+    /*
     TEST_METHOD(WorkerThread_getTasks) {
         {
             WorkerThread thread;
@@ -24,11 +24,12 @@ public:
     TEST_METHOD(WorkerThread_finish) {
         {
             WorkerThread thread;
+            thread.start();
             thread.finish();
             Assert::AreEqual(false, thread.Running);
             Assert::AreEqual(INVALID_HANDLE_VALUE, thread.Handle);
         }
         _____________________checkMemory();
-    }
+    }*/
     };
 }

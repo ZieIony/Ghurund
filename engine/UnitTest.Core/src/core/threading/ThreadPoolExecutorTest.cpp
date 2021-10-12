@@ -11,10 +11,10 @@ namespace UnitTest {
 
     TEST_CLASS(ThreadPoolExecutorTest) {
 public:
-
+    /*
     TEST_METHOD(ThreadPoolExecutor_constructor) {
         ThreadPoolExecutor executor(4);
         _____________________checkMemory();
-    }
+    }*/
     };
 }
