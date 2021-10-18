@@ -26,4 +26,11 @@ namespace Ghurund::Core {
 
         virtual String toString() const;
     };
+
+    template<class T>
+    inline T* clone(T* obj) {
+        if (obj)
+            return (T*)obj->clone();
+        return nullptr;
+    }
 }

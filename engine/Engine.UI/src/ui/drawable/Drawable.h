@@ -24,6 +24,8 @@ namespace Ghurund::UI {
         Control* owner = nullptr;
 
     public:
+        ~Drawable() = 0 {}
+
         inline Ghurund::Core::FloatSize& getSize() {
             return size;
         }

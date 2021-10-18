@@ -4,6 +4,7 @@
 #include "ui/Canvas.h"
 #include "ui/layout/LayoutLoader.h"
 #include "ui/style/Theme.h"
+#include "ui/drawable/InvalidImageDrawable.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ImageView::GET_TYPE() {
@@ -102,10 +103,10 @@ namespace Ghurund::UI {
             return result;
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            auto image = loader.loadDrawable(imageAttr->Value());
+            SharedPointer<ImageDrawable> image = loader.loadDrawable(imageAttr->Value());
+            if (!image)
+                image = ghnew InvalidImageDrawable();
             Image = image;
-            if (image)
-                image->release();
         }
         if (this->image) {
             auto imageTintAttr = xml.FindAttribute("imageTint");

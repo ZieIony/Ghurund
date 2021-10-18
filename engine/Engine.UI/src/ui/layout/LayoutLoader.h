@@ -98,7 +98,5 @@ namespace Ghurund::UI {
         TextFormat* loadTextFormat(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
-
-        Ghurund::Core::WString getPath(const Ghurund::Core::AString& path);
     };
 }

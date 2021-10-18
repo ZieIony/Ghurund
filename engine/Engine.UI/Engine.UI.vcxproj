@@ -34,12 +34,14 @@
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ControlParent.cpp" />
     <ClCompile Include="src\ui\control\ImageView.cpp" />
+    <ClCompile Include="src\ui\control\InvalidControl.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
     <ClCompile Include="src\ui\control\SelectableView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\control\Space.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
+    <ClCompile Include="src\ui\drawable\InvalidImageDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\font\Font.cpp" />
     <ClCompile Include="src\ui\image\Bitmap.cpp" />
@@ -121,12 +123,14 @@
     <ClInclude Include="src\ui\control\ControlList.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
+    <ClInclude Include="src\ui\control\InvalidControl.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\control\PaddingContainer.h" />
     <ClInclude Include="src\ui\control\ScrollView.h" />
     <ClInclude Include="src\ui\control\SelectableView.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\control\Space.h" />
+    <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
     <ClInclude Include="src\ui\image\Bitmap.h" />
     <ClInclude Include="src\ui\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\image\BitmapLoader.h" />
@@ -139,6 +143,7 @@
     <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
     <ClInclude Include="src\ui\font\FontLoader.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
+    <ClInclude Include="src\ui\StrokeStyle.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextBlockStyle.h" />

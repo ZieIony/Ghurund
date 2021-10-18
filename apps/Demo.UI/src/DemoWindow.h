@@ -36,7 +36,7 @@ namespace Demo {
             Graphics2D& graphics2d = uiFeature->Graphics2D;
 
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
-            context = ghnew UIContext(*graphics2d.DWriteFactory, *this, app.ResourceManager);
+            context = ghnew UIContext(*graphics2d.D2DFactory, *graphics2d.DWriteFactory, graphics2d.DeviceContext, *this, app.ResourceManager);
             LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
             layoutLoader->Theme = lightTheme;
 

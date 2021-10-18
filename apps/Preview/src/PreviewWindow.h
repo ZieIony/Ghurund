@@ -38,7 +38,7 @@ namespace Preview {
 
             lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
             darkTheme = ghnew DarkTheme(*graphics2d.DWriteFactory, app.ResourceManager);
-            context = ghnew UIContext(*graphics2d.DWriteFactory, *this, app.ResourceManager);
+            context = ghnew UIContext(*graphics2d.D2DFactory, *graphics2d.DWriteFactory, graphics2d.DeviceContext, *this, app.ResourceManager);
             LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
             layoutLoader->Theme = lightTheme;
 
@@ -90,7 +90,7 @@ namespace Preview {
                 if (!file.Exists)
                     return;
                 if (file.read() == Status::OK) {
-                    if (path.FileName.endsWith(L".xml")) {
+                    if (path.Extension == L".xml") {
                         loadLayout(file);
                     } else {
                         loadDrawable(file);

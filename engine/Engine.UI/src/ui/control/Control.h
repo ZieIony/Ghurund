@@ -79,6 +79,10 @@ namespace Ghurund::UI {
                 style->onThemeChanged(*this);
         }
 
+        virtual void onContextChanged() {
+            contextChanged();
+        }
+
         virtual void onMeasure(float parentWidth, float parentHeight);
 
         virtual void onLayout(float x, float y, float width, float height) {}

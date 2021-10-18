@@ -7,6 +7,7 @@
 #include "ui/layout/LayoutLoader.h"
 #include "ui/style/Style.h"
 #include "ui/style/Theme.h"
+#include "ui/control/InvalidControl.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -15,18 +16,6 @@ namespace Ghurund::UI {
     class Widget:public ControlContainer {
     private:
         LayoutType* widgetLayout = nullptr;
-
-        Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml, const Ghurund::Core::AString& pathStr) {
-            Status result;
-            Ghurund::Core::SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(loader.getPath(pathStr), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
-            if (result != Status::OK)
-                return result;
-            if (layout && !layout->Controls.Empty)
-                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(layout->Controls[0]));
-            if (Layout)
-                return Layout->loadContent(loader, xml);
-            return Status::INV_PARAM;
-        }
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE() {
@@ -125,13 +114,41 @@ namespace Ghurund::UI {
             Status result = Control::load(loader, xml);
             if (result != Status::OK)
                 return result;
+
+            SharedPointer<Control> control;
+            AString layoutPath;
             auto layoutAttr = xml.FindAttribute("layout");
             if (layoutAttr) {
-                return load(loader, xml, layoutAttr->Value());
+                layoutPath = layoutAttr->Value();
             } else if (loader.Theme) {
                 size_t index = loader.Theme->Layouts.indexOfKey(&Type);
                 if (index != loader.Theme->Layouts.Size)
-                    return load(loader, xml, loader.Theme->Layouts.getValue(index));
+                    layoutPath = loader.Theme->Layouts.getValue(index).Data;
+            }
+
+            [[unlikely]]
+            if (layoutPath.Empty) {
+                Logger::log(LogType::ERR0R, Status::INV_DATA, _T("Missing 'layout' attribute.\n"));
+            } else {
+                SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(convertText<char, wchar_t>(layoutPath), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                if (result == Status::OK) {
+                    if (layout->Controls.Size == 1) {
+                        control = layout->Controls[0];
+                        control->addReference();
+                    } else {
+                        Logger::log(LogType::WARNING, Status::INV_DATA, _T("Layout '{}' has to contain exactly one child.\n"), layoutPath);
+                    }
+                } else {
+                    Logger::log(LogType::WARNING, result, _T("Could not load layout '{}'.\n"), layoutPath);
+                }
+            }
+
+            if (&control != nullptr) {
+                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(control));
+                return Layout->loadContent(loader, xml);
+            } else {
+                control = ghnew InvalidControl();
+                Layout = std::unique_ptr<LayoutType>(ghnew LayoutType(control));
             }
             return Status::INV_PARAM;
         }

@@ -9,24 +9,35 @@ namespace Ghurund::Core {
     Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options) {
         std::unique_ptr<File> file;
         WString pathString = WString(path.toString());
-        size_t protocolLength = lengthOf(LIB_PROTOCOL);
+        size_t libProtocolLength = lengthOf(LIB_PROTOCOL);
+        size_t fileProtocolLength = lengthOf(FILE_PROTOCOL);
         if (pathString.startsWith(LIB_PROTOCOL)) {
             pathString.replace(L'\\', L'/');
-            size_t separatorIndex = pathString.find(L"/", protocolLength);
+            size_t separatorIndex = pathString.find(L"/", libProtocolLength);
             if (separatorIndex == pathString.Size)
                 return Status::INV_PATH;
-            WString libName = pathString.substring(protocolLength, separatorIndex - protocolLength);
+            WString libName = pathString.substring(libProtocolLength, separatorIndex - libProtocolLength);
             WString fileName = pathString.substring(separatorIndex + 1);
             file.reset(libraries.get(libName)->getFile(fileName));
+            if (file.get() == nullptr || file->Size == 0 && !file->Exists)
+                return Status::FILE_DOESNT_EXIST;
+        } else if (pathString.startsWith(FILE_PROTOCOL)) {
+            pathString.replace(L'\\', L'/');
+            WString fileName = pathString.substring(fileProtocolLength);
+            file.reset(ghnew File(fileName));
+            if (!file->Exists)
+                return Status::FILE_DOESNT_EXIST;
         } else {
             file.reset(ghnew File(path));
             if (!file->Exists)
                 return Status::FILE_DOESNT_EXIST;
         }
 
-        Status result = file->read();
-        if (result != Status::OK)
-            return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
+        if (file->Size == 0) {
+            Status result = file->read();
+            if (result != Status::OK)
+                return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
+        }
 
         return loadInternal(loader, resource, *file, format, options);
     }

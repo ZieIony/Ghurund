@@ -50,7 +50,7 @@ namespace Ghurund {
 
         auto bitmapLoader = ghnew BitmapLoader(*imageLoader, graphics2d->DeviceContext);
         app.ResourceManager.Loaders.set<Bitmap>(std::unique_ptr<BitmapLoader>(bitmapLoader));
-        auto layoutLoader = ghnew LayoutLoader(*graphics2d->Factory, app.ResourceManager);
+        auto layoutLoader = ghnew LayoutLoader(*graphics2d->D2DFactory, app.ResourceManager);
         app.ResourceManager.Loaders.set<Layout>(std::unique_ptr<LayoutLoader>(layoutLoader));
 
         return Status::OK;

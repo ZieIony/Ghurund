@@ -45,6 +45,7 @@ namespace Ghurund::Core {
     public:
         inline static const wchar_t* const ENGINE_LIB_NAME = L"Ghurund";
         inline static const wchar_t* const LIB_PROTOCOL = L"lib://";
+        inline static const wchar_t* const FILE_PROTOCOL = L"file://";
 
         ResourceManager();
 
@@ -59,6 +60,7 @@ namespace Ghurund::Core {
         void reload();
 
         template<class Type> Type* load(const FilePath& path, const ResourceFormat* format = nullptr, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+            // TODO: resolve path earlier to detect duplicates with differently written paths
             Type* resource = get<Type>(path);
             Status loadResult;
             if (resource == nullptr) {
@@ -67,8 +69,14 @@ namespace Ghurund::Core {
                 if (loader) {
                     resource = loader->makeResource<Type>();
                     loadResult = loadInternal(*loader, *resource, path, format, options);
+                    if (loadResult != Status::OK) {
+                        resource->release();
+                        resource = nullptr;
+                    }
                 } else {
                     loadResult = Status::LOADER_MISSING;
+                    resource->release();
+                    resource = nullptr;
                 }
             } else {
                 resource->addReference();

@@ -65,40 +65,40 @@ namespace Ghurund {
             _countof(ppCommandQueues),
             0,
             &d3d11Device,
-            &m_d3d11DeviceContext,
+            &d3d11DeviceContext,
             nullptr
         )))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D3D11On12CreateDevice failed\n"));
 
         // Query the 11On12 device from the 11 device.
-        if (FAILED(d3d11Device.As(&m_d3d11On12Device)))
+        if (FAILED(d3d11Device.As(&d3d11On12Device)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("cast to 11On12 device failed\n"));
 
         ComPtr<IDXGIDevice> dxgiDevice;
-        if (FAILED(m_d3d11On12Device.As(&dxgiDevice)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("m_d3d11On12Device.As(&dxgiDevice) failed\n"));
+        if (FAILED(d3d11On12Device.As(&dxgiDevice)))
+            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("d3d11On12Device.As(&dxgiDevice) failed\n"));
 
-        if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory6), &d2dFactoryOptions, &m_d2dFactory)))
+        if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, __uuidof(ID2D1Factory6), &d2dFactoryOptions, &d2dFactory)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D2D1CreateFactory failed\n"));
-        if (FAILED(m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)))
+        if (FAILED(d2dFactory->CreateDevice(dxgiDevice.Get(), &d2dDevice)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDevice failed\n"));
 
-        if (FAILED(m_d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &deviceContext)))
+        if (FAILED(d2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &deviceContext)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDeviceContext failed\n"));
 
-        if (FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory5), &m_dwriteFactory)))
+        if (FAILED(DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory5), &dwriteFactory)))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("DWriteCreateFactory failed\n"));
 
         return Status::OK;
     }
 
     void Graphics2D::uninit() {
-        m_dwriteFactory.Reset();
+        dwriteFactory.Reset();
         deviceContext.Reset();
-        m_d2dDevice.Reset();
-        m_d2dFactory.Reset();
-        m_d3d11On12Device.Reset();
-        m_d3d11DeviceContext.Reset();
+        d2dDevice.Reset();
+        d2dFactory.Reset();
+        d3d11On12Device.Reset();
+        d3d11DeviceContext.Reset();
     }
 
     Status Graphics2D::beginPaint(RenderTarget& target) {
@@ -109,7 +109,7 @@ namespace Ghurund {
         deviceContext->SetTarget(target.Target2D);
 
         auto wrappedTarget = target.WrappedTarget;
-        m_d3d11On12Device->AcquireWrappedResources(&wrappedTarget, 1);
+        d3d11On12Device->AcquireWrappedResources(&wrappedTarget, 1);
         deviceContext->BeginDraw();
         deviceContext->Clear();
 
@@ -126,9 +126,9 @@ namespace Ghurund {
         HRESULT endDrawResult = deviceContext->EndDraw();
 
         auto wrappedTarget = target.WrappedTarget;
-        m_d3d11On12Device->ReleaseWrappedResources(&wrappedTarget, 1);
+        d3d11On12Device->ReleaseWrappedResources(&wrappedTarget, 1);
 
-        m_d3d11DeviceContext->Flush();
+        d3d11DeviceContext->Flush();
         deviceContext->SetTarget(nullptr);
 
         state = UIState::IDLE;

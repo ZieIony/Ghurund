@@ -18,42 +18,49 @@ namespace Ghurund::UI {
         preferredSize.width = PreferredSize::Width::FILL;
         preferredSize.height = PreferredSize::Height::FILL;
         Color = color;
+        bitmap = ghnew Bitmap();
     }
 
     Shadow::~Shadow() {
         delete shape;
         delete color;
+        if (bitmap)
+            bitmap->release();
     }
 
     void Shadow::onLayout(float x, float y, float width, float height) {
         __super::onLayout(x, y, width, height);
-        /*auto deviceContext = Context->Graphics.DeviceContext;
-        if (FAILED(deviceContext->CreateSolidColorBrush(D2D1::ColorF(color), &fillBrush))) {
+        Ghurund::UI::Color c = color->getValue(*this);
+        if (c.A == 0.0f || Radius < 0.1f || !Context)
+            return;
+        auto &deviceContext = Context->DeviceContext;
+        if (!fillBrush && FAILED(deviceContext.CreateSolidColorBrush(D2D1::ColorF(c), &fillBrush))) {
             Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateSolidColorBrush failed\n");
             return;
         }
-        fillBrush->SetColor(D2D1::ColorF(color));
-        fillBrush->SetOpacity((color >> 24) / 255.0f);
+        fillBrush->SetColor(D2D1::ColorF(c));
+        fillBrush->SetOpacity(c.A);
 
-        image->invalidate();
-        image->init(Context->Graphics, { (uint32_t)(width + ceil(radius) * 2), (uint32_t)(height + ceil(radius) * 2) }, DXGI_FORMAT_R8G8B8A8_UNORM);
-        deviceContext->SetTarget(image->Data);
-        deviceContext->BeginDraw();
-        deviceContext->Clear();
+        bitmap->invalidate();
+        bitmap->init(Context->DeviceContext, { (uint32_t)(width + ceil(radius) * 2), (uint32_t)(height + ceil(radius) * 2) }, DXGI_FORMAT_R8G8B8A8_UNORM);
+        deviceContext.SetTarget(bitmap->Data);
+        deviceContext.BeginDraw();
+        deviceContext.Clear();
         if (!shape)
-            shape = ghnew Rect(Context->Graphics);
+            shape = ghnew Rect(Context->D2DFactory);
         shape->Bounds = FloatRect{ ceil(radius), ceil(radius), width + ceil(radius), height + ceil(radius) };
-        deviceContext->FillGeometry(shape->Path, fillBrush);
-        deviceContext->EndDraw();*/
+        deviceContext.FillGeometry(shape->Path, fillBrush.Get());
+        deviceContext.EndDraw();
     }
 
     void Shadow::onDraw(Canvas& canvas) {
-        /*if (!Color || Radius < 0.1f || !image)
+        Ghurund::UI::Color c = color->getValue(*this);
+        if (c.A == 0.0f || Radius < 0.1f || !bitmap)
             return;
         canvas.save();
         canvas.translate(-ceil(radius), -ceil(radius) + radius / 2);
-        canvas.drawShadow(*image, radius, color);
-        canvas.restore();*/
+        canvas.drawShadow(bitmap->Data, radius, c.Value);
+        canvas.restore();
     }
 
     Status Shadow::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

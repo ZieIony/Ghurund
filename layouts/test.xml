@@ -36,7 +36,7 @@
 				</Button>
 			</PaddingContainer>
 			<PaddingContainer padding="8">
-				<Button layout="file://ButtonAccentLayout.xml">
+				<Button layout="lib://Ghurund/layouts/ButtonAccentLayout.xml">
 					<LinearLayout alignment="center, center">
 						<ImageView preferredSize="24,24"
 								   image="file://~/images/test/melon.jpg"/>
@@ -61,7 +61,7 @@
 			</PaddingContainer>
 			<PaddingContainer padding="8">
 				<Button preferredSize="100, wrap"
-						  layout="file://~/layouts/ButtonOutlinedLayout.xml">
+						  layout="file://~/../layouts/ButtonOutlinedLayout.xml">
 					<LinearLayout alignment="center, center">
 						<TextBlock text="OUTLINED"
 							  style="theme://style/TextBlock_button"/>

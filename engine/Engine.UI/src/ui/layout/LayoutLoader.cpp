@@ -8,7 +8,11 @@
 #include "ui/control/Space.h"
 #include "ui/control/ColorView.h"
 #include "ui/control/ImageView.h"
+#include "ui/control/InvalidControl.h"
 #include "ui/control/PaddingContainer.h"
+#include "ui/drawable/BitmapDrawable.h"
+#include "ui/drawable/InvalidImageDrawable.h"
+#include "ui/drawable/SvgDrawable.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/ManualLayout.h"
 #include "ui/layout/StackLayout.h"
@@ -65,18 +69,34 @@ namespace Ghurund::UI {
 
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
         AString s = str;
-        s.replace('\\', '/');
-        if (s.startsWith(FILE_PROTOCOL)) {
-            return nullptr;// resourceLoader->loadDrawable(getPath(str));
-        } else if (s.startsWith(THEME_IMAGE) && theme) {
+        s.replace(L'\\', L'/');
+        if (s.startsWith(THEME_IMAGE) && theme) {
             ImageKey imageKey = s.substring(lengthOf(THEME_IMAGE));
             if (theme->Images.containsKey(imageKey))
                 return (ImageDrawable*)theme->Images[imageKey]->clone();
+        } else {
+            if (s.endsWith(".png")) {
+                Status result;
+                SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(convertText<char, wchar_t>(s), nullptr, &result);
+                if (&bitmap == nullptr) {
+                    Logger::log(LogType::ERR0R, result, _T("failed to load '{}'\n"), s);
+                    return nullptr;
+                }
+                return ghnew BitmapDrawable(bitmap);
+            } else if (s.endsWith(".svg")) {
+                Status result;
+                SharedPointer<SvgDocument> svg = resourceManager.load<SvgDocument>(convertText<char, wchar_t>(s), nullptr, &result);
+                if (&svg == nullptr) {
+                    Logger::log(LogType::ERR0R, result, _T("failed to load '{}'\n"), s);
+                    return nullptr;
+                }
+                return ghnew SvgDrawable(svg);
+            }
         }
         return nullptr;
     }
 
-    Status LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat * format, LoadOption options) {
+    Status LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
         Layout& layout = (Layout&)resource;
@@ -84,9 +104,11 @@ namespace Ghurund::UI {
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         if (child && strcmp(child->Value(), "layout") == 0) {
             layout.Controls.addAll(loadControls(*child));
+            if (layout.Controls.Empty)
+                return Logger::log(LogType::WARNING, Status::FILE_EMPTY, _T("Layout is empty.\n"));
             return Status::OK;
         } else {
-            return Logger::log(LogType::ERR0R, Status::INV_FORMAT, _T("missing 'layout' tag\n"));
+            return Logger::log(LogType::ERR0R, Status::INV_FORMAT, _T("Missing 'layout' tag\n"));
         }
     }
 
@@ -98,11 +120,19 @@ namespace Ghurund::UI {
                 auto layoutAttr = child->FindAttribute("layout");
                 if (layoutAttr) {
                     AString s = layoutAttr->Value();
-                    s.replace('\\', '/');
-                    if (s.startsWith(FILE_PROTOCOL)) {
-                        SharedPointer<Layout> layout = resourceManager.load<Layout>(getPath(s));
-                        list.addAll(layout->Controls);
+                    Status result;
+                    SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                    if (result == Status::OK) {
+                        if (!layout->Controls.Empty) {
+                            list.addAll(layout->Controls);
+                        } else {
+                            Logger::log(LogType::ERR0R, _T("Layout '{}' is empty.\n"), s);
+                        }
+                    } else {
+                        Logger::log(LogType::ERR0R, result, _T("Could not load layout '{}'.\n"), s);
                     }
+                } else {
+                    Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
                 }
             } else {
                 Control* control = loadControl(*child);
@@ -121,17 +151,24 @@ namespace Ghurund::UI {
         if (strcmp(name, "include") == 0) {
             auto layoutAttr = xml.FindAttribute("layout");
             if (layoutAttr) {
+                Control* control = nullptr;
                 AString s = layoutAttr->Value();
-                s.replace('\\', '/');
-                if (s.startsWith(FILE_PROTOCOL)) {
-                    SharedPointer<Layout> layout = resourceManager.load<Layout>(getPath(s));
-                    if (!layout->Controls.Empty) {
-                        Control* control = layout->Controls[0];
+                Status result;
+                SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                if (result == Status::OK) {
+                    if (layout->Controls.Size == 1) {
+                        control = layout->Controls[0];
                         control->addReference();
-                        return control;
+                    } else {
+                        Logger::log(LogType::ERR0R, _T("Layout '{}' has to contain exactly one child.\n"), s);
                     }
+                } else {
+                    Logger::log(LogType::ERR0R, result, _T("Could not load layout '{}'.\n"), s);
                 }
+                return control;
             }
+            Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
+            return nullptr;
         } else if (types.containsKey(name)) {
             Control* control = types.get(name)();
             control->load(*this, xml);
@@ -224,12 +261,5 @@ namespace Ghurund::UI {
         }
 
         return Status::OK;
-    }
-
-    WString LayoutLoader::getPath(const AString& path) {
-        AStringView sView = AStringView(path);
-        if (sView.startsWith(FILE_PROTOCOL))
-            sView = sView.substring(lengthOf(FILE_PROTOCOL));
-        return convertText<char, wchar_t>(AString(sView.Data));
     }
 }

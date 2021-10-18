@@ -23,11 +23,11 @@ namespace Ghurund {
     class Graphics2D {
     private:
         ComPtr<ID2D1DeviceContext5> deviceContext;
-        ComPtr<ID3D11DeviceContext> m_d3d11DeviceContext;
-        ComPtr<ID3D11On12Device> m_d3d11On12Device;
-        ComPtr<IDWriteFactory5> m_dwriteFactory;
-        ComPtr<ID2D1Factory6> m_d2dFactory;
-        ComPtr<ID2D1Device5> m_d2dDevice;
+        ComPtr<ID3D11DeviceContext> d3d11DeviceContext;
+        ComPtr<ID3D11On12Device> d3d11On12Device;
+        ComPtr<IDWriteFactory5> dwriteFactory;
+        ComPtr<ID2D1Factory6> d2dFactory;
+        ComPtr<ID2D1Device5> d2dDevice;
         UIState state = UIState::IDLE;
 
     public:
@@ -36,7 +36,7 @@ namespace Ghurund {
         }
 
         inline ID2D1Device5* getDevice() {
-            return m_d2dDevice.Get();
+            return d2dDevice.Get();
         };
 
         __declspec(property(get = getDevice)) ID2D1Device5* Device;
@@ -48,19 +48,19 @@ namespace Ghurund {
         __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5& DeviceContext;
 
         inline ID3D11On12Device* getDevice11() {
-            return m_d3d11On12Device.Get();
+            return d3d11On12Device.Get();
         };
 
         __declspec(property(get = getDevice11)) ID3D11On12Device* Device11;
 
-        inline ID2D1Factory6* getFactory() {
-            return m_d2dFactory.Get();
+        inline ID2D1Factory6* getD2dFactory() {
+            return d2dFactory.Get();
         };
 
-        __declspec(property(get = getFactory)) ID2D1Factory6* Factory;
+        __declspec(property(get = getD2dFactory)) ID2D1Factory6* D2DFactory;
 
         inline IDWriteFactory5* getDWriteFactory() {
-            return m_dwriteFactory.Get();
+            return dwriteFactory.Get();
         };
 
         __declspec(property(get = getDWriteFactory)) IDWriteFactory5* DWriteFactory;
@@ -80,7 +80,7 @@ namespace Ghurund {
         Status endPaint(RenderTarget& target);
 
         void flush() {
-            m_d3d11DeviceContext->Flush();
+            d3d11DeviceContext->Flush();
         }
     };
 }

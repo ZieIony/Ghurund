@@ -33,11 +33,12 @@ namespace Ghurund::UI {
         RadioButton& checkBoxRadio = (RadioButton&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout->Selectable->Selected) {
-            layout->Image->Image = (ImageDrawable*)theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]->clone();
+            SharedPointer<ImageDrawable> image = clone(theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]);
+            layout->Image->Image = image;
         } else {
-            layout->Image->Image = (ImageDrawable*)theme->Images[Theme::IMAGE_RADIOBUTTON_UNCHECKED]->clone();
+            SharedPointer<ImageDrawable> image = clone(theme->Images[Theme::IMAGE_RADIOBUTTON_UNCHECKED]);
+            layout->Image->Image = image;
         }
-        layout->Image->Image->release();
         __super::onStateChanged(control);
     }
 }

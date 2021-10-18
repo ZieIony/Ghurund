@@ -245,7 +245,7 @@ namespace Ghurund::UI {
     }
 
     void Control::dispatchContextChanged() {
-        contextChanged();
+        onContextChanged();
     }
 
     void Control::repaint() {

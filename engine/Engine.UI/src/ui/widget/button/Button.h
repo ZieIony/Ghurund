@@ -26,10 +26,12 @@ namespace Ghurund::UI {
         virtual void onLayoutChanged() override {
             if (!Layout)
                 return;
-            Layout->Clickable->StateChanged.add(stateHandler);
-            Layout->Clickable->Clicked.add([this](Control&, const MouseClickedEventArgs& args) {
-                return clicked(args);
-            });
+            if (Layout->Clickable) {
+                Layout->Clickable->StateChanged.add(stateHandler);
+                Layout->Clickable->Clicked.add([this](Control&, const MouseClickedEventArgs& args) {
+                    return clicked(args);
+                });
+            }
         }
 
     public:

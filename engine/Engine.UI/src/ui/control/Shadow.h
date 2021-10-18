@@ -3,6 +3,7 @@
 #include "Control.h"
 #include "ui/Shape.h"
 #include "ui/style/ColorAttr.h"
+#include "ui/image/Bitmap.h"
 
 namespace Ghurund::UI {
     class Shadow: public Control {
@@ -10,12 +11,14 @@ namespace Ghurund::UI {
         ColorAttr* color = nullptr;
         Ghurund::UI::Shape* shape = nullptr;
         float radius = 2.0f;
+        Bitmap* bitmap = nullptr;
+        ComPtr<ID2D1SolidColorBrush> fillBrush;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        Shadow(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND));
+        Shadow(const ColorAttr& color = ColorValue(Ghurund::UI::Color(0, 0, 0, 0.6f)));
 
         ~Shadow();
 

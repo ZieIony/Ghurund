@@ -2,6 +2,7 @@
 
 #include "Color.h"
 #include "Shape.h"
+#include "StrokeStyle.h"
 #include "core/math/Rect.h"
 
 #include <dxgi1_6.h>
@@ -49,10 +50,10 @@ namespace Ghurund::UI {
             deviceContext->Clear(D2D1::ColorF(color));
         }
 
-        inline void drawRect(float x, float y, float width, float height, const Color& color, float thickness) {
+        inline void drawRect(float x, float y, float width, float height, const Color& color, float thickness, StrokeStyle* strokeStyle = nullptr) {
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
-            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness);
+            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness, strokeStyle ? strokeStyle->get() : nullptr);
         }
 
         inline void fillRect(float x, float y, float width, float height, const Color& color) {
@@ -67,7 +68,11 @@ namespace Ghurund::UI {
             deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), thickness);
         }
 
-        void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness) {}
+        void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, StrokeStyle* strokeStyle = nullptr) {
+            fillBrush->SetColor(D2D1::ColorF(color));
+            fillBrush->SetOpacity(color.A);
+            deviceContext->DrawLine({ x1,y1 }, { x2,y2 }, fillBrush.Get(), thickness, strokeStyle ? strokeStyle->get() : nullptr);
+        }
 
         void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& dst, float alpha = 1.0f);
 

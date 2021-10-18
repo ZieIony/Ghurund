@@ -4,11 +4,12 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "ui/layout/LayoutLoader.h"
+#include "ui/control/InvalidControl.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ControlContainer::GET_TYPE() {
 
-        static auto PROPERTY_CHILD = Property<ControlContainer, Control*>("Child", (Control*(ControlContainer::*)())&getChild, (void(ControlContainer::*)(Control*))&setChild);
+        static auto PROPERTY_CHILD = Property<ControlContainer, Control*>("Child", (Control * (ControlContainer::*)()) & getChild, (void(ControlContainer::*)(Control*)) & setChild);
 
         static const auto CONSTRUCTOR = Constructor<ControlContainer>();
 
@@ -152,8 +153,10 @@ namespace Ghurund::UI {
             Control* control = loader.loadControl(*child);
             if (control) {
                 Child = control;
-                control->release();
+            } else {
+                Child = ghnew InvalidControl();
             }
+            Child->release();
         }
         return Status::OK;
     }
