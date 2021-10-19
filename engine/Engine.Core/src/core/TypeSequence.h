@@ -7,9 +7,9 @@
 
 namespace Ghurund::Core {
     /**
-     * @brief Provides increasing values of type T for each call
-     * @tparam Owner a type to identify template concretization
-     * @tparam T type of the provided value
+     * @brief A sequence of values of type T increasing for each call.
+     * @tparam Owner A type to identify template concretization.
+     * @tparam T The type of the provided value.
     */
     template<typename Owner, typename T>
     class Sequence {
@@ -23,7 +23,7 @@ namespace Ghurund::Core {
     };
 
     /**
-     * @brief Provides increasing values of type T for each new Args combination
+     * @brief Provides increasing values of type T for each new Args combination.
      * @tparam Owner 
      * @tparam T 
      * @tparam ...Args 
@@ -44,6 +44,12 @@ namespace Ghurund::Core {
         }
     };
 
+    /**
+     * @brief A sequence of values of type T increasing for each call. A new sequence is generated for each new specified name.
+     * @tparam Owner A type to identify template concretization.
+     * @tparam T The type of the provided value.
+     * @tparam name The name of this sequence.
+    */
     template<typename Owner, typename T, FixedString name>
     class NamedSequence {
     private:
@@ -55,6 +61,13 @@ namespace Ghurund::Core {
         }
     };
 
+    /**
+     * @brief Provides increasing values of type T for each new specified name and Args combination.
+     * @tparam Owner
+     * @tparam T
+     * @tparam ...Args
+     * @tparam name The name of this sequence.
+    */
     template<typename Owner, typename T, FixedString name, typename... Args>
     class NamedTypeSequence {
     private:

@@ -39,10 +39,16 @@ namespace Ghurund::Core {
     public:
         Pointer();
 
+        /**
+         * @brief Increases reference count by 1.
+        */
         inline void addReference() {
             referenceCount++;
         }
 
+        /**
+         * @brief Decreases reference count of this object by one. If the reference count reaches 0, the object is deleted.
+        */
         inline void release() {
 #ifdef _DEBUG
             checkReferenceCount();
@@ -65,6 +71,13 @@ namespace Ghurund::Core {
 #endif
     };
 
+    /**
+     * @brief Safely sets a Pointer object to a new value. The previous Pointer has its reference counter decreased by one,
+     * and the new Pointer has its reference counter increased by one.
+     * @tparam Type
+     * @param pointer A reference to a Pointer address to assign another Pointer to. The address can be null.
+     * @param pointer2 A Pointer address to assign to 'pointer'. Can be null.
+    */
     template<class Type>
     void setPointer(Type*& pointer, Type* pointer2) {
         if (pointer2 != nullptr)
@@ -74,6 +87,11 @@ namespace Ghurund::Core {
         pointer = pointer2;
     }
 
+    /**
+     * @brief Safely releases and clears a Pointer object.
+     * @tparam Type
+     * @param pointer
+    */
     template<class Type>
     void safeRelease(Type*& pointer) {
         if (pointer != nullptr) {

@@ -20,6 +20,10 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getType)) const Type &Type;
 
+        /**
+         * @brief Construct a deep copy of this object.
+         * @return Can be null if cloning is not supported.
+        */
         virtual Object* clone() const {
             return nullptr;
         }
@@ -27,6 +31,12 @@ namespace Ghurund::Core {
         virtual String toString() const;
     };
 
+    /**
+     * @brief Clones an object and casts it back to its type.
+     * @tparam T 
+     * @param obj An object to clone. Can be null.
+     * @return A clone of the passed object. Can be null.
+    */
     template<class T>
     inline T* clone(T* obj) {
         if (obj)

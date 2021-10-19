@@ -40,7 +40,15 @@ typedef unsigned long address_t;
 namespace Ghurund::Core {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Core);
 
-    template<class Type> inline Type align(Type value, Type alignment) {
+    /**
+     * @brief Modifies a value to be in range (alignment*N) <= value < (alignment*(N+1)).
+     * @tparam Type type of value, alignment and aligned value.
+     * @param value 
+     * @param alignment 
+     * @return Aligned value
+    */
+    template<class Type>
+    inline Type align(Type value, Type alignment) {
         return (value + alignment - 1) & ~(alignment - 1);
     }
 
