@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Path.h"
+#include "core/string/StringView.h"
 
 #include <Windows.h>
 #include <pathcch.h>
@@ -14,16 +15,24 @@ namespace Ghurund::Core {
 
     class FilePath:public Path {
     private:
-        WString fileName, extension;
+        WStringView fileName, extension;
+
+        static inline const wchar_t* getExtensionWithoutDot(const wchar_t* path) {
+            const wchar_t* str = PathFindExtensionW(path);
+            if (str[0] == '.')
+                return str + 1;
+            return str;
+        }
 
     public:
         FilePath(const WString& path):Path(path),
-            fileName(PathFindFileNameW(path.Data)),
-            extension(PathFindExtensionW(path.Data)) {}
+            fileName(PathFindFileNameW(this->path.Data)),
+            extension(getExtensionWithoutDot(this->path.Data)) {}
 
         FilePath(const FilePath& other):Path(other.path),
-            fileName(other.fileName),
-            extension(other.extension) {}
+            // copy constructor for StringView just reuses the pointer to its internal char array, which may be destroyed
+            fileName(PathFindFileNameW(path.Data)),
+            extension(getExtensionWithoutDot(path.Data)) {}
 
         FilePath(FilePath&& other) noexcept:Path(std::move(other)),
             fileName(std::move(other.fileName)),
@@ -33,8 +42,8 @@ namespace Ghurund::Core {
             if (this == &other)
                 return *this;
             Path::operator=(other);
-            fileName = other.fileName;
-            extension = other.extension;
+            fileName = PathFindFileNameW(path.Data);
+            extension = getExtensionWithoutDot(path.Data);
             return *this;
         }
 
@@ -51,17 +60,17 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getDirectory)) DirectoryPath Directory;
 
-        inline const WString& getFileName() const {
+        inline const WStringView& getFileName() const {
             return fileName;
         }
 
-        __declspec(property(get = getFileName)) const WString& FileName;
+        __declspec(property(get = getFileName)) const WStringView& FileName;
 
-        inline const WString& getExtension() const {
+        inline const WStringView& getExtension() const {
             return extension;
         }
 
-        __declspec(property(get = getExtension)) const WString& Extension;
+        __declspec(property(get = getExtension)) const WStringView& Extension;
 
         FilePath getRelativePath(const DirectoryPath& dir) const;
 

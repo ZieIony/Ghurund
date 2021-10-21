@@ -11,6 +11,8 @@ namespace Preview {
         }
 
         virtual Status onInit() override {
+            ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
+     
             auto window = ghnew PreviewWindow(*this);
             Status result = window->init();
             if (result != Status::OK) {

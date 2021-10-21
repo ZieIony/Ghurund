@@ -39,12 +39,6 @@ namespace Ghurund::Core {
             hash = str.hash;
         }
 
-        GenericStringView(GenericStringView<T>&& str) noexcept {
-            v = std::move(str.v);
-            size = std::move(str.size);
-            hash = std::move(str.hash);
-        }
-
         inline T* begin() {
             return v;
         }
@@ -82,11 +76,11 @@ namespace Ghurund::Core {
         }
 
         bool operator==(const GenericString<T>& string) const {
-            return hash == string.hash && size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
+            return hash == string.Hash && size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
         }
 
         bool operator==(const GenericString<T>& string) {
-            return hash == string.hash && size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
+            return hash == string.Hash && size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
         }
 
         bool operator==(const T* str) const {

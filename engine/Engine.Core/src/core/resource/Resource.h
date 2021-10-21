@@ -50,6 +50,8 @@ namespace Ghurund::Core {
 
         static const Ghurund::Core::Type& GET_TYPE();
 
+        static const Array<ResourceFormat>& GET_FORMATS();
+
     public:
         ~Resource();
 
@@ -107,7 +109,7 @@ namespace Ghurund::Core {
             return TYPE;
         }
 
-        inline static const Array<ResourceFormat>& FORMATS = {};
+        inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 
         virtual const Array<ResourceFormat>& getFormats() const {
             return FORMATS;

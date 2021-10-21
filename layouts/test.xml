@@ -39,7 +39,7 @@
 				<Button layout="lib://Ghurund/layouts/ButtonAccentLayout.xml">
 					<LinearLayout alignment="center, center">
 						<ImageView preferredSize="24,24"
-								   image="file://~/images/test/melon.jpg"/>
+								   image="lib://test/images/watermelon.jpg"/>
 						<Space preferredSize="4,4"/>
 						<TextBlock preferredSize="wrap, wrap"
 								   text="accent"

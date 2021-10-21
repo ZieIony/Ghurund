@@ -18,12 +18,19 @@ namespace Ghurund::UI {
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        static const Array<ResourceFormat>& GET_FORMATS();
+
     public:
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
         virtual const Ghurund::Core::Type& getType() const override {
-
             return TYPE;
+        }
+
+        inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
+
+        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
+            return FORMATS;
         }
 
     private:
@@ -65,16 +72,5 @@ namespace Ghurund::UI {
         Ghurund::Core::IntSize getSize();
 
         __declspec(property(get = getSize)) Ghurund::Core::IntSize Size;
-
-        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() {
-            static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = {
-                Ghurund::Core::ResourceFormat(L"jpg", true, true),
-                Ghurund::Core::ResourceFormat(L"jpeg", true, true),
-                Ghurund::Core::ResourceFormat(L"png", true, true)
-            };
-            return formats;
-        }
-
-        __declspec(property(get = getFormats)) Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& Formats;
     };
 }

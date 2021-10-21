@@ -32,6 +32,8 @@
 #include "core/string/TextConversionUtils.h"
 #include "core/logging/Formatter.h"
 
+#include <ranges>
+
 namespace Ghurund::UI {
     LayoutLoader::LayoutLoader(ID2D1Factory6& d2dFactory, Ghurund::Core::ResourceManager& resourceManager)
         :d2dFactory(d2dFactory), resourceManager(resourceManager) {
@@ -75,22 +77,28 @@ namespace Ghurund::UI {
             if (theme->Images.containsKey(imageKey))
                 return (ImageDrawable*)theme->Images[imageKey]->clone();
         } else {
-            if (s.endsWith(".png")) {
+            FilePath path = convertText<char, wchar_t>(s);
+            auto formatSupported = [&path](const ResourceFormat& format) {
+                return format.Extension == path.Extension && format.CanLoad;
+            };
+            if (std::ranges::count_if(Bitmap::FORMATS, formatSupported) == 1) {
                 Status result;
                 SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(convertText<char, wchar_t>(s), nullptr, &result);
                 if (&bitmap == nullptr) {
-                    Logger::log(LogType::ERR0R, result, _T("failed to load '{}'\n"), s);
+                    Logger::log(LogType::ERR0R, _T("Failed to load '{}'.\n"), s);
                     return nullptr;
                 }
                 return ghnew BitmapDrawable(bitmap);
-            } else if (s.endsWith(".svg")) {
+            } else if (std::ranges::count_if(SvgDocument::FORMATS, formatSupported) == 1) {
                 Status result;
                 SharedPointer<SvgDocument> svg = resourceManager.load<SvgDocument>(convertText<char, wchar_t>(s), nullptr, &result);
                 if (&svg == nullptr) {
-                    Logger::log(LogType::ERR0R, result, _T("failed to load '{}'\n"), s);
+                    Logger::log(LogType::ERR0R, _T("Failed to load '{}'.\n"), s);
                     return nullptr;
                 }
                 return ghnew SvgDrawable(svg);
+            } else {
+                Logger::log(LogType::ERR0R, _T("File format of '{}' is not supported.\n"), s);
             }
         }
         return nullptr;
@@ -121,7 +129,7 @@ namespace Ghurund::UI {
                 if (layoutAttr) {
                     AString s = layoutAttr->Value();
                     Status result;
-                    SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                    SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMATS[0], &result, LoadOption::DONT_CACHE);
                     if (result == Status::OK) {
                         if (!layout->Controls.Empty) {
                             list.addAll(layout->Controls);
@@ -154,7 +162,7 @@ namespace Ghurund::UI {
                 Control* control = nullptr;
                 AString s = layoutAttr->Value();
                 Status result;
-                SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMATS[0], &result, LoadOption::DONT_CACHE);
                 if (result == Status::OK) {
                     if (layout->Controls.Size == 1) {
                         control = layout->Controls[0];
@@ -193,18 +201,7 @@ namespace Ghurund::UI {
         AString s = str;
         s.replace('\\', '/');
         if (s.startsWith("#")) {
-            uint32_t value = 0;
-            s = s.toLowerCase();
-            for (size_t i = 1; i < s.Length; i++) {
-                if (s[i] >= '0' && s[i] <= '9') {
-                    value = value * 16 + (s[i] - '0');
-                } else if (s[i] >= 'a' && s[i] <= 'f') {
-                    value = value * 16 + (s[i] - 'a' + 10);
-                } else {
-                    return 0;
-                }
-            }
-            return ghnew ColorValue(value);
+            return ghnew ColorValue(s);
         } else if (s.startsWith(THEME_COLOR) && theme) {
             return ghnew ColorRef(ColorKey(s.substring(lengthOf(THEME_COLOR))));
         }

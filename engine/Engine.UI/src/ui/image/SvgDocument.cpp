@@ -32,6 +32,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    const Array<ResourceFormat>& SvgDocument::GET_FORMATS() {
+        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = { Ghurund::Core::ResourceFormat(L"svg", true, false) };
+        return formats;
+    }
+
     Status SvgDocument::loadInternal(
         const Ghurund::Core::DirectoryPath& workingDir,
         Ghurund::Core::MemoryInputStream& stream,

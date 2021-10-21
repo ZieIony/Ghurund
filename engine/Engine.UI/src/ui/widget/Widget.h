@@ -130,7 +130,7 @@ namespace Ghurund::UI {
             if (layoutPath.Empty) {
                 Logger::log(LogType::ERR0R, Status::INV_DATA, _T("Missing 'layout' attribute.\n"));
             } else {
-                SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(convertText<char, wchar_t>(layoutPath), &Layout::FORMAT_XML, &result, LoadOption::DONT_CACHE);
+                SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(convertText<char, wchar_t>(layoutPath), nullptr, &result, LoadOption::DONT_CACHE);
                 if (result == Status::OK) {
                     if (layout->Controls.Size == 1) {
                         control = layout->Controls[0];

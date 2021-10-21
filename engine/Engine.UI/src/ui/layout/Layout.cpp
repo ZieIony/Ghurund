@@ -13,4 +13,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    const Array<ResourceFormat>& Layout::GET_FORMATS() {
+        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = {
+                Ghurund::Core::ResourceFormat(L"xml", true, false)
+        };
+        return formats;
+    }
+
 }

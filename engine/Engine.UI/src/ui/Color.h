@@ -1,10 +1,13 @@
 #pragma once
 
 #include "core/reflection/Type.h"
+#include "core/string/String.h"
 
 #include <stdint.h>
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class Color {
     private:
         uint32_t value;
@@ -21,6 +24,22 @@ namespace Ghurund::UI {
             this->b = b;
             this->a = a;
             value = (((uint8_t)(a * 255) & 0xff) << 24) | (((uint8_t)(r * 255) & 0xff) << 16) | (((uint8_t)(g * 255) & 0xff) << 8) | ((uint8_t)(b * 255) & 0xff);
+        }
+
+        Color(const AString& string) {
+            uint32_t value = 0;
+            AString s = string.toLowerCase();
+            for (size_t i = s[0] == '#' ? 1 : 0; i < s.Length; i++) {
+                if (s[i] >= '0' && s[i] <= '9') {
+                    value = value * 16 + (s[i] - '0');
+                } else if (s[i] >= 'a' && s[i] <= 'f') {
+                    value = value * 16 + (s[i] - 'a' + 10);
+                } else {
+                    value = 0;
+                    return;
+                }
+            }
+            Value = value;
         }
 
         inline float getR() const {

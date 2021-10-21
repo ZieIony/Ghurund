@@ -76,9 +76,13 @@ namespace Preview {
         void updateTheme(ThemeType type) {
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
             if (type == ThemeType::Dark) {
+                darkTheme->Colors.set(Theme::COLOR_ACCENT, lightTheme->Colors.get(Theme::COLOR_ACCENT));
+                darkTheme->updateColors();
                 layoutLoader->Theme = darkTheme;
                 previewLayout->Theme = darkTheme;
             } else {
+                lightTheme->Colors.set(Theme::COLOR_ACCENT, darkTheme->Colors.get(Theme::COLOR_ACCENT));
+                lightTheme->updateColors();
                 layoutLoader->Theme = lightTheme;
                 previewLayout->Theme = lightTheme;
             }
@@ -90,7 +94,7 @@ namespace Preview {
                 if (!file.Exists)
                     return;
                 if (file.read() == Status::OK) {
-                    if (path.Extension == L".xml") {
+                    if (path.Extension == L"xml") {
                         loadLayout(file);
                     } else {
                         loadDrawable(file);

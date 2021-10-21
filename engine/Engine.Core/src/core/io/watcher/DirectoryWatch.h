@@ -34,11 +34,11 @@ namespace Ghurund::Core {
         ~DirectoryWatch();
 
         void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange&)> fileChangedHandler) {
-            files.set(path.FileName, fileChangedHandler);
+            files.set(path.FileName.Data, fileChangedHandler);
         }
 
         void removeFile(const FilePath &path) {
-            files.remove(path.FileName);
+            files.remove(path.FileName.Data);
         }
 
         size_t getFileCount() {

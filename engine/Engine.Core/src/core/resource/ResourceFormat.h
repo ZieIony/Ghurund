@@ -21,21 +21,25 @@ namespace Ghurund::Core {
             this->load = format.load;
         }
 
-        const WString& getExtension() const {
+        inline const WString& getExtension() const {
             return extension;
         }
 
         __declspec(property(get = getExtension)) const WString& Extension;
 
-        bool canSave() const {
+        inline bool canSave() const {
             return save;
         }
 
-        bool canLoad() const {
+        __declspec(property(get = canSave)) bool CanSave;
+
+        inline bool canLoad() const {
             return load;
         }
 
-        bool operator==(const ResourceFormat& format) const {
+        __declspec(property(get = canLoad)) bool CanLoad;
+
+        inline bool operator==(const ResourceFormat& format) const {
             return extension == format.extension && save == format.save && load == format.load;
         }
     };
