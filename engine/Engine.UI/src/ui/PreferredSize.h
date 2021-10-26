@@ -1,73 +1,94 @@
 #pragma once
 
+#include "core/Enum.h"
+#include "core/string/String.h"
+#include "core/reflection/Type.h"
+#include "core/string/TextConversionUtils.h"
+#include "core/logging/Logger.h"
+
+#include <format>
+#include <regex>
+
 namespace Ghurund::UI {
-    struct PreferredSize {
+    class PreferredSize {
+    public:
+        enum class Type {
+            WRAP, PIXELS, PERCENT, FILL
+        };
+
     private:
-        enum class SpecialValues {
-            WRAP = -1, FILL = -2
+        class OrientationSize {
+        private:
+            PreferredSize::Type type;
+            float value;
+
+        public:
+            OrientationSize(float v):type(PreferredSize::Type::PIXELS) {
+                this->value = v > 0 ? v : 0.0f;
+            }
+
+            OrientationSize(PreferredSize::Type type, float v):type(type) {
+                this->value = v > 0 ? v : 0.0f;
+            }
+
+            inline PreferredSize::Type getType() const {
+                return type;
+            }
+
+            __declspec(property(get = getType)) PreferredSize::Type Type;
+
+            inline float getValue() const {
+                return value;
+            }
+
+            __declspec(property(get = getValue)) float Value;
+
+            inline bool operator==(const OrientationSize& other) const {
+                return this->type == other.type && this->value == other.value;
+            }
+
+            inline bool operator==(const OrientationSize& other) {
+                return this->type == other.type && this->value == other.value;
+            }
+
+            inline float measure(float parentSize, float minSize, float contentSize) {
+                if (type == PreferredSize::Type::PIXELS) {
+                    return std::max(value, minSize);
+                } else if (type == PreferredSize::Type::FILL) {
+                    return std::max(parentSize, minSize);
+                } else if (type == PreferredSize::Type::WRAP) {
+                    return std::max(contentSize, minSize);
+                } else {
+                    return std::max(parentSize * value * 0.01f, minSize);
+                }
+            }
         };
 
     public:
-        class Width {
-        private:
-            float value;
-
-            Width(SpecialValues v) {
-                value = (float)v;
-            }
-
+        class Width:public OrientationSize {
         public:
             static const Width& WRAP;
             static const Width& FILL;
 
-            Width(float v) {
-                this->value = v > 0 ? v : 0.0f;
-            }
+            Width(float v):OrientationSize(v) {}
 
-            inline operator float() const {
-                return value;
-            }
-
-            inline bool operator==(const Width& type) const {
-                return this->value == type.value;
-            }
-
-            inline bool operator==(const Width& type) {
-                return this->value == type.value;
-            }
+            Width(PreferredSize::Type type, float v):OrientationSize(type, v) {}
         };
 
-        class Height {
-        private:
-            float value;
-
-            Height(SpecialValues v) {
-                value = (float)v;
-            }
-
+        class Height:public OrientationSize {
         public:
             static const Height& WRAP;
             static const Height& FILL;
 
-            Height(float v) {
-                this->value = v > 0 ? v : 0.0f;
-            }
+            Height(float v):OrientationSize(v) {}
 
-            inline operator float() const {
-                return value;
-            }
-
-            inline bool operator==(const Height& type) const {
-                return this->value == type.value;
-            }
-
-            inline bool operator==(const Height& type) {
-                return this->value == type.value;
-            }
+            Height(PreferredSize::Type type, float v):OrientationSize(type, v) {}
         };
 
         Width width = Width::WRAP;
         Height height = Height::WRAP;
+
+        static PreferredSize parse(const Ghurund::Core::AString& str);
     };
 }
 

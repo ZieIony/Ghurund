@@ -2,7 +2,7 @@
 #include "DragHelper.h"
 
 namespace Ghurund::UI {
-    DragHelper::DragHelper(Control& handle, Control& content):onDragged(content) {
+    DragHelper::DragHelper(Control& handle, Control& content):dragged(content) {
         handle.OnMouseButton.add([this, &content](EventConsumer& sender, const MouseButtonEventArgs& args) {
             if (args.Action == MouseAction::DOWN && args.Button == MouseButton::LEFT) {
                 pressControlPos = content.Position;
@@ -22,7 +22,7 @@ namespace Ghurund::UI {
                     std::max(0.0f,std::min(content.Position.y + args.Delta.y, parent->Size.height - content.Size.height))
                 };
                 if (prevControlPos.x != content.Position.x || prevControlPos.y != content.Position.y)
-                    onDragged();
+                    dragged();
                 return true;
             }
             return false;

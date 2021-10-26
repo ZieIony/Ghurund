@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "core/Enum.h"
+#include "core/reflection/Type.h"
 
 #include <Windows.h>
 #include <tchar.h>

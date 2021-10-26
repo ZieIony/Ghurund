@@ -1,20 +1,13 @@
 #pragma once
 
 #include "Theme.h"
-#include "ui/control/Control.h"
 
 #include <stdint.h>
 
 namespace Ghurund::UI {
     class ColorAttr:public Object {
     protected:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorAttr))
-                .withModifiers(TypeModifier::ABSTRACT)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         virtual Color getValue(const Control& owner) const = 0;
@@ -31,15 +24,10 @@ namespace Ghurund::UI {
         Color value;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorValue))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        ColorValue(Color value):value(value) {}
+        ColorValue(const Color& value):value(value) {}
 
         virtual Color getValue(const Control& owner) const override {
             return value;
@@ -61,19 +49,12 @@ namespace Ghurund::UI {
         ColorKey key;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorRef))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ColorRef(const ColorKey& key):key(key) {}
 
-        virtual Color getValue(const Control& owner) const override {
-            return owner.Theme->Colors[key];
-        }
+        virtual Color getValue(const Control& owner) const override;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

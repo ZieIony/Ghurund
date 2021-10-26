@@ -1,6 +1,7 @@
 #include "ghpch.h"
 #include "Audio.h"
 
+#include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "MathTypes.h"
@@ -25,20 +26,28 @@ namespace Ghurund::Audio {
         return TYPE;
     }
 
-    Status Audio::init() {
-        if (FAILED(MFStartup(MF_VERSION)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed start the Windows Media Foundation\n"));
+    void Audio::init() {
+        if (FAILED(MFStartup(MF_VERSION))) {
+            Logger::log(LogType::ERR0R, _T("Failed start the Windows Media Foundation\n"));
+            throw CallFailedException();
+        }
 
         // set media foundation reader to low latency
-        if (FAILED(MFCreateAttributes(sourceReaderConfiguration.GetAddressOf(), 1)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to create Media Foundation Source Reader configuration\n"));
+        if (FAILED(MFCreateAttributes(sourceReaderConfiguration.GetAddressOf(), 1))) {
+            Logger::log(LogType::ERR0R, _T("Unable to create Media Foundation Source Reader configuration\n"));
+            throw CallFailedException();
+        }
 
-        if (FAILED(sourceReaderConfiguration->SetUINT32(MF_LOW_LATENCY, true)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set Windows Media Foundation configuration\n"));
+        if (FAILED(sourceReaderConfiguration->SetUINT32(MF_LOW_LATENCY, true))) {
+            Logger::log(LogType::ERR0R, _T("Unable to set Windows Media Foundation configuration\n"));
+            throw CallFailedException();
+        }
 
         uint32_t flags = 0;
-        if (FAILED(XAudio2Create(device.GetAddressOf(), flags)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to init XAudio2 engine\n"));
+        if (FAILED(XAudio2Create(device.GetAddressOf(), flags))) {
+            Logger::log(LogType::ERR0R, _T("Failed to init XAudio2 engine\n"));
+            throw CallFailedException();
+        }
 
 #ifdef _DEBUG
         // To see the trace output, you need to view ETW logs for this application:
@@ -54,14 +63,13 @@ namespace Ghurund::Audio {
 
         if (FAILED(device->CreateMasteringVoice(&masteringVoice))) {
             device.Reset();
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed creating mastering voice\n"));
+            Logger::log(LogType::ERR0R, _T("Failed creating mastering voice\n"));
+            throw CallFailedException();
         }
 
         DWORD dwChannelMask;
         masteringVoice->GetChannelMask(&dwChannelMask);
         X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance);
-
-        return Status::OK;
     }
 
     void Audio::uninit() {

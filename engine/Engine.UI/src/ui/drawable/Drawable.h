@@ -1,11 +1,16 @@
 #pragma once
 
-#include "ui/control/Control.h"
+#include "core/Pointer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
+    class Control;
+    class ICanvas;
+
     class Drawable:public Pointer {
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -19,7 +24,7 @@ namespace Ghurund::UI {
 
     protected:
         Ghurund::Core::FloatSize size = { 0, 0 };
-        PreferredSize preferredSize;
+        Ghurund::Core::FloatSize preferredSize = { 0, 0 };
 
         Control* owner = nullptr;
 
@@ -41,11 +46,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize, put = setSize)) Ghurund::Core::FloatSize& Size;
 
-        inline const PreferredSize& getPreferredSize() const {
+        inline const FloatSize& getPreferredSize() const {
             return preferredSize;
         }
 
-        __declspec(property(get = getPreferredSize)) const PreferredSize& PreferredSize;
+        __declspec(property(get = getPreferredSize)) const FloatSize& PreferredSize;
 
         inline Control* getOwner() {
             return owner;
@@ -59,9 +64,9 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) {}
 
-        virtual void onDraw(Canvas& canvas) = 0;
+        virtual void onDraw(ICanvas& canvas) = 0;
 
-        void draw(Canvas& canvas) {
+        void draw(ICanvas& canvas) {
             onDraw(canvas);
         }
     };

@@ -39,7 +39,7 @@ namespace Ghurund {
             delete clearColor;
         }
 
-        Status init(Graphics& graphics, ParameterManager& parameterManager);
+        void init(Graphics& graphics, ParameterManager& parameterManager);
 
         void uninit();
 

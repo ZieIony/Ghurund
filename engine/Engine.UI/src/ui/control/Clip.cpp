@@ -2,7 +2,7 @@
 #include "Clip.h"
 
 #include "ui/Canvas.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void Clip::onDraw(Canvas& canvas) {
+    void Clip::onDraw(ICanvas& canvas) {
         if (shape) {
             canvas.clipShape(*shape);
             __super::onDraw(canvas);

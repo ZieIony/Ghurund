@@ -2,6 +2,8 @@
 
 #include "GenericString.h"
 
+#include <format>
+
 namespace Ghurund::Core {
 
 #ifdef UNICODE

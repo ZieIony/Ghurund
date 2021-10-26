@@ -33,7 +33,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
-        virtual void onDraw(Canvas& canvas);
+        virtual void onDraw(ICanvas& canvas);
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

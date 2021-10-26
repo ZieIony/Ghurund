@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "ColorView.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
@@ -15,7 +15,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ColorView::onDraw(Canvas& canvas) {
+    void ColorView::onDraw(ICanvas& canvas) {
         canvas.fillRect(0, 0, Size.width, Size.height, color->getValue(*this));
     }
 

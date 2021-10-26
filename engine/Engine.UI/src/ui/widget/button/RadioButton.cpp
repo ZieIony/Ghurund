@@ -17,12 +17,12 @@ namespace Ghurund::UI {
     void RadioButton::onLayoutChanged() {
         __super::onLayoutChanged();
         if (Layout) {
-            Layout->Selectable->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
+            Layout->Selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
                 Checked = true;
-                CheckedChanged();
+                checkedChanged();
                 return true;
-            });
-            Layout->Selectable->StateChanged.add(stateHandler);
+            };
+            Layout->Selectable->stateChanged += stateHandler;
         }
     }
 

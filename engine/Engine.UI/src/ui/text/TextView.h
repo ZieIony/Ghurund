@@ -41,19 +41,19 @@ namespace Ghurund::UI {
                 cursorDrawable->update(time);
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual void onThemeChanged() override;
 
         static const Ghurund::Core::Type& GET_TYPE();
 
-    public:
-        TextView();
-
         ~TextView() {
             if (cursorDrawable)
                 cursorDrawable->release();
         }
+
+    public:
+        TextView(std::unique_ptr<ITextLayout> textLayout);
 
         inline CursorDrawable* getCursorDrawable() {
             return cursorDrawable;

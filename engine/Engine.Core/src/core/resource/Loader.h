@@ -30,11 +30,7 @@ namespace Ghurund::Core {
     private:
         Allocator<size_t>* allocator;
 
-    public:
-        Loader(Allocator<size_t>* allocator = nullptr):allocator(allocator) {}
-
-        virtual ~Loader() = 0 {}
-
+    protected:
         template<class T>
         T* makeResource() {
             Constructor<T>* constructor = (Constructor<T>*)T::TYPE.Constructors.get(0);
@@ -43,7 +39,12 @@ namespace Ghurund::Core {
             return (T*)constructor->invoke();
         }
 
-        virtual Status load(ResourceManager& manager, MemoryInputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) = 0;
-        virtual Status save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const = 0;
+    public:
+        Loader(Allocator<size_t>* allocator = nullptr):allocator(allocator) {}
+
+        virtual ~Loader() = 0 {}
+
+        virtual Resource* load(ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) = 0;
+        virtual void save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const = 0;
     };
 }

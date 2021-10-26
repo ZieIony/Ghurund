@@ -80,9 +80,9 @@ namespace Ghurund::UI {
             if (group->PreferredSize.width == PreferredSize::Width::FILL &&
                 group->PreferredSize.height == PreferredSize::Height::FILL)
                 return { 0,0 };
-            if ((float)group->PreferredSize.width >= 0 &&
-                (float)group->PreferredSize.height >= 0) {
-                return { (float)group->PreferredSize.width, (float)group->PreferredSize.height };
+            if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS &&
+                group->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                return { group->PreferredSize.width.Value, group->PreferredSize.height.Value };
             }
 
             Ghurund::Core::FloatSize measuredSize = { 0,0 };

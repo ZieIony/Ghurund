@@ -4,7 +4,7 @@
 #include "core/Concepts.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/reflection/TypeBuilder.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Style.h"
 #include "ui/style/Theme.h"
 #include "ui/control/InvalidControl.h"
@@ -44,7 +44,7 @@ namespace Ghurund::UI {
             if (layoutIndex == Theme->Layouts.Size)
                 return nullptr;
             FilePath layoutPath = convertText<char, wchar_t>(Theme->Layouts.getValue(layoutIndex));
-            SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Ghurund::UI::Layout> layout = Context->ResourceManager.load<Ghurund::UI::Layout>(layoutPath, nullptr, LoadOption::DONT_CACHE);
             if (layout && !layout->Controls.Empty)
                 return ghnew LayoutType(layout->Controls[0]);
             return nullptr;
@@ -130,16 +130,16 @@ namespace Ghurund::UI {
             if (layoutPath.Empty) {
                 Logger::log(LogType::ERR0R, Status::INV_DATA, _T("Missing 'layout' attribute.\n"));
             } else {
-                SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(convertText<char, wchar_t>(layoutPath), nullptr, &result, LoadOption::DONT_CACHE);
-                if (result == Status::OK) {
+                try{
+                    SharedPointer<Ghurund::UI::Layout> layout = loader.ResourceManager.load<Ghurund::UI::Layout>(convertText<char, wchar_t>(layoutPath), nullptr, LoadOption::DONT_CACHE);
                     if (layout->Controls.Size == 1) {
                         control = layout->Controls[0];
                         control->addReference();
                     } else {
                         Logger::log(LogType::WARNING, Status::INV_DATA, _T("Layout '{}' has to contain exactly one child.\n"), layoutPath);
                     }
-                } else {
-                    Logger::log(LogType::WARNING, result, _T("Could not load layout '{}'.\n"), layoutPath);
+                } catch(...) {
+                    Logger::log(LogType::WARNING, _T("Could not load layout '{}'.\n"), layoutPath);
                 }
             }
 

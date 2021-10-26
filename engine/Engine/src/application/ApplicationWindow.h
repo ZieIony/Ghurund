@@ -26,6 +26,20 @@ namespace Ghurund {
         Application& app;
 
     protected:
+        virtual bool onSizeChangingEvent(const IntSize& size) override {
+            __super::onSizeChangingEvent(size);
+            swapChain->uninitBuffers();
+            return true;
+        }
+
+        virtual bool onSizeChangedEvent() override {
+            layers.Size = Size;
+            swapChain->resize(Size.width, Size.height);
+            swapChain->initBuffers();
+            __super::onSizeChangedEvent();
+            return true;
+        }
+
         virtual bool onFocusedChangedEvent() override;
 
     public:
@@ -35,7 +49,7 @@ namespace Ghurund {
             uninit();
         }
 
-        Status init();
+        virtual Status init();
 
         inline void uninit() {
             delete swapChain;
@@ -53,12 +67,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getLayers)) LayerList& Layers;
-
-        virtual void setSize(uint32_t w, uint32_t h) {
-            __super::setSize(w, h);
-            swapChain->resize(w, h);
-            layers.Size = Size;
-        }
 
         inline Application& getApplication() {
             return app;

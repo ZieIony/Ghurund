@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "PaddingContainer.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 
 #include <regex>
 
@@ -18,17 +18,19 @@ namespace Ghurund::UI {
     void PaddingContainer::onMeasure(float parentWidth, float parentHeight) {
         if (Child) {
             Child->measure(
-                (preferredSize.width >= 0 ? (float)preferredSize.width : parentWidth) - padding.left - padding.right,
-                (preferredSize.height >= 0 ? (float)preferredSize.height : parentHeight) - padding.top - padding.bottom
+                (preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth) - padding.left - padding.right,
+                (preferredSize.height.Type == PreferredSize::Type::PIXELS ? preferredSize.height.Value : parentHeight) - padding.top - padding.bottom
             );
         }
 
-        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+        if (preferredSize.width.Type == PreferredSize::Type::PIXELS)
+            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
+        if (preferredSize.height.Type == PreferredSize::Type::PIXELS)
+            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
         if (Child) {
-            float childWidth = (float)Child->PreferredSize.width >= 0 ? (float)Child->PreferredSize.width : Child->MeasuredSize.width;
+            float childWidth = Child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.width.Value : Child->MeasuredSize.width;
             measuredSize.width = std::max(measuredSize.width, padding.left + padding.right + childWidth);
-            float childHeight = (float)Child->PreferredSize.height >= 0 ? (float)Child->PreferredSize.height : Child->MeasuredSize.height;
+            float childHeight = Child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.height.Value : Child->MeasuredSize.height;
             measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom + childHeight);
         } else {
             measuredSize.width = std::max(measuredSize.width, padding.left + padding.right);

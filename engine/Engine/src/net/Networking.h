@@ -18,7 +18,7 @@ namespace Ghurund::Net {
 #pragma endregion
 
     public:
-        Status init();
+        void init();
 
         void uninit() {
             WSACleanup();

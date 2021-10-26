@@ -84,7 +84,6 @@
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\graphics\Graphics2D.cpp" />
     <ClCompile Include="src\ui\UIFeature.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +100,7 @@
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3D.h" />
     <ClInclude Include="src\DirectXTypes.h" />
+    <ClInclude Include="src\Exceptions.h" />
     <ClInclude Include="src\game\entity\camera\CameraComponent.h" />
     <ClInclude Include="src\game\entity\camera\CameraEntity.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
@@ -202,7 +202,6 @@
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\ui\control\CheckableView.h" />
     <ClInclude Include="src\ui\control\Column.h" />
-    <ClInclude Include="src\graphics\Graphics2D.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
     <ClInclude Include="src\ui\control\ListView.h" />
     <ClInclude Include="src\ui\control\Row.h" />
@@ -210,7 +209,7 @@
     <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\net\Client.h" />
-    <ClInclude Include="src\Ghurund.h" />
+    <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\net\Message.h" />
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\Socket.h" />
@@ -293,7 +292,7 @@
     <TargetName>GhurundEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)engine\Engine.UI.Direct2D\src;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
     <IntDir>$(Configuration)\</IntDir>
     <TargetName>Ghurund.Engine_64</TargetName>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>

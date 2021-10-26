@@ -2,6 +2,9 @@
 
 #include "Common.h"
 
+#include <stdint.h>
+#include <memory.h>
+
 namespace Ghurund::Core {
     class Buffer {
     private:

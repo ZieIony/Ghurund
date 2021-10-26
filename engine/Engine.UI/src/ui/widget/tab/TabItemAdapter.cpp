@@ -11,10 +11,10 @@ namespace Ghurund::UI {
 
     void TabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {
         //tabView.Layout->SelectableView->Selected = tabLayout.SelectedPosition == position;
-        tabView.Layout->SelectableView->Clicked.add([this, position](Control& sender, const MouseClickedEventArgs& args) {
+        tabView.Layout->SelectableView->clicked += [this, position](Control& sender, const MouseClickedEventArgs& args) {
             //tabLayout.SelectedPosition = position;
             return true;
-        });
+        };
     }
 
     void TextTabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {

@@ -42,7 +42,7 @@ namespace Ghurund::Audio {
         X3DAUDIO_LISTENER listener = { };	// player's position
 
     public:
-        virtual Status init() override;
+        virtual void init() override;
 
         virtual void uninit() override;
 

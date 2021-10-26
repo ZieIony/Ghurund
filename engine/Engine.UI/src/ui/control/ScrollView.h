@@ -48,7 +48,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 

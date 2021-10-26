@@ -8,7 +8,6 @@
 namespace Ghurund::UI {
     class Button:public Widget<ButtonBinding> {
     private:
-        Event<Button, MouseClickedEventArgs> clicked = *this;
         EventHandler<Control> stateHandler = [this](Control& control) {
             if (Layout->Clickable->Pressed) {
                 Layout->State->State = IndicatorState::PRESSED;
@@ -27,19 +26,15 @@ namespace Ghurund::UI {
             if (!Layout)
                 return;
             if (Layout->Clickable) {
-                Layout->Clickable->StateChanged.add(stateHandler);
-                Layout->Clickable->Clicked.add([this](Control&, const MouseClickedEventArgs& args) {
+                Layout->Clickable->stateChanged += stateHandler;
+                Layout->Clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
                     return clicked(args);
-                });
+                };
             }
         }
 
     public:
-        inline Event<Button, MouseClickedEventArgs>& getClicked() {
-            return clicked;
-        }
-
-        __declspec(property(get = getClicked)) Event<Button, MouseClickedEventArgs>& Clicked;
+        Event<Button, MouseClickedEventArgs> clicked = *this;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

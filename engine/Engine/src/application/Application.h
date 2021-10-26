@@ -36,7 +36,7 @@ namespace Ghurund {
 
         FeatureCollection features;
 
-        Status init();
+        void init();
         void handleMessages();
         void uninit();
 

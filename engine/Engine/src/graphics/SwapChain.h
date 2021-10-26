@@ -16,14 +16,12 @@ namespace Ghurund {
     using namespace Microsoft::WRL;
 
     class Graphics;
-    class Graphics2D;
 
     class SwapChain:public Object {
     private:
         Graphics* graphics = nullptr;
-        Ghurund::Graphics2D* graphics2d;
         ComPtr<IDXGISwapChain3> swapChain;
-        Frame* frames = nullptr;
+        Array<Frame>* frames = nullptr;
         uint32_t frameCount;
         size_t currentFrame = 0;
         SystemWindow* window = nullptr;
@@ -37,14 +35,20 @@ namespace Ghurund {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, Ghurund::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount = 3);
+        Status init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
 
         Status initBuffers();
 
         void uninitBuffers();
 
+        Array<Frame>& getFrames() {
+            return *frames;
+        }
+
+        __declspec(property(get = getFrames)) Array<Frame>& Frames;
+
         Frame& getCurrentFrame() {
-            return frames[currentFrame];
+            return frames->get(currentFrame);
         }
 
         __declspec(property(get = getCurrentFrame)) Frame& CurrentFrame;

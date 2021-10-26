@@ -14,18 +14,18 @@ namespace Ghurund::UI {
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 w = std::max(width, c->MinSize.width);
-            } else if (c->PreferredSize.width >= 0){
-                w = std::min((float)c->PreferredSize.width, width);
+            } else if (c->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+                w = std::min(c->PreferredSize.width.Value, width);
                 w = std::max(w, c->MinSize.width);
-            }else{
+            } else {
                 w = std::min((float)c->MeasuredSize.width, width);
             }
 
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 h = std::max(height, c->MinSize.height);
-            } else if (c->PreferredSize.height >= 0) {
-                h = std::min((float)c->PreferredSize.height, height);
+            } else if (c->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                h = std::min(c->PreferredSize.height.Value, height);
                 h = std::max(h, c->MinSize.height);
             } else {
                 h = std::min((float)c->MeasuredSize.height, height);
@@ -49,6 +49,12 @@ namespace Ghurund::UI {
                 ity = (height - h) / 2;
             }
 
+            if (group->RoundToPixelsEnabled) {
+                itx = round(itx);
+                ity = round(ity);
+                w = round(w);
+                h = round(h);
+            }
             c->layout(itx, ity, w, h);
         }
     }

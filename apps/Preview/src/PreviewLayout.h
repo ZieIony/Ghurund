@@ -5,6 +5,7 @@
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include "ui/layout/StackLayout.h"
+#include "ui/style/WindowsTheme.h"
 
 namespace Preview {
     using namespace Ghurund::UI;
@@ -14,43 +15,45 @@ namespace Preview {
     };
 
     class PreviewLayout:public Widget<LayoutBinding> {
-    private:
-        Event<PreviewLayout, ThemeType> themeChanged = *this;
-
     protected:
         virtual void onLayoutChanged() override {
             if (!Layout)
                 return;
-            Layout->ThemeCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
+            Layout->ThemeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
                 repaint();
                 return true;
-            });
-            Layout->EnabledCheckBox->CheckedChanged.add([this](CheckBox& checkBox) {
+            };
+            Layout->EnabledCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 Layout->Container->Enabled = checkBox.Checked;
                 Layout->Container->repaint();
                 return true;
-            });
+            };
 
             auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
-                ColorView* colorView = button.find<ColorView>();
-                Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color.getValue(*colorView));
-                Theme->updateColors();
-                dispatchThemeChanged();
+                if (args.Button == MouseButton::LEFT) {
+                    ColorView* colorView = button.find<ColorView>();
+                    Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color.getValue(*colorView));
+                    Theme->updateColors();
+                    dispatchThemeChanged();
+                } else if (args.Button == MouseButton::RIGHT) {
+
+                }
                 return true;
             };
-            Layout->Color1->Clicked.add(colorClickHandler);
-            Layout->Color2->Clicked.add(colorClickHandler);
-            Layout->Color3->Clicked.add(colorClickHandler);
-            Layout->Color4->Clicked.add(colorClickHandler);
+            Layout->Color1->clicked += colorClickHandler;
+            Layout->Color2->clicked += colorClickHandler;
+            Layout->Color3->clicked += colorClickHandler;
+            Layout->Color4->clicked += colorClickHandler;
+
+            ColorView* colorView = Layout->ColorTheme->find<ColorView>();
+            WindowsTheme::init();
+            colorView->Color = ColorValue(WindowsTheme::getAccentColor());
+            Layout->ColorTheme->clicked += colorClickHandler;
         }
 
     public:
-        inline Event<PreviewLayout, ThemeType>& getThemeChanged() {
-            return themeChanged;
-        }
-
-        __declspec(property(get = getThemeChanged)) Event<PreviewLayout, ThemeType>& ThemeChanged;
+        Event<PreviewLayout, ThemeType> themeChanged = *this;
 
         inline StackLayout* getContainer() {
             return Layout->Container;

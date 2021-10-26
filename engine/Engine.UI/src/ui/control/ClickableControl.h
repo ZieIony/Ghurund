@@ -7,8 +7,6 @@ namespace Ghurund::UI {
     private:
         bool hovered = false;
         MousePressed buttons;
-        Event<Control, MousePressedEventArgs> onPressed = { *this };
-        Event<Control, MouseClickedEventArgs> onClicked = { *this };
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -20,6 +18,9 @@ namespace Ghurund::UI {
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
     public:
+        Event<Control, MousePressedEventArgs> onPressed = *this;
+        Event<Control, MouseClickedEventArgs> clicked = *this;
+
         ClickableControl() {
             Focusable = true;
         }
@@ -35,18 +36,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = isPressed)) const MousePressed& Pressed;
-
-        inline Event<Control, MousePressedEventArgs>& getPressed() {
-            return onPressed;
-        }
-
-        __declspec(property(get = getPressed)) Event<Control, MousePressedEventArgs>& Pressed;
-
-        inline Event<Control, MouseClickedEventArgs>& getClicked() {
-            return onClicked;
-        }
-
-        __declspec(property(get = getClicked)) Event<Control, MouseClickedEventArgs>& Clicked;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

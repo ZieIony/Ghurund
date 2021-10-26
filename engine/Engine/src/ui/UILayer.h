@@ -1,29 +1,52 @@
 #pragma once
 
-#include "ui/Canvas.h"
+#include "ui/direct2d/Canvas.h"
 #include "ui/RootView.h"
 #include "application/Layer.h"
-#include "graphics/Graphics2d.h"
+#include "ui/direct2d/Graphics2d.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::UI::Direct2D;
+
     class UILayer:public Layer {
     private:
         Graphics2D& graphics;
-        Canvas* canvas;
+        Ghurund::UI::Direct2D::Canvas* canvas;
         RootView* rootView;
+        Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
 
     protected:
+        virtual bool onSizeChangedEvent() override {
+            graphics.flush();
+            return true;
+        }
+
         virtual bool onFocusedChangedEvent() override {
             rootView->Focused = Focused;
             return true;
         }
 
     public:
-        UILayer(Graphics2D& graphics, RootView* rootView):graphics(graphics) {
-            canvas = ghnew Canvas();
+        UILayer(Graphics2D& graphics, RootView* rootView, ApplicationWindow* window):graphics(graphics) {
+            canvas = ghnew Ghurund::UI::Direct2D::Canvas();
             canvas->init(graphics.DeviceContext);
             this->rootView = rootView;
             rootView->addReference();
+            if (window) {
+                SwapChain& swapChain = window->SwapChain;
+                window->OnSizeChanging.add([&](const Window& window, const IntSize& size) {
+                    renderTargets.clear();
+                    return true;
+                });
+                window->OnSizeChanged.add([&](const Window& window) {
+                    for (Frame& frame : swapChain.Frames) {
+                        RenderTarget2D* target = ghnew RenderTarget2D();
+                        target->init(graphics, *frame.RenderTarget.Texture);
+                        renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
+                    }
+                    return true;
+                });
+            }
         }
 
         ~UILayer() {
@@ -54,12 +77,13 @@ namespace Ghurund::UI {
         }
 
         virtual Status draw(RenderTarget& renderTarget) override {
-            if (graphics.beginPaint(renderTarget) == Status::OK) {
+            RenderTarget2D* target2d = renderTargets.get(&renderTarget).get();
+            if (graphics.beginPaint(*target2d) == Status::OK) {
                 canvas->beginPaint();
                 rootView->draw(*canvas);
                 canvas->endPaint();
             }
-            Status result = graphics.endPaint(renderTarget);
+            Status result = graphics.endPaint(*target2d);
             if (result != Status::OK) {
                 canvas->uninit();
                 canvas->init(graphics.DeviceContext);

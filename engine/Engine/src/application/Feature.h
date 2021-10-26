@@ -24,7 +24,7 @@ namespace Ghurund {
             uninit();
         }
 
-        virtual Status init() = 0;
+        virtual void init() = 0;
         virtual void uninit() {}
     };
 }

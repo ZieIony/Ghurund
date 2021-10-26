@@ -11,31 +11,26 @@ namespace Ghurund::Core {
 
     class SystemWindow: public Window {
     private:
-        const WindowClass& windowClass;
-
         HWND handle;
         Ghurund::Core::Input input;
         Ghurund::Core::Timer& timer;
 
         DragDropManager* dragDropManager = nullptr;
-        Event<Ghurund::Core::Window> onDraggedOver = Event<Ghurund::Core::Window>(*this);
-        Event<Ghurund::Core::Window> onDragLeft = Event<Ghurund::Core::Window>(*this);
-        Event<Ghurund::Core::Window, Array<FilePath*>&> onDragEntered = Event<Ghurund::Core::Window, Array<FilePath*>&>(*this);
-        Event<Ghurund::Core::Window, Array<FilePath*>&> onDropped = Event<Ghurund::Core::Window, Array<FilePath*>&>(*this);
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
+        Event<Ghurund::Core::Window> onDraggedOver = *this;
+        Event<Ghurund::Core::Window> onDragLeft = *this;
+        Event<Ghurund::Core::Window, Array<FilePath*>&> onDragEntered = *this;
+        Event<Ghurund::Core::Window, Array<FilePath*>&> onDropped = *this;
+
+        SystemWindow(HWND handle, Ghurund::Core::Timer& timer);
+
         SystemWindow(const WindowClass& type, Ghurund::Core::Timer& timer);
 
         ~SystemWindow();
-
-        inline const WindowClass& getClass() const {
-            return windowClass;
-        }
-
-        __declspec(property(get = getClass)) const WindowClass& Class;
 
         virtual void setTitle(const WString& title) override {
             __super::setTitle(title);
@@ -81,37 +76,16 @@ namespace Ghurund::Core {
 
         __declspec(property(get = isDragDropEnabled, put = setDragDropEnabled)) bool DragDropEnabled;
 
-        Event<Ghurund::Core::Window>& getOnDraggedOver() {
-            return onDraggedOver;
-        }
-
-        __declspec(property(get = getOnDraggedOver)) Event<Ghurund::Core::Window>& OnDraggedOver;
-
-        Event<Ghurund::Core::Window>& getOnDragLeft() {
-            return onDragLeft;
-        }
-
-        __declspec(property(get = getOnDragLeft)) Event<Ghurund::Core::Window>& OnDragLeft;
-
-        Event<Ghurund::Core::Window, Array<FilePath*>&>& getOnDragEntered() {
-            return onDragEntered;
-        }
-
-        __declspec(property(get = getOnDragEntered)) Event<Ghurund::Core::Window, Array<FilePath*>&>& OnDragEntered;
-
-        Event<Ghurund::Core::Window, Array<FilePath*>&>& getOnDropped() {
-            return onDropped;
-        }
-
-        __declspec(property(get = getOnDropped)) Event<Ghurund::Core::Window, Array<FilePath*>&>& OnDropped;
-
         virtual void refresh() const override {
             RedrawWindow(handle, nullptr, nullptr, RDW_INVALIDATE);
         }
 
-        virtual void activate() override {
-            Visible = true;
-            SetActiveWindow(handle);
+        virtual void bringToFront() {
+            SetWindowPos(handle, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        }
+
+        virtual void sendToBack() {
+            SetWindowPos(handle, HWND_BOTTOM, 0, 0, 0, 0, SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE);
         }
 
         virtual void update(const uint64_t time) override;

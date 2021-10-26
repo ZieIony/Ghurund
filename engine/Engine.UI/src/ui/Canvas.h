@@ -6,123 +6,63 @@
 #include "core/math/Rect.h"
 
 #include <dxgi1_6.h>
-#include <d2d1_3.h>
-#include <dwrite.h>
-#include <d3d11on12.h>
 #include <wrl.h>
+#include <ui/image/Bitmap.h>
+#include <ui/image/VectorImage.h>
+#include <ui/text/ITextLayout.h>
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;
 
-    class Canvas {
-        ComPtr<ID2D1SolidColorBrush> fillBrush;
-        ComPtr<ID2D1SolidColorBrush> strokeBrush;
-        List<D2D1::Matrix3x2F> matrixStack;
-        ID2D1DeviceContext5* deviceContext = nullptr;
-        ComPtr<ID2D1Effect> tintEffect;
-        ComPtr<ID2D1Effect> shadowEffect;
-        ComPtr<ID2D1Effect> floodEffect;
-
+    class ICanvas {
     public:
-        Status init(ID2D1DeviceContext5& deviceContext);
+        virtual ~ICanvas() = 0 {}
 
-        void uninit();
+        virtual bool isAntialiasingEnabled() = 0;
 
-        inline bool isAntialiasingEnabled() {
-            return deviceContext->GetAntialiasMode() == D2D1_ANTIALIAS_MODE_PER_PRIMITIVE;
-        }
-
-        inline void setAntialiasingEnabled(bool enabled) {
-            deviceContext->SetAntialiasMode(enabled ? D2D1_ANTIALIAS_MODE_PER_PRIMITIVE : D2D1_ANTIALIAS_MODE_ALIASED);
-        }
+        virtual void setAntialiasingEnabled(bool enabled) = 0;
 
         __declspec(property(get = isAntialiasingEnabled, put = setAntialiasingEnabled)) bool AntialiasingEnabled;
 
-        inline void beginPaint() {
-            matrixStack.add(D2D1::Matrix3x2F::Identity());
-            deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void beginPaint() = 0;
 
-        void endPaint();
+        virtual void endPaint() = 0;
 
-        inline void clear(int32_t color) {
-            deviceContext->Clear(D2D1::ColorF(color));
-        }
+        virtual void clear(int32_t color) = 0;
 
-        inline void drawRect(float x, float y, float width, float height, const Color& color, float thickness, StrokeStyle* strokeStyle = nullptr) {
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
-            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness, strokeStyle ? strokeStyle->get() : nullptr);
-        }
+        virtual void drawRect(float x, float y, float width, float height, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) = 0;
 
-        inline void fillRect(float x, float y, float width, float height, const Color& color) {
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
-            deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
-        }
+        virtual void fillRect(float x, float y, float width, float height, const Color& color) = 0;
 
-        inline void drawShape(Shape& shape, const Color& color, float thickness) {
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
-            deviceContext->DrawGeometry(shape.Path, fillBrush.Get(), thickness);
-        }
+        virtual void drawShape(Ghurund::UI::Shape& shape, const Color& color, float thickness) = 0;
 
-        void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, StrokeStyle* strokeStyle = nullptr) {
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
-            deviceContext->DrawLine({ x1,y1 }, { x2,y2 }, fillBrush.Get(), thickness, strokeStyle ? strokeStyle->get() : nullptr);
-        }
+        virtual void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) = 0;
 
-        void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& dst, float alpha = 1.0f);
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) = 0;
 
-        void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& dst, const Color& color, float alpha = 1.0f);
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Color& color, float alpha = 1.0f) = 0;
 
-        void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f);
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) = 0;
 
-        void drawImage(ID2D1Bitmap1* bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f);
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f) = 0;
 
-        void drawImage(ID2D1SvgDocument& svgDocument);
+        virtual void drawImage(VectorImage& vectorImage) = 0;
 
-        void drawShadow(ID2D1Bitmap1* bitmapImage, float radius, const Color& color);
+        virtual void drawText(ITextLayout& layout, float x, float y) = 0;
 
-        void drawText(IDWriteTextLayout& layout, float x, float y, const Color& color) {
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
-            deviceContext->DrawTextLayout(D2D1::Point2F(x, y), &layout, fillBrush.Get());
-        }
+        virtual void translate(float x, float y) = 0;
 
-        inline void translate(float x, float y) {
-            matrixStack[matrixStack.Size - 1] = matrixStack[matrixStack.Size - 1] * D2D1::Matrix3x2F::Translation(x, y);
-            deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void save() = 0;
 
-        inline void save() {
-            matrixStack.add(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void restore() = 0;
 
-        inline void restore() {
-            matrixStack.removeAt(matrixStack.Size - 1);
-            deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void clipShape(Ghurund::UI::Shape& shape) = 0;
 
-        inline void clipShape(Shape& shape) {
-            ComPtr<ID2D1Layer> pLayer;
-            D2D_SIZE_F size = { shape.Bounds.right - shape.Bounds.left, shape.Bounds.bottom - shape.Bounds.top };
-            deviceContext->CreateLayer(&size, &pLayer);
-            deviceContext->PushLayer(D2D1::LayerParameters(D2D_RECT_F{ shape.Bounds.left, shape.Bounds.top, shape.Bounds.right, shape.Bounds.bottom }, shape.Path), pLayer.Get());
-        }
+        virtual void restoreClipShape() = 0;
 
-        inline void restoreClipShape() {
-            deviceContext->PopLayer();
-        }
+        virtual void clipRect(float x, float y, float width, float height) = 0;
 
-        inline void clipRect(float x, float y, float width, float height) {
-            deviceContext->PushAxisAlignedClip(D2D1::RectF(x, y, x + width, y + height), D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
-        }
-
-        inline void restoreClipRect() {
-            deviceContext->PopAxisAlignedClip();
-        }
+        virtual void restoreClipRect() = 0;
     };
 }

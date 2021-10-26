@@ -38,7 +38,7 @@ namespace Ghurund::UI {
                 shape->Bounds = FloatRect{ 0, 0, width, height };
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
     };

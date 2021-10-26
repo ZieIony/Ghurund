@@ -3,7 +3,7 @@
 
 #include "core/input/Mouse.h"
 #include "ui/Cursor.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 #include "core/reflection/TypeBuilder.h"
@@ -32,7 +32,7 @@ namespace Ghurund::UI {
         static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
         static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
         static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
-        static auto PROPERTY_CONTEXT = ReadOnlyProperty<Control, UIContext*>("Context", (UIContext * (Control::*)()) & getContext);
+        static auto PROPERTY_CONTEXT = ReadOnlyProperty<Control, IUIContext*>("Context", (IUIContext * (Control::*)()) & getContext);
         static auto PROPERTY_STYLE = Property<Control, const Ghurund::UI::Style*>("Style", (Ghurund::UI::Style * (Control::*)()) & getStyle, (void(Control::*)(const Ghurund::UI::Style*)) & setStyle);
         static auto PROPERTY_POSITIONINWINDOW = ReadOnlyProperty<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
         static auto PROPERTY_POSITIONONSCREEN = ReadOnlyProperty<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
@@ -82,12 +82,25 @@ namespace Ghurund::UI {
         this->name = ghnew AString(name);
     }
 
-    /*
-    * measured size doesn't care about PreferredSize::FILL
-    */
     void Control::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+        if (preferredSize.width.Type == PreferredSize::Type::PIXELS) {
+            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
+        } else if (preferredSize.width.Type == PreferredSize::Type::FILL) {
+            measuredSize.width = std::max(minSize.width, parentWidth);
+        } else if (preferredSize.width.Type == PreferredSize::Type::PERCENT) {
+            measuredSize.width = std::max(minSize.width, preferredSize.width.Value * parentWidth / 100.0f);
+        } else {
+            measuredSize.width = minSize.width;
+        }
+        if (preferredSize.height.Type == PreferredSize::Type::PIXELS) {
+            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
+        } else if (preferredSize.height.Type == PreferredSize::Type::FILL) {
+            measuredSize.height = std::max(minSize.height, parentHeight);
+        } else if (preferredSize.height.Type == PreferredSize::Type::PERCENT) {
+            measuredSize.height = std::max(minSize.height, preferredSize.height.Value * parentHeight / 100.0f);
+        } else {
+            measuredSize.height = minSize.height;
+        }
     }
 
     bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -229,7 +242,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    UIContext* Control::getContext() {
+    IUIContext* Control::getContext() {
         if (parent)
             return parent->Context;
         return nullptr;
@@ -276,11 +289,11 @@ namespace Ghurund::UI {
             size.height = height;
             needsLayout = false;
             onLayout(x, y, size.width, size.height);
-            onSizeChanged();
+            sizeChanged();
         }
     }
 
-    void Control::draw(Canvas& canvas) {
+    void Control::draw(ICanvas& canvas) {
         if (size.width == 0 || size.height == 0)
             return;
 #ifdef _DEBUG
@@ -320,7 +333,7 @@ namespace Ghurund::UI {
 
     FloatPoint Control::getPositionOnScreen() {
         auto pos = PositionInWindow;
-        UIContext* context = Context;
+        IUIContext* context = Context;
         if (!context)
             return pos;
         Window& window = context->Window;
@@ -351,25 +364,9 @@ namespace Ghurund::UI {
         auto preferredSizeAttr = xml.FindAttribute("preferredSize");
         if (preferredSizeAttr) {
             AString size = preferredSizeAttr->Value();
-            size_t comma = size.find(",");
-            if (comma != size.Size) {
-                AString width = size.substring(0, comma);
-                if (width == "wrap") {
-                    PreferredSize.width = PreferredSize::Width::WRAP;
-                } else if (width == "fill") {
-                    PreferredSize.width = PreferredSize::Width::FILL;
-                } else {
-                    PreferredSize.width = (float)atof(width.getData());
-                }
-                AString height = size.substring(comma + 1).trim();
-                if (height == "wrap") {
-                    PreferredSize.height = PreferredSize::Height::WRAP;
-                } else if (height == "fill") {
-                    PreferredSize.height = PreferredSize::Height::FILL;
-                } else {
-                    PreferredSize.height = (float)atof(height.getData());
-                }
-            }
+            try {
+                preferredSize = PreferredSize::parse(size);
+            } catch (std::invalid_argument e) {}
         }
         auto minSizeAttr = xml.FindAttribute("minSize");
         if (minSizeAttr) {

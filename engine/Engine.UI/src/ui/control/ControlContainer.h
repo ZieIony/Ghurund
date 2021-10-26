@@ -78,7 +78,7 @@ namespace Ghurund::UI {
                 child->onUpdate(time);
         }
 
-        virtual void onDraw(Canvas& canvas) override {
+        virtual void onDraw(ICanvas& canvas) override {
             if (child)
                 child->draw(canvas);
         }

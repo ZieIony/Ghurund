@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "StackLayout.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& StackLayout::GET_TYPE() {

@@ -7,10 +7,10 @@ namespace Ghurund::UI {
     void Splitter::setOrientation(Ghurund::UI::Orientation orientation) {
         this->orientation = orientation;
         if (orientation == Orientation::HORIZONTAL) {
-            PreferredSize.width = PreferredSize::Width(std::max((float)PreferredSize.width, (float)PreferredSize.height));
+            PreferredSize.width = PreferredSize::Width(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
             PreferredSize.height = PreferredSize::Height::FILL;
         } else {
-            PreferredSize.height = PreferredSize::Height(std::max((float)PreferredSize.width, (float)PreferredSize.height));
+            PreferredSize.height = PreferredSize::Height(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
             PreferredSize.width = PreferredSize::Width::FILL;
         }
     }
@@ -131,10 +131,11 @@ namespace Ghurund::UI {
                     PreferredSize::Height::FILL
                 };
             } else {
-                container1->PreferredSize = {
+                // TODO
+                /*container1->PreferredSize = {
                     PreferredSize::Width::FILL,
                     container1->Size.height ? (PreferredSize::Width)container1->Size.height : container1->PreferredSize.height
-                };
+                };*/
             }
             container2->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         } else if (lockedChild == LockedChild::CHILD_2) {
@@ -145,10 +146,11 @@ namespace Ghurund::UI {
                     PreferredSize::Height::FILL
                 };
             } else {
-                container2->PreferredSize = {
+                // TODO
+                /*container2->PreferredSize = {
                     PreferredSize::Width::FILL,
                     container2->Size.height ? (PreferredSize::Width)container2->Size.height : container2->PreferredSize.height
-                };
+                };*/
             }
         }
     }

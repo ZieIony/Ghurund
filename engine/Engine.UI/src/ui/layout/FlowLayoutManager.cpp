@@ -116,8 +116,8 @@ namespace Ghurund::UI {
             if (!c->Visible)
                 continue;
             c->measure(
-                group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
-                group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
+                group->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.width.Value : parentWidth,
+                group->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.height.Value : parentHeight
             );
         }
 
@@ -126,13 +126,13 @@ namespace Ghurund::UI {
         if (group->PreferredSize.width == PreferredSize::Width::WRAP) {
             measuredSize.width = std::min(measureWidth(), parentWidth);
         } else if (group->PreferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.width = (float)group->PreferredSize.height;
+            measuredSize.width = group->PreferredSize.height.Value;
         }
 
         if (group->PreferredSize.height == PreferredSize::Height::WRAP) {
             measuredSize.height = measureHeight(parentWidth);
         } else if (group->PreferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.height = (float)group->PreferredSize.height;
+            measuredSize.height = group->PreferredSize.height.Value;
         }
 
         return measuredSize;

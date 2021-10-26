@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ProgressBar::onDraw(Canvas& canvas) {
+    void ProgressBar::onDraw(ICanvas& canvas) {
         if (indeterminate) {
             canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor->getValue(*this));
             canvas.fillRect(Size.width * progress, 0, Size.width * cos(progress * 6.28f) / 2 + 0.5f, Size.height, progressColor->getValue(*this));

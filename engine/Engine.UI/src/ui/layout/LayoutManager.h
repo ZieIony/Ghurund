@@ -70,8 +70,8 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) {
             for (Control* c : group->Children) {
                 c->measure(
-                    group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
-                    group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
+                    group->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.width.Value : parentWidth,
+                    group->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.height.Value : parentHeight
                 );
             }
             return { 0,0 };

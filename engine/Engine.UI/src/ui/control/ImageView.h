@@ -20,6 +20,10 @@ namespace Ghurund::UI {
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        virtual void onMeasure(float parentWidth, float parentHeight) override;
+
+        virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
+
     public:
         ImageView(ImageDrawable* image = nullptr) {
             if (image) {
@@ -80,10 +84,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getGravity, put = setGravity)) Alignment& Alignment;
-
-        virtual void onMeasure(float parentWidth, float parentHeight) override;
-
-        virtual void onDraw(Canvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

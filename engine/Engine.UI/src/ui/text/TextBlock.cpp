@@ -2,7 +2,7 @@
 #include "TextBlock.h"
 
 #include "ui/Canvas.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/text/TextMetrics.h"
 
@@ -10,43 +10,37 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     void TextBlock::onMeasure(float parentWidth, float parentHeight) {
-        textLayout.Size = { parentWidth, parentHeight };
-        if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
+        const float MAX_LAYOUT_SIZE = 32768.0f;
+
+        if (!Context || !textLayout->Format) {
             Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-            __super::onMeasure(parentWidth, parentHeight);
             return;
         }
 
-        TextMetrics textMetrics = textLayout.TextMetrics;
-
         if (preferredSize.width == PreferredSize::Width::WRAP) {
-            measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
-        } else {
-            if (preferredSize.width == PreferredSize::Width::FILL) {
-                measuredSize.width = std::max(minSize.width, parentWidth);
-            } else {
-                measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-            }
-            textLayout.Size = { measuredSize.width, parentHeight };
-            if (textLayout.buildLayout(Context->DWriteFactory) != Status::OK) {
+            textLayout->Size = { MAX_LAYOUT_SIZE, MAX_LAYOUT_SIZE };
+            if (textLayout->refresh() != Status::OK) {
                 Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-                __super::onMeasure(parentWidth, parentHeight);
                 return;
             }
-        }
-
-        if (preferredSize.height == PreferredSize::Height::WRAP) {
-            measuredSize.height = std::max(minSize.height, std::ceil(textMetrics.height));
-        } else  if (preferredSize.height == PreferredSize::Height::FILL) {
-            measuredSize.height = std::max(minSize.height, parentHeight);
+            TextMetrics textMetrics = textLayout->TextMetrics;
+            measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
+            measuredSize.height = preferredSize.height.measure(parentHeight, minSize.height, std::ceil(textMetrics.height));
         } else {
-            measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
+            measuredSize.width = preferredSize.width.measure(parentWidth, minSize.width, 0);
+            textLayout->Size = { measuredSize.width, MAX_LAYOUT_SIZE };
+            if (textLayout->refresh() != Status::OK) {
+                Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
+                return;
+            }
+            TextMetrics textMetrics = textLayout->TextMetrics;
+            measuredSize.height = preferredSize.height.measure(parentHeight, minSize.height, std::ceil(textMetrics.height));
         }
     }
 
-    void TextBlock::onDraw(Canvas& canvas) {
-        textLayout.Color = color->getValue(*this);
-        textLayout.draw(canvas, 0, 0);
+    void TextBlock::onDraw(ICanvas& canvas) {
+        textLayout->Color = color->getValue(*this);
+        canvas.drawText(*textLayout, 0, 0);
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
@@ -65,7 +59,7 @@ namespace Ghurund::UI {
         if (!TextFormat)
             TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
         if (Size.width > 0 && Size.height > 0)
-            textLayout.Size = { Size.width, Size.height };
+            textLayout->Size = { Size.width, Size.height };
     }
 
     Status TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

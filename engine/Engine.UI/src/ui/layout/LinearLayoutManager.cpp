@@ -7,33 +7,48 @@ namespace Ghurund::UI {
         spreadCount = 0;
 
         for (Control* c : group->Children) {
+            if (!c->Visible)
+                continue;
+            if (group->PreferredSize.height == PreferredSize::Height::WRAP && c->PreferredSize.height == PreferredSize::Height::FILL)
+                continue;
             c->measure(
-                group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
-                group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
+                group->PreferredSize.width == PreferredSize::Width::FILL ? parentWidth : group->PreferredSize.width.Value,
+                group->PreferredSize.height == PreferredSize::Height::FILL ? parentHeight : group->PreferredSize.height.Value
             );
+        }
+        float maxHeight = measureMaxHeight();
+        for (Control* c : group->Children) {
+            if (!c->Visible)
+                continue;
+            if (group->PreferredSize.height == PreferredSize::Height::WRAP && c->PreferredSize.height == PreferredSize::Height::FILL) {
+                c->measure(
+                    group->PreferredSize.width == PreferredSize::Width::FILL ? parentWidth : group->PreferredSize.width.Value,
+                    maxHeight
+                );
+            }
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 spreadCount++;
-            } else if (c->PreferredSize.width >= 0) {
-                contentSize += std::max(c->MinSize.width, (float)c->PreferredSize.width);
+            } else if (c->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+                contentSize += std::max(c->MinSize.width, c->PreferredSize.width.Value);
             } else {
                 contentSize += c->MeasuredSize.width;
             }
         }
 
         float measuredwidth = 0;
-        if (group->PreferredSize.width >= 0) {
-            measuredwidth = (float)group->PreferredSize.width;
+        if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+            measuredwidth = group->PreferredSize.width.Value;
         } else {
             for (Control* c : group->Children) {
-                if (c->PreferredSize.width >= 0) {
-                    measuredwidth += std::max(c->MinSize.width, (float)c->PreferredSize.width);
+                if (c->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+                    measuredwidth += std::max(c->MinSize.width, c->PreferredSize.width.Value);
                 } else {
                     measuredwidth += c->MeasuredSize.width;
                 }
             }
         }
 
-        return { std::max(group->MinSize.width, measuredwidth), measureMaxHeight() };
+        return { std::max(group->MinSize.width, measuredwidth), maxHeight };
     }
 
     Ghurund::Core::FloatSize LinearLayoutManager::measureVertical(float parentWidth, float parentHeight) {
@@ -43,33 +58,46 @@ namespace Ghurund::UI {
         for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
+            if (group->PreferredSize.width == PreferredSize::Width::WRAP && c->PreferredSize.width == PreferredSize::Width::FILL)
+                continue;
             c->measure(
-                group->PreferredSize.width >= 0 ? (float)group->PreferredSize.width : parentWidth,
-                group->PreferredSize.height >= 0 ? (float)group->PreferredSize.height : parentHeight
+                group->PreferredSize.width == PreferredSize::Width::FILL ? parentWidth : group->PreferredSize.width.Value,
+                group->PreferredSize.height == PreferredSize::Height::FILL ? parentHeight : group->PreferredSize.height.Value
             );
+        }
+        float maxWidth = measureMaxWidth();
+        for (Control* c : group->Children) {
+            if (!c->Visible)
+                continue;
+            if (group->PreferredSize.width == PreferredSize::Width::WRAP && c->PreferredSize.width == PreferredSize::Width::FILL) {
+                c->measure(
+                    maxWidth,
+                    group->PreferredSize.height == PreferredSize::Height::FILL ? parentHeight : group->PreferredSize.height.Value
+                );
+            }
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 spreadCount++;
-            } else if (c->PreferredSize.height >= 0) {
-                contentSize += std::max(c->MinSize.height, (float)c->PreferredSize.height);
+            } else if (c->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                contentSize += std::max(c->MinSize.height, c->PreferredSize.height.Value);
             } else {
                 contentSize += c->MeasuredSize.height;
             }
         }
 
         float measuredHeight = 0;
-        if (group->PreferredSize.height >= 0) {
-            measuredHeight = (float)group->PreferredSize.height;
+        if (group->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+            measuredHeight = group->PreferredSize.height.Value;
         } else {
             for (Control* c : group->Children) {
-                if (c->PreferredSize.height >= 0) {
-                    measuredHeight += std::max(c->MinSize.height, (float)c->PreferredSize.height);
+                if (c->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                    measuredHeight += std::max(c->MinSize.height, c->PreferredSize.height.Value);
                 } else {
                     measuredHeight += c->MeasuredSize.height;
                 }
             }
         }
 
-        return { measureMaxWidth(), std::max(group->MinSize.height, measuredHeight) };
+        return { maxWidth, std::max(group->MinSize.height, measuredHeight) };
     }
 
     void LinearLayoutManager::layoutHorizontal(float x, float y, float width, float height) {
@@ -89,8 +117,8 @@ namespace Ghurund::UI {
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 w = std::max(spaceLeft / spreadCount, c->MinSize.width);
-            } else if (c->PreferredSize.width >= 0) {
-                w = std::min((float)c->PreferredSize.width, width);
+            } else if (c->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+                w = std::min(c->PreferredSize.width.Value, width);
                 w = std::max(w, c->MinSize.width);
             } else {
                 w = std::min(c->MeasuredSize.width, width);
@@ -99,11 +127,11 @@ namespace Ghurund::UI {
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 h = std::max(height, c->MinSize.height);
-            } else if (c->PreferredSize.height >= 0) {
-                h = std::min((float)c->PreferredSize.height, height);
+            } else if (c->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                h = std::min(c->PreferredSize.height.Value, height);
                 h = std::max(h, c->MinSize.height);
             } else {
-                h = std::min((float)c->MeasuredSize.height, height);
+                h = std::min(c->MeasuredSize.height, height);
             }
 
             float ity;
@@ -137,21 +165,21 @@ namespace Ghurund::UI {
             float w;
             if (c->PreferredSize.width == PreferredSize::Width::FILL) {
                 w = std::max(width, c->MinSize.height);
-            } else if (c->PreferredSize.width >= 0) {
-                w = std::min((float)c->PreferredSize.width, width);
+            } else if (c->PreferredSize.width.Type == PreferredSize::Type::PIXELS) {
+                w = std::min(c->PreferredSize.width.Value, width);
                 w = std::max(w, c->MinSize.width);
             } else {
-                w = std::min((float)c->MeasuredSize.width, width);
+                w = std::min(c->MeasuredSize.width, width);
             }
 
             float h;
             if (c->PreferredSize.height == PreferredSize::Height::FILL) {
                 h = std::max(spaceLeft / spreadCount, c->MinSize.height);
-            } else if (c->PreferredSize.height >= 0) {
-                h = std::min((float)c->PreferredSize.height, height);
+            } else if (c->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
+                h = std::min(c->PreferredSize.height.Value, height);
                 h = std::max(h, c->MinSize.height);
             } else {
-                h = std::min((float)c->MeasuredSize.height, height);
+                h = std::min(c->MeasuredSize.height, height);
             }
 
             float itx;

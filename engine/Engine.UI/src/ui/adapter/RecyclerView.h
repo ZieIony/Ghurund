@@ -84,7 +84,7 @@ namespace Ghurund::UI {
                 layoutManager->layout(x, y, width, height);
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event);
 

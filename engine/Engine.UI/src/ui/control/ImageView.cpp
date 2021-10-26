@@ -2,7 +2,7 @@
 #include "ImageView.h"
 
 #include "ui/Canvas.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/drawable/InvalidImageDrawable.h"
 
@@ -17,17 +17,31 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        measuredSize.width = std::max(measuredSize.width, image ? (float)image->PreferredSize.width : 0.0f);
-        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
-        measuredSize.height = std::max(measuredSize.height, image ? (float)image->PreferredSize.height : 0.0f);
+        if (preferredSize.width.Type == PreferredSize::Type::PIXELS) {
+            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
+        } else if (preferredSize.width.Type == PreferredSize::Type::FILL) {
+            measuredSize.width = std::max(minSize.width, parentWidth);
+        } else if (preferredSize.width.Type == PreferredSize::Type::PERCENT) {
+            measuredSize.width = std::max(minSize.width, preferredSize.width.Value * parentWidth / 100.0f);
+        } else {
+            measuredSize.width = std::max(minSize.width, image ? (float)image->PreferredSize.width : 0.0f);
+        }
+        if (preferredSize.height.Type == PreferredSize::Type::PIXELS) {
+            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
+        } else if (preferredSize.height.Type == PreferredSize::Type::FILL) {
+            measuredSize.height = std::max(minSize.height, parentHeight);
+        } else if (preferredSize.height.Type == PreferredSize::Type::PERCENT) {
+            measuredSize.height = std::max(minSize.height, preferredSize.height.Value * parentHeight / 100.0f);
+        } else {
+            measuredSize.height = std::max(minSize.height, image ? (float)image->PreferredSize.height : 0.0f);
+        }
     }
 
-    void ImageView::onDraw(Canvas& canvas) {
+    void ImageView::onDraw(ICanvas& canvas) {
         if (!image)
             return;
 
-        auto src = FloatRect(0, 0, (float)image->PreferredSize.width, (float)image->PreferredSize.height);
+        auto src = FloatRect(0, 0, image->PreferredSize.width, image->PreferredSize.height);
         FloatRect dst;
 
         if (scaleMode == ImageScaleMode::NONE) {

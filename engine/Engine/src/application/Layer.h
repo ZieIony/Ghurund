@@ -24,7 +24,7 @@ namespace Ghurund {
         virtual ~Layer() = 0 {}
 
         inline void setSize(const IntSize& size) {
-            if (this->size.width != size.width || this->size.height != size.height) {
+            if (this->size != size) {
                 this->size = size;
                 onSizeChangedEvent();
             }

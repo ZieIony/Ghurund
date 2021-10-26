@@ -31,7 +31,7 @@ namespace Ghurund {
         }
 
         static Texture* makeFromImage(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const FilePath& imagePath) {
-            Ghurund::UI::Image* image = manager.load<Ghurund::UI::Image>(imagePath);
+            Ghurund::Core::Image* image = manager.load<Ghurund::Core::Image>(imagePath);
             if (image == nullptr)
                 return nullptr;
             Texture* texture = ghnew Texture();

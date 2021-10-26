@@ -6,7 +6,6 @@
 #include "core/window/SystemWindow.h"
 #include "game/parameter/ParameterManager.h"
 #include "graphics/Graphics.h"
-#include "graphics/Graphics2D.h"
 #include "graphics/Renderer.h"
 #include "physics/Physics.h"
 #include "core/resource/ResourceManager.h"
@@ -17,41 +16,31 @@
 #include <time.h>
 
 namespace Ghurund {
-    Status Application::init() {
+    void Application::init() {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
+
         // engine
         graphics = ghnew Ghurund::Graphics();
-        Status result = graphics->init();
-        if (result != Status::OK)
-            return result;
-        result = graphics->initDevice(*graphics->Adapters[0]);
-        if (result != Status::OK)
-            return result;
+        graphics->init();
+        graphics->initDevice(*graphics->Adapters[0]);
 
         parameterManager = ghnew Ghurund::ParameterManager();
 
         timer = ghnew Ghurund::Timer();
 
         resourceManager = ghnew Ghurund::ResourceManager();
-        resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"."));
+        resourceManager->Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources"));
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
         functionQueue = ghnew Ghurund::FunctionQueue();
 
         renderer = ghnew Ghurund::Renderer();
-        result = renderer->init(*graphics, *parameterManager);
-        if (result != Status::OK)
-            return result;
+        renderer->init(*graphics, *parameterManager);
 
-        for (Feature* f : features) {
-            Status result = f->init();
-            if (result != Status::OK)
-                return result;
-        }
-
-        return Status::OK;
+        for (Feature* f : features)
+            f->init();
     }
 
     void Application::uninit() {
@@ -81,7 +70,9 @@ namespace Ghurund {
         if (settings)
             this->settings = *settings;
 
-        if (init() != Status::OK) {
+        try {
+            init();
+        } catch (...) {
             uninit();
             return;
         }
@@ -113,6 +104,8 @@ namespace Ghurund {
             }
 
             for (auto window : windows) {
+                if (window->Size.width == 0 || window->Size.height == 0)
+                    continue;
                 if (window->paint() != Status::OK)
                     break;
             }

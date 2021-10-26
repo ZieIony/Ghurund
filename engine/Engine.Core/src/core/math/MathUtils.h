@@ -26,10 +26,6 @@ namespace Ghurund::Core {
         return (1 - fact) * val1 + fact * val2;
     }
 
-    template<class Type> inline Type round(Type a) {
-        return floor(a + (Type)0.5);
-    }
-
     template<class Type> inline Type frac(Type a) {
         float a2 = abs(a);
         return a2 - floor(a2);

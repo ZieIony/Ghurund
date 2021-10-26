@@ -37,6 +37,13 @@
 									   preferredSize="24,24"/>
 						</Button>
 					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="colorTheme">
+							<ColorView color="#00000000"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
 				</LinearLayout>
 				<Space preferredSize="4,4"/>
 				<CheckBox checked="true"

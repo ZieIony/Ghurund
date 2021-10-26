@@ -12,7 +12,8 @@ namespace Ghurund::Editor {
             auto window = ghnew EditorWindow(*this);
             window->Size = Settings.windowSize;
             Windows.add(window);
-            window->activate();
+            window->Visible = true;
+            window->bringToFront();
             return Status::OK;
         }
     };

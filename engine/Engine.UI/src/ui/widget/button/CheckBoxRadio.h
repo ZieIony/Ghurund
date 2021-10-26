@@ -8,9 +8,6 @@
 namespace Ghurund::UI {
     template<typename CheckBoxRadioType>
     class CheckBoxRadio:public Widget<CheckBoxBinding> {
-    private:
-        Event<CheckBoxRadioType> onCheckedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
-
     protected:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
@@ -32,6 +29,8 @@ namespace Ghurund::UI {
         };
 
     public:
+        Event<CheckBoxRadioType> checkedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
+  
         inline void setChecked(bool checked) {
             Layout->Selectable->Selected = checked;
             onStateChanged();
@@ -42,12 +41,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;
-
-        inline Event<CheckBoxRadioType>& getCheckedChanged() {
-            return onCheckedChanged;
-        }
-
-        __declspec(property(get = getCheckedChanged)) Event<CheckBoxRadioType>& CheckedChanged;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             Status result = __super::load(loader, xml);

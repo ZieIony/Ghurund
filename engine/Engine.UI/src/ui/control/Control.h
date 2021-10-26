@@ -21,7 +21,7 @@ namespace Ghurund::UI {
     class ControlParent;
     class Theme;
     class LayoutLoader;
-    class Canvas;
+    class ICanvas;
 }
 
 namespace Ghurund::UI {
@@ -46,6 +46,7 @@ namespace Ghurund::UI {
         bool visible = true;
         bool enabled = true;
         bool focusable = false;
+        bool roundToPixels = true;
 
         Ghurund::Core::AString* name = nullptr;
 
@@ -61,11 +62,6 @@ namespace Ghurund::UI {
 
         Theme* localTheme = nullptr;
         const Style* style = nullptr;
-
-        Event<Control> onSizeChanged = Event<Control>(*this);
-        Event<Control> stateChanged = Event<Control>(*this);
-        Event<Control> themeChanged = Event<Control>(*this);
-        Event<Control> contextChanged = Event<Control>(*this);
 
         virtual void onStateChanged() {
             stateChanged();
@@ -87,30 +83,17 @@ namespace Ghurund::UI {
 
         virtual void onLayout(float x, float y, float width, float height) {}
 
-        virtual void onDraw(Canvas& canvas) {}
+        virtual void onDraw(ICanvas& canvas) {}
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual ~Control() = 0;
 
     public:
-        inline Event<Control>& getStateChanged() {
-            return stateChanged;
-        }
-
-        __declspec(property(get = getStateChanged)) Event<Control>& StateChanged;
-
-        inline Event<Control>& getThemeChanged() {
-            return themeChanged;
-        }
-
-        __declspec(property(get = getThemeChanged)) Event<Control>& ThemeChanged;
-
-        inline Event<Control>& getContextChanged() {
-            return contextChanged;
-        }
-
-        __declspec(property(get = getContextChanged)) Event<Control>& ContextChanged;
+        Event<Control> sizeChanged = Event<Control>(*this);
+        Event<Control> stateChanged = Event<Control>(*this);
+        Event<Control> themeChanged = Event<Control>(*this);
+        Event<Control> contextChanged = Event<Control>(*this);
 
         inline const Ghurund::Core::AString* getName() const {
             return name;
@@ -197,6 +180,16 @@ namespace Ghurund::UI {
 
         virtual bool focusRight();
 
+        inline bool isRoundToPixelsEnabled() const {
+            return roundToPixels;
+        }
+
+        inline void setRoundToPixelsEnabled(bool roundToPixels) {
+            this->roundToPixels = roundToPixels;
+        }
+
+        __declspec(property(get = isRoundToPixelsEnabled, put = setRoundToPixelsEnabled)) bool RoundToPixelsEnabled;
+
         inline const FloatPoint& getPosition() const {
             return position;
         }
@@ -268,12 +261,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize)) Ghurund::Core::FloatSize& Size;
 
-        inline Event<Control>& getOnSizeChanged() {
-            return onSizeChanged;
-        }
-
-        __declspec(property(get = getOnSizeChanged)) Event<Control>& OnSizeChanged;
-
         inline const PreferredSize& getPreferredSize() const {
             return preferredSize;
         }
@@ -332,9 +319,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTheme, put = setTheme)) Ghurund::UI::Theme* Theme;
 
-        virtual UIContext* getContext();
+        virtual IUIContext* getContext();
 
-        __declspec(property(get = getContext)) UIContext* Context;
+        __declspec(property(get = getContext)) IUIContext* Context;
 
         inline void setStyle(const Style* style) {
             this->style = style;
@@ -361,20 +348,15 @@ namespace Ghurund::UI {
         virtual void invalidate();
 
         inline void measure(float parentWidth, float parentHeight) {
-            if (needsLayout || (float)preferredSize.width < 0 || (float)preferredSize.height < 0) {
-                if (parentWidth > 0 && parentHeight > 0) {
-                    onMeasure(parentWidth, parentHeight);
-                } else {
-                    measuredSize = { 0,0 };
-                }
-            }
+            if (needsLayout || preferredSize.width.Type != PreferredSize::Type::PIXELS || preferredSize.height.Type != PreferredSize::Type::PIXELS)
+                onMeasure(parentWidth, parentHeight);
         }
 
         void layout(float x, float y, float width, float height);
 
         virtual void onUpdate(const uint64_t time) {}
 
-        void draw(Canvas& canvas);
+        void draw(ICanvas& canvas);
 
         virtual Control* find(const Ghurund::Core::AString& name);
 

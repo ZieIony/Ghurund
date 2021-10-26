@@ -6,16 +6,20 @@
 #include "Resource.h"
 #include "ResourceFormat.h"
 
+#include "core/Exceptions.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"
 #include "core/collection/PointerMap.h"
 #include "core/collection/HashMap.h"
 #include "core/logging/Logger.h"
+#include "core/logging/Formatter.h"
 #include "core/io/File.h"
 #include "core/io/LibraryList.h"
 #include "core/io/MemoryStream.h"
 #include "core/io/watcher/FileWatcher.h"
 #include "core/threading/WorkerThread.h"
+
+#include <format>
 
 namespace Ghurund::Core {
     class ResourceManager:public Noncopyable, public Object {
@@ -35,9 +39,8 @@ namespace Ghurund::Core {
             = false;
 #endif
 
-        Status loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options);
-        Status loadInternal(Loader& loader, Resource& resource, const File& file, const ResourceFormat* format, LoadOption options);
-        Status loadInternal(Loader& loader, Resource& resource, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options);
+        Resource* loadInternal(Loader& loader, const FilePath& path, const ResourceFormat* format, LoadOption options);
+        Resource* loadInternal(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options);
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -59,31 +62,22 @@ namespace Ghurund::Core {
 
         void reload();
 
-        template<class Type> Type* load(const FilePath& path, const ResourceFormat* format = nullptr, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* load(const FilePath& path, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) {
             // TODO: resolve path earlier to detect duplicates with differently written paths
-            Type* resource = get<Type>(path);
-            Status loadResult;
+            Type* resource = get<Type>(path); // TODO: why it doesn't find fonts?
             if (resource == nullptr) {
                 Loader* loader = loaders.get<Type>();
                 [[likely]]
                 if (loader) {
-                    resource = loader->makeResource<Type>();
-                    loadResult = loadInternal(*loader, *resource, path, format, options);
-                    if (loadResult != Status::OK) {
-                        resource->release();
-                        resource = nullptr;
-                    }
+                    resource = (Type*)loadInternal(*loader, path, format, options);
                 } else {
-                    loadResult = Status::LOADER_MISSING;
-                    resource->release();
-                    resource = nullptr;
+                    std::string message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    Logger::log(LogType::ERR0R, message.c_str());
+                    throw InvalidStateException(message.c_str());
                 }
             } else {
                 resource->addReference();
-                loadResult = Status::ALREADY_LOADED;
             }
-            if (result != nullptr)
-                *result = loadResult;
             return resource;
         }
 
@@ -99,24 +93,21 @@ namespace Ghurund::Core {
             task->release();
         }
 
-        template<class Type> Type* load(const File& file, const ResourceFormat* format = nullptr, Status* result = nullptr, LoadOption options = LoadOption::DEFAULT) {
+        template<class Type> Type* load(const File& file, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) {
             Type* resource = get<Type>(file.Path);
-            Status loadResult;
             if (resource == nullptr) {
                 Loader* loader = loaders.get<Type>();
                 [[likely]]
                 if (loader) {
-                    resource = loader->makeResource<Type>();
-                    loadResult = loadInternal(*loader, *resource, file, format, options);
+                    resource = (Type*)loadInternal(*loader, file, format, options);
                 } else {
-                    loadResult = Status::LOADER_MISSING;
+                    std::string message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    Logger::log(LogType::ERR0R, message.c_str());
+                    throw InvalidStateException(message.c_str());
                 }
             } else {
                 resource->addReference();
-                loadResult = Status::ALREADY_LOADED;
             }
-            if (result != nullptr)
-                *result = loadResult;
             return resource;
         }
 

@@ -40,7 +40,7 @@ namespace Ghurund {
         renderer->init(context);*/
     }
 
-    Status ThumbnailRenderer::render(DrawableComponent& entity, Ghurund::UI::Image*& image) {
+    Status ThumbnailRenderer::render(DrawableComponent& entity, Ghurund::Core::Image*& image) {
         /*CameraUtils::lookAtEntity(*camera, entity);
 
 		CommandList& commandList = renderer->startFrame(*frame);
@@ -52,7 +52,7 @@ namespace Ghurund {
         return Status::NOT_IMPLEMENTED;
     }
 
-    Status ThumbnailRenderer::render(Mesh& mesh, Ghurund::UI::Image*& image) {
+    Status ThumbnailRenderer::render(Mesh& mesh, Ghurund::Core::Image*& image) {
         /*Model* model = ghnew Model();
         model->Mesh = &mesh;
         model->Material = Materials::makeChecker(*resourceContext);
@@ -65,7 +65,7 @@ namespace Ghurund {
 		return Status::OK;// result;
     }
 
-    Status ThumbnailRenderer::render(Material& material, Ghurund::UI::Image*& image) {
+    Status ThumbnailRenderer::render(Material& material, Ghurund::Core::Image*& image) {
         /*Model* model = Models::makeSphere(*resourceContext, material);
 
         BoundingOrientedBox boundingBox;

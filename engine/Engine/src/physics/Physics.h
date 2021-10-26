@@ -50,7 +50,7 @@ namespace Ghurund::Physics {
         PxPvdTransport* transport = nullptr;
 
     public:
-        virtual Status init() override;
+        virtual void init() override;
 
         virtual void uninit() override {
             if (physics)

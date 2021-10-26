@@ -22,7 +22,7 @@ namespace Ghurund::UI {
     public:
         InvalidImageDrawable();
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual InvalidImageDrawable* clone() const override {
             return ghnew InvalidImageDrawable();

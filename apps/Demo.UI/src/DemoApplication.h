@@ -15,7 +15,8 @@ namespace Demo {
             auto window = ghnew DemoWindow(*this);
             window->Size = Settings.windowSize;
             Windows.add(window);
-            window->activate();
+            window->Visible = true;
+            window->bringToFront();
             return Status::OK;
         }
     };

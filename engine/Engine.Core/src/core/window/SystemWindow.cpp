@@ -58,23 +58,17 @@ namespace Ghurund::Core {
             unsigned int y = HIWORD(lParam);
 
             RECT rc = { 0,0,(LONG)window.Size.width, (LONG)window.Size.height };
-            AdjustWindowRect(&rc, window.Class.Style, false);
+            AdjustWindowRect(&rc, GetWindowLong(window.Handle, GWL_STYLE), false);
 
-            if (window.Position.x != x + rc.left && window.Position.y != y + rc.top) {
-                window.setPosition(x + rc.left, y + rc.top);
-                window.dispatchPositionChangedEvent();
-            }
+            window.setPosition(x + rc.left, y + rc.top);
             return 0;
         } else if (msg == WM_SIZE) {
             unsigned int width = LOWORD(lParam);
             unsigned int height = HIWORD(lParam);
-            if (window.Size.width != width || window.Size.height != height) {
-                window.setSize(width, height);
-                window.dispatchSizeChangedEvent();
-            }
+            window.setSize(width, height);
             return 0;
         } else if (msg == WM_NCACTIVATE) {
-            if (window.Class == WindowClass::POPUP && wParam == FALSE) {
+            if (GetWindowLong(window.Handle, GWL_EXSTYLE) & WS_EX_NOACTIVATE && wParam == FALSE) {
                 PostMessage(window.Handle, WM_CLOSE, 0, 0);
                 return 0;
             }
@@ -95,7 +89,12 @@ namespace Ghurund::Core {
         return TYPE;
     }
 
-    SystemWindow::SystemWindow(const WindowClass& type, Ghurund::Core::Timer& timer):Window(nullptr), windowClass(type), timer(timer) {
+    SystemWindow::SystemWindow(HWND handle, Ghurund::Core::Timer& timer):handle(handle), timer(timer) {
+        WindowData* windowData = ghnew WindowData(this);
+        SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)windowData);
+    }
+
+    SystemWindow::SystemWindow(const WindowClass& type, Ghurund::Core::Timer& timer) : Window(nullptr), timer(timer) {
         this->handle = type.create();
 
         WindowData* windowData = ghnew WindowData(this);
@@ -119,11 +118,13 @@ namespace Ghurund::Core {
             __super::setPosition(x, y);
 
             SetWindowPos(handle, 0, x, y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
+            dispatchPositionChangedEvent();
         }
     }
 
     void SystemWindow::setSize(unsigned int w, unsigned int h) {
         if (Size.width != w || Size.height != h) {
+            dispatchSizeChangingEvent({ w, h });
             __super::setSize(w, h);
 
             RECT rc, rcClient;
@@ -133,6 +134,7 @@ namespace Ghurund::Core {
             int yExtra = rc.bottom - rc.top - rcClient.bottom;
 
             SetWindowPos(handle, 0, 0, 0, w + xExtra, h + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
+            dispatchSizeChangedEvent();
         }
     }
 

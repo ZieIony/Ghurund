@@ -1,15 +1,19 @@
 #pragma once
 
 #include "application/Feature.h"
-#include "ui/font/FontLoader.h"
-#include "ui/image/BitmapLoader.h"
-#include "ui/image/ImageLoader.h"
-#include "ui/layout/LayoutLoader.h"
+#include "core/image/ImageLoader.h"
+#include "ui/direct2d/font/FontLoader.h"
+#include "ui/direct2d/image/BitmapLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
-#include "graphics/Graphics2D.h"
+#include "ui/direct2d/Graphics2D.h"
+#include "ui/direct2d/loading/ShapeFactory.h"
+#include "ui/direct2d/loading/ImageDrawableFactory.h"
+#include "ui/direct2d/loading/TextFormatFactory.h"
 
 namespace Ghurund {
     using namespace Ghurund::UI;
+    using namespace Ghurund::UI::Direct2D;
 
     class UIFeature:public Feature {
 #pragma region reflection
@@ -23,19 +27,22 @@ namespace Ghurund {
 
     private:
         Application& app;
-        Ghurund::Graphics2D* graphics2d = nullptr;
+        Ghurund::UI::Direct2D::Graphics2D* graphics2d = nullptr;
+        Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
+        Ghurund::UI::Direct2D::ImageDrawableFactory* imageDrawableFactory = nullptr;
+        Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
 
     public:
         UIFeature(Application& app):app(app) {}
 
-        virtual Status init() override;
+        virtual void init() override;
 
         virtual void uninit() override;
 
-        inline Ghurund::Graphics2D& getGraphics2D() {
+        inline Ghurund::UI::Direct2D::Graphics2D& getGraphics2D() {
             return *graphics2d;
         }
 
-        __declspec(property(get = getGraphics2D)) Ghurund::Graphics2D& Graphics2D;
+        __declspec(property(get = getGraphics2D)) Ghurund::UI::Direct2D::Graphics2D& Graphics2D;
     };
 }

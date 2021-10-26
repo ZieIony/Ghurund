@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "VerticalScrollBarLayout.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
     VerticalScrollBarLayout::VerticalScrollBarLayout(LayoutLoader& loader) {

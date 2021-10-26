@@ -2,7 +2,7 @@
 
 #include "game/entity/camera/Camera.h"
 #include "graphics/Renderer.h"
-#include "ui/image/Image.h"
+#include "core/image/Image.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -30,9 +30,9 @@ namespace Ghurund {
 
         void init(uint32_t width, uint32_t height);
 
-        Status render(DrawableComponent& entity, Ghurund::UI::Image*& image);
-        Status render(Mesh& mesh, Ghurund::UI::Image*& image);
-        Status render(Material& material, Ghurund::UI::Image*& image);
+        Status render(DrawableComponent& entity, Ghurund::Core::Image*& image);
+        Status render(Mesh& mesh, Ghurund::Core::Image*& image);
+        Status render(Material& material, Ghurund::Core::Image*& image);
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

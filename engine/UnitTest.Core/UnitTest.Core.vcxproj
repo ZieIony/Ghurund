@@ -106,6 +106,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest.Core\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Ghurund.Core_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -174,10 +175,10 @@
     <ClCompile Include="src\core\collection\RangeTest.cpp" />
     <ClCompile Include="src\core\collection\QueueTest.cpp" />
     <ClCompile Include="src\core\reflection\ReflectionTest.cpp" />
+    <ClCompile Include="src\core\resource\ResourceManagerTest.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\core\threading\WorkerThreadTest.cpp" />
     <ClCompile Include="src\core\TypeWrapperTest.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

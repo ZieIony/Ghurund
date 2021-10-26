@@ -7,7 +7,6 @@
 #include "ui/control/Shadow.h"
 #include "ui/control/Control.h"
 #include "ui/control/ImageView.h"
-#include "ui/drawable/BitmapDrawable.h"
 #include "ui/text/TextBlockStyle.h"
 #include "ui/text/TextFormat.h"
 #include "ui/widget/ClickResponseView.h"
@@ -57,17 +56,17 @@ namespace Ghurund::UI {
 
         void loadImage(Ghurund::Core::ResourceManager& resourceManager, const ImageKey& key, const Ghurund::Core::FilePath& path) {
             Status result;
-            Ghurund::Core::SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
+            /*Ghurund::Core::SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
             Ghurund::Core::SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
-            Images.set(key, imageDrawable);
+            Images.set(key, imageDrawable);*/
         }
 
     public:
-        BaseTheme(IDWriteFactory5& dwriteFactory, Ghurund::Core::ResourceManager& resourceManager) {
-            Ghurund::Core::SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
-            Ghurund::Core::SharedPointer<Font> latoLightFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
+        BaseTheme(Ghurund::Core::ResourceManager& resourceManager) {
+            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont = resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
+            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont = resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
 
-            auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
+            /*auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
             buttonFont->init(dwriteFactory);
             TextFormats.set(Theme::TEXTFORMAT_BUTTON, buttonFont);
 
@@ -81,7 +80,7 @@ namespace Ghurund::UI {
 
             auto textSecondaryFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_REGULAR);
             textSecondaryFont->init(dwriteFactory);
-            TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
+            TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);*/
 
             loadImage(resourceManager, Theme::IMAGE_CHECKBOX_CHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox checked 18.png"));
             loadImage(resourceManager, Theme::IMAGE_CHECKBOX_UNCHECKED, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox unchecked 18.png"));

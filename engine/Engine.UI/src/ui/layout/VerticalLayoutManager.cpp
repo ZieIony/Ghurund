@@ -70,9 +70,9 @@ namespace Ghurund::UI {
 
     const FloatSize VerticalLayoutManager::measure(float parentWidth, float parentHeight) {
         if (group->PreferredSize.width == PreferredSize::Width::FILL && group->PreferredSize.height == PreferredSize::Height::FILL)
-            return { 0,0 };
-        if (group->PreferredSize.width >= 0 && group->PreferredSize.height >= 0)
-            return { group->PreferredSize.width,group->PreferredSize.height };
+            return { 0, 0 };
+        if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS && group->PreferredSize.height.Type == PreferredSize::Type::PIXELS)
+            return { group->PreferredSize.width.Value, group->PreferredSize.height.Value };
 
         float width = 0;
         float height = 0;
@@ -87,10 +87,10 @@ namespace Ghurund::UI {
             provider->releaseChild(control, i);
         }
 
-        if (group->PreferredSize.width >= 0)
-            width = group->PreferredSize.width;
-        if (group->PreferredSize.height >= 0)
-            height = group->PreferredSize.height;
+        if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS)
+            width = group->PreferredSize.width.Value;
+        if (group->PreferredSize.height.Type == PreferredSize::Type::PIXELS)
+            height = group->PreferredSize.height.Value;
         return { width, height };
     }
 

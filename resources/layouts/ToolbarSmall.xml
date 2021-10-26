@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<LinearLayout orientation="horizontal" preferredSize="fill, wrap"
+				  alignment="center, center">
+		<ImageView image="lib://Ghurund/icons/category 18.png"
+				   imageTint="theme://color/primary_onBackground"/>
+		<Clip preferredSize="fill, fill">
+			<StackLayout preferredSize="fill, fill"
+					   alignment="left, center">
+				<TextBlock text="Long window title to test"
+						   preferredSize="wrap, wrap"/>
+			</StackLayout>
+		</Clip>
+		<Button preferredSize="wrap, wrap"
+				  layout="lib://Ghurund/layouts/ButtonIconLayout.xml">
+			<ImageView image="lib://Ghurund/icons/material/help 18.png"
+					   style="theme://style/ImageView_onBackground"/>
+		</Button>
+		<Button preferredSize="wrap, wrap"
+				  layout="lib://Ghurund/layouts/ButtonIconLayout.xml">
+			<ImageView image="lib://Ghurund/icons/material/minimize 18.png"
+					   style="theme://style/ImageView_onBackground"/>
+		</Button>
+		<Button preferredSize="wrap, wrap"
+				  layout="lib://Ghurund/layouts/ButtonIconLayout.xml">
+			<ImageView image="lib://Ghurund/icons/material/maximize 18.png"
+					   style="theme://style/ImageView_onBackground"/>
+		</Button>
+		<Button preferredSize="wrap, wrap"
+				  layout="lib://Ghurund/layouts/ButtonIconLayout.xml">
+			<ImageView image="lib://Ghurund/icons/material/close 18.png"
+					   style="theme://style/ImageView_onBackground"/>
+		</Button>
+	</LinearLayout>
+</layout>

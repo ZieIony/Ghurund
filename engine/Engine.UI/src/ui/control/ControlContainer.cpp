@@ -3,7 +3,7 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/control/InvalidControl.h"
 
 namespace Ghurund::UI {
@@ -76,19 +76,17 @@ namespace Ghurund::UI {
     }
 
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
+        measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
+        measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
+
         if (child) {
             child->measure(
-                preferredSize.width >= 0 ? (float)preferredSize.width : parentWidth,
-                preferredSize.height >= 0 ? (float)preferredSize.height : parentHeight
+                preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth,
+                preferredSize.height.Type == PreferredSize::Type::PIXELS ? preferredSize.height.Value : parentHeight
             );
-        }
-
-        measuredSize.width = std::max(minSize.width, (float)preferredSize.width);
-        measuredSize.height = std::max(minSize.height, (float)preferredSize.height);
-        if (child) {
-            float childWidth = (float)child->PreferredSize.width >= 0 ? (float)child->PreferredSize.width : child->MeasuredSize.width;
+            float childWidth = child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.width.Value : child->MeasuredSize.width;
             measuredSize.width = std::max(measuredSize.width, childWidth);
-            float childHeight = (float)child->PreferredSize.height >= 0 ? (float)child->PreferredSize.height : child->MeasuredSize.height;
+            float childHeight = child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.height.Value : child->MeasuredSize.height;
             measuredSize.height = std::max(measuredSize.height, childHeight);
         }
     }

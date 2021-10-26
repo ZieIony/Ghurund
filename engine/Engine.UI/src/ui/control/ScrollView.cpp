@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ScrollView::onDraw(Canvas& canvas) {
+    void ScrollView::onDraw(ICanvas& canvas) {
         canvas.save();
         canvas.clipRect(0, 0, Size.width, Size.height);
         canvas.translate(-scroll.x, -scroll.y);

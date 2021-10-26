@@ -74,7 +74,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getProgressColor, put = setProgressColor)) const ColorAttr& ProgressColor;
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

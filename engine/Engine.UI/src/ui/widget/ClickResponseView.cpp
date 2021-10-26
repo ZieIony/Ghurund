@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "ClickResponseView.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
@@ -29,7 +29,7 @@ namespace Ghurund::UI {
         alpha = percent;
     }
 
-    void ClickResponseView::onDraw(Canvas& canvas) {
+    void ClickResponseView::onDraw(ICanvas& canvas) {
         Ghurund::UI::Color c = color->getValue(*this);
         c.A = alpha;
         canvas.fillRect(0, 0, Size.width, Size.height, c);

@@ -55,7 +55,7 @@ namespace Ghurund {
 
         static void log(const std::string& str);
 
-        virtual Status init() override;
+        virtual void init() override;
 
         virtual void uninit() override {
             if (engine)

@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "Border.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
 #include "ui/Canvas.h"
 
@@ -15,7 +15,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void Border::onDraw(Canvas& canvas) {
+    void Border::onDraw(ICanvas& canvas) {
         uint32_t color = Color.getValue(*this);
         if (!color || Thickness < 0.1f)
             return;

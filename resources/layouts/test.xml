@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+		<StackLayout preferredSize="wrap,wrap">
+			<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+				<TextView text="test" preferredSize="fill,wrap"/>
+				<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+						   preferredSize="100,100"/>
+			</LinearLayout>
+			<Border preferredSize="fill,fill"/>
+		</StackLayout>
+</layout>

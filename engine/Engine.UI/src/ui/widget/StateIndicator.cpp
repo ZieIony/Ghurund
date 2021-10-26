@@ -40,7 +40,7 @@ namespace Ghurund::UI {
         animation.start();
     }
 
-    void StateIndicator::onDraw(Canvas& canvas) {
+    void StateIndicator::onDraw(ICanvas& canvas) {
         canvas.fillRect(0, 0, Size.width, Size.height, color);
     }
 

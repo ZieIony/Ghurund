@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void RecyclerView::onDraw(Canvas& canvas) {
+    void RecyclerView::onDraw(ICanvas& canvas) {
         if (!layoutManager)
             return;
 

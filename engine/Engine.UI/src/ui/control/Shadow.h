@@ -3,7 +3,7 @@
 #include "Control.h"
 #include "ui/Shape.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/image/Bitmap.h"
+//#include "ui/image/Bitmap.h"
 
 namespace Ghurund::UI {
     class Shadow: public Control {
@@ -11,8 +11,8 @@ namespace Ghurund::UI {
         ColorAttr* color = nullptr;
         Ghurund::UI::Shape* shape = nullptr;
         float radius = 2.0f;
-        Bitmap* bitmap = nullptr;
-        ComPtr<ID2D1SolidColorBrush> fillBrush;
+        //Bitmap* bitmap = nullptr;
+        //ID2D1SolidColorBrush* fillBrush = nullptr;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -33,16 +33,16 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
-        inline Shape* getShape() {
+        inline Ghurund::UI::Shape* getShape() {
             return shape;
         }
 
-        inline void setShape(Shape* shape) {
+        inline void setShape(Ghurund::UI::Shape* shape) {
             delete this->shape;
             this->shape = shape;
         }
 
-        __declspec(property(get = getShape, put = setShape)) Shape* Shape;
+        __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;
 
         inline float getRadius() const {
             return radius;
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

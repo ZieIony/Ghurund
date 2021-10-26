@@ -17,6 +17,7 @@
 					<xs:element ref="Space"/>
 					<xs:element ref="ColorView"/>
 					<xs:element ref="PaddingContainer"/>
+					<xs:element ref="ScrollView"/>
 					<xs:element ref="ClickResponseView"/>
 					<xs:element ref="StateIndicator"/>
 					<xs:element ref="ClickableControl"/>
@@ -160,13 +161,13 @@
 
 	<xs:simpleType name="Layout">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="file:\/\/.*"/>
+			<xs:pattern value="file:\/\/.*|lib:\/\/.*"/>
 		</xs:restriction>
 	</xs:simpleType>
 
 	<xs:simpleType name="Image">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="theme:\/\/image\/.*|file:\/\/.*"/>
+			<xs:pattern value="theme:\/\/image\/.*|file:\/\/.*|lib:\/\/.*"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -183,7 +184,7 @@
 	</xs:simpleType>
 
 	<xs:complexType name="include">
-		<xs:attribute name="layout" type="xs:string"/>
+		<xs:attribute name="layout" type="Layout"/>
 	</xs:complexType>
 	<xs:element name="include" type="include"/>
 
@@ -213,6 +214,7 @@
 						<xs:element ref="Space"/>
 						<xs:element ref="ColorView"/>
 						<xs:element ref="PaddingContainer"/>
+						<xs:element ref="ScrollView"/>
 						<xs:element ref="ClickResponseView"/>
 						<xs:element ref="StateIndicator"/>
 						<xs:element ref="ClickableControl"/>
@@ -258,6 +260,7 @@
 							<xs:element ref="Space"/>
 							<xs:element ref="ColorView"/>
 							<xs:element ref="PaddingContainer"/>
+							<xs:element ref="ScrollView"/>
 							<xs:element ref="ClickResponseView"/>
 							<xs:element ref="StateIndicator"/>
 							<xs:element ref="ClickableControl"/>
@@ -411,6 +414,13 @@
 	</xs:complexType>
 	<xs:element name="PaddingContainer" type="PaddingContainer"/>
 
+	<xs:complexType name="ScrollView">
+		<xs:complexContent>
+			<xs:extension base="ControlContainer"/>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:element name="ScrollView" type="ScrollView"/>
+
 	<xs:complexType name="ClickResponseView">
 		<xs:complexContent>
 			<xs:extension base="Control">
@@ -446,6 +456,7 @@
 		<xs:complexContent>
 			<xs:extension base="ControlContainer">
 				<xs:attribute name="style" type="Style"/>
+				<xs:attribute name="layout" type="Layout"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>

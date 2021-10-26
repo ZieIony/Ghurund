@@ -34,7 +34,7 @@ namespace Ghurund {
 
         List<GraphicsAdapter*> adapters;
 
-        Status initAdapters();
+        void initAdapters();
 
     public:
         ~Graphics() {
@@ -42,8 +42,8 @@ namespace Ghurund {
             uninit();
         }
 
-        Status init();
-        Status initDevice(GraphicsAdapter& adapter);
+        void init();
+        void initDevice(GraphicsAdapter& adapter);
 
         void uninitDevice();
         void uninit();

@@ -1,6 +1,8 @@
 #include "ghpch.h"
 #include "Graphics.h"
 
+#include "Exceptions.h"
+#include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "DirectXTypes.h"
@@ -33,7 +35,7 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Graphics::initAdapters() {
+    void Graphics::initAdapters() {
         ComPtr<IDXGIAdapter1> adapter;
 
         unsigned int adapterIndex = 0;
@@ -46,14 +48,15 @@ namespace Ghurund {
         }
 
         if (FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->EnumWarpAdapter() failed\n"));
+            Logger::log(LogType::WARNING, _T("factory->EnumWarpAdapter() failed\n"));
 
         adapters.add(ghnew GraphicsAdapter(adapter));
 
-        return adapters.Size > 0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
+        if (adapters.Empty)
+            throw DirectX12NotSupportedException();
     }
 
-    Status Graphics::init() {
+    void Graphics::init() {
         UINT dxgiFactoryFlags = 0;
 #if defined(_DEBUG)
         ComPtr<ID3D12Debug> debugController;
@@ -66,34 +69,42 @@ namespace Ghurund {
 
         if (FAILED(CreateDXGIFactory2(dxgiFactoryFlags, IID_PPV_ARGS(&factory)))) {
             Logger::log(LogType::ERR0R, _T("failed to create DXGIFactory2"));
-            return Status::CALL_FAIL;
+            throw CallFailedException();
         }
 
-        return initAdapters();
+        initAdapters();
     }
 
-    Status Graphics::initDevice(GraphicsAdapter& adapter) {
-        if (FAILED(D3D12CreateDevice(adapter.get().Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("D3D12CreateDevice failed\n"));
+    void Graphics::initDevice(GraphicsAdapter& adapter) {
+        if (FAILED(D3D12CreateDevice(adapter.get().Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device)))) {
+            Logger::log(LogType::ERR0R, _T("D3D12CreateDevice failed\n"));
+            throw CallFailedException();
+        }
 
         D3D12_COMMAND_QUEUE_DESC queueDesc = {};
         queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 
-        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&directQueue))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create direct queue failed\n"));
+        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&directQueue)))) {
+            Logger::log(LogType::ERR0R, _T("create direct queue failed\n"));
+            throw CallFailedException();
+        }
         directQueue->SetName(L"direct queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COMPUTE;
 
-        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&computeQueue))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create compute queue failed\n"));
+        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&computeQueue)))) {
+            Logger::log(LogType::ERR0R, _T("create compute queue failed\n"));
+            throw CallFailedException();
+        }
         computeQueue->SetName(L"compute queue");
 
         queueDesc.Type = D3D12_COMMAND_LIST_TYPE_COPY;
 
-        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&copyQueue))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("create copy queue failed\n"));
+        if (FAILED(device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&copyQueue)))) {
+            Logger::log(LogType::ERR0R, _T("create copy queue failed\n"));
+            throw CallFailedException();
+        }
         copyQueue->SetName(L"copy queue");
 
         /*if(FAILED(factory->MakeWindowAssociation(window.Handle, DXGI_MWA_NO_ALT_ENTER))) {
@@ -106,8 +117,6 @@ namespace Ghurund {
         allocator.allocate(*this, D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 
         resourceFactory = ghnew GPUResourceFactory(*this);
-
-        return Status::OK;
     }
 
     void Graphics::uninitDevice() {

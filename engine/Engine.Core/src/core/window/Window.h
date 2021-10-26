@@ -36,6 +36,11 @@ namespace Ghurund::Core {
             return false;
         }
 
+        Event<Window, IntSize> onSizeChanging = *this;
+        virtual bool onSizeChangingEvent(const IntSize& size) {
+            return false;
+        }
+
         Event<Window> onSizeChanged = *this;
         virtual bool onSizeChangedEvent() {
             return false;
@@ -125,6 +130,12 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getPosition, put = setPosition)) IntPoint& Position;
 
+        inline bool dispatchPositionChangedEvent() {
+            bool result = onPositionChangedEvent();
+            bool result2 = onPositionChanged();
+            return result || result2;
+        }
+
         inline const IntSize& getSize() const {
             return size;
         }
@@ -139,15 +150,29 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
 
+        inline bool dispatchSizeChangingEvent(const IntSize& size) {
+            bool result = onSizeChangingEvent(size);
+            bool result2 = onSizeChanging(size);
+            return result || result2;
+        }
+
+        inline bool dispatchSizeChangedEvent() {
+            bool result = onSizeChangedEvent();
+            bool result2 = onSizeChanged();
+            return result || result2;
+        }
+
         virtual bool isFocused() const {
             return false;
         }
 
         __declspec(property(get = isFocused)) bool Focused;
 
-        virtual void refresh() const {}
+        virtual void refresh() const = 0;
 
-        virtual void activate() {}
+        virtual void bringToFront() = 0;
+
+        virtual void sendToBack() = 0;
 
         inline Window* getParent() {
             return parent;
@@ -161,23 +186,17 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getOnPositionChanged)) Event<Window>& OnPositionChanged;
 
-        inline bool dispatchPositionChangedEvent() {
-            bool result = onPositionChangedEvent();
-            bool result2 = onPositionChanged();
-            return result || result2;
+        inline Event<Window, IntSize>& getOnSizeChanging() {
+            return onSizeChanging;
         }
+
+        __declspec(property(get = getOnSizeChanging)) Event<Window, IntSize>& OnSizeChanging;
 
         inline Event<Window>& getOnSizeChanged() {
             return onSizeChanged;
         }
 
         __declspec(property(get = getOnSizeChanged)) Event<Window>& OnSizeChanged;
-
-        inline bool dispatchSizeChangedEvent() {
-            bool result = onSizeChangedEvent();
-            bool result2 = onSizeChanged();
-            return result || result2;
-        }
 
         inline Event<Window>& getOnFocusedChanged() {
             return onFocusedChanged;

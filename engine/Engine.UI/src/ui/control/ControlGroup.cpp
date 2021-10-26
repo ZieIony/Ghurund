@@ -2,7 +2,7 @@
 #include "ControlGroup.h"
 
 #include "ui/Alignment.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ControlGroup::GET_TYPE() {
@@ -82,7 +82,7 @@ namespace Ghurund::UI {
             child->dispatchContextChanged();
     }
 
-    void ControlGroup::onDraw(Canvas& canvas) {
+    void ControlGroup::onDraw(ICanvas& canvas) {
         for (Control* c : children) {
             if (!c->Visible)
                 continue;

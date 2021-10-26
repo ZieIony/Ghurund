@@ -10,14 +10,13 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
         Color backgroundColor = Color(1, 0, 0, 0.2f);
         Color borderColor = Color(1, 0, 0, 1.0f);
-        StrokeStyle strokeStyle;
+        std::unique_ptr<IStrokeStyle> strokeStyle;
 
         virtual void onContextChanged() {
             __super::onContextChanged();
-            strokeStyle.uninit();
             if (Context) {
                 Array<float> dashes = { 3.0f, 4.0f };
-                strokeStyle.init(Context->D2DFactory, dashes);
+                strokeStyle.reset(Context->makeStrokeStyle(dashes));
             }
         }
 
@@ -27,7 +26,7 @@ namespace Ghurund::UI {
             PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

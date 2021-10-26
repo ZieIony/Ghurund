@@ -18,28 +18,14 @@ namespace Ghurund::UI {
             Value = value;
         }
 
+        Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 255):Color(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f) {}
+
         Color(float r, float g, float b, float a = 1.0f) {
             this->r = r;
             this->g = g;
             this->b = b;
             this->a = a;
             value = (((uint8_t)(a * 255) & 0xff) << 24) | (((uint8_t)(r * 255) & 0xff) << 16) | (((uint8_t)(g * 255) & 0xff) << 8) | ((uint8_t)(b * 255) & 0xff);
-        }
-
-        Color(const AString& string) {
-            uint32_t value = 0;
-            AString s = string.toLowerCase();
-            for (size_t i = s[0] == '#' ? 1 : 0; i < s.Length; i++) {
-                if (s[i] >= '0' && s[i] <= '9') {
-                    value = value * 16 + (s[i] - '0');
-                } else if (s[i] >= 'a' && s[i] <= 'f') {
-                    value = value * 16 + (s[i] - 'a' + 10);
-                } else {
-                    value = 0;
-                    return;
-                }
-            }
-            Value = value;
         }
 
         inline float getR() const {
@@ -108,6 +94,8 @@ namespace Ghurund::UI {
         inline operator uint32_t() const {
             return value;
         }
+
+        static Color parse(const AString& color);
     };
 
     constexpr uint32_t colorWithAlpha(float alpha, uint32_t color) {

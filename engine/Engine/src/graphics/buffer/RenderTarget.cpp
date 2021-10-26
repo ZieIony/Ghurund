@@ -2,7 +2,6 @@
 #include "RenderTarget.h"
 
 #include "core/math/MathUtils.h"
-#include "graphics/Graphics2D.h"
 
 namespace Ghurund {
     Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
@@ -63,30 +62,10 @@ namespace Ghurund {
         return init(graphics, texture);
     }
 
-    Status RenderTarget::init2D(Ghurund::Graphics2D& graphics2d) {
-        D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
-        if (FAILED(graphics2d.Device11->CreateWrappedResource(texture, &d3d11Flags, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_RENDER_TARGET, IID_PPV_ARGS(&wrappedRenderTarget))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateWrappedResource failed\n"));
-
-        ComPtr<IDXGISurface> surface;
-        if (FAILED(wrappedRenderTarget.As(&surface)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("m_wrappedRenderTarget.As(&surface) failed\n"));
-
-        D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
-            D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-            D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
-        if (FAILED(graphics2d.DeviceContext.CreateBitmapFromDxgiSurface(surface.Get(), &bitmapProperties, d2dRenderTarget.GetAddressOf())))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateBitmapFromDxgiSurface failed\n"));
-
-        return Status::OK;
-    }
-
     void RenderTarget::uninit() {
         width = 0;
         height = 0;
         format = DXGI_FORMAT_UNKNOWN;
-        d2dRenderTarget.Reset();
-        wrappedRenderTarget.Reset();
 
         if (rtvHeap) {
             rtvHeap->Release();
@@ -258,16 +237,5 @@ namespace Ghurund {
         stagingTexture->Unmap(0, &writeRange);
 
         return Status::OK;
-    }
-}
-
-namespace Ghurund::Core {
-    template<>
-    String toString(const RenderTarget& renderTarget) {
-        return String(std::format(
-            _T("RenderTarget: {{{{\n    WrappedTarget (refs: {})\n    Target2D (refs: {})\n}}}}\n"),
-            getRefCount(*renderTarget.WrappedTarget),
-            getRefCount(*renderTarget.Target2D)
-        ).c_str());
     }
 }

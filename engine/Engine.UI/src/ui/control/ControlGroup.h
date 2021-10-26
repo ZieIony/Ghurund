@@ -18,8 +18,8 @@ namespace Ghurund::UI {
                 if (!c->Visible)
                     continue;
                 c->measure(
-                    PreferredSize.width >= 0 ? (float)PreferredSize.width : parentWidth,
-                    PreferredSize.height >= 0 ? (float)PreferredSize.height : parentHeight
+                    PreferredSize.width.Type == PreferredSize::Type::PIXELS ? PreferredSize.width.Value : parentWidth,
+                    PreferredSize.height.Type == PreferredSize::Type::PIXELS ? PreferredSize.height.Value : parentHeight
                 );
             }
         }
@@ -72,7 +72,7 @@ namespace Ghurund::UI {
                 c->onUpdate(time);
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 

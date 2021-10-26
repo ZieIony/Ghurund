@@ -1,7 +1,10 @@
 #pragma once
 
+#include "core/string/String.h"
+
 namespace Ghurund::UI {
-    struct Alignment {
+    class Alignment {
+    public:
         enum class Horizontal {
             LEFT, RIGHT, CENTER
         };
@@ -16,5 +19,7 @@ namespace Ghurund::UI {
         bool operator==(const Alignment& alignment) const {
             return horizontal == alignment.horizontal && vertical == alignment.vertical;
         }
+
+        static Alignment parse(const Ghurund::Core::AString& alignment);
     };
 }

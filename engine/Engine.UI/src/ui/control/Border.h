@@ -37,16 +37,16 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
-        inline Shape* getShape() {
+        inline Ghurund::UI::Shape* getShape() {
             return shape;
         }
 
-        inline void setShape(Shape* shape) {
+        inline void setShape(Ghurund::UI::Shape* shape) {
             delete this->shape;
             this->shape = shape;
         }
 
-        __declspec(property(get = getShape, put = setShape)) Shape* Shape;
+        __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;
 
         inline float getThickness() const {
             return thickness;
@@ -64,7 +64,7 @@ namespace Ghurund::UI {
                 shape->Bounds = FloatRect{ Thickness / 2, Thickness / 2, width - Thickness / 2, height - Thickness / 2 };
         }
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

@@ -8,69 +8,74 @@
 #include "ui/UILayer.h"
 #include "ui/RootView.h"
 #include "ui/layout/Layout.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
 
 #include "PreviewLayout.h"
-#include "ui/font/FontLoader.h"
-#include "ui/image/BitmapLoader.h"
-#include "ui/image/ImageLoader.h"
+#include "ui/direct2d/font/FontLoader.h"
+#include "ui/direct2d/image/BitmapLoader.h"
+#include "core/image/ImageLoader.h"
+#include "ui/direct2d/UIContext.h"
 
 namespace Preview {
     using namespace Ghurund;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
+    using namespace Ghurund::UI::Direct2D;
 
     class PreviewWindow:public ApplicationWindow {
     private:
         Theme* lightTheme, * darkTheme;
-        UIContext* context;
+        IUIContext* context;
         SharedPointer<PreviewLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
 
     public:
-        PreviewWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
-            UIFeature* uiFeature = app.Features.get<UIFeature>();
-            Graphics2D& graphics2d = uiFeature->Graphics2D;
-
-            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
-            darkTheme = ghnew DarkTheme(*graphics2d.DWriteFactory, app.ResourceManager);
-            context = ghnew UIContext(*graphics2d.D2DFactory, *graphics2d.DWriteFactory, graphics2d.DeviceContext, *this, app.ResourceManager);
-            LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
-            layoutLoader->Theme = lightTheme;
-
-            rootView = ghnew Ghurund::UI::RootView(*context);
-
-            SharedPointer<Layout> layout = app.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, nullptr, LoadOption::DONT_CACHE);
-            previewLayout = ghnew PreviewLayout();
-            previewLayout->Theme = lightTheme;
-            previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
-            rootView->Child = previewLayout;
-            previewLayout->ThemeChanged.add([this](PreviewLayout& previewLayout, ThemeType type) {
-                updateTheme(type);
-                return true;
-            });
-
-            Layers.add(std::make_unique<UILayer>(graphics2d, rootView));
-
-            DragDropEnabled = true;
-            OnDropped.add([this](const Ghurund::Window& window, Array<FilePath*>& files) {
-                fileWatcher.clearFiles();
-                FilePath& path = *files[0];
-                postLoadCallback(path);
-                watchFile(path);
-                return true;
-            });
-        }
+        PreviewWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {}
 
         ~PreviewWindow() {
             Layers.clear();
             delete context;
             delete lightTheme;
             delete darkTheme;
+        }
+
+        virtual Status init() override {
+            __super::init();
+            UIFeature* uiFeature = Application.Features.get<UIFeature>();
+            Layers.add(std::make_unique<UILayer>(uiFeature->Graphics2D, rootView, this));
+
+            lightTheme = ghnew LightTheme(Application.ResourceManager);
+            darkTheme = ghnew DarkTheme(Application.ResourceManager);
+            context = ghnew UIContext(*uiFeature->Graphics2D.D2DFactory, *uiFeature->Graphics2D.DWriteFactory, uiFeature->Graphics2D.DeviceContext, *this, Application.ResourceManager);
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
+            layoutLoader->Theme = lightTheme;
+
+            rootView = ghnew Ghurund::UI::RootView(*context);
+
+            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
+            previewLayout = ghnew PreviewLayout();
+            previewLayout->Theme = lightTheme;
+            previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
+            rootView->Child = previewLayout;
+            previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+                updateTheme(type);
+                return true;
+            };
+
+            DragDropEnabled = true;
+            onDropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {
+                fileWatcher.clearFiles();
+                FilePath& path = *files[0];
+                postLoadCallback(path);
+                watchFile(path);
+                return true;
+            };
+
+            return Status::OK;
         }
 
         void updateTheme(ThemeType type) {
@@ -108,7 +113,7 @@ namespace Preview {
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file, nullptr, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file, nullptr, LoadOption::DONT_CACHE);
             previewLayout->Container->Children.clear();
             for (Control* control : layout->Controls)
                 previewLayout->Container->Children.add(control);

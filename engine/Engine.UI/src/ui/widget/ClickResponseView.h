@@ -48,7 +48,7 @@ namespace Ghurund::UI {
 
         virtual void onUpdate(const uint64_t time) override;
 
-        virtual void onDraw(Canvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas) override;
 
         virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
     };

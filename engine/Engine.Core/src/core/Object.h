@@ -21,7 +21,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getType)) const Type &Type;
 
         /**
-         * @brief Construct a deep copy of this object.
+         * @brief Constructs a deep copy of this object.
          * @return Can be null if cloning is not supported.
         */
         virtual Object* clone() const {

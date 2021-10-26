@@ -11,14 +11,14 @@
 namespace Ghurund::UI {
     class PopupMenu:public StackLayout {
     private:
-        //Ghurund::PopupWindow* window;
+        Ghurund::Core::Window* window;
         SharedPointer<ColorView> backgroundView;
         SharedPointer<RecyclerView> recyclerView;
         List<MenuItem*> items;
 
     public:
-        PopupMenu(Ghurund::UI::Theme& theme, Ghurund::Window& parent) {
-            //window = ghnew Ghurund::PopupWindow(parent.Timer);
+        PopupMenu(Ghurund::UI::Theme& theme, Ghurund::Core::Window& parent) {
+            //window = ghnew Ghurund::Core::Window(parent.Timer);
             //window->RootView->Child = this;
 
             recyclerView = ghnew RecyclerView();

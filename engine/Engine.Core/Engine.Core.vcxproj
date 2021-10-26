@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\image\Image.cpp" />
+    <ClCompile Include="src\core\image\ImageLoader.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />
     <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
@@ -32,6 +34,7 @@
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
     <ClCompile Include="src\core\window\SystemWindow.cpp" />
     <ClCompile Include="src\core\window\Window.cpp" />
+    <ClCompile Include="src\core\window\WindowAttributes.cpp" />
     <ClCompile Include="src\core\window\WindowClass.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -62,6 +65,11 @@
     <ClInclude Include="src\core\collection\TreeMap.h" />
     <ClInclude Include="src\core\collection\TypeMap.h" />
     <ClInclude Include="src\core\Concepts.h" />
+    <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\image\Image.h" />
+    <ClInclude Include="src\core\image\ImageLoader.h" />
+    <ClInclude Include="src\core\resource\TextLoader.h" />
+    <ClInclude Include="src\core\resource\TextResource.h" />
     <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
@@ -146,11 +154,11 @@
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Translations.h" />
     <ClInclude Include="src\core\TypeWrapper.h" />
-    <ClInclude Include="src\core\window\ChildWindow.h" />
     <ClInclude Include="src\core\window\Clipboard.h" />
     <ClInclude Include="src\core\window\DragDropManager.h" />
     <ClInclude Include="src\core\window\SystemWindow.h" />
     <ClInclude Include="src\core\window\Window.h" />
+    <ClInclude Include="src\core\window\WindowAttributes.h" />
     <ClInclude Include="src\core\window\WindowClass.h" />
     <ClInclude Include="src\core\window\WindowMessage.h" />
     <ClInclude Include="src\ghcpch.h" />
@@ -191,6 +199,7 @@
     <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="src\Ghurund.Core.h" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

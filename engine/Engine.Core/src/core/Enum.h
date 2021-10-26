@@ -67,6 +67,8 @@ namespace Ghurund::Core {
 		EnumValueType value;
         const AString name;
 
+        Enum(const Enum& other) = delete;
+
     protected:
         Enum(EnumValueType value, const AString& name):name(name) {
             this->value = value;

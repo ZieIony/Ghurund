@@ -2,7 +2,6 @@
 #include "SwapChain.h"
 
 #include "Graphics.h"
-#include "Graphics2D.h"
 #include "core/window/SystemWindow.h"
 #include "core/logging/Logger.h"
 #include "core/logging/Formatter.h"
@@ -17,9 +16,8 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status SwapChain::init(Graphics& graphics, Ghurund::Graphics2D* graphics2d, SystemWindow& window, uint32_t frameCount) {
+    Status SwapChain::init(Graphics& graphics, SystemWindow& window, uint32_t frameCount) {
         this->graphics = &graphics;
-        this->graphics2d = graphics2d;
         this->window = &window;
         this->frameCount = frameCount;
         this->format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -50,19 +48,17 @@ namespace Ghurund {
         D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.width, (float)window->Size.height,0,1 };
         D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.width, (LONG)window->Size.height };
 
-        frames = ghnew Frame[frameCount];
+        frames = ghnew Array<Frame>(frameCount);
         for (unsigned int i = 0; i < frameCount; i++) {
             ID3D12Resource* renderTargetBuffer;
             swapChain->GetBuffer(i, IID_PPV_ARGS(&renderTargetBuffer));
             RenderTarget* renderTarget = ghnew RenderTarget();
             renderTarget->init(*graphics, renderTargetBuffer);
-            if (graphics2d)
-                renderTarget->init2D(*graphics2d);
 
             DepthBuffer* depthBuffer = ghnew DepthBuffer();
             depthBuffer->init(*graphics, window->Size.width, window->Size.height);
 
-            frames[i].init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
+            frames->get(i).init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
             renderTargetBuffer->Release();
         }
 
@@ -73,7 +69,7 @@ namespace Ghurund {
         if (frames == nullptr)
             return;
 
-        delete[] frames;
+        delete frames;
         frames = nullptr;
         currentFrame = 0;
     }
@@ -93,13 +89,10 @@ namespace Ghurund {
     }
 
     Status SwapChain::resize(unsigned int width, unsigned int height) {
-        uninitBuffers();
-        graphics2d->flush();
         if (width > 0 && height > 0) {
             HRESULT hr = swapChain->ResizeBuffers(frameCount, width, height, format, 0);
             if (FAILED(hr))
                 return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->ResizeBuffers() failed\n"));
-            initBuffers();
         }
 
         return Status::OK;

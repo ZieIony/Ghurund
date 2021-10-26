@@ -13,7 +13,7 @@ namespace Ghurund::UI {
 
     public:
         CursorDrawable(const Color& color = 0x7f000000, float width = 2.0f, uint64_t blinkTimeMs = 1000):blinkTimeMs(blinkTimeMs), color(color) {
-            preferredSize.width = PreferredSize::Width(width);
+            preferredSize.width = width;
         }
 
         inline void setColor(const Color& color) {
@@ -30,10 +30,6 @@ namespace Ghurund::UI {
             visible = fmod(time, blinkTimeMs) < blinkTimeMs / 2.0f;
         }
 
-        virtual void onDraw(Canvas& canvas) override {
-            if (visible)
-                canvas.fillRect(0, 0, size.width, size.height, color);
-            owner->repaint();
-        }
+        virtual void onDraw(ICanvas& canvas) override;
     };
 }

@@ -34,7 +34,7 @@ namespace Ghurund::Core {
         Array<FilePath*>* files = getFiles(pDataObj);
 
         if (files) {
-            window.OnDragEntered(*files);
+            window.onDragEntered(*files);
 
             files->deleteItems();
             delete files;
@@ -44,12 +44,12 @@ namespace Ghurund::Core {
     }
     
     HRESULT DragDropManager::DragLeave() {
-        window.OnDragLeft();
+        window.onDragLeft();
         return S_OK;
     }
     
     HRESULT DragDropManager::DragOver(DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) {
-        window.OnDraggedOver();
+        window.onDraggedOver();
         return S_OK;
     }
     
@@ -57,7 +57,7 @@ namespace Ghurund::Core {
         Array<FilePath*>* files = getFiles(pDataObj);
 
         if (files) {
-            window.OnDropped(*files);
+            window.onDropped(*files);
 
             files->deleteItems();
             delete files;

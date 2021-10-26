@@ -1,6 +1,7 @@
 #include "ghpch.h"
 #include "Physics.h"
 
+#include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Physics {
@@ -16,10 +17,12 @@ namespace Ghurund::Physics {
         return TYPE;
     }
 
-    Status Physics::init() {
+    void Physics::init() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
-        if (!foundation)
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("PxCreateFoundation failed\n"));
+        if (!foundation) {
+            Logger::log(LogType::ERR0R, _T("PxCreateFoundation failed\n"));
+            throw CallFailedException();
+        }
 
         bool recordMemoryAllocations = true;
 
@@ -30,9 +33,9 @@ namespace Ghurund::Physics {
 
 
         physics = PxCreatePhysics(PX_PHYSICS_VERSION, *foundation, PxTolerancesScale(), recordMemoryAllocations, visualDebugger);
-        if (!physics)
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("PxCreatePhysics failed\n"));
-
-        return Status::OK;
+        if (!physics) {
+            Logger::log(LogType::ERR0R, _T("PxCreatePhysics failed\n"));
+            throw CallFailedException();
+        }
     }
 }

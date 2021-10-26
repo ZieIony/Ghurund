@@ -21,7 +21,7 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Renderer::init(Graphics& graphics, ParameterManager& parameterManager) {
+    void Renderer::init(Graphics& graphics, ParameterManager& parameterManager) {
         this->graphics = &graphics;
         this->parameterManager = &parameterManager;
 
@@ -32,8 +32,6 @@ namespace Ghurund {
 
         //lightPassMaterial = Materials::makeLightPass(resourceManager, resourceContext);
         //fullScreenQuad = Models::makeQuad(resourceContext, *lightPassMaterial);
-
-        return Status::OK;
     }
 
     void Renderer::uninit() {

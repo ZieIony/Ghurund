@@ -24,6 +24,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghuipch.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
+    <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\control\Border.cpp" />
     <ClCompile Include="src\ui\control\ClickableControl.cpp" />
@@ -40,27 +41,21 @@
     <ClCompile Include="src\ui\control\SelectableView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\control\Space.cpp" />
+    <ClCompile Include="src\ui\drawable\CursorDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
     <ClCompile Include="src\ui\drawable\InvalidImageDrawable.cpp" />
-    <ClCompile Include="src\ui\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\font\Font.cpp" />
     <ClCompile Include="src\ui\image\Bitmap.cpp" />
-    <ClCompile Include="src\ui\drawable\BitmapDrawable.cpp" />
-    <ClCompile Include="src\ui\image\Image.cpp" />
-    <ClCompile Include="src\ui\image\ImageLoader.cpp" />
-    <ClCompile Include="src\ui\image\SvgDocument.cpp" />
-    <ClCompile Include="src\ui\font\FontFileEnumerator.cpp" />
-    <ClCompile Include="src\ui\font\FontLoader.cpp" />
+    <ClCompile Include="src\ui\image\VectorImage.cpp" />
     <ClCompile Include="src\ui\layout\DesktopLayout.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayout.cpp" />
     <ClCompile Include="src\ui\layout\Layout.cpp" />
+    <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\Style.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextBlockStyle.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
-    <ClCompile Include="src\ui\Canvas.cpp" />
-    <ClCompile Include="src\ui\font\FontCollectionLoader.cpp" />
-    <ClCompile Include="src\ui\layout\LayoutLoader.cpp" />
+    <ClCompile Include="src\ui\loading\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
@@ -74,7 +69,6 @@
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\style\Theme.cpp" />
-    <ClCompile Include="src\ui\text\TextLayout.cpp" />
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextField.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />
@@ -101,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ghuipch.h" />
+    <ClInclude Include="src\Ghurund.UI.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
     <ClInclude Include="src\ui\adapter\ItemAdapter.h" />
@@ -131,27 +126,27 @@
     <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
-    <ClInclude Include="src\ui\image\Bitmap.h" />
-    <ClInclude Include="src\ui\drawable\BitmapDrawable.h" />
-    <ClInclude Include="src\ui\image\BitmapLoader.h" />
-    <ClInclude Include="src\ui\image\Image.h" />
     <ClInclude Include="src\ui\drawable\ImageDrawable.h" />
-    <ClInclude Include="src\ui\image\ImageLoader.h" />
-    <ClInclude Include="src\ui\image\SvgDocument.h" />
-    <ClInclude Include="src\ui\drawable\SvgDrawable.h" />
+    <ClInclude Include="src\ui\effects\DrawingEffect.h" />
+    <ClInclude Include="src\ui\effects\ShadowEffect.h" />
+    <ClInclude Include="src\ui\effects\TintEffect.h" />
     <ClInclude Include="src\ui\font\Font.h" />
-    <ClInclude Include="src\ui\font\FontFileEnumerator.h" />
-    <ClInclude Include="src\ui\font\FontLoader.h" />
+    <ClInclude Include="src\ui\image\Bitmap.h" />
+    <ClInclude Include="src\ui\image\VectorImage.h" />
     <ClInclude Include="src\ui\layout\Layout.h" />
+    <ClInclude Include="src\ui\loading\ImageDrawableFactory.h" />
+    <ClInclude Include="src\ui\loading\ShapeFactory.h" />
+    <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
+    <ClInclude Include="src\ui\style\WindowsTheme.h" />
+    <ClInclude Include="src\ui\text\ITextLayout.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextBlockStyle.h" />
     <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
-    <ClInclude Include="src\ui\font\FontCollectionLoader.h" />
-    <ClInclude Include="src\ui\layout\LayoutLoader.h" />
+    <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\layout\DesktopLayout.h" />
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
     <ClInclude Include="src\ui\layout\FlowLayoutManager.h" />
@@ -181,12 +176,10 @@
     <ClInclude Include="src\ui\style\LightTheme.h" />
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
-    <ClInclude Include="src\ui\text\DrawingEffect.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
     <ClInclude Include="src\ui\text\SetSelectionMode.h" />
     <ClInclude Include="src\ui\text\TextField.h" />
     <ClInclude Include="src\ui\text\TextFormat.h" />
-    <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
     <ClInclude Include="src\ui\UIContext.h" />
@@ -232,7 +225,9 @@
     <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
     <ClInclude Include="src\ui\widget\VerticalScrollBarLayout.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
+    <ClInclude Include="src\ui\window\VirtualWindow.h" />
     <ClInclude Include="src\ui\window\WindowFrame.h" />
+    <ClInclude Include="src\ui\window\WindowManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />

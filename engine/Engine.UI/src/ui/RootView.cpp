@@ -4,7 +4,7 @@
 #include "ui/Cursor.h"
 
 namespace Ghurund::UI {
-    RootView::RootView(UIContext& context) {
+    RootView::RootView(IUIContext& context) {
         this->context = &context;
         Cursor = &Cursor::ARROW;
     }

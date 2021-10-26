@@ -21,7 +21,7 @@ namespace Ghurund::UI {
             } else if (event.Action == KeyAction::UP) {
                 buttons[MouseButton::VIRTUAL] = false;
                 onStateChanged();
-                return onClicked(MouseClickedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
+                return clicked(MouseClickedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
             }
         }
         return false;
@@ -52,7 +52,7 @@ namespace Ghurund::UI {
             buttons[event.Button] = false;
             Parent->CapturedChild = nullptr;
             onStateChanged();
-            return onClicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside)) || result;
+            return clicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside)) || result;
         }
         return result;
     }

@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "Shadow.h"
 
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
@@ -18,14 +18,16 @@ namespace Ghurund::UI {
         preferredSize.width = PreferredSize::Width::FILL;
         preferredSize.height = PreferredSize::Height::FILL;
         Color = color;
-        bitmap = ghnew Bitmap();
+        //bitmap = ghnew Bitmap();
     }
 
     Shadow::~Shadow() {
         delete shape;
         delete color;
-        if (bitmap)
-            bitmap->release();
+        //if (bitmap)
+       //     bitmap->release();
+        //if (fillBrush)
+        //    fillBrush->Release();
     }
 
     void Shadow::onLayout(float x, float y, float width, float height) {
@@ -33,7 +35,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Color c = color->getValue(*this);
         if (c.A == 0.0f || Radius < 0.1f || !Context)
             return;
-        auto &deviceContext = Context->DeviceContext;
+        /*auto& deviceContext = Context->DeviceContext;
         if (!fillBrush && FAILED(deviceContext.CreateSolidColorBrush(D2D1::ColorF(c), &fillBrush))) {
             Logger::log(LogType::ERR0R, Status::CALL_FAIL, "CreateSolidColorBrush failed\n");
             return;
@@ -49,17 +51,17 @@ namespace Ghurund::UI {
         if (!shape)
             shape = ghnew Rect(Context->D2DFactory);
         shape->Bounds = FloatRect{ ceil(radius), ceil(radius), width + ceil(radius), height + ceil(radius) };
-        deviceContext.FillGeometry(shape->Path, fillBrush.Get());
-        deviceContext.EndDraw();
+        deviceContext.FillGeometry(shape->Path, fillBrush);
+        deviceContext.EndDraw();*/
     }
 
-    void Shadow::onDraw(Canvas& canvas) {
+    void Shadow::onDraw(ICanvas& canvas) {
         Ghurund::UI::Color c = color->getValue(*this);
-        if (c.A == 0.0f || Radius < 0.1f || !bitmap)
-            return;
+        //if (c.A == 0.0f || Radius < 0.1f || !bitmap)
+          //  return;
         canvas.save();
         canvas.translate(-ceil(radius), -ceil(radius) + radius / 2);
-        canvas.drawShadow(bitmap->Data, radius, c.Value);
+        //canvas.drawShadow(bitmap->Data, radius, c.Value);
         canvas.restore();
     }
 

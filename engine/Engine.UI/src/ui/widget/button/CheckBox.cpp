@@ -17,12 +17,12 @@ namespace Ghurund::UI {
     void CheckBox::onLayoutChanged() {
         __super::onLayoutChanged();
         if (Layout && Layout->Selectable) {
-            Layout->Selectable->Clicked.add([this](Control&, const MouseClickedEventArgs&) {
+            Layout->Selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
                 Checked = !Checked;
-                CheckedChanged();
+                checkedChanged();
                 return true;
-            });
-            Layout->Selectable->StateChanged.add(stateHandler);
+            };
+            Layout->Selectable->stateChanged += stateHandler;
         }
     }
 

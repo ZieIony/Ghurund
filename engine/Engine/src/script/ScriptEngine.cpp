@@ -1,6 +1,7 @@
 #include "ghpch.h"
 #include "ScriptEngine.h"
 
+#include "core/Exceptions.h"
 #include "application/Application.h"
 #include "script/bindings/ScriptBindings.h"
 #include "script/bindings/CameraScriptBindings.h"
@@ -34,7 +35,7 @@ namespace Ghurund {
         Logger::log(LogType::INFO, _T("%hs\n"), convertText<char, tchar>(AString(str.c_str())));
     }
 
-    Status ScriptEngine::init() {
+    void ScriptEngine::init() {
         engine = asCreateScriptEngine();
         engine->SetMessageCallback(asFUNCTION(messageCallback), 0, asCALL_CDECL);
 
@@ -42,8 +43,10 @@ namespace Ghurund {
         RegisterScriptMath(engine);
 
         auto r = engine->RegisterGlobalFunction("void log(const string &in)", asFUNCTION(log), asCALL_CDECL);
-        if (r < 0)
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to register global function.\n"));
+        if (r < 0) {
+            Logger::log(LogType::ERR0R, _T("Failed to register global function.\n"));
+            throw CallFailedException();
+        }
 
         Float2ScriptBindings::registerClass(*engine);
         Float3ScriptBindings::registerClass(*engine);
@@ -55,8 +58,6 @@ namespace Ghurund {
         SceneScriptBindings::registerClass(*engine);
         ModelScriptBindings::registerClass(*engine);
         TimerScriptBindings::registerClass(*engine, &this->timer);
-
-        return Status::OK;
     }
 
     void ScriptEngine::update(const uint64_t time) {

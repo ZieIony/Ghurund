@@ -32,7 +32,7 @@ namespace Messenger {
             window->Size = Settings.windowSize;
             Windows.add(window);
             window->Visible = true;
-            window->activate();
+            window->bringToFront();
             return Status::OK;
         }
     };

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<StackLayout preferredSize="wrap, wrap">
+		<Shadow/>
+		<ColorView color="theme://color/background"/>
+		<Border color="theme://color/secondary_onBackground"/>
+		<PaddingContainer padding="1">
+			<LinearLayout orientation="vertical" preferredSize="wrap, wrap">
+				<include layout="lib://Ghurund/layouts/ToolbarSmall.xml"/>
+				<include layout="lib://Ghurund/layouts/ToolbarLarge.xml"/>
+				<ControlContainer name="container"
+								  preferredSize="wrap, fill">
+					<StackLayout preferredSize="wrap, fill">
+						<ImageView preferredSize="100, 100"
+								   image="lib://Ghurund/test/images/watermelon.jpg"/>
+					</StackLayout>
+				</ControlContainer>
+			</LinearLayout>
+		</PaddingContainer>
+	</StackLayout>
+</layout>

@@ -20,12 +20,12 @@ namespace Ghurund::UI {
 
     FloatRect TextView::getCaretRect() {
         float caretX, caretY;
-        HitTestMetrics caretMetrics = textLayout.hitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY);
+        HitTestMetrics caretMetrics = textLayout->hitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY);
 
         Selection selectionRange = getSelectionRange();
         if (selectionRange.length > 0) {
             UINT32 actualHitTestCount = 1;
-            Array<HitTestMetrics> metrics = textLayout.hitTestTextRange(caretPosition, 0, 0, 0);
+            Array<HitTestMetrics> metrics = textLayout->hitTestTextRange(caretPosition, 0, 0, 0);
             caretMetrics = metrics[0];
 
             caretY = caretMetrics.top;
@@ -62,7 +62,7 @@ namespace Ghurund::UI {
     void TextView::alignCaretToNearestCluster(bool isTrailingHit = false, bool skipZeroWidth = false) {
         float caretX, caretY;
 
-        HitTestMetrics hitTestMetrics = textLayout.hitTestTextPosition(caretPosition, false, &caretX, &caretY);
+        HitTestMetrics hitTestMetrics = textLayout->hitTestTextPosition(caretPosition, false, &caretX, &caretY);
 
         caretPosition = hitTestMetrics.textPosition;
         caretPositionOffset = (isTrailingHit) ? hitTestMetrics.length : 0;
@@ -83,7 +83,7 @@ namespace Ghurund::UI {
 
     bool TextView::setSelectionFromPoint(float x, float y, bool extendSelection) {
         bool isTrailingHit;
-        HitTestMetrics caretMetrics = textLayout.hitTestPoint(x, y, &isTrailingHit);
+        HitTestMetrics caretMetrics = textLayout->hitTestPoint(x, y, &isTrailingHit);
 
         setSelection(
             isTrailingHit ? SetSelectionMode::AbsoluteTrailing : SetSelectionMode::AbsoluteLeading,
@@ -147,7 +147,7 @@ namespace Ghurund::UI {
                 // Use hit-testing to limit text position.
                 float caretX, caretY;
 
-                HitTestMetrics hitTestMetrics = textLayout.hitTestTextPosition(caretPosition, false, &caretX, &caretY);
+                HitTestMetrics hitTestMetrics = textLayout->hitTestTextPosition(caretPosition, false, &caretX, &caretY);
                 caretPosition = std::min(caretPosition, hitTestMetrics.textPosition + hitTestMetrics.length);
             }
             break;
@@ -156,7 +156,7 @@ namespace Ghurund::UI {
         case SetSelectionMode::Down:
         {
             // Retrieve the line metrics to figure out what line we are on.
-            Array<LineMetrics> lineMetrics = textLayout.getLineMetrics();
+            Array<LineMetrics> lineMetrics = textLayout->getLineMetrics();
 
             UINT32 linePosition;
             getLineFromPosition(lineMetrics.begin(), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &linePosition);
@@ -183,14 +183,14 @@ namespace Ghurund::UI {
             float caretX, caretY, dummyX;
 
             // Get x of current text position
-            textLayout.hitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY);
+            textLayout->hitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY);
 
             // Get y of new position
-            textLayout.hitTestTextPosition(linePosition, false, &dummyX, &caretY);
+            textLayout->hitTestTextPosition(linePosition, false, &dummyX, &caretY);
 
             // Now get text position of new x,y.
             bool isTrailingHit;
-            HitTestMetrics hitTestMetrics = textLayout.hitTestPoint(caretX, caretY, &isTrailingHit);
+            HitTestMetrics hitTestMetrics = textLayout->hitTestPoint(caretX, caretY, &isTrailingHit);
 
             caretPosition = hitTestMetrics.textPosition;
             caretPositionOffset = isTrailingHit ? (hitTestMetrics.length > 0) : 0;
@@ -203,7 +203,7 @@ namespace Ghurund::UI {
             // To navigate by whole words, we look for the canWrapLineAfter
             // flag in the cluster metrics.
 
-            Array<ClusterMetrics> clusterMetrics = textLayout.ClusterMetrics;
+            Array<ClusterMetrics> clusterMetrics = textLayout->ClusterMetrics;
 
             if (clusterMetrics.Empty)
                 break;
@@ -249,7 +249,7 @@ namespace Ghurund::UI {
         {
             // Retrieve the line metrics to know first and last position
             // on the current line.
-            Array<LineMetrics> lineMetrics = textLayout.getLineMetrics();
+            Array<LineMetrics> lineMetrics = textLayout->getLineMetrics();
 
             getLineFromPosition(lineMetrics.begin(), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &caretPosition);
 
@@ -363,12 +363,12 @@ namespace Ghurund::UI {
         return __super::dispatchMouseMotionEvent(event);
     }
 
-    void TextView::onDraw(Canvas& canvas) {
+    void TextView::onDraw(ICanvas& canvas) {
         if (Enabled) {
             Selection caretRange = getSelectionRange();
 
             if (caretRange.length > 0) {
-                Array<HitTestMetrics> hitTestMetrics = textLayout.hitTestTextRange(caretRange.start, caretRange.length, 0, 0);
+                Array<HitTestMetrics> hitTestMetrics = textLayout->hitTestTextRange(caretRange.start, caretRange.length, 0, 0);
 
                 if (hitTestMetrics.Size > 0) {
                     canvas.AntialiasingEnabled = false;
@@ -393,7 +393,7 @@ namespace Ghurund::UI {
             }
         }
 
-        textLayout.draw(canvas, 0, 0);
+        canvas.drawText(*textLayout, 0, 0);
     }
 
     const Ghurund::Core::Type& TextView::GET_TYPE() {
@@ -405,7 +405,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    TextView::TextView() {
+    TextView::TextView(std::unique_ptr<ITextLayout> textLayout):TextBlock(std::move(textLayout)) {
         Cursor = &Cursor::IBEAM;
     }
 }

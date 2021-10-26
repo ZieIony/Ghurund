@@ -2,11 +2,10 @@
 #include "ResourceManager.h"
 
 #include "core/Timer.h"
-#include "core/logging/Formatter.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
-    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const FilePath& path, const ResourceFormat* format, LoadOption options) {
+    Resource* ResourceManager::loadInternal(Loader& loader, const FilePath& path, const ResourceFormat* format, LoadOption options) {
         std::unique_ptr<File> file;
         WString pathString = WString(path.toString());
         size_t libProtocolLength = lengthOf(LIB_PROTOCOL);
@@ -14,42 +13,64 @@ namespace Ghurund::Core {
         if (pathString.startsWith(LIB_PROTOCOL)) {
             pathString.replace(L'\\', L'/');
             size_t separatorIndex = pathString.find(L"/", libProtocolLength);
-            if (separatorIndex == pathString.Size)
-                return Status::INV_PATH;
+            if (separatorIndex == pathString.Size) {
+                std::string message = std::format(_T("the path '{}' has to contain '/'\n"), pathString);
+                Logger::log(LogType::ERR0R, message.c_str());
+                throw InvalidParamException(message.c_str());
+            }
             WString libName = pathString.substring(libProtocolLength, separatorIndex - libProtocolLength);
             WString fileName = pathString.substring(separatorIndex + 1);
             file.reset(libraries.get(libName)->getFile(fileName));
-            if (file.get() == nullptr || file->Size == 0 && !file->Exists)
-                return Status::FILE_DOESNT_EXIST;
+            if (file.get() == nullptr || file->Size == 0 && !file->Exists) {
+                std::string message = std::format(_T("the file '{}' in library '{}' doesn't exist\n"), fileName, libName);
+                Logger::log(LogType::ERR0R, message.c_str());
+                throw InvalidParamException(message.c_str());
+            }
         } else if (pathString.startsWith(FILE_PROTOCOL)) {
             pathString.replace(L'\\', L'/');
             WString fileName = pathString.substring(fileProtocolLength);
             file.reset(ghnew File(fileName));
-            if (!file->Exists)
-                return Status::FILE_DOESNT_EXIST;
+            if (!file->Exists) {
+                std::string message = std::format(_T("the file '{}' doesn't exist\n"), fileName);
+                Logger::log(LogType::ERR0R, message.c_str());
+                throw InvalidParamException(message.c_str());
+            }
         } else {
             file.reset(ghnew File(path));
-            if (!file->Exists)
-                return Status::FILE_DOESNT_EXIST;
+            if (!file->Exists) {
+                std::string message = std::format(_T("the file '{}' doesn't exist\n"), path);
+                Logger::log(LogType::ERR0R, message.c_str());
+                throw InvalidParamException(message.c_str());
+            }
         }
 
         if (file->Size == 0) {
             Status result = file->read();
-            if (result != Status::OK)
-                return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), path);
+            if (result != Status::OK) {
+                std::string message = std::format(_T("failed to load file '{}'\n"), file->Path);
+                Logger::log(LogType::ERR0R, message.c_str());
+                throw CallFailedException(message.c_str());
+            }
         }
 
-        return loadInternal(loader, resource, *file, format, options);
+        return loadInternal(loader, *file, format, options);
     }
 
-    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, const File& file, const ResourceFormat* format, LoadOption options) {
-        if (file.Size == 0)
-            return Logger::log(LogType::ERR0R, Status::FILE_EMPTY, _T("file is empty: {}\n"), file.Path);
+    Resource* ResourceManager::loadInternal(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options) {
+        if (file.Size == 0) {
+            std::string message = std::format(_T("the file '{}' is empty\n"), file.Path);
+            Logger::log(LogType::ERR0R, message.c_str());
+            throw InvalidParamException(message.c_str());
+        }
         MemoryInputStream stream(file.Data, file.Size);
-        resource.Path = &file.Path;
-        Status result = loadInternal(loader, resource, stream, format, options);
-        if (result != Status::OK)
-            return result;
+        Resource* resource;
+        try {
+            resource = loader.load(*this, stream, format, options);
+        } catch (std::exception& exception) {
+            Logger::log(LogType::ERR0R, _T("failed to load file: {}\n"), file.Path);
+            throw exception;
+        }
+        resource->Path = &file.Path;
 
         /*if (hotReloadEnabled && !(options & LoadOption::DONT_WATCH)) {
             watcher.addFile(path, [this, &loader, &resource](const FilePath& path, const FileChange& fileChange) {
@@ -71,25 +92,9 @@ namespace Ghurund::Core {
             });
         }*/
         if (!(options & LoadOption::DONT_CACHE))
-            add(resource);
+            add(*resource);
 
-        return Status::OK;
-    }
-
-    Status ResourceManager::loadInternal(Loader& loader, Resource& resource, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
-        if (!format) {
-            for (ResourceFormat& f : resource.Formats) {
-                if (f.Extension == resource.Path->Extension && f.canLoad()) {
-                    format = &f;
-                    break;
-                }
-            }
-        }
-        Status result = loader.load(*this, stream, resource, format, options);
-        if (result != Status::OK)
-            return Logger::log(LogType::ERR0R, result, _T("failed to load file: {}\n"), *resource.Path);
-
-        return Status::OK;
+        return resource;
     }
 
     const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
