@@ -29,11 +29,6 @@ namespace Ghurund::Core {
 
     class EventConsumer:public EventDispatcher {
     protected:
-        Event<EventConsumer, KeyEventArgs> onKey = *this;
-        Event<EventConsumer, MouseButtonEventArgs> onMouseButton = *this;
-        Event<EventConsumer, MouseMotionEventArgs> onMouseMotion = *this;
-        Event<EventConsumer, MouseWheelEventArgs> onMouseWheel = *this;
-
         virtual bool onKeyEvent(const KeyEventArgs& event) {
             return false;
         }
@@ -51,53 +46,34 @@ namespace Ghurund::Core {
         }
 
     public:
+        Event<EventConsumer, KeyEventArgs> keyEvent = *this;
+        Event<EventConsumer, MouseButtonEventArgs> mouseButtonEvent = *this;
+        Event<EventConsumer, MouseMotionEventArgs> mouseMotionEvent = *this;
+        Event<EventConsumer, MouseWheelEventArgs> mouseWheelEvent = *this;
+
         virtual ~EventConsumer() {}
-
-        inline Event<EventConsumer, KeyEventArgs>& getOnKey() {
-            return onKey;
-        }
-
-        __declspec(property(get = getOnKey)) Event<EventConsumer, KeyEventArgs>& OnKey;
-
-        inline Event<EventConsumer, MouseButtonEventArgs>& getOnMouseButton() {
-            return onMouseButton;
-        }
-
-        __declspec(property(get = getOnMouseButton)) Event<EventConsumer, MouseButtonEventArgs>& OnMouseButton;
-
-        inline Event<EventConsumer, MouseMotionEventArgs>& getOnMouseMotion() {
-            return onMouseMotion;
-        }
-
-        __declspec(property(get = getOnMouseMotion)) Event<EventConsumer, MouseMotionEventArgs>& OnMouseMotion;
-
-        inline Event<EventConsumer, MouseWheelEventArgs> getOnMouseWheel() {
-            return onMouseWheel;
-        }
-
-        __declspec(property(get = getOnMouseWheel)) Event<EventConsumer, MouseWheelEventArgs>& OnMouseWheel;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override {
             bool result = onKeyEvent(event);
-            bool result2 = onKey(event);
+            bool result2 = keyEvent(event);
             return result || result2;
         }
 
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override {
             bool result = onMouseButtonEvent(event);
-            bool result2 = onMouseButton(event);
+            bool result2 = mouseButtonEvent(event);
             return result || result2;
         }
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override {
             bool result = onMouseMotionEvent(event);
-            bool result2 = onMouseMotion(event);
+            bool result2 = mouseMotionEvent(event);
             return result || result2;
         }
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override {
             bool result = onMouseWheelEvent(event);
-            bool result2 = onMouseWheel(event);
+            bool result2 = mouseWheelEvent(event);
             return result || result2;
         }
     };

@@ -31,27 +31,22 @@ namespace Ghurund::Core {
         Window* parent;
 
     protected:
-        Event<Window> onPositionChanged = *this;
         virtual bool onPositionChangedEvent() {
             return false;
         }
 
-        Event<Window, IntSize> onSizeChanging = *this;
         virtual bool onSizeChangingEvent(const IntSize& size) {
             return false;
         }
 
-        Event<Window> onSizeChanged = *this;
         virtual bool onSizeChangedEvent() {
             return false;
         }
 
-        Event<Window> onFocusedChanged = *this;
         virtual bool onFocusedChangedEvent() {
             return false;
         }
 
-        Event<Window> onClosed = *this;
         virtual bool onClosedEvent() {
             return false;
         }
@@ -59,6 +54,12 @@ namespace Ghurund::Core {
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
+        Event<Window> positionChanged = *this;
+        Event<Window, IntSize> sizeChanging = *this;
+        Event<Window> sizeChanged = *this;
+        Event<Window> focusedChanged = *this;
+        Event<Window> closed = *this;
+
         Window(Window* parent = nullptr) {
             this->parent = parent;
         }
@@ -132,7 +133,7 @@ namespace Ghurund::Core {
 
         inline bool dispatchPositionChangedEvent() {
             bool result = onPositionChangedEvent();
-            bool result2 = onPositionChanged();
+            bool result2 = positionChanged();
             return result || result2;
         }
 
@@ -152,13 +153,13 @@ namespace Ghurund::Core {
 
         inline bool dispatchSizeChangingEvent(const IntSize& size) {
             bool result = onSizeChangingEvent(size);
-            bool result2 = onSizeChanging(size);
+            bool result2 = sizeChanging(size);
             return result || result2;
         }
 
         inline bool dispatchSizeChangedEvent() {
             bool result = onSizeChangedEvent();
-            bool result2 = onSizeChanged();
+            bool result2 = sizeChanged();
             return result || result2;
         }
 
@@ -180,45 +181,15 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getParent)) Window* Parent;
 
-        inline Event<Window>& getOnPositionChanged() {
-            return onPositionChanged;
-        }
-
-        __declspec(property(get = getOnPositionChanged)) Event<Window>& OnPositionChanged;
-
-        inline Event<Window, IntSize>& getOnSizeChanging() {
-            return onSizeChanging;
-        }
-
-        __declspec(property(get = getOnSizeChanging)) Event<Window, IntSize>& OnSizeChanging;
-
-        inline Event<Window>& getOnSizeChanged() {
-            return onSizeChanged;
-        }
-
-        __declspec(property(get = getOnSizeChanged)) Event<Window>& OnSizeChanged;
-
-        inline Event<Window>& getOnFocusedChanged() {
-            return onFocusedChanged;
-        }
-
-        __declspec(property(get = getOnFocusedChanged)) Event<Window>& OnFocusedChanged;
-
         inline bool dispatchFocusedChangedEvent() {
             bool result = onFocusedChangedEvent();
-            bool result2 = onFocusedChanged();
+            bool result2 = focusedChanged();
             return result || result2;
         }
 
-        inline Event<Window>& getOnClosed() {
-            return onClosed;
-        }
-
-        __declspec(property(get = getOnClosed)) Event<Window>& OnClosed;
-
         inline bool dispatchClosedEvent() {
             bool result = onClosedEvent();
-            bool result2 = onClosed();
+            bool result2 = closed();
             return result || result2;
         }
 

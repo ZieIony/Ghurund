@@ -17,7 +17,7 @@ namespace Ghurund::UI {
             if (event.Action == KeyAction::DOWN) {
                 buttons[MouseButton::VIRTUAL] = true;
                 onStateChanged();
-                return onPressed(MousePressedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
+                return pressed(MousePressedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
             } else if (event.Action == KeyAction::UP) {
                 buttons[MouseButton::VIRTUAL] = false;
                 onStateChanged();
@@ -47,7 +47,7 @@ namespace Ghurund::UI {
             buttons[event.Button] = true;
             Parent->CapturedChild = this;
             onStateChanged();
-            return onPressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs)) || result;
+            return pressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs)) || result;
         } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
             buttons[event.Button] = false;
             Parent->CapturedChild = nullptr;

@@ -41,10 +41,7 @@ namespace Ghurund::Core {
         }
 
         inline Event<SenderType>& operator-=(const EventHandler<SenderType>& listener) {
-            size_t i = listeners.indexOf(listener);
-            if (i == listeners.Size)
-                return;
-            listeners.removeAt(i);
+            listeners.remove(listener);
             return *this;
         }
 

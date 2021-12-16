@@ -105,6 +105,6 @@ namespace Ghurund::UI {
                 OnScrolled();
             }
         }
-        return OnMouseWheel(event);
+        return mouseWheelEvent(event);
     }
 }

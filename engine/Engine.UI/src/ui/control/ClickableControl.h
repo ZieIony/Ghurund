@@ -18,7 +18,7 @@ namespace Ghurund::UI {
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
     public:
-        Event<Control, MousePressedEventArgs> onPressed = *this;
+        Event<Control, MousePressedEventArgs> pressed = *this;
         Event<Control, MouseClickedEventArgs> clicked = *this;
 
         ClickableControl() {

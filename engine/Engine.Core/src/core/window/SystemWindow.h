@@ -21,10 +21,10 @@ namespace Ghurund::Core {
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        Event<Ghurund::Core::Window> onDraggedOver = *this;
-        Event<Ghurund::Core::Window> onDragLeft = *this;
-        Event<Ghurund::Core::Window, Array<FilePath*>&> onDragEntered = *this;
-        Event<Ghurund::Core::Window, Array<FilePath*>&> onDropped = *this;
+        Event<Ghurund::Core::Window> draggedOver = *this;
+        Event<Ghurund::Core::Window> dragLeft = *this;
+        Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
+        Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
 
         SystemWindow(HWND handle, Ghurund::Core::Timer& timer);
 

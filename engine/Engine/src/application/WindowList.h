@@ -28,29 +28,29 @@ namespace Ghurund {
         inline void add(ApplicationWindow* window, WindowCloseAction action = WindowCloseAction::DESTROY) {
             windows.add(window);
             if (action == WindowCloseAction::DESTROY) {
-                window->OnClosed.add(destroyHandler);
+                window->closed += destroyHandler;
             } else if (action == WindowCloseAction::HIDE) {
-                window->OnClosed.add(hideHandler);
+                window->closed += hideHandler;
             }
         }
 
         inline void remove(ApplicationWindow* window) {
-            window->OnClosed.remove(destroyHandler);
-            window->OnClosed.remove(hideHandler);
+            window->closed -= destroyHandler;
+            window->closed -= hideHandler;
             windows.remove(window);
         }
 
         inline void removeAt(size_t index) {
             ApplicationWindow* window = windows.get(index);
-            window->OnClosed.remove(destroyHandler);
-            window->OnClosed.remove(hideHandler);
+            window->closed -= destroyHandler;
+            window->closed -= hideHandler;
             windows.removeAt(index);
         }
 
         inline void clear() {
             for (ApplicationWindow* window : windows) {
-                window->OnClosed.remove(destroyHandler);
-                window->OnClosed.remove(hideHandler);
+                window->closed -= destroyHandler;
+                window->closed -= hideHandler;
             }
             windows.clear();
         }

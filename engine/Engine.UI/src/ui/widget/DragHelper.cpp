@@ -3,7 +3,7 @@
 
 namespace Ghurund::UI {
     DragHelper::DragHelper(Control& handle, Control& content):dragged(content) {
-        handle.OnMouseButton.add([this, &content](EventConsumer& sender, const MouseButtonEventArgs& args) {
+        handle.mouseButtonEvent += [this, &content](EventConsumer& sender, const MouseButtonEventArgs& args) {
             if (args.Action == MouseAction::DOWN && args.Button == MouseButton::LEFT) {
                 pressControlPos = content.Position;
                 pressMousePos = args.Position;
@@ -12,8 +12,8 @@ namespace Ghurund::UI {
                 pressed = false;
             }
             return true;
-        });
-        handle.OnMouseMotion.add([this, &content](EventConsumer& sender, const MouseMotionEventArgs& args) {
+        };
+        handle.mouseMotionEvent += [this, &content](EventConsumer& sender, const MouseMotionEventArgs& args) {
             Control* parent = content.Parent;
             if (pressed && parent) {
                 auto prevControlPos = content.Position;
@@ -26,6 +26,6 @@ namespace Ghurund::UI {
                 return true;
             }
             return false;
-        });
+        };
     }
 }

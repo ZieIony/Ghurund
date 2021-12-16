@@ -36,15 +36,15 @@ namespace Ghurund::UI {
         this->orientation = orientation;
         splitter->Orientation = orientation;
         layout->Orientation = orientation;
-        splitter->OnMouseButton.clear();
-        splitter->OnMouseMotion.clear();
+        splitter->mouseButtonEvent.clear();
+        splitter->mouseMotionEvent.clear();
         if (orientation == Orientation::HORIZONTAL) {
-            splitter->OnMouseButton.add([this](EventConsumer& sender, const MouseButtonEventArgs& args) {
+            splitter->mouseButtonEvent += [this](EventConsumer& sender, const MouseButtonEventArgs& args) {
                 if (args.Action == MouseAction::DOWN && args.Button == MouseButton::LEFT)
                     pressMousePos = args.Position;
                 return true;
-            });
-            splitter->OnMouseMotion.add([this](EventConsumer& sender, const MouseMotionEventArgs& args) {
+            };
+            splitter->mouseMotionEvent += [this](EventConsumer& sender, const MouseMotionEventArgs& args) {
                 if (splitter->Pressed[MouseButton::LEFT] || splitter->Hovered)
                     Cursor::SIZEWE.set();
                 if (splitter->Pressed[MouseButton::LEFT]) {
@@ -58,14 +58,14 @@ namespace Ghurund::UI {
                     layout->invalidate();
                 }
                 return true;
-            });
+            };
         } else {
-            splitter->OnMouseButton.add([this](EventConsumer& sender, const MouseButtonEventArgs& args) {
+            splitter->mouseButtonEvent += [this](EventConsumer& sender, const MouseButtonEventArgs& args) {
                 if (args.Action == MouseAction::DOWN && args.Button == MouseButton::LEFT)
                     pressMousePos = args.Position;
                 return true;
-            });
-            splitter->OnMouseMotion.add([this](EventConsumer& sender, const MouseMotionEventArgs& args) {
+            };
+            splitter->mouseMotionEvent += [this](EventConsumer& sender, const MouseMotionEventArgs& args) {
                 if (splitter->Pressed[MouseButton::LEFT] || splitter->Hovered)
                     Cursor::SIZENS.set();
                 if (splitter->Pressed[MouseButton::LEFT]) {
@@ -79,7 +79,7 @@ namespace Ghurund::UI {
                     layout->invalidate();
                 }
                 return true;
-            });
+            };
         }
     }
 

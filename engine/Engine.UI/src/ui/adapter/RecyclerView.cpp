@@ -57,6 +57,6 @@ namespace Ghurund::UI {
             }
         }
 
-        return OnMouseWheel(args);
+        return mouseWheelEvent(args);
     }
 }

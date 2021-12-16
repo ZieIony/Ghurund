@@ -34,18 +34,18 @@ namespace Ghurund::UI {
             rootView->addReference();
             if (window) {
                 SwapChain& swapChain = window->SwapChain;
-                window->OnSizeChanging.add([&](const Window& window, const IntSize& size) {
+                window->sizeChanging += [&](const Window& window, const IntSize& size) {
                     renderTargets.clear();
                     return true;
-                });
-                window->OnSizeChanged.add([&](const Window& window) {
+                };
+                window->sizeChanged += [&](const Window& window) {
                     for (Frame& frame : swapChain.Frames) {
                         RenderTarget2D* target = ghnew RenderTarget2D();
                         target->init(graphics, *frame.RenderTarget.Texture);
                         renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
                     }
                     return true;
-                });
+                };
             }
         }
 

@@ -6,43 +6,42 @@
 
 namespace Ghurund::Core {
     template<class Value> class ObservablePointerList:public PointerList<Value> {
-    private:
-        Event<ObservablePointerList<Value>, size_t> onItemAdded = Event(*this);
-        Event<ObservablePointerList<Value>, size_t> onItemRemoved = Event(*this);
-
     public:
+        Event<ObservablePointerList<Value>, size_t> itemAdded = *this;
+        Event<ObservablePointerList<Value>, size_t> itemRemoved = *this;
+
         inline void add(const Value& item) {
             PointerList<Value>::add(item);
-            onItemAdded(Size - 1);
+            itemAdded(Size - 1);
         }
 
 
         inline void addAll(const List<Value>& list) {
             PointerList<Value>::addAll(list);
             for (size_t i = Size - list.Size; i < Size; i++)
-                onItemAdded(i);
+                itemAdded(i);
         }
 
         inline void addAll(const std::initializer_list<Value>& list) {
             PointerList<Value>::addAll(list);
             for (size_t i = Size - list.size(); i < Size; i++)
-                onItemAdded(i);
+                itemAdded(i);
         }
 
         inline void insert(size_t i, const Value& item) {
             PointerList<Value>::insert(i, item);
-            onItemAdded(i);
+            itemAdded(i);
         }
 
         inline void set(size_t i, const Value& item) {
             PointerList<Value>::set(i, item);
-            onItemRemoved(i);
-            onItemAdded(i);
+            itemRemoved(i);
+            itemAdded(i);
         }
 
         inline void removeAt(size_t i) {
             PointerList<Value>::removeAt(i);
-            onItemRemoved(i);
+            itemRemoved(i);
         }
 
         inline void remove(const Value& item) {
@@ -55,7 +54,7 @@ namespace Ghurund::Core {
             size_t s = List<Value>::size;
             PointerList<Value>::clear();
             for (size_t i = 0; i < s; i++)
-                onItemRemoved(s - i - 1);
+                itemRemoved(s - i - 1);
         }
     };
 }

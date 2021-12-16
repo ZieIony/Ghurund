@@ -67,7 +67,7 @@ namespace Preview {
             };
 
             DragDropEnabled = true;
-            onDropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {
+            dropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {
                 fileWatcher.clearFiles();
                 FilePath& path = *files[0];
                 postLoadCallback(path);
