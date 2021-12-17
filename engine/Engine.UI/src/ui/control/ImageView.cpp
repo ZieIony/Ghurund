@@ -17,24 +17,8 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
-        if (preferredSize.width.Type == PreferredSize::Type::PIXELS) {
-            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
-        } else if (preferredSize.width.Type == PreferredSize::Type::FILL) {
-            measuredSize.width = std::max(minSize.width, parentWidth);
-        } else if (preferredSize.width.Type == PreferredSize::Type::PERCENT) {
-            measuredSize.width = std::max(minSize.width, preferredSize.width.Value * parentWidth / 100.0f);
-        } else {
-            measuredSize.width = std::max(minSize.width, image ? (float)image->PreferredSize.width : 0.0f);
-        }
-        if (preferredSize.height.Type == PreferredSize::Type::PIXELS) {
-            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
-        } else if (preferredSize.height.Type == PreferredSize::Type::FILL) {
-            measuredSize.height = std::max(minSize.height, parentHeight);
-        } else if (preferredSize.height.Type == PreferredSize::Type::PERCENT) {
-            measuredSize.height = std::max(minSize.height, preferredSize.height.Value * parentHeight / 100.0f);
-        } else {
-            measuredSize.height = std::max(minSize.height, image ? (float)image->PreferredSize.height : 0.0f);
-        }
+        measuredSize.width = preferredSize.width.measure(minSize.width, image ? (float)image->PreferredSize.width : 0.0f, parentWidth);
+        measuredSize.height = preferredSize.height.measure(minSize.height, image ? (float)image->PreferredSize.height : 0.0f, parentHeight);
     }
 
     void ImageView::onDraw(ICanvas& canvas) {

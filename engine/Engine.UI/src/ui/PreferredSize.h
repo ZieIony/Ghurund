@@ -51,7 +51,7 @@ namespace Ghurund::UI {
                 return this->type == other.type && this->value == other.value;
             }
 
-            inline float measure(float parentSize, float minSize, float contentSize) {
+            inline float measure(float minSize, float contentSize, float parentSize) {
                 if (type == PreferredSize::Type::PIXELS) {
                     return std::max(value, minSize);
                 } else if (type == PreferredSize::Type::FILL) {

@@ -5,18 +5,13 @@
 
 namespace Ghurund::UI::GDI {
     class ShapeFactory:public Ghurund::UI::ShapeFactory {
-    private:
-        ID2D1Factory6& d2dFactory;
-
     public:
-        ShapeFactory(ID2D1Factory6& d2dFactory):d2dFactory(d2dFactory) {}
-
         virtual Shape* makeShape(const AString& desc) override {
             if (desc == "rect") {
-                return ghnew Rect(d2dFactory);
+                return ghnew Rect();
             } else if (desc.startsWith("roundRect")) {
                 float radius = (float)atof(desc.substring(desc.find(",") + 1).trim().Data);
-                return ghnew RoundRect(d2dFactory, radius);
+                return ghnew RoundRect(radius);
             }
             return nullptr;
         }

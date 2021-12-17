@@ -53,7 +53,7 @@ namespace Ghurund::UI {
         inline void setTint(std::unique_ptr<ColorAttr> color) {
             delete this->tint;
             if (color) {
-                this->tint = color.release();
+                this->tint = color.release();   // TODO: can this be simplified?
             } else {
                 this->tint = nullptr;
             }

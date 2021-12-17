@@ -3,13 +3,6 @@
 #include "core/math/Size.h"
 #include "ui/image/VectorImage.h"
 
-#include <d2d1svg.h>
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<ID2D1SvgDocument>();
-}
-
 namespace Ghurund::UI::GDI {
     using namespace Ghurund::Core;
 
@@ -31,9 +24,6 @@ namespace Ghurund::UI::GDI {
         virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
             return FORMATS;
         }
-
-    private:
-        ID2D1SvgDocument* svgDocument = nullptr;
 
     protected:
         virtual Status loadInternal(
@@ -57,19 +47,12 @@ namespace Ghurund::UI::GDI {
 
         virtual void invalidate() {
             finalize();
-            svgDocument = nullptr;
             __super::invalidate();
         }
 
         virtual bool isValid() {
-            return svgDocument != nullptr && __super::Valid;
+            return __super::Valid;
         }
-
-        inline ID2D1SvgDocument* getData() {
-            return svgDocument;
-        }
-
-        __declspec(property(get = getData)) ID2D1SvgDocument* Data;
 
         Ghurund::Core::FloatSize getSize();
 

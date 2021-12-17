@@ -55,8 +55,8 @@ namespace Ghurund::UI {
         StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
         void loadImage(Ghurund::Core::ResourceManager& resourceManager, const ImageKey& key, const Ghurund::Core::FilePath& path) {
-            Status result;
-            /*Ghurund::Core::SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
+            /*Status result;
+            Ghurund::Core::SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path, nullptr, &result);
             Ghurund::Core::SharedPointer<ImageDrawable> imageDrawable = ghnew BitmapDrawable(bitmap);
             Images.set(key, imageDrawable);*/
         }

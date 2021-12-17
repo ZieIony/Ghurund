@@ -2,25 +2,13 @@
 
 #include "core/resource/Loader.h"
 #include "Font.h"
-#include "ui/gdi/font/FontCollectionLoader.h"
 #include "core/Exceptions.h"
 
 namespace Ghurund::UI::GDI {
     using namespace Ghurund::Core;
 
     class FontLoader:public Loader {
-    private:
-        IDWriteFactory5& factory;
-        FontCollectionLoader* fontCollectionLoader = nullptr;
-        IDWriteInMemoryFontFileLoader* fontFileLoader = nullptr;
-
     public:
-        FontLoader(IDWriteFactory5& factory):factory(factory) {}
-
-        ~FontLoader();
-
-        void init();
-
         virtual Font* load(
             Ghurund::Core::ResourceManager& manager,
             MemoryInputStream& stream,

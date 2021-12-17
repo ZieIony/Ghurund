@@ -8,25 +8,15 @@
 #include <Shlwapi.h>
 #include <wrl.h>
 
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<ID2D1SvgDocument>() {
-        static Type TYPE = Type("", "ID2D1SvgDocument", sizeof(ID2D1SvgDocument*));
-        return TYPE;
-    }
-}
-
 namespace Ghurund::UI::GDI {
     const Ghurund::Core::Type& SvgDocument::GET_TYPE() {
         using namespace Ghurund::Core;
 
-        static auto PROPERTY_DATA = ReadOnlyProperty<SvgDocument, ID2D1SvgDocument*>("Data", &getData);
         static auto PROPERTY_SIZE = ReadOnlyProperty<SvgDocument, FloatSize>("Size", &getSize);
 
         static const auto CONSTRUCTOR = Constructor<SvgDocument>();
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<SvgDocument>(Ghurund::UI::NAMESPACE_NAME, "SvgDocument")
-            .withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_SIZE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
@@ -44,19 +34,7 @@ namespace Ghurund::UI::GDI {
         Ghurund::Core::MemoryInputStream& stream,
         Ghurund::Core::LoadOption options
     ) {
-        Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
-        //context.Graphics2D.DeviceContext->CreateSvgDocument(memStream.Get(), D2D1::SizeF(100, 100), &svgDocument);
-        ID2D1SvgElement* root;
-        svgDocument->GetRoot(&root);
-        FLOAT width = 0.0f, height = 0.0f;
-        if (root->IsAttributeSpecified(L"width"))
-            root->GetAttributeValue(L"width", &width);
-        if (root->IsAttributeSpecified(L"height"))
-            root->GetAttributeValue(L"height", &height);
-        if (width > 0 && height > 0)
-            svgDocument->SetViewportSize({ width, height });
-        root->Release();
-        return Status::OK;
+        return Status::NOT_IMPLEMENTED;
     }
 
     Status SvgDocument::saveInternal(
@@ -67,15 +45,9 @@ namespace Ghurund::UI::GDI {
         return Status::NOT_SUPPORTED;
     }
 
-    void SvgDocument::finalize() {
-        if (svgDocument != nullptr)
-            svgDocument->Release();
-    }
+    void SvgDocument::finalize() {}
 
     Ghurund::Core::FloatSize SvgDocument::getSize() {
-        if (!svgDocument)
-            return { 0,0 };
-        auto size = svgDocument->GetViewportSize();
-        return { size.width, size.height };
+        return { 0,0 };
     }
 }

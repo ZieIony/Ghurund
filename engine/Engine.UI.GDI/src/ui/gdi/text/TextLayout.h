@@ -7,7 +7,6 @@
 #include "ui/Canvas.h"
 #include "core/IUnknownImpl.h"
 
-#include <d2d1.h>
 #include <wrl.h>
 #include <ui/Color.h>
 #include <gdiplus.h>
@@ -17,41 +16,16 @@ namespace Ghurund::UI::GDI {
 
     class TextLayout:public ITextLayout {
     private:
-        class DECLSPEC_UUID("1CD7C44F-526B-492a-B780-EF9C4159B653") TextPaint: public Ghurund::Core::ComBase<QiList<IUnknown>> {
-        private:
-            uint32_t color;
-
-        public:
-            TextPaint(uint32_t color): color(color) {}
-
-            inline uint32_t getColor() const throw() {
-                return color;
-            }
-
-            __declspec(property(get = getColor)) uint32_t Color;
-        };
-
         Ghurund::Core::FloatSize size;
         Ghurund::UI::Color color;
         Ghurund::Core::WString text;
         Ghurund::UI::GDI::TextFormat* format = nullptr;
 
-        IDWriteFactory& dwriteFactory;
-        ComPtr<ID2D1SolidColorBrush> fillBrush;
-        IDWriteTextLayout* layout = nullptr;
         bool valid = false;
 
-        void copySinglePropertyRange(IDWriteTextLayout* oldLayout, uint32_t startPosForOld, IDWriteTextLayout* newLayout, uint32_t startPosForNew, uint32_t length, Ghurund::UI::GDI::TextFormat* textFormat = nullptr);
-
-        uint32_t calculateRangeLengthAt(IDWriteTextLayout* layout, uint32_t pos);
-
-        void copyRangedProperties(IDWriteTextLayout* oldLayout, uint32_t startPos, uint32_t afterEndPos, uint32_t newLayoutTextOffset, IDWriteTextLayout* newLayout, bool isOffsetNegative = false);
-
-        void copyGlobalProperties(IDWriteTextLayout* oldLayout, IDWriteTextLayout* newLayout);
-
     public:
-        TextLayout(IDWriteFactory& dwriteFactory, const Ghurund::Core::WString& text, const Ghurund::UI::Color& color, Ghurund::UI::GDI::TextFormat* format)
-            :dwriteFactory(dwriteFactory), text(text), color(color) {
+        TextLayout(const Ghurund::Core::WString& text, const Ghurund::UI::Color& color, Ghurund::UI::GDI::TextFormat* format)
+            :text(text), color(color) {
             Format = format;
         }
 

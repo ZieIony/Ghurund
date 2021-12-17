@@ -25,16 +25,16 @@ namespace Ghurund::UI {
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
             measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
-            measuredSize.height = preferredSize.height.measure(parentHeight, minSize.height, std::ceil(textMetrics.height));
+            measuredSize.height = preferredSize.height.measure(minSize.height, std::ceil(textMetrics.height), parentHeight);
         } else {
-            measuredSize.width = preferredSize.width.measure(parentWidth, minSize.width, 0);
+            measuredSize.width = preferredSize.width.measure(minSize.width, 0, parentWidth);
             textLayout->Size = { measuredSize.width, MAX_LAYOUT_SIZE };
             if (textLayout->refresh() != Status::OK) {
                 Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
                 return;
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
-            measuredSize.height = preferredSize.height.measure(parentHeight, minSize.height, std::ceil(textMetrics.height));
+            measuredSize.height = preferredSize.height.measure(minSize.height, std::ceil(textMetrics.height), parentHeight);
         }
     }
 

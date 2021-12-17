@@ -150,8 +150,6 @@
     <ClCompile Include="src\ui\gdi\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\gdi\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\gdi\font\Font.cpp" />
-    <ClCompile Include="src\ui\gdi\font\FontCollectionLoader.cpp" />
-    <ClCompile Include="src\ui\gdi\font\FontFileEnumerator.cpp" />
     <ClCompile Include="src\ui\gdi\font\FontLoader.cpp" />
     <ClCompile Include="src\ui\gdi\image\Bitmap.cpp" />
     <ClCompile Include="src\ui\gdi\image\SvgDocument.cpp" />
@@ -169,8 +167,6 @@
     <ClInclude Include="src\ui\gdi\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\gdi\effects\TintEffect.h" />
     <ClInclude Include="src\ui\gdi\font\Font.h" />
-    <ClInclude Include="src\ui\gdi\font\FontCollectionLoader.h" />
-    <ClInclude Include="src\ui\gdi\font\FontFileEnumerator.h" />
     <ClInclude Include="src\ui\gdi\font\FontLoader.h" />
     <ClInclude Include="src\ui\gdi\Gdi.h" />
     <ClInclude Include="src\ui\gdi\image\Bitmap.h" />

@@ -50,10 +50,9 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyWrap) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"";
@@ -70,10 +69,9 @@ public:
 
     TEST_METHOD(textBlock_measureTextWrap) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"test text";
@@ -90,10 +88,9 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyFill) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"";
@@ -110,10 +107,9 @@ public:
 
     TEST_METHOD(textBlock_measureTextFill) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"test text";
@@ -130,10 +126,9 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyPixels) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->MinSize = { 0, 0 };
@@ -149,10 +144,9 @@ public:
 
     TEST_METHOD(textBlock_measureTextPixels) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->Text = L"test text";
@@ -169,10 +163,9 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyPercent) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->MinSize = { 0, 0 };
@@ -188,10 +181,9 @@ public:
 
     TEST_METHOD(textBlock_measureTextPercent) {
         SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), nullptr);
+        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
-        textBlock->TextFormat = textFormat;
 
         textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->Text = L"test text";
