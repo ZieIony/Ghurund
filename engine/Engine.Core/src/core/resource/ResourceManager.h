@@ -71,9 +71,10 @@ namespace Ghurund::Core {
                 if (loader) {
                     resource = (Type*)loadInternal(*loader, path, format, options);
                 } else {
-                    std::string message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    auto message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
                     Logger::log(LogType::ERR0R, message.c_str());
-                    throw InvalidStateException(message.c_str());
+                    auto exMessage = convertText<tchar, char>(String(message.c_str()));
+                    throw InvalidStateException(exMessage.Data);
                 }
             } else {
                 resource->addReference();
@@ -101,9 +102,10 @@ namespace Ghurund::Core {
                 if (loader) {
                     resource = (Type*)loadInternal(*loader, file, format, options);
                 } else {
-                    std::string message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    auto message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
                     Logger::log(LogType::ERR0R, message.c_str());
-                    throw InvalidStateException(message.c_str());
+                    AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                    throw InvalidStateException(exMessage.Data);
                 }
             } else {
                 resource->addReference();

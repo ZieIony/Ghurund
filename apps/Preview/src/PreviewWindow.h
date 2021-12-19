@@ -46,7 +46,6 @@ namespace Preview {
         virtual Status init() override {
             __super::init();
             UIFeature* uiFeature = Application.Features.get<UIFeature>();
-            Layers.add(std::make_unique<UILayer>(uiFeature->Graphics2D, rootView, this));
 
             lightTheme = ghnew LightTheme(Application.ResourceManager);
             darkTheme = ghnew DarkTheme(Application.ResourceManager);
@@ -55,6 +54,7 @@ namespace Preview {
             layoutLoader->Theme = lightTheme;
 
             rootView = ghnew Ghurund::UI::RootView(*context);
+            Layers.add(std::make_unique<UILayer>(uiFeature->Graphics2D, rootView, this));
 
             SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();

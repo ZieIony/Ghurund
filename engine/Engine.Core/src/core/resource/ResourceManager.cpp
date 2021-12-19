@@ -14,42 +14,47 @@ namespace Ghurund::Core {
             pathString.replace(L'\\', L'/');
             size_t separatorIndex = pathString.find(L"/", libProtocolLength);
             if (separatorIndex == pathString.Size) {
-                std::string message = std::format(_T("the path '{}' has to contain '/'\n"), pathString);
+                auto message = std::format(_T("the path '{}' has to contain '/'\n"), pathString);
                 Logger::log(LogType::ERR0R, message.c_str());
-                throw InvalidParamException(message.c_str());
+                AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidParamException(exMessage.Data);
             }
             WString libName = pathString.substring(libProtocolLength, separatorIndex - libProtocolLength);
             WString fileName = pathString.substring(separatorIndex + 1);
             file.reset(libraries.get(libName)->getFile(fileName));
             if (file.get() == nullptr || file->Size == 0 && !file->Exists) {
-                std::string message = std::format(_T("the file '{}' in library '{}' doesn't exist\n"), fileName, libName);
+                auto message = std::format(_T("the file '{}' in library '{}' doesn't exist\n"), fileName, libName);
                 Logger::log(LogType::ERR0R, message.c_str());
-                throw InvalidParamException(message.c_str());
+                AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidParamException(exMessage.Data);
             }
         } else if (pathString.startsWith(FILE_PROTOCOL)) {
             pathString.replace(L'\\', L'/');
             WString fileName = pathString.substring(fileProtocolLength);
             file.reset(ghnew File(fileName));
             if (!file->Exists) {
-                std::string message = std::format(_T("the file '{}' doesn't exist\n"), fileName);
+                auto message = std::format(_T("the file '{}' doesn't exist\n"), fileName);
                 Logger::log(LogType::ERR0R, message.c_str());
-                throw InvalidParamException(message.c_str());
+                AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidParamException(exMessage.Data);
             }
         } else {
             file.reset(ghnew File(path));
             if (!file->Exists) {
-                std::string message = std::format(_T("the file '{}' doesn't exist\n"), path);
+                auto message = std::format(_T("the file '{}' doesn't exist\n"), path);
                 Logger::log(LogType::ERR0R, message.c_str());
-                throw InvalidParamException(message.c_str());
+                AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidParamException(exMessage.Data);
             }
         }
 
         if (file->Size == 0) {
             Status result = file->read();
             if (result != Status::OK) {
-                std::string message = std::format(_T("failed to load file '{}'\n"), file->Path);
+                auto message = std::format(_T("failed to load file '{}'\n"), file->Path);
                 Logger::log(LogType::ERR0R, message.c_str());
-                throw CallFailedException(message.c_str());
+                AString exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw CallFailedException(exMessage.Data);
             }
         }
 
@@ -58,9 +63,10 @@ namespace Ghurund::Core {
 
     Resource* ResourceManager::loadInternal(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options) {
         if (file.Size == 0) {
-            std::string message = std::format(_T("the file '{}' is empty\n"), file.Path);
+            auto message = std::format(_T("the file '{}' is empty\n"), file.Path);
             Logger::log(LogType::ERR0R, message.c_str());
-            throw InvalidParamException(message.c_str());
+            AString exMessage = convertText<tchar, char>(String(message.c_str()));
+            throw InvalidParamException(exMessage.Data);
         }
         MemoryInputStream stream(file.Data, file.Size);
         Resource* resource;

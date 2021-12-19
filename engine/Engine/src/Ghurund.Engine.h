@@ -9,12 +9,6 @@
 #pragma comment(lib, "D3DCompiler.lib")
 #pragma comment(lib, "D3D11.lib")
 
-#ifdef _WIN64
-#pragma comment(lib, "Ghurund.Engine_64.lib")
-#else
-#pragma comment(lib, "Ghurund.Engine_32.lib")
-#endif
-
 namespace Ghurund {
     template<Derived<Application> Type>
     static void main(const Ghurund::Settings& settings = Ghurund::Settings(), std::unique_ptr<Ghurund::Core::LogOutput> logOutput = nullptr) {

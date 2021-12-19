@@ -1,109 +1,189 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="Debug Win64|x64">
+      <Configuration>Debug Win64</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Release Win64|x64">
+      <Configuration>Release Win64</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\core\image\Image.cpp" />
-    <ClCompile Include="src\core\image\ImageLoader.cpp" />
-    <ClCompile Include="src\core\input\Input.cpp" />
-    <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
-    <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
-    <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
-    <ClCompile Include="src\core\logging\LogType.cpp" />
-    <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
-    <ClCompile Include="src\core\resource\Resource.cpp" />
-    <ClCompile Include="src\core\resource\ResourceManager.cpp" />
-    <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
-    <ClCompile Include="src\core\Timer.cpp" />
-    <ClCompile Include="src\core\window\DragDropManager.cpp" />
-    <ClCompile Include="src\core\window\SystemWindow.cpp" />
-    <ClCompile Include="src\core\window\Window.cpp" />
-    <ClCompile Include="src\core\window\WindowAttributes.cpp" />
-    <ClCompile Include="src\core\window\WindowClass.cpp" />
-    <ClCompile Include="src\ghcpch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ghcpch.h</PrecompiledHeaderFile>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{92F48861-FEA9-0157-879E-FB2DF352F85A}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Engine.Core</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <OutDir>..\..\bin\Debug\</OutDir>
+    <IntDir>obj\Win64\Debug\</IntDir>
+    <TargetName>Engine.Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <OutDir>..\..\bin\Release\</OutDir>
+    <IntDir>obj\Win64\Release\</IntDir>
+    <TargetName>Engine.Core</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghcpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
-    <ClCompile Include="src\core\io\DirectoryPath.cpp" />
-    <ClCompile Include="src\core\io\File.cpp" />
-    <ClCompile Include="src\core\io\FilePath.cpp" />
-    <ClCompile Include="src\core\Object.cpp" />
-    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
-    <ClCompile Include="src\core\Pointer.cpp" />
-    <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
-    <ClCompile Include="src\core\threading\Task.cpp" />
-    <ClCompile Include="src\core\threading\WorkerThread.cpp" />
-    <ClCompile Include="src\core\io\FileUtils.cpp" />
-    <ClCompile Include="src\core\logging\Logger.cpp" />
-  </ItemGroup>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghcpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\Ghurund.Core.h" />
+    <ClInclude Include="src\Status.h" />
+    <ClInclude Include="src\core\Buffer.h" />
+    <ClInclude Include="src\core\Concepts.h" />
+    <ClInclude Include="src\core\Enum.h" />
+    <ClInclude Include="src\core\Event.h" />
+    <ClInclude Include="src\core\EventHandler.h" />
+    <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\IUnknownImpl.h" />
+    <ClInclude Include="src\core\Id.h" />
+    <ClInclude Include="src\core\NamedObject.h" />
+    <ClInclude Include="src\core\Noncopyable.h" />
+    <ClInclude Include="src\core\Object.h" />
+    <ClInclude Include="src\core\Observable.h" />
+    <ClInclude Include="src\core\ObservableHandler.h" />
+    <ClInclude Include="src\core\Pointer.h" />
+    <ClInclude Include="src\core\SharedPointer.h" />
+    <ClInclude Include="src\core\StackTrace.h" />
+    <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\SystemInfo.h" />
+    <ClInclude Include="src\core\Timer.h" />
+    <ClInclude Include="src\core\Translations.h" />
+    <ClInclude Include="src\core\TypeSequence.h" />
+    <ClInclude Include="src\core\TypeWrapper.h" />
+    <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
+    <ClInclude Include="src\core\allocation\Allocator.h" />
+    <ClInclude Include="src\core\allocation\AllocatorMap.h" />
+    <ClInclude Include="src\core\allocation\CircularBufferStrategy.h" />
+    <ClInclude Include="src\core\allocation\PoolAllocator.h" />
     <ClInclude Include="src\core\allocation\SimpleAllocator.h" />
+    <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
+    <ClInclude Include="src\core\collection\Array.h" />
     <ClInclude Include="src\core\collection\ArrayCollection.h" />
+    <ClInclude Include="src\core\collection\AverageValue.h" />
     <ClInclude Include="src\core\collection\Bag.h" />
+    <ClInclude Include="src\core\collection\BufferedValue.h" />
+    <ClInclude Include="src\core\collection\Collection.h" />
     <ClInclude Include="src\core\collection\CollectionWithCapacity.h" />
+    <ClInclude Include="src\core\collection\HashMap.h" />
     <ClInclude Include="src\core\collection\LinkedList.h" />
+    <ClInclude Include="src\core\collection\List.h" />
+    <ClInclude Include="src\core\collection\Map.h" />
+    <ClInclude Include="src\core\collection\ObservableList.h" />
+    <ClInclude Include="src\core\collection\ObservablePointerList.h" />
+    <ClInclude Include="src\core\collection\PointerArray.h" />
+    <ClInclude Include="src\core\collection\PointerList.h" />
+    <ClInclude Include="src\core\collection\PointerMap.h" />
+    <ClInclude Include="src\core\collection\PointerSet.h" />
     <ClInclude Include="src\core\collection\Queue.h" />
     <ClInclude Include="src\core\collection\Range.h" />
+    <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\collection\TreeMap.h" />
     <ClInclude Include="src\core\collection\TypeMap.h" />
-    <ClInclude Include="src\core\Concepts.h" />
-    <ClInclude Include="src\core\Exceptions.h" />
     <ClInclude Include="src\core\image\Image.h" />
     <ClInclude Include="src\core\image\ImageLoader.h" />
-    <ClInclude Include="src\core\resource\TextLoader.h" />
-    <ClInclude Include="src\core\resource\TextResource.h" />
-    <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
     <ClInclude Include="src\core\input\Input.h" />
     <ClInclude Include="src\core\input\InputEventArgs.h" />
     <ClInclude Include="src\core\input\Keyboard.h" />
     <ClInclude Include="src\core\input\Mouse.h" />
     <ClInclude Include="src\core\io\DirectoryLibrary.h" />
+    <ClInclude Include="src\core\io\DirectoryPath.h" />
+    <ClInclude Include="src\core\io\File.h" />
     <ClInclude Include="src\core\io\FileLibrary.h" />
+    <ClInclude Include="src\core\io\FilePath.h" />
+    <ClInclude Include="src\core\io\FileUtils.h" />
     <ClInclude Include="src\core\io\Library.h" />
     <ClInclude Include="src\core\io\LibraryList.h" />
+    <ClInclude Include="src\core\io\MemoryStream.h" />
+    <ClInclude Include="src\core\io\Path.h" />
     <ClInclude Include="src\core\io\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\core\io\watcher\FileChange.h" />
     <ClInclude Include="src\core\io\watcher\FileWatcher.h" />
     <ClInclude Include="src\core\logging\Formatter.h" />
     <ClInclude Include="src\core\logging\Log.h" />
     <ClInclude Include="src\core\logging\LogOutput.h" />
-    <ClInclude Include="src\core\allocation\AllocatorMap.h" />
-    <ClInclude Include="src\core\collection\Array.h" />
-    <ClInclude Include="src\core\collection\ObservableList.h" />
-    <ClInclude Include="src\core\collection\ObservablePointerList.h" />
-    <ClInclude Include="src\core\collection\PointerSet.h" />
-    <ClInclude Include="src\core\collection\Set.h" />
-    <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\logging\LogType.h" />
+    <ClInclude Include="src\core\logging\Logger.h" />
+    <ClInclude Include="src\core\math\MathUtils.h" />
     <ClInclude Include="src\core\math\Matrix3x2.h" />
+    <ClInclude Include="src\core\math\Point.h" />
     <ClInclude Include="src\core\math\Rect.h" />
-    <ClInclude Include="src\core\Observable.h" />
-    <ClInclude Include="src\core\ObservableHandler.h" />
+    <ClInclude Include="src\core\math\Size.h" />
     <ClInclude Include="src\core\reflection\BaseProperty.h" />
+    <ClInclude Include="src\core\reflection\Constructor.h" />
     <ClInclude Include="src\core\reflection\Method.h" />
     <ClInclude Include="src\core\reflection\Parameter.h" />
-    <ClInclude Include="src\core\reflection\StandardTypes.h" />
-    <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\Property.h" />
+    <ClInclude Include="src\core\reflection\StandardTypes.h" />
+    <ClInclude Include="src\core\reflection\Type.h" />
+    <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
@@ -111,49 +191,25 @@
     <ClInclude Include="src\core\resource\Resource.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
-    <ClInclude Include="src\core\StackTrace.h" />
-    <ClInclude Include="src\core\collection\AverageValue.h" />
-    <ClInclude Include="src\core\collection\BufferedValue.h" />
+    <ClInclude Include="src\core\resource\TextLoader.h" />
+    <ClInclude Include="src\core\resource\TextResource.h" />
+    <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\string\GenericString.h" />
-    <ClInclude Include="src\core\collection\HashMap.h" />
-    <ClInclude Include="src\core\collection\PointerArray.h" />
-    <ClInclude Include="src\core\collection\PointerList.h" />
-    <ClInclude Include="src\core\collection\PointerMap.h" />
     <ClInclude Include="src\core\string\GenericStringView.h" />
     <ClInclude Include="src\core\string\String.h" />
     <ClInclude Include="src\core\string\StringView.h" />
-    <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\allocation\AllocationStrategy.h" />
-    <ClInclude Include="src\core\allocation\Allocator.h" />
-    <ClInclude Include="src\core\allocation\CircularBufferStrategy.h" />
-    <ClInclude Include="src\core\allocation\PoolAllocator.h" />
-    <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
-    <ClInclude Include="src\core\Buffer.h" />
-    <ClInclude Include="src\core\reflection\Constructor.h" />
-    <ClInclude Include="src\core\Enum.h" />
-    <ClInclude Include="src\core\Event.h" />
-    <ClInclude Include="src\core\Id.h" />
-    <ClInclude Include="src\core\io\MemoryStream.h" />
-    <ClInclude Include="src\core\collection\List.h" />
-    <ClInclude Include="src\core\collection\Map.h" />
-    <ClInclude Include="src\core\SystemInfo.h" />
-    <ClInclude Include="src\core\TypeSequence.h" />
+    <ClInclude Include="src\core\string\TextConversionUtils.h" />
+    <ClInclude Include="src\core\string\TextUtils.h" />
     <ClInclude Include="src\core\threading\APCThread.h" />
     <ClInclude Include="src\core\threading\ConcurrentTaskQueue.h" />
     <ClInclude Include="src\core\threading\ConditionVariable.h" />
     <ClInclude Include="src\core\threading\CriticalSection.h" />
     <ClInclude Include="src\core\threading\FunctionQueue.h" />
-    <ClInclude Include="src\core\Object.h" />
-    <ClInclude Include="src\core\Pointer.h">
-      <FileType>Document</FileType>
-    </ClInclude>
-    <ClInclude Include="src\core\SharedPointer.h" />
-    <ClInclude Include="src\core\StateMachine.h" />
-    <ClInclude Include="src\core\threading\Waitable.h" />
+    <ClInclude Include="src\core\threading\Task.h" />
+    <ClInclude Include="src\core\threading\Thread.h" />
     <ClInclude Include="src\core\threading\ThreadPoolExecutor.h" />
-    <ClInclude Include="src\core\Timer.h" />
-    <ClInclude Include="src\core\Translations.h" />
-    <ClInclude Include="src\core\TypeWrapper.h" />
+    <ClInclude Include="src\core\threading\Waitable.h" />
+    <ClInclude Include="src\core\threading\WorkerThread.h" />
     <ClInclude Include="src\core\window\Clipboard.h" />
     <ClInclude Include="src\core\window\DragDropManager.h" />
     <ClInclude Include="src\core\window\SystemWindow.h" />
@@ -162,177 +218,41 @@
     <ClInclude Include="src\core\window\WindowClass.h" />
     <ClInclude Include="src\core\window\WindowMessage.h" />
     <ClInclude Include="src\ghcpch.h" />
-    <ClInclude Include="src\Status.h" />
-    <ClInclude Include="src\core\threading\Task.h" />
-    <ClInclude Include="src\core\threading\Thread.h" />
-    <ClInclude Include="src\core\reflection\Type.h" />
-    <ClInclude Include="src\core\threading\WorkerThread.h" />
-    <ClInclude Include="src\core\io\FileUtils.h" />
-    <ClInclude Include="src\core\NamedObject.h" />
-    <ClInclude Include="src\core\math\MathUtils.h" />
-    <ClInclude Include="src\core\io\DirectoryPath.h" />
-    <ClInclude Include="src\core\io\FilePath.h" />
-    <ClInclude Include="src\core\io\Path.h" />
-    <ClInclude Include="src\core\string\TextConversionUtils.h" />
-    <ClInclude Include="src\core\string\TextUtils.h" />
-    <ClInclude Include="src\ui\control\CheckableView.h" />
-    <ClInclude Include="src\ui\control\Column.h" />
-    <ClInclude Include="src\core\math\Point.h" />
-    <ClInclude Include="src\ui\layout\Layout.h" />
-    <ClInclude Include="src\ui\control\ListView.h" />
-    <ClInclude Include="src\ui\control\Row.h" />
-    <ClInclude Include="src\ui\control\Surface.h" />
-    <ClInclude Include="src\core\io\File.h" />
-    <ClInclude Include="src\core\collection\Collection.h" />
-    <ClInclude Include="src\core\logging\Logger.h" />
-    <ClInclude Include="src\core\Noncopyable.h" />
-    <ClInclude Include="src\ui\MenuItem.h" />
-    <ClInclude Include="src\ui\control\Stack.h" />
-    <ClInclude Include="src\ui\layout\LayoutInflater.h" />
-    <ClInclude Include="src\ui\Property.h" />
-    <ClInclude Include="src\core\math\Size.h" />
-    <ClInclude Include="src\ui\widget\Button.h" />
-    <ClInclude Include="src\ui\widget\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\ImageButton.h" />
-    <ClInclude Include="src\ui\widget\TextButton.h" />
-    <ClInclude Include="src\core\IUnknownImpl.h" />
-    <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="src\Ghurund.Core.h" />
-    <None Include="packages.config" />
+    <ClCompile Include="src\core\Object.cpp" />
+    <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\Timer.cpp" />
+    <ClCompile Include="src\core\image\Image.cpp" />
+    <ClCompile Include="src\core\image\ImageLoader.cpp" />
+    <ClCompile Include="src\core\input\Input.cpp" />
+    <ClCompile Include="src\core\io\DirectoryPath.cpp" />
+    <ClCompile Include="src\core\io\File.cpp" />
+    <ClCompile Include="src\core\io\FilePath.cpp" />
+    <ClCompile Include="src\core\io\FileUtils.cpp" />
+    <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
+    <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
+    <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
+    <ClCompile Include="src\core\logging\LogType.cpp" />
+    <ClCompile Include="src\core\logging\Logger.cpp" />
+    <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
+    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
+    <ClCompile Include="src\core\resource\Resource.cpp" />
+    <ClCompile Include="src\core\resource\ResourceManager.cpp" />
+    <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
+    <ClCompile Include="src\core\threading\Task.cpp" />
+    <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
+    <ClCompile Include="src\core\threading\WorkerThread.cpp" />
+    <ClCompile Include="src\core\window\DragDropManager.cpp" />
+    <ClCompile Include="src\core\window\SystemWindow.cpp" />
+    <ClCompile Include="src\core\window\Window.cpp" />
+    <ClCompile Include="src\core\window\WindowAttributes.cpp" />
+    <ClCompile Include="src\core\window\WindowClass.cpp" />
+    <ClCompile Include="src\ghcpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="Engine.Core.natvis" />
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{D4EE5946-F2FB-47DE-93D3-5B27B9BCEBC9}</ProjectGuid>
-    <RootNamespace>Engine12</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Engine.Core</ProjectName>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-    <EnableASAN>false</EnableASAN>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\libs.props" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>Ghurund.Core_32</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <IntDir>$(Configuration)\</IntDir>
-    <TargetName>Ghurund.Core_64</TargetName>
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghcpch.h</PrecompiledHeaderFile>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

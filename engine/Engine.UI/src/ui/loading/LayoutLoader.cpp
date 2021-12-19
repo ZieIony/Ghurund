@@ -100,11 +100,11 @@ namespace Ghurund::UI {
             layout->Controls.addAll(loadControls(*child));
             if (layout->Controls.Empty) {
                 Logger::log(LogType::WARNING, _T("Layout is empty.\n"));
-                throw InvalidDataException(_T("Layout is empty.\n"));
+                throw InvalidDataException("Layout is empty.\n");
             }
         } else {
             Logger::log(LogType::ERR0R, _T("Missing 'layout' tag\n"));
-            throw InvalidDataException(_T("Missing 'layout' tag\n"));
+            throw InvalidDataException("Missing 'layout' tag\n");
         }
 
         layout->addReference();

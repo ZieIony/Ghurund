@@ -1,190 +1,210 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="Debug Win64|x64">
+      <Configuration>Debug Win64</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Release Win64|x64">
+      <Configuration>Release Win64</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\application\Application.cpp" />
-    <ClCompile Include="src\application\Feature.cpp" />
-    <ClCompile Include="src\application\LayerList.cpp" />
-    <ClCompile Include="src\application\Settings.cpp" />
-    <ClCompile Include="src\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\audio\Audio.cpp" />
-    <ClCompile Include="src\audio\Sound.cpp" />
-    <ClCompile Include="src\DirectXTypes.cpp" />
-    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\game\entity\camera\CameraController.cpp" />
-    <ClCompile Include="src\game\entity\light\Light.cpp" />
-    <ClCompile Include="src\game\parameter\Parameter.cpp" />
-    <ClCompile Include="src\ghpch.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Engine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <OutDir>..\..\bin\Debug\</OutDir>
+    <IntDir>obj\Win64\Debug\</IntDir>
+    <TargetName>Engine</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <OutDir>..\..\bin\Release\</OutDir>
+    <IntDir>obj\Win64\Release\</IntDir>
+    <TargetName>Engine</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
-    <ClCompile Include="src\graphics\adapter\AdapterOutput.cpp" />
-    <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
-    <ClCompile Include="src\graphics\adapter\DisplayMode.cpp" />
-    <ClCompile Include="src\game\entity\camera\Camera.cpp" />
-    <ClCompile Include="src\game\GameAction.cpp" />
-    <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
-    <ClCompile Include="src\game\parameter\ParameterProvider.cpp" />
-    <ClCompile Include="src\game\parameter\ParameterType.cpp" />
-    <ClCompile Include="src\graphics\buffer\GPUBuffer.cpp" />
-    <ClCompile Include="src\graphics\buffer\RenderTarget.cpp" />
-    <ClCompile Include="src\graphics\CommandList.cpp" />
-    <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
-    <ClCompile Include="src\game\entity\Scene.cpp" />
-    <ClCompile Include="src\graphics\Fence.cpp" />
-    <ClCompile Include="src\graphics\Frame.cpp" />
-    <ClCompile Include="src\graphics\Graphics.cpp" />
-    <ClCompile Include="src\graphics\adapter\GraphicsAdapter.cpp" />
-    <ClCompile Include="src\graphics\memory\GPUResourceFactory.cpp" />
-    <ClCompile Include="src\graphics\Materials.cpp" />
-    <ClCompile Include="src\graphics\memory\GPUResourcePointer.cpp" />
-    <ClCompile Include="src\graphics\memory\HeapAllocator.cpp" />
-    <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
-    <ClCompile Include="src\graphics\mesh\CubeMesh.cpp" />
-    <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
-    <ClCompile Include="src\graphics\DrawableComponents.cpp" />
-    <ClCompile Include="src\graphics\Renderer.cpp" />
-    <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
-    <ClCompile Include="src\graphics\shader\CompilerInclude.cpp" />
-    <ClCompile Include="src\graphics\shader\ConstantBuffer.cpp" />
-    <ClCompile Include="src\graphics\Material.cpp" />
-    <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
-    <ClCompile Include="src\graphics\shader\CompilationTarget.cpp" />
-    <ClCompile Include="src\graphics\shader\Shader.cpp" />
-    <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
-    <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
-    <ClCompile Include="src\graphics\SwapChain.cpp" />
-    <ClCompile Include="src\graphics\texture\Texture.cpp" />
-    <ClCompile Include="src\MathTypes.cpp" />
-    <ClCompile Include="src\net\Client.cpp" />
-    <ClCompile Include="src\net\Message.cpp" />
-    <ClCompile Include="src\net\Networking.cpp" />
-    <ClCompile Include="src\net\MessageType.cpp" />
-    <ClCompile Include="src\net\ReliableUDP.cpp" />
-    <ClCompile Include="src\net\Server.cpp" />
-    <ClCompile Include="src\net\Socket.cpp" />
-    <ClCompile Include="src\physics\Physics.cpp" />
-    <ClCompile Include="src\game\parameter\ParameterId.cpp" />
-    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\script\Script.cpp" />
-    <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\ui\UIFeature.cpp" />
-  </ItemGroup>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\DirectXTypes.h" />
+    <ClInclude Include="src\Exceptions.h" />
+    <ClInclude Include="src\Ghurund.Engine.h" />
+    <ClInclude Include="src\MathTypes.h" />
     <ClInclude Include="src\application\Application.h" />
+    <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\Feature.h" />
     <ClInclude Include="src\application\FeatureCollection.h" />
     <ClInclude Include="src\application\Layer.h" />
     <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\Settings.h" />
-    <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\WindowCloseAction.h" />
     <ClInclude Include="src\application\WindowList.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
-    <ClInclude Include="src\audio\Sound3D.h" />
-    <ClInclude Include="src\DirectXTypes.h" />
-    <ClInclude Include="src\Exceptions.h" />
-    <ClInclude Include="src\game\entity\camera\CameraComponent.h" />
-    <ClInclude Include="src\game\entity\camera\CameraEntity.h" />
-    <ClInclude Include="src\game\entity\Entity.h" />
-    <ClInclude Include="src\game\entity\light\LightComponent.h" />
-    <ClInclude Include="src\game\entity\light\LightEntity.h" />
-    <ClInclude Include="src\game\parameter\ParameterId.h" />
-    <ClInclude Include="src\MathTypes.h" />
-    <ClInclude Include="src\ui\UIFeature.h" />
-    <ClInclude Include="src\ui\UILayer.h" />
-    <ClInclude Include="src\ghpch.h" />
-    <ClInclude Include="src\graphics\adapter\AdapterOutput.h" />
-    <ClInclude Include="src\graphics\adapter\DisplayMode.h" />
-    <ClInclude Include="src\net\ClientMessage.h" />
-    <ClInclude Include="src\net\Connection.h" />
-    <ClInclude Include="src\net\MessageType.h" />
-    <ClInclude Include="src\net\Networking.h" />
+    <ClInclude Include="src\audio\Sound3d.h" />
+    <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
-    <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
-    <ClInclude Include="src\game\sky\BasicSky.h" />
-    <ClInclude Include="src\game\entity\camera\CameraController.h" />
-    <ClInclude Include="src\game\sky\AdvancedSky.h" />
-    <ClInclude Include="src\game\sky\Sky.h" />
-    <ClInclude Include="src\game\entity\TransformComponent.h" />
-    <ClInclude Include="src\graphics\DrawableComponent.h" />
-    <ClInclude Include="src\game\entity\Scenes.h" />
     <ClInclude Include="src\game\GameAction.h" />
-    <ClInclude Include="src\game\parameter\TextureParameter.h" />
-    <ClInclude Include="src\game\parameter\ParameterProvider.h" />
+    <ClInclude Include="src\game\KeyMap.h" />
+    <ClInclude Include="src\game\entity\Entity.h" />
     <ClInclude Include="src\game\entity\Scene.h" />
-    <ClInclude Include="src\game\parameter\ParameterType.h" />
-    <ClInclude Include="src\game\parameter\ValueParameter.h" />
-    <ClInclude Include="src\graphics\adapter\GraphicsAdapter.h" />
-    <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
+    <ClInclude Include="src\game\entity\Scenes.h" />
+    <ClInclude Include="src\game\entity\TransformComponent.h" />
     <ClInclude Include="src\game\entity\camera\Camera.h" />
+    <ClInclude Include="src\game\entity\camera\CameraComponent.h" />
+    <ClInclude Include="src\game\entity\camera\CameraController.h" />
+    <ClInclude Include="src\game\entity\camera\CameraEntity.h" />
+    <ClInclude Include="src\game\entity\light\Light.h" />
+    <ClInclude Include="src\game\entity\light\LightComponent.h" />
+    <ClInclude Include="src\game\entity\light\LightEntity.h" />
+    <ClInclude Include="src\game\parameter\Parameter.h" />
+    <ClInclude Include="src\game\parameter\ParameterId.h" />
+    <ClInclude Include="src\game\parameter\ParameterManager.h" />
+    <ClInclude Include="src\game\parameter\ParameterProvider.h" />
+    <ClInclude Include="src\game\parameter\ParameterType.h" />
+    <ClInclude Include="src\game\parameter\TextureParameter.h" />
+    <ClInclude Include="src\game\parameter\ValueParameter.h" />
+    <ClInclude Include="src\game\sky\AdvancedSky.h" />
+    <ClInclude Include="src\game\sky\BasicSky.h" />
+    <ClInclude Include="src\game\sky\Sky.h" />
+    <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\CommandList.h" />
+    <ClInclude Include="src\graphics\DrawableComponent.h" />
+    <ClInclude Include="src\graphics\DrawableComponents.h" />
+    <ClInclude Include="src\graphics\DrawingSystem.h" />
+    <ClInclude Include="src\graphics\Fence.h" />
+    <ClInclude Include="src\graphics\Frame.h" />
+    <ClInclude Include="src\graphics\Graphics.h" />
+    <ClInclude Include="src\graphics\LightSystem.h" />
+    <ClInclude Include="src\graphics\Material.h" />
+    <ClInclude Include="src\graphics\Materials.h" />
+    <ClInclude Include="src\graphics\Postprocess.h" />
+    <ClInclude Include="src\graphics\Renderer.h" />
+    <ClInclude Include="src\graphics\RenderingStatistics.h" />
+    <ClInclude Include="src\graphics\SwapChain.h" />
+    <ClInclude Include="src\graphics\adapter\AdapterOutput.h" />
+    <ClInclude Include="src\graphics\adapter\DisplayMode.h" />
+    <ClInclude Include="src\graphics\adapter\GraphicsAdapter.h" />
     <ClInclude Include="src\graphics\buffer\DepthBuffer.h" />
     <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
-    <ClInclude Include="src\graphics\DrawingSystem.h" />
-    <ClInclude Include="src\graphics\LightSystem.h" />
+    <ClInclude Include="src\graphics\buffer\DynamicBuffer.h" />
+    <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
+    <ClInclude Include="src\graphics\buffer\RenderTarget.h" />
     <ClInclude Include="src\graphics\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\graphics\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\graphics\memory\HeapAllocator.h" />
-    <ClInclude Include="src\graphics\Postprocess.h" />
-    <ClInclude Include="src\graphics\RenderingStatistics.h" />
-    <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
-    <ClInclude Include="src\game\entity\light\Light.h" />
-    <ClInclude Include="src\graphics\Materials.h" />
     <ClInclude Include="src\graphics\mesh\ConeMesh.h" />
     <ClInclude Include="src\graphics\mesh\CubeMesh.h" />
+    <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\mesh\PlaneMesh.h" />
     <ClInclude Include="src\graphics\mesh\QuadMesh.h" />
-    <ClInclude Include="src\graphics\DrawableComponents.h" />
-    <ClInclude Include="src\graphics\buffer\RenderTarget.h" />
-    <ClInclude Include="src\graphics\shader\CompilationTarget.h" />
-    <ClInclude Include="src\graphics\shader\ConstantBuffer.h" />
-    <ClInclude Include="src\graphics\buffer\DynamicBuffer.h" />
-    <ClInclude Include="src\graphics\Fence.h" />
-    <ClInclude Include="src\graphics\Frame.h" />
-    <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\mesh\SphereMesh.h" />
-    <ClInclude Include="src\graphics\Renderer.h" />
+    <ClInclude Include="src\graphics\mesh\Vertex.h" />
+    <ClInclude Include="src\graphics\shader\CompilationTarget.h" />
+    <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
+    <ClInclude Include="src\graphics\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\graphics\shader\ConstantBufferField.h" />
     <ClInclude Include="src\graphics\shader\Sampler.h" />
     <ClInclude Include="src\graphics\shader\Shader.h" />
     <ClInclude Include="src\graphics\shader\ShaderConstant.h" />
     <ClInclude Include="src\graphics\shader\ShaderProgram.h" />
-    <ClInclude Include="src\graphics\shader\Shaders.h" />
     <ClInclude Include="src\graphics\shader\ShaderType.h" />
-    <ClInclude Include="src\graphics\shader\ConstantBufferField.h" />
+    <ClInclude Include="src\graphics\shader\Shaders.h" />
     <ClInclude Include="src\graphics\shader\TextureBufferConstant.h" />
     <ClInclude Include="src\graphics\shader\TextureConstant.h" />
-    <ClInclude Include="src\graphics\SwapChain.h" />
     <ClInclude Include="src\graphics\texture\Texture.h" />
-    <ClInclude Include="src\graphics\mesh\Vertex.h" />
     <ClInclude Include="src\graphics\texture\Textures.h" />
-    <ClInclude Include="src\game\KeyMap.h" />
+    <ClInclude Include="src\net\Client.h" />
+    <ClInclude Include="src\net\ClientMessage.h" />
+    <ClInclude Include="src\net\Connection.h" />
+    <ClInclude Include="src\net\Message.h" />
+    <ClInclude Include="src\net\MessageType.h" />
+    <ClInclude Include="src\net\Networking.h" />
     <ClInclude Include="src\net\ReliableUDP.h" />
+    <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\ServerMessage.h" />
-    <ClInclude Include="src\physics\PhysicsComponent.h" />
-    <ClInclude Include="src\physics\RigidBodyComponent.h" />
+    <ClInclude Include="src\net\Socket.h" />
     <ClInclude Include="src\physics\Physics.h" />
-    <ClInclude Include="src\game\parameter\Parameter.h" />
+    <ClInclude Include="src\physics\PhysicsComponent.h" />
     <ClInclude Include="src\physics\PhysicsSystem.h" />
+    <ClInclude Include="src\physics\RigidBodyComponent.h" />
+    <ClInclude Include="src\script\Script.h" />
+    <ClInclude Include="src\script\ScriptComponent.h" />
+    <ClInclude Include="src\script\ScriptEngine.h" />
+    <ClInclude Include="src\script\Scripts.h" />
+    <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
     <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
@@ -195,178 +215,89 @@
     <ClInclude Include="src\script\bindings\SceneScriptBindings.h" />
     <ClInclude Include="src\script\bindings\ScriptBindings.h" />
     <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
-    <ClInclude Include="src\script\Script.h" />
-    <ClInclude Include="src\script\ScriptComponent.h" />
-    <ClInclude Include="src\script\ScriptEngine.h" />
-    <ClInclude Include="src\script\Scripts.h" />
-    <ClInclude Include="src\script\StringFactory.h" />
-    <ClInclude Include="src\ui\control\CheckableView.h" />
-    <ClInclude Include="src\ui\control\Column.h" />
-    <ClInclude Include="src\ui\layout\Layout.h" />
-    <ClInclude Include="src\ui\control\ListView.h" />
-    <ClInclude Include="src\ui\control\Row.h" />
-    <ClInclude Include="src\ui\control\Surface.h" />
-    <ClInclude Include="src\graphics\Graphics.h" />
-    <ClInclude Include="src\graphics\mesh\Mesh.h" />
-    <ClInclude Include="src\net\Client.h" />
-    <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\net\Message.h" />
-    <ClInclude Include="src\net\Server.h" />
-    <ClInclude Include="src\net\Socket.h" />
-    <ClInclude Include="src\game\parameter\ParameterManager.h" />
-    <ClInclude Include="src\ui\MenuItem.h" />
-    <ClInclude Include="src\ui\control\Stack.h" />
-    <ClInclude Include="src\ui\layout\LayoutInflater.h" />
-    <ClInclude Include="src\ui\Property.h" />
-    <ClInclude Include="src\ui\widget\Button.h" />
-    <ClInclude Include="src\ui\widget\CheckBox.h" />
-    <ClInclude Include="src\ui\widget\ImageButton.h" />
-    <ClInclude Include="src\ui\widget\TextButton.h" />
-    <ClInclude Include="src\ui\widget\textfield\TextRange.h" />
+    <ClInclude Include="src\ui\UIFeature.h" />
+    <ClInclude Include="src\ui\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="src\DirectXTypes.cpp" />
+    <ClCompile Include="src\MathTypes.cpp" />
+    <ClCompile Include="src\application\Application.cpp" />
+    <ClCompile Include="src\application\ApplicationWindow.cpp" />
+    <ClCompile Include="src\application\Feature.cpp" />
+    <ClCompile Include="src\application\LayerList.cpp" />
+    <ClCompile Include="src\application\Settings.cpp" />
+    <ClCompile Include="src\audio\Audio.cpp" />
+    <ClCompile Include="src\audio\Sound.cpp" />
+    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
+    <ClCompile Include="src\game\GameAction.cpp" />
+    <ClCompile Include="src\game\entity\Scene.cpp" />
+    <ClCompile Include="src\game\entity\camera\Camera.cpp" />
+    <ClCompile Include="src\game\entity\camera\CameraController.cpp" />
+    <ClCompile Include="src\game\entity\light\Light.cpp" />
+    <ClCompile Include="src\game\parameter\Parameter.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterId.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterProvider.cpp" />
+    <ClCompile Include="src\game\parameter\ParameterType.cpp" />
+    <ClCompile Include="src\ghpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="src\graphics\CommandList.cpp" />
+    <ClCompile Include="src\graphics\DrawableComponents.cpp" />
+    <ClCompile Include="src\graphics\Fence.cpp" />
+    <ClCompile Include="src\graphics\Frame.cpp" />
+    <ClCompile Include="src\graphics\Graphics.cpp" />
+    <ClCompile Include="src\graphics\Material.cpp" />
+    <ClCompile Include="src\graphics\Materials.cpp" />
+    <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
+    <ClCompile Include="src\graphics\SwapChain.cpp" />
+    <ClCompile Include="src\graphics\adapter\AdapterOutput.cpp" />
+    <ClCompile Include="src\graphics\adapter\DisplayMode.cpp" />
+    <ClCompile Include="src\graphics\adapter\GraphicsAdapter.cpp" />
+    <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
+    <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
+    <ClCompile Include="src\graphics\buffer\GPUBuffer.cpp" />
+    <ClCompile Include="src\graphics\buffer\RenderTarget.cpp" />
+    <ClCompile Include="src\graphics\memory\GPUResourceFactory.cpp" />
+    <ClCompile Include="src\graphics\memory\GPUResourcePointer.cpp" />
+    <ClCompile Include="src\graphics\memory\HeapAllocator.cpp" />
+    <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\graphics\mesh\CubeMesh.cpp" />
+    <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
+    <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
+    <ClCompile Include="src\graphics\shader\CompilationTarget.cpp" />
+    <ClCompile Include="src\graphics\shader\CompilerInclude.cpp" />
+    <ClCompile Include="src\graphics\shader\ConstantBuffer.cpp" />
+    <ClCompile Include="src\graphics\shader\Shader.cpp" />
+    <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
+    <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
+    <ClCompile Include="src\graphics\texture\Texture.cpp" />
+    <ClCompile Include="src\net\Client.cpp" />
+    <ClCompile Include="src\net\Message.cpp" />
+    <ClCompile Include="src\net\MessageType.cpp" />
+    <ClCompile Include="src\net\Networking.cpp" />
+    <ClCompile Include="src\net\ReliableUDP.cpp" />
+    <ClCompile Include="src\net\Server.cpp" />
+    <ClCompile Include="src\net\Socket.cpp" />
+    <ClCompile Include="src\physics\Physics.cpp" />
+    <ClCompile Include="src\script\Script.cpp" />
+    <ClCompile Include="src\script\ScriptEngine.cpp" />
+    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
+    <ClCompile Include="src\ui\UIFeature.cpp" />
   </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{86CFFBCC-8E07-47D2-915F-89B2C9FA5CBC}</ProjectGuid>
-    <RootNamespace>Engine12</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Engine</ProjectName>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\libs.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\libs.props" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)engine\Engine.Core\src;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>Ghurund.Engine_32</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <TargetName>GhurundEngine</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)engine\Engine.UI.Direct2D\src;$(SolutionDir)engine\Engine.UI\generated\reflection;$(SolutionDir)engine\Engine.UI\src;$(SolutionDir)engine\Engine.Core\src;$(ProjectDir)generated\reflection;$(ProjectDir)src;$(IncludePath)</IncludePath>
-    <IntDir>$(Configuration)\</IntDir>
-    <TargetName>Ghurund.Engine_64</TargetName>
-    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
-    <CustomBuildBeforeTargets>
-    </CustomBuildBeforeTargets>
-    <RunCodeAnalysis>false</RunCodeAnalysis>
-    <EnableClangTidyCodeAnalysis>false</EnableClangTidyCodeAnalysis>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)src;$(IncludePath)</IncludePath>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <AdditionalDependencies>d3d12.lib;dxgi.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
-      <PreprocessorDefinitions>WIN64;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <CustomBuildStep>
-      <Command>
-      </Command>
-      <Outputs>
-      </Outputs>
-    </CustomBuildStep>
-    <PreBuildEvent>
-      <Command>
-      </Command>
-    </PreBuildEvent>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);NDEBUG</PreprocessorDefinitions>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">
+      <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
+      <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine.UI.Direct2D\Engine.UI.Direct2D.vcxproj">
+      <Project>{26864DDA-126A-0E30-7BCA-088367CDF8B1}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
 </Project>

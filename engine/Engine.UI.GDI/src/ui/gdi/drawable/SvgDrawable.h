@@ -26,7 +26,6 @@ namespace Ghurund::UI::GDI {
         }
 
         virtual void onDraw(ICanvas& canvas) override {
-            auto dst = D2D1::RectF(0, 0, size.width, size.height);
             canvas.drawImage(*image);
         }
 

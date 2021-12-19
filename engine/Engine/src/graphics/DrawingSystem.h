@@ -63,7 +63,7 @@ namespace Ghurund {
 
         DrawableComponent* pick(XMINT2& mousePos) {
             XMFLOAT3 pos, dir;
-            float dist, closestDist;
+            //float dist, closestDist;
             camera->calcMouseRay(mousePos, pos, dir);
 
             DrawableComponent* picked = nullptr;

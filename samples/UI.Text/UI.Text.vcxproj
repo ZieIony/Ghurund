@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8C1A20B0-78BC-4A86-6177-5EDA4DB8D1D6}</ProjectGuid>
+    <ProjectGuid>{F6938E40-6273-0DDC-6B8B-98B2D7E9733D}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Editor</RootNamespace>
+    <RootNamespace>UI.Text</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
@@ -43,14 +43,14 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\Debug\</OutDir>
     <IntDir>obj\Win64\Debug\</IntDir>
-    <TargetName>Editor</TargetName>
+    <TargetName>UI.Text</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\Release\</OutDir>
     <IntDir>obj\Win64\Release\</IntDir>
-    <TargetName>Editor</TargetName>
+    <TargetName>UI.Text</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
@@ -91,31 +91,6 @@
       <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="generated\bindings\EditorWindowBinding.h" />
-    <ClInclude Include="generated\bindings\LayoutEditorBinding.h" />
-    <ClInclude Include="generated\bindings\LogPanelBinding.h" />
-    <ClInclude Include="generated\bindings\LogRowBinding.h" />
-    <ClInclude Include="generated\bindings\PropertyPanelBinding.h" />
-    <ClInclude Include="generated\bindings\SearchFieldBinding.h" />
-    <ClInclude Include="generated\bindings\TitleBarBinding.h" />
-    <ClInclude Include="generated\bindings\ToolWindowBinding.h" />
-    <ClInclude Include="src\EditorApplication.h" />
-    <ClInclude Include="src\EditorLayout.h" />
-    <ClInclude Include="src\EditorWindow.h" />
-    <ClInclude Include="src\MainMenu.h" />
-    <ClInclude Include="src\control\FpsText.h" />
-    <ClInclude Include="src\control\SearchField.h" />
-    <ClInclude Include="src\control\SearchFieldLayout.h" />
-    <ClInclude Include="src\control\TitleBar.h" />
-    <ClInclude Include="src\control\ToolWindow.h" />
-    <ClInclude Include="src\tool\LogPanel.h" />
-    <ClInclude Include="src\tool\PropertyPanel.h" />
-    <ClInclude Include="src\tool\WidgetHierarchyPanel.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
-  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Engine.Core\Engine.Core.vcxproj">
       <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>

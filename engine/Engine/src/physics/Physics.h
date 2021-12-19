@@ -11,13 +11,11 @@
 #pragma warning(pop)
 
 #ifdef _WIN64
-#pragma comment(lib, "PhysX_64.lib")
 #pragma comment(lib, "PhysXCommon_64.lib")
 #pragma comment(lib, "PhysXFoundation_64.lib")
 #pragma comment(lib, "PhysXExtensions_static_64.lib")
 #pragma comment(lib, "PhysXPvdSDK_static_64.lib")
 #else
-#pragma comment(lib, "PhysX_32.lib")
 #pragma comment(lib, "PhysXCommon_32.lib")
 #pragma comment(lib, "PhysXFoundation_32.lib")
 #pragma comment(lib, "PhysXExtensions_static_32.lib")

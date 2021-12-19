@@ -12,24 +12,6 @@
 #include "angelscript.h"
 #include "angelscript/scriptmath.h"
 
-#ifdef _DEBUG
-
-#ifdef _WIN64
-#pragma comment(lib, "angelscript64d.lib")
-#else
-#pragma comment(lib, "angelscriptd.lib")
-#endif
-
-#else
-
-#ifdef _WIN64
-#pragma comment(lib, "angelscript64.lib")
-#else
-#pragma comment(lib, "angelscript.lib")
-#endif
-
-#endif
-
 namespace Ghurund {
     class ScriptEngine: public Feature {
 #pragma region reflection
