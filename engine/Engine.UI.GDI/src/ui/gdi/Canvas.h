@@ -35,7 +35,11 @@ namespace Ghurund::UI::GDI {
         Gdiplus::Matrix* matrix;
 
     public:
-        Status init();
+        ~Canvas() {
+            uninit();
+        }
+
+        Status init(HWND hwnd);
 
         void uninit();
 

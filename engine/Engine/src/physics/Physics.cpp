@@ -5,6 +5,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Physics {
+    using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& Physics::GET_TYPE() {
 

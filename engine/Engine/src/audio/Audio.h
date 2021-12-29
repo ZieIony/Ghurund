@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "Status.h"
-#include "application/Feature.h"
+#include "core/application/Feature.h"
 
 #include <wrl\client.h>
 

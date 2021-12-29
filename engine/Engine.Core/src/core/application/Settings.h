@@ -6,9 +6,7 @@
 #include "core/math/Size.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
-    using namespace Ghurund::Core;
-
+namespace Ghurund::Core {
     class Settings {
     public:
         IntSize windowSize;

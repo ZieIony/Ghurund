@@ -4,10 +4,8 @@
 #include "core/Pointer.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     using namespace Ghurund::Core;
-
-    class Application;
 
     class Feature:public Pointer {
 #pragma region reflection

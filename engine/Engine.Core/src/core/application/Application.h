@@ -1,42 +1,27 @@
 #pragma once
 
-#include "ApplicationWindow.h"
 #include "Settings.h"
 #include "WindowList.h"
-#include "application/FeatureCollection.h"
+#include "FeatureCollection.h"
 
 #include "core/Noncopyable.h"
 #include "core/SharedPointer.h"
 #include "core/Timer.h"
+#include "core/threading/FunctionQueue.h"
+#include "core/resource/ResourceManager.h"
 
 namespace Ghurund::Core {
-    class Timer;
-    class FunctionQueue;
-}
-
-namespace Ghurund::Core::DirectX {
-    class Graphics;
-}
-
-namespace Ghurund {
-    class Renderer;
-    class ParameterManager;
-
     class Application:public Noncopyable {
     private:
         SystemWindowManager windowManager;
         WindowList windows = windowManager;
-        Ghurund::FunctionQueue* functionQueue = nullptr;
+        FunctionQueue functionQueue;
         bool running = false;
 
         Settings settings;
-        Graphics* graphics;
 
-        ResourceManager* resourceManager;
-        ParameterManager* parameterManager;
-        Timer* timer;
-
-        Renderer* renderer;
+        ResourceManager resourceManager;
+        Timer timer;
 
         FeatureCollection features;
 
@@ -77,40 +62,22 @@ namespace Ghurund {
         __declspec(property(get = getWindows)) WindowList& Windows;
 
         FunctionQueue& getFunctionQueue() {
-            return *functionQueue;
+            return functionQueue;
         }
 
         __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
 
-        inline Graphics& getGraphics() {
-            return *graphics;
-        }
-
-        __declspec(property(get = getGraphics)) Graphics& Graphics;
-
         inline ResourceManager& getResourceManager() {
-            return *resourceManager;
+            return resourceManager;
         }
 
         __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
 
-        inline ParameterManager& getParameterManager() {
-            return *parameterManager;
-        }
-
-        __declspec(property(get = getParameterManager)) ParameterManager& ParameterManager;
-
         inline Timer& getTimer() {
-            return *timer;
+            return timer;
         }
 
         __declspec(property(get = getTimer)) Timer& Timer;
-
-        inline Renderer& getRenderer() {
-            return *renderer;
-        }
-
-        __declspec(property(get = getRenderer)) Renderer& Renderer;
 
         inline FeatureCollection& getFeatures() {
             return features;

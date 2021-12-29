@@ -1,23 +1,23 @@
 #pragma once
 
 #include "WindowCloseAction.h"
-#include "application/ApplicationWindow.h"
 #include "core/collection/List.h"
 #include "core/window/WindowManager.h"
+#include "core/window/SystemWindow.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class WindowList {
     private:
-        List<ApplicationWindow*> windows;
+        List<SystemWindow*> windows;
         WindowManager& windowManager;
 
-        EventHandler<Window> destroyHandler = [this](Ghurund::Window& window) {
-            remove((ApplicationWindow*)&window);
+        EventHandler<Window> destroyHandler = [this](Window& window) {
+            remove((SystemWindow*)&window);
             delete& window;
             return true;
         };
 
-        EventHandler<Window> hideHandler = [](Ghurund::Window& window) {
+        EventHandler<Window> hideHandler = [](Window& window) {
             window.visible = false;
             return true;
         };
@@ -29,7 +29,7 @@ namespace Ghurund {
             clear();
         }
 
-        inline void add(ApplicationWindow* window, WindowCloseAction action = WindowCloseAction::DESTROY) {
+        inline void add(SystemWindow* window, WindowCloseAction action = WindowCloseAction::DESTROY) {
             window->init(windowManager);
             windows.add(window);
             if (action == WindowCloseAction::DESTROY) {
@@ -39,7 +39,7 @@ namespace Ghurund {
             }
         }
 
-        inline void remove(ApplicationWindow* window) {
+        inline void remove(SystemWindow* window) {
             try {
                 window->closed -= destroyHandler;
             } catch (...) {
@@ -49,7 +49,7 @@ namespace Ghurund {
         }
 
         inline void removeAt(size_t index) {
-            ApplicationWindow* window = windows.get(index);
+            SystemWindow* window = windows.get(index);
             try {
                 window->closed -= destroyHandler;
             } catch (...) {
@@ -59,7 +59,7 @@ namespace Ghurund {
         }
 
         inline void clear() {
-            for (ApplicationWindow* window : windows) {
+            for (SystemWindow* window : windows) {
                 try {
                     window->closed -= destroyHandler;
                 } catch (...) {
@@ -69,19 +69,19 @@ namespace Ghurund {
             windows.clear();
         }
 
-        inline ApplicationWindow** begin() {
+        inline SystemWindow** begin() {
             return windows.begin();
         }
 
-        inline ApplicationWindow** begin() const {
+        inline SystemWindow** begin() const {
             return windows.begin();
         }
 
-        inline ApplicationWindow** end() {
+        inline SystemWindow** end() {
             return windows.end();
         }
 
-        inline ApplicationWindow** end() const {
+        inline SystemWindow** end() const {
             return windows.end();
         }
 
@@ -91,19 +91,19 @@ namespace Ghurund {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline ApplicationWindow* get(size_t i)const {
+        inline SystemWindow* get(size_t i)const {
             return windows.get(i);
         }
 
-        inline size_t indexOf(ApplicationWindow* item) const {
+        inline size_t indexOf(SystemWindow* item) const {
             return windows.indexOf(item);
         }
 
-        inline bool contains(ApplicationWindow* item) const {
+        inline bool contains(SystemWindow* item) const {
             return windows.contains(item);
         }
 
-        inline ApplicationWindow* operator[](size_t i)const {
+        inline SystemWindow* operator[](size_t i)const {
             return windows[i];
         }
     };

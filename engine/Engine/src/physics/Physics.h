@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Status.h"
-#include "application/Feature.h"
+#include "core/application/Feature.h"
 
 #pragma warning(push, 0)
 #include <PxFoundation.h>
@@ -29,7 +29,7 @@ namespace Ghurund {
 namespace Ghurund::Physics {
     using namespace physx;
 
-    class Physics:public Feature {
+    class Physics:public Ghurund::Core::Feature {
 #pragma region reflection
     protected:
         static const Ghurund::Core::Type& GET_TYPE();

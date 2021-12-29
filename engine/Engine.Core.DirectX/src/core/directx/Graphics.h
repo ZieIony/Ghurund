@@ -6,6 +6,7 @@
 #include "core/directx/adapter/GraphicsAdapter.h"
 #include "core/directx/buffer/DescriptorHeap.h"
 #include "core/directx/memory/GPUResourceFactory.h"
+#include "core/application/Feature.h"
 
 namespace Ghurund::Core::DirectX {
     using namespace DirectX;
@@ -14,7 +15,7 @@ namespace Ghurund::Core::DirectX {
 
     class CommandList;
 
-    class Graphics: public Object {
+    class Graphics: public Ghurund::Core::Feature {
 #pragma region reflection
     protected:
         static const Ghurund::Core::Type& GET_TYPE();

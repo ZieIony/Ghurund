@@ -1,11 +1,13 @@
 #include "ghpch.h"
 #include "UIFeature.h"
 
-#include "application/Application.h"
+#include "core/application/Application.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/directx/Graphics.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
         static auto PROPERTY_GRAPHICS2D = Ghurund::ReadOnlyProperty<UIFeature, Ghurund::UI::Direct2D::Graphics2D&>("Graphics2D", (Ghurund::UI::Direct2D::Graphics2D & (UIFeature::*)()) & getGraphics2D);
@@ -19,7 +21,8 @@ namespace Ghurund {
 
     void UIFeature::init() {
         graphics2d = ghnew Ghurund::UI::Direct2D::Graphics2D();
-        graphics2d->init(*app.Graphics.Device, *app.Graphics.DirectQueue);
+        Ghurund::Core::DirectX::Graphics* graphics = app.Features.get<Ghurund::Core::DirectX::Graphics>();
+        graphics2d->init(*graphics->Device, *graphics->DirectQueue);
         shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(*graphics2d->D2DFactory);
         imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(app.ResourceManager);
         textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();

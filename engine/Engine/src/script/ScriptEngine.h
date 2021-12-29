@@ -1,7 +1,7 @@
 #pragma once
 
 #include "StringFactory.h"
-#include "application/Feature.h"
+#include "core/application/Feature.h"
 #include "core/Timer.h"
 #include "Script.h"
 #include "core/collection/PointerList.h"

@@ -91,8 +91,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\window\WindowManager.h" />
-    <ClInclude Include="src\core\window\WindowProc.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -124,6 +122,12 @@
     <ClInclude Include="src\core\allocation\PoolAllocator.h" />
     <ClInclude Include="src\core\allocation\SimpleAllocator.h" />
     <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
+    <ClInclude Include="src\core\application\Application.h" />
+    <ClInclude Include="src\core\application\Feature.h" />
+    <ClInclude Include="src\core\application\FeatureCollection.h" />
+    <ClInclude Include="src\core\application\Settings.h" />
+    <ClInclude Include="src\core\application\WindowCloseAction.h" />
+    <ClInclude Include="src\core\application\WindowList.h" />
     <ClInclude Include="src\core\collection\Array.h" />
     <ClInclude Include="src\core\collection\ArrayCollection.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />
@@ -216,15 +220,20 @@
     <ClInclude Include="src\core\window\DragDropManager.h" />
     <ClInclude Include="src\core\window\SystemWindow.h" />
     <ClInclude Include="src\core\window\Window.h" />
-    <ClInclude Include="src\core\window\WindowStyle.h" />
     <ClInclude Include="src\core\window\WindowClass.h" />
+    <ClInclude Include="src\core\window\WindowManager.h" />
     <ClInclude Include="src\core\window\WindowMessage.h" />
+    <ClInclude Include="src\core\window\WindowProc.h" />
+    <ClInclude Include="src\core\window\WindowStyle.h" />
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
+    <ClCompile Include="src\core\application\Application.cpp" />
+    <ClCompile Include="src\core\application\Feature.cpp" />
+    <ClCompile Include="src\core\application\Settings.cpp" />
     <ClCompile Include="src\core\image\Image.cpp" />
     <ClCompile Include="src\core\image\ImageLoader.cpp" />
     <ClCompile Include="src\core\input\Input.cpp" />

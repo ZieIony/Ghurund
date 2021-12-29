@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ghurund.UI.h"
+#include "ui/gdi/Gdi.h"
 
 #pragma comment(lib, "Kernel32.lib")
 #pragma comment(lib, "dxgi.lib")

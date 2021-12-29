@@ -4,7 +4,8 @@
 #include "ui/gdi/Shape.h"
 
 namespace Ghurund::UI::GDI {
-    Status Canvas::init() {
+    Status Canvas::init(HWND hwnd) {
+        this->hwnd = hwnd;
         BufferedPaintInit();
         pen = new Gdiplus::Pen(Gdiplus::Color());
         brush = new Gdiplus::SolidBrush(Gdiplus::Color());

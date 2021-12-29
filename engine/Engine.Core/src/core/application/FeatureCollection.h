@@ -5,7 +5,7 @@
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     class FeatureCollection {
     private:
         // TODO: replace with TypeMap

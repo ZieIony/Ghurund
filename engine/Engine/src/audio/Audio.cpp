@@ -8,10 +8,10 @@
 
 namespace Ghurund::Audio {
     const Ghurund::Core::Type& Audio::GET_TYPE() {
-        static auto PROPERTY_POSITION = Ghurund::Property<Audio, XMFLOAT3>("Position", (XMFLOAT3(Audio::*)()) & getPosition, (void(Audio::*)(XMFLOAT3)) & setPosition);
-        static auto PROPERTY_VELOCITY = Ghurund::Property<Audio, XMFLOAT3>("Velocity", (XMFLOAT3(Audio::*)()) & getVelocity, (void(Audio::*)(XMFLOAT3)) & setVelocity);
-        static auto PROPERTY_DIRECTION = Ghurund::Property<Audio, XMFLOAT3>("Direction", (XMFLOAT3(Audio::*)()) & getDirection, (void(Audio::*)(XMFLOAT3)) & setDirection);
-        static auto PROPERTY_UP = Ghurund::Property<Audio, XMFLOAT3>("Up", (XMFLOAT3(Audio::*)()) & getUp, (void(Audio::*)(XMFLOAT3)) & setUp);
+        static auto PROPERTY_POSITION = Ghurund::Core::Property<Audio, XMFLOAT3>("Position", (XMFLOAT3(Audio::*)()) & getPosition, (void(Audio::*)(XMFLOAT3)) & setPosition);
+        static auto PROPERTY_VELOCITY = Ghurund::Core::Property<Audio, XMFLOAT3>("Velocity", (XMFLOAT3(Audio::*)()) & getVelocity, (void(Audio::*)(XMFLOAT3)) & setVelocity);
+        static auto PROPERTY_DIRECTION = Ghurund::Core::Property<Audio, XMFLOAT3>("Direction", (XMFLOAT3(Audio::*)()) & getDirection, (void(Audio::*)(XMFLOAT3)) & setDirection);
+        static auto PROPERTY_UP = Ghurund::Core::Property<Audio, XMFLOAT3>("Up", (XMFLOAT3(Audio::*)()) & getUp, (void(Audio::*)(XMFLOAT3)) & setUp);
 
         static const auto CONSTRUCTOR = Constructor<Audio>();
 

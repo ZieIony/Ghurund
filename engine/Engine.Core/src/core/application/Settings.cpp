@@ -1,7 +1,7 @@
-#include "ghpch.h"
+#include "ghcpch.h"
 #include "Settings.h"
 
-namespace Ghurund {
+namespace Ghurund::Core {
     void Settings::parse(const String& settings) {
         Array<String> commands = settings.split(_T(" "));
         for (size_t i = 0; i < commands.Size; i++) {

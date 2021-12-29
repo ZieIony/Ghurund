@@ -1,7 +1,7 @@
 #include "ghpch.h"
 #include "ApplicationWindow.h"
 
-#include "Application.h"
+#include "core/application/Application.h"
 #include "graphics/Renderer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
@@ -33,12 +33,13 @@ namespace Ghurund {
         return true;
     }
 
-    ApplicationWindow::ApplicationWindow(Ghurund::Application& app):SystemWindow(app.Timer), app(app) {}
+    ApplicationWindow::ApplicationWindow(Ghurund::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
 
     void ApplicationWindow::init(WindowManager& windowManager) {
         __super::init(windowManager);
         swapChain = ghnew Ghurund::SwapChain();
-        swapChain->init(app.Graphics, *this);
+        Graphics* graphics = app.Features.get<Graphics>();
+        swapChain->init(*graphics, *this);
         swapChain->initBuffers();
     }
 
@@ -71,7 +72,7 @@ namespace Ghurund {
 
     Status ApplicationWindow::paint() {
         Frame& frame = swapChain->CurrentFrame;
-        CommandList& commandList = app.Renderer.startFrame(frame);
+        CommandList& commandList = renderer.startFrame(frame);
         //levelManager.draw(commandList);
         frame.flush();
 
@@ -79,7 +80,7 @@ namespace Ghurund {
         if (result != Status::OK)
             return result;
 
-        result = app.Renderer.finishFrame(frame);
+        result = renderer.finishFrame(frame);
         if (result != Status::OK)
             return result;
         return swapChain->present();

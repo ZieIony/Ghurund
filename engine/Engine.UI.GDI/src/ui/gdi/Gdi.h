@@ -15,11 +15,11 @@ namespace Ghurund::UI::GDI {
         ULONG_PTR gdiplusToken;
 
     public:
-        void init() {
+        Gdi() {
             Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
         }
 
-        void uninit() {
+        ~Gdi() {
             Gdiplus::GdiplusShutdown(gdiplusToken);
         }
     };

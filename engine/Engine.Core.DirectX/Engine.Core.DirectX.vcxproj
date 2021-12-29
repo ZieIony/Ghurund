@@ -157,6 +157,9 @@
       <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Ghurund.Core.DirectX.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

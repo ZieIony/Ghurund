@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/Feature.h"
+#include "core/application/Feature.h"
 #include "core/image/ImageLoader.h"
 #include "ui/direct2d/font/FontLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
@@ -11,7 +11,12 @@
 #include "ui/direct2d/loading/ImageDrawableFactory.h"
 #include "ui/direct2d/loading/TextFormatFactory.h"
 
+namespace Ghurund::Core {
+    class Application;
+}
+
 namespace Ghurund {
+    using namespace Ghurund::Core;
     using namespace Ghurund::UI;
     using namespace Ghurund::UI::Direct2D;
 

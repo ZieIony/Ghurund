@@ -2,7 +2,7 @@
 #include "ScriptEngine.h"
 
 #include "core/Exceptions.h"
-#include "application/Application.h"
+#include "core/application/Application.h"
 #include "script/bindings/ScriptBindings.h"
 #include "script/bindings/CameraScriptBindings.h"
 #include "script/bindings/Float3ScriptBindings.h"

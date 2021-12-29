@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Ghurund {
+namespace Ghurund::Core {
     enum class WindowCloseAction {
         HIDE, DESTROY, NOTHING
     };

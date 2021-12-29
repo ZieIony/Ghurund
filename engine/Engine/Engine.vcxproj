@@ -97,15 +97,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
-    <ClInclude Include="src\application\Feature.h" />
-    <ClInclude Include="src\application\FeatureCollection.h" />
     <ClInclude Include="src\application\Layer.h" />
     <ClInclude Include="src\application\LayerList.h" />
-    <ClInclude Include="src\application\Settings.h" />
-    <ClInclude Include="src\application\WindowCloseAction.h" />
-    <ClInclude Include="src\application\WindowList.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3d.h" />
@@ -188,11 +182,8 @@
     <ClInclude Include="src\ui\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\application\Feature.cpp" />
     <ClCompile Include="src\application\LayerList.cpp" />
-    <ClCompile Include="src\application\Settings.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />

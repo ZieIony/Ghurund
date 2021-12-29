@@ -216,8 +216,8 @@
     <ClInclude Include="src\ui\widget\tree\TreeRowAdapter.h" />
     <ClInclude Include="src\ui\widget\tree\TreeView.h" />
     <ClInclude Include="src\ui\window\VirtualWindow.h" />
-    <ClInclude Include="src\ui\window\WindowFrame.h" />
     <ClInclude Include="src\ui\window\VirtualWindowManager.h" />
+    <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ghuipch.cpp">

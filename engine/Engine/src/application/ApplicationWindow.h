@@ -5,10 +5,16 @@
 #include "core/input/Input.h"
 #include "core/directx/SwapChain.h"
 
+namespace Ghurund::Core {
+    class Application;
+}
+
+namespace Ghurund {
+    class Renderer;
+}
+
 namespace Ghurund {
     using namespace Ghurund::Core::DirectX;
-
-    class Application;
 
     class ApplicationWindow: public Ghurund::Core::SystemWindow {
 #pragma region reflection
@@ -24,6 +30,7 @@ namespace Ghurund {
         SwapChain* swapChain = nullptr;
         LayerList layers;
         Application& app;
+        Renderer& renderer;
 
     protected:
         virtual bool onSizeChangingEvent(const IntSize& size) override {
@@ -46,7 +53,7 @@ namespace Ghurund {
         virtual bool onFocusedChangedEvent() override;
 
     public:
-        ApplicationWindow(Application& app);
+        ApplicationWindow(Application& app, Renderer& renderer);
 
         ~ApplicationWindow() {
             delete swapChain;
