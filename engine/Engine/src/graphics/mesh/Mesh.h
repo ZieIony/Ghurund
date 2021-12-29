@@ -1,8 +1,8 @@
 #pragma once
 
-#include "graphics/Fence.h"
-#include "graphics/Graphics.h"
-#include "graphics/CommandList.h"
+#include "core/directx/Fence.h"
+#include "core/directx/Graphics.h"
+#include "core/directx/CommandList.h"
 #include "Vertex.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
@@ -17,13 +17,12 @@
 
 #include <wrl.h>
 
-#include <PxShape.h>
 #pragma warning(pop)
 
 namespace Ghurund {
+    using namespace Ghurund::Core::DirectX;
     using namespace DirectX;
     using namespace Microsoft::WRL;
-    using namespace physx;
 
     typedef uint32_t vindex_t;
 
@@ -44,7 +43,6 @@ namespace Ghurund {
         ComPtr<ID3D12Resource> indexUploadHeap;
 
         BoundingBox boundingBox;
-		PxGeometry* geometry;
 
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option);
 
@@ -76,12 +74,6 @@ namespace Ghurund {
         void computeBoundingBox();
 
         virtual bool intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist);
-
-        PxGeometry &getGeometry() {
-            return *geometry;
-        }
-
-		__declspec(property(get = getGeometry)) PxGeometry& Geometry;
 
         vindex_t getVertexCount() const {
             return vertexCount;

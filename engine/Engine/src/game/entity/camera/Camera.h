@@ -6,7 +6,7 @@
 #include "game/entity/TransformComponent.h"
 #include "game/parameter/ParameterProvider.h"
 #include "game/parameter/ValueParameter.h"
-#include "graphics/Graphics.h"
+#include "core/directx/Graphics.h"
 
 namespace Ghurund {
 

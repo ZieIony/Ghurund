@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Parameter.h"
+#include "game/parameter/Parameter.h"
 #include "core/string/String.h"
 #include "core/collection/PointerList.h"
 #include "core/Object.h"
@@ -9,10 +9,14 @@ namespace Ghurund::Core {
     class ResourceManager;
 }
 
-namespace Ghurund {
-
+namespace Ghurund::Core::DirectX {
     class Graphics;
     class CommandList;
+}
+
+namespace Ghurund {
+    using namespace Ghurund::Core;
+    using namespace Ghurund::Core::DirectX;
 
     class ParameterManager: public Object {
     private:

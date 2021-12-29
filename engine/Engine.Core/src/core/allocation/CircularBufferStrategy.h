@@ -2,6 +2,7 @@
 
 #include "AllocationStrategy.h"
 #include "core/collection/List.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::Core {
     template<typename MemoryType>

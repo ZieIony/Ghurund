@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/Graphics.h"
+#include "core/directx/Graphics.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -13,7 +13,7 @@
 #include <wrl.h>
 
 namespace Ghurund {
-    using namespace DirectX;
+    using namespace ::DirectX;
     using namespace Microsoft::WRL;
 
     struct ScreenVertex {

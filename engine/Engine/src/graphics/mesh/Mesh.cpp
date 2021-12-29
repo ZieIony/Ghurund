@@ -1,6 +1,8 @@
 #include "ghpch.h"
 #include "Mesh.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund {
 	Status Mesh::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
         /*if (Path) {
@@ -101,7 +103,7 @@ namespace Ghurund {
 
         XMFLOAT3 center = stream.read<XMFLOAT3>();
         XMFLOAT3 extents = stream.read<XMFLOAT3>();
-        boundingBox = DirectX::BoundingBox(center, extents);
+        boundingBox = ::DirectX::BoundingBox(center, extents);
 
         //return init(context.Graphics, context.CommandList);
         return Status::NOT_IMPLEMENTED;
@@ -140,8 +142,6 @@ namespace Ghurund {
         indexBuffer.ReleaseAndGetAddressOf();
         vertexUploadHeap.ReleaseAndGetAddressOf();
         indexUploadHeap.ReleaseAndGetAddressOf();
-
-		delete geometry;
     }
 
     Status Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
@@ -530,7 +530,7 @@ namespace Ghurund {
         }
         XMFLOAT3 center = XMFLOAT3((min.x + max.x) / 2, (min.y + max.y) / 2, (min.z + max.z) / 2);
         XMFLOAT3 extents = XMFLOAT3(center.x - min.x, center.y - min.y, center.z - min.z);
-        boundingBox = DirectX::BoundingBox(center, extents);
+        boundingBox = ::DirectX::BoundingBox(center, extents);
     }
 
     bool Mesh::intersects(XMFLOAT3& pos, XMFLOAT3& dir, float& dist) {

@@ -3,10 +3,11 @@
 #include "ParameterId.h"
 #include "core/Pointer.h"
 #include "core/string/String.h"
-#include "editor/ObservableObject.h"
 
 namespace Ghurund {
-    class Parameter: public Pointer, public ObservableObject {
+    using namespace Ghurund::Core;
+
+    class Parameter: public Pointer {
     protected:
         const AString constantName;
         const ParameterType& type;

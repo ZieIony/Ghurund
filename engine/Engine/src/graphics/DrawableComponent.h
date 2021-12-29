@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/entity/Entity.h"
 #include "game/entity/TransformComponent.h"
 #include "game/parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
@@ -9,7 +10,8 @@
 #include <DirectXCollision.h>
 
 namespace Ghurund {
-	class DrawableComponent:public ParameterProvider {
+	class DrawableComponent//:public ParameterProvider
+	{
 	private:
 		BoundingBox boundingBox;
 		BoundingOrientedBox transformedBoundingBox;
@@ -27,8 +29,7 @@ namespace Ghurund {
 		List<Entity*> entities;
 
 	public:
-
-		~DrawableComponent() {
+		virtual ~DrawableComponent() {
 			finalize();
 		}
 
@@ -56,7 +57,7 @@ namespace Ghurund {
 
 		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
 
-		virtual void initParameters(ParameterManager& parameterManager) override {
+		/*virtual void initParameters(ParameterManager& parameterManager) override {
 			material->initParameters(parameterManager);
 		}
 
@@ -66,7 +67,7 @@ namespace Ghurund {
 
 		virtual const PointerArray<Parameter*>& getParameters() const override {
 			return material->Parameters;
-		}
+		}*/
 
 		virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
@@ -104,7 +105,7 @@ namespace Ghurund {
 
 		__declspec(property(get = isCulled)) bool Culled;
 
-		DirectX::BoundingBox* getBoundingBox() const {
+		::DirectX::BoundingBox* getBoundingBox() const {
 			return &mesh->BoundingBox;
 		}
 

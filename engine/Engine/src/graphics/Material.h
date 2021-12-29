@@ -1,10 +1,13 @@
 #pragma once
 
-#include "graphics/shader/Shader.h"
+#include "core/directx/shader/Shader.h"
 #include "core/resource/Resource.h"
+#include "game/parameter/ParameterManager.h"
 
 namespace Ghurund {
-    class Material:public Resource, public ParameterProvider {
+    using namespace Ghurund::Core::DirectX;
+
+    class Material:public Resource {
     private:
         Shader* shader = nullptr;
         bool supportsTransparency = false;
@@ -48,17 +51,13 @@ namespace Ghurund {
             return shader != nullptr && shader->Valid && __super::Valid;
         }
 
-        virtual void initParameters(ParameterManager& parameterManager) override {
-            shader->initParameters(parameterManager);
-            OnParametersChanged();
+        void initParameters(ParameterManager& parameterManager) {
+            //shader->initParameters(parameterManager);
+            //OnParametersChanged();
         }
 
-        virtual void updateParameters() override {
-            shader->updateParameters();
-        }
-
-        virtual const PointerArray<Parameter*>& getParameters() const override {
-            return shader->Parameters;
+        void updateParameters() {
+            //shader->updateParameters();
         }
 
         bool set(Graphics& graphics, CommandList& commandList) {

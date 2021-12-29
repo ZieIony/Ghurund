@@ -13,13 +13,14 @@
 #include <mfapi.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>
+#include <DirectXMath.h>
 
 #pragma comment(lib, "mfreadwrite.lib")
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfuuid")
 
 namespace Ghurund::Audio {
-    using namespace DirectX;
+    using namespace ::DirectX;
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;
 

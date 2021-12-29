@@ -37,13 +37,11 @@ namespace Ghurund {
             this->value = data;
             empty = false;
             memcpy(this->value, value, type.Size);
-            notifyObjectChanged();
         }
 
         void clearValue() {
             empty = true;
             value = defaultValue;
-            notifyObjectChanged();
         }
 
         __declspec(property(get = getValue, put = setValue)) const void* Value;
@@ -56,7 +54,6 @@ namespace Ghurund {
             defaultValue = value;
             if (!this->value)
                 this->value = defaultValue;
-            notifyObjectChanged();
         }
 
         __declspec(property(get = getDefaultValue, put = setDefaultValue)) void* DefaultValue;

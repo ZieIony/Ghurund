@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug Win64|x64">
+      <Configuration>Debug Win64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Win64|x64">
+      <Configuration>Release Win64</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7374B757-DFD5-9465-6843-DB17D4A3CB24}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Engine.Core.DirectX</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <OutDir>..\..\bin\Debug\</OutDir>
+    <IntDir>obj\Win64\Debug\</IntDir>
+    <TargetName>Engine.Core.DirectX</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <OutDir>..\..\bin\Release\</OutDir>
+    <IntDir>obj\Win64\Release\</IntDir>
+    <TargetName>Engine.Core.DirectX</TargetName>
+    <TargetExt>.lib</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghcdxpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghcdxpch.h</PrecompiledHeaderFile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\core\directx\CommandList.h" />
+    <ClInclude Include="src\core\directx\DirectXTypes.h" />
+    <ClInclude Include="src\core\directx\Exceptions.h" />
+    <ClInclude Include="src\core\directx\Fence.h" />
+    <ClInclude Include="src\core\directx\Frame.h" />
+    <ClInclude Include="src\core\directx\Graphics.h" />
+    <ClInclude Include="src\core\directx\MathTypes.h" />
+    <ClInclude Include="src\core\directx\SwapChain.h" />
+    <ClInclude Include="src\core\directx\adapter\AdapterOutput.h" />
+    <ClInclude Include="src\core\directx\adapter\DisplayMode.h" />
+    <ClInclude Include="src\core\directx\adapter\GraphicsAdapter.h" />
+    <ClInclude Include="src\core\directx\buffer\DepthBuffer.h" />
+    <ClInclude Include="src\core\directx\buffer\DescriptorHeap.h" />
+    <ClInclude Include="src\core\directx\buffer\DynamicBuffer.h" />
+    <ClInclude Include="src\core\directx\buffer\GPUBuffer.h" />
+    <ClInclude Include="src\core\directx\buffer\RenderTarget.h" />
+    <ClInclude Include="src\core\directx\memory\GPUResourceFactory.h" />
+    <ClInclude Include="src\core\directx\memory\GPUResourcePointer.h" />
+    <ClInclude Include="src\core\directx\memory\HeapAllocator.h" />
+    <ClInclude Include="src\core\directx\shader\CompilationTarget.h" />
+    <ClInclude Include="src\core\directx\shader\CompilerInclude.h" />
+    <ClInclude Include="src\core\directx\shader\ConstantBuffer.h" />
+    <ClInclude Include="src\core\directx\shader\ConstantBufferField.h" />
+    <ClInclude Include="src\core\directx\shader\Sampler.h" />
+    <ClInclude Include="src\core\directx\shader\Shader.h" />
+    <ClInclude Include="src\core\directx\shader\ShaderConstant.h" />
+    <ClInclude Include="src\core\directx\shader\ShaderProgram.h" />
+    <ClInclude Include="src\core\directx\shader\ShaderType.h" />
+    <ClInclude Include="src\core\directx\shader\TextureBufferConstant.h" />
+    <ClInclude Include="src\core\directx\shader\TextureConstant.h" />
+    <ClInclude Include="src\core\directx\texture\Texture.h" />
+    <ClInclude Include="src\ghcdxpch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\core\directx\CommandList.cpp" />
+    <ClCompile Include="src\core\directx\DirectXTypes.cpp" />
+    <ClCompile Include="src\core\directx\Fence.cpp" />
+    <ClCompile Include="src\core\directx\Frame.cpp" />
+    <ClCompile Include="src\core\directx\Graphics.cpp" />
+    <ClCompile Include="src\core\directx\MathTypes.cpp" />
+    <ClCompile Include="src\core\directx\SwapChain.cpp" />
+    <ClCompile Include="src\core\directx\adapter\AdapterOutput.cpp" />
+    <ClCompile Include="src\core\directx\adapter\DisplayMode.cpp" />
+    <ClCompile Include="src\core\directx\adapter\GraphicsAdapter.cpp" />
+    <ClCompile Include="src\core\directx\buffer\DepthBuffer.cpp" />
+    <ClCompile Include="src\core\directx\buffer\DescriptorHeap.cpp" />
+    <ClCompile Include="src\core\directx\buffer\GPUBuffer.cpp" />
+    <ClCompile Include="src\core\directx\buffer\RenderTarget.cpp" />
+    <ClCompile Include="src\core\directx\memory\GPUResourceFactory.cpp" />
+    <ClCompile Include="src\core\directx\memory\GPUResourcePointer.cpp" />
+    <ClCompile Include="src\core\directx\memory\HeapAllocator.cpp" />
+    <ClCompile Include="src\core\directx\shader\CompilationTarget.cpp" />
+    <ClCompile Include="src\core\directx\shader\CompilerInclude.cpp" />
+    <ClCompile Include="src\core\directx\shader\ConstantBuffer.cpp" />
+    <ClCompile Include="src\core\directx\shader\Shader.cpp" />
+    <ClCompile Include="src\core\directx\shader\ShaderProgram.cpp" />
+    <ClCompile Include="src\core\directx\shader\ShaderType.cpp" />
+    <ClCompile Include="src\core\directx\texture\Texture.cpp" />
+    <ClCompile Include="src\ghcdxpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">
+      <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -5,7 +5,7 @@
 #include "core/threading/FunctionQueue.h"
 #include "core/window/SystemWindow.h"
 #include "game/parameter/ParameterManager.h"
-#include "graphics/Graphics.h"
+#include "core/directx/Graphics.h"
 #include "graphics/Renderer.h"
 #include "physics/Physics.h"
 #include "core/resource/ResourceManager.h"

@@ -2,9 +2,10 @@
 
 #include "Parameter.h"
 #include "core/resource/Resource.h"
-#include "graphics/texture/Texture.h"
+#include "core/directx/texture/Texture.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core::DirectX;
 
     class TextureParameter:public Parameter {
     private:
@@ -37,13 +38,11 @@ namespace Ghurund {
         void setValue(Texture* value) {
             setPointer(this->value, value);
             empty = false;
-            notifyObjectChanged();
         }
 
         void clearValue() {
             setPointer(value, defaultValue);
             empty = true;
-            notifyObjectChanged();
         }
 
         __declspec(property(get = getValue, put = setValue)) Texture* Value;
@@ -56,7 +55,6 @@ namespace Ghurund {
             setPointer(defaultValue, value);
             if (!this->value)
                 setPointer(this->value, defaultValue);
-            notifyObjectChanged();
         }
 
         __declspec(property(get = getDefaultValue, put = setDefaultValue)) Texture* DefaultValue;

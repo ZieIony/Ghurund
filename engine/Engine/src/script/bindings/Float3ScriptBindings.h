@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ScriptBindings.h"
-#include "graphics/Graphics.h"
+#include "core/directx/Graphics.h"
 
 namespace Ghurund {
 

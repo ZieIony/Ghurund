@@ -1,10 +1,10 @@
 #include "ghpch.h"
 #include "ParameterManager.h"
 
-#include "ValueParameter.h"
-#include "TextureParameter.h"
+#include "game/parameter/ValueParameter.h"
+#include "game/parameter/TextureParameter.h"
 #include "core/SharedPointer.h"
-#include "graphics/texture/Textures.h"
+#include "graphics/Textures.h"
 
 namespace Ghurund {
     const Ghurund::Core::Type& ParameterManager::GET_TYPE() {
@@ -17,22 +17,22 @@ namespace Ghurund {
 
     ParameterManager::ParameterManager() {
         float defaultFloat = 0;
-        XMFLOAT2 defaultFloat2 = {0,0};
-        XMFLOAT3 defaultFloat3 = {0,0,0};
-        XMMATRIX defaultMatrix = XMMatrixIdentity();
+        ::DirectX::XMFLOAT2 defaultFloat2 = {0,0};
+        ::DirectX::XMFLOAT3 defaultFloat3 = {0,0,0};
+        ::DirectX::XMMATRIX defaultMatrix = ::DirectX::XMMatrixIdentity();
 
         SharedPointer<ValueParameter> viewportSize = ghnew ValueParameter(ParameterId::VIEWPORT_SIZE.ConstantName, ParameterType::FLOAT2, &defaultFloat2);
         parameters.add(viewportSize);
-        XMFLOAT4 white(1, 1, 1, 1);
+        ::DirectX::XMFLOAT4 white(1, 1, 1, 1);
         SharedPointer<ValueParameter> outlineColor = ghnew ValueParameter(ParameterId::OUTLINE_COLOR.ConstantName, ParameterType::COLOR, &white);
         parameters.add(outlineColor);
 
-        XMFLOAT4 red(1, 0, 0, 1);
+        ::DirectX::XMFLOAT4 red(1, 0, 0, 1);
         SharedPointer<ValueParameter> partyColor = ghnew ValueParameter(ParameterId::PARTY_COLOR.ConstantName, ParameterType::COLOR, &red);
         parameters.add(partyColor);
         SharedPointer<ValueParameter> random = ghnew ValueParameter(ParameterId::RANDOM.ConstantName, ParameterType::FLOAT, &defaultFloat);
         parameters.add(random);
-        XMFLOAT4 gray(0.4f, 0.4f, 0.4f, 1);
+        ::DirectX::XMFLOAT4 gray(0.4f, 0.4f, 0.4f, 1);
         SharedPointer<ValueParameter> ambientLight = ghnew ValueParameter(ParameterId::AMBIENT_LIGHT.ConstantName, ParameterType::COLOR, &gray);
         parameters.add(ambientLight);
 

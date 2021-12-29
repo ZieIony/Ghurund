@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -77,7 +77,7 @@
       <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -96,10 +96,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\DirectXTypes.h" />
-    <ClInclude Include="src\Exceptions.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\MathTypes.h" />
     <ClInclude Include="src\application\Application.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\Feature.h" />
@@ -140,31 +137,17 @@
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
     <ClInclude Include="src\ghpch.h" />
-    <ClInclude Include="src\graphics\CommandList.h" />
     <ClInclude Include="src\graphics\DrawableComponent.h" />
     <ClInclude Include="src\graphics\DrawableComponents.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
-    <ClInclude Include="src\graphics\Fence.h" />
-    <ClInclude Include="src\graphics\Frame.h" />
-    <ClInclude Include="src\graphics\Graphics.h" />
     <ClInclude Include="src\graphics\LightSystem.h" />
     <ClInclude Include="src\graphics\Material.h" />
     <ClInclude Include="src\graphics\Materials.h" />
     <ClInclude Include="src\graphics\Postprocess.h" />
     <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
-    <ClInclude Include="src\graphics\SwapChain.h" />
-    <ClInclude Include="src\graphics\adapter\AdapterOutput.h" />
-    <ClInclude Include="src\graphics\adapter\DisplayMode.h" />
-    <ClInclude Include="src\graphics\adapter\GraphicsAdapter.h" />
-    <ClInclude Include="src\graphics\buffer\DepthBuffer.h" />
-    <ClInclude Include="src\graphics\buffer\DescriptorHeap.h" />
-    <ClInclude Include="src\graphics\buffer\DynamicBuffer.h" />
-    <ClInclude Include="src\graphics\buffer\GPUBuffer.h" />
-    <ClInclude Include="src\graphics\buffer\RenderTarget.h" />
-    <ClInclude Include="src\graphics\memory\GPUResourceFactory.h" />
-    <ClInclude Include="src\graphics\memory\GPUResourcePointer.h" />
-    <ClInclude Include="src\graphics\memory\HeapAllocator.h" />
+    <ClInclude Include="src\graphics\Shaders.h" />
+    <ClInclude Include="src\graphics\Textures.h" />
     <ClInclude Include="src\graphics\mesh\ConeMesh.h" />
     <ClInclude Include="src\graphics\mesh\CubeMesh.h" />
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
@@ -172,20 +155,6 @@
     <ClInclude Include="src\graphics\mesh\QuadMesh.h" />
     <ClInclude Include="src\graphics\mesh\SphereMesh.h" />
     <ClInclude Include="src\graphics\mesh\Vertex.h" />
-    <ClInclude Include="src\graphics\shader\CompilationTarget.h" />
-    <ClInclude Include="src\graphics\shader\CompilerInclude.h" />
-    <ClInclude Include="src\graphics\shader\ConstantBuffer.h" />
-    <ClInclude Include="src\graphics\shader\ConstantBufferField.h" />
-    <ClInclude Include="src\graphics\shader\Sampler.h" />
-    <ClInclude Include="src\graphics\shader\Shader.h" />
-    <ClInclude Include="src\graphics\shader\ShaderConstant.h" />
-    <ClInclude Include="src\graphics\shader\ShaderProgram.h" />
-    <ClInclude Include="src\graphics\shader\ShaderType.h" />
-    <ClInclude Include="src\graphics\shader\Shaders.h" />
-    <ClInclude Include="src\graphics\shader\TextureBufferConstant.h" />
-    <ClInclude Include="src\graphics\shader\TextureConstant.h" />
-    <ClInclude Include="src\graphics\texture\Texture.h" />
-    <ClInclude Include="src\graphics\texture\Textures.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
@@ -219,8 +188,6 @@
     <ClInclude Include="src\ui\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DirectXTypes.cpp" />
-    <ClCompile Include="src\MathTypes.cpp" />
     <ClCompile Include="src\application\Application.cpp" />
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\application\Feature.cpp" />
@@ -242,37 +209,15 @@
     <ClCompile Include="src\ghpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\graphics\CommandList.cpp" />
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
-    <ClCompile Include="src\graphics\Fence.cpp" />
-    <ClCompile Include="src\graphics\Frame.cpp" />
-    <ClCompile Include="src\graphics\Graphics.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
-    <ClCompile Include="src\graphics\SwapChain.cpp" />
-    <ClCompile Include="src\graphics\adapter\AdapterOutput.cpp" />
-    <ClCompile Include="src\graphics\adapter\DisplayMode.cpp" />
-    <ClCompile Include="src\graphics\adapter\GraphicsAdapter.cpp" />
-    <ClCompile Include="src\graphics\buffer\DepthBuffer.cpp" />
-    <ClCompile Include="src\graphics\buffer\DescriptorHeap.cpp" />
-    <ClCompile Include="src\graphics\buffer\GPUBuffer.cpp" />
-    <ClCompile Include="src\graphics\buffer\RenderTarget.cpp" />
-    <ClCompile Include="src\graphics\memory\GPUResourceFactory.cpp" />
-    <ClCompile Include="src\graphics\memory\GPUResourcePointer.cpp" />
-    <ClCompile Include="src\graphics\memory\HeapAllocator.cpp" />
     <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\CubeMesh.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
-    <ClCompile Include="src\graphics\shader\CompilationTarget.cpp" />
-    <ClCompile Include="src\graphics\shader\CompilerInclude.cpp" />
-    <ClCompile Include="src\graphics\shader\ConstantBuffer.cpp" />
-    <ClCompile Include="src\graphics\shader\Shader.cpp" />
-    <ClCompile Include="src\graphics\shader\ShaderProgram.cpp" />
-    <ClCompile Include="src\graphics\shader\ShaderType.cpp" />
-    <ClCompile Include="src\graphics\texture\Texture.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
     <ClCompile Include="src\net\MessageType.cpp" />
@@ -289,6 +234,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">
       <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine.Core.DirectX\Engine.Core.DirectX.vcxproj">
+      <Project>{7374B757-DFD5-9465-6843-DB17D4A3CB24}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
       <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>

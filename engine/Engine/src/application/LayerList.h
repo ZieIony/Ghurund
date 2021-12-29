@@ -4,6 +4,7 @@
 #include "Status.h"
 #include "core/collection/List.h"
 #include "core/input/EventConsumer.h"
+#include "core/directx/buffer/RenderTarget.h"
 
 namespace Ghurund {
     class LayerList {
@@ -111,7 +112,7 @@ namespace Ghurund {
                 layer->update(time);
         }
 
-        inline Status draw(RenderTarget& renderTarget) {
+        inline Status draw(Ghurund::Core::DirectX::RenderTarget& renderTarget) {
             for (Layer* layer : layers) {
                 Status result = layer->draw(renderTarget);
                 if (result != Status::OK)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/mesh/Mesh.h"
+#include "Mesh.h"
 #include "core/resource/ResourceManager.h"
 
 namespace Ghurund {

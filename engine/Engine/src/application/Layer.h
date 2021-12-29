@@ -4,9 +4,11 @@
 #include "core/input/Keyboard.h"
 #include "core/input/Mouse.h"
 #include "core/math/Size.h"
-#include "graphics/buffer/RenderTarget.h"
+#include "core/directx/buffer/RenderTarget.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class Layer {
     private:
         IntSize size = { 0,0 };
@@ -67,7 +69,7 @@ namespace Ghurund {
 
         virtual void update(const uint64_t time) {}
 
-        virtual Status draw(RenderTarget& renderTarget) {
+        virtual Status draw(Core::DirectX::RenderTarget& renderTarget) {
             return Status::OK;
         }
     };

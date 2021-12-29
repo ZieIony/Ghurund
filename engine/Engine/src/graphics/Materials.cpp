@@ -2,6 +2,7 @@
 #include "Materials.h"
 
 #include "game/parameter/TextureParameter.h"
+#include "Shaders.h"
 
 namespace Ghurund {
     Material* Materials::makeWithShader(Shader* shader, ParameterManager& parameterManager) {
@@ -19,10 +20,10 @@ namespace Ghurund {
         SharedPointer<Shader> shader = Shaders::loadBasic(manager);
         if (shader) {
             material = ghnew Material(shader);
-            if (diffuseTexture) {
+            /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
-            }
+            }*/
             material->initParameters(parameterManager);
             material->Valid = true;
         }
@@ -34,7 +35,7 @@ namespace Ghurund {
         SharedPointer<Shader> shader = Shaders::loadBasicLight(manager);
         if (shader) {
             material = ghnew Material(shader);
-            if (diffuseTexture) {
+            /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
             }
@@ -45,7 +46,7 @@ namespace Ghurund {
             if (normalTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::NORMAL_TEXTURE.ConstantName);
                 diffuse->setValue(normalTexture);
-            }
+            }*/
             material->initParameters(parameterManager);
             material->Valid = true;
         }
@@ -57,10 +58,10 @@ namespace Ghurund {
         SharedPointer<Shader> shader = Shaders::loadToon(manager);
         if (shader) {
             material = ghnew Material(shader);
-            if (diffuseTexture) {
+            /*if (diffuseTexture) {
                 TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
                 diffuse->setValue(diffuseTexture);
-            }
+            }*/
             material->initParameters(parameterManager);
             material->Valid = true;
         }
@@ -72,9 +73,9 @@ namespace Ghurund {
         SharedPointer<Shader> shader = Shaders::loadBasic(manager);
         if (shader) {
             material = ghnew Material(shader);
-            SharedPointer<Texture> texture = Textures::makeChecker(graphics, commandList, manager);
-            TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
-            diffuse->setValue(texture);
+            //SharedPointer<Texture> texture = Textures::makeChecker(graphics, commandList, manager);
+            //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
+            //diffuse->setValue(texture);
             material->initParameters(parameterManager);
             material->Valid = true;
         }

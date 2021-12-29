@@ -1,14 +1,17 @@
 #pragma once
 
-#include "Graphics.h"
+#include "core/directx/Graphics.h"
 #include "Materials.h"
 #include "Postprocess.h"
-#include "SwapChain.h"
+#include "core/directx/SwapChain.h"
 
 #include "core/Object.h"
 #include "core/resource/ResourceManager.h"
+#include "graphics/RenderingStatistics.h"
 
 namespace Ghurund {
+    using namespace ::DirectX;
+
     class Renderer: public Object {
 #pragma region reflection
     protected:

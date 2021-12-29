@@ -14,8 +14,11 @@ namespace Ghurund::Core {
     class FunctionQueue;
 }
 
-namespace Ghurund {
+namespace Ghurund::Core::DirectX {
     class Graphics;
+}
+
+namespace Ghurund {
     class Renderer;
     class ParameterManager;
 

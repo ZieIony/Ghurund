@@ -12,6 +12,7 @@ workspace "Ghurund"
 libsDir = "%{wks.location}/libs"
 includeDir = {}
 includeDir["Engine.Core"] = "%{wks.location}/engine/Engine.Core/src"
+includeDir["Engine.Core.DirectX"] = "%{wks.location}/engine/Engine.Core.DirectX/src"
 includeDir["Engine.UI"] = "%{wks.location}/engine/Engine.UI/src"
 includeDir["Engine.UI_bindings"] = "%{wks.location}/engine/Engine.UI/generated/bindings"
 includeDir["Engine.UI.Direct2D"] = "%{wks.location}/engine/Engine.UI.Direct2D/src"

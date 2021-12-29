@@ -1,9 +1,13 @@
 #pragma once
 
 #include "DrawableComponent.h"
-#include "Graphics.h"
+#include "core/directx/Graphics.h"
+#include "game/parameter/ValueParameter.h"
+#include "game/entity/camera/Camera.h"
 
 namespace Ghurund {
+    using namespace Ghurund::Core::DirectX;
+
     class DrawingSystem {
     private:
         Camera* camera = nullptr;

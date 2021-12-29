@@ -18,6 +18,7 @@ test
 WidgetTest
 AS_DEBUG
 libs
+*.dll
 
 # User-specific files
 *.suo

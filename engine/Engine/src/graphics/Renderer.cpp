@@ -3,7 +3,7 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "MathTypes.h"
+#include "core/directx/MathTypes.h"
 
 namespace Ghurund {
     const Ghurund::Core::Type& Renderer::GET_TYPE() {

@@ -4,6 +4,7 @@ project "Preview"
 
 	dependson {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D",
 		"Engine"
@@ -19,6 +20,7 @@ project "Preview"
 		"src",
 		"generated/bindings",
 		includeDir["Engine.Core"],
+		includeDir["Engine.Core.DirectX"],
 		includeDir["Engine.UI"],
 		includeDir["Engine.UI_bindings"],
 		includeDir["Engine.UI.Direct2D"],
@@ -34,6 +36,7 @@ project "Preview"
 
 	links {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D",
 		"Engine"

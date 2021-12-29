@@ -3,10 +3,10 @@
 #include "LayerList.h"
 #include "core/window/SystemWindow.h"
 #include "core/input/Input.h"
-#include "graphics/SwapChain.h"
+#include "core/directx/SwapChain.h"
 
 namespace Ghurund {
-    using namespace Ghurund::Core;
+    using namespace Ghurund::Core::DirectX;
 
     class Application;
 

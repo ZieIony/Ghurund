@@ -4,7 +4,6 @@
 #include "graphics/mesh/PlaneMesh.h"
 #include "graphics/mesh/QuadMesh.h"
 #include "graphics/mesh/ConeMesh.h"
-#include "graphics/shader/Shader.h"
 
 namespace Ghurund {
     class DrawableComponents {

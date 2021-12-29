@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI\generated\bindings;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.Core.DirectX\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI\generated\bindings;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI\generated\bindings;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.Core.DirectX\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI\generated\bindings;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -103,6 +103,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Engine.Core\Engine.Core.vcxproj">
       <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\engine\Engine.Core.DirectX\Engine.Core.DirectX.vcxproj">
+      <Project>{7374B757-DFD5-9465-6843-DB17D4A3CB24}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\engine\Engine.UI\Engine.UI.vcxproj">
       <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>

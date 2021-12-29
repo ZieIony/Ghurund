@@ -21,7 +21,7 @@ namespace Ghurund {
         Map<MouseButton, Mode> modeMap;
         bool pressed = false;
         MouseButton pressedButton = MouseButton::LEFT;
-        float rotateSensivity = 1.0f / 5 * DirectX::XM_PI / 180;
+        float rotateSensivity = 1.0f / 5 * ::DirectX::XM_PI / 180;
         static constexpr float DIST_EPSILON = 0.01f;
         SystemWindow* window;
         KeyMap keyMap;

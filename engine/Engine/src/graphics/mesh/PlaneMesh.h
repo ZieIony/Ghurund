@@ -29,7 +29,7 @@ namespace Ghurund {
             for (size_t i = 0; i < detail; i++)
                 subdivide();
 
-			geometry = ghnew PxPlaneGeometry();
+			//geometry = ghnew PxPlaneGeometry();
 
             return Mesh::init(graphics, commandList);
         }

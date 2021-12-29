@@ -13,7 +13,7 @@ namespace Ghurund {
         DrawableComponent* model = ghnew DrawableComponent();
 		model->Mesh = mesh;
 		model->Material = &material;
-        model->initParameters(parameterManager);
+        //model->initParameters(parameterManager);
 
         return model;
     }
@@ -24,7 +24,7 @@ namespace Ghurund {
 		DrawableComponent* model = ghnew DrawableComponent();
 		model->Mesh = mesh;
 		model->Material = &material;
-        model->initParameters(parameterManager);
+        //model->initParameters(parameterManager);
 
         return model;
     }
@@ -35,7 +35,7 @@ namespace Ghurund {
         DrawableComponent* model = ghnew DrawableComponent();
         model->Mesh = mesh;
         model->Material = &material;
-        model->initParameters(parameterManager);
+        //model->initParameters(parameterManager);
 
         return model;
     }
@@ -46,7 +46,7 @@ namespace Ghurund {
         DrawableComponent* model = ghnew DrawableComponent();
         model->Mesh = mesh;
         model->Material = &material;
-        model->initParameters(parameterManager);
+        //model->initParameters(parameterManager);
 
         return model;
     }
@@ -57,7 +57,7 @@ namespace Ghurund {
         DrawableComponent* model = ghnew DrawableComponent();
         model->Mesh = mesh;
         model->Material = &material;
-        model->initParameters(parameterManager);
+        //model->initParameters(parameterManager);
 
         return model;
     }

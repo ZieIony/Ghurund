@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Material.h"
-#include "shader/Shaders.h"
-#include "texture/Textures.h"
+#include "core/directx/texture/Texture.h"
 
 namespace Ghurund {
     class Materials {

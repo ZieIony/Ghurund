@@ -1,9 +1,10 @@
 #include "ghpch.h"
 #include "Material.h"
 
-#include "Graphics.h"
+#include "core/directx/Graphics.h"
 #include "core/resource/ResourceManager.h"
 #include "core/SharedPointer.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Core::Type& Material::GET_TYPE() {

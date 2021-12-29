@@ -1,10 +1,10 @@
 #pragma once
 
 #include "core/Timer.h"
-#include "editor/ObservableObject.h"
+#include "core/reflection/Type.h"
 
 namespace Ghurund {
-    class RenderingStatistics:public ObservableObject {
+    class RenderingStatistics {
         friend class DrawableComponent;
         friend class DrawingSystem;
 
@@ -60,12 +60,11 @@ namespace Ghurund {
         void finishFrame() {
             timer.tick();
             renderingTime = timer.FrameTime;
-            notifyObjectChanged();
         }
     };
 }
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<RenderingStatistics>();
+    const Type& getType<Ghurund::RenderingStatistics>();
 }

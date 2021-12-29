@@ -1,9 +1,9 @@
 #pragma once
 
-#include "buffer/RenderTarget.h"
-#include "graphics/DrawableComponents.h"
+#include "core/directx/buffer/RenderTarget.h"
+#include "DrawableComponents.h"
 
-namespace Ghurund {
+namespace Ghurund::Core::DirectX {
     class Postprocess: public Resource {
     private:
         //Model* fullScreenQuad = nullptr;

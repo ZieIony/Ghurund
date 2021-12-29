@@ -6,6 +6,7 @@ project "Engine"
 
 	dependson {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D"
 	}
@@ -18,6 +19,7 @@ project "Engine"
 	includedirs {
 		"src",
 		includeDir["Engine.Core"],
+		includeDir["Engine.Core.DirectX"],
 		includeDir["Engine.UI"],
 		includeDir["Engine.UI.Direct2D"],
 		includeDir["tinyxml2"],
@@ -31,6 +33,7 @@ project "Engine"
 
 	links {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D"
 	}

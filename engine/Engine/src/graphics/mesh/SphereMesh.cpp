@@ -65,8 +65,6 @@ namespace Ghurund {
 
         generateNormals();
 
-		geometry = ghnew PxSphereGeometry(0.5);
-
         return Mesh::init(graphics, commandList);
     }
 }

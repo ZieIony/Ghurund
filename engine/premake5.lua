@@ -2,6 +2,7 @@ group "engine"
 
 include "Engine"
 include "Engine.Core"
+include "Engine.Core.DirectX"
 include "Engine.UI"
 include "Engine.UI.Direct2D"
 include "Engine.UI.GDI"

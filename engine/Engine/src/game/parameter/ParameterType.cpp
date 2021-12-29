@@ -4,7 +4,7 @@
 #include "core/Pointer.h"
 
 namespace Ghurund {
-    using namespace DirectX;
+    using namespace ::DirectX;
 
     const ParameterType ParameterType::INT = ParameterType(ParameterTypeEnum::INT, "int", sizeof(int));
     const ParameterType ParameterType::INT2 = ParameterType(ParameterTypeEnum::INT2, "int2", sizeof(XMINT2));

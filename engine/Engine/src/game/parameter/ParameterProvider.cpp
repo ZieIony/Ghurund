@@ -5,7 +5,7 @@
 #include "ValueParameter.h"
 #include "core/SharedPointer.h"
 #include "core/resource/ResourceManager.h"
-#include "graphics/texture/Texture.h"
+#include "core/directx/texture/Texture.h"
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 

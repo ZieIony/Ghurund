@@ -4,14 +4,12 @@
 #include <DirectXMath.h>
 
 namespace Ghurund::Core {
-    using namespace DirectX;
-
-    inline XMFLOAT4 makeColor(unsigned int color) {
+    inline ::DirectX::XMFLOAT4 makeColor(uint32_t color) {
         unsigned int a = (color >> 24) & 0xff;
         unsigned int r = (color >> 16) & 0xff;
         unsigned int g = (color >> 8) & 0xff;
         unsigned int b = color & 0xff;
-        return XMFLOAT4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+        return ::DirectX::XMFLOAT4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
     }
 
     template<class Type> inline Type minMax(Type a, Type b, Type c) {

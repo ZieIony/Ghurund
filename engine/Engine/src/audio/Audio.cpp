@@ -4,7 +4,7 @@
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "MathTypes.h"
+#include "core/directx/MathTypes.h"
 
 namespace Ghurund::Audio {
     const Ghurund::Core::Type& Audio::GET_TYPE() {
