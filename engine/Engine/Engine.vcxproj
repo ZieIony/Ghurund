@@ -98,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphics\mesh\MeshLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\UIApplicationWindow.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
+    <ClCompile Include="src\graphics\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\net\Client.cpp" />

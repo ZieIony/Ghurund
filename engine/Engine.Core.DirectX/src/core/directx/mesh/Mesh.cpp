@@ -158,7 +158,7 @@ namespace Ghurund {
                 nullptr,
                 IID_PPV_ARGS(&vertexBuffer)))) {
                 Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-                throw CallFailedException();
+                throw CallFailedException("device->CreateCommittedResource() failed");
             }
 
             auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -170,7 +170,7 @@ namespace Ghurund {
                 nullptr,
                 IID_PPV_ARGS(&vertexUploadHeap)))) {
                 Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-                throw CallFailedException();
+                throw CallFailedException("device->CreateCommittedResource() failed");
             }
 
             D3D12_SUBRESOURCE_DATA vertexData = {};
@@ -206,7 +206,7 @@ namespace Ghurund {
                 nullptr,
                 IID_PPV_ARGS(&indexBuffer)))) {
                 Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-                throw CallFailedException();
+                throw CallFailedException("device->CreateCommittedResource() failed");
             }
 
             auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -218,7 +218,7 @@ namespace Ghurund {
                 nullptr,
                 IID_PPV_ARGS(&indexUploadHeap)))) {
                 Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
-                throw CallFailedException();
+                throw CallFailedException("device->CreateCommittedResource() failed");
             }
 
             D3D12_SUBRESOURCE_DATA indexData = {};
