@@ -14,6 +14,8 @@ namespace Ghurund::UI {
         Ghurund::UI::Direct2D::Canvas* canvas;
         RootView* rootView;
         Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
+        IUIContext* context;
+        ApplicationWindow& window;
 
     protected:
         virtual bool onSizeChangedEvent() override {
@@ -27,32 +29,43 @@ namespace Ghurund::UI {
         }
 
     public:
-        UILayer(Graphics2D& graphics, RootView* rootView, ApplicationWindow* window):graphics(graphics) {
+        UILayer(Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager):graphics(graphics), window(window) {
+            context = ghnew UIContext(*graphics.D2DFactory, *graphics.DWriteFactory, graphics.DeviceContext, window, resourceManager);
             canvas = ghnew Ghurund::UI::Direct2D::Canvas();
             canvas->init(graphics.DeviceContext);
-            this->rootView = rootView;
-            rootView->addReference();
-            if (window) {
-                SwapChain& swapChain = window->SwapChain;
-                window->sizeChanging += [&](const Window& window, const IntSize& size) {
-                    renderTargets.clear();
-                    return true;
-                };
-                window->sizeChanged += [&](const Window& window) {
-                    for (Frame& frame : swapChain.Frames) {
-                        RenderTarget2D* target = ghnew RenderTarget2D();
-                        target->init(graphics, *frame.RenderTarget.Texture);
-                        renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
-                    }
-                    return true;
-                };
-            }
+            this->rootView = ghnew Ghurund::UI::RootView(*context);
+            SwapChain& swapChain = window.SwapChain;
+            window.sizeChanging += [&](const Window& window, const IntSize& size) {
+                renderTargets.clear();
+                return true;
+            };
+            window.sizeChanged += [&](const Window& window) {
+                initTargets();
+                return true;
+            };
+            initTargets();
         }
 
         ~UILayer() {
             rootView->release();
             delete canvas;
+            delete context;
         }
+
+        void initTargets() {
+            SwapChain& swapChain = window.SwapChain;
+            for (Frame& frame : swapChain.Frames) {
+                RenderTarget2D* target = ghnew RenderTarget2D();
+                target->init(graphics, *frame.RenderTarget.Texture);
+                renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
+            }
+        }
+
+        inline RootView& getRoot() {
+            return *rootView;
+        }
+
+        __declspec(property(get = getRoot)) RootView& Root;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
             return rootView->dispatchKeyEvent(args);

@@ -17,7 +17,7 @@ namespace Ghurund::Core::DirectX {
         return TYPE;
     }
 
-    Status SwapChain::init(Graphics& graphics, SystemWindow& window, uint32_t frameCount) {
+    void SwapChain::init(Graphics& graphics, SystemWindow& window, uint32_t frameCount) {
         this->graphics = &graphics;
         this->window = &window;
         this->frameCount = frameCount;
@@ -33,13 +33,15 @@ namespace Ghurund::Core::DirectX {
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("factory->CreateSwapChainForHwnd() failed\n"));
+        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
+            Logger::log(LogType::ERR0R, _T("factory->CreateSwapChainForHwnd() failed\n"));
+            throw CallFailedException("factory->CreateSwapChainForHwnd() failed");
+        }
 
-        if (FAILED(swapChain1.As(&swapChain)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain1.As() failed\n"));
-
-        return Status::OK;
+        if (FAILED(swapChain1.As(&swapChain))) {
+            Logger::log(LogType::ERR0R, _T("swapChain1.As() failed\n"));
+            throw CallFailedException("factory->CreateSwapChainForHwnd() failed");
+        }
     }
 
     Status SwapChain::initBuffers() {

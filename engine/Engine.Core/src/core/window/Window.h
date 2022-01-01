@@ -8,6 +8,8 @@
 #include "core/input/Input.h"
 #include "core/math/Point.h"
 #include "core/math/Size.h"
+#include "core/Observable.h"
+#include <core/window/WindowStyle.h>
 
 namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
@@ -18,10 +20,6 @@ namespace Ghurund::Core {
 
     class Window:public Object, public EventConsumer {
     private:
-        WString title;
-        bool visible = false;
-        IntPoint position = {};
-        IntSize size = {};
         /*
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
@@ -29,6 +27,13 @@ namespace Ghurund::Core {
         IntPoint prevMousePos = { -1, -1 };
 
         Window* parent;
+        WindowStyle style = {
+            .hasMinimizeButton = true,
+            .hasMaximizeButton = true,
+            .hasTitle = true,
+            .borderStyle = WindowBorderStyle::RESIZE,
+            .showOnTaskbar = true
+        };
 
     protected:
         virtual bool onPositionChangedEvent() {
@@ -60,6 +65,11 @@ namespace Ghurund::Core {
         Event<Window> focusedChanged = *this;
         Event<Window> closed = *this;
 
+        Observable<WString> title;
+        Observable<bool> visible;
+        Observable<IntSize> size;
+        Observable<IntPoint> position;
+
         Window(Window* parent = nullptr) {
             this->parent = parent;
         }
@@ -79,15 +89,16 @@ namespace Ghurund::Core {
             return parameters;
         }
         */
-        virtual void setTitle(const WString& title) {
-            this->title = title;
+
+        inline WindowStyle getStyle() const {
+            return style;
         }
 
-        inline const WString& getTitle()const {
-            return title;
+        inline void setStyle(WindowStyle style) {
+            this->style = style;
         }
 
-        __declspec(property(put = setTitle, get = getTitle)) WString& Title;
+        __declspec(property(get = getStyle, put = setStyle)) WindowStyle Style;
 
         virtual HWND getHandle() const {
             return parent->Handle;

@@ -77,7 +77,9 @@ namespace Ghurund {
             return;
         }
 
-        if (onInit() != Status::OK) {
+        try {
+            onInit();
+        } catch (...) {
             onUninit();
             uninit();
             return;

@@ -35,7 +35,7 @@ namespace Ghurund::Core::DirectX {
             uninitBuffers();
         }
 
-        Status init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
+        void init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
 
         Status initBuffers();
 

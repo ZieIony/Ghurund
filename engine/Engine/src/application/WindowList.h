@@ -3,11 +3,13 @@
 #include "WindowCloseAction.h"
 #include "application/ApplicationWindow.h"
 #include "core/collection/List.h"
+#include "core/window/WindowManager.h"
 
 namespace Ghurund {
     class WindowList {
     private:
         List<ApplicationWindow*> windows;
+        WindowManager& windowManager;
 
         EventHandler<Window> destroyHandler = [this](Ghurund::Window& window) {
             remove((ApplicationWindow*)&window);
@@ -16,16 +18,19 @@ namespace Ghurund {
         };
 
         EventHandler<Window> hideHandler = [](Ghurund::Window& window) {
-            window.Visible = false;
+            window.visible = false;
             return true;
         };
 
     public:
+        WindowList(WindowManager& windowManager):windowManager(windowManager) {}
+
         ~WindowList() {
             clear();
         }
 
         inline void add(ApplicationWindow* window, WindowCloseAction action = WindowCloseAction::DESTROY) {
+            window->init(windowManager);
             windows.add(window);
             if (action == WindowCloseAction::DESTROY) {
                 window->closed += destroyHandler;
@@ -35,22 +40,31 @@ namespace Ghurund {
         }
 
         inline void remove(ApplicationWindow* window) {
-            window->closed -= destroyHandler;
-            window->closed -= hideHandler;
+            try {
+                window->closed -= destroyHandler;
+            } catch (...) {
+                window->closed -= hideHandler;
+            }
             windows.remove(window);
         }
 
         inline void removeAt(size_t index) {
             ApplicationWindow* window = windows.get(index);
-            window->closed -= destroyHandler;
-            window->closed -= hideHandler;
+            try {
+                window->closed -= destroyHandler;
+            } catch (...) {
+                window->closed -= hideHandler;
+            }
             windows.removeAt(index);
         }
 
         inline void clear() {
             for (ApplicationWindow* window : windows) {
-                window->closed -= destroyHandler;
-                window->closed -= hideHandler;
+                try {
+                    window->closed -= destroyHandler;
+                } catch (...) {
+                    window->closed -= hideHandler;
+                }
             }
             windows.clear();
         }

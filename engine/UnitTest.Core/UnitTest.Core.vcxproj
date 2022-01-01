@@ -100,6 +100,7 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\ObservableTest.cpp" />
     <ClCompile Include="src\core\TypeWrapperTest.cpp" />
     <ClCompile Include="src\core\collection\BagTest.cpp" />
     <ClCompile Include="src\core\collection\LinkedListTest.cpp" />

@@ -26,41 +26,46 @@ namespace Preview {
 
     class PreviewWindow:public ApplicationWindow {
     private:
-        Theme* lightTheme, * darkTheme;
-        IUIContext* context;
+        Theme* lightTheme = nullptr, * darkTheme = nullptr;
         SharedPointer<PreviewLayout> previewLayout;
         SharedPointer<Ghurund::UI::RootView> rootView;
         FileWatcher fileWatcher;
         std::function<void()> loadCallback;
 
     public:
-        PreviewWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {}
+        PreviewWindow(Ghurund::Application& app):ApplicationWindow(app) {
+            Style = WindowStyle{
+               .hasMinimizeButton = true,
+               .hasMaximizeButton = true,
+               .hasTitle = true,
+               .borderStyle = WindowBorderStyle::RESIZE,
+               .showOnTaskbar = true
+            };
+        }
 
         ~PreviewWindow() {
             Layers.clear();
-            delete context;
             delete lightTheme;
             delete darkTheme;
         }
 
-        virtual Status init() override {
-            __super::init();
+        virtual void init(WindowManager& windowManager) {
+            __super::init(windowManager);
+
             UIFeature* uiFeature = Application.Features.get<UIFeature>();
 
             lightTheme = ghnew LightTheme(Application.ResourceManager);
             darkTheme = ghnew DarkTheme(Application.ResourceManager);
-            context = ghnew UIContext(*uiFeature->Graphics2D.D2DFactory, *uiFeature->Graphics2D.DWriteFactory, uiFeature->Graphics2D.DeviceContext, *this, Application.ResourceManager);
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
             layoutLoader->Theme = lightTheme;
 
-            rootView = ghnew Ghurund::UI::RootView(*context);
-            Layers.add(std::make_unique<UILayer>(uiFeature->Graphics2D, rootView, this));
+            auto uiLayer = ghnew UILayer(uiFeature->Graphics2D, *this, Application.ResourceManager);
 
             SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
             previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
-            rootView->Child = previewLayout;
+            uiLayer->Root.Child = previewLayout;
             previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
                 return true;
@@ -75,7 +80,7 @@ namespace Preview {
                 return true;
             };
 
-            return Status::OK;
+            Layers.add(std::unique_ptr<UILayer>(uiLayer));
         }
 
         void updateTheme(ThemeType type) {

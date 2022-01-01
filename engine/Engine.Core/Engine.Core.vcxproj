@@ -91,6 +91,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\window\WindowManager.h" />
+    <ClInclude Include="src\core\window\WindowProc.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -214,7 +216,7 @@
     <ClInclude Include="src\core\window\DragDropManager.h" />
     <ClInclude Include="src\core\window\SystemWindow.h" />
     <ClInclude Include="src\core\window\Window.h" />
-    <ClInclude Include="src\core\window\WindowAttributes.h" />
+    <ClInclude Include="src\core\window\WindowStyle.h" />
     <ClInclude Include="src\core\window\WindowClass.h" />
     <ClInclude Include="src\core\window\WindowMessage.h" />
     <ClInclude Include="src\ghcpch.h" />
@@ -246,8 +248,8 @@
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
     <ClCompile Include="src\core\window\SystemWindow.cpp" />
     <ClCompile Include="src\core\window\Window.cpp" />
-    <ClCompile Include="src\core\window\WindowAttributes.cpp" />
     <ClCompile Include="src\core\window\WindowClass.cpp" />
+    <ClCompile Include="src\core\window\WindowProc.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

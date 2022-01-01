@@ -1,7 +1,9 @@
 #pragma once
 
-#include "PropertyHandler.h"
+#include "ObservableHandler.h"
 #include "core/collection/List.h"
+
+#include <functional>
 
 namespace Ghurund::Core {
     template<class Type>
@@ -13,25 +15,44 @@ namespace Ghurund::Core {
     public:
         Observable() {}
 
-        Observable(Type& value):value(value) {}
+        Observable(const Type& value):value(value) {}
 
         inline void add(std::function<void(const Type& args)> lambda) {
             listeners.add(lambda);
+            lambda(value);
+        }
+
+        inline Observable<Type>& operator+=(const std::function<void(const Type& args)>& lambda) {
+            listeners.add(lambda);
+            lambda(value);
+            return *this;
         }
 
         inline void add(const ObservableHandler<Type>& listener) {
             listeners.add(listener);
+            listener(value);
+        }
+
+        inline Observable<Type>& operator+=(const ObservableHandler<Type>& listener) {
+            listeners.add(listener);
+            listener(value);
+            return *this;
         }
 
         inline void remove(const ObservableHandler<Type>& listener) {
             listeners.remove(listener);
         }
 
+        inline Observable<Type>& operator-=(const ObservableHandler<Type>& listener) {
+            listeners.remove(listener);
+            return *this;
+        }
+
         void clear() {
             listeners.clear();
         }
 
-        inline operator Type&() {
+        inline operator const Type&() {
             return value;
         }
 
@@ -39,10 +60,24 @@ namespace Ghurund::Core {
             return value;
         }
 
-        inline Type& operator=(const Type& value) {
-            this->value = value;
-            for (auto& listener : listeners)
-                listener(value);
+        inline const Type& getValue() {
+            return value;
         }
+
+        __declspec(property(get = getValue)) const Type& Value;
+
+        inline Type& operator=(const Type& value) {
+            if (this->value != value) {
+                this->value = value;
+                for (auto& listener : listeners)
+                    listener(value);
+            }
+            return this->value;
+        }
+
+        /*inline Observable<Type>& operator=(const Observable<Type>& other) {
+            //other.add()
+            return *this;
+        }*/
     };
 }

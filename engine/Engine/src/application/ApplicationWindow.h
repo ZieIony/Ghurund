@@ -28,14 +28,17 @@ namespace Ghurund {
     protected:
         virtual bool onSizeChangingEvent(const IntSize& size) override {
             __super::onSizeChangingEvent(size);
-            swapChain->uninitBuffers();
+            if (swapChain)
+                swapChain->uninitBuffers();
             return true;
         }
 
         virtual bool onSizeChangedEvent() override {
             layers.Size = Size;
-            swapChain->resize(Size.width, Size.height);
-            swapChain->initBuffers();
+            if (swapChain) {
+                swapChain->resize(Size.width, Size.height);
+                swapChain->initBuffers();
+            }
             __super::onSizeChangedEvent();
             return true;
         }
@@ -43,18 +46,14 @@ namespace Ghurund {
         virtual bool onFocusedChangedEvent() override;
 
     public:
-        ApplicationWindow(const WindowClass& type, Application& app);
+        ApplicationWindow(Application& app);
 
         ~ApplicationWindow() {
-            uninit();
-        }
-
-        virtual Status init();
-
-        inline void uninit() {
             delete swapChain;
             swapChain = nullptr;
         }
+
+        virtual void init(WindowManager& windowManager) override;
 
         inline SwapChain& getSwapChain() {
             return *swapChain;

@@ -3,17 +3,18 @@
 #include "DragDropManager.h"
 #include "Window.h"
 #include "core/input/Input.h"
+#include "core/window/WindowManager.h"
+#include "WindowProc.h"
 
 namespace Ghurund::Core {
     class WindowClass;
 
-    LRESULT CALLBACK windowProc(HWND handle, UINT msg, WPARAM wParam, LPARAM lParam);
-
     class SystemWindow: public Window {
     private:
-        HWND handle;
+        HWND handle = {};
         Ghurund::Core::Input input;
         Ghurund::Core::Timer& timer;
+        WindowData* windowData = nullptr;
 
         DragDropManager* dragDropManager = nullptr;
 
@@ -26,16 +27,11 @@ namespace Ghurund::Core {
         Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
         Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
 
-        SystemWindow(HWND handle, Ghurund::Core::Timer& timer);
-
-        SystemWindow(const WindowClass& type, Ghurund::Core::Timer& timer);
+        SystemWindow(Ghurund::Core::Timer& timer):timer(timer) {}
 
         ~SystemWindow();
 
-        virtual void setTitle(const WString& title) override {
-            __super::setTitle(title);
-            SetWindowTextW(handle, title.Data);
-        }
+        virtual void init(WindowManager& windowManager);
 
         virtual HWND getHandle() const override {
             return handle;
@@ -54,15 +50,6 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getTimer)) Ghurund::Core::Timer& Timer;
-
-        virtual void setVisible(bool visible) override {
-            __super::setVisible(visible);
-            ShowWindow(handle, visible ? SW_SHOWNOACTIVATE : SW_HIDE);
-        }
-
-        void setPosition(int x, int y);
-
-        void setSize(unsigned int w, unsigned int h);
 
         virtual bool isFocused() const override {
             return handle == GetFocus();
@@ -95,12 +82,5 @@ namespace Ghurund::Core {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
-    };
-
-    struct WindowData {
-        SystemWindow* window;
-        bool mouseTracked = false;
-
-        WindowData(SystemWindow* w):window(w) {}
     };
 }

@@ -24,7 +24,8 @@ namespace Ghurund {
 
     class Application:public Noncopyable {
     private:
-        WindowList windows;
+        SystemWindowManager windowManager;
+        WindowList windows = windowManager;
         Ghurund::FunctionQueue* functionQueue = nullptr;
         bool running = false;
 
@@ -44,9 +45,7 @@ namespace Ghurund {
         void uninit();
 
     protected:
-        virtual Status onInit() {
-            return Status::OK;
-        };
+        virtual void onInit() {};
 
         virtual void onUninit() {};
 

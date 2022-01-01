@@ -1,5 +1,7 @@
 #pragma once
 
+#include <functional>
+
 namespace Ghurund::Core {
     template<class Type>
     class ObservableHandler {
@@ -13,6 +15,7 @@ namespace Ghurund::Core {
         ObservableHandler() {}
 
         ObservableHandler(std::function<void(const Type& args)> lambda, uint32_t id = ID++) {
+            this->id = id;
             this->lambda = lambda;
         }
 
@@ -30,8 +33,8 @@ namespace Ghurund::Core {
             return id == handler.id;
         }
 
-        inline bool operator()(const Type& args) {
-            return lambda(args);
+        inline void operator()(const Type& args) const {
+            lambda(args);
         }
 
         ObservableHandler& operator=(const ObservableHandler& handler) {

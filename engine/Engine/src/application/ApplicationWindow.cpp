@@ -33,11 +33,13 @@ namespace Ghurund {
         return true;
     }
 
-    ApplicationWindow::ApplicationWindow(const WindowClass& type, Ghurund::Application& app):SystemWindow(type, app.Timer), app(app) {}
+    ApplicationWindow::ApplicationWindow(Ghurund::Application& app):SystemWindow(app.Timer), app(app) {}
 
-    Status ApplicationWindow::init() {
+    void ApplicationWindow::init(WindowManager& windowManager) {
+        __super::init(windowManager);
         swapChain = ghnew Ghurund::SwapChain();
-        return swapChain->init(app.Graphics, *this);
+        swapChain->init(app.Graphics, *this);
+        swapChain->initBuffers();
     }
 
     bool ApplicationWindow::onKeyEvent(const KeyEventArgs& args) {

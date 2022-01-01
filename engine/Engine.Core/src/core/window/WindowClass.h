@@ -1,31 +1,21 @@
 #pragma once
 
-#include "core/Enum.h"
-#include "core/Event.h"
-#include "core/NamedObject.h"
 #include "core/Object.h"
 #include "core/string/String.h"
+#include "core/window/WindowStyle.h"
+#include "core/window/WindowProc.h"
 
 namespace Ghurund::Core {
-    class Window;
-
-    enum class WindowClassEnum {
-        WINDOWED, FULLSCREEN, POPUP
-    };
-
-    class WindowClass:public Enum<WindowClassEnum, WindowClass> {
+    class WindowClass {
     private:
         String className;
         WNDCLASSEX windowClass;
-        HINSTANCE hInst;
         DWORD exStyle, dwStyle;
 
+        WindowClass(const WindowClass& other) = delete;
+
     public:
-        static const WindowClass WINDOWED, FULLSCREEN, POPUP;
-
-        static const EnumValues<WindowClassEnum, WindowClass> VALUES;
-
-        WindowClass(WindowClassEnum value, const AString& name, DWORD exStyle, DWORD dwStyle, UINT style);
+        WindowClass(WindowStyle style, WNDPROC windowProc = &windowProc, const tchar* className = nullptr);
 
         ~WindowClass(){
             UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
