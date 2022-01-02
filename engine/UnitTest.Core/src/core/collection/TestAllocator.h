@@ -26,4 +26,12 @@ public:
     inline bool canAllocate(size_t size) const {
         return true;
     }
+
+    inline bool operator==(const TestAllocator& other) const {
+        return this == &other;
+    }
+
+    inline bool operator!=(const TestAllocator& other) const {
+        return this != &other;
+    }
 };

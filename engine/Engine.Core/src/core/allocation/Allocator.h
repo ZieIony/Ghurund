@@ -1,5 +1,7 @@
 #pragma once
 
+#include <exception>
+
 namespace Ghurund::Core {
     template<typename T>
     __interface Allocator {
@@ -12,6 +14,11 @@ namespace Ghurund::Core {
     struct Allocation {
         T size;
         T address;
+    };
+
+    class IncompatibleAllocatorsException:public std::exception {
+    public:
+        IncompatibleAllocatorsException(const char* message = nullptr):std::exception(message) {}
     };
 }
 

@@ -3,43 +3,51 @@
 #include "CollectionWithCapacity.h"
 
 #include <exception>
+#include <map>
 
 namespace Ghurund::Core {
+    template<class Key, class Value>
+    struct KeyValuePair {
+        Key key;
+        Value value;
 
-    template<class Key, class Value> class Map :public CollectionWithCapacity {
+        auto operator<=>(const KeyValuePair& other) const = default;
+    };
+
+    template<class Key, class Value> class Map:public CollectionWithCapacity {
     protected:
-        Key* k;
-        Value* v;
+        typedef KeyValuePair<Key, Value> pair_t;
+
+        pair_t* v;
 
     public:
         Map() {
-            k = (Key*)ghnew char[sizeof(Key) * capacity];
-            v = (Value*)ghnew char[sizeof(Value) * capacity];
+            v = (pair_t*)ghnew uint8_t[sizeof(pair_t) * capacity];
         }
 
         Map(const Map& t1):CollectionWithCapacity(t1) {
-            k = (Key*)ghnew char[sizeof(Key) * capacity];
-            v = (Value*)ghnew char[sizeof(Value) * capacity];
-            for (size_t i = 0; i < size; i++) {
-                new (k + i) Key(t1.k[i]);
-                new (v + i) Value(t1.v[i]);
+            v = (pair_t*)ghnew uint8_t[sizeof(pair_t) * capacity];
+            for (size_t i = 0; i < size; i++)
+                new (v + i) pair_t(t1.v[i]);
+        }
+
+        Map(const std::initializer_list<pair_t>& list):CollectionWithCapacity(list.size()) {
+            v = (pair_t*)ghnew uint8_t[sizeof(pair_t) * capacity];
+            for (auto it = list.begin(); it != list.end(); it++) {
+                new (v + size) pair_t(*it);
+                size++;
             }
         }
 
         Map(Map&& t1) noexcept:CollectionWithCapacity(std::move(t1)) {
-            k = t1.k;
             v = t1.v;
-            t1.k = nullptr;
             t1.v = nullptr;
         }
 
         virtual ~Map() {
-            for (size_t i = 0; i < size; i++) {
-                k[i].~Key();
-                v[i].~Value();
-            }
-            delete[] (char*)k;
-            delete[] (char*)v;
+            for (size_t i = 0; i < size; i++)
+                v[i].~pair_t();
+            delete[](uint8_t*)v;
         }
 
         inline size_t getSize()const {
@@ -49,124 +57,112 @@ namespace Ghurund::Core {
         __declspec(property(get = getSize)) size_t Size;
 
         inline void resize(size_t c) {
-            Key* k1 = (Key*)ghnew char[sizeof(Key) * c];
-            Value* v1 = (Value*)ghnew char[sizeof(Value) * c];
-            _ASSERTE(sizeof(Value) * c != 0);
+            pair_t* v1 = (pair_t*)ghnew uint8_t[sizeof(pair_t) * c];
+            _ASSERTE(sizeof(pair_t) * c != 0);
             capacity = c;
             if (c >= size) {
                 for (size_t i = 0; i < size; i++) {
-                    new (k1 + i) Key(k[i]);
-                    k[i].~Key();
-                    new (v1 + i) Value(v[i]);
-                    v[i].~Value();
+                    new (v1 + i) pair_t(v[i]);
+                    v[i].~pair_t();
                 }
             } else {
                 for (size_t i = 0; i < c; i++) {
-                    new (k1 + i) Key(k[i]);
-                    k[i].~Key();
-                    new (v1 + i) Value(v[i]);
-                    v[i].~Value();
+                    new (v1 + i) pair_t(v[i]);
+                    v[i].~pair_t();
                 }
-                for (size_t i = c; i < size; i++) {
-                    k[i].~Key();
-                    v[i].~Value();
-                }
+                for (size_t i = c; i < size; i++)
+                    v[i].~pair_t();
                 size = c;
             }
-            delete[](char*)k;
-            delete[](char*)v;
-            k = k1;
+            delete[](uint8_t*)v;
             v = v1;
         }
 
         inline void clear() {
-            for (size_t i = 0; i < size; i++) {
-                k[i].~Key();
-                v[i].~Value();
-            }
+            for (size_t i = 0; i < size; i++)
+                v[i].~pair_t();
             __super::clear();
         }
 
         inline void set(const Key& key, const Value& value) {
             for (size_t i = 0; i < size; i++) {
-                if (k[i] == key) {
-                    v[i] = value;
+                if (v[i].key == key) {
+                    v[i].value = value;
                     return;
                 }
             }
             if (size == capacity)
                 resize(size + initial);
-            new(k + size) Key(key);
-            new(v + size) Value(value);
+            new(v + size) pair_t(key, value);
             size++;
         }
 
         inline void setKey(size_t i, Key& key) {
-            if (i >= capacity) {
-                resize(i);
-                new(k + i) Key(key);
-            } else {
-                k[i].~Key();
-                new(k + i) Key(key);
-            }
+            v[i].key = key;
         }
 
         inline void setValue(size_t i, Value& value) {
-            if (i >= capacity) {
-                resize(i);
-                new(v + i) Value(value);
-            } else {
-                v[i].~Value();
-                new(v + i) Value(value);
-            }
+            v[i].value = value;
         }
 
         inline Key& getKey(size_t i) const {
-            return k[i];
+            return v[i].key;
         }
 
-        inline Value& getValue(size_t i) const {
-            return v[i];
+        inline Value& getValue(size_t i) {
+            return v[i].value;
         }
 
-        inline Value& get(const Key& key) const {
+        inline const Value& getValue(size_t i) const {
+            return v[i].value;
+        }
+
+        inline Value& get(const Key& key) {
             for (size_t i = 0; i < size; i++) {
-                if (k[i] == key)
-                    return v[i];
+                if (v[i].key == key)
+                    return v[i].value;
+            }
+            throw std::exception("no value for given key");
+        }
+
+        inline const Value& get(const Key& key) const {
+            for (size_t i = 0; i < size; i++) {
+                if (v[i].key == key)
+                    return v[i].value;
             }
             throw std::exception("no value for given key");
         }
 
         inline void remove(const Key& key) {
             for (size_t i = 0; i < size; i++) {
-                if (k[i] == key) {
-                    k[i] = k[size - 1];
-                    v[i] = v[size - 1];
+                if (v[i].key == key) {
                     size--;
+                    v[i] = std::move(v[size]);
+                    v[size].~pair_t();
                     return;
                 }
             }
         }
 
-        inline Value* begin() {
+        inline pair_t* begin() {
             return v;
         }
 
-        inline Value* begin() const {
+        inline pair_t* begin() const {
             return v;
         }
 
-        inline Value* end() {
+        inline pair_t* end() {
             return v + size;
         }
 
-        inline Value* end() const {
+        inline pair_t* end() const {
             return v + size;
         }
 
         inline size_t indexOfKey(const Key& key) const {
             for (size_t i = 0; i < size; i++) {
-                if (k[i] == key)
+                if (v[i].key == key)
                     return i;
             }
             return size;
@@ -174,7 +170,7 @@ namespace Ghurund::Core {
 
         inline size_t indexOfValue(const Value& value) const {
             for (size_t i = 0; i < size; i++) {
-                if (v[i] == value)
+                if (v[i].value == value)
                     return i;
             }
             return size;
@@ -182,16 +178,20 @@ namespace Ghurund::Core {
 
         inline bool containsKey(const Key& item) const {
             for (size_t i = 0; i < size; i++)
-                if (k[i] == item)
+                if (v[i].key == item)
                     return true;
             return false;
         }
 
         inline bool containsValue(const Value& item) const {
             for (size_t i = 0; i < size; i++)
-                if (v[i] == item)
+                if (v[i].value == item)
                     return true;
             return false;
+        }
+
+        inline Value& operator[](const Key& key) {
+            return get(key);
         }
 
         inline const Value& operator[](const Key& key) const {
@@ -201,25 +201,24 @@ namespace Ghurund::Core {
         Map<Key, Value>& operator=(const Map<Key, Value>& other) {
             if (this == &other)
                 return *this;
+            for (size_t i = 0; i < size; i++)
+                v[i].~pair_t();
+            delete[](uint8_t*)v;
             __super::operator=(other);
-            delete[](char*)k;
-            delete[](char*)v;
-            k = (Key*)ghnew(char*)[sizeof(Key) * other.capacity];
-            v = (Value*)ghnew(char*)[sizeof(Value) * other.capacity];
-            for (size_t i = 0; i < size; i++) {
-                new (k + i) Key(other.k[i]);
-                new (v + i) Value(other.v[i]);
-            }
+            v = (pair_t*)ghnew uint8_t[sizeof(pair_t) * other.capacity];
+            for (size_t i = 0; i < size; i++)
+                new (v + i) pair_t(other.v[i]);
             return *this;
         }
 
-        Map<Key, Value>& operator=(const Map<Key, Value>&& other) {
+        Map<Key, Value>& operator=(Map<Key, Value>&& other) {
             if (this == &other)
                 return *this;
+            for (size_t i = 0; i < size; i++)
+                v[i].~pair_t();
+            delete[](uint8_t*)v;
             __super::operator=(std::move(other));
-            k = other.k;
             v = other.v;
-            other.k = nullptr;
             other.v = nullptr;
             return *this;
         }

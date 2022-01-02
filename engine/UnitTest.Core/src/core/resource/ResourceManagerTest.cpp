@@ -19,8 +19,8 @@ public:
         resourceManager.Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources"));
     }
 
-    TEST_METHOD(ResourceManager_loadFileMissing) {
+    //TEST_METHOD(ResourceManager_loadFileMissing) {
         //Ghurund::Core::SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
-    }
+    //}
     };
 }

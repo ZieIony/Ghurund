@@ -1,8 +1,9 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "TestAllocator.h"
+#include "MemoryGuard.h"
 
 #include "Common.h"
-#include "TestAllocator.h"
 #include "core/collection/Queue.h"
 
 #include <iostream>
@@ -23,14 +24,15 @@ namespace UnitTest {
     public:
 
         TEST_METHOD(Queue_constructor) {
+            MemoryGuard guard;
+            TestAllocator a;
             {
-                TestAllocator a;
                 Queue<uint32_t, TestAllocator&> queue(a);
 
                 Assert::AreEqual(queue.Size, (size_t)0);
                 Assert::AreEqual(queue.Empty, true);
-                Assert::AreEqual(a.Allocations, 0);
             }
+            Assert::AreEqual(a.Allocations, 0);
 
             {
                 Queue<TestClass> queue;
@@ -38,71 +40,81 @@ namespace UnitTest {
                 Assert::AreEqual(queue.Size, (size_t)0);
                 Assert::AreEqual(queue.Empty, true);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_constructorCopy) {
-            Queue<uint32_t, TestAllocator> testQueue = { 1, 2, 3 };
-            Queue<uint32_t, TestAllocator> queue = Queue<uint32_t, TestAllocator>(testQueue);
+            MemoryGuard guard;
+            {
+                Queue<uint32_t, TestAllocator> testQueue = { 1, 2, 3 };
+                Queue<uint32_t, TestAllocator> queue = Queue<uint32_t, TestAllocator>(testQueue);
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+            }
         }
 
         TEST_METHOD(Queue_constructorMove) {
-            Queue<uint32_t> testQueue = { 1, 2, 3 };
-            Queue<uint32_t> queue = std::move(testQueue);
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> testQueue = { 1, 2, 3 };
+                Queue<uint32_t> queue = std::move(testQueue);
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+            }
         }
 
         TEST_METHOD(Queue_constructorInitializer) {
-            Queue<uint32_t> queue = { 1, 2, 3 };
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> queue = { 1, 2, 3 };
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+            }
         }
 
         TEST_METHOD(Queue_referenceAssignment) {
-            Queue<uint32_t> testQueue = { 1, 2, 3 };
-            Queue<uint32_t> queue;
-            queue = testQueue;
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> testQueue = { 1, 2, 3 };
+                Queue<uint32_t> queue;
+                queue = testQueue;
 
-            Assert::AreEqual(queue.Size, testQueue.Size);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, testQueue.Size);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+            }
         }
 
         TEST_METHOD(Queue_moveAssignment) {
-            Queue<uint32_t> testQueue = { 1, 2, 3 };
-            Queue<uint32_t> queue;
-            queue = std::move(testQueue);
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> testQueue = { 1, 2, 3 };
+                Queue<uint32_t> queue;
+                queue = std::move(testQueue);
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+            }
         }
 
         TEST_METHOD(Queue_initializerAssignment) {
+            MemoryGuard guard;
             {
                 Queue<uint32_t> queue;
                 queue = { 1, 2, 3 };
@@ -113,10 +125,10 @@ namespace UnitTest {
                 Assert::AreEqual(queue[1], 2u);
                 Assert::AreEqual(queue[2], 3u);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_add) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 Queue<uint32_t, TestAllocator&> queue(a);
@@ -140,10 +152,10 @@ namespace UnitTest {
                 Assert::AreEqual(queue.back(), 2u);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_addAll_initializer) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 Queue<uint32_t, TestAllocator&> queue(a);
@@ -157,10 +169,10 @@ namespace UnitTest {
                 Assert::AreEqual(a.Allocations, 3);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_addAll_Queue) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 Queue<uint32_t, TestAllocator&> queue(a);
@@ -184,10 +196,10 @@ namespace UnitTest {
                 Assert::AreEqual(a.Allocations, 3);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_get) {
+            MemoryGuard guard;
             {
                 Queue<uint32_t> queue = { 1, 2, 3 };
                 auto val = queue.get(1);
@@ -204,28 +216,29 @@ namespace UnitTest {
                 Queue<uint32_t> queue2 = { 1, 2, 3 };
                 const uint32_t& val2 = queue2.get(1);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_arrayOperator) {
-            Queue<uint32_t> queue = { 1, 2, 3 };
-            uint32_t& val = queue[1];
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> queue = { 1, 2, 3 };
+                uint32_t& val = queue[1];
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::AreEqual(queue[0], 1u);
-            Assert::AreEqual(queue[1], 2u);
-            Assert::AreEqual(queue[2], 3u);
-            Assert::AreEqual(val, 2u);
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::AreEqual(queue[0], 1u);
+                Assert::AreEqual(queue[1], 2u);
+                Assert::AreEqual(queue[2], 3u);
+                Assert::AreEqual(val, 2u);
 
-            // does it compile with const?
-            const Queue<uint32_t> queue2 = { 1, 2, 3 };
-            const uint32_t& val2 = queue2[1];
-
-            _____________________checkMemory();
+                // does it compile with const?
+                const Queue<uint32_t> queue2 = { 1, 2, 3 };
+                const uint32_t& val2 = queue2[1];
+            }
         }
 
         TEST_METHOD(Queue_remove) {
+            MemoryGuard guard;
             {
                 Queue<uint32_t> queue = { 1, 2, 3 };
                 queue.remove();
@@ -242,10 +255,10 @@ namespace UnitTest {
                 Assert::AreEqual(queue.Size, (size_t)0);
                 Assert::AreEqual(queue.Empty, true);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_iterator) {
+            MemoryGuard guard;
             {
                 std::vector<uint32_t> testVector = { 1, 2, 3 };
                 Queue<uint32_t> queue = { 1, 2, 3 };
@@ -269,10 +282,10 @@ namespace UnitTest {
                 for (auto& item : queue)
                     Assert::AreEqual(item, testVector[i++]);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_indexOf) {
+            MemoryGuard guard;
             {
                 Queue<uint32_t> queue = { 1, 2, 3 };
 
@@ -290,10 +303,10 @@ namespace UnitTest {
                 Assert::AreEqual(queue.indexOf(2), (size_t)1);
                 Assert::AreEqual(queue.indexOf(4), (size_t)3);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_contains) {
+            MemoryGuard guard;
             {
                 Queue<uint32_t> queue = { 1, 2, 3 };
 
@@ -311,17 +324,18 @@ namespace UnitTest {
                 Assert::IsTrue(queue.contains(1));
                 Assert::IsFalse(queue.contains(4));
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(Queue_comparison) {
-            Queue<uint32_t> queue = { 1, 2, 3 };
-            Queue<uint32_t> queue2 = { 1, 2, 3 };
+            MemoryGuard guard;
+            {
+                Queue<uint32_t> queue = { 1, 2, 3 };
+                Queue<uint32_t> queue2 = { 1, 2, 3 };
 
-            Assert::AreEqual(queue.Size, (size_t)3);
-            Assert::AreEqual(queue.Empty, false);
-            Assert::IsTrue(queue == queue2);
-            _____________________checkMemory();
+                Assert::AreEqual(queue.Size, (size_t)3);
+                Assert::AreEqual(queue.Empty, false);
+                Assert::IsTrue(queue == queue2);
+            }
         }
     };
 }

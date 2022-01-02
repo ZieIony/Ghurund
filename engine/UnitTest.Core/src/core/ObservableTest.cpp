@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "MemoryGuard.h"
 
 #include "core/Observable.h"
 #include <core/string/String.h>
@@ -14,6 +15,7 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(Observable_set) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -24,10 +26,10 @@ public:
 
             Assert::AreEqual(observable.Value, username);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_observe) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -41,10 +43,10 @@ public:
 
             Assert::AreEqual(called, 2u);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_observeAfterSet) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -58,10 +60,10 @@ public:
 
             Assert::AreEqual(called, 1u);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_observeSameValue) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -79,10 +81,10 @@ public:
 
             Assert::AreEqual(called, 2u);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_observeHandler) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -97,10 +99,10 @@ public:
 
             Assert::AreEqual(called, 2u);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_handlerRemove) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -122,10 +124,10 @@ public:
             Assert::AreEqual(called, 2u);
             Assert::AreEqual(calledFromHandler, 1u);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Observable_clear) {
+        MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
@@ -145,7 +147,6 @@ public:
 
             Assert::AreEqual(called, 2u);
         }
-        _____________________checkMemory();
     }
     };
 }

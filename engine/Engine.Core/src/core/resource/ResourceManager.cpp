@@ -113,11 +113,11 @@ namespace Ghurund::Core {
     }
 
     ResourceManager::ResourceManager() {
-        loadingThread.start();
+        //loadingThread.start();
     }
 
     ResourceManager::~ResourceManager() {
-        loadingThread.finish();
+        //loadingThread.finish();
     }
 
     void ResourceManager::reload() {

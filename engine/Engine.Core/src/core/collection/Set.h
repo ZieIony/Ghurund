@@ -16,54 +16,25 @@ namespace Ghurund::Core {
     public:
         using ArrayCollection<Value, AllocatorType>::ArrayCollection;
 
-        Set(const ArrayCollection<Value, AllocatorType>& t1):ArrayCollection<Value, AllocatorType>(t1) {}
+        Set(const ArrayCollection<Value, AllocatorType>& collection) {
+            addAll(collection);
+        }
 
         Set(const Set& t1):ArrayCollection<Value, AllocatorType>(t1) {}
 
-        Set(Set&& t1) noexcept:ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
+        Set(Set&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
-        Set(const std::initializer_list<Value> list) {
-            Set<Value, AllocatorType> copy(list.size());
-            for (const Value& item : list) {
-                if (!A::contains(item))
-                    copy.add(item);
-            }
-            A::size = A::initial = A::capacity = copy.Size;
-            A::v = (Value*)A::a.allocate(sizeof(Value) * copy.Size);
-            const Value* j = copy.begin();
-            for (size_t i = 0; i < copy.Size; i++, j++)
-                new(A::v + i) Value(*j);
+        Set(const std::initializer_list<Value>& list) {
+            addAll(list);
         }
 
-        Set<Value, AllocatorType>& operator=(const Set<Value, AllocatorType>& other) {
-            if (this == &other)
-                return *this;
-            for (size_t i = 0; i < A::size; i++)
-                A::v[i].~Value();
-            if (A::capacity != other.capacity) {
-                A::a.deallocate(A::v);
-                A::v = (Value*)A::a.allocate(sizeof(Value) * other.capacity);
-            }
-            A::size = other.size;
-            A::initial = other.initial;
-            A::capacity = other.capacity;
-            const Value* j = other.begin();
-            for (size_t i = 0; i < A::size; i++, j++)
-                new (A::v + i) Value(*j);
+        inline Set<Value, AllocatorType>& operator=(const Set<Value, AllocatorType>& other) {
+            __super::operator=(other);
             return *this;
         }
 
-        Set<Value, AllocatorType>& operator=(Set<Value, AllocatorType>&& other) noexcept {
-            if (this == &other)
-                return *this;
-            A::size = other.size;
-            other.size = 0;
-            A::initial = other.initial;
-            other.initial = 0;
-            A::capacity = other.capacity;
-            other.capacity = 0;
-            A::v = other.v;
-            other.v = nullptr;
+        inline Set<Value, AllocatorType>& operator=(Set<Value, AllocatorType>&& other) {
+            __super::operator=(std::move(other));
             return *this;
         }
 
@@ -77,31 +48,13 @@ namespace Ghurund::Core {
         }
 
         inline void addAll(const ArrayCollection<Value>& list) {
-            Set<Value, AllocatorType> copy(list.Size);
-            for (const Value& item : list) {
-                if (!A::contains(item))
-                    copy.add(item);
-            }
-            if (A::capacity < A::size + copy.Size)
-                A::resize(A::size + copy.Size);
-            const Value* j = copy.begin();
-            for (size_t i = 0; i < copy.Size; i++, j++)
-                new(A::v + A::size + i) Value(*j);
-            A::size += copy.Size;
+            for (const Value& item : list)
+                add(item);
         }
 
         inline void addAll(const std::initializer_list<Value>& list) {
-            Set<Value, AllocatorType> copy(list.size());
-            for (const Value& item : list) {
-                if (!A::contains(item))
-                    copy.add(item);
-            }
-            if (A::capacity < A::size + copy.Size)
-                A::resize(A::size + copy.Size);
-            const Value* j = copy.begin();
-            for (size_t i = 0; i < copy.Size; i++, j++)
-                new(A::v + A::size + i) Value(*j);
-            A::size += copy.Size;
+            for (const Value& item : list)
+                add(item);
         }
 
         inline void remove(const Value& item) {

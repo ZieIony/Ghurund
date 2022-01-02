@@ -451,11 +451,29 @@ namespace Ghurund::Core {
 #endif
 
     public:
-        Tree() {}
+        Tree(AllocatorType a = AllocatorType()) {}
+
+        Tree(const Tree& other) {
+            for (const Value& item : other)
+                add(item);
+        }
 
         Tree(const std::initializer_list<Value>& list) {
             for (const Value& item : list)
                 add(item);
+        }
+
+        Tree(Tree&& other) {
+            if (a != other.a)
+                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+            root = other.root;
+            other.root = nullptr;
+            size = other.size;
+            other.size = 0;
+        }
+
+        ~Tree() {
+            clear();
         }
 
         inline size_t getSize() const {
@@ -597,6 +615,28 @@ namespace Ghurund::Core {
             clear(root);
             root = nullptr;
             size = 0;
+        }
+
+        Tree& operator=(const Tree& other) {
+            if (this == &other)
+                return *this;
+            clear();
+            for (const Value& item : other)
+                add(item);
+            return *this;
+        }
+
+        Tree& operator=(Tree&& other) {
+            if (this == &other)
+                return *this;
+            if (a != other.a)
+                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+            clear();
+            root = other.root;
+            other.root = nullptr;
+            size = other.size;
+            other.size = 0;
+            return *this;
         }
 
         inline void deleteItems() {

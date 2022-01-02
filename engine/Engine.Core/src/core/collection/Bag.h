@@ -17,37 +17,15 @@ namespace Ghurund::Core {
 
         Bag(const Bag& t1):ArrayCollection<Value, AllocatorType>(t1) {}
 
-        Bag(Bag&& t1) noexcept:ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
+        Bag(Bag&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
-        Bag<Value, AllocatorType>& operator=(const Bag<Value, AllocatorType>& other) {
-            if (this == &other)
-                return *this;
-            for (size_t i = 0; i < A::size; i++)
-                A::v[i].~Value();
-            if (A::capacity != other.capacity) {
-                A::a.deallocate(A::v);
-                A::v = (Value*)A::a.allocate(sizeof(Value) * other.capacity);
-            }
-            A::size = other.size;
-            A::initial = other.initial;
-            A::capacity = other.capacity;
-            const Value* j = other.begin();
-            for (size_t i = 0; i < A::size; i++, j++)
-                new (A::v + i) Value(*j);
+        inline Bag<Value, AllocatorType>& operator=(const Bag<Value, AllocatorType>& other) {
+            __super::operator=(other);
             return *this;
         }
 
-        Bag<Value, AllocatorType>& operator=(Bag<Value, AllocatorType>&& other) noexcept {
-            if (this == &other)
-                return *this;
-            A::size = other.size;
-            other.size = 0;
-            A::initial = other.initial;
-            other.initial = 0;
-            A::capacity = other.capacity;
-            other.capacity = 0;
-            A::v = other.v;
-            other.v = nullptr;
+        inline Bag<Value, AllocatorType>& operator=(Bag<Value, AllocatorType>&& other) noexcept {
+            __super::operator=(std::move(other));
             return *this;
         }
 

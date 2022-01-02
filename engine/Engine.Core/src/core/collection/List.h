@@ -17,36 +17,15 @@ namespace Ghurund::Core {
 
         List(const List& t1):ArrayCollection<Value, AllocatorType>(t1) {}
 
-        List(List&& t1) noexcept:ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
+        List(List&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
 
         List<Value, AllocatorType>& operator=(const List<Value, AllocatorType>& other) {
-            if (this == &other)
-                return *this;
-            for (size_t i = 0; i < A::size; i++)
-                A::v[i].~Value();
-            if (A::capacity != other.capacity) {
-                A::a.deallocate(A::v);
-                A::v = (Value*)A::a.allocate(sizeof(Value) * other.capacity);
-            }
-            A::size = other.size;
-            A::initial = other.initial;
-            A::capacity = other.capacity;
-            for (size_t i = 0; i < A::size; i++)
-                new (A::v + i) Value(other[i]);
+            __super::operator=(other);
             return *this;
         }
 
         List<Value, AllocatorType>& operator=(List<Value, AllocatorType>&& other) noexcept {
-            if (this == &other)
-                return *this;
-            A::size = other.size;
-            other.size = 0;
-            A::initial = other.initial;
-            other.initial = 0;
-            A::capacity = other.capacity;
-            other.capacity = 0;
-            A::v = other.v;
-            other.v = nullptr;
+            __super::operator=(std::move(other));
             return *this;
         }
 

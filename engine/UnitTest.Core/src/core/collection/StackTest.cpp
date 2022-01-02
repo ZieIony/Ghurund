@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "MemoryGuard.h"
 
 #include "core/collection/List.h"
 #include "core/collection/Stack.h"
@@ -17,151 +18,173 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(Stack_constructor) {
-        Stack<uint32_t> stack;
+        MemoryGuard guard;
+        {
+            Stack<uint32_t> stack;
 
-        Assert::AreEqual(stack.Size, (size_t)0);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, true);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)0);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, true);
+        }
     }
 
     TEST_METHOD(Stack_constructorInitial) {
-        Stack<uint32_t> stack(20);
+        MemoryGuard guard;
+        {
+            Stack<uint32_t> stack(20);
 
-        Assert::AreEqual(stack.Size, (size_t)0);
-        Assert::AreEqual(stack.Capacity, (size_t)20);
-        Assert::AreEqual(stack.Empty, true);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)0);
+            Assert::AreEqual(stack.Capacity, (size_t)20);
+            Assert::AreEqual(stack.Empty, true);
+        }
     }
 
     TEST_METHOD(Stack_constructorCopy) {
-        Stack<uint32_t> testStack = { 1, 2, 3 };
-        Stack<uint32_t> stack = Stack<uint32_t>(testStack);
+        MemoryGuard guard;
+        {
+            Stack<uint32_t> testStack = { 1, 2, 3 };
+            Stack<uint32_t> stack = Stack<uint32_t>(testStack);
 
-        Assert::AreEqual(stack.Size, testStack.Size);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testStack.begin();
-        auto j = stack.begin();
-        for (; i != testStack.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, testStack.Size);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testStack.begin();
+            auto j = stack.begin();
+            for (; i != testStack.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_constructorMove) {
-        std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> testStack = testList;
-        Stack<uint32_t> stack = std::move(testStack);
+        MemoryGuard guard;
+        {
+            std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> testStack = testList;
+            Stack<uint32_t> stack = std::move(testStack);
 
-        Assert::AreEqual(stack.Size, (size_t)3);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)3);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_constructorInitializer) {
-        std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> stack = testList;
+        MemoryGuard guard;
+        {
+            std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> stack = testList;
 
-        Assert::AreEqual(stack.Size, (size_t)3);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)3);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_listReferenceAssignment) {
-        List<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> stack;
-        stack = testList;
+        MemoryGuard guard;
+        {
+            List<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> stack;
+            stack = testList;
 
-        Assert::AreEqual(stack.Size, testList.Size);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, testList.Size);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_referenceAssignment) {
-        Stack<uint32_t> testStack = { 1, 2, 3 };
-        Stack<uint32_t> stack;
-        stack = testStack;
+        MemoryGuard guard;
+        {
+            Stack<uint32_t> testStack = { 1, 2, 3 };
+            Stack<uint32_t> stack;
+            stack = testStack;
 
-        Assert::AreEqual(stack.Size, testStack.Size);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testStack.begin();
-        auto j = stack.begin();
-        for (; i != testStack.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, testStack.Size);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testStack.begin();
+            auto j = stack.begin();
+            for (; i != testStack.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_moveAssignment) {
-        std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> testStack = testList;
-        Stack<uint32_t> stack;
-        stack = std::move(testStack);
+        MemoryGuard guard;
+        {
+            std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> testStack = testList;
+            Stack<uint32_t> stack;
+            stack = std::move(testStack);
 
-        Assert::AreEqual(stack.Size, (size_t)3);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)3);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_initializerAssignment) {
-        std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> stack;
-        stack = testList;
+        MemoryGuard guard;
+        {
+            std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> stack;
+            stack = testList;
 
-        Assert::AreEqual(stack.Size, (size_t)3);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)3);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
 
     TEST_METHOD(Stack_push) {
-        Stack<uint32_t> stack;
-        stack.push(1);
+        MemoryGuard guard;
+        {
+            Stack<uint32_t> stack;
+            stack.push(1);
 
-        Assert::AreEqual(stack.Size, (size_t)1);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        Assert::AreEqual(stack.top(), 1u);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)1);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            Assert::AreEqual(stack.top(), 1u);
+        }
     }
 
     TEST_METHOD(Stack_pushAll_initializer) {
-        std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        Stack<uint32_t> stack;
-        stack.pushAll(testList);
+        MemoryGuard guard;
+        {
+            std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            Stack<uint32_t> stack;
+            stack.pushAll(testList);
 
-        Assert::AreEqual(stack.Size, (size_t)3);
-        Assert::AreEqual(stack.Capacity >= stack.Size, true);
-        Assert::AreEqual(stack.Empty, false);
-        auto i = testList.begin();
-        auto j = stack.begin();
-        for (; i != testList.end(); i++, j++)
-            Assert::AreEqual(*i, *j);
-        _____________________checkMemory();
+            Assert::AreEqual(stack.Size, (size_t)3);
+            Assert::AreEqual(stack.Capacity >= stack.Size, true);
+            Assert::AreEqual(stack.Empty, false);
+            auto i = testList.begin();
+            auto j = stack.begin();
+            for (; i != testList.end(); i++, j++)
+                Assert::AreEqual(*i, *j);
+        }
     }
     /*
     TEST_METHOD(Stack_pushAll_Stack) {

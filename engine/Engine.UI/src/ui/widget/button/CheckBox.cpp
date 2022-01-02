@@ -34,10 +34,10 @@ namespace Ghurund::UI {
         CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout) {
             if (layout->Selectable->Selected) {
-                SharedPointer<ImageDrawable> image = clone(theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]);
+                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]->clone();
                 layout->Image->Image = image;
             } else {
-                SharedPointer<ImageDrawable> image = clone(theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]);
+                SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]->clone();
                 layout->Image->Image = image;
             }
         }

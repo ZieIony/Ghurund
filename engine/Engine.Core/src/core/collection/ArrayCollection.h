@@ -10,19 +10,6 @@ namespace Ghurund::Core {
         Value* v;
         AllocatorType a;
 
-        inline bool operator==(const ArrayCollection<Value, AllocatorType>& other) const {
-            if (__super::operator!=(other))
-                return false;
-            for (size_t i = 0; i < size; i++)
-                if (v[i] != other.v[i])
-                    return false;
-            return true;
-        }
-
-        inline bool operator!=(const ArrayCollection<Value, AllocatorType>& other) const {
-            return !(*this == other);
-        }
-
     public:
         ArrayCollection(AllocatorType a = AllocatorType()):a(a) {
             v = (Value*)a.allocate(sizeof(Value) * capacity);
@@ -38,12 +25,14 @@ namespace Ghurund::Core {
                 new (v + i)Value(t1.v[i]);
         }
 
-        ArrayCollection(ArrayCollection&& t1) noexcept:CollectionWithCapacity(std::move(t1)) {
-            v = t1.v;
-            t1.v = nullptr;
+        ArrayCollection(ArrayCollection&& other):CollectionWithCapacity(std::move(other)) {
+            if (a != other.a)
+                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+            v = other.v;
+            other.v = nullptr;
         }
 
-        ArrayCollection(const std::initializer_list<Value> list) {
+        ArrayCollection(const std::initializer_list<Value>& list) {
             size = initial = capacity = list.size();
             v = (Value*)a.allocate(sizeof(Value) * capacity);
             int i = 0;
@@ -129,6 +118,48 @@ namespace Ghurund::Core {
                 v[i].~Value();
             }
             size = 0;
+        }
+
+        inline bool operator==(const ArrayCollection<Value, AllocatorType>& other) const {
+            if (__super::operator!=(other))
+                return false;
+            for (size_t i = 0; i < size; i++)
+                if (v[i] != other.v[i])
+                    return false;
+            return true;
+        }
+
+        inline bool operator!=(const ArrayCollection<Value, AllocatorType>& other) const {
+            return !(*this == other);
+        }
+
+        inline ArrayCollection<Value, AllocatorType>& operator=(const ArrayCollection<Value, AllocatorType>& other) {
+            if (this == &other)
+                return *this;
+            for (size_t i = 0; i < size; i++)
+                v[i].~Value();
+            if (capacity != other.capacity) {
+                a.deallocate(v);
+                v = (Value*)a.allocate(sizeof(Value) * other.capacity);
+            }
+            __super::operator=(other);
+            for (size_t i = 0; i < size; i++)
+                new (v + i) Value(other.v[i]);
+            return *this;
+        }
+
+        inline ArrayCollection<Value, AllocatorType>& operator=(ArrayCollection<Value, AllocatorType>&& other) {
+            if (this == &other)
+                return *this;
+            if (a != other.a)
+                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+            for (size_t i = 0; i < size; i++)
+                v[i].~Value();
+            a.deallocate(v);
+            __super::operator=(std::move(other));
+            v = other.v;
+            other.v = nullptr;
+            return *this;
         }
     };
 }

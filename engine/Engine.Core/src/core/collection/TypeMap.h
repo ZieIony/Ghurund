@@ -28,7 +28,13 @@ namespace Ghurund::Core {
         }
 
         template<typename T>
-        inline Value& get() const {
+        inline Value& get() {
+            size_t id = CollectionSequence<T>::value();
+            return items.get(id);
+        }
+
+        template<typename T>
+        inline const Value& get() const {
             size_t id = CollectionSequence<T>::value();
             return items.get(id);
         }
@@ -39,19 +45,19 @@ namespace Ghurund::Core {
             items.remove(id);
         }
 
-        inline Value* begin() {
+        inline KeyValuePair<size_t, Value>* begin() {
             return items.begin();
         }
 
-        inline Value* begin() const {
+        inline KeyValuePair<size_t, Value>* begin() const {
             return items.begin();
         }
 
-        inline Value* end() {
+        inline KeyValuePair<size_t, Value>* end() {
             return items.end();
         }
 
-        inline Value* end() const {
+        inline KeyValuePair<size_t, Value>* end() const {
             return items.end();
         }
 

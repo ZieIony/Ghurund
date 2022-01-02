@@ -9,7 +9,6 @@
 #include "core/Exceptions.h"
 #include "core/Noncopyable.h"
 #include "core/Object.h"
-#include "core/collection/PointerMap.h"
 #include "core/collection/HashMap.h"
 #include "core/logging/Logger.h"
 #include "core/logging/Formatter.h"

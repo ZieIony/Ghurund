@@ -34,5 +34,14 @@ namespace Ghurund::Core {
         inline bool canAllocate(size_t size) const {
             return true;
         }
+
+        inline bool operator==(const SimpleAllocator& other) const {
+            return true;
+        }
+
+        inline bool operator!=(const SimpleAllocator& other) const {
+            return false;
+        }
+
     };
 }

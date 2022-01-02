@@ -5,8 +5,7 @@ project "UI.GDI"
 	dependson {
 		"Engine.Core",
 		"Engine.UI",
-		"Engine.UI.GDI",
-		"Engine"
+		"Engine.UI.GDI"
 	}
 
 	files {
@@ -27,8 +26,7 @@ project "UI.GDI"
 		includeDir["CRC"],
 		includeDir["angelscript"],
 		includeDir["PhysX"],
-		includeDir["PhysX.Shared"],
-		includeDir["DirectX"]
+		includeDir["PhysX.Shared"]
 	}
 
 	links {

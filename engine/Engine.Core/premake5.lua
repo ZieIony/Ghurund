@@ -11,4 +11,17 @@ project "Engine.Core"
 
 	defines { "_CRT_SECURE_NO_WARNINGS" }
 
-	includedirs { "src" }
+	includedirs {
+		"src",
+		includeDir["tinyxml2"]
+	}
+
+	filter "configurations:Debug"
+		links {
+			library["tinyxml2_Debug"]
+		}
+
+	filter "configurations:Release"
+		links {
+			library["tinyxml2_Release"]
+		}

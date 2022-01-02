@@ -8,7 +8,7 @@
 
 namespace Ghurund::Core {
     template<Derived<Application> Type>
-    static void main(const Settings& settings = Settings(), std::unique_ptr<LogOutput> logOutput = nullptr) {
+    static void main(const Settings* settings = nullptr, std::unique_ptr<LogOutput> logOutput = nullptr) {
 #ifdef _DEBUG
         _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
         _____________________checkMemory();
@@ -21,7 +21,7 @@ namespace Ghurund::Core {
 
         {
             Type application = {};
-            application.run(&settings);
+            application.run(settings);
         }
 
 #ifdef _DEBUG
@@ -38,7 +38,7 @@ namespace Ghurund::Core {
     template<Derived<Application> Type>
     static void main(
         const String& instanceName,
-        const Settings& settings = Settings(),
+        const Settings* settings = nullptr,
         std::unique_ptr<LogOutput> logOutput = nullptr
     ) {
         HANDLE singleInstanceMutex = CreateMutex(nullptr, true, instanceName.Data);

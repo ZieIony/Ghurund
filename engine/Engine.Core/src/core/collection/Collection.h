@@ -48,5 +48,20 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = isEmpty)) bool Empty;
+
+        Collection& operator=(const Collection& other) {
+            if (this == &other)
+                return *this;
+            size = other.size;
+            return *this;
+        }
+
+        Collection& operator=(Collection&& other) {
+            if (this == &other)
+                return *this;
+            size = other.size;
+            other.size = 0;
+            return *this;
+        }
     };
 }

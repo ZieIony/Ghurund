@@ -30,11 +30,11 @@ namespace Ghurund::Core {
             map.remove(Type::TYPE, feature);
         }
 
-        SharedPointer<Feature>* begin() {
+        KeyValuePair<Type, SharedPointer<Feature>>* begin() {
             return map.begin();
         }
 
-        SharedPointer<Feature>* end() {
+        KeyValuePair<Type, SharedPointer<Feature>>* end() {
             return map.end();
         }
     };

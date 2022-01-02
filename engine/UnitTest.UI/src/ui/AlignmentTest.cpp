@@ -12,7 +12,6 @@ namespace UnitTest {
 
     TEST_CLASS(AlignmentTest) {
 public:
-
     TEST_METHOD(Alignment_parseLeftTop) {
         Alignment alignment = Alignment::parse("left, top");
         Assert::AreEqual(Alignment::Horizontal::LEFT, alignment.horizontal);

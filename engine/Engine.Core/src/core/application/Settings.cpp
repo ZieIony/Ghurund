@@ -1,19 +1,18 @@
 #include "ghcpch.h"
 #include "Settings.h"
 
+#include "core/string/TextConversionUtils.h"
+
 namespace Ghurund::Core {
     void Settings::parse(const String& settings) {
-        Array<String> commands = settings.split(_T(" "));
+        AString aSettings = convertText<tchar, char>(settings);
+        Array<AString> commands = aSettings.split(" ");
         for (size_t i = 0; i < commands.Size; i++) {
-            Array<String> keyVal = commands[i].split(_T("="));
+            Array<AString> keyVal = commands[i].split("=");
             if (keyVal.Size != 2)
-                return;
-            if (keyVal[0] == _T("width"))
-                windowSize.width = _ttoi(keyVal[1].getData());
-            if (keyVal[0] == _T("height"))
-                windowSize.height = _ttoi(keyVal[1].getData());
-            if (keyVal[0] == _T("windowed"))
-                windowed = keyVal[1] == _T("true");
+                continue;
+            if (allowed.containsKey(keyVal[0]))
+                values.set(keyVal[0], keyVal[1]);
         }
     }
 }

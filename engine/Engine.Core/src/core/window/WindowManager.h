@@ -16,7 +16,7 @@ namespace Ghurund::Core {
 
     public:
         ~SystemWindowManager() {
-            for (WindowClass* windowClass : classes)
+            for (auto& [windowStyle, windowClass] : classes)
                 delete windowClass;
         }
 

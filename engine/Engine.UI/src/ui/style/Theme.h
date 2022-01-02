@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/SharedPointer.h"
-#include "core/collection/PointerMap.h"
+#include "core/collection/Map.h"
 
 #include "ui/Color.h"
 #include "ui/drawable/ImageDrawable.h"
@@ -54,9 +54,9 @@ namespace Ghurund::UI {
         //static const inline float state_disabled = 0.08f;
 
         Ghurund::Core::Map<StyleKey, Style*> styles;
-        PointerMap<TextFormatKey, TextFormat*> textFormats;
+        Map<TextFormatKey, SharedPointer<TextFormat>> textFormats;
         Ghurund::Core::Map<ColorKey, Color> colors;
-        PointerMap<ImageKey, ImageDrawable*> images;
+        Map<ImageKey, SharedPointer<ImageDrawable>> images;
         
         // xml reader doesn't support wchar_t
         Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString> layouts;
@@ -134,11 +134,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getStyles)) Ghurund::Core::Map<StyleKey, Style*>& Styles;
 
-        inline PointerMap<TextFormatKey, TextFormat*>& getTextFormats() {
+        inline Map<TextFormatKey, SharedPointer<TextFormat>>& getTextFormats() {
             return textFormats;
         }
 
-        __declspec(property(get = getTextFormats)) PointerMap<TextFormatKey, TextFormat*>& TextFormats;
+        __declspec(property(get = getTextFormats)) Map<TextFormatKey, SharedPointer<TextFormat>>& TextFormats;
 
         inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
             return colors;
@@ -146,11 +146,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color>& Colors;
 
-        inline PointerMap<ImageKey, ImageDrawable*>& getImages() {
+        inline Map<ImageKey, SharedPointer<ImageDrawable>>& getImages() {
             return images;
         }
 
-        __declspec(property(get = getImages)) PointerMap<ImageKey, ImageDrawable*>& Images;
+        __declspec(property(get = getImages)) Map<ImageKey, SharedPointer<ImageDrawable>>& Images;
 
         inline Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() {
             return layouts;

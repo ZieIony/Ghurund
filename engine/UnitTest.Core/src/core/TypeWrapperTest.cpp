@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "MemoryGuard.h"
 
 #include "core/TypeWrapper.h"
 #include <core/string/String.h>
@@ -14,34 +15,34 @@ namespace UnitTest {
     class Password:public TypeWrapper<String> {};
 
     TEST_CLASS(TypeWrapperTest) {
-public:
+    public:
 
-    TEST_METHOD(TypeWrapper_equality) {
-        {
-            Username username = Username(String(_T("test")));
-            Username username2 = Username(String(_T("test2")));
-            Password password = Password(String(_T("test")));
-            Password password2 = Password(String(_T("test")));
+        TEST_METHOD(TypeWrapper_equality) {
+            MemoryGuard guard;
+            {
+                Username username = Username(String(_T("test")));
+                Username username2 = Username(String(_T("test2")));
+                Password password = Password(String(_T("test")));
+                Password password2 = Password(String(_T("test")));
 
-            String& str = username;
-            const String& str2 = username;
+                String& str = username;
+                const String& str2 = username;
 
-            Assert::AreNotEqual(username, username2);
-            Assert::AreEqual(password, password2);
+                Assert::AreNotEqual(username, username2);
+                Assert::AreEqual(password, password2);
+            }
         }
-        _____________________checkMemory();
-    }
 
-    TEST_METHOD(TypeWrapper_conversions) {
-        {
-            Assert::IsFalse(std::is_convertible<WString, Username>::value);
-            Assert::IsFalse(std::is_convertible<WString, Password>::value);
-            Assert::IsFalse(std::is_convertible<Username, Password>::value);
-            Assert::IsFalse(std::is_convertible<Password, Username>::value);
-            Assert::IsFalse(std::is_constructible<TypeWrapper<String>>::value);
+        TEST_METHOD(TypeWrapper_conversions) {
+            MemoryGuard guard;
+            {
+                Assert::IsFalse(std::is_convertible<WString, Username>::value);
+                Assert::IsFalse(std::is_convertible<WString, Password>::value);
+                Assert::IsFalse(std::is_convertible<Username, Password>::value);
+                Assert::IsFalse(std::is_convertible<Password, Username>::value);
+                Assert::IsFalse(std::is_constructible<TypeWrapper<String>>::value);
+            }
         }
-        _____________________checkMemory();
-    }
     };
 }
 

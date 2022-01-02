@@ -36,9 +36,10 @@ namespace Ghurund::Core {
             initial = collection.initial;
         }
 
-        CollectionWithCapacity(CollectionWithCapacity&& collection) noexcept:Collection(std::move(collection)) {
-            capacity = collection.capacity;
-            initial = collection.initial;
+        CollectionWithCapacity(CollectionWithCapacity&& other) noexcept:Collection(std::move(other)) {
+            capacity = other.capacity;
+            initial = other.initial;
+            other.capacity = 0;
         }
 
         inline size_t getCapacity() const {
@@ -46,6 +47,25 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getCapacity)) size_t Capacity;
+
+        CollectionWithCapacity& operator=(const CollectionWithCapacity& other) {
+            if (this == &other)
+                return *this;
+            __super::operator=(other);
+            initial = other.initial;
+            capacity = other.capacity;
+            return *this;
+        }
+
+        CollectionWithCapacity& operator=(CollectionWithCapacity&& other) {
+            if (this == &other)
+                return *this;
+            __super::operator=(std::move(other));
+            initial = other.initial;
+            capacity = other.capacity;
+            other.capacity = 0;
+            return *this;
+        }
     };
 
 }

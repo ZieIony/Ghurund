@@ -33,7 +33,7 @@ namespace Ghurund::Core {
     }
 
     template<>
-    inline AString convertText(const WString& src, unsigned int codePage) {
+    inline AString convertText(const String& src, unsigned int codePage) {
         int size = WideCharToMultiByte(codePage, 0, src.Data, (int)src.Length, nullptr, 0, nullptr, nullptr);
         if (!size)
             return AString();

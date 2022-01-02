@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "MemoryGuard.h"
 
 #include "core/collection/List.h"
 #include "core/collection/Tree.h"
@@ -23,6 +24,7 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(Tree_constructor) {
+        MemoryGuard guard;
         {
             Tree<uint32_t> tree;
 
@@ -30,7 +32,6 @@ public:
             Assert::AreEqual(tree.Empty, true);
             Assert::IsTrue(tree.verify());
         }
-        _____________________checkMemory();
 
         {
             Tree<TestClass> tree;
@@ -39,71 +40,81 @@ public:
             Assert::AreEqual(tree.Empty, true);
             Assert::IsTrue(tree.verify());
         }
-        _____________________checkMemory();
     }
     
     TEST_METHOD(Tree_constructorCopy) {
-        Tree<uint32_t> testTree = { 1, 2, 3 };
-        Tree<uint32_t> tree = Tree<uint32_t>(testTree);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> testTree = { 1, 2, 3 };
+            Tree<uint32_t> tree = Tree<uint32_t>(testTree);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+        }
     }
 
     TEST_METHOD(Tree_constructorMove) {
-        Tree<uint32_t> testTree = { 1, 2, 3 };
-        Tree<uint32_t> tree = std::move(testTree);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> testTree = { 1, 2, 3 };
+            Tree<uint32_t> tree = std::move(testTree);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+        }
     }
 
     TEST_METHOD(Tree_constructorInitializer) {
-        Tree<uint32_t> tree = { 1, 2, 3 };
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree = { 1, 2, 3 };
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+        }
     }
 
     TEST_METHOD(Tree_referenceAssignment) {
-        Tree<uint32_t> testTree = { 1, 2, 3 };
-        Tree<uint32_t> tree;
-        tree = testTree;
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> testTree = { 1, 2, 3 };
+            Tree<uint32_t> tree;
+            tree = testTree;
 
-        Assert::AreEqual(tree.Size, testTree.Size);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, testTree.Size);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+        }
     }
 
     TEST_METHOD(Tree_moveAssignment) {
-        Tree<uint32_t> testTree = { 1, 2, 3 };
-        Tree<uint32_t> tree;
-        tree = std::move(testTree);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> testTree = { 1, 2, 3 };
+            Tree<uint32_t> tree;
+            tree = std::move(testTree);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+        }
     }
 
     TEST_METHOD(Tree_initializerAssignment) {
+        MemoryGuard guard;
         {
             Tree<uint32_t> tree;
             tree = { 1, 2, 3 };
@@ -114,86 +125,92 @@ public:
             Assert::IsTrue(tree.contains(2u));
             Assert::IsTrue(tree.contains(3u));
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Tree_add) {
-        Tree<uint32_t> tree;
-        tree.add(1);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree;
+            tree.add(1);
 
-        Assert::AreEqual(tree.Size, (size_t)1);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.verify());
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)1);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_addAllInitializer) {
-        Tree<uint32_t> tree;
-        tree.addAll({ 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 });
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree;
+            tree.addAll({ 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 });
 
-        Assert::AreEqual(tree.Size, (size_t)10);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(20u));
-        Assert::IsTrue(tree.contains(6u));
-        Assert::IsTrue(tree.verify());
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)10);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(20u));
+            Assert::IsTrue(tree.contains(6u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_addAll_List) {
-        Tree<uint32_t> tree;
-        const List<uint32_t> testList = { 1, 2, 3 };
-        tree.addAll(testList);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree;
+            const List<uint32_t> testList = { 1, 2, 3 };
+            tree.addAll(testList);
 
-        Assert::AreEqual(testList.Size, (size_t)3);
-        Assert::AreEqual(testList.Empty, false);
-        Assert::IsTrue(testList.contains(1u));
-        Assert::IsTrue(testList.contains(2u));
-        Assert::IsTrue(testList.contains(3u));
+            Assert::AreEqual(testList.Size, (size_t)3);
+            Assert::AreEqual(testList.Empty, false);
+            Assert::IsTrue(testList.contains(1u));
+            Assert::IsTrue(testList.contains(2u));
+            Assert::IsTrue(testList.contains(3u));
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        Assert::IsTrue(tree.verify());
-
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_addAll_initializer) {
-        Tree<uint32_t> tree;
-        const std::initializer_list<uint32_t> testList = { 1, 2, 3 };
-        tree.addAll(testList);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree;
+            const std::initializer_list<uint32_t> testList = { 1, 2, 3 };
+            tree.addAll(testList);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        Assert::IsTrue(tree.verify());
-
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_addAll_initializerWithDuplicates) {
-        Tree<uint32_t> tree;
-        const std::initializer_list<uint32_t> testList = { 1, 2, 3, 3 };
-        tree.addAll(testList);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree;
+            const std::initializer_list<uint32_t> testList = { 1, 2, 3, 3 };
+            tree.addAll(testList);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        Assert::IsTrue(tree.verify());
-
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_remove) {
-
+        MemoryGuard guard;
         {
             Tree<uint32_t> tree = { 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 };
             tree.remove(2);
@@ -271,24 +288,26 @@ public:
             Assert::IsFalse(tree.contains(1u));
             Assert::IsTrue(tree.verify());
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Tree_removeNonexisting) {
-        Tree<uint32_t> tree = { 1, 2, 3 };
-        tree.remove(4);
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree = { 1, 2, 3 };
+            tree.remove(4);
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree.contains(1u));
-        Assert::IsTrue(tree.contains(2u));
-        Assert::IsTrue(tree.contains(3u));
-        Assert::IsFalse(tree.contains(4u));
-        Assert::IsTrue(tree.verify());
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree.contains(1u));
+            Assert::IsTrue(tree.contains(2u));
+            Assert::IsTrue(tree.contains(3u));
+            Assert::IsFalse(tree.contains(4u));
+            Assert::IsTrue(tree.verify());
+        }
     }
 
     TEST_METHOD(Tree_iterator) {
+        MemoryGuard guard;
         {
             std::vector<uint32_t> testVector = { 1, 2, 3 };
             Tree<uint32_t> tree = { 1, 2, 3 };
@@ -312,10 +331,10 @@ public:
             for (auto& item : tree)
                 Assert::AreEqual(item, testVector[i++]);
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Tree_contains) {
+        MemoryGuard guard;
         {
             Tree<uint32_t> tree = { 1, 2, 3 };
 
@@ -333,17 +352,18 @@ public:
             Assert::IsTrue(tree.contains(1));
             Assert::IsFalse(tree.contains(4));
         }
-        _____________________checkMemory();
     }
 
     TEST_METHOD(Tree_comparison) {
-        Tree<uint32_t> tree = { 1, 2, 3 };
-        Tree<uint32_t> tree2 = { 1, 2, 3 };
+        MemoryGuard guard;
+        {
+            Tree<uint32_t> tree = { 1, 2, 3 };
+            Tree<uint32_t> tree2 = { 1, 2, 3 };
 
-        Assert::AreEqual(tree.Size, (size_t)3);
-        Assert::AreEqual(tree.Empty, false);
-        Assert::IsTrue(tree == tree2);
-        _____________________checkMemory();
+            Assert::AreEqual(tree.Size, (size_t)3);
+            Assert::AreEqual(tree.Empty, false);
+            Assert::IsTrue(tree == tree2);
+        }
     }
     };
 }

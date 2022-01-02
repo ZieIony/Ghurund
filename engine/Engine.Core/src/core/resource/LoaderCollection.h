@@ -14,7 +14,7 @@ namespace Ghurund::Core {
     public:
         ~LoaderCollection() {
             for (auto i = loaders.begin(); i != loaders.end(); i++)
-                delete* i;
+                delete i->value;
             loaders.clear();
         }
 

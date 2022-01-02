@@ -16,7 +16,7 @@ namespace Ghurund::Core {
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
-        for (Feature* f : features)
+        for (auto& [id, f] : features)
             f->init();
     }
 
@@ -24,7 +24,7 @@ namespace Ghurund::Core {
         windows.clear();
         resourceManager.clear();
 
-        for (Feature* f : features)
+        for (auto& [id, f] : features)
             f->uninit();
 
         OleUninitialize();

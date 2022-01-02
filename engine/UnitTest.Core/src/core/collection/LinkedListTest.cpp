@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "TestAllocator.h"
+#include "MemoryGuard.h"
 
 #include "core/collection/LinkedList.h"
 #include "core/collection/Stack.h"
 #include "core/Concepts.h"
-#include "TestAllocator.h"
 
 #include <iostream>
 #include <vector>
@@ -24,6 +25,7 @@ namespace UnitTest {
     public:
 
         TEST_METHOD(LinkedList_constructor) {
+            MemoryGuard guard;
             {
                 TestAllocator a;
                 LinkedList<uint32_t, TestAllocator&> list(a);
@@ -39,71 +41,81 @@ namespace UnitTest {
                 Assert::AreEqual(list.Size, (size_t)0);
                 Assert::AreEqual(list.Empty, true);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_constructorCopy) {
-            LinkedList<uint32_t, TestAllocator> testLinkedList = { 1, 2, 3 };
-            LinkedList<uint32_t, TestAllocator> list = LinkedList<uint32_t, TestAllocator>(testLinkedList);
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t, TestAllocator> testLinkedList = { 1, 2, 3 };
+                LinkedList<uint32_t, TestAllocator> list = LinkedList<uint32_t, TestAllocator>(testLinkedList);
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_constructorMove) {
-            LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
-            LinkedList<uint32_t> list = std::move(testLinkedList);
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
+                LinkedList<uint32_t> list = std::move(testLinkedList);
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_constructorInitializer) {
-            LinkedList<uint32_t> list = { 1, 2, 3 };
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_referenceAssignment) {
-            LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
-            LinkedList<uint32_t> list;
-            list = testLinkedList;
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
+                LinkedList<uint32_t> list;
+                list = testLinkedList;
 
-            Assert::AreEqual(list.Size, testLinkedList.Size);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, testLinkedList.Size);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_moveAssignment) {
-            LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
-            LinkedList<uint32_t> list;
-            list = std::move(testLinkedList);
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> testLinkedList = { 1, 2, 3 };
+                LinkedList<uint32_t> list;
+                list = std::move(testLinkedList);
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_initializerAssignment) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list;
                 list = { 1, 2, 3 };
@@ -114,10 +126,10 @@ namespace UnitTest {
                 Assert::AreEqual(list[1], 2u);
                 Assert::AreEqual(list[2], 3u);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_add) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 LinkedList<uint32_t, TestAllocator&> list(a);
@@ -129,10 +141,10 @@ namespace UnitTest {
                 Assert::AreEqual(a.Allocations, 1);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_addAll_initializer) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 LinkedList<uint32_t, TestAllocator&> list(a);
@@ -146,10 +158,10 @@ namespace UnitTest {
                 Assert::AreEqual(a.Allocations, 3);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_addAll_LinkedList) {
+            MemoryGuard guard;
             TestAllocator a;
             {
                 LinkedList<uint32_t, TestAllocator&> list(a);
@@ -173,35 +185,39 @@ namespace UnitTest {
                 Assert::AreEqual(a.Allocations, 3);
             }
             Assert::AreEqual(a.Allocations, 0);
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_insert) {
-            LinkedList<uint32_t> list = { 1, 2, 3 };
-            list.insert(1, 4);
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
+                list.insert(1, 4);
 
-            Assert::AreEqual(list.Size, (size_t)4);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 4u);
-            Assert::AreEqual(list[2], 2u);
-            Assert::AreEqual(list[3], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)4);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 4u);
+                Assert::AreEqual(list[2], 2u);
+                Assert::AreEqual(list[3], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_set) {
-            LinkedList<uint32_t> list = { 1, 2, 3 };
-            list.set(1, 4);
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
+                list.set(1, 4);
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 4u);
-            Assert::AreEqual(list[2], 3u);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 4u);
+                Assert::AreEqual(list[2], 3u);
+            }
         }
 
         TEST_METHOD(LinkedList_get) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list = { 1, 2, 3 };
                 auto val = list.get(1);
@@ -218,28 +234,29 @@ namespace UnitTest {
                 LinkedList<uint32_t> list2 = { 1, 2, 3 };
                 const uint32_t& val2 = list2.get(1);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_arrayOperator) {
-            LinkedList<uint32_t> list = { 1, 2, 3 };
-            uint32_t& val = list[1];
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
+                uint32_t& val = list[1];
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::AreEqual(list[0], 1u);
-            Assert::AreEqual(list[1], 2u);
-            Assert::AreEqual(list[2], 3u);
-            Assert::AreEqual(val, 2u);
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list[0], 1u);
+                Assert::AreEqual(list[1], 2u);
+                Assert::AreEqual(list[2], 3u);
+                Assert::AreEqual(val, 2u);
 
-            // does it compile with const?
-            const LinkedList<uint32_t> list2 = { 1, 2, 3 };
-            const uint32_t& val2 = list2[1];
-
-            _____________________checkMemory();
+                // does it compile with const?
+                const LinkedList<uint32_t> list2 = { 1, 2, 3 };
+                const uint32_t& val2 = list2[1];
+            }
         }
 
         TEST_METHOD(LinkedList_remove) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list = { 1, 2, 3 };
                 list.remove(2);
@@ -256,10 +273,10 @@ namespace UnitTest {
                 Assert::AreEqual(list.Size, (size_t)0);
                 Assert::AreEqual(list.Empty, true);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_removeAt) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list = { 1, 2, 3 };
                 list.removeAt(2);
@@ -276,23 +293,25 @@ namespace UnitTest {
                 Assert::AreEqual(list.Size, (size_t)0);
                 Assert::AreEqual(list.Empty, true);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_removeAll_initializer) {
-            LinkedList<uint32_t> list = { 1, 2, 3,4,5,6,7,8 };
-            list.removeAll({ 2,4,1 });
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3,4,5,6,7,8 };
+                list.removeAll({ 2,4,1 });
 
-            Assert::AreEqual(list.Size, (size_t)5);
-            Assert::AreEqual(list.Empty, false);
+                Assert::AreEqual(list.Size, (size_t)5);
+                Assert::AreEqual(list.Empty, false);
 
-            LinkedList<uint32_t> testLinkedList = { 3,5,6,7,8 };
-            size_t i = 0;
-            //for (auto& item : list)
-            //    Assert::AreEqual(item, testLinkedList[i++]);
-            _____________________checkMemory();
+                LinkedList<uint32_t> testLinkedList = { 3,5,6,7,8 };
+                size_t i = 0;
+                //for (auto& item : list)
+                //    Assert::AreEqual(item, testLinkedList[i++]);
+            }
         }
         TEST_METHOD(LinkedList_iterator) {
+            MemoryGuard guard;
             {
                 std::vector<uint32_t> testVector = { 1, 2, 3 };
                 LinkedList<uint32_t> list = { 1, 2, 3 };
@@ -316,10 +335,10 @@ namespace UnitTest {
                 for (auto& item : list)
                     Assert::AreEqual(item, testVector[i++]);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_indexOf) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list = { 1, 2, 3 };
 
@@ -337,10 +356,10 @@ namespace UnitTest {
                 Assert::AreEqual(list.indexOf(2), (size_t)1);
                 Assert::AreEqual(list.indexOf(4), (size_t)3);
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_contains) {
+            MemoryGuard guard;
             {
                 LinkedList<uint32_t> list = { 1, 2, 3 };
 
@@ -358,17 +377,18 @@ namespace UnitTest {
                 Assert::IsTrue(list.contains(1));
                 Assert::IsFalse(list.contains(4));
             }
-            _____________________checkMemory();
         }
 
         TEST_METHOD(LinkedList_comparison) {
-            LinkedList<uint32_t> list = { 1, 2, 3 };
-            LinkedList<uint32_t> list2 = { 1, 2, 3 };
+            MemoryGuard guard;
+            {
+                LinkedList<uint32_t> list = { 1, 2, 3 };
+                LinkedList<uint32_t> list2 = { 1, 2, 3 };
 
-            Assert::AreEqual(list.Size, (size_t)3);
-            Assert::AreEqual(list.Empty, false);
-            Assert::IsTrue(list == list2);
-            _____________________checkMemory();
+                Assert::AreEqual(list.Size, (size_t)3);
+                Assert::AreEqual(list.Empty, false);
+                Assert::IsTrue(list == list2);
+            }
         }
     };
 }

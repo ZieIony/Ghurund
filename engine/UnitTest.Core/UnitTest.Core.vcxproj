@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\MemoryGuard.h" />
     <ClInclude Include="src\TestUtils.h" />
     <ClInclude Include="src\core\collection\TestAllocator.h" />
     <ClInclude Include="src\core\reflection\TestClass.h" />
@@ -105,6 +106,7 @@
     <ClCompile Include="src\core\collection\BagTest.cpp" />
     <ClCompile Include="src\core\collection\LinkedListTest.cpp" />
     <ClCompile Include="src\core\collection\ListTest.cpp" />
+    <ClCompile Include="src\core\collection\MapTest.cpp" />
     <ClCompile Include="src\core\collection\QueueTest.cpp" />
     <ClCompile Include="src\core\collection\RangeTest.cpp" />
     <ClCompile Include="src\core\collection\SetTest.cpp" />

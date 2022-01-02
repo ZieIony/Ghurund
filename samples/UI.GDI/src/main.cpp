@@ -12,7 +12,7 @@ namespace Samples {
 
             auto window = ghnew GdiWindow(this->Timer);
             window->title = _T("Preview");
-            window->Size = Settings.windowSize;
+            window->Size = { Settings.get<uint32_t>("width"), Settings.get<uint32_t>("height") };
             Windows.add(window);
             window->visible = true;
             window->bringToFront();
@@ -23,6 +23,6 @@ namespace Samples {
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
     Ghurund::Core::Settings settings;
     settings.parse(GetCommandLine());
-    Ghurund::Core::main<Samples::SampleApplication>(settings);
+    Ghurund::Core::main<Samples::SampleApplication>(&settings);
     return 0;
 }

@@ -17,7 +17,8 @@ project "UnitTest.UI"
 	includedirs {
 		"src",
 		includeDir["Engine.Core"],
-		includeDir["Engine.UI"]
+		includeDir["Engine.UI"],
+		includeDir["tinyxml2"]
 	}
 
 	links {
