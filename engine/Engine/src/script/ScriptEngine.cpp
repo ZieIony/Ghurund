@@ -35,7 +35,7 @@ namespace Ghurund {
         Logger::log(LogType::INFO, _T("%hs\n"), convertText<char, tchar>(AString(str.c_str())));
     }
 
-    void ScriptEngine::init() {
+    void ScriptEngine::onInit() {
         engine = asCreateScriptEngine();
         engine->SetMessageCallback(asFUNCTION(messageCallback), 0, asCALL_CDECL);
 

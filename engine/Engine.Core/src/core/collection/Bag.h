@@ -39,9 +39,9 @@ namespace Ghurund::Core {
         inline void addAll(const ArrayCollection<Value>& list) {
             if (A::capacity < A::size + list.Size)
                 A::resize(A::size + list.Size);
-            const Value* j = list.begin();
-            for (size_t i = 0; i < list.Size; i++, j++)
-                new(A::v + A::size + i) Value(*j);
+            auto it = list.begin();
+            for (size_t i = 0; i < list.Size; i++, it++)
+                new(A::v + A::size + i) Value(*it);
             A::size += list.Size;
         }
 

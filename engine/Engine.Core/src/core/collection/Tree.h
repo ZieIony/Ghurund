@@ -3,6 +3,8 @@
 #include "Common.h"
 #include "Collection.h"
 #include "core/allocation/SimpleAllocator.h"
+#include "core/collection/iterator/TreeNodeIterator.h"
+#include "core/collection/iterator/ReverseTreeNodeIterator.h"
 
 namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
@@ -23,30 +25,9 @@ namespace Ghurund::Core {
             Node(const Value& data):data(data) {}
 
             inline bool isOnLeft() { return this == parent->left; }
-        };
 
-        template<typename Value>
-        class Iterator {
-        private:
-            Node<Value>* node;
-
-        public:
-            Iterator(Node<Value>* node):node(node) {}
-
-            inline bool operator==(const Iterator<Value>& other) const {
-                return node == other.node;
-            }
-
-            inline bool operator!=(const Iterator<Value>& other) const {
-                return !this->operator==(other);
-            }
-
-            inline Iterator& operator=(Node<Value>* node) {
-                this->node = node;
-                return *this;
-            }
-
-            inline Iterator& operator++() {
+            inline Node* getNext() {
+                Node* node = this;
                 if (node->right) {
                     node = node->right;
                     while (node->left)
@@ -56,14 +37,11 @@ namespace Ghurund::Core {
                         node = node->parent;
                     node = node->parent;
                 }
-                return *this;
+                return node;
             }
 
-            inline Iterator operator++(int) {
-                return ++Iterator(node);
-            }
-
-            inline Iterator& operator--() {
+            inline Node* getPrevious() {
+                Node* node = this;
                 if (node->left) {
                     node = node->left;
                     while (node->right)
@@ -73,76 +51,9 @@ namespace Ghurund::Core {
                         node = node->parent;
                     node = node->parent;
                 }
-                return *this;
+                return node;
             }
 
-            inline Iterator operator--(int) {
-                return --Iterator(node);
-            }
-
-            inline Value& operator*() {
-                return node->data;
-            }
-        };
-
-        template<typename Value>
-        class ConstIterator {
-        private:
-            Node<Value>* node;
-
-        public:
-            ConstIterator(Node<Value>* node):node(node) {}
-
-            inline bool operator==(const ConstIterator<Value>& other) const {
-                return node == other.node;
-            }
-
-            inline bool operator!=(const ConstIterator<Value>& other) const {
-                return !this->operator==(other);
-            }
-
-            inline ConstIterator& operator=(Node<Value>* node) {
-                this->node = node;
-                return *this;
-            }
-
-            inline ConstIterator& operator++() {
-                if (node->right) {
-                    node = node->right;
-                    while (node->left)
-                        node = node->left;
-                } else {
-                    while (node->parent && node->parent->right == node)
-                        node = node->parent;
-                    node = node->parent;
-                }
-                return *this;
-            }
-
-            inline ConstIterator operator++(int) {
-                return ++ConstIterator(node);
-            }
-
-            inline ConstIterator& operator--() {
-                if (node->left) {
-                    node = node->left;
-                    while (node->right)
-                        node = node->right;
-                } else {
-                    while (node->parent && node->parent->left == node)
-                        node = node->parent;
-                    node = node->parent;
-                }
-                return *this;
-            }
-
-            inline ConstIterator operator--(int) {
-                return --ConstIterator(node);
-            }
-
-            inline const Value& operator*() {
-                return node->data;
-            }
         };
 
         Node<Value>* root = nullptr;
@@ -451,6 +362,11 @@ namespace Ghurund::Core {
 #endif
 
     public:
+        using iterator_t = TreeNodeIterator<Value, Node<Value>>;
+        using constIterator_t = ConstTreeNodeIterator<Value, Node<Value>>;
+        using reverseIterator_t = ReverseTreeNodeIterator<Value, Node<Value>>;
+        using constReverseIterator_t = ConstReverseTreeNodeIterator<Value, Node<Value>>;
+
         Tree(AllocatorType a = AllocatorType()) {}
 
         Tree(const Tree& other) {
@@ -527,56 +443,56 @@ namespace Ghurund::Core {
                 remove(item);
         }
 
-        inline Iterator<Value> begin() {
+        inline iterator_t begin() {
             Node<Value>* node = root;
             if (node) {
                 while (node->left)
                     node = node->left;
             }
-            return Iterator<Value>(node);
+            return iterator_t(node);
         }
 
-        inline ConstIterator<Value> begin() const {
+        inline constIterator_t begin() const {
             Node<Value>* node = root;
             if (node) {
                 while (node->left)
                     node = node->left;
             }
-            return ConstIterator<Value>(node);
+            return constIterator_t(node);
         }
 
-        inline Iterator<Value> end() {
-            return Iterator<Value>(nullptr);
+        inline iterator_t end() {
+            return iterator_t();
         }
 
-        inline ConstIterator<Value> end() const {
-            return ConstIterator<Value>(nullptr);
+        inline constIterator_t end() const {
+            return constIterator_t();
         }
 
-        inline Iterator<Value> rbegin() {
+        inline reverseIterator_t rbegin() {
             Node<Value>* node = root;
             if (node) {
                 while (node->right)
                     node = node->right;
             }
-            return Iterator<Value>(node);
+            return reverseIterator_t(node);
         }
 
-        inline ConstIterator<Value> rbegin() const {
+        inline constReverseIterator_t rbegin() const {
             Node<Value>* node = root;
             if (node) {
                 while (node->right)
                     node = node->right;
             }
-            return ConstIterator<Value>(node);
+            return constReverseIterator_t(node);
         }
 
-        inline Iterator<Value> rend() {
-            return Iterator<Value>(nullptr);
+        inline reverseIterator_t rend() {
+            return reverseIterator_t();
         }
 
-        inline ConstIterator<Value> rend() const {
-            return ConstIterator<Value>(nullptr);
+        inline constReverseIterator_t rend() const {
+            return constReverseIterator_t();
         }
 
         inline bool operator==(const Tree<Value, AllocatorType>& other) const {
@@ -584,7 +500,7 @@ namespace Ghurund::Core {
                 return true;
             if (size != other.size)
                 return false;
-            for (ConstIterator<Value> iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
+            for (constIterator_t iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
                 if (*iter != *iter2)
                     return false;
             }

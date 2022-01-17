@@ -57,7 +57,7 @@ namespace Ghurund::Core::DirectX {
             throw DirectX12NotSupportedException();
     }
 
-    void Graphics::init() {
+    void Graphics::onInit() {
         UINT dxgiFactoryFlags = 0;
 #if defined(_DEBUG)
         ComPtr<ID3D12Debug> debugController;
@@ -74,6 +74,7 @@ namespace Ghurund::Core::DirectX {
         }
 
         initAdapters();
+        initDevice(*adapters[0]);
     }
 
     void Graphics::initDevice(GraphicsAdapter& adapter) {
@@ -121,19 +122,28 @@ namespace Ghurund::Core::DirectX {
     }
 
     void Graphics::uninitDevice() {
-        directQueue->Release();
-        directQueue = nullptr;
-        computeQueue->Release();
-        computeQueue = nullptr;
-        copyQueue->Release();
-        copyQueue = nullptr;
+        if (directQueue) {
+            directQueue->Release();
+            directQueue = nullptr;
+        }
+        if (computeQueue) {
+            computeQueue->Release();
+            computeQueue = nullptr;
+        }
+        if (copyQueue) {
+            copyQueue->Release();
+            copyQueue = nullptr;
+        }
         delete resourceFactory;
         resourceFactory = nullptr;
-        device->Release();
-        device = nullptr;
+        if (device) {
+            device->Release();
+            device = nullptr;
+        }
     }
 
-    void Graphics::uninit() {
+    void Graphics::onUninit() {
+        uninitDevice();
         adapters.deleteItems();
         factory->Release();
         factory = nullptr;

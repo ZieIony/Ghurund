@@ -16,16 +16,14 @@ namespace Ghurund::Core {
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
-        for (auto& [id, f] : features)
-            f->init();
+        features.init();
     }
 
     void Application::uninit() {
         windows.clear();
         resourceManager.clear();
 
-        for (auto& [id, f] : features)
-            f->uninit();
+        features.uninit();
 
         OleUninitialize();
         CoUninitialize();

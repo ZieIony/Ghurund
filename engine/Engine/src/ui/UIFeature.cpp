@@ -19,10 +19,10 @@ namespace Ghurund {
         return TYPE;
     }
 
-    void UIFeature::init() {
+    void UIFeature::onInit() {
         graphics2d = ghnew Ghurund::UI::Direct2D::Graphics2D();
-        Ghurund::Core::DirectX::Graphics* graphics = app.Features.get<Ghurund::Core::DirectX::Graphics>();
-        graphics2d->init(*graphics->Device, *graphics->DirectQueue);
+        Ghurund::Core::DirectX::Graphics& graphics = app.Features.get<Ghurund::Core::DirectX::Graphics>();
+        graphics2d->init(*graphics.Device, *graphics.DirectQueue);
         shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(*graphics2d->D2DFactory);
         imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(app.ResourceManager);
         textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
@@ -42,7 +42,7 @@ namespace Ghurund {
         app.ResourceManager.Loaders.set<Layout>(std::unique_ptr<LayoutLoader>(layoutLoader));
     }
     
-    void UIFeature::uninit() {
+    void UIFeature::onUninit() {
         app.ResourceManager.Loaders.remove<Layout>();
         app.ResourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
         app.ResourceManager.Loaders.remove<Image>();

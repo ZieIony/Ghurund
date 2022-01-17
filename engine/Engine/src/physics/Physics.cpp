@@ -18,7 +18,7 @@ namespace Ghurund::Physics {
         return TYPE;
     }
 
-    void Physics::init() {
+    void Physics::onInit() {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, defaultAllocatorCallback, defaultErrorCallback);
         if (!foundation) {
             Logger::log(LogType::ERR0R, _T("PxCreateFoundation failed\n"));

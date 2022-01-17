@@ -69,19 +69,19 @@ namespace Ghurund::Core {
             windows.clear();
         }
 
-        inline SystemWindow** begin() {
+        inline ArrayIterator<SystemWindow*> begin() {
             return windows.begin();
         }
 
-        inline SystemWindow** begin() const {
+        inline ConstArrayIterator<SystemWindow*> begin() const {
             return windows.begin();
         }
 
-        inline SystemWindow** end() {
+        inline ArrayIterator<SystemWindow*> end() {
             return windows.end();
         }
 
-        inline SystemWindow** end() const {
+        inline ConstArrayIterator<SystemWindow*> end() const {
             return windows.end();
         }
 

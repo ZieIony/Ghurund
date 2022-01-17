@@ -40,9 +40,9 @@ namespace Ghurund {
     public:
         UIFeature(Application& app):app(app) {}
 
-        virtual void init() override;
+        virtual void onInit() override;
 
-        virtual void uninit() override;
+        virtual void onUninit() override;
 
         inline Ghurund::UI::Direct2D::Graphics2D& getGraphics2D() {
             return *graphics2d;

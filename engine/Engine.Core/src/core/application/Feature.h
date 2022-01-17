@@ -8,6 +8,9 @@ namespace Ghurund::Core {
     using namespace Ghurund::Core;
 
     class Feature:public Pointer {
+    private:
+        bool initialized = false;
+
 #pragma region reflection
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -17,12 +20,37 @@ namespace Ghurund::Core {
         virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
 #pragma endregion
 
+    protected:
+        virtual void onInit() {}
+        virtual void onUninit() {}
+
     public:
         virtual ~Feature() {
             uninit();
         }
 
-        virtual void init() = 0;
-        virtual void uninit() {}
+        void init() {
+            if (initialized)
+                return;
+            try {
+                onInit();
+                initialized = true;
+            } catch (std::exception& e) {
+                throw e;
+            }
+        }
+
+        void uninit() {
+            if (!initialized)
+                return;
+            onUninit();
+            initialized = false;
+        }
+
+        inline bool isInitialized() const {
+            return initialized;
+        }
+
+        __declspec(property(get = isInitialized)) bool Initialized;
     };
 }

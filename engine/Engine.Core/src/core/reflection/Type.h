@@ -59,8 +59,8 @@ namespace Ghurund::Core {
             getTypes().add(*this);
         }
 
-        static Type* fromName(const char* _namespace, const char* name) {
-            for (Type& type : TYPES) {
+        static const Type* fromName(const char* _namespace, const char* name) {
+            for (const Type& type : TYPES) {
                 if (type.Namespace == _namespace && type.Name == name)
                     return &type;
             }

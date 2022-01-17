@@ -48,9 +48,9 @@ namespace Ghurund::Physics {
         PxPvdTransport* transport = nullptr;
 
     public:
-        virtual void init() override;
+        virtual void onInit() override;
 
-        virtual void uninit() override {
+        virtual void onUninit() override {
             if (physics)
                 physics->release();
             if (transport)

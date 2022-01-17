@@ -23,12 +23,12 @@ namespace Ghurund {
             layers.add(layer.release());
         }
 
-        inline void remove(Layer* layer) {
-            if (focusedLayer == layer) {
+        inline void remove(Layer& layer) {
+            if (focusedLayer == &layer) {
                 focusedLayer->Focused = false;
                 focusedLayer = nullptr;
             }
-            layers.remove(layer);
+            layers.remove(&layer);
         }
 
         inline void clear() {

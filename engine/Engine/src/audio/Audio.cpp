@@ -26,7 +26,7 @@ namespace Ghurund::Audio {
         return TYPE;
     }
 
-    void Audio::init() {
+    void Audio::onInit() {
         if (FAILED(MFStartup(MF_VERSION))) {
             Logger::log(LogType::ERR0R, _T("Failed start the Windows Media Foundation\n"));
             throw CallFailedException();
@@ -72,7 +72,7 @@ namespace Ghurund::Audio {
         X3DAudioInitialize(dwChannelMask, X3DAUDIO_SPEED_OF_SOUND, x3DInstance);
     }
 
-    void Audio::uninit() {
+    void Audio::onUninit() {
         MFShutdown();
 
         if (masteringVoice != nullptr) {

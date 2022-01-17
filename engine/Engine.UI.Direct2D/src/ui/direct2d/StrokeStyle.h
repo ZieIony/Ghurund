@@ -30,7 +30,7 @@ namespace Ghurund::UI::Direct2D {
                     10.0f,
                     D2D1_DASH_STYLE_CUSTOM,
                     0.0f),
-                dashes.begin(),
+                &(*(dashes.begin())),
                 (UINT32)dashes.Size,
                 &strokeStyle
             );

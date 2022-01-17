@@ -1,6 +1,8 @@
 #pragma once
 
 #include "core/allocation/SimpleAllocator.h"
+#include "core/collection/iterator/ListNodeIterator.h"
+#include "core/collection/iterator/ReverseListNodeIterator.h"
 
 #include <cassert>
 #include <iterator>
@@ -25,56 +27,10 @@ namespace Ghurund::Core {
         Node<Value>* last = nullptr;
 
     public:
-        template<typename Value>
-        class Iterator {
-        private:
-            Node<Value>* node;
-
-        public:
-            using iterator_category = std::forward_iterator_tag;
-            using difference_type = ptrdiff_t;
-            using value_type = Value;
-
-            Iterator():node(nullptr) {}
-            Iterator(Node<Value>* node):node(node) {}
-
-            inline bool operator==(const Iterator<Value>& other) const {
-                return node == other.node;
-            }
-
-            inline bool operator!=(const Iterator<Value>& other) const {
-                return !this->operator==(other);
-            }
-
-            inline Iterator& operator=(Node<Value>* node) {
-                this->node = node;
-                return *this;
-            }
-
-            inline Iterator& operator++() {
-                node = node->next;
-                return *this;
-            }
-
-            inline Iterator operator++(int) {
-                return Iterator(node->next);
-            }
-
-            inline Iterator& operator--() {
-                node = node->prev;
-                return *this;
-            }
-
-            inline Iterator operator--(int) {
-                return Iterator(node->prev);
-            }
-
-            inline Value& operator*() const {
-                return node->data;
-            }
-
-            inline Value* operator->() { return &node->data; }
-        };
+        using iterator_t = ListNodeIterator<Value, Node<Value>>;
+        using constIterator_t = ConstListNodeIterator<Value, Node<Value>>;
+        using reverseIterator_t = ReverseListNodeIterator<Value, Node<Value>>;
+        using constReverseIterator_t = ConstReverseListNodeIterator<Value, Node<Value>>;
 
         LinkedList(AllocatorType a = AllocatorType()):a(a) {}
 
@@ -328,36 +284,36 @@ namespace Ghurund::Core {
             size = 0;
         }
 
-        inline Iterator<Value> begin() {
-            return Iterator<Value>(first);
+        inline iterator_t begin() {
+            return iterator_t(first);
         }
 
-        inline Iterator<Value> begin() const {
-            return Iterator<Value>(first);
+        inline constIterator_t begin() const {
+            return constIterator_t(first);
         }
 
-        inline Iterator<Value> end() {
-            return Iterator<Value>(nullptr);
+        inline iterator_t end() {
+            return iterator_t();
         }
 
-        inline Iterator<Value> end() const {
-            return Iterator<Value>(nullptr);
+        inline constIterator_t end() const {
+            return constIterator_t();
         }
 
-        inline Iterator<Value> rbegin() {
-            return Iterator<Value>(last);
+        inline reverseIterator_t rbegin() {
+            return reverseIterator_t(last);
         }
 
-        inline Iterator<Value> rbegin() const {
-            return Iterator<Value>(last);
+        inline constReverseIterator_t rbegin() const {
+            return constReverseIterator_t(last);
         }
 
-        inline Iterator<Value> rend() {
-            return Iterator<Value>(nullptr);
+        inline reverseIterator_t rend() {
+            return reverseIterator_t();
         }
 
-        inline Iterator<Value> rend() const {
-            return Iterator<Value>(nullptr);
+        inline constReverseIterator_t rend() const {
+            return constReverseIterator_t();
         }
 
         inline bool operator==(const LinkedList<Value, AllocatorType>& other) const {
@@ -365,7 +321,7 @@ namespace Ghurund::Core {
                 return true;
             if (size != other.size)
                 return false;
-            for (Iterator<Value> iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
+            for (auto iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
                 if (*iter != *iter2)
                     return false;
             }

@@ -64,20 +64,36 @@ namespace Ghurund::Core {
             return v[i];
         }
 
-        inline Value* begin() {
-            return v;
+        inline ArrayIterator<Value> begin() {
+            return ArrayIterator<Value>(v);
         }
 
-        inline Value* begin() const {
-            return v;
+        inline ArrayIterator<const Value> begin() const {
+            return ArrayIterator<const Value>(v);
         }
 
-        inline Value* end() {
-            return v + size;
+        inline ArrayIterator<Value> end() {
+            return ArrayIterator<Value>(v + size);
         }
 
-        inline Value* end() const {
-            return v + size;
+        inline ArrayIterator<const Value> end() const {
+            return ArrayIterator<const Value>(v + size);
+        }
+
+        inline ReverseArrayIterator<Value> rbegin() {
+            return ReverseArrayIterator<Value>(v + size - 1);
+        }
+
+        inline ReverseArrayIterator<const Value> rbegin() const {
+            return ReverseArrayIterator<const Value>(v + size - 1);
+        }
+
+        inline ReverseArrayIterator<Value> rend() {
+            return ReverseArrayIterator<Value>(v - 1);
+        }
+
+        inline ReverseArrayIterator<const Value> rend() const {
+            return ReverseArrayIterator<const Value>(v - 1);
         }
 
         inline size_t indexOf(const Value& item) const {

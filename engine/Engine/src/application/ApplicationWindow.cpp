@@ -38,8 +38,8 @@ namespace Ghurund {
     void ApplicationWindow::init(WindowManager& windowManager) {
         __super::init(windowManager);
         swapChain = ghnew Ghurund::SwapChain();
-        Graphics* graphics = app.Features.get<Graphics>();
-        swapChain->init(*graphics, *this);
+        Graphics& graphics = app.Features.get<Graphics>();
+        swapChain->init(graphics, *this);
         swapChain->initBuffers();
     }
 

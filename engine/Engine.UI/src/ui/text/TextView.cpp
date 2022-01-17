@@ -159,7 +159,7 @@ namespace Ghurund::UI {
             Array<LineMetrics> lineMetrics = textLayout->getLineMetrics();
 
             UINT32 linePosition;
-            getLineFromPosition(lineMetrics.begin(), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &linePosition);
+            getLineFromPosition(&(*(lineMetrics.begin())), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &linePosition);
 
             // Move up a line or down
             if (moveMode == SetSelectionMode::Up) {
@@ -251,7 +251,7 @@ namespace Ghurund::UI {
             // on the current line.
             Array<LineMetrics> lineMetrics = textLayout->getLineMetrics();
 
-            getLineFromPosition(lineMetrics.begin(), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &caretPosition);
+            getLineFromPosition(&(*(lineMetrics.begin())), static_cast<UINT32>(lineMetrics.Size), caretPosition, &line, &caretPosition);
 
             caretPositionOffset = 0;
             if (moveMode == SetSelectionMode::End) {

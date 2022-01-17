@@ -74,11 +74,11 @@ namespace Ghurund {
         vertexSize = sizeof(Vertex);
         vertexCount = (vindex_t)triangleVertices.Size;
         vertices = ghnew Vertex[vertexCount];
-        memcpy(vertices, triangleVertices.begin(), vertexCount * vertexSize);
+        memcpy(vertices, &(*(triangleVertices.begin())), vertexCount * vertexSize);
 
         indexCount = (vindex_t)triangleIndices.Size;
         indices = ghnew vindex_t[indexCount];
-        memcpy(indices, triangleIndices.begin(), indexCount * sizeof(vindex_t));
+        memcpy(indices, &(*(triangleIndices.begin())), indexCount * sizeof(vindex_t));
 
         computeBoundingBox();
         generateTangents();
@@ -279,12 +279,12 @@ namespace Ghurund {
         delete[] vertices;
         vertexCount = (vindex_t)vertexData.Size;
         vertices = ghnew Vertex[vertexCount];
-        memcpy(vertices, vertexData.begin(), vertexCount * vertexSize);
+        memcpy(vertices, &(*(vertexData.begin())), vertexCount * vertexSize);
 
         delete[] indices;
         indexCount = (vindex_t)indexData.Size;
         indices = ghnew vindex_t[indexCount];
-        memcpy(indices, indexData.begin(), sizeof(vindex_t) * indexCount);
+        memcpy(indices, &(*(indexData.begin())), sizeof(vindex_t) * indexCount);
     }
 
     void Mesh::subdivide() {
@@ -327,12 +327,12 @@ namespace Ghurund {
         vertexCount = (vindex_t)vertexData.Size;
         delete[] vertices;
         vertices = ghnew Vertex[vertexCount];
-        memcpy(vertices, vertexData.begin(), vertexCount * vertexSize);
+        memcpy(vertices, &(*(vertexData.begin())), vertexCount * vertexSize);
 
         indexCount = (vindex_t)indexData.Size;
         delete[] indices;
         indices = ghnew vindex_t[indexCount];
-        memcpy(indices, indexData.begin(), indexCount * sizeof(vindex_t));
+        memcpy(indices, &(*(indexData.begin())), indexCount * sizeof(vindex_t));
     }
 
     void Mesh::spherify() {

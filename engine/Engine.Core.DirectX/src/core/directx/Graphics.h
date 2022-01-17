@@ -39,15 +39,14 @@ namespace Ghurund::Core::DirectX {
 
     public:
         ~Graphics() {
-            uninitDevice();
             uninit();
         }
 
-        void init();
+        virtual void onInit() override;
         void initDevice(GraphicsAdapter& adapter);
 
+        virtual void onUninit() override;
         void uninitDevice();
-        void uninit();
 
         ID3D12Device* getDevice() {
             return device;

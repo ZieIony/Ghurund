@@ -1,7 +1,7 @@
 #pragma once
 
-#include "application/Application.h"
 #include "application/ApplicationWindow.h"
+#include "core/application/Application.h"
 #include "core/window/WindowClass.h"
 #include "ui/Canvas.h"
 #include "ui/UIFeature.h"
@@ -33,7 +33,7 @@ namespace Preview {
         std::function<void()> loadCallback;
 
     public:
-        PreviewWindow(Ghurund::Application& app):ApplicationWindow(app) {
+        PreviewWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
             Style = WindowStyle{
                .hasMinimizeButton = true,
                .hasMaximizeButton = true,
@@ -52,19 +52,19 @@ namespace Preview {
         virtual void init(WindowManager& windowManager) {
             __super::init(windowManager);
 
-            UIFeature* uiFeature = Application.Features.get<UIFeature>();
+            UIFeature& uiFeature = Application.Features.get<UIFeature>();
 
             lightTheme = ghnew LightTheme(Application.ResourceManager);
             darkTheme = ghnew DarkTheme(Application.ResourceManager);
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
             layoutLoader->Theme = lightTheme;
 
-            auto uiLayer = ghnew UILayer(uiFeature->Graphics2D, *this, Application.ResourceManager);
+            auto uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
 
-            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
+            //SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout = ghnew PreviewLayout();
             previewLayout->Theme = lightTheme;
-            previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
+            //previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
             uiLayer->Root.Child = previewLayout;
             previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);

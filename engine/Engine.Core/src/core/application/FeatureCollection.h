@@ -5,37 +5,61 @@
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
 
+#include <ranges>
+#include <format>
+
 namespace Ghurund::Core {
+    class FeatureNotAvailableException:public std::exception {
+    public:
+        FeatureNotAvailableException(const char* message = nullptr):std::exception(message) {}
+    };
+
     class FeatureCollection {
     private:
-        // TODO: replace with TypeMap
-        Map<Type, SharedPointer<Feature>> map;
+        List<Feature*> features;
 
     public:
-        template<Derived<Feature> Type>
-        inline void add(SharedPointer<Feature> feature) {
-            map.set(Type::TYPE, feature);
+        ~FeatureCollection() {
+            features.deleteItems();
+        }
+
+        inline void add(std::unique_ptr<Feature> feature) {
+            features.add(feature.release());
         }
 
         template<Derived<Feature> Type>
-        inline Type* get() {
-            size_t index = map.indexOfKey(Type::TYPE);
-            if (index == map.Size)
-                return nullptr;
-            return (Type*)(Feature*)map.getValue(index);
+        inline Type& get() {
+            size_t index = features.find([](const Feature* f) {
+                return f->Type == Type::TYPE;
+            });
+            if (index == features.Size)
+                throw FeatureNotAvailableException(std::format("feature '{}' is not available", Type::TYPE.Name).c_str());
+            Feature* feature = features[index];
+            if (!feature->Initialized) {
+                size_t firstNotInitialized = features.find([](const Feature* f) {
+                    return !f->Initialized;
+                });
+                feature->init();
+                features.removeAt(index);
+                features.insert(firstNotInitialized, feature);
+            }
+            return *(Type*)feature;
         }
 
-        template<Derived<Feature> Type>
-        inline void remove(SharedPointer<Feature> feature) {
-            map.remove(Type::TYPE, feature);
+        inline void remove(Feature& feature) {
+            features.remove(&feature);
         }
 
-        KeyValuePair<Type, SharedPointer<Feature>>* begin() {
-            return map.begin();
+        void init() {
+            for (Feature* f : features)
+                f->init();
         }
 
-        KeyValuePair<Type, SharedPointer<Feature>>* end() {
-            return map.end();
+        void uninit() {
+            //for (Feature* f : features | std::views::reverse)
+              //  f->uninit();
+            for (auto it = features.rbegin(); it != features.rend(); it++)
+                (*it)->uninit();
         }
     };
 }

@@ -61,19 +61,19 @@ namespace Ghurund::UI {
             children.clear();
         }
 
-        inline Control** begin() {
+        inline ArrayIterator<Control*> begin() {
             return children.begin();
         }
 
-        inline Control** begin() const {
+        inline ArrayIterator<Control* const> begin() const {
             return children.begin();
         }
 
-        inline Control** end() {
+        inline ArrayIterator<Control*> end() {
             return children.end();
         }
 
-        inline Control** end() const {
+        inline ArrayIterator<Control* const> end() const {
             return children.end();
         }
 

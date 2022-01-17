@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Common.h"
-#include "application/Application.h"
+#include "application/ApplicationWindow.h
+#include "core/application/Application.h"
 #include "core/window/SystemWindow.h"
 #include "core/math/MathUtils.h"
 #include "ui/layout/StackLayout.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/RootView.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "net/Server.h"
 #include "net/Client.h"

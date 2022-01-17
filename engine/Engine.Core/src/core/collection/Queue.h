@@ -96,35 +96,35 @@ namespace Ghurund::Core {
             list.clear();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> begin() {
+        inline LinkedList<Value, AllocatorType>::iterator_t begin() {
             return list.begin();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> begin() const {
+        inline LinkedList<Value, AllocatorType>::constIterator_t begin() const {
             return list.begin();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> end() {
+        inline LinkedList<Value, AllocatorType>::iterator_t end() {
             return list.end();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> end() const {
+        inline LinkedList<Value, AllocatorType>::constIterator_t end() const {
             return list.end();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> rbegin() {
+        inline LinkedList<Value, AllocatorType>::reverseIterator_t rbegin() {
             return list.rbegin();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> rbegin() const {
+        inline LinkedList<Value, AllocatorType>::constReverseIterator_t rbegin() const {
             return list.rbegin();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> rend() {
+        inline LinkedList<Value, AllocatorType>::reverseIterator_t rend() {
             return list.rend();
         }
 
-        inline LinkedList<Value, AllocatorType>::Iterator<Value> rend() const {
+        inline LinkedList<Value, AllocatorType>::constReverseIterator_t rend() const {
             return list.rend();
         }
 

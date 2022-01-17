@@ -78,8 +78,8 @@ namespace Ghurund::UI::Direct2D {
 
             Ghurund::Core::Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
             localeName.set(0, '\0');
-            oldLayout->GetLocaleName(startPosForOld, localeName.begin(), (uint32_t)localeName.Size);
-            newLayout->SetLocaleName(localeName.begin(), range);
+            oldLayout->GetLocaleName(startPosForOld, &(*(localeName.begin())), (uint32_t)localeName.Size);
+            newLayout->SetLocaleName(&(*(localeName.begin())), range);
         }
 
         // drawing effect
@@ -144,7 +144,7 @@ namespace Ghurund::UI::Direct2D {
         layout->HitTestTextRange(textPosition, textLength, 0, 0, nullptr, 0, &actualHitTestCount);
 
         Ghurund::Core::Array<DWRITE_HIT_TEST_METRICS> hitTestMetrics(actualHitTestCount);
-        layout->HitTestTextRange(textPosition, textLength, 0, 0, hitTestMetrics.begin(), (UINT32)hitTestMetrics.Size, &actualHitTestCount);
+        layout->HitTestTextRange(textPosition, textLength, 0, 0, &(*(hitTestMetrics.begin())), (UINT32)hitTestMetrics.Size, &actualHitTestCount);
 
         Ghurund::Core::Array<HitTestMetrics> hitTestMetrics2(actualHitTestCount);
         for (size_t i = 0; i < actualHitTestCount; i++) {
@@ -180,7 +180,7 @@ namespace Ghurund::UI::Direct2D {
         uint32_t lineCount = 0;
         layout->GetLineMetrics(nullptr, 0, &lineCount);
         Ghurund::Core::Array<DWRITE_LINE_METRICS> dwriteLineMetrics(lineCount);
-        layout->GetLineMetrics(dwriteLineMetrics.begin(), lineCount, &lineCount);
+        layout->GetLineMetrics(&(*(dwriteLineMetrics.begin())), lineCount, &lineCount);
         Ghurund::Core::Array<Ghurund::UI::LineMetrics> lineMetrics(lineCount);
         for (size_t i = 0; i < lineMetrics.Size; i++) {
             lineMetrics[i] = Ghurund::UI::LineMetrics{
@@ -200,7 +200,7 @@ namespace Ghurund::UI::Direct2D {
         layout->GetClusterMetrics(nullptr, 0, &clusterCount);
 
         Ghurund::Core::Array<DWRITE_CLUSTER_METRICS> dwriteClusterMetrics(clusterCount);
-        layout->GetClusterMetrics(dwriteClusterMetrics.begin(), clusterCount, &clusterCount);
+        layout->GetClusterMetrics(&(*(dwriteClusterMetrics.begin())), clusterCount, &clusterCount);
 
         Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> clusterMetrics(clusterCount);
         for (size_t i = 0; i < clusterMetrics.Size; i++) {
@@ -326,11 +326,11 @@ namespace Ghurund::UI::Direct2D {
     Ghurund::UI::TextFormat* TextLayout::getFormat(uint32_t position) {
         Ghurund::Core::Array<wchar_t> fontFamilyName(100);
         fontFamilyName.set(0, L'\0');
-        layout->GetFontFamilyName(position, fontFamilyName.begin(), (UINT32)fontFamilyName.Size);
+        layout->GetFontFamilyName(position, &(*(fontFamilyName.begin())), (UINT32)fontFamilyName.Size);
 
         Ghurund::Core::Array<wchar_t> localeName(LOCALE_NAME_MAX_LENGTH);
         localeName.set(0, L'\0');
-        layout->GetLocaleName(position, localeName.begin(), (UINT32)localeName.Size);
+        layout->GetLocaleName(position, &(*(localeName.begin())), (UINT32)localeName.Size);
 
         DWRITE_FONT_WEIGHT fontWeight;
         layout->GetFontWeight(position, &fontWeight);
@@ -354,7 +354,7 @@ namespace Ghurund::UI::Direct2D {
         //strikethrough = hasStrikethrough;
 
         // TODO: this method returns a new Pointer object
-        return ghnew Ghurund::UI::Direct2D::TextFormat(layout, size, fontWeight, fontStyle == DWRITE_FONT_STYLE_ITALIC, localeName.begin());
+        return ghnew Ghurund::UI::Direct2D::TextFormat(layout, size, fontWeight, fontStyle == DWRITE_FONT_STYLE_ITALIC, &(*(localeName.begin())));
     }
 
     TextMetrics TextLayout::getMetrics() {

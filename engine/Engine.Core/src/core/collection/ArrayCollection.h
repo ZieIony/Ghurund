@@ -1,5 +1,7 @@
 #pragma once
 
+#include "iterator/ArrayIterator.h"
+#include "iterator/ReverseArrayIterator.h"
 #include "CollectionWithCapacity.h"
 #include "core/allocation/SimpleAllocator.h"
 
@@ -73,36 +75,36 @@ namespace Ghurund::Core {
             __super::clear();
         }
 
-        inline Value* begin() {
-            return v;
+        inline ArrayIterator<Value> begin() {
+            return ArrayIterator<Value>(v);
         }
 
-        inline Value* begin() const {
-            return v;
+        inline ConstArrayIterator<Value> begin() const {
+            return ConstArrayIterator<Value>(v);
         }
 
-        inline Value* end() {
-            return v + size;
+        inline ArrayIterator<Value> end() {
+            return ArrayIterator<Value>(v + size);
         }
 
-        inline Value* end() const {
-            return v + size;
+        inline ConstArrayIterator<Value> end() const {
+            return ConstArrayIterator<Value>(v + size);
         }
 
-        inline Value* rbegin() {
-            return v + size - 1;
+        inline ReverseArrayIterator<Value> rbegin() {
+            return ReverseArrayIterator<Value>(v + size - 1);
         }
 
-        inline Value* rbegin() const {
-            return v + size - 1;
+        inline ConstReverseArrayIterator<Value> rbegin() const {
+            return ConstReverseArrayIterator<Value>(v + size - 1);
         }
 
-        inline Value* rend() {
-            return v - 1;
+        inline ReverseArrayIterator<Value> rend() {
+            return ReverseArrayIterator<Value>(v - 1);
         }
 
-        inline Value* rend() const {
-            return v - 1;
+        inline ConstReverseArrayIterator<Value> rend() const {
+            return ConstReverseArrayIterator<Value>(v - 1);
         }
 
         inline bool contains(const Value& item) const {
@@ -160,6 +162,17 @@ namespace Ghurund::Core {
             v = other.v;
             other.v = nullptr;
             return *this;
+        }
+
+        template<typename Predicate>
+        inline size_t find(Predicate predicate) {
+            size_t i = 0;
+            for (const Value& item : *this) {
+                if (predicate(item))
+                    return i;
+                i++;
+            }
+            return size;
         }
     };
 }

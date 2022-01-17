@@ -95,12 +95,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\MemoryGuard.h" />
+    <ClInclude Include="src\TestClass.h" />
     <ClInclude Include="src\TestUtils.h" />
     <ClInclude Include="src\core\collection\TestAllocator.h" />
     <ClInclude Include="src\core\reflection\TestClass.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\collection\ArrayIteratorTest.cpp" />
+    <ClCompile Include="src\core\collection\ReverseIteratorTest.cpp" />
     <ClCompile Include="src\core\ObservableTest.cpp" />
     <ClCompile Include="src\core\TypeWrapperTest.cpp" />
     <ClCompile Include="src\core\collection\BagTest.cpp" />

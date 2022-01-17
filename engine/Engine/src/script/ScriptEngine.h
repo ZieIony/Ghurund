@@ -37,9 +37,9 @@ namespace Ghurund {
 
         static void log(const std::string& str);
 
-        virtual void init() override;
+        virtual void onInit() override;
 
-        virtual void uninit() override {
+        virtual void onUninit() override {
             if (engine)
                 engine->ShutDownAndRelease();
         }

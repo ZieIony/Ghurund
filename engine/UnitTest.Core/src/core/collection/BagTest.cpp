@@ -15,11 +15,6 @@ namespace UnitTest {
     using namespace Ghurund::Core;
     using namespace std;
 
-    struct TestClass {
-        uint32_t val = 5;
-        const char* text = "text";
-    };
-
     TEST_CLASS(BagTest) {
 public:
 

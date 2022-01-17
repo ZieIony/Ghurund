@@ -97,6 +97,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\collection\iterator\ArrayIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ListNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseArrayIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseListNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseTreeNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\Buffer.h" />
