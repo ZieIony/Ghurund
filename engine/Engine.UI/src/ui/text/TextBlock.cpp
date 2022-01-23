@@ -62,10 +62,8 @@ namespace Ghurund::UI {
             textLayout->Size = { Size.width, Size.height };
     }
 
-    Status TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto textAttr = xml.FindAttribute("text");
         if (textAttr)
             Text = loader.loadText(textAttr->Value());
@@ -78,6 +76,5 @@ namespace Ghurund::UI {
             TextFormat = format;
             format->release();
         }
-        return Status::OK;
     }
 }

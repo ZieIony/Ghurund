@@ -42,9 +42,9 @@ namespace Ghurund::Core {
         }
 
     public:
-        GenericString() {
-            size = 1;   // with null terminator
-            capacity = initial = INITIAL_CAPACITY;
+        GenericString(size_t initialCapacity = 1) {   // with null terminator
+            size = 1;
+            capacity = initial = initialCapacity;
             v = ghnew T[capacity];
             v[size - 1] = 0;
             hash = 0;

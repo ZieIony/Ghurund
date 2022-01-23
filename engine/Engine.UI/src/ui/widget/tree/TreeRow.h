@@ -7,7 +7,7 @@
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class TreeRow:public Widget<TreeRowBinding> {
+    class TreeRow:public Widget {
     private:
         TreeItem* item;
 

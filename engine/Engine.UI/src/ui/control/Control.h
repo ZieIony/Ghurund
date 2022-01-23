@@ -2,7 +2,7 @@
 
 #include "Status.h"
 #include "MouseEvents.h"
-#include "core/Pointer.h"
+#include "core/resource/Resource.h"
 #include "core/Event.h"
 #include "core/math/Matrix3x2.h"
 #include "core/math/Size.h"
@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class Control: public Pointer, public EventConsumer {
+    class Control: public Resource, public EventConsumer {
 #pragma region reflection
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -377,7 +377,15 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual Status load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+        virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+
+        static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
+
+        inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_XML };
+
+        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
+            return FORMATS;
+        }
 
 #ifdef _DEBUG
         virtual void validate();

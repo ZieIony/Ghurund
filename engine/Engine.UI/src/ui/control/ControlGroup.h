@@ -86,7 +86,7 @@ namespace Ghurund::UI {
 
         virtual Control* find(const Ghurund::Core::Type& type);
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual void validate() override {

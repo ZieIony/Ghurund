@@ -29,16 +29,4 @@ namespace Ghurund::UI {
             pool.recycle(control);
         }
     };
-
-    template<class ItemType, BindingControl<ItemType> ControlType>
-    class BindingControlItemAdapter:public ItemAdapter<ItemType, ControlType> {
-    public:
-        virtual ControlType* makeControl() const override {
-            return ghnew ControlType();
-        }
-
-        virtual void bind(ControlType& control, ItemType& item, size_t position) const {
-            control.bind(item);
-        }
-    };
 }

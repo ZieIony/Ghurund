@@ -37,14 +37,11 @@ namespace Ghurund::UI {
             repaint();
     }
     
-    Status ClickResponseView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void ClickResponseView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr)
             Color = *loader.loadColor(colorAttr->Value());
-        return Status::OK;
     }
     
     void ClickResponseViewOnBackgroundStyle::onStateChanged(Control& control) const {

@@ -19,17 +19,14 @@ namespace Ghurund::UI {
         canvas.fillRect(0, 0, Size.width, Size.height, color->getValue(*this));
     }
 
-    Status ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr) {
             auto color = loader.loadColor(colorAttr->Value());
             Color = *color;
             delete color;
         }
-        return Status::OK;
     }
 
     void ColorViewBackgroundStyle::onThemeChanged(ColorView& control) const {

@@ -90,25 +90,24 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Layout* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
+    Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
-        SharedPointer<Layout> layout = makeResource<Layout>();
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
-        if (child && strcmp(child->Value(), "layout") == 0) {
-            layout->Controls.addAll(loadControls(*child));
-            if (layout->Controls.Empty) {
-                Logger::log(LogType::WARNING, _T("Layout is empty.\n"));
-                throw InvalidDataException("Layout is empty.\n");
-            }
-        } else {
-            Logger::log(LogType::ERR0R, _T("Missing 'layout' tag\n"));
-            throw InvalidDataException("Missing 'layout' tag\n");
+        if (!child) {
+            Logger::log(LogType::ERR0R, _T("Missing 'layout' tag.\n"));
+            throw InvalidDataException("Missing 'layout' tag.\n");
         }
-
-        layout->addReference();
-        return layout;
+        size_t index = types.indexOfKey(child->Value());
+        if (index == types.Size) {
+            Logger::log(LogType::ERR0R, _T("Type '{}' is not registered.\n"), AString(child->Value()));
+            throw InvalidDataException(std::format("Type '{}' is not registered.\n", child->Value()).c_str());
+        }
+        SharedPointer<Control> control = types.getValue(index).operator()();
+        control->load(*this, *child);
+        control->addReference();
+        return control;
     }
 
     PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
@@ -120,12 +119,8 @@ namespace Ghurund::UI {
                 if (layoutAttr) {
                     AString s = layoutAttr->Value();
                     try {
-                        SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMATS[0], LoadOption::DONT_CACHE);
-                        if (!layout->Controls.Empty) {
-                            list.addAll(layout->Controls);
-                        } else {
-                            Logger::log(LogType::ERR0R, _T("Layout '{}' is empty.\n"), s);
-                        }
+                        SharedPointer<Control> control = resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE);
+                        list.add(control);
                     } catch (...) {
                         Logger::log(LogType::ERR0R, _T("Could not load layout '{}'.\n"), s);
                     }
@@ -152,13 +147,8 @@ namespace Ghurund::UI {
                 Control* control = nullptr;
                 AString s = layoutAttr->Value();
                 try {
-                    SharedPointer<Layout> layout = resourceManager.load<Layout>(convertText<char, wchar_t>(s), &Layout::FORMATS[0], LoadOption::DONT_CACHE);
-                    if (layout->Controls.Size == 1) {
-                        control = layout->Controls[0];
-                        control->addReference();
-                    } else {
-                        Logger::log(LogType::ERR0R, _T("Layout '{}' has to contain exactly one child.\n"), s);
-                    }
+                    SharedPointer<Control> control = resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE);
+                    control->addReference();
                 } catch (...) {
                     Logger::log(LogType::ERR0R, _T("Could not load layout '{}'.\n"), s);
                 }

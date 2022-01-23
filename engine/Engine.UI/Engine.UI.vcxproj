@@ -90,12 +90,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="generated\bindings\ButtonBinding.h" />
-    <ClInclude Include="generated\bindings\CheckBoxBinding.h" />
     <ClInclude Include="generated\bindings\ExpandableContainerBinding.h" />
-    <ClInclude Include="generated\bindings\ScrollBarBinding.h" />
     <ClInclude Include="generated\bindings\TabBinding.h" />
-    <ClInclude Include="generated\bindings\TabContainerBinding.h" />
     <ClInclude Include="generated\bindings\ToolbarBinding.h" />
     <ClInclude Include="generated\bindings\TreeRowBinding.h" />
     <ClInclude Include="src\Ghurund.UI.h" />
@@ -149,7 +145,6 @@
     <ClInclude Include="src\ui\layout\FlowLayout.h" />
     <ClInclude Include="src\ui\layout\FlowLayoutManager.h" />
     <ClInclude Include="src\ui\layout\HorizontalLayoutManager.h" />
-    <ClInclude Include="src\ui\layout\Layout.h" />
     <ClInclude Include="src\ui\layout\LayoutManager.h" />
     <ClInclude Include="src\ui\layout\LinearLayout.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
@@ -179,6 +174,7 @@
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
+    <ClInclude Include="src\ui\widget\ContentWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
     <ClInclude Include="src\ui\widget\ExpandableContainer.h" />
     <ClInclude Include="src\ui\widget\LayoutBinding.h" />
@@ -188,7 +184,6 @@
     <ClInclude Include="src\ui\widget\SplitLayout.h" />
     <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\VerticalScrollBar.h" />
-    <ClInclude Include="src\ui\widget\VerticalScrollBarLayout.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />
@@ -210,7 +205,6 @@
     <ClInclude Include="src\ui\widget\tab\Tab.h" />
     <ClInclude Include="src\ui\widget\tab\TabContainer.h" />
     <ClInclude Include="src\ui\widget\tab\TabItemAdapter.h" />
-    <ClInclude Include="src\ui\widget\tab\TextTabLayout.h" />
     <ClInclude Include="src\ui\widget\tree\TreeItem.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRow.h" />
     <ClInclude Include="src\ui\widget\tree\TreeRowAdapter.h" />
@@ -255,7 +249,6 @@
     <ClCompile Include="src\ui\layout\DesktopLayout.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayout.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\Layout.cpp" />
     <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
@@ -281,7 +274,6 @@
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
     <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
-    <ClCompile Include="src\ui\widget\VerticalScrollBarLayout.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
@@ -289,7 +281,6 @@
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
-    <ClCompile Include="src\ui\widget\tab\TextTabLayout.cpp" />
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
   </ItemGroup>

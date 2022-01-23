@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

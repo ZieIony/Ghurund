@@ -65,7 +65,7 @@ namespace Ghurund::UI {
             return children.begin();
         }
 
-        inline ArrayIterator<Control* const> begin() const {
+        inline ConstArrayIterator<Control*> begin() const {
             return children.begin();
         }
 
@@ -73,11 +73,11 @@ namespace Ghurund::UI {
             return children.end();
         }
 
-        inline ArrayIterator<Control* const> end() const {
+        inline ConstArrayIterator<Control*> end() const {
             return children.end();
         }
 
-        inline size_t getSize()const {
+        inline size_t getSize() const {
             return children.getSize();
         }
 

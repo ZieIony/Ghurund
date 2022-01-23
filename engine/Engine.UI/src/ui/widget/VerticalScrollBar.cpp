@@ -4,56 +4,61 @@
 namespace Ghurund::UI {
     void VerticalScrollBar::updateBar() {
         if (maxScroll > 0) {
-            Layout->BarButton->Visible = true;
-            Layout->BarButton->PreferredSize.height = std::max(16.0f, Layout->Track->Size.height - MaxScroll);
-            Layout->BarButton->setPosition(0, scroll / maxScroll * (Layout->Track->Size.height - Layout->BarButton->Size.height));
-            Layout->TopButton->Enabled = true;
-            Layout->BarButton->Enabled = true;
-            Layout->BottomButton->Enabled = true;
+            barButton->Visible = true;
+            barButton->PreferredSize.height = std::max(16.0f, track->Size.height - MaxScroll);
+            barButton->setPosition(0, scroll / maxScroll * (track->Size.height - barButton->Size.height));
+            topButton->Enabled = true;
+            barButton->Enabled = true;
+            bottomButton->Enabled = true;
         } else {
-            Layout->BarButton->Visible = false;
-            Layout->BarButton->setPosition(0, 0);
-            Layout->TopButton->Enabled = false;
-            Layout->BarButton->Enabled = false;
-            Layout->BottomButton->Enabled = false;
+            barButton->Visible = false;
+            barButton->setPosition(0, 0);
+            topButton->Enabled = false;
+            barButton->Enabled = false;
+            bottomButton->Enabled = false;
         }
     }
 
     void VerticalScrollBar::updateScroll() {
-        float trackLength = Layout->Track->Size.height - Layout->BarButton->Size.height;
+        float trackLength = track->Size.height - barButton->Size.height;
         if (trackLength > 0) {
-            scroll = Layout->BarButton->Position.y / trackLength * maxScroll;
-            Layout->TopButton->Enabled = true;
-            Layout->BarButton->Enabled = true;
-            Layout->BottomButton->Enabled = true;
+            scroll = barButton->Position.y / trackLength * maxScroll;
+            topButton->Enabled = true;
+            barButton->Enabled = true;
+            bottomButton->Enabled = true;
         } else {
             scroll = 0;
-            Layout->TopButton->Enabled = false;
-            Layout->BarButton->Enabled = false;
-            Layout->BottomButton->Enabled = false;
+            topButton->Enabled = false;
+            barButton->Enabled = false;
+            bottomButton->Enabled = false;
         }
     }
 
-    void VerticalScrollBar::onLayoutChanged() {
-        __super::onLayoutChanged();
+    void VerticalScrollBar::bind() {
+        __super::bind();
+        topButton = (Button*)find("startButton");
+        barButton = (Button*)find("barButton");
+        clickableTrack = (ClickableControl*)find("clickableTrack");
+        track = (ManualLayout*)find("track");
+        bottomButton = (Button*)find("endButton");
         if (dragHelper)
             delete dragHelper;
-        dragHelper = ghnew DragHelper(*Layout->BarButton);
+        dragHelper = ghnew DragHelper(*barButton);
 
-        Layout->TopButton->clicked += [this](Control&, const MouseClickedEventArgs&) {
+        topButton->clicked += [this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll -= 10;
             if (scroll != prevScroll) {
-                Layout->Track->repaint();
+                track->repaint();
                 OnScrolled();
             }
             return true;
         };
-        Layout->BottomButton->clicked += [this](Control&, const MouseClickedEventArgs&) {
+        bottomButton->clicked += [this](Control&, const MouseClickedEventArgs&) {
             float prevScroll = scroll;
             Scroll += 10;
             if (scroll != prevScroll) {
-                Layout->Track->repaint();
+                track->repaint();
                 OnScrolled();
             }
             return true;

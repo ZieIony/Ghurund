@@ -95,16 +95,13 @@ namespace Ghurund::UI {
         return false;
     }
     
-    Status LinearLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void LinearLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto orientationAttr = xml.FindAttribute("orientation");
         if (orientationAttr)
             Orientation = strcmp(orientationAttr->Value(), "horizontal") == 0 ? Orientation::HORIZONTAL : Orientation::VERTICAL;
         Ghurund::UI::Alignment a;
         if (loader.loadAlignment(xml, &a) == Status::OK)
             Alignment = a;
-        return Status::OK;
     }
 }

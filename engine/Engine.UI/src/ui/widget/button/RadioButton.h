@@ -7,7 +7,15 @@ namespace Ghurund::UI {
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual void onLayoutChanged() override;
+        virtual void bind() override {
+            __super::bind();
+            selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
+                Checked = !Checked;
+                checkedChanged();
+                return true;
+            };
+            selectable->stateChanged += stateHandler;
+        }
 
     public:
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();

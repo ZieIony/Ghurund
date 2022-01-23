@@ -39,11 +39,11 @@ namespace Ghurund {
         auto bitmapLoader = ghnew BitmapLoader(*imageLoader, graphics2d->DeviceContext);
         app.ResourceManager.Loaders.set<Ghurund::UI::Bitmap>(std::unique_ptr<BitmapLoader>(bitmapLoader));
         auto layoutLoader = ghnew Ghurund::UI::Direct2D::LayoutLoader(app.ResourceManager, *shapeFactory, *imageDrawableFactory, *textFormatFactory);
-        app.ResourceManager.Loaders.set<Layout>(std::unique_ptr<LayoutLoader>(layoutLoader));
+        app.ResourceManager.Loaders.set<Control>(std::unique_ptr<LayoutLoader>(layoutLoader));
     }
     
     void UIFeature::onUninit() {
-        app.ResourceManager.Loaders.remove<Layout>();
+        app.ResourceManager.Loaders.remove<Control>();
         app.ResourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
         app.ResourceManager.Loaders.remove<Image>();
         app.ResourceManager.Loaders.remove<Ghurund::UI::Font>();

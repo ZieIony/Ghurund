@@ -27,22 +27,10 @@ namespace Ghurund::UI {
         TextTabItem(const Ghurund::Core::WString& text, Control* content):TabItem(content), text(text) {}
     };
 
-    class TabLayout:public LayoutBinding {
-    protected:
-        SelectableView* selectableView;
-
-    public:
-        TabLayout(Control* control):LayoutBinding(control) {}
-
-        inline SelectableView* getSelectableView() {
-            return selectableView;
-        }
-
-        __declspec(property(get = getSelectableView)) SelectableView* SelectableView;
-    };
-
-    class Tab:public Widget<TabLayout> {
+    class Tab:public Widget {
     private:
+        SelectableView* selectableView;
+ 
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<Tab>(NAMESPACE_NAME, GH_STRINGIFY(Tab))
                 .withSupertype(__super::GET_TYPE());
@@ -50,15 +38,25 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
-        virtual void onLayoutChanged() override {
-            if (Layout)
-                Layout->SelectableView->stateChanged += [this](Control& control) { return stateChanged(); };
+        virtual void bind() override {
+            __super::bind();
+            selectableView->stateChanged += [this](Control& control) { return stateChanged(); };
         }
 
     public:
         Tab() {
             Focusable = true;
         }
+
+        inline void setSelected(bool selected) {
+            selectableView->Selected = selected;
+        }
+
+        inline bool isSelected() const {
+            return selectableView->Selected;
+        }
+
+        __declspec(property(get = isSelected, put = setSelected)) bool Selected;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 

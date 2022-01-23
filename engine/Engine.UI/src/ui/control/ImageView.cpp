@@ -95,10 +95,8 @@ namespace Ghurund::UI {
         canvas.restoreClipRect();
     }
 
-    Status ImageView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void ImageView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
             SharedPointer<ImageDrawable> image = loader.loadDrawable(imageAttr->Value());
@@ -111,7 +109,6 @@ namespace Ghurund::UI {
             if (imageTintAttr)
                 Tint = std::unique_ptr<ColorAttr>(loader.loadColor(imageTintAttr->Value()));
         }
-        return Status::OK;
     }
 
     void ImageViewStyle::onStateChanged(Control& control) const {

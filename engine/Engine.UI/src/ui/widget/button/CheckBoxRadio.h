@@ -1,14 +1,18 @@
 #pragma once
 
-#include "CheckBoxBinding.h"
 #include "ui/control/SelectableView.h"
+#include "ui/control/ImageView.h"
 #include "ui/widget/Widget.h"
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
     template<typename CheckBoxRadioType>
-    class CheckBoxRadio:public Widget<CheckBoxBinding> {
+    class CheckBoxRadio:public Widget {
     protected:
+        Ghurund::UI::SelectableView* selectable = nullptr;
+        Ghurund::UI::StateIndicator* state = nullptr;
+        Ghurund::UI::ImageView* image = nullptr;
+
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
                 .withModifiers(TypeModifier::ABSTRACT)
@@ -18,38 +22,42 @@ namespace Ghurund::UI {
         }
 
         EventHandler<Control> stateHandler = [this](Control& control) {
-            if (Layout->Selectable->Pressed) {
-                Layout->State->State = IndicatorState::PRESSED;
-            } else if (Layout->Selectable->Focused || Layout->Selectable->Hovered) {
-                Layout->State->State = IndicatorState::FOCUSED;
+            if (selectable->Pressed) {
+                state->State = IndicatorState::PRESSED;
+            } else if (selectable->Focused || selectable->Hovered) {
+                state->State = IndicatorState::FOCUSED;
             } else {
-                Layout->State->State = IndicatorState::NONE;
+                state->State = IndicatorState::NONE;
             }
             return true;
         };
+
+        virtual void bind() override {
+            __super::bind();
+            selectable = (Ghurund::UI::SelectableView*)find("selectable");
+            state = (Ghurund::UI::StateIndicator*)find("state");
+            image = (Ghurund::UI::ImageView*)find("image");
+        }
 
     public:
         Event<CheckBoxRadioType> checkedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
   
         inline void setChecked(bool checked) {
-            Layout->Selectable->Selected = checked;
+            selectable->Selected = checked;
             onStateChanged();
         }
 
         inline bool isChecked() const {
-            return Layout->Selectable->Selected;
+            return selectable->Selected;
         }
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;
 
-        virtual Status load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
-            Status result = __super::load(loader, xml);
-            if (result != Status::OK)
-                return result;
+        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
+            __super::load(loader, xml);
             auto checkedAttr = xml.FindAttribute("checked");
             if (checkedAttr)
                 Checked = checkedAttr->BoolValue();
-            return Status::OK;
         }
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();

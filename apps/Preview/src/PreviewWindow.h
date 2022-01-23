@@ -7,7 +7,6 @@
 #include "ui/UIFeature.h"
 #include "ui/UILayer.h"
 #include "ui/RootView.h"
-#include "ui/layout/Layout.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
@@ -56,15 +55,14 @@ namespace Preview {
 
             lightTheme = ghnew LightTheme(Application.ResourceManager);
             darkTheme = ghnew DarkTheme(Application.ResourceManager);
-            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             layoutLoader->Theme = lightTheme;
 
             auto uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
 
-            //SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
-            previewLayout = ghnew PreviewLayout();
+            layoutLoader->registerClass<PreviewLayout>();
+            previewLayout = Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout->Theme = lightTheme;
-            //previewLayout->Layout = std::make_unique<LayoutBinding>(layout->Controls[0]);
             uiLayer->Root.Child = previewLayout;
             previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
@@ -84,7 +82,7 @@ namespace Preview {
         }
 
         void updateTheme(ThemeType type) {
-            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Layout>();
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             if (type == ThemeType::Dark) {
                 darkTheme->Colors.set(Theme::COLOR_ACCENT, lightTheme->Colors.get(Theme::COLOR_ACCENT));
                 darkTheme->updateColors();
@@ -118,9 +116,9 @@ namespace Preview {
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<ControlGroup> layout = Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE);
             previewLayout->Container->Children.clear();
-            for (Control* control : layout->Controls)
+            for (Control* control : layout->Children)
                 previewLayout->Container->Children.add(control);
             previewLayout->Container->invalidate();
         }

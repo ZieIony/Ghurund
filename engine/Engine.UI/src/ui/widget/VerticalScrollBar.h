@@ -1,14 +1,22 @@
 #pragma once
 
 #include "DragHelper.h"
-#include "VerticalScrollBarLayout.h"
 #include "Widget.h"
+#include "ui/widget/button/Button.h"
+#include "ui/control/ClickableControl.h"
+#include "ui/layout/ManualLayout.h"
 
 #include <algorithm>
 
 namespace Ghurund::UI {
-    class VerticalScrollBar:public Widget<VerticalScrollBarLayout> {
+    class VerticalScrollBar:public Widget {
     private:
+        Button* topButton;
+        Button* barButton;
+        ClickableControl* clickableTrack;
+        ManualLayout* track;
+        Button* bottomButton;
+
         uint32_t pressMousePos = 0;
         float pressBarPos = 0;
         DragHelper* dragHelper = nullptr;
@@ -22,7 +30,7 @@ namespace Ghurund::UI {
         void updateScroll();
 
     protected:
-        virtual void onLayoutChanged() override;
+        virtual void bind() override;
 
         static const Ghurund::Core::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = Constructor<VerticalScrollBar>();

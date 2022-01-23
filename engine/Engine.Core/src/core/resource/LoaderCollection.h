@@ -2,14 +2,14 @@
 
 #include "core/resource/Loader.h"
 #include "core/reflection/Type.h"
-#include "core/collection/TypeMap.h"
+#include "core/collection/Map.h"
 
 #include <memory>
 
 namespace Ghurund::Core {
     class LoaderCollection {
     private:
-        TypeMap<LoaderCollection, Loader*> loaders;
+        Map<const Type*, Loader*> loaders;
 
     public:
         ~LoaderCollection() {
@@ -20,20 +20,22 @@ namespace Ghurund::Core {
 
         template<typename T>
         inline void set(std::unique_ptr<Loader> loader) {
-            loaders.set<T>(loader.release());
+            loaders.set(&T::TYPE, loader.release());
         }
 
         template<typename T>
         inline Loader* get() {
-            if (loaders.containsKey<T>())
-                return loaders.get<T>();
+            for (auto [type, loader] : loaders) {
+                if (T::TYPE.isOrExtends(*type))
+                    return loader;
+            }
             return nullptr;
         }
 
         template<typename T>
         inline void remove() {
-            Loader* loader = loaders.get<T>();
-            loaders.remove<T>();
+            Loader* loader = loaders.get(&T::TYPE);
+            loaders.remove(&T::TYPE);
             delete loader;
         }
     };

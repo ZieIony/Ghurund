@@ -5,25 +5,25 @@
 #include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/layout/HorizontalLayoutManager.h"
-#include "ui/widget/Widget.h"
-#include "TabContainerBinding.h"
+#include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
-    class TabContainer:public Widget<TabContainerBinding> {
+    class TabContainer:public ContentWidget {
     private:
         size_t selectedPosition = 0;
         Tab* selectedTab = nullptr;
         List<TabItem*> tabs;
+        Ghurund::UI::RecyclerView* tabLayout = nullptr;
         AdapterChildrenProvider<TabItem*, Tab>* provider;
 
         typedef SingleAdapterChildrenProvider<TabItem*, Tab, TabItemAdapter> TabChildrenProvider;
 
     protected:
-        virtual void onLayoutChanged() override {
-            if (!Layout)
-                return;
+        virtual void bind() override {
+            __super::bind();
+            tabLayout = (Ghurund::UI::RecyclerView*)find("tabs");
             provider = ghnew TabChildrenProvider();
-            Layout->Tabs->ChildrenProvider = std::unique_ptr<ChildrenProvider>(provider);
+            tabLayout->ChildrenProvider = std::unique_ptr<ChildrenProvider>(provider);
         }
 
     public:
@@ -46,14 +46,14 @@ namespace Ghurund::UI {
 
         inline void setSelectedPosition(size_t position) {
             if (selectedTab)
-                selectedTab->Layout->SelectableView->Selected = false;
+                selectedTab->Selected = false;
             this->selectedPosition = position;
-            if (Layout->Tabs->Children.Size > position) {
-                setPointer(selectedTab, (Tab*)Layout->Tabs->Children[position]);
-                selectedTab->Layout->SelectableView->Selected = true;
+            if (tabLayout->Children.Size > position) {
+                setPointer(selectedTab, (Tab*)tabLayout->Children[position]);
+                selectedTab->Selected = true;
             }
             TabItem* tab = tabs[position];
-            Layout->Content = tab->content;
+            content = tab->content;
             tab->content->invalidate();
         }
 

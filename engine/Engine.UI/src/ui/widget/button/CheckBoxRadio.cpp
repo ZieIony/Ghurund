@@ -6,7 +6,7 @@
 
 namespace Ghurund::UI {
     void CheckBoxRadioStyle::onStateChanged(Control& control) const {
-        Widget<CheckBoxBinding>& checkBoxRadio = (Widget<CheckBoxBinding>&)control;
+        /*Widget<CheckBoxBinding>& checkBoxRadio = (Widget<CheckBoxBinding>&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (!layout)
             return;
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
             } else {
                 layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND));
             }
-        }
+        }*/
     }
     
 }

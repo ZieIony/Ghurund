@@ -168,12 +168,9 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status ControlGroup::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void ControlGroup::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         Children.clear();
         Children.addAll(loader.loadControls(xml));
-        return Status::OK;
     }
 }

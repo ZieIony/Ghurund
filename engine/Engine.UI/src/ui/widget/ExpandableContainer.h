@@ -7,9 +7,9 @@
 #include "ui/control/ImageView.h"
 
 namespace Ghurund::UI {
-    class ExpandableContainer:public BindingWidget<ExpandableContainer, ExpandableContainerBinding<ExpandableContainer>> {
+    class ExpandableContainer:public ContentWidget {
     private:
-        friend class ExpandableContainerBinding<ExpandableContainer>;
+        Control* header = nullptr;
 
         Event<ExpandableContainer> expandedChanged = *this;
         bool expanded;
@@ -41,24 +41,14 @@ namespace Ghurund::UI {
         __declspec(property(get = getExpandedChanged)) Event<ExpandableContainer>& ExpandedChanged;
 
         inline Control* getHeader() {
-            return Layout->Header;
+            return header;
         }
 
         inline void setHeader(Control* header) {
-            Layout->Header = header;
+            header = header;
         }
 
         __declspec(property(get = getHeader, put = setHeader)) Control* Header;
-
-        inline Control* getContent() {
-            return Layout->Content;
-        }
-
-        inline void setContent(Control* content) {
-            Layout->Content = content;
-        }
-
-        __declspec(property(get = getContent, put = setContent)) Control* Content;
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
@@ -74,7 +64,6 @@ namespace Ghurund::UI {
             if (!theme)
                 return;
             CheckBox& checkBoxRadio = (CheckBox&)control;
-            CheckBoxBinding* layout = checkBoxRadio.Layout;
             /*if (layout->Selectable->Selected) {
                 layout->Image->Image = makeShared<BitmapDrawable>(theme->Images[Theme::IMAGE_ARROWDOWN]);
             } else {

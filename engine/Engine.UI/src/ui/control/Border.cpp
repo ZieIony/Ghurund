@@ -26,10 +26,8 @@ namespace Ghurund::UI {
         }
     }
 
-    Status Border::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void Border::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto shapeAttr = xml.FindAttribute("shape");
         if (shapeAttr)
             Shape = loader.loadShape(shapeAttr->Value());
@@ -39,7 +37,6 @@ namespace Ghurund::UI {
         auto thicknessAttr = xml.FindAttribute("thickness");
         if (thicknessAttr)
             Thickness = thicknessAttr->FloatValue();
-        return Status::OK;
     }
     
     void BorderOnBackgroundStyle::onStateChanged(Border& control) const {

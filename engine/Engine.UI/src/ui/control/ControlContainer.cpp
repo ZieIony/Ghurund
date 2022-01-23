@@ -142,10 +142,8 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status ControlContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void ControlContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto child = xml.FirstChildElement();
         if (child) {
             Control* control = loader.loadControl(*child);
@@ -156,6 +154,5 @@ namespace Ghurund::UI {
             }
             Child->release();
         }
-        return Status::OK;
     }
 }

@@ -14,33 +14,18 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void CheckBox::onLayoutChanged() {
-        __super::onLayoutChanged();
-        if (Layout && Layout->Selectable) {
-            Layout->Selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
-                Checked = !Checked;
-                checkedChanged();
-                return true;
-            };
-            Layout->Selectable->stateChanged += stateHandler;
-        }
-    }
-
     void CheckBoxStyle::onStateChanged(Control& control) const {
         Theme* theme = control.Theme;
         if (!theme)
             return;
-        CheckBox& checkBoxRadio = (CheckBox&)control;
-        CheckBoxBinding* layout = checkBoxRadio.Layout;
-        if (layout) {
-            if (layout->Selectable->Selected) {
+        /*CheckBox& checkBoxRadio = (CheckBox&)control;
+            if (checkBoxRadio->selectable->Selected) {
                 SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_CHECKED]->clone();
-                layout->Image->Image = image;
+                checkBoxRadio->image->Image = image;
             } else {
                 SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_CHECKBOX_UNCHECKED]->clone();
-                layout->Image->Image = image;
-            }
-        }
+                checkBoxRadio->image->Image = image;
+            }*/
         __super::onStateChanged(control);
     }
 }

@@ -12,7 +12,6 @@
 #include "ui/Alignment.h"
 #include "ui/control/Control.h"
 #include "ui/drawable/ImageDrawable.h"
-#include "ui/layout/Layout.h"
 #include "ui/loading/ShapeFactory.h"
 #include "ui/loading/ImageDrawableFactory.h"
 #include "ui/loading/TextFormatFactory.h"
@@ -54,6 +53,8 @@ namespace Ghurund::UI {
 
         template<class T>
         void registerClass() {
+            if (types.containsKey(T::TYPE.Name))
+                Logger::log(LogType::WARNING, std::format(_T("Type '{}' is already registered in this LayoutLoader.\n"), T::TYPE.Name).c_str());
             types.set(T::TYPE.Name, []() {
                 return ghnew T();
             });
@@ -82,7 +83,7 @@ namespace Ghurund::UI {
 
         ImageDrawable* loadDrawable(const char* str);
 
-        virtual Layout* load(
+        virtual Control* load(
             Ghurund::Core::ResourceManager& manager,
             Ghurund::Core::MemoryInputStream& stream,
             const Ghurund::Core::ResourceFormat* format = nullptr,

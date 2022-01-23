@@ -65,10 +65,8 @@ namespace Ghurund::UI {
         canvas.restore();
     }
 
-    Status Shadow::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Status result = __super::load(loader, xml);
-        if (result != Status::OK)
-            return result;
+    void Shadow::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, xml);
         auto shapeAttr = xml.FindAttribute("shape");
         if (shapeAttr)
             Shape = loader.loadShape(shapeAttr->Value());
@@ -78,6 +76,5 @@ namespace Ghurund::UI {
         auto radiusAttr = xml.FindAttribute("radius");
         if (radiusAttr)
             Radius = radiusAttr->FloatValue();
-        return Status::OK;
     }
 }

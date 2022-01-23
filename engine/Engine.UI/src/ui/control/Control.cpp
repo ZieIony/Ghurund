@@ -228,7 +228,7 @@ namespace Ghurund::UI {
     }
 
     void Control::setTheme(Ghurund::UI::Theme* theme) {
-        if (localTheme != theme) {
+        if (Theme != theme) {
             localTheme = theme;
             dispatchThemeChanged();
         }
@@ -351,7 +351,7 @@ namespace Ghurund::UI {
         return result;
     }
 
-    Status Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+    void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         auto nameAttr = xml.FindAttribute("name");
         if (nameAttr)
             Name = nameAttr->Value();
@@ -386,18 +386,17 @@ namespace Ghurund::UI {
             if (s.startsWith(LayoutLoader::THEME_STYLE)) {
                 StyleKey styleKey = s.substring(lengthOf(LayoutLoader::THEME_STYLE));
                 if (!loader.Theme) {
-                    return Status::INV_PARAM;
+                    throw InvalidStateException("Loader does not have a theme set.");
                 } else if (loader.Theme->Styles.containsKey(styleKey)) {
                     Style = loader.Theme->Styles[styleKey];
                 } else {
-                    Logger::log(LogType::WARNING, _T("invalid style key {}\n"), styleKey.str);
+                    Logger::log(LogType::WARNING, _T("Invalid style key '{}'. Default style for type '{}' will be used.\n"), styleKey.str, Type.Name);
+                    Style = loader.Theme->Styles[StyleKey(Type.Name)];
                 }
             }
         } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
             Style = loader.Theme->Styles[StyleKey(Type.Name)];
         }
-
-        return Status::OK;
     }
 
 #ifdef _DEBUG
