@@ -28,6 +28,8 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         //inline static const TypeProperty& SELECTED = TypedProperty<SelectableView, bool>(
          //   GH_STRINGIFY(bool), "selected", &isSelected, &setSelected);

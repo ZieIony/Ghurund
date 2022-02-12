@@ -5,6 +5,7 @@
 #include "graphics/Renderer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 
 #include <windowsx.h>
 #include <ui/UIFeature.h>

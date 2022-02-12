@@ -148,6 +148,48 @@ public:
             Assert::AreEqual(called, 2u);
         }
     }
+
+    TEST_METHOD(Observable_assign) {
+        MemoryGuard guard;
+        {
+            String username = _T("username");
+            Observable<String> observable = String(_T("empty"));
+            Observable<String> source = String(_T("empty"));
+            uint32_t called = 0;
+            observable = source;
+            observable.add([&](const String& value) {
+                called++;
+            });
+
+            source = username;
+
+            Assert::AreEqual(username, observable.Value);
+            Assert::AreEqual(username, source.Value);
+            Assert::AreEqual(called, 2u);
+            observable = nullptr;
+        }
+    }
+
+    TEST_METHOD(Observable_assign_destruct) {
+        MemoryGuard guard;
+        {
+            String username = _T("username");
+            Observable<String> source = String(_T("empty"));
+            uint32_t called = 0;
+            {
+                Observable<String> observable = String(_T("empty"));
+                observable = source;
+                observable.add([&](const String& value) {
+                    called++;
+                });
+            }
+
+            source = username;
+
+            Assert::AreEqual(username, source.Value);
+            Assert::AreEqual(called, 1u);
+        }
+    }
     };
 }
 

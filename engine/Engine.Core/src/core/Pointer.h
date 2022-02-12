@@ -20,6 +20,8 @@ namespace Ghurund::Core {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         mutable unsigned int referenceCount = 1;
 

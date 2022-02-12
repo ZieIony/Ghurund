@@ -35,6 +35,12 @@ namespace Ghurund::Core::DirectX {
             uninitBuffers();
         }
 
+        inline bool isInitialized() const {
+            return frames != nullptr;
+        }
+
+        __declspec(property(get = isInitialized)) bool Initialized;
+
         void init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
 
         Status initBuffers();
@@ -63,5 +69,6 @@ namespace Ghurund::Core::DirectX {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

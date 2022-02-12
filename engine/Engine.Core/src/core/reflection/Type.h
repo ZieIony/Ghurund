@@ -6,17 +6,25 @@
 #include "TypeModifier.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
+#include "core/Object.h"
+#include "core/Concepts.h"
+#include "core/Exceptions.h"
+
+#include <type_traits>
 
 namespace Ghurund::Core {
     class Type:public NamedObject<char> {
     private:
         const TypeModifier modifiers;
+        const Type* baseType;
         const AString _namespace;
         const size_t size;
         const Type* supertype;
         const List<BaseConstructor*> constructors;
         const List<BaseProperty*> properties;
         const List<BaseMethod*> methods;
+        const List<Type> templateParams;
+        const bool _const, pointer, ref, _volatile;
 
         static List<Type>& getTypes() {
             static List<Type> types;
@@ -24,16 +32,52 @@ namespace Ghurund::Core {
         }
 
     public:
-        Type(const char* name, size_t size): NamedObject<char>(name), modifiers((TypeModifier)0), size(size) {
+        Type(const char* name, size_t size):
+            NamedObject<char>(name),
+            baseType(this),
+            modifiers((TypeModifier)0),
+            size(size),
+            _const(false),
+            pointer(false),
+            ref(false),
+            _volatile(false) {
             getTypes().add(*this);
         }
 
         Type(const char* _namespace, const char* name, size_t size):
             NamedObject<char>(name),
             _namespace(_namespace),
+            baseType(this),
             modifiers((TypeModifier)0),
-            size(size)
-        {
+            size(size),
+            _const(false),
+            pointer(false),
+            ref(false),
+            _volatile(false) {
+            getTypes().add(*this);
+        }
+
+        Type(
+            const Type& baseType,
+            bool _const,
+            bool pointer,
+            bool ref,
+            bool _volatile
+        ):
+            NamedObject<char>(baseType.Name),
+            constructors(baseType.Constructors),
+            modifiers(baseType.Modifiers),
+            baseType(&baseType),
+            _namespace(baseType.Namespace),
+            size(baseType.Size),
+            _const(_const),
+            pointer(pointer),
+            ref(ref),
+            _volatile(_volatile),
+            supertype(supertype),
+            properties(properties),
+            methods(methods),
+            templateParams(templateParams) {
             getTypes().add(*this);
         }
 
@@ -42,24 +86,30 @@ namespace Ghurund::Core {
             const AString& name,
             size_t size,
             TypeModifier modifiers,
-            Type* supertype,
-            List<BaseConstructor*>& constructors,
-            List<BaseProperty*>& properties,
-            List<BaseMethod*>& methods
+            const Type* supertype,
+            const List<BaseConstructor*>& constructors,
+            const List<BaseProperty*>& properties,
+            const List<BaseMethod*>& methods,
+            const List<Type> templateParams
         ):
             NamedObject<char>(name),
             constructors(constructors),
             modifiers(modifiers),
+            baseType(this),
             _namespace(_namespace),
             size(size),
+            _const(false),
+            pointer(false),
+            ref(false),
+            _volatile(false),
             supertype(supertype),
             properties(properties),
-            methods(methods)
-        {
+            methods(methods),
+            templateParams(templateParams) {
             getTypes().add(*this);
         }
 
-        static const Type* fromName(const char* _namespace, const char* name) {
+        static const Type* byName(const char* _namespace, const char* name) {
             for (const Type& type : TYPES) {
                 if (type.Namespace == _namespace && type.Name == name)
                     return &type;
@@ -72,6 +122,12 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getConstructors)) List<BaseConstructor*>& Constructors;
+
+        inline const Type& getBaseType() const {
+            return *baseType;
+        }
+
+        __declspec(property(get = getBaseType)) const Type& BaseType;
 
         const AString& getNamespace() const {
             return _namespace;
@@ -109,8 +165,44 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getMethods)) const List<BaseMethod*>& Methods;
 
-        bool operator==(const Type& type) const {
-            return _namespace == type._namespace && __super::operator==(type);
+        const List<Type>& getTemplateParams() const {
+            return templateParams;
+        }
+
+        __declspec(property(get = getTemplateParams)) const List<Type>& TemplateParams;
+
+        inline bool isTemplate() const {
+            return !templateParams.Empty;
+        }
+
+        __declspec(property(get = isTemplate)) bool IsTemplate;
+
+        inline bool isPointer() const {
+            return pointer;
+        }
+
+        __declspec(property(get = isPointer)) bool IsPointer;
+
+        inline bool isReference() const {
+            return ref;
+        }
+
+        __declspec(property(get = isReference)) bool IsReference;
+
+        inline bool isConst() const {
+            return _const;
+        }
+
+        __declspec(property(get = isConst)) bool IsConst;
+
+        inline bool isVolatile() const {
+            return _volatile;
+        }
+
+        __declspec(property(get = isVolatile)) bool IsVolatile;
+
+        bool operator==(const Type& other) const {
+            return _namespace == other._namespace && __super::operator==(other) && pointer == other.pointer && ref == other.ref && _const == other._const;
         }
 
         inline static const List<Type>& TYPES = getTypes();
@@ -139,5 +231,17 @@ namespace Ghurund::Core {
     template<typename T>
     const Type& getType() {
         return T::TYPE;
+    }
+
+    template<Qualified T>
+    const Type& getType() {
+        const Type& baseType = getType<std::remove_cvref<std::remove_pointer<T>::type>::type>();
+        static Type type = Type(baseType, std::is_const_v<T>, std::is_pointer_v<T>, std::is_reference_v<T>, std::is_volatile_v<T>);
+        return type;
+    }
+
+    template<typename T>
+    const Type& getType(T obj) {
+        return getType<T>();
     }
 }

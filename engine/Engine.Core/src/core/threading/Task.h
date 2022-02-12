@@ -38,6 +38,8 @@ namespace Ghurund::Core {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
         inline void run() {
             executionStatus = ExecutionStatus::IN_PROGRESS;
             statusChanged(executionStatus);

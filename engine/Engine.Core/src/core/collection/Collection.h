@@ -56,7 +56,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        Collection& operator=(Collection&& other) {
+        Collection& operator=(Collection&& other) noexcept {
             if (this == &other)
                 return *this;
             size = other.size;

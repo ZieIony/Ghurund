@@ -55,6 +55,8 @@ namespace Ghurund::UI {
 
         void initTargets() {
             SwapChain& swapChain = window.SwapChain;
+            if (!swapChain.Initialized)
+                return;
             for (Frame& frame : swapChain.Frames) {
                 RenderTarget2D* target = ghnew RenderTarget2D();
                 target->init(graphics, *frame.RenderTarget.Texture);

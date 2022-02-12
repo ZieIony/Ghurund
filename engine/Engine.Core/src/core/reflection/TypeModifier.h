@@ -7,5 +7,7 @@ namespace Ghurund::Core {
 
     TypeModifier operator |(TypeModifier lhs, TypeModifier rhs);
 
+    TypeModifier& operator |=(TypeModifier& lhs, TypeModifier rhs);
+
     bool operator &(TypeModifier lhs, TypeModifier rhs);
 }

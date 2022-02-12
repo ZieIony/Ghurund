@@ -99,6 +99,8 @@ namespace Ghurund {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {
                 ResourceFormat(L"mesh", true, true),

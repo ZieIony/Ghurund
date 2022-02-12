@@ -28,10 +28,10 @@ namespace Ghurund::UI {
             __super::bind();
             clickable = (Ghurund::UI::ClickableControl*)find("clickable");
             state = (Ghurund::UI::StateIndicator*)find("state");
-            clickable->stateChanged += stateHandler;
+            /*clickable->stateChanged += stateHandler;
             clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
                 return clicked(args);
-            };
+            };*/
         }
 
     public:
@@ -42,5 +42,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

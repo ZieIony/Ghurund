@@ -155,4 +155,30 @@ namespace Ghurund::UI {
             Child->release();
         }
     }
+
+    void ControlContainer::validate() const {
+        __super::validate();
+        if (child)
+            child->validate();
+    }
+
+    String ControlContainer::printTree() const {
+        String str = __super::printTree();
+        size_t len = 4;
+        if (child) {
+            auto childStr = child->printTree().split(_T("\n"));
+            str.add(_T("\n"));
+            for (size_t j = 0; j < len; j++)
+                str.add(_T(" "));
+            str.add(_T("\\-"));
+            str.add(childStr[0]);
+            for (size_t i = 1; i < childStr.Size; i++) {
+                str.add(_T("\n"));
+                for (size_t j = 0; j < len + 2; j++)
+                    str.add(_T(" "));
+                str.add(childStr[i]);
+            }
+        }
+        return str;
+    }
 }

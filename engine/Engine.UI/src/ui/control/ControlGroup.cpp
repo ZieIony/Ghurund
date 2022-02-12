@@ -173,4 +173,31 @@ namespace Ghurund::UI {
         Children.clear();
         Children.addAll(loader.loadControls(xml));
     }
+    
+    void ControlGroup::validate() const {
+        __super::validate();
+        for (Control* child : children)
+            child->validate();
+    }
+
+    String ControlGroup::printTree() const {
+        String str = __super::printTree();
+        size_t len = 4;
+        for (Control* child : children) {
+            auto childStr = child->printTree().split(_T("\n"));
+            str.add(_T("\n"));
+            for (size_t j = 0; j < len; j++)
+                str.add(_T(" "));
+            str.add(_T("\\-"));
+            str.add(childStr[0]);
+            for (size_t i = 1; i < childStr.Size; i++) {
+                str.add(_T("\n"));
+                for (size_t j = 0; j < len; j++)
+                    str.add(_T(" "));
+                str.add(child != children[children.Size - 1] ? _T("| ") : _T("  "));
+                str.add(childStr[i]);
+            }
+        }
+        return str;
+    }
 }

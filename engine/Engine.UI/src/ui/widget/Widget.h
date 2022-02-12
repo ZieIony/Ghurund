@@ -25,8 +25,14 @@ namespace Ghurund::UI {
         }
 
         virtual void onThemeChanged() override {
-            if (Context && !layoutPath.Empty) {
-                SharedPointer<Control> control = Context->ResourceManager.load<Control>(convertText<char, wchar_t>(layoutPath), nullptr, LoadOption::DONT_CACHE);
+            if (Context) {
+                AString localPath = layoutPath;
+                if(layoutPath.Empty){
+                    size_t index = Theme->Layouts.indexOfKey(&Type);
+                    if (index != Theme->Layouts.Size)
+                        localPath = Theme->Layouts.getValue(index).Data;
+                }
+                SharedPointer<Control> control = Context->ResourceManager.load<Control>(convertText<char, wchar_t>(localPath), nullptr, LoadOption::DONT_CACHE);
                 Child = control;
                 bind();
             }
@@ -40,8 +46,6 @@ namespace Ghurund::UI {
 
         virtual void bind() {}
 
-        virtual void loadContent(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) {}
-
     public:
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             Control::load(loader, xml);
@@ -50,20 +54,6 @@ namespace Ghurund::UI {
             auto layoutAttr = xml.FindAttribute("layout");
             if (layoutAttr) {
                 layoutPath = layoutAttr->Value();
-            } else if (loader.Theme) {
-                size_t index = loader.Theme->Layouts.indexOfKey(&Type);
-                if (index != loader.Theme->Layouts.Size)
-                    layoutPath = loader.Theme->Layouts.getValue(index).Data;
-            }
-
-            [[unlikely]]
-            if (layoutPath.Empty) {
-                Logger::log(LogType::WARNING, Status::INV_DATA, _T("Missing 'layout' attribute.\n"));
-            } else {
-                SharedPointer<Control> control = loader.ResourceManager.load<Control>(convertText<char, wchar_t>(layoutPath), nullptr, LoadOption::DONT_CACHE);
-                Child = control;
-                loadContent(loader, xml);
-                bind();
             }
         }
 
@@ -72,5 +62,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

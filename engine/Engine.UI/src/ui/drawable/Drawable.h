@@ -22,6 +22,8 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     protected:
         Ghurund::Core::FloatSize size = { 0, 0 };
         Ghurund::Core::FloatSize preferredSize = { 0, 0 };

@@ -97,12 +97,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\collection\iterator\ArrayIterator.h" />
-    <ClInclude Include="src\core\collection\iterator\ListNodeIterator.h" />
-    <ClInclude Include="src\core\collection\iterator\ReverseArrayIterator.h" />
-    <ClInclude Include="src\core\collection\iterator\ReverseListNodeIterator.h" />
-    <ClInclude Include="src\core\collection\iterator\ReverseTreeNodeIterator.h" />
-    <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
+    <ClInclude Include="src\core\reflection\BaseTypedProperty.h" />
+    <ClInclude Include="src\core\reflection\OperationNotSupportedException.h" />
+    <ClInclude Include="src\core\reflection\ReadOnlyProperty.h" />
+    <ClInclude Include="src\core\reflection\WriteOnlyProperty.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -112,6 +110,7 @@
     <ClInclude Include="src\core\Event.h" />
     <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
     <ClInclude Include="src\core\NamedObject.h" />
@@ -164,6 +163,12 @@
     <ClInclude Include="src\core\collection\Tree.h" />
     <ClInclude Include="src\core\collection\TreeMap.h" />
     <ClInclude Include="src\core\collection\TypeMap.h" />
+    <ClInclude Include="src\core\collection\iterator\ArrayIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ListNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseArrayIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseListNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\ReverseTreeNodeIterator.h" />
+    <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
     <ClInclude Include="src\core\image\Image.h" />
     <ClInclude Include="src\core\image\ImageLoader.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
@@ -240,11 +245,11 @@
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\application\Feature.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
-    <ClCompile Include="src\core\application\Feature.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />
     <ClCompile Include="src\core\image\Image.cpp" />
     <ClCompile Include="src\core\image\ImageLoader.cpp" />
@@ -262,6 +267,7 @@
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
+    <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\Task.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />

@@ -3,6 +3,7 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Core {

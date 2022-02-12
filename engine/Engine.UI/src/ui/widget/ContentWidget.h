@@ -7,6 +7,9 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class ContentWidget:public Widget {
+    private:
+        ControlContainer* container = nullptr;
+
     protected:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<ContentWidget>(NAMESPACE_NAME, GH_STRINGIFY(ContentWidget))
@@ -17,9 +20,10 @@ namespace Ghurund::UI {
         }
 
         virtual void bind() override {
-            ControlContainer* container = (Ghurund::UI::ControlContainer*)ControlContainer::find("content");
-            content += [&](Control* control) {
-                container->Child = control;
+            container = (Ghurund::UI::ControlContainer*)ControlContainer::find("content");
+            content += [&](SharedPointer<Control> control) {
+                if (container)
+                    container->Child = control;
             };
         }
 
@@ -28,30 +32,35 @@ namespace Ghurund::UI {
             while (childElement) {
                 if (strcmp(childElement->Name(), std::format("{}.Content", Type.Name).c_str()) == 0) {
                     auto controls = loader.loadControls(*childElement);
-                    if (!controls.Empty)
+                    if (!controls.Empty) {
                         content = controls[0];
-                } else if (!content) {
-                    auto control = loader.loadControl(*childElement);
-                    if (control) {
-                        content = control;
-                        control->release();
+                        controls[0]->addReference();
                     }
+                } else if (!&content.Value) {
+                    auto control = loader.loadControl(*childElement);
+                    if (control)
+                        content = control;
                 }
                 childElement = childElement->NextSiblingElement();
             }
         }
 
     public:
-        Observable<Ghurund::UI::Control*> content;
+        Observable<SharedPointer<Ghurund::UI::Control>> content;
+
+        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
+            __super::load(loader, xml);
+            loadContent(loader, xml);
+        }
 
         virtual Ghurund::UI::Control* find(const Ghurund::Core::AString& name) override {
-            if (content)
+            if (&content.Value)
                 return content.Value->find(name);
             return nullptr;
         }
 
         virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type) override {
-            if (content)
+            if (&content.Value)
                 return content.Value->find(type);
             return nullptr;
         }
@@ -61,5 +70,7 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

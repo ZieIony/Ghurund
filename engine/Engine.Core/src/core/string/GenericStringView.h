@@ -8,35 +8,26 @@ namespace Ghurund::Core {
     protected:
         const T* v;
         size_t size;
-        int hash;
-
-        inline void computeHash() {
-            hash = hashCode(v, size - 1);
-        }
 
     public:
         GenericStringView(const GenericString<T>& str) {
             v = str.getData();
             size = str.Size;
-            hash = str.Hash;
         }
 
         GenericStringView(const T* str) {
             v = str;
             size = lengthOf(str) + 1;
-            computeHash();
         }
 
         GenericStringView(const T* str, size_t length) {
             v = str;
             size = length + 1;
-            computeHash();
         }
 
         GenericStringView(const GenericStringView<T>& str) {
             v = str.v;
             size = str.size;
-            hash = str.hash;
         }
 
         inline T* begin() {
@@ -68,19 +59,19 @@ namespace Ghurund::Core {
         }
 
         bool operator==(const GenericStringView<T>& string) const {
-            return hash == string.hash && size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
+            return size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
         }
 
         bool operator==(const GenericStringView<T>& string) {
-            return hash == string.hash && size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
+            return size == string.size && size != 0 && (v == string.v || memcmp(v, string.v, Length * sizeof(T)) == 0);
         }
 
         bool operator==(const GenericString<T>& string) const {
-            return hash == string.Hash && size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
+            return size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
         }
 
         bool operator==(const GenericString<T>& string) {
-            return hash == string.Hash && size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
+            return size == string.Size && size != 0 && (v == string.begin() || memcmp(v, string.begin(), Length * sizeof(T)) == 0);
         }
 
         bool operator==(const T* str) const {
@@ -166,7 +157,6 @@ namespace Ghurund::Core {
         inline void setData(const T* data) {
             v = data;
             size = lengthOf(data) + 1;
-            computeHash();
         }
 
         __declspec(property(get = getData, put = setData)) const T* Data;
@@ -188,12 +178,6 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = isEmpty)) bool Empty;
-
-        inline int getHash() const {
-            return hash;
-        }
-
-        __declspec(property(get = getHash)) int Hash;
 
         inline GenericStringView<T> substring(size_t start) const {
             return GenericStringView<T>(v + start);

@@ -43,12 +43,12 @@ namespace Ghurund::UI {
         Event<CheckBoxRadioType> checkedChanged = Event<CheckBoxRadioType>((CheckBoxRadioType&)*this);
   
         inline void setChecked(bool checked) {
-            selectable->Selected = checked;
+            //selectable->Selected = checked;
             onStateChanged();
         }
 
         inline bool isChecked() const {
-            return selectable->Selected;
+            return false;// selectable->Selected;
         }
 
         __declspec(property(get = isChecked, put = setChecked)) bool Checked;
@@ -65,6 +65,8 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
     class CheckBoxRadioStyle:public Style {

@@ -15,6 +15,8 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         Color backgroundColor = Color(1, 0, 0, 0.2f);
         Color borderColor = Color(1, 0, 0, 1.0f);

@@ -14,6 +14,8 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         Control* child = nullptr;
         bool previousReceiver = false;
@@ -98,11 +100,9 @@ namespace Ghurund::UI {
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
-        virtual void validate() override {
-            __super::validate();
-            if (child)
-                child->validate();
-        }
+        virtual void validate() const override;
+
+        virtual String printTree() const;
 #endif
     };
 }

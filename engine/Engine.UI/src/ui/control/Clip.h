@@ -12,6 +12,8 @@ namespace Ghurund::UI {
     public:
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
         virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 #pragma endregion
 
     private:

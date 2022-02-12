@@ -52,14 +52,14 @@ namespace Ghurund::Core {
     }
 
     template<>
-    const Type& getType<FloatPoint>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "FloatPoint", sizeof(FloatPoint));
+    const Type& getType<IntPoint>() {
+        static Type TYPE = Type(NAMESPACE_NAME, "IntPoint", sizeof(IntPoint));
         return TYPE;
     }
 
     template<>
-    const Type& getType<IntPoint>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "IntPoint", sizeof(IntPoint));
+    const Type& getType<FloatPoint>() {
+        static Type TYPE = Type(NAMESPACE_NAME, "FloatPoint", sizeof(FloatPoint));
         return TYPE;
     }
 

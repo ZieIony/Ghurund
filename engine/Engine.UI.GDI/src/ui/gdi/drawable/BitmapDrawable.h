@@ -16,6 +16,8 @@ namespace Ghurund::UI::GDI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         Bitmap* image;
 

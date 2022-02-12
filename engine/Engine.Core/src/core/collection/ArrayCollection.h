@@ -165,7 +165,7 @@ namespace Ghurund::Core {
         }
 
         template<typename Predicate>
-        inline size_t find(Predicate predicate) {
+        inline size_t find(Predicate predicate) const {
             size_t i = 0;
             for (const Value& item : *this) {
                 if (predicate(item))

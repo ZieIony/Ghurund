@@ -11,6 +11,8 @@ namespace Ghurund::UI {
     public:
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
         virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 #pragma endregion
 
     protected:
@@ -46,7 +48,7 @@ namespace Ghurund::UI {
         __declspec(property(put = setCapturedChild)) Control* CapturedChild;
 
 #ifdef _DEBUG
-        virtual void validate() override {
+        virtual void validate() const override {
             _ASSERTE(!focusedChild || focusedChild->Parent == this);
         }
 #endif

@@ -80,6 +80,8 @@ namespace Ghurund::Core::DirectX {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
         void addResourceRef(ID3D12Object* resource) {
             resource->AddRef();
             resourceRefs.add(resource);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextUtils.h"
+#include "core/Hashing.h"
 #include "core/collection/Array.h"
 
 #include <algorithm>
@@ -16,7 +17,6 @@ namespace Ghurund::Core {
 
     protected:
         T* v = nullptr;
-        int hash;
         size_t initial;
         size_t size;
         size_t capacity;
@@ -37,17 +37,12 @@ namespace Ghurund::Core {
             v = t1;
         }
 
-        inline void computeHash() {
-            hash = hashCode(v, size - 1);
-        }
-
     public:
         GenericString(size_t initialCapacity = 1) {   // with null terminator
             size = 1;
             capacity = initial = initialCapacity;
             v = ghnew T[capacity];
             v[size - 1] = 0;
-            hash = 0;
         }
 
         GenericString(const T* str) {
@@ -55,7 +50,6 @@ namespace Ghurund::Core {
             capacity = size = lengthOf(str) + 1;
             v = ghnew T[capacity];
             memcpy(v, str, size * sizeof(T));
-            computeHash();
         }
 
         GenericString(const T* str, size_t length) {
@@ -64,7 +58,6 @@ namespace Ghurund::Core {
             v = ghnew T[capacity];
             memcpy(v, str, length * sizeof(T));
             v[size - 1] = 0;
-            computeHash();
         }
 
         GenericString(const GenericString<T>& string) {
@@ -72,7 +65,6 @@ namespace Ghurund::Core {
             capacity = size = string.size;
             v = ghnew T[capacity];
             memcpy(v, string.v, size * sizeof(T));
-            hash = string.hash;
         }
 
         GenericString(GenericString&& other) noexcept {
@@ -80,7 +72,6 @@ namespace Ghurund::Core {
             size = other.size;
             initial = other.initial;
             capacity = other.capacity;
-            hash = other.hash;
 
             other.v = nullptr;
             other.size = 0;
@@ -112,7 +103,6 @@ namespace Ghurund::Core {
             v[size - 1] = e;
             size++;
             v[size - 1] = 0;
-            computeHash();
         }
 
         inline void add(const T* str) {
@@ -123,7 +113,6 @@ namespace Ghurund::Core {
             memcpy(v + size - 1, str, len * sizeof(T));
             size += len;
             v[size - 1] = 0;
-            computeHash();
         }
 
         inline void add(const T* str, size_t len) {
@@ -133,12 +122,17 @@ namespace Ghurund::Core {
             memcpy(v + size - 1, str, len * sizeof(T));
             size += len;
             v[size - 1] = 0;
-            computeHash();
+        }
+
+        inline void add(const GenericString<T>& str) {
+            fit(size + str.Length);
+            memcpy(v + size - 1, str.Data, str.Length * sizeof(T));
+            size += str.Length;
+            v[size - 1] = 0;
         }
 
         inline void set(size_t i, T c) {
             v[i] = c;
-            computeHash();
         }
 
         inline T get(size_t i)const {
@@ -146,19 +140,13 @@ namespace Ghurund::Core {
         }
 
         inline void replace(T from, T to) {
-            bool updated = false;
             for (size_t i = 0; i < size; i++) {
-                if (v[i] == from) {
+                if (v[i] == from)
                     v[i] = to;
-                    updated = true;
-                }
             }
-            if (updated)
-                computeHash();
         }
 
         inline void replace(const T* from, const T* to) {
-            bool updated = false;
             size_t fromLength = lengthOf(from);
             size_t toLength = lengthOf(to);
             size_t next = 0;
@@ -173,10 +161,7 @@ namespace Ghurund::Core {
                 }
                 memcpy(v + next, to, toLength * sizeof(T));
                 next += toLength;
-                updated = true;
             }
-            if (updated)
-                computeHash();
         }
 
         inline void insert(size_t pos, T str) {
@@ -185,7 +170,6 @@ namespace Ghurund::Core {
             memcpy(v + pos + 1, v + pos, (size - pos) * sizeof(T));
             v[pos] = str;
             size++;
-            computeHash();
         }
 
         inline void insert(size_t pos, const T* str) {
@@ -196,7 +180,6 @@ namespace Ghurund::Core {
             memcpy(v + pos + len, v + pos, (size - pos) * sizeof(T));
             memcpy(v + pos, str, len * sizeof(T));
             size += len;	// null terminator already present
-            computeHash();
         }
 
         inline void insert(size_t pos, const T* str, size_t len) {
@@ -206,20 +189,17 @@ namespace Ghurund::Core {
             memcpy(v + pos + len, v + pos, (size - pos) * sizeof(T));
             memcpy(v + pos, str, len * sizeof(T));
             size += len;	// null terminator already present
-            computeHash();
         }
 
         inline void remove(size_t pos, size_t length) {
             memcpy(v + pos, v + pos + length, (size - pos - length) * sizeof(T));
             size -= length;
-            computeHash();
         }
 
         inline void clear() {
             delete[] v;
             size = capacity = initial;
             v = ghnew T[capacity];
-            computeHash();
         }
 
         inline const T* getData() const {
@@ -232,7 +212,6 @@ namespace Ghurund::Core {
             v = ghnew T[len];
             memcpy(this->v, data, len * sizeof(T));
             capacity = size = len;
-            computeHash();
         }
 
         __declspec(property(get = getData, put = setData)) const T* Data;
@@ -242,7 +221,6 @@ namespace Ghurund::Core {
             v = ghnew T[len];
             memcpy(this->v, data, len * sizeof(T));
             capacity = size = len;
-            computeHash();
         }
 
         inline size_t getLength()const {
@@ -266,7 +244,7 @@ namespace Ghurund::Core {
         }
 
         bool operator==(const GenericString& string) const {
-            return hash == string.hash && size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(T)) == 0;
+            return size == string.size && size != 0 && memcmp(v, string.v, Length * sizeof(T)) == 0;
         }
 
         bool operator==(const T* str) const {
@@ -281,7 +259,6 @@ namespace Ghurund::Core {
             T* stringV = string.v;
             v = new T[capacity];
             memcpy(v, stringV, size * sizeof(T));
-            hash = string.hash;
             delete[] prevV;
             return *this;
         }
@@ -355,12 +332,6 @@ namespace Ghurund::Core {
 
         __declspec(property(get = isEmpty)) bool Empty;
 
-        inline int getHash() const {
-            return hash;
-        }
-
-        __declspec(property(get = getHash)) int Hash;
-
         std::strong_ordering operator<=>(const GenericString<T>& string) const {
             int order = lexicographicalStrCompare<T>(v, string.Data);
             if (order < 0) {
@@ -421,4 +392,10 @@ namespace Ghurund::Core {
             return GenericString<T>(v + i, j - i);
         }
     };
+
+    template<>
+    uint32_t hashCode(const GenericString<char>& data);
+
+    template<>
+    uint32_t hashCode(const GenericString<wchar_t>& data);
 }

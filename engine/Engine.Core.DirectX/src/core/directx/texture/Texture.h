@@ -64,6 +64,8 @@ namespace Ghurund::Core::DirectX {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
         static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", true, false);
         static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", true, false);
         static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", true, false);

@@ -59,7 +59,7 @@ namespace Ghurund::Core {
             if (A::size == A::capacity)
                 A::resize((size_t)(A::capacity * 1.6));
             if (i < A::size) {
-                A::v[A::size] = A::v[A::size - 1];
+                new(A::v + A::size) Value(A::v[A::size - 1]);
                 for (size_t j = A::size - 1; j > i; j--)
                     A::v[j] = std::move(A::v[j - 1]);
                 A::v[i].~Value();
@@ -80,8 +80,8 @@ namespace Ghurund::Core {
 
         inline void set(size_t i, const Value& item) {
             _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
-            A::v[i].~Value();
             new(A::v + i) Value(item);
+            A::v[i].~Value();
         }
 
         inline size_t indexOf(const Value& item) const {

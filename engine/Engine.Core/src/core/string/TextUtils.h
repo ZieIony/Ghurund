@@ -141,28 +141,6 @@ namespace Ghurund::Core {
         return dest;
     }
 
-    inline unsigned long hashCode(const wchar_t* str, size_t size = 0) {
-        unsigned long h = 0xAAAAAAAA;
-        if (!size)
-            size = wcslen(str);
-        for (unsigned int i = 0; i < size; i++) {
-            h ^= ((i & 1) == 0) ? ((h << 7) ^ str[i] * (h >> 3)) :
-                (~((h << 11) + str[i] ^ (h >> 5)));
-        }
-        return h;
-    }
-
-    inline unsigned long hashCode(const char* str, size_t size = 0) {
-        unsigned long h = 0xAAAAAAAA;
-        if (!size)
-            size = strlen(str);
-        for (unsigned int i = 0; i < size; i++) {
-            h ^= ((i & 1) == 0) ? ((h << 7) ^ str[i] * (h >> 3)) :
-                (~((h << 11) + str[i] ^ (h >> 5)));
-        }
-        return h;
-    }
-
     template<typename CharType>
     inline int lexicographicalStrCompare(const CharType* str1, const CharType* str2) {
         return 0;

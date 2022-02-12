@@ -16,6 +16,8 @@ namespace Ghurund::UI::Direct2D {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     private:
         Bitmap* image;
 

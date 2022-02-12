@@ -50,24 +50,48 @@ namespace Ghurund::UI::Direct2D {
         }
 
         virtual void drawRect(float x, float y, float width, float height, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
+#ifdef _DEBUG
+            if (color.A == 0.0f || thickness == 0.0f || width == 0.0f || height == 0.0f) {
+                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
+                return;
+            }
+#endif
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
             deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);
         }
 
         virtual void fillRect(float x, float y, float width, float height, const Color& color) override {
+#ifdef _DEBUG
+            if (color.A == 0.0f) {
+                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
+                return;
+            }
+#endif
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
             deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
         }
 
         virtual void drawShape(Ghurund::UI::Shape& shape, const Color& color, float thickness) override {
+#ifdef _DEBUG
+            if (color.A == 0.0f || thickness == 0.0f) {
+                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
+                return;
+            }
+#endif
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
             deviceContext->DrawGeometry(((Direct2D::Shape&)shape).Path, fillBrush.Get(), thickness);
         }
 
         virtual void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
+#ifdef _DEBUG
+            if (color.A == 0.0f || thickness == 0.0f) {
+                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
+                return;
+            }
+#endif
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
             deviceContext->DrawLine({ x1,y1 }, { x2,y2 }, fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);

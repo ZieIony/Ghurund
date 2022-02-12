@@ -4,6 +4,7 @@
 #include "core/application/Application.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 #include "core/directx/Graphics.h"
 
 namespace Ghurund {

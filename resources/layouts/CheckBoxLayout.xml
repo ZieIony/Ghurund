@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<ControlContainer xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<SelectableView name="selectable" preferredSize="wrap, wrap">
 		<LinearLayout alignment="center, center"
 					  orientation="horizontal">
@@ -18,4 +18,4 @@
 							  name="content"/>
 		</LinearLayout>
 	</SelectableView>
-</layout>
+</ControlContainer>

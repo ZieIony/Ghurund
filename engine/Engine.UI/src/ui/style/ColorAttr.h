@@ -17,6 +17,8 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
     class ColorValue:public ColorAttr {
@@ -38,6 +40,8 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         virtual ColorValue* clone() const override {
             return ghnew ColorValue(value);
@@ -61,6 +65,8 @@ namespace Ghurund::UI {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         virtual ColorRef* clone() const override {
             return ghnew ColorRef(key);

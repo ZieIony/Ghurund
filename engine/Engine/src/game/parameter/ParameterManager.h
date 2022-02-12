@@ -50,5 +50,6 @@ namespace Ghurund {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

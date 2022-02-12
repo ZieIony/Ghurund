@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 
 #include <d2d1_3.h>
 

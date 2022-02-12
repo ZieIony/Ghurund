@@ -31,7 +31,7 @@ namespace Ghurund::Core {
         Status saveInternal(File& file, SaveOption options) const;
 
     protected:
-        DataSize dataSize;
+        DataSize dataSize = {};
 
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             return Status::NOT_IMPLEMENTED;
@@ -108,6 +108,8 @@ namespace Ghurund::Core {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 

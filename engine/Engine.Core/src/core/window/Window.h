@@ -9,7 +9,8 @@
 #include "core/math/Point.h"
 #include "core/math/Size.h"
 #include "core/Observable.h"
-#include <core/window/WindowStyle.h>
+#include "core/window/WindowStyle.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
@@ -215,5 +216,7 @@ namespace Ghurund::Core {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
-    };
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+  };
 }

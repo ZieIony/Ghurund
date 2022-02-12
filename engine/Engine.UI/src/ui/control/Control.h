@@ -35,6 +35,8 @@ namespace Ghurund::UI {
     public:
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
         virtual const Ghurund::Core::Type& getType() const override { return TYPE; }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 #pragma endregion
 
     private:
@@ -63,6 +65,8 @@ namespace Ghurund::UI {
         Theme* localTheme = nullptr;
         const Style* style = nullptr;
 
+        //List<Binding> bindings;
+
         virtual void onStateChanged() {
             stateChanged();
             if (style)
@@ -86,6 +90,8 @@ namespace Ghurund::UI {
         virtual void onDraw(ICanvas& canvas) {}
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+        Control* resolvePath(const Array<AString>& path);
 
         virtual ~Control() = 0;
 
@@ -367,6 +373,12 @@ namespace Ghurund::UI {
 
         virtual Control* find(const Ghurund::Core::Type& type);
 
+        virtual void bind() {
+            /*for (Binding& b : bindings) {
+                Control* result = resolvePath(b.Path);
+            }*/
+        }
+
         virtual FloatPoint getPositionInWindow();
 
         __declspec(property(get = getPositionInWindow)) FloatPoint PositionInWindow;
@@ -388,7 +400,9 @@ namespace Ghurund::UI {
         }
 
 #ifdef _DEBUG
-        virtual void validate();
+        virtual void validate() const;
+
+        virtual String printTree() const;
 #endif
     };
 

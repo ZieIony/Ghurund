@@ -17,6 +17,8 @@ namespace Ghurund::UI {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     public:
         virtual Ghurund::Core::IntSize getSize() const = 0;
 

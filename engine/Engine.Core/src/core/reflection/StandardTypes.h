@@ -33,10 +33,10 @@ namespace Ghurund::Core {
     const Type& getType<FloatSize>();
 
     template<>
-    const Type& getType<FloatPoint>();
+    const Type& getType<IntPoint>();
 
     template<>
-    const Type& getType<IntPoint>();
+    const Type& getType<FloatPoint>();
 
     template<>
     const Type& getType<Matrix3x2>();

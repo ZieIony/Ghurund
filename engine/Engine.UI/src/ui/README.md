@@ -55,7 +55,7 @@ The following code shows an xml layout of a check box:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<CheckBox xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<SelectableView name="selectable" preferredSize="wrap, wrap">
 		<StackLayout>
 			<FocusIndicator style="theme://style/colorView_accent"/>
@@ -67,7 +67,7 @@ The following code shows an xml layout of a check box:
 			</LinearLayout>
 		</StackLayout>
 	</SelectableView>
-</layout>
+</CheckBox>
 ```
 
 ##### Hot reload and layout editing

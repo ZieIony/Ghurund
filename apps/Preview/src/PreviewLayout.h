@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LayoutBinding.h"
-#include "ui/widget/Widget.h"
+#include "ui/widget/ContentWidget.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include "ui/layout/StackLayout.h"
@@ -14,7 +14,7 @@ namespace Preview {
         Dark, Light
     };
 
-    class PreviewLayout:public Widget {
+    class PreviewLayout:public ControlContainer {
     private:
         Ghurund::UI::StackLayout* container = nullptr;
         Ghurund::UI::Button* color1 = nullptr;
@@ -33,8 +33,9 @@ namespace Preview {
             return TYPE;
         }
 
-        virtual void bind() override {
-            __super::bind();
+        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
+            __super::load(loader, xml);
+
             container = (Ghurund::UI::StackLayout*)find("container");
             color1 = (Ghurund::UI::Button*)find("color1");
             color2 = (Ghurund::UI::Button*)find("color2");
@@ -44,7 +45,7 @@ namespace Preview {
             enabledCheckBox = (Ghurund::UI::CheckBox*)find("enabledCheckBox");
             themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
 
-            themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
+            /*themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
                 repaint();
                 return true;
@@ -65,8 +66,8 @@ namespace Preview {
 
                 }
                 return true;
-            };
-            color1->clicked += colorClickHandler;
+            };*/
+            /*color1->clicked += colorClickHandler;
             color2->clicked += colorClickHandler;
             color3->clicked += colorClickHandler;
             color4->clicked += colorClickHandler;
@@ -74,7 +75,7 @@ namespace Preview {
             ColorView* colorView = (ColorView*)colorTheme->find(ColorView::TYPE);
             WindowsTheme::init();
             colorView->Color = ColorValue(WindowsTheme::getAccentColor());
-            colorTheme->clicked += colorClickHandler;
+            colorTheme->clicked += colorClickHandler;*/
         }
 
     public:
@@ -91,5 +92,7 @@ namespace Preview {
         virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

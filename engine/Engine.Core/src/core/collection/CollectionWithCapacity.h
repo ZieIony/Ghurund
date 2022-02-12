@@ -57,7 +57,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        CollectionWithCapacity& operator=(CollectionWithCapacity&& other) {
+        CollectionWithCapacity& operator=(CollectionWithCapacity&& other) noexcept {
             if (this == &other)
                 return *this;
             __super::operator=(std::move(other));

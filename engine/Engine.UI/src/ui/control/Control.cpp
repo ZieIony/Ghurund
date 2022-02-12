@@ -1,5 +1,6 @@
 #include "ghuipch.h"
 #include "ControlParent.h"
+#include "ControlGroup.h"
 
 #include "core/input/Mouse.h"
 #include "ui/Cursor.h"
@@ -9,6 +10,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 
 #include <regex>
 
@@ -19,7 +21,7 @@ namespace Ghurund::UI {
         static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
         static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
         static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
-        static auto PROPERTY_FOCUS = ReadOnlyProperty<Control, Control*>("Focus", (Control * (Control::*)()) & getFocus);
+        static auto PROPERTY_FOCUS = ReadOnlyProperty<Control, Control*>("Focus", &getFocus);
         static auto PROPERTY_FOCUSED = ReadOnlyProperty<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
         static auto PROPERTY_POSITION = Property<Control, const FloatPoint&>("Position", (FloatPoint & (Control::*)()) & getPosition, (void(Control::*)(const FloatPoint&)) & setPosition);
         static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
@@ -37,7 +39,7 @@ namespace Ghurund::UI {
         static auto PROPERTY_POSITIONINWINDOW = ReadOnlyProperty<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
         static auto PROPERTY_POSITIONONSCREEN = ReadOnlyProperty<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Control>("Ghurund::UI", "Control")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Control>(Ghurund::UI::NAMESPACE_NAME, "Control")
             .withProperty(PROPERTY_NAME)
             .withProperty(PROPERTY_VISIBLE)
             .withProperty(PROPERTY_ENABLED)
@@ -109,6 +111,26 @@ namespace Ghurund::UI {
             return true;
         }
         return false;
+    }
+
+    Control* Control::resolvePath(const Array<AString>& path) {
+        Control* result = this;
+        for (const AString& part : path) {
+            if (part == "Parent") {
+                result = result->Parent;
+            } else {
+                result = result->find(part);
+            }
+            if (!result) {
+                if (part == "parent") {
+                    Logger::log(LogType::WARNING, _T("Could not find control 'parent', did you mean 'Parent'?\n"));
+                } else {
+                    Logger::log(LogType::WARNING, std::format(_T("Could not find control '{}'.\n"), part).c_str());
+                }
+                return nullptr;
+            }
+        }
+        return result;
     }
 
     bool Control::isEnabled() const {
@@ -400,9 +422,17 @@ namespace Ghurund::UI {
     }
 
 #ifdef _DEBUG
-    void Control::validate() {
+    void Control::validate() const {
         _ASSERTE(ReferenceCount < 1000);
         _ASSERTE(!parent || parent->ReferenceCount < 1000);
+    }
+
+    String Control::printTree() const {
+        if (Name) {
+            return String(std::format(_T("{} \"{}\"\n"), Type.Name, *Name).c_str());
+        } else {
+            return convertText<char, tchar>(Type.Name);
+        }
     }
 #endif
 }

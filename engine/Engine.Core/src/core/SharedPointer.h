@@ -19,6 +19,11 @@ namespace Ghurund::Core {
                 pointer->addReference();
         }
 
+        SharedPointer(SharedPointer&& other) noexcept {
+            pointer = other.pointer;
+            other.pointer = nullptr;
+        }
+
         SharedPointer(T* p) {
             pointer = p;
         }
@@ -57,6 +62,12 @@ namespace Ghurund::Core {
 
         SharedPointer<T>& operator=(const SharedPointer<T>& other) {
             setPointer(pointer, other.pointer);
+            return *this;
+        }
+
+        SharedPointer<T>& operator=(SharedPointer<T>&& other) {
+            pointer = other.pointer;
+            other.pointer = nullptr;
             return *this;
         }
 

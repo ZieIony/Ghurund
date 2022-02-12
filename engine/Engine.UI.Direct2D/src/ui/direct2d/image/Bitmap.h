@@ -27,6 +27,8 @@ namespace Ghurund::UI::Direct2D {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
         inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 
         virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {

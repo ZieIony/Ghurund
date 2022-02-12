@@ -62,12 +62,15 @@ namespace Preview {
 
             layoutLoader->registerClass<PreviewLayout>();
             previewLayout = Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
+            Logger::print(LogType::INFO, _T("\n"));
+            Logger::print(LogType::INFO, previewLayout->printTree().Data);
+            Logger::print(LogType::INFO, _T("\n"));
             previewLayout->Theme = lightTheme;
             uiLayer->Root.Child = previewLayout;
-            previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+            /*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
                 return true;
-            };
+            };*/
 
             DragDropEnabled = true;
             dropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {
@@ -84,12 +87,12 @@ namespace Preview {
         void updateTheme(ThemeType type) {
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             if (type == ThemeType::Dark) {
-                darkTheme->Colors.set(Theme::COLOR_ACCENT, lightTheme->Colors.get(Theme::COLOR_ACCENT));
+                darkTheme->Colors.set(Theme::COLOR_ACCENT, lightTheme->Colors[Theme::COLOR_ACCENT]);
                 darkTheme->updateColors();
                 layoutLoader->Theme = darkTheme;
                 previewLayout->Theme = darkTheme;
             } else {
-                lightTheme->Colors.set(Theme::COLOR_ACCENT, darkTheme->Colors.get(Theme::COLOR_ACCENT));
+                lightTheme->Colors.set(Theme::COLOR_ACCENT, darkTheme->Colors[Theme::COLOR_ACCENT]);
                 lightTheme->updateColors();
                 layoutLoader->Theme = lightTheme;
                 previewLayout->Theme = lightTheme;
@@ -116,11 +119,11 @@ namespace Preview {
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<ControlGroup> layout = Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE);
+            /*SharedPointer<ControlGroup> layout = Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE);
             previewLayout->Container->Children.clear();
             for (Control* control : layout->Children)
                 previewLayout->Container->Children.add(control);
-            previewLayout->Container->invalidate();
+            previewLayout->Container->invalidate();*/
         }
 
         void loadDrawable(const File& file) {

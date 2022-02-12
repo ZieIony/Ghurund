@@ -2,6 +2,7 @@
 #include "Drawable.h"
 
 #include "ui/control/Control.h"
+#include "core/reflection/ReadOnlyProperty.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Drawable::GET_TYPE() {

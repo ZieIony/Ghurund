@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& VectorImage::GET_TYPE() {

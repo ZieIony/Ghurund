@@ -21,6 +21,8 @@ namespace UnitTest {
             return TYPE;
         }
 
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
     public:
         inline void setPreferredSize(const FloatSize& size) {
             preferredSize = size;

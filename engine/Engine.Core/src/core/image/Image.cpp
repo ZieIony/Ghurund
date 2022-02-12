@@ -2,6 +2,7 @@
 #include "Image.h"
 
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
 

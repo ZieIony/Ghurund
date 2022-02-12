@@ -5,6 +5,7 @@
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/ReadOnlyProperty.h"
 #include "DirectXTypes.h"
 #include "core/logging/Logger.h"
 
