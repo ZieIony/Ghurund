@@ -7,16 +7,6 @@ namespace Ghurund::Core {
     protected:
         size_t size;
 
-        inline bool operator==(const Collection& other) const {
-            if (this == &other)
-                return true;
-            return size == other.size;
-        }
-
-        inline bool operator!=(const Collection& other) const {
-            return !(*this == other);
-        }
-
     public:
         Collection() {
             size = 0;
@@ -62,6 +52,16 @@ namespace Ghurund::Core {
             size = other.size;
             other.size = 0;
             return *this;
+        }
+
+        inline bool operator==(const Collection& other) const {
+            if (this == &other)
+                return true;
+            return size == other.size;
+        }
+
+        inline bool operator!=(const Collection& other) const {
+            return !(*this == other);
         }
     };
 }

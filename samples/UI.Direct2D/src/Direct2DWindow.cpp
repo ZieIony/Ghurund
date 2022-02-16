@@ -24,11 +24,11 @@ namespace Samples {
 
     void Direct2DWindow::init(WindowManager& windowManager) {
         __super::init(windowManager);
-        canvas = ghnew Canvas();
+        /*canvas = ghnew Canvas();
         canvas->init(Handle);
         resourceManager = ghnew ResourceManager();
         uiContext = ghnew UIContext(*this, *resourceManager);
-        rootView = ghnew RootView(*uiContext);
+        rootView = ghnew RootView(*uiContext);*/
     }
 
     void Direct2DWindow::uninit() {

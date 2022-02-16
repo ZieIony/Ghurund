@@ -1,46 +1,61 @@
 #pragma once
 
+#include "core/Pointer.h"
+#include "core/reflection/TypeBuilder.h"
+
 #include <functional>
 
 namespace Ghurund::Core {
-    template<class Type>
-    class ObservableHandler {
-    private:
-        static inline uint32_t ID = 0;
+    template<typename T>
+    class Observable;
 
-        uint32_t id = 0;
-        std::function<void(const Type& args)> lambda;
+    template<class T>
+    class ObservableHandler:public Pointer {
+    private:
+        std::function<void(const T& args)> lambda;
+        Observable<T>* owner = nullptr;
 
     public:
         ObservableHandler() {}
 
-        ObservableHandler(std::function<void(const Type& args)> lambda, uint32_t id = ID++) {
-            this->id = id;
+        ObservableHandler(std::function<void(const T& args)> lambda) {
             this->lambda = lambda;
         }
 
         ObservableHandler(const ObservableHandler& handler) {
-            id = handler.id;
             lambda = handler.lambda;
         }
 
         ObservableHandler(ObservableHandler&& handler) noexcept {
-            id = handler.id;
             lambda = std::move(handler.lambda);
         }
 
-        bool operator==(const ObservableHandler& handler) const {
-            return id == handler.id;
+        inline Observable<T>* getOwner() {
+            return owner;
         }
 
-        inline void operator()(const Type& args) const {
+        inline void setOwner(Observable<T>* owner) {
+            this->owner = owner;
+        }
+
+        __declspec(property(get = getOwner, put = setOwner)) Observable<T>* Owner;
+
+        inline void invoke(const T& args) const {
             lambda(args);
         }
 
-        ObservableHandler& operator=(const ObservableHandler& handler) {
-            id = handler.id;
-            lambda = handler.lambda;
-            return *this;
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static Ghurund::Core::Type type = TypeBuilder<ObservableHandler<T>>(Ghurund::Core::NAMESPACE_NAME, "ObservableHandler").withTemplateParams<T>();
+            return type;
         }
+
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getType() const {
+            return TYPE;
+        }
+
+        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
+
 }

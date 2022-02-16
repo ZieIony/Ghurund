@@ -16,8 +16,6 @@ namespace Ghurund::Core {
     public:
         static const LogType INFO, WARNING, ERR0R;
 
-        static const EnumValues<LogTypeEnum, LogType> VALUES;
-
         inline uint32_t getColor() const {
             return color;
         }

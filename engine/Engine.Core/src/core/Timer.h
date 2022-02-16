@@ -18,7 +18,9 @@ namespace Ghurund::Core {
         uint64_t timeMs, frameTimeMs;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         Timer();
@@ -75,12 +77,6 @@ namespace Ghurund::Core {
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

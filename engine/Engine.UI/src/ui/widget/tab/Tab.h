@@ -35,7 +35,7 @@ namespace Ghurund::UI {
             static const Ghurund::Core::Type TYPE = TypeBuilder<Tab>(NAMESPACE_NAME, GH_STRINGIFY(Tab))
                 .withSupertype(__super::GET_TYPE());
 
-            return TYPE;
+            return GET_TYPE();
         }
 
         virtual void bind() override {
@@ -58,10 +58,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isSelected, put = setSelected)) bool Selected;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

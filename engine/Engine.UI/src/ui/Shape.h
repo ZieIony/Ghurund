@@ -10,6 +10,10 @@ namespace Ghurund::UI {
         FloatRect bounds;
 
     public:
+        Shape():bounds({}) {}
+
+        Shape(const FloatRect& bounds):bounds(bounds) {}
+
         virtual ~Shape() = 0 {};
 
         inline const FloatRect& getBounds() const {

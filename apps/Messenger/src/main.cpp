@@ -1,12 +1,16 @@
-#include "Ghurund.h"
+#include "Ghurund.Engine.h"
 
 #include "MessengerApplication.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    Ghurund::Settings settings;
-    settings.windowSize = { 200,300 };
+    using namespace Ghurund;
+
+    Settings settings;
+    settings.set(Settings::WIDTH, 200);
+    settings.set(Settings::HEIGHT, 300);
     settings.parse(GetCommandLine());
-    std::unique_ptr<Ghurund::LogOutput> logOutput = std::make_unique<Ghurund::CustomConsoleLogOutput>(_T("logs"));
-    Ghurund::main<Messenger::MessengerApplication>(settings, std::move(logOutput));
+
+    std::unique_ptr<LogOutput> logOutput = std::make_unique<CustomConsoleLogOutput>(_T("logs"));
+    main<Messenger::MessengerApplication>(&settings, std::move(logOutput));
     return 0;
 }

@@ -8,10 +8,10 @@
 
 namespace Ghurund::UI {
     Theme::Theme() {
-        layouts.set(&Button::TYPE, "lib://Ghurund\\layouts\\ButtonDefaultLayout.xml");
-        layouts.set(&CheckBox::TYPE, "lib://Ghurund\\layouts\\CheckBoxLayout.xml");
-        layouts.set(&RadioButton::TYPE, "lib://Ghurund\\layouts\\RadioButtonLayout.xml");
-        layouts.set(&ExpandableContainer::TYPE, "lib://Ghurund\\layouts\\ExpandableContainer.xml");
+        layouts.set(&Button::GET_TYPE(), "lib://Ghurund\\layouts\\ButtonDefaultLayout.xml");
+        layouts.set(&CheckBox::GET_TYPE(), "lib://Ghurund\\layouts\\CheckBoxLayout.xml");
+        layouts.set(&RadioButton::GET_TYPE(), "lib://Ghurund\\layouts\\RadioButtonLayout.xml");
+        layouts.set(&ExpandableContainer::GET_TYPE(), "lib://Ghurund\\layouts\\ExpandableContainer.xml");
     }
 
     void Theme::updateColors() {

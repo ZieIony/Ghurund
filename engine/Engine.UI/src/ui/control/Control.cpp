@@ -10,7 +10,6 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 
 #include <regex>
 
@@ -21,23 +20,23 @@ namespace Ghurund::UI {
         static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
         static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
         static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
-        static auto PROPERTY_FOCUS = ReadOnlyProperty<Control, Control*>("Focus", &getFocus);
-        static auto PROPERTY_FOCUSED = ReadOnlyProperty<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
+        static auto PROPERTY_FOCUS = Property<Control, Control*>("Focus", &getFocus);
+        static auto PROPERTY_FOCUSED = Property<Control, bool>("Focused", (bool(Control::*)()) & isFocused);
         static auto PROPERTY_POSITION = Property<Control, const FloatPoint&>("Position", (FloatPoint & (Control::*)()) & getPosition, (void(Control::*)(const FloatPoint&)) & setPosition);
         static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
         static auto PROPERTY_SCALE = Property<Control, const FloatPoint&>("Scale", (FloatPoint & (Control::*)()) & getScale, (void(Control::*)(const FloatPoint&)) & setScale);
-        static auto PROPERTY_TRANSFORMATION = ReadOnlyProperty<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
+        static auto PROPERTY_TRANSFORMATION = Property<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
         static auto PROPERTY_MINSIZE = Property<Control, const FloatSize&>("MinSize", (FloatSize & (Control::*)()) & getMinSize, (void(Control::*)(const FloatSize&)) & setMinSize);
-        static auto PROPERTY_SIZE = ReadOnlyProperty<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
+        static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
         static auto PROPERTY_PREFERREDSIZE = Property<Control, const Ghurund::UI::PreferredSize&>("PreferredSize", (Ghurund::UI::PreferredSize & (Control::*)()) & getPreferredSize, (void(Control::*)(const Ghurund::UI::PreferredSize&)) & setPreferredSize);
-        static auto PROPERTY_MEASUREDSIZE = ReadOnlyProperty<Control, FloatSize&>("MeasuredSize", (FloatSize & (Control::*)()) & getMeasuredSize);
+        static auto PROPERTY_MEASUREDSIZE = Property<Control, FloatSize&>("MeasuredSize", (FloatSize & (Control::*)()) & getMeasuredSize);
         static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
         static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
         static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
-        static auto PROPERTY_CONTEXT = ReadOnlyProperty<Control, IUIContext*>("Context", (IUIContext * (Control::*)()) & getContext);
+        static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", (IUIContext * (Control::*)()) & getContext);
         static auto PROPERTY_STYLE = Property<Control, const Ghurund::UI::Style*>("Style", (Ghurund::UI::Style * (Control::*)()) & getStyle, (void(Control::*)(const Ghurund::UI::Style*)) & setStyle);
-        static auto PROPERTY_POSITIONINWINDOW = ReadOnlyProperty<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
-        static auto PROPERTY_POSITIONONSCREEN = ReadOnlyProperty<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
+        static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
+        static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<Control>(Ghurund::UI::NAMESPACE_NAME, "Control")
             .withProperty(PROPERTY_NAME)
@@ -429,9 +428,9 @@ namespace Ghurund::UI {
 
     String Control::printTree() const {
         if (Name) {
-            return String(std::format(_T("{} \"{}\"\n"), Type.Name, *Name).c_str());
+            return String(std::format(_T("{} '{}' {}\n"), Type.Name, *Name, Size).c_str());
         } else {
-            return convertText<char, tchar>(Type.Name);
+            return String(std::format(_T("{} {}\n"), Type.Name, Size).c_str());
         }
     }
 #endif

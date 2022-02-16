@@ -6,6 +6,7 @@
 #include "core/string/String.h"
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
+#include "core/Concepts.h"
 
 #include <format>
 
@@ -38,6 +39,22 @@ struct std::formatter<Ghurund::Core::WString, wchar_t>:std::formatter<const wcha
     template <typename FormatContext>
     auto format(const Ghurund::Core::WString& s, FormatContext& ctx) {
         return std::formatter<const wchar_t*, wchar_t>::format(s.Data, ctx);
+    }
+};
+
+template <Ghurund::Core::StringConvertible T>
+struct std::formatter<T, char>:std::formatter<Ghurund::Core::String, char> {
+    template <typename FormatContext>
+    auto format(const T& s, FormatContext& ctx) {
+        return std::formatter<Ghurund::Core::String, char>::format(Ghurund::Core::toString(s), ctx);
+    }
+};
+
+template <Ghurund::Core::StringConvertible T>
+struct std::formatter<T, wchar_t>:std::formatter<Ghurund::Core::String, wchar_t> {
+    template <typename FormatContext>
+    auto format(const T& s, FormatContext& ctx) {
+        return std::formatter<Ghurund::Core::String, wchar_t>::format(Ghurund::Core::toString(s), ctx);
     }
 };
 

@@ -5,7 +5,6 @@
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "DirectXTypes.h"
 #include "core/logging/Logger.h"
 
@@ -13,13 +12,13 @@
 
 namespace Ghurund::Core::DirectX {
     const Ghurund::Core::Type& Graphics::GET_TYPE() {
-        static auto PROPERTY_DEVICE = Ghurund::Core::ReadOnlyProperty<Graphics, ID3D12Device*>("Device", (ID3D12Device * (Graphics::*)()) & getDevice);
-        static auto PROPERTY_DIRECTQUEUE = Ghurund::Core::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("DirectQueue", (ID3D12CommandQueue * (Graphics::*)()) & getDirectQueue);
-        static auto PROPERTY_COMPUTEQUEUE = Ghurund::Core::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("ComputeQueue", (ID3D12CommandQueue * (Graphics::*)()) & getComputeQueue);
-        static auto PROPERTY_COPYQUEUE = Ghurund::Core::ReadOnlyProperty<Graphics, ID3D12CommandQueue*>("CopyQueue", (ID3D12CommandQueue * (Graphics::*)()) & getCopyQueue);
-        static auto PROPERTY_FACTORY = Ghurund::Core::ReadOnlyProperty<Graphics, IDXGIFactory4*>("Factory", (IDXGIFactory4 * (Graphics::*)()) & getFactory);
-        static auto PROPERTY_DESCRIPTORALLOCATOR = Ghurund::Core::ReadOnlyProperty<Graphics, Ghurund::Core::DirectX::DescriptorAllocator&>("DescriptorAllocator", (Ghurund::Core::DirectX::DescriptorAllocator & (Graphics::*)()) & getDescriptorAllocator);
-        static auto PROPERTY_RESOURCEFACTORY = Ghurund::Core::ReadOnlyProperty<Graphics, GPUResourceFactory&>("ResourceFactory", (GPUResourceFactory & (Graphics::*)()) & getResourceFactory);
+        static auto PROPERTY_DEVICE = Property<Graphics, ID3D12Device*>("Device", &getDevice);
+        static auto PROPERTY_DIRECTQUEUE = Property<Graphics, ID3D12CommandQueue*>("DirectQueue", &getDirectQueue);
+        static auto PROPERTY_COMPUTEQUEUE = Property<Graphics, ID3D12CommandQueue*>("ComputeQueue", &getComputeQueue);
+        static auto PROPERTY_COPYQUEUE = Property<Graphics, ID3D12CommandQueue*>("CopyQueue", &getCopyQueue);
+        static auto PROPERTY_FACTORY = Property<Graphics, IDXGIFactory4*>("Factory", &getFactory);
+        static auto PROPERTY_DESCRIPTORALLOCATOR = Property<Graphics, Ghurund::Core::DirectX::DescriptorAllocator&>("DescriptorAllocator", &getDescriptorAllocator);
+        static auto PROPERTY_RESOURCEFACTORY = Property<Graphics, GPUResourceFactory&>("ResourceFactory", &getResourceFactory);
 
         static const auto CONSTRUCTOR = Constructor<Graphics>();
 

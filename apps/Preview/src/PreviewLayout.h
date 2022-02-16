@@ -26,13 +26,6 @@ namespace Preview {
         Ghurund::UI::CheckBox* themeCheckBox = nullptr;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>(NAMESPACE_NAME, GH_STRINGIFY(PreviewLayout))
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
-
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             __super::load(loader, xml);
 
@@ -58,7 +51,7 @@ namespace Preview {
 
             auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
                 if (args.Button == MouseButton::LEFT) {
-                    ColorView* colorView = (ColorView*)button.find(ColorView::TYPE);
+                    ColorView* colorView = (ColorView*)button.find(ColorView::GET_TYPE());
                     Theme->Colors.set(Theme::COLOR_ACCENT, colorView->Color.getValue(*colorView));
                     Theme->updateColors();
                     dispatchThemeChanged();
@@ -72,10 +65,14 @@ namespace Preview {
             color3->clicked += colorClickHandler;
             color4->clicked += colorClickHandler;
 
-            ColorView* colorView = (ColorView*)colorTheme->find(ColorView::TYPE);
+            ColorView* colorView = (ColorView*)colorTheme->find(ColorView::GET_TYPE());
             WindowsTheme::init();
             colorView->Color = ColorValue(WindowsTheme::getAccentColor());
             colorTheme->clicked += colorClickHandler;*/
+        }
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
     public:
@@ -87,12 +84,13 @@ namespace Preview {
 
         __declspec(property(get = getContainer)) StackLayout* Container;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
+            static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))
+                .withConstructor(CONSTRUCTOR)
+                .withSupertype(__super::GET_TYPE());
 
-        virtual const Ghurund::Core::Type& getType() const override {
             return TYPE;
         }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

@@ -14,15 +14,4 @@ namespace Ghurund {
     const ParameterType ParameterType::MATRIX = ParameterType(ParameterTypeEnum::MATRIX, "matrix", sizeof(XMFLOAT4X4));
     const ParameterType ParameterType::COLOR = ParameterType(ParameterTypeEnum::COLOR, "color", sizeof(XMFLOAT4));
     const ParameterType ParameterType::TEXTURE = ParameterType(ParameterTypeEnum::TEXTURE, "texture", sizeof(Pointer*));
-
-    const EnumValues<ParameterTypeEnum, ParameterType> ParameterType::VALUES = {
-        &ParameterType::INT,
-        &ParameterType::INT2,
-        &ParameterType::FLOAT,
-        &ParameterType::FLOAT2,
-        &ParameterType::FLOAT3,
-        &ParameterType::MATRIX,
-        &ParameterType::COLOR,
-        &ParameterType::TEXTURE
-    };
 }

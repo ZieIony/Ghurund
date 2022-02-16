@@ -21,9 +21,6 @@ namespace Ghurund::UI {
         uint32_t weight = 400, stretch = 0;
         Ghurund::Core::WString locale;
 
-    protected:
-        const Ghurund::Core::Type& GET_TYPE();
-
     public:
         TextFormat(Font* font, float size, unsigned int weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
             :size(size), weight(weight), italic(italic), locale(locale) {
@@ -81,8 +78,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getLocale)) const Ghurund::Core::WString& Locale;
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

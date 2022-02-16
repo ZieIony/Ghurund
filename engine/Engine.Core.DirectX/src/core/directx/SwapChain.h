@@ -28,7 +28,9 @@ namespace Ghurund::Core::DirectX {
         DXGI_FORMAT format;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         ~SwapChain() {
@@ -63,12 +65,6 @@ namespace Ghurund::Core::DirectX {
 
         Status resize(unsigned int width, unsigned int height);
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

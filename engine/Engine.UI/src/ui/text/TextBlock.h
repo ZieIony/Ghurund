@@ -18,8 +18,6 @@ namespace Ghurund::UI {
 
         virtual void onDraw(ICanvas& canvas) override;
 
-        static const Ghurund::Core::Type& GET_TYPE();
-
         ~TextBlock() {
             delete textLayout;
             delete color;
@@ -73,10 +71,10 @@ namespace Ghurund::UI {
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

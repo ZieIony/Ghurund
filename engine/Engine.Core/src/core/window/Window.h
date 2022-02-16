@@ -57,7 +57,9 @@ namespace Ghurund::Core {
             return false;
         }
 
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         Event<Window> positionChanged = *this;
@@ -124,13 +126,13 @@ namespace Ghurund::Core {
         }
 
         inline bool isVisible() {
-            return visible;
+            return visible.Value;
         }
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
         inline const IntPoint& getPosition() const {
-            return position;
+            return position.Value;
         }
 
         inline void setPosition(const IntPoint& position) {
@@ -150,7 +152,7 @@ namespace Ghurund::Core {
         }
 
         inline const IntSize& getSize() const {
-            return size;
+            return size.Value;
         }
 
         inline void setSize(const IntSize& size) {
@@ -211,12 +213,6 @@ namespace Ghurund::Core {
             return Status::OK;
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
   };
 }

@@ -97,10 +97,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\reflection\BaseTypedProperty.h" />
+    <ClInclude Include="src\core\Lazy.h" />
+    <ClInclude Include="src\core\reflection\BaseType.h" />
+    <ClInclude Include="src\core\reflection\ConstructorCollection.h" />
+    <ClInclude Include="src\core\reflection\Field.h" />
     <ClInclude Include="src\core\reflection\OperationNotSupportedException.h" />
-    <ClInclude Include="src\core\reflection\ReadOnlyProperty.h" />
-    <ClInclude Include="src\core\reflection\WriteOnlyProperty.h" />
+    <ClInclude Include="src\core\reflection\TypeMember.h" />
+    <ClInclude Include="src\core\reflection\Visibility.h" />
+    <ClInclude Include="src\core\Tuple.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -202,7 +206,6 @@
     <ClInclude Include="src\core\reflection\BaseProperty.h" />
     <ClInclude Include="src\core\reflection\Constructor.h" />
     <ClInclude Include="src\core\reflection\Method.h" />
-    <ClInclude Include="src\core\reflection\Parameter.h" />
     <ClInclude Include="src\core\reflection\Property.h" />
     <ClInclude Include="src\core\reflection\StandardTypes.h" />
     <ClInclude Include="src\core\reflection\Type.h" />
@@ -245,9 +248,15 @@
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
+    <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Feature.cpp" />
+    <ClInclude Include="src\core\BindableObservable.h" />
+    <ClCompile Include="src\core\math\Size.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\reflection\Type.cpp" />
+    <ClCompile Include="src\core\reflection\TypeMember.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />

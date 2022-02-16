@@ -397,9 +397,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& TextView::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<TextView>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, GH_STRINGIFY(TextView))
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

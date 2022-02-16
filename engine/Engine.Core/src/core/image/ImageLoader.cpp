@@ -231,7 +231,7 @@ namespace Ghurund::Core {
         const Ghurund::Core::ResourceFormat* format,
         Ghurund::Core::SaveOption options
     ) const {
-        if (resource.Type != Image::TYPE) {
+        if (resource.Type != Image::GET_TYPE()) {
             Logger::log(LogType::ERR0R, _T("resource needs to be of type Ghurund::Core::Image\n"));
             throw std::invalid_argument("resource needs to be of type Ghurund::Core::Image\n");
         }

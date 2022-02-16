@@ -4,6 +4,7 @@
 #include "TestClass.h"
 #include "MemoryGuard.h"
 #include "core/reflection/StandardTypes.h"
+#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -47,6 +48,23 @@ public:
 
         const Ghurund::Core::Type& intType = Ghurund::Core::getType<uint32_t>();
         Assert::AreNotEqual(intPtrType, intType.BaseType);
+    }
+
+    TEST_METHOD(Type_qualifiedType) {
+        UnitTest::TestClass t3;
+        const Type& type3 = getType(t3);
+        UnitTest::TestClass* t2 = &t3;
+        const Type& type2 = getType(t2);
+        UnitTest::TestClass* const& t = t2;
+        const Type& type = getType(t);
+
+        Assert::AreEqual(type3, type2.BaseType);
+        Assert::AreEqual(type3, type.BaseType);
+    }
+
+    TEST_METHOD(Type_lazyType) {
+        UnitTest::TestClass t;
+        Assert::AreEqual(getType<UnitTest::TestClass>(), t.GET_TYPE());
     }
     };
 }

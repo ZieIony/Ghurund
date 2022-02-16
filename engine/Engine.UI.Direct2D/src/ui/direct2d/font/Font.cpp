@@ -3,7 +3,6 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Core {
@@ -17,7 +16,7 @@ namespace Ghurund::Core {
 namespace Ghurund::UI::Direct2D
 {
     const Ghurund::Core::Type& Font::GET_TYPE() {
-        static auto PROPERTY_COLLECTION = ReadOnlyProperty<Font, IDWriteFontCollection*>("Collection", &getCollection);
+        static auto PROPERTY_COLLECTION = Property<Font, IDWriteFontCollection*>("Collection", &getCollection);
 
         static const auto CONSTRUCTOR = Constructor<Font>();
 

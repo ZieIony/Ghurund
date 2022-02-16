@@ -3,12 +3,11 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Font::GET_TYPE() {
-        static auto PROPERTY_FAMILYNAME = ReadOnlyProperty<Font, const WString&>("FamilyName", &getFamilyName);
+        static auto PROPERTY_FAMILYNAME = Property<Font, const WString&>("FamilyName", &getFamilyName);
 
         static const auto CONSTRUCTOR = Constructor<Font>();
 

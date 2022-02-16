@@ -20,13 +20,13 @@ namespace Ghurund::Core {
 
         template<typename T>
         inline void set(std::unique_ptr<Loader> loader) {
-            loaders.set(&T::TYPE, loader.release());
+            loaders.set(&(const Ghurund::Core::Type&)T::GET_TYPE(), loader.release());
         }
 
         template<typename T>
         inline Loader* get() {
             for (auto [type, loader] : loaders) {
-                if (T::TYPE.isOrExtends(*type))
+                if (T::GET_TYPE().isOrExtends(*type))
                     return loader;
             }
             return nullptr;
@@ -34,8 +34,8 @@ namespace Ghurund::Core {
 
         template<typename T>
         inline void remove() {
-            Loader* loader = loaders.get(&T::TYPE);
-            loaders.remove(&T::TYPE);
+            Loader* loader = loaders.get(&T::GET_TYPE());
+            loaders.remove(&T::GET_TYPE());
             delete loader;
         }
     };

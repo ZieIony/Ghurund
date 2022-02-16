@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common.h"
-#include "core/reflection/Type.h"
 
 #include <compare>
 

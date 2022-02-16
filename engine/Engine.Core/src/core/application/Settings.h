@@ -39,6 +39,11 @@ namespace Ghurund::Core {
         };
 
     public:
+        static inline const AString WIDTH = "width";
+        static inline const AString HEIGHT = "height";
+        static inline const AString WINDOWED = "windowed";
+        static inline const AString GRAPHICS = "graphics";
+
         Settings() {
             reset();
         }
@@ -58,6 +63,11 @@ namespace Ghurund::Core {
         template<typename Result>
         inline Result get(const AString& name) const {
             return Ghurund::Core::parse<Result>(values[name]);
+        }
+
+        template<typename T>
+        inline void set(const AString& name, const T& value) {
+            values.set(name, toString(value));
         }
 
         void reset() {

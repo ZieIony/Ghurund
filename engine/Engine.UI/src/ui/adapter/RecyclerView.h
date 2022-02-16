@@ -14,9 +14,13 @@ namespace Ghurund::UI {
         LayoutManager* layoutManager = nullptr;
         ChildrenProvider* childrenProvider = nullptr;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
         ~RecyclerView() {
             delete childrenProvider;
             delete layoutManager;
@@ -91,13 +95,5 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event);
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args);
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

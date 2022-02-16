@@ -17,4 +17,9 @@ namespace Ghurund::Core {
     String Object::toString() const {
         return String(std::format(_T("{}::{}"), Type.Namespace, _T("::"), Type.Name).c_str());
     }
+
+    template<>
+    String toString(const Object& obj) {
+        return obj.toString();
+    }
 }

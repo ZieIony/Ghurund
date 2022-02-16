@@ -1,7 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreviewLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
 	<StackLayout alignment="left, bottom">
-		<ColorView preferredSize="fill, fill" style="theme://style\ColorView_background" name="source" color="#ffaf3301"/>
-		<ColorView preferredSize="fill, fill" style="theme://style\ColorView_background" color="{Parent/source/Color}"/>
+		<ColorView preferredSize="fill, fill" style="theme://style\ColorView_background"/>
+		<StackLayout name="container"
+					 alignment="center, center"/>
+		<PaddingContainer padding="8, 4"
+						  preferredSize="fill, wrap">
+			<LinearLayout orientation="vertical"
+						  preferredSize="fill, wrap">
+				<LinearLayout orientation="horizontal">
+					<PaddingContainer padding="0,4,4,4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="color1">
+							<ColorView color="#ffd32f2f"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="color2">
+							<ColorView color="#ff1976d2"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="color3">
+							<ColorView color="#ffffa000"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="color4">
+							<ColorView color="#ff388e3c"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+					<PaddingContainer padding="4">
+						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
+								name="colorTheme">
+							<ColorView color="#00000000"
+									   preferredSize="24,24"/>
+						</Button>
+					</PaddingContainer>
+				</LinearLayout>
+			</LinearLayout>
+		</PaddingContainer>
 	</StackLayout>
 </PreviewLayout>

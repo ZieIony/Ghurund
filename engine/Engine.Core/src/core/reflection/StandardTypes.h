@@ -8,6 +8,10 @@
 #include "core/string/String.h"
 
 namespace Ghurund::Core {
+
+    template<>
+    const Type& getType<void>();
+
     template<>
     const Type& getType<uint32_t>();
 

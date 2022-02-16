@@ -1,7 +1,7 @@
 #include "Ghurund.Core.h"
 
 #include "core/application/Application.h"
-#include "GdiWindow.h"
+#include "Direct2DWindow.h"
 
 namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {
@@ -10,7 +10,7 @@ namespace Samples {
             ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
             ResourceManager.Libraries.add(L"icons", DirectoryPath(L"./icons"));
 
-            auto window = ghnew GdiWindow(this->Timer);
+            auto window = ghnew Direct2DWindow(this->Timer);
             window->title = _T("Preview");
             window->Size = { Settings.get<uint32_t>("width"), Settings.get<uint32_t>("height") };
             Windows.add(window);

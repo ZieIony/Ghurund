@@ -1,10 +1,10 @@
 #pragma once
 
-#include "BaseTypedProperty.h"
+#include "BaseProperty.h"
 
 namespace Ghurund::Core {
     template<class OwnerT, class PropType>
-    class BaseTypedRWProperty:public BaseTypedProperty<OwnerT, PropType> {
+    class BaseTypedProperty:public BaseProperty {
     protected:
         typedef std::function<PropType(OwnerT&)> Getter;
         typedef std::function<void(OwnerT&, PropType)> Setter;
@@ -13,32 +13,45 @@ namespace Ghurund::Core {
         Getter getter = nullptr;
         Setter setter = nullptr;
 
+    protected:
+        virtual const Ghurund::Core::Type& getOwnerTypeImpl() const override {
+            return Ghurund::Core::getType<OwnerT>();
+        }
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return Ghurund::Core::getType<PropType>();
+        }
+
+        virtual bool canReadImpl() const override {
+            return getter != nullptr;
+        }
+
+        virtual bool canWriteImpl() const override {
+            return setter != nullptr;
+        }
+
     public:
-        BaseTypedRWProperty(
+        BaseTypedProperty(
             const AString& name,
             Getter getter,
             Setter setter,
-            const AString& group = BaseTypedProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedProperty<OwnerT, PropType>(name) {
-            this->getter = getter;
-            this->setter = setter;
-        }
+            const AString& group = DEFAULT_GROUP
+        ):BaseProperty(
+            name,
+            group
+            ), getter(getter), setter(setter) {}
 
-        BaseTypedRWProperty(
+        BaseTypedProperty(
             const AString& name,
             Getter getter,
-            const AString& group = BaseTypedProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedProperty<OwnerT, PropType>(name) {
-            this->getter = getter;
-        }
+            const AString& group = DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType>(name, getter, nullptr, group) {}
 
-        BaseTypedRWProperty(
+        BaseTypedProperty(
             const AString& name,
             Setter setter,
-            const AString& group = BaseTypedProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedProperty<OwnerT, PropType>(name) {
-            this->setter = setter;
-        }
+            const AString& group = DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType>(name, nullptr, setter, group) {}
 
         inline PropType get(OwnerT& owner) const {
             return getter(owner);
@@ -47,77 +60,69 @@ namespace Ghurund::Core {
         inline void set(OwnerT& owner, PropType value) const {
             setter(owner, value);
         }
-
-        virtual bool canRead() const override {
-            return getter != nullptr;
-        }
-
-        virtual bool canWrite() const override {
-            return setter != nullptr;
-        }
     };
 
     template<class OwnerT, class PropType>
-    class Property:public BaseTypedRWProperty<OwnerT, PropType> {
+    class Property:public BaseTypedProperty<OwnerT, PropType> {
     public:
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType>::Getter getter,
-            BaseTypedRWProperty<OwnerT, PropType>::Setter setter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType>(name, getter, setter, group) {}
+            BaseTypedProperty<OwnerT, PropType>::Getter getter,
+            BaseTypedProperty<OwnerT, PropType>::Setter setter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType>(name, getter, setter, group) {}
 
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType>::Getter getter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType>(name, getter, group) {}
+            BaseTypedProperty<OwnerT, PropType>::Getter getter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType>(name, getter, group) {}
 
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType>::Setter setter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType>(name, setter, group) {}
+            BaseTypedProperty<OwnerT, PropType>::Setter setter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType>(name, setter, group) {}
 
         virtual void getRaw(void* obj, std::function<void(void*)> onGet) const override {
-            PropType val = BaseTypedRWProperty<OwnerT, PropType>::get(*(OwnerT*)obj);
+            PropType val = BaseTypedProperty<OwnerT, PropType>::get(*(OwnerT*)obj);
             onGet((void*)&val);
         }
 
         virtual void setRaw(void* obj, void* val) const override {
-            BaseTypedRWProperty<OwnerT, PropType>::set(*(OwnerT*)obj, *(std::remove_cvref_t<PropType>*)val);
+            BaseTypedProperty<OwnerT, PropType>::set(*(OwnerT*)obj, *(std::remove_cvref_t<PropType>*)val);
         }
     };
 
     template<class OwnerT, class PropType>
-    class Property<OwnerT, PropType*>:public BaseTypedRWProperty<OwnerT, PropType*> {
+    class Property<OwnerT, PropType*>:public BaseTypedProperty<OwnerT, PropType*> {
     public:
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType*>::Getter getter,
-            BaseTypedRWProperty<OwnerT, PropType*>::Setter setter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType*>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType*>(name, getter, setter, group) {}
+            BaseTypedProperty<OwnerT, PropType*>::Getter getter,
+            BaseTypedProperty<OwnerT, PropType*>::Setter setter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType*>(name, getter, setter, group) {}
 
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType*>::Getter getter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType*>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType*>(name, getter, group) {}
+            BaseTypedProperty<OwnerT, PropType*>::Getter getter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType*>(name, getter, group) {}
 
         Property(
             const AString& name,
-            BaseTypedRWProperty<OwnerT, PropType*>::Setter setter,
-            const AString& group = BaseTypedRWProperty<OwnerT, PropType*>::DEFAULT_GROUP
-        ):BaseTypedRWProperty<OwnerT, PropType*>(name, setter, group) {}
+            BaseTypedProperty<OwnerT, PropType*>::Setter setter,
+            const AString& group = BaseProperty::DEFAULT_GROUP
+        ):BaseTypedProperty<OwnerT, PropType*>(name, setter, group) {}
 
         virtual void getRaw(void* obj, std::function<void(void*)> onGet) const override {
-            PropType* val = BaseTypedRWProperty<OwnerT, PropType*>::get(*(OwnerT*)obj);
+            PropType* val = BaseTypedProperty<OwnerT, PropType*>::get(*(OwnerT*)obj);
             onGet((void*)val);
         }
 
         virtual void setRaw(void* obj, void* val) const override {
-            BaseTypedRWProperty<OwnerT, PropType*>::set(*(OwnerT*)obj, (PropType*)val);
+            BaseTypedProperty<OwnerT, PropType*>::set(*(OwnerT*)obj, (PropType*)val);
         }
     };
 }

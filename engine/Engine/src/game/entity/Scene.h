@@ -20,8 +20,6 @@ namespace Ghurund {
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
         virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
-        static const Ghurund::Core::Type& GET_TYPE();
-
     public:
 
         Scene() {}
@@ -56,10 +54,10 @@ namespace Ghurund {
         inline void render(CommandList& commandList) {
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

@@ -5,7 +5,10 @@
 
 namespace Ghurund::Core {
     template <class T, class U>
-    concept Derived = std::is_base_of<U, T>::value;
+    concept Derived = std::is_same_v<U, T> || std::is_base_of_v<U, T>;
+
+    template <class T, class U>
+    concept NotDerived = !std::is_same_v<U, T> && !std::is_base_of_v<U, T>;
 
     template <class T>
     concept Qualified = std::is_const_v<T> || std::is_pointer_v<T> || std::is_reference_v<T> || std::is_volatile_v<T>;

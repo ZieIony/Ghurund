@@ -31,10 +31,11 @@ namespace Ghurund::Core::DirectX {
         PointerList<Pointer*> pointerRefs;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
-
         CommandList() {
 #ifdef _DEBUG
             Name = L"unnamed CommandList";
@@ -74,13 +75,7 @@ namespace Ghurund::Core::DirectX {
             commandList->ResourceBarrier(1, &barrier);
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
 
         void addResourceRef(ID3D12Object* resource) {
             resource->AddRef();

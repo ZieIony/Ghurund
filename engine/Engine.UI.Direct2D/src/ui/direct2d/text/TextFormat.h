@@ -13,7 +13,9 @@ namespace Ghurund::UI::Direct2D {
         IDWriteTextFormat* format = nullptr;
 
     protected:
-        const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         TextFormat(Ghurund::UI::Direct2D::Font* font, float size, unsigned int weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
@@ -36,10 +38,6 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getFormat)) IDWriteTextFormat* Format;
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

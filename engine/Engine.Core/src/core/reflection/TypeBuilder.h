@@ -11,17 +11,17 @@ namespace Ghurund::Core {
         const AString name;
         Type* supertype = nullptr;
         size_t size;
-        List<BaseConstructor*> constructors;
-        List<BaseProperty*> properties;
-        List<BaseMethod*> methods;
-        List<Type> templateParams;
+        List<std::reference_wrapper<const BaseConstructor>> constructors;
+        List<std::reference_wrapper<const BaseProperty>> properties;
+        List<std::reference_wrapper<const BaseMethod>> methods;
+        List<std::reference_wrapper<const Type>> templateParams;
 
     public:
         TypeBuilder(const AString& _namespace, const AString& name):_namespace(_namespace), name(name), size(sizeof(T)) {}
 
         template<typename... ArgsT>
         inline TypeBuilder& withConstructor(const Constructor<T, ArgsT...>& constructor) {
-            constructors.add((BaseConstructor*)&constructor);
+            constructors.add(constructor);
             return *this;
         }
 
@@ -41,21 +41,22 @@ namespace Ghurund::Core {
         }
 
         inline TypeBuilder& withProperty(const BaseProperty& property) {
-            properties.add((BaseProperty*)&property);
+            properties.add(property);
             return *this;
         }
 
         template<typename ReturnT, typename... ArgsT>
         inline TypeBuilder& withMethod(const Method<T, ReturnT, ArgsT...>& method) {
-            methods.add(&method);
+            methods.add(method);
             return *this;
         }
 
-        inline TypeBuilder& withTemplateParams(const List<Type>& types) {
-            if (!types.Empty) {
-                templateParams.addAll(types);
-                modifiers |= TypeModifier::TEMPLATE;
-            }
+        template<typename... ArgsT>
+        inline TypeBuilder& withTemplateParams() {
+            const Array<std::reference_wrapper<const Type>> types = { getType<ArgsT>()... };
+            for (const Type& type : types)
+                templateParams.add(type);
+            modifiers |= TypeModifier::TEMPLATE;
             return *this;
         }
 

@@ -2,7 +2,6 @@
 #include "SvgDocument.h"
 
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
 
@@ -21,15 +20,12 @@ namespace Ghurund::UI::Direct2D {
     const Ghurund::Core::Type& SvgDocument::GET_TYPE() {
         using namespace Ghurund::Core;
 
-        static auto PROPERTY_DATA = ReadOnlyProperty<SvgDocument, ID2D1SvgDocument*>("Data", &getData);
-        static auto PROPERTY_SIZE = ReadOnlyProperty<SvgDocument, FloatSize>("Size", &getSize);
-
-        static const auto CONSTRUCTOR = Constructor<SvgDocument>();
+        static auto PROPERTY_DATA = Property<SvgDocument, ID2D1SvgDocument*>("Data", &getData);
+        static auto PROPERTY_SIZE = Property<SvgDocument, FloatSize>("Size", &getSize);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<SvgDocument>(Ghurund::UI::NAMESPACE_NAME, "SvgDocument")
             .withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_SIZE)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

@@ -27,31 +27,4 @@ namespace Ghurund {
     const ParameterId ParameterId::DIFFUSE_TEXTURE = ParameterId(ParameterIdEnum::DIFFUSE_TEXTURE, "DIFFUSE_TEXTURE", "diffuseTexture", ParameterType::TEXTURE);
     const ParameterId ParameterId::SPECULAR_TEXTURE = ParameterId(ParameterIdEnum::SPECULAR_TEXTURE, "SPECULAR_TEXTURE", "specularTexture", ParameterType::TEXTURE);
     const ParameterId ParameterId::NORMAL_TEXTURE = ParameterId(ParameterIdEnum::NORMAL_TEXTURE, "NORMAL_TEXTURE", "normalTexture", ParameterType::TEXTURE);
-
-    const EnumValues<ParameterIdEnum, ParameterId> ParameterId::VALUES = {
-        &ParameterId::VIEWPORT_SIZE,
-        &ParameterId::OUTLINE_COLOR,
-        &ParameterId::PARTY_COLOR,
-        &ParameterId::RANDOM,
-        &ParameterId::AMBIENT_LIGHT,
-        &ParameterId::POSITION,
-        &ParameterId::SCALE,
-        &ParameterId::CAMERA_DIRECTION,
-        &ParameterId::CAMERA_POSITION,
-        &ParameterId::CAMERA_TARGET,
-        &ParameterId::CAMERA_UP,
-        &ParameterId::CAMERA_RIGHT,
-        &ParameterId::FOV,
-        &ParameterId::ZNEAR,
-        &ParameterId::ZFAR,
-        &ParameterId::WORLD,
-        &ParameterId::WORLD_IT,
-        &ParameterId::VIEW,
-        &ParameterId::PROJECTION,
-        &ParameterId::VIEW_PROJECTION,
-        &ParameterId::VIEW_PROJECTION_INV,
-        &ParameterId::DIFFUSE_TEXTURE,
-        &ParameterId::SPECULAR_TEXTURE,
-        &ParameterId::NORMAL_TEXTURE
-    };
 }

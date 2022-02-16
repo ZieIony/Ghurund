@@ -12,4 +12,9 @@ namespace Ghurund::Core {
     inline uint32_t parse(const AString& text) {
         return atoi(text.Data);
     }
+
+    template<>
+    inline float parse(const AString& text) {
+        return (float)atof(text.Data);
+    }
 }

@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& StateIndicator::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<StateIndicator>();
-        static const Ghurund::Core::Type& TYPE = TypeBuilder<StateIndicator>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicator>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

@@ -16,7 +16,7 @@ namespace Ghurund::Core {
     void Pointer::checkReferenceCount() {
         if (referenceCount == 0) {
             const auto& info = typeid(*this);
-            Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, AString(TYPE.Name), AString(info.name()), referenceCount);
+            Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) release refCount={}. The object may have been deleted or is being released in its destructor\n"), (address_t)this, AString(GET_TYPE().Name), AString(info.name()), referenceCount);
         }
     }
 #endif
@@ -28,9 +28,9 @@ namespace Ghurund::Core {
         if (referenceCount) {
             const auto& info = typeid(*this);
             if (referenceCount == 1) {
-                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (address_t)this, AString(TYPE.Name), AString(info.name()));
+                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount=1. This deletion could be replaced with Pointer::release() call\n"), (address_t)this, AString(GET_TYPE().Name), AString(info.name()));
             } else {
-                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount={}. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (address_t)this, AString(TYPE.Name), AString(info.name()), referenceCount);
+                Logger::log(LogType::WARNING, _T("[{:#x}] {} ({}) delete refCount={}. The object may still be in use. Consider replacing deletion with Pointer::release() call\n"), (address_t)this, AString(GET_TYPE().Name), AString(info.name()), referenceCount);
             }
         }
 #endif

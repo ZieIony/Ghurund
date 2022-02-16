@@ -16,7 +16,10 @@ namespace Ghurund::Core::DirectX {
         float refreshRate;
         DXGI_FORMAT format;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         DisplayMode(DXGI_MODE_DESC mode) {
@@ -42,12 +45,6 @@ namespace Ghurund::Core::DirectX {
             return format;
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

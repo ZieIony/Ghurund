@@ -18,13 +18,13 @@ namespace Ghurund::Core::DirectX {
 
     class Graphics;
 
-    class HeapAllocator:public Allocator<uint64_t> {
+    class HeapAllocator:public Allocator {
     public:
         ID3D12Heap* heap = nullptr;
-        AllocationStrategy<uint64_t>* strategy;
+        AllocationStrategy* strategy;
 
     public:
-        HeapAllocator(Graphics& graphics, uint64_t size, AllocationStrategy<uint64_t>* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
+        HeapAllocator(Graphics& graphics, uint64_t size, AllocationStrategy* strategy, D3D12_HEAP_TYPE type, D3D12_HEAP_FLAGS flags);
 
         ~HeapAllocator() {
             if (heap != nullptr)

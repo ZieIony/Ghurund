@@ -3,7 +3,7 @@
 #include "Allocator.h"
 
 namespace Ghurund::Core {
-    class SimpleAllocator:public Allocator<size_t> {
+    class SimpleAllocator:public Allocator {
     public:
         SimpleAllocator() {}
 

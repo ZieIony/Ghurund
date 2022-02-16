@@ -68,13 +68,4 @@ namespace Ghurund::Core {
             criticalSection.leave();
         }
     };
-
-    template<typename T>
-    String toString(const T& obj) {
-        const Type& type = getType<T>();
-        return String(std::format(_T("{}::{}"), type.Namespace, _T("::"), type.Name).c_str());
-    }
-
-    template<>
-    String toString(const Object& obj);
 }

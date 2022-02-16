@@ -12,14 +12,12 @@ namespace Ghurund::Core {
     template<class Type, class Type2>
     class EnumValues:public Noncopyable {
     private:
-        Map<Type, Type2*> values;
-        Map<AString, Type2*> valuesByName;
+        mutable Map<Type, std::reference_wrapper<const Type2>> values;
+        mutable Map<AString, std::reference_wrapper<const Type2>> valuesByName;
 
-        EnumValues(const std::initializer_list<const Type2*> list) {
-            for (auto it = list.begin(); it != list.end(); ++it) {
-                values.set((*it)->Value, (Type2*)(*it));
-                valuesByName.set((*it)->Name, (Type2*)(*it));
-            }
+        inline void add(const std::reference_wrapper<const Type2> value) const {
+            values.set(value->Value, value);
+            valuesByName.set(value->Name, value);
         }
 
     public:
@@ -27,15 +25,15 @@ namespace Ghurund::Core {
         friend typename Type2;
 
         inline const Type2& operator[](const Type& key) const {
-            return *values.get(key);
+            return values.get(key);
         }
 
         inline const Type2& operator[](const size_t index) const {
-            return *values.getValue(index);
+            return values.getValue(index);
         }
 
         inline const Type2& operator[](const AString& name) const {
-            return *valuesByName.get(name);
+            return valuesByName.get(name);
         }
 
         inline size_t getSize() const {
@@ -68,6 +66,7 @@ namespace Ghurund::Core {
         const AString name;
 
         Enum(const Enum& other) = delete;
+        Enum(Enum&& other) = delete;
 
     protected:
         Enum(EnumValueType value, const AString& name):name(name) {
@@ -75,6 +74,12 @@ namespace Ghurund::Core {
         }
 
     public:
+        static inline const EnumValues<EnumValueType, EnumType> VALUES;
+
+        Enum() {
+            VALUES.add(*this);
+        }
+
         inline EnumValueType getValue() const {
             return value;
         }

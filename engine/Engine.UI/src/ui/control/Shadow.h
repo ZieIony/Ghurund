@@ -15,9 +15,15 @@ namespace Ghurund::UI {
         //ID2D1SolidColorBrush* fillBrush = nullptr;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Shadow::GET_TYPE();
+
         Shadow(const ColorAttr& color = ColorValue(Ghurund::UI::Color(0, 0, 0, 0.6f)));
 
         ~Shadow();
@@ -59,14 +65,6 @@ namespace Ghurund::UI {
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
     class ShadowButtonStyle:public TypedStyle<Shadow> {

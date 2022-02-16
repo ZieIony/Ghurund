@@ -12,9 +12,15 @@ namespace Ghurund::UI {
         Ghurund::UI::Shape* shape = nullptr;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Border::GET_TYPE();
+
         Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) {
             Color = color;
             preferredSize.width = PreferredSize::Width::FILL;
@@ -67,14 +73,6 @@ namespace Ghurund::UI {
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
     class BorderOnBackgroundStyle:public TypedStyle<Border> {

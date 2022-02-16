@@ -1,24 +1,27 @@
 #pragma once
 
 #include "core/string/String.h"
+#include "core/Lazy.h"
 
 namespace Ghurund::Core {
     class Type;
 
     class Object {
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const {
+            return GET_TYPE();
+        }
 
     public:
         virtual ~Object() = 0 {}   // gives a common destructor to all deriving classes
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const {
-            return TYPE;
+        inline const Ghurund::Core::Type& getType() const {
+            return getTypeImpl();
         }
 
-        __declspec(property(get = getType)) const Type &Type;
+        __declspec(property(get = getType)) const Type& Type;
 
         /**
          * @brief Constructs a deep copy of this object.
@@ -33,14 +36,15 @@ namespace Ghurund::Core {
 
     /**
      * @brief Clones an object and casts it back to its type.
-     * @tparam T 
-     * @param obj An object to clone. Can be null.
+     * @tparam T
+     * @param obj An object to clone.
      * @return A clone of the passed object. Can be null.
     */
     template<class T>
-    inline T* clone(T* obj) {
-        if (obj)
-            return (T*)obj->clone();
-        return nullptr;
+    inline T* clone(T& obj) {
+        return (T*)obj.clone();
     }
+
+    template<>
+    String toString(const Object& obj);
 }

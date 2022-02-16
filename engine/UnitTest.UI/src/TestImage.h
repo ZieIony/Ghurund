@@ -6,7 +6,7 @@ namespace UnitTest {
     using namespace Ghurund::UI;
 
     class TestImage:public ImageDrawable {
-    protected:
+    public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<ImageDrawable>(Ghurund::UI::NAMESPACE_NAME, "ImageDrawable")
                 .withSupertype(__super::GET_TYPE());
@@ -14,11 +14,8 @@ namespace UnitTest {
             return TYPE;
         }
 
-    public:
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

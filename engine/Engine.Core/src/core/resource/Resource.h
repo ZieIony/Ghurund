@@ -48,9 +48,11 @@ namespace Ghurund::Core {
         Status writeHeader(MemoryOutputStream& stream) const;
         Status readHeader(MemoryInputStream& stream);
 
-        static const Ghurund::Core::Type& GET_TYPE();
-
         static const Array<ResourceFormat>& GET_FORMATS();
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         ~Resource();
@@ -103,13 +105,7 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize)) const DataSize& Size;*/
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 

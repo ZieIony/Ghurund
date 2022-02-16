@@ -42,7 +42,9 @@ namespace Ghurund::Core {
         Resource* loadInternal(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options);
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         inline static const wchar_t* const ENGINE_LIB_NAME = L"Ghurund";
@@ -70,7 +72,7 @@ namespace Ghurund::Core {
                 if (loader) {
                     resource = (Type*)loadInternal(*loader, path, format, options);
                 } else {
-                    auto message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    auto message = std::format(_T("loader for type {} is missing\n"), ((const Ghurund::Core::Type&)Type::GET_TYPE()).Name);
                     Logger::log(LogType::ERR0R, message.c_str());
                     auto exMessage = convertText<tchar, char>(String(message.c_str()));
                     throw InvalidStateException(exMessage.Data);
@@ -101,7 +103,7 @@ namespace Ghurund::Core {
                 if (loader) {
                     resource = (Type*)loadInternal(*loader, file, format, options);
                 } else {
-                    auto message = std::format(_T("loader for type {} is missing\n"), Type::TYPE.Name);
+                    auto message = std::format(_T("loader for type {} is missing\n"), Type::GET_TYPE().Name);
                     Logger::log(LogType::ERR0R, message.c_str());
                     AString exMessage = convertText<tchar, char>(String(message.c_str()));
                     throw InvalidStateException(exMessage.Data);
@@ -190,12 +192,6 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getLibraries)) LibraryList& Libraries;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
    };
 }

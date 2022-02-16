@@ -1,10 +1,9 @@
 #pragma once
 
-#include "application/Application.h"
 #include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
 #include "ui/RootView.h"
-#include "ui/layout/LayoutLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
 #include <ui/widget/button/Button.h>
@@ -27,7 +26,25 @@ namespace Ghurund::Editor {
         EditorWindowBinding* binding;
 
     public:
-        EditorWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
+        EditorWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+            Style = WindowStyle{
+             .hasMinimizeButton = true,
+             .hasMaximizeButton = true,
+             .hasTitle = true,
+             .borderStyle = WindowBorderStyle::RESIZE,
+             .showOnTaskbar = true
+            };
+        }
+
+        ~EditorWindow() {
+            delete context;
+            delete lightTheme;
+            delete darkTheme;
+        }
+
+        virtual void init(WindowManager& windowManager) {
+            __super::init(windowManager);
+
             /*
             auto fontLoader = ghnew FontLoader(*app.Graphics2D.DWriteFactory);
             fontLoader->init();
@@ -65,12 +82,6 @@ namespace Ghurund::Editor {
             rootView->Child = binding->Root;
 
             RootView = rootView;*/
-        }
-
-        ~EditorWindow() {
-            delete context;
-            delete lightTheme;
-            delete darkTheme;
         }
     };
 }

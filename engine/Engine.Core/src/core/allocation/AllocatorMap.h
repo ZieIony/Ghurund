@@ -5,22 +5,20 @@
 #include "core/collection/Map.h"
 
 namespace Ghurund::Core {
-	template<typename MemoryType>
 	class AllocatorMap {
 	private:
-		typename size_t key_t;
-		Map<key_t, Allocator<MemoryType>*> allocators;
+		Map<size_t, Allocator*> allocators;
 
 	public:
 		template<typename Type>
-		inline void set(const Allocator<MemoryType>& allocator) {
-			TypeSequence<AllocatorMap<MemoryType>, key_t, Type> seq;
-			allocators.set(seq.value(), (Allocator<MemoryType>*)& allocator);
+		inline void set(const Allocator& allocator) {
+			TypeSequence<AllocatorMap, size_t, Type> seq;
+			allocators.set(seq.value(), (Allocator*)& allocator);
 		}
 
 		template<typename Type>
-		inline Allocator<MemoryType>* get() {
-			TypeSequence<AllocatorMap<MemoryType>, key_t, Type> seq;
+		inline Allocator* get() {
+			TypeSequence<AllocatorMap, size_t, Type> seq;
 			size_t index = allocators.indexOfKey(seq.value());
 			if (index == allocators.Size)
 				return nullptr;
@@ -29,7 +27,7 @@ namespace Ghurund::Core {
 
 		template<typename Type>
 		inline void remove() {
-			TypeSequence<AllocatorMap<MemoryType>, key_t, Type> seq;
+			TypeSequence<AllocatorMap, size_t, Type> seq;
 			allocators.remove(seq.value());
 		}
 

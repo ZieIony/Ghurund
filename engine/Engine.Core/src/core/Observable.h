@@ -1,7 +1,8 @@
 #pragma once
 
-#include "core/Object.h"
 #include "ObservableHandler.h"
+#include "core/Object.h"
+#include "core/SharedPointer.h"
 #include "core/collection/List.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
@@ -13,25 +14,12 @@ namespace Ghurund::Core {
     template<class T>
     class Observable:public Object {
     private:
-        List<ObservableHandler<T>> listeners;
+        List<SharedPointer<ObservableHandler<T>>> listeners;
         T value;
-        ObservableHandler<T> chainHandler = [](const T&) {};
-        Observable<T>* sourceObservable = nullptr;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = Constructor<Observable<T>>();
-            static const auto CONSTRUCTOR2 = Constructor<Observable<T>, const T&>();
-            static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
-        
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
-                .withConstructor(CONSTRUCTOR)
-                .withConstructor(CONSTRUCTOR2)
-                .withSupertype(__super::GET_TYPE())
-                .withProperty(VALUE_PROPERTY)
-                .withTemplateParams({ Ghurund::Core::getType<T>() });
-
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const {
+            return GET_TYPE();
         }
 
     public:
@@ -39,63 +27,69 @@ namespace Ghurund::Core {
 
         Observable(const T& value):value(value) {}
 
+        Observable(const Observable<T>& other) = delete;
+
+        Observable(Observable<T>&& other) = delete;
+
         ~Observable() {
-            if (sourceObservable)
-                sourceObservable->remove(chainHandler);
+            for (auto& handler : listeners)
+                handler->Owner = nullptr;
         }
 
         inline void add(std::function<void(const T& args)> lambda) {
-            listeners.add(lambda);
+            listeners.add(ghnew ObservableHandler(lambda));
             lambda(value);
         }
 
         inline Observable<T>& operator+=(const std::function<void(const T& args)>& lambda) {
-            listeners.add(lambda);
+            listeners.add(ghnew ObservableHandler(lambda));
             lambda(value);
             return *this;
         }
 
-        inline void add(const ObservableHandler<T>& handler) {
+        inline void add(SharedPointer<ObservableHandler<T>> handler) {
             listeners.add(handler);
-            handler(value);
+            handler->Owner = this;
+            handler->invoke(value);
         }
 
-        inline Observable<T>& operator+=(const ObservableHandler<T>& handler) {
+        inline Observable<T>& operator+=(SharedPointer<ObservableHandler<T>> handler) {
             listeners.add(handler);
+            handler->Owner = this;
             handler(value);
             return *this;
         }
 
-        inline void remove(const ObservableHandler<T>& listener) {
-            listeners.remove(listener);
+        inline void remove(ObservableHandler<T>& listener) {
+            listeners.remove(&listener);
+            listener.Owner = nullptr;
         }
 
-        inline Observable<T>& operator-=(const ObservableHandler<T>& listener) {
-            listeners.remove(listener);
+        inline Observable<T>& operator-=(ObservableHandler<T>& listener) {
+            listeners.remove(&listener);
+            listener.Owner = nullptr;
             return *this;
         }
 
         void clear() {
+            for (auto& handler : listeners)
+                handler->Owner = nullptr;
             listeners.clear();
-        }
-
-        inline operator const T& () {
-            return value;
         }
 
         inline operator const T& () const {
             return value;
         }
 
-        inline T& getValue() {
+        inline const T& getValue() const {
             return value;
         }
 
-        inline void setValue(const T& val) {
+        inline void setValue(const T& value) {
             if (this->value != value) {
                 this->value = value;
                 for (auto& listener : listeners)
-                    listener(value);
+                    listener->invoke(value);
             }
         }
 
@@ -106,31 +100,21 @@ namespace Ghurund::Core {
             return this->value;
         }
 
-        inline Observable<T>& operator=(nullptr_t) {
-            if (sourceObservable) {
-                sourceObservable->remove(chainHandler);
-                sourceObservable = nullptr;
-            }
-            return *this;
-        }
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = Constructor<Observable<T>>();
+            static const auto CONSTRUCTOR2 = Constructor<Observable<T>, const T&>();
+            static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
+            static const auto ADD_METHOD = Method<Observable<T>, void, SharedPointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(SharedPointer<ObservableHandler<T>>)) & add);
 
-        inline Observable<T>& operator=(Observable<T>& other) {
-            if (sourceObservable)
-                sourceObservable->remove(chainHandler);
-            sourceObservable = &other;
-            chainHandler = ObservableHandler<T>([&](const T& val) {
-                this->operator=(val);
-            });
-            other.add(chainHandler);
-            return *this;
-        }
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
+                .withConstructor(CONSTRUCTOR)
+                .withConstructor(CONSTRUCTOR2)
+                .withSupertype(__super::GET_TYPE())
+                .withProperty(VALUE_PROPERTY)
+                .withMethod(ADD_METHOD)
+                .withTemplateParams<T>();
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const {
             return TYPE;
         }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-   };
+    };
 }

@@ -31,13 +31,25 @@ namespace Demo {
         std::function<void()> loadCallback;
 
     public:
-        DemoWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
-            UIFeature* uiFeature = app.Features.get<UIFeature>();
-            Graphics2D& graphics2d = uiFeature->Graphics2D;
+        DemoWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+            Style = WindowStyle{
+             .hasMinimizeButton = true,
+             .hasMaximizeButton = true,
+             .hasTitle = true,
+             .borderStyle = WindowBorderStyle::RESIZE,
+             .showOnTaskbar = true
+            };
+        }
 
-            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, app.ResourceManager);
-            context = ghnew UIContext(*graphics2d.D2DFactory, *graphics2d.DWriteFactory, graphics2d.DeviceContext, *this, app.ResourceManager);
-            LayoutLoader* layoutLoader = (LayoutLoader*)app.ResourceManager.Loaders.get<Layout>();
+        virtual void init(WindowManager& windowManager) {
+            __super::init(windowManager);
+
+            UIFeature& uiFeature = Application.Features.get<UIFeature>();
+            Graphics2D& graphics2d = uiFeature.Graphics2D;
+
+            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, Application.ResourceManager);
+            context = ghnew UIContext(*graphics2d.D2DFactory, *graphics2d.DWriteFactory, graphics2d.DeviceContext, *this, Application.ResourceManager);
+            LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             layoutLoader->Theme = lightTheme;
 
             rootView = ghnew Ghurund::UI::RootView(*context);
@@ -59,10 +71,9 @@ namespace Demo {
         }
 
         void loadLayout(const File& file) {
-            SharedPointer<Layout> layout = Application.ResourceManager.load<Layout>(file);
+            SharedPointer<Control> control = Application.ResourceManager.load<Control>(file);
             demoLayout->Container->Children.clear();
-            for (Control* control : layout->Controls)
-                demoLayout->Container->Children.add(control);
+            demoLayout->Container->Children.add(control);
             demoLayout->Container->invalidate();
         }
     };

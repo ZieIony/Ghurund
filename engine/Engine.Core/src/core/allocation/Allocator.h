@@ -3,17 +3,15 @@
 #include <exception>
 
 namespace Ghurund::Core {
-    template<typename T>
     __interface Allocator {
-        void* allocate(T size);
+        void* allocate(size_t size);
         void deallocate(void*);
-        bool canAllocate(T size) const;
+        bool canAllocate(size_t size) const;
     };
 
-    template<typename T>
     struct Allocation {
-        T size;
-        T address;
+        size_t size;
+        size_t address;
     };
 
     class IncompatibleAllocatorsException:public std::exception {
@@ -22,12 +20,10 @@ namespace Ghurund::Core {
     };
 }
 
-template<typename T>
-inline void* operator new(size_t size, Ghurund::Core::Allocator<T>& allocator) {
+inline void* operator new(size_t size, Ghurund::Core::Allocator& allocator) {
     return allocator.allocate(size);
 }
 
-template<typename T>
-inline void operator delete(void* ptr, Ghurund::Core::Allocator<T>& allocator) {
+inline void operator delete(void* ptr, Ghurund::Core::Allocator& allocator) {
     allocator.deallocate(ptr);
 }

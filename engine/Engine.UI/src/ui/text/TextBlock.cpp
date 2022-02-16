@@ -44,9 +44,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<TextBlock>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

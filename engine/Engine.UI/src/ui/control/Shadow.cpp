@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Shadow::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<Shadow>();
-        static const Ghurund::Core::Type& TYPE = TypeBuilder<Shadow>(NAMESPACE_NAME, GH_STRINGIFY(Shadow))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Shadow>(NAMESPACE_NAME, GH_STRINGIFY(Shadow))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

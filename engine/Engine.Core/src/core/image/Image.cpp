@@ -2,7 +2,6 @@
 #include "Image.h"
 
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
 
@@ -16,12 +15,12 @@ namespace Ghurund::Core {
     const Ghurund::Core::Type& Image::GET_TYPE() {
         using namespace Ghurund::Core;
 
-        static auto PROPERTY_DATA = ReadOnlyProperty<Image, Buffer&>("Data", &getData);
-        static auto PROPERTY_FORMAT = ReadOnlyProperty<Image, DXGI_FORMAT>("Format", &getFormat);
-        static auto PROPERTY_WIDTH = ReadOnlyProperty<Image, uint32_t>("Width", &getWidth);
-        static auto PROPERTY_HEIGHT = ReadOnlyProperty<Image, uint32_t>("Height", &getHeight);
-        static auto PROPERTY_PIXELSIZE = ReadOnlyProperty<Image, uint32_t>("PixelSize", &getPixelSize);
-        static auto PROPERTY_ROWPITCH = ReadOnlyProperty<Image, uint32_t>("RowPitch", &getRowPitch);
+        static auto PROPERTY_DATA = Property<Image, Buffer&>("Data", &getData);
+        static auto PROPERTY_FORMAT = Property<Image, DXGI_FORMAT>("Format", &getFormat);
+        static auto PROPERTY_WIDTH = Property<Image, uint32_t>("Width", &getWidth);
+        static auto PROPERTY_HEIGHT = Property<Image, uint32_t>("Height", &getHeight);
+        static auto PROPERTY_PIXELSIZE = Property<Image, uint32_t>("PixelSize", &getPixelSize);
+        static auto PROPERTY_ROWPITCH = Property<Image, uint32_t>("RowPitch", &getRowPitch);
 
         static const auto CONSTRUCTOR = Constructor<Image>();
 

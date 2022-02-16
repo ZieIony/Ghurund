@@ -38,43 +38,7 @@ namespace Ghurund::UI {
         ShapeFactory& shapeFactory,
         ImageDrawableFactory& imageDrawableFactory,
         TextFormatFactory& textFormatFactory
-    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory) {
-
-        registerClass<ClickableControl>();
-        registerClass<SelectableView>();
-        registerClass<ClickResponseView>();
-        registerClass<StateIndicator>();
-        /*registerClass<TextBlock>([&dwriteFactory] {
-            return ghnew TextBlock(std::make_unique<TextLayout>(dwriteFactory, L"text", Color(0.0f,0.0f,0.0f), nullptr));
-        });
-        registerClass<TextView>([&dwriteFactory] {
-            return ghnew TextView(std::make_unique<TextLayout>(dwriteFactory, L"text", Color(0.0f, 0.0f, 0.0f), nullptr));
-        });
-        registerClass<TextField>([&dwriteFactory] {
-            return ghnew TextField(std::make_unique<TextLayout>(dwriteFactory, L"text", Color(0.0f, 0.0f, 0.0f), nullptr));
-        });*/
-        registerClass<ImageView>();
-        registerClass<Clip>();
-        registerClass<Border>();
-        registerClass<Shadow>();
-        registerClass<Space>();
-        registerClass<ColorView>();
-
-        registerClass<ControlContainer>();
-        registerClass<PaddingContainer>();
-        registerClass<LinearLayout>();
-        registerClass<StackLayout>();
-        registerClass<ManualLayout>();
-        registerClass<RecyclerView>();
-
-        registerClass<Button>();
-        registerClass<CheckBox>();
-        registerClass<RadioButton>();
-        registerClass<VerticalScrollBar>();
-        registerClass<TreeView>();
-        registerClass<TabContainer>();
-        registerClass<ExpandableContainer>();
-    }
+    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory) {}
 
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
         AString s = str;
@@ -99,14 +63,16 @@ namespace Ghurund::UI {
             Logger::log(LogType::ERR0R, _T("Missing 'layout' tag.\n"));
             throw InvalidDataException("Missing 'layout' tag.\n");
         }
-        size_t index = types.indexOfKey(child->Value());
-        if (index == types.Size) {
-            Logger::log(LogType::ERR0R, _T("Type '{}' is not registered.\n"), AString(child->Value()));
-            throw InvalidDataException(std::format("Type '{}' is not registered.\n", child->Value()).c_str());
-        }
-        SharedPointer<Control> control = types.getValue(index).operator()();
+        AString namespaceName = Ghurund::UI::NAMESPACE_NAME;
+        auto namespaceAttr = child->FindAttribute("namespace");
+        if (namespaceAttr)
+            namespaceName = namespaceAttr->Value();
+        const Type& type = Type::byName(namespaceName, child->Value());
+        const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
+        if (!constructor)
+            throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
+        Control* control = (Control*)constructor->invokeRaw();
         control->load(*this, *child);
-        control->addReference();
         return control;
     }
 
@@ -114,25 +80,10 @@ namespace Ghurund::UI {
         PointerList<Control*> list;
         const tinyxml2::XMLElement* child = xml.FirstChildElement();
         while (child != nullptr) {
-            if (strcmp(child->Value(), "include") == 0) {
-                auto layoutAttr = child->FindAttribute("layout");
-                if (layoutAttr) {
-                    AString s = layoutAttr->Value();
-                    try {
-                        SharedPointer<Control> control = resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE);
-                        list.add(control);
-                    } catch (...) {
-                        Logger::log(LogType::ERR0R, _T("Could not load layout '{}'.\n"), s);
-                    }
-                } else {
-                    Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
-                }
-            } else {
-                Control* control = loadControl(*child);
-                if (control) {
-                    list.add(control);
-                    control->release();
-                }
+            Control* control = loadControl(*child);
+            if (control) {
+                list.add(control);
+                control->release();
             }
             child = child->NextSiblingElement();
         }
@@ -156,8 +107,16 @@ namespace Ghurund::UI {
             }
             Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
             return nullptr;
-        } else if (types.containsKey(name)) {
-            Control* control = types.get(name)();
+        } else {
+            AString namespaceName = Ghurund::UI::NAMESPACE_NAME;
+            auto namespaceAttr = xml.FindAttribute("namespace");
+            if (namespaceAttr)
+                namespaceName = namespaceAttr->Value();
+            const Type& type = Type::byName(namespaceName, xml.Value());
+            const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
+            if (!constructor)
+                throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
+            Control* control = (Control*)constructor->invokeRaw();
             control->load(*this, xml);
             return control;
         }

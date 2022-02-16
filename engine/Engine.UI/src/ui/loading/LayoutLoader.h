@@ -30,7 +30,6 @@ namespace Ghurund::UI {
     private:
         Ghurund::Core::ResourceManager& resourceManager;
         Theme* theme = nullptr;
-        Ghurund::Core::Map<Ghurund::Core::AString, std::function<Control* ()>> types;
         ShapeFactory& shapeFactory;
         ImageDrawableFactory& imageDrawableFactory;
         TextFormatFactory& textFormatFactory;
@@ -50,20 +49,6 @@ namespace Ghurund::UI {
         );
 
         virtual ~LayoutLoader() {}
-
-        template<class T>
-        void registerClass() {
-            if (types.containsKey(T::TYPE.Name))
-                Logger::log(LogType::WARNING, std::format(_T("Type '{}' is already registered in this LayoutLoader.\n"), T::TYPE.Name).c_str());
-            types.set(T::TYPE.Name, []() {
-                return ghnew T();
-            });
-        }
-
-        template<class T>
-        void registerClass(std::function<T* ()> factory) {
-            types.set(T::TYPE.Name, factory);
-        }
 
         inline Theme* getTheme() {
             return theme;

@@ -43,9 +43,4 @@ namespace Ghurund::Core {
         delete logOutput;
         logOutput = nullptr;
     }
-
-    template<>
-    String toString(const Object& obj) {
-        return obj.toString();
-    }
 }

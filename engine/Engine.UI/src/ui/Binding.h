@@ -1,59 +1,31 @@
 #pragma once
 #include "core/Exceptions.h"
 #include "core/string/String.h"
+#include "core/Observable.h"
 
 #include <regex>
 
 namespace Ghurund::UI {
-    class BindingPath {
-    private:
-        Array<AString> sourcePath;
-        AString propertyName;
-
-    public:
-        BindingPath(const Array<AString>& sourcePath, const AString& propertyName):sourcePath(sourcePath), propertyName(propertyName) {}
-
-        inline const Array<AString>& getSourcePath() const {
-            return sourcePath;
-        }
-
-        __declspec(property(get = getPath)) const Array<AString>& SourcePath;
-
-        inline const AString& getPropertyName() const {
-            return propertyName;
-        }
-
-        __declspec(property(get = getPropertyName)) const AString& PropertyName;
-
-        static BindingPath parse(const AString& binding) {
-            std::regex regex(" *\\{ *((?:(?:parent|[a-zA-Z0-9_]+)\\/)*)([a-zA-Z0-9_]+) *\\} *");
-            std::smatch m;
-            std::string s = binding.Data;
-            if (std::regex_match(s, m, regex)) {
-                Array<AString> path = AString(m[1].str().c_str()).split("/");
-                AString propertyName = m[2].str().c_str();
-                return BindingPath(path, propertyName);
-            } else {
-                throw InvalidParamException("invalid binding string");
-            }
-        }
-    };
+    using namespace Ghurund::Core;
 
     class Control;
 
     class Binding {
     private:
-        Control* target;
+        Control& target;
         BaseProperty* sourceProperty;
-        BaseProperty* targetProperty;
-        Array<AString> path;
+        const BaseProperty* targetProperty = nullptr;
+        List<AString> path;
+        AString propertyName;
+
+        Control* resolvePath(const Array<AString>& path);
 
     public:
-        Binding(Control* target, BaseProperty* targetProperty, BaseProperty* sourceProperty, Array<AString> path)
-            :target(target), targetProperty(targetProperty), sourceProperty(sourceProperty), path(path) {}
+        Binding(Control& target, BaseProperty* targetProperty, BaseProperty* sourceProperty)
+            :target(target), targetProperty(targetProperty), sourceProperty(sourceProperty) {}
 
-        void execute() {
-            //            target.resolvePath(
-        }
+        void parse(AString& attrName, AString& attrValue);
+
+        void execute();
     };
 }

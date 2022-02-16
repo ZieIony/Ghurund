@@ -4,7 +4,6 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 
 #include <d2d1_3.h>
 
@@ -18,9 +17,9 @@ namespace Ghurund::Core {
 
 namespace Ghurund::UI::Direct2D {
     const Ghurund::Core::Type& Bitmap::GET_TYPE() {
-        static auto PROPERTY_IMAGE = ReadOnlyProperty<Bitmap, Ghurund::Core::Image*>("Image", &getImage);
-        static auto PROPERTY_DATA = ReadOnlyProperty<Bitmap, ID2D1Bitmap1*>("Data", &getData);
-        static auto PROPERTY_SIZE = ReadOnlyProperty<Bitmap, IntSize>("Size", &getSize);
+        static auto PROPERTY_IMAGE = Property<Bitmap, Ghurund::Core::Image*>("Image", &getImage);
+        static auto PROPERTY_DATA = Property<Bitmap, ID2D1Bitmap1*>("Data", &getData);
+        static auto PROPERTY_SIZE = Property<Bitmap, IntSize>("Size", &getSize);
 
         static const auto CONSTRUCTOR = Constructor<Bitmap>();
 

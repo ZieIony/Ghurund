@@ -13,8 +13,6 @@ namespace Ghurund {
     private:
         PointerArray<Parameter*> parameters;
 
-        static const Ghurund::Core::Type& GET_TYPE();
-
     protected:
         virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
             //__super::loadInternal(context, workingDir, stream, options);
@@ -35,10 +33,10 @@ namespace Ghurund {
             return parameters;
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

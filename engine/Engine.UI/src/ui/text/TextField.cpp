@@ -150,9 +150,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& TextField::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<TextField>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextField>(NAMESPACE_NAME, GH_STRINGIFY(TextField))
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

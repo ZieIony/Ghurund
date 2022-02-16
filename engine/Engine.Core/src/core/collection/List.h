@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ArrayCollection.h"
+#include "Array.h"
 
 #include <cassert>
 
@@ -36,13 +37,22 @@ namespace Ghurund::Core {
             A::size++;
         }
 
-        inline void addAll(const ArrayCollection<Value>& list) {
-            if (A::capacity < A::size + list.Size)
-                A::resize(A::size + list.Size);
-            auto it = list.begin();
-            for (size_t i = 0; i < list.Size; i++, it++)
+        inline void addAll(const Array<Value>& array) {
+            if (A::capacity < A::size + array.Size)
+                A::resize(A::size + array.Size);
+            auto it = array.begin();
+            for (size_t i = 0; i < array.Size; i++, it++)
                 new(A::v + A::size + i) Value(*it);
-            A::size += list.Size;
+            A::size += array.Size;
+        }
+
+        inline void addAll(const ArrayCollection<Value>& collection) {
+            if (A::capacity < A::size + collection.Size)
+                A::resize(A::size + collection.Size);
+            auto it = collection.begin();
+            for (size_t i = 0; i < collection.Size; i++, it++)
+                new(A::v + A::size + i) Value(*it);
+            A::size += collection.Size;
         }
 
         inline void addAll(const std::initializer_list<Value>& list) {

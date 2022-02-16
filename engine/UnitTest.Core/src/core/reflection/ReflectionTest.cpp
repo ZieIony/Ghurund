@@ -4,6 +4,7 @@
 
 #include "TestClass.h"
 #include "MemoryGuard.h"
+#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -14,96 +15,143 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
 }
 
 namespace UnitTest {
-    TEST_CLASS(ReflectionTest) {
+    TEST_CLASS(PropertyTest) {
 public:
 
     TEST_METHOD(readOnlyProperty_uint32) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t index = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Name == "val"; });
-            auto valProperty = (ReadOnlyProperty<UnitTest::TestClass, uint32_t>*)testObj.Type.Properties[index];
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t index = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Name == "val"; });
+                auto& valProperty = (Property<UnitTest::TestClass, uint32_t>&)testObj.Type.Properties[index].get();
+                Assert::IsTrue(valProperty.CanRead);
+                Assert::IsFalse(valProperty.CanWrite);
 
-            testObj.val = 5u;
-            uint32_t val = valProperty->get(testObj);
-            Assert::AreEqual(5u, val);
+                testObj.val = 5u;
+                uint32_t val = valProperty.get(testObj);
+                Assert::AreEqual(5u, val);
+            }
         }
     }
 
     TEST_METHOD(property_charPointer) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t index = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Name == "text"; });
-            auto textProperty = (Property<UnitTest::TestClass, const char*>*)testObj.Type.Properties[index];
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t index = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Name == "text"; });
+                auto& textProperty = (const Property<UnitTest::TestClass, const char*>&)testObj.Type.Properties[index].get();
 
-            testObj.setText("lemon");
-            const char* text = textProperty->get(testObj);
-            Assert::AreEqual("lemon", text);
+                testObj.setText("lemon");
+                const char* text = textProperty.get(testObj);
+                Assert::AreEqual("lemon", text);
 
-            textProperty->set(testObj, "apple");
-            Assert::AreEqual("apple", testObj.getText());
+                textProperty.set(testObj, "apple");
+                Assert::AreEqual("apple", testObj.getText());
+            }
         }
     }
 
     TEST_METHOD(writeOnlyProperty_float) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t index = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Name == "progress"; });
-            auto progressProperty = (WriteOnlyProperty<UnitTest::TestClass, float>*)testObj.Type.Properties[index];
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t index = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Name == "progress"; });
+                auto& progressProperty = (Property<UnitTest::TestClass, float>&)testObj.Type.Properties[index].get();
+                Assert::IsFalse(progressProperty.CanRead);
+                Assert::IsTrue(progressProperty.CanWrite);
 
-            testObj.progress = 0.5f;
-            progressProperty->set(testObj, 0.3f);
-            Assert::AreEqual(0.3f, testObj.progress);
+                testObj.progress = 0.5f;
+                progressProperty.set(testObj, 0.3f);
+                Assert::AreEqual(0.3f, testObj.progress);
+            }
         }
     }
 
     TEST_METHOD(findPropertyByType) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t progressIndex = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Name == "progress"; });
-            size_t floatIndex = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Type == getType<float>(); });
-            Assert::AreEqual(progressIndex, floatIndex);
-            Assert::AreNotEqual(testObj.Type.Properties.Size, floatIndex);
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t progressIndex = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Name == "progress"; });
+                size_t floatIndex = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Type == getType<float>(); });
+                Assert::AreEqual(progressIndex, floatIndex);
+                Assert::AreNotEqual(testObj.Type.Properties.Size, floatIndex);
+            }
         }
     }
 
     TEST_METHOD(templateProperty) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t observableIndex = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Type.Name.startsWith("Observable"); });
-            auto observableProperty = testObj.Type.Properties[observableIndex];
-            observableProperty->getRaw(&testObj, [&](void* val) {
-                Assert::IsNotNull(val);
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t observableIndex = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Type.Name.startsWith("Observable"); });
+                const BaseProperty& observableProperty = testObj.Type.Properties[observableIndex];
+                observableProperty.getRaw(&testObj, [&](void* val) {
+                    Assert::IsNotNull(val);
 
-                Object* observable = (Object*)val;
-                size_t valueIndex = observable->Type.Properties.find([](const BaseProperty* obj) { return obj->Name == "Value"; });
-                auto valueProperty = observable->Type.Properties[valueIndex];
-                Ghurund::Core::AString value;
-                valueProperty->getRaw(val, [&](void* val) {
-                    value = *(Ghurund::Core::AString*)val;
+                    Object* observable = (Object*)val;
+                    size_t valueIndex = observable->Type.Properties.find([](const BaseProperty& obj) { return obj.Name == "Value"; });
+                    const BaseProperty& valueProperty = observable->Type.Properties[valueIndex];
+                    Ghurund::Core::AString value;
+                    valueProperty.getRaw(val, [&](void* val) {
+                        value = *(Ghurund::Core::AString*)val;
+                    });
+                    Assert::AreEqual(testObj.name.Value, value);
                 });
-                Assert::AreEqual(testObj.name.Value, value);
-            });
+            }
         }
     }
 
     TEST_METHOD(templateMethod) {
-        MemoryGuard guard;
+        getType<UnitTest::TestClass>();
+        getType<float>();
+        getType<const char*>();
+        getType<uint32_t>();
+        getType<Observable<Ghurund::Core::AString>&>();
         {
-            UnitTest::TestClass testObj;
-            size_t observableIndex = testObj.Type.Properties.find([](const BaseProperty* obj) { return obj->Type.Name.startsWith("Observable"); });
-            auto observableProperty = testObj.Type.Properties[observableIndex];
-            Object* observable = nullptr;
-            observableProperty->getRaw(&testObj, [&](void* val) { observable = (Object*)val; });
-            Assert::IsNotNull(observable);
+            MemoryGuard guard;
+            {
+                UnitTest::TestClass testObj;
+                size_t observableIndex = testObj.Type.Properties.find([](const BaseProperty& obj) { return obj.Type.Name.startsWith("Observable"); });
+                const BaseProperty& observableProperty = testObj.Type.Properties[observableIndex];
+                Object* observable = nullptr;
+                observableProperty.getRaw(&testObj, [&](void* val) { observable = (Object*)val; });
+                Assert::IsNotNull(observable);
 
-            size_t addIndex = observable->Type.Methods.find([](const BaseMethod* obj) { return obj->Name == "add"; });
-            auto addMethod = observable->Type.Methods[addIndex];
-            //addMethod->invoke(
+                size_t addIndex = observable->Type.Methods.find([](const BaseMethod& obj) { return obj.Name == "add"; });
+                const BaseMethod& addMethod = observable->Type.Methods[addIndex];
+                SharedPointer<ObservableHandler<AString>> handler = ghnew ObservableHandler<AString>([](const AString& f) {});
+                addMethod.invokeRaw<SharedPointer<ObservableHandler<AString>>>(observable, handler);
+            }
         }
     }
     };

@@ -3,6 +3,13 @@
 #include "StandardTypes.h"
 
 namespace Ghurund::Core {
+
+    template<>
+    const Type& getType<void>() {
+        static Type TYPE = Type("void", 0);
+        return TYPE;
+    }
+
     template<>
     const Type& getType<uint32_t>() {
         static Type TYPE = Type("uint32_t", sizeof(uint32_t));

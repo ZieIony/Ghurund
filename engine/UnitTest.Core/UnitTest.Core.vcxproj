@@ -94,6 +94,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\reflection\BaseTypeTest.cpp" />
+    <ClCompile Include="src\core\reflection\ConstructorTest.cpp" />
     <ClCompile Include="src\core\reflection\TypeTest.cpp" />
     <ClInclude Include="src\MemoryGuard.h" />
     <ClInclude Include="src\TestClass.h" />

@@ -157,7 +157,7 @@ namespace Ghurund::Core {
     }
 
     Status ResourceManager::save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format, SaveOption options) const {
-        size_t index = Ghurund::Core::Type::TYPES.indexOf(resource.getType());
+        size_t index = Ghurund::Core::Type::TYPES.find([&](const std::reference_wrapper<const Ghurund::Core::Type> obj) { return obj.get() == resource.getType(); });
         stream.writeUInt((uint32_t)index);
         if (resource.Path == nullptr) {
             stream.writeBoolean(true);  // full binary

@@ -3,6 +3,7 @@
 #include "Pointer.h"
 #include "Common.h"
 #include "Concepts.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
     template<typename T>
@@ -11,6 +12,13 @@ namespace Ghurund::Core {
         T* pointer = nullptr;
 
     public:
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Type TYPE = TypeBuilder<SharedPointer<T>>(Ghurund::Core::NAMESPACE_NAME, "SharedPointer").withTemplateParams<T>();
+            return TYPE;
+        }
+
+        inline static const Type& TYPE = GET_TYPE();
+
         SharedPointer() {}
 
         SharedPointer(const SharedPointer& other) {
@@ -80,4 +88,5 @@ namespace Ghurund::Core {
     SharedPointer<T> makeShared(Args&&... args) {
         return ghnew T(std::forward<Args>(args)...);
     }
+
 }

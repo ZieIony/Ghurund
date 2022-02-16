@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Common.h"
-#include "application/ApplicationWindow.h
+#include "application/ApplicationWindow.h"
 #include "core/application/Application.h"
 #include "core/window/SystemWindow.h"
 #include "core/math/MathUtils.h"
@@ -28,7 +28,7 @@ namespace Messenger {
         SharedPointer<TextBlock> clientCount;
 
     public:
-        MessengerWindow(Ghurund::Application& app);
+        MessengerWindow(Ghurund::Application& app, Renderer& renderer);
 
         ~MessengerWindow();
 

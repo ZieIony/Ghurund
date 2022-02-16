@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FilePath.h"
+#include "core/collection/List.h"
 
 namespace Ghurund::Core {
 

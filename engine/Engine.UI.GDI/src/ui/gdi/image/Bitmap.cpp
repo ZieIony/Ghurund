@@ -17,9 +17,9 @@ namespace Ghurund::Core {
 
 namespace Ghurund::UI::GDI {
     const Ghurund::Core::Type& Bitmap::GET_TYPE() {
-        static auto PROPERTY_IMAGE = ReadOnlyProperty<Bitmap, Ghurund::Core::Image*>("Image", &getImage);
-        static auto PROPERTY_DATA = ReadOnlyProperty<Bitmap, Gdiplus::Bitmap*>("Data", &getData);
-        static auto PROPERTY_SIZE = ReadOnlyProperty<Bitmap, IntSize>("Size", &getSize);
+        static auto PROPERTY_IMAGE = Property<Bitmap, Ghurund::Core::Image*>("Image", &getImage);
+        static auto PROPERTY_DATA = Property<Bitmap, Gdiplus::Bitmap*>("Data", &getData);
+        static auto PROPERTY_SIZE = Property<Bitmap, IntSize>("Size", &getSize);
 
         static const auto CONSTRUCTOR = Constructor<Bitmap>();
 

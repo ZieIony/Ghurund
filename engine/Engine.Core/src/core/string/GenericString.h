@@ -3,6 +3,7 @@
 #include "TextUtils.h"
 #include "core/Hashing.h"
 #include "core/collection/Array.h"
+#include "core/collection/List.h"
 
 #include <algorithm>
 #undef min

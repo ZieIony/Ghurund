@@ -10,9 +10,6 @@ namespace Ghurund::UI {
         Control* previousReceiver = nullptr;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-    protected:
         virtual void onMeasure(float parentWidth, float parentHeight) override {
             for (Control* c : Children) {
                 if (!c->Visible)
@@ -22,6 +19,10 @@ namespace Ghurund::UI {
                     PreferredSize.height.Type == PreferredSize::Type::PIXELS ? PreferredSize.height.Value : parentHeight
                 );
             }
+        }
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
     public:
@@ -94,12 +95,6 @@ namespace Ghurund::UI {
         virtual String printTree() const;
 #endif
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

@@ -13,7 +13,25 @@ namespace Messenger {
     using namespace Ghurund::Net;
     using namespace std::ranges;
 
-    MessengerWindow::MessengerWindow(Ghurund::Application& app):ApplicationWindow(WindowClass::WINDOWED, app) {
+    MessengerWindow::MessengerWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+        Style = WindowStyle{
+               .hasMinimizeButton = true,
+               .hasMaximizeButton = true,
+               .hasTitle = true,
+               .borderStyle = WindowBorderStyle::RESIZE,
+               .showOnTaskbar = true
+        };
+    }
+
+    MessengerWindow::~MessengerWindow() {
+        delete context;
+        context = nullptr;
+        delete theme;
+    }
+
+    virtual void init(WindowManager& windowManager) {
+        __super::init(windowManager);
+
         /*UIFeature* uiFeature = app.Features.get<UIFeature>();
         Graphics2D& graphics2d = uiFeature->Graphics2D;
         const uint16_t port = 52109;
@@ -103,12 +121,6 @@ namespace Messenger {
         rootView->Theme = theme;
         rootView->BackgroundColor = theme->ColorBackground;
         RootView = rootView;*/
-    }
-
-    MessengerWindow::~MessengerWindow() {
-        delete context;
-        context = nullptr;
-        delete theme;
     }
 
     void MessengerWindow::update(const uint64_t time) {

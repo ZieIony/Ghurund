@@ -219,6 +219,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\ui\Alignment.cpp" />
+    <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />

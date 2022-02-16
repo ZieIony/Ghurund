@@ -14,7 +14,9 @@ namespace Ghurund::UI {
         Color color;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
         Animation animation;
         IndicatorState state = IndicatorState::NONE;
@@ -49,13 +51,9 @@ namespace Ghurund::UI {
 
         virtual void onDraw(ICanvas& canvas);
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
     };
 
     class StateIndicatorOnBackgroundStyle:public Style {

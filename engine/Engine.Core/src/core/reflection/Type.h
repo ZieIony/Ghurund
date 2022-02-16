@@ -9,8 +9,8 @@
 #include "core/Object.h"
 #include "core/Concepts.h"
 #include "core/Exceptions.h"
-
-#include <type_traits>
+#include "BaseType.h"
+#include "ConstructorCollection.h"
 
 namespace Ghurund::Core {
     class Type:public NamedObject<char> {
@@ -20,16 +20,19 @@ namespace Ghurund::Core {
         const AString _namespace;
         const size_t size;
         const Type* supertype;
-        const List<BaseConstructor*> constructors;
-        const List<BaseProperty*> properties;
-        const List<BaseMethod*> methods;
-        const List<Type> templateParams;
+        const ConstructorCollection constructors;
+        const Array<std::reference_wrapper<const BaseProperty>> properties;
+        const Array<std::reference_wrapper<const BaseMethod>> methods;
+        const Array<std::reference_wrapper<const Type>> templateParams;
         const bool _const, pointer, ref, _volatile;
 
-        static List<Type>& getTypes() {
-            static List<Type> types;
+        static List<std::reference_wrapper<const Type>>& getTypes() {
+            static List<std::reference_wrapper<const Type>> types;
             return types;
         }
+
+        Type(const Type& other) = delete;
+        Type(Type&& other) = delete;
 
     public:
         Type(const char* name, size_t size):
@@ -87,10 +90,10 @@ namespace Ghurund::Core {
             size_t size,
             TypeModifier modifiers,
             const Type* supertype,
-            const List<BaseConstructor*>& constructors,
-            const List<BaseProperty*>& properties,
-            const List<BaseMethod*>& methods,
-            const List<Type> templateParams
+            const ConstructorCollection& constructors,
+            const Array<std::reference_wrapper<const BaseProperty>>& properties,
+            const Array<std::reference_wrapper<const BaseMethod>>& methods,
+            const Array<std::reference_wrapper<const Type>> templateParams
         ):
             NamedObject<char>(name),
             constructors(constructors),
@@ -109,19 +112,19 @@ namespace Ghurund::Core {
             getTypes().add(*this);
         }
 
-        static const Type* byName(const char* _namespace, const char* name) {
+        static const Type& byName(const AString& _namespace, const AString& name) {
             for (const Type& type : TYPES) {
                 if (type.Namespace == _namespace && type.Name == name)
-                    return &type;
+                    return type;
             }
-            return nullptr;
+            throw InvalidParamException(std::format("Type {}::{} could not be located.\n", _namespace.Data, name.Data).c_str());
         }
 
-        const List<BaseConstructor*> getConstructors() const {
+        const ConstructorCollection& getConstructors() const {
             return constructors;
         }
 
-        __declspec(property(get = getConstructors)) List<BaseConstructor*>& Constructors;
+        __declspec(property(get = getConstructors)) const ConstructorCollection& Constructors;
 
         inline const Type& getBaseType() const {
             return *baseType;
@@ -153,23 +156,23 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getModifiers)) const TypeModifier Modifiers;
 
-        const List<BaseProperty*>& getProperties() const {
+        const Array<std::reference_wrapper<const BaseProperty>>& getProperties() const {
             return properties;
         }
 
-        __declspec(property(get = getProperties)) const List<BaseProperty*>& Properties;
+        __declspec(property(get = getProperties)) const Array<std::reference_wrapper<const BaseProperty>>& Properties;
 
-        const List<BaseMethod*>& getMethods() const {
+        const Array<std::reference_wrapper<const BaseMethod>>& getMethods() const {
             return methods;
         }
 
-        __declspec(property(get = getMethods)) const List<BaseMethod*>& Methods;
+        __declspec(property(get = getMethods)) const Array<std::reference_wrapper<const BaseMethod>>& Methods;
 
-        const List<Type>& getTemplateParams() const {
+        const Array<std::reference_wrapper<const Type>>& getTemplateParams() const {
             return templateParams;
         }
 
-        __declspec(property(get = getTemplateParams)) const List<Type>& TemplateParams;
+        __declspec(property(get = getTemplateParams)) const Array<std::reference_wrapper<const Type>>& TemplateParams;
 
         inline bool isTemplate() const {
             return !templateParams.Empty;
@@ -205,7 +208,7 @@ namespace Ghurund::Core {
             return _namespace == other._namespace && __super::operator==(other) && pointer == other.pointer && ref == other.ref && _const == other._const;
         }
 
-        inline static const List<Type>& TYPES = getTypes();
+        inline static const List<std::reference_wrapper<const Type>>& TYPES = getTypes();
 
         bool isOrExtends(const Type& type) const {
             Type* st = (Type*)this;
@@ -229,19 +232,42 @@ namespace Ghurund::Core {
     };
 
     template<typename T>
+    const Type& getType() = delete;
+
+    template <typename T>
+    concept HasType = requires(T obj) {
+        { T::GET_TYPE() } -> std::same_as<const Type&>;
+    };
+
+    template<HasType T>
     const Type& getType() {
-        return T::TYPE;
+        return T::GET_TYPE();
     }
 
     template<Qualified T>
     const Type& getType() {
-        const Type& baseType = getType<std::remove_cvref<std::remove_pointer<T>::type>::type>();
+        const Type& baseType = getType<BaseType<T>::type>();
         static Type type = Type(baseType, std::is_const_v<T>, std::is_pointer_v<T>, std::is_reference_v<T>, std::is_volatile_v<T>);
         return type;
     }
 
     template<typename T>
-    const Type& getType(T obj) {
+    const Type& getType(const T& obj) {
         return getType<T>();
     }
+
+    template <typename T>
+    concept Typed = requires(T obj) {
+        { getType(obj) } -> std::same_as<Type>;
+    };
+
+    template<>
+    String toString(const Type& type);
+
+    template<Typed T>
+    String toString(const T& obj) {
+        const Type& type = getType<T>();
+        return String(std::format(_T("{}::{}"), type.Namespace, _T("::"), type.Name).c_str());
+    }
+
 }

@@ -28,19 +28,19 @@ namespace Ghurund::Core {
 
     class Loader {
     private:
-        Allocator<size_t>* allocator;
+        Allocator* allocator;
 
     protected:
         template<class T>
         T* makeResource() {
-            Constructor<T>* constructor = (Constructor<T>*)T::TYPE.Constructors.get(0);
+            Constructor<T>& constructor = (Constructor<T>&)T::GET_TYPE().Constructors.get(0);
             if (allocator)
-                return (T*)constructor->invoke(*allocator);
-            return (T*)constructor->invoke();
+                return (T*)constructor.invokeWithAllocator(*allocator);
+            return (T*)constructor.invoke();
         }
 
     public:
-        Loader(Allocator<size_t>* allocator = nullptr):allocator(allocator) {}
+        Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
         virtual ~Loader() = 0 {}
 

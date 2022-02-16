@@ -3,8 +3,10 @@
 #include "MemoryGuard.h"
 
 #include "core/Observable.h"
-#include <core/string/String.h>
-#include <core/string/TextConversionUtils.h>
+#include "core/BindableObservable.h"
+#include "core/SharedPointer.h"
+#include "core/string/String.h"
+#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -24,7 +26,7 @@ public:
 
             observable = username;
 
-            Assert::AreEqual(observable.Value, username);
+            Assert::AreEqual(username, observable.Value);
         }
     }
 
@@ -89,7 +91,7 @@ public:
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
             uint32_t called = 0;
-            ObservableHandler<String> handler = ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
@@ -112,12 +114,12 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            ObservableHandler<String> handler = ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
                 calledFromHandler++;
                 Assert::AreEqual(value, observable.Value);
             });
             observable.add(handler);
-            observable.remove(handler);
+            observable.remove(*handler);
 
             observable = username;
 
@@ -136,7 +138,7 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            ObservableHandler<String> handler = ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
@@ -149,14 +151,14 @@ public:
         }
     }
 
-    TEST_METHOD(Observable_assign) {
+    TEST_METHOD(BindableObservable_bind) {
         MemoryGuard guard;
         {
             String username = _T("username");
-            Observable<String> observable = String(_T("empty"));
+            BindableObservable<String> observable = String(_T("empty"));
             Observable<String> source = String(_T("empty"));
             uint32_t called = 0;
-            observable = source;
+            observable.bind(source);
             observable.add([&](const String& value) {
                 called++;
             });
@@ -166,19 +168,18 @@ public:
             Assert::AreEqual(username, observable.Value);
             Assert::AreEqual(username, source.Value);
             Assert::AreEqual(called, 2u);
-            observable = nullptr;
         }
     }
 
-    TEST_METHOD(Observable_assign_destruct) {
+    TEST_METHOD(BindableObservable_bind_destruct) {
         MemoryGuard guard;
         {
             String username = _T("username");
             Observable<String> source = String(_T("empty"));
             uint32_t called = 0;
             {
-                Observable<String> observable = String(_T("empty"));
-                observable = source;
+                BindableObservable<String> observable = String(_T("empty"));
+                observable.bind(source);
                 observable.add([&](const String& value) {
                     called++;
                 });

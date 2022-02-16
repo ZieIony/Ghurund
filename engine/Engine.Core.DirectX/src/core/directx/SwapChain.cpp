@@ -12,7 +12,7 @@ namespace Ghurund::Core::DirectX {
         static const auto CONSTRUCTOR = Constructor<SwapChain>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<SwapChain>(Ghurund::Core::DirectX::NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
             .withConstructor(CONSTRUCTOR)
-            .withSupertype(Object::TYPE);
+            .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }

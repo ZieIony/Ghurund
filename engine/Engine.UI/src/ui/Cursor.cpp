@@ -16,23 +16,6 @@ namespace Ghurund::UI {
     const Cursor Cursor::SIZEWE = Cursor(CursorEnum::SIZEWE, "SIZEWE", IDC_SIZEWE);
     const Cursor Cursor::UPARROW = Cursor(CursorEnum::UPARROW, "UPARROW", IDC_UPARROW);
     const Cursor Cursor::WAIT = Cursor(CursorEnum::WAIT, "WAIT", IDC_WAIT);
-
-    const Ghurund::Core::EnumValues<CursorEnum, Cursor> Cursor::VALUES = {
-        &Cursor::APPSTARTING,
-        &Cursor::ARROW,
-        &Cursor::CROSS,
-        &Cursor::HAND,
-        &Cursor::HELP,
-        &Cursor::IBEAM,
-        &Cursor::NO,
-        &Cursor::SIZEALL,
-        &Cursor::SIZENESW,
-        &Cursor::SIZENS,
-        &Cursor::SIZENWSE,
-        &Cursor::SIZEWE,
-        &Cursor::UPARROW,
-        &Cursor::WAIT
-    };
 }
 
 namespace Ghurund::Core {

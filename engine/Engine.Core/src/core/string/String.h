@@ -15,4 +15,12 @@ namespace Ghurund::Core {
     typedef GenericString<wchar_t> WString;
     typedef GenericString<char> AString;
     typedef GenericString<tchar> TString;
+
+    template<typename T>
+    String toString(const T& obj) = delete;
+
+    template <class T>
+    concept StringConvertible = requires(T obj) {
+        { toString(obj) } -> std::same_as<String>;
+    };
 }

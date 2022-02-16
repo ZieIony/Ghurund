@@ -3,13 +3,12 @@
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/directx/MathTypes.h"
 
 namespace Ghurund {
     const Ghurund::Core::Type& Renderer::GET_TYPE() {
-        static auto PROPERTY_CLEARCOLOR = Property<Renderer, const XMFLOAT4*>("ClearColor", (XMFLOAT4 * (Renderer::*)()) & getClearColor, (void(Renderer::*)(const XMFLOAT4*)) & setClearColor);
-        static auto PROPERTY_STATISTICS = ReadOnlyProperty<Renderer, RenderingStatistics&>("Statistics", (RenderingStatistics & (Renderer::*)()) & getStatistics);
+        static auto PROPERTY_CLEARCOLOR = Property<Renderer, const XMFLOAT4*>("ClearColor", &getClearColor, &setClearColor);
+        static auto PROPERTY_STATISTICS = Property<Renderer, RenderingStatistics&>("Statistics", &getStatistics);
 
         static const auto CONSTRUCTOR = Constructor<Renderer>();
 

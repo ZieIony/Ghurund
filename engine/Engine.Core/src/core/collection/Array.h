@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Collection.h"
-#include "List.h"
+#include "ArrayCollection.h"
 
 namespace Ghurund::Core {
     template<class Value> class Array:public Collection {
@@ -9,6 +8,11 @@ namespace Ghurund::Core {
         Value* v;
 
     public:
+        Array() {
+            this->size = 0;
+            v = nullptr;
+        }
+
         Array(size_t size) {
             this->size = size;
             v = (Value*)ghnew char[sizeof(Value) * size];
@@ -41,7 +45,7 @@ namespace Ghurund::Core {
                 new(v + i)Value(*it);
         }
 
-        Array(const List<Value>& list) {
+        Array(const ArrayCollection<Value>& list) {
             size = list.Size;
             v = (Value*)ghnew char[sizeof(Value) * size];
             int i = 0;
@@ -153,6 +157,20 @@ namespace Ghurund::Core {
             return *this;
         }
 
+        inline bool operator==(const Array<Value>& other) const {
+            if (__super::operator!=(other))
+                return false;
+            for (size_t i = 0; i < size; i++) {
+                if (v[i] != other[i])
+                    return false;
+            }
+            return true;
+        }
+
+        inline bool operator!=(const Array<Value>& other) const {
+            return !(*this == other);
+        }
+
         inline void deleteItems() {
             for (size_t i = 0; i < size; i++) {
                 delete v[i];
@@ -163,6 +181,17 @@ namespace Ghurund::Core {
         inline void copyTo(Array<Value>& dest, size_t offset = 0) const {
             for (size_t i = 0; i < size; i++)
                 dest.set(i + offset, v[i]);
+        }
+
+        template<typename Predicate>
+        inline size_t find(Predicate predicate) const {
+            size_t i = 0;
+            for (const Value& item : *this) {
+                if (predicate(item))
+                    return i;
+                i++;
+            }
+            return size;
         }
     };
 

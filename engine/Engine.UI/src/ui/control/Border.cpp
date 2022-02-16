@@ -8,7 +8,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Border::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<Border>();
-        static const Ghurund::Core::Type& TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

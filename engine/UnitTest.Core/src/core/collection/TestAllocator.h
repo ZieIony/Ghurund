@@ -2,7 +2,7 @@
 
 #include "core/allocation/Allocator.h"
 
-class TestAllocator:public Ghurund::Core::Allocator<size_t> {
+class TestAllocator:public Ghurund::Core::Allocator {
 private:
     int allocations = 0;
 

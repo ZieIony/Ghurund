@@ -5,16 +5,12 @@
 namespace Ghurund::UI {
     class ControlContainer: public ControlParent {
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-    public:
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
 
     private:
         Control* child = nullptr;

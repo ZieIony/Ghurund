@@ -2,7 +2,7 @@
 #include "Feature.h"
 
 namespace Ghurund::Core {
-    inline const Ghurund::Core::Type& Feature::GET_TYPE() {
+    const Ghurund::Core::Type& Feature::GET_TYPE() {
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<Feature>(Ghurund::Core::NAMESPACE_NAME, "Feature")
             .withModifier(TypeModifier::ABSTRACT)

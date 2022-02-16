@@ -8,7 +8,7 @@ namespace Ghurund {
     class LightScriptBindings:ScriptBindings<Light> {
     public:
         static void registerClass(asIScriptEngine& engine) {
-            ScriptBindings<Light>::registerRefClass(engine, Light::TYPE.Name.Data);
+            ScriptBindings<Light>::registerRefClass(engine, Light::GET_TYPE().Name.Data);
         }
     };
 

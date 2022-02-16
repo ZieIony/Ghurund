@@ -12,13 +12,10 @@ namespace Ghurund::UI::GDI {
     const Ghurund::Core::Type& SvgDocument::GET_TYPE() {
         using namespace Ghurund::Core;
 
-        static auto PROPERTY_SIZE = ReadOnlyProperty<SvgDocument, FloatSize>("Size", &getSize);
-
-        static const auto CONSTRUCTOR = Constructor<SvgDocument>();
+        static auto PROPERTY_SIZE = Property<SvgDocument, FloatSize>("Size", &getSize);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<SvgDocument>(Ghurund::UI::NAMESPACE_NAME, "SvgDocument")
             .withProperty(PROPERTY_SIZE)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

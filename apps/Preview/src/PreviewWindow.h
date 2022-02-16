@@ -60,17 +60,20 @@ namespace Preview {
 
             auto uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
 
-            layoutLoader->registerClass<PreviewLayout>();
             previewLayout = Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
-            Logger::print(LogType::INFO, _T("\n"));
-            Logger::print(LogType::INFO, previewLayout->printTree().Data);
-            Logger::print(LogType::INFO, _T("\n"));
             previewLayout->Theme = lightTheme;
             uiLayer->Root.Child = previewLayout;
             /*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
                 return true;
             };*/
+
+            sizeChanged += [&](Window& window) {
+                Logger::print(LogType::INFO, _T("\n"));
+                Logger::print(LogType::INFO, previewLayout->printTree().Data);
+                Logger::print(LogType::INFO, _T("\n"));
+                return true;
+            };
 
             DragDropEnabled = true;
             dropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {

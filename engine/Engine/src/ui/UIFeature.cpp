@@ -4,14 +4,13 @@
 #include "core/application/Application.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 #include "core/directx/Graphics.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static auto PROPERTY_GRAPHICS2D = Ghurund::ReadOnlyProperty<UIFeature, Ghurund::UI::Direct2D::Graphics2D&>("Graphics2D", (Ghurund::UI::Direct2D::Graphics2D & (UIFeature::*)()) & getGraphics2D);
+        static auto PROPERTY_GRAPHICS2D = Property<UIFeature, Ghurund::UI::Direct2D::Graphics2D&>("Graphics2D", &getGraphics2D);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::UI::NAMESPACE_NAME, "UIFeature")
             .withProperty(PROPERTY_GRAPHICS2D)

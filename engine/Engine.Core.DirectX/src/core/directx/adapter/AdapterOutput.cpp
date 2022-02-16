@@ -6,7 +6,7 @@
 namespace Ghurund::Core::DirectX {
     const Ghurund::Core::Type& AdapterOutput::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<AdapterOutput>(Ghurund::Core::DirectX::NAMESPACE_NAME, GH_STRINGIFY(AdapterOutput))
-            .withSupertype(Object::TYPE);
+            .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }

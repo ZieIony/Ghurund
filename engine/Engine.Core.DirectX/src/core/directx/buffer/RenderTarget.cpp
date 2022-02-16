@@ -122,7 +122,7 @@ namespace Ghurund::Core::DirectX {
         ComPtr<ID3D12Resource> copySource(texture);
         if (desc.SampleDesc.Count > 1) {
             // MSAA content must be resolved before being copied to a staging texture
-            auto descCopy = desc;
+            D3D12_RESOURCE_DESC descCopy = desc;
             descCopy.SampleDesc.Count = 1;
             descCopy.SampleDesc.Quality = 0;
 

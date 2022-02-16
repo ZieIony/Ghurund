@@ -9,13 +9,15 @@ namespace Ghurund::UI {
         MousePressed buttons;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
         virtual bool onKeyEvent(const KeyEventArgs& event) override;
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
         virtual bool onMouseButtonEvent(const MouseButtonEventArgs& event) override;
+
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         Event<Control, MousePressedEventArgs> pressed = *this;
@@ -37,12 +39,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isPressed)) const MousePressed& Pressed;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        inline static const Ghurund::Core::Type& TYPE = ClickableControl::GET_TYPE();
     };
 }

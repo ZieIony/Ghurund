@@ -24,7 +24,7 @@ namespace Ghurund::Physics {
 			static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
 				.withSupertype(__super::GET_TYPE());
 
-			return TYPE;
+			return GET_TYPE();
 		}
 
 	protected:
@@ -49,10 +49,10 @@ namespace Ghurund::Physics {
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        
 
-		virtual const Ghurund::Core::Type& getType() const override {
-			return TYPE;
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
 		}
 
 		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;

@@ -20,7 +20,10 @@ namespace Ghurund::Core::DirectX {
         void* address;
         ID3D12Resource *resource;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         GPUResourcePointer(HeapAllocator *allocator, void* address, ID3D12Resource *resource){
@@ -34,10 +37,6 @@ namespace Ghurund::Core::DirectX {
             allocator->deallocate(address);
         }
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type&getType() const override {
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

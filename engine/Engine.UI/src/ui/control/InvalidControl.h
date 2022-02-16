@@ -7,7 +7,6 @@
 namespace Ghurund::UI {
     class InvalidControl:public Control {
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
         Color backgroundColor = Color(1, 0, 0, 0.2f);
         Color borderColor = Color(1, 0, 0, 1.0f);
         std::unique_ptr<IStrokeStyle> strokeStyle;
@@ -20,20 +19,18 @@ namespace Ghurund::UI {
             }
         }
 
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
         InvalidControl() {
             MinSize = { 18, 18 };
             PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
         virtual void onDraw(ICanvas& canvas) override;
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

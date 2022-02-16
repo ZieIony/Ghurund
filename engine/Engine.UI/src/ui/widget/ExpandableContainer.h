@@ -19,9 +19,6 @@ namespace Ghurund::UI {
             return true;
         };
 
-    protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
     public:
         inline void setExpanded(bool expanded) {
             this->expanded = expanded;
@@ -50,10 +47,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getHeader, put = setHeader)) Control* Header;
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getType() const override {
-            return TYPE;
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;

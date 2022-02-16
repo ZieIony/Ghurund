@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         static const auto CONSTRUCTOR = Constructor<ColorView>();
         static auto PROPERTY_COLOR = Property<ColorView, const ColorAttr&>("Color", (const ColorAttr & (ColorView::*)()) & getColor, (void(ColorView::*)(const ColorAttr&)) & setColor);
 
-        static const Ghurund::Core::Type& TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
             .withConstructor(CONSTRUCTOR)
             .withProperty(PROPERTY_COLOR)
             .withSupertype(__super::GET_TYPE());
@@ -29,44 +29,14 @@ namespace Ghurund::UI {
         __super::load(loader, xml);
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr) {
-            /*try {
-                Binding binding = Binding::parse(colorAttr->Value());
-                Array<AString> path = binding.Path;
-                size_t propIndex = Type.Properties.find([&](BaseProperty* prop) {
-                    return prop->Name == "Color";
-                });
-                if (propIndex != Type.Properties.Size) {
-                    BaseProperty* targetProperty = Type.Properties[propIndex];
-                    Control* result = resolvePath(path);
-                    if (result) {
-                        size_t sourcePropIndex = result->Type.Properties.find([&](BaseProperty* prop) {
-                            return prop->Name == binding.PropertyName;
-                        });
-                        if (sourcePropIndex != result->Type.Properties.Size) {
-                            BaseProperty* sourceProperty = result->Type.Properties[sourcePropIndex];
-                            if (sourceProperty->Type == targetProperty->Type) { // TODO: extends
-                                sourceProperty->getRaw(result, [&](void* val) {
-                                    targetProperty->setRaw(this, val);
-                                });
-                            } else {
-                                Logger::log(LogType::WARNING, std::format(_T("Invalid binding property type: '{}'.\n"), AString(colorAttr->Value())).c_str());
-                            }
-                        } else {
-                            Logger::log(LogType::WARNING, std::format(_T("Invalid binding source: '{}'.\n"), AString(colorAttr->Value())).c_str());
-                        }
-                    } else {
-                        Logger::log(LogType::WARNING, std::format(_T("Invalid binding path: '{}'.\n"), AString(colorAttr->Value())).c_str());
-                    }
-                }
-            } catch (InvalidParamException e) {*/
-                auto color = loader.loadColor(colorAttr->Value());
-                if (color) {
-                    Color = *color;
-                    delete color;
-                } else {
-                    Logger::log(LogType::WARNING, std::format(_T("Invalid color value: '{}'.\n"), AString(colorAttr->Value())).c_str());
-                }
-            //}
+            AString colorAttrValue = colorAttr->Value();
+            auto color = loader.loadColor(colorAttr->Value());
+            if (color) {
+                Color = *color;
+                delete color;
+            } else {
+                Logger::log(LogType::WARNING, _T("Invalid color value: '{}'.\n"), colorAttrValue);
+            }
         }
     }
 

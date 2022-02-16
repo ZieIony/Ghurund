@@ -5,16 +5,15 @@
 #include "graphics/Renderer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/ReadOnlyProperty.h"
 
 #include <windowsx.h>
 #include <ui/UIFeature.h>
 
 namespace Ghurund {
     const Ghurund::Core::Type& ApplicationWindow::GET_TYPE() {
-        static auto PROPERTY_SWAPCHAIN = Ghurund::ReadOnlyProperty<ApplicationWindow, Ghurund::SwapChain&>("SwapChain", (Ghurund::SwapChain & (ApplicationWindow::*)()) & getSwapChain);
-        static auto PROPERTY_LAYERS = Ghurund::ReadOnlyProperty<ApplicationWindow, LayerList&>("Layers", (LayerList & (ApplicationWindow::*)()) & getLayers);
-        static auto PROPERTY_APPLICATION = Ghurund::ReadOnlyProperty<ApplicationWindow, Ghurund::Application&>("Application", (Ghurund::Application & (ApplicationWindow::*)()) & getApplication);
+        static auto PROPERTY_SWAPCHAIN = Property<ApplicationWindow, Ghurund::SwapChain&>("SwapChain", &getSwapChain);
+        static auto PROPERTY_LAYERS = Property<ApplicationWindow, LayerList&>("Layers", &getLayers);
+        static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<ApplicationWindow>("Ghurund", "ApplicationWindow")
             .withProperty(PROPERTY_SWAPCHAIN)
