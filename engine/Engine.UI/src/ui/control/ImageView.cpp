@@ -17,75 +17,75 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.width = preferredSize.width.measure(minSize.width, image ? (float)image->PreferredSize.width : 0.0f, parentWidth);
-        measuredSize.height = preferredSize.height.measure(minSize.height, image ? (float)image->PreferredSize.height : 0.0f, parentHeight);
+        measuredSize.Width = resolveWidth(image ? (float)image->PreferredSize.Width : 0.0f, parentWidth);
+        measuredSize.Height = resolveHeight(image ? (float)image->PreferredSize.Height : 0.0f, parentHeight);
     }
 
     void ImageView::onDraw(ICanvas& canvas) {
         if (!image)
             return;
 
-        auto src = FloatRect(0, 0, image->PreferredSize.width, image->PreferredSize.height);
+        auto src = FloatRect(0, 0, image->PreferredSize.Width, image->PreferredSize.Height);
         FloatRect dst;
 
         if (scaleMode == ImageScaleMode::NONE) {
-            dst.left = (Size.width - image->PreferredSize.width) / 2.0f;
-            dst.top = (Size.height - image->PreferredSize.height) / 2.0f;
-            dst.right = dst.left + image->PreferredSize.width;
-            dst.bottom = dst.top + image->PreferredSize.height;
+            dst.left = (Size.Width - image->PreferredSize.Width) / 2.0f;
+            dst.top = (Size.Height - image->PreferredSize.Height) / 2.0f;
+            dst.right = dst.left + image->PreferredSize.Width;
+            dst.bottom = dst.top + image->PreferredSize.Height;
         } else if (scaleMode == ImageScaleMode::STRETCH) {
             dst.left = 0;
             dst.top = 0;
-            dst.right = Size.width;
-            dst.bottom = Size.height;
+            dst.right = Size.Width;
+            dst.bottom = Size.Height;
         } else if (scaleMode == ImageScaleMode::FIT) {
-            float sx = Size.width / image->PreferredSize.width;
-            float sy = Size.height / image->PreferredSize.height;
+            float sx = Size.Width / image->PreferredSize.Width;
+            float sy = Size.Height / image->PreferredSize.Height;
             float s = std::min(sx, sy);
-            float width = image->PreferredSize.width * s;
-            float height = image->PreferredSize.height * s;
+            float width = image->PreferredSize.Width * s;
+            float height = image->PreferredSize.Height * s;
             if (gravity.horizontal == Alignment::Horizontal::LEFT) {
                 dst.left = 0;
             } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
-                dst.left = (Size.width - width) / 2.0f;
+                dst.left = (Size.Width - width) / 2.0f;
             } else {
-                dst.left = Size.width - width;
+                dst.left = Size.Width - width;
             }
             if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.top = 0;
             } else if (gravity.vertical == Alignment::Vertical::CENTER) {
-                dst.top = (Size.height - height) / 2.0f;
+                dst.top = (Size.Height - height) / 2.0f;
             } else {
-                dst.top = Size.height - height;
+                dst.top = Size.Height - height;
             }
             dst.right = dst.left + width;
             dst.bottom = dst.top + height;
         } else if (scaleMode == ImageScaleMode::CROP) {
-            float sx = Size.width / image->PreferredSize.width;
-            float sy = Size.height / image->PreferredSize.height;
+            float sx = Size.Width / image->PreferredSize.Width;
+            float sy = Size.Height / image->PreferredSize.Height;
             float s = std::max(sx, sy);
-            float width = image->PreferredSize.width * s;
-            float height = image->PreferredSize.height * s;
+            float width = image->PreferredSize.Width * s;
+            float height = image->PreferredSize.Height * s;
             if (gravity.horizontal == Alignment::Horizontal::LEFT) {
                 dst.left = 0;
             } else if (gravity.horizontal == Alignment::Horizontal::CENTER) {
-                dst.left = (Size.width - width) / 2.0f;
+                dst.left = (Size.Width - width) / 2.0f;
             } else {
-                dst.left = Size.width - width;
+                dst.left = Size.Width - width;
             }
             if (gravity.vertical == Alignment::Vertical::TOP) {
                 dst.top = 0;
             } else if (gravity.vertical == Alignment::Vertical::TOP) {
-                dst.top = (Size.height - height) / 2.0f;
+                dst.top = (Size.Height - height) / 2.0f;
             } else {
-                dst.top = Size.height - height;
+                dst.top = Size.Height - height;
             }
             dst.right = dst.left + width;
             dst.bottom = dst.top + height;
         }
 
         image->Size = { dst.right - dst.left, dst.bottom - dst.top };
-        canvas.clipRect(0, 0, Size.width, Size.height);
+        canvas.clipRect(0, 0, Size.Width, Size.Height);
         canvas.save();
         canvas.translate(dst.left, dst.top);
         if (Tint)

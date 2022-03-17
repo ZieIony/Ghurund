@@ -17,7 +17,7 @@ namespace Ghurund::UI::GDI {
     BitmapDrawable::BitmapDrawable(Bitmap* image) {
         this->image = image;
         image->addReference();
-        preferredSize = { (float)image->Size.width, (float)image->Size.height };
+        preferredSize = { (float)image->Size.Width, (float)image->Size.Height };
     }
 
     BitmapDrawable::~BitmapDrawable() {
@@ -25,7 +25,7 @@ namespace Ghurund::UI::GDI {
     }
 
     void BitmapDrawable::onDraw(ICanvas& canvas) {
-        auto dst = FloatRect{ 0, 0, size.width, size.height };
+        auto dst = FloatRect{ 0, 0, size.Width, size.Height };
         if (Tint) {
             canvas.drawImage(*image, dst, Tint, Alpha);
         } else {

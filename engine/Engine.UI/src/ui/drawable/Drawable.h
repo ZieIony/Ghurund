@@ -36,8 +36,8 @@ namespace Ghurund::UI {
         }
 
         inline void setSize(float width, float height) {
-            size.width = width;
-            size.height = height;
+            size.Width = width;
+            size.Height = height;
         }
 
         __declspec(property(get = getSize, put = setSize)) Ghurund::Core::FloatSize& Size;

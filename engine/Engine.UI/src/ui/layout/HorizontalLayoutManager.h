@@ -13,13 +13,13 @@ namespace Ghurund::UI {
         virtual void scrollBy(float dx, float dy) override {
             scroll.x += dx;
             if (dx > 0) {
-                addLeft(group->Size.width, group->Size.height);
+                addLeft(group->Size.Width, group->Size.Height);
                 scroll.x = std::min(scroll.x, 0.0f);
                 removeLeft();
             } else {
-                addRight(group->Size.width, group->Size.height);
+                addRight(group->Size.Width, group->Size.Height);
                 if (indexFirst + group->Children.Size == provider->getChildCount())
-                    scroll.y = std::max(scroll.y, -lastRight + group->Size.height);
+                    scroll.y = std::max(scroll.y, -lastRight + group->Size.Height);
                 removeTop();
             }
         }
@@ -29,24 +29,24 @@ namespace Ghurund::UI {
                 indexFirst--;
                 Control* control = provider->getChild(indexFirst);
                 control->measure(parentWidth, parentHeight);
-                control->layout(firstLeft - control->MeasuredSize.width, 0, control->MeasuredSize.width, group->Size.height);
+                control->layout(firstLeft - control->MeasuredSize.Width, 0, control->MeasuredSize.Width, group->Size.Height);
                 group->Children.insert(0, control);
                 firstLeft = control->Position.x;
-                firstRight = firstLeft + control->Size.width;
+                firstRight = firstLeft + control->Size.Width;
                 control->release();
             }
         }
 
         void addRight(float parentWidth, float parentHeight) {
-            while (lastRight + scroll.x < group->Size.width && provider->getChildCount()>indexLast) {
+            while (lastRight + scroll.x < group->Size.Width && provider->getChildCount()>indexLast) {
                 Control* control = provider->getChild(indexLast);
                 control->measure(parentWidth, parentHeight);
-                control->layout(lastRight, 0, control->MeasuredSize.width, group->Size.height);
+                control->layout(lastRight, 0, control->MeasuredSize.Width, group->Size.Height);
                 group->Children.add(control);
                 control->release();
                 indexLast++;
                 lastLeft = control->Position.x;
-                lastRight = lastLeft + control->Size.width;
+                lastRight = lastLeft + control->Size.Width;
             }
         }
 
@@ -57,21 +57,21 @@ namespace Ghurund::UI {
                 if (group->Children.Size > 0) {
                     Control* control = group->Children[0];
                     firstLeft = control->Position.x;
-                    firstRight = firstLeft + control->Size.width;
+                    firstRight = firstLeft + control->Size.Width;
                 }
                 indexFirst++;
             }
         }
 
         void removeLeft() {
-            while (group->Children.Size > 0 && lastLeft + scroll.x > group->Size.width) {
+            while (group->Children.Size > 0 && lastLeft + scroll.x > group->Size.Width) {
                 indexLast--;
                 provider->releaseChild(group->Children[group->Children.Size - 1], indexLast);
                 group->Children.removeAt(group->Children.Size - 1);
                 if (group->Children.Size > 0) {
                     Control* control = group->Children[group->Children.Size - 1];
                     lastLeft = control->Position.x;
-                    lastRight = lastLeft + control->Size.width;
+                    lastRight = lastLeft + control->Size.Width;
                 }
             }
         }
@@ -91,9 +91,9 @@ namespace Ghurund::UI {
                 Control* control = provider->getChild(i);
                 control->measure(parentWidth, parentHeight);
                 if (control->PreferredSize.width != PreferredSize::Width::FILL)
-                    measuredSize.width += control->MeasuredSize.width;
+                    measuredSize.Width += control->MeasuredSize.Width;
                 if (control->PreferredSize.height != PreferredSize::Height::FILL)
-                    measuredSize.height = std::max(measuredSize.height, control->MeasuredSize.height);
+                    measuredSize.Height = std::max(measuredSize.Height, control->MeasuredSize.Height);
                 provider->releaseChild(control, i);
                 control->release();
                 i++;
@@ -104,8 +104,8 @@ namespace Ghurund::UI {
 
         virtual void layout(float x, float y, float width, float height) {
             for (Control* c : group->Children) {
-                if (c->Size.height != height)
-                    c->layout(c->Position.x, 0, c->Size.width, height);
+                if (c->Size.Height != height)
+                    c->layout(c->Position.x, 0, c->Size.Width, height);
             }
 
             addLeft(width, height);

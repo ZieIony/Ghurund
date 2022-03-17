@@ -25,8 +25,8 @@ namespace Ghurund::Core::DirectX {
 
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.BufferCount = frameCount;
-        swapChainDesc.Width = window.Size.width;
-        swapChainDesc.Height = window.Size.height;
+        swapChainDesc.Width = window.Size.Width;
+        swapChainDesc.Height = window.Size.Height;
         swapChainDesc.Format = format;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
@@ -45,11 +45,11 @@ namespace Ghurund::Core::DirectX {
     }
 
     Status SwapChain::initBuffers() {
-        if (frames || window->Size.width == 0 || window->Size.height == 0)
+        if (frames || window->Size.Width == 0 || window->Size.Height == 0)
             return Status::INV_STATE;
 
-        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.width, (float)window->Size.height,0,1 };
-        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.width, (LONG)window->Size.height };
+        D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.Width, (float)window->Size.Height,0,1 };
+        D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.Width, (LONG)window->Size.Height };
 
         frames = ghnew Array<Frame>(frameCount);
         for (unsigned int i = 0; i < frameCount; i++) {
@@ -59,7 +59,7 @@ namespace Ghurund::Core::DirectX {
             renderTarget->init(*graphics, renderTargetBuffer);
 
             DepthBuffer* depthBuffer = ghnew DepthBuffer();
-            depthBuffer->init(*graphics, window->Size.width, window->Size.height);
+            depthBuffer->init(*graphics, window->Size.Width, window->Size.Height);
 
             frames->get(i).init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
             renderTargetBuffer->Release();
@@ -91,9 +91,9 @@ namespace Ghurund::Core::DirectX {
         return Status::OK;
     }
 
-    Status SwapChain::resize(unsigned int width, unsigned int height) {
-        if (width > 0 && height > 0) {
-            HRESULT hr = swapChain->ResizeBuffers(frameCount, width, height, format, 0);
+    Status SwapChain::resize(const IntSize& size) {
+        if (size.Width > 0 && size.Height > 0) {
+            HRESULT hr = swapChain->ResizeBuffers(frameCount, size.Width, size.Height, format, 0);
             if (FAILED(hr))
                 return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->ResizeBuffers() failed\n"));
         }

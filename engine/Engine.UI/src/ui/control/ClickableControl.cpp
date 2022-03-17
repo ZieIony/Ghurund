@@ -17,19 +17,19 @@ namespace Ghurund::UI {
             if (event.Action == KeyAction::DOWN) {
                 buttons[MouseButton::VIRTUAL] = true;
                 onStateChanged();
-                return pressed(MousePressedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
+                return pressed(MousePressedEventArgs({ (int32_t)(Size.Width / 2), (int32_t)(Size.Height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
             } else if (event.Action == KeyAction::UP) {
                 buttons[MouseButton::VIRTUAL] = false;
                 onStateChanged();
-                return clicked(MouseClickedEventArgs({ (int32_t)(Size.width / 2), (int32_t)(Size.height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
+                return clicked(MouseClickedEventArgs({ (int32_t)(Size.Width / 2), (int32_t)(Size.Height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
             }
         }
         return false;
     }
 
     bool ClickableControl::onMouseMotionEvent(const MouseMotionEventArgs& event) {
-        bool in = event.Position.x >= 0 && event.Position.x < Size.width&&
-            event.Position.y >= 0 && event.Position.y < Size.height;
+        bool in = event.Position.x >= 0 && event.Position.x < Size.Width&&
+            event.Position.y >= 0 && event.Position.y < Size.Height;
         if (in && !hovered) {
             hovered = true;
             onStateChanged();

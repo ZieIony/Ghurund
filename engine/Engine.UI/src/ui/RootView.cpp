@@ -58,8 +58,8 @@ namespace Ghurund::UI {
     bool RootView::dispatchMouseButtonEvent(const MouseButtonEventArgs& event) {
         if (capturedChild) {
             auto position = capturedChild->PositionInWindow;
-            bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.width &&
-                event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.height;
+            bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.Width &&
+                event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.Height;
             auto result = capturedChild->dispatchMouseButtonEvent(event.translate(-position.x, -position.y, inside));
             return result;
         }
@@ -70,8 +70,8 @@ namespace Ghurund::UI {
     bool RootView::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
         if (capturedChild) {
             auto position = capturedChild->PositionInWindow;
-            bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.width &&
-                event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.height;
+            bool inside = event.Position.x >= position.x && event.Position.x < position.x + capturedChild->Size.Width &&
+                event.Position.y >= position.y && event.Position.y < position.y + capturedChild->Size.Height;
             return capturedChild->dispatchMouseMotionEvent(event.translate(-position.x, -position.y, inside));
         }
 

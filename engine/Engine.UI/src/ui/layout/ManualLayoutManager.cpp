@@ -13,8 +13,8 @@ namespace Ghurund::UI {
                 continue;
 
             c->layout(c->Position.x, c->Position.y,
-                c->PreferredSize.width == PreferredSize::Width::FILL ? width : c->MeasuredSize.width,
-                c->PreferredSize.height == PreferredSize::Height::FILL ? height : c->MeasuredSize.height
+                c->PreferredSize.width == PreferredSize::Width::FILL ? width : c->MeasuredSize.Width,
+                c->PreferredSize.height == PreferredSize::Height::FILL ? height : c->MeasuredSize.Height
             );
         }
     }

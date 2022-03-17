@@ -5,6 +5,7 @@
 #include "core/reflection/Type.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/logging/Logger.h"
+#include "core/math/Size.h"
 
 #include <format>
 #include <regex>
@@ -13,7 +14,7 @@ namespace Ghurund::UI {
     class PreferredSize {
     public:
         enum class Type {
-            WRAP, PIXELS, PERCENT, FILL
+            WRAP, PIXELS, PERCENT, FILL, RATIO
         };
 
     private:
@@ -50,18 +51,6 @@ namespace Ghurund::UI {
             inline bool operator==(const OrientationSize& other) {
                 return this->type == other.type && this->value == other.value;
             }
-
-            inline float measure(float minSize, float contentSize, float parentSize) {
-                if (type == PreferredSize::Type::PIXELS) {
-                    return std::max(value, minSize);
-                } else if (type == PreferredSize::Type::FILL) {
-                    return std::max(parentSize, minSize);
-                } else if (type == PreferredSize::Type::WRAP) {
-                    return std::max(contentSize, minSize);
-                } else {
-                    return std::max(parentSize * value * 0.01f, minSize);
-                }
-            }
         };
 
     public:
@@ -87,6 +76,10 @@ namespace Ghurund::UI {
 
         Width width = Width::WRAP;
         Height height = Height::WRAP;
+
+        PreferredSize() {}
+
+        PreferredSize(const Width& width, const Height& height):width(width), height(height) {}
 
         static PreferredSize parse(const Ghurund::Core::AString& str);
     };

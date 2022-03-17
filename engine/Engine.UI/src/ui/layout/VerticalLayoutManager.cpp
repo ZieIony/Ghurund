@@ -6,25 +6,25 @@ namespace Ghurund::UI {
         while (firstTop + scroll.y > 0 && indexTop > 0) {
             indexTop--;
             Control* control = provider->getChild(indexTop);
-            control->measure(group->Size.width, group->Size.height);
-            control->layout(0, firstTop - control->MeasuredSize.height, group->Size.width, control->MeasuredSize.height);
+            control->measure(group->Size.Width, group->Size.Height);
+            control->layout(0, firstTop - control->MeasuredSize.Height, group->Size.Width, control->MeasuredSize.Height);
             group->Children.insert(0, control);
             firstTop = control->Position.y;
-            firstBottom = firstTop + control->Size.height;
+            firstBottom = firstTop + control->Size.Height;
             control->release();
         }
     }
 
     void VerticalLayoutManager::addBottom() {
-        while (lastBottom + scroll.y < group->Size.height && provider->getChildCount()>indexBottom) {
+        while (lastBottom + scroll.y < group->Size.Height && provider->getChildCount()>indexBottom) {
             Control* control = provider->getChild(indexBottom);
-            control->measure(group->Size.width, group->Size.height);
-            control->layout(0, lastBottom, group->Size.width, control->MeasuredSize.height);
+            control->measure(group->Size.Width, group->Size.Height);
+            control->layout(0, lastBottom, group->Size.Width, control->MeasuredSize.Height);
             group->Children.add(control);
             control->release();
             indexBottom++;
             lastTop = control->Position.y;
-            lastBottom = lastTop + control->Size.height;
+            lastBottom = lastTop + control->Size.Height;
         }
     }
 
@@ -35,21 +35,21 @@ namespace Ghurund::UI {
             if (group->Children.Size > 0) {
                 Control* control = group->Children[0];
                 firstTop = control->Position.y;
-                firstBottom = firstTop + control->Size.height;
+                firstBottom = firstTop + control->Size.Height;
             }
             indexTop++;
         }
     }
 
     void VerticalLayoutManager::removeBottom() {
-        while (group->Children.Size > 0 && lastTop + scroll.y > group->Size.height) {
+        while (group->Children.Size > 0 && lastTop + scroll.y > group->Size.Height) {
             indexBottom--;
             provider->releaseChild(group->Children[group->Children.Size - 1], indexBottom);
             group->Children.removeAt(group->Children.Size - 1);
             if (group->Children.Size > 0) {
                 Control* control = group->Children[group->Children.Size - 1];
                 lastTop = control->Position.y;
-                lastBottom = lastTop + control->Size.height;
+                lastBottom = lastTop + control->Size.Height;
             }
         }
     }
@@ -63,7 +63,7 @@ namespace Ghurund::UI {
         } else {
             addBottom();
             if (indexTop + group->Children.Size == provider->getChildCount())
-                scroll.y = std::max(scroll.y, -lastBottom + group->Size.height);
+                scroll.y = std::max(scroll.y, -lastBottom + group->Size.Height);
             removeTop();
         }
     }
@@ -80,10 +80,10 @@ namespace Ghurund::UI {
             Control* control = provider->getChild(i);
             control->measure(parentWidth, parentHeight);
             if (control->PreferredSize.width != PreferredSize::Width::FILL)
-                width = std::max(width, control->MeasuredSize.width);
+                width = std::max(width, control->MeasuredSize.Width);
             if (control->PreferredSize.height != PreferredSize::Height::FILL)
-                height += control->MeasuredSize.height;
-            maxScroll.y += control->MeasuredSize.height;
+                height += control->MeasuredSize.Height;
+            maxScroll.y += control->MeasuredSize.Height;
             provider->releaseChild(control, i);
         }
 
@@ -96,8 +96,8 @@ namespace Ghurund::UI {
 
     void VerticalLayoutManager::layout(float x, float y, float width, float height) {
         for (Control* c : group->Children) {
-            if (c->Size.width != width)
-                c->layout(0, c->Position.y, width, c->Size.height);
+            if (c->Size.Width != width)
+                c->layout(0, c->Position.y, width, c->Size.Height);
         }
 
         addTop();

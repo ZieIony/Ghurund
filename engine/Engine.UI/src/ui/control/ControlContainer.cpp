@@ -76,18 +76,17 @@ namespace Ghurund::UI {
     }
 
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
-        measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
+        __super::onMeasure(parentWidth, parentHeight);
 
         if (child) {
             child->measure(
                 preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth,
                 preferredSize.height.Type == PreferredSize::Type::PIXELS ? preferredSize.height.Value : parentHeight
             );
-            float childWidth = child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.width.Value : child->MeasuredSize.width;
-            measuredSize.width = std::max(measuredSize.width, childWidth);
-            float childHeight = child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.height.Value : child->MeasuredSize.height;
-            measuredSize.height = std::max(measuredSize.height, childHeight);
+            float childWidth = child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.width.Value : child->MeasuredSize.Width;
+            measuredSize.Width = std::max(measuredSize.Width, childWidth);
+            float childHeight = child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.height.Value : child->MeasuredSize.Height;
+            measuredSize.Height = std::max(measuredSize.Height, childHeight);
         }
     }
 

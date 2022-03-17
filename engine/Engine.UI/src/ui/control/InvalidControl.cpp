@@ -15,7 +15,7 @@ namespace Ghurund::UI {
     }
 
     void InvalidControl::onDraw(ICanvas& canvas) {
-        canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor);
-        canvas.drawRect(1, 1, Size.width - 2, Size.height - 2, borderColor, 2, strokeStyle.get());
+        canvas.fillRect(0, 0, Size.Width, Size.Height, backgroundColor);
+        canvas.drawRect(1, 1, Size.Width - 2, Size.Height - 2, borderColor, 2, strokeStyle.get());
     }
 }

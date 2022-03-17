@@ -19,7 +19,7 @@ namespace Ghurund::UI {
             return;
 
         canvas.save();
-        canvas.clipRect(0, 0, Size.width, Size.height);
+        canvas.clipRect(0, 0, Size.Width, Size.Height);
         auto& scroll = layoutManager->Scroll;
         canvas.translate(scroll.x, scroll.y);
         for (Control* c : Children)

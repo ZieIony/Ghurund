@@ -24,17 +24,17 @@ namespace Ghurund::UI {
                 return;
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
-            measuredSize.width = std::max(minSize.width, std::ceil(textMetrics.width));
-            measuredSize.height = preferredSize.height.measure(minSize.height, std::ceil(textMetrics.height), parentHeight);
+            measuredSize.Width = std::max(minSize.width.resolve(parentWidth), std::ceil(textMetrics.width));
+            measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
         } else {
-            measuredSize.width = preferredSize.width.measure(minSize.width, 0, parentWidth);
-            textLayout->Size = { measuredSize.width, MAX_LAYOUT_SIZE };
+            measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
+            textLayout->Size = { measuredSize.Width, MAX_LAYOUT_SIZE };
             if (textLayout->refresh() != Status::OK) {
                 Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
                 return;
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
-            measuredSize.height = preferredSize.height.measure(minSize.height, std::ceil(textMetrics.height), parentHeight);
+            measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
         }
     }
 
@@ -56,8 +56,8 @@ namespace Ghurund::UI {
             return;
         if (!TextFormat)
             TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
-        if (Size.width > 0 && Size.height > 0)
-            textLayout->Size = { Size.width, Size.height };
+        if (Size.Width > 0 && Size.Height > 0)
+            textLayout->Size = { Size.Width, Size.Height };
     }
 
     void TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

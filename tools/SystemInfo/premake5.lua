@@ -20,7 +20,6 @@ project "SystemInfo"
 		"generated/bindings",
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
-		includeDir["Engine.UI_bindings"],
 		includeDir["Engine.UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],

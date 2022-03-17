@@ -51,9 +51,9 @@ namespace Ghurund::UI {
                     if (lockedChild == LockedChild::NONE)
                         lockedChild = LockedChild::CHILD_1;
                     if (lockedChild == LockedChild::CHILD_1) {
-                        container1->PreferredSize.width = container1->Size.width + args.Position.x - pressMousePos.x;
+                        container1->PreferredSize.width = container1->Size.Width + args.Position.x - pressMousePos.x;
                     } else {
-                        container2->PreferredSize.width = container2->Size.width - (args.Position.x - pressMousePos.x);
+                        container2->PreferredSize.width = container2->Size.Width - (args.Position.x - pressMousePos.x);
                     }
                     layout->invalidate();
                 }
@@ -72,9 +72,9 @@ namespace Ghurund::UI {
                     if (lockedChild == LockedChild::NONE)
                         lockedChild = LockedChild::CHILD_1;
                     if (lockedChild == LockedChild::CHILD_1) {
-                        container1->PreferredSize.height = container1->Size.height + args.Position.y - pressMousePos.y;
+                        container1->PreferredSize.height = container1->Size.Height + args.Position.y - pressMousePos.y;
                     } else {
-                        container2->PreferredSize.height = container2->Size.height - (args.Position.y - pressMousePos.y);
+                        container2->PreferredSize.height = container2->Size.Height - (args.Position.y - pressMousePos.y);
                     }
                     layout->invalidate();
                 }
@@ -127,7 +127,7 @@ namespace Ghurund::UI {
         } else if (lockedChild == LockedChild::CHILD_1) {
             if (orientation == Orientation::HORIZONTAL) {
                 container1->PreferredSize = {
-                    container1->Size.width > 0 ? (PreferredSize::Width)container1->Size.width : container1->PreferredSize.width,
+                    container1->Size.Width > 0 ? (PreferredSize::Width)container1->Size.Width : container1->PreferredSize.width,
                     PreferredSize::Height::FILL
                 };
             } else {
@@ -142,7 +142,7 @@ namespace Ghurund::UI {
             container1->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
             if (orientation == Orientation::HORIZONTAL) {
                 container2->PreferredSize = {
-                    container2->Size.width ? (PreferredSize::Width)container2->Size.width : container2->PreferredSize.width,
+                    container2->Size.Width ? (PreferredSize::Width)container2->Size.Width : container2->PreferredSize.width,
                     PreferredSize::Height::FILL
                 };
             } else {

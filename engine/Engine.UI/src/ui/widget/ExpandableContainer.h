@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Widget.h"
-#include "ExpandableContainerBinding.h"
 #include "button/Button.h"
 #include "button/CheckBox.h"
 #include "ui/control/ImageView.h"

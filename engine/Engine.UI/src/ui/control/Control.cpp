@@ -26,7 +26,6 @@ namespace Ghurund::UI {
         static auto PROPERTY_ROTATION = Property<Control, float>("Rotation", (float(Control::*)()) & getRotation, (void(Control::*)(float)) & setRotation);
         static auto PROPERTY_SCALE = Property<Control, const FloatPoint&>("Scale", (FloatPoint & (Control::*)()) & getScale, (void(Control::*)(const FloatPoint&)) & setScale);
         static auto PROPERTY_TRANSFORMATION = Property<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
-        static auto PROPERTY_MINSIZE = Property<Control, const FloatSize&>("MinSize", (FloatSize & (Control::*)()) & getMinSize, (void(Control::*)(const FloatSize&)) & setMinSize);
         static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
         static auto PROPERTY_PREFERREDSIZE = Property<Control, const Ghurund::UI::PreferredSize&>("PreferredSize", (Ghurund::UI::PreferredSize & (Control::*)()) & getPreferredSize, (void(Control::*)(const Ghurund::UI::PreferredSize&)) & setPreferredSize);
         static auto PROPERTY_MEASUREDSIZE = Property<Control, FloatSize&>("MeasuredSize", (FloatSize & (Control::*)()) & getMeasuredSize);
@@ -49,7 +48,6 @@ namespace Ghurund::UI {
             .withProperty(PROPERTY_ROTATION)
             .withProperty(PROPERTY_SCALE)
             .withProperty(PROPERTY_TRANSFORMATION)
-            .withProperty(PROPERTY_MINSIZE)
             .withProperty(PROPERTY_SIZE)
             .withProperty(PROPERTY_PREFERREDSIZE)
             .withProperty(PROPERTY_MEASUREDSIZE)
@@ -83,24 +81,56 @@ namespace Ghurund::UI {
         this->name = ghnew AString(name);
     }
 
-    void Control::onMeasure(float parentWidth, float parentHeight) {
-        if (preferredSize.width.Type == PreferredSize::Type::PIXELS) {
-            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
-        } else if (preferredSize.width.Type == PreferredSize::Type::FILL) {
-            measuredSize.width = std::max(minSize.width, parentWidth);
-        } else if (preferredSize.width.Type == PreferredSize::Type::PERCENT) {
-            measuredSize.width = std::max(minSize.width, preferredSize.width.Value * parentWidth / 100.0f);
-        } else {
-            measuredSize.width = minSize.width;
+    float Control::resolveWidth(float contentSize, float parentWidth, float parentHeight) const {
+        float width;
+        switch (preferredSize.width.Type) {
+        case PreferredSize::Type::PIXELS:
+            width = preferredSize.width.Value;
+            break;
+        case PreferredSize::Type::FILL:
+            width = parentWidth * preferredSize.width.Value;
+            break;
+        case PreferredSize::Type::WRAP:
+            width = contentSize;
+            break;
+        case PreferredSize::Type::PERCENT:
+            width = parentWidth * preferredSize.width.Value * 0.01f;
+            break;
+        case PreferredSize::Type::RATIO:
+            return std::min(maxSize.height.resolve(parentHeight), std::max(preferredSize.height.Value, minSize.height.resolve(parentHeight))) * preferredSize.width.Value;
         }
-        if (preferredSize.height.Type == PreferredSize::Type::PIXELS) {
-            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
-        } else if (preferredSize.height.Type == PreferredSize::Type::FILL) {
-            measuredSize.height = std::max(minSize.height, parentHeight);
-        } else if (preferredSize.height.Type == PreferredSize::Type::PERCENT) {
-            measuredSize.height = std::max(minSize.height, preferredSize.height.Value * parentHeight / 100.0f);
+        return std::min(maxSize.width.resolve(parentWidth), std::max(width, minSize.width.resolve(parentWidth)));
+    }
+
+    float Control::resolveHeight(float contentSize, float parentWidth, float parentHeight) const {
+        float height;
+        switch (preferredSize.height.Type) {
+        case PreferredSize::Type::PIXELS:
+            height = preferredSize.height.Value;
+            break;
+        case PreferredSize::Type::FILL:
+            height = parentHeight * preferredSize.height.Value;
+            break;
+        case PreferredSize::Type::WRAP:
+            height = contentSize;
+            break;
+        case PreferredSize::Type::PERCENT:
+            height = parentHeight * preferredSize.height.Value * 0.01f;
+            break;
+        case PreferredSize::Type::RATIO:
+            return std::min(maxSize.width.resolve(parentWidth), std::max(preferredSize.width.Value, minSize.width.resolve(parentWidth))) * preferredSize.height.Value;
+        }
+        return std::min(maxSize.height.resolve(parentHeight), std::max(height, minSize.height.resolve(parentHeight)));
+    }
+
+    void Control::onMeasure(float parentWidth, float parentHeight) {
+        [[likely]]
+        if (preferredSize.width.Type != PreferredSize::Type::RATIO) {
+            measuredSize.Width = resolveWidth(parentWidth, parentHeight);
+            measuredSize.Height = resolveHeight(parentWidth, parentHeight);
         } else {
-            measuredSize.height = minSize.height;
+            measuredSize.Height = resolveHeight(parentWidth, parentHeight);
+            measuredSize.Width = resolveWidth(parentWidth, parentHeight);
         }
     }
 
@@ -298,7 +328,7 @@ namespace Ghurund::UI {
             position.x = x;
             position.y = y;
         }
-        if (needsLayout || size.width != width || size.height != height) {
+        if (needsLayout || size.Width != width || size.Height != height) {
 #ifdef _DEBUG
             /*const char* name = Name ? Name->Data : "[unnamed]";
             if (width < minSize.width || height < minSize.height)
@@ -306,16 +336,16 @@ namespace Ghurund::UI {
             if (width == 0 || height == 0)
                 Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, name);*/
 #endif
-            size.width = width;
-            size.height = height;
+            size.Width = width;
+            size.Height = height;
             needsLayout = false;
-            onLayout(x, y, size.width, size.height);
+            onLayout(x, y, size.Width, size.Height);
             sizeChanged();
         }
     }
 
     void Control::draw(ICanvas& canvas) {
-        if (size.width == 0 || size.height == 0)
+        if (size.Width == 0 || size.Height == 0)
             return;
 #ifdef _DEBUG
         /*        if (!Theme) {

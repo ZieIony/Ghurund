@@ -80,7 +80,7 @@ namespace Ghurund::UI::Direct2D {
             D2D1::PixelFormat(format, D2D1_ALPHA_MODE_PREMULTIPLIED)
         );
 
-        if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ size.width, size.height }, nullptr, 0, bitmapProperties, &bitmapImage)))
+        if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ size.Width, size.Height }, nullptr, 0, bitmapProperties, &bitmapImage)))
             return Status::CALL_FAIL;
 
         Valid = true;

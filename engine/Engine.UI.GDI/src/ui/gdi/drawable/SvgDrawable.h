@@ -23,7 +23,7 @@ namespace Ghurund::UI::GDI {
         SvgDrawable(SvgDocument* image) {
             this->image = image;
             image->addReference();
-            preferredSize = { image->Size.width, image->Size.height };
+            preferredSize = { image->Size.Width, image->Size.Height };
         }
 
         virtual void onDraw(ICanvas& canvas) override {

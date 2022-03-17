@@ -12,6 +12,8 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = ControlContainer::GET_TYPE();
+
     private:
         Control* child = nullptr;
         bool previousReceiver = false;

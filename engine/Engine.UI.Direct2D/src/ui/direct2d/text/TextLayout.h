@@ -65,11 +65,11 @@ namespace Ghurund::UI::Direct2D {
         }
 
         inline void setSize(const Ghurund::Core::FloatSize& size) {
-            setSize(size.width, size.height);
+            setSize(size.Width, size.Height);
         }
 
         virtual void setSize(float w, float h) {
-            if (size.width != w || size.height != h) {
+            if (size.Width != w || size.Height != h) {
                 size = { w, h };
                 valid = false;
             }

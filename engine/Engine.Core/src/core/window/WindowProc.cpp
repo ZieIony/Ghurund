@@ -51,7 +51,7 @@ namespace Ghurund::Core {
             unsigned int x = LOWORD(lParam);
             unsigned int y = HIWORD(lParam);
 
-            RECT rc = { 0,0,(LONG)window.size.Value.width, (LONG)window.size.Value.height };
+            RECT rc = { 0,0,(LONG)window.size.Value.Width, (LONG)window.size.Value.Height };
             AdjustWindowRect(&rc, GetWindowLong(window.Handle, GWL_STYLE), false);
 
             window.position = IntPoint(x + rc.left, y + rc.top);

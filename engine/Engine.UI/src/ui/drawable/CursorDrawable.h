@@ -13,7 +13,7 @@ namespace Ghurund::UI {
 
     public:
         CursorDrawable(const Color& color = 0x7f000000, float width = 2.0f, uint64_t blinkTimeMs = 1000):blinkTimeMs(blinkTimeMs), color(color) {
-            preferredSize.width = width;
+            preferredSize.Width = width;
         }
 
         inline void setColor(const Color& color) {

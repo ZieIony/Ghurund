@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\Engine.Core\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -74,7 +74,7 @@
       <PrecompiledHeaderFile>ghuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\Engine.Core\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -94,6 +94,7 @@
     <ClInclude Include="generated\bindings\TabBinding.h" />
     <ClInclude Include="generated\bindings\ToolbarBinding.h" />
     <ClInclude Include="generated\bindings\TreeRowBinding.h" />
+    <ClInclude Include="src\ui\SizeConstraints.h" />
     <ClInclude Include="src\Ghurund.UI.h" />
     <ClInclude Include="src\ghuipch.h" />
     <ClInclude Include="src\ui\Alignment.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ui\SizeConstraints.cpp" />
     <ClCompile Include="src\ghuipch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

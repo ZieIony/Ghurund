@@ -15,7 +15,7 @@ namespace Ghurund::UI::Direct2D {
             return Status::INV_STATE;
         }
 
-        if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.width, size.height, &newLayout)))
+        if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.Width, size.Height, &newLayout)))
             return Status::CALL_FAIL;
 
         if (layout)

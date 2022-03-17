@@ -72,7 +72,7 @@ namespace Ghurund::Core {
             }
 
             for (auto window : windows) {
-                if (window->Size.width == 0 || window->Size.height == 0)
+                if (window->Size.Width == 0 || window->Size.Height == 0)
                     continue;
                 if (window->paint() != Status::OK)
                     break;

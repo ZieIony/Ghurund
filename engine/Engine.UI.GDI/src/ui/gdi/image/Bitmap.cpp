@@ -69,7 +69,7 @@ namespace Ghurund::UI::GDI {
             image = nullptr;
         }
 
-        bitmapImage = new Gdiplus::Bitmap(size.width, size.height, PixelFormat32bppARGB);
+        bitmapImage = new Gdiplus::Bitmap(size.Width, size.Height, PixelFormat32bppARGB);
 
         Valid = true;
 

@@ -40,14 +40,14 @@ namespace Ghurund::Core {
             SetWindowTextW(handle, title.Data);
         };
         size += [&](const IntSize& size) {
-            dispatchSizeChangingEvent({ size.width, size.height });
+            dispatchSizeChangingEvent({ size.Width, size.Height });
             RECT rc, rcClient;
             GetWindowRect(handle, &rc);
             GetClientRect(handle, &rcClient);
             int xExtra = rc.right - rc.left - rcClient.right;
             int yExtra = rc.bottom - rc.top - rcClient.bottom;
 
-            SetWindowPos(handle, 0, 0, 0, size.width + xExtra, size.height + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
+            SetWindowPos(handle, 0, 0, 0, size.Width + xExtra, size.Height + yExtra, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
             dispatchSizeChangedEvent();
         };
         visible += [&](const bool& visible) {

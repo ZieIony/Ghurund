@@ -22,7 +22,7 @@ namespace Ghurund::UI {
         if (shape) {
             canvas.drawShape(*shape, color, thickness);
         } else {
-            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.width - Thickness, Size.height - Thickness, color, thickness);
+            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.Width - Thickness, Size.Height - Thickness, color, thickness);
         }
     }
 

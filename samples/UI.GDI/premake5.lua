@@ -19,7 +19,6 @@ project "UI.GDI"
 		"generated/bindings",
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
-		includeDir["Engine.UI_bindings"],
 		includeDir["Engine.UI.GDI"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],

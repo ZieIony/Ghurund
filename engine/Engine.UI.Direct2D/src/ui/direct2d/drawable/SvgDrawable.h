@@ -23,11 +23,11 @@ namespace Ghurund::UI::Direct2D {
         SvgDrawable(SvgDocument* image) {
             this->image = image;
             image->addReference();
-            preferredSize = { image->Size.width, image->Size.height };
+            preferredSize = { image->Size.Width, image->Size.Height };
         }
 
         virtual void onDraw(ICanvas& canvas) override {
-            auto dst = D2D1::RectF(0, 0, size.width, size.height);
+            auto dst = D2D1::RectF(0, 0, size.Width, size.Height);
             canvas.drawImage(*image);
         }
 

@@ -94,109 +94,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\reflection\BaseTypeTest.cpp" />
+    <ClCompile Include="src\core\reflection\ConstructorTest.cpp" />
+    <ClCompile Include="src\core\reflection\TypeTest.cpp" />
     <ClInclude Include="src\MemoryGuard.h" />
     <ClInclude Include="src\TestClass.h" />
     <ClInclude Include="src\TestUtils.h" />
     <ClInclude Include="src\core\collection\TestAllocator.h" />
     <ClInclude Include="src\core\reflection\TestClass.h" />
-    <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\test\MemoryGuard.h" />
-    <ClInclude Include="src\test\TestClass.h" />
-    <ClInclude Include="src\test\TestUtils.h" />
-    <ClInclude Include="src\test\core\collection\TestAllocator.h" />
-    <ClInclude Include="src\test\core\reflection\TestClass.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\core\ObservableTest.cpp" />
-    <ClCompile Include="src\core\TypeWrapperTest.cpp" />
-    <ClCompile Include="src\core\collection\ArrayIteratorTest.cpp" />
-    <ClCompile Include="src\core\collection\BagTest.cpp" />
-    <ClCompile Include="src\core\collection\LinkedListTest.cpp" />
-    <ClCompile Include="src\core\collection\ListTest.cpp" />
-    <ClCompile Include="src\core\collection\MapTest.cpp" />
-    <ClCompile Include="src\core\collection\QueueTest.cpp" />
-    <ClCompile Include="src\core\collection\RangeTest.cpp" />
-    <ClCompile Include="src\core\collection\ReverseIteratorTest.cpp" />
+    <ClInclude Include="src\TestUtils.h" />
+    <ClInclude Include="src\core\collection\TestAllocator.h" />
+    <ClInclude Include="src\core\reflection\TestClass.h" />
+    <ClInclude Include="src\TestUtils.h" />
+    <ClInclude Include="src\core\collection\TestAllocator.h" />
     <ClCompile Include="src\core\collection\SetTest.cpp" />
     <ClCompile Include="src\core\collection\StackTest.cpp" />
     <ClCompile Include="src\core\collection\TreeTest.cpp" />
+    <ClCompile Include="src\test\core\ObservableTest.cpp" />
+    <ClCompile Include="src\test\core\TypeWrapperTest.cpp" />
+    <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
+    <ClCompile Include="src\test\core\collection\BagTest.cpp" />
+    <ClCompile Include="src\test\core\collection\LinkedListTest.cpp" />
+    <ClCompile Include="src\test\core\collection\ListTest.cpp" />
+    <ClCompile Include="src\test\core\collection\MapTest.cpp" />
+    <ClCompile Include="src\test\core\collection\QueueTest.cpp" />
+    <ClCompile Include="src\test\core\collection\RangeTest.cpp" />
+    <ClCompile Include="src\test\core\collection\ReverseIteratorTest.cpp" />
+    <ClCompile Include="src\test\core\collection\SetTest.cpp" />
+    <ClCompile Include="src\test\core\collection\StackTest.cpp" />
+    <ClCompile Include="src\test\core\collection\TreeTest.cpp" />
+    <ClCompile Include="src\test\core\io\PathTest.cpp" />
+    <ClCompile Include="src\test\core\reflection\BaseTypeTest.cpp" />
+    <ClCompile Include="src\test\core\reflection\ConstructorTest.cpp" />
+    <ClCompile Include="src\test\core\reflection\ReflectionTest.cpp" />
+    <ClCompile Include="src\test\core\reflection\TypeTest.cpp" />
+    <ClCompile Include="src\test\core\resource\ResourceManagerTest.cpp" />
+    <ClCompile Include="src\test\core\string\StringTest.cpp" />
+    <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
+    <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
     <ClCompile Include="src\core\io\PathTest.cpp" />
-    <ClCompile Include="src\core\reflection\BaseTypeTest.cpp" />
-    <ClCompile Include="src\core\reflection\ConstructorTest.cpp" />
     <ClCompile Include="src\core\reflection\ReflectionTest.cpp" />
-    <ClCompile Include="src\core\reflection\TypeTest.cpp" />
     <ClCompile Include="src\core\resource\ResourceManagerTest.cpp" />
     <ClCompile Include="src\core\string\StringTest.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\core\threading\WorkerThreadTest.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="src\test\core\ObservableTest.cpp">
-      <ObjectFileName>$(IntDir)\ObservableTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\TypeWrapperTest.cpp">
-      <ObjectFileName>$(IntDir)\TypeWrapperTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp">
-      <ObjectFileName>$(IntDir)\ArrayIteratorTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\BagTest.cpp">
-      <ObjectFileName>$(IntDir)\BagTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\LinkedListTest.cpp">
-      <ObjectFileName>$(IntDir)\LinkedListTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\ListTest.cpp">
-      <ObjectFileName>$(IntDir)\ListTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\MapTest.cpp">
-      <ObjectFileName>$(IntDir)\MapTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\QueueTest.cpp">
-      <ObjectFileName>$(IntDir)\QueueTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\RangeTest.cpp">
-      <ObjectFileName>$(IntDir)\RangeTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\ReverseIteratorTest.cpp">
-      <ObjectFileName>$(IntDir)\ReverseIteratorTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\SetTest.cpp">
-      <ObjectFileName>$(IntDir)\SetTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\StackTest.cpp">
-      <ObjectFileName>$(IntDir)\StackTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\collection\TreeTest.cpp">
-      <ObjectFileName>$(IntDir)\TreeTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\io\PathTest.cpp">
-      <ObjectFileName>$(IntDir)\PathTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\reflection\BaseTypeTest.cpp">
-      <ObjectFileName>$(IntDir)\BaseTypeTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\reflection\ConstructorTest.cpp">
-      <ObjectFileName>$(IntDir)\ConstructorTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\reflection\ReflectionTest.cpp">
-      <ObjectFileName>$(IntDir)\ReflectionTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\reflection\TypeTest.cpp">
-      <ObjectFileName>$(IntDir)\TypeTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\resource\ResourceManagerTest.cpp">
-      <ObjectFileName>$(IntDir)\ResourceManagerTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\string\StringTest.cpp">
-      <ObjectFileName>$(IntDir)\StringTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp">
-      <ObjectFileName>$(IntDir)\ThreadPoolExecutorTest1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp">
-      <ObjectFileName>$(IntDir)\WorkerThreadTest1.obj</ObjectFileName>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

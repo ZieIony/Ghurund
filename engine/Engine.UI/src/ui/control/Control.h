@@ -9,6 +9,7 @@
 #include "core/input/EventConsumer.h"
 #include "ui/Cursor.h"
 #include "ui/PreferredSize.h"
+#include "ui/SizeConstraints.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
 
@@ -56,7 +57,8 @@ namespace Ghurund::UI {
         float rotation = 0;
         Ghurund::Core::Matrix3x2 transformation;
 
-        Ghurund::Core::FloatSize minSize = { 0,0 };
+        SizeConstraints minSize = { 0,0 };
+        SizeConstraints maxSize = { SizeConstraints::Width(SizeConstraints::Type::PERCENT, 100), SizeConstraints::Height(SizeConstraints::Type::PERCENT, 100) };
         PreferredSize preferredSize;   // what the user wants
         Ghurund::Core::FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
@@ -241,24 +243,25 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
-        inline const Ghurund::Core::FloatSize& getMinSize() const {
+        inline const SizeConstraints& getMinSize() const {
             return minSize;
         }
 
-        inline Ghurund::Core::FloatSize& getMinSize() {
-            return minSize;
-        }
-
-        inline void setMinSize(const Ghurund::Core::FloatSize& size) {
+        inline void setMinSize(const SizeConstraints& size) {
             this->minSize = size;
         }
 
-        virtual void setMinSize(float width, float height) {
-            minSize.width = abs(width);
-            minSize.height = abs(height);
+        __declspec(property(get = getMinSize, put = setMinSize)) const SizeConstraints& MinSize;
+
+        inline const SizeConstraints& getMaxSize() const {
+            return maxSize;
         }
 
-        __declspec(property(get = getMinSize, put = setMinSize)) const Ghurund::Core::FloatSize& MinSize;
+        inline void setMaxSize(const SizeConstraints& size) {
+            this->maxSize = size;
+        }
+
+        __declspec(property(get = getMaxSize, put = setMaxSize)) const SizeConstraints& MaxSize;
 
         inline const Ghurund::Core::FloatSize& getSize() const {
             return size;
@@ -297,7 +300,7 @@ namespace Ghurund::UI {
 
         // TODO: support matrix transformation
         inline bool hitTest(float x, float y) {
-            return x >= position.x && x < position.x + size.width && y >= position.y && y < position.y + size.height;
+            return x >= position.x && x < position.x + size.Width && y >= position.y && y < position.y + size.Height;
         }
 
         void setParent(ControlParent* parent);
@@ -356,6 +359,10 @@ namespace Ghurund::UI {
             if (needsLayout || preferredSize.width.Type != PreferredSize::Type::PIXELS || preferredSize.height.Type != PreferredSize::Type::PIXELS)
                 onMeasure(parentWidth, parentHeight);
         }
+
+        float resolveWidth(float contentSize, float parentWidth, float parentHeight) const;
+
+        float resolveHeight(float contentSize, float parentWidth, float parentHeight) const;
 
         void layout(float x, float y, float width, float height);
 

@@ -5,8 +5,8 @@ namespace Ghurund::UI {
     void VerticalScrollBar::updateBar() {
         if (maxScroll > 0) {
             barButton->Visible = true;
-            barButton->PreferredSize.height = std::max(16.0f, track->Size.height - MaxScroll);
-            barButton->setPosition(0, scroll / maxScroll * (track->Size.height - barButton->Size.height));
+            barButton->PreferredSize.height = std::max(16.0f, track->Size.Height - MaxScroll);
+            barButton->setPosition(0, scroll / maxScroll * (track->Size.Height - barButton->Size.Height));
             topButton->Enabled = true;
             barButton->Enabled = true;
             bottomButton->Enabled = true;
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
     }
 
     void VerticalScrollBar::updateScroll() {
-        float trackLength = track->Size.height - barButton->Size.height;
+        float trackLength = track->Size.Height - barButton->Size.Height;
         if (trackLength > 0) {
             scroll = barButton->Position.y / trackLength * maxScroll;
             topButton->Enabled = true;

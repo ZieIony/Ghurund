@@ -42,10 +42,10 @@ namespace Ghurund {
         }
 
         inline void setSize(const IntSize& size) {
-            setSize(size.width, size.height);
+            setSize(size.Width, size.Height);
         }
 
-        virtual void setSize(unsigned int w, unsigned int h) {
+        virtual void setSize(uint32_t w, uint32_t h) {
             size = { w, h };
             for (Layer* layer : layers)
                 layer->Size = size;

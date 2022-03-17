@@ -43,7 +43,7 @@ namespace Ghurund {
         virtual bool onSizeChangedEvent() override {
             layers.Size = Size;
             if (swapChain) {
-                swapChain->resize(Size.width, Size.height);
+                swapChain->resize(Size);
                 swapChain->initBuffers();
             }
             __super::onSizeChangedEvent();

@@ -32,7 +32,7 @@ namespace Ghurund::UI {
     void ClickResponseView::onDraw(ICanvas& canvas) {
         Ghurund::UI::Color c = color->getValue(*this);
         c.A = alpha;
-        canvas.fillRect(0, 0, Size.width, Size.height, c);
+        canvas.fillRect(0, 0, Size.Width, Size.Height, c);
         if (!finishedAnimating)
             repaint();
     }

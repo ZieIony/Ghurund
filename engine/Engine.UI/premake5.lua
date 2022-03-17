@@ -14,7 +14,6 @@ project "Engine.UI"
 
 	includedirs {
 		includeDir["Engine.UI"],
-		includeDir["Engine.UI_bindings"],
 		includeDir["Engine.Core"],
 		includeDir["tinyxml2"]
 	}

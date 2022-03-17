@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 
     void ScrollView::onDraw(ICanvas& canvas) {
         canvas.save();
-        canvas.clipRect(0, 0, Size.width, Size.height);
+        canvas.clipRect(0, 0, Size.Width, Size.Height);
         canvas.translate(-scroll.x, -scroll.y);
         __super::onDraw(canvas);
         canvas.restoreClipRect();
@@ -26,11 +26,11 @@ namespace Ghurund::UI {
     void ScrollView::onLayout(float x, float y, float width, float height) {
         if (Child) {
             Child->layout(0, 0,
-                Child->PreferredSize.width == PreferredSize::Width::FILL ? width : Child->MeasuredSize.width,
-                Child->PreferredSize.height == PreferredSize::Height::FILL ? height : Child->MeasuredSize.height);
+                Child->PreferredSize.width == PreferredSize::Width::FILL ? width : Child->MeasuredSize.Width,
+                Child->PreferredSize.height == PreferredSize::Height::FILL ? height : Child->MeasuredSize.Height);
             maxScroll = {
-                std::max(0.0f, Child->Size.width - Size.width),
-                std::max(0.0f, Child->Size.height - Size.height)
+                std::max(0.0f, Child->Size.Width - Size.Width),
+                std::max(0.0f, Child->Size.Height - Size.Height)
             };
             scroll = {
                 std::max(0.0f, std::min(scroll.x, maxScroll.x)),
@@ -42,14 +42,14 @@ namespace Ghurund::UI {
     bool ScrollView::dispatchKeyEvent(const KeyEventArgs& event) {
         if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_NEXT) {
             FloatPoint prevScroll = scroll;
-            if (Child && Child->Size.height == Size.height) {
-                Scroll = { Scroll.x + Size.width, Scroll.y };
+            if (Child && Child->Size.Height == Size.Height) {
+                Scroll = { Scroll.x + Size.Width, Scroll.y };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
                     OnScrolled();
                 }
             } else {
-                Scroll = { Scroll.x , Scroll.y + Size.height };
+                Scroll = { Scroll.x , Scroll.y + Size.Height };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
                     OnScrolled();
@@ -58,14 +58,14 @@ namespace Ghurund::UI {
             return true;
         } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_PRIOR) {
             FloatPoint prevScroll = scroll;
-            if (Child && Child->Size.height == Size.height) {
-                Scroll = { Scroll.x - Size.width, Scroll.y };
+            if (Child && Child->Size.Height == Size.Height) {
+                Scroll = { Scroll.x - Size.Width, Scroll.y };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
                     OnScrolled();
                 }
             } else {
-                Scroll = { Scroll.x, Scroll.y - Size.height };
+                Scroll = { Scroll.x, Scroll.y - Size.Height };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
                     OnScrolled();
@@ -95,7 +95,7 @@ namespace Ghurund::UI {
     bool ScrollView::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
         if (Child) {
             FloatPoint prevScroll = scroll;
-            if (event.Wheel == MouseWheel::HORIZONTAL || Child->Size.height == Size.height) {
+            if (event.Wheel == MouseWheel::HORIZONTAL || Child->Size.Height == Size.Height) {
                 scroll.x = std::max(0.0f, std::min(scroll.x - event.Delta, maxScroll.x));
             } else if (event.Wheel == MouseWheel::VERTICAL) {
                 scroll.y = std::max(0.0f, std::min(scroll.y - event.Delta, maxScroll.y));

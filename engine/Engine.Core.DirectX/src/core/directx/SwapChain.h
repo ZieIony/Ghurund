@@ -63,7 +63,7 @@ namespace Ghurund::Core::DirectX {
 
         Status present();
 
-        Status resize(unsigned int width, unsigned int height);
+        Status resize(const IntSize& size);
 
         static const Ghurund::Core::Type& GET_TYPE();
     };

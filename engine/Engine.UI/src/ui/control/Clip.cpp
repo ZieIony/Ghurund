@@ -26,7 +26,7 @@ namespace Ghurund::UI {
             __super::onDraw(canvas);
             canvas.restoreClipShape();
         } else {
-            canvas.clipRect(0, 0, Size.width, Size.height);
+            canvas.clipRect(0, 0, Size.Width, Size.Height);
             __super::onDraw(canvas);
             canvas.restoreClipRect();
         }

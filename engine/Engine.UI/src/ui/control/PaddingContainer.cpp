@@ -16,7 +16,7 @@ namespace Ghurund::UI {
     }
 
     void PaddingContainer::onMeasure(float parentWidth, float parentHeight) {
-        if (Child) {
+        /*if (Child) {
             Child->measure(
                 (preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth) - padding.left - padding.right,
                 (preferredSize.height.Type == PreferredSize::Type::PIXELS ? preferredSize.height.Value : parentHeight) - padding.top - padding.bottom
@@ -24,29 +24,29 @@ namespace Ghurund::UI {
         }
 
         if (preferredSize.width.Type == PreferredSize::Type::PIXELS)
-            measuredSize.width = std::max(minSize.width, preferredSize.width.Value);
+            measuredSize.Width = std::max(minSize.Width, preferredSize.width.Value);
         if (preferredSize.height.Type == PreferredSize::Type::PIXELS)
-            measuredSize.height = std::max(minSize.height, preferredSize.height.Value);
+            measuredSize.Height = std::max(minSize.Height, preferredSize.height.Value);
         if (Child) {
-            float childWidth = Child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.width.Value : Child->MeasuredSize.width;
-            measuredSize.width = std::max(measuredSize.width, padding.left + padding.right + childWidth);
-            float childHeight = Child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.height.Value : Child->MeasuredSize.height;
-            measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom + childHeight);
+            float childWidth = Child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.width.Value : Child->MeasuredSize.Width;
+            measuredSize.Width = std::max(measuredSize.Width, padding.left + padding.right + childWidth);
+            float childHeight = Child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? Child->PreferredSize.height.Value : Child->MeasuredSize.Height;
+            measuredSize.Height = std::max(measuredSize.Height, padding.top + padding.bottom + childHeight);
         } else {
-            measuredSize.width = std::max(measuredSize.width, padding.left + padding.right);
-            measuredSize.height = std::max(measuredSize.height, padding.top + padding.bottom);
-        }
+            measuredSize.Width = std::max(measuredSize.Width, padding.left + padding.right);
+            measuredSize.Height = std::max(measuredSize.Height, padding.top + padding.bottom);
+        }*/
     }
 
     void PaddingContainer::onLayout(float x, float y, float width, float height) {
-        if (Child) {
+        /*if (Child) {
             Child->layout(
                 padding.left,
                 padding.top,
-                std::max(width - padding.left - padding.right, Child->MinSize.width),
-                std::max(height - padding.top - padding.bottom, Child->MinSize.height)
+                std::max(width - padding.left - padding.right, Child->MinSize.Width),
+                std::max(height - padding.top - padding.bottom, Child->MinSize.Height)
             );
-        }
+        }*/
     }
 
     void PaddingContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

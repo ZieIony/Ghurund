@@ -22,7 +22,7 @@ namespace Ghurund::UI {
     void ColorView::onDraw(ICanvas& canvas) {
         const Ghurund::UI::Color& c = color->getValue(*this);
         if (c.A > 0.0f)
-            canvas.fillRect(0, 0, Size.width, Size.height, c);
+            canvas.fillRect(0, 0, Size.Width, Size.Height, c);
     }
 
     void ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

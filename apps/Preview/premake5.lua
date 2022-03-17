@@ -22,7 +22,6 @@ project "Preview"
 		includeDir["Engine.Core"],
 		includeDir["Engine.Core.DirectX"],
 		includeDir["Engine.UI"],
-		includeDir["Engine.UI_bindings"],
 		includeDir["Engine.UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],

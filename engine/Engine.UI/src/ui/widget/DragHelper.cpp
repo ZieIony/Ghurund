@@ -18,8 +18,8 @@ namespace Ghurund::UI {
             if (pressed && parent) {
                 auto prevControlPos = content.Position;
                 content.Position = {
-                    std::max(0.0f,std::min(content.Position.x + args.Delta.x, parent->Size.width - content.Size.width)),
-                    std::max(0.0f,std::min(content.Position.y + args.Delta.y, parent->Size.height - content.Size.height))
+                    std::max(0.0f,std::min(content.Position.x + args.Delta.x, parent->Size.Width - content.Size.Width)),
+                    std::max(0.0f,std::min(content.Position.y + args.Delta.y, parent->Size.Height - content.Size.Height))
                 };
                 if (prevControlPos.x != content.Position.x || prevControlPos.y != content.Position.y)
                     dragged();

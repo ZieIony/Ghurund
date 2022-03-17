@@ -30,12 +30,11 @@ namespace Ghurund::UI {
         __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
 
         inline float getThickness() const {
-            return colorView->MinSize.width;
+            return colorView->Size.Width;
         }
 
         inline void setThickness(float thickness) {
-            colorView->MinSize.width = thickness;
-            colorView->MinSize.height = thickness;
+            colorView->MinSize = { thickness, thickness };
         }
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;

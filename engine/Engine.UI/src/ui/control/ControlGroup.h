@@ -96,5 +96,7 @@ namespace Ghurund::UI {
 #endif
 
         static const Ghurund::Core::Type& GET_TYPE();
+   
+        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
     };
 }

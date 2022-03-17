@@ -35,8 +35,8 @@ namespace Ghurund::UI {
             canvas = ghnew Ghurund::UI::Direct2D::Canvas();
             canvas->init(graphics.DeviceContext);
             this->rootView = ghnew Ghurund::UI::RootView(*context);
-            rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.width);
-            rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.height);
+            rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
+            rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
             SwapChain& swapChain = window.SwapChain;
             window.sizeChanging += [&](const Window& window, const IntSize& size) {
                 renderTargets.clear();
@@ -44,8 +44,8 @@ namespace Ghurund::UI {
             };
             window.sizeChanged += [&](const Window& window) {
                 initTargets();
-                rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.width);
-                rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.height);
+                rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
+                rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
                 rootView->invalidate();
                 return true;
             };
@@ -93,8 +93,8 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) override {
             rootView->onUpdate(time);
-            rootView->measure((float)Size.width, (float)Size.height);
-            rootView->layout(0, 0, (float)Size.width, (float)Size.height);
+            rootView->measure((float)Size.Width, (float)Size.Height);
+            rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
         }
 
         virtual Status draw(RenderTarget& renderTarget) override {

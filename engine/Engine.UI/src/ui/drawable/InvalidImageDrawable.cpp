@@ -18,9 +18,9 @@ namespace Ghurund::UI {
     }
 
     void InvalidImageDrawable::onDraw(ICanvas& canvas) {
-        canvas.fillRect(0, 0, Size.width, Size.height, backgroundColor);
-        canvas.drawRect(1, 1, Size.width - 2, Size.height - 2, borderColor, 2);
-        canvas.drawLine(Size.width / 2 - 6, Size.height / 2 - 6, Size.width / 2 + 6, Size.height / 2 + 6, borderColor, 1.5);
-        canvas.drawLine(Size.width / 2 - 6, Size.height / 2 + 6, Size.width / 2 + 6, Size.height / 2 - 6, borderColor, 1.5);
+        canvas.fillRect(0, 0, Size.Width, Size.Height, backgroundColor);
+        canvas.drawRect(1, 1, Size.Width - 2, Size.Height - 2, borderColor, 2);
+        canvas.drawLine(Size.Width / 2 - 6, Size.Height / 2 - 6, Size.Width / 2 + 6, Size.Height / 2 + 6, borderColor, 1.5);
+        canvas.drawLine(Size.Width / 2 - 6, Size.Height / 2 + 6, Size.Width / 2 + 6, Size.Height / 2 - 6, borderColor, 1.5);
     }
 }

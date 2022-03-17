@@ -156,7 +156,7 @@ namespace Ghurund::Core {
         }
 
         inline void setSize(const IntSize& size) {
-            setSize(size.width, size.height);
+            setSize(size.Width, size.Height);
         }
 
         virtual void setSize(uint32_t w, uint32_t h) {
