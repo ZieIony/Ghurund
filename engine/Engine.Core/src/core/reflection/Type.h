@@ -246,7 +246,7 @@ namespace Ghurund::Core {
 
     template<Qualified T>
     const Type& getType() {
-        const Type& baseType = getType<BaseType<T>::type>();
+        const Type& baseType = getType<typename BaseType<T>::type>();
         static Type type = Type(baseType, std::is_const_v<T>, std::is_pointer_v<T>, std::is_reference_v<T>, std::is_volatile_v<T>);
         return type;
     }

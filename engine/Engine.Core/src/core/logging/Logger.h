@@ -23,7 +23,7 @@ namespace Ghurund::Core {
 
         template<typename... Args>
         static void logVA(const LogType& type, const tchar* format, Args&& ... args) {
-            if (((int)type.Value) < (int)filterLevel)
+            /*if (((int)type.Value) < (int)filterLevel)
                 return;
 
             StackTrace stacktrace(GetCurrentProcess());
@@ -34,7 +34,7 @@ namespace Ghurund::Core {
 
             criticalSection.enter();
             logOutput->log({ type, fileLine.c_str(), message.c_str() });
-            criticalSection.leave();
+            criticalSection.leave();*/
         }
 
     public:
@@ -42,30 +42,30 @@ namespace Ghurund::Core {
 
         static void uninit();
 
-        static void setFilter(const LogType& level) {
+        static inline void setFilter(const LogType& level) {
             filterLevel = level.Value;
         }
 
         template<typename... Args>
-        static void log(const LogType& type, const tchar* format, Args&& ... args) {
+        static inline void log(const LogType& type, const tchar* format, Args&& ... args) {
             logVA(type, format, args...);
         }
 
         template<typename... Args>
-        static Status log(const LogType& type, const Status status, const tchar* format, Args&& ... args) {
+        static inline Status log(const LogType& type, const Status status, const tchar* format, Args&& ... args) {
             logVA(type, format, args...);
             return status;
         }
 
         template<typename... Args>
-        static void print(const LogType& type, const tchar* format, Args&& ... args) {
-            if (((int)type.Value) < (int)filterLevel)
+        static inline void print(const LogType& type, const tchar* format, Args&& ... args) {
+            /*if (((int)type.Value) < (int)filterLevel)
                 return;
 
             std::basic_string<tchar> message = std::format(format, args...);
             criticalSection.enter();
             logOutput->log({ type, _T(""), message.c_str() });
-            criticalSection.leave();
+            criticalSection.leave();*/
         }
     };
 }

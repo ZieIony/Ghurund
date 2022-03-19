@@ -96,27 +96,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\FloatSize.h" />
-    <ClInclude Include="src\TestImage.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\ui\test\UIContext.h" />
-    <ClInclude Include="src\ui\test\font\Font.h" />
-    <ClInclude Include="src\ui\test\font\FontLoader.h" />
-    <ClInclude Include="src\ui\test\image\Bitmap.h" />
-    <ClInclude Include="src\ui\test\text\TextFormat.h" />
-    <ClInclude Include="src\ui\test\text\TextLayout.h" />
+    <ClInclude Include="src\test\core\math\FloatSize.h" />
+    <ClInclude Include="src\test\ui\UIContext.h" />
+    <ClInclude Include="src\test\ui\control\ControlTestTemplate.h" />
+    <ClInclude Include="src\test\ui\font\Font.h" />
+    <ClInclude Include="src\test\ui\font\FontLoader.h" />
+    <ClInclude Include="src\test\ui\image\Bitmap.h" />
+    <ClInclude Include="src\test\ui\image\TestImage.h" />
+    <ClInclude Include="src\test\ui\text\TextFormat.h" />
+    <ClInclude Include="src\test\ui\text\TextLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\ui\AlignmentTest.cpp" />
-    <ClCompile Include="src\ui\ColorTest.cpp" />
-    <ClCompile Include="src\ui\PreferredSizeTest.cpp" />
-    <ClCompile Include="src\ui\control\ImageViewTest.cpp" />
-    <ClCompile Include="src\ui\control\TextBlockTest.cpp" />
-    <ClCompile Include="src\ui\test\font\FontLoader.cpp" />
-    <ClCompile Include="src\ui\test\text\TextLayout.cpp" />
+    <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
+    <ClCompile Include="src\test\ui\ColorTest.cpp" />
+    <ClCompile Include="src\test\ui\PreferredSizeTest.cpp" />
+    <ClCompile Include="src\test\ui\control\ControlTest.cpp" />
+    <ClCompile Include="src\test\ui\control\ImageViewTest.cpp" />
+    <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
+    <ClCompile Include="src\test\ui\font\FontLoader.cpp" />
+    <ClCompile Include="src\test\ui\layout\HorizontalLayoutTest.cpp" />
+    <ClCompile Include="src\test\ui\layout\StackLayoutTest.cpp" />
+    <ClCompile Include="src\test\ui\layout\VerticalLayoutTest.cpp" />
+    <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

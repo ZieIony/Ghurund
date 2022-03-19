@@ -13,12 +13,12 @@ namespace Ghurund::Core {
         Lazy(Lazy&& other) = delete;
 
         inline T getValue() {
-            static T val = func();
+            static T val = func();  // TODO: static makes this val global
             return val;
         }
 
         inline const T getValue() const {
-            static T val = func();
+            static T val = func();  // TODO: static makes this val global
             return val;
         }
 

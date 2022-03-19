@@ -86,8 +86,8 @@ namespace Ghurund::Core::DirectX {
             pointerRefs.add(resource);
         }
 
-        virtual String toString() const override {
+        /*virtual String toString() const override {
             return String(std::format(_T("{}: {\n}\n"), __super::toString()).c_str());
-        }
+        }*/
     };
 }
