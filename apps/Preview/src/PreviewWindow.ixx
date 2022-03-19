@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "application/ApplicationWindow.h"
 #include "core/application/Application.h"
@@ -11,13 +11,16 @@
 #include "ui/style/LightTheme.h"
 #include "ui/style/DarkTheme.h"
 
-#include "PreviewLayout.h"
 #include "ui/direct2d/font/FontLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
 #include "core/image/ImageLoader.h"
 #include "ui/direct2d/UIContext.h"
 
-namespace Preview {
+export module Preview.PreviewWindow;
+
+import Preview.PreviewLayout;
+
+export namespace Preview {
     using namespace Ghurund;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI;
@@ -90,12 +93,12 @@ namespace Preview {
         void updateTheme(ThemeType type) {
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             if (type == ThemeType::Dark) {
-                darkTheme->Colors.set(Theme::COLOR_ACCENT, lightTheme->Colors[Theme::COLOR_ACCENT]);
+                darkTheme->Colors[Theme::COLOR_ACCENT] = lightTheme->Colors[Theme::COLOR_ACCENT];
                 darkTheme->updateColors();
                 layoutLoader->Theme = darkTheme;
                 previewLayout->Theme = darkTheme;
             } else {
-                lightTheme->Colors.set(Theme::COLOR_ACCENT, darkTheme->Colors[Theme::COLOR_ACCENT]);
+                lightTheme->Colors[Theme::COLOR_ACCENT] = darkTheme->Colors[Theme::COLOR_ACCENT];
                 lightTheme->updateColors();
                 layoutLoader->Theme = lightTheme;
                 previewLayout->Theme = lightTheme;

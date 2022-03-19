@@ -93,9 +93,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="generated\bindings\LayoutBinding.h" />
-    <ClInclude Include="src\PreviewApplication.h" />
-    <ClInclude Include="src\PreviewLayout.h" />
-    <ClInclude Include="src\PreviewWindow.h" />
+    <ClCompile Include="src\PreviewApplication.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\PreviewLayout.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\PreviewWindow.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />

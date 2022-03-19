@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "LayoutBinding.h"
 #include "ui/widget/ContentWidget.h"
@@ -7,7 +7,9 @@
 #include "ui/layout/StackLayout.h"
 #include "ui/style/WindowsTheme.h"
 
-namespace Preview {
+export module Preview.PreviewLayout;
+
+export namespace Preview {
     using namespace Ghurund::UI;
 
     enum class ThemeType {

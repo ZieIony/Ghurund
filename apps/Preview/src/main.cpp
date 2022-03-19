@@ -1,10 +1,10 @@
 #include "Ghurund.Engine.h"
 
-#include "PreviewApplication.h"
+import Preview.PreviewApplication;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    Ghurund::Settings settings;
+    Ghurund::Core::Settings settings;
     settings.parse(GetCommandLine());
-    Ghurund::main<Preview::PreviewApplication>(&settings);
+    Ghurund::Core::main<Preview::PreviewApplication>(&settings);
     return 0;
 }

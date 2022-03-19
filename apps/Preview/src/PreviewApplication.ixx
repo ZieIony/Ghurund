@@ -1,10 +1,18 @@
-﻿#include "PreviewWindow.h"
+﻿module;
+
 #include "ui/UIFeature.h"
 #include "graphics/Renderer.h"
+#include "core/application/Application.h"
 
 #include <format>
 
-namespace Preview {
+export module Preview.PreviewApplication;
+
+import Preview.PreviewWindow;
+
+export namespace Preview {
+    using namespace Ghurund;
+
     class PreviewApplication:public Ghurund::Application {
     protected:
         Renderer renderer;
