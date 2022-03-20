@@ -94,7 +94,6 @@
     <ClInclude Include="generated\bindings\TabBinding.h" />
     <ClInclude Include="generated\bindings\ToolbarBinding.h" />
     <ClInclude Include="generated\bindings\TreeRowBinding.h" />
-    <ClInclude Include="src\ui\SizeConstraints.h" />
     <ClInclude Include="src\Ghurund.UI.h" />
     <ClInclude Include="src\ghuipch.h" />
     <ClInclude Include="src\ui\Alignment.h" />
@@ -108,6 +107,7 @@
     <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
+    <ClInclude Include="src\ui\SizeConstraints.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
     <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
@@ -216,7 +216,6 @@
     <ClInclude Include="src\ui\window\WindowFrame.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ui\SizeConstraints.cpp" />
     <ClCompile Include="src\ghuipch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
@@ -227,6 +226,7 @@
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
+    <ClCompile Include="src\ui\SizeConstraints.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
     <ClCompile Include="src\ui\control\Border.cpp" />

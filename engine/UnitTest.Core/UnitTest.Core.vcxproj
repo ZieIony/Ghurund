@@ -94,22 +94,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\reflection\BaseTypeTest.cpp" />
-    <ClCompile Include="src\core\reflection\ConstructorTest.cpp" />
-    <ClCompile Include="src\core\reflection\TypeTest.cpp" />
-    <ClInclude Include="src\MemoryGuard.h" />
-    <ClInclude Include="src\TestClass.h" />
-    <ClInclude Include="src\TestUtils.h" />
-    <ClInclude Include="src\core\collection\TestAllocator.h" />
-    <ClInclude Include="src\core\reflection\TestClass.h" />
-    <ClInclude Include="src\TestUtils.h" />
-    <ClInclude Include="src\core\collection\TestAllocator.h" />
-    <ClInclude Include="src\core\reflection\TestClass.h" />
-    <ClInclude Include="src\TestUtils.h" />
-    <ClInclude Include="src\core\collection\TestAllocator.h" />
-    <ClCompile Include="src\core\collection\SetTest.cpp" />
-    <ClCompile Include="src\core\collection\StackTest.cpp" />
-    <ClCompile Include="src\core\collection\TreeTest.cpp" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\test\MemoryGuard.h" />
+    <ClInclude Include="src\test\TestClass.h" />
+    <ClInclude Include="src\test\TestUtils.h" />
+    <ClInclude Include="src\test\core\collection\TestAllocator.h" />
+    <ClInclude Include="src\test\core\reflection\TestClass.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
     <ClCompile Include="src\test\core\TypeWrapperTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
@@ -132,15 +127,6 @@
     <ClCompile Include="src\test\core\string\StringTest.cpp" />
     <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
-    <ClCompile Include="src\core\io\PathTest.cpp" />
-    <ClCompile Include="src\core\reflection\ReflectionTest.cpp" />
-    <ClCompile Include="src\core\resource\ResourceManagerTest.cpp" />
-    <ClCompile Include="src\core\string\StringTest.cpp" />
-    <ClCompile Include="src\core\threading\ThreadPoolExecutorTest.cpp" />
-    <ClCompile Include="src\core\threading\WorkerThreadTest.cpp" />
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns="https://github.com/ZieIony/Ghurund/blob/master/engine/Engine.UI/UISchema.xsd">
+	<LinearLayout orientation="horizontal" preferredSize="fill, fill">
+		<LinearLayout orientation="vertical" preferredSize="fill, fill">
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="fill,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="fill,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="120,120">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="fill,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+		</LinearLayout>
+		<Space/>
+		<LinearLayout orientation="vertical" preferredSize="fill, fill">
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="120,120">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+		</LinearLayout>
+		<Space/>
+		<LinearLayout orientation="vertical" preferredSize="fill, fill">
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,fill"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,fill"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="120,120">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="wrap,fill"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+		</LinearLayout>
+		<Space/>
+		<LinearLayout orientation="vertical" preferredSize="fill, fill">
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="100,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="wrap,wrap">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="100,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+			<Space/>
+			<StackLayout preferredSize="120,120">
+				<LinearLayout orientation="vertical" preferredSize="wrap,wrap">
+					<TextView text="Lorem ipsum dolor sit amet." preferredSize="100,wrap"/>
+					<ImageView image="lib://Ghurund/test/images/watermelon.jpg"
+							   preferredSize="100,100"/>
+				</LinearLayout>
+				<Border preferredSize="fill,fill"/>
+			</StackLayout>
+		</LinearLayout>
+	</LinearLayout>
+</layout>

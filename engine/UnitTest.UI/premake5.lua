@@ -6,7 +6,8 @@ project "UnitTest.UI"
 
 	dependson {
 		"Engine.Core",
-		"Engine.UI"
+		"Engine.UI",
+		"UnitTest.Core"
 	}
 
 	files {
@@ -19,7 +20,8 @@ project "UnitTest.UI"
 		includeDir["UnitTest.Core"],
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
-		includeDir["tinyxml2"]
+		includeDir["tinyxml2"],
+		includeDir["UnitTest.Core"]
 	}
 
 	links {
