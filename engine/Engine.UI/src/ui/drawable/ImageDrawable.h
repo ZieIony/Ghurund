@@ -9,7 +9,9 @@ namespace Ghurund::UI {
         float alpha = 1.0f;
 
     public:
-        virtual ~ImageDrawable() = 0 {}
+        virtual ~ImageDrawable()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}
 
         inline void setTint(const uint32_t color) {
             this->tint = color;

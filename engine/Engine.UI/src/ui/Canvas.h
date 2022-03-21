@@ -17,7 +17,9 @@ namespace Ghurund::UI {
 
     class ICanvas {
     public:
-        virtual ~ICanvas() = 0 {}
+        virtual ~ICanvas()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}
 
         virtual bool isAntialiasingEnabled() = 0;
 

@@ -1,12 +1,18 @@
-#pragma once
+module;
 
-#include "Layer.h"
 #include "Status.h"
 #include "core/collection/List.h"
 #include "core/input/EventConsumer.h"
 #include "core/directx/buffer/RenderTarget.h"
+#include "core/math/Size.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Application.LayerList;
+
+import Ghurund.Engine.Application.Layer;
+
+export namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class LayerList {
     private:
         List<Layer*> layers;

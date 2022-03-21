@@ -1,13 +1,19 @@
-#pragma once
+module;
 
-#include "application/Layer.h"
 #include "ui/RootView.h"
 #include "ui/direct2d/Canvas.h"
 #include "ui/direct2d/Graphics2d.h"
 #include "ui/direct2d/UIContext.h"
+#include <core/directx/buffer/RenderTarget.h>
 
-namespace Ghurund::UI {
+export module Ghurund.Engine.UI.UILayer;
+
+import Ghurund.Engine.Application.Layer;
+import Ghurund.Engine.Application.ApplicationWindow;
+
+export namespace Ghurund::UI {
     using namespace Ghurund::UI::Direct2D;
+    using namespace Ghurund::Core::DirectX;
 
     class UILayer:public Layer {
     private:

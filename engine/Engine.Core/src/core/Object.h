@@ -13,7 +13,9 @@ namespace Ghurund::Core {
         }
 
     public:
-        virtual ~Object() = 0 {}   // gives a common destructor to all deriving classes
+        virtual ~Object()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}   // gives a common destructor to all deriving classes
 
         static const Ghurund::Core::Type& GET_TYPE();
 

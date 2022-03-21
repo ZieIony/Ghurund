@@ -1,18 +1,27 @@
-#include "ghpch.h"
-#include "UIFeature.h"
+module;
 
-#include "core/application/Application.h"
+#include "ui/direct2d/Graphics2D.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/directx/Graphics.h"
+#include <ui/control/Control.h>
+#include <core/image/Image.h>
+#include "ui/direct2d/font/FontLoader.h"
+#include "core/image/ImageLoader.h"
+#include "ui/direct2d/image/BitmapLoader.h"
+#include "ui/direct2d/loading/LayoutLoader.h"
+
+module Ghurund.Engine.UI.UIFeature;
 
 namespace Ghurund {
     using namespace Ghurund::Core;
+    using namespace Ghurund::UI;
+    using namespace Ghurund::UI::Direct2D;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
         static auto PROPERTY_GRAPHICS2D = Property<UIFeature, Ghurund::UI::Direct2D::Graphics2D&>("Graphics2D", &getGraphics2D);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::UI::NAMESPACE_NAME, "UIFeature")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::NAMESPACE_NAME, "UIFeature")
             .withProperty(PROPERTY_GRAPHICS2D)
             .withSupertype(__super::GET_TYPE());
 
@@ -39,7 +48,7 @@ namespace Ghurund {
         auto bitmapLoader = ghnew BitmapLoader(*imageLoader, graphics2d->DeviceContext);
         app.ResourceManager.Loaders.set<Ghurund::UI::Bitmap>(std::unique_ptr<BitmapLoader>(bitmapLoader));
         auto layoutLoader = ghnew Ghurund::UI::Direct2D::LayoutLoader(app.ResourceManager, *shapeFactory, *imageDrawableFactory, *textFormatFactory);
-        app.ResourceManager.Loaders.set<Control>(std::unique_ptr<LayoutLoader>(layoutLoader));
+        app.ResourceManager.Loaders.set<Control>(std::unique_ptr<Ghurund::UI::Direct2D::LayoutLoader>(layoutLoader));
     }
     
     void UIFeature::onUninit() {

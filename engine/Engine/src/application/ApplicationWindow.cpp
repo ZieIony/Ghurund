@@ -1,19 +1,27 @@
-#include "ghpch.h"
-#include "ApplicationWindow.h"
+module;
 
-#include "core/application/Application.h"
-#include "graphics/Renderer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/window/SystemWindow.h"
+#include "core/input/Input.h"
+#include "core/directx/SwapChain.h"
+#include "core/application/Application.h"
+#include "Status.h"
 
 #include <windowsx.h>
-#include <ui/UIFeature.h>
+
+module Ghurund.Engine.Application.ApplicationWindow;
+
+import Ghurund.Engine.Application.LayerList;
+import Ghurund.Engine.UI.UIFeature;
 
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     const Ghurund::Core::Type& ApplicationWindow::GET_TYPE() {
-        static auto PROPERTY_SWAPCHAIN = Property<ApplicationWindow, Ghurund::SwapChain&>("SwapChain", &getSwapChain);
+        static auto PROPERTY_SWAPCHAIN = Property<ApplicationWindow, Ghurund::Core::DirectX::SwapChain&>("SwapChain", &getSwapChain);
         static auto PROPERTY_LAYERS = Property<ApplicationWindow, LayerList&>("Layers", &getLayers);
-        static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Application&>("Application", &getApplication);
+        static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<ApplicationWindow>("Ghurund", "ApplicationWindow")
             .withProperty(PROPERTY_SWAPCHAIN)
@@ -33,12 +41,12 @@ namespace Ghurund {
         return true;
     }
 
-    ApplicationWindow::ApplicationWindow(Ghurund::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
+    ApplicationWindow::ApplicationWindow(Ghurund::Core::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
 
     void ApplicationWindow::init(WindowManager& windowManager) {
         __super::init(windowManager);
-        swapChain = ghnew Ghurund::SwapChain();
-        Graphics& graphics = app.Features.get<Graphics>();
+        swapChain = ghnew Ghurund::Core::DirectX::SwapChain();
+        Ghurund::Core::DirectX::Graphics& graphics = app.Features.get<Ghurund::Core::DirectX::Graphics>();
         swapChain->init(graphics, *this);
         swapChain->initBuffers();
     }
@@ -61,7 +69,7 @@ namespace Ghurund {
         return layers.dispatchMouseMotionEvent(args);
     }
 
-    bool ApplicationWindow::onMouseWheelEvent(const MouseWheelEventArgs& args) {
+    bool ApplicationWindow::onMouseWheelEvent(const Ghurund::Core::MouseWheelEventArgs& args) {
         return layers.dispatchMouseWheelEvent(args);
     }
 
@@ -71,8 +79,8 @@ namespace Ghurund {
     }
 
     Status ApplicationWindow::paint() {
-        Frame& frame = swapChain->CurrentFrame;
-        CommandList& commandList = renderer.startFrame(frame);
+        Ghurund::Core::DirectX::Frame& frame = swapChain->CurrentFrame;
+        Ghurund::Core::DirectX::CommandList& commandList = renderer.startFrame(frame);
         //levelManager.draw(commandList);
         frame.flush();
 

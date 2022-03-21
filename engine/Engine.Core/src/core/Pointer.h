@@ -32,7 +32,9 @@ namespace Ghurund::Core {
     protected:
         Pointer(const Pointer& pointer) = delete;
 
-        virtual ~Pointer() = 0;
+        virtual ~Pointer()
+        //    = 0  // TODO: a destructor cannot be abstract
+        ;
 
     public:
         Pointer();

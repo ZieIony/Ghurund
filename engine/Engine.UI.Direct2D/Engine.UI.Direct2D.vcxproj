@@ -117,6 +117,7 @@
     <ClInclude Include="src\ui\direct2d\text\TextLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ui\direct2d\loading\ImageDrawableFactory.cpp" />
     <ClCompile Include="src\ghuidxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

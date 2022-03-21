@@ -1,11 +1,9 @@
 module;
 
-#include "application/ApplicationWindow.h"
 #include "core/application/Application.h"
 #include "core/window/WindowClass.h"
 #include "ui/Canvas.h"
 #include "ui/UIFeature.h"
-#include "ui/UILayer.h"
 #include "ui/RootView.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
@@ -19,6 +17,8 @@ module;
 export module Preview.PreviewWindow;
 
 import Preview.PreviewLayout;
+import Ghurund.Engine.Application.ApplicationWindow;
+import Ghurund.Engine.UI.UILayer;
 
 export namespace Preview {
     using namespace Ghurund;

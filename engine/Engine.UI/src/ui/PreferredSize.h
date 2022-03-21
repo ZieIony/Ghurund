@@ -79,6 +79,8 @@ namespace Ghurund::UI {
 
         PreferredSize() {}
 
+        PreferredSize(float width, float height):width(width), height(height) {}
+
         PreferredSize(const Width& width, const Height& height):width(width), height(height) {}
 
         static PreferredSize parse(const Ghurund::Core::AString& str);

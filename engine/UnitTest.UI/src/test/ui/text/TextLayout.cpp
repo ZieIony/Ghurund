@@ -33,10 +33,10 @@ namespace UnitTest {
 
     TextMetrics TextLayout::getMetrics() {
         return {
-            .width = Size.width,
-            .height = Size.height,
-            .layoutWidth = Size.width,
-            .layoutHeight = Size.height
+            .width = Size.Width,
+            .height = Size.Height,
+            .layoutWidth = Size.Width,
+            .layoutHeight = Size.Height
         };
     }
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <compare>
+
 namespace Ghurund::Core {
     enum class WindowBorderStyle {
         RESIZE, THIN, NONE

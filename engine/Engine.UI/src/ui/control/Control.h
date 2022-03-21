@@ -94,7 +94,9 @@ namespace Ghurund::UI {
 
         Control* resolvePath(const Array<AString>& path);
 
-        virtual ~Control() = 0;
+        virtual ~Control()
+        //    = 0   // TODO: a destructor cannot be abstract
+        ;
 
     public:
         Event<Control> sizeChanged = Event<Control>(*this);

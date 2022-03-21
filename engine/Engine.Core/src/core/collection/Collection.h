@@ -21,7 +21,9 @@ namespace Ghurund::Core {
             collection.size = 0;
         }
 
-        virtual ~Collection() = 0 {};
+        virtual ~Collection()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {};
 
         inline void clear() {
             size = 0;

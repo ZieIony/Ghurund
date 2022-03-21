@@ -77,7 +77,9 @@ namespace Ghurund::Core {
             this->parent = parent;
         }
 
-        ~Window() = 0 {}
+        ~Window()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}
         /*
         virtual void initParameters(ParameterManager& parameterManager) override {
             if (parameterViewportSize != nullptr)

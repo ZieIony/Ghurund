@@ -53,8 +53,9 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -97,9 +98,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\application\ApplicationWindow.h" />
-    <ClInclude Include="src\application\Layer.h" />
-    <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3d.h" />
@@ -178,12 +176,19 @@
     <ClInclude Include="src\script\bindings\SceneScriptBindings.h" />
     <ClInclude Include="src\script\bindings\ScriptBindings.h" />
     <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
-    <ClInclude Include="src\ui\UIFeature.h" />
-    <ClInclude Include="src\ui\UILayer.h" />
+    <ClCompile Include="src\ui\UIFeature.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\ui\UILayer.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
+    <ClCompile Include="src\application\ApplicationWindow.ixx" />
+    <ClCompile Include="src\application\Layer.ixx" />
     <ClCompile Include="src\application\LayerList.cpp" />
+    <ClCompile Include="src\application\LayerList.ixx" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
@@ -220,7 +225,9 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\ui\UIFeature.cpp" />
+    <ClCompile Include="src\ui\UIFeature.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">false</PreprocessToFile>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

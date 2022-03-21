@@ -14,7 +14,9 @@ namespace Ghurund::UI {
 
         Shape(const FloatRect& bounds):bounds(bounds) {}
 
-        virtual ~Shape() = 0 {};
+        virtual ~Shape()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {};
 
         inline const FloatRect& getBounds() const {
             return bounds;

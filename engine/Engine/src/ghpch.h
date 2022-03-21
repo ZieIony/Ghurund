@@ -6,6 +6,4 @@
 
 #include <DirectXMath.h>
 
-namespace Ghurund {
-    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund);
-}
+#include "Ghurund.Engine.h"

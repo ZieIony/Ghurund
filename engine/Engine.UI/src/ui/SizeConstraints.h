@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
+#include "core/math/Size.h"
 
 namespace Ghurund::UI {
     class SizeConstraints {
@@ -68,6 +69,10 @@ namespace Ghurund::UI {
 
         Width width;
         Height height;
+
+        SizeConstraints(const Ghurund::Core::FloatSize& size):width(size.Width), height(size.Height) {}
+
+        SizeConstraints(float width, float height):width(width), height(height) {}
 
         SizeConstraints(const Width& width, const Height& height):width(width), height(height) {}
 

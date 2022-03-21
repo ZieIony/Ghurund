@@ -25,7 +25,9 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        ~Drawable() = 0 {}
+        ~Drawable()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}
 
         inline Ghurund::Core::FloatSize& getSize() {
             return size;

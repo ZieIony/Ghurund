@@ -5,7 +5,9 @@ namespace Ghurund::UI {
 
     class Style {
     public:
-        virtual ~Style() = 0 {}
+        virtual ~Style()
+        //    = 0   // TODO: a destructor cannot be abstract
+        {}
 
         virtual void onThemeChanged(Control& control) const {}
 

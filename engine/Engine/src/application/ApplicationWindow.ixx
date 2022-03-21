@@ -1,19 +1,17 @@
-#pragma once
+module;
 
-#include "LayerList.h"
 #include "core/window/SystemWindow.h"
 #include "core/input/Input.h"
 #include "core/directx/SwapChain.h"
+#include "graphics/Renderer.h"
+#include "core/application/Application.h"
 
-namespace Ghurund::Core {
-    class Application;
-}
+export module Ghurund.Engine.Application.ApplicationWindow;
 
-namespace Ghurund {
-    class Renderer;
-}
+import Ghurund.Engine.Application.LayerList;
 
-namespace Ghurund {
+export namespace Ghurund {
+    using namespace Ghurund::Core;
     using namespace Ghurund::Core::DirectX;
 
     class ApplicationWindow: public Ghurund::Core::SystemWindow {

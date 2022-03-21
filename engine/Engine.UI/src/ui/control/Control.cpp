@@ -126,11 +126,11 @@ namespace Ghurund::UI {
     void Control::onMeasure(float parentWidth, float parentHeight) {
         [[likely]]
         if (preferredSize.width.Type != PreferredSize::Type::RATIO) {
-            measuredSize.Width = resolveWidth(parentWidth, parentHeight);
-            measuredSize.Height = resolveHeight(parentWidth, parentHeight);
+            measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
+            measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
         } else {
-            measuredSize.Height = resolveHeight(parentWidth, parentHeight);
-            measuredSize.Width = resolveWidth(parentWidth, parentHeight);
+            measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
+            measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
         }
     }
 

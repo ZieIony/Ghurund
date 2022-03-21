@@ -1,5 +1,9 @@
-#include "ghpch.h"
-#include "LayerList.h"
+module;
+
+#include "Ghurund.Engine.h"
+#include "core/reflection/Type.h"
+
+module Ghurund.Engine.Application.LayerList;
 
 namespace Ghurund::Core {
     template<>

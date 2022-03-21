@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "Status.h"
 #include "core/input/Keyboard.h"
@@ -6,7 +6,9 @@
 #include "core/math/Size.h"
 #include "core/directx/buffer/RenderTarget.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Application.Layer;
+
+export namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Layer {
@@ -23,7 +25,9 @@ namespace Ghurund {
         }
 
     public:
-        virtual ~Layer() = 0 {}
+        virtual ~Layer()
+        //    = 0   TODO: a destructor cannot be abstract
+        {}
 
         inline void setSize(const IntSize& size) {
             if (this->size != size) {
