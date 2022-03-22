@@ -1,6 +1,5 @@
 ﻿module;
 
-#include "ui/UIFeature.h"
 #include "graphics/Renderer.h"
 #include "core/application/Application.h"
 
@@ -9,6 +8,7 @@
 export module Preview.PreviewApplication;
 
 import Preview.PreviewWindow;
+import Ghurund.Engine.UI.UIFeature;
 
 export namespace Preview {
     using namespace Ghurund;

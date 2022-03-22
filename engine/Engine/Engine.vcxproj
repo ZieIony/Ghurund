@@ -98,9 +98,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\audio\Audio.h" />
-    <ClInclude Include="src\audio\Sound.h" />
-    <ClInclude Include="src\audio\Sound3d.h" />
+    <ClCompile Include="src\audio\Audio.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\audio\Sound.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
+    <ClCompile Include="src\audio\Sound3d.ixx">
+      <FileType>Document</FileType>
+    </ClCompile>
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />

@@ -1,12 +1,22 @@
+module;
+
 #include "ghpch.h"
-#include "Audio.h"
 
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/directx/MathTypes.h"
 
+#include <xaudio2.h>
+#include <mfapi.h>
+#include <x3daudio.h>
+
+module Ghurund.Engine.Audio.Audio;
+
 namespace Ghurund::Audio {
+    using namespace ::DirectX;
+    using namespace Ghurund::Core;
+
     const Ghurund::Core::Type& Audio::GET_TYPE() {
         static auto PROPERTY_POSITION = Ghurund::Core::Property<Audio, XMFLOAT3>("Position", (XMFLOAT3(Audio::*)()) & getPosition, (void(Audio::*)(XMFLOAT3)) & setPosition);
         static auto PROPERTY_VELOCITY = Ghurund::Core::Property<Audio, XMFLOAT3>("Velocity", (XMFLOAT3(Audio::*)()) & getVelocity, (void(Audio::*)(XMFLOAT3)) & setVelocity);

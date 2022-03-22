@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "Common.h"
 #include "Status.h"
@@ -19,7 +19,9 @@
 #pragma comment(lib, "mfplat.lib")
 #pragma comment(lib, "mfuuid")
 
-namespace Ghurund::Audio {
+export module Ghurund.Engine.Audio.Audio;
+
+export namespace Ghurund::Audio {
     using namespace ::DirectX;
     using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;

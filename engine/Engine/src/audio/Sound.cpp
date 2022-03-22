@@ -1,12 +1,25 @@
-#include "ghpch.h"
-#include "Sound.h"
+module;
 
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
+#include "Ghurund.Engine.h"
+#include "Common.h"
+#include "Status.h"
 
-#include <Shlwapi.h>
+#include <wrl\client.h>
+
+#include <xaudio2.h>
+
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfreadwrite.h>
+
+#include "core/logging/Logger.h"
+
+module Ghurund.Engine.Audio.Sound;
 
 namespace Ghurund::Audio {
+    using namespace Ghurund::Core;
+    using Microsoft::WRL::ComPtr;
+
 	Status Sound::loadInternal(const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
         /*Status result = loadData(context, stream, options);
         if(result!=Status::OK)

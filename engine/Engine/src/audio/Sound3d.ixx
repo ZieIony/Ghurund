@@ -1,8 +1,20 @@
-#pragma once
+module;
 
-#include "Sound.h"
+#include "Common.h"
 
-namespace Ghurund::Audio {
+#include <xaudio2.h>
+#include <x3daudio.h>
+
+#include <mfapi.h>
+#include <mfidl.h>
+
+export module Ghurund.Engine.Audio.Sound3d;
+
+import Ghurund.Engine.Audio.Sound;
+
+export namespace Ghurund::Audio {
+    using namespace ::DirectX;
+ 
     class Sound3D:public Sound {
     private:
         X3DAUDIO_EMITTER emitter = { 0 };	// sound source's position
@@ -12,11 +24,11 @@ namespace Ghurund::Audio {
             emitter.ChannelCount = 1;
             emitter.CurveDistanceScaler = FLT_MIN;
 
-            X3DAUDIO_DSP_SETTINGS DSPSettings = { 0 };
+            /*X3DAUDIO_DSP_SETTINGS DSPSettings = { 0 };
             FLOAT32* matrix = new FLOAT32[deviceDetails.OutputFormat.Format.nChannels];
             DSPSettings.SrcChannelCount = 1;
             DSPSettings.DstChannelCount = deviceDetails.OutputFormat.Format.nChannels;
-            DSPSettings.pMatrixCoefficients = matrix;
+            DSPSettings.pMatrixCoefficients = matrix;*/
         }
     };
 }

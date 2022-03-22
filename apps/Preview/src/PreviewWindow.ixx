@@ -3,7 +3,6 @@ module;
 #include "core/application/Application.h"
 #include "core/window/WindowClass.h"
 #include "ui/Canvas.h"
-#include "ui/UIFeature.h"
 #include "ui/RootView.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/style/LightTheme.h"
@@ -19,6 +18,7 @@ export module Preview.PreviewWindow;
 import Preview.PreviewLayout;
 import Ghurund.Engine.Application.ApplicationWindow;
 import Ghurund.Engine.UI.UILayer;
+import Ghurund.Engine.UI.UIFeature;
 
 export namespace Preview {
     using namespace Ghurund;
@@ -35,7 +35,7 @@ export namespace Preview {
         std::function<void()> loadCallback;
 
     public:
-        PreviewWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+        PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
             Style = WindowStyle{
                .hasMinimizeButton = true,
                .hasMaximizeButton = true,
@@ -79,7 +79,7 @@ export namespace Preview {
             };
 
             DragDropEnabled = true;
-            dropped += [this](Ghurund::Window& window, const Array<FilePath*>& files) {
+            dropped += [this](Ghurund::Core::Window& window, const Array<FilePath*>& files) {
                 fileWatcher.clearFiles();
                 FilePath& path = *files[0];
                 postLoadCallback(path);

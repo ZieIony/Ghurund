@@ -1,11 +1,29 @@
-#pragma once
+module;
 
-#include "Audio.h"
+#include "Common.h"
+#include <Windows.h>
+#include "Status.h"
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "core/resource/Resource.h"
 
-namespace Ghurund::Audio {
+#include <wrl\client.h>
+
+#include <xaudio2.h>
+
+#include <mfapi.h>
+#include <mfidl.h>
+#include <mfreadwrite.h>
+#include <DirectXMath.h>
+
+export module Ghurund.Engine.Audio.Sound;
+
+import Ghurund.Engine.Audio.Audio;
+
+export namespace Ghurund::Audio {
+    using namespace Ghurund::Core;
+    using Microsoft::WRL::ComPtr;
+
     enum class PlaybackState {
         STOPPED, PAUSED, PLAYING
     };
