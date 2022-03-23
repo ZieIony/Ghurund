@@ -1,5 +1,10 @@
 #pragma once
 
+#include <stdint.h>
+#include <string.h>
+#include <memory.h>
+#include <algorithm>
+
 namespace Ghurund::Core {
     class MemoryStream {
     protected:

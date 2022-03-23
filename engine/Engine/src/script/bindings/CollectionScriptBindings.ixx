@@ -1,12 +1,15 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "core/collection/Array.h"
-#include "core/collection/PointerMap.h"
 #include "core/collection/PointerList.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Bindings.CollectionScriptBindings;
 
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
+    using namespace Ghurund::Core;
+    /*
     class ListScriptBindings:ScriptBindings<List> {
     public:
         static void registerClass(asIScriptEngine& engine) {
@@ -40,13 +43,6 @@ namespace Ghurund {
         static void registerClass(asIScriptEngine& engine) {
             ScriptBindings<Map>::registerRefClass(engine, "Map");
         }
-    };
-
-    class PointerMapScriptBindings:ScriptBindings<PointerMap> {
-    public:
-        static void registerClass(asIScriptEngine& engine) {
-            ScriptBindings<PointerMap>::registerRefClass(engine, "PointerMap");
-        }
-    };
+    };*/
 
 }

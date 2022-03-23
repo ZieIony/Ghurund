@@ -1,9 +1,12 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "game/entity/Scene.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Bindings.SceneScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
 
     class SceneScriptBindings:ScriptBindings<Scene> {
     public:

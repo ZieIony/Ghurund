@@ -1,25 +1,29 @@
-#pragma once
+module;
 
-#include "StringFactory.h"
 #include "core/application/Feature.h"
 #include "core/Timer.h"
-#include "Script.h"
 #include "core/collection/PointerList.h"
-#include "ScriptComponent.h"
 
 #include <atomic>
 
 #include "angelscript.h"
 #include "angelscript/scriptmath.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.ScriptEngine;
+
+import Ghurund.Engine.Script.Script;
+import Ghurund.Engine.Script.StringFactory;
+import Ghurund.Engine.Script.ScriptComponent;
+
+export namespace Ghurund {
+    using namespace Ghurund::Core;
+
     class ScriptEngine: public Feature {
 #pragma region reflection
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
-        
         virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
@@ -47,7 +51,7 @@ namespace Ghurund {
         }
 
         asIScriptModule* makeModule() {
-            string moduleName("module");
+            std::string moduleName("module");
             moduleName += moduleIndex++;
             return engine->GetModule(moduleName.c_str(), asGM_ALWAYS_CREATE);
         }

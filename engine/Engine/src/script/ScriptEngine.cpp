@@ -1,22 +1,32 @@
+module;
+
 #include "ghpch.h"
-#include "ScriptEngine.h"
 
 #include "core/Exceptions.h"
 #include "core/application/Application.h"
-#include "script/bindings/ScriptBindings.h"
-#include "script/bindings/CameraScriptBindings.h"
-#include "script/bindings/Float3ScriptBindings.h"
-#include "script/bindings/TimerScriptBindings.h"
-#include "script/bindings/LightScriptBindings.h"
-#include "script/bindings/ModelScriptBindings.h"
-#include "script/bindings/SceneScriptBindings.h"
 #include "core/reflection/TypeBuilder.h"
 
+#include <angelscript.h>
+#include <script/angelscript/scriptmath.h>
+
+module Ghurund.Engine.Script.ScriptEngine;
+
+import Ghurund.Engine.Script.Bindings.CameraScriptBindings;
+import Ghurund.Engine.Script.Bindings.CollectionScriptBindings;
+import Ghurund.Engine.Script.Bindings.EntityScriptBindings;
+import Ghurund.Engine.Script.Bindings.LightScriptBindings;
+import Ghurund.Engine.Script.Bindings.MathScriptBindings;
+import Ghurund.Engine.Script.Bindings.ModelScriptBindings;
+import Ghurund.Engine.Script.Bindings.SceneScriptBindings;
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+import Ghurund.Engine.Script.Bindings.TimerScriptBindings;
+
 namespace Ghurund {
+    using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& ScriptEngine::GET_TYPE() {
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>("Ghurund", "ScriptEngine")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>(Ghurund::NAMESPACE_NAME, "ScriptEngine")
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

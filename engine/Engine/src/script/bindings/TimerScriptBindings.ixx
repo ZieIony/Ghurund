@@ -1,9 +1,16 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "core/Timer.h"
+#include "core/reflection/Type.h"
 
-namespace Ghurund {
+#include <angelscript.h>
+
+export module Ghurund.Engine.Script.Bindings.TimerScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
+    using namespace Ghurund::Core;
 
     class TimerScriptBindings:ScriptBindings<Timer> {
     public:

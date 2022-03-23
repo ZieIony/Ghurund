@@ -1,16 +1,18 @@
-#pragma once
+module;
 
 #include "core/resource/Resource.h"
 #include "core/string/String.h"
 
 #include "angelscript.h"
 
+export module Ghurund.Engine.Script.Script;
+
 namespace Ghurund::Core {
     class ResourceManager;
     class ResourceContext;
 }
 
-namespace Ghurund {
+export namespace Ghurund {
     using namespace Ghurund::Core;
 
     class ScriptEngine;

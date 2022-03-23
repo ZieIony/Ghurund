@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "angelscript.h"
 #include <assert.h> // assert()
@@ -17,7 +17,9 @@ BEGIN_AS_NAMESPACE
 typedef std::unordered_map<std::string, int> map_t;
 END_AS_NAMESPACE
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.StringFactory;
+
+export namespace Ghurund {
     using namespace std;
 
     class StringFactory: public asIStringFactory {

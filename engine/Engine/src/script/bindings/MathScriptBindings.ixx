@@ -1,9 +1,16 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "core/directx/Graphics.h"
 
-namespace Ghurund {
+#include <DirectXMath.h>
+#include <angelscript.h>
+
+export module Ghurund.Engine.Script.Bindings.MathScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
+    using namespace ::DirectX;
 
     class Float2ScriptBindings:ScriptBindings<XMFLOAT2> {
     public:

@@ -1,11 +1,19 @@
-#include "ghpch.h"
-#include "Script.h"
+module;
 
-#include "ScriptEngine.h"
+#include "ghpch.h"
+
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
 
+#include <angelscript.h>
+
+module Ghurund.Engine.Script.Script;
+
+import Ghurund.Engine.Script.ScriptEngine;
+
 namespace Ghurund {
+    using namespace Ghurund::Core;
+
     Status Script::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();

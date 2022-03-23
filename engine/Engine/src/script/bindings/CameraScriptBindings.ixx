@@ -1,9 +1,14 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "game/entity/camera/Camera.h"
 
-namespace Ghurund {
+#include <angelscript.h>
+
+export module Ghurund.Engine.Script.Bindings.CameraScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
 
     class CameraScriptBindings:ScriptBindings<Camera> {
     public:

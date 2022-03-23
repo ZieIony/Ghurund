@@ -167,21 +167,21 @@
     <ClInclude Include="src\physics\PhysicsComponent.h" />
     <ClInclude Include="src\physics\PhysicsSystem.h" />
     <ClInclude Include="src\physics\RigidBodyComponent.h" />
-    <ClInclude Include="src\script\Script.h" />
-    <ClInclude Include="src\script\ScriptComponent.h" />
-    <ClInclude Include="src\script\ScriptEngine.h" />
-    <ClInclude Include="src\script\Scripts.h" />
-    <ClInclude Include="src\script\StringFactory.h" />
+    <ClCompile Include="src\script\Script.ixx" />
+    <ClCompile Include="src\script\ScriptComponent.ixx" />
+    <ClCompile Include="src\script\ScriptEngine.ixx" />
+    <ClCompile Include="src\script\Scripts.ixx" />
+    <ClCompile Include="src\script\StringFactory.ixx" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
-    <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\EntityScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\Float3ScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\LightScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\ModelScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\SceneScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\ScriptBindings.h" />
-    <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
+    <ClCompile Include="src\script\bindings\CameraScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\CollectionScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\EntityScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\MathScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\LightScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\ModelScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\SceneScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\ScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\TimerScriptBindings.ixx" />
     <ClCompile Include="src\ui\UIFeature.ixx">
       <FileType>Document</FileType>
     </ClCompile>

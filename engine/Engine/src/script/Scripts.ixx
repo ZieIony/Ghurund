@@ -1,16 +1,20 @@
-#pragma once
+module;
 
-#include "Script.h"
-#include "ecs/Entity.h"
+#include "game/entity/Entity.h"
+#include "core/reflection/Type.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Scripts;
+
+import Ghurund.Engine.Script.Script;
+
+export namespace Ghurund {
 
     class Scripts {
     private:
         Scripts() = delete;
 
     public:
-        static Script* makeEmpty(Entity* entity) {
+        /*static Script* makeEmpty(Entity* entity) {
             typedef AString A;
 
             Script* script = ghnew Script();
@@ -28,6 +32,6 @@ namespace Ghurund {
             script->EntryPoint = A("void main(") + entity->Type.Name + " &in)";
             script->Arguments = {Argument(entity)};
             return script;
-        }
+        }*/
     };
 }

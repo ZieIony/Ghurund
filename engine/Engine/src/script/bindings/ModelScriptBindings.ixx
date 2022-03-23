@@ -1,9 +1,12 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "graphics/DrawableComponent.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Bindings.ModelScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
 
     class ModelScriptBindings:ScriptBindings<DrawableComponent> {
     public:

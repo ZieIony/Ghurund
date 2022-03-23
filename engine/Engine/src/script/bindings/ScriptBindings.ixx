@@ -1,10 +1,12 @@
-#pragma once
+module;
 
 #include "core/string/String.h"
 
-#include "angelscript.h"
+#include <angelscript.h>
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
     template <class Type>
     class ScriptBindings {
 	private:
@@ -26,8 +28,6 @@ namespace Ghurund {
         static Type* typeFactory() {
             return new Type();
         }
-
-        typedef AString A;
 
         static void registerValueClass(asIScriptEngine& engine, const char* name) {
             auto r = engine.RegisterObjectType(name, sizeof(Type), asOBJ_VALUE | asGetTypeTraits<Type>()); assert(r >= 0);

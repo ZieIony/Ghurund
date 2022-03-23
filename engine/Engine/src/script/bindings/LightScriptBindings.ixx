@@ -1,9 +1,13 @@
-#pragma once
+module;
 
-#include "ScriptBindings.h"
 #include "game/entity/light/Light.h"
+#include "core/reflection/Type.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.Bindings.LightScriptBindings;
+
+import Ghurund.Engine.Script.Bindings.ScriptBindings;
+
+export namespace Ghurund {
 
     class LightScriptBindings:ScriptBindings<Light> {
     public:

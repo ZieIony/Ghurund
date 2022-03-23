@@ -3,7 +3,6 @@
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
-#include "script/ScriptEngine.h"
 
 namespace Ghurund {
     void Camera::rebuild(TransformComponent& transformComponent) {

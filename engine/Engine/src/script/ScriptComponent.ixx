@@ -1,8 +1,12 @@
-#pragma once
+module;
 
-#include "Script.h"
+#include "core/Pointer.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Script.ScriptComponent;
+
+import Ghurund.Engine.Script.Script;
+
+export namespace Ghurund {
     class ScriptComponent {
     private:
         Ghurund::Script* script = nullptr;
