@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "ConeMesh.h"
 
 namespace Ghurund {

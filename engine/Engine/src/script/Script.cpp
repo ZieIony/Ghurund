@@ -1,9 +1,9 @@
 module;
 
-#include "ghpch.h"
-
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/reflection/TypeBuilder.h"
+#include "core/logging/Logger.h"
 
 #include <angelscript.h>
 

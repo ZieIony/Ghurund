@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "Material.h"
 
 #include "core/directx/Graphics.h"

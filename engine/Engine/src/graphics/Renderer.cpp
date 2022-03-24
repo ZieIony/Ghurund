@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "Renderer.h"
 
 #include "core/reflection/TypeBuilder.h"

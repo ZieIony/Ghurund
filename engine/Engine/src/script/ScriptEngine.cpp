@@ -1,7 +1,5 @@
 module;
 
-#include "ghpch.h"
-
 #include "core/Exceptions.h"
 #include "core/application/Application.h"
 #include "core/reflection/TypeBuilder.h"

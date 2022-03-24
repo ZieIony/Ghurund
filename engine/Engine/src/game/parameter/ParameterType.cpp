@@ -1,7 +1,8 @@
-#include "ghpch.h"
 #include "ParameterType.h"
 
 #include "core/Pointer.h"
+
+#include <DirectXMath.h>
 
 namespace Ghurund {
     using namespace ::DirectX;

@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "Client.h"
 
 #include "ClientMessage.h"

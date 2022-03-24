@@ -1,11 +1,10 @@
 module;
 
-#include "ghpch.h"
-
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/directx/MathTypes.h"
+#include "core/logging/Logger.h"
 
 #include <xaudio2.h>
 #include <mfapi.h>

@@ -134,7 +134,6 @@
     <ClInclude Include="src\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
-    <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\DrawableComponent.h" />
     <ClInclude Include="src\graphics\DrawableComponents.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
@@ -208,9 +207,6 @@
     <ClCompile Include="src\game\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\game\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\game\parameter\ParameterType.cpp" />
-    <ClCompile Include="src\ghpch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />

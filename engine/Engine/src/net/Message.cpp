@@ -1,5 +1,6 @@
-#include "ghpch.h"
 #include "Message.h"
+
+#include "core/logging/Logger.h"
 
 namespace Ghurund::Net {
     bool Message::isCrcValid(size_t messageSize) {

@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "Camera.h"
 
 #include "core/io/File.h"

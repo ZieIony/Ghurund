@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "CameraController.h"
 
 #include "core/window/SystemWindow.h"

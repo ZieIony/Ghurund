@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "scriptmath.h"
 
 #include <assert.h>

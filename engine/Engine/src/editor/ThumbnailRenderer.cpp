@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "ThumbnailRenderer.h"
 
 #include "CameraUtils.h"

@@ -1,4 +1,3 @@
-#include "ghpch.h"
 #include "Scene.h"
 
 namespace Ghurund {

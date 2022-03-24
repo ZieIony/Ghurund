@@ -1,5 +1,6 @@
-#include "ghpch.h"
 #include "Light.h"
+
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
     const Ghurund::Core::Type& Light::GET_TYPE() {

@@ -1,5 +1,6 @@
-#include "ghpch.h"
 #include "RenderingStatistics.h"
+
+#include "Ghurund.Engine.h"
 
 namespace Ghurund::Core {
     template<>
