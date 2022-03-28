@@ -2,7 +2,7 @@
 
 #include "core/directx/shader/Shader.h"
 #include "core/resource/Resource.h"
-#include "game/parameter/ParameterManager.h"
+#include "parameter/ParameterManager.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core::DirectX;

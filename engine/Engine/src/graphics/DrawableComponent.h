@@ -1,8 +1,8 @@
 #pragma once
 
-#include "game/entity/Entity.h"
-#include "game/entity/TransformComponent.h"
-#include "game/parameter/ParameterProvider.h"
+#include "entity/Entity.h"
+#include "entity/TransformComponent.h"
+#include "parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
 #include "graphics/RenderingStatistics.h"

@@ -1,6 +1,6 @@
 #include "Materials.h"
 
-#include "game/parameter/TextureParameter.h"
+#include "parameter/TextureParameter.h"
 #include "Shaders.h"
 
 namespace Ghurund {

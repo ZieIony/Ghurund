@@ -1,7 +1,7 @@
 #include "ParameterManager.h"
 
-#include "game/parameter/ValueParameter.h"
-#include "game/parameter/TextureParameter.h"
+#include "parameter/ValueParameter.h"
+#include "parameter/TextureParameter.h"
 #include "core/SharedPointer.h"
 #include "graphics/Textures.h"
 

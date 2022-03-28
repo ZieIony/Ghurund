@@ -1,12 +1,12 @@
 module;
 
 #include "core/resource/Resource.h"
-#include "game/entity/camera/Camera.h"
+#include "entity/camera/Camera.h"
 #include "graphics/DrawingSystem.h"
 
 #include <entt.hpp>
 
-export module Ghurund.Engine.Game.Entity.Scene;
+export module Ghurund.Engine.Entity.Scene;
 
 import Ghurund.Engine.Physics.Physics;
 import Ghurund.Engine.Physics.PhysicsSystem;

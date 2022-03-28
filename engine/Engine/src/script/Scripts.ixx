@@ -1,6 +1,6 @@
 module;
 
-#include "game/entity/Entity.h"
+#include "entity/Entity.h"
 #include "core/reflection/Type.h"
 
 export module Ghurund.Engine.Script.Scripts;

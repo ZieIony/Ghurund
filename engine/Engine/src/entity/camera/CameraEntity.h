@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CameraComponent.h"
-#include "game/entity/Entity.h"
+#include "entity/Entity.h"
 
 namespace Ghurund {
     class CameraEntity:public Entity {

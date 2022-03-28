@@ -1,8 +1,8 @@
 #pragma once
 
-#include "game/entity/Entity.h"
-#include "game/parameter/Parameter.h"
-#include "game/parameter/ParameterProvider.h"
+#include "entity/Entity.h"
+#include "parameter/Parameter.h"
+#include "parameter/ParameterProvider.h"
 #include "core/collection/PointerArray.h"
 #include "core/resource/ResourceFormat.h"
 

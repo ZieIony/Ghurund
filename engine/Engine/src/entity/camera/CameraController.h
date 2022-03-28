@@ -3,7 +3,7 @@
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
 #include "game/KeyMap.h"
-#include "game/entity/camera/CameraEntity.h"
+#include "entity/camera/CameraEntity.h"
 
 namespace Ghurund::Core {
     class SystemWindow;

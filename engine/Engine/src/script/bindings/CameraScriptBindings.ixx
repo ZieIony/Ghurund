@@ -1,6 +1,6 @@
 module;
 
-#include "game/entity/camera/Camera.h"
+#include "entity/camera/Camera.h"
 
 #include <angelscript.h>
 

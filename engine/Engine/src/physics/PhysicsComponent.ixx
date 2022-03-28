@@ -1,6 +1,6 @@
 module;
 
-#include "game/entity/TransformComponent.h"
+#include "entity/TransformComponent.h"
 #include "core/reflection/TypeBuilder.h"
 #include "Ghurund.Engine.h"
 

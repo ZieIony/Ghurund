@@ -1,7 +1,7 @@
 #include "CameraController.h"
 
 #include "core/window/SystemWindow.h"
-#include <game/entity/camera/CameraComponent.h>
+#include "entity/camera/CameraComponent.h"
 
 namespace Ghurund {
 	using namespace std;

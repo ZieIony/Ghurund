@@ -1,6 +1,6 @@
 module;
 
-#include "game/entity/light/Light.h"
+#include "entity/light/Light.h"
 #include "core/reflection/Type.h"
 
 export module Ghurund.Engine.Script.Bindings.LightScriptBindings;

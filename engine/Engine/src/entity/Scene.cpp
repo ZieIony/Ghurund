@@ -3,7 +3,7 @@ module;
 #include "core/resource/Resource.h"
 #include "core/reflection/TypeBuilder.h"
 
-module Ghurund.Engine.Game.Entity.Scene;
+module Ghurund.Engine.Entity.Scene;
 
 namespace Ghurund {
 	using namespace Ghurund::Core;

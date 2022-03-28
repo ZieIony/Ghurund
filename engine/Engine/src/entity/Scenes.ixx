@@ -2,9 +2,9 @@ module;
 
 #include "graphics/Materials.h"
 
-export module Ghurund.Engine.Game.Entity.Scenes;
+export module Ghurund.Engine.Entity.Scenes;
 
-import Ghurund.Engine.Game.Entity.Scene;
+import Ghurund.Engine.Entity.Scene;
 
 export namespace Ghurund {
     class Scenes {

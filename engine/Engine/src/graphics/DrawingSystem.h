@@ -2,8 +2,8 @@
 
 #include "DrawableComponent.h"
 #include "core/directx/Graphics.h"
-#include "game/parameter/ValueParameter.h"
-#include "game/entity/camera/Camera.h"
+#include "parameter/ValueParameter.h"
+#include "entity/camera/Camera.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core::DirectX;

@@ -1,6 +1,6 @@
 module;
 
-#include "game/entity/Entity.h"
+#include "entity/Entity.h"
 
 export module Ghurund.Engine.Script.Bindings.EntityScriptBindings;
 

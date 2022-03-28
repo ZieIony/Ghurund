@@ -2,10 +2,10 @@
 
 #include "core/io/MemoryStream.h"
 #include "core/resource/Resource.h"
-#include "game/entity/Entity.h"
-#include "game/entity/TransformComponent.h"
-#include "game/parameter/ParameterProvider.h"
-#include "game/parameter/ValueParameter.h"
+#include "entity/Entity.h"
+#include "entity/TransformComponent.h"
+#include "parameter/ParameterProvider.h"
+#include "parameter/ValueParameter.h"
 #include "core/directx/Graphics.h"
 
 namespace Ghurund {

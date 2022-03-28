@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game/parameter/Parameter.h"
+#include "parameter/Parameter.h"
 #include "core/string/String.h"
 #include "core/collection/PointerList.h"
 #include "core/Object.h"
