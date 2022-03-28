@@ -1,6 +1,13 @@
-#include "Scene.h"
+module;
+
+#include "core/resource/Resource.h"
+#include "core/reflection/TypeBuilder.h"
+
+module Ghurund.Engine.Game.Entity.Scene;
 
 namespace Ghurund {
+	using namespace Ghurund::Core;
+
 	Status Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*context.Allocators.set(DrawableComponent::TYPE, DrawingSystem.Allocator);
 		size_t size = stream.readUInt();

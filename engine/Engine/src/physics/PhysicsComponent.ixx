@@ -1,30 +1,28 @@
-#pragma once
+module;
 
-#include "ecs/Component.h"
-#include "game/TransformComponent.h"
-#include "physics/Physics.h"
+#include "game/entity/TransformComponent.h"
+#include "core/reflection/TypeBuilder.h"
+#include "Ghurund.Engine.h"
 
 #pragma warning(push, 0)
 #include <PxShape.h>
 #pragma warning(pop)
 
-namespace Ghurund::Physics {
-	using namespace physx;
+export module Ghurund.Engine.Physics.PhysicsComponent;
 
-	class PhysicsComponent :public Component {
+import Ghurund.Engine.Physics.Physics;
+
+export namespace Ghurund::Physics {
+	using namespace physx;
+	using namespace Ghurund::Core;
+
+	class PhysicsComponent {
 	private:
         TransformComponent& transformComponent;
 		PxShape* shape = nullptr;
 
 		void finalize() {
 			safeRelease2(shape);
-		}
-
-		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
-				.withSupertype(__super::GET_TYPE());
-
-			return GET_TYPE();
 		}
 
 	protected:
@@ -48,13 +46,12 @@ namespace Ghurund::Physics {
 		}
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
-
-        
-
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 	};
+	/*
+	static const Ghurund::Core::Type& GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
+			.withSupertype(__super::GET_TYPE());
+
+		return GET_TYPE();
+	}*/
 }

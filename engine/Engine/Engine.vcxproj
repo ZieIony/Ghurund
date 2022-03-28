@@ -114,8 +114,8 @@
     <ClInclude Include="src\game\GameAction.h" />
     <ClInclude Include="src\game\KeyMap.h" />
     <ClInclude Include="src\game\entity\Entity.h" />
-    <ClInclude Include="src\game\entity\Scene.h" />
-    <ClInclude Include="src\game\entity\Scenes.h" />
+    <ClCompile Include="src\game\entity\Scene.ixx" />
+    <ClCompile Include="src\game\entity\Scenes.ixx" />
     <ClInclude Include="src\game\entity\TransformComponent.h" />
     <ClInclude Include="src\game\entity\camera\Camera.h" />
     <ClInclude Include="src\game\entity\camera\CameraComponent.h" />
@@ -162,10 +162,10 @@
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\ServerMessage.h" />
     <ClInclude Include="src\net\Socket.h" />
-    <ClInclude Include="src\physics\Physics.h" />
-    <ClInclude Include="src\physics\PhysicsComponent.h" />
-    <ClInclude Include="src\physics\PhysicsSystem.h" />
-    <ClInclude Include="src\physics\RigidBodyComponent.h" />
+    <ClCompile Include="src\physics\Physics.ixx" />
+    <ClCompile Include="src\physics\PhysicsComponent.ixx" />
+    <ClCompile Include="src\physics\PhysicsSystem.ixx" />
+    <ClCompile Include="src\physics\RigidBodyComponent.ixx" />
     <ClCompile Include="src\script\Script.ixx" />
     <ClCompile Include="src\script\ScriptComponent.ixx" />
     <ClCompile Include="src\script\ScriptEngine.ixx" />

@@ -1,4 +1,4 @@
-#pragma once
+module;
 
 #include "Status.h"
 #include "core/application/Feature.h"
@@ -22,11 +22,13 @@
 #pragma comment(lib, "PhysXPvdSDK_static_32.lib")
 #endif
 
+export module Ghurund.Engine.Physics.Physics;
+
 namespace Ghurund {
     class Application;
 }
 
-namespace Ghurund::Physics {
+export namespace Ghurund::Physics {
     using namespace physx;
 
     class Physics:public Ghurund::Core::Feature {

@@ -1,14 +1,18 @@
-#pragma once
+module;
 
 #include "core/resource/Resource.h"
-#include "physics/Physics.h"
 
 #pragma warning(push, 0)
+#include <PxPhysicsAPI.h>
 #include <PxScene.h>
 #include <extensions/PxDefaultCpuDispatcher.h>
 #pragma warning(pop)
 
-namespace Ghurund::Physics {
+export module Ghurund.Engine.Physics.PhysicsSystem;
+
+import Ghurund.Engine.Physics.Physics;
+
+export namespace Ghurund::Physics {
 	using namespace physx;
 
 	class PhysicsSystem {

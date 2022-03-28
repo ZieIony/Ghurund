@@ -1,12 +1,14 @@
-#pragma once
-
-#include "physics/Physics.h"
+module;
 
 #pragma warning(push, 0)
 #include <PxShape.h>
 #pragma warning(pop)
 
-namespace Ghurund::Physics {
+export module Ghurund.Engine.Physics.RigidBodyComponent;
+
+import Ghurund.Engine.Physics.Physics;
+
+export namespace Ghurund::Physics {
 	using namespace physx;
 
 	class RigidBodyComponent {

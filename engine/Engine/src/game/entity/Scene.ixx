@@ -1,14 +1,17 @@
-#pragma once
+module;
 
 #include "core/resource/Resource.h"
-#include "physics/Physics.h"
-#include "physics/PhysicsSystem.h"
 #include "game/entity/camera/Camera.h"
 #include "graphics/DrawingSystem.h"
 
 #include <entt.hpp>
 
-namespace Ghurund {
+export module Ghurund.Engine.Game.Entity.Scene;
+
+import Ghurund.Engine.Physics.Physics;
+import Ghurund.Engine.Physics.PhysicsSystem;
+
+export namespace Ghurund {
     class Scene:public Resource {
     private:
         entt::registry entityRegistry;

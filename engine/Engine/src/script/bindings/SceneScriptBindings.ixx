@@ -1,9 +1,10 @@
 module;
 
-#include "game/entity/Scene.h"
+#include <format>
 
 export module Ghurund.Engine.Script.Bindings.SceneScriptBindings;
 
+import Ghurund.Engine.Game.Entity.Scene;
 import Ghurund.Engine.Script.Bindings.ScriptBindings;
 
 export namespace Ghurund {

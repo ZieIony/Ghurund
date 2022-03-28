@@ -1,9 +1,12 @@
-#pragma once
+module;
 
-#include "Scene.h"
 #include "graphics/Materials.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Game.Entity.Scenes;
+
+import Ghurund.Engine.Game.Entity.Scene;
+
+export namespace Ghurund {
     class Scenes {
     private:
         Scenes() = delete;
