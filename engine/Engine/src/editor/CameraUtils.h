@@ -1,7 +1,8 @@
 #pragma once
 
-#include "entity/camera/Camera.h"
 #include "graphics/DrawableComponent.h"
+
+import Ghurund.Engine.Entity.Camera.Camera;
 
 namespace Ghurund {
     class CameraUtils {

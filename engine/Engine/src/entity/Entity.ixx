@@ -1,10 +1,12 @@
-#pragma once
+module;
 
 #include "core/Pointer.h"
 
 #include <entt.hpp>
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.Entity;
+
+export namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Entity:public Pointer {

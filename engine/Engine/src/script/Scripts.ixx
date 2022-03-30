@@ -1,10 +1,10 @@
 module;
 
-#include "entity/Entity.h"
 #include "core/reflection/Type.h"
 
 export module Ghurund.Engine.Script.Scripts;
 
+import Ghurund.Engine.Entity.Entity;
 import Ghurund.Engine.Script.Script;
 
 export namespace Ghurund {

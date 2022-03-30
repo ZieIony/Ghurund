@@ -1,8 +1,10 @@
-#pragma once
+module;
 
 #include <DirectXMath.h>
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.TransformComponent;
+
+export namespace Ghurund {
 	using namespace ::DirectX;
 
 	class TransformComponent {

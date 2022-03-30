@@ -1,20 +1,21 @@
 module;
 
 #include "core/resource/Resource.h"
-#include "entity/camera/Camera.h"
 #include "graphics/DrawingSystem.h"
 
-#include <entt.hpp>
+//#include <entt.hpp>
 
 export module Ghurund.Engine.Entity.Scene;
 
+import Ghurund.Engine.Entity.Camera.Camera;
+import Ghurund.Engine.Entity.Entity;
 import Ghurund.Engine.Physics.Physics;
 import Ghurund.Engine.Physics.PhysicsSystem;
 
 export namespace Ghurund {
     class Scene:public Resource {
     private:
-        entt::registry entityRegistry;
+        //entt::registry entityRegistry;
 
         PointerList<Entity*> entities;
         DrawingSystem drawingSystem;

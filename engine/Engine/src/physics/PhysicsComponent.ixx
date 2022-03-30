@@ -1,6 +1,5 @@
 module;
 
-#include "entity/TransformComponent.h"
 #include "core/reflection/TypeBuilder.h"
 #include "Ghurund.Engine.h"
 
@@ -10,6 +9,7 @@ module;
 
 export module Ghurund.Engine.Physics.PhysicsComponent;
 
+import Ghurund.Engine.Entity.TransformComponent;
 import Ghurund.Engine.Physics.Physics;
 
 export namespace Ghurund::Physics {

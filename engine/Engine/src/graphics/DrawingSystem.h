@@ -3,7 +3,8 @@
 #include "DrawableComponent.h"
 #include "core/directx/Graphics.h"
 #include "parameter/ValueParameter.h"
-#include "entity/camera/Camera.h"
+
+import Ghurund.Engine.Entity.Camera.Camera;
 
 namespace Ghurund {
     using namespace Ghurund::Core::DirectX;

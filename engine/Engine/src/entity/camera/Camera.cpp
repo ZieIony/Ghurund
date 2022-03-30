@@ -1,9 +1,18 @@
-#include "Camera.h"
+module;
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
+#include "core/collection/PointerArray.h"
+#include "parameter/ParameterId.h"
+#include "core/reflection/TypeBuilder.h"
+
+#include <DirectXMath.h>
+
+module Ghurund.Engine.Entity.Camera.Camera;
 
 namespace Ghurund {
+    using namespace ::DirectX;
+
     void Camera::rebuild(TransformComponent& transformComponent) {
         XMMATRIX view2, proj2, viewProj2;
         XMFLOAT3 pos = transformComponent.Position;

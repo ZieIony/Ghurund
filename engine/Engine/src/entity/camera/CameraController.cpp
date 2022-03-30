@@ -1,10 +1,20 @@
-#include "CameraController.h"
+module;
 
 #include "core/window/SystemWindow.h"
-#include "entity/camera/CameraComponent.h"
+
+#include <DirectXMath.h>
+#include <entt.hpp>
+
+module Ghurund.Engine.Entity.Camera.CameraController;
+
+import Ghurund.Engine.Entity.Camera.Camera;
+import Ghurund.Engine.Entity.Camera.CameraComponent;
+import Ghurund.Engine.Entity.TransformComponent;
 
 namespace Ghurund {
 	using namespace std;
+	using namespace Ghurund::Core;
+	using namespace ::DirectX;
 
 	CameraController::CameraController(CameraEntity& cameraEntity, SystemWindow* window) :cameraEntity(cameraEntity) {
 		modeMap.set(MouseButton::LEFT, Mode::ORBIT);

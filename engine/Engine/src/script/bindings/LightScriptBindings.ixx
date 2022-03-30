@@ -1,10 +1,10 @@
 module;
 
-#include "entity/light/Light.h"
 #include "core/reflection/Type.h"
 
 export module Ghurund.Engine.Script.Bindings.LightScriptBindings;
 
+import Ghurund.Engine.Entity.Light.Light;
 import Ghurund.Engine.Script.Bindings.ScriptBindings;
 
 export namespace Ghurund {

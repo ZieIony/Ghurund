@@ -1,14 +1,20 @@
-#pragma once
+module;
 
 #include "core/io/MemoryStream.h"
 #include "core/resource/Resource.h"
-#include "entity/Entity.h"
-#include "entity/TransformComponent.h"
 #include "parameter/ParameterProvider.h"
 #include "parameter/ValueParameter.h"
 #include "core/directx/Graphics.h"
 
-namespace Ghurund {
+#include <DirectXMath.h>
+
+export module Ghurund.Engine.Entity.Camera.Camera;
+
+import Ghurund.Engine.Entity.Entity;
+import Ghurund.Engine.Entity.TransformComponent;
+
+export namespace Ghurund {
+    using namespace ::DirectX;
 
     class Camera: public Pointer, public ParameterProvider {
     private:

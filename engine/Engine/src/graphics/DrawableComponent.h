@@ -1,13 +1,14 @@
 #pragma once
 
-#include "entity/Entity.h"
-#include "entity/TransformComponent.h"
 #include "parameter/ParameterProvider.h"
 #include "graphics/mesh/Mesh.h"
 #include "graphics/Material.h"
 #include "graphics/RenderingStatistics.h"
 
 #include <DirectXCollision.h>
+
+import Ghurund.Engine.Entity.Entity;
+import Ghurund.Engine.Entity.TransformComponent;
 
 namespace Ghurund {
 	class DrawableComponent//:public ParameterProvider

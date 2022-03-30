@@ -1,11 +1,12 @@
 module;
 
-#include "entity/camera/Camera.h"
-
 #include <angelscript.h>
+#include <cassert>
+#include <format>
 
 export module Ghurund.Engine.Script.Bindings.CameraScriptBindings;
 
+import Ghurund.Engine.Entity.Camera.Camera;
 import Ghurund.Engine.Script.Bindings.ScriptBindings;
 
 export namespace Ghurund {

@@ -1,9 +1,13 @@
-#pragma once
+module;
 
-#include "CameraComponent.h"
-#include "entity/Entity.h"
+#include <entt.hpp>
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.Camera.CameraEntity;
+
+import Ghurund.Engine.Entity.Camera.CameraComponent;
+import Ghurund.Engine.Entity.Entity;
+
+export namespace Ghurund {
     class CameraEntity:public Entity {
     public:
         CameraEntity(entt::registry& registry):Entity(registry) {

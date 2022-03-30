@@ -1,12 +1,15 @@
-#pragma once
+module;
 
-#include "entity/Entity.h"
 #include "parameter/Parameter.h"
 #include "parameter/ParameterProvider.h"
 #include "core/collection/PointerArray.h"
 #include "core/resource/ResourceFormat.h"
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.Light.Light;
+
+import Ghurund.Engine.Entity.Entity;
+
+export namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Light: public Pointer, public ParameterProvider {

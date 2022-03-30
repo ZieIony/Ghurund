@@ -1,9 +1,13 @@
-#pragma once
+module;
 
-#include "LightComponent.h"
-#include "game/entity/Entity.h"
+#include <entt.hpp>
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.Light.LightEntity;
+
+import Ghurund.Engine.Entity.Light.LightComponent;
+import Ghurund.Engine.Entity.Entity;
+
+export namespace Ghurund {
     class LightEntity:public Entity {
     public:
         LightEntity(entt::registry& registry):Entity(registry) {

@@ -1,15 +1,17 @@
-#pragma once
+module;
 
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
 #include "game/KeyMap.h"
-#include "entity/camera/CameraEntity.h"
+#include "core/window/SystemWindow.h"
 
-namespace Ghurund::Core {
-    class SystemWindow;
-}
+#include <DirectXMath.h>
 
-namespace Ghurund {
+export module Ghurund.Engine.Entity.Camera.CameraController;
+
+import Ghurund.Engine.Entity.Camera.CameraEntity;
+
+export namespace Ghurund {
     class CameraController: public EventConsumer {
     public:
         enum class Mode {
