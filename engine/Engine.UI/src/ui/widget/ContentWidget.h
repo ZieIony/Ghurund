@@ -48,21 +48,15 @@ namespace Ghurund::UI {
             loadContent(loader, xml);
         }
 
-        using ControlContainer::find;
-
-        virtual Ghurund::UI::Control* find(const Ghurund::Core::AString& name) override {
-            if (Name && *Name == name)
-                return this;
+        virtual Ghurund::UI::Control* find(const Ghurund::Core::AString& name, bool deep = true) override {
             if (content.Value)
-                return content.Value->find(name);
+                return content.Value->find(name, deep);
             return nullptr;
         }
 
-        virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type) override {
-            if (Type == type)
-                return this;
+        virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type, bool deep = true) override {
             if (content.Value)
-                return content.Value->find(type);
+                return content.Value->find(type, deep);
             return nullptr;
         }
 

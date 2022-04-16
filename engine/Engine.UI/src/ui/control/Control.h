@@ -12,13 +12,15 @@
 #include "ui/SizeConstraints.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
+#include "ui/layout/constraint/Constraint.h"
+#include "ui/layout/constraint/ValueConstraint.h"
+#include "ui/layout/constraint/WrapConstraint.h"
 
 namespace tinyxml2 {
     class XMLElement;
 }
 
 namespace Ghurund::UI {
-    class Control;
     class ControlParent;
     class Theme;
     class LayoutLoader;
@@ -55,7 +57,7 @@ namespace Ghurund::UI {
     protected:
         FloatPoint position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
-        Ghurund::Core::Matrix3x2 transformation;
+        Ghurund::Core::Matrix3x2 transformation = {};
 
         SizeConstraints minSize = { 0,0 };
         SizeConstraints maxSize = { SizeConstraints::Width(SizeConstraints::Type::PERCENT, 100), SizeConstraints::Height(SizeConstraints::Type::PERCENT, 100) };
@@ -67,6 +69,13 @@ namespace Ghurund::UI {
         const Style* style = nullptr;
 
         //List<Binding> bindings;
+
+        std::shared_ptr<Constraint> left = std::make_shared<ValueConstraint>(0.0f);
+        std::shared_ptr<Constraint> right = std::make_shared<LeftWidthConstraint>();
+        std::shared_ptr<Constraint> width = std::make_shared<ValueConstraint>(0.0f);
+        std::shared_ptr<Constraint> top = std::make_shared<ValueConstraint>(0.0f);
+        std::shared_ptr<Constraint> bottom = std::make_shared<TopHeightConstraint>();
+        std::shared_ptr<Constraint> height = std::make_shared<ValueConstraint>(0.0f);
 
         virtual void onStateChanged() {
             stateChanged();
@@ -95,14 +104,23 @@ namespace Ghurund::UI {
         Control* resolvePath(const Array<AString>& path);
 
         virtual ~Control()
-        //    = 0   // TODO: a destructor cannot be abstract
-        ;
+            //    = 0   // TODO: a destructor cannot be abstract
+            ;
 
     public:
         Event<Control> sizeChanged = Event<Control>(*this);
         Event<Control> stateChanged = Event<Control>(*this);
         Event<Control> themeChanged = Event<Control>(*this);
         Event<Control> contextChanged = Event<Control>(*this);
+
+        Control() {
+            /*left.reset(ghnew WidthValueConstraint(0));
+            top.reset(ghnew HeightValueConstraint(0));
+            right.reset(ghnew WidthValueConstraint(0));
+            bottom.reset(ghnew HeightValueConstraint(0));
+            width.reset(ghnew WidthWrapConstraint());
+            height.reset(ghnew HeightWrapConstraint());*/
+        }
 
         inline const Ghurund::Core::AString* getName() const {
             return name;
@@ -359,8 +377,16 @@ namespace Ghurund::UI {
         virtual void invalidate();
 
         inline void measure(float parentWidth, float parentHeight) {
-            if (needsLayout || preferredSize.width.Type != PreferredSize::Type::PIXELS || preferredSize.height.Type != PreferredSize::Type::PIXELS)
-                onMeasure(parentWidth, parentHeight);
+            //if (needsLayout || preferredSize.width.Type != PreferredSize::Type::PIXELS || preferredSize.height.Type != PreferredSize::Type::PIXELS)
+            onMeasure(parentWidth, parentHeight);
+        }
+
+        inline void measureWidth() {
+            measuredSize.Width = width->Value;
+        }
+
+        inline void measureHeight() {
+            measuredSize.Height = height->Value;
         }
 
         float resolveWidth(float contentSize, float parentWidth, float parentHeight) const;
@@ -373,19 +399,121 @@ namespace Ghurund::UI {
 
         void draw(ICanvas& canvas);
 
-        template<class T>
-        inline T* find(const Ghurund::Core::AString& name) {
-            return (T*)find(name);
-        }
-
-        virtual Control* find(const Ghurund::Core::AString& name);
+        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true);
 
         template<class T>
-        inline T* find() {
-            return (T*)find(T::GET_TYPE());
+        inline T* find(bool deep = true) {
+            return (T*)find(T::GET_TYPE(), deep);
         }
 
-        virtual Control* find(const Ghurund::Core::Type& type);
+        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
+
+        inline Constraint& getLeft() {
+            return *left;
+        }
+
+        inline void setLeft(std::unique_ptr<Constraint> left) {
+            if (left) {
+                this->left.reset(left.release());
+            } else {
+                this->left.reset(ghnew RightWidthConstraint());
+            }
+        }
+
+        __declspec(property(get = getLeft, put = setLeft)) Constraint& Left;
+
+        inline Constraint& getRight() {
+            return *right;
+        }
+
+        inline void setRight(std::unique_ptr<Constraint> right) {
+            if (right) {
+                this->right.reset(right.release());
+            } else {
+                this->right.reset(ghnew LeftWidthConstraint());
+            }
+        }
+
+        __declspec(property(get = getRight, put = setRight)) Constraint& Right;
+
+        inline Constraint& getWidth() {
+            return *width;
+        }
+
+        inline void setWidth(std::unique_ptr<Constraint> width) {
+            if (width) {
+                this->width.reset(width.release());
+            } else {
+                this->width.reset(ghnew WrapConstraint());
+            }
+        }
+
+        inline void setWidth(float width) {
+            this->width.reset(ghnew ValueConstraint(width));
+        }
+
+        __declspec(property(get = getWidth, put = setWidth)) Constraint& Width;
+
+        inline Constraint& getTop() {
+            return *top;
+        }
+
+        inline void setTop(std::unique_ptr<Constraint> top) {
+            if (top) {
+                this->top.reset(top.release());
+            } else {
+                this->top.reset(ghnew ValueConstraint(0.0f));
+            }
+        }
+
+        __declspec(property(get = getTop, put = setTop)) Constraint& Top;
+
+        inline Constraint& getBottom() {
+            return *bottom;
+        }
+
+        inline void setBottom(std::unique_ptr<Constraint> bottom) {
+            if (bottom) {
+                this->bottom.reset(bottom.release());
+            } else {
+                this->bottom.reset(ghnew TopHeightConstraint());
+            }
+        }
+
+        __declspec(property(get = getBottom, put = setBottom)) Constraint& Bottom;
+
+        inline Constraint& getHeight() {
+            return *height;
+        }
+
+        inline void setHeight(std::unique_ptr<Constraint> height) {
+            if (height) {
+                this->height.reset(height.release());
+            } else {
+                this->width.reset(ghnew WrapConstraint());
+            }
+        }
+
+        inline void setHeight(float height) {
+            this->height.reset(ghnew ValueConstraint(height));
+        }
+
+        __declspec(property(get = getHeight, put = setHeight)) Constraint& Height;
+
+        virtual void resolveConstraints(List<Constraint*>& constraints) {
+            width->resolve(*this);
+            constraints.add(width.get());
+            height->resolve(*this);
+            constraints.add(height.get());
+            left->resolve(*this);
+            constraints.add(left.get());
+            top->resolve(*this);
+            constraints.add(top.get());
+            right->resolve(*this);
+            constraints.add(right.get());
+            bottom->resolve(*this);
+            constraints.add(bottom.get());
+        }
 
         virtual void bind() {
             /*for (Binding& b : bindings) {

@@ -107,12 +107,14 @@
     <ClInclude Include="src\test\ui\text\TextLayout.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
+    <ClCompile Include="src\test\ui\control\PreferredSizeTest.cpp" />
+    <ClCompile Include="src\test\ui\layout\constraint\ConstraintSolverTest.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
     <ClCompile Include="src\test\ui\ColorTest.cpp" />
-    <ClCompile Include="src\test\ui\PreferredSizeTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlTest.cpp" />
     <ClCompile Include="src\test\ui\control\ImageViewTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
@@ -120,6 +122,7 @@
     <ClCompile Include="src\test\ui\layout\HorizontalLayoutTest.cpp" />
     <ClCompile Include="src\test\ui\layout\StackLayoutTest.cpp" />
     <ClCompile Include="src\test\ui\layout\VerticalLayoutTest.cpp" />
+    <ClCompile Include="src\test\ui\layout\constraint\ConstraintFactoryTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
   </ItemGroup>
   <ItemGroup>

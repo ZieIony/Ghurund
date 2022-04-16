@@ -14,6 +14,7 @@
 #include "ui/layout/LinearLayout.h"
 #include "ui/layout/ManualLayout.h"
 #include "ui/layout/StackLayout.h"
+#include "ui/layout/constraint/ConstraintLayout.h"
 #include "ui/style/Theme.h"
 #include "ui/text/TextBlock.h"
 #include "ui/text/TextField.h"
@@ -37,8 +38,9 @@ namespace Ghurund::UI {
         Ghurund::Core::ResourceManager& resourceManager,
         ShapeFactory& shapeFactory,
         ImageDrawableFactory& imageDrawableFactory,
-        TextFormatFactory& textFormatFactory
-    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory) {}
+        TextFormatFactory& textFormatFactory,
+        ConstraintFactory& constraintFactory
+    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory), constraintFactory(constraintFactory) {}
 
     ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
         AString s = str;
@@ -112,15 +114,23 @@ namespace Ghurund::UI {
             auto namespaceAttr = xml.FindAttribute("namespace");
             if (namespaceAttr)
                 namespaceName = namespaceAttr->Value();
-            const Type& type = Type::byName(namespaceName, xml.Value());
-            const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
-            if (!constructor)
-                throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
-            Control* control = (Control*)constructor->invokeRaw();
-            control->load(*this, xml);
-            return control;
+            try {
+                const Type& type = Type::byName(namespaceName, xml.Value());
+                if (type.isOrExtends(Control::GET_TYPE())) {
+                    const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
+                    if (!constructor)
+                        throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
+                    Control* control = (Control*)constructor->invokeRaw();
+                    control->load(*this, xml);
+                    return control;
+                } else {
+                    // it's a known class, but not a control
+                    return nullptr;
+                }
+            } catch (TypeNotFoundException exception) {
+            }
         }
-        Logger::log(LogType::ERR0R, _T("Control type {} not registered in LayoutLoader.\n"), convertText<char, tchar>(AString(name)));
+        Logger::log(LogType::WARNING, _T("Control type {} not registered in LayoutLoader.\n"), convertText<char, tchar>(AString(name)));
         return nullptr;
     }
 

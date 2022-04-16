@@ -54,11 +54,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -69,7 +68,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -78,7 +77,7 @@
       <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -93,44 +92,17 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClCompile Include="src\audio\Audio.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="src\audio\Sound.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="src\audio\Sound3d.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\game\GameAction.h" />
     <ClInclude Include="src\game\KeyMap.h" />
-    <ClCompile Include="src\entity\Entity.ixx" />
-    <ClCompile Include="src\entity\Scene.ixx" />
-    <ClCompile Include="src\entity\Scenes.ixx" />
-    <ClCompile Include="src\entity\TransformComponent.ixx" />
-    <ClCompile Include="src\entity\camera\Camera.ixx" />
-    <ClCompile Include="src\entity\camera\CameraComponent.ixx" />
-    <ClCompile Include="src\entity\camera\CameraController.ixx" />
-    <ClCompile Include="src\entity\camera\CameraEntity.ixx" />
-    <ClCompile Include="src\entity\light\Light.ixx" />
-    <ClCompile Include="src\entity\light\LightComponent.ixx" />
-    <ClCompile Include="src\entity\light\LightEntity.ixx" />
-    <ClInclude Include="src\parameter\Parameter.h" />
-    <ClInclude Include="src\parameter\ParameterId.h" />
-    <ClInclude Include="src\parameter\ParameterManager.h" />
-    <ClInclude Include="src\parameter\ParameterProvider.h" />
-    <ClInclude Include="src\parameter\ParameterType.h" />
-    <ClInclude Include="src\parameter\TextureParameter.h" />
-    <ClInclude Include="src\parameter\ValueParameter.h" />
     <ClInclude Include="src\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
@@ -162,31 +134,14 @@
     <ClInclude Include="src\net\Server.h" />
     <ClInclude Include="src\net\ServerMessage.h" />
     <ClInclude Include="src\net\Socket.h" />
-    <ClCompile Include="src\physics\Physics.ixx" />
-    <ClCompile Include="src\physics\PhysicsComponent.ixx" />
-    <ClCompile Include="src\physics\PhysicsSystem.ixx" />
-    <ClCompile Include="src\physics\RigidBodyComponent.ixx" />
-    <ClCompile Include="src\script\Script.ixx" />
-    <ClCompile Include="src\script\ScriptComponent.ixx" />
-    <ClCompile Include="src\script\ScriptEngine.ixx" />
-    <ClCompile Include="src\script\Scripts.ixx" />
-    <ClCompile Include="src\script\StringFactory.ixx" />
+    <ClInclude Include="src\parameter\Parameter.h" />
+    <ClInclude Include="src\parameter\ParameterId.h" />
+    <ClInclude Include="src\parameter\ParameterManager.h" />
+    <ClInclude Include="src\parameter\ParameterProvider.h" />
+    <ClInclude Include="src\parameter\ParameterType.h" />
+    <ClInclude Include="src\parameter\TextureParameter.h" />
+    <ClInclude Include="src\parameter\ValueParameter.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
-    <ClCompile Include="src\script\bindings\CameraScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\CollectionScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\EntityScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\MathScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\LightScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\ModelScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\SceneScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\ScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\TimerScriptBindings.ixx" />
-    <ClCompile Include="src\ui\UIFeature.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="src\ui\UILayer.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
@@ -195,18 +150,27 @@
     <ClCompile Include="src\application\LayerList.cpp" />
     <ClCompile Include="src\application\LayerList.ixx" />
     <ClCompile Include="src\audio\Audio.cpp" />
+    <ClCompile Include="src\audio\Audio.ixx" />
     <ClCompile Include="src\audio\Sound.cpp" />
+    <ClCompile Include="src\audio\Sound.ixx" />
+    <ClCompile Include="src\audio\Sound3d.ixx" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\game\GameAction.cpp" />
+    <ClCompile Include="src\entity\camera\Camera.ixx" />
+    <ClCompile Include="src\entity\camera\CameraComponent.ixx" />
+    <ClCompile Include="src\entity\camera\CameraController.ixx" />
+    <ClCompile Include="src\entity\camera\CameraEntity.ixx" />
+    <ClCompile Include="src\entity\Entity.ixx" />
+    <ClCompile Include="src\entity\light\Light.ixx" />
+    <ClCompile Include="src\entity\light\LightComponent.ixx" />
+    <ClCompile Include="src\entity\light\LightEntity.ixx" />
     <ClCompile Include="src\entity\Scene.cpp" />
     <ClCompile Include="src\entity\camera\Camera.cpp" />
     <ClCompile Include="src\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\entity\light\Light.cpp" />
-    <ClCompile Include="src\parameter\Parameter.cpp" />
-    <ClCompile Include="src\parameter\ParameterId.cpp" />
-    <ClCompile Include="src\parameter\ParameterManager.cpp" />
-    <ClCompile Include="src\parameter\ParameterProvider.cpp" />
-    <ClCompile Include="src\parameter\ParameterType.cpp" />
+    <ClCompile Include="src\entity\Scene.ixx" />
+    <ClCompile Include="src\entity\Scenes.ixx" />
+    <ClCompile Include="src\entity\TransformComponent.ixx" />
+    <ClCompile Include="src\game\GameAction.cpp" />
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
@@ -223,13 +187,36 @@
     <ClCompile Include="src\net\ReliableUDP.cpp" />
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
+    <ClCompile Include="src\parameter\Parameter.cpp" />
+    <ClCompile Include="src\parameter\ParameterId.cpp" />
+    <ClCompile Include="src\parameter\ParameterManager.cpp" />
+    <ClCompile Include="src\parameter\ParameterProvider.cpp" />
+    <ClCompile Include="src\parameter\ParameterType.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
+    <ClCompile Include="src\physics\Physics.ixx" />
+    <ClCompile Include="src\physics\PhysicsComponent.ixx" />
+    <ClCompile Include="src\physics\PhysicsSystem.ixx" />
+    <ClCompile Include="src\physics\RigidBodyComponent.ixx" />
+    <ClCompile Include="src\script\bindings\CameraScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\CollectionScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\EntityScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\LightScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\MathScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\ModelScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\SceneScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\ScriptBindings.ixx" />
+    <ClCompile Include="src\script\bindings\TimerScriptBindings.ixx" />
     <ClCompile Include="src\script\Script.cpp" />
+    <ClCompile Include="src\script\Script.ixx" />
+    <ClCompile Include="src\script\ScriptComponent.ixx" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\ui\UIFeature.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">false</PreprocessToFile>
-    </ClCompile>
+    <ClCompile Include="src\script\ScriptEngine.ixx" />
+    <ClCompile Include="src\script\Scripts.ixx" />
+    <ClCompile Include="src\script\StringFactory.ixx" />
+    <ClCompile Include="src\ui\UIFeature.cpp" />
+    <ClCompile Include="src\ui\UIFeature.ixx" />
+    <ClCompile Include="src\ui\UILayer.ixx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

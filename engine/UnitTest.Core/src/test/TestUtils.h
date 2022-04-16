@@ -3,6 +3,7 @@
 #include "CppUnitTest.h"
 
 #include "core/math/Size.h"
+#include "core/string/TextConversionUtils.h"
 
 #include <format>
 #include <initializer_list>
@@ -11,6 +12,11 @@ namespace Microsoft::VisualStudio::CppUnitTestFramework {
     template<>
     static std::wstring ToString<Ghurund::Core::FloatSize>(const Ghurund::Core::FloatSize& t) {
         return Ghurund::Core::toString(t).Data;
+    }
+
+    template<>
+    static std::wstring ToString<Ghurund::Core::AString>(const Ghurund::Core::AString& t) {
+        return Ghurund::Core::convertText<char, wchar_t>(t).Data;
     }
 }
 

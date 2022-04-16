@@ -32,7 +32,7 @@ namespace Ghurund::UI {
         auto colorAttr = xml.FindAttribute("color");
         if (colorAttr) {
             AString colorAttrValue = colorAttr->Value();
-            auto color = loader.loadColor(colorAttr->Value());
+            auto color = loader.loadColor(colorAttrValue.Data);
             if (color) {
                 Color = *color;
                 delete color;

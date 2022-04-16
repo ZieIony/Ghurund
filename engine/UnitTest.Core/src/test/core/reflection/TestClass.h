@@ -51,7 +51,7 @@ namespace UnitTest {
             static const auto writeProp = Property<TestClass, float>("progress", &setProgress);
             static const auto observableProp = Property<TestClass, Observable<Ghurund::Core::AString>&>("name", [](TestClass& obj)->Observable<AString>& {return obj.name; });
 
-            static const Ghurund::Core::Type TYPE = TypeBuilder<TestClass>(NAMESPACE_NAME, GH_STRINGIFY(TestClass))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TestClass>("UnitTest::Utils", GH_STRINGIFY(TestClass))
                 .withConstructor(CONSTRUCTOR)
                 .withConstructor(CONSTRUCTOR2)
                 .withSupertype(__super::GET_TYPE())

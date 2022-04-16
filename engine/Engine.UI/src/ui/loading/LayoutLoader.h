@@ -15,6 +15,7 @@
 #include "ui/loading/ShapeFactory.h"
 #include "ui/loading/ImageDrawableFactory.h"
 #include "ui/loading/TextFormatFactory.h"
+#include "ui/layout/constraint/ConstraintFactory.h"
 #include "ui/style/ColorAttr.h"
 
 #include <tinyxml2.h>
@@ -33,6 +34,7 @@ namespace Ghurund::UI {
         ShapeFactory& shapeFactory;
         ImageDrawableFactory& imageDrawableFactory;
         TextFormatFactory& textFormatFactory;
+        ConstraintFactory& constraintFactory;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
@@ -45,7 +47,8 @@ namespace Ghurund::UI {
             Ghurund::Core::ResourceManager& resourceManager,
             ShapeFactory& shapeFactory,
             ImageDrawableFactory& imageDrawableFactory,
-            TextFormatFactory& textFormatFactory
+            TextFormatFactory& textFormatFactory,
+            ConstraintFactory& constraintFactory
         );
 
         virtual ~LayoutLoader() {}
@@ -88,6 +91,18 @@ namespace Ghurund::UI {
         PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
 
         Control* loadControl(const tinyxml2::XMLElement& xml);
+
+        Constraint* loadConstraint(const tinyxml2::XMLElement& xml) {
+            auto nameAttr = xml.FindAttribute("path");
+            //if (nameAttr)
+                //Name = nameAttr->Value();
+            auto valueAttr = xml.FindAttribute("value");
+            return nullptr;
+        }
+
+        Constraint* loadConstraint(const char* str, Orientation orientation) {
+            return constraintFactory.parseConstraint(str, orientation);
+        }
 
         Shape* loadShape(const char* str);
 

@@ -1,51 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreviewLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
-	<StackLayout alignment="left, bottom">
-		<ColorView preferredSize="fill, fill" style="theme://style\ColorView_background"/>
-		<StackLayout name="container"
-					 alignment="center, center"/>
-		<PaddingContainer padding="8, 4"
-						  preferredSize="fill, wrap">
-			<LinearLayout orientation="vertical"
-						  preferredSize="fill, wrap">
-				<LinearLayout orientation="horizontal">
-					<PaddingContainer padding="0,4,4,4">
-						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
-								name="color1">
-							<ColorView color="#ffd32f2f"
-									   preferredSize="24,24"/>
-						</Button>
-					</PaddingContainer>
-					<PaddingContainer padding="4">
-						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
-								name="color2">
-							<ColorView color="#ff1976d2"
-									   preferredSize="24,24"/>
-						</Button>
-					</PaddingContainer>
-					<PaddingContainer padding="4">
-						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
-								name="color3">
-							<ColorView color="#ffffa000"
-									   preferredSize="24,24"/>
-						</Button>
-					</PaddingContainer>
-					<PaddingContainer padding="4">
-						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
-								name="color4">
-							<ColorView color="#ff388e3c"
-									   preferredSize="24,24"/>
-						</Button>
-					</PaddingContainer>
-					<PaddingContainer padding="4">
-						<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml"
-								name="colorTheme">
-							<ColorView color="#00000000"
-									   preferredSize="24,24"/>
-						</Button>
-					</PaddingContainer>
-				</LinearLayout>
-			</LinearLayout>
-		</PaddingContainer>
+<PreviewLayout width="fill" height="fill" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
+	<StackLayout width="fill" height="fill">
+		<ColorView width="fill" height="fill" style="theme://style\ColorView_background"/>
+		<ConstraintLayout width="fill" height="fill" alignment="left, bottom">
+			<Guide name="left" constraint="parent.left" value="100"/>
+			<Guide name="top" constraint="parent.top" value="100"/>
+			<Guide name="right" constraint="parent.right" value="-100"/>
+			<Guide name="bottom" constraint="parent.bottom" value="-100"/>
+			<Guide name="leftp" constraint="parent.width" value="30%"/>
+			<Guide name="topp" constraint="parent.height" value="30%"/>
+			<Guide name="rightp" constraint="parent.width" value="70%"/>
+			<Guide name="bottomp" constraint="parent.height" value="70%"/>
+			<ColorView color="#1fff0000" left="left" top="parent" bottom ="bottomp" width="30"/>
+			<ColorView color="#1f00ff00" bottom ="bottom" height="50" width="200"/>
+		</ConstraintLayout>
 	</StackLayout>
 </PreviewLayout>

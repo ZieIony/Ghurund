@@ -8,12 +8,6 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace Microsoft::VisualStudio::CppUnitTestFramework {
-    template<> static std::wstring ToString<Ghurund::Core::AString>(const Ghurund::Core::AString& t) {
-        return convertText<char, wchar_t>(t).Data;
-    }
-}
-
 namespace UnitTest {
     using namespace UnitTest::Utils;
 

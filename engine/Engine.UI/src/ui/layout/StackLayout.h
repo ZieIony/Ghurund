@@ -4,7 +4,7 @@
 #include "ui/layout/StackLayoutManager.h"
 
 namespace Ghurund::UI {
-    class StackLayout : public ControlGroup {
+    class StackLayout: public ControlGroup {
     private:
         StackLayoutManager layoutManager;
         ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
@@ -31,6 +31,8 @@ namespace Ghurund::UI {
 
         virtual void onMeasure(float parentWidth, float parentHeight) override {
             measuredSize = layoutManager.measure(parentWidth, parentHeight);
+            width->evaluate();
+            height->evaluate();
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {

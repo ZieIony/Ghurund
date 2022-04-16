@@ -45,8 +45,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        template<typename ReturnT, typename... ArgsT>
-        inline TypeBuilder& withMethod(const Method<T, ReturnT, ArgsT...>& method) {
+        inline TypeBuilder& withMethod(const BaseMethod& method) {
             methods.add(method);
             return *this;
         }

@@ -1,11 +1,12 @@
 module;
 
+#include "core/application/Application.h"
 #include "core/application/Feature.h"
 #include "ui/direct2d/Graphics2D.h"
 #include "ui/direct2d/loading/ShapeFactory.h"
 #include "ui/direct2d/loading/ImageDrawableFactory.h"
 #include "ui/direct2d/loading/TextFormatFactory.h"
-#include "core/application/Application.h"
+#include "ui/layout/constraint/ConstraintFactory.h"
 
 export module Ghurund.Engine.UI.UIFeature;
 
@@ -29,6 +30,7 @@ export namespace Ghurund {
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::Direct2D::ImageDrawableFactory* imageDrawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
+        Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
 
     public:
         UIFeature(Application& app):app(app) {}

@@ -16,7 +16,8 @@ namespace Ghurund::UI {
         float measureMaxHeight();
 
     public:
-        virtual ~LayoutManager() = 0 {}
+        virtual ~LayoutManager() //= 0
+        {}
 
         void setGroup(ControlGroup& group, ChildrenProvider& provider) {
             this->group = &group;

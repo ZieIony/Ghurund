@@ -1,20 +1,16 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "test/TestClass.h"
 #include "test/MemoryGuard.h"
+#include "test/TestClass.h"
+#include "test/TestUtils.h"
 #include "core/reflection/StandardTypes.h"
-#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
     template<> static std::wstring ToString<Ghurund::Core::Type>(const Ghurund::Core::Type& t) {
-        return convertText<char, wchar_t>(t.Name).Data;
-    }
-
-    template<> static std::wstring ToString<Ghurund::Core::AString>(const Ghurund::Core::AString& t) {
-        return convertText<char, wchar_t>(t).Data;
+        return Ghurund::Core::convertText<char, wchar_t>(t.Name).Data;
     }
 }
 
@@ -68,6 +64,12 @@ public:
     TEST_METHOD(lazyType) {
         ObjectTestClass t;
         Assert::AreEqual(getType<ObjectTestClass>(), t.GET_TYPE());
+    }
+
+    TEST_METHOD(getByName) {
+        auto& type = getType<ObjectTestClass>();
+        Assert::AreEqual(type, Type::byName("UnitTest::Utils::ObjectTestClass"));
+        Assert::AreEqual(type, Type::byName("UnitTest::Utils", "ObjectTestClass"));
     }
     };
 }

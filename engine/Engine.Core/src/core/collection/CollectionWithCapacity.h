@@ -12,16 +12,6 @@ namespace Ghurund::Core {
 
         const static size_t INITIAL_CAPACITY = 10;
 
-        inline bool operator==(const CollectionWithCapacity& other) const {
-            if (this->__super::operator!=(other))
-                return false;
-            return initial == other.initial || capacity == other.capacity;
-        }
-
-        inline bool operator!=(const CollectionWithCapacity& other) const {
-            return !(*this == other);
-        }
-
     public:
         CollectionWithCapacity() {
             capacity = initial = CollectionWithCapacity::INITIAL_CAPACITY;

@@ -7,17 +7,17 @@ module;
 #include <stdio.h>	// sprintf()
 #include <stdlib.h> // strtod()
 #include <locale.h> // setlocale()
+#include <unordered_map>  // std::unordered_map
 
 #define UNUSED_VAR(x) (void)(x)
 
+export module Ghurund.Engine.Script.StringFactory;
+
 // The string factory doesn't need to keep a specific order in the
 // cache, so the unordered_map is faster than the ordinary map
-#include <unordered_map>  // std::unordered_map
 BEGIN_AS_NAMESPACE
 typedef std::unordered_map<std::string, int> map_t;
 END_AS_NAMESPACE
-
-export module Ghurund.Engine.Script.StringFactory;
 
 export namespace Ghurund {
     using namespace std;
@@ -607,6 +607,10 @@ export namespace Ghurund {
             return lhs == rhs;
         }
 
+        static std::string StringAdd(const std::string& lhs, const std::string& rhs) {
+            return lhs + rhs;
+        }
+
         static void RegisterStdString(asIScriptEngine* engine, StringFactory* stringFactory) {
             int r = 0;
             UNUSED_VAR(r);
@@ -628,7 +632,8 @@ export namespace Ghurund {
             // Need to use a wrapper for operator== otherwise gcc 4.7 fails to compile
             r = engine->RegisterObjectMethod("string", "bool opEquals(const string &in) const", asFUNCTIONPR(StringEquals, (const string&, const string&), bool), asCALL_CDECL_OBJFIRST); assert(r >= 0);
             r = engine->RegisterObjectMethod("string", "int opCmp(const string &in) const", asFUNCTION(StringCmp), asCALL_CDECL_OBJFIRST); assert(r >= 0);
-            r = engine->RegisterObjectMethod("string", "string opAdd(const string &in) const", asFUNCTIONPR(operator +, (const string&, const string&), string), asCALL_CDECL_OBJFIRST); assert(r >= 0);
+            r = engine->RegisterObjectMethod("string", "string opAdd(const string &in) const", asFUNCTIONPR(StringAdd, (const string&, const string&), string), asCALL_CDECL_OBJFIRST); assert(r >= 0);
+            // r = engine->RegisterObjectMethod("string", "string opAdd(const string &in) const", asFUNCTIONPR(operator +, (const string&, const string&), string), asCALL_CDECL_OBJFIRST); assert(r >= 0);
 
             // The string length can be accessed through methods or through virtual property
             // TODO: Register as size() for consistency with other types

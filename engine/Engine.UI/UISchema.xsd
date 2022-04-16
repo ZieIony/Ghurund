@@ -73,6 +73,17 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="PixelsOrPercent">
+		<xs:annotation>
+			<xs:documentation>
+				A float with an optional '%' sign.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d+(\.\d+)?\%?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
 	<xs:simpleType name="Size">
 		<xs:annotation>
 			<xs:documentation>
@@ -538,5 +549,13 @@
 		</xs:complexContent>
 	</xs:complexType>
 	<xs:element name="TabContainer" type="TabContainer"/>
+
+	<!-- other -->
+
+	<xs:complexType name="Guide">
+		<xs:attribute name="side" type="xs:string"/>
+		<xs:attribute name="value" type="PixelsOrPercent"/>
+	</xs:complexType>
+	<xs:element name="Guide" type="Guide"/>
 
 </xs:schema>

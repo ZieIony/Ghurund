@@ -86,6 +86,12 @@ export namespace Preview {
 
         __declspec(property(get = getContainer)) StackLayout* Container;
 
+        void onMeasure(float parentWidth, float parentHeight) {
+            __super::onMeasure(parentWidth, parentHeight);
+            width->evaluate();
+            height->evaluate();
+        }
+
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
             static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))

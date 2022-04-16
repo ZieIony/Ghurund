@@ -53,6 +53,10 @@ namespace Ghurund::Core {
             return pointer;
         }
 
+        operator const T* () const {
+            return pointer;
+        }
+
         T* operator ->() {
             return pointer;
         }

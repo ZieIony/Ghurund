@@ -9,12 +9,14 @@ namespace Ghurund::UI::Direct2D {
             Ghurund::Core::ResourceManager& resourceManager,
             ShapeFactory& shapeFactory,
             ImageDrawableFactory& imageDrawableFactory,
-            TextFormatFactory& textFormatFactory
+            TextFormatFactory& textFormatFactory,
+            ConstraintFactory& constraintFactory
         ):Ghurund::UI::LayoutLoader(
             resourceManager,
             shapeFactory,
             imageDrawableFactory,
-            textFormatFactory
+            textFormatFactory,
+            constraintFactory
         ) {
 
         }

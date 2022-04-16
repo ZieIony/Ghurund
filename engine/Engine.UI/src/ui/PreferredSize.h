@@ -62,6 +62,8 @@ namespace Ghurund::UI {
             Width(float v):OrientationSize(v) {}
 
             Width(PreferredSize::Type type, float v):OrientationSize(type, v) {}
+
+            static Width parse(const Ghurund::Core::AString& str);
         };
 
         class Height:public OrientationSize {
@@ -72,6 +74,8 @@ namespace Ghurund::UI {
             Height(float v):OrientationSize(v) {}
 
             Height(PreferredSize::Type type, float v):OrientationSize(type, v) {}
+
+            static Height parse(const Ghurund::Core::AString& str);
         };
 
         Width width = Width::WRAP;

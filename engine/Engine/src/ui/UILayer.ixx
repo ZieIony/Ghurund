@@ -41,8 +41,8 @@ export namespace Ghurund::UI {
             canvas = ghnew Ghurund::UI::Direct2D::Canvas();
             canvas->init(graphics.DeviceContext);
             this->rootView = ghnew Ghurund::UI::RootView(*context);
-            rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
-            rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
+            //rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
+            //rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
             SwapChain& swapChain = window.SwapChain;
             window.sizeChanging += [&](const Window& window, const IntSize& size) {
                 renderTargets.clear();
@@ -50,8 +50,8 @@ export namespace Ghurund::UI {
             };
             window.sizeChanged += [&](const Window& window) {
                 initTargets();
-                rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
-                rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
+                //rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
+                //rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
                 rootView->invalidate();
                 return true;
             };

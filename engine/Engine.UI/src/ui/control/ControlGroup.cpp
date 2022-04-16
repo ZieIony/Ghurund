@@ -146,24 +146,28 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlGroup::find(const Ghurund::Core::AString& name) {
-        if (Name && *Name == name)
-            return this;
-        for (Control* c : children) {
-            Control* result = c->find(name);
-            if (result)
-                return result;
+    Control* ControlGroup::find(const Ghurund::Core::AString& name, bool deep) {
+        for (Control* child : children) {
+            if (child->Name && child->Name->operator==(name))
+                return child;
+            if (deep) {
+                Control* result = child->find(name, deep);
+                if (result)
+                    return result;
+            }
         }
         return nullptr;
     }
 
-    Control* ControlGroup::find(const Ghurund::Core::Type& type) {
-        if (Type == type)
-            return this;
-        for (Control* c : children) {
-            Control* result = c->find(type);
-            if (result)
-                return result;
+    Control* ControlGroup::find(const Ghurund::Core::Type& type, bool deep) {
+        for (Control* child : children) {
+            if (child->Type == type)
+                return child;
+            if (deep) {
+                Control* result = child->find(type, deep);
+                if (result)
+                    return result;
+            }
         }
         return nullptr;
     }

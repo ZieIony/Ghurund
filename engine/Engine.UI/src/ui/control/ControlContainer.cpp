@@ -78,16 +78,8 @@ namespace Ghurund::UI {
     void ControlContainer::onMeasure(float parentWidth, float parentHeight) {
         __super::onMeasure(parentWidth, parentHeight);
 
-        if (child) {
-            child->measure(
-                preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth,
-                preferredSize.height.Type == PreferredSize::Type::PIXELS ? preferredSize.height.Value : parentHeight
-            );
-            float childWidth = child->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.width.Value : child->MeasuredSize.Width;
-            measuredSize.Width = std::max(measuredSize.Width, childWidth);
-            float childHeight = child->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? child->PreferredSize.height.Value : child->MeasuredSize.Height;
-            measuredSize.Height = std::max(measuredSize.Height, childHeight);
-        }
+        if (child)
+            child->measure(0, 0);
     }
 
     bool ControlContainer::dispatchKeyEvent(const KeyEventArgs& event) {
@@ -125,19 +117,23 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlContainer::find(const AString& name) {
-        if (Name && *Name == name)
-            return this;
-        if (child)
-            return child->find(name);
+    Control* ControlContainer::find(const AString& name, bool deep) {
+        if (child) {
+            if (child->Name && child->Name->operator==(name))
+                return child;
+            if (deep)
+                return child->find(name, deep);
+        }
         return nullptr;
     }
 
-    Control* ControlContainer::find(const Ghurund::Core::Type& type) {
-        if (Type == type)
-            return this;
-        if (child)
-            return child->find(type);
+    Control* ControlContainer::find(const Ghurund::Core::Type& type, bool deep) {
+        if (child) {
+            if (child->Type == type)
+                return child;
+            if (deep)
+                return child->find(type, deep);
+        }
         return nullptr;
     }
 

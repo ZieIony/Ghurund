@@ -2,7 +2,7 @@
 
 #include "Constructor.h"
 #include "BaseProperty.h"
-#include "Method.h"
+#include "BaseMethod.h"
 #include "TypeModifier.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
@@ -13,6 +13,12 @@
 #include "ConstructorCollection.h"
 
 namespace Ghurund::Core {
+    class TypeNotFoundException:public std::exception {
+    public:
+        TypeNotFoundException(const AString& _namespace, const AString& name)
+            :std::exception(std::format("Type {}::{} could not be located.\n", _namespace.Data, name.Data).c_str()) {}
+    };
+
     class Type:public NamedObject<char> {
     private:
         const TypeModifier modifiers;
@@ -112,12 +118,23 @@ namespace Ghurund::Core {
             getTypes().add(*this);
         }
 
-        static const Type& byName(const AString& _namespace, const AString& name) {
+        static const Type& byName(const AString& typeNameWithNamespace) {
+            size_t index = typeNameWithNamespace.findLast("::");
+            if (index < typeNameWithNamespace.Size) {
+                AString _namespace = typeNameWithNamespace.substring(0, index);
+                AString typeName = typeNameWithNamespace.substring(index + 2);
+                return byName(_namespace, typeName);
+            } else {
+                return byName("", typeNameWithNamespace);
+            }
+        }
+
+        static const Type& byName(const AString& _namespace, const AString& typeName) {
             for (const Type& type : TYPES) {
-                if (type.Namespace == _namespace && type.Name == name)
+                if (type.Namespace == _namespace && type.Name == typeName)
                     return type;
             }
-            throw InvalidParamException(std::format("Type {}::{} could not be located.\n", _namespace.Data, name.Data).c_str());
+            throw TypeNotFoundException(_namespace, typeName);
         }
 
         const ConstructorCollection& getConstructors() const {

@@ -5,6 +5,7 @@
 #include "core/SharedPointer.h"
 #include "core/collection/List.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/reflection/Method.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 

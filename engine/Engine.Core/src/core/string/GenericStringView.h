@@ -30,19 +30,26 @@ namespace Ghurund::Core {
             size = str.size;
         }
 
-        inline T* begin() {
+        GenericStringView(GenericStringView<T>&& str) {
+            v = str.getData();
+            size = str.Size;
+            str.v = nullptr;
+            str.size = 0;
+        }
+
+        inline const T* begin() {
             return v;
         }
 
-        inline T* begin() const {
+        inline const T* begin() const {
             return v;
         }
 
-        inline T* end() {
+        inline const T* end() {
             return v + size;
         }
 
-        inline T* end() const {
+        inline const T* end() const {
             return v + size;
         }
 
@@ -50,7 +57,7 @@ namespace Ghurund::Core {
             return v[i];
         }
 
-        inline T& operator[](size_t i) {
+        inline const T& operator[](size_t i) {
             return v[i];
         }
 
@@ -136,7 +143,84 @@ namespace Ghurund::Core {
             }
         }
 
+        bool startsWith(const GenericString<T>& str) const {
+            size_t i = 0;
+            while (true) {
+                if (str[i] == (T)'\0')
+                    return true;
+                if (str[i] != v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool startsWith(const GenericStringView<T>& str) const {
+            size_t i = 0;
+            while (true) {
+                if (str[i] == (T)'\0')
+                    return true;
+                if (str[i] != v[i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool contains(const T* str) const {
+            size_t strSize = lengthOf(str);
+            for (size_t i = 0; i <= size - strSize; i++) {
+                if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        bool contains(const GenericString<T>* str) const {
+            size_t strSize = lengthOf(str);
+            for (size_t i = 0; i <= size - strSize; i++) {
+                if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
+                    return true;
+            }
+            return false;
+        }
+
+        bool contains(const GenericStringView<T>* str) const {
+            size_t strSize = lengthOf(str);
+            for (size_t i = 0; i <= size - strSize; i++) {
+                if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
+                    return true;
+            }
+            return false;
+        }
+
         bool endsWith(const T* str) const {
+            size_t l = lengthOf(str);
+            if (l > Length)
+                return false;
+            size_t i = 0;
+            while (true) {
+                if (str[i] == (T)'\0')
+                    return true;
+                if (str[i] != v[Length - l + i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool endsWith(const GenericString<T>* str) const {
+            size_t l = lengthOf(str);
+            if (l > Length)
+                return false;
+            size_t i = 0;
+            while (true) {
+                if (str[i] == (T)'\0')
+                    return true;
+                if (str[i] != v[Length - l + i])
+                    return false;
+                i++;
+            }
+        }
+
+        bool endsWith(const GenericStringView<T>* str) const {
             size_t l = lengthOf(str);
             if (l > Length)
                 return false;

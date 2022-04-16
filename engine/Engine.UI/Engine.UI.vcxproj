@@ -102,6 +102,10 @@
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\Cursor.h" />
+    <ClInclude Include="src\ui\layout\constraint\ConstraintFactory.h" />
+    <ClInclude Include="src\ui\layout\constraint\ConstraintSolver.h" />
+    <ClInclude Include="src\ui\layout\constraint\ParentConstraint.h" />
+    <ClInclude Include="src\ui\layout\constraint\SiblingConstraint.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
     <ClInclude Include="src\ui\PreferredSize.h" />
@@ -125,6 +129,7 @@
     <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\ui\control\ControlList.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
+    <ClInclude Include="src\ui\control\ControlPath.h" />
     <ClInclude Include="src\ui\control\ImageView.h" />
     <ClInclude Include="src\ui\control\InvalidControl.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
@@ -155,6 +160,17 @@
     <ClInclude Include="src\ui\layout\StackLayout.h" />
     <ClInclude Include="src\ui\layout\StackLayoutManager.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
+    <ClInclude Include="src\ui\layout\constraint\Baseline.h" />
+    <ClInclude Include="src\ui\layout\constraint\Chain.h" />
+    <ClInclude Include="src\ui\layout\constraint\Constraint.h" />
+    <ClInclude Include="src\ui\layout\constraint\ConstraintLayout.h" />
+    <ClInclude Include="src\ui\layout\constraint\ConstraintPath.h" />
+    <ClInclude Include="src\ui\layout\constraint\FillConstraint.h" />
+    <ClInclude Include="src\ui\layout\constraint\Guide.h" />
+    <ClInclude Include="src\ui\layout\constraint\RatioConstraint.h" />
+    <ClInclude Include="src\ui\layout\constraint\Side.h" />
+    <ClInclude Include="src\ui\layout\constraint\ValueConstraint.h" />
+    <ClInclude Include="src\ui\layout\constraint\WrapConstraint.h" />
     <ClInclude Include="src\ui\loading\ImageDrawableFactory.h" />
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\loading\ShapeFactory.h" />
@@ -223,6 +239,7 @@
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
+    <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
     <ClCompile Include="src\ui\PreferredSize.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
@@ -253,7 +270,6 @@
     <ClCompile Include="src\ui\layout\DesktopLayout.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayout.cpp" />
     <ClCompile Include="src\ui\layout\FlowLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\ManualLayout.cpp" />
@@ -261,6 +277,12 @@
     <ClCompile Include="src\ui\layout\StackLayout.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\Constraint.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\ConstraintLayout.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\FillConstraint.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\Guide.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\RatioConstraint.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\WrapConstraint.cpp" />
     <ClCompile Include="src\ui\loading\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\Style.cpp" />

@@ -124,14 +124,16 @@ namespace Ghurund::UI {
     }
 
     void Control::onMeasure(float parentWidth, float parentHeight) {
-        [[likely]]
+        measureWidth();
+        measureHeight();
+        /*[[likely]]
         if (preferredSize.width.Type != PreferredSize::Type::RATIO) {
             measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
             measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
         } else {
             measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
             measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
-        }
+        }*/
     }
 
     bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -359,15 +361,11 @@ namespace Ghurund::UI {
         canvas.restore();
     }
 
-    Control* Control::find(const AString& name) {
-        if (Name && *Name == name)
-            return this;
+    Control* Control::find(const AString& name, bool deep) {
         return nullptr;
     }
 
-    Control* Control::find(const Ghurund::Core::Type& type) {
-        if (Type == type)
-            return this;
+    Control* Control::find(const Ghurund::Core::Type& type, bool deep) {
         return nullptr;
     }
 
@@ -419,6 +417,12 @@ namespace Ghurund::UI {
                 preferredSize = PreferredSize::parse(size);
             } catch (std::invalid_argument e) {}
         }
+        /*auto widthAttr = xml.FindAttribute("width");
+        if (widthAttr)
+            width = std::unique_ptr<Constraint>(loader.loadConstraint(widthAttr->Value()));
+        auto heightAttr = xml.FindAttribute("height");
+        if (heightAttr)
+            height = std::unique_ptr<VerticalConstraint>(loader.loadHeightConstraint(heightAttr->Value()));*/
         auto minSizeAttr = xml.FindAttribute("minSize");
         if (minSizeAttr) {
             std::string str = minSizeAttr->Value();
@@ -429,6 +433,18 @@ namespace Ghurund::UI {
                 minSize.height = (float)atof(m[2].str().c_str());
             }
         }
+        auto leftAttr = xml.FindAttribute("left");
+        if (leftAttr)
+            Left = std::unique_ptr<Constraint>(loader.loadConstraint(leftAttr->Value(), Orientation::HORIZONTAL));
+        auto topAttr = xml.FindAttribute("top");
+        if (topAttr)
+            Top = std::unique_ptr<Constraint>(loader.loadConstraint(topAttr->Value(), Orientation::VERTICAL));
+        auto rightAttr = xml.FindAttribute("right");
+        if (rightAttr)
+            Right = std::unique_ptr<Constraint>(loader.loadConstraint(rightAttr->Value(), Orientation::HORIZONTAL));
+        auto bottomAttr = xml.FindAttribute("bottom");
+        if (bottomAttr)
+            Bottom = std::unique_ptr<Constraint>(loader.loadConstraint(bottomAttr->Value(), Orientation::VERTICAL));
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
             AString s = styleAttr->Value();
@@ -447,6 +463,23 @@ namespace Ghurund::UI {
             }
         } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
             Style = loader.Theme->Styles[StyleKey(Type.Name)];
+        }
+        auto childElement = xml.FirstChildElement();
+        while (childElement) {
+            if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
+            }
+            childElement = childElement->NextSiblingElement();
         }
     }
 

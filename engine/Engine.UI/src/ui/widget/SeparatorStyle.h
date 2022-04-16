@@ -8,7 +8,8 @@ namespace Ghurund::UI {
 
     class SeparatorStyle:public Ghurund::UI::Style {
     public:
-        ~SeparatorStyle() = 0 {}
+        ~SeparatorStyle()// = 0 
+        {}
 
         virtual void onThemeChanged(Control& separator) const override;
 

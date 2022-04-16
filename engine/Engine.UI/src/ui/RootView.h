@@ -4,6 +4,30 @@
 #include "core/window/Window.h"
 
 namespace Ghurund::UI {
+    class WindowWidthConstraint:public Constraint {
+    private:
+        Window& window;
+
+    public:
+        WindowWidthConstraint(Window& window):window(window) {}
+
+        virtual void evaluate() override {
+            value = (float)window.Size.Width;
+        }
+    };
+
+    class WindowHeightConstraint:public Constraint {
+    private:
+        Window& window;
+
+    public:
+        WindowHeightConstraint(Window& window):window(window) {}
+
+        virtual void evaluate() override {
+            value = (float)window.Size.Height;
+        }
+    };
+
     class RootView: public ControlContainer {
     private:
         Control* prevFocusedChild = nullptr;
@@ -45,6 +69,12 @@ namespace Ghurund::UI {
 
         virtual IUIContext* getContext() override {
             return context;
+        }
+
+        void onMeasure(float parentWidth, float parentHeight) {
+            __super::onMeasure(parentWidth, parentHeight);
+            width->evaluate();
+            height->evaluate();
         }
 
         virtual void repaint() {

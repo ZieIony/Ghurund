@@ -93,9 +93,15 @@ namespace Ghurund::UI {
 
         using Control::find;
 
-        virtual Control* find(const Ghurund::Core::AString& name);
+        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true);
 
-        virtual Control* find(const Ghurund::Core::Type& type);
+        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
+
+        virtual void resolveConstraints(List<Constraint*>& constraints) override {
+            __super::resolveConstraints(constraints);
+            if (child)
+                child->resolveConstraints(constraints);
+        }
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

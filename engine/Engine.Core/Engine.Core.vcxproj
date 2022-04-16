@@ -198,6 +198,7 @@
     <ClInclude Include="src\core\math\Point.h" />
     <ClInclude Include="src\core\math\Rect.h" />
     <ClInclude Include="src\core\math\Size.h" />
+    <ClInclude Include="src\core\reflection\BaseMethod.h" />
     <ClInclude Include="src\core\reflection\BaseProperty.h" />
     <ClInclude Include="src\core\reflection\BaseType.h" />
     <ClInclude Include="src\core\reflection\Constructor.h" />

@@ -58,7 +58,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -67,7 +67,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64d.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Debug\tinyxml2d64.lib;..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64d.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\debug\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -75,7 +75,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.33.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;generated\bindings;..\..\engine\Engine.Core\src;..\..\engine\Engine.UI\src;..\..\engine\Engine.UI.Direct2D\src;..\..\engine\Engine\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -88,7 +88,7 @@
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.33.0\sdk\angelscript\lib\angelscript64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

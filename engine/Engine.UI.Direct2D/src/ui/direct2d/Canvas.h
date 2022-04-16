@@ -1,8 +1,10 @@
 #pragma once
 
-#include "ui/Canvas.h"
+#include "core/logging/Logger.h"
 #include "core/math/Rect.h"
+
 #include "StrokeStyle.h"
+#include "ui/Canvas.h"
 #include "ui/direct2d/Shape.h"
 #include "ui/direct2d/text/TextLayout.h"
 
