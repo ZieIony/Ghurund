@@ -3,8 +3,10 @@
 
 #include "core/Exceptions.h"
 #include "core/logging/Logger.h"
+#include "core/image/ImageLoader.h"
 
 namespace Ghurund::UI::GDI {
+
     Font* FontLoader::load(
         Ghurund::Core::ResourceManager& manager,
         MemoryInputStream& stream,
@@ -12,6 +14,7 @@ namespace Ghurund::UI::GDI {
         LoadOption options
     ) {
         Font* font = makeResource<Ghurund::UI::GDI::Font>();
+        font->init(stream.Data, stream.Size);
         return font;
     }
 }

@@ -29,16 +29,7 @@ namespace Ghurund::Core {
         Buffer imageData;
 
     public:
-        void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format, uint32_t pixelSize) {
-            imageData = data;
-            this->width = width;
-            this->height = height;
-            this->format = format;
-            this->pixelSize = pixelSize;
-            rowPitch = ((uint32_t)(data.Size / height));
-
-            Valid = true;
-        }
+        void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format);
 
         Buffer& getData() {
             return imageData;

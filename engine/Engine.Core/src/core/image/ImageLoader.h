@@ -9,15 +9,15 @@ namespace Ghurund::Core {
     private:
         IWICImagingFactory* imageFactory;
 
-        DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
-
-        WICPixelFormatGUID getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB) const;
-
-        WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) const;
-
-        int getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat) const;
-
     public:
+        static DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
+
+        static WICPixelFormatGUID getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB);
+
+        static WICPixelFormatGUID convertToWICFormat(WICPixelFormatGUID& wicFormatGUID);
+
+        static int getDXGIFormatBitsPerPixel(DXGI_FORMAT dxgiFormat);
+
         ~ImageLoader() {
             if (imageFactory)
                 imageFactory->Release();
@@ -37,7 +37,7 @@ namespace Ghurund::Core {
         ) override;
 
         virtual void save(
-            ResourceManager& manager,
+            const ResourceManager& manager,
             MemoryOutputStream& stream,
             Resource& resource,
             const ResourceFormat* format = nullptr,

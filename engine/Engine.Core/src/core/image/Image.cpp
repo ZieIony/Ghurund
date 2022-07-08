@@ -1,11 +1,23 @@
 #include "ghcpch.h"
 #include "Image.h"
 
+#include "ImageLoader.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
+    void Image::init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format) {
+        imageData = data;
+        this->width = width;
+        this->height = height;
+        this->format = format;
+        this->pixelSize = ImageLoader::getDXGIFormatBitsPerPixel(format) / 8;
+        rowPitch = ((uint32_t)(data.Size / height));
+
+        Valid = true;
+    }
+
     template<>
     const Type& getType<DXGI_FORMAT>() {
         static Type TYPE = Type("", "DXGI_FORMAT", sizeof(DXGI_FORMAT));

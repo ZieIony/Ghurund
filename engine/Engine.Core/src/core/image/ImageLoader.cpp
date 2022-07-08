@@ -4,7 +4,7 @@
 #include <wrl.h>
 
 namespace Ghurund::Core {
-    DXGI_FORMAT ImageLoader::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
+    DXGI_FORMAT ImageLoader::getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID) {
         if (wicFormatGUID == GUID_WICPixelFormat128bppRGBAFloat) return DXGI_FORMAT_R32G32B32A32_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBAHalf) return DXGI_FORMAT_R16G16B16A16_FLOAT;
         else if (wicFormatGUID == GUID_WICPixelFormat64bppRGBA) return DXGI_FORMAT_R16G16B16A16_UNORM;
@@ -25,7 +25,7 @@ namespace Ghurund::Core {
         else return DXGI_FORMAT_UNKNOWN;
     }
 
-    WICPixelFormatGUID ImageLoader::getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB) const {
+    WICPixelFormatGUID ImageLoader::getWICFormatFromDXGIFormat(DXGI_FORMAT format, bool* sRGB) {
         WICPixelFormatGUID pfGuid;
         switch (format) {
         case DXGI_FORMAT_R32G32B32A32_FLOAT:            pfGuid = GUID_WICPixelFormat128bppRGBAFloat; break;
@@ -78,7 +78,7 @@ namespace Ghurund::Core {
         return pfGuid;
     }
 
-    WICPixelFormatGUID ImageLoader::convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) const {
+    WICPixelFormatGUID ImageLoader::convertToWICFormat(WICPixelFormatGUID& wicFormatGUID) {
         if (wicFormatGUID == GUID_WICPixelFormatBlackWhite) return GUID_WICPixelFormat8bppGray;
         else if (wicFormatGUID == GUID_WICPixelFormat1bppIndexed) return GUID_WICPixelFormat32bppRGBA;
         else if (wicFormatGUID == GUID_WICPixelFormat2bppIndexed) return GUID_WICPixelFormat32bppRGBA;
@@ -125,7 +125,7 @@ namespace Ghurund::Core {
         else return GUID_WICPixelFormatDontCare;
     }
 
-    int ImageLoader::getDXGIFormatBitsPerPixel(DXGI_FORMAT& dxgiFormat) const {
+    int ImageLoader::getDXGIFormatBitsPerPixel(DXGI_FORMAT dxgiFormat) {
         if (dxgiFormat == DXGI_FORMAT_R32G32B32A32_FLOAT) return 128;
         else if (dxgiFormat == DXGI_FORMAT_R16G16B16A16_FLOAT) return 64;
         else if (dxgiFormat == DXGI_FORMAT_R16G16B16A16_UNORM) return 64;
@@ -224,14 +224,14 @@ namespace Ghurund::Core {
         }
 
         image = makeResource<Image>();
-        image->init(Buffer(imageData, imageSize), width, height, giFormat, pixelSize);
+        image->init(Buffer(imageData, imageSize), width, height, giFormat);
         delete[] imageData;
 
         return image;
     }
 
     void ImageLoader::save(
-        Ghurund::Core::ResourceManager& manager,
+        const Ghurund::Core::ResourceManager& manager,
         Ghurund::Core::MemoryOutputStream& stream,
         Ghurund::Core::Resource& resource,
         const Ghurund::Core::ResourceFormat* format,

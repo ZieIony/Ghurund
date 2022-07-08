@@ -18,5 +18,16 @@ project "Engine.UI.GDI"
 		"src",
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
-		includeDir["tinyxml2"]
+		includeDir["tinyxml2"],
+		includeDir["msdfgen"]
 	}
+
+	filter "configurations:Debug"
+		links {
+			library["msdfgen_Debug"]
+		}
+
+	filter "configurations:Release"
+		links {
+			library["msdfgen_Release"]
+		}

@@ -41,6 +41,8 @@ namespace Ghurund::Core {
         Resource* loadInternal(Loader& loader, const FilePath& path, const ResourceFormat* format, LoadOption options);
         Resource* loadInternal(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options);
 
+        void saveInternal(Resource& resource, Loader& loader, File& file, const ResourceFormat* format, SaveOption options) const;
+
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -155,10 +157,60 @@ namespace Ghurund::Core {
             return nullptr;
         }
 
-        Status save(Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(Resource& resource, const FilePath& path, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(Resource& resource, File& file, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const;
-        Status save(Resource& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const;
+        template<class Type> void save(Type& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const {
+            Loader* loader = loaders.get<Type>();
+            [[likely]]
+            if (loader) {
+                File file(resource.Path);
+                resource = (Type*)saveInternal(resource, *loader, file, format, options);
+            } else {
+                auto message = std::format(_T("loader for type {} is missing\n"), ((const Ghurund::Core::Type&)Type::GET_TYPE()).Name);
+                Logger::log(LogType::ERR0R, message.c_str());
+                auto exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidStateException(exMessage.Data);
+            }
+        }
+
+        template<class Type> void save(Type& resource, const FilePath& path, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const {
+            Loader* loader = loaders.get<Type>();
+            [[likely]]
+            if (loader) {
+                File file(path);
+                saveInternal(resource, *loader, file, format, options);
+                file.write();
+            } else {
+                auto message = std::format(_T("loader for type {} is missing\n"), ((const Ghurund::Core::Type&)Type::GET_TYPE()).Name);
+                Logger::log(LogType::ERR0R, message.c_str());
+                auto exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidStateException(exMessage.Data);
+            }
+        }
+
+        template<class Type> void save(Type& resource, File& file, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const {
+            Loader* loader = loaders.get<Type>();
+            [[likely]]
+            if (loader) {
+                resource = (Type*)saveInternal(resource, *loader, file, format, options);
+            } else {
+                auto message = std::format(_T("loader for type {} is missing\n"), ((const Ghurund::Core::Type&)Type::GET_TYPE()).Name);
+                Logger::log(LogType::ERR0R, message.c_str());
+                auto exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidStateException(exMessage.Data);
+            }
+        }
+
+        template<class Type> void save(Type& resource, const DirectoryPath& workingDir, MemoryOutputStream& stream, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const {
+            /*Loader* loader = loaders.get<Type>();
+            [[likely]]
+            if (loader) {
+                resource = (Type*)saveInternal(resource, *loader, format, options);
+            } else {
+                auto message = std::format(_T("loader for type {} is missing\n"), ((const Ghurund::Core::Type&)Type::GET_TYPE()).Name);
+                Logger::log(LogType::ERR0R, message.c_str());
+                auto exMessage = convertText<tchar, char>(String(message.c_str()));
+                throw InvalidStateException(exMessage.Data);
+            }*/
+        }
 
         template<class Type = Resource> Type* get(const WString& fileName) {
             section.enter();

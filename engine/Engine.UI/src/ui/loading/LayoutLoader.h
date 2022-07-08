@@ -78,15 +78,15 @@ namespace Ghurund::UI {
 			Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
 		) override;
 
-		virtual void save(
-			Ghurund::Core::ResourceManager& manager,
-			Ghurund::Core::MemoryOutputStream& stream,
-			Ghurund::Core::Resource& resource,
-			const Ghurund::Core::ResourceFormat* format = nullptr,
-			Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
-		) const override {
-			throw NotImplementedException();
-		}
+        virtual void save(
+            const Ghurund::Core::ResourceManager& manager,
+            Ghurund::Core::MemoryOutputStream& stream,
+            Ghurund::Core::Resource& resource,
+            const Ghurund::Core::ResourceFormat* format = nullptr,
+            Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
+        ) const override {
+            throw NotImplementedException();
+        }
 
 		void loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
 			const Type* type = &obj.Type;

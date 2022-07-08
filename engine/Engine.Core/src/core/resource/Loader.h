@@ -45,6 +45,6 @@ namespace Ghurund::Core {
         virtual ~Loader() = 0 {}
 
         virtual Resource* load(ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) = 0;
-        virtual void save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const = 0;
+        virtual void save(const ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const = 0;
     };
 }

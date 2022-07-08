@@ -29,7 +29,7 @@ namespace Ghurund::UI::Direct2D {
         ) override;
 
         virtual void save(
-            Ghurund::Core::ResourceManager& manager,
+            const Ghurund::Core::ResourceManager& manager,
             MemoryOutputStream& stream,
             Resource& resource,
             const ResourceFormat* format = nullptr,

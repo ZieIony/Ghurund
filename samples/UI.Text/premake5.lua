@@ -5,6 +5,7 @@ project "UI.Text"
 	dependson {
 		"Engine.Core",
 		"Engine.UI",
+		"Engine.UI.GDI",
 		"Engine.UI.Direct2D",
 		"Engine"
 	}
@@ -20,9 +21,11 @@ project "UI.Text"
 		"generated/bindings",
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
+		includeDir["Engine.UI.GDI"],
 		includeDir["Engine.UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
+		includeDir["msdfgen"],
 		includeDir["entt"],
 		includeDir["CRC"],
 		includeDir["angelscript"],
@@ -34,6 +37,7 @@ project "UI.Text"
 	links {
 		"Engine.Core",
 		"Engine.UI",
+		"Engine.UI.GDI",
 		"Engine.UI.Direct2D",
 		"Engine"
 	}
@@ -41,6 +45,7 @@ project "UI.Text"
 	filter "configurations:Debug"
 		links {
 			library["tinyxml2_Debug"],
+			library["msdfgen_Debug"],
 			library["angelscript_Debug"],
 			library["PhysX_Debug"],
 			library["PhysXCommon_Debug"],

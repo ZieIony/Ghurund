@@ -197,6 +197,7 @@
     <ClInclude Include="src\core\logging\LogOutput.h" />
     <ClInclude Include="src\core\logging\LogType.h" />
     <ClInclude Include="src\core\logging\Logger.h" />
+    <ClInclude Include="src\core\math\Bezier.h" />
     <ClInclude Include="src\core\math\Float.h" />
     <ClInclude Include="src\core\math\Int.h" />
     <ClInclude Include="src\core\math\MathUtils.h" />

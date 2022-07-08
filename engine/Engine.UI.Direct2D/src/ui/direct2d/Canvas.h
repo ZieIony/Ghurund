@@ -76,6 +76,7 @@ namespace Ghurund::UI::Direct2D {
         virtual void drawText(ITextLayout& layout, float x, float y) override {
             fillBrush->SetColor(D2D1::ColorF(((TextLayout&)layout).Color));
             fillBrush->SetOpacity(((TextLayout&)layout).Color.A);
+            //deviceContext->DrawRectangle();
             deviceContext->DrawTextLayout(D2D1::Point2F(x, y), ((TextLayout&)layout).get(), fillBrush.Get());
         }
 

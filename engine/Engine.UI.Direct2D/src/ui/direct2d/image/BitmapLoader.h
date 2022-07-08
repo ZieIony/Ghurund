@@ -19,7 +19,7 @@ namespace Ghurund::UI::Direct2D {
             return bitmap.get();
         }
 
-        virtual void save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
+        virtual void save(const ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
             Bitmap& bitmap = (Bitmap&)resource;
             imageLoader.save(manager, stream, *bitmap.Image, format, options);
         }

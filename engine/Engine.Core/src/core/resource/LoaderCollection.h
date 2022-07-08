@@ -24,7 +24,7 @@ namespace Ghurund::Core {
         }
 
         template<typename T>
-        inline Loader* get() {
+        inline Loader* get() const {
             for (auto [type, loader] : loaders) {
                 if (T::GET_TYPE().isOrExtends(*type))
                     return loader;
