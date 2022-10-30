@@ -21,8 +21,10 @@ namespace Ghurund::UI {
 
     void ColorView::onDraw(ICanvas& canvas) {
         const Ghurund::UI::Color& c = color->getValue(*this);
-        if (c.A > 0.0f)
-            canvas.fillRect(0, 0, Size.Width, Size.Height, c);
+        if (c.A > 0.0f) {
+            canvas.Color = c;
+            canvas.fillRect(0, 0, Size.Width, Size.Height);
+        }
     }
 
     void ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
@@ -40,15 +42,15 @@ namespace Ghurund::UI {
         }
     }
 
-    void ColorViewBackgroundStyle::onThemeChanged(ColorView& control) const {
+    void ColorViewBackgroundStyle::apply(ColorView& control) const {
         control.Color = ColorRef(Theme::COLOR_BACKGR0UND);
     }
 
-    void ColorViewControlStyle::onThemeChanged(ColorView& control) const {
+    void ColorViewControlStyle::apply(ColorView& control) const {
         control.Color = ColorRef(Theme::COLOR_CONTROL);
     }
 
-    void ColorViewAccentStyle::onThemeChanged(ColorView& control) const {
+    void ColorViewAccentStyle::apply(ColorView& control) const {
         control.Color = ColorRef(Theme::COLOR_ACCENT);
     }
 }

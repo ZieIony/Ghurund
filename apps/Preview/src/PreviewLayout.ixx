@@ -31,14 +31,14 @@ export namespace Preview {
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             __super::load(loader, xml);
 
-            container = (Ghurund::UI::StackLayout*)find("container");
-            color1 = (Ghurund::UI::Button*)find("color1");
-            color2 = (Ghurund::UI::Button*)find("color2");
-            color3 = (Ghurund::UI::Button*)find("color3");
-            color4 = (Ghurund::UI::Button*)find("color4");
-            colorTheme = (Ghurund::UI::Button*)find("colorTheme");
-            enabledCheckBox = (Ghurund::UI::CheckBox*)find("enabledCheckBox");
-            themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
+            container = find<Ghurund::UI::StackLayout>("container");
+            color1 = find<Ghurund::UI::Button>("color1");
+            color2 = find<Ghurund::UI::Button>("color2");
+            color3 = find<Ghurund::UI::Button>("color3");
+            color4 = find<Ghurund::UI::Button>("color4");
+            colorTheme = find<Ghurund::UI::Button>("colorTheme");
+            enabledCheckBox = find<Ghurund::UI::CheckBox>("enabledCheckBox");
+            themeCheckBox = find<Ghurund::UI::CheckBox>("themeCheckBox");
 
             /*themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
@@ -49,7 +49,7 @@ export namespace Preview {
                 container->Enabled = checkBox.Checked;
                 container->repaint();
                 return true;
-            };
+            };*/
 
             auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
                 if (args.Button == MouseButton::LEFT) {
@@ -61,16 +61,16 @@ export namespace Preview {
 
                 }
                 return true;
-            };*/
-            /*color1->clicked += colorClickHandler;
+            };
+            color1->clicked += colorClickHandler;
             color2->clicked += colorClickHandler;
             color3->clicked += colorClickHandler;
             color4->clicked += colorClickHandler;
 
-            ColorView* colorView = (ColorView*)colorTheme->find(ColorView::GET_TYPE());
+            auto* colorView = colorTheme->find<ColorView>();
             WindowsTheme::init();
             colorView->Color = ColorValue(WindowsTheme::getAccentColor());
-            colorTheme->clicked += colorClickHandler;*/
+            colorTheme->clicked += colorClickHandler;
         }
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

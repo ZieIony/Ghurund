@@ -9,6 +9,8 @@ namespace Ghurund::UI {
         //    = 0   // TODO: a destructor cannot be abstract
         {}
 
+        virtual void apply(Control& control) const {}
+
         virtual void onThemeChanged(Control& control) const {}
 
         virtual void onStateChanged(Control& control) const {}
@@ -17,6 +19,10 @@ namespace Ghurund::UI {
     template<class T>
     class TypedStyle:public Style {
     public:
+        virtual void apply(Control& control) const override {
+            apply((T&)control);
+        }
+
         virtual void onThemeChanged(Control& control) const override {
             onThemeChanged((T&)control);
         }
@@ -24,6 +30,8 @@ namespace Ghurund::UI {
         virtual void onStateChanged(Control& control) const override {
             onStateChanged((T&)control);
         }
+
+        virtual void apply(T& control) const {}
 
         virtual void onThemeChanged(T& control) const {}
 

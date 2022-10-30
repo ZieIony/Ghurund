@@ -57,5 +57,7 @@ namespace Ghurund::UI {
         Status insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
 
         Status removeTextAt(uint32_t position, uint32_t lengthToRemove);
+
+        void draw(ICanvas& canvas);
     };
 }

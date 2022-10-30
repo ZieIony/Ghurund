@@ -19,10 +19,11 @@ namespace Ghurund::UI {
         uint32_t color = Color.getValue(*this);
         if (!color || Thickness < 0.1f)
             return;
+        canvas.Color = color;
         if (shape) {
-            canvas.drawShape(*shape, color, thickness);
+            canvas.drawShape(*shape, thickness);
         } else {
-            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.Width - Thickness, Size.Height - Thickness, color, thickness);
+            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.Width - Thickness, Size.Height - Thickness, thickness);
         }
     }
 

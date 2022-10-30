@@ -18,11 +18,14 @@ namespace Ghurund::UI {
                     if (!controls.Empty) {
                         content = controls[0];
                         controls[0]->addReference();
+                        return;
                     }
-                } else if (!&content.Value) {
+                } else {
                     auto control = loader.loadControl(*childElement);
-                    if (control)
+                    if (control) {
                         content = control;
+                        return;
+                    }
                 }
                 childElement = childElement->NextSiblingElement();
             }
@@ -45,13 +48,19 @@ namespace Ghurund::UI {
             loadContent(loader, xml);
         }
 
+        using ControlContainer::find;
+
         virtual Ghurund::UI::Control* find(const Ghurund::Core::AString& name) override {
+            if (Name && *Name == name)
+                return this;
             if (content.Value)
                 return content.Value->find(name);
             return nullptr;
         }
 
         virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type) override {
+            if (Type == type)
+                return this;
             if (content.Value)
                 return content.Value->find(type);
             return nullptr;

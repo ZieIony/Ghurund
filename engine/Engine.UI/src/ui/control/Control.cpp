@@ -360,7 +360,7 @@ namespace Ghurund::UI {
     }
 
     Control* Control::find(const AString& name) {
-        if (this->name && this->name->operator==(name))
+        if (Name && *Name == name)
             return this;
         return nullptr;
     }

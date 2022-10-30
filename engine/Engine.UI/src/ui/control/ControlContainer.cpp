@@ -126,7 +126,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlContainer::find(const AString& name) {
-        if (this->Name && this->Name->operator==(name))
+        if (Name && *Name == name)
             return this;
         if (child)
             return child->find(name);

@@ -16,15 +16,19 @@ namespace Ghurund::UI {
 
     void ProgressBar::onDraw(ICanvas& canvas) {
         if (indeterminate) {
-            canvas.fillRect(0, 0, Size.Width, Size.Height, backgroundColor->getValue(*this));
-            canvas.fillRect(Size.Width * progress, 0, Size.Width * cos(progress * 6.28f) / 2 + 0.5f, Size.Height, progressColor->getValue(*this));
+            canvas.Color = backgroundColor->getValue(*this);
+            canvas.fillRect(0, 0, Size.Width, Size.Height);
+            canvas.Color = progressColor->getValue(*this);
+            canvas.fillRect(Size.Width * progress, 0, Size.Width * cos(progress * 6.28f) / 2 + 0.5f, Size.Height);
             progress += 0.01f;
             if (progress > 1.0f)
                 progress--;
             repaint();
         } else {
-            canvas.fillRect(Size.Width * progress, 0, Size.Width, Size.Height, backgroundColor->getValue(*this));
-            canvas.fillRect(0, 0, Size.Width * progress, Size.Height, progressColor->getValue(*this));
+            canvas.Color = backgroundColor->getValue(*this);
+            canvas.fillRect(Size.Width * progress, 0, Size.Width, Size.Height);
+            canvas.Color = progressColor->getValue(*this);
+            canvas.fillRect(0, 0, Size.Width * progress, Size.Height);
         }
     }
 

@@ -373,8 +373,9 @@ namespace Ghurund::UI {
                 if (hitTestMetrics.Size > 0) {
                     canvas.AntialiasingEnabled = false;
 
+                    canvas.Color = textSelectionEffect;
                     for (const HitTestMetrics& htm : hitTestMetrics)
-                        canvas.fillRect(htm.left, htm.top, htm.width, htm.height, textSelectionEffect);
+                        canvas.fillRect(htm.left, htm.top, htm.width, htm.height);
 
                     canvas.AntialiasingEnabled = true;
                 }

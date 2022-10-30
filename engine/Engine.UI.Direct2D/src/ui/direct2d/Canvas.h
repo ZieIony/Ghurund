@@ -19,7 +19,6 @@ namespace Ghurund::UI::Direct2D {
     class Canvas:public ICanvas {
     private:
         ComPtr<ID2D1SolidColorBrush> fillBrush;
-        ComPtr<ID2D1SolidColorBrush> strokeBrush;
         List<D2D1::Matrix3x2F> matrixStack;
         ID2D1DeviceContext5* deviceContext = nullptr;
         ComPtr<ID2D1Effect> tintEffect;
@@ -49,61 +48,34 @@ namespace Ghurund::UI::Direct2D {
             deviceContext->Clear(D2D1::ColorF(color));
         }
 
-        virtual void drawRect(float x, float y, float width, float height, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
-#ifdef _DEBUG
-            if (color.A == 0.0f || thickness == 0.0f || width == 0.0f || height == 0.0f) {
-                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
-                return;
-            }
-#endif
+        virtual void setColor(const Ghurund::UI::Color& color) {
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);
+        }
+
+        virtual void drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
             deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);
         }
 
-        virtual void fillRect(float x, float y, float width, float height, const Color& color) override {
-#ifdef _DEBUG
-            if (color.A == 0.0f) {
-                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
-                return;
-            }
-#endif
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
+        virtual void fillRect(float x, float y, float width, float height) override {
             deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
         }
 
-        virtual void drawShape(Ghurund::UI::Shape& shape, const Color& color, float thickness) override {
-#ifdef _DEBUG
-            if (color.A == 0.0f || thickness == 0.0f) {
-                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
-                return;
-            }
-#endif
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
+        virtual void drawShape(Ghurund::UI::Shape& shape, float thickness) override {
             deviceContext->DrawGeometry(((Direct2D::Shape&)shape).Path, fillBrush.Get(), thickness);
         }
 
-        virtual void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
-#ifdef _DEBUG
-            if (color.A == 0.0f || thickness == 0.0f) {
-                Logger::log(LogType::WARNING, _T("A draw call that doesn't draw anything.\n"));
-                return;
-            }
-#endif
-            fillBrush->SetColor(D2D1::ColorF(color));
-            fillBrush->SetOpacity(color.A);
+        virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
             deviceContext->DrawLine({ x1,y1 }, { x2,y2 }, fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);
         }
 
         virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Color& color, float alpha = 1.0f) override;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& color, float alpha = 1.0f) override;
 
         virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f) override;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& color, float alpha = 1.0f) override;
 
         virtual void drawImage(VectorImage& svgDocument) override;
 

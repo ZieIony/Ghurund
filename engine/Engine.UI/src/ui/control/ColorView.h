@@ -46,16 +46,16 @@ namespace Ghurund::UI {
 
     class ColorViewBackgroundStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(ColorView& control) const;
+        virtual void apply(ColorView& control) const;
     };
 
     class ColorViewControlStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(ColorView& control) const;
+        virtual void apply(ColorView& control) const;
     };
 
     class ColorViewAccentStyle:public TypedStyle<ColorView> {
 
-        virtual void onThemeChanged(ColorView& control) const;
+        virtual void apply(ColorView& control) const;
     };
 }

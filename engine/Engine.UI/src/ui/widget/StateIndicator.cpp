@@ -41,8 +41,10 @@ namespace Ghurund::UI {
     }
 
     void StateIndicator::onDraw(ICanvas& canvas) {
-        if (color.A > 0.0f)
-            canvas.fillRect(0, 0, Size.Width, Size.Height, color);
+        if (color.A > 0.0f) {
+            canvas.Color = color;
+            canvas.fillRect(0, 0, Size.Width, Size.Height);
+        }
     }
 
     void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {

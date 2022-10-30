@@ -55,8 +55,7 @@ namespace Ghurund::UI::GDI {
         graphics = nullptr;
     }
 
-    void Canvas::drawRect(float x, float y, float width, float height, const Color& color, float thickness, IStrokeStyle* strokeStyle) {
-        this->color.SetValue(color);
+    void Canvas::drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle) {
         if (strokeStyle)
             pen->SetDashStyle(((StrokeStyle*)strokeStyle)->get());
         pen->SetWidth(thickness);
@@ -64,21 +63,18 @@ namespace Ghurund::UI::GDI {
         graphics->DrawRectangle(pen, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
     }
 
-    void Canvas::fillRect(float x, float y, float width, float height, const Color& color) {
-        this->color.SetValue(color);
+    void Canvas::fillRect(float x, float y, float width, float height) {
         brush->SetColor(this->color);
         graphics->FillRectangle(brush, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
     }
 
-    void Canvas::drawShape(Ghurund::UI::Shape& shape, const Color& color, float thickness) {
-        this->color.SetValue(color);
+    void Canvas::drawShape(Ghurund::UI::Shape& shape, float thickness) {
         pen->SetWidth(thickness);
         pen->SetColor(this->color);
         graphics->DrawPath(pen, ((Ghurund::UI::GDI::Shape&)shape).Path);
     }
 
-    void Canvas::drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, IStrokeStyle* strokeStyle) {
-        this->color.SetValue(color);
+    void Canvas::drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle) {
         if (strokeStyle)
             pen->SetDashStyle(((StrokeStyle*)strokeStyle)->get());
         pen->SetWidth(thickness);
@@ -93,9 +89,9 @@ namespace Ghurund::UI::GDI {
         //deviceContext->DrawBitmap(bitmapImage, d, alpha);
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Color& color, float alpha) {
+    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
-        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
+        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);*/
     }
@@ -106,9 +102,9 @@ namespace Ghurund::UI::GDI {
         deviceContext->DrawBitmap(bitmapImage, d, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, s);*/
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha) {
+    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
-        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, color.A * alpha, color.R, color.G, color.B, 0);
+        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);*/
     }

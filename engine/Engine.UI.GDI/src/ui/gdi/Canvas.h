@@ -61,21 +61,25 @@ namespace Ghurund::UI::GDI {
             graphics->Clear(this->color);
         }
 
-        virtual void drawRect(float x, float y, float width, float height, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
+        virtual void setColor(const Ghurund::UI::Color& color) {
+            this->color.SetValue(color);
+        }
 
-        virtual void fillRect(float x, float y, float width, float height, const Color& color) override;
+        virtual void drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
 
-        virtual void drawShape(Ghurund::UI::Shape& shape, const Color& color, float thickness) override;
+        virtual void fillRect(float x, float y, float width, float height) override;
 
-        virtual void drawLine(float x1, float y1, float x2, float y2, const Color& color, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
+        virtual void drawShape(Ghurund::UI::Shape& shape, float thickness) override;
+
+        virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
 
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Color& color, float alpha = 1.0f) override;
+        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) override;
 
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Color& color, float alpha = 1.0f) override;
+        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) override;
 
         virtual void drawImage(VectorImage& svgDocument) override;
 

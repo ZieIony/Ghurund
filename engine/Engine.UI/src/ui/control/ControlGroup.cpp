@@ -147,7 +147,7 @@ namespace Ghurund::UI {
     }
 
     Control* ControlGroup::find(const Ghurund::Core::AString& name) {
-        if (this->Name && this->Name->operator==(name))
+        if (Name && *Name == name)
             return this;
         for (Control* c : children) {
             Control* result = c->find(name);

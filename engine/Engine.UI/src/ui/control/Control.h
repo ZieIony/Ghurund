@@ -336,6 +336,7 @@ namespace Ghurund::UI {
         inline void setStyle(const Style* style) {
             this->style = style;
             if (style) {
+                style->apply(*this);
                 style->onThemeChanged(*this);
                 style->onStateChanged(*this);
             }
@@ -371,6 +372,11 @@ namespace Ghurund::UI {
         virtual void onUpdate(const uint64_t time) {}
 
         void draw(ICanvas& canvas);
+
+        template<class T>
+        inline T* find(const Ghurund::Core::AString& name) {
+            return (T*)find(name);
+        }
 
         virtual Control* find(const Ghurund::Core::AString& name);
 

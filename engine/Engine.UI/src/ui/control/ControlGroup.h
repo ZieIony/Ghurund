@@ -83,6 +83,8 @@ namespace Ghurund::UI {
 
         virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
+        using Control::find;
+
         virtual Control* find(const Ghurund::Core::AString& name);
 
         virtual Control* find(const Ghurund::Core::Type& type);
