@@ -32,7 +32,7 @@ export namespace Preview {
 
             auto window = ghnew PreviewWindow(*this, renderer);
             window->title = _T("Preview");
-            window->Size = { Settings.get<uint32_t>("width"), Settings.get<uint32_t>("height") };
+            window->Size = { 800, 600 };
             Windows.add(window);
             window->visible = true;
             window->bringToFront();

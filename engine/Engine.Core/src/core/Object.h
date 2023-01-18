@@ -46,7 +46,4 @@ namespace Ghurund::Core {
     inline T* clone(T& obj) {
         return (T*)obj.clone();
     }
-
-    template<>
-    String toString(const Object& obj);
 }

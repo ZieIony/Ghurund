@@ -54,7 +54,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -62,6 +61,8 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,8 +74,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -85,6 +85,8 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,31 +147,47 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\application\ApplicationWindow.ixx" />
+    <ClCompile Include="src\application\ApplicationWindow.ixx">
+      <ObjectFileName>$(IntDir)\ApplicationWindow1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\application\Layer.ixx" />
     <ClCompile Include="src\application\LayerList.cpp" />
-    <ClCompile Include="src\application\LayerList.ixx" />
+    <ClCompile Include="src\application\LayerList.ixx">
+      <ObjectFileName>$(IntDir)\LayerList1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\audio\Audio.cpp" />
-    <ClCompile Include="src\audio\Audio.ixx" />
+    <ClCompile Include="src\audio\Audio.ixx">
+      <ObjectFileName>$(IntDir)\Audio1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\audio\Sound.cpp" />
-    <ClCompile Include="src\audio\Sound.ixx" />
+    <ClCompile Include="src\audio\Sound.ixx">
+      <ObjectFileName>$(IntDir)\Sound1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\audio\Sound3d.ixx" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\entity\camera\Camera.ixx" />
-    <ClCompile Include="src\entity\camera\CameraComponent.ixx" />
-    <ClCompile Include="src\entity\camera\CameraController.ixx" />
-    <ClCompile Include="src\entity\camera\CameraEntity.ixx" />
     <ClCompile Include="src\entity\Entity.ixx" />
-    <ClCompile Include="src\entity\light\Light.ixx" />
-    <ClCompile Include="src\entity\light\LightComponent.ixx" />
-    <ClCompile Include="src\entity\light\LightEntity.ixx" />
     <ClCompile Include="src\entity\Scene.cpp" />
-    <ClCompile Include="src\entity\camera\Camera.cpp" />
-    <ClCompile Include="src\entity\camera\CameraController.cpp" />
-    <ClCompile Include="src\entity\light\Light.cpp" />
-    <ClCompile Include="src\entity\Scene.ixx" />
+    <ClCompile Include="src\entity\Scene.ixx">
+      <ObjectFileName>$(IntDir)\Scene1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\entity\Scenes.ixx" />
     <ClCompile Include="src\entity\TransformComponent.ixx" />
+    <ClCompile Include="src\entity\camera\Camera.cpp" />
+    <ClCompile Include="src\entity\camera\Camera.ixx">
+      <ObjectFileName>$(IntDir)\Camera1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\entity\camera\CameraComponent.ixx" />
+    <ClCompile Include="src\entity\camera\CameraController.cpp" />
+    <ClCompile Include="src\entity\camera\CameraController.ixx">
+      <ObjectFileName>$(IntDir)\CameraController1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\entity\camera\CameraEntity.ixx" />
+    <ClCompile Include="src\entity\light\Light.cpp" />
+    <ClCompile Include="src\entity\light\Light.ixx">
+      <ObjectFileName>$(IntDir)\Light1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\entity\light\LightComponent.ixx" />
+    <ClCompile Include="src\entity\light\LightEntity.ixx" />
     <ClCompile Include="src\game\GameAction.cpp" />
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
@@ -193,10 +211,24 @@
     <ClCompile Include="src\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\parameter\ParameterType.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
-    <ClCompile Include="src\physics\Physics.ixx" />
+    <ClCompile Include="src\physics\Physics.ixx">
+      <ObjectFileName>$(IntDir)\Physics1.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="src\physics\PhysicsComponent.ixx" />
     <ClCompile Include="src\physics\PhysicsSystem.ixx" />
     <ClCompile Include="src\physics\RigidBodyComponent.ixx" />
+    <ClCompile Include="src\script\Script.cpp" />
+    <ClCompile Include="src\script\Script.ixx">
+      <ObjectFileName>$(IntDir)\Script1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\script\ScriptComponent.ixx" />
+    <ClCompile Include="src\script\ScriptEngine.cpp" />
+    <ClCompile Include="src\script\ScriptEngine.ixx">
+      <ObjectFileName>$(IntDir)\ScriptEngine1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\script\Scripts.ixx" />
+    <ClCompile Include="src\script\StringFactory.ixx" />
+    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\bindings\CameraScriptBindings.ixx" />
     <ClCompile Include="src\script\bindings\CollectionScriptBindings.ixx" />
     <ClCompile Include="src\script\bindings\EntityScriptBindings.ixx" />
@@ -206,16 +238,11 @@
     <ClCompile Include="src\script\bindings\SceneScriptBindings.ixx" />
     <ClCompile Include="src\script\bindings\ScriptBindings.ixx" />
     <ClCompile Include="src\script\bindings\TimerScriptBindings.ixx" />
-    <ClCompile Include="src\script\Script.cpp" />
-    <ClCompile Include="src\script\Script.ixx" />
-    <ClCompile Include="src\script\ScriptComponent.ixx" />
-    <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\script\ScriptEngine.ixx" />
-    <ClCompile Include="src\script\Scripts.ixx" />
-    <ClCompile Include="src\script\StringFactory.ixx" />
     <ClCompile Include="src\ui\UIFeature.cpp" />
-    <ClCompile Include="src\ui\UIFeature.ixx" />
+    <ClCompile Include="src\ui\UIFeature.ixx">
+      <ObjectFileName>$(IntDir)\UIFeature1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\UILayer.ixx" />
   </ItemGroup>
   <ItemGroup>

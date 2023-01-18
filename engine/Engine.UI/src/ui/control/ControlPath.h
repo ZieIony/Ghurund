@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Int.h"
 #include "core/collection/Array.h"
 #include "core/string/String.h"
 #include "ui/control/ControlContainer.h"

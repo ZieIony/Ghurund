@@ -92,17 +92,9 @@ namespace Ghurund::UI {
 
         Control* loadControl(const tinyxml2::XMLElement& xml);
 
-        Constraint* loadConstraint(const tinyxml2::XMLElement& xml) {
-            auto nameAttr = xml.FindAttribute("path");
-            //if (nameAttr)
-                //Name = nameAttr->Value();
-            auto valueAttr = xml.FindAttribute("value");
-            return nullptr;
-        }
+        Constraint* loadConstraint(const tinyxml2::XMLElement& xml);
 
-        Constraint* loadConstraint(const char* str, Orientation orientation) {
-            return constraintFactory.parseConstraint(str, orientation);
-        }
+        Constraint* loadConstraint(const char* str);
 
         Shape* loadShape(const char* str);
 

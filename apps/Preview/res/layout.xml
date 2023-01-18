@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreviewLayout width="fill" height="fill" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
-	<StackLayout width="fill" height="fill">
-		<ColorView width="fill" height="fill" style="theme://style\ColorView_background"/>
-		<ConstraintLayout width="fill" height="fill" alignment="left, bottom">
-			<Guide name="left" constraint="parent.left" value="100"/>
-			<Guide name="top" constraint="parent.top" value="100"/>
-			<Guide name="right" constraint="parent.right" value="-100"/>
-			<Guide name="bottom" constraint="parent.bottom" value="-100"/>
-			<Guide name="leftp" constraint="parent.width" value="30%"/>
-			<Guide name="topp" constraint="parent.height" value="30%"/>
-			<Guide name="rightp" constraint="parent.width" value="70%"/>
-			<Guide name="bottomp" constraint="parent.height" value="70%"/>
-			<ColorView color="#1fff0000" left="left" top="parent" bottom ="bottomp" width="30"/>
-			<ColorView color="#1f00ff00" bottom ="bottom" height="50" width="200"/>
-		</ConstraintLayout>
+<PreviewLayout width="Parent.Width" height="Parent.Width" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
+	<StackLayout width="Parent.Width" height="Parent.Width">
+		<ColorView width="Parent.Width" height="Parent.Width" color="#ffff00ff"/>
 	</StackLayout>
 </PreviewLayout>

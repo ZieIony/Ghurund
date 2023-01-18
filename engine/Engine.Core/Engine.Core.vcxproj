@@ -62,6 +62,7 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,6 +86,7 @@
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ExternalWarningLevel>Level3</ExternalWarningLevel>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,6 +99,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\application\CommandLine.h" />
+    <ClInclude Include="src\core\Float.h" />
+    <ClInclude Include="src\core\Int.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -270,9 +275,7 @@
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
     <ClCompile Include="src\core\logging\LogType.cpp" />
     <ClCompile Include="src\core\logging\Logger.cpp" />
-    <ClCompile Include="src\core\math\Size.cpp" />
     <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
-    <ClCompile Include="src\core\reflection\Type.cpp" />
     <ClCompile Include="src\core\reflection\TypeMember.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />

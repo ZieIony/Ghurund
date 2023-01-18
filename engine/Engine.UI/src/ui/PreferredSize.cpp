@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "PreferredSize.h"
 
-#include "core/DataParsing.h"
+#include "core/Float.h"
 
 namespace Ghurund::UI {
     const PreferredSize::Width& PreferredSize::Width::WRAP = PreferredSize::Width(PreferredSize::Type::WRAP, 0.0f);

@@ -8,9 +8,10 @@ namespace Ghurund::UI {
     class SiblingLeftConstraint:public Constraint {
     private:
         const AString name;
+        float offset;
 
     public:
-        SiblingLeftConstraint(const AString& name):name(name) {}
+        SiblingLeftConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -24,16 +25,17 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value + offset;
         }
     };
 
     class SiblingRightConstraint:public Constraint {
     private:
         const AString name;
+        float offset;
 
     public:
-        SiblingRightConstraint(const AString& name):name(name) {}
+        SiblingRightConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -47,16 +49,17 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value + offset;
         }
     };
 
     class SiblingTopConstraint:public Constraint {
     private:
         const AString name;
+        float offset;
 
     public:
-        SiblingTopConstraint(const AString& name):name(name) {}
+        SiblingTopConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -70,16 +73,17 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value + offset;
         }
     };
 
     class SiblingBottomConstraint:public Constraint {
     private:
         const AString name;
+        float offset;
 
     public:
-        SiblingBottomConstraint(const AString& name):name(name) {}
+        SiblingBottomConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -93,16 +97,18 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value + offset;
         }
     };
 
     class SiblingWidthConstraint:public Constraint {
     private:
         const AString name;
+        float ratio, offset;
 
     public:
-        SiblingWidthConstraint(const AString& name):name(name) {}
+        SiblingWidthConstraint(const AString& name, float ratio = 1.0f, float offset = 0.0f)
+            :name(name), ratio(ratio), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -116,16 +122,18 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value * ratio + offset;
         }
     };
 
     class SiblingHeightConstraint:public Constraint {
     private:
         const AString name;
+        float ratio, offset;
 
     public:
-        SiblingHeightConstraint(const AString& name):name(name) {}
+        SiblingHeightConstraint(const AString& name, float ratio = 1.0f, float offset = 0.0f)
+            :name(name), ratio(ratio), offset(offset) {}
 
         inline const AString& getName() const {
             return name;
@@ -139,8 +147,7 @@ namespace Ghurund::UI {
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value;
+            value = (*dependencies.begin())->Value * ratio + offset;
         }
     };
-
 }

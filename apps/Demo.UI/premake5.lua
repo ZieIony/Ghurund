@@ -1,9 +1,11 @@
 project "Demo.UI"
 	kind "WindowedApp"
 	staticruntime "on"
+	scanformoduledependencies "on"
 
 	dependson {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D",
 		"Engine"
@@ -19,6 +21,7 @@ project "Demo.UI"
 		"src",
 		"generated/bindings",
 		includeDir["Engine.Core"],
+		includeDir["Engine.Core.DirectX"],
 		includeDir["Engine.UI"],
 		includeDir["Engine.UI.Direct2D"],
 		includeDir["Engine"],
@@ -33,6 +36,7 @@ project "Demo.UI"
 
 	links {
 		"Engine.Core",
+		"Engine.Core.DirectX",
 		"Engine.UI",
 		"Engine.UI.Direct2D",
 		"Engine"

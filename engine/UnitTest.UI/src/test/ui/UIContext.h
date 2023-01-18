@@ -28,8 +28,3 @@ namespace UnitTest {
         }
     };
 }
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<UnitTest::UIContext>();
-}

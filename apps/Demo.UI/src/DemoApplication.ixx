@@ -1,11 +1,15 @@
-﻿#include "core/math/MathUtils.h"
-#include "DemoWindow.h"
+﻿module;
+
 #include "core/application/Application.h"
 #include "graphics/Renderer.h"
 
-namespace Demo {
+export module Demo.DemoApplication;
+
+import Demo.DemoWindow;
+
+export namespace Demo {
     using namespace Ghurund;
-    using namespace Ghurund::UI;
+    using namespace Ghurund::Core;
 
     class DemoApplication:public Application {
     protected:
@@ -14,7 +18,6 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add(std::make_unique<UIFeature>(*this));
             Features.add(std::make_unique<Graphics>());
         }
 
@@ -22,7 +25,7 @@ namespace Demo {
             renderer.init(Features.get<Graphics>(), parameterManager);
 
             auto window = ghnew DemoWindow(*this, renderer);
-            window->Size = { Settings.get<uint32_t>("width"), Settings.get<uint32_t>("height") };
+            window->Size = { 800, 600 };
             Windows.add(window);
             window->Visible = true;
             window->bringToFront();

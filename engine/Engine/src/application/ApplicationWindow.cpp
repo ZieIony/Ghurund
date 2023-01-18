@@ -4,7 +4,6 @@ module;
 #include "core/reflection/Property.h"
 #include "core/window/SystemWindow.h"
 #include "core/input/Input.h"
-#include "core/directx/SwapChain.h"
 #include "core/application/Application.h"
 #include "Status.h"
 

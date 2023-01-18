@@ -61,7 +61,7 @@ namespace Ghurund::UI {
         }
 
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<ContentWidget>(NAMESPACE_NAME, GH_STRINGIFY(ContentWidget))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<ContentWidget>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(ContentWidget))
                 .withModifiers(TypeModifier::ABSTRACT)
                 .withSupertype(__super::GET_TYPE());
 

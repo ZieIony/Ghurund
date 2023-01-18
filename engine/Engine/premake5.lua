@@ -1,6 +1,7 @@
 project "Engine"
 	kind "StaticLib"
 	staticruntime "on"
+	scanformoduledependencies "on"
 
 	dependson {
 		"Engine.Core",
@@ -11,7 +12,8 @@ project "Engine"
 
 	files {
 		"src/**.h",
-		"src/**.cpp"
+		"src/**.cpp",
+		"src/**.ixx"
 	}
 
 	includedirs {

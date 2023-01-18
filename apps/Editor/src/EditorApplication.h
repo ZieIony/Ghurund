@@ -1,7 +1,8 @@
 ﻿#include "EditorWindow.h"
-#include "ui/UIFeature.h"
 #include "core/application/Application.h"
 #include "graphics/Renderer.h"
+
+import Ghurund.Engine.UI.UIFeature;
 
 namespace Ghurund::Editor {
     class EditorApplication:public Ghurund::Core::Application {

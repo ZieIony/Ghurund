@@ -13,8 +13,6 @@ namespace Ghurund::Net {
     public:
         static const MessageType RELIABLE, CONFIRM, UPDATE, REFRESH;
 
-        static const EnumValues<MessageTypeEnum, MessageType> VALUES;
-
         MessageType(MessageTypeEnum value, const char* name):Enum<MessageTypeEnum, MessageType>(value, name) {}
     };
 }

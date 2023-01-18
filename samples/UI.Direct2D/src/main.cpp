@@ -1,7 +1,8 @@
 #include "Ghurund.Core.h"
 
-#include "core/application/Application.h"
 #include "Direct2DWindow.h"
+#include "core/Int.h"
+#include "core/application/Application.h"
 
 namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {

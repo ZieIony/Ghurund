@@ -1,6 +1,7 @@
 project "Preview"
 	kind "WindowedApp"
 	staticruntime "on"
+	scanformoduledependencies "on"
 
 	dependson {
 		"Engine.Core",
@@ -13,6 +14,7 @@ project "Preview"
 	files {
 		"src/**.h",
 		"src/**.cpp",
+		"src/**.ixx",
 		"generated/bindings/**.h"
 	}
 

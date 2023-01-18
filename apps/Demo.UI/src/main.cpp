@@ -1,10 +1,8 @@
 #include "Ghurund.Engine.h"
 
-#include "DemoApplication.h"
+import Demo.DemoApplication;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    Ghurund::Settings settings;
-    settings.parse(GetCommandLine());
-    Ghurund::main<Demo::DemoApplication>(&settings);
+    Ghurund::Core::main<Demo::DemoApplication>();
     return 0;
 }

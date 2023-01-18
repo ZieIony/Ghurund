@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ColorView left="5.0" height="100">
+	<ColorView.Top offset="3.0"/>
+	<ColorView.Width path="Height" ratio="0.5" offset="-16"/>
+</ColorView>

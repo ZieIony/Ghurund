@@ -42,22 +42,6 @@ struct std::formatter<Ghurund::Core::WString, wchar_t>:std::formatter<const wcha
     }
 };
 
-template <Ghurund::Core::StringConvertible T>
-struct std::formatter<T, char>:std::formatter<Ghurund::Core::String, char> {
-    template <typename FormatContext>
-    auto format(const T& s, FormatContext& ctx) {
-        return std::formatter<Ghurund::Core::String, char>::format(Ghurund::Core::toString(s), ctx);
-    }
-};
-
-template <Ghurund::Core::StringConvertible T>
-struct std::formatter<T, wchar_t>:std::formatter<Ghurund::Core::String, wchar_t> {
-    template <typename FormatContext>
-    auto format(const T& s, FormatContext& ctx) {
-        return std::formatter<Ghurund::Core::String, wchar_t>::format(Ghurund::Core::toString(s), ctx);
-    }
-};
-
 template <>
 struct std::formatter<Ghurund::Core::AStringView, char>:std::formatter<const char*, char> {
     template <typename FormatContext>

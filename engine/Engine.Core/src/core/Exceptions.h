@@ -15,6 +15,11 @@ namespace Ghurund::Core {
         InvalidDataException(const char* message = nullptr):std::exception(message) {}
     };
 
+    class InvalidFormatException:public std::exception {
+    public:
+        InvalidFormatException(const char* message = nullptr):std::exception(message) {}
+    };
+
     class InvalidStateException:public std::exception {
     public:
         InvalidStateException(const char* message = nullptr):std::exception(message) {}

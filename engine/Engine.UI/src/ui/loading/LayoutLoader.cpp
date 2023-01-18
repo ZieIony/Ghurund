@@ -62,8 +62,8 @@ namespace Ghurund::UI {
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         if (!child) {
-            Logger::log(LogType::ERR0R, _T("Missing 'layout' tag.\n"));
-            throw InvalidDataException("Missing 'layout' tag.\n");
+            Logger::log(LogType::ERR0R, _T("Missing control tag.\n"));
+            throw InvalidFormatException("Missing control tag.\n");
         }
         AString namespaceName = Ghurund::UI::NAMESPACE_NAME;
         auto namespaceAttr = child->FindAttribute("namespace");
@@ -132,6 +132,28 @@ namespace Ghurund::UI {
         }
         Logger::log(LogType::WARNING, _T("Control type {} not registered in LayoutLoader.\n"), convertText<char, tchar>(AString(name)));
         return nullptr;
+    }
+
+    Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml) {
+        AString name, ratio, offset;
+        auto nameAttr = xml.FindAttribute("path");
+        if (nameAttr)
+            name = nameAttr->Value();
+        auto ratioAttr = xml.FindAttribute("ratio");
+        if (ratioAttr)
+            ratio = ratioAttr->Value();
+        auto offsetAttr = xml.FindAttribute("offset");
+        if (offsetAttr)
+            offset = offsetAttr->Value();
+        return constraintFactory.parseConstraint(
+            nameAttr ? &name: nullptr,
+            ratioAttr ? &ratio : nullptr,
+            offsetAttr ? &offset : nullptr
+        );
+    }
+
+    Constraint* LayoutLoader::loadConstraint(const char* str) {
+        return constraintFactory.parseConstraint(str);
     }
 
     Shape* LayoutLoader::loadShape(const char* str) {

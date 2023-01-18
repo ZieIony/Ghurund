@@ -101,8 +101,3 @@ namespace Ghurund::Core::DirectX {
         Status capture(Graphics& graphics, Ghurund::Core::Image*& image);
     };
 }
-
-namespace Ghurund::Core {
-    template<>
-    String toString(const Ghurund::Core::DirectX::RenderTarget& renderTarget);
-}

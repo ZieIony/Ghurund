@@ -61,15 +61,15 @@ export namespace Preview {
             LayoutLoader* layoutLoader = (LayoutLoader*)Application.ResourceManager.Loaders.get<Control>();
             layoutLoader->Theme = lightTheme;
 
-            auto uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
+            UILayer* uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
 
             previewLayout = Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
             previewLayout->Theme = lightTheme;
             uiLayer->Root.Child = previewLayout;
-            /*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+            previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
                 return true;
-            };*/
+            };
 
             sizeChanged += [&](Window& window) {
                 Logger::print(LogType::INFO, _T("\n"));

@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         Ghurund::UI::ImageView* image = nullptr;
 
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
                 .withModifiers(TypeModifier::ABSTRACT)
                 .withSupertype(__super::GET_TYPE());
 

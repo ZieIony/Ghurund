@@ -1,7 +1,6 @@
-#pragma once
+module;
 
 #include "Common.h"
-#include "application/ApplicationWindow.h"
 #include "core/application/Application.h"
 #include "core/window/SystemWindow.h"
 #include "core/math/MathUtils.h"
@@ -12,10 +11,19 @@
 #include "ui/style/LightTheme.h"
 #include "net/Server.h"
 #include "net/Client.h"
+#include "ui/direct2d/UIContext.h"
 
-namespace Messenger {
+export module Messenger.MessengerWindow;
+
+import Ghurund.Engine.Application.ApplicationWindow;
+import Ghurund.Engine.UI.UILayer;
+import Ghurund.Engine.UI.UIFeature;
+
+export namespace Messenger {
     using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace Ghurund::UI;
+    using namespace Ghurund::UI::Direct2D;
     using namespace Ghurund::Net;
 
     class MessengerWindow:public ApplicationWindow {
@@ -28,7 +36,7 @@ namespace Messenger {
         SharedPointer<TextBlock> clientCount;
 
     public:
-        MessengerWindow(Ghurund::Application& app, Renderer& renderer);
+        MessengerWindow(Ghurund::Core::Application& app, Renderer& renderer);
 
         ~MessengerWindow();
 

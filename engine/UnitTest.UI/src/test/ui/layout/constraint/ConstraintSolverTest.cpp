@@ -7,7 +7,6 @@
 #include "ui/layout/constraint/ConstraintSolver.h"
 #include "ui/layout/constraint/ValueConstraint.h"
 #include "ui/layout/constraint/WrapConstraint.h"
-#include "ui/layout/constraint/FillConstraint.h"
 
 #include <format>
 
@@ -82,7 +81,7 @@ public:
         MemoryGuard guard;
         {
             WrapConstraint wrap;
-            WidthFillConstraint fill;
+            Constraint fill;
             ValueConstraint value(0.0f);
             wrap.Dependencies.add(&fill);
             wrap.Dependencies.add(&value);

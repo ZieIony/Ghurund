@@ -277,14 +277,21 @@ namespace Ghurund::Core {
     concept Typed = requires(T obj) {
         { getType(obj) } -> std::same_as<Type>;
     };
-
-    template<>
-    String toString(const Type& type);
-
-    template<Typed T>
-    String toString(const T& obj) {
-        const Type& type = getType<T>();
-        return String(std::format(_T("{}::{}"), type.Namespace, _T("::"), type.Name).c_str());
-    }
-
 }
+
+
+template <>
+struct std::formatter<Ghurund::Core::Type, char>:std::formatter<const char*, char> {
+    template <typename FormatContext>
+    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) {
+        return format_to(ctx.out(), "{}::{}", type.Namespace, type.Name);
+    }
+};
+
+template <>
+struct std::formatter<Ghurund::Core::Type, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+    template <typename FormatContext>
+    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) {
+        return format_to(ctx.out(), L"{}::{}", type.Namespace, type.Name);
+    }
+};

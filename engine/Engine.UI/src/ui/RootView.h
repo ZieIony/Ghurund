@@ -2,6 +2,7 @@
 
 #include "control/ControlContainer.h"
 #include "core/window/Window.h"
+#include "layout/constraint/ConstraintSolver.h"
 
 namespace Ghurund::UI {
     class WindowWidthConstraint:public Constraint {
@@ -73,8 +74,13 @@ namespace Ghurund::UI {
 
         void onMeasure(float parentWidth, float parentHeight) {
             __super::onMeasure(parentWidth, parentHeight);
-            width->evaluate();
-            height->evaluate();
+
+            List<Constraint*> constraints;
+            Child->resolveConstraints(constraints);
+            ConstraintSolver solver;
+            solver.sortGraph(constraints);
+            for (Constraint* c : constraints)
+                c->evaluate();
         }
 
         virtual void repaint() {

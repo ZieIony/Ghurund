@@ -1,6 +1,5 @@
 #pragma once
 
-#include "application/ApplicationWindow.h"
 #include "core/window/WindowClass.h"
 #include "ui/RootView.h"
 #include "ui/loading/LayoutLoader.h"
@@ -9,15 +8,16 @@
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include "ui/Canvas.h"
+#include "ui/direct2d/UIContext.h"
 
 #include "EditorWindowBinding.h"
-#include "ui/font/FontLoader.h"
-#include "ui/image/BitmapLoader.h"
-#include "ui/image/ImageLoader.h"
+
+import Ghurund.Engine.Application.ApplicationWindow;
 
 namespace Ghurund::Editor {
     using namespace Ghurund;
     using namespace Ghurund::UI;
+    using namespace Ghurund::UI::Direct2D;
 
     class EditorWindow:public ApplicationWindow {
     private:
@@ -26,7 +26,7 @@ namespace Ghurund::Editor {
         EditorWindowBinding* binding;
 
     public:
-        EditorWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+        EditorWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
             Style = WindowStyle{
              .hasMinimizeButton = true,
              .hasMaximizeButton = true,

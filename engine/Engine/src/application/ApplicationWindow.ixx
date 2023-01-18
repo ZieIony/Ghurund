@@ -64,7 +64,7 @@ export namespace Ghurund {
             return *swapChain;
         }
 
-        __declspec(property(get = getSwapChain)) Ghurund::SwapChain& SwapChain;
+        __declspec(property(get = getSwapChain)) Ghurund::Core::DirectX::SwapChain& SwapChain;
 
         inline LayerList& getLayers() {
             return layers;

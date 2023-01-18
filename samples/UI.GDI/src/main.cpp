@@ -2,6 +2,7 @@
 
 #include "core/application/Application.h"
 #include "GdiWindow.h"
+#include "core/Int.h"
 
 namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {

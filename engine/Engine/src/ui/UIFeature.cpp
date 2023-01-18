@@ -63,6 +63,8 @@ namespace Ghurund {
         imageDrawableFactory = nullptr;
         delete textFormatFactory;
         textFormatFactory = nullptr;
+        delete constraintFactory;
+        constraintFactory = nullptr;
         delete graphics2d;
         graphics2d = nullptr;
     }

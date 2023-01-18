@@ -4,15 +4,32 @@
 #include "core/string/TextConversionUtils.h"
 
 namespace Ghurund::Core {
-    void Settings::parse(const String& settings) {
-        AString aSettings = convertText<tchar, char>(settings);
-        Array<AString> commands = aSettings.split(" ");
-        for (size_t i = 0; i < commands.Size; i++) {
-            Array<AString> keyVal = commands[i].split("=");
-            if (keyVal.Size != 2)
-                continue;
-            if (allowed.containsKey(keyVal[0]))
-                values.set(keyVal[0], keyVal[1]);
+    Status Settings::load(const FilePath& path) {
+        File file(path);
+        file.read();
+        tinyxml2::XMLDocument doc;
+        doc.Parse((const char*)file.Data, file.Size);
+        tinyxml2::XMLElement* child = doc.FirstChildElement();
+        while (child) {
+            const char* name = child->Name();
+            values.set(name, child->Value());
+            child = child->NextSiblingElement();
         }
+        return Status::OK;
     }
+
+    Status Settings::save(const FilePath& path) const {
+        File file(path);
+        tinyxml2::XMLDocument doc;
+        for (size_t i = 0; i < values.Size; i++) {
+            auto element = doc.NewElement(values.getKey(i).Data);
+            element->SetText(values.getValue(i).Data);
+        }
+        tinyxml2::XMLPrinter printer;
+        doc.Print(&printer);
+        file.setData(printer.CStr(), printer.CStrSize());
+        file.write();
+        return Status::OK;
+    }
+
 }

@@ -2,6 +2,7 @@ module;
 
 #include "core/string/String.h"
 
+#include <format>
 #include <angelscript.h>
 
 export module Ghurund.Engine.Script.Bindings.ScriptBindings;

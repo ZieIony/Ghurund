@@ -2,6 +2,7 @@
 #include "Guide.h"
 
 #include "ConstraintLayout.h"
+#include "core/Float.h"
 
 namespace Ghurund::UI {
     void Guide::resolve(ConstraintLayout& parent) {

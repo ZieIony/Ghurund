@@ -11,7 +11,7 @@
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
     template<>
     static std::wstring ToString<Ghurund::Core::FloatSize>(const Ghurund::Core::FloatSize& t) {
-        return Ghurund::Core::toString(t).Data;
+        return std::format(L"{}", t);
     }
 
     template<>

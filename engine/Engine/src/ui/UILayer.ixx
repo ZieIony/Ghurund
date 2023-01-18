@@ -4,7 +4,7 @@ module;
 #include "ui/direct2d/Canvas.h"
 #include "ui/direct2d/Graphics2d.h"
 #include "ui/direct2d/UIContext.h"
-#include <core/directx/buffer/RenderTarget.h>
+#include "core/directx/buffer/RenderTarget.h"
 
 export module Ghurund.Engine.UI.UILayer;
 
@@ -23,6 +23,7 @@ export namespace Ghurund::UI {
         Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
         IUIContext* context;
         ApplicationWindow& window;
+        ConstraintSolver solver;
 
     protected:
         virtual bool onSizeChangedEvent() override {
@@ -36,27 +37,7 @@ export namespace Ghurund::UI {
         }
 
     public:
-        UILayer(Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager):graphics(graphics), window(window) {
-            context = ghnew UIContext(*graphics.D2DFactory, *graphics.DWriteFactory, graphics.DeviceContext, window, resourceManager);
-            canvas = ghnew Ghurund::UI::Direct2D::Canvas();
-            canvas->init(graphics.DeviceContext);
-            this->rootView = ghnew Ghurund::UI::RootView(*context);
-            //rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
-            //rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
-            SwapChain& swapChain = window.SwapChain;
-            window.sizeChanging += [&](const Window& window, const IntSize& size) {
-                renderTargets.clear();
-                return true;
-            };
-            window.sizeChanged += [&](const Window& window) {
-                initTargets();
-                //rootView->PreferredSize.width = PreferredSize::Width::Width((float)window.Size.Width);
-                //rootView->PreferredSize.height = PreferredSize::Height::Height((float)window.Size.Height);
-                rootView->invalidate();
-                return true;
-            };
-            initTargets();
-        }
+        UILayer(Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager);
 
         ~UILayer() {
             rootView->release();
@@ -64,16 +45,7 @@ export namespace Ghurund::UI {
             delete context;
         }
 
-        void initTargets() {
-            SwapChain& swapChain = window.SwapChain;
-            if (!swapChain.Initialized)
-                return;
-            for (Frame& frame : swapChain.Frames) {
-                RenderTarget2D* target = ghnew RenderTarget2D();
-                target->init(graphics, *frame.RenderTarget.Texture);
-                renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
-            }
-        }
+        void initTargets();
 
         inline RootView& getRoot() {
             return *rootView;
@@ -97,25 +69,8 @@ export namespace Ghurund::UI {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void update(const uint64_t time) override {
-            rootView->onUpdate(time);
-            rootView->measure((float)Size.Width, (float)Size.Height);
-            rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
-        }
+        virtual void update(const uint64_t time) override;
 
-        virtual Status draw(RenderTarget& renderTarget) override {
-            RenderTarget2D* target2d = renderTargets.get(&renderTarget).get();
-            if (graphics.beginPaint(*target2d) == Status::OK) {
-                canvas->beginPaint();
-                rootView->draw(*canvas);
-                canvas->endPaint();
-            }
-            Status result = graphics.endPaint(*target2d);
-            if (result != Status::OK) {
-                canvas->uninit();
-                canvas->init(graphics.DeviceContext);
-            }
-            return result;
-        }
+        virtual Status draw(RenderTarget& renderTarget) override;
     };
 }

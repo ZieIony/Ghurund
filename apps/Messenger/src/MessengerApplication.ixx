@@ -1,9 +1,19 @@
-﻿#include "MessengerWindow.h"
-#include "ui/UIFeature.h"
+﻿module;
+
 #include "net/Networking.h"
 #include "graphics/Renderer.h"
+#include "ui/style/LightTheme.h"
+#include "core/application/Application.h"
+#include "core/Int.h"
 
-namespace Messenger {
+#include <format>
+
+export module Messenger.MessengerApplication;
+
+import Messenger.MessengerWindow;
+import Ghurund.Engine.UI.UIFeature;
+
+export namespace Messenger {
     using namespace Ghurund;
     using namespace Ghurund::UI;
     using namespace Ghurund::Net;
@@ -20,9 +30,9 @@ namespace Messenger {
         MessengerApplication() {
             auto uiFeature = ghnew UIFeature(*this);
             Features.add(std::unique_ptr<UIFeature>(uiFeature));
-            Graphics2D& graphics2d = uiFeature->Graphics2D;
-            lightTheme = ghnew LightTheme(*graphics2d.DWriteFactory, ResourceManager);
-            LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Layout>();
+            Ghurund::UI::Direct2D::Graphics2D& graphics2d = uiFeature->Graphics2D;
+            lightTheme = ghnew LightTheme(ResourceManager);
+            LayoutLoader* layoutLoader = (LayoutLoader*)ResourceManager.Loaders.get<Control>();
             layoutLoader->Theme = lightTheme;
 
             Features.add(std::make_unique<Graphics>());

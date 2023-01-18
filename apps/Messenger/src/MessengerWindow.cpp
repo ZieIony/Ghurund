@@ -1,4 +1,3 @@
-#include "MessengerWindow.h"
 #include "TextMessage.h"
 #include "core/window/WindowClass.h"
 
@@ -7,13 +6,18 @@
 #include "net/Networking.h"
 
 #include <ranges>
-#include "ui/UIFeature.h"
+
+import Messenger.MessengerWindow;
+import Ghurund.Engine.Application.ApplicationWindow;
+import Ghurund.Engine.UI.UIFeature;
 
 namespace Messenger {
+    using namespace Ghurund;
+    using namespace Ghurund::Core;
     using namespace Ghurund::Net;
     using namespace std::ranges;
 
-    MessengerWindow::MessengerWindow(Ghurund::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+    MessengerWindow::MessengerWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
         Style = WindowStyle{
                .hasMinimizeButton = true,
                .hasMaximizeButton = true,
@@ -29,10 +33,10 @@ namespace Messenger {
         delete theme;
     }
 
-    virtual void init(WindowManager& windowManager) {
+    /*virtual void init(WindowManager& windowManager) {
         __super::init(windowManager);
 
-        /*UIFeature* uiFeature = app.Features.get<UIFeature>();
+        UIFeature* uiFeature = app.Features.get<UIFeature>();
         Graphics2D& graphics2d = uiFeature->Graphics2D;
         const uint16_t port = 52109;
 
@@ -120,8 +124,8 @@ namespace Messenger {
 
         rootView->Theme = theme;
         rootView->BackgroundColor = theme->ColorBackground;
-        RootView = rootView;*/
-    }
+        RootView = rootView;
+    }*/
 
     void MessengerWindow::update(const uint64_t time) {
         /*if (server.Hosting) {
