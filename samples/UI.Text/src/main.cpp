@@ -11,8 +11,6 @@ namespace Samples {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
-    Ghurund::Core::Settings settings;
-    settings.parse(GetCommandLine());
-    Ghurund::Core::main<Samples::SampleApplication>(&settings);
+    Ghurund::Core::main<Samples::SampleApplication>();
     return 0;
 }

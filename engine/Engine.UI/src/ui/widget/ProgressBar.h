@@ -21,10 +21,7 @@ namespace Ghurund::UI {
         ProgressBar(
             const ColorAttr& progressColor = ColorRef(Theme::COLOR_ACCENT),
             const ColorAttr& backgroundColor = ColorRef(Theme::COLOR_CONTROL))
-        {
-            PreferredSize.width = PreferredSize::Width::FILL;
-            PreferredSize.height = 4;
-        }
+        {}
 
         ~ProgressBar() {
             delete progressColor;

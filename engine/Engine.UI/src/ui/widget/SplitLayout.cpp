@@ -7,21 +7,21 @@ namespace Ghurund::UI {
     void Splitter::setOrientation(Ghurund::UI::Orientation orientation) {
         this->orientation = orientation;
         if (orientation == Orientation::HORIZONTAL) {
-            PreferredSize.width = PreferredSize::Width(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
-            PreferredSize.height = PreferredSize::Height::FILL;
+            //PreferredSize.width = PreferredSize::Width(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
+            //PreferredSize.height = PreferredSize::Height::FILL;
         } else {
-            PreferredSize.height = PreferredSize::Height(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
-            PreferredSize.width = PreferredSize::Width::FILL;
+            //PreferredSize.height = PreferredSize::Height(std::max(PreferredSize.width.Value, PreferredSize.height.Value));
+            //PreferredSize.width = PreferredSize::Width::FILL;
         }
     }
 
     SplitLayout::SplitLayout(Ghurund::UI::Orientation orientation) {
         splitter = ghnew Splitter(orientation);
-        splitter->PreferredSize.width = 4;
+        //splitter->PreferredSize.width = 4;
         container1 = ghnew ControlContainer();
         container2 = ghnew ControlContainer();
         LockedChild = LockedChild::NONE;
-        PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
+        //PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
 
         layout = ghnew LinearLayout();
         layout->Children = { container1, splitter, container2 };
@@ -51,9 +51,9 @@ namespace Ghurund::UI {
                     if (lockedChild == LockedChild::NONE)
                         lockedChild = LockedChild::CHILD_1;
                     if (lockedChild == LockedChild::CHILD_1) {
-                        container1->PreferredSize.width = container1->Size.Width + args.Position.x - pressMousePos.x;
+                        //container1->PreferredSize.width = container1->Size.Width + args.Position.x - pressMousePos.x;
                     } else {
-                        container2->PreferredSize.width = container2->Size.Width - (args.Position.x - pressMousePos.x);
+                        //container2->PreferredSize.width = container2->Size.Width - (args.Position.x - pressMousePos.x);
                     }
                     layout->invalidate();
                 }
@@ -72,9 +72,9 @@ namespace Ghurund::UI {
                     if (lockedChild == LockedChild::NONE)
                         lockedChild = LockedChild::CHILD_1;
                     if (lockedChild == LockedChild::CHILD_1) {
-                        container1->PreferredSize.height = container1->Size.Height + args.Position.y - pressMousePos.y;
+                        //container1->PreferredSize.height = container1->Size.Height + args.Position.y - pressMousePos.y;
                     } else {
-                        container2->PreferredSize.height = container2->Size.Height - (args.Position.y - pressMousePos.y);
+                        //container2->PreferredSize.height = container2->Size.Height - (args.Position.y - pressMousePos.y);
                     }
                     layout->invalidate();
                 }
@@ -85,7 +85,7 @@ namespace Ghurund::UI {
 
     void SplitLayout::setChild1(Control* control) {
         container1->Child = control;
-        if (control) {
+        /*if (control) {
             if (orientation == Orientation::HORIZONTAL) {
                 if (control->PreferredSize.width != PreferredSize::Width::FILL) {
                     container1->PreferredSize.width = control->PreferredSize.width;
@@ -98,12 +98,12 @@ namespace Ghurund::UI {
                 }
             }
             control->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-        }
+        }*/
     }
 
     void SplitLayout::setChild2(Control* control) {
         container2->Child = control;
-        if (control) {
+        /*if (control) {
             if (orientation == Orientation::HORIZONTAL) {
                 if (control->PreferredSize.width != PreferredSize::Width::FILL) {
                     container2->PreferredSize.width = control->PreferredSize.width;
@@ -116,12 +116,12 @@ namespace Ghurund::UI {
                 }
             }
             control->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-        }
+        }*/
     }
 
     void SplitLayout::setLockedChild(Ghurund::UI::LockedChild child) {
         this->lockedChild = child;
-        if (lockedChild == LockedChild::NONE) {
+        /*if (lockedChild == LockedChild::NONE) {
             container1->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
             container2->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         } else if (lockedChild == LockedChild::CHILD_1) {
@@ -135,7 +135,7 @@ namespace Ghurund::UI {
                 /*container1->PreferredSize = {
                     PreferredSize::Width::FILL,
                     container1->Size.height ? (PreferredSize::Width)container1->Size.height : container1->PreferredSize.height
-                };*/
+                };* /
             }
             container2->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         } else if (lockedChild == LockedChild::CHILD_2) {
@@ -150,8 +150,8 @@ namespace Ghurund::UI {
                 /*container2->PreferredSize = {
                     PreferredSize::Width::FILL,
                     container2->Size.height ? (PreferredSize::Width)container2->Size.height : container2->PreferredSize.height
-                };*/
+                };* /
             }
-        }
+        }*/
     }
 }

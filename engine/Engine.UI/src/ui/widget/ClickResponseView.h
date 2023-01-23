@@ -30,7 +30,6 @@ namespace Ghurund::UI {
     public:
         ClickResponseView(const ColorAttr& color = DEFAULT_COLOR) {
             Color = color;
-            PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
         ~ClickResponseView() {

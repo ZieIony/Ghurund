@@ -30,16 +30,12 @@ namespace Ghurund::UI {
 
     void SeparatorHorizontalStyle::onThemeChanged(Control& control) const {
         __super::onThemeChanged(control);
-        control.PreferredSize.width = PreferredSize::Width::FILL;
-        control.PreferredSize.height = PreferredSize::Height::WRAP;
         ((Separator&)control).Padding.Vertical = 4;
         ((Separator&)control).Padding.Horizontal = 0;
     }
 
     void SeparatorVerticalStyle::onThemeChanged(Control& control) const {
         __super::onThemeChanged(control);
-        control.PreferredSize.width = PreferredSize::Width::WRAP;
-        control.PreferredSize.height = PreferredSize::Height::FILL;
         ((Separator&)control).Padding.Vertical = 0;
         ((Separator&)control).Padding.Horizontal = 4;
     }

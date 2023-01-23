@@ -17,8 +17,8 @@ namespace Ghurund::UI {
     }
 
     void ImageView::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.Width = resolveWidth(image ? (float)image->PreferredSize.Width : 0.0f, parentWidth, parentHeight);
-        measuredSize.Height = resolveHeight(image ? (float)image->PreferredSize.Height : 0.0f, parentWidth, parentHeight);
+        measuredSize.Width = image ? (float)image->PreferredSize.Width : 0.0f;
+        measuredSize.Height = image ? (float)image->PreferredSize.Height : 0.0f;
     }
 
     void ImageView::onDraw(ICanvas& canvas) {

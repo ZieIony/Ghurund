@@ -42,10 +42,6 @@ namespace Ghurund::UI {
         }
 
     public:
-        VerticalScrollBar() {
-            setPreferredSize(PreferredSize::Width::WRAP, PreferredSize::Height::FILL);
-        };
-
         ~VerticalScrollBar() {
             delete dragHelper;
         }

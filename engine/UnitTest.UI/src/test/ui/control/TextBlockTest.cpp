@@ -54,7 +54,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
+        //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
@@ -73,7 +73,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
+        //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"test text";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
@@ -92,7 +92,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
+        //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
@@ -111,7 +111,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
+        //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"test text";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
@@ -130,7 +130,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
+        //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
@@ -148,7 +148,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
+        //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->Text = L"test text";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
@@ -167,7 +167,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
+        //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);
@@ -185,7 +185,7 @@ public:
         SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock;
 
-        textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
+        //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->Text = L"test text";
         textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);

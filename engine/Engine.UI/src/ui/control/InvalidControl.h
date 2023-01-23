@@ -28,7 +28,6 @@ namespace Ghurund::UI {
 
         InvalidControl() {
             MinSize = { 18, 18 };
-            PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         }
 
         virtual void onDraw(ICanvas& canvas) override;

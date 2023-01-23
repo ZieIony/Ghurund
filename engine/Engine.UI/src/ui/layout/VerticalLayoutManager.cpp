@@ -69,29 +69,7 @@ namespace Ghurund::UI {
     }
 
     const FloatSize VerticalLayoutManager::measure(float parentWidth, float parentHeight) {
-        if (group->PreferredSize.width == PreferredSize::Width::FILL && group->PreferredSize.height == PreferredSize::Height::FILL)
-            return { 0, 0 };
-        if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS && group->PreferredSize.height.Type == PreferredSize::Type::PIXELS)
-            return { group->PreferredSize.width.Value, group->PreferredSize.height.Value };
-
-        float width = 0;
-        float height = 0;
-        for (size_t i = 0; i < provider->getChildCount(); i++) {
-            Control* control = provider->getChild(i);
-            control->measure(parentWidth, parentHeight);
-            if (control->PreferredSize.width != PreferredSize::Width::FILL)
-                width = std::max(width, control->MeasuredSize.Width);
-            if (control->PreferredSize.height != PreferredSize::Height::FILL)
-                height += control->MeasuredSize.Height;
-            maxScroll.y += control->MeasuredSize.Height;
-            provider->releaseChild(control, i);
-        }
-
-        if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS)
-            width = group->PreferredSize.width.Value;
-        if (group->PreferredSize.height.Type == PreferredSize::Type::PIXELS)
-            height = group->PreferredSize.height.Value;
-        return { width, height };
+        return { parentWidth, parentHeight };
     }
 
     void VerticalLayoutManager::layout(float x, float y, float width, float height) {

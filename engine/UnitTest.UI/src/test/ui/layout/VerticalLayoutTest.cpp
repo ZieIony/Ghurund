@@ -23,10 +23,10 @@ public:
     TEST_METHOD(measureContentWrap) {
         UnitTest::Utils::measureContentWrap<VerticalLayout>([](VerticalLayout& verticalLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent2);
             return FloatSize{ 20, 60 };
         });
@@ -39,10 +39,10 @@ public:
     TEST_METHOD(measureContentFill) {
         UnitTest::Utils::measureContentFill<VerticalLayout>([](VerticalLayout& verticalLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent2);
             return FloatSize{ 20, 60 };
         });
@@ -55,10 +55,10 @@ public:
     TEST_METHOD(measureContentPixels) {
         UnitTest::Utils::measureContentPixels<VerticalLayout>([](VerticalLayout& verticalLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent2);
             return FloatSize{ 20, 60 };
         });
@@ -71,10 +71,10 @@ public:
     TEST_METHOD(measureContentPercent) {
         UnitTest::Utils::measureContentPercent<VerticalLayout>([](VerticalLayout& verticalLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             verticalLayout.Children.add(testContent2);
             return FloatSize{ 20, 60 };
         });

@@ -22,47 +22,71 @@ namespace Ghurund::UI {
         return index;
     }
 
-    Constraint* ConstraintFactory::parseParentConstraint(const AString& str, const AString* ratio, const AString* offset) const {
-        float mul = ratio ? parse<float>(*ratio) : 1.0f;
-        float add = offset ? parse<float>(*offset) : 0.0f;
+    Constraint* ConstraintFactory::parseParentConstraint(const AString& str, float ratio, float offset, float min, float max) const {
         const AString constraintStr = str.substring(lengthOf("Parent."));
         if (constraintStr == "Left") {
-            return ghnew ParentLeftConstraint(add);
+            return ghnew ParentLeftConstraint(offset);
         } else if (constraintStr == "Right") {
-            return ghnew ParentRightConstraint(add);
+            return ghnew ParentRightConstraint(offset);
         } else if (constraintStr == "Top") {
-            return ghnew ParentTopConstraint(add);
+            return ghnew ParentTopConstraint(offset);
         } else if (constraintStr == "Bottom") {
-            return ghnew ParentBottomConstraint(add);
+            return ghnew ParentBottomConstraint(offset);
         } else if (constraintStr == "Width") {
-            return ghnew ParentWidthConstraint(mul, add);
+            auto c = ghnew ParentWidthConstraint();
+            c->Ratio = ratio;
+            c->Offset = offset;
+            c->Min = min;
+            c->Max = max;
+            return c;
         } else if (constraintStr == "Height") {
-            return ghnew ParentHeightConstraint(mul, add);
+            auto c = ghnew ParentHeightConstraint();
+            c->Ratio = ratio;
+            c->Offset = offset;
+            c->Min = min;
+            c->Max = max;
+            return c;
         } else {
             throw InvalidFormatException("Parent constraint has to be one of: 'Left', 'Right', 'Top', 'Bottom', 'Width', 'Height'");
         }
     }
 
-    Constraint* ConstraintFactory::parseSiblingConstraint(const AString& str, const AString* ratio, const AString* offset) const {
-        float mul = ratio ? parse<float>(*ratio) : 1.0f;
-        float add = offset ? parse<float>(*offset) : 0.0f;
+    Constraint* ConstraintFactory::parseSiblingConstraint(const AString& str, float ratio, float offset, float min, float max) const {
         size_t index = findEndOfNameIndex(str);
         if (str.Length < index + 2 || str.get(index + 1) != '.')
             throw InvalidFormatException(std::format("'{}' is not a valid constraint path ('.' and a constraint name expected)", str).c_str());
         const AString constraintStr = str.substring(index + 2);
         const AString siblingNameStr = str.substring(1, index - 1);
         if (constraintStr == "Left") {
-            return ghnew SiblingLeftConstraint(siblingNameStr, add);
+            auto c = ghnew SiblingLeftConstraint(siblingNameStr);
+            c->Offset = offset;
+            return c;
         } else if (constraintStr == "Right") {
-            return ghnew SiblingRightConstraint(siblingNameStr, add);
+            auto c = ghnew SiblingRightConstraint(siblingNameStr);
+            c->Offset = offset;
+            return c;
         } else if (constraintStr == "Top") {
-            return ghnew SiblingTopConstraint(siblingNameStr, add);
+            auto c = ghnew SiblingTopConstraint(siblingNameStr);
+            c->Offset = offset;
+            return c;
         } else if (constraintStr == "Bottom") {
-            return ghnew SiblingBottomConstraint(siblingNameStr, add);
+            auto c = ghnew SiblingBottomConstraint(siblingNameStr);
+            c->Offset = offset;
+            return c;
         } else if (constraintStr == "Width") {
-            return ghnew SiblingWidthConstraint(siblingNameStr, mul, add);
+            auto c = ghnew SiblingWidthConstraint(siblingNameStr);
+            c->Ratio = ratio;
+            c->Offset = offset;
+            c->Min = min;
+            c->Max = max;
+            return c;
         } else if (constraintStr == "Height") {
-            return ghnew SiblingHeightConstraint(siblingNameStr, mul, add);
+            auto c = ghnew SiblingHeightConstraint(siblingNameStr);
+            c->Ratio = ratio;
+            c->Offset = offset;
+            c->Min = min;
+            c->Max = max;
+            return c;
         } else {
             throw InvalidFormatException("Sibling constraint has to be one of: 'Left', 'Right', 'Top', 'Bottom', 'Width', 'Height'");
         }
@@ -84,22 +108,37 @@ namespace Ghurund::UI {
         }
     }
 
-    Constraint* ConstraintFactory::parseConstraint(const AString* path, const AString* ratio, const AString* offset) const {
+    Constraint* ConstraintFactory::parseConstraint(const AString* path, const AString* ratio, const AString* offset, const AString* min, const AString* max) const {
         if (!path && !offset)
             throw InvalidParamException("A constraint needs 'path', 'offset' or both to be defined.");
         if (path) {
+            float ratioValue = ratio ? parse<float>(*ratio) : 1.0f;
+            if(ratioValue<=0.0f)
+                throw InvalidParamException("Ratio cannot be less than or equal to 0.0f.");
+            float offsetValue = offset ? parse<float>(*offset) : 0.0f;
+            float minValue = min ? parse<float>(*min) : 0.0f;
+            float maxValue = max ? parse<float>(*max) : std::numeric_limits<float>::max();
+            if (minValue > maxValue)
+                throw InvalidParamException("Min cannot be larger than max.");
+
             if (path->startsWith("Parent.")) {
-                return parseParentConstraint(*path, ratio, offset);
+                return parseParentConstraint(*path, ratioValue, offsetValue, minValue, maxValue);
             } else if (path->startsWith("'")) {
-                return parseSiblingConstraint(*path, ratio, offset);
+                return parseSiblingConstraint(*path, ratioValue, offsetValue, minValue, maxValue);
             } else if (*path == "Width") {
-                float mul = ratio ? parse<float>(*ratio) : 1.0f;
-                float add = offset ? parse<float>(*offset) : 0.0f;
-                return ghnew SelfWidthConstraint(mul, add);
+                auto c = ghnew SelfWidthConstraint();
+                c->Ratio = ratioValue;
+                c->Offset = offsetValue;
+                c->Min = minValue;
+                c->Max = maxValue;
+                return c;
             } else if (*path == "Height") {
-                float mul = ratio ? parse<float>(*ratio) : 1.0f;
-                float add = offset ? parse<float>(*offset) : 0.0f;
-                return ghnew SelfHeightConstraint(mul, add);
+                auto c = ghnew SelfHeightConstraint();
+                c->Ratio = ratioValue;
+                c->Offset = offsetValue;
+                c->Min = minValue;
+                c->Max = maxValue;
+                return c;
             } else {
                 throw InvalidFormatException("Constraint path has to be one of: 'Parent.[constraint]', ''[sibling name]'.[constraint]', '[constraint]'");
             }
@@ -110,13 +149,13 @@ namespace Ghurund::UI {
     
     Constraint* ConstraintFactory::parseConstraint(const AString& str) const {
         if (str.startsWith("Parent.")) {
-            return parseParentConstraint(str, nullptr, nullptr);
+            return parseParentConstraint(str);
         } else if (str.startsWith("'")) {
-            return parseSiblingConstraint(str, nullptr, nullptr);
+            return parseSiblingConstraint(str);
         } else if (str == "Width") {
-            return ghnew SelfWidthConstraint(1.0f, 0.0f);
+            return ghnew SelfWidthConstraint();
         } else if (str == "Height") {
-            return ghnew SelfHeightConstraint(1.0f, 0.0f);
+            return ghnew SelfHeightConstraint();
         } else {
             return parseValueConstraint(str);
         }

@@ -77,28 +77,7 @@ namespace Ghurund::UI {
         }
 
         virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) {
-            if (group->PreferredSize.width == PreferredSize::Width::FILL &&
-                group->PreferredSize.height == PreferredSize::Height::FILL)
-                return { 0,0 };
-            if (group->PreferredSize.width.Type == PreferredSize::Type::PIXELS &&
-                group->PreferredSize.height.Type == PreferredSize::Type::PIXELS) {
-                return { group->PreferredSize.width.Value, group->PreferredSize.height.Value };
-            }
-
             Ghurund::Core::FloatSize measuredSize = { 0,0 };
-            size_t i = indexFirst;
-            while (i < provider->getChildCount()) {
-                Control* control = provider->getChild(i);
-                control->measure(parentWidth, parentHeight);
-                if (control->PreferredSize.width != PreferredSize::Width::FILL)
-                    measuredSize.Width += control->MeasuredSize.Width;
-                if (control->PreferredSize.height != PreferredSize::Height::FILL)
-                    measuredSize.Height = std::max(measuredSize.Height, control->MeasuredSize.Height);
-                provider->releaseChild(control, i);
-                control->release();
-                i++;
-            }
-
             return measuredSize;
         }
 

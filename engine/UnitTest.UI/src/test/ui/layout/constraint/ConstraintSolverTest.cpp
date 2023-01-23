@@ -9,6 +9,7 @@
 #include "ui/layout/constraint/WrapConstraint.h"
 
 #include <format>
+#include <ui/control/ColorView.h>
 
 using namespace UnitTest::Utils;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -91,6 +92,25 @@ public:
             Assert::IsTrue(&value == sorted[0], L"&value != sorted[0]");
             Assert::IsTrue(&wrap == sorted[1], L"&wrap != sorted[1]");
             Assert::IsTrue(&fill == sorted[2], L"&fill != sorted[2]");
+        }
+    }
+
+    TEST_METHOD(wrapCenterHorizontal) {
+        MemoryGuard guard;
+        {
+            SharedPointer<ColorView> colorView = ghnew ColorView();
+            colorView->setConstraints({
+                .left = std::make_shared<ValueConstraint>(0.0f),
+                .width = std::make_shared<ValueConstraint>(50.0f),
+                .right = std::make_shared<ValueConstraint>(100.0f)
+                });
+            List<Constraint*> constraints;
+            colorView->resolveConstraints(constraints);
+            List<Constraint*> sorted = ConstraintSolver::sortGraph(constraints);
+            for (Constraint* c : sorted)
+                c->evaluate();
+            Assert::AreEqual(25.0f, colorView->Left.Value);
+            Assert::AreEqual(75.0f, colorView->Right.Value);
         }
     }
 

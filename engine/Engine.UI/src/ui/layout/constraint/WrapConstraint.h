@@ -8,7 +8,9 @@ namespace Ghurund::UI {
     public:
         WrapConstraint():Constraint(0.0f, true) {}
 
-        virtual void resolve(Control& control) override {}
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
+            constraints.add(this);
+        }
 
         virtual void evaluate() override;
     };

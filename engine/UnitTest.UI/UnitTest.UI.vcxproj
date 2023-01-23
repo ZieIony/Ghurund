@@ -120,7 +120,6 @@
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlTest.cpp" />
     <ClCompile Include="src\test\ui\control\ImageViewTest.cpp" />
-    <ClCompile Include="src\test\ui\control\PreferredSizeTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\font\FontLoader.cpp" />
     <ClCompile Include="src\test\ui\layout\HorizontalLayoutTest.cpp" />
@@ -137,6 +136,9 @@
     <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
       <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="res\ConstraintFactoryTest.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

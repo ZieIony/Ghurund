@@ -10,25 +10,16 @@ namespace Ghurund::UI {
         Control* previousReceiver = nullptr;
 
     protected:
-        virtual void onMeasure(float parentWidth, float parentHeight) override {
-            for (Control* c : Children) {
-                if (!c->Visible)
-                    continue;
-                c->measure(
-                    PreferredSize.width.Type == PreferredSize::Type::PIXELS ? PreferredSize.width.Value : parentWidth,
-                    PreferredSize.height.Type == PreferredSize::Type::PIXELS ? PreferredSize.height.Value : parentHeight
-                );
-            }
-        }
+        virtual void onMeasure(float parentWidth, float parentHeight) override;
+
+        virtual void onLayout(float x, float y, float width, float height) override;
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
     public:
-        ControlGroup():children(*this) {
-            PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
-        }
+        ControlGroup():children(*this) {}
 
         ~ControlGroup() {
             if (previousReceiver)

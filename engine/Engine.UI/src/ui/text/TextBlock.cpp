@@ -17,7 +17,7 @@ namespace Ghurund::UI {
             return;
         }
 
-        if (preferredSize.width == PreferredSize::Width::WRAP) {
+        /*if (preferredSize.width == PreferredSize::Width::WRAP) {
             textLayout->Size = { MAX_LAYOUT_SIZE, MAX_LAYOUT_SIZE };
             if (textLayout->refresh() != Status::OK) {
                 Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
@@ -35,7 +35,7 @@ namespace Ghurund::UI {
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
             measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
-        }
+        }*/
     }
 
     void TextBlock::onDraw(ICanvas& canvas) {

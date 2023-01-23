@@ -25,9 +25,7 @@ namespace Ghurund::UI {
     
     void ScrollView::onLayout(float x, float y, float width, float height) {
         if (Child) {
-            Child->layout(0, 0,
-                Child->PreferredSize.width == PreferredSize::Width::FILL ? width : Child->MeasuredSize.Width,
-                Child->PreferredSize.height == PreferredSize::Height::FILL ? height : Child->MeasuredSize.Height);
+            Child->layout(0, 0, width, height);
             maxScroll = {
                 std::max(0.0f, Child->Size.Width - Size.Width),
                 std::max(0.0f, Child->Size.Height - Size.Height)

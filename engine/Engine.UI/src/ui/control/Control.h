@@ -8,13 +8,14 @@
 #include "core/math/Size.h"
 #include "core/input/EventConsumer.h"
 #include "ui/Cursor.h"
-#include "ui/PreferredSize.h"
 #include "ui/SizeConstraints.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
 #include "ui/layout/constraint/Constraint.h"
+#include "ui/layout/constraint/ConstraintSet.h"
 #include "ui/layout/constraint/ValueConstraint.h"
 #include "ui/layout/constraint/WrapConstraint.h"
+#include "ui/layout/constraint/SelfConstraint.h"
 
 namespace tinyxml2 {
     class XMLElement;
@@ -54,6 +55,8 @@ namespace Ghurund::UI {
 
         Ghurund::Core::AString* name = nullptr;
 
+        void loadConstraints(LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+
     protected:
         FloatPoint position = { 0,0 }, scale = { 1,1 };
         float rotation = 0;
@@ -61,7 +64,6 @@ namespace Ghurund::UI {
 
         SizeConstraints minSize = { 0,0 };
         SizeConstraints maxSize = { SizeConstraints::Width(SizeConstraints::Type::PERCENT, 100), SizeConstraints::Height(SizeConstraints::Type::PERCENT, 100) };
-        PreferredSize preferredSize;   // what the user wants
         Ghurund::Core::FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
 
@@ -289,25 +291,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize)) Ghurund::Core::FloatSize& Size;
 
-        inline const PreferredSize& getPreferredSize() const {
-            return preferredSize;
-        }
-
-        inline PreferredSize& getPreferredSize() {
-            return preferredSize;
-        }
-
-        inline void setPreferredSize(const PreferredSize& size) {
-            this->preferredSize = size;
-        }
-
-        virtual void setPreferredSize(const PreferredSize::Width& width, const PreferredSize::Height& height) {
-            preferredSize.width = width;
-            preferredSize.height = height;
-        }
-
-        __declspec(property(get = getPreferredSize, put = setPreferredSize)) const Ghurund::UI::PreferredSize& PreferredSize;
-
         inline const Ghurund::Core::FloatSize& getMeasuredSize() const {
             return measuredSize;
         }
@@ -389,10 +372,6 @@ namespace Ghurund::UI {
             measuredSize.Height = height->Value;
         }
 
-        float resolveWidth(float contentSize, float parentWidth, float parentHeight) const;
-
-        float resolveHeight(float contentSize, float parentWidth, float parentHeight) const;
-
         void layout(float x, float y, float width, float height);
 
         virtual void onUpdate(const uint64_t time) {}
@@ -412,108 +391,41 @@ namespace Ghurund::UI {
             return *left;
         }
 
-        inline void setLeft(std::unique_ptr<Constraint> left) {
-            if (left) {
-                this->left.reset(left.release());
-            } else {
-                this->left.reset(ghnew RightWidthConstraint());
-            }
-        }
-
-        __declspec(property(get = getLeft, put = setLeft)) Constraint& Left;
+        __declspec(property(get = getLeft)) Constraint& Left;
 
         inline Constraint& getRight() {
             return *right;
         }
 
-        inline void setRight(std::unique_ptr<Constraint> right) {
-            if (right) {
-                this->right.reset(right.release());
-            } else {
-                this->right.reset(ghnew LeftWidthConstraint());
-            }
-        }
-
-        __declspec(property(get = getRight, put = setRight)) Constraint& Right;
+        __declspec(property(get = getRight)) Constraint& Right;
 
         inline Constraint& getWidth() {
             return *width;
         }
 
-        inline void setWidth(std::unique_ptr<Constraint> width) {
-            if (width) {
-                this->width.reset(width.release());
-            } else {
-                this->width.reset(ghnew WrapConstraint());
-            }
-        }
-
-        inline void setWidth(float width) {
-            this->width.reset(ghnew ValueConstraint(width));
-        }
-
-        __declspec(property(get = getWidth, put = setWidth)) Constraint& Width;
+        __declspec(property(get = getWidth)) Constraint& Width;
 
         inline Constraint& getTop() {
             return *top;
         }
 
-        inline void setTop(std::unique_ptr<Constraint> top) {
-            if (top) {
-                this->top.reset(top.release());
-            } else {
-                this->top.reset(ghnew ValueConstraint(0.0f));
-            }
-        }
-
-        __declspec(property(get = getTop, put = setTop)) Constraint& Top;
+        __declspec(property(get = getTop)) Constraint& Top;
 
         inline Constraint& getBottom() {
             return *bottom;
         }
 
-        inline void setBottom(std::unique_ptr<Constraint> bottom) {
-            if (bottom) {
-                this->bottom.reset(bottom.release());
-            } else {
-                this->bottom.reset(ghnew TopHeightConstraint());
-            }
-        }
-
-        __declspec(property(get = getBottom, put = setBottom)) Constraint& Bottom;
+        __declspec(property(get = getBottom)) Constraint& Bottom;
 
         inline Constraint& getHeight() {
             return *height;
         }
 
-        inline void setHeight(std::unique_ptr<Constraint> height) {
-            if (height) {
-                this->height.reset(height.release());
-            } else {
-                this->width.reset(ghnew WrapConstraint());
-            }
-        }
+        __declspec(property(get = getHeight)) Constraint& Height;
 
-        inline void setHeight(float height) {
-            this->height.reset(ghnew ValueConstraint(height));
-        }
+        virtual void setConstraints(ConstraintSet constraints);
 
-        __declspec(property(get = getHeight, put = setHeight)) Constraint& Height;
-
-        virtual void resolveConstraints(List<Constraint*>& constraints) {
-            width->resolve(*this);
-            constraints.add(width.get());
-            height->resolve(*this);
-            constraints.add(height.get());
-            left->resolve(*this);
-            constraints.add(left.get());
-            top->resolve(*this);
-            constraints.add(top.get());
-            right->resolve(*this);
-            constraints.add(right.get());
-            bottom->resolve(*this);
-            constraints.add(bottom.get());
-        }
+        virtual void resolveConstraints(List<Constraint*>& constraints);
 
         virtual void bind() {
             /*for (Binding& b : bindings) {

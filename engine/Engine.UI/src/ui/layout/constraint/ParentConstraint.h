@@ -2,6 +2,7 @@
 
 #include "Constraint.h"
 #include "ValueConstraint.h"
+#include "core/math/MathUtils.h"
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
@@ -17,9 +18,10 @@ namespace Ghurund::UI {
     public:
         ParentRightConstraint(float offset = 0.0f):offset(offset) {}
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->Width);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -39,9 +41,10 @@ namespace Ghurund::UI {
     public:
         ParentBottomConstraint(float offset = 0.0f):offset(offset) {}
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->Height);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -49,37 +52,29 @@ namespace Ghurund::UI {
         }
     };
 
-    class ParentWidthConstraint:public Constraint {
-    private:
-        float ratio, offset;
-
+    class ParentWidthConstraint:public MinMaxConstraint {
     public:
-        ParentWidthConstraint(float ratio = 1.0f, float offset = 0.0f):ratio(ratio), offset(offset) {}
-
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->Width);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value * ratio + offset;
+            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
         }
     };
 
-    class ParentHeightConstraint:public Constraint {
-    private:
-        float ratio, offset;
-
+    class ParentHeightConstraint:public MinMaxConstraint {
     public:
-        ParentHeightConstraint(float ratio = 1.0f, float offset = 0.0f):ratio(ratio), offset(offset) {}
-
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->Height);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value * ratio + offset;
+            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
         }
     };
 }

@@ -15,8 +15,6 @@ namespace Ghurund::UI {
     }
 
     Shadow::Shadow(const ColorAttr& color) {
-        preferredSize.width = PreferredSize::Width::FILL;
-        preferredSize.height = PreferredSize::Height::FILL;
         Color = color;
         //bitmap = ghnew Bitmap();
     }

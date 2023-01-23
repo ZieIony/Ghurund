@@ -14,6 +14,27 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void ControlGroup::onMeasure(float parentWidth, float parentHeight) {
+        for (Control* c : children) {
+            if (!c->Visible)
+                continue;
+            c->measure(parentWidth, parentHeight);
+        }
+    }
+
+    void ControlGroup::onLayout(float x, float y, float width, float height) {
+        for (Control* c : children) {
+            if (!c->Visible)
+                continue;
+            c->layout(
+                c->Left.Value,
+                c->Top.Value,
+                c->Width.Value,
+                c->Height.Value
+            );
+        }
+    }
+
     bool ControlGroup::focusNext() {
         if (__super::focusNext())
             return true;

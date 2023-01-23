@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreviewLayout width="Parent.Width" height="Parent.Width" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
-	<StackLayout width="Parent.Width" height="Parent.Width">
-		<ColorView width="Parent.Width" height="Parent.Width" color="#ffff00ff"/>
-	</StackLayout>
+<PreviewLayout width="Parent.Width" height="Parent.Height" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
+	<ControlGroup height="Parent.Height">
+		<ControlGroup.Width path="Parent.Width" max="500"/>
+		<ColorView left="Parent.Left" right="Parent.Right" width="100" height="100" style="theme://style\ColorView_background"/>
+		<ColorView width="Parent.Width" top="100" bottom="Parent.Bottom" color="#ffff00ff"/>
+	</ControlGroup>
 </PreviewLayout>

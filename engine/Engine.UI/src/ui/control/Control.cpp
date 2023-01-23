@@ -27,7 +27,6 @@ namespace Ghurund::UI {
         static auto PROPERTY_SCALE = Property<Control, const FloatPoint&>("Scale", (FloatPoint & (Control::*)()) & getScale, (void(Control::*)(const FloatPoint&)) & setScale);
         static auto PROPERTY_TRANSFORMATION = Property<Control, const Matrix3x2&>("Transformation", (Matrix3x2 & (Control::*)()) & getTransformation);
         static auto PROPERTY_SIZE = Property<Control, FloatSize&>("Size", (FloatSize & (Control::*)()) & getSize);
-        static auto PROPERTY_PREFERREDSIZE = Property<Control, const Ghurund::UI::PreferredSize&>("PreferredSize", (Ghurund::UI::PreferredSize & (Control::*)()) & getPreferredSize, (void(Control::*)(const Ghurund::UI::PreferredSize&)) & setPreferredSize);
         static auto PROPERTY_MEASUREDSIZE = Property<Control, FloatSize&>("MeasuredSize", (FloatSize & (Control::*)()) & getMeasuredSize);
         static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
         static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
@@ -49,7 +48,6 @@ namespace Ghurund::UI {
             .withProperty(PROPERTY_SCALE)
             .withProperty(PROPERTY_TRANSFORMATION)
             .withProperty(PROPERTY_SIZE)
-            .withProperty(PROPERTY_PREFERREDSIZE)
             .withProperty(PROPERTY_MEASUREDSIZE)
             .withProperty(PROPERTY_PARENT)
             .withProperty(PROPERTY_CURSOR)
@@ -79,48 +77,6 @@ namespace Ghurund::UI {
         if (this->name)
             delete this->name;
         this->name = ghnew AString(name);
-    }
-
-    float Control::resolveWidth(float contentSize, float parentWidth, float parentHeight) const {
-        float width;
-        switch (preferredSize.width.Type) {
-        case PreferredSize::Type::PIXELS:
-            width = preferredSize.width.Value;
-            break;
-        case PreferredSize::Type::FILL:
-            width = parentWidth * preferredSize.width.Value;
-            break;
-        case PreferredSize::Type::WRAP:
-            width = contentSize;
-            break;
-        case PreferredSize::Type::PERCENT:
-            width = parentWidth * preferredSize.width.Value * 0.01f;
-            break;
-        case PreferredSize::Type::RATIO:
-            return std::min(maxSize.height.resolve(parentHeight), std::max(preferredSize.height.Value, minSize.height.resolve(parentHeight))) * preferredSize.width.Value;
-        }
-        return std::min(maxSize.width.resolve(parentWidth), std::max(width, minSize.width.resolve(parentWidth)));
-    }
-
-    float Control::resolveHeight(float contentSize, float parentWidth, float parentHeight) const {
-        float height;
-        switch (preferredSize.height.Type) {
-        case PreferredSize::Type::PIXELS:
-            height = preferredSize.height.Value;
-            break;
-        case PreferredSize::Type::FILL:
-            height = parentHeight * preferredSize.height.Value;
-            break;
-        case PreferredSize::Type::WRAP:
-            height = contentSize;
-            break;
-        case PreferredSize::Type::PERCENT:
-            height = parentHeight * preferredSize.height.Value * 0.01f;
-            break;
-        case PreferredSize::Type::RATIO:
-            return std::min(maxSize.width.resolve(parentWidth), std::max(preferredSize.width.Value, minSize.width.resolve(parentWidth))) * preferredSize.height.Value;
-        }
-        return std::min(maxSize.height.resolve(parentHeight), std::max(height, minSize.height.resolve(parentHeight)));
     }
 
     void Control::onMeasure(float parentWidth, float parentHeight) {
@@ -369,6 +325,88 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
+    void Control::setConstraints(ConstraintSet constraints) {
+        if (constraints.left && constraints.width && constraints.right) {
+            left = std::make_shared<CenterLeftConstraint>(constraints.left, constraints.width, constraints.right);
+            width = constraints.width;
+            right = std::make_shared<CenterRightConstraint>(constraints.left, constraints.width, constraints.right);
+        } else if (constraints.left) {
+            left = constraints.left;
+            if (constraints.width) {
+                width = constraints.width;
+                right.reset(ghnew LeftWidthConstraint());
+            } else if (constraints.right) {
+                width.reset(ghnew LeftRightConstraint());
+                right = constraints.right;
+            } else {
+                width.reset(ghnew WrapConstraint());
+                right.reset(ghnew LeftWidthConstraint());
+            }
+        } else if (constraints.width) {
+            if (constraints.right) {
+                left.reset(ghnew WidthRightConstraint());
+                width = constraints.width;
+                right = constraints.right;
+            } else {
+                left.reset(ghnew ParentLeftConstraint());
+                width = constraints.width;
+                right.reset(ghnew LeftWidthConstraint());
+            }
+        } else if (constraints.right) {
+            left.reset(ghnew WidthRightConstraint());
+            width.reset(ghnew WrapConstraint());
+            right = constraints.right;
+        } else {
+            left.reset(ghnew ParentLeftConstraint());
+            width.reset(ghnew WrapConstraint());
+            right.reset(ghnew LeftWidthConstraint());
+        }
+        if (constraints.top && constraints.height && constraints.bottom) {
+            top = std::make_shared<CenterTopConstraint>(constraints.top, constraints.height, constraints.bottom);
+            height = constraints.height;
+            bottom = std::make_shared<CenterBottomConstraint>(constraints.top, constraints.height, constraints.bottom);
+        } else if (constraints.top) {
+            top = constraints.top;
+            if (constraints.height) {
+                height = constraints.height;
+                bottom.reset(ghnew TopHeightConstraint());
+            } else if (constraints.bottom) {
+                height.reset(ghnew TopBottomConstraint());
+                bottom = constraints.bottom;
+            } else {
+                height.reset(ghnew WrapConstraint());
+                bottom.reset(ghnew TopHeightConstraint());
+            }
+        } else if (constraints.height) {
+            if (constraints.bottom) {
+                top.reset(ghnew HeightBottomConstraint());
+                height = constraints.height;
+                bottom = constraints.bottom;
+            } else {
+                top.reset(ghnew ParentTopConstraint());
+                height = constraints.height;
+                bottom.reset(ghnew TopHeightConstraint());
+            }
+        } else if (constraints.bottom) {
+            top.reset(ghnew HeightBottomConstraint());
+            height.reset(ghnew WrapConstraint());
+            bottom = constraints.bottom;
+        } else {
+            top.reset(ghnew ParentTopConstraint());
+            height.reset(ghnew WrapConstraint());
+            bottom.reset(ghnew TopHeightConstraint());
+        }
+    }
+
+    void Control::resolveConstraints(List<Constraint*>& constraints) {
+        width->resolve(*this, constraints);
+        height->resolve(*this, constraints);
+        left->resolve(*this, constraints);
+        top->resolve(*this, constraints);
+        right->resolve(*this, constraints);
+        bottom->resolve(*this, constraints);
+    }
+
     FloatPoint Control::getPositionInWindow() {
         Control* control = this;
         while (control) {
@@ -400,6 +438,88 @@ namespace Ghurund::UI {
         return result;
     }
 
+    void Control::loadConstraints(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+        auto childElement = xml.FirstChildElement();
+        const tinyxml2::XMLElement* leftElement = nullptr, * rightElement = nullptr, * widthElement = nullptr;
+        const tinyxml2::XMLElement* topElement = nullptr, * bottomElement = nullptr, * heightElement = nullptr;
+        while (childElement) {
+            if (strcmp(childElement->Name(), std::format("{}.Left", Type.Name).c_str()) == 0) {
+                leftElement = childElement->ToElement();
+            } else if (strcmp(childElement->Name(), std::format("{}.Right", Type.Name).c_str()) == 0) {
+                rightElement = childElement->ToElement();
+            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
+                widthElement = childElement->ToElement();
+            } else if (strcmp(childElement->Name(), std::format("{}.Top", Type.Name).c_str()) == 0) {
+                topElement = childElement->ToElement();
+            } else if (strcmp(childElement->Name(), std::format("{}.Bottom", Type.Name).c_str()) == 0) {
+                bottomElement = childElement->ToElement();
+            } else if (strcmp(childElement->Name(), std::format("{}.Height", Type.Name).c_str()) == 0) {
+                heightElement = childElement->ToElement();
+            }
+            childElement = childElement->NextSiblingElement();
+        }
+        auto leftAttr = xml.FindAttribute("left");
+        auto rightAttr = xml.FindAttribute("right");
+        auto widthAttr = xml.FindAttribute("width");
+        auto topAttr = xml.FindAttribute("top");
+        auto bottomAttr = xml.FindAttribute("bottom");
+        auto heightAttr = xml.FindAttribute("height");
+
+        if (leftAttr && leftElement)
+            throw InvalidDataException(std::format("A combination of both - 'left' attribute and '{}.Left' child is invalid.", Type.Name).c_str());
+        if (rightAttr && rightElement)
+            throw InvalidDataException(std::format("A combination of both - 'right' attribute and '{}.Right' child is invalid.", Type.Name).c_str());
+        if (widthAttr && widthElement)
+            throw InvalidDataException(std::format("A combination of both - 'width' attribute and '{}.Width' child is invalid.", Type.Name).c_str());
+        if (topAttr && topElement)
+            throw InvalidDataException(std::format("A combination of both - 'top' attribute and '{}.Top' child is invalid.", Type.Name).c_str());
+        if (bottomAttr && bottomElement)
+            throw InvalidDataException(std::format("A combination of both - 'bottom' attribute and '{}.Bottom' child is invalid.", Type.Name).c_str());
+        if (heightAttr && heightElement)
+            throw InvalidDataException(std::format("A combination of both - 'height' attribute and '{}.Height' child is invalid.", Type.Name).c_str());
+
+        Constraint* left = nullptr, * right = nullptr, * width = nullptr;
+        Constraint* top = nullptr, * bottom = nullptr, * height = nullptr;
+        if (leftElement) {
+            left = loader.loadConstraint(*leftElement);
+        } else  if (leftAttr) {
+            left = loader.loadConstraint(leftAttr->Value());
+        }
+        if (rightElement) {
+            right = loader.loadConstraint(*rightElement);
+        } else if (rightAttr) {
+            right = loader.loadConstraint(rightAttr->Value());
+        }
+        if (widthElement) {
+            width = loader.loadConstraint(*widthElement);
+        } else if (widthAttr) {
+            width = loader.loadConstraint(widthAttr->Value());
+        }
+        if (topElement) {
+            top = loader.loadConstraint(*topElement);
+        } else if (topAttr) {
+            top = loader.loadConstraint(topAttr->Value());
+        }
+        if (bottomElement) {
+            bottom = loader.loadConstraint(*bottomElement);
+        } else if (bottomAttr) {
+            bottom = loader.loadConstraint(bottomAttr->Value());
+        }
+        if (heightElement) {
+            height = loader.loadConstraint(*heightElement);
+        } else if (heightAttr) {
+            height = loader.loadConstraint(heightAttr->Value());
+        }
+        setConstraints({
+            .left = std::shared_ptr<Constraint>(left),
+            .width = std::shared_ptr<Constraint>(width),
+            .right = std::shared_ptr<Constraint>(right),
+            .top = std::shared_ptr<Constraint>(top),
+            .height = std::shared_ptr<Constraint>(height),
+            .bottom = std::shared_ptr<Constraint>(bottom)
+            });
+    }
+
     void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         auto nameAttr = xml.FindAttribute("name");
         if (nameAttr)
@@ -410,19 +530,6 @@ namespace Ghurund::UI {
         auto visibleAttr = xml.FindAttribute("visible");
         if (visibleAttr)
             Visible = visibleAttr->BoolValue();
-        auto preferredSizeAttr = xml.FindAttribute("preferredSize");
-        if (preferredSizeAttr) {
-            AString size = preferredSizeAttr->Value();
-            try {
-                preferredSize = PreferredSize::parse(size);
-            } catch (std::invalid_argument e) {}
-        }
-        auto widthAttr = xml.FindAttribute("width");
-        if (widthAttr)
-            width = std::unique_ptr<Constraint>(loader.loadConstraint(widthAttr->Value()));
-        auto heightAttr = xml.FindAttribute("height");
-        if (heightAttr)
-            height = std::unique_ptr<Constraint>(loader.loadConstraint(heightAttr->Value()));
         auto minSizeAttr = xml.FindAttribute("minSize");
         if (minSizeAttr) {
             std::string str = minSizeAttr->Value();
@@ -433,18 +540,6 @@ namespace Ghurund::UI {
                 minSize.height = (float)atof(m[2].str().c_str());
             }
         }
-        auto leftAttr = xml.FindAttribute("left");
-        if (leftAttr)
-            Left = std::unique_ptr<Constraint>(loader.loadConstraint(leftAttr->Value()));
-        auto topAttr = xml.FindAttribute("top");
-        if (topAttr)
-            Top = std::unique_ptr<Constraint>(loader.loadConstraint(topAttr->Value()));
-        auto rightAttr = xml.FindAttribute("right");
-        if (rightAttr)
-            Right = std::unique_ptr<Constraint>(loader.loadConstraint(rightAttr->Value()));
-        auto bottomAttr = xml.FindAttribute("bottom");
-        if (bottomAttr)
-            Bottom = std::unique_ptr<Constraint>(loader.loadConstraint(bottomAttr->Value()));
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
             AString s = styleAttr->Value();
@@ -464,23 +559,8 @@ namespace Ghurund::UI {
         } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
             Style = loader.Theme->Styles[StyleKey(Type.Name)];
         }
-        auto childElement = xml.FirstChildElement();
-        while (childElement) {
-            if (strcmp(childElement->Name(), std::format("{}.Left", Type.Name).c_str()) == 0) {
-                Left = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            } else if (strcmp(childElement->Name(), std::format("{}.Top", Type.Name).c_str()) == 0) {
-                Top = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            } else if (strcmp(childElement->Name(), std::format("{}.Right", Type.Name).c_str()) == 0) {
-                Right = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            } else if (strcmp(childElement->Name(), std::format("{}.Bottom", Type.Name).c_str()) == 0) {
-                Bottom = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            } else if (strcmp(childElement->Name(), std::format("{}.Width", Type.Name).c_str()) == 0) {
-                Width = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            } else if (strcmp(childElement->Name(), std::format("{}.Height", Type.Name).c_str()) == 0) {
-                Height = std::unique_ptr<Constraint>(loader.loadConstraint(*childElement));
-            }
-            childElement = childElement->NextSiblingElement();
-        }
+
+        loadConstraints(loader, xml);
     }
 
 #ifdef _DEBUG

@@ -12,10 +12,7 @@ namespace Ghurund::UI {
             if (!c->Visible)
                 continue;
 
-            c->layout(c->Position.x, c->Position.y,
-                c->PreferredSize.width == PreferredSize::Width::FILL ? width : c->MeasuredSize.Width,
-                c->PreferredSize.height == PreferredSize::Height::FILL ? height : c->MeasuredSize.Height
-            );
+            c->layout(c->Position.x, c->Position.y, c->Width.Value, c->Height.Value);
         }
     }
 }

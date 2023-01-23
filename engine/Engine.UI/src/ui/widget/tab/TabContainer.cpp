@@ -5,7 +5,6 @@
 
 namespace Ghurund::UI {
     TabContainer::TabContainer(){
-        PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
     }
     
     TabContainer::~TabContainer() {

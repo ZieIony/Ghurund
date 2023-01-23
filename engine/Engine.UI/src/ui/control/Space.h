@@ -12,9 +12,6 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        Space(float space = 8.0f) {
-            preferredSize.width = PreferredSize::Width(space);
-            preferredSize.height = PreferredSize::Height(space);
-        }
+        Space(float space = 8.0f) {}
     };
 }

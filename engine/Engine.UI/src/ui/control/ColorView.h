@@ -16,8 +16,6 @@ namespace Ghurund::UI {
     public:
         ColorView(const ColorAttr& color = ColorRef(Theme::COLOR_CONTROL)) {
             Color = color;
-            preferredSize.width = PreferredSize::Width::FILL;
-            preferredSize.height = PreferredSize::Height::FILL;
         }
 
         ~ColorView() {

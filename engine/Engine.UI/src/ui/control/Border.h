@@ -23,8 +23,6 @@ namespace Ghurund::UI {
 
         Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) {
             Color = color;
-            preferredSize.width = PreferredSize::Width::FILL;
-            preferredSize.height = PreferredSize::Height::FILL;
         }
 
         ~Border() {

@@ -135,7 +135,7 @@ namespace Ghurund::UI {
     }
 
     Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml) {
-        AString name, ratio, offset;
+        AString name, ratio, offset, min, max;
         auto nameAttr = xml.FindAttribute("path");
         if (nameAttr)
             name = nameAttr->Value();
@@ -145,10 +145,18 @@ namespace Ghurund::UI {
         auto offsetAttr = xml.FindAttribute("offset");
         if (offsetAttr)
             offset = offsetAttr->Value();
+        auto minAttr = xml.FindAttribute("min");
+        if (minAttr)
+            min = minAttr->Value();
+        auto maxAttr = xml.FindAttribute("max");
+        if (maxAttr)
+            max = maxAttr->Value();
         return constraintFactory.parseConstraint(
             nameAttr ? &name: nullptr,
             ratioAttr ? &ratio : nullptr,
-            offsetAttr ? &offset : nullptr
+            offsetAttr ? &offset : nullptr,
+            minAttr ? &min : nullptr,
+            maxAttr ? &max : nullptr
         );
     }
 

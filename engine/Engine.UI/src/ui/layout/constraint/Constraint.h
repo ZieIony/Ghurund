@@ -32,7 +32,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = isConstant)) bool Constant;
 
-        virtual void resolve(Control& control) {}
+        virtual void resolve(Control& control, List<Constraint*>& constraints) {}
 
         virtual void evaluate() {}
 
@@ -55,51 +55,67 @@ namespace Ghurund::UI {
         __declspec(property(get = canSkipDependencies)) bool CanSkipDependencies;
     };
 
-    class LeftWidthConstraint:public Constraint {
-    private:
-        Constraint* left, * width;
+    class OffsetConstraint:public Constraint {
+    protected:
+        float offset = 0.0f;
 
     public:
-        virtual void resolve(Control& control) override;
-
-        virtual void evaluate() override {
-            value = left->Value + width->Value;
+        inline float getOffset() const {
+            return offset;
         }
+
+        inline void setOffset(float offset) {
+            this->offset = offset;
+        }
+
+        __declspec(property(get = getOffset, put = setOffset)) float Offset;
     };
 
-    class RightWidthConstraint:public Constraint {
-    private:
-        Constraint* right, * width;
+    class RatioConstraint:public OffsetConstraint {
+    protected:
+        float ratio = 1.0f;
 
     public:
-        virtual void resolve(Control& control) override;
-
-        virtual void evaluate() override {
-            value = right->Value - width->Value;
+        inline float getRatio() const {
+            return ratio;
         }
+
+        inline void setRatio(float ratio) {
+            if (ratio <= 0.0f)
+                throw InvalidParamException();
+            this->ratio = ratio;
+        }
+
+        __declspec(property(get = getRatio, put = setRatio)) float Ratio;
     };
 
-    class TopHeightConstraint:public Constraint {
-    private:
-        Constraint* top, * height;
+    class MinMaxConstraint:public RatioConstraint {
+    protected:
+        float min = 0.0f, max = std::numeric_limits<float>::max();
 
     public:
-        virtual void resolve(Control& control) override;
-
-        virtual void evaluate() override {
-            value = top->Value + height->Value;
+        inline float getMin() const {
+            return min;
         }
-    };
 
-    class BottomHeightConstraint:public Constraint {
-    private:
-        Constraint* bottom, * height;
-
-    public:
-        virtual void resolve(Control& control) override;
-
-        virtual void evaluate() override {
-            value = bottom->Value - height->Value;
+        inline void setMin(float min) {
+            if (min > max)
+                throw InvalidParamException();
+            this->min = min;
         }
+
+        __declspec(property(get = getMin, put = setMin)) float Min;
+
+        inline float getMax() const {
+            return max;
+        }
+
+        inline void setMax(float max) {
+            if (max < min)
+                throw InvalidParamException();
+            this->max = max;
+        }
+
+        __declspec(property(get = getMax, put = setMax)) float Max;
     };
 }

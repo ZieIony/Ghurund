@@ -115,25 +115,10 @@ namespace Ghurund::UI {
         for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
-            c->measure(
-                group->PreferredSize.width.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.width.Value : parentWidth,
-                group->PreferredSize.height.Type == PreferredSize::Type::PIXELS ? group->PreferredSize.height.Value : parentHeight
-            );
+            c->measure(parentWidth, parentHeight);
         }
 
         FloatSize measuredSize = { 0,0 };
-
-        if (group->PreferredSize.width == PreferredSize::Width::WRAP) {
-            measuredSize.Width = std::min(measureWidth(), parentWidth);
-        } else if (group->PreferredSize.width != PreferredSize::Width::FILL) {
-            measuredSize.Width = group->PreferredSize.height.Value;
-        }
-
-        if (group->PreferredSize.height == PreferredSize::Height::WRAP) {
-            measuredSize.Height = measureHeight(parentWidth);
-        } else if (group->PreferredSize.height != PreferredSize::Height::FILL) {
-            measuredSize.Height = group->PreferredSize.height.Value;
-        }
 
         return measuredSize;
     }

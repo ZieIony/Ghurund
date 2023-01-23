@@ -2,7 +2,6 @@
 
 #include "core/math/Size.h"
 #include "test/MemoryGuard.h"
-#include "ui/PreferredSize.h"
 #include "core/SharedPointer.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ControlGroup.h"
@@ -15,7 +14,7 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = ghnew T();
-            control->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //control->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
 
             control->MinSize = { 0, 0 };
             control->MaxSize = { 1000, 1000 };
@@ -50,7 +49,7 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //control->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);
@@ -76,7 +75,7 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
+            //control->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
 
             control->MinSize = { 0, 0 };
             control->measure(100, 120);
@@ -97,7 +96,7 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
+            //control->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);
@@ -123,10 +122,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 20),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 30)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 20),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 30)
+            //};
 
             control->MinSize = { 0, 0 };
             control->measure(100, 120);
@@ -147,10 +146,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 20),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 30)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 20),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 30)
+            //};
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);
@@ -176,10 +175,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PERCENT, 25.0f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50.0f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PERCENT, 25.0f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50.0f)
+            //};
 
             control->MinSize = { 0, 0 };
             control->measure(100, 120);
@@ -200,10 +199,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PERCENT, 25.0f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50.0f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PERCENT, 25.0f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50.0f)
+            //};
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);
@@ -229,10 +228,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::RATIO, 2.5f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 50.0f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::RATIO, 2.5f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 50.0f)
+            //};
 
             control->MinSize = { 0, 0 };
             control->measure(100, 120);
@@ -266,10 +265,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::RATIO, 2.5f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 50.0f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::RATIO, 2.5f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PIXELS, 50.0f)
+            //};
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);
@@ -295,10 +294,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 25.0f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 25.0f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f)
+            //};
 
             control->MinSize = { 0, 0 };
             control->measure(100, 120);
@@ -332,10 +331,10 @@ namespace UnitTest::Utils {
         MemoryGuard guard;
         {
             SharedPointer<T> control = new T();
-            control->PreferredSize = {
-                Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 25.0f),
-                Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f)
-            };
+            //control->PreferredSize = {
+            //    Ghurund::UI::PreferredSize::Width(Ghurund::UI::PreferredSize::Type::PIXELS, 25.0f),
+            //    Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f)
+            //};
             FloatSize size = initializer(*control);
             if (control->Type.isOrExtends(Ghurund::UI::ControlGroup::TYPE))
                 Assert::IsTrue(((Ghurund::UI::ControlGroup&)*control).Children.Size > 0);

@@ -102,8 +102,8 @@ public:
         List<Constraint*> constraints;
         control->resolveConstraints(constraints);
         ConstraintSolver solver;
-        solver.sortGraph(constraints);
-        for (Constraint* c : constraints)
+        List<Constraint*> sorted = solver.sortGraph(constraints);
+        for (Constraint* c : sorted)
             c->evaluate();
 
         Assert::AreEqual(34.0f, control->Width.Value);

@@ -21,8 +21,10 @@ namespace Ghurund {
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
         canvas->init(graphics.DeviceContext);
         this->rootView = ghnew Ghurund::UI::RootView(*context);
-        rootView->Width = (float)window.Size.Width;
-        rootView->Height = (float)window.Size.Height;
+        rootView->setConstraints({
+            .width = std::make_shared<ValueConstraint>((float)window.Size.Width),
+            .height = std::make_shared<ValueConstraint>((float)window.Size.Height)
+            });
         SwapChain& swapChain = window.SwapChain;
         window.sizeChanging += [&](const Window& window, const IntSize& size) {
             renderTargets.clear();
@@ -30,8 +32,10 @@ namespace Ghurund {
         };
         window.sizeChanged += [&](const Window& window) {
             initTargets();
-            rootView->Width = (float)window.Size.Width;
-            rootView->Height = (float)window.Size.Height;
+            rootView->setConstraints({
+       .width = std::make_shared<ValueConstraint>((float)window.Size.Width),
+       .height = std::make_shared<ValueConstraint>((float)window.Size.Height)
+                });
             rootView->invalidate();
             return true;
         };

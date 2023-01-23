@@ -5,13 +5,12 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
-    class SiblingLeftConstraint:public Constraint {
+    class SiblingLeftConstraint:public OffsetConstraint {
     private:
         const AString name;
-        float offset;
 
     public:
-        SiblingLeftConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
+        SiblingLeftConstraint(const AString& name):name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -19,9 +18,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Left);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -29,13 +29,12 @@ namespace Ghurund::UI {
         }
     };
 
-    class SiblingRightConstraint:public Constraint {
+    class SiblingRightConstraint:public OffsetConstraint {
     private:
         const AString name;
-        float offset;
 
     public:
-        SiblingRightConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
+        SiblingRightConstraint(const AString& name):name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -43,9 +42,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Right);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -53,13 +53,13 @@ namespace Ghurund::UI {
         }
     };
 
-    class SiblingTopConstraint:public Constraint {
+    class SiblingTopConstraint:public OffsetConstraint {
     private:
         const AString name;
         float offset;
 
     public:
-        SiblingTopConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
+        SiblingTopConstraint(const AString& name):name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -67,9 +67,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Top);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -77,13 +78,12 @@ namespace Ghurund::UI {
         }
     };
 
-    class SiblingBottomConstraint:public Constraint {
+    class SiblingBottomConstraint:public OffsetConstraint {
     private:
         const AString name;
-        float offset;
 
     public:
-        SiblingBottomConstraint(const AString& name, float offset = 0.0f):name(name), offset(offset) {}
+        SiblingBottomConstraint(const AString& name):name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -91,9 +91,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Bottom);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
@@ -101,14 +102,12 @@ namespace Ghurund::UI {
         }
     };
 
-    class SiblingWidthConstraint:public Constraint {
+    class SiblingWidthConstraint:public MinMaxConstraint {
     private:
         const AString name;
-        float ratio, offset;
 
     public:
-        SiblingWidthConstraint(const AString& name, float ratio = 1.0f, float offset = 0.0f)
-            :name(name), ratio(ratio), offset(offset) {}
+        SiblingWidthConstraint(const AString& name):name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -116,24 +115,23 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Width);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value * ratio + offset;
+            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
         }
     };
 
-    class SiblingHeightConstraint:public Constraint {
+    class SiblingHeightConstraint:public MinMaxConstraint {
     private:
-        const AString name;
-        float ratio, offset;
-
+    const AString name;
+    
     public:
-        SiblingHeightConstraint(const AString& name, float ratio = 1.0f, float offset = 0.0f)
-            :name(name), ratio(ratio), offset(offset) {}
+        SiblingHeightConstraint(const AString& name): name(name) {}
 
         inline const AString& getName() const {
             return name;
@@ -141,13 +139,14 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control) override {
+        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
             dependencies.clear();
             dependencies.add(&control.Parent->find(name, false)->Height);
+            constraints.add(this);
         }
 
         virtual void evaluate() override {
-            value = (*dependencies.begin())->Value * ratio + offset;
+            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
         }
     };
 }

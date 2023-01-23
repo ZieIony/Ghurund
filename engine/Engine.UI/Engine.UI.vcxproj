@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ui\layout\constraint\ConstraintSet.h" />
     <ClInclude Include="generated\bindings\ExpandableContainerBinding.h" />
     <ClInclude Include="generated\bindings\TabBinding.h" />
     <ClInclude Include="generated\bindings\ToolbarBinding.h" />
@@ -106,7 +107,6 @@
     <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
-    <ClInclude Include="src\ui\PreferredSize.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\SizeConstraints.h" />
@@ -240,7 +240,7 @@
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
-    <ClCompile Include="src\ui\PreferredSize.cpp" />
+    <ClCompile Include="src\ui\layout\constraint\SelfConstraint.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\SizeConstraints.cpp" />
@@ -278,7 +278,6 @@
     <ClCompile Include="src\ui\layout\StackLayout.cpp" />
     <ClCompile Include="src\ui\layout\StackLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
-    <ClCompile Include="src\ui\layout\constraint\Constraint.cpp" />
     <ClCompile Include="src\ui\layout\constraint\ConstraintFactory.cpp" />
     <ClCompile Include="src\ui\layout\constraint\ConstraintLayout.cpp" />
     <ClCompile Include="src\ui\layout\constraint\Guide.cpp" />

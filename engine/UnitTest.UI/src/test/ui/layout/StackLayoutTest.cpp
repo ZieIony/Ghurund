@@ -21,13 +21,13 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<StackLayout> stackLayout = new StackLayout();
-            stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
 
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
+            //testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height::FILL };
             stackLayout->Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
 
             stackLayout->Children.add(testContent2);
             stackLayout->measure(100, 100);
@@ -39,13 +39,13 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<StackLayout> stackLayout = new StackLayout();
-            stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
 
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
             stackLayout->Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
 
             stackLayout->Children.add(testContent2);
             stackLayout->measure(100, 100);
@@ -57,12 +57,12 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<StackLayout> stackLayout = new StackLayout();
-            stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f) };
+            //testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::RATIO, 0.5f) };
             stackLayout->Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout->Children.add(testContent2);
             stackLayout->measure(100, 100);
             Assert::AreEqual({ 20,30 }, stackLayout->MeasuredSize);
@@ -73,12 +73,12 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<StackLayout> stackLayout = new StackLayout();
-            stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
+            //stackLayout->PreferredSize = { Ghurund::UI::PreferredSize::Width::WRAP, Ghurund::UI::PreferredSize::Height::WRAP };
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50) };
+            //testContent->PreferredSize = { Ghurund::UI::PreferredSize::Width::FILL, Ghurund::UI::PreferredSize::Height(Ghurund::UI::PreferredSize::Type::PERCENT, 50) };
             stackLayout->Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout->Children.add(testContent2);
             stackLayout->measure(100, 100);
             Assert::AreEqual({ 20,30 }, stackLayout->MeasuredSize);
@@ -92,10 +92,10 @@ public:
     TEST_METHOD(measureContentWrap) {
         UnitTest::Utils::measureContentWrap<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
@@ -108,10 +108,10 @@ public:
     TEST_METHOD(measureContentFill) {
         UnitTest::Utils::measureContentFill<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
@@ -124,10 +124,10 @@ public:
     TEST_METHOD(measureContentPixels) {
         UnitTest::Utils::measureContentPixels<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
@@ -140,10 +140,10 @@ public:
     TEST_METHOD(measureContentPercent) {
         UnitTest::Utils::measureContentPercent<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
@@ -156,10 +156,10 @@ public:
     TEST_METHOD(measureContentRatioWidth) {
         UnitTest::Utils::measureContentRatioWidth<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
@@ -172,10 +172,10 @@ public:
     TEST_METHOD(measureContentRatioHeight) {
         UnitTest::Utils::measureContentRatioHeight<StackLayout>([](StackLayout& stackLayout) {
             SharedPointer<ColorView> testContent = new ColorView();
-            testContent->PreferredSize = { 20, 30 };
+            //testContent->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent);
             SharedPointer<ColorView> testContent2 = new ColorView();
-            testContent2->PreferredSize = { 20, 30 };
+            //testContent2->PreferredSize = { 20, 30 };
             stackLayout.Children.add(testContent2);
             return FloatSize{ 20, 30 };
         });
