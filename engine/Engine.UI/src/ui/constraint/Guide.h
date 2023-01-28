@@ -1,9 +1,9 @@
 #pragma once
 
-#include "ui/layout/constraint/Side.h"
+#include "Constraint.h"
+#include "Side.h"
 #include "core/Exceptions.h"
 #include "core/string/String.h"
-#include "ui/layout/constraint/Constraint.h"
 #include "core/SharedPointer.h"
 #include "core/DataParsing.h"
 #include "ui/control/ControlPath.h"

@@ -2,6 +2,7 @@
 #include "ControlGroup.h"
 
 #include "ui/Alignment.h"
+#include "ui/constraint/ConstraintGraph.h"
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
@@ -191,6 +192,12 @@ namespace Ghurund::UI {
             }
         }
         return nullptr;
+    }
+
+    void ControlGroup::resolveConstraints(ConstraintGraph& graph) {
+        __super::resolveConstraints(graph);
+        for (Control* c : children)
+            c->resolveConstraints(graph);
     }
 
     void ControlGroup::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

@@ -18,11 +18,7 @@ namespace Ghurund::UI {
     public:
         ParentRightConstraint(float offset = 0.0f):offset(offset) {}
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->Width);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -41,11 +37,7 @@ namespace Ghurund::UI {
     public:
         ParentBottomConstraint(float offset = 0.0f):offset(offset) {}
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->Height);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -54,11 +46,7 @@ namespace Ghurund::UI {
 
     class ParentWidthConstraint:public MinMaxConstraint {
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->Width);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
@@ -67,11 +55,7 @@ namespace Ghurund::UI {
 
     class ParentHeightConstraint:public MinMaxConstraint {
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->Height);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);

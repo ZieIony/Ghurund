@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 
     class SelfWidthConstraint:public MinMaxConstraint {
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 
     class SelfHeightConstraint:public MinMaxConstraint {
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
@@ -30,7 +30,7 @@ namespace Ghurund::UI {
         Constraint* left, * width;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = left->Value + width->Value;
@@ -47,7 +47,7 @@ namespace Ghurund::UI {
             dependencies.addAll({ this->left.get(), this->width.get(), this->right.get() });
         }
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (right->Value + left->Value - width->Value) / 2;
@@ -59,7 +59,7 @@ namespace Ghurund::UI {
         Constraint* left, * right;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = right->Value - left->Value;
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
             dependencies.addAll({ this->left.get(), this->width.get(), this->right.get() });
         }
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (right->Value + left->Value + width->Value) / 2;
@@ -88,7 +88,7 @@ namespace Ghurund::UI {
         Constraint* width, * right;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = right->Value - width->Value;
@@ -100,7 +100,7 @@ namespace Ghurund::UI {
         Constraint* top, * height;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = top->Value + height->Value;
@@ -117,7 +117,7 @@ namespace Ghurund::UI {
             dependencies.addAll({ this->top.get(), this->height.get(), this->bottom.get() });
         }
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (bottom->Value + top->Value - height->Value) / 2;
@@ -129,7 +129,7 @@ namespace Ghurund::UI {
         Constraint* top, * bottom;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = bottom->Value - top->Value;
@@ -146,7 +146,7 @@ namespace Ghurund::UI {
             dependencies.addAll({ this->top.get(), this->height.get(), this->bottom.get() });
         }
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (bottom->Value + top->Value + height->Value) / 2;
@@ -158,7 +158,7 @@ namespace Ghurund::UI {
         Constraint* height, * bottom;
 
     public:
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override;
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = bottom->Value - height->Value;

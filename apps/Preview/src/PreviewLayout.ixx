@@ -3,7 +3,7 @@ module;
 #include "ui/widget/ContentWidget.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
-#include "ui/layout/StackLayout.h"
+#include "ui/control/ControlGroup.h"
 #include "ui/style/WindowsTheme.h"
 
 export module Preview.PreviewLayout;
@@ -17,7 +17,7 @@ export namespace Preview {
 
     class PreviewLayout:public ControlContainer {
     private:
-        Ghurund::UI::StackLayout* container = nullptr;
+        Ghurund::UI::ControlGroup* container = nullptr;
         Ghurund::UI::Button* color1 = nullptr;
         Ghurund::UI::Button* color2 = nullptr;
         Ghurund::UI::Button* color3 = nullptr;
@@ -30,14 +30,14 @@ export namespace Preview {
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             __super::load(loader, xml);
 
-            container = find<Ghurund::UI::StackLayout>("container");
-            color1 = find<Ghurund::UI::Button>("color1");
-            color2 = find<Ghurund::UI::Button>("color2");
-            color3 = find<Ghurund::UI::Button>("color3");
-            color4 = find<Ghurund::UI::Button>("color4");
-            colorTheme = find<Ghurund::UI::Button>("colorTheme");
-            enabledCheckBox = find<Ghurund::UI::CheckBox>("enabledCheckBox");
-            themeCheckBox = find<Ghurund::UI::CheckBox>("themeCheckBox");
+            container = (Ghurund::UI::ControlGroup*)find("container");
+            color1 = (Ghurund::UI::Button*)find("color1");
+            color2 = (Ghurund::UI::Button*)find("color2");
+            color3 = (Ghurund::UI::Button*)find("color3");
+            color4 = (Ghurund::UI::Button*)find("color4");
+            colorTheme = (Ghurund::UI::Button*)find("colorTheme");
+            enabledCheckBox = (Ghurund::UI::CheckBox*)find("enabledCheckBox");
+            themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
 
             /*themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
@@ -79,11 +79,11 @@ export namespace Preview {
     public:
         Event<PreviewLayout, ThemeType> themeChanged = *this;
 
-        inline StackLayout* getContainer() {
+        inline ControlGroup* getContainer() {
             return container;
         }
 
-        __declspec(property(get = getContainer)) StackLayout* Container;
+        __declspec(property(get = getContainer)) ControlGroup* Container;
 
         void onMeasure(float parentWidth, float parentHeight) {
             __super::onMeasure(parentWidth, parentHeight);

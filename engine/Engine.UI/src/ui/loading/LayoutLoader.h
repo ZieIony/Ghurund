@@ -15,7 +15,7 @@
 #include "ui/loading/ShapeFactory.h"
 #include "ui/loading/ImageDrawableFactory.h"
 #include "ui/loading/TextFormatFactory.h"
-#include "ui/layout/constraint/ConstraintFactory.h"
+#include "ui/constraint/ConstraintFactory.h"
 #include "ui/style/ColorAttr.h"
 
 #include <tinyxml2.h>
@@ -92,9 +92,9 @@ namespace Ghurund::UI {
 
         Control* loadControl(const tinyxml2::XMLElement& xml);
 
-        Constraint* loadConstraint(const tinyxml2::XMLElement& xml);
+        Constraint* loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation);
 
-        Constraint* loadConstraint(const char* str);
+        Constraint* loadConstraint(const char* str, Orientation orientation);
 
         Shape* loadShape(const char* str);
 

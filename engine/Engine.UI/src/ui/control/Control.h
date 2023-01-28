@@ -8,14 +8,13 @@
 #include "core/math/Size.h"
 #include "core/input/EventConsumer.h"
 #include "ui/Cursor.h"
-#include "ui/SizeConstraints.h"
 #include "ui/UIContext.h"
 #include "ui/style/Style.h"
-#include "ui/layout/constraint/Constraint.h"
-#include "ui/layout/constraint/ConstraintSet.h"
-#include "ui/layout/constraint/ValueConstraint.h"
-#include "ui/layout/constraint/WrapConstraint.h"
-#include "ui/layout/constraint/SelfConstraint.h"
+#include "ui/constraint/Constraint.h"
+#include "ui/constraint/ConstraintSet.h"
+#include "ui/constraint/ValueConstraint.h"
+#include "ui/constraint/WrapConstraint.h"
+#include "ui/constraint/SelfConstraint.h"
 
 namespace tinyxml2 {
     class XMLElement;
@@ -26,9 +25,8 @@ namespace Ghurund::UI {
     class Theme;
     class LayoutLoader;
     class ICanvas;
-}
+    class ConstraintGraph;
 
-namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class Control: public Resource, public EventConsumer {
@@ -62,8 +60,6 @@ namespace Ghurund::UI {
         float rotation = 0;
         Ghurund::Core::Matrix3x2 transformation = {};
 
-        SizeConstraints minSize = { 0,0 };
-        SizeConstraints maxSize = { SizeConstraints::Width(SizeConstraints::Type::PERCENT, 100), SizeConstraints::Height(SizeConstraints::Type::PERCENT, 100) };
         Ghurund::Core::FloatSize measuredSize;  // what the view wants
         bool needsLayout = true;
 
@@ -265,26 +261,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
-        inline const SizeConstraints& getMinSize() const {
-            return minSize;
-        }
-
-        inline void setMinSize(const SizeConstraints& size) {
-            this->minSize = size;
-        }
-
-        __declspec(property(get = getMinSize, put = setMinSize)) const SizeConstraints& MinSize;
-
-        inline const SizeConstraints& getMaxSize() const {
-            return maxSize;
-        }
-
-        inline void setMaxSize(const SizeConstraints& size) {
-            this->maxSize = size;
-        }
-
-        __declspec(property(get = getMaxSize, put = setMaxSize)) const SizeConstraints& MaxSize;
-
         inline const Ghurund::Core::FloatSize& getSize() const {
             return size;
         }
@@ -425,7 +401,7 @@ namespace Ghurund::UI {
 
         virtual void setConstraints(ConstraintSet constraints);
 
-        virtual void resolveConstraints(List<Constraint*>& constraints);
+        virtual void resolveConstraints(ConstraintGraph& graph);
 
         virtual void bind() {
             /*for (Binding& b : bindings) {

@@ -2,9 +2,9 @@
 
 #include "DragHelper.h"
 #include "Widget.h"
-#include "ui/widget/button/Button.h"
 #include "ui/control/ClickableControl.h"
-#include "ui/layout/ManualLayout.h"
+#include "ui/control/ControlGroup.h"
+#include "ui/widget/button/Button.h"
 
 #include <algorithm>
 
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
         Button* topButton;
         Button* barButton;
         ClickableControl* clickableTrack;
-        ManualLayout* track;
+        ControlGroup* track;
         Button* bottomButton;
 
         uint32_t pressMousePos = 0;

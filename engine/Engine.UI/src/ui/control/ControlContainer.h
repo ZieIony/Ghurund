@@ -97,11 +97,7 @@ namespace Ghurund::UI {
 
         virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
 
-        virtual void resolveConstraints(List<Constraint*>& constraints) override {
-            __super::resolveConstraints(constraints);
-            if (child)
-                child->resolveConstraints(constraints);
-        }
+        virtual void resolveConstraints(ConstraintGraph& graph) override;
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 

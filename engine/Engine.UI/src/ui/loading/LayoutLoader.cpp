@@ -12,9 +12,7 @@
 #include "ui/control/PaddingContainer.h"
 #include "ui/drawable/InvalidImageDrawable.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/layout/ManualLayout.h"
-#include "ui/layout/StackLayout.h"
-#include "ui/layout/constraint/ConstraintLayout.h"
+#include "ui/constraint/ConstraintLayout.h"
 #include "ui/style/Theme.h"
 #include "ui/text/TextBlock.h"
 #include "ui/text/TextField.h"
@@ -134,7 +132,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml) {
+    Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation) {
         AString name, ratio, offset, min, max;
         auto nameAttr = xml.FindAttribute("path");
         if (nameAttr)
@@ -156,12 +154,13 @@ namespace Ghurund::UI {
             ratioAttr ? &ratio : nullptr,
             offsetAttr ? &offset : nullptr,
             minAttr ? &min : nullptr,
-            maxAttr ? &max : nullptr
+            maxAttr ? &max : nullptr,
+            orientation
         );
     }
 
-    Constraint* LayoutLoader::loadConstraint(const char* str) {
-        return constraintFactory.parseConstraint(str);
+    Constraint* LayoutLoader::loadConstraint(const char* str, Orientation orientation) {
+        return constraintFactory.parseConstraint(str, orientation);
     }
 
     Shape* LayoutLoader::loadShape(const char* str) {

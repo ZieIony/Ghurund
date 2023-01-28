@@ -3,10 +3,10 @@ module;
 #include "core/resource/ResourceManager.h"
 #include "core/directx/SwapChain.h"
 #include "core/directx/Frame.h"
+#include "ui/constraint/ValueConstraint.h"
 #include "ui/direct2d/RenderTarget2D.h"
 #include "ui/direct2d/UIContext.h"
 #include "ui/direct2d/Graphics2d.h"
-#include <ui/layout/constraint/ValueConstraint.h>
 
 module Ghurund.Engine.UI.UILayer;
 
@@ -55,11 +55,10 @@ namespace Ghurund {
     
     void UI::UILayer::update(const uint64_t time) {
         rootView->onUpdate(time);
-        List<Constraint*> constraints;
-        rootView->resolveConstraints(constraints);
-        List<Constraint*> sorted = solver.sortGraph(constraints);
-        for (Constraint* c : sorted)
-            c->evaluate();
+        graph.clear();
+        rootView->resolveConstraints(graph);
+        graph.sort();
+        graph.evaluate();
         rootView->measure((float)Size.Width, (float)Size.Height);
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }

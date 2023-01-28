@@ -3,13 +3,15 @@
 #include "ControlGroup.h"
 
 #include "core/input/Mouse.h"
+#include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
+#include "core/reflection/TypeBuilder.h"
+#include "ui/Canvas.h"
 #include "ui/Cursor.h"
+#include "ui/constraint/ConstraintGraph.h"
+#include "ui/constraint/ParentConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/style/Theme.h"
-#include "ui/Canvas.h"
-#include "core/reflection/TypeBuilder.h"
-#include "core/reflection/StandardTypes.h"
-#include "core/reflection/Property.h"
 
 #include <regex>
 
@@ -339,7 +341,7 @@ namespace Ghurund::UI {
                 width.reset(ghnew LeftRightConstraint());
                 right = constraints.right;
             } else {
-                width.reset(ghnew WrapConstraint());
+                width.reset(ghnew WrapWidthConstraint());
                 right.reset(ghnew LeftWidthConstraint());
             }
         } else if (constraints.width) {
@@ -354,11 +356,11 @@ namespace Ghurund::UI {
             }
         } else if (constraints.right) {
             left.reset(ghnew WidthRightConstraint());
-            width.reset(ghnew WrapConstraint());
+            width.reset(ghnew WrapWidthConstraint());
             right = constraints.right;
         } else {
             left.reset(ghnew ParentLeftConstraint());
-            width.reset(ghnew WrapConstraint());
+            width.reset(ghnew WrapWidthConstraint());
             right.reset(ghnew LeftWidthConstraint());
         }
         if (constraints.top && constraints.height && constraints.bottom) {
@@ -374,7 +376,7 @@ namespace Ghurund::UI {
                 height.reset(ghnew TopBottomConstraint());
                 bottom = constraints.bottom;
             } else {
-                height.reset(ghnew WrapConstraint());
+                height.reset(ghnew WrapHeightConstraint());
                 bottom.reset(ghnew TopHeightConstraint());
             }
         } else if (constraints.height) {
@@ -389,22 +391,22 @@ namespace Ghurund::UI {
             }
         } else if (constraints.bottom) {
             top.reset(ghnew HeightBottomConstraint());
-            height.reset(ghnew WrapConstraint());
+            height.reset(ghnew WrapHeightConstraint());
             bottom = constraints.bottom;
         } else {
             top.reset(ghnew ParentTopConstraint());
-            height.reset(ghnew WrapConstraint());
+            height.reset(ghnew WrapHeightConstraint());
             bottom.reset(ghnew TopHeightConstraint());
         }
     }
 
-    void Control::resolveConstraints(List<Constraint*>& constraints) {
-        width->resolve(*this, constraints);
-        height->resolve(*this, constraints);
-        left->resolve(*this, constraints);
-        top->resolve(*this, constraints);
-        right->resolve(*this, constraints);
-        bottom->resolve(*this, constraints);
+    void Control::resolveConstraints(ConstraintGraph& graph) {
+        width->resolve(*this, graph);
+        height->resolve(*this, graph);
+        left->resolve(*this, graph);
+        top->resolve(*this, graph);
+        right->resolve(*this, graph);
+        bottom->resolve(*this, graph);
     }
 
     FloatPoint Control::getPositionInWindow() {
@@ -481,34 +483,34 @@ namespace Ghurund::UI {
         Constraint* left = nullptr, * right = nullptr, * width = nullptr;
         Constraint* top = nullptr, * bottom = nullptr, * height = nullptr;
         if (leftElement) {
-            left = loader.loadConstraint(*leftElement);
+            left = loader.loadConstraint(*leftElement, Orientation::HORIZONTAL);
         } else  if (leftAttr) {
-            left = loader.loadConstraint(leftAttr->Value());
+            left = loader.loadConstraint(leftAttr->Value(), Orientation::HORIZONTAL);
         }
         if (rightElement) {
-            right = loader.loadConstraint(*rightElement);
+            right = loader.loadConstraint(*rightElement, Orientation::HORIZONTAL);
         } else if (rightAttr) {
-            right = loader.loadConstraint(rightAttr->Value());
+            right = loader.loadConstraint(rightAttr->Value(), Orientation::HORIZONTAL);
         }
         if (widthElement) {
-            width = loader.loadConstraint(*widthElement);
+            width = loader.loadConstraint(*widthElement, Orientation::HORIZONTAL);
         } else if (widthAttr) {
-            width = loader.loadConstraint(widthAttr->Value());
+            width = loader.loadConstraint(widthAttr->Value(), Orientation::HORIZONTAL);
         }
         if (topElement) {
-            top = loader.loadConstraint(*topElement);
+            top = loader.loadConstraint(*topElement, Orientation::VERTICAL);
         } else if (topAttr) {
-            top = loader.loadConstraint(topAttr->Value());
+            top = loader.loadConstraint(topAttr->Value(), Orientation::VERTICAL);
         }
         if (bottomElement) {
-            bottom = loader.loadConstraint(*bottomElement);
+            bottom = loader.loadConstraint(*bottomElement, Orientation::VERTICAL);
         } else if (bottomAttr) {
-            bottom = loader.loadConstraint(bottomAttr->Value());
+            bottom = loader.loadConstraint(bottomAttr->Value(), Orientation::VERTICAL);
         }
         if (heightElement) {
-            height = loader.loadConstraint(*heightElement);
+            height = loader.loadConstraint(*heightElement, Orientation::VERTICAL);
         } else if (heightAttr) {
-            height = loader.loadConstraint(heightAttr->Value());
+            height = loader.loadConstraint(heightAttr->Value(), Orientation::VERTICAL);
         }
         setConstraints({
             .left = std::shared_ptr<Constraint>(left),
@@ -530,16 +532,6 @@ namespace Ghurund::UI {
         auto visibleAttr = xml.FindAttribute("visible");
         if (visibleAttr)
             Visible = visibleAttr->BoolValue();
-        auto minSizeAttr = xml.FindAttribute("minSize");
-        if (minSizeAttr) {
-            std::string str = minSizeAttr->Value();
-            std::regex regex("(-?\\d+(?:\\.\\d+)?), *(-?\\d+(?:\\.\\d+)?)");
-            std::smatch m;
-            if (std::regex_match(str, m, regex) && m[2].matched) {
-                minSize.width = (float)atof(m[1].str().c_str());
-                minSize.height = (float)atof(m[2].str().c_str());
-            }
-        }
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
             AString s = styleAttr->Value();
@@ -552,8 +544,7 @@ namespace Ghurund::UI {
                 } else if (loader.Theme->Styles.containsKey(styleKey)) {
                     Style = loader.Theme->Styles[styleKey];
                 } else {
-                    Logger::log(LogType::WARNING, _T("Invalid style key '{}'. Default style for type '{}' will be used.\n"), styleKey.str, Type.Name);
-                    Style = loader.Theme->Styles[StyleKey(Type.Name)];
+                    Logger::log(LogType::WARNING, _T("Style '{}' not found.\n"), styleKey.str);
                 }
             }
         } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {

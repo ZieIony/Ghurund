@@ -121,5 +121,7 @@ namespace UnitTest {
             size = { text.Length * 10.0f, format->Size };
             return Status::OK;
         }
+
+        void draw(ICanvas& canvas) {}
     };
 }

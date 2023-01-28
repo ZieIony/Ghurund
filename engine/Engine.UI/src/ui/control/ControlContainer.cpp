@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "ui/loading/LayoutLoader.h"
+#include "ui/constraint/ConstraintGraph.h"
 #include "ui/control/InvalidControl.h"
 
 namespace Ghurund::UI {
@@ -135,6 +136,12 @@ namespace Ghurund::UI {
                 return child->find(type, deep);
         }
         return nullptr;
+    }
+
+    void ControlContainer::resolveConstraints(ConstraintGraph& graph) {
+        __super::resolveConstraints(graph);
+        if (child)
+            child->resolveConstraints(graph);
     }
 
     void ControlContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

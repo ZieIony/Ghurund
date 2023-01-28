@@ -56,13 +56,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 0, 10 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -75,13 +75,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"test text";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 90, 10 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 90, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -94,13 +94,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 100, 120 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 100, 120 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -113,13 +113,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"test text";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 100, 120 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 100, 120 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -131,13 +131,13 @@ public:
         rootView->Child = textBlock;
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -150,13 +150,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->Text = L"test text";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -168,13 +168,13 @@ public:
         rootView->Child = textBlock;
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }
@@ -187,13 +187,13 @@ public:
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->Text = L"test text";
-        textBlock->MinSize = { 0, 0 };
+        //textBlock->MinSize = { 0, 0 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 50, 70 };
+        //textBlock->MinSize = { 50, 70 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);
-        textBlock->MinSize = { 150, 170 };
+        //textBlock->MinSize = { 150, 170 };
         textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
     }

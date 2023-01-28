@@ -18,11 +18,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Left);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -42,11 +38,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Right);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -67,11 +59,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Top);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -91,11 +79,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Bottom);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = (*dependencies.begin())->Value + offset;
@@ -115,11 +99,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Width);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
@@ -139,11 +119,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, List<Constraint*>& constraints) override {
-            dependencies.clear();
-            dependencies.add(&control.Parent->find(name, false)->Height);
-            constraints.add(this);
-        }
+        virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
             value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);

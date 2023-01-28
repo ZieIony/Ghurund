@@ -27,7 +27,7 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
         InvalidControl() {
-            MinSize = { 18, 18 };
+            //MinSize = { 18, 18 };
         }
 
         virtual void onDraw(ICanvas& canvas) override;

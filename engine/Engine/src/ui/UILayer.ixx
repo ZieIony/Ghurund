@@ -23,7 +23,7 @@ export namespace Ghurund::UI {
         Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
         IUIContext* context;
         ApplicationWindow& window;
-        ConstraintSolver solver;
+        ConstraintGraph graph;
 
     protected:
         virtual bool onSizeChangedEvent() override {

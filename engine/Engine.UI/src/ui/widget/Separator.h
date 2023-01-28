@@ -34,7 +34,7 @@ namespace Ghurund::UI {
         }
 
         inline void setThickness(float thickness) {
-            colorView->MinSize = { thickness, thickness };
+            //colorView->MinSize = { thickness, thickness };
         }
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;

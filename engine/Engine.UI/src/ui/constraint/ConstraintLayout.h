@@ -1,16 +1,14 @@
 #pragma once
 
+#include "Guide.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/Canvas.h"
-#include "ui/layout/constraint/Guide.h"
 
 namespace Ghurund::UI {
     class ConstraintLayout:public ControlGroup {
     private:
         std::unique_ptr<IStrokeStyle> strokeStyle;
         List<Guide> guides;
-        bool constraintsResolved = false;
-        List<Constraint*> sorted;
 
         Control* findChild(const AString& name) {
             for (Control* control : Children) {
@@ -42,11 +40,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getGuides)) List<Guide>& Guides;
 
-        void resolveConstraints();
-
-        virtual void resolveConstraints(List<Constraint*>& constraints) override;
-
-        void sortConstraints(List<Constraint*>& constraints);
+        virtual void resolveConstraints(ConstraintGraph& graph) override;
 
         static const Ghurund::Core::Type& GET_TYPE();
 

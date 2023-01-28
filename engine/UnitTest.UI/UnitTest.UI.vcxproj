@@ -103,7 +103,6 @@
     <ClInclude Include="src\test\ui\ShapeFactory.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
     <ClInclude Include="src\test\ui\UIContext.h" />
-    <ClInclude Include="src\test\ui\control\ControlTestTemplate.h" />
     <ClInclude Include="src\test\ui\font\Font.h" />
     <ClInclude Include="src\test\ui\font\FontLoader.h" />
     <ClInclude Include="src\test\ui\image\Bitmap.h" />
@@ -117,16 +116,14 @@
     </ClCompile>
     <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
     <ClCompile Include="src\test\ui\ColorTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintControl.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
-    <ClCompile Include="src\test\ui\control\ControlTest.cpp" />
-    <ClCompile Include="src\test\ui\control\ImageViewTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\font\FontLoader.cpp" />
-    <ClCompile Include="src\test\ui\layout\HorizontalLayoutTest.cpp" />
-    <ClCompile Include="src\test\ui\layout\StackLayoutTest.cpp" />
-    <ClCompile Include="src\test\ui\layout\VerticalLayoutTest.cpp" />
-    <ClCompile Include="src\test\ui\layout\constraint\ConstraintFactoryTest.cpp" />
-    <ClCompile Include="src\test\ui\layout\constraint\ConstraintSolverTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintSolverTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
   </ItemGroup>
   <ItemGroup>

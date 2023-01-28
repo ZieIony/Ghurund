@@ -39,7 +39,7 @@ namespace Ghurund::UI {
         topButton = (Button*)find("startButton");
         barButton = (Button*)find("barButton");
         clickableTrack = (ClickableControl*)find("clickableTrack");
-        track = (ManualLayout*)find("track");
+        track = (ControlGroup*)find("track");
         bottomButton = (Button*)find("endButton");
         if (dragHelper)
             delete dragHelper;

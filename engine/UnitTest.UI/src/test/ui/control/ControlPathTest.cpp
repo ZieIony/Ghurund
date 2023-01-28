@@ -2,8 +2,8 @@
 #include "CppUnitTest.h"
 #include "test/TestUtils.h"
 
-#include "ui/layout/StackLayout.h"
 #include "ui/control/ColorView.h"
+#include "ui/control/ControlGroup.h"
 #include "ui/control/ControlPath.h"
 #include "ui/control/PaddingContainer.h"
 
@@ -25,7 +25,7 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(resolveParentGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         layout->Children.add(content);
         ControlPath path = ControlPath::parse("Parent");
@@ -52,7 +52,7 @@ public:
     }
 
     TEST_METHOD(resolveNameGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         content->Name = "color";
         layout->Children.add(content);
@@ -74,7 +74,7 @@ public:
     }
 
     TEST_METHOD(resolveMissingNameGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(*layout);
         Assert::IsNull(result);
@@ -88,7 +88,7 @@ public:
     }
 
     TEST_METHOD(resolveIndexGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         SharedPointer<ColorView> content2 = new ColorView();
         layout->Children = { content, content2 };
@@ -99,7 +99,7 @@ public:
     }
 
     TEST_METHOD(resolveNegativeIndexGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         SharedPointer<ColorView> content2 = new ColorView();
         layout->Children = { content, content2 };
@@ -110,7 +110,7 @@ public:
     }
 
     TEST_METHOD(resolveIndexMissingGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         SharedPointer<ColorView> content2 = new ColorView();
         layout->Children = { content, content2 };
@@ -120,7 +120,7 @@ public:
     }
 
     TEST_METHOD(resolveNegativeIndexMissingGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         SharedPointer<ColorView> content2 = new ColorView();
         layout->Children = { content, content2 };
@@ -172,7 +172,7 @@ public:
     }
 
     TEST_METHOD(resolveParentNameGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         content->Name = "color";
         layout->Children.add(content);
@@ -194,7 +194,7 @@ public:
     }
 
     TEST_METHOD(resolveParentIndexGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
         SharedPointer<ColorView> content = new ColorView();
         layout->Children.add(content);
         ControlPath path = ControlPath::parse("Parent[0]");
@@ -214,8 +214,8 @@ public:
     }
 
     TEST_METHOD(resolveNameIndexGroup) {
-        SharedPointer<StackLayout> layout = new StackLayout();
-        SharedPointer<StackLayout> mid = new StackLayout();
+        SharedPointer<ControlGroup> layout = new ControlGroup();
+        SharedPointer<ControlGroup> mid = new ControlGroup();
         mid->Name = "container";
         layout->Children = { mid };
         SharedPointer<ColorView> content = new ColorView();

@@ -1,6 +1,10 @@
 #include "ghuipch.h"
 #include "ConstraintFactory.h"
 
+#include "ParentConstraint.h"
+#include "SiblingConstraint.h"
+#include "SelfConstraint.h"
+#include "WrapConstraint.h"
 #include "core/Float.h"
 
 namespace Ghurund::UI {
@@ -92,9 +96,13 @@ namespace Ghurund::UI {
         }
     }
 
-    Constraint* ConstraintFactory::parseValueConstraint(const AString& str) const {
+    Constraint* ConstraintFactory::parseValueConstraint(const AString& str, Orientation orientation) const {
         if (str == "wrap") {
-            return ghnew WrapConstraint();
+            if (orientation == Orientation::HORIZONTAL) {
+                return ghnew WrapWidthConstraint();
+            } else {
+                return ghnew WrapHeightConstraint();
+            }
             /*} else if (str.endsWith("%")) {
             float value = Ghurund::Core::parse<float>(str.substring(0, str.Length - 1));
             if (orientation == Orientation::HORIZONTAL) {
@@ -108,7 +116,14 @@ namespace Ghurund::UI {
         }
     }
 
-    Constraint* ConstraintFactory::parseConstraint(const AString* path, const AString* ratio, const AString* offset, const AString* min, const AString* max) const {
+    Constraint* ConstraintFactory::parseConstraint(
+        const AString* path,
+        const AString* ratio,
+        const AString* offset,
+        const AString* min,
+        const AString* max,
+        Orientation orientation
+    ) const {
         if (!path && !offset)
             throw InvalidParamException("A constraint needs 'path', 'offset' or both to be defined.");
         if (path) {
@@ -143,11 +158,11 @@ namespace Ghurund::UI {
                 throw InvalidFormatException("Constraint path has to be one of: 'Parent.[constraint]', ''[sibling name]'.[constraint]', '[constraint]'");
             }
         } else {
-            return parseValueConstraint(*offset);
+            return parseValueConstraint(*offset, orientation);
         }
     }
     
-    Constraint* ConstraintFactory::parseConstraint(const AString& str) const {
+    Constraint* ConstraintFactory::parseConstraint(const AString& str, Orientation orientation) const {
         if (str.startsWith("Parent.")) {
             return parseParentConstraint(str);
         } else if (str.startsWith("'")) {
@@ -157,7 +172,7 @@ namespace Ghurund::UI {
         } else if (str == "Height") {
             return ghnew SelfHeightConstraint();
         } else {
-            return parseValueConstraint(str);
+            return parseValueConstraint(str, orientation);
         }
     }
 }

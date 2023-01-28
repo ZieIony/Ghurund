@@ -1,9 +1,9 @@
 #pragma once
 
-#include "core/string/String.h"
-#include "ui/control/ControlPath.h"
-#include <ui/control/Control.h>
 #include "Constraint.h"
+#include "core/string/String.h"
+#include "ui/control/Control.h"
+#include "ui/control/ControlPath.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

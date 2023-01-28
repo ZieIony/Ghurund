@@ -2,6 +2,8 @@
 
 #include "Constraint.h"
 
+#include <memory>
+
 namespace Ghurund::UI{
     struct ConstraintSet {
         std::shared_ptr<Constraint> left;
