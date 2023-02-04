@@ -155,6 +155,7 @@ namespace Ghurund::Core {
         IWICBitmapDecoder* wicDecoder = nullptr;
         IWICBitmapFrameDecode* wicFrame = nullptr;
         IWICFormatConverter* wicConverter = nullptr;
+        HRESULT hr;
 
         DXGI_FORMAT giFormat;
         uint32_t width, height, pixelSize, rowPitch;
@@ -164,19 +165,19 @@ namespace Ghurund::Core {
         bool imageConverted = false;
 
         Microsoft::WRL::ComPtr<IStream> memStream = SHCreateMemStream((const BYTE*)stream.Data, (UINT)stream.Size);
-        if (FAILED(imageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
+        if (FAILED(hr = imageFactory->CreateDecoderFromStream(memStream.Get(), nullptr, WICDecodeMetadataCacheOnLoad, &wicDecoder))) {
             Logger::log(LogType::ERR0R, _T("Failed to create decoder\n"));
             throw std::bad_function_call();
         }
 
-        if (FAILED(wicDecoder->GetFrame(0, &wicFrame)))
+        if (FAILED(hr = wicDecoder->GetFrame(0, &wicFrame)))
             throw std::bad_function_call();
 
         WICPixelFormatGUID pixelFormat;
-        if (FAILED(wicFrame->GetPixelFormat(&pixelFormat)))
+        if (FAILED(hr = wicFrame->GetPixelFormat(&pixelFormat)))
             throw std::bad_function_call();
 
-        if (FAILED(wicFrame->GetSize(&width, &height)))
+        if (FAILED(hr = wicFrame->GetSize(&width, &height)))
             throw std::bad_function_call();
 
         // TODO: implement sRGB
@@ -191,14 +192,14 @@ namespace Ghurund::Core {
 
             giFormat = getDXGIFormatFromWICFormat(convertToPixelFormat);
 
-            if (FAILED(imageFactory->CreateFormatConverter(&wicConverter)))
+            if (FAILED(hr = imageFactory->CreateFormatConverter(&wicConverter)))
                 throw std::bad_function_call();
 
             BOOL canConvert = FALSE;
-            if (FAILED(wicConverter->CanConvert(pixelFormat, convertToPixelFormat, &canConvert)) || !canConvert)
+            if (FAILED(hr = wicConverter->CanConvert(pixelFormat, convertToPixelFormat, &canConvert)) || !canConvert)
                 throw std::bad_function_call();
 
-            if (FAILED(wicConverter->Initialize(wicFrame, convertToPixelFormat, WICBitmapDitherTypeErrorDiffusion, 0, 0, WICBitmapPaletteTypeCustom)))
+            if (FAILED(hr = wicConverter->Initialize(wicFrame, convertToPixelFormat, WICBitmapDitherTypeErrorDiffusion, 0, 0, WICBitmapPaletteTypeCustom)))
                 throw std::bad_function_call();
 
             imageConverted = true;
@@ -208,13 +209,13 @@ namespace Ghurund::Core {
         rowPitch = width * pixelSize;
         int imageSize = rowPitch * height;
 
-        imageData.Size = imageSize;
+        imageData.reset(imageSize);
 
         if (imageConverted) {
-            if (FAILED(wicConverter->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicConverter->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
                 throw std::bad_function_call();
         } else {
-            if (FAILED(wicFrame->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicFrame->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
                 throw std::bad_function_call();
         }
 

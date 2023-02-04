@@ -20,8 +20,7 @@ project "UnitTest.UI"
 		includeDir["UnitTest.Core"],
 		includeDir["Engine.Core"],
 		includeDir["Engine.UI"],
-		includeDir["tinyxml2"],
-		includeDir["UnitTest.Core"]
+		includeDir["tinyxml2"]
 	}
 
 	links {

@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include <vector>
+#include <test/TestClass.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -167,7 +168,7 @@ public:
         }
     }
 
-    TEST_METHOD(List_add) {
+    TEST_METHOD(List_addSimple) {
         MemoryGuard guard;
         {
             List<uint32_t> list;
@@ -177,6 +178,20 @@ public:
             Assert::AreEqual(list.Capacity >= list.Size, true);
             Assert::AreEqual(list.Empty, false);
             Assert::AreEqual(list[0], 1u);
+        }
+    }
+
+    TEST_METHOD(List_addObject) {
+        MemoryGuard guard;
+        {
+            List<ObjectTestClass*> list;
+            for (size_t i = 0; i < 30; i++)
+                list.add(ghnew ObjectTestClass());
+            while (!list.Empty) {
+                ObjectTestClass* obj = *list.rbegin();
+                list.removeAt(list.Size - 1);
+                delete obj;
+            }
         }
     }
 

@@ -36,7 +36,8 @@ namespace Ghurund::Core::DirectX {
                     result = Status::ENTRY_POINT_NOT_FOUND;
                 } else {
                     result = Status::COMPILATION_ERROR;
-                    Logger::log(LogType::ERR0R, result, _T("Error while compiling shader:\n%hs\n"), convertText<char, wchar_t>(errorMessages));
+                    auto text = std::format(_T("Error while compiling shader:\n%s\n"), errorMessages);
+                    Logger::log(LogType::ERR0R, result, text.c_str());
                     if(outErrorMessages != nullptr) {
                         *outErrorMessages = ghnew char[errorBlob->GetBufferSize()];
                         memcpy(*outErrorMessages, errorBlob->GetBufferPointer(), errorBlob->GetBufferSize());

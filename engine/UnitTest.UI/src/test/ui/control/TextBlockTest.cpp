@@ -32,8 +32,6 @@ private:
 
 public:
     TextBlockTest() {
-        Ghurund::Core::Logger::init();
-        Ghurund::Core::Logger::log(LogType::INFO, _T("working dir: {}\n"), Ghurund::Core::DirectoryPath(L".").AbsolutePath);
         window = new SystemWindow(timer);
         context = new UIContext(*window, resourceManager);
         fontLoader = new FontLoader();

@@ -8,6 +8,7 @@
 namespace Ghurund::UI {
     void WrapWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         graph.add(this);
+        dependencies.clear();
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
@@ -20,9 +21,11 @@ namespace Ghurund::UI {
                 dependencies.add(&c->Width);
             }
         }
+        this->control = &control;
     }
 
     void WrapWidthConstraint::evaluate() {
+        value = control->MeasuredSize.Width;
         for (Constraint* c : dependencies)
             value = std::max(value, c->Value);
         value = minMax(min, value * ratio + offset, max);
@@ -30,6 +33,7 @@ namespace Ghurund::UI {
 
     void WrapHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         graph.add(this);
+        dependencies.clear();
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
@@ -42,9 +46,11 @@ namespace Ghurund::UI {
                 dependencies.add(&c->Height);
             }
         }
+        this->control = &control;
     }
 
     void WrapHeightConstraint::evaluate() {
+        value = control->MeasuredSize.Height;
         for (Constraint* c : dependencies)
             value = std::max(value, c->Value);
         value = minMax(min, value * ratio + offset, max);

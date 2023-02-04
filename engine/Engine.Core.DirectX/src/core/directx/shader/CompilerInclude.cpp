@@ -37,7 +37,8 @@ namespace Ghurund::Core::DirectX {
         size_t size;
 
         if (readFile(fullPath.Data, data, size) != Status::OK) {
-            Logger::log(LogType::ERR0R, _T("failed to load include: {}\n"), fullPath);
+            auto text = std::format(_T("failed to load include: {}\n"), fullPath);
+            Logger::log(LogType::ERR0R, text.c_str());
             return E_FAIL;
         }
 

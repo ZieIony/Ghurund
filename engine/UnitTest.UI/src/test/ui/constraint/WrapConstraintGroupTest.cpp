@@ -28,10 +28,9 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->setConstraints({
-                .width = std::make_shared<WrapWidthConstraint>(),
-                .height = std::make_shared<WrapHeightConstraint>()
-                });
+            group->Constraints = ConstraintSet()
+                .withWidth(makeShared<WrapWidthConstraint>())
+                .withHeight(makeShared<WrapHeightConstraint>());
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -47,22 +46,21 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->setConstraints({
-                .width = []() {
-                    auto c = std::make_shared<WrapWidthConstraint>();
-                    c->Min = 100;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }(),
-                .height = []() {
-                    auto c = std::make_shared<WrapHeightConstraint>();
-                    c->Min = 75;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }()
-                });
+            group->Constraints = ConstraintSet()
+                .withWidth([]() {
+                auto c = makeShared<WrapWidthConstraint>();
+                c->Min = 100;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }())
+                .withHeight([]() {
+                auto c = makeShared<WrapHeightConstraint>();
+                c->Min = 75;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }());
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -78,23 +76,20 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->setConstraints({
-                .width = std::make_shared<ValueConstraint>(100.0f),
-                .height = std::make_shared<ValueConstraint>(75.0f)
-                });
+            child1->Constraints = ConstraintSet()
+                .withWidth(100.0f)
+                .withHeight(75.0f);
 
             SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->setConstraints({
-                .width = std::make_shared<ValueConstraint>(150.0f),
-                .height = std::make_shared<ValueConstraint>(50.0f)
-                });
+            child2->Constraints = ConstraintSet()
+                .withWidth(150.0f)
+                .withHeight(50.0f);
 
             SharedPointer<ControlGroup> group = ghnew ControlGroup();
             group->Children.addAll({ child1, child2 });
-            group->setConstraints({
-                .width = std::make_shared<WrapWidthConstraint>(),
-                .height = std::make_shared<WrapHeightConstraint>()
-                });
+            group->Constraints = ConstraintSet()
+                .withWidth(makeShared<WrapWidthConstraint>())
+                .withHeight(makeShared<WrapHeightConstraint>());
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -110,22 +105,19 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->setConstraints({
-                .width = std::make_shared<ValueConstraint>(100.0f),
-                .height = std::make_shared<ValueConstraint>(75.0f)
-                });
+            child1->Constraints = ConstraintSet()
+                .withWidth(100.0f)
+                .withHeight(75.0f);
             SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->setConstraints({
-                .width = std::make_shared<ParentWidthConstraint>(),
-                .height = std::make_shared<ParentHeightConstraint>()
-                });
+            child2->Constraints = ConstraintSet()
+                .withWidth(makeShared<ParentWidthConstraint>())
+                .withHeight(makeShared<ParentHeightConstraint>());
 
             SharedPointer<ControlGroup> group = ghnew ControlGroup();
             group->Children.addAll({ child1, child2 });
-            group->setConstraints({
-                .width = std::make_shared<WrapWidthConstraint>(),
-                .height = std::make_shared<WrapHeightConstraint>()
-                });
+            group->Constraints = ConstraintSet()
+                .withWidth(makeShared<WrapWidthConstraint>())
+                .withHeight(makeShared<WrapHeightConstraint>());
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -143,46 +135,43 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->setConstraints({
-                .width = []() {
-                    auto c = std::make_shared<WrapWidthConstraint>();
-                    c->Min = 100;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }(),
-                .height = []() {
-                    auto c = std::make_shared<WrapHeightConstraint>();
-                    c->Min = 75;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }()
-                });
+            child1->Constraints = ConstraintSet()
+                .withWidth([]() {
+                auto c = makeShared<WrapWidthConstraint>();
+                c->Min = 100;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }())
+                .withHeight([]() {
+                auto c = makeShared<WrapHeightConstraint>();
+                c->Min = 75;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }());
             SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->setConstraints({
-                .width = []() {
-                    auto c = std::make_shared<WrapWidthConstraint>();
-                    c->Min = 150;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }(),
-                .height = []() {
-                    auto c = std::make_shared<WrapHeightConstraint>();
-                    c->Min = 50;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }()
-                });
+            child2->Constraints = ConstraintSet()
+                .withWidth([]() {
+                auto c = makeShared<WrapWidthConstraint>();
+                c->Min = 150;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }())
+                .withHeight([]() {
+                auto c = makeShared<WrapHeightConstraint>();
+                c->Min = 50;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }());
 
             SharedPointer<ControlGroup> group = ghnew ControlGroup();
             group->Children.addAll({ child1, child2 });
-            group->setConstraints({
-                .width = std::make_shared<WrapWidthConstraint>(),
-                .height = std::make_shared<WrapHeightConstraint>()
-                });
+            group->Constraints = ConstraintSet()
+                .withWidth(makeShared<WrapWidthConstraint>())
+                .withHeight(makeShared<WrapHeightConstraint>());
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);

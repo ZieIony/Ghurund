@@ -36,11 +36,13 @@ namespace Ghurund {
             type = &LogType::WARNING;
         else if (msg->type == asMSGTYPE_INFORMATION)
             type = &LogType::INFO;
-        Logger::log(*type, _T("%hs (%d, %d): %hs\n"), convertText<char, tchar>(AString(msg->section)), msg->row, msg->col, convertText<char, tchar>(AString(msg->message)));
+        auto text = std::format(_T("%s (%d, %d): %s\n"), AString(msg->section), msg->row, msg->col, AString(msg->message));
+        Logger::log(*type, text.c_str());
     }
 
     void ScriptEngine::log(const std::string& str) {
-        Logger::log(LogType::INFO, _T("%hs\n"), convertText<char, tchar>(AString(str.c_str())));
+        auto text = std::format(_T("%s\n"), AString(str.c_str()));
+        Logger::log(LogType::INFO, text.c_str());
     }
 
     void ScriptEngine::onInit() {

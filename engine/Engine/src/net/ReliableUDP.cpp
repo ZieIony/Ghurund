@@ -7,7 +7,8 @@ namespace Ghurund::Net {
         Message* confirmation = ghnew ConfirmationMessage(message.id, message.crc);
         confirmation->calculateCrc(sizeof(ConfirmationMessage));
         socket.send(connection.Socket, confirmation, sizeof(ConfirmationMessage));
-        Logger::log(LogType::INFO, _T("confirmed message id:{}, crc:{}, size:{}\n"), message.id, confirmation->crc, sizeof(ConfirmationMessage));
+        auto text = std::format(_T("confirmed message id:{}, crc:{}, size:{}\n"), message.id, confirmation->crc, sizeof(ConfirmationMessage));
+        Logger::log(LogType::INFO, text.c_str());
         delete confirmation;
     }
     
@@ -26,7 +27,8 @@ namespace Ghurund::Net {
         Message* message = (Message*)messageData;
         for (MessageItem* messageItem : connection.MessagesReceived) {
             if (messageItem->Message == *message) {
-                Logger::log(LogType::INFO, _T("received duplicate message:{}\n"), message->toString());
+                auto text = std::format(_T("received duplicate message:{}\n"), message->toString());
+                Logger::log(LogType::INFO, text.c_str());
                 return true;
             }
         }
@@ -61,8 +63,10 @@ namespace Ghurund::Net {
                 }
                 delete messageItem;
             } else {
-                if (!connection.MessagesReceived.Empty)
-                    Logger::log(LogType::INFO, _T("can't pass received message connection.id:{}, message.id:{}\n"), connection.ReliableId, connection.MessagesReceived[0]->Message.id);
+                if (!connection.MessagesReceived.Empty) {
+                    auto text = std::format(_T("can't pass received message connection.id:{}, message.id:{}\n"), connection.ReliableId, connection.MessagesReceived[0]->Message.id);
+                    Logger::log(LogType::INFO, text.c_str());
+                }
                 break;
             }
         }
@@ -76,7 +80,8 @@ namespace Ghurund::Net {
             Message& message = messageItem->Message;
             if (confirmation->confirmedCrc == message.crc && confirmation->id == message.id) {
                 uint64_t rtt = time - messageItem->time;
-                Logger::log(LogType::INFO, _T("got confirmation for message:{}, rtt:{}\n"), message.toString(), rtt);
+                auto text = std::format(_T("got confirmation for message:{}, rtt:{}\n"), message.toString(), rtt);
+                Logger::log(LogType::INFO, text.c_str());
                 connection.Rtt = rtt;
                 connection.MessagesSent.removeAt(i);
                 delete messageItem;
@@ -99,7 +104,8 @@ namespace Ghurund::Net {
             Message& message = messageItem->Message;
             if (message.type == MessageType::REFRESH.Value) {
                 uint64_t rtt = time - messageItem->time;
-                Logger::log(LogType::INFO, _T("got refresh message rtt:{}\n"), rtt);
+                auto text = std::format(_T("got refresh message rtt:{}\n"), rtt);
+                Logger::log(LogType::INFO, text.c_str());
                 connection.Rtt = rtt;
                 connection.MessagesSent.removeAt(i);
                 delete messageItem;
@@ -111,9 +117,8 @@ namespace Ghurund::Net {
     
     Status ReliableUDP::processMessages(Connection& connection, size_t size, uint64_t time) {
         Status result;
-        buffer.Size = size;
         size_t consumed = 0, messageSize = 0;
-        while (consumed < buffer.Size) {
+        while (consumed < size) {
             uint8_t* messageData = buffer.Data + consumed;
             Message* message = (Message*)messageData;
             if (message->type == MessageType::CONFIRM.Value) {
@@ -127,8 +132,10 @@ namespace Ghurund::Net {
                 if (messageSize == 0)
                     return Logger::log(LogType::INFO, Status::INV_PACKET, _T("invalid packet2\n"));
             }
-            if (messageSize + consumed > buffer.Size)
-                return Logger::log(LogType::INFO, Status::INV_PACKET, _T("invalid packet3 msgSize:{}, buffer.Size:{}, consumed:{}\n"), messageSize, buffer.Size, consumed);
+            if (messageSize + consumed > size) {
+                auto text = std::format(_T("invalid packet3 msgSize:{}, size:{}, consumed:{}\n"), messageSize, size, consumed);
+                return Logger::log(LogType::INFO, Status::INV_PACKET, text.c_str());
+            }
             consumed += messageSize;
             result = processMessage(connection, messageData, messageSize, time);
             if (result != Status::OK)
@@ -139,7 +146,8 @@ namespace Ghurund::Net {
     
     Status ReliableUDP::processMessage(Connection& connection, uint8_t* messageData, size_t messageSize, uint64_t time) {
         Message* message = (Message*)messageData;
-        Logger::log(LogType::INFO, _T("got message:{}, size:{}\n"), message->toString(), messageSize);
+        auto text = std::format(_T("got message:{}, size:{}\n"), message->toString(), messageSize);
+        Logger::log(LogType::INFO, text.c_str());
         if (!message->isCrcValid(messageSize))
             return Status::INV_PACKET;
         if (message->type == MessageType::UPDATE.Value) {
@@ -162,7 +170,8 @@ namespace Ghurund::Net {
         }
         message->calculateCrc(messageSize);
         Status result = socket.send(connection.Socket, message, messageSize);
-        Logger::log(LogType::INFO, _T("sent message:{}, size:{}\n"), message->toString(), messageSize);
+        auto text = std::format(_T("sent message:{}, size:{}\n"), message->toString(), messageSize);
+        Logger::log(LogType::INFO, text.c_str());
         if ((message->type == MessageType::RELIABLE.Value || message->type == MessageType::REFRESH.Value) && result == Status::OK) {
             connection.MessagesSent.add(ghnew MessageItem((uint8_t*)message, messageSize));
         }
@@ -183,7 +192,8 @@ namespace Ghurund::Net {
             } else if (message->time + RETRY_DELAY_MS < time) {
                 socket.send(connection->Socket, message->messageData, message->messageSize);
                 Message* m = (Message*)message->messageData;
-                Logger::log(LogType::INFO, _T("retried message:{}\n"), m->toString());
+                auto text = std::format(_T("retried message:{}\n"), m->toString());
+                Logger::log(LogType::INFO, text.c_str());
                 message->time = time;
                 message->retryCount++;
             }
@@ -203,11 +213,13 @@ namespace Ghurund::Net {
                 if (connections.Size > 0 && connections[0]->MessagesReceived.Size > 0) {
                     MessageItem* messageItem = connections[0]->MessagesReceived[0];
                     Message& message = messageItem->Message;
-                    Logger::log(LogType::INFO, _T("stuck message:{}\n"), messageItem->toString());
+                    auto text = std::format(_T("stuck message:{}\n"), messageItem->toString());
+                    Logger::log(LogType::INFO, text.c_str());
                 }
                 break;
             }
-            Logger::log(LogType::INFO, _T("got packet size:{}\n"), size);
+            auto text = std::format(_T("got packet size:{}\n"), size);
+            Logger::log(LogType::INFO, text.c_str());
             Connection* connection = nullptr;
             for(Connection* c:connections){
                 if (memcmp(c->Socket.AddressStruct, &socketAddr, sizeof(sockaddr)) == 0) {

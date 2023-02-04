@@ -90,8 +90,6 @@ namespace Ghurund::UI {
             return __super::dispatchMouseMotionEvent(event);
         }
 
-        
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }

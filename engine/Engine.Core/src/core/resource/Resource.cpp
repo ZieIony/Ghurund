@@ -76,8 +76,10 @@ namespace Ghurund::Core {
             return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("File path is empty\n"));
 
         File file(*path);
-        if (!file.Exists)
-            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, _T("'{}' doesn't exist\n"), *path);
+        if (!file.Exists) {
+            auto text = std::format(_T("'{}' doesn't exist\n"), *path);
+            return Logger::log(LogType::ERR0R, Status::FILE_DOESNT_EXIST, text.c_str());
+        }
 
         Status result = file.read();
         if (result != Status::OK)

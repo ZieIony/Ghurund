@@ -27,10 +27,9 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<Control> container = ghnew Control();
-            container->setConstraints({
-                .width = std::make_shared<WrapWidthConstraint>(),
-                .height = std::make_shared<WrapHeightConstraint>()
-                });
+            container->Constraints = ConstraintSet()
+                .withWidth(makeShared<WrapWidthConstraint>())
+                .withHeight(makeShared<WrapHeightConstraint>());
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);
@@ -46,22 +45,21 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<Control> container = ghnew Control();
-            container->setConstraints({
-                .width = []() {
-                    auto c = std::make_shared<WrapWidthConstraint>();
-                    c->Min = 100;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }(),
-                .height = []() {
-                    auto c = std::make_shared<WrapHeightConstraint>();
-                    c->Min = 75;
-                    c->Ratio = 0.5f;
-                    c->Offset = 10.0f;
-                    return c;
-                }()
-                });
+            container->Constraints = ConstraintSet()
+                .withWidth([]() {
+                auto c = makeShared<WrapWidthConstraint>();
+                c->Min = 100;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }())
+                .withHeight([]() {
+                auto c = makeShared<WrapHeightConstraint>();
+                c->Min = 75;
+                c->Ratio = 0.5f;
+                c->Offset = 10.0f;
+                return c;
+            }());
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);

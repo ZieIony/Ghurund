@@ -46,6 +46,7 @@ namespace Ghurund::Core {
         return (value + alignment - 1) & ~(alignment - 1);
     }
 
+#ifdef _DEBUG
     inline void dumpMemoryLeaks() {
         _CrtDumpMemoryLeaks();
     }
@@ -53,4 +54,5 @@ namespace Ghurund::Core {
     inline void _____________________checkMemory() {
         _ASSERTE(_CrtCheckMemory());
     }
+#endif
 }

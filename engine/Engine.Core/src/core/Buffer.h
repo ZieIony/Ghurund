@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include <memory.h>
+#include <utility>
 
 namespace Ghurund::Core {
     class Buffer {
@@ -20,7 +21,7 @@ namespace Ghurund::Core {
 
         Buffer(size_t capacity) {
             data = ghnew uint8_t[capacity];
-            this->size = capacity;
+            this->size = 0;
             this->capacity = capacity;
         }
 
@@ -51,27 +52,23 @@ namespace Ghurund::Core {
             delete[] data;
         }
 
-        uint8_t* getData() {
+        inline uint8_t* getData() {
             return data;
         }
 
-        const uint8_t* getData() const {
+        inline const uint8_t* getData() const {
             return data;
         }
 
         __declspec(property(get = getData)) uint8_t* Data;
 
-        size_t getSize() const {
+        inline size_t getSize() const {
             return size;
         }
 
-        void setSize(size_t size) {
-            this->size = size;
-        }
+        __declspec(property(get = getSize)) size_t Size;
 
-        __declspec(property(get = getSize, put = setSize)) size_t Size;
-
-        size_t getCapacity() const {
+        inline size_t getCapacity() const {
             return capacity;
         }
 
@@ -110,7 +107,34 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        void zero() {
+        inline void resize(size_t capacity) {
+            this->capacity = capacity;
+            if (capacity) {
+                uint8_t* prev = data;
+                data = ghnew uint8_t[capacity];
+                if (prev) {
+                    memcpy(data, prev, std::min(capacity, size));
+                    delete[] prev;
+                }
+            } else {
+                delete[] data;
+                data = nullptr;
+            }
+            size = std::min(capacity, size);
+        }
+
+        inline void reset(size_t capacity) {
+            delete[] data;
+            this->capacity = capacity;
+            if (capacity) {
+                data = ghnew uint8_t[capacity];
+            } else {
+                data = nullptr;
+            }
+            size = 0;
+        }
+
+        inline void zero() {
             memset(data, 0, capacity);
             size = 0;
         }

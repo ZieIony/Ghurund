@@ -5,6 +5,7 @@
 #include "SiblingConstraint.h"
 #include "SelfConstraint.h"
 #include "WrapConstraint.h"
+#include "FlowConstraint.h"
 #include "core/Float.h"
 
 namespace Ghurund::UI {
@@ -103,13 +104,12 @@ namespace Ghurund::UI {
             } else {
                 return ghnew WrapHeightConstraint();
             }
-            /*} else if (str.endsWith("%")) {
-            float value = Ghurund::Core::parse<float>(str.substring(0, str.Length - 1));
+        }else if(str=="flow"){
             if (orientation == Orientation::HORIZONTAL) {
-            return ghnew ParentWidthConstraint(value);
+                return ghnew FlowWidthConstraint();
             } else {
-            return ghnew ParentHeightConstraint(value);
-            }*/
+                return ghnew FlowHeightConstraint();
+            }
         } else {
             float value = Ghurund::Core::parse<float>(str);
             return ghnew ValueConstraint(value);

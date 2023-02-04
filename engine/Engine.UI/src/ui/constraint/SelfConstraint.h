@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 
     class LeftWidthConstraint:public Constraint {
     private:
-        Constraint* left, * width;
+        SharedPointer<Constraint> left, width;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -39,12 +39,12 @@ namespace Ghurund::UI {
 
     class CenterLeftConstraint:public Constraint {
     private:
-        std::shared_ptr<Constraint> left, width, right;
+        SharedPointer<Constraint> left, width, right;
 
     public:
-        CenterLeftConstraint(std::shared_ptr<Constraint> left, std::shared_ptr<Constraint> width, std::shared_ptr<Constraint> right)
+        CenterLeftConstraint(const SharedPointer<Constraint> left, const SharedPointer<Constraint> width, const SharedPointer<Constraint> right)
             :left(left), width(width), right(right) {
-            dependencies.addAll({ this->left.get(), this->width.get(), this->right.get() });
+                dependencies.addAll({ this->left, this->width, this->right });
         }
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 
     class LeftRightConstraint:public Constraint {
     private:
-        Constraint* left, * right;
+        SharedPointer<Constraint> left, right;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -68,12 +68,12 @@ namespace Ghurund::UI {
 
     class CenterRightConstraint:public Constraint {
     private:
-        std::shared_ptr<Constraint> left, width, right;
+        SharedPointer<Constraint> left, width, right;
 
     public:
-        CenterRightConstraint(std::shared_ptr<Constraint> left, std::shared_ptr<Constraint> width, std::shared_ptr<Constraint> right)
+        CenterRightConstraint(const SharedPointer<Constraint> left, const SharedPointer<Constraint> width, const SharedPointer<Constraint> right)
             :left(left), width(width), right(right) {
-            dependencies.addAll({ this->left.get(), this->width.get(), this->right.get() });
+            dependencies.addAll({ this->left, this->width, this->right });
         }
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -85,7 +85,7 @@ namespace Ghurund::UI {
 
     class WidthRightConstraint:public Constraint {
     private:
-        Constraint* width, * right;
+        SharedPointer<Constraint> width, right;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -97,7 +97,7 @@ namespace Ghurund::UI {
 
     class TopHeightConstraint:public Constraint {
     private:
-        Constraint* top, * height;
+        SharedPointer<Constraint> top, height;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -109,12 +109,12 @@ namespace Ghurund::UI {
 
     class CenterTopConstraint:public Constraint {
     private:
-        std::shared_ptr<Constraint> top, height, bottom;
+        SharedPointer<Constraint> top, height, bottom;
 
     public:
-        CenterTopConstraint(std::shared_ptr<Constraint> top, std::shared_ptr<Constraint> height, std::shared_ptr<Constraint> bottom)
+        CenterTopConstraint(const SharedPointer<Constraint> top, const SharedPointer<Constraint> height, const SharedPointer<Constraint> bottom)
             :top(top), height(height), bottom(bottom) {
-            dependencies.addAll({ this->top.get(), this->height.get(), this->bottom.get() });
+            dependencies.addAll({ this->top, this->height, this->bottom });
         }
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -126,7 +126,7 @@ namespace Ghurund::UI {
 
     class TopBottomConstraint:public Constraint {
     private:
-        Constraint* top, * bottom;
+        SharedPointer<Constraint> top, bottom;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -138,12 +138,12 @@ namespace Ghurund::UI {
 
     class CenterBottomConstraint:public Constraint {
     private:
-        std::shared_ptr<Constraint> top, height, bottom;
+        SharedPointer<Constraint> top, height, bottom;
 
     public:
-        CenterBottomConstraint(std::shared_ptr<Constraint> top, std::shared_ptr<Constraint> height, std::shared_ptr<Constraint> bottom)
+        CenterBottomConstraint(const SharedPointer<Constraint> top, const SharedPointer<Constraint> height, const SharedPointer<Constraint> bottom)
             :top(top), height(height), bottom(bottom) {
-            dependencies.addAll({ this->top.get(), this->height.get(), this->bottom.get() });
+            dependencies.addAll({ this->top, this->height, this->bottom });
         }
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -155,7 +155,7 @@ namespace Ghurund::UI {
 
     class HeightBottomConstraint:public Constraint {
     private:
-        Constraint* height, * bottom;
+        SharedPointer<Constraint> height, bottom;
 
     public:
         virtual void resolve(Control& control, ConstraintGraph& graph) override;

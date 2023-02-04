@@ -158,6 +158,7 @@ namespace Ghurund::UI {
         }
     }
 
+#ifdef _DEBUG
     void ControlContainer::validate() const {
         __super::validate();
         if (child)
@@ -183,4 +184,5 @@ namespace Ghurund::UI {
         }
         return str;
     }
+#endif
 }

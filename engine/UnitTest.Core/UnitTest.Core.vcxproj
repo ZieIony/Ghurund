@@ -99,6 +99,7 @@
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\test\MemoryGuard.h" />
     <ClInclude Include="src\test\TestClass.h" />
+    <ClInclude Include="src\test\TestLogOutput.h" />
     <ClInclude Include="src\test\TestUtils.h" />
     <ClInclude Include="src\test\core\collection\TestAllocator.h" />
     <ClInclude Include="src\test\core\reflection\TestClass.h" />

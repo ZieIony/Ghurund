@@ -5,6 +5,7 @@
 #ifdef _DEBUG
 #include "core/StackTrace.h"
 #include "core/collection/List.h"
+#include "core/threading/CriticalSection.h"
 #endif
 
 namespace Ghurund::Core {
@@ -23,6 +24,7 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
         static List<Pointer*> pointers;
+        static CriticalSection criticalSection;
 
         List<StackTrace::Entry> stacktrace;
 
@@ -68,6 +70,12 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
         static void dumpPointers();
+
+        static void reservePointers(size_t size) {
+            criticalSection.enter();
+            pointers.resize(size);
+            criticalSection.leave();
+        }
 #endif
     };
 

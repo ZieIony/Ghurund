@@ -101,7 +101,8 @@ namespace Ghurund::UI {
                     SharedPointer<Control> control = resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE);
                     control->addReference();
                 } catch (...) {
-                    Logger::log(LogType::ERR0R, _T("Could not load layout '{}'.\n"), s);
+                    auto text = std::format(_T("Could not load layout '{}'.\n"), s);
+                    Logger::log(LogType::ERR0R, text.c_str());
                 }
                 return control;
             }
@@ -128,7 +129,8 @@ namespace Ghurund::UI {
             } catch (TypeNotFoundException exception) {
             }
         }
-        Logger::log(LogType::WARNING, _T("Control type {} not registered in LayoutLoader.\n"), convertText<char, tchar>(AString(name)));
+        auto text = std::format(_T("Control type {} not registered in LayoutLoader.\n"), AString(name));
+        Logger::log(LogType::WARNING, text.c_str());
         return nullptr;
     }
 

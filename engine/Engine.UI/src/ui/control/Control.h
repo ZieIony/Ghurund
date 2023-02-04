@@ -14,6 +14,7 @@
 #include "ui/constraint/ConstraintSet.h"
 #include "ui/constraint/ValueConstraint.h"
 #include "ui/constraint/WrapConstraint.h"
+#include "ui/constraint/FlowConstraint.h"
 #include "ui/constraint/SelfConstraint.h"
 
 namespace tinyxml2 {
@@ -68,12 +69,12 @@ namespace Ghurund::UI {
 
         //List<Binding> bindings;
 
-        std::shared_ptr<Constraint> left = std::make_shared<ValueConstraint>(0.0f);
-        std::shared_ptr<Constraint> right = std::make_shared<LeftWidthConstraint>();
-        std::shared_ptr<Constraint> width = std::make_shared<ValueConstraint>(0.0f);
-        std::shared_ptr<Constraint> top = std::make_shared<ValueConstraint>(0.0f);
-        std::shared_ptr<Constraint> bottom = std::make_shared<TopHeightConstraint>();
-        std::shared_ptr<Constraint> height = std::make_shared<ValueConstraint>(0.0f);
+        SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
+        SharedPointer<Constraint> right = ghnew LeftWidthConstraint();
+        SharedPointer<Constraint> width = ghnew WrapWidthConstraint();
+        SharedPointer<Constraint> top = ghnew ValueConstraint(0.0f);
+        SharedPointer<Constraint> bottom = ghnew TopHeightConstraint();
+        SharedPointer<Constraint> height = ghnew FlowHeightConstraint();
 
         virtual void onStateChanged() {
             stateChanged();
@@ -110,15 +111,6 @@ namespace Ghurund::UI {
         Event<Control> stateChanged = Event<Control>(*this);
         Event<Control> themeChanged = Event<Control>(*this);
         Event<Control> contextChanged = Event<Control>(*this);
-
-        Control() {
-            /*left.reset(ghnew WidthValueConstraint(0));
-            top.reset(ghnew HeightValueConstraint(0));
-            right.reset(ghnew WidthValueConstraint(0));
-            bottom.reset(ghnew HeightValueConstraint(0));
-            width.reset(ghnew WidthWrapConstraint());
-            height.reset(ghnew HeightWrapConstraint());*/
-        }
 
         inline const Ghurund::Core::AString* getName() const {
             return name;
@@ -399,7 +391,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getHeight)) Constraint& Height;
 
-        virtual void setConstraints(ConstraintSet constraints);
+        void setConstraints(const ConstraintSet& constraints);
+
+        __declspec(property(put = setConstraints)) const ConstraintSet& Constraints;
 
         virtual void resolveConstraints(ConstraintGraph& graph);
 

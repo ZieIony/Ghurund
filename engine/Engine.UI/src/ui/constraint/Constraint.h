@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/SharedPointer.h"
 #include "core/collection/Set.h"
 
 namespace Ghurund::UI {
@@ -8,7 +9,7 @@ namespace Ghurund::UI {
 
     using namespace Ghurund::Core;
 
-    class Constraint {
+    class Constraint:public Pointer {
     protected:
         float value = 0.0f, initial = 0.0f;
         bool constant = false, skipDependencies = false;

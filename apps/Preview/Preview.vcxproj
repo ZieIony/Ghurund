@@ -96,6 +96,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="generated\bindings\LayoutBinding.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\PreviewApplication.ixx" />
     <ClCompile Include="src\PreviewLayout.ixx" />
     <ClCompile Include="src\PreviewWindow.ixx" />
@@ -117,9 +120,6 @@
     <ProjectReference Include="..\..\engine\Engine\Engine.vcxproj">
       <Project>{DBC7D3B0-C769-FE86-B024-12DB9C6585D7}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="res\layout.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

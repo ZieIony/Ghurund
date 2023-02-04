@@ -243,7 +243,9 @@
       <ObjectFileName>$(IntDir)\UIFeature1.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="src\ui\UILayer.cpp" />
-    <ClCompile Include="src\ui\UILayer.ixx" />
+    <ClCompile Include="src\ui\UILayer.ixx">
+      <ObjectFileName>$(IntDir)\UILayer1.obj</ObjectFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;..\UnitTest.Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -79,7 +79,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;..\UnitTest.Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,14 +116,15 @@
     </ClCompile>
     <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
     <ClCompile Include="src\test\ui\ColorTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintGraphTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ConstraintSetTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintControl.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\font\FontLoader.cpp" />
-    <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
-    <ClCompile Include="src\test\ui\constraint\ConstraintSolverTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -133,9 +134,6 @@
     <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
       <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="res\ConstraintFactoryTest.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

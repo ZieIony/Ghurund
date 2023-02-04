@@ -6,10 +6,12 @@ namespace Ghurund::Core {
     void ThreadPoolExecutor::PoolThread::run() {
         while (true) {
             waitable.wait();
-            Logger::print(LogType::INFO, _T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+            auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+            Logger::print(LogType::INFO, text.c_str());
             task->run();
             tag = nullptr;
-            Logger::print(LogType::INFO, _T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+            auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+            Logger::print(LogType::INFO, text2.c_str());
             executor.section.enter();
             executor.onTaskFinished(*this, task);
             while (executor.queueNextTask());

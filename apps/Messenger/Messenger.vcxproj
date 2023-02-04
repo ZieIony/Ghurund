@@ -96,12 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\MessengerApplication.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="src\MessengerWindow.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
     <ClInclude Include="src\TextMessage.h" />
   </ItemGroup>
   <ItemGroup>

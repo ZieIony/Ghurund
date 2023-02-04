@@ -73,7 +73,8 @@ namespace Ghurund::Core {
         try {
             resource = loader.load(*this, stream, format, options);
         } catch (std::exception& exception) {
-            Logger::log(LogType::ERR0R, _T("failed to load file: {}\n"), file.Path);
+            auto text = std::format(_T("failed to load file: {}\n"), file.Path);
+            Logger::log(LogType::ERR0R, text.c_str());
             throw exception;
         }
         resource->Path = &file.Path;
@@ -138,7 +139,8 @@ namespace Ghurund::Core {
             timer.tick();
             ticks_t finishTime = timer.Ticks;
             float dt = (float)((double)(finishTime - startTime) * 1000 / (double)timer.Frequency);
-            Logger::log(LogType::INFO, _T("hot reload finished in %fms\n"), dt);
+            auto text = std::format(_T("hot reload finished in %fms\n"), dt);
+            Logger::log(LogType::INFO, text.c_str());
         }
         reloadQueue.clear();
         section.leave();

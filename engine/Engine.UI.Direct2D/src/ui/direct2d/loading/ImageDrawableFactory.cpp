@@ -19,16 +19,18 @@ namespace Ghurund::UI::Direct2D {
         };
         try {
             if (std::ranges::count_if(Bitmap::FORMATS, formatSupported) == 1) {
-                SharedPointer<Image> bitmap = resourceManager.load<Image>(path);
-                return ghnew BitmapDrawable(dynamic_cast<Bitmap*>(&bitmap));
+                SharedPointer<Bitmap> bitmap = resourceManager.load<Bitmap>(path);
+                return ghnew BitmapDrawable(bitmap);
             } else if (std::ranges::count_if(SvgDocument::FORMATS, formatSupported) == 1) {
-                SharedPointer<Image> svg = resourceManager.load<Image>(path);
-                return ghnew SvgDrawable(dynamic_cast<SvgDocument*>(&svg));
+                SharedPointer<SvgDocument> svg = resourceManager.load<SvgDocument>(path);
+                return ghnew SvgDrawable(svg);
             } else {
-                Logger::log(LogType::ERR0R, _T("File format of '{}' is not supported.\n"), path);
+                auto text = std::format(_T("File format of '{}' is not supported.\n"), path);
+                Logger::log(LogType::ERR0R, text.c_str());
             }
         } catch (...) {
-            Logger::log(LogType::ERR0R, _T("Failed to load '{}'.\n"), path);
+            auto text = std::format(_T("Failed to load '{}'.\n"), path);
+            Logger::log(LogType::ERR0R, text.c_str());
         }
         return nullptr;
     }

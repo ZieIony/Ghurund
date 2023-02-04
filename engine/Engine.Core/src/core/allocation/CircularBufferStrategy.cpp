@@ -31,6 +31,7 @@ namespace Ghurund::Core {
                 return;
             }
         }
-        Logger::log(LogType::WARNING, _T("the requested address (%i) does not belong to this strategy\n"), address);
+        auto text = std::format(_T("the requested address (%i) does not belong to this strategy\n"), address);
+        Logger::log(LogType::WARNING, text.c_str());
     }
 }

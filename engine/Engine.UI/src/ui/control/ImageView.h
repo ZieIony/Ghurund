@@ -27,6 +27,10 @@ namespace Ghurund::UI {
         }
 
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ImageView::GET_TYPE();
+
         ImageView(ImageDrawable* image = nullptr) {
             if (image) {
                 image->addReference();
@@ -88,8 +92,6 @@ namespace Ghurund::UI {
         __declspec(property(get = getGravity, put = setGravity)) Alignment& Alignment;
 
         virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 
     class ImageViewStyle:public Style {

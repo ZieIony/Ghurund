@@ -3,9 +3,8 @@
 			   xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ColorView width="Parent.Width" height="Parent.Height" color="theme://color/background"/>
-		<Border left="10" top="10"
-				width="100" style="theme://style\Border_onBackground">
-			<Border.Height path="Width" ratio="0.75"/>
-		</Border>
+		<ImageView left="10" top="10"
+				   width="wrap" height="wrap"
+				   image="C:/Users/Marcin/Downloads/profil.png"/>
 	</ControlGroup>
 </PreviewLayout>

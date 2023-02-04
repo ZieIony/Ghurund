@@ -26,7 +26,9 @@ public:
 
             Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
 
         {
@@ -34,7 +36,9 @@ public:
 
             Assert::AreEqual(tree.Size, (size_t)0);
             Assert::AreEqual(tree.Empty, true);
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
     
@@ -132,7 +136,9 @@ public:
             Assert::AreEqual(tree.Size, (size_t)1);
             Assert::AreEqual(tree.Empty, false);
             Assert::IsTrue(tree.contains(1u));
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
 
@@ -147,7 +153,9 @@ public:
             Assert::IsTrue(tree.contains(1u));
             Assert::IsTrue(tree.contains(20u));
             Assert::IsTrue(tree.contains(6u));
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
 
@@ -169,7 +177,9 @@ public:
             Assert::IsTrue(tree.contains(1u));
             Assert::IsTrue(tree.contains(2u));
             Assert::IsTrue(tree.contains(3u));
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
 
@@ -185,7 +195,9 @@ public:
             Assert::IsTrue(tree.contains(1u));
             Assert::IsTrue(tree.contains(2u));
             Assert::IsTrue(tree.contains(3u));
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
 
@@ -201,7 +213,9 @@ public:
             Assert::IsTrue(tree.contains(1u));
             Assert::IsTrue(tree.contains(2u));
             Assert::IsTrue(tree.contains(3u));
+#ifdef _DEBUG
             Assert::IsTrue(tree.verify());
+#endif
         }
     }
 

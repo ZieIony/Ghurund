@@ -206,6 +206,7 @@ namespace Ghurund::UI {
         Children.addAll(loader.loadControls(xml));
     }
     
+#ifdef _DEBUG
     void ControlGroup::validate() const {
         __super::validate();
         for (Control* child : children)
@@ -232,4 +233,5 @@ namespace Ghurund::UI {
         }
         return str;
     }
+#endif
 }

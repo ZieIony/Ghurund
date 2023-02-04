@@ -13,7 +13,8 @@ namespace Ghurund::UI {
         const float MAX_LAYOUT_SIZE = 32768.0f;
 
         if (!Context || !textLayout->Format) {
-            Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
+            auto text = std::format(_T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
+            Logger::log(LogType::WARNING, text.c_str());
             return;
         }
 

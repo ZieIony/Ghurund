@@ -99,9 +99,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\application\CommandLine.h" />
-    <ClInclude Include="src\core\Float.h" />
-    <ClInclude Include="src\core\Int.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -112,9 +109,11 @@
     <ClInclude Include="src\core\Event.h" />
     <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\Float.h" />
     <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
+    <ClInclude Include="src\core\Int.h" />
     <ClInclude Include="src\core\Lazy.h" />
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\core\Noncopyable.h" />
@@ -139,6 +138,7 @@
     <ClInclude Include="src\core\allocation\SimpleAllocator.h" />
     <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
     <ClInclude Include="src\core\application\Application.h" />
+    <ClInclude Include="src\core\application\CommandLine.h" />
     <ClInclude Include="src\core\application\Feature.h" />
     <ClInclude Include="src\core\application\FeatureCollection.h" />
     <ClInclude Include="src\core\application\Settings.h" />

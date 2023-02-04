@@ -37,7 +37,8 @@ namespace Ghurund::UI {
                 Color = *color;
                 delete color;
             } else {
-                Logger::log(LogType::WARNING, _T("Invalid color value: '{}'.\n"), colorAttrValue);
+                auto text = std::format(_T("Invalid color value: '{}'.\n"), colorAttrValue);
+                Logger::log(LogType::WARNING, text.c_str());
             }
         }
     }

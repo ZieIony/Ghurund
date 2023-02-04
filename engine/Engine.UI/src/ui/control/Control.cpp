@@ -327,76 +327,76 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    void Control::setConstraints(ConstraintSet constraints) {
+    void Control::setConstraints(const ConstraintSet& constraints) {
         if (constraints.left && constraints.width && constraints.right) {
-            left = std::make_shared<CenterLeftConstraint>(constraints.left, constraints.width, constraints.right);
-            width = constraints.width;
-            right = std::make_shared<CenterRightConstraint>(constraints.left, constraints.width, constraints.right);
+            this->left = ghnew CenterLeftConstraint(constraints.left, constraints.width, constraints.right);
+            this->width = constraints.width;
+            this->right = ghnew CenterRightConstraint(constraints.left, constraints.width, constraints.right);
         } else if (constraints.left) {
-            left = constraints.left;
+            this->left = constraints.left;
             if (constraints.width) {
-                width = constraints.width;
-                right.reset(ghnew LeftWidthConstraint());
+                this->width = constraints.width;
+                this->right = ghnew LeftWidthConstraint();
             } else if (constraints.right) {
-                width.reset(ghnew LeftRightConstraint());
-                right = constraints.right;
+                this->width = ghnew LeftRightConstraint();
+                this->right = constraints.right;
             } else {
-                width.reset(ghnew WrapWidthConstraint());
-                right.reset(ghnew LeftWidthConstraint());
+                this->width = ghnew WrapWidthConstraint();
+                this->right = ghnew LeftWidthConstraint();
             }
         } else if (constraints.width) {
             if (constraints.right) {
-                left.reset(ghnew WidthRightConstraint());
-                width = constraints.width;
-                right = constraints.right;
+                this->left = ghnew WidthRightConstraint();
+                this->width = constraints.width;
+                this->right = constraints.right;
             } else {
-                left.reset(ghnew ParentLeftConstraint());
-                width = constraints.width;
-                right.reset(ghnew LeftWidthConstraint());
+                this->left = ghnew ParentLeftConstraint();
+                this->width = constraints.width;
+                this->right = ghnew LeftWidthConstraint();
             }
         } else if (constraints.right) {
-            left.reset(ghnew WidthRightConstraint());
-            width.reset(ghnew WrapWidthConstraint());
-            right = constraints.right;
+            this->left = ghnew WidthRightConstraint();
+            this->width = ghnew WrapWidthConstraint();
+            this->right = constraints.right;
         } else {
-            left.reset(ghnew ParentLeftConstraint());
-            width.reset(ghnew WrapWidthConstraint());
-            right.reset(ghnew LeftWidthConstraint());
+            this->left = ghnew ParentLeftConstraint();
+            this->width = ghnew WrapWidthConstraint();
+            this->right = ghnew LeftWidthConstraint();
         }
         if (constraints.top && constraints.height && constraints.bottom) {
-            top = std::make_shared<CenterTopConstraint>(constraints.top, constraints.height, constraints.bottom);
-            height = constraints.height;
-            bottom = std::make_shared<CenterBottomConstraint>(constraints.top, constraints.height, constraints.bottom);
+            this->top = ghnew CenterTopConstraint(constraints.top, constraints.height, constraints.bottom);
+            this->height = constraints.height;
+            this->bottom = ghnew CenterBottomConstraint(constraints.top, constraints.height, constraints.bottom);
         } else if (constraints.top) {
-            top = constraints.top;
+            this->top = constraints.top;
             if (constraints.height) {
-                height = constraints.height;
-                bottom.reset(ghnew TopHeightConstraint());
+                this->height = constraints.height;
+                this->bottom = ghnew TopHeightConstraint();
             } else if (constraints.bottom) {
-                height.reset(ghnew TopBottomConstraint());
-                bottom = constraints.bottom;
+                this->height = ghnew TopBottomConstraint();
+                this->bottom = constraints.bottom;
             } else {
-                height.reset(ghnew WrapHeightConstraint());
-                bottom.reset(ghnew TopHeightConstraint());
+                this->height = ghnew WrapHeightConstraint();
+                this->bottom = ghnew TopHeightConstraint();
             }
         } else if (constraints.height) {
             if (constraints.bottom) {
-                top.reset(ghnew HeightBottomConstraint());
-                height = constraints.height;
-                bottom = constraints.bottom;
+                this->top = ghnew HeightBottomConstraint();
+                this->height = constraints.height;
+                this->bottom = constraints.bottom;
             } else {
-                top.reset(ghnew ParentTopConstraint());
-                height = constraints.height;
-                bottom.reset(ghnew TopHeightConstraint());
+                this->top = ghnew ParentTopConstraint();
+                this->height = constraints.height;
+                this->bottom = ghnew TopHeightConstraint();
             }
         } else if (constraints.bottom) {
-            top.reset(ghnew HeightBottomConstraint());
-            height.reset(ghnew WrapHeightConstraint());
-            bottom = constraints.bottom;
+            this->top = ghnew HeightBottomConstraint();
+            this->height = ghnew WrapHeightConstraint();
+            this->bottom = constraints.bottom;
         } else {
-            top.reset(ghnew ParentTopConstraint());
-            height.reset(ghnew WrapHeightConstraint());
-            bottom.reset(ghnew TopHeightConstraint());
+            this->top = ghnew ParentTopConstraint();
+            this->height = ghnew WrapHeightConstraint();
+            this->bottom = ghnew TopHeightConstraint();
         }
     }
 
@@ -480,8 +480,8 @@ namespace Ghurund::UI {
         if (heightAttr && heightElement)
             throw InvalidDataException(std::format("A combination of both - 'height' attribute and '{}.Height' child is invalid.", Type.Name).c_str());
 
-        Constraint* left = nullptr, * right = nullptr, * width = nullptr;
-        Constraint* top = nullptr, * bottom = nullptr, * height = nullptr;
+        SharedPointer<Constraint> left, right, width;
+        SharedPointer<Constraint> top, bottom, height;
         if (leftElement) {
             left = loader.loadConstraint(*leftElement, Orientation::HORIZONTAL);
         } else  if (leftAttr) {
@@ -512,14 +512,9 @@ namespace Ghurund::UI {
         } else if (heightAttr) {
             height = loader.loadConstraint(heightAttr->Value(), Orientation::VERTICAL);
         }
-        setConstraints({
-            .left = std::shared_ptr<Constraint>(left),
-            .width = std::shared_ptr<Constraint>(width),
-            .right = std::shared_ptr<Constraint>(right),
-            .top = std::shared_ptr<Constraint>(top),
-            .height = std::shared_ptr<Constraint>(height),
-            .bottom = std::shared_ptr<Constraint>(bottom)
-            });
+        setConstraints(ConstraintSet()
+            .withLeft(left).withWidth(width).withRight(right)
+            .withTop(top).withHeight(height).withBottom(bottom));
     }
 
     void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
@@ -544,7 +539,8 @@ namespace Ghurund::UI {
                 } else if (loader.Theme->Styles.containsKey(styleKey)) {
                     Style = loader.Theme->Styles[styleKey];
                 } else {
-                    Logger::log(LogType::WARNING, _T("Style '{}' not found.\n"), styleKey.str);
+                    auto text = std::format(_T("Style '{}' not found.\n"), styleKey.str);
+                    Logger::log(LogType::WARNING, text.c_str());
                 }
             }
         } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {

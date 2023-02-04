@@ -48,10 +48,12 @@ namespace Ghurund {
             return Logger::log(LogType::ERR0R, Status::COMPILATION_ERROR, _T("Compilation failed.\n"));
 
         func = mod->GetFunctionByDecl(entryPoint.Data);
-        if (func == 0)
+        if (func == 0) {
             // The function couldn't be found. Instruct the script writer
             // to include the expected function in the script.
-            return Logger::log(LogType::ERR0R, Status::ENTRY_POINT_NOT_FOUND, _T("The script must have the function '%hs'. Please add it and try again.\n"), entryPoint);
+            auto text = std::format(_T("The script must have the function '%hs'. Please add it and try again.\n"), entryPoint);
+            return Logger::log(LogType::ERR0R, Status::ENTRY_POINT_NOT_FOUND, text.c_str());
+        }
 
         // Create our context, prepare it, and then execute
         ctx = engine.createContext();
@@ -68,7 +70,8 @@ namespace Ghurund {
         int r = ctx->Execute();
         if (r != asEXECUTION_FINISHED) {
             if (r == asEXECUTION_EXCEPTION) {
-                Logger::log(LogType::ERR0R, _T("An exception '%hs' occurred. Please correct the code and try again.\n"), convertText<char, tchar>(AString(ctx->GetExceptionString())));
+                auto text = std::format(_T("An exception '%s' occurred. Please correct the code and try again.\n"), AString(ctx->GetExceptionString()));
+                Logger::log(LogType::ERR0R, text.c_str());
                 return Status::SCRIPT_EXCEPTION;
             }
         }

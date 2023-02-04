@@ -59,7 +59,8 @@ namespace Ghurund::Net {
         if (socket.bind() != Status::OK) {
             int error = WSAGetLastError();
             delete connection;
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("unable to bind to socket, error: {:d}\n"), error);
+            auto text = std::format(_T("unable to bind to socket, error: {:d}\n"), error);
+            return Logger::log(LogType::ERR0R, Status::SOCKET, text.c_str());
         }
 
         connections.add(connection);

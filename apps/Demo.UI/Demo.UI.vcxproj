@@ -96,14 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\DemoApplication.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-    <ClCompile Include="src\DemoWindow.ixx">
-      <FileType>Document</FileType>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

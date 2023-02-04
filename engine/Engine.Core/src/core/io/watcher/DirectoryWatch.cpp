@@ -35,8 +35,9 @@ namespace Ghurund::Core {
         if (numberOfBytesTransfered == 0)
             return;
 
-        watch->buffer.Size = numberOfBytesTransfered;
+        // TODO: check this buffer reset
         Buffer buffer2(watch->buffer);
+        watch->buffer.reset(numberOfBytesTransfered);
         watch->readChanges();
         watch->fileChanged(buffer2);
     }

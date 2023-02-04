@@ -1,8 +1,8 @@
 #include "ghcpch.h"
-#include "Formatter.h"
 #include "Logger.h"
 
 #include "Common.h"
+#include "Formatter.h"
 
 #include <io.h>
 #include <fcntl.h>
@@ -42,5 +42,19 @@ namespace Ghurund::Core {
 
         delete logOutput;
         logOutput = nullptr;
+    }
+    
+    void Logger::log(const LogType& type, const tchar* text) {
+        if (!logOutput || ((int)type.Value) < (int)filterLevel)
+            return;
+
+        StackTrace stacktrace(GetCurrentProcess());
+        StackTrace::Entry entry = stacktrace[2];
+
+        std::basic_string<tchar> fileLine = std::format(_T("{0}({1:d}): [{2:#x} {3}(..)]"), entry.fileName, entry.fileLine, entry.address, entry.name);
+
+        criticalSection.enter();
+        logOutput->log({ type, fileLine.c_str(), text });
+        criticalSection.leave();
     }
 }

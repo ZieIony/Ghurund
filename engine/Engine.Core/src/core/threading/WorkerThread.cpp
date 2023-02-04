@@ -18,9 +18,15 @@ namespace Ghurund::Core {
                 SharedPointer<Task> task = queue.front();
                 queue.remove();
                 section.leave();
-                Logger::print(LogType::INFO, _T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+#ifdef _DEBUG
+                auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+                Logger::print(LogType::INFO, text.c_str());
+#endif
                 task->run();
-                Logger::print(LogType::INFO, _T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+#ifdef _DEBUG
+                auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+                Logger::print(LogType::INFO, text2.c_str());
+#endif
             }
             busy.clear();
         }

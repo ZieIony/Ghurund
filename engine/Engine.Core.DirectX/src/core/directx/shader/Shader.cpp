@@ -48,7 +48,8 @@ namespace Ghurund::Core::DirectX {
         ComPtr<ID3DBlob> error;
         if (FAILED(D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error))) {
             result = Status::CALL_FAIL;
-            Logger::log(LogType::ERR0R, result, _T("D3D12SerializeRootSignature() failed\n%hs"), error->GetBufferPointer());
+            auto text = std::format(_T("D3D12SerializeRootSignature() failed\n%hs"), error->GetBufferPointer());
+            Logger::log(LogType::ERR0R, result, text.c_str());
             goto cleanUp;
         }
         if (FAILED(graphics->Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&rootSignature)))) {

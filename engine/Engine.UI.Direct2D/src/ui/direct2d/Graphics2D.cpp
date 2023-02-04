@@ -146,8 +146,10 @@ namespace Ghurund::UI::Direct2D {
 
         state = UIState::IDLE;
 
-        if (FAILED(endDrawResult))
-            return Logger::log(LogType::WARNING, Status::CALL_FAIL, _T("ID2D1DeviceContext2::EndDraw() failed with code {}\n"), endDrawResult);
+        if (FAILED(endDrawResult)) {
+            auto text = std::format(_T("ID2D1DeviceContext2::EndDraw() failed with code {}\n"), endDrawResult);
+            return Logger::log(LogType::WARNING, Status::CALL_FAIL, text.c_str());
+        }
         return Status::OK;
     }
 }
