@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "test/MemoryGuard.h"
 
-#include "core/Float.h"
+#include "core/math/Float.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

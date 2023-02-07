@@ -32,12 +32,12 @@ private:
 
 public:
     TextBlockTest() {
-        window = new SystemWindow(timer);
-        context = new UIContext(*window, resourceManager);
-        fontLoader = new FontLoader();
+        window = ghnew SystemWindow(timer);
+        context = ghnew UIContext(*window, resourceManager);
+        fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(std::unique_ptr<FontLoader>(fontLoader));
-        Ghurund::Core::SharedPointer<Font> latoMediumFont = resourceManager.load<Font>(Ghurund::Core::FilePath(L"e:/Ghurund/resources/fonts\\lato_medium.ttf"));
-        textFormat = new TextFormat(latoMediumFont, 10);
+        Ghurund::Core::SharedPointer<Font> latoMediumFont(resourceManager.load<Font>(Ghurund::Core::FilePath(L"e:/Ghurund/resources/fonts\\lato_medium.ttf")));
+        textFormat = ghnew TextFormat(latoMediumFont.get(), 10);
     }
 
     ~TextBlockTest() {
@@ -47,10 +47,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyWrap) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"";
@@ -66,10 +66,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextWrap) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width::WRAP, PreferredSize::Height::WRAP };
         textBlock->Text = L"test text";
@@ -85,10 +85,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyFill) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"";
@@ -104,10 +104,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextFill) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
         textBlock->Text = L"test text";
@@ -123,10 +123,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyPixels) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         //textBlock->MinSize = { 0, 0 };
@@ -141,10 +141,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextPixels) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PIXELS, 50), PreferredSize::Height(PreferredSize::Type::PIXELS, 70) };
         textBlock->Text = L"test text";
@@ -160,10 +160,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyPercent) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         //textBlock->MinSize = { 0, 0 };
@@ -178,10 +178,10 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextPercent) {
-        SharedPointer<RootView> rootView = new RootView(*context);
-        TextLayout* textLayout = new TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        SharedPointer<TextBlock> textBlock = new TextBlock(std::unique_ptr<TextLayout>(textLayout));
-        rootView->Child = textBlock;
+        auto rootView = makeShared<RootView>(*context);
+        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        rootView->Child = textBlock.get();
 
         //textBlock->PreferredSize = { PreferredSize::Width(PreferredSize::Type::PERCENT, 50.0f), PreferredSize::Height(PreferredSize::Type::PERCENT, 70.0f) };
         textBlock->Text = L"test text";

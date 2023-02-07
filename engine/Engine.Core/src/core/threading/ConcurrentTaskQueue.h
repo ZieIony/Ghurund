@@ -20,7 +20,7 @@ namespace Ghurund::Core {
 
         inline SharedPointer<Task> remove() {
             criticalSection.enter();
-            SharedPointer<Task> task = nullptr;
+            SharedPointer<Task> task;
             if (!queue.Empty) {
                 task = queue.front();
                 queue.remove();

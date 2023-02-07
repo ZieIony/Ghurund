@@ -63,9 +63,9 @@ export namespace Preview {
 
             UILayer* uiLayer = ghnew UILayer(uiFeature.Graphics2D, *this, Application.ResourceManager);
 
-            previewLayout = Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE);
+            previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE));
             previewLayout->Theme = lightTheme;
-            uiLayer->Root.Child = previewLayout;
+            uiLayer->Root.Child = previewLayout.get();
             previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
                 updateTheme(type);
                 return true;

@@ -328,75 +328,75 @@ namespace Ghurund::UI {
     }
 
     void Control::setConstraints(const ConstraintSet& constraints) {
-        if (constraints.left && constraints.width && constraints.right) {
-            this->left = ghnew CenterLeftConstraint(constraints.left, constraints.width, constraints.right);
-            this->width = constraints.width;
-            this->right = ghnew CenterRightConstraint(constraints.left, constraints.width, constraints.right);
-        } else if (constraints.left) {
-            this->left = constraints.left;
-            if (constraints.width) {
-                this->width = constraints.width;
-                this->right = ghnew LeftWidthConstraint();
-            } else if (constraints.right) {
-                this->width = ghnew LeftRightConstraint();
-                this->right = constraints.right;
+        if (constraints.left != nullptr && constraints.width != nullptr && constraints.right != nullptr) {
+            this->left.set(ghnew CenterLeftConstraint(constraints.left.get(), constraints.width.get(), constraints.right.get()));
+            this->width = constraints.width.get();
+            this->right.set(ghnew CenterRightConstraint(constraints.left.get(), constraints.width.get(), constraints.right.get()));
+        } else if (constraints.left != nullptr) {
+            this->left = constraints.left.get();
+            if (constraints.width != nullptr) {
+                this->width = constraints.width.get();
+                this->right.set(ghnew LeftWidthConstraint());
+            } else if (constraints.right != nullptr) {
+                this->width.set(ghnew LeftRightConstraint());
+                this->right = constraints.right.get();
             } else {
-                this->width = ghnew WrapWidthConstraint();
-                this->right = ghnew LeftWidthConstraint();
+                this->width.set(ghnew WrapWidthConstraint());
+                this->right.set(ghnew LeftWidthConstraint());
             }
-        } else if (constraints.width) {
-            if (constraints.right) {
-                this->left = ghnew WidthRightConstraint();
-                this->width = constraints.width;
-                this->right = constraints.right;
+        } else if (constraints.width != nullptr) {
+            if (constraints.right != nullptr) {
+                this->left.set(ghnew WidthRightConstraint());
+                this->width = constraints.width.get();
+                this->right = constraints.right.get();
             } else {
-                this->left = ghnew ParentLeftConstraint();
-                this->width = constraints.width;
-                this->right = ghnew LeftWidthConstraint();
+                this->left.set(ghnew ParentLeftConstraint());
+                this->width = constraints.width.get();
+                this->right.set(ghnew LeftWidthConstraint());
             }
-        } else if (constraints.right) {
-            this->left = ghnew WidthRightConstraint();
-            this->width = ghnew WrapWidthConstraint();
-            this->right = constraints.right;
+        } else if (constraints.right != nullptr) {
+            this->left.set(ghnew WidthRightConstraint());
+            this->width.set(ghnew WrapWidthConstraint());
+            this->right = constraints.right.get();
         } else {
-            this->left = ghnew ParentLeftConstraint();
-            this->width = ghnew WrapWidthConstraint();
-            this->right = ghnew LeftWidthConstraint();
+            this->left.set(ghnew ParentLeftConstraint());
+            this->width.set(ghnew WrapWidthConstraint());
+            this->right.set(ghnew LeftWidthConstraint());
         }
-        if (constraints.top && constraints.height && constraints.bottom) {
-            this->top = ghnew CenterTopConstraint(constraints.top, constraints.height, constraints.bottom);
-            this->height = constraints.height;
-            this->bottom = ghnew CenterBottomConstraint(constraints.top, constraints.height, constraints.bottom);
-        } else if (constraints.top) {
-            this->top = constraints.top;
-            if (constraints.height) {
-                this->height = constraints.height;
-                this->bottom = ghnew TopHeightConstraint();
-            } else if (constraints.bottom) {
-                this->height = ghnew TopBottomConstraint();
-                this->bottom = constraints.bottom;
+        if (constraints.top != nullptr && constraints.height != nullptr && constraints.bottom != nullptr) {
+            this->top.set(ghnew CenterTopConstraint(constraints.top.get(), constraints.height.get(), constraints.bottom.get()));
+            this->height = constraints.height.get();
+            this->bottom.set(ghnew CenterBottomConstraint(constraints.top.get(), constraints.height.get(), constraints.bottom.get()));
+        } else if (constraints.top != nullptr) {
+            this->top = constraints.top.get();
+            if (constraints.height != nullptr) {
+                this->height = constraints.height.get();
+                this->bottom.set(ghnew TopHeightConstraint());
+            } else if (constraints.bottom != nullptr) {
+                this->height.set(ghnew TopBottomConstraint());
+                this->bottom = constraints.bottom.get();
             } else {
-                this->height = ghnew WrapHeightConstraint();
-                this->bottom = ghnew TopHeightConstraint();
+                this->height.set(ghnew WrapHeightConstraint());
+                this->bottom.set(ghnew TopHeightConstraint());
             }
-        } else if (constraints.height) {
-            if (constraints.bottom) {
-                this->top = ghnew HeightBottomConstraint();
-                this->height = constraints.height;
-                this->bottom = constraints.bottom;
+        } else if (constraints.height != nullptr) {
+            if (constraints.bottom != nullptr) {
+                this->top.set(ghnew HeightBottomConstraint());
+                this->height = constraints.height.get();
+                this->bottom = constraints.bottom.get();
             } else {
-                this->top = ghnew ParentTopConstraint();
-                this->height = constraints.height;
-                this->bottom = ghnew TopHeightConstraint();
+                this->top.set(ghnew ParentTopConstraint());
+                this->height = constraints.height.get();
+                this->bottom.set(ghnew TopHeightConstraint());
             }
-        } else if (constraints.bottom) {
-            this->top = ghnew HeightBottomConstraint();
-            this->height = ghnew WrapHeightConstraint();
-            this->bottom = constraints.bottom;
+        } else if (constraints.bottom != nullptr) {
+            this->top.set(ghnew HeightBottomConstraint());
+            this->height.set(ghnew WrapHeightConstraint());
+            this->bottom = constraints.bottom.get();
         } else {
-            this->top = ghnew ParentTopConstraint();
-            this->height = ghnew WrapHeightConstraint();
-            this->bottom = ghnew TopHeightConstraint();
+            this->top.set(ghnew ParentTopConstraint());
+            this->height.set(ghnew WrapHeightConstraint());
+            this->bottom.set(ghnew TopHeightConstraint());
         }
     }
 
@@ -483,38 +483,39 @@ namespace Ghurund::UI {
         SharedPointer<Constraint> left, right, width;
         SharedPointer<Constraint> top, bottom, height;
         if (leftElement) {
-            left = loader.loadConstraint(*leftElement, Orientation::HORIZONTAL);
+            left.set(loader.loadConstraint(*leftElement, Orientation::HORIZONTAL));
         } else  if (leftAttr) {
-            left = loader.loadConstraint(leftAttr->Value(), Orientation::HORIZONTAL);
+            left.set(loader.loadConstraint(leftAttr->Value(), Orientation::HORIZONTAL));
         }
         if (rightElement) {
-            right = loader.loadConstraint(*rightElement, Orientation::HORIZONTAL);
+            right.set(loader.loadConstraint(*rightElement, Orientation::HORIZONTAL));
         } else if (rightAttr) {
-            right = loader.loadConstraint(rightAttr->Value(), Orientation::HORIZONTAL);
+            right.set(loader.loadConstraint(rightAttr->Value(), Orientation::HORIZONTAL));
         }
         if (widthElement) {
-            width = loader.loadConstraint(*widthElement, Orientation::HORIZONTAL);
+            width.set(loader.loadConstraint(*widthElement, Orientation::HORIZONTAL));
         } else if (widthAttr) {
-            width = loader.loadConstraint(widthAttr->Value(), Orientation::HORIZONTAL);
+            width.set(loader.loadConstraint(widthAttr->Value(), Orientation::HORIZONTAL));
         }
         if (topElement) {
-            top = loader.loadConstraint(*topElement, Orientation::VERTICAL);
+            top.set(loader.loadConstraint(*topElement, Orientation::VERTICAL));
         } else if (topAttr) {
-            top = loader.loadConstraint(topAttr->Value(), Orientation::VERTICAL);
+            top.set(loader.loadConstraint(topAttr->Value(), Orientation::VERTICAL));
         }
         if (bottomElement) {
-            bottom = loader.loadConstraint(*bottomElement, Orientation::VERTICAL);
+            bottom.set(loader.loadConstraint(*bottomElement, Orientation::VERTICAL));
         } else if (bottomAttr) {
-            bottom = loader.loadConstraint(bottomAttr->Value(), Orientation::VERTICAL);
+            bottom.set(loader.loadConstraint(bottomAttr->Value(), Orientation::VERTICAL));
         }
         if (heightElement) {
-            height = loader.loadConstraint(*heightElement, Orientation::VERTICAL);
+            height.set(loader.loadConstraint(*heightElement, Orientation::VERTICAL));
         } else if (heightAttr) {
-            height = loader.loadConstraint(heightAttr->Value(), Orientation::VERTICAL);
+            height.set(loader.loadConstraint(heightAttr->Value(), Orientation::VERTICAL));
         }
-        setConstraints(ConstraintSet()
-            .withLeft(left).withWidth(width).withRight(right)
-            .withTop(top).withHeight(height).withBottom(bottom));
+        setConstraints({
+            left,width,right,
+            top,height,bottom
+            });
     }
 
     void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

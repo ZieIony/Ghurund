@@ -6,7 +6,7 @@
 #include "SelfConstraint.h"
 #include "WrapConstraint.h"
 #include "FlowConstraint.h"
-#include "core/Float.h"
+#include "core/math/Float.h"
 
 namespace Ghurund::UI {
     size_t ConstraintFactory::findEndOfNameIndex(const AString& str) const {

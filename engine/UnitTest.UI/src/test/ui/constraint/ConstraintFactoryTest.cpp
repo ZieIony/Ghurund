@@ -28,7 +28,10 @@ public:
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        Pointer::dumpPointers();
+        if (Pointer::numberOfAllocatedPointers() > 0) {
+            Pointer::dumpPointers();
+            Assert::Fail();
+        }
     }
 
     TEST_METHOD(parseParent) {
@@ -36,27 +39,27 @@ public:
         {
             ConstraintFactory factory;
             {
-                SharedPointer<Constraint> parentLeft = dynamic_cast<ParentLeftConstraint*>(factory.parseConstraint("Parent.Left", Orientation::HORIZONTAL));
+                SharedPointer<Constraint> parentLeft(dynamic_cast<ParentLeftConstraint*>(factory.parseConstraint("Parent.Left", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentLeft);
             }
             {
-                SharedPointer<Constraint> parentRight = dynamic_cast<ParentRightConstraint*>(factory.parseConstraint("Parent.Right", Orientation::HORIZONTAL));
+                SharedPointer<Constraint> parentRight(dynamic_cast<ParentRightConstraint*>(factory.parseConstraint("Parent.Right", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentRight);
             }
             {
-                SharedPointer<Constraint> parentTop = dynamic_cast<ParentTopConstraint*>(factory.parseConstraint("Parent.Top", Orientation::VERTICAL));
+                SharedPointer<Constraint> parentTop(dynamic_cast<ParentTopConstraint*>(factory.parseConstraint("Parent.Top", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentTop);
             }
             {
-                SharedPointer<Constraint> parentBottom = dynamic_cast<ParentBottomConstraint*>(factory.parseConstraint("Parent.Bottom", Orientation::VERTICAL));
+                SharedPointer<Constraint> parentBottom(dynamic_cast<ParentBottomConstraint*>(factory.parseConstraint("Parent.Bottom", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentBottom);
             }
             {
-                SharedPointer<Constraint> parentWidth = dynamic_cast<ParentWidthConstraint*>(factory.parseConstraint("Parent.Width", Orientation::HORIZONTAL));
+                SharedPointer<Constraint> parentWidth(dynamic_cast<ParentWidthConstraint*>(factory.parseConstraint("Parent.Width", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentWidth);
             }
             {
-                SharedPointer<Constraint> parentHeight = dynamic_cast<ParentHeightConstraint*>(factory.parseConstraint("Parent.Height", Orientation::VERTICAL));
+                SharedPointer<Constraint> parentHeight(dynamic_cast<ParentHeightConstraint*>(factory.parseConstraint("Parent.Height", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentHeight);
             }
         }
@@ -67,32 +70,32 @@ public:
         {
             ConstraintFactory factory;
             {
-                SharedPointer<SiblingLeftConstraint> siblingLeft = dynamic_cast<SiblingLeftConstraint*>(factory.parseConstraint("'color'.Left", Orientation::HORIZONTAL));
+                SharedPointer<SiblingLeftConstraint> siblingLeft(dynamic_cast<SiblingLeftConstraint*>(factory.parseConstraint("'color'.Left", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingLeft);
                 Assert::AreEqual(AString("color"), siblingLeft->Name);
             }
             {
-                SharedPointer<SiblingRightConstraint> siblingRight = dynamic_cast<SiblingRightConstraint*>(factory.parseConstraint("'color'.Right", Orientation::HORIZONTAL));
+                SharedPointer<SiblingRightConstraint> siblingRight(dynamic_cast<SiblingRightConstraint*>(factory.parseConstraint("'color'.Right", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingRight);
                 Assert::AreEqual(AString("color"), siblingRight->Name);
             }
             {
-                SharedPointer<SiblingTopConstraint> siblingTop = dynamic_cast<SiblingTopConstraint*>(factory.parseConstraint("'color'.Top", Orientation::VERTICAL));
+                SharedPointer<SiblingTopConstraint> siblingTop(dynamic_cast<SiblingTopConstraint*>(factory.parseConstraint("'color'.Top", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingTop);
                 Assert::AreEqual(AString("color"), siblingTop->Name);
             }
             {
-                SharedPointer<SiblingBottomConstraint> siblingBottom = dynamic_cast<SiblingBottomConstraint*>(factory.parseConstraint("'color'.Bottom", Orientation::VERTICAL));
+                SharedPointer<SiblingBottomConstraint> siblingBottom(dynamic_cast<SiblingBottomConstraint*>(factory.parseConstraint("'color'.Bottom", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingBottom);
                 Assert::AreEqual(AString("color"), siblingBottom->Name);
             }
             {
-                SharedPointer<SiblingWidthConstraint> siblingWidth = dynamic_cast<SiblingWidthConstraint*>(factory.parseConstraint("'color'.Width", Orientation::HORIZONTAL));
+                SharedPointer<SiblingWidthConstraint> siblingWidth(dynamic_cast<SiblingWidthConstraint*>(factory.parseConstraint("'color'.Width", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingWidth);
                 Assert::AreEqual(AString("color"), siblingWidth->Name);
             }
             {
-                SharedPointer<SiblingHeightConstraint> siblingHeight = dynamic_cast<SiblingHeightConstraint*>(factory.parseConstraint("'color'.Height", Orientation::VERTICAL));
+                SharedPointer<SiblingHeightConstraint> siblingHeight(dynamic_cast<SiblingHeightConstraint*>(factory.parseConstraint("'color'.Height", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingHeight);
                 Assert::AreEqual(AString("color"), siblingHeight->Name);
             }
@@ -111,7 +114,7 @@ public:
             LayoutLoader* layoutLoader = ghnew LayoutLoader(resourceManager, shapeFactory, imageDrawableFactory, textFormatFactory, constraintFactory);
             resourceManager.Loaders.set<Control>(std::unique_ptr<LayoutLoader>(layoutLoader));
 
-            SharedPointer<Control> control = resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")));
+            SharedPointer<Control> control(resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")), nullptr, LoadOption::DONT_CACHE));
 
             Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&control->Left));
             Assert::AreEqual(5.0f, control->Left.Value);

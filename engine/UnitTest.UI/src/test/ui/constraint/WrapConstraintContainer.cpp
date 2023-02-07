@@ -36,10 +36,11 @@ public:
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            SharedPointer<ControlContainer> container = ghnew ControlContainer();
-            container->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto container = makeShared<ControlContainer>();
+            container->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);
@@ -54,22 +55,23 @@ public:
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            SharedPointer<ControlContainer> container = ghnew ControlContainer();
-            container->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<WrapWidthConstraint>();
-                c->Min = 100;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<WrapHeightConstraint>();
-                c->Min = 75;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
+            auto container = makeShared<ControlContainer>();
+            container->Constraints = {
+                .width = []() {
+                    auto c = makeShared<WrapWidthConstraint>();
+                    c->Min = 100;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<WrapHeightConstraint>();
+                    c->Min = 75;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);
@@ -84,15 +86,17 @@ public:
     TEST_METHOD(wrapChild) {
         MemoryGuard guard;
         {
-            SharedPointer<Control> child = ghnew ColorView();
-            child->Constraints = ConstraintSet()
-                .withWidth(100.0f)
-                .withHeight(75.0f);
-            SharedPointer<ControlContainer> group = ghnew ControlContainer();
-            group->Child = child;
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto child = makeShared<ColorView>();
+            child->Constraints = {
+                .width = 100.0f,
+                .height = 75.0f
+            };
+            auto group = makeShared<ControlContainer>();
+            group->Child = child.get();
+            group->Constraints = ConstraintSet{
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -108,27 +112,29 @@ public:
         MemoryGuard guard;
         {
             auto child = makeShared<ColorView>();
-            child->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<ParentWidthConstraint>();
-                c->Min = 100.0f;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<ParentHeightConstraint>();
-                c->Min = 75.0f;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
+            child->Constraints = {
+                .width = []() {
+                    auto c = makeShared<ParentWidthConstraint>();
+                    c->Min = 100.0f;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<ParentHeightConstraint>();
+                    c->Min = 75.0f;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
 
             auto group = makeShared<ControlContainer>();
-            group->Child = child;
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            group->Child = child.get();
+            group->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);

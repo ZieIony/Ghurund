@@ -5,7 +5,7 @@
 
 namespace Ghurund {
     class QuadMesh: public Mesh {
-    protected:
+    public:
         Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0) {
             ScreenVertex quadVertices[] = {
                 {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f}},

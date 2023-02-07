@@ -47,54 +47,54 @@ namespace Ghurund::UI {
 
     void LeftWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        left = &control.Left;
+        left.set(&control.Left);
         dependencies.add(&control.Left);
-        width = &control.Width;
+        width.set(&control.Width);
         dependencies.add(&control.Width);
         graph.add(this);
     }
 
     void LeftRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        left = &control.Left;
+        left.set(&control.Left);
         dependencies.add(&control.Left);
-        right = &control.Right;
+        right.set(&control.Right);
         dependencies.add(&control.Right);
         graph.add(this);
     }
 
     void WidthRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        width = &control.Width;
+        width.set(&control.Width);
         dependencies.add(&control.Width);
-        right = &control.Right;
+        right.set(&control.Right);
         dependencies.add(&control.Right);
         graph.add(this);
     }
 
     void TopHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        top = &control.Top;
+        top.set(&control.Top);
         dependencies.add(&control.Top);
-        height = &control.Height;
+        height.set(&control.Height);
         dependencies.add(&control.Height);
         graph.add(this);
     }
 
     void TopBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        top = &control.Top;
+        top.set(&control.Top);
         dependencies.add(&control.Top);
-        bottom = &control.Bottom;
+        bottom.set(&control.Bottom);
         dependencies.add(&control.Bottom);
         graph.add(this);
     }
 
     void HeightBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        height = &control.Height;
+        height.set(&control.Height);
         dependencies.add(&control.Height);
-        bottom = &control.Bottom;
+        bottom.set(&control.Bottom);
         dependencies.add(&control.Bottom);
         graph.add(this);
     }

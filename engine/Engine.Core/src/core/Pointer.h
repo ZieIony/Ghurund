@@ -69,6 +69,14 @@ namespace Ghurund::Core {
         virtual String toString() const override;
 
 #ifdef _DEBUG
+        static size_t numberOfAllocatedPointers() {
+            size_t s;
+            criticalSection.enter();
+            s = pointers.Size;
+            criticalSection.leave();
+            return s;
+        }
+
         static void dumpPointers();
 
         static void reservePointers(size_t size) {

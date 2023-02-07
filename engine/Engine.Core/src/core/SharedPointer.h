@@ -19,20 +19,20 @@ namespace Ghurund::Core {
 
         inline static const Type& TYPE = GET_TYPE();
 
-        SharedPointer() {}
+        constexpr SharedPointer():pointer(nullptr) {}
 
-        SharedPointer(const SharedPointer& other) {
-            pointer = other.pointer;
+        SharedPointer(const SharedPointer<T>& other) {
+            pointer = other.get();
             if (pointer)
                 pointer->addReference();
         }
 
-        SharedPointer(SharedPointer&& other) noexcept {
+        SharedPointer(SharedPointer<T>&& other) noexcept {
             pointer = other.pointer;
             other.pointer = nullptr;
         }
 
-        SharedPointer(T* p) {
+        explicit SharedPointer(T* p) {
             pointer = p;
         }
 
@@ -41,56 +41,49 @@ namespace Ghurund::Core {
                 pointer->release();
         }
 
-        T& operator*() {
-            return *pointer;
-        }
-
-        T* operator&() {
+        inline T* get() const {
             return pointer;
         }
 
-        operator T* () {
-            return pointer;
-        }
-
-        operator const T* () const {
-            return pointer;
-        }
-
-        T* operator ->() {
-            return pointer;
-        }
-
-        const T* operator ->() const {
-            return pointer;
-        }
-
-        SharedPointer<T>& operator=(T* p) {
+        inline void set(T* p) {
             if (pointer)
                 pointer->release();
             pointer = p;
-            return *this;
         }
 
-        SharedPointer<T>& operator=(const SharedPointer<T>& other) {
+        inline T* operator ->() {
+            return pointer;
+        }
+
+        inline const T* operator ->() const {
+            return pointer;
+        }
+
+        inline SharedPointer<T>& operator=(const SharedPointer<T>& other) {
             setPointer(pointer, other.pointer);
             return *this;
         }
 
-        SharedPointer<T>& operator=(SharedPointer<T>&& other) {
+        inline SharedPointer<T>& operator=(SharedPointer<T>&& other) {
+            if(pointer)
+                pointer->release();
             pointer = other.pointer;
             other.pointer = nullptr;
             return *this;
         }
 
-        bool operator==(const SharedPointer<T>& other) const {
+        inline bool operator==(const SharedPointer<T>& other) const {
             return pointer == other.pointer;
+        }
+
+        inline bool operator==(const nullptr_t& other) const {
+            return pointer == nullptr;
         }
     };
 
     template<typename T, typename... Args>
     SharedPointer<T> makeShared(Args&&... args) {
-        return ghnew T(std::forward<Args>(args)...);
+        return SharedPointer(ghnew T(std::forward<Args>(args)...));
     }
 
 }

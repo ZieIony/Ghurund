@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_BUTTON];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_BUTTON].get();
     }
 
     void TextBlockButtonStyle::onStateChanged(Control& control) const {
@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY].get();
     }
 
     void TextBlockPrimaryStyle::onStateChanged(Control& control) const {
@@ -38,7 +38,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_TEXT_SECONDARY].get();
     }
 
     void TextBlockSecondaryStyle::onStateChanged(Control& control) const {
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
         Ghurund::UI::Theme* theme = control.Theme;
         if (!theme)
             return;
-        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_LIST_HEADER];
+        ((TextBlock&)control).TextFormat = theme->TextFormats[Theme::TEXTFORMAT_LIST_HEADER].get();
     }
 
     void TextBlockHeaderStyle::onStateChanged(Control& control) const {

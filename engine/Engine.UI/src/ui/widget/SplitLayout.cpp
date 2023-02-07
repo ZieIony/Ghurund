@@ -16,16 +16,16 @@ namespace Ghurund::UI {
     }
 
     SplitLayout::SplitLayout(Ghurund::UI::Orientation orientation) {
-        splitter = ghnew Splitter(orientation);
+        splitter.set(ghnew Splitter(orientation));
         //splitter->PreferredSize.width = 4;
-        container1 = ghnew ControlContainer();
-        container2 = ghnew ControlContainer();
+        container1.set(ghnew ControlContainer());
+        container2.set(ghnew ControlContainer());
         LockedChild = LockedChild::NONE;
         //PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
 
-        layout = ghnew LinearLayout();
-        layout->Children = { container1, splitter, container2 };
-        Child = layout;
+        layout.set(ghnew LinearLayout());
+        layout->Children = { container1.get(), splitter.get(), container2.get() };
+        Child = layout.get();
 
         Orientation = orientation;
     }

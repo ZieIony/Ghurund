@@ -25,255 +25,255 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(resolveParentGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        layout->Children.add(content);
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout, *result);
+        Assert::AreSame<Control>(*layout.get(), *result);
     }
 
     TEST_METHOD(resolveParentContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
-        layout->Child = content;
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout, *result);
+        Assert::AreSame<Control>(*layout.get(), *result);
     }
 
     TEST_METHOD(resolveEmptyParent) {
-        SharedPointer<ColorView> content = new ColorView();
+        auto content = makeShared<ColorView>();
         ControlPath path = ControlPath::parse("Parent");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveNameGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Children.add(content);
+        layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveNameContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveMissingNameGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
+        auto layout = makeShared<ControlGroup>();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveMissingNameContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
+        auto layout = makeShared<PaddingContainer>();
         ControlPath path = ControlPath::parse("'color'");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveIndexGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        SharedPointer<ColorView> content2 = new ColorView();
-        layout->Children = { content, content2 };
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        auto content2 = makeShared<ColorView>();
+        layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[1]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content2, *result);
+        Assert::AreSame<Control>(*content2.get(), *result);
     }
 
     TEST_METHOD(resolveNegativeIndexGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        SharedPointer<ColorView> content2 = new ColorView();
-        layout->Children = { content, content2 };
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        auto content2 = makeShared<ColorView>();
+        layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-1]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content2, *result);
+        Assert::AreSame<Control>(*content2.get(), *result);
     }
 
     TEST_METHOD(resolveIndexMissingGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        SharedPointer<ColorView> content2 = new ColorView();
-        layout->Children = { content, content2 };
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        auto content2 = makeShared<ColorView>();
+        layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[2]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveNegativeIndexMissingGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        SharedPointer<ColorView> content2 = new ColorView();
-        layout->Children = { content, content2 };
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        auto content2 = makeShared<ColorView>();
+        layout->Children = { content.get(), content2.get() };
         ControlPath path = ControlPath::parse("[-3]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveIndexContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("[0]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     // [0] is the only valid index for containers
     TEST_METHOD(resolveNegativeIndexContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-1]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveIndexMissingContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("[1]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveNegativeIndexMissingContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("[-2]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveParentNameGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Children.add(content);
+        layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent.'color'");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveParentNameContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        layout->Child = content;
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.'color'");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveParentIndexGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ColorView> content = new ColorView();
-        layout->Children.add(content);
+        auto layout = makeShared<ControlGroup>();
+        auto content = makeShared<ColorView>();
+        layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent[0]");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveParentIndexContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<ColorView> content = new ColorView();
-        layout->Child = content;
+        auto layout = makeShared<PaddingContainer>();
+        auto content = makeShared<ColorView>();
+        layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent[0]");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveNameIndexGroup) {
-        SharedPointer<ControlGroup> layout = new ControlGroup();
-        SharedPointer<ControlGroup> mid = new ControlGroup();
+        auto layout = makeShared<ControlGroup>();
+        auto mid = makeShared<ControlGroup>();
         mid->Name = "container";
-        layout->Children = { mid };
-        SharedPointer<ColorView> content = new ColorView();
-        mid->Children = { content };
+        layout->Children = { mid.get() };
+        auto content = makeShared<ColorView>();
+        mid->Children = { content.get() };
         ControlPath path = ControlPath::parse("'container'[0]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveNameIndexContainer) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<PaddingContainer> mid = new PaddingContainer();
+        auto layout = makeShared<PaddingContainer>();
+        auto mid = makeShared<PaddingContainer>();
         mid->Name = "container";
-        layout->Child = mid;
-        SharedPointer<ColorView> content = new ColorView();
-        mid->Child = content;
+        layout->Child = mid.get();
+        auto content = makeShared<ColorView>();
+        mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'[0]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveComplex1) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<PaddingContainer> container = new PaddingContainer();
+        auto layout = makeShared<PaddingContainer>();
+        auto container = makeShared<PaddingContainer>();
         container->Name = "container";
-        layout->Child = container;
+        layout->Child = container.get();
         ControlPath path = ControlPath::parse("'container'.Parent[0]");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*container, *result);
+        Assert::AreSame<Control>(*container.get(), *result);
     }
 
     TEST_METHOD(resolveComplex2) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<PaddingContainer> mid = new PaddingContainer();
+        auto layout = makeShared<PaddingContainer>();
+        auto mid = makeShared<PaddingContainer>();
         mid->Name = "container";
-        layout->Child = mid;
-        SharedPointer<ColorView> content = new ColorView();
+        layout->Child = mid.get();
+        auto content = makeShared<ColorView>();
         content->Name = "color";
-        mid->Child = content;
+        mid->Child = content.get();
         ControlPath path = ControlPath::parse("'container'.'color'");
-        Control* result = path.resolve(*layout);
+        Control* result = path.resolve(*layout.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*content, *result);
+        Assert::AreSame<Control>(*content.get(), *result);
     }
 
     TEST_METHOD(resolveComplex3) {
-        SharedPointer<PaddingContainer> layout = new PaddingContainer();
-        SharedPointer<PaddingContainer> mid = new PaddingContainer();
-        layout->Child = mid;
-        SharedPointer<ColorView> content = new ColorView();
-        mid->Child = content;
+        auto layout = makeShared<PaddingContainer>();
+        auto mid = makeShared<PaddingContainer>();
+        layout->Child = mid.get();
+        auto content = makeShared<ColorView>();
+        mid->Child = content.get();
         ControlPath path = ControlPath::parse("Parent.Parent");
-        Control* result = path.resolve(*content);
+        Control* result = path.resolve(*content.get());
         Assert::IsNotNull(result);
-        Assert::AreSame<Control>(*layout, *result);
+        Assert::AreSame<Control>(*layout.get(), *result);
     }
 
     TEST_METHOD(resolveInvalidPathNoQuotationMarks) {

@@ -109,11 +109,11 @@
     <ClInclude Include="src\core\Event.h" />
     <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\Exceptions.h" />
-    <ClInclude Include="src\core\Float.h" />
+    <ClInclude Include="src\core\math\Float.h" />
     <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
-    <ClInclude Include="src\core\Int.h" />
+    <ClInclude Include="src\core\math\Int.h" />
     <ClInclude Include="src\core\Lazy.h" />
     <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\core\Noncopyable.h" />

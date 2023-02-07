@@ -32,22 +32,22 @@ namespace Ghurund::Core {
         BindableObservable(BindableObservable<T>&& other) = delete;
 
         ~BindableObservable() {
-            if (chainHandler && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler);
+            if (chainHandler != nullptr && chainHandler->Owner)
+                chainHandler->Owner->remove(*chainHandler.get());
         }
 
         void bind(Observable<T>& observable) {
-            if (chainHandler && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler);
-            chainHandler = ghnew ObservableHandler<T>([&](const T& val) {
+            if (chainHandler != nullptr && chainHandler->Owner)
+                chainHandler->Owner->remove(*chainHandler.get());
+            chainHandler.set(ghnew ObservableHandler<T>([&](const T& val) {
                 Observable<T>::Value = val;
-            });
+            }));
             observable.add(chainHandler);
         }
 
         void unbind() {
-            if (chainHandler && chainHandler->Owner)
-                chainHandler->Owner->remove(*chainHandler);
+            if (chainHandler != nullptr && chainHandler->Owner)
+                chainHandler->Owner->remove(*chainHandler.get());
         }
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();

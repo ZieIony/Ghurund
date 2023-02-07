@@ -92,10 +92,10 @@ public:
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
             uint32_t called = 0;
-            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
-            });
+            }));
             observable.add(handler);
 
             observable = username;
@@ -115,12 +115,13 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 calledFromHandler++;
                 Assert::AreEqual(value, observable.Value);
-            });
+            }));
+            Assert::Fail(L"observable adds handler_ptr and removes bare handler - fix observable");
             observable.add(handler);
-            observable.remove(*handler);
+            observable.remove(*handler.get());
 
             observable = username;
 
@@ -139,10 +140,10 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            SharedPointer<ObservableHandler<String>> handler = ghnew ObservableHandler<String>([&](const String& value) {
+            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
-            });
+            }));
             observable.add(handler);
             observable.clear();
 

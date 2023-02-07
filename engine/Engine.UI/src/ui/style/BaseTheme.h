@@ -63,8 +63,8 @@ namespace Ghurund::UI {
 
     public:
         BaseTheme(Ghurund::Core::ResourceManager& resourceManager) {
-            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont = resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf"));
-            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont = resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf"));
+            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf")));
+            Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf")));
 
             /*auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
             buttonFont->init(dwriteFactory);

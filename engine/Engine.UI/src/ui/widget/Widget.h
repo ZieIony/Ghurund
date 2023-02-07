@@ -32,8 +32,8 @@ namespace Ghurund::UI {
                     if (index != Theme->Layouts.Size)
                         localPath = Theme->Layouts.getValue(index).Data;
                 }
-                SharedPointer<Control> control = Context->ResourceManager.load<Control>(convertText<char, wchar_t>(localPath), nullptr, LoadOption::DONT_CACHE);
-                Child = control;
+                SharedPointer<Control> control(Context->ResourceManager.load<Control>(convertText<char, wchar_t>(localPath), nullptr, LoadOption::DONT_CACHE));
+                Child = control.get();
                 bind();
             }
             if (!style) {

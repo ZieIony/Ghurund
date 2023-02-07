@@ -165,7 +165,7 @@ namespace Ghurund::Core {
             Resource* resource = nullptr;
             size_t index = resources.indexOfKey(fileName);
             if (index != resources.Size)
-                resource = resources.getValue(index);
+                resource = resources.getValue(index).get();
             section.leave();
             return (Type*)resource;
         }

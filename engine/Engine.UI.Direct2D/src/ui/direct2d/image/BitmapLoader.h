@@ -12,11 +12,11 @@ namespace Ghurund::UI::Direct2D {
         BitmapLoader(Ghurund::Core::ImageLoader& imageLoader, ID2D1DeviceContext5& deviceContext):imageLoader(imageLoader), deviceContext(deviceContext) {}
 
         virtual Bitmap* load(ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override {
-            SharedPointer<Bitmap> bitmap = ghnew Bitmap();
-            SharedPointer<Image> image = imageLoader.load(manager, stream, format, options);
-            bitmap->init(deviceContext, *image);
+            SharedPointer<Bitmap> bitmap(ghnew Bitmap());
+            SharedPointer<Image> image(imageLoader.load(manager, stream, format, options));
+            bitmap->init(deviceContext, *image.get());
             bitmap->addReference();
-            return bitmap;
+            return bitmap.get();
         }
 
         virtual void save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {

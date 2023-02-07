@@ -1,7 +1,7 @@
 #include "Ghurund.Core.h"
 
 #include "Direct2DWindow.h"
-#include "core/Int.h"
+#include "core/math/Int.h"
 #include "core/application/Application.h"
 
 namespace Samples {

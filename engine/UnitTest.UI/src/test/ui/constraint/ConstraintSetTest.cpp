@@ -29,39 +29,44 @@ public:
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        Pointer::dumpPointers();
+        if (Pointer::numberOfAllocatedPointers() > 0) {
+            Pointer::dumpPointers();
+            Assert::Fail();
+        }
     }
 
     TEST_METHOD(passConstraintSet) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> width = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> right = ghnew ValueConstraint(0.0f);
-            control->Constraints = ConstraintSet()
-                .withLeft(left)
-                .withWidth(width)
-                .withRight(right);
+            auto control = makeShared<ColorView>();
+            auto left = makeShared<ValueConstraint>(0.0f);
+            auto width = makeShared<ValueConstraint>(0.0f);
+            auto right = makeShared<ValueConstraint>(0.0f);
+            control->Constraints = {
+                .left = left,
+                .width = width,
+                .right = right
+            };
         }
     }
 
     TEST_METHOD(setAllWidth) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> width = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> right = ghnew ValueConstraint(0.0f);
+            auto control = makeShared<ColorView>();
+            auto left = makeShared<ValueConstraint>(0.0f);
+            auto width = makeShared<ValueConstraint>(0.0f);
+            auto right = makeShared<ValueConstraint>(0.0f);
 
-            control->Constraints = ConstraintSet()
-                .withLeft(left)
-                .withWidth(width)
-                .withRight(right);
+            control->Constraints = {
+                .left = left,
+                .width = width,
+                .right = right
+            };
 
             Assert::IsNotNull(dynamic_cast<CenterLeftConstraint*>(&control->Left));
             Assert::AreEqual(3ul, left->ReferenceCount);
-            Assert::IsTrue(&width == &control->Width);
+            Assert::IsTrue(width.get() == &control->Width);
             Assert::AreEqual(4ul, width->ReferenceCount);
             Assert::IsNotNull(dynamic_cast<CenterRightConstraint*>(&control->Right));
             Assert::AreEqual(3ul, right->ReferenceCount);
@@ -78,15 +83,16 @@ public:
     TEST_METHOD(setAllHeight) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> top = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> height = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> bottom = ghnew ValueConstraint(0.0f);
+            auto control = makeShared<ColorView>();
+            auto top = makeShared<ValueConstraint>(0.0f);
+            auto height = makeShared<ValueConstraint>(0.0f);
+            auto bottom = makeShared<ValueConstraint>(0.0f);
 
-            control->Constraints = ConstraintSet()
-                .withTop(top)
-                .withHeight(height)
-                .withBottom(bottom);
+            control->Constraints = {
+                .top = top,
+                .height = height,
+                .bottom = bottom
+            };
 
             Assert::IsNotNull(&control->Left);
             Assert::AreEqual(1ul, control->Left.ReferenceCount);
@@ -97,7 +103,7 @@ public:
 
             Assert::IsNotNull(dynamic_cast<CenterTopConstraint*>(&control->Top));
             Assert::AreEqual(3ul, top->ReferenceCount);
-            Assert::IsTrue(&height == &control->Height);
+            Assert::IsTrue(height.get() == &control->Height);
             Assert::AreEqual(4ul, height->ReferenceCount);
             Assert::IsNotNull(dynamic_cast<CenterBottomConstraint*>(&control->Bottom));
             Assert::AreEqual(3ul, bottom->ReferenceCount);
@@ -107,28 +113,29 @@ public:
     TEST_METHOD(setLeftWidthTopHeight) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> width = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> top = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> height = ghnew ValueConstraint(0.0f);
+            auto control = makeShared<ColorView>();
+            auto left = makeShared<ValueConstraint>(0.0f);
+            auto width = makeShared<ValueConstraint>(0.0f);
+            auto top = makeShared<ValueConstraint>(0.0f);
+            auto height = makeShared<ValueConstraint>(0.0f);
 
-            control->Constraints = ConstraintSet()
-                .withLeft(left)
-                .withWidth(width)
-                .withTop(top)
-                .withHeight(height);
+            control->Constraints = ConstraintSet{
+                .left = left,
+                .width = width,
+                .top = top,
+                .height = height
+            };
 
-            Assert::IsTrue(&left == &control->Left);
+            Assert::IsTrue(left.get() == &control->Left);
             Assert::AreEqual(2ul, control->Left.ReferenceCount);
-            Assert::IsTrue(&width == &control->Width);
+            Assert::IsTrue(width.get() == &control->Width);
             Assert::AreEqual(2ul, control->Width.ReferenceCount);
             Assert::IsNotNull(dynamic_cast<LeftWidthConstraint*>(&control->Right));
             Assert::AreEqual(1ul, control->Right.ReferenceCount);
 
-            Assert::IsTrue(&top == &control->Top);
+            Assert::IsTrue(top.get() == &control->Top);
             Assert::AreEqual(2ul, top->ReferenceCount);
-            Assert::IsTrue(&height == &control->Height);
+            Assert::IsTrue(height.get() == &control->Height);
             Assert::AreEqual(2ul, height->ReferenceCount);
             Assert::IsNotNull(dynamic_cast<TopHeightConstraint*>(&control->Bottom));
             Assert::AreEqual(1ul, control->Bottom.ReferenceCount);
@@ -138,30 +145,31 @@ public:
     TEST_METHOD(setLeftRightTopBottom) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> right = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> top = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> bottom = ghnew ValueConstraint(0.0f);
+            auto control = makeShared<ColorView>();
+            auto left = makeShared<ValueConstraint>(0.0f);
+            auto right = makeShared<ValueConstraint>(0.0f);
+            auto top = makeShared<ValueConstraint>(0.0f);
+            auto bottom = makeShared<ValueConstraint>(0.0f);
 
-            control->Constraints = ConstraintSet()
-                .withLeft(left)
-                .withRight(right)
-                .withTop(top)
-                .withBottom(bottom);
+            control->Constraints = {
+                .left = left,
+                .right = right,
+                .top = top,
+                .bottom = bottom
+            };
 
-            Assert::IsTrue(&left == &control->Left);
+            Assert::IsTrue(left.get() == &control->Left);
             Assert::AreEqual(2ul, control->Left.ReferenceCount);
             Assert::IsNotNull(dynamic_cast<LeftRightConstraint*>(&control->Width));
             Assert::AreEqual(1ul, control->Width.ReferenceCount);
-            Assert::IsTrue(&right == &control->Right);
+            Assert::IsTrue(right.get() == &control->Right);
             Assert::AreEqual(2ul, control->Right.ReferenceCount);
 
-            Assert::IsTrue(&top == &control->Top);
+            Assert::IsTrue(top.get() == &control->Top);
             Assert::AreEqual(2ul, top->ReferenceCount);
             Assert::IsNotNull(dynamic_cast<TopBottomConstraint*>(&control->Height));
             Assert::AreEqual(1ul, control->Height.ReferenceCount);
-            Assert::IsTrue(&bottom == &control->Bottom);
+            Assert::IsTrue(bottom.get() == &control->Bottom);
             Assert::AreEqual(2ul, bottom->ReferenceCount);
         }
     }
@@ -169,30 +177,31 @@ public:
     TEST_METHOD(setWidthRightHeightBottom) {
         MemoryGuard memoryGuard;
         {
-            SharedPointer<Control> control = ghnew ColorView();
-            SharedPointer<Constraint> width = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> right = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> height = ghnew ValueConstraint(0.0f);
-            SharedPointer<Constraint> bottom = ghnew ValueConstraint(0.0f);
+            auto control = makeShared<ColorView>();
+            auto width = makeShared<ValueConstraint>(0.0f);
+            auto right = makeShared<ValueConstraint>(0.0f);
+            auto height = makeShared<ValueConstraint>(0.0f);
+            auto bottom = makeShared<ValueConstraint>(0.0f);
 
-            control->Constraints = ConstraintSet()
-                .withWidth(width)
-                .withRight(right)
-                .withHeight(height)
-                .withBottom(bottom);
+            control->Constraints = {
+                .width = width,
+                .right = right,
+                .height = height,
+                .bottom = bottom
+            };
 
             Assert::IsNotNull(dynamic_cast<WidthRightConstraint*>(&control->Left));
             Assert::AreEqual(1ul, control->Left.ReferenceCount);
-            Assert::IsTrue(&width == &control->Width);
+            Assert::IsTrue(width.get() == &control->Width);
             Assert::AreEqual(2ul, control->Width.ReferenceCount);
-            Assert::IsTrue(&right == &control->Right);
+            Assert::IsTrue(right.get() == &control->Right);
             Assert::AreEqual(2ul, control->Right.ReferenceCount);
 
             Assert::IsNotNull(dynamic_cast<HeightBottomConstraint*>(&control->Top));
             Assert::AreEqual(1ul, control->Top.ReferenceCount);
-            Assert::IsTrue(&height == &control->Height);
+            Assert::IsTrue(height.get() == &control->Height);
             Assert::AreEqual(2ul, height->ReferenceCount);
-            Assert::IsTrue(&bottom == &control->Bottom);
+            Assert::IsTrue(bottom.get() == &control->Bottom);
             Assert::AreEqual(2ul, bottom->ReferenceCount);
         }
     }

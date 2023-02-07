@@ -56,7 +56,7 @@ namespace Ghurund::UI {
         if (!Theme)
             return;
         if (!TextFormat)
-            TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY];
+            TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY].get();
         if (Size.Width > 0 && Size.Height > 0)
             textLayout->Size = { Size.Width, Size.Height };
     }

@@ -20,8 +20,8 @@ export namespace Preview {
 
     public:
         PreviewApplication() {
-            Features.add(std::make_unique<UIFeature>(*this));
-            Features.add(std::make_unique<Graphics>());
+            Features.add(makeShared<UIFeature>(*this).get());
+            Features.add(makeShared<Graphics>().get());
         }
 
         virtual void onInit() override {

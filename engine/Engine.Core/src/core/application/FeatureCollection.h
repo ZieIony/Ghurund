@@ -19,8 +19,9 @@ namespace Ghurund::Core {
         List<SharedPointer<Feature>> features;
 
     public:
-        inline void add(std::unique_ptr<Feature> feature) {
-            features.add(feature.release());
+        inline void add(Feature* feature) {
+            feature->addReference();
+            features.add(SharedPointer(feature));
         }
 
         template<Derived<Feature> Type>
@@ -39,20 +40,21 @@ namespace Ghurund::Core {
                 features.removeAt(index);
                 features.insert(firstNotInitialized, feature);
             }
-            return *(Type*)&feature;
+            return *(Type*)feature.get();
         }
 
         inline void remove(Feature& feature) {
-            features.remove(&feature);
+            feature.addReference();
+            features.remove(SharedPointer(&feature));
         }
 
         void init() {
-            for (Feature* f : features)
+            for (auto& f : features)
                 f->init();
         }
 
         void uninit() {
-            for (Feature* f : features | std::views::reverse)
+            for (auto& f : features | std::views::reverse)
                 f->uninit();
         }
     };

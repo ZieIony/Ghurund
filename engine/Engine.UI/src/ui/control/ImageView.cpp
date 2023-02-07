@@ -99,10 +99,10 @@ namespace Ghurund::UI {
         __super::load(loader, xml);
         auto imageAttr = xml.FindAttribute("image");
         if (imageAttr) {
-            SharedPointer<ImageDrawable> image = loader.loadDrawable(imageAttr->Value());
-            if (!image)
-                image = ghnew InvalidImageDrawable();
-            Image = image;
+            SharedPointer<ImageDrawable> image(loader.loadDrawable(imageAttr->Value()));
+            if (image == nullptr)
+                image.set(ghnew InvalidImageDrawable());
+            Image = image.get();
         }
         if (this->image) {
             auto imageTintAttr = xml.FindAttribute("imageTint");

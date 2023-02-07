@@ -174,7 +174,7 @@ namespace Ghurund::Core {
     void ResourceManager::add(Resource& resource) {
         section.enter();
         resource.addReference();
-        resources.set(*resource.Path, &resource);
+        resources.set(*resource.Path, SharedPointer(&resource));
         section.leave();
     }
 

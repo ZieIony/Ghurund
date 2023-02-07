@@ -7,7 +7,7 @@ namespace Ghurund {
     using namespace Ghurund::Core::DirectX;
 
     class ConeMesh: public Mesh {
-    protected:
+    public:
         Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 2);
     };
 }

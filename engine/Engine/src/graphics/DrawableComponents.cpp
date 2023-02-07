@@ -7,10 +7,10 @@
 
 namespace Ghurund {
     DrawableComponent* DrawableComponents::makeCube(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
-        SharedPointer<Mesh> mesh = ghnew CubeMesh();
+        auto mesh = makeShared<CubeMesh>();
         mesh->init(graphics, commandList);
         DrawableComponent* model = ghnew DrawableComponent();
-		model->Mesh = mesh;
+		model->Mesh = mesh.get();
 		model->Material = &material;
         //model->initParameters(parameterManager);
 
@@ -18,10 +18,10 @@ namespace Ghurund {
     }
 
     DrawableComponent* DrawableComponents::makePlane(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material, unsigned int detail) {
-        SharedPointer<Mesh> mesh = ghnew PlaneMesh();
+        auto mesh = makeShared<PlaneMesh>();
         mesh->init(graphics, commandList);
 		DrawableComponent* model = ghnew DrawableComponent();
-		model->Mesh = mesh;
+		model->Mesh = mesh.get();
 		model->Material = &material;
         //model->initParameters(parameterManager);
 
@@ -29,10 +29,10 @@ namespace Ghurund {
     }
 
     DrawableComponent* DrawableComponents::makeSphere(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
-        SharedPointer<Mesh> mesh = ghnew SphereMesh();
+        auto mesh = makeShared<SphereMesh>();
         mesh->init(graphics, commandList);
         DrawableComponent* model = ghnew DrawableComponent();
-        model->Mesh = mesh;
+        model->Mesh = mesh.get();
         model->Material = &material;
         //model->initParameters(parameterManager);
 
@@ -40,10 +40,10 @@ namespace Ghurund {
     }
 
     DrawableComponent* DrawableComponents::makeCone(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
-        SharedPointer<Mesh> mesh = ghnew ConeMesh();
+        auto mesh = makeShared<ConeMesh>();
         mesh->init(graphics, commandList);
         DrawableComponent* model = ghnew DrawableComponent();
-        model->Mesh = mesh;
+        model->Mesh = mesh.get();
         model->Material = &material;
         //model->initParameters(parameterManager);
 
@@ -51,10 +51,10 @@ namespace Ghurund {
     }
 
     DrawableComponent* DrawableComponents::makeQuad(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
-        SharedPointer<Mesh> mesh = ghnew QuadMesh();
+        auto mesh = makeShared<QuadMesh>();
         mesh->init(graphics, commandList);
         DrawableComponent* model = ghnew DrawableComponent();
-        model->Mesh = mesh;
+        model->Mesh = mesh.get();
         model->Material = &material;
         //model->initParameters(parameterManager);
 

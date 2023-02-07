@@ -69,12 +69,12 @@ namespace Ghurund::UI {
 
         //List<Binding> bindings;
 
-        SharedPointer<Constraint> left = ghnew ValueConstraint(0.0f);
-        SharedPointer<Constraint> right = ghnew LeftWidthConstraint();
-        SharedPointer<Constraint> width = ghnew WrapWidthConstraint();
-        SharedPointer<Constraint> top = ghnew ValueConstraint(0.0f);
-        SharedPointer<Constraint> bottom = ghnew TopHeightConstraint();
-        SharedPointer<Constraint> height = ghnew FlowHeightConstraint();
+        SharedPointer<Constraint> left = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
+        SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint());
+        SharedPointer<Constraint> width = SharedPointer<Constraint>(ghnew WrapWidthConstraint());
+        SharedPointer<Constraint> top = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
+        SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint());
+        SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
 
         virtual void onStateChanged() {
             stateChanged();
@@ -356,37 +356,37 @@ namespace Ghurund::UI {
         virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
 
         inline Constraint& getLeft() {
-            return *left;
+            return *left.get();
         }
 
         __declspec(property(get = getLeft)) Constraint& Left;
 
         inline Constraint& getRight() {
-            return *right;
+            return *right.get();
         }
 
         __declspec(property(get = getRight)) Constraint& Right;
 
         inline Constraint& getWidth() {
-            return *width;
+            return *width.get();
         }
 
         __declspec(property(get = getWidth)) Constraint& Width;
 
         inline Constraint& getTop() {
-            return *top;
+            return *top.get();
         }
 
         __declspec(property(get = getTop)) Constraint& Top;
 
         inline Constraint& getBottom() {
-            return *bottom;
+            return *bottom.get();
         }
 
         __declspec(property(get = getBottom)) Constraint& Bottom;
 
         inline Constraint& getHeight() {
-            return *height;
+            return *height.get();
         }
 
         __declspec(property(get = getHeight)) Constraint& Height;

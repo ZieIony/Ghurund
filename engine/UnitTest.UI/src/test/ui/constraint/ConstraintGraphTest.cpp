@@ -28,46 +28,49 @@ public:
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        Pointer::dumpPointers();
+        if (Pointer::numberOfAllocatedPointers() > 0) {
+            Pointer::dumpPointers();
+            Assert::Fail();
+        }
     }
 
     TEST_METHOD(simple) {
         MemoryGuard guard;
         {
-            SharedPointer<ValueConstraint> c0 = ghnew ValueConstraint(0.0f), c1 = ghnew ValueConstraint(0.0f);
-            c0->Dependencies.add(&c1);
+            auto c0 = makeShared<ValueConstraint>(0.0f), c1 = makeShared<ValueConstraint>(0.0f);
+            c0->Dependencies.add(c1.get());
             ConstraintGraph graph;
-            graph.addAll({ &c0, &c1 });
+            graph.addAll({ c0.get(), c1.get() });
             graph.sort();
-            Assert::IsTrue(&c1 == &graph[0], L"&c1 != sorted[0]");
-            Assert::IsTrue(&c0 == &graph[1], L"&c0 != sorted[1]");
+            Assert::IsTrue(c1.get() == &graph[0], L"&c1 != sorted[0]");
+            Assert::IsTrue(c0.get() == &graph[1], L"&c0 != sorted[1]");
         }
     }
 
     TEST_METHOD(noDependencies) {
         MemoryGuard guard;
         {
-            SharedPointer<ValueConstraint> c0 = ghnew ValueConstraint(0.0f), c1 = ghnew ValueConstraint(0.0f);
+            auto c0 = makeShared<ValueConstraint>(0.0f), c1 = makeShared<ValueConstraint>(0.0f);
             ConstraintGraph graph;
-            graph.addAll({ &c0, &c1 });
+            graph.addAll({ c0.get(), c1.get() });
             graph.sort();
-            Assert::IsTrue(&c0 == &graph[0], L"&c0 != sorted[0]");
-            Assert::IsTrue(&c1 == &graph[1], L"&c1 != sorted[1]");
+            Assert::IsTrue(c0.get() == &graph[0], L"&c0 != sorted[0]");
+            Assert::IsTrue(c1.get() == &graph[1], L"&c1 != sorted[1]");
         }
     }
 
     TEST_METHOD(cycles) {
         MemoryGuard guard;
         {
-            SharedPointer<Constraint> c0 = ghnew Constraint(), c1 = ghnew Constraint(), c2 = ghnew Constraint(), c3 = ghnew Constraint();
-            c3->Dependencies.add(&c3);
-            c2->Dependencies.add(&c3);
-            c2->Dependencies.add(&c0);
-            c1->Dependencies.add(&c2);
-            c0->Dependencies.add(&c1);
-            c0->Dependencies.add(&c2);
+            SharedPointer<Constraint> c0 = makeShared<Constraint>(), c1 = makeShared<Constraint>(), c2 = makeShared<Constraint>(), c3 = makeShared<Constraint>();
+            c3->Dependencies.add(c3.get());
+            c2->Dependencies.add(c3.get());
+            c2->Dependencies.add(c0.get());
+            c1->Dependencies.add(c2.get());
+            c0->Dependencies.add(c1.get());
+            c0->Dependencies.add(c2.get());
             ConstraintGraph graph;
-            graph.addAll({ &c0, &c1, &c2, &c3 });
+            graph.addAll({ c0.get(), c1.get(), c2.get(), c3.get() });
             Assert::ExpectException<InvalidDataException>([&] {
                 graph.sort();
             });
@@ -77,47 +80,48 @@ public:
     TEST_METHOD(noCycles) {
         MemoryGuard guard;
         {
-            SharedPointer<Constraint> c0 = ghnew Constraint(), c1 = ghnew Constraint(), c2 = ghnew Constraint(), c3 = ghnew Constraint();
-            c2->Dependencies.add(&c3);
-            c1->Dependencies.add(&c2);
-            c0->Dependencies.add(&c1);
-            c0->Dependencies.add(&c2);
+            SharedPointer<Constraint> c0 = makeShared<Constraint>(), c1 = makeShared<Constraint>(), c2 = makeShared<Constraint>(), c3 = makeShared<Constraint>();
+            c2->Dependencies.add(c3.get());
+            c1->Dependencies.add(c2.get());
+            c0->Dependencies.add(c1.get());
+            c0->Dependencies.add(c2.get());
             ConstraintGraph graph;
-            graph.addAll({ &c0, &c1, &c2, &c3 });
+            graph.addAll({ c0.get(), c1.get(), c2.get(), c3.get() });
             graph.sort();
-            Assert::IsTrue(&c3 == &graph[0], L"&c3 != sorted[0]");
-            Assert::IsTrue(&c2 == &graph[1], L"&c2 != sorted[1]");
-            Assert::IsTrue(&c1 == &graph[2], L"&c1 != sorted[2]");
-            Assert::IsTrue(&c0 == &graph[3], L"&c0 != sorted[3]");
+            Assert::IsTrue(c3.get() == &graph[0], L"&c3 != sorted[0]");
+            Assert::IsTrue(c2.get() == &graph[1], L"&c2 != sorted[1]");
+            Assert::IsTrue(c1.get() == &graph[2], L"&c1 != sorted[2]");
+            Assert::IsTrue(c0.get() == &graph[3], L"&c0 != sorted[3]");
         }
     }
 
     TEST_METHOD(wrapFill) {
         MemoryGuard guard;
         {
-            SharedPointer<WrapWidthConstraint> wrap = ghnew WrapWidthConstraint();
-            SharedPointer<Constraint> fill = ghnew Constraint();
-            SharedPointer<ValueConstraint> value = ghnew ValueConstraint(0.0f);
-            wrap->Dependencies.add(&fill);
-            wrap->Dependencies.add(&value);
-            fill->Dependencies.add(&wrap);
+            auto wrap = makeShared<WrapWidthConstraint>();
+            auto fill = makeShared<Constraint>();
+            auto value = makeShared<ValueConstraint>(0.0f);
+            wrap->Dependencies.add(fill.get());
+            wrap->Dependencies.add(value.get());
+            fill->Dependencies.add(wrap.get());
             ConstraintGraph graph;
-            graph.addAll({ &wrap, &fill, &value });
+            graph.addAll({ wrap.get(), fill.get(), value.get() });
             graph.sort();
-            Assert::IsTrue(&value == &graph[0], L"&value != sorted[0]");
-            Assert::IsTrue(&wrap == &graph[1], L"&wrap != sorted[1]");
-            Assert::IsTrue(&fill == &graph[2], L"&fill != sorted[2]");
+            Assert::IsTrue(value.get() == &graph[0], L"&value != sorted[0]");
+            Assert::IsTrue(wrap.get() == &graph[1], L"&wrap != sorted[1]");
+            Assert::IsTrue(fill.get() == &graph[2], L"&fill != sorted[2]");
         }
     }
 
     TEST_METHOD(wrapCenterHorizontal) {
         MemoryGuard guard;
         {
-            SharedPointer<ColorView> colorView = ghnew ColorView();
-            colorView->Constraints = ConstraintSet()
-                .withLeft(0.0f)
-                .withWidth(50.0f)
-                .withRight(100.0f);
+            auto colorView = makeShared<ColorView>();
+            colorView->Constraints = {
+                .left = 0.0f,
+                .width = 50.0f,
+                .right = 100.0f
+            };
             ConstraintGraph graph;
             colorView->resolveConstraints(graph);
             graph.sort();

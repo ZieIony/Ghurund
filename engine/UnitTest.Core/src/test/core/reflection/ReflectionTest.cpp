@@ -145,7 +145,7 @@ public:
 
                 size_t addIndex = observable->Type.Methods.find([](const BaseMethod& obj) { return obj.Name == "add"; });
                 const BaseMethod& addMethod = observable->Type.Methods[addIndex];
-                SharedPointer<ObservableHandler<AString>> handler = ghnew ObservableHandler<AString>([](const AString& f) {});
+                SharedPointer<ObservableHandler<AString>> handler(ghnew ObservableHandler<AString>([](const AString& f) {}));
                 addMethod.invokeRaw<SharedPointer<ObservableHandler<AString>>>(observable, handler);
             }
         }

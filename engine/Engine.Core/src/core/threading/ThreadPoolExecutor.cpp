@@ -57,7 +57,7 @@ namespace Ghurund::Core {
                 tasks.remove(taskList);
             return t;
         }
-        return nullptr;
+        return {};
     }
 
     bool ThreadPoolExecutor::queueNextTask() {

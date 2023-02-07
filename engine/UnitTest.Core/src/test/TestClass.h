@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Object.h"
+#include "core/Pointer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
@@ -15,6 +15,8 @@ namespace UnitTest::Utils {
         uint32_t val = 5;
         const char* text = "text";
     };
+
+    class PointerTestClass:public Pointer {};
 
     class ObjectTestClass:public Object {
     public:

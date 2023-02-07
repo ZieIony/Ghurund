@@ -38,12 +38,12 @@ namespace Ghurund::Core {
         }
 
         inline void add(std::function<void(const T& args)> lambda) {
-            listeners.add(ghnew ObservableHandler(lambda));
+            listeners.add(makeShared<ObservableHandler<T>>(lambda));
             lambda(value);
         }
 
         inline Observable<T>& operator+=(const std::function<void(const T& args)>& lambda) {
-            listeners.add(ghnew ObservableHandler(lambda));
+            listeners.add(makeShared<ObservableHandler<T>>(lambda));
             lambda(value);
             return *this;
         }
@@ -62,12 +62,14 @@ namespace Ghurund::Core {
         }
 
         inline void remove(ObservableHandler<T>& listener) {
-            listeners.remove(&listener);
+            listener.addReference();
+            listeners.remove(SharedPointer(&listener));
             listener.Owner = nullptr;
         }
 
         inline Observable<T>& operator-=(ObservableHandler<T>& listener) {
-            listeners.remove(&listener);
+            listener.addReference();
+            listeners.remove(SharedPointer(&listener));
             listener.Owner = nullptr;
             return *this;
         }

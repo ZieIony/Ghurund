@@ -98,7 +98,7 @@ namespace Ghurund::UI {
                 Control* control = nullptr;
                 AString s = layoutAttr->Value();
                 try {
-                    SharedPointer<Control> control = resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE);
+                    SharedPointer<Control> control(resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE));
                     control->addReference();
                 } catch (...) {
                     auto text = std::format(_T("Could not load layout '{}'.\n"), s);
@@ -194,7 +194,7 @@ namespace Ghurund::UI {
         } else if (s.startsWith(THEME_TEXTFORMAT) && theme) {
             TextFormatKey textFormatKey = s.substring(lengthOf(THEME_TEXTFORMAT));
             if (theme->TextFormats.containsKey(textFormatKey)) {
-                TextFormat* style = theme->TextFormats[textFormatKey];
+                TextFormat* style = theme->TextFormats[textFormatKey].get();
                 style->addReference();
                 return style;
             }
