@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "test/TestUtils.h"
 #include "test/MemoryGuard.h"
+#include <test/TestLogOutput.h>
 
 #include "ui/constraint/ConstraintFactory.h"
 #include "test/ui/ShapeFactory.h"
@@ -23,14 +24,26 @@ namespace UnitTest {
 
     TEST_CLASS(WrapConstraintGroupTest) {
 public:
+    TEST_CLASS_INITIALIZE(classInitialize) {
+        Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
+        TestLogOutput::initReportHook();
+    }
+
+    TEST_METHOD_CLEANUP(methodCleanup) {
+        if (Pointer::numberOfAllocatedPointers() > 0) {
+            Pointer::dumpPointers();
+            Assert::Fail();
+        }
+    }
 
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto group = makeShared<ControlGroup>();
+            group->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -45,22 +58,23 @@ public:
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<WrapWidthConstraint>();
-                c->Min = 100;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<WrapHeightConstraint>();
-                c->Min = 75;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
+            auto group = makeShared<ControlGroup>();
+            group->Constraints = {
+                .width = []() {
+                    auto c = makeShared<WrapWidthConstraint>();
+                    c->Min = 100;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<WrapHeightConstraint>();
+                    c->Min = 75;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -75,21 +89,24 @@ public:
     TEST_METHOD(wrapChildren) {
         MemoryGuard guard;
         {
-            SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->Constraints = ConstraintSet()
-                .withWidth(100.0f)
-                .withHeight(75.0f);
+            auto child1 = makeShared<ColorView>();
+            child1->Constraints = {
+                .width = 100.0f,
+                .height = 75.0f
+            };
 
-            SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->Constraints = ConstraintSet()
-                .withWidth(150.0f)
-                .withHeight(50.0f);
+            auto child2 = makeShared<ColorView>();
+            child2->Constraints = {
+                .width = 150.0f,
+                .height = 50.0f
+            };
 
-            SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->Children.addAll({ child1, child2 });
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto group = makeShared<ControlGroup>();
+            group->Children.addAll({ child1.get(), child2.get() });
+            group->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -104,20 +121,23 @@ public:
     TEST_METHOD(wrapChildrenValueFill) {
         MemoryGuard guard;
         {
-            SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->Constraints = ConstraintSet()
-                .withWidth(100.0f)
-                .withHeight(75.0f);
-            SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->Constraints = ConstraintSet()
-                .withWidth(makeShared<ParentWidthConstraint>())
-                .withHeight(makeShared<ParentHeightConstraint>());
+            auto child1 = makeShared<ColorView>();
+            child1->Constraints = {
+                .width = 100.0f,
+                .height = 75.0f
+            };
+            auto child2 = makeShared<ColorView>();
+            child2->Constraints = {
+                .width = makeShared<ParentWidthConstraint>(),
+                .height = makeShared<ParentHeightConstraint>()
+            };
 
-            SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->Children.addAll({ child1, child2 });
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto group = makeShared<ControlGroup>();
+            group->Children.addAll({ child1.get(), child2.get() });
+            group->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);
@@ -134,44 +154,47 @@ public:
     TEST_METHOD(wrapChildrenFillMinRatioOffset) {
         MemoryGuard guard;
         {
-            SharedPointer<ColorView> child1 = ghnew ColorView();
-            child1->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<WrapWidthConstraint>();
-                c->Min = 100;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<WrapHeightConstraint>();
-                c->Min = 75;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
-            SharedPointer<ColorView> child2 = ghnew ColorView();
-            child2->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<WrapWidthConstraint>();
-                c->Min = 150;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<WrapHeightConstraint>();
-                c->Min = 50;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
+            auto child1 = makeShared<ColorView>();
+            child1->Constraints = {
+                .width = []() {
+                    auto c = makeShared<WrapWidthConstraint>();
+                    c->Min = 100;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<WrapHeightConstraint>();
+                    c->Min = 75;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
+            auto child2 = makeShared<ColorView>();
+            child2->Constraints = {
+                .width = []() {
+                    auto c = makeShared<WrapWidthConstraint>();
+                    c->Min = 150;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<WrapHeightConstraint>();
+                    c->Min = 50;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
 
-            SharedPointer<ControlGroup> group = ghnew ControlGroup();
-            group->Children.addAll({ child1, child2 });
-            group->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto group = makeShared<ControlGroup>();
+            group->Children.addAll({ child1.get(), child2.get() });
+            group->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             group->resolveConstraints(graph);

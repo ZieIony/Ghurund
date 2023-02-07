@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "test/TestUtils.h"
 #include "test/MemoryGuard.h"
+#include <test/TestLogOutput.h>
 
 #include "ui/constraint/ConstraintFactory.h"
 #include "test/ui/ShapeFactory.h"
@@ -22,14 +23,26 @@ namespace UnitTest {
 
     TEST_CLASS(WrapConstraintControlTest) {
 public:
+    TEST_CLASS_INITIALIZE(classInitialize) {
+        Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
+        TestLogOutput::initReportHook();
+    }
+
+    TEST_METHOD_CLEANUP(methodCleanup) {
+        if (Pointer::numberOfAllocatedPointers() > 0) {
+            Pointer::dumpPointers();
+            Assert::Fail();
+        }
+    }
 
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            SharedPointer<Control> container = ghnew Control();
-            container->Constraints = ConstraintSet()
-                .withWidth(makeShared<WrapWidthConstraint>())
-                .withHeight(makeShared<WrapHeightConstraint>());
+            auto container = makeShared<Control>();
+            container->Constraints = {
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);
@@ -44,22 +57,23 @@ public:
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            SharedPointer<Control> container = ghnew Control();
-            container->Constraints = ConstraintSet()
-                .withWidth([]() {
-                auto c = makeShared<WrapWidthConstraint>();
-                c->Min = 100;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }())
-                .withHeight([]() {
-                auto c = makeShared<WrapHeightConstraint>();
-                c->Min = 75;
-                c->Ratio = 0.5f;
-                c->Offset = 10.0f;
-                return c;
-            }());
+            auto container = makeShared<Control>();
+            container->Constraints = {
+                .width = []() {
+                    auto c = makeShared<WrapWidthConstraint>();
+                    c->Min = 100;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }(),
+                .height = []() {
+                    auto c = makeShared<WrapHeightConstraint>();
+                    c->Min = 75;
+                    c->Ratio = 0.5f;
+                    c->Offset = 10.0f;
+                    return c;
+                }()
+            };
 
             ConstraintGraph graph;
             container->resolveConstraints(graph);
