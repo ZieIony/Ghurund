@@ -1,4 +1,4 @@
-#include "ghuigdipch.h"
+#include "ghuipch.h"
 #include "Ttf.h"
 
 #include "core/string/TextConversionUtils.h"

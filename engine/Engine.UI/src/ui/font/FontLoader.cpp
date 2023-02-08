@@ -1,4 +1,4 @@
-#include "ghuigdipch.h"
+#include "ghuipch.h"
 #include "FontLoader.h"
 
 #include "core/Exceptions.h"
@@ -13,7 +13,7 @@ namespace Ghurund::UI::GDI {
         const ResourceFormat* format,
         LoadOption options
     ) {
-        Font* font = makeResource<Ghurund::UI::GDI::Font>();
+        Font* font = makeResource<Ghurund::UI::Font>();
         font->init(stream.Data, stream.Size);
         return font;
     }

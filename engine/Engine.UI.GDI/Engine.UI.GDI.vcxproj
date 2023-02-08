@@ -109,16 +109,12 @@
     <ClInclude Include="src\ui\gdi\drawable\SvgDrawable.h" />
     <ClInclude Include="src\ui\gdi\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\gdi\effects\TintEffect.h" />
-    <ClInclude Include="src\ui\gdi\font\Font.h" />
-    <ClInclude Include="src\ui\gdi\font\FontLoader.h" />
-    <ClInclude Include="src\ui\gdi\font\Ttf.h" />
     <ClInclude Include="src\ui\gdi\image\Bitmap.h" />
     <ClInclude Include="src\ui\gdi\image\BitmapLoader.h" />
     <ClInclude Include="src\ui\gdi\image\SvgDocument.h" />
     <ClInclude Include="src\ui\gdi\loading\ImageDrawableFactory.h" />
     <ClInclude Include="src\ui\gdi\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\gdi\loading\TextFormatFactory.h" />
-    <ClInclude Include="src\ui\gdi\text\TextFormat.h" />
     <ClInclude Include="src\ui\gdi\text\TextLayout.h" />
   </ItemGroup>
   <ItemGroup>
@@ -130,12 +126,8 @@
     <ClCompile Include="src\ui\gdi\UIContext.cpp" />
     <ClCompile Include="src\ui\gdi\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\gdi\drawable\SvgDrawable.cpp" />
-    <ClCompile Include="src\ui\gdi\font\Font.cpp" />
-    <ClCompile Include="src\ui\gdi\font\FontLoader.cpp" />
-    <ClCompile Include="src\ui\gdi\font\Ttf.cpp" />
     <ClCompile Include="src\ui\gdi\image\Bitmap.cpp" />
     <ClCompile Include="src\ui\gdi\image\SvgDocument.cpp" />
-    <ClCompile Include="src\ui\gdi\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\gdi\text\TextLayout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

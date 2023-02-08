@@ -1,10 +1,10 @@
 #include "Ghurund.Core.h"
 
 #include "core/application/Application.h"
-#include <ui/gdi/font/Font.h>
+#include "ui/font/Font.h"
 
 using namespace Ghurund::Core;
-using namespace Ghurund::UI::GDI;
+using namespace Ghurund::UI;
 
 namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {

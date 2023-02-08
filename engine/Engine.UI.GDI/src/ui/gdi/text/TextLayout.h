@@ -2,7 +2,7 @@
 
 #include "ui/text/ITextLayout.h"
 #include "ui/text/TextMetrics.h"
-#include "ui/gdi/text/TextFormat.h"
+#include "ui/text/TextFormat.h"
 #include "core/math/Size.h"
 #include "ui/Canvas.h"
 #include "core/IUnknownImpl.h"
@@ -19,12 +19,12 @@ namespace Ghurund::UI::GDI {
         Ghurund::Core::FloatSize size;
         Ghurund::UI::Color color;
         Ghurund::Core::WString text;
-        Ghurund::UI::GDI::TextFormat* format = nullptr;
+        Ghurund::UI::TextFormat* format = nullptr;
 
         bool valid = false;
 
     public:
-        TextLayout(const Ghurund::Core::WString& text, const Ghurund::UI::Color& color, Ghurund::UI::GDI::TextFormat* format)
+        TextLayout(const Ghurund::Core::WString& text, const Ghurund::UI::Color& color, Ghurund::UI::TextFormat* format)
             :text(text), color(color) {
             Format = format;
         }
@@ -81,7 +81,7 @@ namespace Ghurund::UI::GDI {
         }
 
         inline void setFormat(Ghurund::UI::TextFormat* textFormat) {
-            setPointer(this->format, (Ghurund::UI::GDI::TextFormat*)textFormat);
+            setPointer(this->format, (Ghurund::UI::TextFormat*)textFormat);
         }
 
         __declspec(property(get = getFormat, put = setFormat)) Ghurund::UI::TextFormat* Format;

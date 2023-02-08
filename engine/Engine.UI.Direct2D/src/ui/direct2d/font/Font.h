@@ -43,7 +43,7 @@ namespace Ghurund::UI::Direct2D {
             localizedStrings[0].GetStringLength(0, &strLength);
             wchar_t* str = ghnew wchar_t[strLength + 1];
             localizedStrings[0].GetString(0, str, strLength + 1);
-            familyName = str;
+            //familyName = str;
             delete[] str;
 
             Valid = true;

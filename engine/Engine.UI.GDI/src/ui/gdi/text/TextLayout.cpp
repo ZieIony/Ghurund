@@ -1,6 +1,5 @@
 #include "ghuigdipch.h"
 #include "TextLayout.h"
-#include "ui/gdi/text/TextFormat.h"
 
 namespace Ghurund::UI::GDI {
     Status TextLayout::refresh() {
