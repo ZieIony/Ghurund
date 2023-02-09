@@ -5,7 +5,7 @@
 #include "core/logging/Logger.h"
 #include "core/image/ImageLoader.h"
 
-namespace Ghurund::UI::GDI {
+namespace Ghurund::UI {
 
     Font* FontLoader::load(
         Ghurund::Core::ResourceManager& manager,

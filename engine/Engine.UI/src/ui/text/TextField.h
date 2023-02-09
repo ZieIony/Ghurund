@@ -41,7 +41,7 @@ namespace Ghurund::UI {
         ~TextField() {}
 
     public:
-        TextField(std::unique_ptr<ITextLayout> textLayout):TextView(std::move(textLayout)) {
+        TextField(std::unique_ptr<TextLayout> textLayout):TextView(std::move(textLayout)) {
             Focusable = true;
         }
 
@@ -56,8 +56,6 @@ namespace Ghurund::UI {
         void pasteFromClipboard();
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();

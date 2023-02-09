@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TextLayout.h"
-#include "test/ui/text/TextFormat.h"
+#include "ui/text/TextFormat.h"
 
 namespace UnitTest {
     Ghurund::Core::Array<Ghurund::UI::LineMetrics> TextLayout::getLineMetrics() {

@@ -4,7 +4,7 @@
 #include "Font.h"
 #include "core/Exceptions.h"
 
-namespace Ghurund::UI::GDI {
+namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class FontLoader:public Loader {

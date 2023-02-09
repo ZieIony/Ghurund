@@ -197,7 +197,7 @@
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\style\WindowsTheme.h" />
-    <ClInclude Include="src\ui\text\ITextLayout.h" />
+    <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
     <ClInclude Include="src\ui\text\SetSelectionMode.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />

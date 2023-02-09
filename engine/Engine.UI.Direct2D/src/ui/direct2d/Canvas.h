@@ -73,7 +73,7 @@ namespace Ghurund::UI::Direct2D {
 
         virtual void drawImage(VectorImage& svgDocument) override;
 
-        virtual void drawText(ITextLayout& layout, float x, float y) override {
+        virtual void drawText(Ghurund::UI::TextLayout& layout, float x, float y) override {
             fillBrush->SetColor(D2D1::ColorF(((TextLayout&)layout).Color));
             fillBrush->SetOpacity(((TextLayout&)layout).Color.A);
             //deviceContext->DrawRectangle();

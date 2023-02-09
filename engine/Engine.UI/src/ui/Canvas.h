@@ -9,7 +9,7 @@
 #include <wrl.h>
 #include <ui/image/Bitmap.h>
 #include <ui/image/VectorImage.h>
-#include <ui/text/ITextLayout.h>
+#include <ui/text/TextLayout.h>
 
 namespace Ghurund::UI {
     using Microsoft::WRL::ComPtr;
@@ -55,7 +55,7 @@ namespace Ghurund::UI {
 
         virtual void drawImage(VectorImage& vectorImage) = 0;
 
-        virtual void drawText(ITextLayout& layout, float x, float y) = 0;
+        virtual void drawText(TextLayout& layout, float x, float y) = 0;
 
         virtual void translate(float x, float y) = 0;
 

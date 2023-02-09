@@ -404,7 +404,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    TextView::TextView(std::unique_ptr<ITextLayout> textLayout):TextBlock(std::move(textLayout)) {
+    TextView::TextView(std::unique_ptr<TextLayout> textLayout):TextBlock(std::move(textLayout)) {
         Cursor = &Cursor::IBEAM;
     }
 }

@@ -53,7 +53,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextView(std::unique_ptr<ITextLayout> textLayout);
+        TextView(std::unique_ptr<TextLayout> textLayout);
 
         inline CursorDrawable* getCursorDrawable() {
             return cursorDrawable;

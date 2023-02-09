@@ -10,7 +10,7 @@ namespace Ghurund::UI::Direct2D {
         if (layout) {
             formatSource = layout;
         } else if (format) {
-            formatSource = format->Format;
+            formatSource = ((Ghurund::UI::Direct2D::TextFormat*)format)->Format;
         } else {
             return Status::INV_STATE;
         }
@@ -240,7 +240,7 @@ namespace Ghurund::UI::Direct2D {
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout);
 
                 // Inserted text
-                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, (uint32_t)textToInsert.Size, format);
+                copySinglePropertyRange(oldLayout, position - 1, newLayout, position, (uint32_t)textToInsert.Size, (Ghurund::UI::Direct2D::TextFormat*)format);
 
                 // Last block (if it exists)
                 copyRangedProperties(oldLayout, position, oldTextLength, (uint32_t)textToInsert.Size, newLayout);

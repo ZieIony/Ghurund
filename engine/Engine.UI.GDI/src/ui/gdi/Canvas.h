@@ -83,7 +83,7 @@ namespace Ghurund::UI::GDI {
 
         virtual void drawImage(VectorImage& svgDocument) override;
 
-        virtual void drawText(ITextLayout& layout, float x, float y) override {
+        virtual void drawText(TextLayout& layout, float x, float y) override {
             throw NotImplementedException();
         }
 

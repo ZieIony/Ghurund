@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/text/ITextLayout.h"
+#include "ui/text/TextLayout.h"
 #include "ui/text/TextMetrics.h"
 #include "ui/direct2d/text/TextFormat.h"
 #include "core/math/Size.h"
@@ -15,7 +15,7 @@
 namespace Ghurund::UI::Direct2D {
     using namespace Microsoft::WRL;
 
-    class TextLayout:public ITextLayout {
+    class TextLayout:public Ghurund::UI::TextLayout {
     private:
         class DECLSPEC_UUID("1CD7C44F-526B-492a-B780-EF9C4159B653") TextPaint: public Ghurund::Core::ComBase<QiList<IUnknown>> {
         private:
@@ -31,15 +31,9 @@ namespace Ghurund::UI::Direct2D {
             __declspec(property(get = getColor)) uint32_t Color;
         };
 
-        Ghurund::Core::FloatSize size;
-        Ghurund::UI::Color color;
-        Ghurund::Core::WString text;
-        Ghurund::UI::Direct2D::TextFormat* format = nullptr;
-
         IDWriteFactory& dwriteFactory;
         ComPtr<ID2D1SolidColorBrush> fillBrush;
         IDWriteTextLayout* layout = nullptr;
-        bool valid = false;
 
         void copySinglePropertyRange(IDWriteTextLayout* oldLayout, uint32_t startPosForOld, IDWriteTextLayout* newLayout, uint32_t startPosForNew, uint32_t length, Ghurund::UI::Direct2D::TextFormat* textFormat = nullptr);
 
@@ -51,66 +45,9 @@ namespace Ghurund::UI::Direct2D {
 
     public:
         TextLayout(IDWriteFactory& dwriteFactory, const Ghurund::Core::WString& text, const Ghurund::UI::Color& color, Ghurund::UI::Direct2D::TextFormat* format)
-            :dwriteFactory(dwriteFactory), text(text), color(color) {
-            Format = format;
-        }
+            :Ghurund::UI::TextLayout(text, color, format), dwriteFactory(dwriteFactory) {}
 
-        ~TextLayout() {
-            if (format)
-                format->release();
-        }
-
-        inline const Ghurund::Core::FloatSize& getSize() const {
-            return size;
-        }
-
-        inline void setSize(const Ghurund::Core::FloatSize& size) {
-            setSize(size.Width, size.Height);
-        }
-
-        virtual void setSize(float w, float h) {
-            if (size.Width != w || size.Height != h) {
-                size = { w, h };
-                valid = false;
-            }
-        }
-
-        __declspec(property(get = getSize, put = setSize)) const Ghurund::Core::FloatSize& Size;
-
-        inline void setColor(const Ghurund::UI::Color& color) {
-            this->color = color;
-        }
-
-        inline const Ghurund::UI::Color& getColor() const {
-            return color;
-        }
-
-        __declspec(property(get = getColor, put = setColor)) const Ghurund::UI::Color& Color;
-
-        Ghurund::UI::Color getColor(uint32_t pos);
-
-        inline const Ghurund::Core::WString& getText() const {
-            return text;
-        }
-
-        inline void setText(const Ghurund::Core::WString& text) {
-            if (this->text != text) {
-                this->text = text;
-                valid = false;
-            }
-        }
-
-        __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
-
-        inline Ghurund::UI::TextFormat* getFormat() {
-            return format;
-        }
-
-        inline void setFormat(Ghurund::UI::TextFormat* textFormat) {
-            setPointer(this->format, (Ghurund::UI::Direct2D::TextFormat*)textFormat);
-        }
-
-        __declspec(property(get = getFormat, put = setFormat)) Ghurund::UI::TextFormat* Format;
+        virtual Ghurund::UI::Color getColor(uint32_t pos) override;
 
         Ghurund::UI::TextFormat* getFormat(uint32_t position);
 
@@ -122,7 +59,7 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getLineMetrics)) Ghurund::Core::Array<Ghurund::UI::LineMetrics> LineMetrics;
 
-        Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> getClusterMetrics();;
+        Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> getClusterMetrics();
 
         __declspec(property(get = getClusterMetrics)) Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> ClusterMetrics;
 
@@ -131,10 +68,6 @@ namespace Ghurund::UI::Direct2D {
         Ghurund::Core::Array<HitTestMetrics> hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY);
 
         HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit);
-
-        inline void invalidate() {
-            valid = false;
-        }
 
         Status refresh();
 
