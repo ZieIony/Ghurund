@@ -18,6 +18,7 @@
 #include "ui/loading/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/style/ColorAttr.h"
+#include "ui/text/DocumentElement.h"
 
 #include <tinyxml2.h>
 
@@ -111,6 +112,10 @@ namespace Ghurund::UI {
 
 		TextFormat* loadTextFormat(const char* str);
 
-		Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
-	};
+        Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
+
+        DocumentElement* loadDocumentElement(const tinyxml2::XMLElement& xml) {
+            return nullptr;
+        }
+    };
 }

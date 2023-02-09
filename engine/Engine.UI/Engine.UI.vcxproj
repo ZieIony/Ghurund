@@ -116,6 +116,7 @@
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
+    <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
+    <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
     <ClCompile Include="src\ui\constraint\ConstraintFactory.cpp" />

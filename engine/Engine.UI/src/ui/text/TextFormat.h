@@ -30,7 +30,7 @@ namespace Ghurund::UI {
 
         ~TextFormat();
 
-        inline Font* getFont() {
+        inline const Font* getFont() const {
             return font;
         }
 
