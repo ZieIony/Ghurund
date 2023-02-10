@@ -25,7 +25,8 @@ namespace Ghurund::Core {
 
             Entry(const Entry& other):address(other.address), name(other.name), fileName(other.fileName), fileLine(other.fileLine) {}
 
-            Entry(Entry&& other) noexcept :address(std::move(other.address)), name(std::move(other.name)), fileName(std::move(other.fileName)), fileLine(std::move(other.fileLine)) {}
+            Entry(Entry&& other) noexcept
+                :address(std::move(other.address)), name(std::move(other.name)), fileName(std::move(other.fileName)), fileLine(std::move(other.fileLine)) {}
         };
 
         StackTrace(HANDLE process):process(process) {
@@ -60,7 +61,7 @@ namespace Ghurund::Core {
             }
 
             DWORD displacement2 = 0;
-            IMAGEHLP_LINEW64 line;  // IMAGEHLP_LINEW uses char instead of wchar_t
+            IMAGEHLP_LINEW64 line = {};  // IMAGEHLP_LINEW uses char instead of wchar_t
             line.SizeOfStruct = sizeof(IMAGEHLP_LINEW64);
             if (SymGetLineFromAddrW64(process, address, &displacement2, &line)) {
                 entry.fileName = line.FileName;

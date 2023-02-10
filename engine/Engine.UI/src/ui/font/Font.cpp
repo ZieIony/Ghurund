@@ -118,7 +118,7 @@ namespace Ghurund::UI {
     }
 
     void Font::init(const void* data, size_t size) {
-        TtfFile file;
+        TtfFile file = {};
         file.init(data, size);
         familyName = file.readFontName();
         weight = file.readFontWeight();

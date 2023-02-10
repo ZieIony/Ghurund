@@ -22,7 +22,7 @@ namespace Ghurund::UI {
         Ghurund::Core::WString locale;
 
     public:
-        TextFormat(Font* font, float size, unsigned int weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
+        TextFormat(Font* font, float size, uint32_t weight = 400, bool italic = false, const Ghurund::Core::WString& locale = L"en-us")
             :size(size), weight(weight), italic(italic), locale(locale) {
             this->font = font;
             font->addReference();

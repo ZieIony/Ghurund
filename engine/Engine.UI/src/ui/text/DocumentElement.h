@@ -1,7 +1,7 @@
 #pragma once
 
+#include "TextFormat.h"
 #include "core/SharedPointer.h"
-#include "ui/Canvas.h"
 #include "ui/Color.h"
 #include "ui/drawable/Drawable.h"
 
@@ -9,6 +9,7 @@
 
 namespace Ghurund::UI {
     class LayoutLoader;
+    class ICanvas;
 
     struct DocumentElement {
         FloatSize size;
@@ -29,8 +30,12 @@ namespace Ghurund::UI {
         }
     };
 
-    struct TextElement:public DocumentElement {
+    class TextElement:public DocumentElement {
+    private:
         WString text;
+
+    public:
+        TextElement(const WString& text):text(text) {}
 
         virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             text = convertText<char, wchar_t>(AString(xml.Value()));
@@ -50,16 +55,22 @@ namespace Ghurund::UI {
     };
 
     struct BoldSpan:public DocumentElementGroup {
+        SharedPointer<TextFormat> textFormat;
+
+        BoldSpan(Font* font, float size, bool italic, WString& locale):textFormat(makeShared<TextFormat>(font, size, FW_BOLD, italic, locale)) {}
+
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
-            auto format = makeShared<TextFormat>(parentFormat.Font, parentFormat.Size, FW_BOLD, parentFormat.Italic, parentFormat.Locale);
-            __super::draw(canvas, *format.get(), color);
+            __super::draw(canvas, *textFormat.get(), color);
         }
     };
 
     struct ItalicSpan:public DocumentElementGroup {
+        SharedPointer<TextFormat> textFormat;
+
+        ItalicSpan(Font* font, float size, uint32_t weight, WString& locale):textFormat(makeShared<TextFormat>(font, size, weight, true, locale)) {}
+
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
-            auto format = makeShared<TextFormat>(parentFormat.Font, parentFormat.Size, parentFormat.Weight, true, parentFormat.Locale);
-            __super::draw(canvas, *format.get(), color);
+            __super::draw(canvas, *textFormat.get(), color);
         }
     };
 

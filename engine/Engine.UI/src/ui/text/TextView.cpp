@@ -12,8 +12,8 @@ namespace Ghurund::UI {
         if (caretBegin > caretEnd)
             std::swap(caretBegin, caretEnd);
 
-        caretBegin = std::min(caretBegin, (uint32_t)Text.Length);
-        caretEnd = std::min(caretEnd, (uint32_t)Text.Length);
+        caretBegin = 0;//std::min(caretBegin, (uint32_t)Text.Length);
+        caretEnd = 0;// std::min(caretEnd, (uint32_t)Text.Length);
 
         return { caretBegin, caretEnd - caretBegin };
     }
@@ -108,14 +108,14 @@ namespace Ghurund::UI {
                 alignCaretToNearestCluster(false, true);
 
                 // special check for CR/LF pair
-                absolutePosition = caretPosition + caretPositionOffset;
+                /*absolutePosition = caretPosition + caretPositionOffset;
                 if (absolutePosition >= 1
                     && absolutePosition < Text.Size
                     && Text[absolutePosition - 1] == '\r'
                     && Text[absolutePosition] == '\n') {
                     caretPosition = absolutePosition - 1;
                     alignCaretToNearestCluster(false, true);
-                }
+                }*/
             }
             break;
 
@@ -124,14 +124,14 @@ namespace Ghurund::UI {
             alignCaretToNearestCluster(true, true);
 
             // special check for CR/LF pair
-            absolutePosition = caretPosition + caretPositionOffset;
+            /*absolutePosition = caretPosition + caretPositionOffset;
             if (absolutePosition >= 1
                 && absolutePosition < Text.Size
                 && Text[absolutePosition - 1] == '\r'
                 && Text[absolutePosition] == '\n') {
                 caretPosition = absolutePosition + 1;
                 alignCaretToNearestCluster(false, true);
-            }
+            }*/
             break;
 
         case SetSelectionMode::LeftChar:
@@ -318,7 +318,7 @@ namespace Ghurund::UI {
         if (selectionRange.length <= 0 || !Context)
             return;
 
-        Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.start, selectionRange.length));
+        //Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.start, selectionRange.length));
     }
 
     void TextView::onThemeChanged() {

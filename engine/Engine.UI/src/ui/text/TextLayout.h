@@ -5,40 +5,43 @@
 #include "ui/Color.h"
 #include "TextMetrics.h"
 #include "TextFormat.h"
+#include "TextDocument.h"
 
 namespace Ghurund::UI {
     class TextLayout {
     protected:
         Ghurund::Core::FloatSize size;
         Color color;
-        Ghurund::Core::WString text;
+        Ghurund::UI::TextDocument* text;
         TextFormat* format = nullptr;
 
         bool valid = false;
 
     public:
         TextLayout(const Ghurund::Core::WString& text, const Color& color, TextFormat* format)
-            :text(text), color(color) {
+            :text(ghnew Ghurund::UI::TextDocument(text)), color(color) {
             Format = format;
         }
 
         virtual ~TextLayout() {
             if (format)
                 format->release();
+            delete text;
         }
 
-        inline const Ghurund::Core::WString& getText() const {
-            return text;
+        inline const Ghurund::UI::TextDocument& getText() const {
+            return *text;
         }
 
-        inline void setText(const Ghurund::Core::WString& text) {
-            if (this->text != text) {
-                this->text = text;
+        inline void setText(std::unique_ptr<Ghurund::UI::TextDocument> text) {
+            if (this->text != text.get()) {
+                delete this->text;
+                this->text = text.release();
                 valid = false;
             }
         }
 
-        __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
+        __declspec(property(get = getText, put = setText)) const Ghurund::UI::TextDocument& TextDocument;
 
         inline Ghurund::UI::TextFormat* getFormat() {
             return format;

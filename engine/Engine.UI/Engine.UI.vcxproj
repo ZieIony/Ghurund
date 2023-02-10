@@ -63,7 +63,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -116,7 +115,6 @@
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
-    <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
@@ -190,6 +188,7 @@
     <ClInclude Include="src\ui\loading\ShapePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\StylePropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\style\BaseTheme.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
@@ -198,13 +197,15 @@
     <ClInclude Include="src\ui\style\Style.h" />
     <ClInclude Include="src\ui\style\Theme.h" />
     <ClInclude Include="src\ui\style\WindowsTheme.h" />
-    <ClInclude Include="src\ui\text\TextLayout.h" />
+    <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
     <ClInclude Include="src\ui\text\SetSelectionMode.h" />
     <ClInclude Include="src\ui\text\TextBlock.h" />
     <ClInclude Include="src\ui\text\TextBlockStyle.h" />
+    <ClInclude Include="src\ui\text\TextDocument.h" />
     <ClInclude Include="src\ui\text\TextField.h" />
     <ClInclude Include="src\ui\text\TextFormat.h" />
+    <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
@@ -257,7 +258,6 @@
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
-    <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
     <ClCompile Include="src\ui\constraint\ConstraintFactory.cpp" />
@@ -305,8 +305,10 @@
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\Style.cpp" />
     <ClCompile Include="src\ui\style\Theme.cpp" />
+    <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextBlockStyle.cpp" />
+    <ClCompile Include="src\ui\text\TextDocument.cpp" />
     <ClCompile Include="src\ui\text\TextField.cpp" />
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />

@@ -34,15 +34,19 @@ namespace Ghurund::UI {
             TextColor = color;
         }*/
 
-        const Ghurund::Core::WString& getText() {
-            return textLayout->Text;
+        const TextDocument& getText() {
+            return textLayout->TextDocument;
         }
 
         inline void setText(const Ghurund::Core::WString& text) {
-            textLayout->Text = text;
+            textLayout->TextDocument = std::move(std::make_unique<TextDocument>(text));
         }
 
-        __declspec(property(get = getText, put = setText)) const Ghurund::Core::WString& Text;
+        inline void setText(std::unique_ptr<TextDocument>& textDocument) {
+            textLayout->TextDocument = std::move(textDocument);
+        }
+
+        __declspec(property(get = getText, put = setText)) const TextDocument& Text;
 
         inline const ColorAttr& getTextColor() const {
             return *color;

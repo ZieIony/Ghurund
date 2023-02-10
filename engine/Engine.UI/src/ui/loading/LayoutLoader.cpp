@@ -7,6 +7,7 @@
 #include "ShapePropertyLoader.h"
 #include "DrawablePropertyLoader.h"
 #include "ImageScaleModePropertyLoader.h"
+#include "TextDocumentPropertyLoader.h"
 #include "core/logging/Formatter.h"
 #include "core/string/TextConversionUtils.h"
 #include "ui/control/Clip.h"
@@ -35,6 +36,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(imageDrawableFactory)));
+        propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
     }
 
     Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {

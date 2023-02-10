@@ -24,7 +24,7 @@ namespace Ghurund::UI {
         // a base character.
 
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
-
+        /*
         if (absolutePosition != caretAnchor) {
             deleteSelection();
         } else if (absolutePosition > 0) {
@@ -39,7 +39,7 @@ namespace Ghurund::UI {
             setSelection(SetSelectionMode::LeftChar, count, false);
             textLayout->removeTextAt(caretPosition, count);
             repaint();
-        }
+        }*/
     }
 
     void TextField::onDelete() {

@@ -13,8 +13,8 @@ namespace Ghurund::UI {
         const float MAX_LAYOUT_SIZE = 32768.0f;
 
         if (!Context || !textLayout->Format) {
-            auto text = std::format(_T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
-            Logger::log(LogType::WARNING, text.c_str());
+            //auto text = std::format(_T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
+            //Logger::log(LogType::WARNING, text.c_str());
             return;
         }
 
@@ -45,7 +45,12 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
+        static auto PROPERTY_TEXT_GET = Property<TextBlock, const TextDocument&>("Text", &getText);
+        static auto PROPERTY_TEXT_SET = Property<TextBlock, std::unique_ptr<TextDocument>&>("Text", (void(TextBlock::*)(std::unique_ptr<TextDocument>&)) &setText);
+
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
+            .withProperty(PROPERTY_TEXT_GET)
+            .withProperty(PROPERTY_TEXT_SET)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

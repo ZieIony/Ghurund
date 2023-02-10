@@ -15,8 +15,8 @@ namespace Ghurund::UI::Direct2D {
             return Status::INV_STATE;
         }
 
-        if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.Width, size.Height, &newLayout)))
-            return Status::CALL_FAIL;
+        //if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.Width, size.Height, &newLayout)))
+        //    return Status::CALL_FAIL;
 
         if (layout)
             layout->Release();
@@ -215,7 +215,7 @@ namespace Ghurund::UI::Direct2D {
     Status TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
         if (layout)
             layout->AddRef();
-        IDWriteTextLayout* oldLayout = layout;
+        /*IDWriteTextLayout* oldLayout = layout;
         uint32_t oldTextLength = (uint32_t)text.Length;
         position = std::min(position, (uint32_t)text.Size);
 
@@ -247,20 +247,20 @@ namespace Ghurund::UI::Direct2D {
             }
 
             // Copy trailing end.
-            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
+            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
         }
 
         if (oldLayout)
-            oldLayout->Release();
+            oldLayout->Release();*/
 
-        return result;
+        return Status::OK;// result;
     }
 
     Status TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
-        uint32_t oldTextLength = (uint32_t)text.Length;
+        /*uint32_t oldTextLength = (uint32_t)text.Length;
 
         text.remove(position, lengthToRemove);
 
@@ -281,13 +281,13 @@ namespace Ghurund::UI::Direct2D {
                 // Last block (if it exists, we increment past the deleted text)
                 copyRangedProperties(oldLayout, position + lengthToRemove, oldTextLength, lengthToRemove, newLayout, true);
             }
-            copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
+            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
         }
 
         if (oldLayout)
-            oldLayout->Release();
+            oldLayout->Release();*/
 
-        return result;
+        return Status::OK;// result;
     }
 
     void TextLayout::copyGlobalProperties(IDWriteTextLayout* oldLayout, IDWriteTextLayout* newLayout) {

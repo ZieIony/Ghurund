@@ -30,7 +30,7 @@ namespace Ghurund::Core {
             size = str.size;
         }
 
-        GenericStringView(GenericStringView<T>&& str) {
+        GenericStringView(GenericStringView<T>&& str) noexcept {
             v = str.getData();
             size = str.Size;
             str.v = nullptr;

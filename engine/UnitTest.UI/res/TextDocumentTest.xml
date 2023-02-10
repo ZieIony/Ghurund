@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextBlock>
+	<TextBlock.Text size="12">
+		Size 12 span
+		<!--<Bold size="10">Bold span <Italic>Bold Italic span</Italic></Bold>-->
+	</TextBlock.Text>
+</TextBlock>
