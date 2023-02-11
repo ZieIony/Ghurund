@@ -11,10 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{43DA4CD1-2FBE-0D27-981E-087A8421F8A8}</ProjectGuid>
+    <ProjectGuid>{B7F2B498-237E-225D-2C8F-A55198997E5D}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>PerformanceTest.UI</RootNamespace>
+    <RootNamespace>PerformanceTest</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'" Label="Configuration">
@@ -43,14 +43,14 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\bin\Debug\</OutDir>
     <IntDir>obj\Win64\Debug\</IntDir>
-    <TargetName>PerformanceTest.UI</TargetName>
+    <TargetName>PerformanceTest</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\bin\Release\</OutDir>
     <IntDir>obj\Win64\Release\</IntDir>
-    <TargetName>PerformanceTest.UI</TargetName>
+    <TargetName>PerformanceTest</TargetName>
     <TargetExt>.dll</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
@@ -69,7 +69,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ImportLibrary>..\..\bin\Debug\PerformanceTest.UI.lib</ImportLibrary>
+      <ImportLibrary>..\..\bin\Debug\PerformanceTest.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
@@ -93,7 +93,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>..\..\bin\Release\PerformanceTest.UI.lib</ImportLibrary>
+      <ImportLibrary>..\..\bin\Release\PerformanceTest.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -107,6 +107,7 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\test\core\string\StringTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ConstraintGraphTest.cpp" />
   </ItemGroup>
   <ItemGroup>

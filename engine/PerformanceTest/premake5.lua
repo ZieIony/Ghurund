@@ -1,4 +1,4 @@
-project "PerformanceTest.UI"
+project "PerformanceTest"
 	kind "SharedLib"
 	pchheader "pch.h"
 	pchsource "src/pch.cpp"

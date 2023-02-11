@@ -37,6 +37,13 @@ namespace Ghurund::Core {
             A::size++;
         }
 
+        inline void add(Value&& item) {
+            if (A::size == A::capacity)
+                A::resize((size_t)(A::capacity * 1.6));
+            new(A::v + A::size) Value(std::move(item));
+            A::size++;
+        }
+
         inline void addAll(const Array<Value>& array) {
             if (A::capacity < A::size + array.Size)
                 A::resize(A::size + array.Size);
@@ -91,6 +98,12 @@ namespace Ghurund::Core {
         inline void set(size_t i, const Value& item) {
             _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
             new(A::v + i) Value(item);
+            A::v[i].~Value();
+        }
+
+        inline void set(size_t i, Value&& item) {
+            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
+            new(A::v + i) Value(std::move(item));
             A::v[i].~Value();
         }
 

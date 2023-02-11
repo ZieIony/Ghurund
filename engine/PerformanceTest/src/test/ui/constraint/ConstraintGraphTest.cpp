@@ -14,7 +14,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Ghurund::Core;
 using namespace Ghurund::UI;
 
-namespace PerformanceTest {
+namespace PerformanceTest::UI {
     TEST_CLASS(ConstraintGraphTest) {
 public:
     TEST_METHOD(bigGraph) {

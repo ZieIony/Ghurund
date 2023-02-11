@@ -290,6 +290,15 @@ namespace Ghurund::Core {
             return size;
         }
 
+        size_t find(const GenericString<T>& str, size_t start = 0) const {
+            size_t strSize = str.Length;
+            for (size_t i = start; i <= size - strSize; i++) {
+                if (memcmp(&v[i], str.begin(), strSize * sizeof(T)) == 0)
+                    return i;
+            }
+            return size;
+        }
+
         size_t findLast(const T* str) const {
             size_t strSize = lengthOf(str);
             for (size_t i = size - strSize; i > 0; i--) {
@@ -298,6 +307,18 @@ namespace Ghurund::Core {
             }
 
             if (memcmp(v, str, strSize * sizeof(T)) == 0)
+                return 0;
+            return size;
+        }
+
+        size_t findLast(const GenericString<T>& str) const {
+            size_t strSize = str.Length;
+            for (size_t i = size - strSize; i > 0; i--) {
+                if (memcmp(&v[i], str.begin(), strSize * sizeof(T)) == 0)
+                    return i;
+            }
+
+            if (memcmp(v, str.begin(), strSize * sizeof(T)) == 0)
                 return 0;
             return size;
         }
@@ -399,6 +420,26 @@ namespace Ghurund::Core {
             List<GenericString<T>> list;
             size_t index = 0;
             size_t strSize = lengthOf(d);
+            while (index < Length) {
+                size_t nextIndex = find(d, index);
+                if (nextIndex == index) {
+                } else if (nextIndex == size) {
+                    GenericString<T> str = substring(index, size - index - 1);
+                    list.add(str);
+                    break;
+                } else {
+                    GenericString<T> str = substring(index, nextIndex - index);
+                    list.add(str);
+                }
+                index = nextIndex + strSize;
+            }
+            return list;
+        }
+
+        Array<GenericString<T>> split(const GenericString<T>& d) const {
+            List<GenericString<T>> list;
+            size_t index = 0;
+            size_t strSize = d.Length;
             while (index < Length) {
                 size_t nextIndex = find(d, index);
                 if (nextIndex == index) {

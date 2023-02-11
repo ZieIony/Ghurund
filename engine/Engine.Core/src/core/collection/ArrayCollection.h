@@ -53,12 +53,12 @@ namespace Ghurund::Core {
             Value* other = (Value*)a.allocate(sizeof(Value) * capacity);
             if (c >= size) {
                 for (size_t i = 0; i < size; i++) {
-                    new (other + i) Value(v[i]);
+                    new (other + i) Value(std::move(v[i]));
                     v[i].~Value();
                 }
             } else {
                 for (size_t i = 0; i < c; i++) {
-                    new (other + i) Value(v[i]);
+                    new (other + i) Value(std::move(v[i]));
                     v[i].~Value();
                 }
                 for (size_t i = c; i < size; i++)

@@ -94,6 +94,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\SystemInfo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\engine\Engine.Core\Engine.Core.vcxproj">
       <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
     </ProjectReference>

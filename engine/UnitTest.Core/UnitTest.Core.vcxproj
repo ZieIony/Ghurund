@@ -105,7 +105,6 @@
     <ClInclude Include="src\test\core\reflection\TestClass.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SharedPointerTest.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
