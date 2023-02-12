@@ -78,14 +78,18 @@ namespace Ghurund::UI {
 
     PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
         PointerList<Control*> list;
-        const tinyxml2::XMLElement* child = xml.FirstChildElement();
-        while (child != nullptr) {
-            Control* control = loadControl(*child);
-            if (control) {
-                list.add(control);
-                control->release();
+        const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
+        while (childElement) {
+            if (!AString(childElement->Name()).contains(".")) {
+                Control* control = loadControl(*childElement);
+                if (control) {
+                    list.add(control);
+                    control->release();
+                } else {
+                    Logger::log(LogType::WARNING, std::format(_T("Failed to load control {}.\n"), AString(childElement->Name())).c_str());
+                }
             }
-            child = child->NextSiblingElement();
+            childElement = childElement->NextSiblingElement();
         }
         return list;
     }

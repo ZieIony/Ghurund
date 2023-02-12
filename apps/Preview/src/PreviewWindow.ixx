@@ -12,6 +12,7 @@ module;
 #include "ui/direct2d/image/BitmapLoader.h"
 #include "core/image/ImageLoader.h"
 #include "ui/direct2d/UIContext.h"
+#include <ui/control/ControlGroup.h>
 
 export module Preview.PreviewWindow;
 
@@ -125,11 +126,11 @@ export namespace Preview {
         }
 
         void loadLayout(const File& file) {
-            /*SharedPointer<ControlGroup> layout = Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE);
+            SharedPointer<ControlGroup> layout(Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE));
             previewLayout->Container->Children.clear();
             for (Control* control : layout->Children)
                 previewLayout->Container->Children.add(control);
-            previewLayout->Container->invalidate();*/
+            previewLayout->Container->invalidate();
         }
 
         void loadDrawable(const File& file) {

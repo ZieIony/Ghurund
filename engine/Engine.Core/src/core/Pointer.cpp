@@ -81,10 +81,10 @@ namespace Ghurund::Core {
         if (pointers.Empty) {
             Logger::log(LogType::INFO, _T("no allocated pointers\n"));
         } else {
-            Logger::log(LogType::INFO, _T("allocated pointers:\n"));
+            Logger::log(LogType::INFO, std::format(_T("allocated pointers ({}):\n"), pointers.Size).c_str());
             for (Pointer* p : pointers) {
                 const auto& info = typeid(*p);
-                auto text = std::format(_T("[{:#x}] {} ({}) refCount={}\n"), (address_t)p, AString(p->getType().Name), AString(info.name()), p->ReferenceCount);
+                auto text = std::format(_T("[{:#x}] {} ({}) refCount={}\n"), (address_t)p, p->toString(), AString(info.name()), p->ReferenceCount);
                 Logger::print(LogType::INFO, text.c_str());
                 for (StackTrace::Entry& e : p->stacktrace) {
                     if (e.fileName.Empty || !e.address || e.name.Empty)

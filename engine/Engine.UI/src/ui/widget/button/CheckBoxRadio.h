@@ -5,6 +5,8 @@
 #include "ui/widget/Widget.h"
 #include "ui/widget/StateIndicator.h"
 
+#include <tinyxml2.h>
+
 namespace Ghurund::UI {
     template<typename CheckBoxRadioType>
     class CheckBoxRadio:public Widget {
@@ -59,8 +61,6 @@ namespace Ghurund::UI {
             if (checkedAttr)
                 Checked = checkedAttr->BoolValue();
         }
-
-        
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
-	<SelectableView name="selectable" preferredSize="wrap, wrap">
-		<StackLayout>
-			<StateIndicator name="state"/>
-			<LinearLayout alignment="center, center"
-						  orientation="horizontal">
-				<ImageView
-						name="image"
-						image="theme://image\checkBox_checked"
-						imageTint="theme://color\accent"/>
-				<Space preferredSize="4,4"/>
-				<ControlContainer preferredSize="wrap, wrap"
-								  name="content"/>
-			</LinearLayout>
-		</StackLayout>
-	</SelectableView>
-</layout>
+<SelectableView xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI"
+				name="selectable" width="wrap" height="wrap">
+	<ControlGroup width="Parent.Width" height="Parent.Height">
+		<StateIndicator width="Parent.Width" height="Parent.Height" name="state"/>
+		<ControlGroup width="Parent.Width" height="Parent.Height"
+					  alignment="center, center"
+					  orientation="horizontal">
+			<ImageView width="wrap" height="wrap"
+					   name="image"
+					   image="theme://image\checkBox_checked"
+					   imageTint="theme://color\accent"/>
+			<Space width="4" height="4"/>
+			<ControlContainer width="wrap" height="wrap"
+							  name="content"/>
+		</ControlGroup>
+	</ControlGroup>
+</SelectableView>

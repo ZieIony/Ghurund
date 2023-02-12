@@ -3,8 +3,40 @@
 			   xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Preview">
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ColorView width="Parent.Width" height="Parent.Height" color="theme://color/background"/>
-		<ImageView left="10" top="10"
-				   width="wrap" height="wrap"
-				   image="C:/Users/Marcin/Downloads/profil.png"/>
+		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
+						  name="container"/>
+		<ControlGroup left="10" width="Parent.Width" name="controls">
+			<ControlGroup.Bottom path="Parent.Bottom" offset="-10"/>
+			<Button name="color1" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+				<ColorView width="24" height="24"
+						   color="#ffd32f2f" name="c1"/>
+			</Button>
+			<Button name="color2" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+				<Button.Left path="'color1'.Right" offset="10"/>
+				<ColorView width="24" height="24"
+						   color="#ff1976d2" name="c2"/>
+			</Button>
+			<Button name="color3" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+				<Button.Left path="'color2'.Right" offset="10"/>
+				<ColorView width="24" height="24"
+						   color="#ffffa000" name="c3"/>
+			</Button>
+			<Button name="color4" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+				<Button.Left path="'color3'.Right" offset="10"/>
+				<ColorView width="24" height="24"
+						   color="#ff388e3c" name="c4"/>
+			</Button>
+			<Button name="colorTheme" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+				<Button.Left path="'color4'.Right" offset="10"/>
+				<ColorView width="24" height="24"
+						   color="#ffff0000" name="theme"/>
+			</Button>
+			<CheckBox left="'colorTheme'.Right" name="enabledCheckBox">
+				<TextBlock width="Parent.Width" height="Parent.Height">enabled</TextBlock>
+			</CheckBox>
+			<CheckBox left="'enabledCheckBox'.Right" name="themeCheckBox">
+				<TextBlock width="Parent.Width" height="Parent.Height">theme</TextBlock>
+			</CheckBox>
+		</ControlGroup>
 	</ControlGroup>
 </PreviewLayout>

@@ -76,9 +76,9 @@ namespace Ghurund::UI {
 
         using Control::find;
 
-        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true);
+        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const override;
 
-        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
+        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const override;
 
         virtual void resolveConstraints(ConstraintGraph& graph) override;
 

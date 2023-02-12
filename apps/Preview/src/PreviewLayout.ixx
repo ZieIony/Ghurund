@@ -39,7 +39,7 @@ export namespace Preview {
             enabledCheckBox = (Ghurund::UI::CheckBox*)find("enabledCheckBox");
             themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
 
-            /*themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
+            themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
                 themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
                 repaint();
                 return true;
@@ -48,7 +48,7 @@ export namespace Preview {
                 container->Enabled = checkBox.Checked;
                 container->repaint();
                 return true;
-            };*/
+            };
 
             auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
                 if (args.Button == MouseButton::LEFT) {
@@ -61,15 +61,21 @@ export namespace Preview {
                 }
                 return true;
             };
-            color1->clicked += colorClickHandler;
-            color2->clicked += colorClickHandler;
-            color3->clicked += colorClickHandler;
-            color4->clicked += colorClickHandler;
+            if (color1)
+                color1->clicked += colorClickHandler;
+            if (color2)
+                color2->clicked += colorClickHandler;
+            if (color3)
+                color3->clicked += colorClickHandler;
+            if (color4)
+                color4->clicked += colorClickHandler;
 
-            auto* colorView = colorTheme->find<ColorView>();
-            WindowsTheme::init();
-            colorView->Color = ColorValue(WindowsTheme::getAccentColor());
-            colorTheme->clicked += colorClickHandler;
+            if (colorTheme) {
+                auto* colorView = colorTheme->find<ColorView>();
+                WindowsTheme::init();
+                colorView->Color = ColorValue(WindowsTheme::getAccentColor());
+                colorTheme->clicked += colorClickHandler;
+            }
         }
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

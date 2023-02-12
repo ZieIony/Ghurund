@@ -118,7 +118,7 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlContainer::find(const AString& name, bool deep) {
+    Control* ControlContainer::find(const AString& name, bool deep) const {
         if (child) {
             if (child->Name && child->Name->operator==(name))
                 return child;
@@ -128,7 +128,7 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Control* ControlContainer::find(const Ghurund::Core::Type& type, bool deep) {
+    Control* ControlContainer::find(const Ghurund::Core::Type& type, bool deep) const {
         if (child) {
             if (child->Type == type)
                 return child;
@@ -146,15 +146,19 @@ namespace Ghurund::UI {
 
     void ControlContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         __super::load(loader, xml);
-        auto child = xml.FirstChildElement();
-        if (child) {
-            Control* control = loader.loadControl(*child);
-            if (control) {
-                Child = control;
-            } else {
-                Child = ghnew InvalidControl();
+        auto childElement = xml.FirstChildElement();
+        while (childElement) {
+            if (!AString(childElement->Name()).contains(".")) {
+                Control* control = loader.loadControl(*childElement);
+                if (control) {
+                    Child = control;
+                } else {
+                    Child = ghnew InvalidControl();
+                }
+                Child->release();
+                return;
             }
-            Child->release();
+            childElement = childElement->NextSiblingElement();
         }
     }
 

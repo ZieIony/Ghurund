@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Button xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI">
-	<ClickableControl name="clickable" preferredSize="wrap, wrap">
-		<StackLayout preferredSize="fill, fill"
-					 alignment="center, center">
-			<Clip shape="roundRect, 2"
-				  preferredSize="fill, fill">
-				<StackLayout preferredSize="fill, fill">
-					<StateIndicator name="state" preferredSize="fill, fill"
-									style="theme://style\stateIndicator_onBackground"/>
-					<ControlContainer preferredSize="wrap, wrap"
-										name="content"/>
-				</StackLayout>
-			</Clip>
-		</StackLayout>
-	</ClickableControl>
-</Button>
+<ClickableControl xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Ghurund::UI"
+				  name="clickable" width="wrap" height="wrap">
+	<Clip shape="roundRect, 2" width="Parent.Width" height="Parent.Height">
+		<ControlGroup width="Parent.Width" height="Parent.Height">
+			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
+							style="theme://style\stateIndicator_onBackground"/>
+			<ControlContainer width="wrap" height="wrap"
+							  name="content"/>
+		</ControlGroup>
+	</Clip>
+</ClickableControl>

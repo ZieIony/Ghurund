@@ -70,11 +70,11 @@ namespace Ghurund::UI {
         //List<Binding> bindings;
 
         SharedPointer<Constraint> left = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-        SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint());
         SharedPointer<Constraint> width = SharedPointer<Constraint>(ghnew WrapWidthConstraint());
+        SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint(left, width));
         SharedPointer<Constraint> top = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-        SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint());
         SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
+        SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
 
         virtual void onStateChanged() {
             stateChanged();
@@ -346,14 +346,14 @@ namespace Ghurund::UI {
 
         void draw(ICanvas& canvas);
 
-        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true);
+        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const;
 
         template<class T>
-        inline T* find(bool deep = true) {
+        inline T* find(bool deep = true) const {
             return (T*)find(T::GET_TYPE(), deep);
         }
 
-        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
+        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const;
 
         inline Constraint& getLeft() {
             return *left.get();

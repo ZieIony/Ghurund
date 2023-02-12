@@ -12,6 +12,8 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
         Space(float space = 8.0f) {}
     };
 }

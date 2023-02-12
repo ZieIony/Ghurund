@@ -98,7 +98,7 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getValue, put = setValue)) T& Value;
 
-        inline T& operator=(const T& value) {
+        inline const T& operator=(const T& value) {
             Value = value;
             return this->value;
         }

@@ -39,14 +39,14 @@ namespace Ghurund::UI {
     }
 
     void PaddingContainer::onLayout(float x, float y, float width, float height) {
-        /*if (Child) {
+        if (Child) {
             Child->layout(
                 padding.left,
                 padding.top,
-                std::max(width - padding.left - padding.right, Child->MinSize.Width),
-                std::max(height - padding.top - padding.bottom, Child->MinSize.Height)
+                width - padding.left - padding.right,
+                height - padding.top - padding.bottom
             );
-        }*/
+        }
     }
 
     void PaddingContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {

@@ -288,6 +288,7 @@
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
+    <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
@@ -303,6 +304,7 @@
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
+    <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

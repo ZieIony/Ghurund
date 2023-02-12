@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ClickableControl xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
-				  name="clickable" preferredSize="wrap, wrap">
-	<StackLayout preferredSize="fill, fill"
-				 alignment="center, center">
-		<Shadow preferredSize="fill, fill"
+				  name="clickable" width="wrap" height="wrap">
+	<ControlGroup width="wrap" height="wrap">
+		<Shadow width="Parent.Width" height="Parent.Height"
 				name="shadow"
 				style="theme://style/Shadow_button"
 				shape="roundRect, 2"/>
 		<Clip shape="roundRect, 2"
 			  name="clip"
-			  preferredSize="fill, fill">
-			<StackLayout preferredSize="fill, fill">
-				<ColorView style="theme://style/ColorView_control"
+			  width="wrap" height="wrap">
+			<ControlGroup width="wrap" height="wrap">
+				<ColorView width="Parent.Width" height="Parent.Height"
+						   style="theme://style/ColorView_control"
 						   name="background"/>
-				<StateIndicator name="state" preferredSize="fill, fill"
+				<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
 								style="theme://style/StateIndicator_onBackground"/>
 				<PaddingContainer padding="8, 4"
-								  preferredSize="fill, fill"
+								  width="wrap" height="wrap"
 								  name="padding">
-					<ControlContainer preferredSize="wrap, wrap"
+					<ControlContainer width="wrap" height="wrap"
 									  name="content"/>
 				</PaddingContainer>
-			</StackLayout>
+			</ControlGroup>
 		</Clip>
-	</StackLayout>
+	</ControlGroup>
 </ClickableControl>

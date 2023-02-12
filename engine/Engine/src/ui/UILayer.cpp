@@ -7,6 +7,7 @@ module;
 #include "ui/direct2d/RenderTarget2D.h"
 #include "ui/direct2d/UIContext.h"
 #include "ui/direct2d/Graphics2d.h"
+#include "ui/RootView.h"
 
 module Ghurund.Engine.UI.UILayer;
 
@@ -22,8 +23,8 @@ namespace Ghurund {
         canvas->init(graphics.DeviceContext);
         this->rootView = ghnew Ghurund::UI::RootView(*context);
         rootView->Constraints = {
-            .width = (float)window.Size.Width,
-            .height = (float)window.Size.Height
+            .width = makeShared<Ghurund::UI::WindowWidthConstraint>(window),
+            .height = makeShared<Ghurund::UI::WindowHeightConstraint>(window)
         };
         SwapChain& swapChain = window.SwapChain;
         window.sizeChanging += [&](const Window& window, const IntSize& size) {
@@ -32,10 +33,6 @@ namespace Ghurund {
         };
         window.sizeChanged += [&](const Window& window) {
             initTargets();
-            rootView->Constraints = {
-                .width = (float)window.Size.Width,
-                .height = (float)window.Size.Height
-            };
             rootView->invalidate();
             return true;
         };
@@ -58,8 +55,8 @@ namespace Ghurund {
         graph.clear();
         rootView->resolveConstraints(graph);
         graph.sort();
-        graph.evaluate();
         rootView->measure((float)Size.Width, (float)Size.Height);
+        graph.evaluate();
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }
 

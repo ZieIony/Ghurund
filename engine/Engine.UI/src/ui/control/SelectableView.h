@@ -15,6 +15,8 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
         
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
         inline bool isSelected() const {
             return selected;
         }

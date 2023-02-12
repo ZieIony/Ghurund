@@ -72,15 +72,6 @@ namespace Ghurund::UI {
             return context;
         }
 
-        void onMeasure(float parentWidth, float parentHeight) {
-            __super::onMeasure(parentWidth, parentHeight);
-
-            ConstraintGraph graph;
-            Child->resolveConstraints(graph);
-            graph.sort();
-            graph.evaluate();
-        }
-
         virtual void repaint() {
             context->Window.refresh();
         }

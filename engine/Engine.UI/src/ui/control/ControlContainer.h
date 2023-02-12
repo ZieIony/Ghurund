@@ -18,7 +18,12 @@ namespace Ghurund::UI {
         Control* child = nullptr;
         bool previousReceiver = false;
 
+    protected:
+        virtual void onChildChanged() {}
+
     public:
+        Event<ControlContainer> childChanged = Event<ControlContainer>(*this);
+
         ~ControlContainer() {
             if (child) {
                 child->Parent = nullptr;
@@ -44,6 +49,8 @@ namespace Ghurund::UI {
             setPointer(this->child, child);
             if (this->child)
                 this->child->Parent = this;
+            onChildChanged();
+            childChanged();
         }
 
         __declspec(property(get = getChild, put = setChild)) Control* Child;
@@ -93,9 +100,9 @@ namespace Ghurund::UI {
 
         using Control::find;
 
-        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true);
+        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const override;
 
-        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true);
+        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const override;
 
         virtual void resolveConstraints(ConstraintGraph& graph) override;
 

@@ -7,12 +7,14 @@ namespace Ghurund::UI {
     protected:
         virtual void bind() override {
             __super::bind();
-            selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
-                Checked = !Checked;
-                checkedChanged();
-                return true;
-            };
-            selectable->stateChanged += stateHandler;
+            if (selectable) {
+                selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
+                    Checked = !Checked;
+                    checkedChanged();
+                    return true;
+                };
+                selectable->stateChanged += stateHandler;
+            }
         }
 
     public:
