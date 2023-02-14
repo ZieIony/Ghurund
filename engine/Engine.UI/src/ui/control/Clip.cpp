@@ -31,11 +31,4 @@ namespace Ghurund::UI {
             canvas.restoreClipRect();
         }
     }
-
-    void Clip::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto shapeAttr = xml.FindAttribute("shape");
-        if (shapeAttr)
-            Shape = loader.loadShape(shapeAttr->Value());
-    }
 }

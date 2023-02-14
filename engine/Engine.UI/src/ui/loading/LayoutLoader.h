@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PropertyLoaderCollection.h"
 #include "core/Buffer.h"
 #include "core/Exceptions.h"
 #include "core/collection/Stack.h"
@@ -35,6 +36,7 @@ namespace Ghurund::UI {
         ImageDrawableFactory& imageDrawableFactory;
         TextFormatFactory& textFormatFactory;
         ConstraintFactory& constraintFactory;
+        PropertyLoaderCollection propertyLoaders;
 
     public:
         static inline const char* FILE_PROTOCOL = "file://";
@@ -69,8 +71,6 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
-        ImageDrawable* loadDrawable(const char* str);
-
         virtual Control* load(
             Ghurund::Core::ResourceManager& manager,
             Ghurund::Core::MemoryInputStream& stream,
@@ -88,6 +88,17 @@ namespace Ghurund::UI {
             throw NotImplementedException();
         }
 
+        void loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
+            const Type* type = &obj.Type;
+            while (*type != Pointer::TYPE) {
+                for (auto& property : type->Properties)
+                    loadProperty(obj, property, xml);
+                type = type->Supertype;
+            }
+        }
+
+        void loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml);
+
         PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
 
         Control* loadControl(const tinyxml2::XMLElement& xml);
@@ -95,12 +106,6 @@ namespace Ghurund::UI {
         Constraint* loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation);
 
         Constraint* loadConstraint(const char* str, Orientation orientation);
-
-        Shape* loadShape(const char* str);
-
-        ColorAttr* loadColor(const char* str);
-
-        Ghurund::Core::WString loadText(const char* str);
 
         TextFormat* loadTextFormat(const char* str);
 

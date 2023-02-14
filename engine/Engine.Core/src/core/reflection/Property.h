@@ -93,7 +93,7 @@ namespace Ghurund::Core {
             BaseTypedProperty<OwnerT, PropType>::set(*(OwnerT*)obj, *(std::remove_cvref_t<PropType>*)val);
         }
     };
-
+    /*
     template<class OwnerT, class PropType>
     class Property<OwnerT, PropType*>:public BaseTypedProperty<OwnerT, PropType*> {
     public:
@@ -124,5 +124,5 @@ namespace Ghurund::Core {
         virtual void setRaw(void* obj, void* val) const override {
             BaseTypedProperty<OwnerT, PropType*>::set(*(OwnerT*)obj, (PropType*)val);
         }
-    };
+    };*/
 }

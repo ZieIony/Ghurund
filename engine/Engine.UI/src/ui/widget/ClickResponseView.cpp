@@ -38,13 +38,6 @@ namespace Ghurund::UI {
             repaint();
     }
     
-    void ClickResponseView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto colorAttr = xml.FindAttribute("color");
-        if (colorAttr)
-            Color = *loader.loadColor(colorAttr->Value());
-    }
-    
     void ClickResponseViewOnBackgroundStyle::onStateChanged(Control& control) const {
         ((ClickResponseView&)control).Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONBACKGROUND);
     }

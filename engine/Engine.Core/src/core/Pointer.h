@@ -19,6 +19,8 @@ namespace Ghurund::Core {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
     private:
         mutable unsigned int referenceCount = 1;
 

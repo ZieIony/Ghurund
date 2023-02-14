@@ -69,8 +69,6 @@ namespace Ghurund::UI {
         }
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
-
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
     };
 
     class BorderOnBackgroundStyle:public TypedStyle<Border> {

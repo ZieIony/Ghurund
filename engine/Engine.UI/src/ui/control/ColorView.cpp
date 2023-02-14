@@ -27,22 +27,6 @@ namespace Ghurund::UI {
         }
     }
 
-    void ColorView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto colorAttr = xml.FindAttribute("color");
-        if (colorAttr) {
-            AString colorAttrValue = colorAttr->Value();
-            auto color = loader.loadColor(colorAttrValue.Data);
-            if (color) {
-                Color = *color;
-                delete color;
-            } else {
-                auto text = std::format(_T("Invalid color value: '{}'.\n"), colorAttrValue);
-                Logger::log(LogType::WARNING, text.c_str());
-            }
-        }
-    }
-
     void ColorViewBackgroundStyle::apply(ColorView& control) const {
         control.Color = ColorRef(Theme::COLOR_BACKGR0UND);
     }

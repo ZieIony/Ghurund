@@ -8,8 +8,11 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ImageView::GET_TYPE() {
+        static auto PROPERTY_IMAGE = Property<ImageView, Ghurund::UI::ImageDrawable*>("Image", & getImage, & setImage);
+  
         static const auto CONSTRUCTOR = Constructor<ImageView>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
+            .withProperty(PROPERTY_IMAGE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -93,22 +96,6 @@ namespace Ghurund::UI {
         image->draw(canvas);
         canvas.restore();
         canvas.restoreClipRect();
-    }
-
-    void ImageView::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto imageAttr = xml.FindAttribute("image");
-        if (imageAttr) {
-            SharedPointer<ImageDrawable> image(loader.loadDrawable(imageAttr->Value()));
-            if (image == nullptr)
-                image.set(ghnew InvalidImageDrawable());
-            Image = image.get();
-        }
-        if (this->image) {
-            auto imageTintAttr = xml.FindAttribute("imageTint");
-            if (imageTintAttr)
-                Tint = std::unique_ptr<ColorAttr>(loader.loadColor(imageTintAttr->Value()));
-        }
     }
 
     void ImageViewStyle::onStateChanged(Control& control) const {

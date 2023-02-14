@@ -18,7 +18,7 @@
 namespace Ghurund::UI {
 
     const Ghurund::Core::Type& Control::GET_TYPE() {
-        static auto PROPERTY_NAME = Property<Control, const AString*>("Name", (AString * (Control::*)()) & getName, (void(Control::*)(const AString*)) & setName);
+        static auto PROPERTY_NAME = Property<Control, const AString*>("Name", (const AString * (Control::*)()) & getName, (void(Control::*)(const AString*)) & setName);
         static auto PROPERTY_VISIBLE = Property<Control, bool>("Visible", (bool(Control::*)()) & isVisible, (void(Control::*)(bool)) & setVisible);
         static auto PROPERTY_ENABLED = Property<Control, bool>("Enabled", (bool(Control::*)()) & isEnabled, (void(Control::*)(bool)) & setEnabled);
         static auto PROPERTY_FOCUSABLE = Property<Control, bool>("Focusable", (bool(Control::*)()) & isFocusable, (void(Control::*)(bool)) & setFocusable);
@@ -519,15 +519,7 @@ namespace Ghurund::UI {
     }
 
     void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        auto nameAttr = xml.FindAttribute("name");
-        if (nameAttr)
-            Name = nameAttr->Value();
-        auto enabledAttr = xml.FindAttribute("enabled");
-        if (enabledAttr)
-            Enabled = enabledAttr->BoolValue();
-        auto visibleAttr = xml.FindAttribute("visible");
-        if (visibleAttr)
-            Visible = visibleAttr->BoolValue();
+        loader.loadProperties(*this, xml);
         auto styleAttr = xml.FindAttribute("style");
         if (styleAttr) {
             AString s = styleAttr->Value();

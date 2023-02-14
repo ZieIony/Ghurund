@@ -42,7 +42,5 @@ namespace Ghurund::UI {
         }
 
         virtual void onDraw(ICanvas& canvas) override;
-
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
     };
 }

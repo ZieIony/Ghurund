@@ -18,12 +18,13 @@
 			</Button>
 			<Button name="color3" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
 				<Button.Left path="'color2'.Right" offset="10"/>
-				<ColorView width="24" height="24"
-						   color="#ffffa000" name="c3"/>
+				<ColorView width="24" height="24" name="c3">
+					<ColorView.Color>#ffffa000</ColorView.Color>
+				</ColorView>
 			</Button>
 			<Button name="color4" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
 				<Button.Left path="'color3'.Right" offset="10"/>
-				<ColorView width="24" height="24"
+				<ColorView width="24" height="24" visible="false"
 						   color="#ff388e3c" name="c4"/>
 			</Button>
 			<Button name="colorTheme" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">

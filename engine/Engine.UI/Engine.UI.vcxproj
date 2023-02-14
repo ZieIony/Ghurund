@@ -104,6 +104,13 @@
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\Cursor.h" />
+    <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
+    <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
+    <ClInclude Include="src\ui\loading\PropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
+    <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\StylePropertyLoader.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
     <ClInclude Include="src\ui\RootView.h" />
@@ -306,6 +313,9 @@
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
     <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\ui\loading\ShapePropertyLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

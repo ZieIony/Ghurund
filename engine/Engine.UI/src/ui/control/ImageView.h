@@ -90,8 +90,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getGravity, put = setGravity)) Alignment& Alignment;
-
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
     };
 
     class ImageViewStyle:public Style {

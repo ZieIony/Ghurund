@@ -63,12 +63,6 @@ namespace Ghurund::UI {
 
     void TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         __super::load(loader, xml);
-        auto textAttr = xml.FindAttribute("text");
-        if (textAttr)
-            Text = loader.loadText(textAttr->Value());
-        auto textColorAttr = xml.FindAttribute("textColor");
-        if (textColorAttr)
-            TextColor = *loader.loadColor(textColorAttr->Value());
         auto textFormatAttr = xml.FindAttribute("textFormat");
         if (textFormatAttr) {
             Ghurund::UI::TextFormat* format = loader.loadTextFormat(textFormatAttr->Value());

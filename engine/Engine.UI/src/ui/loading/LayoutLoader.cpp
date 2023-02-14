@@ -1,57 +1,38 @@
 #include "ghuipch.h"
 #include "LayoutLoader.h"
 
-#include "core/io/File.h"
-#include "ui/control/Clip.h"
-#include "ui/control/Border.h"
-#include "ui/control/Shadow.h"
-#include "ui/control/Space.h"
-#include "ui/control/ColorView.h"
-#include "ui/control/ImageView.h"
-#include "ui/control/InvalidControl.h"
-#include "ui/control/PaddingContainer.h"
-#include "ui/drawable/InvalidImageDrawable.h"
-#include "ui/layout/LinearLayout.h"
-#include "ui/constraint/ConstraintLayout.h"
-#include "ui/style/Theme.h"
-#include "ui/text/TextBlock.h"
-#include "ui/text/TextField.h"
-#include "ui/text/TextView.h"
-#include "ui/widget/ClickResponseView.h"
-#include "ui/widget/ExpandableContainer.h"
-#include "ui/widget/StateIndicator.h"
-#include "ui/widget/VerticalScrollBar.h"
-#include "ui/widget/button/Button.h"
-#include "ui/widget/button/CheckBox.h"
-#include "ui/widget/button/RadioButton.h"
-#include "ui/widget/tree/TreeView.h"
-#include "ui/widget/tab/TabContainer.h"
-#include "core/string/TextConversionUtils.h"
+#include "StringPropertyLoader.h"
+#include "PrimitivePropertyLoaders.h"
+#include "ColorPropertyLoaders.h"
+#include "ShapePropertyLoader.h"
+#include "DrawablePropertyLoader.h"
 #include "core/logging/Formatter.h"
+#include "core/string/TextConversionUtils.h"
+#include "ui/control/Clip.h"
+#include "ui/control/Space.h"
+#include "ui/style/Theme.h"
 
 #include <ranges>
 
 namespace Ghurund::UI {
+
     LayoutLoader::LayoutLoader(
         Ghurund::Core::ResourceManager& resourceManager,
         ShapeFactory& shapeFactory,
         ImageDrawableFactory& imageDrawableFactory,
         TextFormatFactory& textFormatFactory,
         ConstraintFactory& constraintFactory
-    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory), constraintFactory(constraintFactory) {}
-
-    ImageDrawable* LayoutLoader::loadDrawable(const char* str) {
-        AString s = str;
-        s.replace(L'\\', L'/');
-        if (s.startsWith(THEME_IMAGE) && theme) {
-            ImageKey imageKey = s.substring(lengthOf(THEME_IMAGE));
-            if (theme->Images.containsKey(imageKey))
-                return (ImageDrawable*)theme->Images[imageKey]->clone();
-        } else {
-            FilePath path = convertText<char, wchar_t>(s);
-            return imageDrawableFactory.makeDrawable(path);
-        }
-        return nullptr;
+    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory), constraintFactory(constraintFactory) {
+        propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
+        propertyLoaders.add(std::make_unique<UInt32PropertyLoader>());
+        propertyLoaders.add(std::make_unique<FloatPropertyLoader>());
+        propertyLoaders.add(std::make_unique<AStringPropertyLoader>());
+        propertyLoaders.add(std::make_unique<NullableAStringPropertyLoader>());
+        propertyLoaders.add(std::make_unique<WStringPropertyLoader>());
+        propertyLoaders.add(std::make_unique<ColorPropertyLoader>());
+        propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
+        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
+        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(imageDrawableFactory)));
     }
 
     Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
@@ -74,6 +55,45 @@ namespace Ghurund::UI {
         Control* control = (Control*)constructor->invokeRaw();
         control->load(*this, *child);
         return control;
+    }
+
+    void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) {
+        AString propertyName = property.Name;
+        AString propertyUpper = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+        AString propertyLower = propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
+        const Type& type = obj.Type;
+        auto elementName = std::format("{}.{}", type.Name, propertyUpper);
+
+        const tinyxml2::XMLElement* propertyElement = xml.FirstChildElement(elementName.c_str());
+        auto propertyAttr = xml.FindAttribute(propertyLower.Data);
+
+        if (propertyAttr && propertyElement) {
+            auto text = std::format("A combination of both - '{}' attribute and '{}.{}' child is invalid.", propertyLower, type.Name, propertyUpper);
+            throw InvalidDataException(text.c_str());
+        } else if (!propertyAttr && !propertyElement) {
+            return;
+        }
+
+        PropertyLoader* loader = propertyLoaders.get(property.Type);
+        if (!loader) {
+            Logger::log(LogType::WARNING, std::format(_T("No loader for type {}::{}.\n"), property.Type.Namespace, property.Type.Name).c_str());
+            return;
+        }
+
+        if (propertyAttr) {
+            loader->loadAttr(obj, property, propertyAttr->Value());
+        } else if (propertyElement) {
+            if (!propertyElement->FirstAttribute() &&
+                !propertyElement->NoChildren() &&
+                !propertyElement->FirstChildElement() &&
+                propertyElement->FirstChild()) {
+                loader->loadAttr(obj, property, propertyElement->GetText());
+            } else if (!propertyElement->FirstAttribute() && !propertyElement->NoChildren()) {
+                loader->loadChildren(obj, property, *propertyElement);
+            } else {
+                loader->loadElement(obj, property, *propertyElement);
+            }
+        }
     }
 
     PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
@@ -156,7 +176,7 @@ namespace Ghurund::UI {
         if (maxAttr)
             max = maxAttr->Value();
         return constraintFactory.parseConstraint(
-            nameAttr ? &name: nullptr,
+            nameAttr ? &name : nullptr,
             ratioAttr ? &ratio : nullptr,
             offsetAttr ? &offset : nullptr,
             minAttr ? &min : nullptr,
@@ -167,27 +187,6 @@ namespace Ghurund::UI {
 
     Constraint* LayoutLoader::loadConstraint(const char* str, Orientation orientation) {
         return constraintFactory.parseConstraint(str, orientation);
-    }
-
-    Shape* LayoutLoader::loadShape(const char* str) {
-        AString desc = str;
-        return shapeFactory.makeShape(desc);
-    }
-
-    ColorAttr* LayoutLoader::loadColor(const char* str) {
-        AString s = str;
-        s = s.trim();
-        s.replace('\\', '/');
-        if (s.startsWith("#")) {
-            return ghnew ColorValue(Color::parse(s));
-        } else if (s.startsWith(THEME_COLOR) && theme) {
-            return ghnew ColorRef(ColorKey(s.substring(lengthOf(THEME_COLOR))));
-        }
-        return nullptr;
-    }
-
-    WString LayoutLoader::loadText(const char* str) {
-        return convertText<char, wchar_t>(AString(str));
     }
 
     TextFormat* LayoutLoader::loadTextFormat(const char* str) {

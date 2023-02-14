@@ -281,6 +281,13 @@ namespace Ghurund::Core {
             return *this;
         }
 
+        GenericString operator+(const GenericString& other) const {
+            GenericString str(Size + other.Length);
+            memcpy(str.v, v, Length * sizeof(T));
+            memcpy(str.v + Length, other.v, other.Size * sizeof(T));
+            return str;
+        }
+
         size_t find(const T* str, size_t start = 0) const {
             size_t strSize = lengthOf(str);
             for (size_t i = start; i <= size - strSize; i++) {

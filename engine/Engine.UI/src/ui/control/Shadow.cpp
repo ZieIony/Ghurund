@@ -62,17 +62,4 @@ namespace Ghurund::UI {
         //canvas.drawShadow(bitmap->Data, radius, c.Value);
         canvas.restore();
     }
-
-    void Shadow::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto shapeAttr = xml.FindAttribute("shape");
-        if (shapeAttr)
-            Shape = loader.loadShape(shapeAttr->Value());
-        auto colorAttr = xml.FindAttribute("color");
-        if (colorAttr)
-            Color = *loader.loadColor(colorAttr->Value());
-        auto radiusAttr = xml.FindAttribute("radius");
-        if (radiusAttr)
-            Radius = radiusAttr->FloatValue();
-    }
 }

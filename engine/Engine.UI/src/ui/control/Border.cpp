@@ -26,19 +26,6 @@ namespace Ghurund::UI {
             canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.Width - Thickness, Size.Height - Thickness, thickness);
         }
     }
-
-    void Border::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        auto shapeAttr = xml.FindAttribute("shape");
-        if (shapeAttr)
-            Shape = loader.loadShape(shapeAttr->Value());
-        auto colorAttr = xml.FindAttribute("color");
-        if (colorAttr)
-            Color = *loader.loadColor(colorAttr->Value());
-        auto thicknessAttr = xml.FindAttribute("thickness");
-        if (thicknessAttr)
-            Thickness = thicknessAttr->FloatValue();
-    }
     
     void BorderOnBackgroundStyle::onStateChanged(Border& control) const {
         if (control.Enabled) {

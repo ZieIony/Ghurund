@@ -35,8 +35,6 @@ namespace Ghurund::UI {
 
         virtual void onDraw(ICanvas& canvas);
 
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
         static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
