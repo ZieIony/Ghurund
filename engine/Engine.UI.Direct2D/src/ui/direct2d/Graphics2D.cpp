@@ -37,7 +37,8 @@ namespace Ghurund::UI::Direct2D {
                 // This occurs when there are uninitialized descriptors in a descriptor table, even when a
                 // shader does not access the missing descriptors.
                 D3D12_MESSAGE_ID_INVALID_DESCRIPTOR_HANDLE,
-                D3D12_MESSAGE_ID_CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVALUE
+                D3D12_MESSAGE_ID_CLEARRENDERTARGETVIEW_MISMATCHINGCLEARVALUE,
+                D3D12_MESSAGE_ID_CREATERESOURCE_STATE_IGNORED
             };
 
             D3D12_INFO_QUEUE_FILTER filter = {};

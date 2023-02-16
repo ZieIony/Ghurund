@@ -9,7 +9,14 @@ namespace Ghurund::UI {
     enum class ImageScaleMode {
         NONE, STRETCH, FIT, CROP
     };
+}
 
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::ImageScaleMode>();
+}
+
+namespace Ghurund::UI{
     class ImageView: public Control {
     private:
         ImageDrawable* image = nullptr;
@@ -18,7 +25,7 @@ namespace Ghurund::UI {
         Alignment gravity;
 
     protected:
-        virtual void onMeasure(float parentWidth, float parentHeight) override;
+        //virtual void onMeasure(float parentWidth, float parentHeight) override;
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 

@@ -6,6 +6,7 @@
 #include "ColorPropertyLoaders.h"
 #include "ShapePropertyLoader.h"
 #include "DrawablePropertyLoader.h"
+#include "ImageScaleModePropertyLoader.h"
 #include "core/logging/Formatter.h"
 #include "core/string/TextConversionUtils.h"
 #include "ui/control/Clip.h"
@@ -31,6 +32,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<WStringPropertyLoader>());
         propertyLoaders.add(std::make_unique<ColorPropertyLoader>());
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
+        propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(imageDrawableFactory)));
     }

@@ -48,7 +48,6 @@ namespace Ghurund::UI {
     class SiblingTopConstraint:public OffsetConstraint {
     private:
         const AString name;
-        float offset;
 
     public:
         SiblingTopConstraint(const AString& name):name(name) {}

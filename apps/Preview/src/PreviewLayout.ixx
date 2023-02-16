@@ -39,16 +39,20 @@ export namespace Preview {
             enabledCheckBox = (Ghurund::UI::CheckBox*)find("enabledCheckBox");
             themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
 
-            themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
-                themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
-                repaint();
-                return true;
-            };
-            enabledCheckBox->checkedChanged += [this](CheckBox& checkBox) {
-                container->Enabled = checkBox.Checked;
-                container->repaint();
-                return true;
-            };
+            if (themeCheckBox) {
+                themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
+                    themeChanged(checkBox.Checked ? ThemeType::Dark : ThemeType::Light);
+                    repaint();
+                    return true;
+                };
+            }
+            if (enabledCheckBox) {
+                enabledCheckBox->checkedChanged += [this](CheckBox& checkBox) {
+                    container->Enabled = checkBox.Checked;
+                    container->repaint();
+                    return true;
+                };
+            }
 
             auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
                 if (args.Button == MouseButton::LEFT) {

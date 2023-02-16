@@ -4,7 +4,13 @@
 	<ControlGroup width="Parent.Width" height="Parent.Height">
 		<ColorView width="Parent.Width" height="Parent.Height" color="theme://color/background"/>
 		<ControlContainer width="Parent.Width" top="Parent.Top" bottom="'controls'.Top"
-						  name="container"/>
+						  name="container">
+			<ControlGroup>
+				<Border width="200" height="200"/>
+				<ImageView width="200" height="200" scaleMode="fit"
+						   image="images\buttons.png"/>
+			</ControlGroup>
+		</ControlContainer>
 		<ControlGroup left="10" width="Parent.Width" name="controls">
 			<ControlGroup.Bottom path="Parent.Bottom" offset="-10"/>
 			<Button name="color1" layout="lib://Ghurund\layouts\ButtonImageLayout.xml">

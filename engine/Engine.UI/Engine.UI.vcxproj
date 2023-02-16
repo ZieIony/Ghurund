@@ -106,6 +106,7 @@
     <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\PropertyLoader.h" />
     <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
+    <ClCompile Include="src\ui\loading\DrawablePropertyLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />

@@ -55,21 +55,13 @@ namespace Ghurund::UI::Direct2D {
             fillBrush->SetOpacity(color.A);
         }
 
-        virtual void drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
-            deviceContext->DrawRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);
-        }
+        virtual void drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
 
-        virtual void fillRect(float x, float y, float width, float height) override {
-            deviceContext->FillRectangle(D2D1::RectF(x, y, x + width, y + height), fillBrush.Get());
-        }
+        virtual void fillRect(float x, float y, float width, float height) override;
 
-        virtual void drawShape(Ghurund::UI::Shape& shape, float thickness) override {
-            deviceContext->DrawGeometry(((Direct2D::Shape&)shape).Path, fillBrush.Get(), thickness);
-        }
+        virtual void drawShape(Ghurund::UI::Shape& shape, float thickness) override;
 
-        virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
-            deviceContext->DrawLine({ x1,y1 }, { x2,y2 }, fillBrush.Get(), thickness, strokeStyle ? ((Direct2D::StrokeStyle*)strokeStyle)->get() : nullptr);
-        }
+        virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
 
         virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
 
@@ -87,38 +79,18 @@ namespace Ghurund::UI::Direct2D {
             deviceContext->DrawTextLayout(D2D1::Point2F(x, y), ((TextLayout&)layout).get(), fillBrush.Get());
         }
 
-        virtual void translate(float x, float y) override {
-            matrixStack[matrixStack.Size - 1] = matrixStack[matrixStack.Size - 1] * D2D1::Matrix3x2F::Translation(x, y);
-            deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void translate(float x, float y) override;
 
-        virtual void save() override {
-            matrixStack.add(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void save() override;
 
-        virtual void restore() override {
-            matrixStack.removeAt(matrixStack.Size - 1);
-            deviceContext->SetTransform(matrixStack[matrixStack.Size - 1]);
-        }
+        virtual void restore() override;
 
-        virtual void clipShape(Ghurund::UI::Shape& shape) override {
-            ComPtr<ID2D1Layer> pLayer;
-            D2D_SIZE_F size = { shape.Bounds.right - shape.Bounds.left, shape.Bounds.bottom - shape.Bounds.top };
-            deviceContext->CreateLayer(&size, &pLayer);
-            D2D_RECT_F bounds = D2D_RECT_F{ shape.Bounds.left, shape.Bounds.top, shape.Bounds.right, shape.Bounds.bottom };
-            deviceContext->PushLayer(D2D1::LayerParameters(bounds, ((Direct2D::Shape&)shape).Path), pLayer.Get());
-        }
+        virtual void clipShape(Ghurund::UI::Shape& shape) override;
 
-        virtual void restoreClipShape() override {
-            deviceContext->PopLayer();
-        }
+        virtual void restoreClipShape() override;
 
-        virtual void clipRect(float x, float y, float width, float height) override {
-            deviceContext->PushAxisAlignedClip(D2D1::RectF(x, y, x + width, y + height), D2D1_ANTIALIAS_MODE_PER_PRIMITIVE);
-        }
+        virtual void clipRect(float x, float y, float width, float height) override;
 
-        virtual void restoreClipRect() override {
-            deviceContext->PopAxisAlignedClip();
-        }
+        virtual void restoreClipRect() override;
     };
 }

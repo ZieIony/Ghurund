@@ -6,23 +6,34 @@
 #include "ui/style/Theme.h"
 #include "ui/drawable/InvalidImageDrawable.h"
 
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::ImageScaleMode>() {
+        static Type TYPE = Type("ImageScaleMode", sizeof(Ghurund::UI::ImageScaleMode));
+        return TYPE;
+    }
+}
+
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ImageView::GET_TYPE() {
         static auto PROPERTY_IMAGE = Property<ImageView, Ghurund::UI::ImageDrawable*>("Image", & getImage, & setImage);
-  
+        //static auto PROPERTY_TINT = Property<ImageView, std::unique_ptr<ColorAttr>>("Tint", &getTint, &setTint);
+        static auto PROPERTY_SCALEMODE = Property<ImageView, ImageScaleMode>("ScaleMode", &getScaleMode, &setScaleMode);
+
         static const auto CONSTRUCTOR = Constructor<ImageView>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<ImageView>(NAMESPACE_NAME, GH_STRINGIFY(ImageView))
             .withProperty(PROPERTY_IMAGE)
+            .withProperty(PROPERTY_SCALEMODE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void ImageView::onMeasure(float parentWidth, float parentHeight) {
+    /*void ImageView::onMeasure(float parentWidth, float parentHeight) {
         measuredSize.Width = image ? (float)image->PreferredSize.Width : 0.0f;
         measuredSize.Height = image ? (float)image->PreferredSize.Height : 0.0f;
-    }
+    }*/
 
     void ImageView::onDraw(ICanvas& canvas) {
         if (!image)

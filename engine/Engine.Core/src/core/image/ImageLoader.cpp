@@ -159,7 +159,7 @@ namespace Ghurund::Core {
 
         DXGI_FORMAT giFormat;
         uint32_t width, height, pixelSize, rowPitch;
-        Ghurund::Core::Buffer imageData;
+        uint8_t* imageData = nullptr;
         Image* image = nullptr;
 
         bool imageConverted = false;
@@ -209,18 +209,23 @@ namespace Ghurund::Core {
         rowPitch = width * pixelSize;
         int imageSize = rowPitch * height;
 
-        imageData.reset(imageSize);
+        imageData = ghnew uint8_t[imageSize];
 
         if (imageConverted) {
-            if (FAILED(hr = wicConverter->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicConverter->CopyPixels(0, rowPitch, imageSize, imageData))) {
+                delete[] imageData;
                 throw std::bad_function_call();
+            }
         } else {
-            if (FAILED(hr = wicFrame->CopyPixels(0, rowPitch, imageSize, imageData.Data)))
+            if (FAILED(hr = wicFrame->CopyPixels(0, rowPitch, imageSize, imageData))) {
+                delete[] imageData;
                 throw std::bad_function_call();
+            }
         }
 
         image = makeResource<Image>();
-        image->init(imageData, width, height, giFormat, pixelSize);
+        image->init(Buffer(imageData, imageSize), width, height, giFormat, pixelSize);
+        delete[] imageData;
 
         return image;
     }
