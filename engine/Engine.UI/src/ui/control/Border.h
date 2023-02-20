@@ -45,9 +45,9 @@ namespace Ghurund::UI {
             return shape;
         }
 
-        inline void setShape(Ghurund::UI::Shape* shape) {
+        inline void setShape(std::unique_ptr<Ghurund::UI::Shape>& shape) {
             delete this->shape;
-            this->shape = shape;
+            this->shape = shape.release();
         }
 
         __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;

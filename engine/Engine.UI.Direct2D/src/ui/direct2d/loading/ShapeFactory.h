@@ -11,12 +11,12 @@ namespace Ghurund::UI::Direct2D {
     public:
         ShapeFactory(ID2D1Factory6& d2dFactory):d2dFactory(d2dFactory) {}
 
-        virtual Shape* makeShape(const AString& desc) override {
+        virtual std::unique_ptr<Ghurund::UI::Shape> makeShape(const AString& desc) override {
             if (desc == "rect") {
-                return ghnew Rect(d2dFactory);
+                return std::make_unique<Rect>(d2dFactory);
             } else if (desc.startsWith("roundRect")) {
                 float radius = (float)atof(desc.substring(desc.find(",") + 1).trim().Data);
-                return ghnew RoundRect(d2dFactory, radius);
+                return std::make_unique<RoundRect>(d2dFactory, radius);
             }
             return nullptr;
         }

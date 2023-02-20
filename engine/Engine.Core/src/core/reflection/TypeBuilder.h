@@ -59,6 +59,19 @@ namespace Ghurund::Core {
             return *this;
         }
 
+        template<typename T>
+        inline TypeBuilder& withTemplateParam() {
+            templateParams.add(getType<T>());
+            modifiers |= TypeModifier::TEMPLATE;
+            return *this;
+        }
+
+        inline TypeBuilder& withTemplateParam(const Type& type) {
+            templateParams.add(type);
+            modifiers |= TypeModifier::TEMPLATE;
+            return *this;
+        }
+
         operator Type() const {
             TypeModifier m = constructors.Empty ? modifiers | TypeModifier::ABSTRACT : modifiers;
             return Type(_namespace, name, size, m, supertype, constructors, properties, methods, templateParams);

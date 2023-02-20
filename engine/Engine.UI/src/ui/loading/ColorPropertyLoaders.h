@@ -3,17 +3,6 @@
 #include "PropertyLoader.h"
 #include "ui/style/ColorAttr.h"
 
-namespace Ghurund::Core {
-
-    template<>
-    const Type& getType<std::unique_ptr<Ghurund::UI::ColorAttr>>() {
-        const Type& templateType = getType<Ghurund::UI::ColorAttr>();
-        static Type TYPE = TypeBuilder<std::unique_ptr<Ghurund::UI::ColorAttr>>("std", "unique_ptr")
-            .withTemplateParams<Ghurund::UI::ColorAttr>();
-        return TYPE;
-    }
-}
-
 namespace Ghurund::UI {
 
     class ColorPropertyLoader:public PropertyLoader {

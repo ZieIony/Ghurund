@@ -30,3 +30,12 @@ namespace Ghurund::UI {
         return owner.Theme->Colors[key];
     }
 }
+
+namespace Ghurund::Core {
+
+    template<>
+    const Type& getType<Ghurund::UI::ColorAttr>() {
+        static Type TYPE = TypeBuilder<Ghurund::UI::ColorAttr>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Ghurund::UI::ColorAttr));
+        return TYPE;
+    }
+}

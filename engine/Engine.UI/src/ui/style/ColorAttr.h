@@ -64,3 +64,9 @@ namespace Ghurund::UI {
         }
     };
 }
+
+namespace Ghurund::Core {
+
+    template<>
+    const Type& getType<Ghurund::UI::ColorAttr>();
+}

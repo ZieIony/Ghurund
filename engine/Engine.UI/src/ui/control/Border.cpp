@@ -7,8 +7,13 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Border::GET_TYPE() {
+        static auto PROPERTY_SHAPE_GET = Property<Border, const Ghurund::UI::Shape*>("Shape", &getShape);
+        static auto PROPERTY_SHAPE_SET = Property<Border, std::unique_ptr<Ghurund::UI::Shape>&>("Shape", &setShape);
+
         static const auto CONSTRUCTOR = Constructor<Border>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
+            .withProperty(PROPERTY_SHAPE_GET)
+            .withProperty(PROPERTY_SHAPE_SET)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
