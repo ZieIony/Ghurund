@@ -7,7 +7,7 @@ namespace Ghurund::UI {
 
     class WrapWidthConstraint:public MinMaxConstraint {
     private:
-        Control* control;
+        Control* control = nullptr;
 
     public:
         WrapWidthConstraint():MinMaxConstraint(0.0f, false, true) {}
@@ -19,7 +19,7 @@ namespace Ghurund::UI {
 
     class WrapHeightConstraint:public MinMaxConstraint {
     private:
-        Control* control;
+        Control* control = nullptr;
 
     public:
         WrapHeightConstraint():MinMaxConstraint(0.0f, false, true) {}

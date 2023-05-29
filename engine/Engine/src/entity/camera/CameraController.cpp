@@ -4,7 +4,7 @@
 #include "core/window/SystemWindow.h"
 
 #include <DirectXMath.h>
-#include <entt.hpp>
+//#include <entt.hpp>
 
 #include "Camera.h"
 #include "CameraComponent.h"
@@ -48,7 +48,7 @@ namespace Ghurund {
 	}
 
 	bool CameraController::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
-		if (pressed) {
+		/*if (pressed) {
 			Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
 			TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
 			Mode mode = modeMap.get(pressedButton);
@@ -64,19 +64,19 @@ namespace Ghurund {
 				XMFLOAT3 rotation = camera.getRotation();
 				camera.setRotation(transformComponent, rotation.x + event.Delta.x * rotateSensivity, max(-89.0f / 180.0f * XM_PI, min(rotation.y - event.Delta.y * rotateSensivity, 89.0f / 180.0f * XM_PI)));
 			}
-		}
+		}*/
 
 		return pressed;
 	}
 
 	bool CameraController::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
-		Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
+		/*Camera& camera = *cameraEntity.Components.get<CameraComponent>().camera;
 		TransformComponent& transformComponent = cameraEntity.Components.get<TransformComponent>();
 		if (camera.getDistance() > event.Delta) {
 			camera.zoom(transformComponent, (float)event.Delta);
 		} else {
 			camera.zoom(transformComponent, camera.getDistance() - DIST_EPSILON);
-		}
+		}*/
 		return true;
 	}
 

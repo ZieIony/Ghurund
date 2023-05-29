@@ -2,7 +2,7 @@
 #include "core/application/Application.h"
 #include "graphics/Renderer.h"
 
-import Ghurund.Engine.UI.UIFeature;
+#include "ui/UIFeature.h"
 
 namespace Ghurund::Editor {
     class EditorApplication:public Ghurund::Core::Application {

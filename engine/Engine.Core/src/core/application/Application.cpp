@@ -4,6 +4,7 @@
 #include "core/threading/FunctionQueue.h"
 #include "core/window/SystemWindow.h"
 #include "core/resource/ResourceManager.h"
+#include "core/image/ImageLoader.h"
 
 #include <time.h>
 
@@ -15,6 +16,10 @@ namespace Ghurund::Core {
         resourceManager.Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources"));
 
         //parameterManager->initDefaultTextures(*resourceContext);
+
+        auto imageLoader = ghnew ImageLoader();
+        imageLoader->init();
+        resourceManager.Loaders.set<Image>(std::unique_ptr<ImageLoader>(imageLoader));
 
         features.init();
     }

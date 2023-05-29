@@ -103,7 +103,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void Font::init(const tchar* supportedCharacters) {
+    void Font::initAtlas(const String& supportedCharacters) {
         HDC hdcScreen = GetDC(NULL);
 
         float size = 12.0f;
@@ -112,12 +112,12 @@ namespace Ghurund::UI {
 
         initKerning(hf);
 
-        initMsdf(hf, supportedCharacters ? supportedCharacters : DEFAULT_CHARACTER_SET);
+        initMsdf(hf, supportedCharacters);
 
         ReleaseDC(NULL, hdcScreen);
     }
 
-    void Font::init(const void* data, size_t size) {
+    void Font::init(const void* data, size_t size, const String& supportedCharacters) {
         TtfFile file = {};
         file.init(data, size);
         familyName = file.readFontName();
@@ -126,6 +126,7 @@ namespace Ghurund::UI {
         DWORD numFonts = {};
         uninit();
         handle = AddFontMemResourceEx((void*)data, size, 0, &numFonts);
+        init(supportedCharacters);
     }
 
     void Font::uninit() {
@@ -165,13 +166,13 @@ namespace Ghurund::UI {
         ReleaseDC(NULL, hdcScreen);
     }
 
-    void Font::initMsdf(HFONT hf, const tchar* characters) {
+    void Font::initMsdf(HFONT hf, const String& characters) {
         HDC hdcScreen = GetDC(NULL);
         HDC hdcBmp = CreateCompatibleDC(hdcScreen);
         SelectObject(hdcBmp, hf);
 
         IntSize glyphSize = { 128, 128 };
-        uint32_t charactersPerRow = std::bit_ceil((uint32_t)std::ceilf(std::log2f(lengthOf(characters))));
+        uint32_t charactersPerRow = std::bit_ceil((uint32_t)std::ceilf(std::log2f(characters.Length)));
         uint32_t atlasWidth = charactersPerRow * glyphSize.Width;
         IntSize atlasSize = { atlasWidth, atlasWidth };
         uint32_t pixelSize = ImageLoader::getDXGIFormatBitsPerPixel(DXGI_FORMAT_R8G8B8A8_UNORM) / 8;
@@ -185,7 +186,7 @@ namespace Ghurund::UI {
         glyphs.clear();
         MAT2 mat = { {0, 1}, {0, 0}, {0, 0}, {0, 1} };
         uint32_t maxDist = 8, padding = 2;
-        for (size_t i = 0; i < lengthOf(characters); i++) {
+        for (size_t i = 0; i < characters.Length; i++) {
             tchar c = characters[i];
             uint32_t column = i % charactersPerRow;
             uint32_t row = i / charactersPerRow;
@@ -239,49 +240,10 @@ namespace Ghurund::UI {
         }
 
         atlas->init(atlasData, atlasSize.Width, atlasSize.Height, DXGI_FORMAT_R8G8B8A8_UNORM);
-        /*ResourceManager manager;
-        auto imageLoader = ghnew ImageLoader();
-        imageLoader->init();
-        manager.Loaders.set<Ghurund::Core::Image>(std::unique_ptr<ImageLoader>(imageLoader));
-        manager.save(*atlas, FilePath(_T("output.png")));*/
 
         DeleteDC(hdcBmp);
         ReleaseDC(NULL, hdcScreen);
     }
-
-    /*IntSize Font::initAtlas(HDC context, const tchar* characters, unsigned int width) {
-        RECT rect;
-        uint32_t padding = 2;
-        uint32_t maxWidth = std::bit_ceil((uint32_t)std::ceilf(std::log2f(lengthOf(characters))));
-
-        uint32_t x = padding / 2, y = padding / 2;
-        for (size_t i = 0; i < lengthOf(characters); i++) {
-            tchar c = characters[i];
-            SIZE charSize;
-            GetTextExtentPoint32(context, &c, 1, &charSize);
-            if (x + charSize.cx + padding > maxWidth) {
-                y += tm.tmExternalLeading + tm.tmInternalLeading + padding;
-                x = padding / 2;
-            }
-
-            rect.left = x;
-            rect.top = y + tm.tmExternalLeading + tm.tmInternalLeading;
-            rect.right = x + charSize.cx;
-            rect.bottom = y + tm.tmAscent + tm.tmDescent;
-            Glyph glyph = {
-                {(float)rect.left, (float)rect.top, (float)(rect.right), (float)(rect.bottom)},
-                {
-                    (float)(rect.left - padding / 2),
-                    (float)(rect.top - tm.tmExternalLeading - tm.tmInternalLeading),
-                    (float)(rect.right + padding / 2),
-                    (float)(rect.bottom + tm.tmExternalLeading + tm.tmInternalLeading)
-                }
-            };
-            glyphs.set(c, glyph);
-            x += charSize.cx + padding;
-        }
-        return { maxWidth, std::bit_ceil(y) };
-    }*/
 
     HBITMAP Font::makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels) {
         ZeroMemory(&bmi, sizeof(BITMAPINFO));

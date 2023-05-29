@@ -57,12 +57,13 @@
       <PrecompiledHeaderFile>ghuidxpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,7 +76,7 @@
       <PrecompiledHeaderFile>ghuidxpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -117,6 +118,7 @@
     <ClInclude Include="src\ui\direct2d\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\direct2d\text\TextFormat.h" />
     <ClInclude Include="src\ui\direct2d\text\TextLayout.h" />
+    <ClInclude Include="src\ui\direct2d\text\TextMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ghuidxpch.cpp">

@@ -4,8 +4,8 @@
 
 #include "graphics/Materials.h"
 #include "core/SharedPointer.h"
-#include "graphics/mesh/CubeMesh.h"
-#include "graphics/mesh/SphereMesh.h"
+#include "core/directx/mesh/CubeMesh.h"
+#include "core/directx/mesh/SphereMesh.h"
 
 namespace Ghurund {
     DrawableComponent* DrawableComponents::makeCube(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {

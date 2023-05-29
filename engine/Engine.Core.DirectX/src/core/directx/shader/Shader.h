@@ -26,8 +26,8 @@ namespace Ghurund::Core::DirectX {
     {
     private:
         ShaderProgram* programs[6] = {};
-        ID3D12RootSignature* rootSignature;
-        ID3D12PipelineState* pipelineState;
+        ID3D12RootSignature* rootSignature = nullptr;
+        ID3D12PipelineState* pipelineState = nullptr;
         bool supportsTransparency = false;
 
         List<ConstantBuffer*> constantBuffers;
@@ -37,10 +37,10 @@ namespace Ghurund::Core::DirectX {
 
         //PointerArray<Parameter*>* parameters = nullptr;
 #ifdef _DEBUG
-        bool* reported;
+        bool* reported = nullptr;
 #endif
 
-        Graphics* graphics;
+        Graphics* graphics = nullptr;
 
         AString source;
         bool compiled = false;

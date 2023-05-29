@@ -1,5 +1,3 @@
-module;
-
 #include "Common.h"
 #include "core/application/Application.h"
 #include "core/window/SystemWindow.h"
@@ -13,11 +11,7 @@ module;
 #include "net/Client.h"
 #include "ui/direct2d/UIContext.h"
 
-export module Messenger.MessengerWindow;
-
-import Ghurund.Engine.Application.ApplicationWindow;
-import Ghurund.Engine.UI.UILayer;
-import Ghurund.Engine.UI.UIFeature;
+#include "application/ApplicationWindow.h"
 
 export namespace Messenger {
     using namespace Ghurund;

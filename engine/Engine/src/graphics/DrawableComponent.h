@@ -1,7 +1,7 @@
 #pragma once
 
 #include "parameter/ParameterProvider.h"
-#include "graphics/mesh/Mesh.h"
+#include "core/directx/mesh/Mesh.h"
 #include "graphics/Material.h"
 #include "graphics/RenderingStatistics.h"
 

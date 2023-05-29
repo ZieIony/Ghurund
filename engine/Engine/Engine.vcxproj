@@ -63,6 +63,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -137,13 +138,6 @@
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\graphics\Shaders.h" />
     <ClInclude Include="src\graphics\Textures.h" />
-    <ClInclude Include="src\graphics\mesh\ConeMesh.h" />
-    <ClInclude Include="src\graphics\mesh\CubeMesh.h" />
-    <ClInclude Include="src\graphics\mesh\Mesh.h" />
-    <ClInclude Include="src\graphics\mesh\PlaneMesh.h" />
-    <ClInclude Include="src\graphics\mesh\QuadMesh.h" />
-    <ClInclude Include="src\graphics\mesh\SphereMesh.h" />
-    <ClInclude Include="src\graphics\mesh\Vertex.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
@@ -202,10 +196,6 @@
     <ClCompile Include="src\graphics\Materials.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
-    <ClCompile Include="src\graphics\mesh\ConeMesh.cpp" />
-    <ClCompile Include="src\graphics\mesh\CubeMesh.cpp" />
-    <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
-    <ClCompile Include="src\graphics\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
     <ClCompile Include="src\net\MessageType.cpp" />

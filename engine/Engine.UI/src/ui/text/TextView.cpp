@@ -12,8 +12,8 @@ namespace Ghurund::UI {
         if (caretBegin > caretEnd)
             std::swap(caretBegin, caretEnd);
 
-        caretBegin = 0;//std::min(caretBegin, (uint32_t)Text.Length);
-        caretEnd = 0;// std::min(caretEnd, (uint32_t)Text.Length);
+        caretBegin = std::min(caretBegin, (uint32_t)Text.Length);
+        caretEnd = std::min(caretEnd, (uint32_t)Text.Length);
 
         return { caretBegin, caretEnd - caretBegin };
     }

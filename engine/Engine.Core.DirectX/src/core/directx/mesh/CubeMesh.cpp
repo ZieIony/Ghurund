@@ -1,5 +1,4 @@
-#include "ghpch.h"
-
+#include "ghcdxpch.h"
 #include "CubeMesh.h"
 
 namespace Ghurund {

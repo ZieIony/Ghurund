@@ -2,14 +2,14 @@
 
 #include "core/Pointer.h"
 
-#include <entt.hpp>
+//#include <entt.hpp>
 
 namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Entity:public Pointer {
     public:
-        class ComponentCollection {
+        /*class ComponentCollection {
         private:
             Entity& owner;
 
@@ -35,16 +35,16 @@ namespace Ghurund {
             void remove() {
                 owner.registry.remove<Type>(owner.id);
             }
-        };
+        };*/
 
     private:
-        entt::entity id;
+        /*entt::entity id;
         entt::registry& registry;
-        ComponentCollection components;
+        ComponentCollection components;*/
         WString name;
 
     public:
-        Entity(entt::registry& registry):id(registry.create()), registry(registry), components(*this) {}
+        /*Entity(entt::registry& registry) :id(registry.create()), registry(registry), components(*this) {}
 
         ~Entity() {
             registry.destroy(id);
@@ -54,7 +54,7 @@ namespace Ghurund {
             return components;
         }
 
-        __declspec(property(get = getComponents)) ComponentCollection& Components;
+        __declspec(property(get = getComponents)) ComponentCollection& Components;*/
 
         inline WString& getName() {
             return name;

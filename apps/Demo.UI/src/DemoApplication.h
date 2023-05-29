@@ -1,11 +1,7 @@
-﻿module;
-
-#include "core/application/Application.h"
+﻿#include "core/application/Application.h"
 #include "graphics/Renderer.h"
 
-export module Demo.DemoApplication;
-
-import Demo.DemoWindow;
+#include "DemoWindow.h"
 
 export namespace Demo {
     using namespace Ghurund;

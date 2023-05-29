@@ -12,7 +12,7 @@
 
 #include "EditorWindowBinding.h"
 
-import Ghurund.Engine.Application.ApplicationWindow;
+#include "application/ApplicationWindow.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund;

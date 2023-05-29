@@ -30,11 +30,11 @@ namespace Ghurund::UI {
         Map<tchar, Map<tchar, int>> kerning;
         Ghurund::Core::Image* atlas = nullptr;
 
+        void initAtlas(const String& supportedCharacters);
+
         void initKerning(HFONT hf);
 
-        void initMsdf(HFONT hf, const tchar* characters);
-
-        //IntSize initAtlas(HDC context, const tchar* characters, unsigned int width);
+        void initMsdf(HFONT hf, const String& characters);
 
         HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
 
@@ -59,16 +59,14 @@ namespace Ghurund::UI {
             uninit();
         }
 
-        void init(const tchar* supportedCharacters = nullptr);
-
-        void init(const String& family, uint32_t weight = 400, bool italic = false, const tchar* supportedCharacters = nullptr) {
+        void init(const String& family, uint32_t weight = 400, bool italic = false, const String& supportedCharacters = DEFAULT_CHARACTER_SET) {
             this->familyName = family;
             this->weight = weight;
             this->italic = italic;
-            init(supportedCharacters);
+            initAtlas(supportedCharacters);
         }
 
-        void init(const void* data, size_t size);
+        void init(const void* data, size_t size, const String& supportedCharacters = DEFAULT_CHARACTER_SET);
 
         void uninit();
 
@@ -76,25 +74,43 @@ namespace Ghurund::UI {
             return tm.tmAscent;
         }
 
+        __declspec(property(get = getAscent)) long Ascent;
+
         long getDescent() const {
             return tm.tmDescent;
         }
+
+        __declspec(property(get = getDescent)) long Descent;
 
         long getInternalLeading() const {
             return tm.tmInternalLeading;
         }
 
+        __declspec(property(get = getInternalLeading)) long InternalLeading;
+
         long getExternalLeading() const {
             return tm.tmExternalLeading;
         }
+
+        __declspec(property(get = getExternalLeading)) long ExternalLeading;
 
         long getHeight() const {
             return tm.tmHeight;
         }
 
+        __declspec(property(get = getHeight)) long Height;
+
         uint32_t getWeight() const {
             return weight;
         }
+
+        __declspec(property(get = getWeight)) uint32_t Weight;
+
+        Image* getAtlas() const {
+            return atlas;
+        }
+
+        __declspec(property(get = getAtlas)) const Image* Atlas;
 
         FloatSize measureText(const String& text) const;
 

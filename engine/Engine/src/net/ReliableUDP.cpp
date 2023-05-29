@@ -208,7 +208,7 @@ namespace Ghurund::Net {
         while (socket.Valid) {
             sockaddr_in socketAddr;
             size_t size;
-            Status result = socket.receive(buffer.Data, buffer.Capacity, size, (sockaddr&)socketAddr);
+            Status result = socket.receive(buffer.Data, buffer.Size, size, (sockaddr&)socketAddr);
             if (result != Status::OK)
                 return result;
             if (size == 0) {

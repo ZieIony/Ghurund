@@ -1,6 +1,6 @@
 #include "Ghurund.Engine.h"
 
-import Demo.DemoApplication;
+#include "DemoApplication.h"
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR cmdLine, int nCmdShow) {
     Ghurund::Core::main<Demo::DemoApplication>();

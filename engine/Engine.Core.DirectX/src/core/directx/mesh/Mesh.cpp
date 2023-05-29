@@ -1,5 +1,4 @@
-#include "ghpch.h"
-
+#include "ghcdxpch.h"
 #include "Mesh.h"
 
 #include "core/reflection/TypeBuilder.h"

@@ -11,8 +11,8 @@ namespace Preview {
 
     class PreviewApplication:public Ghurund::Application {
     protected:
-        Renderer renderer;
-        ParameterManager parameterManager;
+        Ghurund::Renderer renderer;
+        Ghurund::ParameterManager parameterManager;
 
     public:
         PreviewApplication() {

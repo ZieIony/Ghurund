@@ -11,11 +11,13 @@ namespace Samples {
     public:
         virtual void onInit() override {
             Font* f = ghnew Font();
-            FilePath filePath(_T("E:/Ghurund/resources/fonts/lato_regular.ttf"));
+            FilePath filePath(_T("resources/fonts/lato_regular.ttf"));
             File file(filePath);
             file.read();
             f->init(file.Data, file.Size);
-            f->init(_T("ABCDEFGHIJK"));
+
+            ResourceManager.save(*f->Atlas, FilePath(_T("output.png")));
+
             f->release();
         }
     };

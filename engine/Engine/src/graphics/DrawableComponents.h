@@ -1,9 +1,9 @@
 #pragma once
 
 #include "DrawableComponent.h"
-#include "graphics/mesh/PlaneMesh.h"
-#include "graphics/mesh/QuadMesh.h"
-#include "graphics/mesh/ConeMesh.h"
+#include "core/directx/mesh/PlaneMesh.h"
+#include "core/directx/mesh/QuadMesh.h"
+#include "core/directx/mesh/ConeMesh.h"
 
 namespace Ghurund {
     class DrawableComponents {

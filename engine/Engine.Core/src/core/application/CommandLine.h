@@ -25,7 +25,7 @@ namespace Ghurund::Core {
             return parameters;
         }
 
-        __declspec(property(get = getValues)) Map<AString, AString>& Parameters;
+        __declspec(property(get = getParameters)) Map<AString, AString>& Parameters;
 
         inline AString get(const AString& name) const {
             return parameters[name];

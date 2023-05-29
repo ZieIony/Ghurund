@@ -11,7 +11,7 @@ namespace Ghurund::Core {
     class Input {
     private:
         POINT prevMousePos = {};
-        IntPoint mousePos = {};
+        IntPoint mousePos = { 0,0 };
         bool keys[256];
         List<WindowMessage> events;
 

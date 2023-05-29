@@ -37,7 +37,7 @@ namespace Ghurund::Core {
 
         // TODO: check this buffer reset
         Buffer buffer2(watch->buffer);
-        watch->buffer.reset(numberOfBytesTransfered);
+        //watch->buffer.reset(numberOfBytesTransfered);
         watch->readChanges();
         watch->fileChanged(buffer2);
     }
@@ -52,7 +52,7 @@ namespace Ghurund::Core {
         buffer.zero();
 
         auto filter = FILE_NOTIFY_CHANGE_CREATION | FILE_NOTIFY_CHANGE_LAST_WRITE | FILE_NOTIFY_CHANGE_FILE_NAME;
-        bool success = 0 != ReadDirectoryChangesW(dirHandle, buffer.Data, (DWORD)buffer.Capacity, false, filter,
+        bool success = 0 != ReadDirectoryChangesW(dirHandle, buffer.Data, (DWORD)buffer.Size, false, filter,
             &bytesReturned, &overlapped, &notificationCompletion);
 
         if (!success)

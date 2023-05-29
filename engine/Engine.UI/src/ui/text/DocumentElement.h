@@ -14,6 +14,8 @@ namespace Ghurund::UI {
     struct DocumentElement {
         FloatSize size;
 
+        virtual size_t getLength() const = 0;
+
         virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) = 0;
 
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const = 0;
@@ -21,6 +23,13 @@ namespace Ghurund::UI {
 
     struct DocumentElementGroup:public DocumentElement {
         List<DocumentElement*> elements;
+
+        virtual size_t getLength() const override {
+            size_t length = 0;
+            for (auto element : elements)
+                length += element->getLength();
+            return length;
+        }
 
         virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
 
@@ -37,6 +46,10 @@ namespace Ghurund::UI {
     public:
         TextElement(const WString& text):text(text) {}
 
+        virtual size_t getLength() const override {
+            return text.Length;
+        }
+
         virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml) override {
             text = convertText<char, wchar_t>(AString(xml.Value()));
         }
@@ -48,6 +61,10 @@ namespace Ghurund::UI {
 
     struct DrawableElement:public DocumentElement {
         Drawable* drawable;
+
+        virtual size_t getLength() const override {
+            return 1;
+        }
 
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
             drawable->draw(canvas);

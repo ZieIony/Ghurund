@@ -37,7 +37,7 @@ namespace Ghurund::Core::DirectX {
             samplerDescs[i] = samplers.get(i)->samplerDesc;
         }
 
-        CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+        CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc = {};
         rootSignatureDesc.Init_1_1((UINT)paramCount,
             rootParameters,
             (UINT)samplers.Size,

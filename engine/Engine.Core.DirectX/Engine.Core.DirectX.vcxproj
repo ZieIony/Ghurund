@@ -63,6 +63,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -112,6 +113,13 @@
     <ClInclude Include="src\core\directx\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\core\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\core\directx\memory\HeapAllocator.h" />
+    <ClInclude Include="src\core\directx\mesh\ConeMesh.h" />
+    <ClInclude Include="src\core\directx\mesh\CubeMesh.h" />
+    <ClInclude Include="src\core\directx\mesh\Mesh.h" />
+    <ClInclude Include="src\core\directx\mesh\PlaneMesh.h" />
+    <ClInclude Include="src\core\directx\mesh\QuadMesh.h" />
+    <ClInclude Include="src\core\directx\mesh\SphereMesh.h" />
+    <ClInclude Include="src\core\directx\mesh\Vertex.h" />
     <ClInclude Include="src\core\directx\shader\CompilationTarget.h" />
     <ClInclude Include="src\core\directx\shader\CompilerInclude.h" />
     <ClInclude Include="src\core\directx\shader\ConstantBuffer.h" />
@@ -144,6 +152,10 @@
     <ClCompile Include="src\core\directx\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\core\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\core\directx\memory\HeapAllocator.cpp" />
+    <ClCompile Include="src\core\directx\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\core\directx\mesh\CubeMesh.cpp" />
+    <ClCompile Include="src\core\directx\mesh\Mesh.cpp" />
+    <ClCompile Include="src\core\directx\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\core\directx\shader\CompilationTarget.cpp" />
     <ClCompile Include="src\core\directx\shader\CompilerInclude.cpp" />
     <ClCompile Include="src\core\directx\shader\ConstantBuffer.cpp" />

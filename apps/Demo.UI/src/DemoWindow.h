@@ -1,11 +1,7 @@
-module;
-
 #include "core/application/Application.h"
 #include "core/window/WindowClass.h"
 
-export module Demo.DemoWindow;
-
-import Ghurund.Engine.Application.ApplicationWindow;
+#include "application/ApplicationWindow.h"
 
 export namespace Demo {
     using namespace Ghurund;

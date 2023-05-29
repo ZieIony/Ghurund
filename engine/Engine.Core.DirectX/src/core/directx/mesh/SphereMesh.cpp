@@ -1,5 +1,4 @@
-#include "ghpch.h"
-
+#include "ghcdxpch.h"
 #include "SphereMesh.h"
 
 namespace Ghurund {

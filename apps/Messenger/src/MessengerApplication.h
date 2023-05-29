@@ -1,17 +1,12 @@
-﻿module;
-
-#include "net/Networking.h"
+﻿#include "net/Networking.h"
 #include "graphics/Renderer.h"
 #include "ui/style/LightTheme.h"
 #include "core/application/Application.h"
-#include "core/Int.h"
+#include "ui/UIFeature.h"
 
 #include <format>
 
-export module Messenger.MessengerApplication;
-
-import Messenger.MessengerWindow;
-import Ghurund.Engine.UI.UIFeature;
+#include "MessengerWindow.h"
 
 export namespace Messenger {
     using namespace Ghurund;
