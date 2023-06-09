@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "ParameterId.h"
 
 namespace Ghurund {

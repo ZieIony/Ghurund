@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "RenderingStatistics.h"
 
 #include "Ghurund.Engine.h"

@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "ParameterProvider.h"
 
 #include "TextureParameter.h"

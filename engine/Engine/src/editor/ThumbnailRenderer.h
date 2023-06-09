@@ -3,7 +3,7 @@
 #include "graphics/Renderer.h"
 #include "core/image/Image.h"
 
-import Ghurund.Engine.Entity.Camera.Camera;
+#include "entity/camera/Camera.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -15,8 +15,6 @@ namespace Ghurund {
         Frame* frame = nullptr;
         RenderTarget* renderTarget = nullptr;
         DepthBuffer* depthBuffer = nullptr;
-
-        ResourceContext* resourceContext = nullptr;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();

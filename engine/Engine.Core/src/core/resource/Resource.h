@@ -18,7 +18,6 @@ namespace Ghurund::Core {
     };
 
     class ResourceManager;
-    class ResourceContext;
     class MemoryInputStream;
     class MemoryOutputStream;
     class File;

@@ -1,4 +1,6 @@
-module;
+#include "ghpch.h"
+
+#include "ApplicationWindow.h"
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
@@ -9,10 +11,8 @@ module;
 
 #include <windowsx.h>
 
-module Ghurund.Engine.Application.ApplicationWindow;
-
-import Ghurund.Engine.Application.LayerList;
-import Ghurund.Engine.UI.UIFeature;
+#include "application/LayerList.h"
+#include "ui/UIFeature.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;

@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "Message.h"
 
 #include "core/logging/Logger.h"

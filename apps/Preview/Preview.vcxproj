@@ -64,7 +64,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,7 +86,6 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -97,11 +96,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="generated\bindings\LayoutBinding.h" />
+    <ClInclude Include="src\PreviewApplication.h" />
+    <ClInclude Include="src\PreviewLayout.h" />
+    <ClInclude Include="src\PreviewWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\PreviewApplication.ixx" />
-    <ClCompile Include="src\PreviewLayout.ixx" />
-    <ClCompile Include="src\PreviewWindow.ixx" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

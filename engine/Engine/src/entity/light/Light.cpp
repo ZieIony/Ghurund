@@ -1,9 +1,9 @@
-module;
+#include "ghpch.h"
+
+#include "Light.h"
 
 #include "Ghurund.Engine.h"
 #include "core/reflection/TypeBuilder.h"
-
-module Ghurund.Engine.Entity.Light.Light;
 
 namespace Ghurund {
     using namespace Ghurund::Core;

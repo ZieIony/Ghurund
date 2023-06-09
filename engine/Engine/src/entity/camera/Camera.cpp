@@ -1,4 +1,6 @@
-module;
+#include "ghpch.h"
+
+#include "Camera.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
@@ -7,8 +9,6 @@ module;
 #include "core/reflection/TypeBuilder.h"
 
 #include <DirectXMath.h>
-
-module Ghurund.Engine.Entity.Camera.Camera;
 
 namespace Ghurund {
     using namespace ::DirectX;

@@ -2,7 +2,7 @@
 
 #include "graphics/DrawableComponent.h"
 
-import Ghurund.Engine.Entity.Camera.Camera;
+#include "entity/camera/Camera.h"
 
 namespace Ghurund {
     class CameraUtils {

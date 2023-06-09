@@ -1,7 +1,8 @@
 project "Engine"
 	kind "StaticLib"
+	pchheader "ghpch.h"
+	pchsource "src/ghpch.cpp"
 	staticruntime "on"
-	scanformoduledependencies "on"
 
 	dependson {
 		"Engine.Core",

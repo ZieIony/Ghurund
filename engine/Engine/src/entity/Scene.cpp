@@ -1,9 +1,9 @@
-module;
+#include "ghpch.h"
+
+#include "Scene.h"
 
 #include "core/resource/Resource.h"
 #include "core/reflection/TypeBuilder.h"
-
-module Ghurund.Engine.Entity.Scene;
 
 namespace Ghurund {
 	using namespace Ghurund::Core;

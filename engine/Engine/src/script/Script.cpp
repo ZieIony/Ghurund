@@ -1,4 +1,5 @@
-module;
+#include "ghpch.h"
+#include "Script.h"
 
 #include "core/io/File.h"
 #include "core/io/MemoryStream.h"
@@ -7,9 +8,7 @@ module;
 
 #include <angelscript.h>
 
-module Ghurund.Engine.Script.Script;
-
-import Ghurund.Engine.Script.ScriptEngine;
+#include "ScriptEngine.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;

@@ -1,4 +1,6 @@
-module;
+#include "ghpch.h"
+
+#include "Audio.h"
 
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
@@ -9,8 +11,6 @@ module;
 #include <xaudio2.h>
 #include <mfapi.h>
 #include <x3daudio.h>
-
-module Ghurund.Engine.Audio.Audio;
 
 namespace Ghurund::Audio {
     using namespace ::DirectX;

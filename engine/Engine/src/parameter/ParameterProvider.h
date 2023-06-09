@@ -7,7 +7,6 @@
 #include "Status.h"
 
 namespace Ghurund::Core {
-    class ResourceContext;
     class ResourceManager;
     class DirectoryPath;
     class MemoryInputStream;

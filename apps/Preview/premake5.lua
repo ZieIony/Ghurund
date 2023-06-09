@@ -1,7 +1,6 @@
 project "Preview"
 	kind "WindowedApp"
 	staticruntime "on"
-	scanformoduledependencies "on"
 
 	dependson {
 		"Engine.Core",

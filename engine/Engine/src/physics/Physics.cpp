@@ -1,12 +1,11 @@
-module;
+#include "ghpch.h"
+#include "Physics.h"
 
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/logging/Logger.h"
 
 #include <PxPhysicsAPI.h>
-
-module Ghurund.Engine.Physics.Physics;
 
 namespace Ghurund::Physics {
     using namespace Ghurund::Core;

@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "ParameterManager.h"
 
 #include "parameter/ValueParameter.h"

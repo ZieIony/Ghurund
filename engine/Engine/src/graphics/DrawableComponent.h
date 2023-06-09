@@ -7,8 +7,8 @@
 
 #include <DirectXCollision.h>
 
-import Ghurund.Engine.Entity.Entity;
-import Ghurund.Engine.Entity.TransformComponent;
+#include "entity/Entity.h"
+#include "entity/TransformComponent.h"
 
 namespace Ghurund {
 	class DrawableComponent//:public ParameterProvider

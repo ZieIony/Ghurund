@@ -1,3 +1,4 @@
+#include "ghpch.h"
 #include "ParameterType.h"
 
 #include "core/Pointer.h"

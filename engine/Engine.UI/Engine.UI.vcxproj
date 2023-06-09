@@ -63,6 +63,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,14 +105,6 @@
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\Cursor.h" />
-    <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
-    <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
-    <ClInclude Include="src\ui\loading\PropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
-    <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\StylePropertyLoader.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
     <ClInclude Include="src\ui\RootView.h" />
@@ -176,9 +169,18 @@
     <ClInclude Include="src\ui\layout\LinearLayout.h" />
     <ClInclude Include="src\ui\layout\LinearLayoutManager.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
+    <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
+    <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\ImageDrawableFactory.h" />
+    <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
+    <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
+    <ClInclude Include="src\ui\loading\PropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\PropertyLoaderCollection.h" />
     <ClInclude Include="src\ui\loading\ShapeFactory.h" />
+    <ClInclude Include="src\ui\loading\ShapePropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\StringPropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\StylePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\style\BaseTheme.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
@@ -244,7 +246,6 @@
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
-    <ClCompile Include="src\ui\loading\DrawablePropertyLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
@@ -287,6 +288,7 @@
     <ClCompile Include="src\ui\layout\LinearLayout.cpp" />
     <ClCompile Include="src\ui\layout\LinearLayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
+    <ClCompile Include="src\ui\loading\DrawablePropertyLoader.cpp" />
     <ClCompile Include="src\ui\loading\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
     <ClCompile Include="src\ui\style\Style.cpp" />
@@ -305,6 +307,7 @@
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
     <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
+    <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
@@ -313,11 +316,7 @@
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
-    <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="src\ui\loading\ShapePropertyLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

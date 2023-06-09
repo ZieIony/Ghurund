@@ -64,7 +64,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -86,7 +85,6 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,6 +93,10 @@
       <AdditionalDependencies>..\..\libs\tinyxml2\vs\x64\Release\tinyxml264.lib;..\..\libs\angelscript_2.36.0\sdk\angelscript\lib\angelscript64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysX_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXCommon_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXFoundation_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXExtensions_static_64.lib;..\..\libs\PhysX\physx\bin\win.x86_64.vc141.mt\release\PhysXPvdSDK_static_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\DemoApplication.h" />
+    <ClInclude Include="src\DemoWindow.h" />
+  </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

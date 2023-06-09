@@ -1,4 +1,5 @@
-module;
+#include "ghpch.h"
+#include "UIFeature.h"
 
 #include "ui/direct2d/Graphics2D.h"
 #include "core/reflection/TypeBuilder.h"
@@ -10,8 +11,6 @@ module;
 #include "core/image/ImageLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
 #include "ui/direct2d/loading/LayoutLoader.h"
-
-module Ghurund.Engine.UI.UIFeature;
 
 namespace Ghurund {
     using namespace Ghurund::Core;

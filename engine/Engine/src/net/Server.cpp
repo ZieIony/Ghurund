@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "Server.h"
 
 #include "ServerMessage.h"

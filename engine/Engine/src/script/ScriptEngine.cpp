@@ -1,4 +1,5 @@
-module;
+#include "ghpch.h"
+#include "ScriptEngine.h"
 
 #include "core/Exceptions.h"
 #include "core/application/Application.h"
@@ -7,17 +8,15 @@ module;
 #include <angelscript.h>
 #include <script/angelscript/scriptmath.h>
 
-module Ghurund.Engine.Script.ScriptEngine;
-
-import Ghurund.Engine.Script.Bindings.CameraScriptBindings;
-import Ghurund.Engine.Script.Bindings.CollectionScriptBindings;
-import Ghurund.Engine.Script.Bindings.EntityScriptBindings;
-import Ghurund.Engine.Script.Bindings.LightScriptBindings;
-import Ghurund.Engine.Script.Bindings.MathScriptBindings;
-import Ghurund.Engine.Script.Bindings.ModelScriptBindings;
-import Ghurund.Engine.Script.Bindings.SceneScriptBindings;
-import Ghurund.Engine.Script.Bindings.ScriptBindings;
-import Ghurund.Engine.Script.Bindings.TimerScriptBindings;
+#include "bindings\CameraScriptBindings.h"
+#include "bindings\CollectionScriptBindings.h"
+#include "bindings\EntityScriptBindings.h"
+#include "bindings\LightScriptBindings.h"
+#include "bindings\MathScriptBindings.h"
+#include "bindings\ModelScriptBindings.h"
+#include "bindings\SceneScriptBindings.h"
+#include "bindings\ScriptBindings.h"
+#include "bindings\TimerScriptBindings.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;

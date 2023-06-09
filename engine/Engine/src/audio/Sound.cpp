@@ -1,4 +1,6 @@
-module;
+#include "ghpch.h"
+
+#include "Sound.h"
 
 #include "Ghurund.Engine.h"
 #include "Common.h"
@@ -13,8 +15,6 @@ module;
 #include <mfreadwrite.h>
 
 #include "core/logging/Logger.h"
-
-module Ghurund.Engine.Audio.Sound;
 
 namespace Ghurund::Audio {
     using namespace Ghurund::Core;

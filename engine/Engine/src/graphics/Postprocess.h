@@ -26,7 +26,7 @@ namespace Ghurund::Core::DirectX {
                 material->release();
         }
 
-        void init(ResourceContext& resourceContext, Material& material) {
+        void init(Material& material) {
             setPointer(this->material, &material);
             //fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
         }

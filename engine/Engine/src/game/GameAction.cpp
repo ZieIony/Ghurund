@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "GameAction.h"
 
 namespace Ghurund {

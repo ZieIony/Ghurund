@@ -25,7 +25,7 @@ namespace Ghurund::Core {
 
             Entry(const Entry& other):address(other.address), name(other.name), fileName(other.fileName), fileLine(other.fileLine) {}
 
-            Entry(Entry&& other):address(std::move(other.address)), name(std::move(other.name)), fileName(std::move(other.fileName)), fileLine(std::move(other.fileLine)) {}
+            Entry(Entry&& other) noexcept :address(std::move(other.address)), name(std::move(other.name)), fileName(std::move(other.fileName)), fileLine(std::move(other.fileLine)) {}
         };
 
         StackTrace(HANDLE process):process(process) {

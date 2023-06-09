@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "MessageType.h"
 
 namespace Ghurund::Net {

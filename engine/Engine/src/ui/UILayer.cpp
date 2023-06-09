@@ -1,4 +1,5 @@
-module;
+#include "ghpch.h"
+#include "UILayer.h"
 
 #include "core/resource/ResourceManager.h"
 #include "core/directx/SwapChain.h"
@@ -8,8 +9,6 @@ module;
 #include "ui/direct2d/UIContext.h"
 #include "ui/direct2d/Graphics2d.h"
 #include "ui/RootView.h"
-
-module Ghurund.Engine.UI.UILayer;
 
 namespace Ghurund {
     using namespace Ghurund::Core;

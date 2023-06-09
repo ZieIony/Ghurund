@@ -4,7 +4,7 @@
 #include "core/directx/Graphics.h"
 #include "parameter/ValueParameter.h"
 
-import Ghurund.Engine.Entity.Camera.Camera;
+#include "entity/camera/Camera.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core::DirectX;

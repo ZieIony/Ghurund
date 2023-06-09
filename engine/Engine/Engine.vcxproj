@@ -53,7 +53,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -62,7 +63,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -74,7 +75,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -86,7 +88,6 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,15 +100,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
+    <ClInclude Include="src\application\ApplicationWindow.h" />
+    <ClInclude Include="src\application\Layer.h" />
+    <ClInclude Include="src\application\LayerList.h" />
+    <ClInclude Include="src\audio\Audio.h" />
+    <ClInclude Include="src\audio\Sound.h" />
+    <ClInclude Include="src\audio\Sound3d.h" />
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
     <ClInclude Include="src\editor\ThumbnailRenderer.h" />
+    <ClInclude Include="src\entity\Entity.h" />
+    <ClInclude Include="src\entity\Scene.h" />
+    <ClInclude Include="src\entity\Scenes.h" />
+    <ClInclude Include="src\entity\TransformComponent.h" />
+    <ClInclude Include="src\entity\camera\Camera.h" />
+    <ClInclude Include="src\entity\camera\CameraComponent.h" />
+    <ClInclude Include="src\entity\camera\CameraController.h" />
+    <ClInclude Include="src\entity\camera\CameraEntity.h" />
+    <ClInclude Include="src\entity\light\Light.h" />
+    <ClInclude Include="src\entity\light\LightComponent.h" />
+    <ClInclude Include="src\entity\light\LightEntity.h" />
     <ClInclude Include="src\game\GameAction.h" />
     <ClInclude Include="src\game\KeyMap.h" />
     <ClInclude Include="src\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
+    <ClInclude Include="src\ghpch.h" />
     <ClInclude Include="src\graphics\DrawableComponent.h" />
     <ClInclude Include="src\graphics\DrawableComponents.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
@@ -143,52 +162,42 @@
     <ClInclude Include="src\parameter\ParameterType.h" />
     <ClInclude Include="src\parameter\TextureParameter.h" />
     <ClInclude Include="src\parameter\ValueParameter.h" />
+    <ClInclude Include="src\physics\Physics.h" />
+    <ClInclude Include="src\physics\PhysicsComponent.h" />
+    <ClInclude Include="src\physics\PhysicsSystem.h" />
+    <ClInclude Include="src\physics\RigidBodyComponent.h" />
+    <ClInclude Include="src\script\Script.h" />
+    <ClInclude Include="src\script\ScriptComponent.h" />
+    <ClInclude Include="src\script\ScriptEngine.h" />
+    <ClInclude Include="src\script\Scripts.h" />
+    <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
+    <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\CollectionScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\EntityScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\LightScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\MathScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\ModelScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\SceneScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\ScriptBindings.h" />
+    <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
+    <ClInclude Include="src\ui\UIFeature.h" />
+    <ClInclude Include="src\ui\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\application\ApplicationWindow.ixx">
-      <ObjectFileName>$(IntDir)\ApplicationWindow1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\application\Layer.ixx" />
     <ClCompile Include="src\application\LayerList.cpp" />
-    <ClCompile Include="src\application\LayerList.ixx">
-      <ObjectFileName>$(IntDir)\LayerList1.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="src\audio\Audio.cpp" />
-    <ClCompile Include="src\audio\Audio.ixx">
-      <ObjectFileName>$(IntDir)\Audio1.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="src\audio\Sound.cpp" />
-    <ClCompile Include="src\audio\Sound.ixx">
-      <ObjectFileName>$(IntDir)\Sound1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\audio\Sound3d.ixx" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
-    <ClCompile Include="src\entity\Entity.ixx" />
     <ClCompile Include="src\entity\Scene.cpp" />
-    <ClCompile Include="src\entity\Scene.ixx">
-      <ObjectFileName>$(IntDir)\Scene1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\entity\Scenes.ixx" />
-    <ClCompile Include="src\entity\TransformComponent.ixx" />
     <ClCompile Include="src\entity\camera\Camera.cpp" />
-    <ClCompile Include="src\entity\camera\Camera.ixx">
-      <ObjectFileName>$(IntDir)\Camera1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\entity\camera\CameraComponent.ixx" />
     <ClCompile Include="src\entity\camera\CameraController.cpp" />
-    <ClCompile Include="src\entity\camera\CameraController.ixx">
-      <ObjectFileName>$(IntDir)\CameraController1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\entity\camera\CameraEntity.ixx" />
     <ClCompile Include="src\entity\light\Light.cpp" />
-    <ClCompile Include="src\entity\light\Light.ixx">
-      <ObjectFileName>$(IntDir)\Light1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\entity\light\LightComponent.ixx" />
-    <ClCompile Include="src\entity\light\LightEntity.ixx" />
     <ClCompile Include="src\game\GameAction.cpp" />
+    <ClCompile Include="src\ghpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
@@ -211,41 +220,11 @@
     <ClCompile Include="src\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\parameter\ParameterType.cpp" />
     <ClCompile Include="src\physics\Physics.cpp" />
-    <ClCompile Include="src\physics\Physics.ixx">
-      <ObjectFileName>$(IntDir)\Physics1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\physics\PhysicsComponent.ixx" />
-    <ClCompile Include="src\physics\PhysicsSystem.ixx" />
-    <ClCompile Include="src\physics\RigidBodyComponent.ixx" />
     <ClCompile Include="src\script\Script.cpp" />
-    <ClCompile Include="src\script\Script.ixx">
-      <ObjectFileName>$(IntDir)\Script1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\script\ScriptComponent.ixx" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\script\ScriptEngine.ixx">
-      <ObjectFileName>$(IntDir)\ScriptEngine1.obj</ObjectFileName>
-    </ClCompile>
-    <ClCompile Include="src\script\Scripts.ixx" />
-    <ClCompile Include="src\script\StringFactory.ixx" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\script\bindings\CameraScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\CollectionScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\EntityScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\LightScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\MathScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\ModelScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\SceneScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\ScriptBindings.ixx" />
-    <ClCompile Include="src\script\bindings\TimerScriptBindings.ixx" />
     <ClCompile Include="src\ui\UIFeature.cpp" />
-    <ClCompile Include="src\ui\UIFeature.ixx">
-      <ObjectFileName>$(IntDir)\UIFeature1.obj</ObjectFileName>
-    </ClCompile>
     <ClCompile Include="src\ui\UILayer.cpp" />
-    <ClCompile Include="src\ui\UILayer.ixx">
-      <ObjectFileName>$(IntDir)\UILayer1.obj</ObjectFileName>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "DrawableComponents.h"
 
 #include "graphics/Materials.h"

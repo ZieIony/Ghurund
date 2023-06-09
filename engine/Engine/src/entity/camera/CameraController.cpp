@@ -1,15 +1,14 @@
-module;
+#include "ghpch.h"
+#include "CameraController.h"
 
 #include "core/window/SystemWindow.h"
 
 #include <DirectXMath.h>
 #include <entt.hpp>
 
-module Ghurund.Engine.Entity.Camera.CameraController;
-
-import Ghurund.Engine.Entity.Camera.Camera;
-import Ghurund.Engine.Entity.Camera.CameraComponent;
-import Ghurund.Engine.Entity.TransformComponent;
+#include "Camera.h"
+#include "CameraComponent.h"
+#include "entity/TransformComponent.h"
 
 namespace Ghurund {
 	using namespace std;

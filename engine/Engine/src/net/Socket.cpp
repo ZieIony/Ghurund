@@ -1,3 +1,5 @@
+#include "ghpch.h"
+
 #include "Socket.h"
 #include "core/logging/Logger.h"
 
