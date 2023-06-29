@@ -17,7 +17,7 @@ namespace Ghurund {
     using namespace Ghurund::UI::Direct2D;
 
     UILayer::UILayer(Ghurund::UI::Direct2D::Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager):graphics(graphics), window(window) {
-        context = ghnew UIContext(*graphics.D2DFactory, *graphics.DWriteFactory, graphics.DeviceContext, window, resourceManager);
+        context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window, resourceManager);
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
         canvas->init(graphics.DeviceContext);
         this->rootView = ghnew Ghurund::UI::RootView(*context);

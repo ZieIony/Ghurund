@@ -7,6 +7,6 @@
 
 namespace Ghurund::UI {
     __interface ShapeFactory {
-        std::unique_ptr<Shape> makeShape(const AString& desc);
+        std::unique_ptr<UI::Shape> makeShape(const AString& desc);
     };
 }

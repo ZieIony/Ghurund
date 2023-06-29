@@ -6,7 +6,7 @@
 namespace Ghurund::UI::Direct2D {
     Status RenderTarget2D::init(Graphics2D& graphics2d, ID3D12Resource& texture) {
         D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
-        if (FAILED(graphics2d.Device11->CreateWrappedResource(&texture, &d3d11Flags, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_RENDER_TARGET, IID_PPV_ARGS(&wrappedRenderTarget))))
+        if (FAILED(graphics2d.Device11.CreateWrappedResource(&texture, &d3d11Flags, D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_RENDER_TARGET, IID_PPV_ARGS(&wrappedRenderTarget))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateWrappedResource failed\n"));
 
         ComPtr<IDXGISurface> surface;

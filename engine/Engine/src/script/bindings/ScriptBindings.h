@@ -39,8 +39,8 @@ namespace Ghurund {
         static void registerRefClassUninstantiable(asIScriptEngine& engine, const char* name) {
             engine.RegisterObjectType(name, sizeof(Type), asOBJ_REF);
 
-            engine.RegisterObjectBehaviour(name, asBEHAVE_ADDREF, "void f()", asMETHOD(Type, addReference), asCALL_THISCALL);
-            engine.RegisterObjectBehaviour(name, asBEHAVE_RELEASE, "void f()", asMETHOD(Type, release), asCALL_THISCALL);
+            //engine.RegisterObjectBehaviour(name, asBEHAVE_ADDREF, "void f()", asMETHOD(Type, addReference), asCALL_THISCALL);
+            //engine.RegisterObjectBehaviour(name, asBEHAVE_RELEASE, "void f()", asMETHOD(Type, release), asCALL_THISCALL);
         }
 
         static void registerRefClass(asIScriptEngine& engine, const char* name) {

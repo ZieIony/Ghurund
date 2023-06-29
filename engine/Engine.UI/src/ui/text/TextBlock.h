@@ -1,15 +1,16 @@
 #pragma once
 
-#include "TextFormat.h"
 #include "TextLayout.h"
 #include "ui/control/Control.h"
-#include "ui/style/Style.h"
 #include "ui/style/ColorAttr.h"
+#include "ui/style/Style.h"
+#include "ui/style/TextFormatAttr.h"
 
 namespace Ghurund::UI {
     class TextBlock:public Control {
     protected:
         ColorAttr* color = nullptr;
+        Ghurund::UI::TextFormatAttr* textFormat = nullptr;
         TextLayout* textLayout;
 
         virtual void onMeasure(float parentWidth, float parentHeight) override;
@@ -59,15 +60,22 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextColor, put = setTextColor)) const ColorAttr& TextColor;
 
-        inline Ghurund::UI::TextFormat* getTextFormat() {
-            return textLayout->Format;
+        inline Ghurund::UI::TextFormatAttr* getTextFormat() {
+            return textFormat;
         }
 
-        inline void setTextFormat(Ghurund::UI::TextFormat* textFormat) {
-            textLayout->Format = textFormat;
+        inline void setTextFormat(Ghurund::UI::TextFormatAttr* textFormat) {
+            if (this->textFormat)
+                delete this->textFormat;
+            if (textFormat) {
+                this->textFormat = (Ghurund::UI::TextFormatAttr*)textFormat->clone();
+            } else {
+                this->textFormat = nullptr;
+            }
+            textLayout->Format = textFormat->getValue(*this);
         }
 
-        __declspec(property(get = getTextFormat, put = setTextFormat)) Ghurund::UI::TextFormat* TextFormat;
+        __declspec(property(get = getTextFormat, put = setTextFormat)) Ghurund::UI::TextFormatAttr* TextFormat;
 
         void dispatchContextChanged();
 

@@ -47,7 +47,7 @@ namespace Ghurund::UI {
             return format;
         }
 
-        inline void setFormat(Ghurund::UI::TextFormat* textFormat) {
+        inline void setFormat(const Ghurund::UI::TextFormat* textFormat) {
             setPointer(this->format, (Ghurund::UI::TextFormat*)textFormat);
         }
 

@@ -14,7 +14,7 @@ namespace Ghurund::Core {
     List<Pointer*> Pointer::pointers;
     CriticalSection Pointer::criticalSection;
 
-    void Pointer::checkReferenceCount() {
+    void Pointer::checkReferenceCount() const {
         if (referenceCount == 0) {
             const auto& info = typeid(*this);
             auto text = std::format(

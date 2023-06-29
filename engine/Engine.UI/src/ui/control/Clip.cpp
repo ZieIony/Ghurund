@@ -8,7 +8,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Clip::GET_TYPE() {
-        static auto PROPERTY_SHAPE = Property<Clip, Ghurund::UI::Shape*>("Shape", (Ghurund::UI::Shape * (Clip::*)()) & getShape, (void(Clip::*)(Ghurund::UI::Shape*)) & setShape);
+        static auto PROPERTY_SHAPE = Property<Clip, Ghurund::UI::Shape*>("Shape", &getShape, &setShape);
 
         static const auto CONSTRUCTOR = Constructor<Clip>();
 

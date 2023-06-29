@@ -4,6 +4,6 @@
 
 namespace Ghurund::UI {
     __interface TextFormatFactory {
-        TextFormat* makeTextFormat();
+        UI::TextFormat* makeTextFormat();
     };
 }

@@ -15,6 +15,7 @@
 #include "ui/style/Theme.h"
 
 #include <ranges>
+#include "StylePropertyLoader.h"
 
 namespace Ghurund::UI {
 
@@ -37,6 +38,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(imageDrawableFactory)));
         propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
+        propertyLoaders.add(std::unique_ptr<StylePropertyLoader>(ghnew StylePropertyLoader()));
     }
 
     Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
@@ -52,7 +54,7 @@ namespace Ghurund::UI {
         auto namespaceAttr = child->FindAttribute("namespace");
         if (namespaceAttr)
             namespaceName = namespaceAttr->Value();
-        const Type& type = Type::byName(namespaceName, child->Value());
+        const Core::Type& type = Type::byName(namespaceName, child->Value());
         const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
         if (!constructor)
             throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
@@ -65,7 +67,7 @@ namespace Ghurund::UI {
         AString propertyName = property.Name;
         AString propertyUpper = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         AString propertyLower = propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
-        const Type& type = obj.Type;
+        const Core::Type& type = obj.Type;
         auto elementName = std::format("{}.{}", type.Name, propertyUpper);
 
         const tinyxml2::XMLElement* propertyElement = xml.FirstChildElement(elementName.c_str());
@@ -142,7 +144,7 @@ namespace Ghurund::UI {
             if (namespaceAttr)
                 namespaceName = namespaceAttr->Value();
             try {
-                const Type& type = Type::byName(namespaceName, xml.Value());
+                const Core::Type& type = Type::byName(namespaceName, xml.Value());
                 if (type.isOrExtends(Control::GET_TYPE())) {
                     const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
                     if (!constructor)
@@ -193,18 +195,14 @@ namespace Ghurund::UI {
         return constraintFactory.parseConstraint(str, orientation);
     }
 
-    TextFormat* LayoutLoader::loadTextFormat(const char* str) {
+    TextFormatRef* LayoutLoader::loadTextFormat(const char* str) {
         AString s = str;
         s.replace('\\', '/');
         if (s.startsWith(FILE_PROTOCOL)) {
             //auto textFormat = ghnew TextFormat()
-        } else if (s.startsWith(THEME_TEXTFORMAT) && theme) {
+        } else if (s.startsWith(THEME_TEXTFORMAT)) {
             TextFormatKey textFormatKey = s.substring(lengthOf(THEME_TEXTFORMAT));
-            if (theme->TextFormats.containsKey(textFormatKey)) {
-                TextFormat* style = theme->TextFormats[textFormatKey].get();
-                style->addReference();
-                return style;
-            }
+            return ghnew TextFormatRef(textFormatKey);
         }
         return nullptr;
     }

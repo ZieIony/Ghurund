@@ -58,7 +58,7 @@ namespace Ghurund::UI {
     class ExpandableCheckBoxStyle:public CheckBoxRadioStyle {
     public:
         virtual void onStateChanged(Control& control) const override {
-            Theme* theme = control.Theme;
+            const Theme* theme = control.Theme;
             if (!theme)
                 return;
             CheckBox& checkBoxRadio = (CheckBox&)control;

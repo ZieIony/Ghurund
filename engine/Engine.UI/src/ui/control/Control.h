@@ -9,7 +9,7 @@
 #include "core/input/EventConsumer.h"
 #include "ui/Cursor.h"
 #include "ui/UIContext.h"
-#include "ui/style/Style.h"
+#include "ui/style/StyleAttr.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ConstraintSet.h"
 #include "ui/constraint/ValueConstraint.h"
@@ -65,7 +65,7 @@ namespace Ghurund::UI {
         bool needsLayout = true;
 
         Theme* localTheme = nullptr;
-        const Style* style = nullptr;
+        const StyleAttr* style = nullptr;
 
         //List<Binding> bindings;
 
@@ -78,14 +78,20 @@ namespace Ghurund::UI {
 
         virtual void onStateChanged() {
             stateChanged();
-            if (style)
-                style->onStateChanged(*this);
+            if (style) {
+                auto s = style->getValue(*this);
+                if (s)
+                    s->onStateChanged(*this);
+            }
         }
 
-        virtual void onThemeChanged() {
-            themeChanged();
-            if (style)
-                style->onThemeChanged(*this);
+		virtual void onThemeChanged() {
+			themeChanged();
+			if (style) {
+				auto s = style->getValue(*this);
+				if (s)
+					s->onThemeChanged(*this);
+			}
         }
 
         virtual void onContextChanged() {
@@ -294,28 +300,33 @@ namespace Ghurund::UI {
 
         void setTheme(Theme* theme);
 
-        Theme* getTheme() const;
+        const Theme* getTheme() const;
 
-        __declspec(property(get = getTheme, put = setTheme)) Ghurund::UI::Theme* Theme;
+        __declspec(property(get = getTheme, put = setTheme)) const Ghurund::UI::Theme* Theme;
 
         virtual IUIContext* getContext();
 
         __declspec(property(get = getContext)) IUIContext* Context;
 
-        inline void setStyle(const Style* style) {
-            this->style = style;
+        inline void setStyle(const StyleAttr* style) {
+            if (this->style)
+                delete this->style;
+            this->style = (StyleAttr*)style->clone();
             if (style) {
-                style->apply(*this);
-                style->onThemeChanged(*this);
-                style->onStateChanged(*this);
+                auto val = style->getValue(*this);
+                if (val) {
+                    val->apply(*this);
+                    val->onThemeChanged(*this);
+                    val->onStateChanged(*this);
+                }
             }
         }
 
-        inline const Style* getStyle() {
+        inline const StyleAttr* getStyle() const {
             return style;
         }
 
-        __declspec(property(get = getStyle, put = setStyle)) const Ghurund::UI::Style* Style;
+        __declspec(property(get = getStyle, put = setStyle)) const Ghurund::UI::StyleAttr* Style;
 
         virtual void dispatchStateChanged();
 

@@ -18,6 +18,7 @@
 #include "ui/loading/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/style/ColorAttr.h"
+#include "ui/style/TextFormatAttr.h"
 #include "ui/text/DocumentElement.h"
 
 #include <tinyxml2.h>
@@ -41,7 +42,6 @@ namespace Ghurund::UI {
 
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
-		static inline const char* THEME_STYLE = "theme://style/";
 		static inline const char* THEME_COLOR = "theme://color/";
 		static inline const char* THEME_IMAGE = "theme://image/";
 		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
@@ -90,7 +90,7 @@ namespace Ghurund::UI {
         }
 
 		void loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
-			const Type* type = &obj.Type;
+			const Core::Type* type = &obj.Type;
 			while (*type != Pointer::TYPE) {
 				for (auto& property : type->Properties) {
 					if (property.get().CanWrite)
@@ -110,7 +110,7 @@ namespace Ghurund::UI {
 
 		Constraint* loadConstraint(const char* str, Orientation orientation);
 
-		TextFormat* loadTextFormat(const char* str);
+		TextFormatRef* loadTextFormat(const char* str);
 
         Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 

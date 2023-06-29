@@ -57,13 +57,14 @@
       <PrecompiledHeaderFile>ghuidxpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\libs;src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
       <BuildStlModules>false</BuildStlModules>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -113,7 +114,6 @@
     <ClInclude Include="src\ui\direct2d\image\BitmapLoader.h" />
     <ClInclude Include="src\ui\direct2d\image\SvgDocument.h" />
     <ClInclude Include="src\ui\direct2d\loading\ImageDrawableFactory.h" />
-    <ClInclude Include="src\ui\direct2d\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\direct2d\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\direct2d\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\direct2d\text\TextFormat.h" />

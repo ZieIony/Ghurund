@@ -95,13 +95,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="generated\bindings\LayoutBinding.h" />
     <ClInclude Include="src\PreviewApplication.h" />
     <ClInclude Include="src\PreviewLayout.h" />
     <ClInclude Include="src\PreviewWindow.h" />
+    <ClInclude Include="src\ThemeApplication.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PreviewLayout.cpp" />
+    <ClCompile Include="src\PreviewWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\engine\Engine.Core\Engine.Core.vcxproj">

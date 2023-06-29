@@ -2,6 +2,7 @@
 
 #include "ResourceFormat.h"
 #include "Status.h"
+#include "core/Pointer.h"
 #include "core/allocation/Allocator.h"
 #include "core/io/MemoryStream.h"
 #include "core/reflection/Constructor.h"
@@ -26,7 +27,7 @@ namespace Ghurund::Core {
     class Resource;
     class ResourceManager;
 
-    class Loader {
+    class Loader:public Pointer {
     private:
         Allocator* allocator;
 
@@ -39,7 +40,15 @@ namespace Ghurund::Core {
             return (T*)constructor.invoke();
         }
 
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+
         Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
         virtual ~Loader() = 0 {}

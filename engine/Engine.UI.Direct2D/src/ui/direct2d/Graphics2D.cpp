@@ -4,16 +4,16 @@
 #include "core/Exceptions.h"
 
 
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::UI::Direct2D::Graphics2D>() {
-        static Type TYPE = Type(Ghurund::UI::Direct2D::NAMESPACE_NAME, "Graphics2D", sizeof(Ghurund::UI::Direct2D::Graphics2D));
+namespace Ghurund::UI::Direct2D {
+
+    const Ghurund::Core::Type& Graphics2D::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics2D>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(Graphics2D))
+            .withSupertype(__super::GET_TYPE());
+
         return TYPE;
     }
-}
 
-namespace Ghurund::UI::Direct2D {
-    void Graphics2D::init(ID3D12Device& device, ID3D12CommandQueue& commandQueue) {
+    void Graphics2D::onInit() {
         UINT d3d11DeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
         D2D1_FACTORY_OPTIONS d2dFactoryOptions = {};
 
@@ -25,7 +25,7 @@ namespace Ghurund::UI::Direct2D {
         d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 
         ComPtr<ID3D12InfoQueue> infoQueue;
-        HRESULT hr = device.QueryInterface(__uuidof(ID3D12InfoQueue), &infoQueue);
+        HRESULT hr = graphics.Device->QueryInterface(__uuidof(ID3D12InfoQueue), &infoQueue);
         if (SUCCEEDED(hr)) {
             // Suppress messages based on their severity level.
             D3D12_MESSAGE_SEVERITY severities[] = {
@@ -57,9 +57,9 @@ namespace Ghurund::UI::Direct2D {
         // Create an 11 device wrapped around the 12 device and share
         // 12's command queue.
         ComPtr<ID3D11Device> d3d11Device;
-        ID3D12CommandQueue* ppCommandQueues[] = { &commandQueue };
+        ID3D12CommandQueue* ppCommandQueues[] = { graphics.DirectQueue };
         if (FAILED(D3D11On12CreateDevice(
-            &device,
+            graphics.Device,
             d3d11DeviceFlags,
             nullptr,
             0,
@@ -106,7 +106,7 @@ namespace Ghurund::UI::Direct2D {
         }
     }
 
-    void Graphics2D::uninit() {
+    void Graphics2D::onUninit() {
         dwriteFactory.Reset();
         deviceContext.Reset();
         d2dDevice.Reset();

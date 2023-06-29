@@ -61,7 +61,7 @@ namespace Ghurund::UI {
         if (!Theme)
             return;
         if (!TextFormat)
-            TextFormat = Theme->TextFormats[Theme::TEXTFORMAT_TEXT_PRIMARY].get();
+            textLayout->Format = TextFormat->getValue(*this);
         if (Size.Width > 0 && Size.Height > 0)
             textLayout->Size = { Size.Width, Size.Height };
     }
@@ -70,9 +70,11 @@ namespace Ghurund::UI {
         __super::load(loader, xml);
         auto textFormatAttr = xml.FindAttribute("textFormat");
         if (textFormatAttr) {
-            Ghurund::UI::TextFormat* format = loader.loadTextFormat(textFormatAttr->Value());
-            TextFormat = format;
-            format->release();
+            Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());
+            if (format) {
+                TextFormat = format;
+                delete format;
+            }
         }
     }
 }

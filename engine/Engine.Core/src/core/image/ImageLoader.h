@@ -7,7 +7,7 @@
 namespace Ghurund::Core {
     class ImageLoader:public Loader {
     private:
-        IWICImagingFactory* imageFactory;
+        IWICImagingFactory* imageFactory = nullptr;
 
     public:
         static DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);

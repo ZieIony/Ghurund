@@ -30,7 +30,7 @@ namespace Ghurund::Core {
 
         List<StackTrace::Entry> stacktrace;
 
-        void checkReferenceCount();
+        void checkReferenceCount() const;
 #endif
 
     protected:
@@ -46,14 +46,14 @@ namespace Ghurund::Core {
         /**
          * @brief Increases reference count by 1.
         */
-        inline void addReference() {
+        inline void addReference() const {
             referenceCount++;
         }
 
         /**
          * @brief Decreases reference count of this object by one. If the reference count reaches 0, the object is deleted.
         */
-        inline void release() {
+        inline void release() const {
 #ifdef _DEBUG
             checkReferenceCount();
 #endif

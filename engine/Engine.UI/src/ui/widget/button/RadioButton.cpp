@@ -15,7 +15,7 @@ namespace Ghurund::UI {
     }
 
     void RadioButtonStyle::onStateChanged(Control& control) const {
-        Theme* theme = control.Theme;
+        const Theme* theme = control.Theme;
         if (!theme)
             return;
         /*RadioButton& checkBoxRadio = (RadioButton&)control;

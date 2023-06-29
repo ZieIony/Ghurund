@@ -48,7 +48,7 @@ namespace Ghurund::UI {
     }
 
     void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {
-        Theme* theme = control.Theme;
+        const Theme* theme = control.Theme;
         if (!theme)
             return;
         StateIndicator& indicator = (StateIndicator&)control;
@@ -58,7 +58,7 @@ namespace Ghurund::UI {
     }
 
     void StateIndicatorOnAccentStyle::onThemeChanged(Control& control) const {
-        Theme* theme = control.Theme;
+        const Theme* theme = control.Theme;
         if (!theme)
             return;
         StateIndicator& indicator = (StateIndicator&)control;

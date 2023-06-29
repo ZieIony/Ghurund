@@ -30,9 +30,8 @@ namespace Ghurund::UI {
             bind();
         }
         if (!style) {
-            size_t index = Theme->Styles.indexOfKey(StyleKey(Type.Name));
-            if (index != Theme->Styles.Size)
-                Style = Theme->Styles.getValue(index);
+            auto s = StyleRef(StyleKey(Type.Name));
+            Style = &s;
         }
         __super::onThemeChanged();
     }

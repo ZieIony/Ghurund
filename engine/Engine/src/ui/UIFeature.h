@@ -1,8 +1,9 @@
 #pragma once
 
-#include "core/application/Application.h"
+#include "core/directx/Graphics.h"
 #include "core/application/Feature.h"
 #include "ui/constraint/ConstraintFactory.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/direct2d/Graphics2D.h"
 #include "ui/direct2d/loading/ShapeFactory.h"
 #include "ui/direct2d/loading/ImageDrawableFactory.h"
@@ -23,24 +24,25 @@ namespace Ghurund {
 #pragma endregion
 
     private:
-        Application& app;
-        Ghurund::UI::Direct2D::Graphics2D* graphics2d = nullptr;
+        ResourceManager& resourceManager;
+        Ghurund::UI::Direct2D::Graphics2D& graphics2d;
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::Direct2D::ImageDrawableFactory* imageDrawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
+        SharedPointer<LayoutLoader> layoutLoader;
 
     public:
-        UIFeature(Application& app):app(app) {}
+        UIFeature(Ghurund::UI::Direct2D::Graphics2D& graphics2d, ResourceManager& resourceManager):graphics2d(graphics2d), resourceManager(resourceManager) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        inline Ghurund::UI::Direct2D::Graphics2D& getGraphics2D() {
-            return *graphics2d;
+        inline LayoutLoader& getLayoutLoader() {
+            return *layoutLoader.get();
         }
 
-        __declspec(property(get = getGraphics2D)) Ghurund::UI::Direct2D::Graphics2D& Graphics2D;
+        __declspec(property(get = getLayoutLoader)) LayoutLoader& LayoutLoader;
     };
 }

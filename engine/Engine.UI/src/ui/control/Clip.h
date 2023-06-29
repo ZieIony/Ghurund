@@ -30,7 +30,12 @@ namespace Ghurund::UI {
         }
 
         inline void setShape(Shape* shape) {
-            this->shape = shape;
+            delete this->shape;
+            if (shape) {
+                this->shape = (Ghurund::UI::Shape*)shape->clone();
+            } else {
+                this->shape = nullptr;
+            }
         }
 
         __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;

@@ -132,15 +132,27 @@ namespace Ghurund::UI {
             return styles;
         }
 
+        inline const Ghurund::Core::Map<StyleKey, Style*>& getStyles() const {
+            return styles;
+        }
+
         __declspec(property(get = getStyles)) Ghurund::Core::Map<StyleKey, Style*>& Styles;
 
         inline Map<TextFormatKey, SharedPointer<TextFormat>>& getTextFormats() {
             return textFormats;
         }
 
+        inline const Map<TextFormatKey, SharedPointer<TextFormat>>& getTextFormats() const {
+            return textFormats;
+        }
+
         __declspec(property(get = getTextFormats)) Map<TextFormatKey, SharedPointer<TextFormat>>& TextFormats;
 
         inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
+            return colors;
+        }
+
+        inline const Ghurund::Core::Map<ColorKey, Color>& getColors() const {
             return colors;
         }
 
@@ -153,6 +165,10 @@ namespace Ghurund::UI {
         __declspec(property(get = getImages)) Map<ImageKey, SharedPointer<ImageDrawable>>& Images;
 
         inline Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() {
+            return layouts;
+        }
+
+        inline const Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() const {
             return layouts;
         }
 

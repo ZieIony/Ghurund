@@ -5,11 +5,19 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class Shape {
+    class Shape:public Object {
     protected:
         FloatRect bounds;
 
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
     public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Shape::GET_TYPE();
+
         Shape():bounds({}) {}
 
         Shape(const FloatRect& bounds):bounds(bounds) {}
@@ -28,9 +36,4 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getBounds, put = setBounds)) const FloatRect& Bounds;
     };
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::UI::Shape>();
 }

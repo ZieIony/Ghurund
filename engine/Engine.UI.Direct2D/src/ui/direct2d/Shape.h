@@ -31,6 +31,12 @@ namespace Ghurund::UI::Direct2D {
         Rect(ID2D1Factory6& d2dFactory):d2dFactory(d2dFactory) {}
 
         virtual void setBounds(const FloatRect& bounds) override;
+
+        virtual Rect* clone() const override {
+            auto rect = ghnew Rect(d2dFactory);
+            rect->Bounds = Bounds;
+            return rect;
+        }
     };
 
     class RoundRect:public Shape {
@@ -52,6 +58,13 @@ namespace Ghurund::UI::Direct2D {
         __declspec(property(get = getCornerRadius, put = setCornerRadius)) float CornerRadius;
 
         virtual void setBounds(const FloatRect& bounds) override;
+
+        virtual RoundRect* clone() const override {
+            auto rect = ghnew RoundRect(d2dFactory);
+            rect->Bounds = Bounds;
+            rect->CornerRadius = CornerRadius;
+            return rect;
+        }
     };
 }
 

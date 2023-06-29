@@ -9,8 +9,8 @@
 #include <core/image/Image.h>
 #include "ui/direct2d/font/FontLoader.h"
 #include "core/image/ImageLoader.h"
+#include "ui/loading/LayoutLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
-#include "ui/direct2d/loading/LayoutLoader.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -18,40 +18,35 @@ namespace Ghurund {
     using namespace Ghurund::UI::Direct2D;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static auto PROPERTY_GRAPHICS2D = Property<UIFeature, Ghurund::UI::Direct2D::Graphics2D&>("Graphics2D", &getGraphics2D);
-
         static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::NAMESPACE_NAME, "UIFeature")
-            .withProperty(PROPERTY_GRAPHICS2D)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
     void UIFeature::onInit() {
-        graphics2d = ghnew Ghurund::UI::Direct2D::Graphics2D();
-        Ghurund::Core::DirectX::Graphics& graphics = app.Features.get<Ghurund::Core::DirectX::Graphics>();
-        graphics2d->init(*graphics.Device, *graphics.DirectQueue);
-        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(*graphics2d->D2DFactory);
-        imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(app.ResourceManager);
+        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d.D2DFactory);
+        imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(resourceManager);
         textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
-        auto fontLoader = ghnew FontLoader(*graphics2d->DWriteFactory);
+        auto fontLoader = makeShared<FontLoader>(graphics2d.DWriteFactory);
         fontLoader->init();
 
-        app.ResourceManager.Loaders.set<Ghurund::UI::Font>(std::unique_ptr<FontLoader>(fontLoader));
+        resourceManager.Loaders.set<Ghurund::UI::Font>(fontLoader.get());
 
-        auto bitmapLoader = ghnew BitmapLoader(*(ImageLoader*)app.ResourceManager.Loaders.get<Image>(), graphics2d->DeviceContext);
-        app.ResourceManager.Loaders.set<Ghurund::UI::Bitmap>(std::unique_ptr<BitmapLoader>(bitmapLoader));
-        auto layoutLoader = ghnew Ghurund::UI::Direct2D::LayoutLoader(app.ResourceManager, *shapeFactory, *imageDrawableFactory, *textFormatFactory, *constraintFactory);
-        app.ResourceManager.Loaders.set<Control>(std::unique_ptr<Ghurund::UI::Direct2D::LayoutLoader>(layoutLoader));
+        auto bitmapLoader = makeShared<BitmapLoader>(*(ImageLoader*)resourceManager.Loaders.get<Image>(), graphics2d.DeviceContext);
+        resourceManager.Loaders.set<Ghurund::UI::Bitmap>(bitmapLoader.get());
+        layoutLoader = makeShared<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *imageDrawableFactory, *textFormatFactory, *constraintFactory);
+        resourceManager.Loaders.set<Control>(layoutLoader.get());
     }
     
     void UIFeature::onUninit() {
-        app.ResourceManager.Loaders.remove<Control>();
-        app.ResourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
-        app.ResourceManager.Loaders.remove<Image>();
-        app.ResourceManager.Loaders.remove<Ghurund::UI::Font>();
+        resourceManager.Loaders.remove<Control>();
+        resourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
+        resourceManager.Loaders.remove<Image>();
+        resourceManager.Loaders.remove<Ghurund::UI::Font>();
+        layoutLoader.set(nullptr);
         delete shapeFactory;
         shapeFactory = nullptr;
         delete imageDrawableFactory;
@@ -60,7 +55,5 @@ namespace Ghurund {
         textFormatFactory = nullptr;
         delete constraintFactory;
         constraintFactory = nullptr;
-        delete graphics2d;
-        graphics2d = nullptr;
     }
 }

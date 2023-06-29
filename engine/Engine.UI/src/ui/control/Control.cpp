@@ -65,6 +65,7 @@ namespace Ghurund::UI {
     }
 
     Control::~Control() {
+        delete style;
         delete name;
     }
 
@@ -245,7 +246,7 @@ namespace Ghurund::UI {
         }
     }
 
-    Theme* Control::getTheme() const {
+    const Theme* Control::getTheme() const {
         if (localTheme)
             return localTheme;
         if (parent)
@@ -520,24 +521,10 @@ namespace Ghurund::UI {
 
     void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
         loader.loadProperties(*this, xml);
-        auto styleAttr = xml.FindAttribute("style");
-        if (styleAttr) {
-            AString s = styleAttr->Value();
-            s.replace('\\', '/');
-            uint32_t value = 0;
-            if (s.startsWith(LayoutLoader::THEME_STYLE)) {
-                StyleKey styleKey = s.substring(lengthOf(LayoutLoader::THEME_STYLE));
-                if (!loader.Theme) {
-                    throw InvalidStateException("Loader does not have a theme set.");
-                } else if (loader.Theme->Styles.containsKey(styleKey)) {
-                    Style = loader.Theme->Styles[styleKey];
-                } else {
-                    auto text = std::format(_T("Style '{}' not found.\n"), styleKey.str);
-                    Logger::log(LogType::WARNING, text.c_str());
-                }
-            }
-        } else if (loader.Theme && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
-            Style = loader.Theme->Styles[StyleKey(Type.Name)];
+
+        if (!Style && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
+            auto s = StyleRef(StyleKey(Type.Name));
+            Style = &s;
         }
 
         loadConstraints(loader, xml);

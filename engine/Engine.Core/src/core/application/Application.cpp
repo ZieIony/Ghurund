@@ -17,9 +17,9 @@ namespace Ghurund::Core {
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
-        auto imageLoader = ghnew ImageLoader();
+        auto imageLoader = makeShared<ImageLoader>();
         imageLoader->init();
-        resourceManager.Loaders.set<Image>(std::unique_ptr<ImageLoader>(imageLoader));
+        resourceManager.Loaders.set<Image>(imageLoader.get());
 
         features.init();
     }
