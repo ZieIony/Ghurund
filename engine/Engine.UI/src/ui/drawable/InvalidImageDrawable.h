@@ -19,7 +19,7 @@ namespace Ghurund::UI {
 
         InvalidImageDrawable();
 
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const override;
 
         virtual InvalidImageDrawable* clone() const override {
             return ghnew InvalidImageDrawable();

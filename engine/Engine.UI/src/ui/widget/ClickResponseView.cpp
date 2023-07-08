@@ -20,6 +20,12 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void ClickResponseView::onThemeChanged() {
+        const UI::Theme* theme = Theme;
+        if (theme)
+            color.resolve(*theme);
+    }
+
     void ClickResponseView::onUpdate(const uint64_t time) {
         if (Pressed)
             startTime = time;
@@ -30,10 +36,13 @@ namespace Ghurund::UI {
     }
 
     void ClickResponseView::onDraw(ICanvas& canvas) {
-        Ghurund::UI::Color c = color->getValue(*this);
-        c.A = alpha;
-        canvas.Color = c;
-        canvas.fillRect(0, 0, Size.Width, Size.Height);
+        const Ghurund::UI::Color* c = color.get();
+        if (c) {
+            UI::Color colorWithAlpha = *c;
+            colorWithAlpha.A = alpha;
+            canvas.Color = colorWithAlpha;
+            canvas.fillRect(0, 0, Size.Width, Size.Height);
+        }
         if (!finishedAnimating)
             repaint();
     }

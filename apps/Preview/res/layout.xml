@@ -7,8 +7,8 @@
 						  name="container">
 			<ControlGroup>
 				<Border width="200" height="200"/>
-				<ImageView width="200" height="200" scaleMode="fit"
-						   image="images\buttons.png"/>
+				<DrawableView width="200" height="200" scaleMode="fit"
+						   drawable="images\buttons.png"/>
 			</ControlGroup>
 		</ControlContainer>
 		<ControlGroup left="10" width="Parent.Width" name="controls">

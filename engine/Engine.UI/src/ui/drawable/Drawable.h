@@ -29,43 +29,18 @@ namespace Ghurund::UI {
         //    = 0   // TODO: a destructor cannot be abstract
         {}
 
-        inline Ghurund::Core::FloatSize& getSize() {
-            return size;
-        }
-
-        inline void setSize(const Ghurund::Core::FloatSize& size) {
-            this->size = size;
-        }
-
-        inline void setSize(float width, float height) {
-            size.Width = width;
-            size.Height = height;
-        }
-
-        __declspec(property(get = getSize, put = setSize)) Ghurund::Core::FloatSize& Size;
-
         inline const FloatSize& getPreferredSize() const {
             return preferredSize;
         }
 
         __declspec(property(get = getPreferredSize)) const FloatSize& PreferredSize;
 
-        inline Control* getOwner() {
-            return owner;
-        }
-
-        inline void setOwner(Control* owner) {
-            this->owner = owner;
-        }
-
-        __declspec(property(get = getOwner, put = setOwner)) Control* Owner;
-
         virtual void update(const uint64_t time) {}
 
-        virtual void onDraw(ICanvas& canvas) = 0;
+        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const = 0;
 
-        void draw(ICanvas& canvas) {
-            onDraw(canvas);
+        void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const {
+            onDraw(canvas, size);
         }
     };
 }

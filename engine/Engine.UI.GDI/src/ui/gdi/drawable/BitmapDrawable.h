@@ -22,7 +22,7 @@ namespace Ghurund::UI::GDI {
 
         ~BitmapDrawable();
 
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas, const FloatSize& size) const override;
 
         virtual BitmapDrawable* clone() const override {
             return ghnew BitmapDrawable(image);

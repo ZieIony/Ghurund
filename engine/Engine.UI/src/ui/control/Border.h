@@ -2,12 +2,13 @@
 
 #include "Control.h"
 #include "ui/Shape.h"
+#include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
     class Border: public Control {
     private:
-        ColorAttr* color = nullptr;
+        AttrProperty<ColorAttr, Color> color;
         float thickness = 1.0f;
         Ghurund::UI::Shape* shape = nullptr;
 
@@ -21,51 +22,37 @@ namespace Ghurund::UI {
 
         inline static const Ghurund::Core::Type& TYPE = Border::GET_TYPE();
 
-        Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) {
-            Color = color;
-        }
+        Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) :color(color) {}
 
         ~Border() {
             delete shape;
-            delete color;
-        }
-
-        inline const ColorAttr& getColor() const {
-            return *color;
         }
 
         inline void setColor(const ColorAttr& color) {
-            delete this->color;
-            this->color = (ColorAttr*)color.clone();
+            this->color.set(color);
         }
 
-        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
-
-        inline Ghurund::UI::Shape* getShape() {
-            return shape;
-        }
+        __declspec(property(put = setColor)) const ColorAttr& Color;
 
         inline void setShape(std::unique_ptr<Ghurund::UI::Shape>& shape) {
             delete this->shape;
             this->shape = shape.release();
         }
 
-        __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;
-
-        inline float getThickness() const {
-            return thickness;
-        }
+        __declspec(property(put = setShape)) Ghurund::UI::Shape* Shape;
 
         inline void setThickness(float thickness) {
             this->thickness = thickness;
         }
 
-        __declspec(property(get = getThickness, put = setThickness)) float Thickness;
+        __declspec(property(put = setThickness)) float Thickness;
 
+        virtual void onThemeChanged() override;
+    
         virtual void onLayout(float x, float y, float width, float height) override {
             __super::onLayout(x, y, width, height);
             if (shape)
-                shape->Bounds = FloatRect{ Thickness / 2, Thickness / 2, width - Thickness / 2, height - Thickness / 2 };
+                shape->Bounds = FloatRect{ thickness / 2, thickness / 2, width - thickness / 2, height - thickness / 2 };
         }
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;

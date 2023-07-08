@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
 		static inline const char* THEME_COLOR = "theme://color/";
-		static inline const char* THEME_IMAGE = "theme://image/";
+		static inline const char* THEME_DRAWABLE = "theme://drawable/";
 		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
 		LayoutLoader(
@@ -89,16 +89,7 @@ namespace Ghurund::UI {
             throw NotImplementedException();
         }
 
-		void loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
-			const Core::Type* type = &obj.Type;
-			while (*type != Pointer::TYPE) {
-				for (auto& property : type->Properties) {
-					if (property.get().CanWrite)
-						loadProperty(obj, property, xml);
-				}
-				type = type->Supertype;
-			}
-		}
+		void loadProperties(Object& obj, const tinyxml2::XMLElement& xml);
 
 		void loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml);
 

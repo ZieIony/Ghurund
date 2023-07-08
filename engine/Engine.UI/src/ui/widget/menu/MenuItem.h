@@ -20,16 +20,16 @@ namespace Ghurund::UI {
 
     class ButtonMenuItem:public MenuItem {
     private:
-        Drawable* image = nullptr;
+        Drawable* drawable = nullptr;
         WString text;
         ClickEventHandler clickEventHandler;
 
     public:
-        ButtonMenuItem(Drawable* image, ClickEventHandler clickHandler) {
+        ButtonMenuItem(Drawable* drawable, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
-            this->image = image;
-            if (image)
-                image->addReference();
+            this->drawable = drawable;
+            if (drawable)
+                drawable->addReference();
             clickEventHandler = clickHandler;
         }
 
@@ -39,26 +39,26 @@ namespace Ghurund::UI {
             clickEventHandler = clickHandler;
         }
 
-        ButtonMenuItem(Drawable* image, const WString& text, ClickEventHandler clickHandler) {
+        ButtonMenuItem(Drawable* drawable, const WString& text, ClickEventHandler clickHandler) {
             type = MenuItemType::BUTTON;
-            this->image = image;
-            if (image)
-                image->addReference();
+            this->drawable = drawable;
+            if (drawable)
+                drawable->addReference();
             this->text = text;
             clickEventHandler = clickHandler;
         }
 
         ~ButtonMenuItem() {
-            if(image)
-                image->release();
+            if(drawable)
+                drawable->release();
         }
 
-        inline void setImage(Drawable* image) {
-            this->image = image;
+        inline void setImage(Drawable* drawable) {
+            this->drawable = drawable;
         }
 
         inline Drawable* getImage() {
-            return image;
+            return drawable;
         }
 
         __declspec(property(get = getImage, put = setImage)) Drawable* Image;

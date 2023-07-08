@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PropertyLoader.h"
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 
 namespace Ghurund::UI {
 

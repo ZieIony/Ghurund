@@ -24,7 +24,7 @@ namespace Ghurund::UI::GDI {
         image->release();
     }
 
-    void BitmapDrawable::onDraw(ICanvas& canvas) {
+    void BitmapDrawable::onDraw(ICanvas& canvas, const FloatSize& size) const {
         auto dst = FloatRect{ 0, 0, size.Width, size.Height };
         if (Tint) {
             canvas.drawImage(*image, dst, Tint, Alpha);

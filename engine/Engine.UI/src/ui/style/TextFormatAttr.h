@@ -5,11 +5,10 @@
 
 namespace Ghurund::UI {
 	class TextFormat;
-	class Control;
 
 	class TextFormatAttr : public Ghurund::Core::Object {
 	public:
-		virtual const TextFormat* getValue(const Control& owner) const = 0;
+		virtual const TextFormat* resolve(const Theme& theme) const = 0;
 	};
 
 	class TextFormatValue : public TextFormatAttr {
@@ -19,7 +18,7 @@ namespace Ghurund::UI {
 	public:
 		TextFormatValue(TextFormat* TextFormat) :textFormat(TextFormat) {}
 
-		virtual const TextFormat* getValue(const Control& owner) const override {
+		virtual const TextFormat* resolve(const Theme& theme) const override {
 			return textFormat;
 		}
 
@@ -35,7 +34,7 @@ namespace Ghurund::UI {
 	public:
 		TextFormatRef(TextFormatKey key) :key(key) {}
 
-		virtual const TextFormat* getValue(const Control& owner) const override;
+		virtual const TextFormat* resolve(const Theme& theme) const override;
 
 		virtual TextFormatRef* clone() const override {
 			return ghnew TextFormatRef(key);

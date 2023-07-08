@@ -17,21 +17,21 @@ namespace Ghurund::UI::GDI {
 #pragma endregion
 
     private:
-        SvgDocument* image;
+        SvgDocument* drawable;
 
     public:
-        SvgDrawable(SvgDocument* image) {
-            this->image = image;
-            image->addReference();
-            preferredSize = { image->Size.Width, image->Size.Height };
+        SvgDrawable(SvgDocument* drawable) {
+            this->drawable = drawable;
+            drawable->addReference();
+            preferredSize = { drawable->Size.Width, drawable->Size.Height };
         }
 
-        virtual void onDraw(ICanvas& canvas) override {
-            canvas.drawImage(*image);
+        virtual void onDraw(ICanvas& canvas, const FloatSize& size) const override {
+            canvas.drawImage(*drawable);
         }
 
         virtual SvgDrawable* clone() const override {
-            return ghnew SvgDrawable(image);
+            return ghnew SvgDrawable(drawable);
         }
     };
 }

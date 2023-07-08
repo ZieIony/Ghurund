@@ -5,14 +5,13 @@
 
 namespace Ghurund::UI {
 
-	const Style* StyleRef::getValue(const Control& owner) const {
-		auto theme = owner.Theme;
-		if (theme) {
-			auto index = theme->Styles.indexOfKey(key);
-			if (index != theme->Styles.Size)
-				return theme->Styles[key];
+	const Style* StyleRef::resolve(const Theme& theme) const {
+		size_t index = theme.Styles.indexOfKey(key);
+		if (index == theme.Styles.Size) {
+			Logger::log(LogType::WARNING, std::format(_T("Style '{}' not found in the current theme.\n"), key.Value).c_str());
+			return nullptr;
 		}
-		return nullptr;
+		return theme.Styles.getValue(index);
 	}
 
 }

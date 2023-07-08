@@ -3,7 +3,7 @@
 #include "MenuItem.h"
 #include "core/SharedPointer.h"
 #include "ui/style/Theme.h"
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/layout/LinearLayout.h"
 #include "ui/text/TextBlock.h"
@@ -11,14 +11,14 @@
 namespace Ghurund::UI {
     class ButtonPopupMenuRow:public ClickableControl {
     private:
-        SharedPointer<ImageView> icon;
+        SharedPointer<DrawableView> icon;
         SharedPointer<TextBlock> text;
         SharedPointer<PaddingContainer> padding;
         SharedPointer<HorizontalLayout> row;
 
     public:
         ButtonPopupMenuRow() {
-            icon = ghnew ImageView();
+            icon = ghnew DrawableView();
             icon->PreferredSize.width = 16;
             text = ghnew TextBlock();
             padding = ghnew PaddingContainer(4);

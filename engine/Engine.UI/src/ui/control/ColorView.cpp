@@ -9,7 +9,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ColorView::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<ColorView>();
-        static auto PROPERTY_COLOR = Property<ColorView, const ColorAttr&>("Color", (const ColorAttr & (ColorView::*)()) & getColor, (void(ColorView::*)(const ColorAttr&)) & setColor);
+        static auto PROPERTY_COLOR = Property<ColorView, const ColorAttr&>("Color", &setColor);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
             .withConstructor(CONSTRUCTOR)
@@ -19,10 +19,16 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void ColorView::onThemeChanged() {
+        const UI::Theme* theme = Theme;
+        if (theme)
+            color.resolve(*theme);
+    }
+
     void ColorView::onDraw(ICanvas& canvas) {
-        const Ghurund::UI::Color& c = color->getValue(*this);
-        if (c.A > 0.0f) {
-            canvas.Color = c;
+        const Ghurund::UI::Color* c = color.get();
+        if (c && c->A > 0.0f) {
+            canvas.Color = *c;
             canvas.fillRect(0, 0, Size.Width, Size.Height);
         }
     }

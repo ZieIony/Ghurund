@@ -42,6 +42,15 @@ namespace Preview {
             height->evaluate();
         }
 
+        inline bool onColorClicked(const MouseClickedEventArgs& args, uint32_t color) {
+            if (args.Button == MouseButton::LEFT) {
+                colorChanged(color);
+                dispatchThemeChanged();
+                return true;
+            }
+            return false;
+        }
+
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
             static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))

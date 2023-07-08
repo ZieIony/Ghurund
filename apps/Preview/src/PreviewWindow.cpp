@@ -11,13 +11,15 @@ namespace Preview {
 		UILayer* uiLayer = ghnew UILayer(graphics2d, *this, Application.ResourceManager);
 
 		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE));
-		//previewLayout->Theme = &themeApp.CurrentTheme;
+		uiLayer->Root.Theme = &themeApp.CurrentTheme;
 		uiLayer->Root.Child = previewLayout.get();
-		/*previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
+
+		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
 			themeApp.ThemeType = type;
 			previewLayout.Theme = &themeApp.CurrentTheme;
 			return true;
 			};
+
 		previewLayout->colorChanged += [this](PreviewLayout& previewLayout, const uint32_t color) {
 			themeApp.PrimaryColor = color;
 			return true;
@@ -37,7 +39,7 @@ namespace Preview {
 			postLoadCallback(path);
 			watchFile(path);
 			return true;
-			};*/
+			};
 
 		Layers.add(std::unique_ptr<UILayer>(uiLayer));
 	}

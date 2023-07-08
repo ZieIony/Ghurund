@@ -5,11 +5,10 @@
 
 namespace Ghurund::UI {
 	class Style;
-	class Control;
 
 	class StyleAttr : public Ghurund::Core::Object {
 	public:
-		virtual const Style* getValue(const Control& owner) const = 0;
+		virtual const Style* resolve(const Theme& theme) const = 0;
 	};
 
 	class StyleValue : public StyleAttr {
@@ -19,7 +18,7 @@ namespace Ghurund::UI {
 	public:
 		StyleValue(Style* style) :style(style) {}
 
-		virtual const Style* getValue(const Control& owner) const override {
+		virtual const Style* resolve(const Theme& theme) const override {
 			return style;
 		}
 
@@ -35,7 +34,7 @@ namespace Ghurund::UI {
 	public:
 		StyleRef(StyleKey key) :key(key) {}
 
-		virtual const Style* getValue(const Control& owner) const override;
+		virtual const Style* resolve(const Theme& theme) const override;
 
 		virtual StyleRef* clone() const override {
 			return ghnew StyleRef(key);

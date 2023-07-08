@@ -116,6 +116,9 @@
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
+    <ClInclude Include="src\ui\style\AttrProperty.h" />
+    <ClInclude Include="src\ui\style\DrawableAttr.h" />
+    <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
     <ClInclude Include="src\ui\style\StyleAttr.h" />
     <ClInclude Include="src\ui\style\TextFormatAttr.h" />
     <ClInclude Include="src\ui\UIContext.h" />
@@ -151,7 +154,7 @@
     <ClInclude Include="src\ui\control\ControlList.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
     <ClInclude Include="src\ui\control\ControlPath.h" />
-    <ClInclude Include="src\ui\control\ImageView.h" />
+    <ClInclude Include="src\ui\control\DrawableView.h" />
     <ClInclude Include="src\ui\control\InvalidControl.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\control\PaddingContainer.h" />
@@ -261,6 +264,8 @@
     <ClCompile Include="src\ui\Cursor.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
+    <ClCompile Include="src\ui\style\BaseTheme.cpp" />
+    <ClCompile Include="src\ui\style\DrawableAttr.cpp" />
     <ClCompile Include="src\ui\style\StyleAttr.cpp" />
     <ClCompile Include="src\ui\style\TextFormatAttr.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
@@ -283,7 +288,7 @@
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ControlParent.cpp" />
     <ClCompile Include="src\ui\control\ControlPath.cpp" />
-    <ClCompile Include="src\ui\control\ImageView.cpp" />
+    <ClCompile Include="src\ui\control\DrawableView.cpp" />
     <ClCompile Include="src\ui\control\InvalidControl.cpp" />
     <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />

@@ -63,6 +63,17 @@ namespace Ghurund::UI {
         return control;
     }
 
+    void LayoutLoader::loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
+        const Core::Type* type = &obj.Type;
+        while (*type != Pointer::TYPE) {
+            for (auto& property : type->Properties) {
+                if (property.get().CanWrite)
+                    loadProperty(obj, property, xml);
+            }
+            type = type->Supertype;
+        }
+    }
+
     void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) {
         AString propertyName = property.Name;
         AString propertyUpper = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);

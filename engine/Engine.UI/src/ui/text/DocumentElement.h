@@ -67,7 +67,7 @@ namespace Ghurund::UI {
         }
 
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
-            drawable->draw(canvas);
+            //drawable->draw(canvas);
         }
     };
 

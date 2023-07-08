@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 #include "ui/control/ClickableControl.h"
 
@@ -24,28 +25,19 @@ namespace Ghurund::UI {
         uint64_t startTime = 0;
         uint32_t length = 150;
         bool finishedAnimating = true;
-        ColorAttr* color = nullptr;
+        AttrProperty<ColorAttr, Color> color;
         float alpha = 1.0f;
 
     public:
-        ClickResponseView(const ColorAttr& color = DEFAULT_COLOR) {
-            Color = color;
-        }
-
-        ~ClickResponseView() {
-            delete color;
-        }
-
-        inline const ColorAttr& getColor() const {
-            return *color;
-        }
+        ClickResponseView(const ColorAttr& color = DEFAULT_COLOR):color(color) {}
 
         inline void setColor(const ColorAttr& color) {
-            delete this->color;
-            this->color = (ColorAttr*)color.clone();
+            this->color.set(color);
         }
 
-        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
+        __declspec(property(put = setColor)) const ColorAttr& Color;
+
+        virtual void onThemeChanged() override;
 
         virtual void onUpdate(const uint64_t time) override;
 

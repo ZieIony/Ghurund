@@ -30,31 +30,34 @@ namespace Preview {
                 };
         }
 
-        auto colorClickHandler = [this](Button& button, const MouseClickedEventArgs& args) {
-            if (args.Button == MouseButton::LEFT) {
-                ColorView* colorView = (ColorView*)button.find(ColorView::GET_TYPE());
-                uint32_t color = colorView->Color.getValue(*colorView);
-                colorChanged(color);
-                dispatchThemeChanged();
-            } else if (args.Button == MouseButton::RIGHT) {
-
-            }
-            return true;
-            };
-        if (color1)
-            color1->clicked += colorClickHandler;
-        if (color2)
-            color2->clicked += colorClickHandler;
-        if (color3)
-            color3->clicked += colorClickHandler;
-        if (color4)
-            color4->clicked += colorClickHandler;
+        if (color1) {
+            color1->clicked += [this](Button& button, const MouseClickedEventArgs& args) {
+                return onColorClicked(args, 0xffd32f2f);
+                };
+        }
+        if (color2) {
+            color2->clicked += [this](Button& button, const MouseClickedEventArgs& args) {
+                return onColorClicked(args, 0xff1976d2);
+                };
+        }
+        if (color3) {
+            color3->clicked += [this](Button& button, const MouseClickedEventArgs& args) {
+                return onColorClicked(args, 0xffffa000);
+                };
+        }
+        if (color4) {
+            color4->clicked += [this](Button& button, const MouseClickedEventArgs& args) {
+                return onColorClicked(args, 0xff388e3c);
+                };
+        }
 
         if (colorTheme) {
             auto* colorView = colorTheme->find<ColorView>();
             WindowsTheme::init();
             colorView->Color = ColorValue(WindowsTheme::getAccentColor());
-            colorTheme->clicked += colorClickHandler;
+            colorTheme->clicked += [this](Button& button, const MouseClickedEventArgs& args) {
+                return onColorClicked(args, WindowsTheme::getAccentColor());
+                };
         }
     }
 }

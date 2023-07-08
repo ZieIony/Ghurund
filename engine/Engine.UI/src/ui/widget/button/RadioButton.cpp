@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "RadioButton.h"
 
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI {
@@ -21,11 +21,11 @@ namespace Ghurund::UI {
         /*RadioButton& checkBoxRadio = (RadioButton&)control;
         CheckBoxBinding* layout = checkBoxRadio.Layout;
         if (layout->Selectable->Selected) {
-            SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_RADIOBUTTON_CHECKED]->clone();
-            layout->Image->Image = image;
+            SharedPointer<ImageDrawable> drawable = (ImageDrawable*)theme->Drawables[Theme::IMAGE_RADIOBUTTON_CHECKED]->clone();
+            layout->Image->Image = drawable;
         } else {
-            SharedPointer<ImageDrawable> image = (ImageDrawable*)theme->Images[Theme::IMAGE_RADIOBUTTON_UNCHECKED]->clone();
-            layout->Image->Image = image;
+            SharedPointer<ImageDrawable> drawable = (ImageDrawable*)theme->Drawables[Theme::IMAGE_RADIOBUTTON_UNCHECKED]->clone();
+            layout->Image->Image = drawable;
         }*/
         __super::onStateChanged(control);
     }

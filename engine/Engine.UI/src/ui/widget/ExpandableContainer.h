@@ -3,7 +3,7 @@
 #include "Widget.h"
 #include "button/Button.h"
 #include "button/CheckBox.h"
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 
 namespace Ghurund::UI {
     class ExpandableContainer:public ContentWidget {
@@ -63,9 +63,9 @@ namespace Ghurund::UI {
                 return;
             CheckBox& checkBoxRadio = (CheckBox&)control;
             /*if (layout->Selectable->Selected) {
-                layout->Image->Image = makeShared<BitmapDrawable>(theme->Images[Theme::IMAGE_ARROWDOWN]);
+                layout->Image->Image = makeShared<BitmapDrawable>(theme->Drawables[Theme::IMAGE_ARROWDOWN]);
             } else {
-                layout->Image->Image = makeShared<BitmapDrawable>(theme->Images[Theme::IMAGE_ARROWRIGHT]);
+                layout->Image->Image = makeShared<BitmapDrawable>(theme->Drawables[Theme::IMAGE_ARROWRIGHT]);
             }*/
             __super::onStateChanged(control);
         }

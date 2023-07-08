@@ -20,16 +20,12 @@ namespace Ghurund::UI {
             this->color = color;
         }
 
-        inline const Color& getColor() const {
-            return this->color;
-        }
-
-        __declspec(property(get = getColor, put = setColor)) const Color& Color;
+        __declspec(property(put = setColor)) const Color& Color;
 
         virtual void update(const uint64_t time) override {
             visible = fmod(time, blinkTimeMs) < blinkTimeMs / 2.0f;
         }
 
-        virtual void onDraw(ICanvas& canvas) override;
+        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const override;
     };
 }

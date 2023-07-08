@@ -55,19 +55,11 @@ namespace Ghurund::UI {
     public:
         TextView(std::unique_ptr<TextLayout> textLayout);
 
-        inline CursorDrawable* getCursorDrawable() {
-            return cursorDrawable;
-        }
-
         inline void setCursorDrawable(CursorDrawable* drawable) {
-            if (cursorDrawable)
-                cursorDrawable->Owner = nullptr;
             setPointer(cursorDrawable, drawable);
-            if (drawable)
-                drawable->Owner = this;
         }
 
-        __declspec(property(get = getCursorDrawable, put = setCursorDrawable)) CursorDrawable* CursorDrawable;
+        __declspec(property(put = setCursorDrawable)) CursorDrawable* CursorDrawable;
 
         bool setSelection(SetSelectionMode moveMode, uint32_t advance, bool extendSelection, bool updateCaretFormat = true);
 

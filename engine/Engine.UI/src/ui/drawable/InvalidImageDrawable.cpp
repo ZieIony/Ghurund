@@ -17,11 +17,11 @@ namespace Ghurund::UI {
         preferredSize = { 18, 18 };
     }
 
-    void InvalidImageDrawable::onDraw(ICanvas& canvas) {
+    void InvalidImageDrawable::onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const {
         canvas.Color = backgroundColor;
-        canvas.fillRect(0, 0, Size.Width, Size.Height);
-        canvas.drawRect(1, 1, Size.Width - 2, Size.Height - 2, 2);
-        canvas.drawLine(Size.Width / 2 - 6, Size.Height / 2 - 6, Size.Width / 2 + 6, Size.Height / 2 + 6, 1.5);
-        canvas.drawLine(Size.Width / 2 - 6, Size.Height / 2 + 6, Size.Width / 2 + 6, Size.Height / 2 - 6, 1.5);
+        canvas.fillRect(0, 0, size.Width, size.Height);
+        canvas.drawRect(1, 1, size.Width - 2, size.Height - 2, 2);
+        canvas.drawLine(size.Width / 2 - 6, size.Height / 2 - 6, size.Width / 2 + 6, size.Height / 2 + 6, 1.5);
+        canvas.drawLine(size.Width / 2 - 6, size.Height / 2 + 6, size.Width / 2 + 6, size.Height / 2 - 6, 1.5);
     }
 }

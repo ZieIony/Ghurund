@@ -104,7 +104,7 @@ namespace Ghurund::Core {
                 delete[] data;
                 data = nullptr;
             }
-            this->size = std::min(this->size, size);
+            this->size = size;
         }
 
         inline void zero() {

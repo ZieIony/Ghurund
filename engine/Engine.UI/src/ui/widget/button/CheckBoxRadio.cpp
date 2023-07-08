@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "CheckBoxRadio.h"
 
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
             layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
         } else if (layout->Selectable->Pressed) {
             if (layout->Selectable->Selected) {
-                //imageView->Image->Tint = theme->getColorAccentDark();
+                //drawableView->Image->Tint = theme->getColorAccentDark();
                 layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
             } else {
                 layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND));

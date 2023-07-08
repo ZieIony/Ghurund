@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     class ColorAttr:public Object {
     public:
-        virtual Color getValue(const Control& owner) const = 0;
+        virtual const Color* resolve(const Theme& theme) const = 0;
 
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -25,8 +25,12 @@ namespace Ghurund::UI {
     public:
         ColorValue(const Color& value):value(value) {}
 
-        virtual Color getValue(const Control& owner) const override {
-            return value;
+        ColorValue(const ColorValue& other) :value(other.value) {}
+
+        ColorValue(ColorValue&& other) noexcept :value(std::move(other.value)) {}
+
+        virtual const Color* resolve(const Theme& theme) const override {
+            return &value;
         }
 
         static const Ghurund::Core::Type& GET_TYPE();
@@ -36,6 +40,18 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
+        ColorValue& operator=(const ColorValue& other) {
+            value = other.value;
+            return *this;
+        }
+
+        ColorValue& operator=(ColorValue&& other) noexcept {
+            if (this == &other)
+                return *this;
+            value = std::move(other.value);
+            return *this;
+        }
 
         virtual ColorValue* clone() const override {
             return ghnew ColorValue(value);
@@ -49,7 +65,11 @@ namespace Ghurund::UI {
     public:
         ColorRef(const ColorKey& key):key(key) {}
 
-        virtual Color getValue(const Control& owner) const override;
+        ColorRef(const ColorRef& other) :key(other.key) {}
+
+        ColorRef(ColorRef&& other) noexcept :key(std::move(other.key)) {}
+
+        virtual const Color* resolve(const Theme& theme) const override;
 
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -58,6 +78,18 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
+        ColorRef& operator=(const ColorRef& other) {
+            key = other.key;
+            return *this;
+        }
+
+        ColorRef& operator=(ColorRef&& other) noexcept {
+            if (this == &other)
+                return *this;
+            key = std::move(other.key);
+            return *this;
+        }
 
         virtual ColorRef* clone() const override {
             return ghnew ColorRef(key);

@@ -2,13 +2,14 @@
 
 #include "Control.h"
 #include "ui/Shape.h"
+#include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 //#include "ui/image/Bitmap.h"
 
 namespace Ghurund::UI {
     class Shadow: public Control {
     private:
-        ColorAttr* color = nullptr;
+        AttrProperty<ColorAttr, Color> color;
         Ghurund::UI::Shape* shape = nullptr;
         float radius = 2.0f;
         //Bitmap* bitmap = nullptr;
@@ -28,16 +29,11 @@ namespace Ghurund::UI {
 
         ~Shadow();
 
-        inline const ColorAttr& getColor() const {
-            return *color;
-        }
-
         inline void setColor(const ColorAttr& color) {
-            delete this->color;
-            this->color = (ColorAttr*)color.clone();
+            this->color.set(color);
         }
 
-        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
+        __declspec(property(put = setColor)) const ColorAttr& Color;
 
         inline Ghurund::UI::Shape* getShape() {
             return shape;

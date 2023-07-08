@@ -40,8 +40,11 @@ namespace Ghurund::UI {
     }
 
     void TextBlock::onDraw(ICanvas& canvas) {
-        textLayout->Color = color->getValue(*this);
-        canvas.drawText(*textLayout, 0, 0);
+        const UI::Color* c = color.get();
+        if (c) {
+            textLayout->Color = *c;
+            canvas.drawText(*textLayout, 0, 0);
+        }
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
@@ -58,10 +61,11 @@ namespace Ghurund::UI {
 
     void TextBlock::dispatchContextChanged() {
         __super::dispatchContextChanged();
-        if (!Theme)
+        auto theme = Theme;
+        if (!theme)
             return;
         if (!TextFormat)
-            textLayout->Format = TextFormat->getValue(*this);
+            textLayout->Format = TextFormat->resolve(*theme);
         if (Size.Width > 0 && Size.Height > 0)
             textLayout->Size = { Size.Width, Size.Height };
     }

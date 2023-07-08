@@ -55,8 +55,6 @@ namespace Ghurund::Core {
         std::function<bool(SenderType& sender, const Type& args)> lambda;
 
     public:
-        EventHandler() {}
-
         EventHandler(std::function<bool(SenderType& sender, const Type& args)> lambda, uint32_t id = ID++) {
             this->lambda = lambda;
         }

@@ -16,6 +16,7 @@ namespace Preview {
         Ghurund::Renderer renderer;
         Ghurund::ParameterManager parameterManager;
 
+        Ghurund::UI::ImageDrawableFactory* imageDrawableFactory;
         LightTheme* lightTheme = nullptr;
         DarkTheme* darkTheme = nullptr;
         LayoutLoader* layoutLoader = nullptr;
@@ -34,9 +35,10 @@ namespace Preview {
         virtual void onInit() override {
             auto& uiFeature = Features.get<UIFeature>();
 
+            imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(ResourceManager);
             layoutLoader = &uiFeature.LayoutLoader;
-            lightTheme = ghnew LightTheme(ResourceManager);
-            darkTheme = ghnew DarkTheme(ResourceManager);
+            lightTheme = ghnew LightTheme(ResourceManager, *imageDrawableFactory);
+            darkTheme = ghnew DarkTheme(ResourceManager, *imageDrawableFactory);
             ThemeType = ThemeType::LIGHT;
             
             ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
@@ -56,6 +58,7 @@ namespace Preview {
             renderer.uninit();
             delete darkTheme;
             delete lightTheme;
+            delete imageDrawableFactory;
         }
 
         virtual void setThemeType(Preview::ThemeType theme) override {

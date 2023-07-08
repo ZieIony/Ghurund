@@ -19,15 +19,11 @@ namespace Ghurund::UI {
             colorView->release();
         }
 
-        inline const ColorAttr& getColor() const {
-            return colorView->Color;
-        }
-
         inline void setColor(const ColorAttr& color) {
             colorView->Color = color;
         }
 
-        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
+        __declspec(property(put = setColor)) const ColorAttr& Color;
 
         inline float getThickness() const {
             return colorView->Size.Width;

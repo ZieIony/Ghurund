@@ -5,123 +5,127 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
-    class SiblingLeftConstraint:public OffsetConstraint {
-    private:
-        const AString name;
+	class SiblingLeftConstraint:public OffsetConstraint {
+	private:
+		const AString name;
 
-    public:
-        SiblingLeftConstraint(const AString& name):name(name) {}
+	public:
+		SiblingLeftConstraint(const AString& name):name(name) {}
 
-        inline const AString& getName() const {
-            return name;
-        }
+		inline const AString& getName() const {
+			return name;
+		}
 
-        __declspec(property(get = getName)) const AString& Name;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
-    };
+		virtual void evaluate() override {
+			value = (*dependencies.begin())->Value + offset;
+		}
+	};
 
-    class SiblingRightConstraint:public OffsetConstraint {
-    private:
-        const AString name;
+	class SiblingRightConstraint:public OffsetConstraint {
+	private:
+		const AString name;
 
-    public:
-        SiblingRightConstraint(const AString& name):name(name) {}
+	public:
+		SiblingRightConstraint(const AString& name):name(name) {}
 
-        inline const AString& getName() const {
-            return name;
-        }
+		inline const AString& getName() const {
+			return name;
+		}
 
-        __declspec(property(get = getName)) const AString& Name;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
-    };
+		virtual void evaluate() override {
+			value = (*dependencies.begin())->Value + offset;
+		}
+	};
 
-    class SiblingTopConstraint:public OffsetConstraint {
-    private:
-        const AString name;
+	class SiblingTopConstraint: public OffsetConstraint {
+	private:
+		const AString name;
 
-    public:
-        SiblingTopConstraint(const AString& name):name(name) {}
+	public:
+		SiblingTopConstraint(const AString& name): name(name) {}
 
-        inline const AString& getName() const {
-            return name;
-        }
+		inline const AString& getName() const {
+			return name;
+		}
 
-        __declspec(property(get = getName)) const AString& Name;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
-    };
+		virtual void evaluate() override {
+			if (!dependencies.Empty)
+				value = (*dependencies.begin())->Value + offset;
+		}
+	};
 
-    class SiblingBottomConstraint:public OffsetConstraint {
-    private:
-        const AString name;
+	class SiblingBottomConstraint:public OffsetConstraint {
+	private:
+		const AString name;
 
-    public:
-        SiblingBottomConstraint(const AString& name):name(name) {}
+	public:
+		SiblingBottomConstraint(const AString& name):name(name) {}
 
-        inline const AString& getName() const {
-            return name;
-        }
+		inline const AString& getName() const {
+			return name;
+		}
 
-        __declspec(property(get = getName)) const AString& Name;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
-    };
+		virtual void evaluate() override {
+			if (!dependencies.Empty)
+				value = (*dependencies.begin())->Value + offset;
+		}
+	};
 
-    class SiblingWidthConstraint:public MinMaxConstraint {
-    private:
-        const AString name;
+	class SiblingWidthConstraint:public MinMaxConstraint {
+	private:
+		const AString name;
 
-    public:
-        SiblingWidthConstraint(const AString& name):name(name) {}
+	public:
+		SiblingWidthConstraint(const AString& name):name(name) {}
 
-        inline const AString& getName() const {
-            return name;
-        }
+		inline const AString& getName() const {
+			return name;
+		}
 
-        __declspec(property(get = getName)) const AString& Name;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
-    };
+		virtual void evaluate() override {
+			if (!dependencies.Empty)
+				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
+	};
 
-    class SiblingHeightConstraint:public MinMaxConstraint {
-    private:
-    const AString name;
-    
-    public:
-        SiblingHeightConstraint(const AString& name): name(name) {}
+	class SiblingHeightConstraint:public MinMaxConstraint {
+	private:
+		const AString name;
 
-        inline const AString& getName() const {
-            return name;
-        }
+	public:
+		SiblingHeightConstraint(const AString& name): name(name) {}
 
-        __declspec(property(get = getName)) const AString& Name;
+		inline const AString& getName() const {
+			return name;
+		}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		__declspec(property(get = getName)) const AString& Name;
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
-    };
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			if (!dependencies.Empty)
+				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
+	};
 }

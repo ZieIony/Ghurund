@@ -385,10 +385,9 @@ namespace Ghurund::UI {
                 canvas.AntialiasingEnabled = false;
                 auto caretRect = getCaretRect();
                 cursorDrawable->Color = caretBackgroundEffect;
-                cursorDrawable->Size = { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top };
                 canvas.save();
                 canvas.translate(caretRect.left, caretRect.top);
-                cursorDrawable->draw(canvas);
+                cursorDrawable->draw(canvas, { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top });
                 canvas.restore();
                 canvas.AntialiasingEnabled = true;
             }

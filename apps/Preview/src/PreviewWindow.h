@@ -63,9 +63,9 @@ namespace Preview {
 			MemoryInputStream stream(data.Data, data.Size);
 			DirectoryPath baseDir(L".");
 			image->load(app->ResourceContext, baseDir, stream);
-			auto imageView = makeShared<ImageView>();
-			imageView->Image = ghnew BitmapDrawable(image);
-			binding->Container->Children = { imageView };
+			auto drawableView = makeShared<DrawableView>();
+			drawableView->Image = ghnew BitmapDrawable(image);
+			binding->Container->Children = { drawableView };
 			binding->Container->invalidate();*/
 		}
 

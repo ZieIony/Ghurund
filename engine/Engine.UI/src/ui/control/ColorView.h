@@ -1,57 +1,51 @@
 #pragma once
 
 #include "Control.h"
+#include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
-    class ColorView:public Control {
-    private:
-        ColorAttr* color = nullptr;
+	class ColorView :public Control {
+	private:
+		inline static const auto DEFAULT_COLOR = ColorRef(Theme::COLOR_CONTROL);
 
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		AttrProperty<ColorAttr, Color> color;
 
-    public:
-        ColorView(const ColorAttr& color = ColorRef(Theme::COLOR_CONTROL)) {
-            Color = color;
-        }
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        ~ColorView() {
-            delete color;
-        }
-
-        inline const ColorAttr& getColor() const {
-            return *color;
-        }
+	public:
+		ColorView(const ColorAttr& color = DEFAULT_COLOR) :color(color) {}
 
         inline void setColor(const ColorAttr& color) {
-            delete this->color;
-            this->color = (ColorAttr*)color.clone();
+            this->color.set(color);
         }
 
-        __declspec(property(get = getColor, put = setColor)) const ColorAttr& Color;
+        __declspec(property(put = setColor)) const ColorAttr& Color;
 
-        virtual void onDraw(ICanvas& canvas);
+		virtual void onThemeChanged() override;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+		virtual void onDraw(ICanvas& canvas);
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-    };
+		static const Ghurund::Core::Type& GET_TYPE();
 
-    class ColorViewBackgroundStyle:public TypedStyle<ColorView> {
+		inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+	};
 
-        virtual void apply(ColorView& control) const;
-    };
+	class ColorViewBackgroundStyle :public TypedStyle<ColorView> {
 
-    class ColorViewControlStyle:public TypedStyle<ColorView> {
+		virtual void apply(ColorView& control) const;
+	};
 
-        virtual void apply(ColorView& control) const;
-    };
+	class ColorViewControlStyle :public TypedStyle<ColorView> {
 
-    class ColorViewAccentStyle:public TypedStyle<ColorView> {
+		virtual void apply(ColorView& control) const;
+	};
 
-        virtual void apply(ColorView& control) const;
-    };
+	class ColorViewAccentStyle :public TypedStyle<ColorView> {
+
+		virtual void apply(ColorView& control) const;
+	};
 }

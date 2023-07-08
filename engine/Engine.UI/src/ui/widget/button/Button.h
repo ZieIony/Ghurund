@@ -5,42 +5,37 @@
 #include "ui/widget/StateIndicator.h"
 
 namespace Ghurund::UI {
-    class Button:public ContentWidget {
-    private:
-        Ghurund::UI::ClickableControl* clickable = nullptr;
-        Ghurund::UI::StateIndicator* state = nullptr;
+	class Button:public ContentWidget {
+	private:
+		Ghurund::UI::ClickableControl* clickable = nullptr;
+		Ghurund::UI::StateIndicator* state = nullptr;
 
-        EventHandler<Control> stateHandler = [this](Control& control) {
-            if (clickable->Pressed) {
-                state->State = IndicatorState::PRESSED;
-            } else if (clickable->Focused || clickable->Hovered) {
-                state->State = IndicatorState::FOCUSED;
-            } else {
-                state->State = IndicatorState::NONE;
-            }
-            return true;
-        };
+		EventHandler<Control> stateHandler = [this](Control& control) {
+			if (clickable && state) {
+				if (clickable->Pressed) {
+					state->State = IndicatorState::PRESSED;
+				} else if (clickable->Focused || clickable->Hovered) {
+					state->State = IndicatorState::FOCUSED;
+				} else {
+					state->State = IndicatorState::NONE;
+				}
+				return true;
+			}
+			return false;
+			};
 
-    protected:
-        virtual void bind() override {
-            __super::bind();
-            clickable = (Ghurund::UI::ClickableControl*)find("clickable");
-            state = (Ghurund::UI::StateIndicator*)find("state");
-            /*clickable->stateChanged += stateHandler;
-            clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
-                return clicked(args);
-            };*/
-        }
+	protected:
+		virtual void bind() override;
 
-    public:
-        Event<Button, MouseClickedEventArgs> clicked = *this;
+	public:
+		Event<Button, MouseClickedEventArgs> clicked = *this;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
+		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+	};
 }

@@ -12,11 +12,11 @@ namespace Ghurund::UI {
         ShapePropertyLoader(ShapeFactory& shapeFactory):shapeFactory(shapeFactory) {}
 
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<Shape*>();
+            return Ghurund::Core::getType<std::unique_ptr<Shape>&>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
-            Shape* shape = shapeFactory.makeShape(text).release();
+            std::unique_ptr<Shape> shape = shapeFactory.makeShape(text);
             property.setRaw(&obj, &shape);
         }
     };

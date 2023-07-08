@@ -10,8 +10,8 @@
 										style="theme://style/StateIndicator_onBackground"/>
 					</Clip>
 				</PaddingContainer>
-				<ImageView name="image"
-						   image="theme://image/checkBox_checked"/>
+				<DrawableView name="image" width="wrap" height="wrap"
+						   drawable="theme://drawable/checkBox_checked"/>
 			</ControlGroup>
 			<Space width="4" height="4"/>
 			<ControlContainer width="Parent.Width" height="wrap"

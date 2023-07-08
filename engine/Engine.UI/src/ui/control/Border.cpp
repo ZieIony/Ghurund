@@ -7,28 +7,32 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Border::GET_TYPE() {
-        static auto PROPERTY_SHAPE_GET = Property<Border, const Ghurund::UI::Shape*>("Shape", &getShape);
-        static auto PROPERTY_SHAPE_SET = Property<Border, std::unique_ptr<Ghurund::UI::Shape>&>("Shape", &setShape);
+        static auto PROPERTY_SHAPE = Property<Border, std::unique_ptr<Ghurund::UI::Shape>&>("Shape", &setShape);
 
         static const auto CONSTRUCTOR = Constructor<Border>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
-            .withProperty(PROPERTY_SHAPE_GET)
-            .withProperty(PROPERTY_SHAPE_SET)
+            .withProperty(PROPERTY_SHAPE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
+    void Border::onThemeChanged() {
+        const UI::Theme* theme = Theme;
+        if (theme)
+            color.resolve(*theme);
+    }
+
     void Border::onDraw(ICanvas& canvas) {
-        uint32_t color = Color.getValue(*this);
-        if (!color || Thickness < 0.1f)
+        const UI::Color* color = this->color.get();
+        if (!color || thickness < 0.1f)
             return;
-        canvas.Color = color;
+        canvas.Color = *color;
         if (shape) {
             canvas.drawShape(*shape, thickness);
         } else {
-            canvas.drawRect(Position.x + Thickness / 2, Position.y + Thickness / 2, Size.Width - Thickness, Size.Height - Thickness, thickness);
+            canvas.drawRect(Position.x + thickness / 2, Position.y + thickness / 2, Size.Width - thickness, Size.Height - thickness, thickness);
         }
     }
     

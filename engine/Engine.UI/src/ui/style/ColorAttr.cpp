@@ -26,8 +26,13 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    Color ColorRef::getValue(const Control& owner) const {
-        return owner.Theme->Colors[key];
+    const Color* ColorRef::resolve(const Theme& theme) const {
+        size_t index = theme.Colors.indexOfKey(key);
+        if (index == theme.Colors.Size) {
+            Logger::log(LogType::WARNING, std::format(_T("Color '{}' not found in the current theme.\n"), key.Value).c_str());
+            return nullptr;
+        }
+        return &theme.Colors.getValue(index);
     }
 }
 

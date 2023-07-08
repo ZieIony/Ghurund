@@ -5,14 +5,10 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Drawable::GET_TYPE() {
-        static auto PROPERTY_SIZE = Property<Drawable, FloatSize&>("Size", (FloatSize & (Drawable::*)()) & getSize, (void(Drawable::*)(const FloatSize&)) & setSize);
-        static auto PROPERTY_PREFERREDSIZE = Property<Drawable, const FloatSize&>("PreferredSize", (FloatSize & (Drawable::*)()) & getPreferredSize);
-        static auto PROPERTY_OWNER = Property<Drawable, Control*>("Owner", (Control * (Drawable::*)()) & getOwner, (void(Drawable::*)(Control*)) & setOwner);
+        static auto PROPERTY_PREFERREDSIZE = Property<Drawable, const FloatSize&>("PreferredSize", &getPreferredSize);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<Drawable>(Ghurund::UI::NAMESPACE_NAME, "Drawable")
-            .withProperty(PROPERTY_SIZE)
             .withProperty(PROPERTY_PREFERREDSIZE)
-            .withProperty(PROPERTY_OWNER)
             .withModifier(TypeModifier::ABSTRACT)
             .withSupertype(__super::GET_TYPE());
 

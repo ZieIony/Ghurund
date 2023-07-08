@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ui/control/SelectableView.h"
-#include "ui/control/ImageView.h"
+#include "ui/control/DrawableView.h"
 #include "ui/widget/Widget.h"
 #include "ui/widget/StateIndicator.h"
 
@@ -13,7 +13,7 @@ namespace Ghurund::UI {
     protected:
         Ghurund::UI::SelectableView* selectable = nullptr;
         Ghurund::UI::StateIndicator* state = nullptr;
-        Ghurund::UI::ImageView* image = nullptr;
+        Ghurund::UI::DrawableView* drawable = nullptr;
 
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
@@ -38,7 +38,7 @@ namespace Ghurund::UI {
             __super::bind();
             selectable = (Ghurund::UI::SelectableView*)find("selectable");
             state = (Ghurund::UI::StateIndicator*)find("state");
-            image = (Ghurund::UI::ImageView*)find("image");
+            drawable = (Ghurund::UI::DrawableView*)find("drawable");
         }
 
     public:
