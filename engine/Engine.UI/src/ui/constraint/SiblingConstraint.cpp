@@ -2,11 +2,12 @@
 #include "SiblingConstraint.h"
 
 #include "ui/constraint/ConstraintGraph.h"
+#include <ui/control/ControlGroup.h>
 
 namespace Ghurund::UI {
 	void SiblingLeftConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Left);
 			graph.add(this);
@@ -21,7 +22,7 @@ namespace Ghurund::UI {
 
 	void SiblingHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Height);
 			graph.add(this);
@@ -36,7 +37,7 @@ namespace Ghurund::UI {
 
 	void SiblingWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Width);
 			graph.add(this);
@@ -51,7 +52,7 @@ namespace Ghurund::UI {
 
 	void SiblingBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Bottom);
 			graph.add(this);
@@ -66,7 +67,7 @@ namespace Ghurund::UI {
 
 	void SiblingTopConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Top);
 			graph.add(this);
@@ -81,7 +82,7 @@ namespace Ghurund::UI {
 
 	void SiblingRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
-		Control* ref = control.Parent->find(name, false);
+		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
 			dependencies.add(&ref->Right);
 			graph.add(this);

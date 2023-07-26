@@ -2,7 +2,7 @@
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>
 #include "ui/control/ControlGroup.h"
-#include "ui/style/WindowsTheme.h"
+#include "ui/theme/WindowsTheme.h"
 #include "ThemeApplication.h"
 
 namespace Preview {
@@ -20,7 +20,7 @@ namespace Preview {
         Ghurund::UI::CheckBox* themeCheckBox = nullptr;
 
     protected:
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -36,16 +36,9 @@ namespace Preview {
 
         __declspec(property(get = getContainer)) ControlGroup* Container;
 
-        void onMeasure(float parentWidth, float parentHeight) {
-            __super::onMeasure(parentWidth, parentHeight);
-            width->evaluate();
-            height->evaluate();
-        }
-
         inline bool onColorClicked(const MouseClickedEventArgs& args, uint32_t color) {
             if (args.Button == MouseButton::LEFT) {
                 colorChanged(color);
-                dispatchThemeChanged();
                 return true;
             }
             return false;

@@ -3,6 +3,10 @@
 #include "ControlList.h"
 #include "ControlParent.h"
 
+namespace Ghurund::Core {
+    class ResourceManager;
+}
+
 namespace Ghurund::UI {
     class ControlGroup:public ControlParent {
     private:
@@ -10,7 +14,7 @@ namespace Ghurund::UI {
         Control* previousReceiver = nullptr;
 
     protected:
-        virtual void onMeasure(float parentWidth, float parentHeight) override;
+        virtual void onMeasure() override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
@@ -76,13 +80,13 @@ namespace Ghurund::UI {
 
         using Control::find;
 
-        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const override;
+        virtual Control* find(const Ghurund::Core::AString& name) override;
 
-        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const override;
+        virtual Control* find(const Ghurund::Core::Type& type) override;
 
         virtual void resolveConstraints(ConstraintGraph& graph) override;
 
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual void validate() const override;

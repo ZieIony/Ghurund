@@ -26,6 +26,6 @@ namespace Ghurund::UI {
             visible = fmod(time, blinkTimeMs) < blinkTimeMs / 2.0f;
         }
 
-        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const override;
+        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
     };
 }

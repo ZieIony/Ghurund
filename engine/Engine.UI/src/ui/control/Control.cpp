@@ -4,14 +4,16 @@
 
 #include "core/input/Mouse.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/UniqueProperty.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/resource/ResourceManager.h"
 #include "ui/Canvas.h"
 #include "ui/Cursor.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/constraint/ParentConstraint.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 #include <regex>
 
@@ -33,10 +35,10 @@ namespace Ghurund::UI {
 		static auto PROPERTY_PARENT = Property<Control, ControlParent*>("Parent", (ControlParent * (Control::*)()) & getParent, (void(Control::*)(ControlParent*)) & setParent);
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
-		static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", (IUIContext * (Control::*)()) & getContext);
-		static auto PROPERTY_STYLE = Property<Control, const Ghurund::UI::Style*>("Style", (Ghurund::UI::Style * (Control::*)()) & getStyle, (void(Control::*)(const Ghurund::UI::Style*)) & setStyle);
-		static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", (FloatPoint(Control::*)()) & getPositionInWindow);
-		static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", (FloatPoint(Control::*)()) & getPositionOnScreen);
+		static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", &getContext);
+		static auto PROPERTY_STYLE = UniqueProperty<Control, std::unique_ptr<StyleAttr>>("Style", &setStyle);
+		static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", &getPositionInWindow);
+		static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", &getPositionOnScreen);
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Control>(Ghurund::UI::NAMESPACE_NAME, "Control")
 			.withProperty(PROPERTY_NAME)
@@ -65,7 +67,6 @@ namespace Ghurund::UI {
 	}
 
 	Control::~Control() {
-		delete style;
 		delete name;
 	}
 
@@ -82,7 +83,28 @@ namespace Ghurund::UI {
 		this->name = ghnew AString(name);
 	}
 
-	void Control::onMeasure(float parentWidth, float parentHeight) {
+	void Control::onStateChanged() {
+		stateChanged();
+		const Ghurund::UI::Theme* theme = Theme;
+		if (theme) {
+			auto s = style.get();
+			if (s)
+				onStyleStateChanged(*s, *theme);
+		}
+	}
+
+	void Control::onThemeChanged() {
+		themeChanged();
+		const Ghurund::UI::Theme* theme = Theme;
+		if (theme) {
+			style.resolve(*theme);
+			auto s = style.get();
+			if (s)
+				s->onThemeChanged(*this);
+		}
+	}
+
+	void Control::onMeasure() {
 		measureWidth();
 		measureHeight();
 		/*[[likely]]
@@ -156,7 +178,7 @@ namespace Ghurund::UI {
 	void Control::clearFocus() {
 		if (!parent)
 			return;
-		Control* f = parent->Focus;
+		Control* f = parent->Focus;	// TODO: why start with parent?
 		if (!f)
 			return;
 		while (f) {
@@ -233,6 +255,8 @@ namespace Ghurund::UI {
 		bool contextChanged = parent && Context != parent->Context;
 		bool themeChanged = parent && Theme != parent->Theme;
 		this->parent = parent;
+		if (Focused)
+			clearFocus();
 		if (contextChanged)
 			dispatchContextChanged();
 		if (themeChanged)
@@ -243,9 +267,8 @@ namespace Ghurund::UI {
 		const UI::Theme* previousTheme = Theme;
 		localTheme = theme;
 		const UI::Theme* currentTheme = Theme;
-		if (previousTheme != currentTheme) {
+		if (previousTheme != currentTheme)
 			dispatchThemeChanged();
-		}
 	}
 
 	const Theme* Control::getTheme() const {
@@ -254,6 +277,22 @@ namespace Ghurund::UI {
 		if (parent)
 			return parent->Theme;
 		return nullptr;
+	}
+
+	void Control::setStyle(std::unique_ptr<StyleAttr> style) {
+		if (style.get() != this->style) {
+			this->style.set(std::move(style));
+			const Ghurund::UI::Theme* theme = Theme;
+			if (theme) {
+				this->style.resolve(*theme);
+				auto s = this->style.get();
+				if (s) {
+					s->apply(*this);
+					s->onThemeChanged(*this);
+					onStyleStateChanged(*s, *theme);
+				}
+			}
+		}
 	}
 
 	IUIContext* Control::getContext() {
@@ -322,14 +361,6 @@ namespace Ghurund::UI {
 		canvas.restore();
 	}
 
-	Control* Control::find(const AString& name, bool deep) const {
-		return nullptr;
-	}
-
-	Control* Control::find(const Ghurund::Core::Type& type, bool deep) const {
-		return nullptr;
-	}
-
 	void Control::setConstraints(const ConstraintSet& constraints) {
 		if (constraints.left != nullptr && constraints.width != nullptr && constraints.right != nullptr) {
 			width = constraints.width.get();
@@ -341,8 +372,8 @@ namespace Ghurund::UI {
 				width = constraints.width.get();
 				right.set(ghnew LeftWidthConstraint(left, width));
 			} else if (constraints.right != nullptr) {
-				width.set(ghnew LeftRightConstraint(left, right));
 				right = constraints.right.get();
+				width.set(ghnew LeftRightConstraint(left, right));
 			} else {
 				width.set(ghnew WrapWidthConstraint());
 				right.set(ghnew LeftWidthConstraint(left, width));
@@ -521,14 +552,8 @@ namespace Ghurund::UI {
 			});
 	}
 
-	void Control::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
+	void Control::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
 		loader.loadProperties(*this, xml);
-
-		if (!Style && loader.Theme->Styles.containsKey(StyleKey(Type.Name))) {
-			auto s = StyleRef(StyleKey(Type.Name));
-			Style = &s;
-		}
-
 		loadConstraints(loader, xml);
 	}
 

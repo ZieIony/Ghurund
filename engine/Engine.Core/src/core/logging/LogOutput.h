@@ -8,7 +8,10 @@
 #include <functional>
 
 namespace Ghurund::Core {
-    __interface LogOutput {
+    class LogOutput {
+    public:
+        virtual ~LogOutput() = 0 {}
+
         virtual void log(const Log& log) = 0;
     };
 

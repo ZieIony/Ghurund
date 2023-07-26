@@ -1,28 +1,51 @@
 #pragma once
 
-#include "ui/control/ControlContainer.h"
+#include "ui/control/ControlContainerBase.h"
+#include "ui/style/LayoutAttr.h"
+#include "ui/style/PointerAttrProperty.h"
 
 namespace Ghurund::UI {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class Widget:public ControlContainer {
-    private:
-        AString layoutPath;
+	class Widget:public ControlContainerBase {
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+		PointerAttrProperty<LayoutAttr, Control> layout;
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		void updateLayout();
 
-        virtual void onThemeChanged() override;
+		virtual void onThemeChanged() override;
 
-        virtual void bind() {}
+		virtual void onLayoutChanged() {}
 
-    public:
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+	public:
+		inline static const Ghurund::Core::Type& TYPE = Widget::GET_TYPE();
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline void setLayout(std::unique_ptr<LayoutAttr> layout) {
+			this->layout.set(std::move(layout));
+			updateLayout();
+		}
+
+		__declspec(property(put = setLayout)) LayoutAttr* Layout;
+
+		using Control::find;
+
+		virtual Control* find(const Ghurund::Core::AString& name) override;
+
+		virtual Control* find(const Ghurund::Core::Type& type) override;
+
+		void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override {
+			Control::load(loader, resourceManager, xml);
+			if (style == nullptr)
+				Style = std::move(std::make_unique<StyleRef>(StyleKey(Type.Name)));
+			if (layout == nullptr)
+				Layout = std::make_unique<LayoutRef>(LayoutKey(Type.Name));
+		}
+
+	};
 }

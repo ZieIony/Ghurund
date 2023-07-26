@@ -95,8 +95,8 @@ namespace Ghurund::UI {
         return false;
     }
     
-    void LinearLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void LinearLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         auto orientationAttr = xml.FindAttribute("orientation");
         if (orientationAttr)
             Orientation = strcmp(orientationAttr->Value(), "horizontal") == 0 ? Orientation::HORIZONTAL : Orientation::VERTICAL;

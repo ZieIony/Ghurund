@@ -3,26 +3,19 @@
 
 #include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/drawable/InvalidImageDrawable.h"
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::UI::ImageScaleMode>() {
-        static Type TYPE = Type("ImageScaleMode", sizeof(Ghurund::UI::ImageScaleMode));
-        return TYPE;
-    }
-}
+#include "core/reflection/UniqueProperty.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& DrawableView::GET_TYPE() {
-        static auto PROPERTY_IMAGE = Property<DrawableView, std::unique_ptr<Ghurund::UI::DrawableAttr>&>("Drawable", & setDrawable);
-        //static auto PROPERTY_TINT = Property<DrawableView, std::unique_ptr<ColorAttr>>("Tint", &getTint, &setTint);
+        static auto PROPERTY_DRAWABLE = UniqueProperty<DrawableView, std::unique_ptr<Ghurund::UI::DrawableAttr>>("Drawable", (void(DrawableView::*)(std::unique_ptr<Ghurund::UI::DrawableAttr>)) & setDrawable);
+        static auto PROPERTY_TINT = UniqueProperty<DrawableView, std::unique_ptr<ColorAttr>>("Tint", (void(DrawableView::*)(std::unique_ptr<Ghurund::UI::ColorAttr>)) &setTint);
         static auto PROPERTY_SCALEMODE = Property<DrawableView, ImageScaleMode>("ScaleMode", &setScaleMode);
 
         static const auto CONSTRUCTOR = Constructor<DrawableView>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableView>(NAMESPACE_NAME, GH_STRINGIFY(DrawableView))
-            .withProperty(PROPERTY_IMAGE)
+            .withProperty(PROPERTY_DRAWABLE)
             .withProperty(PROPERTY_SCALEMODE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
@@ -31,17 +24,18 @@ namespace Ghurund::UI {
     }
 
     void DrawableView::onThemeChanged() {
-        const UI::Theme* theme = Theme;
-        if (theme) {
-            tint.resolve(*theme);
-            drawable.resolve(*theme);
-        }
+        updateProperties();
     }
 
-    /*void DrawableView::onMeasure(float parentWidth, float parentHeight) {
-        measuredSize.Width = drawable ? (float)drawable->PreferredSize.Width : 0.0f;
-        measuredSize.Height = drawable ? (float)drawable->PreferredSize.Height : 0.0f;
-    }*/
+    void DrawableView::onMeasure() {
+        const Ghurund::UI::Drawable* d = drawable.get();
+        if (d) {
+            measuredSize.Width = d->PreferredSize.Width;
+            measuredSize.Height = d->PreferredSize.Height;
+        } else {
+            measuredSize = { 0, 0 };
+        }
+    }
 
     void DrawableView::onDraw(ICanvas& canvas) {
         auto drawable = this->drawable.get();
@@ -110,46 +104,12 @@ namespace Ghurund::UI {
         canvas.clipRect(0, 0, Size.Width, Size.Height);
         canvas.save();
         canvas.translate(dst.left, dst.top);
-        //if (tint.get())
-            //drawable->Tint = *tint.get();
-        drawable->draw(canvas, { dst.right - dst.left, dst.bottom - dst.top });
+        if (tint.get()) {
+            drawable->draw(canvas, { dst.right - dst.left, dst.bottom - dst.top }, *tint.get());
+        } else {
+            drawable->draw(canvas, { dst.right - dst.left, dst.bottom - dst.top }, Color(0));
+        }
         canvas.restore();
         canvas.restoreClipRect();
-    }
-
-    void DrawableViewStyle::onStateChanged(Control& control) const {
-        DrawableView& drawableView = ((DrawableView&)control);
-        /*if (control.Enabled) {
-            drawableView.Alpha = 1.0f;
-        } else {
-            drawableView.Alpha = 0.38f;
-        }*/
-    }
-
-    void DrawableViewOnBackgroundStyle::onStateChanged(Control& control) const {
-        DrawableView& drawableView = ((DrawableView&)control);
-        if (control.Enabled) {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND));
-        } else {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
-        }
-    }
-
-    void DrawableViewOnAccentStyle::onStateChanged(Control& control) const {
-        DrawableView& drawableView = ((DrawableView&)control);
-        if (control.Enabled) {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONACCENT));
-        } else {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONACCENT));
-        }
-    }
-
-    void DrawableViewAccentStyle::onStateChanged(Control& control) const {
-        DrawableView& drawableView = ((DrawableView&)control);
-        if (control.Enabled) {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
-        } else {
-            drawableView.Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
-        }
     }
 }

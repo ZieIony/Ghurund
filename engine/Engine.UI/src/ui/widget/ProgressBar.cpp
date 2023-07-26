@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "ProgressBar.h"
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {

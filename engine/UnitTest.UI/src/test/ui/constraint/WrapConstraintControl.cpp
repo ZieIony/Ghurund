@@ -24,6 +24,7 @@ namespace UnitTest {
     TEST_CLASS(WrapConstraintControlTest) {
 public:
     TEST_CLASS_INITIALIZE(classInitialize) {
+        Pointer::reservePointers(500);
         Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
         TestLogOutput::initReportHook();
     }

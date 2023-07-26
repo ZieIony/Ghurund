@@ -28,7 +28,6 @@ namespace Samples {
         RootView* rootView = nullptr;
         UIContext* uiContext = nullptr;
         Canvas* canvas = nullptr;
-        ResourceManager* resourceManager = nullptr;
         Gdi gdi;
 
     protected:

@@ -111,11 +111,11 @@ namespace Ghurund::UI {
         return nextY;
     }
 
-    const FloatSize FlowLayoutManager::measure(float parentWidth, float parentHeight) {
+    const FloatSize FlowLayoutManager::measure() {
         for (Control* c : group->Children) {
             if (!c->Visible)
                 continue;
-            c->measure(parentWidth, parentHeight);
+            c->measure();
         }
 
         FloatSize measuredSize = { 0,0 };

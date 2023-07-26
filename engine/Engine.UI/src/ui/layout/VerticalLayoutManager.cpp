@@ -6,7 +6,7 @@ namespace Ghurund::UI {
         while (firstTop + scroll.y > 0 && indexTop > 0) {
             indexTop--;
             Control* control = provider->getChild(indexTop);
-            control->measure(group->Size.Width, group->Size.Height);
+            //control->measure(group->Size.Width, group->Size.Height);
             control->layout(0, firstTop - control->MeasuredSize.Height, group->Size.Width, control->MeasuredSize.Height);
             group->Children.insert(0, control);
             firstTop = control->Position.y;
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
     void VerticalLayoutManager::addBottom() {
         while (lastBottom + scroll.y < group->Size.Height && provider->getChildCount()>indexBottom) {
             Control* control = provider->getChild(indexBottom);
-            control->measure(group->Size.Width, group->Size.Height);
+            //control->measure(group->Size.Width, group->Size.Height);
             control->layout(0, lastBottom, group->Size.Width, control->MeasuredSize.Height);
             group->Children.add(control);
             control->release();
@@ -68,8 +68,8 @@ namespace Ghurund::UI {
         }
     }
 
-    const FloatSize VerticalLayoutManager::measure(float parentWidth, float parentHeight) {
-        return { parentWidth, parentHeight };
+    const FloatSize VerticalLayoutManager::measure() {
+        return { 0, 0 };
     }
 
     void VerticalLayoutManager::layout(float x, float y, float width, float height) {

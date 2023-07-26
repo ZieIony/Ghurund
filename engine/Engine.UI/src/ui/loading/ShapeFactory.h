@@ -6,7 +6,10 @@
 #include <memory>
 
 namespace Ghurund::UI {
-    __interface ShapeFactory {
-        std::unique_ptr<UI::Shape> makeShape(const AString& desc);
+    class ShapeFactory {
+    public:
+        virtual ~ShapeFactory() = 0 {}
+
+        virtual std::unique_ptr<UI::Shape> makeShape(const AString& desc) = 0;
     };
 }

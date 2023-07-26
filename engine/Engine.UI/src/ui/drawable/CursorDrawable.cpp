@@ -2,11 +2,12 @@
 #include "CursorDrawable.h"
 
 #include "ui/control/Control.h"
+#include "ui/Color.h"
 
 namespace Ghurund::UI {
-    void CursorDrawable::onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const {
+    void CursorDrawable::draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {
         if (visible) {
-            canvas.Color = color;
+            canvas.Color = lerp(tint, color, tint.A);
             canvas.fillRect(0, 0, size.Width, size.Height);
         }
         owner->repaint();

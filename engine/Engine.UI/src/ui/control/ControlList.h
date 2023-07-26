@@ -108,5 +108,26 @@ namespace Ghurund::UI {
         inline Control* operator[](size_t i)const {
             return children[i];
         }
+
+        inline Control* find(const Ghurund::Core::AString& name) {
+            for (Control* child : children) {
+                if (child->Name && child->Name->operator==(name))
+                    return child;
+            }
+            return nullptr;
+        }
+
+        template<class T>
+        inline T* find() const {
+            return (T*)find(T::GET_TYPE());
+        }
+
+        inline Control* find(const Ghurund::Core::Type& type) const {
+            for (Control* child : children) {
+                if (child->Type == type)
+                    return child;
+            }
+            return nullptr;
+        }
     };
 }

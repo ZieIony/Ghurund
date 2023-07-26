@@ -63,7 +63,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -100,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -219,6 +219,7 @@
     <ClInclude Include="src\core\reflection\TypeBuilder.h" />
     <ClInclude Include="src\core\reflection\TypeMember.h" />
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
+    <ClInclude Include="src\core\reflection\UniqueProperty.h" />
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
@@ -259,7 +260,6 @@
   <ItemGroup>
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
-    <ClCompile Include="src\core\resource\Loader.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
@@ -281,6 +281,7 @@
     <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
     <ClCompile Include="src\core\reflection\TypeMember.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
+    <ClCompile Include="src\core\resource\Loader.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />

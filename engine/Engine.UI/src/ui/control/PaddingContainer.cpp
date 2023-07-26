@@ -15,7 +15,7 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void PaddingContainer::onMeasure(float parentWidth, float parentHeight) {
+    void PaddingContainer::onMeasure() {
         /*if (Child) {
             Child->measure(
                 (preferredSize.width.Type == PreferredSize::Type::PIXELS ? preferredSize.width.Value : parentWidth) - padding.left - padding.right,
@@ -49,8 +49,8 @@ namespace Ghurund::UI {
         }
     }
 
-    void PaddingContainer::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void PaddingContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         auto paddingAttr = xml.FindAttribute("padding");
         if (paddingAttr) {
             std::string str = paddingAttr->Value();

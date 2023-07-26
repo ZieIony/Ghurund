@@ -2,7 +2,7 @@
 #include "ClickResponseView.h"
 
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {

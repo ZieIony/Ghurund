@@ -23,7 +23,7 @@ namespace Ghurund::UI {
         bool reverseLayout = false;
         Spacing spacing;
 
-        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure() override;
 
         virtual void layout(float x, float y, float width, float height) override;
     };

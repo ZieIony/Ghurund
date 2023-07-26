@@ -3,46 +3,48 @@
 
 #include "core/string/TextConversionUtils.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/reflection/UniqueProperty.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/style/Style.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
 
-    const Ghurund::Core::Type& Widget::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Widget>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Widget))
-            .withModifiers(TypeModifier::ABSTRACT)
-            .withSupertype(__super::GET_TYPE());
+	const Ghurund::Core::Type& Widget::GET_TYPE() {
+		static auto PROPERTY_IMAGE = UniqueProperty<Widget, std::unique_ptr<Ghurund::UI::LayoutAttr>>("Layout", &setLayout);
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Widget>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Widget))
+			.withProperty(PROPERTY_IMAGE)
+			.withModifiers(TypeModifier::ABSTRACT)
+			.withSupertype(__super::GET_TYPE());
 
-        return TYPE;
-    }
+		return TYPE;
+	}
 
-    void Widget::onThemeChanged() {
-        if (Context) {
-            AString localPath = layoutPath;
-            if (layoutPath.Empty) {
-                size_t index = Theme->Layouts.indexOfKey(&Type);
-                if (index != Theme->Layouts.Size)
-                    localPath = Theme->Layouts.getValue(index).Data;
-            }
-            SharedPointer<Control> control(Context->ResourceManager.load<Control>(convertText<char, wchar_t>(localPath), nullptr, LoadOption::DONT_CACHE));
-            Child = control.get();
-            bind();
-        }
-        if (!style) {
-            auto s = StyleRef(StyleKey(Type.Name));
-            Style = &s;
-        }
-        __super::onThemeChanged();
-    }
+	void Widget::updateLayout() {
+		const UI::Theme* theme = Theme;
+		if (theme) {
+			this->layout.resolve(*theme);
+			if (child != this->layout.get()) {
+				setChild(this->layout.get());
+				onLayoutChanged();
+			}
+		}
+	}
 
-    void Widget::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        Control::load(loader, xml);
+	void Widget::onThemeChanged() {
+		updateLayout();
+		__super::onThemeChanged();
+	}
 
-        SharedPointer<Control> control;
-        auto layoutAttr = xml.FindAttribute("layout");
-        if (layoutAttr) {
-            layoutPath = layoutAttr->Value();
-        }
-    }
+	Control* Widget::find(const AString& name) {
+		if (this->Name && this->Name->operator==(name))
+			return this;
+		return nullptr;
+	}
+
+	Control* Widget::find(const Ghurund::Core::Type& type) {
+		if (Type == type)
+			return this;
+		return nullptr;
+	}
 }

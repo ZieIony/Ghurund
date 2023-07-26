@@ -7,7 +7,7 @@ namespace Ghurund::UI {
 	class PointerAttrProperty {
 	private:
 		AttrType* attr = nullptr;
-		const ValueType* value = nullptr;
+		ValueType* value = nullptr;
 
 		PointerAttrProperty(const PointerAttrProperty& other) = delete;
 		PointerAttrProperty(PointerAttrProperty&& other) = delete;
@@ -30,14 +30,17 @@ namespace Ghurund::UI {
 
 		inline void set(std::unique_ptr<AttrType> attr) {
 			delete this->attr;
-			if (value)
-				value->release();
+			safeRelease(value);
 			if (attr)
 				this->attr = attr.release();
 		}
 
-		inline const ValueType* get() const {
+		inline ValueType* get() const {
 			return value;
+		}
+
+		inline const bool operator==(const AttrType* attr) const {
+			return this->attr == attr;
 		}
 	};
 

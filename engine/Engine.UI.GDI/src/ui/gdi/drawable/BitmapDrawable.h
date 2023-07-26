@@ -1,11 +1,11 @@
 #pragma once
 
 #include "ui/Canvas.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/gdi/image/Bitmap.h"
 
 namespace Ghurund::UI::GDI {
-    class BitmapDrawable:public ImageDrawable {
+    class BitmapDrawable:public Drawable {
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -22,7 +22,7 @@ namespace Ghurund::UI::GDI {
 
         ~BitmapDrawable();
 
-        virtual void onDraw(ICanvas& canvas, const FloatSize& size) const override;
+        virtual void draw(ICanvas& canvas, const FloatSize& size, const Ghurund::UI::Color& tint) const override;
 
         virtual BitmapDrawable* clone() const override {
             return ghnew BitmapDrawable(image);

@@ -34,8 +34,8 @@ namespace Ghurund::UI {
         }
     }
 
-    void VerticalScrollBar::bind() {
-        __super::bind();
+    void VerticalScrollBar::onLayoutChanged() {
+        __super::onLayoutChanged();
         topButton = (Button*)find("startButton");
         barButton = (Button*)find("barButton");
         clickableTrack = (ClickableControl*)find("clickableTrack");

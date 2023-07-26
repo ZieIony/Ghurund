@@ -2,42 +2,70 @@
 
 #include "Widget.h"
 #include "core/Observable.h"
+#include <ui/control/ControlContainer.h>
 
 namespace Ghurund::UI {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class ContentWidget:public Widget {
-    private:
-        ControlContainer* container = nullptr;
+	class ContentWidget:public Widget {
+	private:
+		ControlContainer* container = nullptr;
+		Control* content = nullptr;
 
-    protected:
-        virtual void onChildChanged() override {
-            if (Child) {
-                container = (Ghurund::UI::ControlContainer*)ControlContainer::find("content");
-                if (container)
-                    container->Child = content.Value.get();
-            } else {
-                container = nullptr;
-            }
-        }
+		inline void updateContent() {
+			if (container) {
+				container->Child = content;
+			} else if (content) {
+				content->Parent = nullptr;
+			}
+		}
 
-    public:
-        Observable<SharedPointer<Control>> content;
+	protected:
+		virtual void onLayoutChanged() override {
+			if (container) {
+				container->Child = nullptr;
+				container->release();
+				container = nullptr;
+			}
+			Control* layoutControl = layout.get();
+			if (layoutControl)
+				setPointer(container, (Ghurund::UI::ControlContainer*)layoutControl->find("container"));
+			updateContent();
+		}
 
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+	public:
+		~ContentWidget() {
+			if (container)
+				container->release();
+			if (content)
+				content->release();
+		}
 
-        using Control::find;
+		inline void setContent(Control* content) {
+			setPointer(this->content, content);
+			updateContent();
+		}
 
-        virtual Ghurund::UI::Control* find(const Ghurund::Core::AString& name, bool deep = true) const override;
+		inline Control* getContent() {
+			return content;
+		}
 
-        virtual Ghurund::UI::Control* find(const Ghurund::Core::Type& type, bool deep = true) const override;
+		__declspec(property(get = getContent, put = setContent)) Control* Content;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+		virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		using Control::find;
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
+		virtual Control* find(const Ghurund::Core::AString& name) override;
+
+		virtual Control* find(const Ghurund::Core::Type& type) override;
+
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+	};
 }

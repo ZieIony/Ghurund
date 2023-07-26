@@ -25,17 +25,24 @@ namespace Ghurund::UI {
 			};
 
 	protected:
-		virtual void bind() override;
-
-	public:
-		Event<Button, MouseClickedEventArgs> clicked = *this;
-
-		static const Ghurund::Core::Type& GET_TYPE();
+		virtual void onLayoutChanged() override;
 
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
 		}
 
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
 		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+
+		Event<Button, MouseClickedEventArgs> clicked = *this;
+
+		~Button() {
+			if (clickable)
+				clickable->release();
+			if (state)
+				state->release();
+		}
 	};
 }

@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "TabContainer.h"
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     Tab* TabItemAdapter::makeControl() const {

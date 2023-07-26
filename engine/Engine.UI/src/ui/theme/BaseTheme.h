@@ -17,11 +17,14 @@
 #include "ui/widget/button/CheckBox.h"
 #include "ui/widget/button/RadioButton.h"
 #include "ui/image/Bitmap.h"
-#include "ui/loading/ImageDrawableFactory.h"
+#include "ui/loading/DrawableFactory.h"
+#include <ui/control/DrawableViewStyle.h>
 
 namespace Ghurund::UI {
 	class BaseTheme:public Ghurund::UI::Theme {
 	private:
+		Ghurund::Core::ResourceManager& resourceManager;
+		
 		CheckBoxStyle checkBoxStyle;
 		ExpandableCheckBoxStyle expandableCheckBoxStyle;
 		RadioButtonStyle radioButtonStyle;
@@ -56,9 +59,7 @@ namespace Ghurund::UI {
 		StateIndicatorOnBackgroundStyle stateIndicatorOnBackgroundStyle;
 		StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
-		void loadImage(ImageDrawableFactory& drawableFactory, const DrawableKey& key, const Ghurund::Core::FilePath& path);
-
 	public:
-		BaseTheme(Ghurund::Core::ResourceManager& resourceManager, ImageDrawableFactory& drawableFactory);
+		BaseTheme(Ghurund::Core::ResourceManager& resourceManager, DrawableFactory& drawableFactory);
 	};
 }

@@ -12,9 +12,8 @@
 #include "core/string/StringView.h"
 #include "ui/Alignment.h"
 #include "ui/control/Control.h"
-#include "ui/drawable/ImageDrawable.h"
 #include "ui/loading/ShapeFactory.h"
-#include "ui/loading/ImageDrawableFactory.h"
+#include "ui/loading/DrawableFactory.h"
 #include "ui/loading/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/style/ColorAttr.h"
@@ -33,9 +32,8 @@ namespace Ghurund::UI {
 	class LayoutLoader :public Ghurund::Core::Loader {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		Theme* theme = nullptr;
 		ShapeFactory& shapeFactory;
-		ImageDrawableFactory& imageDrawableFactory;
+		DrawableFactory& drawableFactory;
 		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
@@ -49,22 +47,12 @@ namespace Ghurund::UI {
 		LayoutLoader(
 			Ghurund::Core::ResourceManager& resourceManager,
 			ShapeFactory& shapeFactory,
-			ImageDrawableFactory& imageDrawableFactory,
+			DrawableFactory& drawableFactory,
 			TextFormatFactory& textFormatFactory,
 			ConstraintFactory& constraintFactory
 		);
 
 		virtual ~LayoutLoader() {}
-
-		inline Theme* getTheme() {
-			return theme;
-		}
-
-		inline void setTheme(Theme* theme) {
-			this->theme = theme;
-		}
-
-		__declspec(property(get = getTheme, put = setTheme)) Theme* Theme;
 
 		inline Ghurund::Core::ResourceManager& getResourceManager() {
 			return resourceManager;

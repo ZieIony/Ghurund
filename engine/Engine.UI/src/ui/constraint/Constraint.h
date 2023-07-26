@@ -101,7 +101,7 @@ namespace Ghurund::UI {
     class MinMaxConstraint:public RatioConstraint {
     protected:
         float min = std::numeric_limits<float>::lowest(), max = std::numeric_limits<float>::max();
-        float baseInitial;
+        float baseInitial = 0.0f;
 
     public:
         MinMaxConstraint() {}

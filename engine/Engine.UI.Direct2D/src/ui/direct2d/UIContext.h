@@ -27,9 +27,8 @@ namespace Ghurund::UI::Direct2D {
             ID2D1Factory6& d2dFactory,
             IDWriteFactory& dwriteFactory,
             ID2D1DeviceContext5& deviceContext,
-            Ghurund::Core::Window& window,
-            Ghurund::Core::ResourceManager& manager
-        ):IUIContext(window, manager), d2dFactory(d2dFactory), dwriteFactory(dwriteFactory), deviceContext(deviceContext) {}
+            Ghurund::Core::Window& window
+        ):IUIContext(window), d2dFactory(d2dFactory), dwriteFactory(dwriteFactory), deviceContext(deviceContext) {}
 
         inline ID2D1DeviceContext5& getDeviceContext() {
             return deviceContext;

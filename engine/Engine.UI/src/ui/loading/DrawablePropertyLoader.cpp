@@ -3,7 +3,7 @@
 
 #include "ui/drawable/InvalidImageDrawable.h"
 #include "ui/style/DrawableAttr.h"
-#include <ui/style/Theme.h>
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
 	void DrawablePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const AString& text) const {
@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 			attr.reset(ghnew DrawableRef(imageKey));
 		} else {
 			FilePath path = convertText<char, wchar_t>(s);
-			ImageDrawable* drawable = drawableFactory.makeDrawable(path);
+			Drawable* drawable = drawableFactory.makeDrawable(path);
 			attr.reset(ghnew DrawableValue(drawable));
 			drawable->release();
 		}

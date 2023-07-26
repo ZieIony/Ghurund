@@ -48,15 +48,15 @@ namespace Ghurund::UI {
 
         virtual bool focusRight() override;
 
-        virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(parentWidth, parentHeight);
+        virtual void onMeasure() override {
+            measuredSize = layoutManager.measure();
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {
             layoutManager.layout(x, y, width, height);
         }
 
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
 
         static const Ghurund::Core::Type& GET_TYPE();
 

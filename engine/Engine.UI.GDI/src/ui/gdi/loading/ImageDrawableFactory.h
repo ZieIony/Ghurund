@@ -11,12 +11,12 @@
 #include "ui/style/Theme.h"
 
 namespace Ghurund::UI::GDI {
-    class ImageDrawableFactory:public Ghurund::UI::ImageDrawableFactory {
+    class DrawableFactory:public Ghurund::UI::DrawableFactory {
     private:
         ResourceManager& resourceManager;
 
     public:
-        ImageDrawableFactory(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DrawableFactory(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         virtual ImageDrawable* makeDrawable(const FilePath& path) override {
             auto formatSupported = [&path](const ResourceFormat& format) {

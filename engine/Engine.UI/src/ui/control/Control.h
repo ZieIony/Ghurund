@@ -9,6 +9,7 @@
 #include "core/input/EventConsumer.h"
 #include "ui/Cursor.h"
 #include "ui/UIContext.h"
+#include "ui/style/AttrProperty.h"
 #include "ui/style/StyleAttr.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ConstraintSet.h"
@@ -19,6 +20,10 @@
 
 namespace tinyxml2 {
 	class XMLElement;
+}
+
+namespace Ghurund::Core {
+	class ResourceManager;
 }
 
 namespace Ghurund::UI {
@@ -65,7 +70,11 @@ namespace Ghurund::UI {
 		bool needsLayout = true;
 
 		Theme* localTheme = nullptr;
-		const StyleAttr* style = nullptr;
+		NullableAttrProperty<StyleAttr, Style> style;
+
+		virtual void onStyleStateChanged(const Style& style, const Ghurund::UI::Theme& theme) {
+			style.onStateChanged(*this);
+		}
 
 		//List<Binding> bindings;
 
@@ -76,31 +85,15 @@ namespace Ghurund::UI {
 		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
 		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
 
-		virtual void onStateChanged() {
-			stateChanged();
-			const Ghurund::UI::Theme* theme = Theme;
-			if (style && theme) {
-				auto s = style->resolve(*theme);
-				if (s)
-					s->onStateChanged(*this);
-			}
-		}
+		virtual void onStateChanged();
 
-		virtual void onThemeChanged() {
-			themeChanged();
-			const Ghurund::UI::Theme* theme = Theme;
-			if (style && theme) {
-				auto s = style->resolve(*theme);
-				if (s)
-					s->onThemeChanged(*this);
-			}
-		}
+		virtual void onThemeChanged();
 
 		virtual void onContextChanged() {
 			contextChanged();
 		}
 
-		virtual void onMeasure(float parentWidth, float parentHeight);
+		virtual void onMeasure();
 
 		virtual void onLayout(float x, float y, float width, float height) {}
 
@@ -310,26 +303,9 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getContext)) IUIContext* Context;
 
-		inline void setStyle(const StyleAttr* style) {
-			if (this->style)
-				delete this->style;
-			this->style = (StyleAttr*)style->clone();
-			const Ghurund::UI::Theme* theme = Theme;
-			if (style && theme) {
-				auto s = style->resolve(*theme);
-				if (s) {
-					s->apply(*this);
-					s->onThemeChanged(*this);
-					s->onStateChanged(*this);
-				}
-			}
-		}
+		void setStyle(std::unique_ptr<StyleAttr> style);
 
-		inline const StyleAttr* getStyle() const {
-			return style;
-		}
-
-		__declspec(property(get = getStyle, put = setStyle)) const Ghurund::UI::StyleAttr* Style;
+		__declspec(property(put = setStyle)) std::unique_ptr<StyleAttr> Style;
 
 		virtual void dispatchStateChanged();
 
@@ -341,9 +317,8 @@ namespace Ghurund::UI {
 
 		virtual void invalidate();
 
-		inline void measure(float parentWidth, float parentHeight) {
-			//if (needsLayout || preferredSize.width.Type != PreferredSize::Type::PIXELS || preferredSize.height.Type != PreferredSize::Type::PIXELS)
-			onMeasure(parentWidth, parentHeight);
+		inline void measure() {
+			onMeasure();
 		}
 
 		inline void measureWidth() {
@@ -360,14 +335,18 @@ namespace Ghurund::UI {
 
 		void draw(ICanvas& canvas);
 
-		virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const;
-
-		template<class T>
-		inline T* find(bool deep = true) const {
-			return (T*)find(T::GET_TYPE(), deep);
+		virtual Control* find(const Ghurund::Core::AString& name) {
+			return (this->name && this->name->operator==(name)) ? this : nullptr;
 		}
 
-		virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const;
+		template<class T>
+		inline T* find() {
+			return (T*)find(T::GET_TYPE());
+		}
+
+		virtual Control* find(const Ghurund::Core::Type& type) {
+			return (Type == type) ? this : nullptr;
+		}
 
 		inline Constraint& getLeft() {
 			return *left.get();
@@ -427,7 +406,7 @@ namespace Ghurund::UI {
 
 		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-		virtual void load(Ghurund::UI::LayoutLoader& loader, const tinyxml2::XMLElement& xml);
+		virtual void load(Ghurund::UI::LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml);
 
 		static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
 

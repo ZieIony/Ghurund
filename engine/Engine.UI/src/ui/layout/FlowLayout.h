@@ -78,8 +78,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getOrientation, put = setOrientation)) Orientation Orientation;
 
-        virtual void onMeasure(float parentWidth, float parentHeight) override {
-            measuredSize = layoutManager.measure(parentWidth, parentHeight);
+        virtual void onMeasure() override {
+            measuredSize = layoutManager.measure();
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {

@@ -28,7 +28,7 @@ namespace Ghurund::UI {
             while (firstLeft + scroll.x > 0 && indexFirst > 0) {
                 indexFirst--;
                 Control* control = provider->getChild(indexFirst);
-                control->measure(parentWidth, parentHeight);
+                //control->measure(parentWidth, parentHeight);
                 control->layout(firstLeft - control->MeasuredSize.Width, 0, control->MeasuredSize.Width, group->Size.Height);
                 group->Children.insert(0, control);
                 firstLeft = control->Position.x;
@@ -40,7 +40,7 @@ namespace Ghurund::UI {
         void addRight(float parentWidth, float parentHeight) {
             while (lastRight + scroll.x < group->Size.Width && provider->getChildCount()>indexLast) {
                 Control* control = provider->getChild(indexLast);
-                control->measure(parentWidth, parentHeight);
+                //control->measure(parentWidth, parentHeight);
                 control->layout(lastRight, 0, control->MeasuredSize.Width, group->Size.Height);
                 group->Children.add(control);
                 control->release();
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
             }
         }
 
-        virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) {
+        virtual const Ghurund::Core::FloatSize measure() {
             Ghurund::Core::FloatSize measuredSize = { 0,0 };
             return measuredSize;
         }

@@ -211,7 +211,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        Map<Key, Value>& operator=(Map<Key, Value>&& other) {
+        Map<Key, Value>& operator=(Map<Key, Value>&& other) noexcept {
             if (this == &other)
                 return *this;
             for (size_t i = 0; i < size; i++)

@@ -1,9 +1,11 @@
 ﻿#include "core/application/Application.h"
 #include "graphics/Renderer.h"
+#include "ui/direct2d/Graphics2D.h"
 
+#include "ui/UIFeature.h"
 #include "DemoWindow.h"
 
-export namespace Demo {
+namespace Demo {
     using namespace Ghurund;
     using namespace Ghurund::Core;
 
@@ -14,7 +16,10 @@ export namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add(std::make_unique<Graphics>());
+            auto graphics = makeShared<Graphics>();
+            auto graphics2d = makeShared<UI::Direct2D::Graphics2D>(*graphics.get());
+            auto uiFeature = makeShared<Ghurund::UIFeature>(*graphics2d.get(), ResourceManager);
+            Features.addAll({ graphics.get(), graphics2d.get(), uiFeature.get() });
         }
 
         virtual void onInit() override {

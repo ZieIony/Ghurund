@@ -16,8 +16,15 @@ namespace Ghurund {
     using namespace Ghurund::UI;
     using namespace Ghurund::UI::Direct2D;
 
-    UILayer::UILayer(Ghurund::UI::Direct2D::Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager):graphics(graphics), window(window) {
-        context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window, resourceManager);
+    const Ghurund::Core::Type& UILayer::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<UILayer>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(UILayer))
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    UILayer::UILayer(Ghurund::UI::Direct2D::Graphics2D& graphics, ApplicationWindow& window):graphics(graphics), window(window) {
+        context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window);
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
         canvas->init(graphics.DeviceContext);
         this->rootView = ghnew Ghurund::UI::RootView(*context);
@@ -54,7 +61,7 @@ namespace Ghurund {
         graph.clear();
         rootView->resolveConstraints(graph);
         graph.sort();
-        rootView->measure((float)Size.Width, (float)Size.Height);
+        rootView->measure();
         graph.evaluate();
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }

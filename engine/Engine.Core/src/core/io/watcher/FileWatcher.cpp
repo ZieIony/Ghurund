@@ -12,13 +12,14 @@ namespace Ghurund::Core {
     }
 
     FileWatcher::FileWatcher() {
-        thread.start();
+        // TODO: fix thread finishing before it starts
+        //thread.start();
     }
 
     FileWatcher::~FileWatcher() {
         for (size_t i = 0; i < watches.Size; i++)
             delete watches.getValue(i);
-        thread.finish();
+        //thread.finish();
     }
 
     void FileWatcher::addFile(const FilePath& path, std::function<void(const FilePath& path, const FileChange&)> fileChangedHandler) {

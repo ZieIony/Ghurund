@@ -18,7 +18,7 @@ namespace Ghurund {
     using namespace Ghurund::UI::Direct2D;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::NAMESPACE_NAME, "UIFeature")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(UIFeature))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -26,7 +26,7 @@ namespace Ghurund {
 
     void UIFeature::onInit() {
         shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d.D2DFactory);
-        imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(resourceManager);
+        drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(resourceManager);
         textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
 
@@ -37,7 +37,7 @@ namespace Ghurund {
 
         auto bitmapLoader = makeShared<BitmapLoader>(*(ImageLoader*)resourceManager.Loaders.get<Image>(), graphics2d.DeviceContext);
         resourceManager.Loaders.set<Ghurund::UI::Bitmap>(bitmapLoader.get());
-        layoutLoader = makeShared<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *imageDrawableFactory, *textFormatFactory, *constraintFactory);
+        layoutLoader = makeShared<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *drawableFactory, *textFormatFactory, *constraintFactory);
         resourceManager.Loaders.set<Control>(layoutLoader.get());
     }
     
@@ -49,8 +49,8 @@ namespace Ghurund {
         layoutLoader.set(nullptr);
         delete shapeFactory;
         shapeFactory = nullptr;
-        delete imageDrawableFactory;
-        imageDrawableFactory = nullptr;
+        delete drawableFactory;
+        drawableFactory = nullptr;
         delete textFormatFactory;
         textFormatFactory = nullptr;
         delete constraintFactory;

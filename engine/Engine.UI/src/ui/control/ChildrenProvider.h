@@ -3,9 +3,14 @@
 #include "ControlGroup.h"
 
 namespace Ghurund::UI {
-    __interface ChildrenProvider {
+    class ChildrenProvider {
+    public:
+        virtual ~ChildrenProvider() = 0 {}
+        
         virtual size_t getChildCount() const = 0;
+        
         virtual Control* getChild(size_t index) = 0;
+        
         virtual void releaseChild(Control* control, size_t index) = 0;
     };
 

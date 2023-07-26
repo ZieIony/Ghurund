@@ -8,20 +8,23 @@ namespace Preview {
 
 		Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 
-		UILayer* uiLayer = ghnew UILayer(graphics2d, *this, Application.ResourceManager);
-
 		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE));
-		uiLayer->Root.Theme = &themeApp.CurrentTheme;
-		uiLayer->Root.Child = previewLayout.get();
+		Theme = &themeApp.CurrentTheme;
+		Content = previewLayout.get();
 
 		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
-			themeApp.ThemeType = type;
+			Application.FunctionQueue.post([&]() {
+				themeApp.ThemeType = type;
 			previewLayout.Theme = &themeApp.CurrentTheme;
+				});
 			return true;
 			};
 
 		previewLayout->colorChanged += [this](PreviewLayout& previewLayout, const uint32_t color) {
-			themeApp.PrimaryColor = color;
+			Application.FunctionQueue.post([&]() {
+				themeApp.PrimaryColor = color;
+				previewLayout.dispatchThemeChanged();
+				});
 			return true;
 			};
 
@@ -40,8 +43,6 @@ namespace Preview {
 			watchFile(path);
 			return true;
 			};
-
-		Layers.add(std::unique_ptr<UILayer>(uiLayer));
 	}
 
 	void PreviewWindow::postLoadCallback(const FilePath& path) {

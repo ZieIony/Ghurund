@@ -68,11 +68,11 @@ namespace Ghurund::UI {
             return group->focusRight();
         }
 
-        virtual const Ghurund::Core::FloatSize measure(float parentWidth, float parentHeight) {
+        virtual const Ghurund::Core::FloatSize measure() {
             for (Control* c : group->Children) {
                 if (!c->Visible)
                     continue;
-                c->measure(parentWidth, parentHeight);
+                c->measure();
             }
             return { 0,0 };
         }

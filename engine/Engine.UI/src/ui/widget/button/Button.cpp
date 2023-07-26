@@ -2,15 +2,25 @@
 #include "Button.h"
 
 namespace Ghurund::UI {
-    void Button::bind() {
-        __super::bind();
-        clickable = (Ghurund::UI::ClickableControl*)ControlContainer::find("clickable");
-        state = (Ghurund::UI::StateIndicator*)ControlContainer::find("state");
+    void Button::onLayoutChanged() {
         if (clickable) {
-            clickable->stateChanged += stateHandler;
-            clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
-                return clicked(args);
-                };
+            clickable->stateChanged.clear();
+            clickable->clicked.clear();
+            clickable->release();
+            clickable = nullptr;
+        }
+        safeRelease(state);
+        __super::onLayoutChanged();
+        Control* layoutControl = layout.get();
+        if (layoutControl) {
+            setPointer(clickable, (Ghurund::UI::ClickableControl*)layoutControl->find("clickable"));
+            setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
+            if (clickable) {
+                clickable->stateChanged += stateHandler;
+                clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
+                    return clicked(args);
+                    };
+            }
         }
     }
 

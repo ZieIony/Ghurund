@@ -7,17 +7,16 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
-    void ContentWidget::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
-        container = (Ghurund::UI::ControlContainer*)ControlContainer::find("content");
+    void ContentWidget::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         auto childElement = xml.FirstChildElement();
         while (childElement) {
             if (!AString(childElement->Name()).contains(".")) {
                 SharedPointer<Control> control(loader.loadControl(*childElement));
                 if (control != nullptr) {
-                    content.Value = control;
+                    Content = control.get();
                 } else {
-                    content.Value = SharedPointer<Control>(ghnew InvalidControl());
+                    Content = makeShared<InvalidControl>().get();
                 }
                 return;
             }
@@ -25,21 +24,19 @@ namespace Ghurund::UI {
         }
     }
 
-    Ghurund::UI::Control* ContentWidget::find(const Ghurund::Core::AString& name, bool deep) const {
-        if (content.Value != nullptr) {
-            if (content.Value->Name && content.Value->Name->operator==(name))
-                return content.Value.get();
-            return content.Value->find(name, deep);
-        }
+    Ghurund::UI::Control* ContentWidget::find(const Ghurund::Core::AString& name) {
+        if (this->Name && this->Name->operator==(name))
+            return this;
+        if (content != nullptr)
+            return content->find(name);
         return nullptr;
     }
 
-    Ghurund::UI::Control* ContentWidget::find(const Ghurund::Core::Type& type, bool deep) const {
-        if (content.Value != nullptr) {
-            if (content.Value->Type == type)
-                return content.Value.get();
-            return content.Value->find(type, deep);
-        }
+    Ghurund::UI::Control* ContentWidget::find(const Ghurund::Core::Type& type) {
+        if (Type == type)
+            return this;
+        if (content != nullptr)
+            return content->find(type);
         return nullptr;
     }
 

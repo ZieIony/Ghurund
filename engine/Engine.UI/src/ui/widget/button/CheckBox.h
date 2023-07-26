@@ -3,32 +3,26 @@
 #include "CheckBoxRadio.h"
 
 namespace Ghurund::UI {
-    class CheckBox:public CheckBoxRadio<CheckBox> {
-    protected:
-        virtual void bind() override {
-            __super::bind();
-            if (selectable) {
-                selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
-                    Checked = !Checked;
-                    checkedChanged();
-                    return true;
-                };
-                selectable->stateChanged += stateHandler;
-            }
-        }
+	class CheckBox:public CheckBoxRadio<CheckBox> {
+	protected:
+		virtual void onLayoutChanged() override;
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+		virtual void onStyleStateChanged(const Ghurund::UI::Style& style, const Ghurund::UI::Theme& theme) override;
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-    class CheckBoxStyle:public CheckBoxRadioStyle {
-    public:
-        virtual void onStateChanged(Control& control) const;
-    };
+		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+	};
+
+	class CheckBoxStyle:public Style {
+	public:
+		virtual void onStateChanged(Control& control) const;
+
+		void onStateChanged(const Theme& theme, DrawableView& drawableView, bool checked, bool enabled, bool pressed, bool hovered, bool focused) const;
+	};
 }

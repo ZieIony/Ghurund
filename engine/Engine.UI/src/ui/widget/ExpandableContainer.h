@@ -55,7 +55,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
-    class ExpandableCheckBoxStyle:public CheckBoxRadioStyle {
+    class ExpandableCheckBoxStyle:public Style {
     public:
         virtual void onStateChanged(Control& control) const override {
             const Theme* theme = control.Theme;

@@ -3,8 +3,8 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
-    void PreviewLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void PreviewLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
 
         container = (Ghurund::UI::ControlGroup*)find("container");
         color1 = (Ghurund::UI::Button*)find("color1");
@@ -16,15 +16,15 @@ namespace Preview {
         themeCheckBox = (Ghurund::UI::CheckBox*)find("themeCheckBox");
 
         if (themeCheckBox) {
-            themeCheckBox->checkedChanged += [this](CheckBox& checkBox) {
-                themeChanged(checkBox.Checked ? ThemeType::DARK : ThemeType::LIGHT);
+            themeCheckBox->checkedChanged += [this](CheckBox& checkBox, bool checked) {
+                themeChanged(checked ? ThemeType::DARK : ThemeType::LIGHT);
                 repaint();
                 return true;
                 };
         }
         if (enabledCheckBox) {
-            enabledCheckBox->checkedChanged += [this](CheckBox& checkBox) {
-                container->Enabled = checkBox.Checked;
+            enabledCheckBox->checkedChanged += [this](CheckBox& checkBox, bool checked) {
+                container->Enabled = checked;
                 container->repaint();
                 return true;
                 };

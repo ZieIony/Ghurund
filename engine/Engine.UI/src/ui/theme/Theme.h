@@ -1,37 +1,23 @@
 #pragma once
 
+#include "AttributeKey.h"
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
 
 #include "ui/Color.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/text/TextFormat.h"
 #include "ui/style/Style.h"
+#include "DrawableProvider.h"
+#include "LayoutProvider.h"
 
 namespace Ghurund::UI {
-    template<typename Type>
-    class AttributeKey {
-    private:
-        Ghurund::Core::AString str;
-
-    public:
-        AttributeKey(const Ghurund::Core::AString& str) :str(str) {}
-
-        const Ghurund::Core::AString& getValue() const {
-            return str;
-        }
-
-        __declspec(property(get = getValue)) const Ghurund::Core::AString& Value;
-
-        bool operator==(const AttributeKey& other) const {
-            return str == other.str;
-        }
-    };
 
     typedef AttributeKey<Color> ColorKey;
     typedef AttributeKey<Style> StyleKey;
-    typedef AttributeKey<ImageDrawable> DrawableKey;
+    typedef AttributeKey<Drawable> DrawableKey;
     typedef AttributeKey<TextFormat> TextFormatKey;
+    typedef AttributeKey<Control> LayoutKey;
 
     class Theme {
     private:
@@ -46,12 +32,10 @@ namespace Ghurund::UI {
         //static const inline float state_disabled = 0.08f;
 
         Ghurund::Core::Map<StyleKey, Style*> styles;
-        Map<TextFormatKey, SharedPointer<TextFormat>> textFormats;
+        Ghurund::Core::Map<TextFormatKey, Ghurund::Core::SharedPointer<TextFormat>> textFormats;
         Ghurund::Core::Map<ColorKey, Color> colors;
-        Map<DrawableKey, SharedPointer<Drawable>> drawables;
-        
-        // xml reader doesn't support wchar_t
-        Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString> layouts;
+        Ghurund::Core::Map<DrawableKey, std::shared_ptr<DrawableProvider>> drawables;
+        Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>> layouts;
 
     public:
         static inline const DrawableKey DRAWABLE_CHECKBOX_CHECKED = DrawableKey("checkBox_checked");
@@ -114,8 +98,6 @@ namespace Ghurund::UI {
         static inline const ColorKey COLOR_DISABLED_ONACCENT = ColorKey("disabled_onAccent");
         static inline const ColorKey COLOR_HIGHLIGHT_ONACCENT = ColorKey("highlight_onAccent");
 
-        Theme();
-
         virtual ~Theme() {}
 
         void updateColors();
@@ -150,25 +132,25 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color>& Colors;
 
-        inline Map<DrawableKey, SharedPointer<Drawable>>& getDrawables() {
+        inline Map<DrawableKey, std::shared_ptr<DrawableProvider>>& getDrawables() {
             return drawables;
         }
 
-        inline const Map<DrawableKey, SharedPointer<Drawable>>& getDrawables() const {
+        inline const Map<DrawableKey, std::shared_ptr<DrawableProvider>>& getDrawables() const {
             return drawables;
         }
 
-        __declspec(property(get = getDrawables)) Map<DrawableKey, SharedPointer<Drawable>>& Drawables;
+        __declspec(property(get = getDrawables)) Map<DrawableKey, std::shared_ptr<DrawableProvider>>& Drawables;
 
-        inline Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() {
+        inline Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& getLayouts() {
             return layouts;
         }
 
-        inline const Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& getLayouts() const {
+        inline const Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& getLayouts() const {
             return layouts;
         }
 
-        __declspec(property(get = getLayouts)) Ghurund::Core::Map<const Ghurund::Core::Type*, Ghurund::Core::AString>& Layouts;
+        __declspec(property(get = getLayouts)) Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>>& Layouts;
     };
 }
 

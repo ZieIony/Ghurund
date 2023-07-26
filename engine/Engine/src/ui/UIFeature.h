@@ -21,13 +21,15 @@ namespace Ghurund {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 #pragma endregion
 
     private:
         ResourceManager& resourceManager;
         Ghurund::UI::Direct2D::Graphics2D& graphics2d;
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
-        Ghurund::UI::Direct2D::ImageDrawableFactory* imageDrawableFactory = nullptr;
+        Ghurund::UI::Direct2D::DrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         SharedPointer<LayoutLoader> layoutLoader;

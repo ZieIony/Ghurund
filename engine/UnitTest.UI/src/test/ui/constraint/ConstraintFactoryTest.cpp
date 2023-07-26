@@ -12,6 +12,8 @@
 #include "ui/constraint/ConstraintGraph.h"
 #include <ui/constraint/SiblingConstraint.h>
 #include <ui/constraint/ParentConstraint.h>
+#include "ui/control/DrawableView.h"
+#include <ui/text/TextDocument.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -103,16 +105,30 @@ public:
     }
 
     TEST_METHOD(parseXml) {
+        Ghurund::Core::getType<bool>();
+        Ghurund::Core::getType<uint32_t>();
+        Ghurund::Core::getType<float>();
+        Ghurund::Core::getType<const AString&>();
+        Ghurund::Core::getType<const AString*>();
+        Ghurund::Core::getType<const WString&>();
+        Ghurund::Core::getType<const ColorAttr&>();
+        Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
+        Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
+        Ghurund::Core::getType<std::unique_ptr<Shape>&>();
+        Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>&>();
+        Ghurund::Core::getType<std::unique_ptr<TextDocument>&>();
+        Ghurund::Core::getType<std::unique_ptr<StyleAttr>>();
+
         Pointer::reservePointers(300);
         MemoryGuard memoryGuard;
         {
             ResourceManager resourceManager;
             ShapeFactory shapeFactory;
-            ImageDrawableFactory imageDrawableFactory;
+            DrawableFactory drawableFactory;
             TextFormatFactory textFormatFactory;
             ConstraintFactory constraintFactory;
-            LayoutLoader* layoutLoader = ghnew LayoutLoader(resourceManager, shapeFactory, imageDrawableFactory, textFormatFactory, constraintFactory);
-            resourceManager.Loaders.set<Control>(std::unique_ptr<LayoutLoader>(layoutLoader));
+            auto layoutLoader = makeShared<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
+            resourceManager.Loaders.set<Control>(layoutLoader.get());
 
             SharedPointer<Control> control(resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")), nullptr, LoadOption::DONT_CACHE));
 

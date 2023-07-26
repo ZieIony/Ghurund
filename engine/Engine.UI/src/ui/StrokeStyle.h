@@ -1,5 +1,8 @@
 #pragma once
 
 namespace Ghurund::UI {
-    __interface IStrokeStyle {};
+    class IStrokeStyle {
+    public:
+        virtual ~IStrokeStyle() = 0 {};
+    };
 }

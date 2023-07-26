@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Preview {
 
@@ -8,14 +8,20 @@ namespace Preview {
 		LIGHT, DARK
 	};
 
-	__interface ThemeApplication {
-		void setThemeType(ThemeType theme);
+	class ThemeApplication {
+	public:
+		virtual ~ThemeApplication() = 0 {}
+
+		virtual void setThemeType(ThemeType theme) = 0;
+
 		__declspec(property(put = setThemeType)) ThemeType ThemeType;
 
-		void setPrimaryColor(uint32_t color);
+		virtual void setPrimaryColor(uint32_t color) = 0;
+
 		__declspec(property(put = setPrimaryColor)) uint32_t PrimaryColor;
 
-		Ghurund::UI::Theme& getCurrentTheme();
+		virtual Ghurund::UI::Theme& getCurrentTheme() = 0;
+
 		__declspec(property(get = getCurrentTheme)) Ghurund::UI::Theme& CurrentTheme;
 	};
 }

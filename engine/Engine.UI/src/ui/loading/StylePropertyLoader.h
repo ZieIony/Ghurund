@@ -1,7 +1,8 @@
 #pragma once
 
 #include "PropertyLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
+#include "ui/style/StyleAttr.h"
 
 namespace Ghurund::UI {
 
@@ -11,22 +12,9 @@ namespace Ghurund::UI {
 
 	public:
 		virtual const Type& getType() const override {
-			return Ghurund::Core::getType<const Style*>();
+			return Ghurund::Core::getType<std::unique_ptr<StyleAttr>>();
 		}
 
-		virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
-			AString s = text;
-			s.replace('\\', '/');
-			uint32_t value = 0;
-			if (s.startsWith(THEME_STYLE)) {
-				StyleKey styleKey = s.substring(lengthOf(THEME_STYLE));
-				auto style = StyleRef(styleKey);
-				auto stylePointer = &style;
-				property.setRaw(&obj, &stylePointer);
-			} else {
-				auto text = std::format(_T("Invalid style name: '{}'.\n"), s);
-				Logger::log(LogType::WARNING, text.c_str());
-			}
-		}
+		virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override;
 	};
 }

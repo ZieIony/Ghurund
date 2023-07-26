@@ -5,7 +5,7 @@
 		  width="wrap" height="wrap">
 		<ControlGroup>
 			<ControlContainer width="wrap" height="wrap"
-							  name="content"/>
+							  name="container"/>
 			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
 							style="theme://style/StateIndicator_onAccent"/>
 		</ControlGroup>

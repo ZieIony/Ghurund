@@ -2,22 +2,12 @@
 
 #include "Control.h"
 #include "ui/Alignment.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/style/PointerAttrProperty.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 #include "ui/style/DrawableAttr.h"
-
-namespace Ghurund::UI {
-    enum class ImageScaleMode {
-        NONE, STRETCH, FIT, CROP
-    };
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::UI::ImageScaleMode>();
-}
+#include "ImageScaleMode.h"
 
 namespace Ghurund::UI{
     class DrawableView: public Control {
@@ -27,8 +17,16 @@ namespace Ghurund::UI{
         ImageScaleMode scaleMode = ImageScaleMode::CROP;
         Alignment gravity;
 
+        inline void updateProperties() {
+            const UI::Theme* theme = Theme;
+            if (theme) {
+                tint.resolve(*theme);
+                drawable.resolve(*theme);
+            }
+        }
+
     protected:
-        //virtual void onMeasure(float parentWidth, float parentHeight) override;
+        virtual void onMeasure() override;
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
@@ -46,14 +44,36 @@ namespace Ghurund::UI{
             gravity.vertical = Alignment::Vertical::CENTER;
         }
 
-        inline void setDrawable(std::unique_ptr<DrawableAttr>& drawable) {
+        inline void setDrawable(std::unique_ptr<DrawableAttr> drawable) {
             this->drawable.set(std::move(drawable));
+            updateProperties();
+        }
+
+        inline void setDrawable(const DrawableKey& key) {
+            this->drawable.set(std::make_unique<DrawableRef>(key));
+            updateProperties();
+        }
+
+        inline void setDrawable(Drawable* drawable) {
+            this->drawable.set(std::make_unique<DrawableValue>(drawable));
+            updateProperties();
         }
 
         __declspec(property(put = setDrawable)) std::unique_ptr<DrawableAttr>& Drawable;
 
         inline void setTint(std::unique_ptr<ColorAttr> tint) {
             this->tint.set(std::move(tint));
+            updateProperties();
+        }
+
+        inline void setTint(const ColorKey& tint) {
+            this->tint.set(std::make_unique<ColorRef>(tint));
+            updateProperties();
+        }
+
+        inline void setTint(Color tint) {
+            this->tint.set(std::make_unique<ColorValue>(tint));
+            updateProperties();
         }
 
         __declspec(property(put = setTint)) std::unique_ptr<ColorAttr> Tint;
@@ -71,25 +91,5 @@ namespace Ghurund::UI{
         __declspec(property(put = setGravity)) Alignment& Alignment;
 
         virtual void onThemeChanged() override;
-    };
-
-    class DrawableViewStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
-    };
-
-    class DrawableViewOnBackgroundStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
-    };
-
-    class DrawableViewOnAccentStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
-    };
-
-    class DrawableViewAccentStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
     };
 }

@@ -1,5 +1,8 @@
 #pragma once
 
 namespace Ghurund::UI {
-    __interface DrawingEffect {};
+    class DrawingEffect {
+    public:
+        virtual ~DrawingEffect() = 0 {}
+    };
 }

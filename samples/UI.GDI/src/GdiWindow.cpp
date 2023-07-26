@@ -26,8 +26,7 @@ namespace Samples {
         __super::init(windowManager);
         canvas = ghnew Canvas();
         canvas->init(Handle);
-        resourceManager = ghnew ResourceManager();
-        uiContext = ghnew UIContext(*this, *resourceManager);
+        uiContext = ghnew UIContext(*this);
         rootView = ghnew RootView(*uiContext);
     }
 
@@ -43,10 +42,6 @@ namespace Samples {
         if (canvas) {
             delete canvas;
             canvas = nullptr;
-        }
-        if (resourceManager) {
-            delete resourceManager;
-            resourceManager = nullptr;
         }
     }
 
@@ -75,7 +70,7 @@ namespace Samples {
     void GdiWindow::update(const uint64_t time) {
         __super::update(time);
         rootView->onUpdate(time);
-        rootView->measure((float)Size.Width, (float)Size.Height);
+        rootView->measure();
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }
 

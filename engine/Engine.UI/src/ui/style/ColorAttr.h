@@ -1,21 +1,22 @@
 #pragma once
 
-#include "Theme.h"
+#include "ui/theme/Theme.h"
 
 #include <stdint.h>
 
 namespace Ghurund::UI {
     class ColorAttr:public Object {
-    public:
-        virtual const Color* resolve(const Theme& theme) const = 0;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
+    protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ColorAttr::GET_TYPE();
+
+        virtual const Color* resolve(const Theme& theme) const = 0;
     };
 
     class ColorValue:public ColorAttr {

@@ -5,7 +5,7 @@
 #include "core/input/Input.h"
 #include "ui/drawable/CursorDrawable.h"
 #include "ui/text/TextBlock.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

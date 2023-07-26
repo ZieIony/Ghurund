@@ -78,9 +78,9 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getChildrenProvider, put = setChildrenProvider)) ChildrenProvider* ChildrenProvider;
 
-        virtual void onMeasure(float parentWidth, float parentHeight) override {
+        virtual void onMeasure() override {
             if (layoutManager && childrenProvider)
-                measuredSize = layoutManager->measure(parentWidth, parentHeight);
+                measuredSize = layoutManager->measure();
         }
 
         virtual void onLayout(float x, float y, float width, float height) override {

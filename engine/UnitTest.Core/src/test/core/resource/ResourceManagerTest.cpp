@@ -15,7 +15,7 @@ private:
 
 public:
     ResourceManagerTest() {
-        resourceManager.Loaders.set<TextResource>(std::make_unique<TextLoader>());
+        resourceManager.Loaders.set<TextResource>(makeShared<TextLoader>().get());
         resourceManager.Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources"));
     }
 

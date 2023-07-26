@@ -5,15 +5,7 @@
 namespace Ghurund::UI {
     class RadioButton:public CheckBoxRadio<RadioButton> {
     protected:
-        virtual void bind() override {
-            __super::bind();
-            selectable->clicked += [this](Control&, const MouseClickedEventArgs&) {
-                Checked = !Checked;
-                checkedChanged();
-                return true;
-            };
-            selectable->stateChanged += stateHandler;
-        }
+        virtual void onLayoutChanged() override;
 
     public:
         static const Ghurund::Core::Type& GET_TYPE();
@@ -25,7 +17,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
-    class RadioButtonStyle:public CheckBoxRadioStyle {
+    class RadioButtonStyle:public Style {
     public:
         virtual void onStateChanged(Control& control) const;
     };

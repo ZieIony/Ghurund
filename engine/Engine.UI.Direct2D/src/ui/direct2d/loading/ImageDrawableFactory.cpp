@@ -6,14 +6,14 @@
 #include "ui/direct2d/drawable/SvgDrawable.h"
 #include "ui/direct2d/image/Bitmap.h"
 #include "ui/direct2d/image/SvgDocument.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 #include <ranges>
 
 namespace Ghurund::UI::Direct2D {
-    ImageDrawable* ImageDrawableFactory::makeDrawable(const FilePath& path) {
+    Drawable* DrawableFactory::makeDrawable(const FilePath& path) {
         auto formatSupported = [&path](const ResourceFormat& format) {
             return format.Extension == path.Extension && format.CanLoad;
         };

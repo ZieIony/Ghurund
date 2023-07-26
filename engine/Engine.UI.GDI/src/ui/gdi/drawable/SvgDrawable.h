@@ -1,11 +1,11 @@
 #pragma once
 
 #include "ui/Canvas.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/gdi/image/SvgDocument.h"
 
 namespace Ghurund::UI::GDI {
-    class SvgDrawable:public ImageDrawable {
+    class SvgDrawable:public Drawable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -26,7 +26,7 @@ namespace Ghurund::UI::GDI {
             preferredSize = { drawable->Size.Width, drawable->Size.Height };
         }
 
-        virtual void onDraw(ICanvas& canvas, const FloatSize& size) const override {
+        virtual void draw(ICanvas& canvas, const FloatSize& size, const Ghurund::UI::Color& tint) const override {
             canvas.drawImage(*drawable);
         }
 

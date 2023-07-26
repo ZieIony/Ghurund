@@ -12,20 +12,20 @@
 #include "core/string/TextConversionUtils.h"
 #include "ui/control/Clip.h"
 #include "ui/control/Space.h"
-#include "ui/style/Theme.h"
 
 #include <ranges>
 #include "StylePropertyLoader.h"
+#include "LayoutPropertyLoader.h"
 
 namespace Ghurund::UI {
 
     LayoutLoader::LayoutLoader(
         Ghurund::Core::ResourceManager& resourceManager,
         ShapeFactory& shapeFactory,
-        ImageDrawableFactory& imageDrawableFactory,
+        DrawableFactory& drawableFactory,
         TextFormatFactory& textFormatFactory,
         ConstraintFactory& constraintFactory
-    ):resourceManager(resourceManager), shapeFactory(shapeFactory), imageDrawableFactory(imageDrawableFactory), textFormatFactory(textFormatFactory), constraintFactory(constraintFactory) {
+    ):resourceManager(resourceManager), shapeFactory(shapeFactory), drawableFactory(drawableFactory), textFormatFactory(textFormatFactory), constraintFactory(constraintFactory) {
         propertyLoaders.add(std::make_unique<BoolPropertyLoader>());
         propertyLoaders.add(std::make_unique<UInt32PropertyLoader>());
         propertyLoaders.add(std::make_unique<FloatPropertyLoader>());
@@ -36,9 +36,10 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
         propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
-        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(imageDrawableFactory)));
+        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(drawableFactory)));
         propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
         propertyLoaders.add(std::unique_ptr<StylePropertyLoader>(ghnew StylePropertyLoader()));
+        propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
     }
 
     Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
@@ -59,7 +60,7 @@ namespace Ghurund::UI {
         if (!constructor)
             throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
         Control* control = (Control*)constructor->invokeRaw();
-        control->load(*this, *child);
+        control->load(*this, resourceManager, *child);
         return control;
     }
 
@@ -106,7 +107,7 @@ namespace Ghurund::UI {
                 propertyElement->FirstChild()) {
                 loader->loadAttr(obj, property, propertyElement->GetText());
             } else if (!propertyElement->FirstAttribute() && !propertyElement->NoChildren()) {
-                loader->loadChildren(obj, property, *propertyElement);
+                loader->loadChildren(obj, property, *propertyElement->FirstChildElement());
             } else {
                 loader->loadElement(obj, property, *propertyElement);
             }
@@ -161,7 +162,7 @@ namespace Ghurund::UI {
                     if (!constructor)
                         throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
                     Control* control = (Control*)constructor->invokeRaw();
-                    control->load(*this, xml);
+                    control->load(*this, resourceManager, xml);
                     return control;
                 } else {
                     // it's a known class, but not a control

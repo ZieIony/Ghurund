@@ -63,7 +63,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -110,17 +109,21 @@
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
+    <ClInclude Include="src\ui\control\ControlContainer.h" />
+    <ClInclude Include="src\ui\control\DrawableViewStyle.h" />
+    <ClInclude Include="src\ui\control\ImageScaleMode.h" />
     <ClInclude Include="src\ui\Cursor.h" />
+    <ClInclude Include="src\ui\loading\LayoutPropertyLoader.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
     <ClInclude Include="src\ui\StrokeStyle.h" />
-    <ClInclude Include="src\ui\style\AttrProperty.h" />
-    <ClInclude Include="src\ui\style\DrawableAttr.h" />
-    <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
-    <ClInclude Include="src\ui\style\StyleAttr.h" />
-    <ClInclude Include="src\ui\style\TextFormatAttr.h" />
+    <ClInclude Include="src\ui\style\LayoutAttr.h" />
+    <ClInclude Include="src\ui\theme\DrawableProvider.h" />
+    <ClInclude Include="src\ui\theme\FileDrawableProvider.h" />
+    <ClInclude Include="src\ui\theme\FileLayoutProvider.h" />
+    <ClInclude Include="src\ui\theme\LayoutProvider.h" />
     <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\adapter\AdapterChildrenProvider.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />
@@ -149,7 +152,7 @@
     <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Control.h" />
-    <ClInclude Include="src\ui\control\ControlContainer.h" />
+    <ClInclude Include="src\ui\control\ControlContainerBase.h" />
     <ClInclude Include="src\ui\control\ControlGroup.h" />
     <ClInclude Include="src\ui\control\ControlList.h" />
     <ClInclude Include="src\ui\control\ControlParent.h" />
@@ -164,7 +167,6 @@
     <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
-    <ClInclude Include="src\ui\drawable\ImageDrawable.h" />
     <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
     <ClInclude Include="src\ui\effects\DrawingEffect.h" />
     <ClInclude Include="src\ui\effects\ShadowEffect.h" />
@@ -184,7 +186,7 @@
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
     <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
     <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
-    <ClInclude Include="src\ui\loading\ImageDrawableFactory.h" />
+    <ClInclude Include="src\ui\loading\DrawableFactory.h" />
     <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\loading\PrimitivePropertyLoaders.h" />
@@ -196,13 +198,13 @@
     <ClInclude Include="src\ui\loading\StylePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextDocumentPropertyLoader.h" />
     <ClInclude Include="src\ui\loading\TextFormatFactory.h" />
-    <ClInclude Include="src\ui\style\BaseTheme.h" />
+    <ClInclude Include="src\ui\style\AttrProperty.h" />
     <ClInclude Include="src\ui\style\ColorAttr.h" />
-    <ClInclude Include="src\ui\style\DarkTheme.h" />
-    <ClInclude Include="src\ui\style\LightTheme.h" />
+    <ClInclude Include="src\ui\style\DrawableAttr.h" />
+    <ClInclude Include="src\ui\style\PointerAttrProperty.h" />
     <ClInclude Include="src\ui\style\Style.h" />
-    <ClInclude Include="src\ui\style\Theme.h" />
-    <ClInclude Include="src\ui\style\WindowsTheme.h" />
+    <ClInclude Include="src\ui\style\StyleAttr.h" />
+    <ClInclude Include="src\ui\style\TextFormatAttr.h" />
     <ClInclude Include="src\ui\text\DocumentElement.h" />
     <ClInclude Include="src\ui\text\Selection.h" />
     <ClInclude Include="src\ui\text\SetSelectionMode.h" />
@@ -214,6 +216,12 @@
     <ClInclude Include="src\ui\text\TextLayout.h" />
     <ClInclude Include="src\ui\text\TextMetrics.h" />
     <ClInclude Include="src\ui\text\TextView.h" />
+    <ClInclude Include="src\ui\theme\AttributeKey.h" />
+    <ClInclude Include="src\ui\theme\BaseTheme.h" />
+    <ClInclude Include="src\ui\theme\DarkTheme.h" />
+    <ClInclude Include="src\ui\theme\LightTheme.h" />
+    <ClInclude Include="src\ui\theme\Theme.h" />
+    <ClInclude Include="src\ui\theme\WindowsTheme.h" />
     <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\widget\ContentWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
@@ -261,13 +269,16 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
+    <ClCompile Include="src\ui\control\ControlContainer.cpp" />
+    <ClCompile Include="src\ui\control\DrawableViewStyle.cpp" />
+    <ClCompile Include="src\ui\control\ImageScaleMode.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
+    <ClCompile Include="src\ui\loading\LayoutPropertyLoader.cpp" />
+    <ClCompile Include="src\ui\loading\StylePropertyLoader.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
-    <ClCompile Include="src\ui\style\BaseTheme.cpp" />
-    <ClCompile Include="src\ui\style\DrawableAttr.cpp" />
-    <ClCompile Include="src\ui\style\StyleAttr.cpp" />
-    <ClCompile Include="src\ui\style\TextFormatAttr.cpp" />
+    <ClCompile Include="src\ui\style\LayoutAttr.cpp" />
+    <ClCompile Include="src\ui\theme\WindowsTheme.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
     <ClCompile Include="src\ui\adapter\RecyclerView.cpp" />
     <ClCompile Include="src\ui\constraint\ConstraintFactory.cpp" />
@@ -284,7 +295,7 @@
     <ClCompile Include="src\ui\control\Clip.cpp" />
     <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
-    <ClCompile Include="src\ui\control\ControlContainer.cpp" />
+    <ClCompile Include="src\ui\control\ControlContainerBase.cpp" />
     <ClCompile Include="src\ui\control\ControlGroup.cpp" />
     <ClCompile Include="src\ui\control\ControlParent.cpp" />
     <ClCompile Include="src\ui\control\ControlPath.cpp" />
@@ -313,8 +324,10 @@
     <ClCompile Include="src\ui\loading\DrawablePropertyLoader.cpp" />
     <ClCompile Include="src\ui\loading\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\style\ColorAttr.cpp" />
+    <ClCompile Include="src\ui\style\DrawableAttr.cpp" />
     <ClCompile Include="src\ui\style\Style.cpp" />
-    <ClCompile Include="src\ui\style\Theme.cpp" />
+    <ClCompile Include="src\ui\style\StyleAttr.cpp" />
+    <ClCompile Include="src\ui\style\TextFormatAttr.cpp" />
     <ClCompile Include="src\ui\text\DocumentElement.cpp" />
     <ClCompile Include="src\ui\text\TextBlock.cpp" />
     <ClCompile Include="src\ui\text\TextBlockStyle.cpp" />
@@ -322,6 +335,8 @@
     <ClCompile Include="src\ui\text\TextField.cpp" />
     <ClCompile Include="src\ui\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\text\TextView.cpp" />
+    <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
+    <ClCompile Include="src\ui\theme\Theme.cpp" />
     <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
@@ -331,15 +346,14 @@
     <ClCompile Include="src\ui\widget\SplitLayout.cpp" />
     <ClCompile Include="src\ui\widget\StateIndicator.cpp" />
     <ClCompile Include="src\ui\widget\VerticalScrollBar.cpp" />
-    <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\widget\button\Button.cpp" />
     <ClCompile Include="src\ui\widget\button\CheckBox.cpp" />
-    <ClCompile Include="src\ui\widget\button\CheckBoxRadio.cpp" />
     <ClCompile Include="src\ui\widget\button\RadioButton.cpp" />
     <ClCompile Include="src\ui\widget\menu\ToolbarAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabContainer.cpp" />
     <ClCompile Include="src\ui\widget\tab\TabItemAdapter.cpp" />
     <ClCompile Include="src\ui\widget\tree\TreeView.cpp" />
+    <ClCompile Include="src\ui\widget\Widget.cpp" />
     <ClCompile Include="src\ui\window\WindowFrame.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

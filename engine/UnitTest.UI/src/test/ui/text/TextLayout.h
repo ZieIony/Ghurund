@@ -49,7 +49,7 @@ namespace UnitTest {
         }
 
         Status refresh() {
-            size = { text.Length * 10.0f, format->Size };
+            //size = { text.Length * 10.0f, format->Size };
             return Status::OK;
         }
 

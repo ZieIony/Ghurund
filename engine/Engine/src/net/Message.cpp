@@ -3,6 +3,7 @@
 #include "Message.h"
 
 #include "core/logging/Logger.h"
+#include <CRC.h>
 
 namespace Ghurund::Net {
     bool Message::isCrcValid(size_t messageSize) {
@@ -15,6 +16,10 @@ namespace Ghurund::Net {
         }
 #endif
         return valid;
+    }
+
+    void Message::calculateCrc(size_t messageSize) {
+        crc = CRC::Calculate((uint8_t*)this + sizeof(crc), messageSize - sizeof(crc), CRC::CRC_32());
     }
     
     String Message::toString() const {

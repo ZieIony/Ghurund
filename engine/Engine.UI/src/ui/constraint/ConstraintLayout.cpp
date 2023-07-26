@@ -16,12 +16,6 @@ namespace Ghurund::UI {
         }
     }
 
-    void ConstraintLayout::onMeasure(float parentWidth, float parentHeight) {
-        __super::onMeasure(parentWidth, parentHeight);
-        //for (Constraint* c : sorted)
-        //    c->evaluate();
-    }
-
     void ConstraintLayout::onLayout(float x, float y, float width, float height) {
         __super::onLayout(x, y, width, height);
         for (Control* control : Children) {
@@ -29,8 +23,8 @@ namespace Ghurund::UI {
         }
     }
 
-    void ConstraintLayout::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void ConstraintLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         const tinyxml2::XMLElement* child = xml.FirstChildElement();
         while (child != nullptr) {
             if (strcmp(child->Name(), "Guide") == 0)

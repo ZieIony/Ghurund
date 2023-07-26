@@ -387,7 +387,7 @@ namespace Ghurund::UI {
                 cursorDrawable->Color = caretBackgroundEffect;
                 canvas.save();
                 canvas.translate(caretRect.left, caretRect.top);
-                cursorDrawable->draw(canvas, { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top });
+                cursorDrawable->draw(canvas, { caretRect.right - caretRect.left, caretRect.bottom - caretRect.top }, Color(0));
                 canvas.restore();
                 canvas.AntialiasingEnabled = true;
             }

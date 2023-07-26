@@ -7,63 +7,69 @@
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class ControlPath {
-    private:
-        interface StepStrategy {
-            virtual Control* resolve(Control& control) = 0;
-        };
+	class ControlPath {
+	private:
+		interface StepStrategy {
+			virtual Control* resolve(Control& control) = 0;
+		};
 
-        struct ParentStrategy:public StepStrategy {
-            virtual Control* resolve(Control& control) override {
-                return control.Parent;
-            }
-        };
+		struct ParentStrategy:public StepStrategy {
+			virtual Control* resolve(Control& control) override {
+				return control.Parent;
+			}
+		};
 
-        struct ChildStrategy:public StepStrategy {
-            AString name;
+		struct ChildStrategy:public StepStrategy {
+			AString name;
 
-            ChildStrategy(const AString& name):name(name) {}
+			ChildStrategy(const AString& name):name(name) {}
 
-            ChildStrategy(const ChildStrategy& other):name(other.name) {}
+			ChildStrategy(const ChildStrategy& other):name(other.name) {}
 
-            ChildStrategy(ChildStrategy&& other)noexcept:name(other.name) {}
+			ChildStrategy(ChildStrategy&& other)noexcept:name(other.name) {}
 
-            virtual Control* resolve(Control& control) override {
-                return control.find(name, false);
-            }
-        };
+			virtual Control* resolve(Control& control) override {
+				if (control.Type.isOrExtends(ControlContainer::TYPE)) {
+					((ControlContainer&)control).Child;
+					return ((ControlContainer&)control).Child;
+				}
+				if (control.Type.isOrExtends(ControlGroup::TYPE))
+					return ((ControlGroup&)control).Children.find(name);
+				return nullptr;
+			}
+		};
 
-        struct IndexStrategy:public StepStrategy {
-            int index;
+		struct IndexStrategy:public StepStrategy {
+			int index;
 
-            IndexStrategy(int index):index(index) {}
+			IndexStrategy(int index):index(index) {}
 
-            IndexStrategy(const IndexStrategy& other):index(other.index) {}
+			IndexStrategy(const IndexStrategy& other):index(other.index) {}
 
-            IndexStrategy(IndexStrategy&& other)noexcept:index(other.index) {}
+			IndexStrategy(IndexStrategy&& other)noexcept:index(other.index) {}
 
-            virtual Control* resolve(Control& control) override;
-        };
+			virtual Control* resolve(Control& control) override;
+		};
 
-        Array<std::shared_ptr<StepStrategy>> steps;
+		Array<std::shared_ptr<StepStrategy>> steps;
 
-    public:
-        inline static const AString PARENT_STEP = "Parent";
+	public:
+		inline static const AString PARENT_STEP = "Parent";
 
-        static ControlPath parse(const AString& text);
+		static ControlPath parse(const AString& text);
 
-        ControlPath(const Array<std::shared_ptr<StepStrategy>>& steps):steps(steps) {}
+		ControlPath(const Array<std::shared_ptr<StepStrategy>>& steps):steps(steps) {}
 
-        inline Control* resolve(Control& control) const {
-            Control* result = &control;
-            for (auto& step : steps) {
-                result = step->resolve(*result);
-                if (!result)
-                    return nullptr;
-            }
-            return result;
-        }
-    };
+		inline Control* resolve(Control& control) const {
+			Control* result = &control;
+			for (auto& step : steps) {
+				result = step->resolve(*result);
+				if (!result)
+					return nullptr;
+			}
+			return result;
+		}
+	};
 }

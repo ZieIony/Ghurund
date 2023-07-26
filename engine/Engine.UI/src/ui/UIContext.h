@@ -15,25 +15,17 @@ namespace Ghurund::UI {
     class IUIContext {
     private:
         Ghurund::Core::Window& window;
-        Ghurund::Core::ResourceManager& manager;
 
     public:
         IUIContext(
-            Ghurund::Core::Window& window,
-            Ghurund::Core::ResourceManager& manager
-        ):window(window), manager(manager) {}
+            Ghurund::Core::Window& window
+        ):window(window) {}
 
         inline Ghurund::Core::Window& getWindow() {
             return window;
         }
 
         __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
-
-        inline Ghurund::Core::ResourceManager& getResourceManager() {
-            return manager;
-        }
-
-        __declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
         virtual IStrokeStyle* makeStrokeStyle(Ghurund::Core::Array<float>& dashes) = 0;
 

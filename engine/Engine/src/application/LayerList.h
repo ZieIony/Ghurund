@@ -13,31 +13,33 @@ namespace Ghurund {
 
     class LayerList {
     private:
-        List<Layer*> layers;
+        List<SharedPointer<Layer>> layers;
         IntSize size = {};
-        Layer* focusedLayer = nullptr, * prevFocusedLayer = nullptr;
+        SharedPointer<Layer> focusedLayer, prevFocusedLayer;
 
     public:
         ~LayerList() {
             clear();
         }
 
-        inline void add(std::unique_ptr<Layer> layer) {
+        inline void add(Layer* layer) {
+            layer->addReference();
             layer->Size = size;
-            layers.add(layer.release());
+            layers.add(SharedPointer(layer));
         }
 
-        inline void remove(Layer& layer) {
-            if (focusedLayer == &layer) {
+        inline void remove(Layer* layer) {
+            if (focusedLayer.get() == layer) {
                 focusedLayer->Focused = false;
-                focusedLayer = nullptr;
+                focusedLayer.set(nullptr);
             }
-            layers.remove(&layer);
+            size_t index = layers.find([&](const SharedPointer<Layer>& item) { return item.get() == layer; });
+            if (index != layers.Size)
+                layers.removeAt(index);
         }
 
         inline void clear() {
             clearFocus();
-            layers.deleteItems();
             layers.clear();
         }
 
@@ -51,40 +53,40 @@ namespace Ghurund {
 
         virtual void setSize(uint32_t w, uint32_t h) {
             size = { w, h };
-            for (Layer* layer : layers)
+            for (SharedPointer<Layer>& layer : layers)
                 layer->Size = size;
         }
 
         __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
 
         inline void clearFocus() {
-            if (focusedLayer) {
+            if (focusedLayer.get()) {
                 focusedLayer->Focused = false;
                 prevFocusedLayer = focusedLayer;
-                focusedLayer = nullptr;
+                focusedLayer.set(nullptr);
             }
         }
 
         inline void restoreFocus() {
-            if (focusedLayer || !prevFocusedLayer)
+            if (focusedLayer.get() || !prevFocusedLayer.get())
                 return;
             focusedLayer = prevFocusedLayer;
             focusedLayer->Focused = true;
-            prevFocusedLayer = nullptr;
+            prevFocusedLayer.set(nullptr);
         }
 
         inline bool dispatchKeyEvent(const KeyEventArgs& args) {
-            return focusedLayer && focusedLayer->dispatchKeyEvent(args);
+            return focusedLayer.get() && focusedLayer->dispatchKeyEvent(args);
         }
 
         inline bool dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (Layer* layer : layers) {
+            for (SharedPointer<Layer>& layer : layers) {
                 consumed |= layer->dispatchMouseButtonEvent(args);
                 if (consumed) {
                     if (!layer->Focused) {
-                        if (focusedLayer)
+                        if (focusedLayer.get())
                             focusedLayer->Focused = false;
                         layer->Focused = true;
                         focusedLayer = layer;
@@ -98,7 +100,7 @@ namespace Ghurund {
         inline bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (Layer* layer : layers)
+            for (SharedPointer<Layer>& layer : layers)
                 consumed |= layer->dispatchMouseMotionEvent(args);
             return consumed;
         }
@@ -106,18 +108,18 @@ namespace Ghurund {
         inline bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (Layer* layer : layers)
+            for (SharedPointer<Layer>& layer : layers)
                 consumed |= layer->dispatchMouseWheelEvent(args);
             return consumed;
         }
 
         inline void update(const uint64_t time) {
-            for (Layer* layer : layers)
+            for (SharedPointer<Layer>& layer : layers)
                 layer->update(time);
         }
 
         inline Status draw(Ghurund::Core::DirectX::RenderTarget& renderTarget) {
-            for (Layer* layer : layers) {
+            for (SharedPointer<Layer>& layer : layers) {
                 Status result = layer->draw(renderTarget);
                 if (result != Status::OK)
                     return result;

@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "TextBlockStyle.h"
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     void TextBlockButtonStyle::apply(Control& control) const {

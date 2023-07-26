@@ -3,8 +3,8 @@
 #include "ui/Canvas.h"
 #include "ui/RootView.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/LightTheme.h"
-#include "ui/style/DarkTheme.h"
+#include "ui/theme/LightTheme.h"
+#include "ui/theme/DarkTheme.h"
 
 #include "ui/direct2d/font/FontLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
@@ -13,7 +13,7 @@
 #include <ui/control/ControlGroup.h>
 
 #include "PreviewLayout.h"
-#include "application/ApplicationWindow.h"
+#include "application/UIApplicationWindow.h"
 #include "ui/UILayer.h"
 #include "ui/UIFeature.h"
 
@@ -23,16 +23,15 @@ namespace Preview {
 	using namespace Ghurund::UI;
 	using namespace Ghurund::UI::Direct2D;
 
-	class PreviewWindow :public Ghurund::ApplicationWindow {
+	class PreviewWindow :public Ghurund::UIApplicationWindow {
 	private:
 		SharedPointer<PreviewLayout> previewLayout;
-		SharedPointer<Ghurund::UI::RootView> rootView;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
 
 	public:
-		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp) :ApplicationWindow(app, renderer), themeApp(themeApp) {
+		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp) :UIApplicationWindow(app, renderer), themeApp(themeApp) {
 			Style = WindowStyle{
 			   .hasMinimizeButton = true,
 			   .hasMaximizeButton = true,
@@ -42,11 +41,7 @@ namespace Preview {
 			};
 		}
 
-		~PreviewWindow() {
-			Layers.clear();
-		}
-
-		virtual void init(WindowManager& windowManager);
+		virtual void init(WindowManager& windowManager) override;
 
 		void postLoadCallback(const FilePath& path);
 

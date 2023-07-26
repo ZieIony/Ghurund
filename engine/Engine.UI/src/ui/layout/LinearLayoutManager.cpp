@@ -2,7 +2,7 @@
 #include "LinearLayoutManager.h"
 
 namespace Ghurund::UI {
-    Ghurund::Core::FloatSize LinearLayoutManager::measureHorizontal(float parentWidth, float parentHeight) {
+    Ghurund::Core::FloatSize LinearLayoutManager::measureHorizontal() {
         /*contentSize = 0.0f;
         spreadCount = 0;
 
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
         return { 0,0 };
     }
 
-    Ghurund::Core::FloatSize LinearLayoutManager::measureVertical(float parentWidth, float parentHeight) {
+    Ghurund::Core::FloatSize LinearLayoutManager::measureVertical() {
         /*contentSize = 0.0f;
         spreadCount = 0;
 
@@ -191,11 +191,11 @@ namespace Ghurund::UI {
         }*/
     }
 
-    const FloatSize LinearLayoutManager::measure(float parentWidth, float parentHeight) {
+    const FloatSize LinearLayoutManager::measure() {
         if (orientation == Orientation::HORIZONTAL) {
-            return measureHorizontal(parentWidth, parentHeight);
+            return measureHorizontal();
         } else {
-            return measureVertical(parentWidth, parentHeight);
+            return measureVertical();
         }
     }
 

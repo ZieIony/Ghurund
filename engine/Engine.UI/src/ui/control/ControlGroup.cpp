@@ -15,11 +15,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void ControlGroup::onMeasure(float parentWidth, float parentHeight) {
+    void ControlGroup::onMeasure() {
         for (Control* c : children) {
             if (!c->Visible)
                 continue;
-            c->measure(parentWidth, parentHeight);
+            c->measure();
         }
     }
 
@@ -168,28 +168,24 @@ namespace Ghurund::UI {
         return __super::dispatchMouseWheelEvent(event);
     }
 
-    Control* ControlGroup::find(const Ghurund::Core::AString& name, bool deep) const {
+    Control* ControlGroup::find(const AString& name) {
+        if (this->Name && this->Name->operator==(name))
+            return this;
         for (Control* child : children) {
-            if (child->Name && child->Name->operator==(name))
-                return child;
-            if (deep) {
-                Control* result = child->find(name, deep);
-                if (result)
-                    return result;
-            }
+            Control* result = child->find(name);
+            if (result)
+                return result;
         }
         return nullptr;
     }
 
-    Control* ControlGroup::find(const Ghurund::Core::Type& type, bool deep) const {
+    Control* ControlGroup::find(const Ghurund::Core::Type& type) {
+        if (Type == type)
+            return this;
         for (Control* child : children) {
-            if (child->Type == type)
-                return child;
-            if (deep) {
-                Control* result = child->find(type, deep);
-                if (result)
-                    return result;
-            }
+            Control* result = child->find(type);
+            if (result)
+                return result;
         }
         return nullptr;
     }
@@ -200,8 +196,8 @@ namespace Ghurund::UI {
             c->resolveConstraints(graph);
     }
 
-    void ControlGroup::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void ControlGroup::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         Children.clear();
         Children.addAll(loader.loadControls(xml));
     }

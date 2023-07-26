@@ -55,7 +55,7 @@ library["PhysXExtensions_Release"] = "%{libraryDir.PhysX_Release}/PhysXExtension
 library["PhysXPvdSDK_Debug"] = "%{libraryDir.PhysX_Debug}/PhysXPvdSDK_static_64.lib"
 library["PhysXPvdSDK_Release"] = "%{libraryDir.PhysX_Release}/PhysXPvdSDK_static_64.lib"
 
-	libdirs = libraryDir
+libdirs = libraryDir
 
 filter { "platforms:Win64" }
     system "Windows"

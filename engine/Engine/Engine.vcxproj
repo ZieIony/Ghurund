@@ -63,7 +63,6 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ExternalWarningLevel>Level3</ExternalWarningLevel>
-      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -99,6 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\application\UIApplicationWindow.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\Layer.h" />
@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
+    <ClCompile Include="src\application\Layer.cpp" />
     <ClCompile Include="src\application\LayerList.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />

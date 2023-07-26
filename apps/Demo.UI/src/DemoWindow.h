@@ -1,15 +1,15 @@
 #include "core/application/Application.h"
 #include "core/window/WindowClass.h"
 
-#include "application/ApplicationWindow.h"
+#include "application/UIApplicationWindow.h"
 
-export namespace Demo {
+namespace Demo {
     using namespace Ghurund;
     using namespace Ghurund::Core;
 
-    class DemoWindow:public ApplicationWindow {
+    class DemoWindow:public UIApplicationWindow {
     public:
-        DemoWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {
+        DemoWindow(Ghurund::Core::Application& app, Renderer& renderer):UIApplicationWindow(app, renderer) {
             Style = WindowStyle{
              .hasMinimizeButton = true,
              .hasMaximizeButton = true,

@@ -59,7 +59,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -79,7 +79,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Engine.Core\src;..\Engine.UI\src;..\..\libs\tinyxml2;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -122,7 +122,7 @@
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
-    <ClCompile Include="TextDocumentTest.cpp" />
+    <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">
@@ -131,9 +131,6 @@
     <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
       <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="res\TextDocumentTest.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

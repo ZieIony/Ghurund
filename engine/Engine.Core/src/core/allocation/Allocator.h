@@ -3,10 +3,15 @@
 #include <exception>
 
 namespace Ghurund::Core {
-    __interface Allocator {
-        void* allocate(size_t size);
-        void deallocate(void*);
-        bool canAllocate(size_t size) const;
+    class Allocator {
+    public:
+        virtual ~Allocator() = 0 {};
+
+        virtual void* allocate(size_t size) = 0;
+
+        virtual void deallocate(void*) = 0;
+
+        virtual bool canAllocate(size_t size) const = 0;
     };
 
     struct Allocation {

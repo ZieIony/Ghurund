@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
+#include "ui/Color.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -37,10 +38,6 @@ namespace Ghurund::UI {
 
         virtual void update(const uint64_t time) {}
 
-        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const = 0;
-
-        void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const {
-            onDraw(canvas, size);
-        }
+        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const = 0;
     };
 }

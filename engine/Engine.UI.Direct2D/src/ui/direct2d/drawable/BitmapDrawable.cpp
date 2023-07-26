@@ -24,12 +24,12 @@ namespace Ghurund::UI::Direct2D {
         image->release();
     }
 
-    void BitmapDrawable::onDraw(ICanvas& canvas, const FloatSize& size) const {
+    void BitmapDrawable::draw(ICanvas& canvas, const FloatSize& size, const Ghurund::UI::Color& tint) const {
         auto dst = FloatRect{ 0, 0, size.Width, size.Height };
-        if (Tint) {
-            canvas.drawImage(*image, dst, Tint, Alpha);
+        if (tint.A) {
+            canvas.drawImage(*image, dst, tint, tint.A);
         } else {
-            canvas.drawImage(*image, dst, Alpha);
+            canvas.drawImage(*image, dst);
         }
     }
 }

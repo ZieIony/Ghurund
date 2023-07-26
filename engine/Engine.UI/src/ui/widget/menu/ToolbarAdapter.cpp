@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "ToolbarAdapter.h"
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     Control* ButtonToolbarAdapter::makeControl() const {
@@ -24,8 +24,8 @@ namespace Ghurund::UI {
 
     Control* SeparatorToolbarAdapter::makeControl() const {
         Separator* separator = ghnew Separator();
-        auto s = StyleRef(Theme::STYLE_SEPARATOR_HORIZONTAL);
-        separator->Style = &s;
+        //auto s = StyleRef(Theme::STYLE_SEPARATOR_HORIZONTAL);
+        //separator->Style = &s;
         //separator->PreferredSize.height = PreferredSize::Height::FILL;
         return separator;
     }

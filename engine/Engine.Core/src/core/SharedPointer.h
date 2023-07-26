@@ -64,7 +64,7 @@ namespace Ghurund::Core {
             return *this;
         }
 
-        inline SharedPointer<T>& operator=(SharedPointer<T>&& other) {
+        inline SharedPointer<T>& operator=(SharedPointer<T>&& other) noexcept {
             if(pointer)
                 pointer->release();
             pointer = other.pointer;

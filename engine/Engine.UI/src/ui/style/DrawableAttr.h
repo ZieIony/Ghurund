@@ -1,13 +1,22 @@
 #pragma once
 
 #include "core/Object.h"
-#include "Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/drawable/Drawable.h"
 
 namespace Ghurund::UI {
 	class DrawableAttr: public Ghurund::Core::Object {
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
 	public:
-		virtual const Drawable* resolve(const Theme& theme) const = 0;
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = DrawableAttr::GET_TYPE();
+
+		virtual Drawable* resolve(const Theme& theme) const = 0;
 	};
 
 	class DrawableValue: public DrawableAttr {
@@ -32,7 +41,7 @@ namespace Ghurund::UI {
 				drawable->release();
 		}
 
-		virtual const Drawable* resolve(const Theme& theme) const override {
+		virtual Drawable* resolve(const Theme& theme) const override {
 			return drawable;
 		}
 
@@ -62,7 +71,7 @@ namespace Ghurund::UI {
 	public:
 		DrawableRef(DrawableKey key):key(key) {}
 
-		virtual const Drawable* resolve(const Theme& theme) const override;
+		virtual Drawable* resolve(const Theme& theme) const override;
 
 		virtual DrawableRef* clone() const override {
 			return ghnew DrawableRef(key);

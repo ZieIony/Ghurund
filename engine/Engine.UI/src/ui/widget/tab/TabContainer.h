@@ -53,7 +53,7 @@ namespace Ghurund::UI {
                 selectedTab->Selected = true;
             }
             TabItem* tab = tabs[position];
-            content.Value = SharedPointer<Control>(tab->content);
+            //content.Value = SharedPointer<Control>(tab->content);
             tab->content->invalidate();
         }
 

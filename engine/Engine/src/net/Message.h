@@ -5,7 +5,6 @@
 #include "core/string/String.h"
 
 #include <WinSock2.h>
-#include <CRC.h>
 
 namespace Ghurund::Net {
     using namespace Ghurund::Core;
@@ -19,9 +18,7 @@ namespace Ghurund::Net {
 
         bool isCrcValid(size_t messageSize);
 
-        void calculateCrc(size_t messageSize) {
-            crc = CRC::Calculate((uint8_t*)this + sizeof(crc), messageSize - sizeof(crc), CRC::CRC_32());
-        }
+        void calculateCrc(size_t messageSize);
 
         bool operator==(const Message& other) const {
             return crc == other.crc && type == other.type && id == other.id && messageType == other.messageType;

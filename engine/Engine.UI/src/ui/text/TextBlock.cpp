@@ -3,13 +3,13 @@
 
 #include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/text/TextMetrics.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    void TextBlock::onMeasure(float parentWidth, float parentHeight) {
+    void TextBlock::onMeasure() {
         const float MAX_LAYOUT_SIZE = 32768.0f;
 
         if (!Context || !textLayout->Format) {
@@ -70,8 +70,8 @@ namespace Ghurund::UI {
             textLayout->Size = { Size.Width, Size.Height };
     }
 
-    void TextBlock::load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, xml);
+    void TextBlock::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, xml);
         auto textFormatAttr = xml.FindAttribute("textFormat");
         if (textFormatAttr) {
             Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());

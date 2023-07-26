@@ -8,7 +8,6 @@
 #include <gdiplus.h>
 
 namespace Ghurund::Core {
-    class ResourceManager;
     class Window;
 }
 
@@ -18,9 +17,8 @@ namespace Ghurund::UI::GDI {
     class UIContext:public IUIContext {
     public:
         UIContext(
-            Ghurund::Core::Window& window,
-            Ghurund::Core::ResourceManager& manager
-        ):IUIContext(window, manager) {}
+            Ghurund::Core::Window& window
+        ):IUIContext(window) {}
 
         virtual StrokeStyle* makeStrokeStyle(Array<float>& dashes) override {
             GDI::StrokeStyle* strokeStyle = ghnew GDI::StrokeStyle();

@@ -2,7 +2,7 @@
 #include "InvalidControl.h"
 
 #include "ui/Canvas.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& InvalidControl::GET_TYPE() {

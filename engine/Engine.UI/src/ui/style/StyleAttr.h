@@ -1,25 +1,50 @@
 #pragma once
 
 #include "core/Object.h"
-#include "Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
 	class Style;
 
-	class StyleAttr : public Ghurund::Core::Object {
+	class StyleAttr: public Ghurund::Core::Object {
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
 	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = StyleAttr::GET_TYPE();
+
 		virtual const Style* resolve(const Theme& theme) const = 0;
 	};
 
-	class StyleValue : public StyleAttr {
+	class StyleValue: public StyleAttr {
 	private:
-		Style* style;
+		const Style* style;
 
 	public:
-		StyleValue(Style* style) :style(style) {}
+		StyleValue(const Style* style):style(style) {}
+
+		StyleValue(const StyleValue& other):style(other.style) {}
+
+		StyleValue(StyleValue&& other) noexcept:style(std::move(other.style)) {}
 
 		virtual const Style* resolve(const Theme& theme) const override {
 			return style;
+		}
+
+		StyleValue& operator=(const StyleValue& other) {
+			style = other.style;
+			return *this;
+		}
+
+		StyleValue& operator=(StyleValue&& other) noexcept {
+			if (this == &other)
+				return *this;
+			style = std::move(other.style);
+			return *this;
 		}
 
 		virtual StyleValue* clone() const override {
@@ -27,12 +52,12 @@ namespace Ghurund::UI {
 		}
 	};
 
-	class StyleRef : public StyleAttr {
+	class StyleRef: public StyleAttr {
 	private:
 		StyleKey key;
 
 	public:
-		StyleRef(StyleKey key) :key(key) {}
+		StyleRef(StyleKey key):key(key) {}
 
 		virtual const Style* resolve(const Theme& theme) const override;
 

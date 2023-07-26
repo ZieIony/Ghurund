@@ -41,10 +41,10 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getPadding, put = setPadding)) Padding& Padding;
 
-        virtual void onMeasure(float parentWidth, float parentHeight) override;
+        virtual void onMeasure() override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
+        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
     };
 }

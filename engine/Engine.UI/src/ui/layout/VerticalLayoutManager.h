@@ -17,7 +17,7 @@ namespace Ghurund::UI {
     public:
         virtual void scrollBy(float dx, float dy) override;
 
-        virtual const FloatSize measure(float parentWidth, float parentHeight) override;
+        virtual const FloatSize measure() override;
 
         virtual void layout(float x, float y, float width, float height) override;
     };

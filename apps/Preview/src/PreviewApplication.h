@@ -16,66 +16,22 @@ namespace Preview {
         Ghurund::Renderer renderer;
         Ghurund::ParameterManager parameterManager;
 
-        Ghurund::UI::ImageDrawableFactory* imageDrawableFactory;
+        Ghurund::UI::DrawableFactory* drawableFactory;
         LightTheme* lightTheme = nullptr;
         DarkTheme* darkTheme = nullptr;
         LayoutLoader* layoutLoader = nullptr;
         Theme* currentTheme = nullptr;
 
     public:
-        PreviewApplication() {
-            auto graphics = makeShared<Graphics>();
-            auto graphics2d = makeShared<UI::Direct2D::Graphics2D>(*graphics.get());
-            auto uiFeature = makeShared<Ghurund::UIFeature>(*graphics2d.get(), ResourceManager);
-            Features.add(graphics.get());
-            Features.add(graphics2d.get());
-            Features.add(uiFeature.get());
-        }
+        PreviewApplication();
 
-        virtual void onInit() override {
-            auto& uiFeature = Features.get<UIFeature>();
+        virtual void onInit() override;
 
-            imageDrawableFactory = ghnew Ghurund::UI::Direct2D::ImageDrawableFactory(ResourceManager);
-            layoutLoader = &uiFeature.LayoutLoader;
-            lightTheme = ghnew LightTheme(ResourceManager, *imageDrawableFactory);
-            darkTheme = ghnew DarkTheme(ResourceManager, *imageDrawableFactory);
-            ThemeType = ThemeType::LIGHT;
-            
-            ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
-            ResourceManager.Libraries.add(L"icons", DirectoryPath(L"./icons"));
+        virtual void onUninit() override;
 
-            renderer.init(Features.get<Graphics>(), parameterManager);
+        virtual void setThemeType(Preview::ThemeType theme) override;
 
-            auto window = ghnew PreviewWindow(*this, renderer, *this);
-            window->title = _T("Preview");
-            window->Size = { 800, 600 };
-            Windows.add(window);
-            window->visible = true;
-            window->bringToFront();
-        }
-
-        virtual void onUninit() override {
-            renderer.uninit();
-            delete darkTheme;
-            delete lightTheme;
-            delete imageDrawableFactory;
-        }
-
-        virtual void setThemeType(Preview::ThemeType theme) override {
-            if (theme == ThemeType::LIGHT) {
-                currentTheme = lightTheme;
-            } else {
-                currentTheme = darkTheme;
-            }
-            layoutLoader->Theme = currentTheme;
-        }
-
-        virtual void setPrimaryColor(uint32_t color) override {
-            lightTheme->Colors[Theme::COLOR_ACCENT].Value = color;
-            lightTheme->updateColors();
-            darkTheme->Colors[Theme::COLOR_ACCENT].Value = color;
-            lightTheme->updateColors();
-        }
+        virtual void setPrimaryColor(uint32_t color) override;
 
         virtual Theme& getCurrentTheme() override {
             return *currentTheme;

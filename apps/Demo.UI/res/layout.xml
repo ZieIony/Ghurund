@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" namespace="Demo">
-	<StackLayout alignment="left, bottom">
-		<ColorView style="theme://style/ColorView_background"/>
-		<StackLayout name="container"
-					 alignment="center, center"/>
-	</StackLayout>
-</layout>
+<ControlGroup xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ColorView width="Parent.Width" height="Parent.Height"
+			   style="theme://style/ColorView_background"/>
+	<ControlGroup name="container"
+				  width="Parent.Width" height="Parent.Height">
+	</ControlGroup>
+</ControlGroup>

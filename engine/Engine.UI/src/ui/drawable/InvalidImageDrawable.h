@@ -1,10 +1,9 @@
 #pragma once
 
-#include "ImageDrawable.h"
-#include "ui/Color.h"
+#include "Drawable.h"
 
 namespace Ghurund::UI {
-    class InvalidImageDrawable:public ImageDrawable {
+    class InvalidImageDrawable:public Drawable {
     private:
         Color backgroundColor = Color(1, 0, 0, 0.2f);
         Color borderColor = Color(1, 0, 0, 1.0f);
@@ -19,7 +18,7 @@ namespace Ghurund::UI {
 
         InvalidImageDrawable();
 
-        virtual void onDraw(ICanvas& canvas, const Ghurund::Core::FloatSize& size) const override;
+        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const override;
 
         virtual InvalidImageDrawable* clone() const override {
             return ghnew InvalidImageDrawable();

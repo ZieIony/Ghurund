@@ -2,7 +2,7 @@
 #include "ColorView.h"
 
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 #include "ui/Canvas.h"
 #include <ui/Binding.h>
 

@@ -1,11 +1,11 @@
 #pragma once
 
 #include "ui/Canvas.h"
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 #include "ui/direct2d/image/Bitmap.h"
 
 namespace Ghurund::UI::Direct2D {
-    class BitmapDrawable:public ImageDrawable {
+    class BitmapDrawable:public Drawable {
     private:
         Bitmap* image;
 
@@ -21,7 +21,7 @@ namespace Ghurund::UI::Direct2D {
 
         ~BitmapDrawable();
 
-        virtual void onDraw(ICanvas& canvas, const FloatSize& size) const override;
+        virtual void draw(ICanvas& canvas, const FloatSize& size, const Ghurund::UI::Color& tint) const override;
 
         virtual BitmapDrawable* clone() const override {
             return ghnew BitmapDrawable(image);

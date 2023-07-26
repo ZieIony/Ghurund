@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<SelectableView name="selectable" preferredSize="wrap, wrap">
+	<ClickableControl name="clickable" preferredSize="wrap, wrap">
 		<LinearLayout alignment="center, center"
 					  orientation="horizontal">
 			<StackLayout alignment="center, center" preferredSize="18, 18">
@@ -10,12 +10,12 @@
 										style="theme://style/StateIndicator_onBackground"/>
 					</Clip>
 				</PaddingContainer>
-				<ImageView name="image"
+				<DrawableView name="image"
 						   image="theme://image/radioButton_checked"/>
 			</StackLayout>
 			<Space preferredSize="4,4"/>
 			<ControlContainer preferredSize="fill, wrap"
 							  name="content"/>
 		</LinearLayout>
-	</SelectableView>
+	</ClickableControl>
 </layout>

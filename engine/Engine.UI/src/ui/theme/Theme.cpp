@@ -7,13 +7,6 @@
 #include "ui/widget/ExpandableContainer.h"
 
 namespace Ghurund::UI {
-    Theme::Theme() {
-        layouts.set(&Button::GET_TYPE(), "lib://Ghurund\\layouts\\ButtonDefaultLayout.xml");
-        layouts.set(&CheckBox::GET_TYPE(), "lib://Ghurund\\layouts\\CheckBoxLayout.xml");
-        layouts.set(&RadioButton::GET_TYPE(), "lib://Ghurund\\layouts\\RadioButtonLayout.xml");
-        layouts.set(&ExpandableContainer::GET_TYPE(), "lib://Ghurund\\layouts\\ExpandableContainer.xml");
-    }
-
     void Theme::updateColors() {
         colors.set(COLOR_CONTROL, lerpColors(Colors[COLOR_BACKGR0UND], Colors[COLOR_FOREGROUND_ONBACKGROUND], state_normal));
         colors.set(COLOR_PRIMARY_ONBACKGROUND, colorWithAlpha(emphasis_high, Colors[COLOR_FOREGROUND_ONBACKGROUND]));

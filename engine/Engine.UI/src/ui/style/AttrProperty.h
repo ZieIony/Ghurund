@@ -52,8 +52,11 @@ namespace Ghurund::UI {
 		}
 
 		inline void resolve(const Theme& theme) {
-			if (attr)
+			if (attr) {
 				value = attr->resolve(theme);
+			} else {
+				value = nullptr;
+			}
 		}
 
 		inline void set(std::unique_ptr<AttrType> attr) {
@@ -64,6 +67,10 @@ namespace Ghurund::UI {
 
 		inline const ValueType* get() const {
 			return value;
+		}
+
+		inline const bool operator==(const AttrType* attr) const {
+			return this->attr == attr;
 		}
 	};
 

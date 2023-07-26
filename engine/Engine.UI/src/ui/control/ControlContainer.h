@@ -1,9 +1,13 @@
 #pragma once
 
-#include "ControlParent.h"
+#include "ControlContainerBase.h"
+
+namespace Ghurund::Core {
+    class ResourceManager;
+}
 
 namespace Ghurund::UI {
-    class ControlContainer: public ControlParent {
+    class ControlContainer:public ControlContainerBase {
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -12,25 +16,14 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = ControlContainer::GET_TYPE();
-
-    private:
-        Control* child = nullptr;
-        bool previousReceiver = false;
+        inline static const Ghurund::Core::Type& TYPE = ControlContainerBase::GET_TYPE();
 
     protected:
         virtual void onChildChanged() {}
 
     public:
         Event<ControlContainer> childChanged = Event<ControlContainer>(*this);
-
-        ~ControlContainer() {
-            if (child) {
-                child->Parent = nullptr;
-                child->release();
-            }
-        }
-
+        
         inline Control* getChild() {
             return child;
         }
@@ -40,78 +33,19 @@ namespace Ghurund::UI {
         }
 
         inline void setChild(Control* child) {
-            if (this->child == child)
-                return;
-            if (Focused)
-                clearFocus();
-            if (this->child)
-                this->child->Parent = nullptr;
-            setPointer(this->child, child);
-            if (this->child)
-                this->child->Parent = this;
+            __super::setChild(child);
             onChildChanged();
             childChanged();
         }
 
         __declspec(property(get = getChild, put = setChild)) Control* Child;
 
-        virtual bool focusNext() override;
-
-        virtual bool focusPrevious() override;
-
-        virtual bool focusUp() override;
-
-        virtual bool focusDown() override;
-
-        virtual bool focusLeft() override;
-
-        virtual bool focusRight() override;
-
-        virtual void dispatchStateChanged() override;
-
-        virtual void dispatchThemeChanged() override;
-
-        virtual void dispatchContextChanged() override;
-
-        virtual void onMeasure(float parentWidth, float parentHeight) override;
-
-        virtual void onLayout(float x, float y, float width, float height) override {
-            if (child)
-                child->layout(0, 0, width, height);
-        }
-
-        virtual void onUpdate(const uint64_t time) override {
-            if (child)
-                child->onUpdate(time);
-        }
-
-        virtual void onDraw(ICanvas& canvas) override {
-            if (child)
-                child->draw(canvas);
-        }
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
-
         using Control::find;
 
-        virtual Control* find(const Ghurund::Core::AString& name, bool deep = true) const override;
+        virtual Control* find(const Ghurund::Core::AString& name) override;
 
-        virtual Control* find(const Ghurund::Core::Type& type, bool deep = true) const override;
+        virtual Control* find(const Ghurund::Core::Type& type) override;
 
-        virtual void resolveConstraints(ConstraintGraph& graph) override;
-
-        virtual void load(LayoutLoader& loader, const tinyxml2::XMLElement& xml) override;
-
-#ifdef _DEBUG
-        virtual void validate() const override;
-
-        virtual String printTree() const;
-#endif
+        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
     };
 }

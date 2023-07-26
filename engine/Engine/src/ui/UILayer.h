@@ -14,6 +14,16 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core::DirectX;
 
     class UILayer:public Layer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+#pragma endregion
+
     private:
         Graphics2D& graphics;
         Ghurund::UI::Direct2D::Canvas* canvas;
@@ -35,7 +45,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        UILayer(Graphics2D& graphics, ApplicationWindow& window, ResourceManager& resourceManager);
+        UILayer(Graphics2D& graphics, ApplicationWindow& window);
 
         ~UILayer() {
             rootView->release();

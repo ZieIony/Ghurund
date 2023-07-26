@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "SeparatorStyle.h"
 
-#include "ui/style/Theme.h"
+#include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Separator::GET_TYPE() {
