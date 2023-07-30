@@ -16,12 +16,12 @@ namespace Ghurund::UI {
 
 		inline static const Ghurund::Core::Type& TYPE = DrawableAttr::GET_TYPE();
 
-		virtual Drawable* resolve(const Theme& theme) const = 0;
+		virtual SharedPointer<Drawable> resolve(const Theme& theme) const = 0;
 	};
 
 	class DrawableValue: public DrawableAttr {
 	private:
-		Drawable* drawable = nullptr;
+		SharedPointer<Drawable> drawable;
 
 	public:
 		DrawableValue(Drawable* drawable):drawable(drawable) {
@@ -29,26 +29,16 @@ namespace Ghurund::UI {
 				drawable->addReference();
 		}
 
-		DrawableValue(const DrawableValue& other):drawable(other.drawable) {
-			if (drawable)
-				drawable->addReference();
-		}
+		DrawableValue(const DrawableValue& other):drawable(other.drawable) {}
 
 		DrawableValue(DrawableValue&& other) noexcept:drawable(std::move(other.drawable)) {}
 
-		~DrawableValue() {
-			if (drawable)
-				drawable->release();
-		}
-
-		virtual Drawable* resolve(const Theme& theme) const override {
+		virtual SharedPointer<Drawable> resolve(const Theme& theme) const override {
 			return drawable;
 		}
 
 		DrawableValue& operator=(const DrawableValue& other) {
 			drawable = other.drawable;
-			if (drawable)
-				drawable->addReference();
 			return *this;
 		}
 
@@ -60,7 +50,7 @@ namespace Ghurund::UI {
 		}
 
 		virtual DrawableValue* clone() const override {
-			return ghnew DrawableValue(drawable);
+			return ghnew DrawableValue(drawable.get());
 		}
 	};
 
@@ -71,7 +61,7 @@ namespace Ghurund::UI {
 	public:
 		DrawableRef(DrawableKey key):key(key) {}
 
-		virtual Drawable* resolve(const Theme& theme) const override;
+		virtual SharedPointer<Drawable> resolve(const Theme& theme) const override;
 
 		virtual DrawableRef* clone() const override {
 			return ghnew DrawableRef(key);

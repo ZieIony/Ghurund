@@ -12,7 +12,7 @@ namespace Ghurund::UI {
 	protected:
 		AttrProperty<ColorAttr, Color> color;
 		Ghurund::UI::TextFormatAttr* textFormat = nullptr;
-		TextLayout* textLayout;
+		Ghurund::UI::TextLayout* textLayout;
 
 		virtual void onMeasure() override;
 
@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 		}
 
 	public:
-		TextBlock(std::unique_ptr<TextLayout> textLayout):textLayout(textLayout.release()), color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {}
+		TextBlock(std::unique_ptr<Ghurund::UI::TextLayout> textLayout):textLayout(textLayout.release()), color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {}
 
 		/*TextBlock(
 			const Ghurund::Core::WString& text,

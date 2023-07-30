@@ -10,11 +10,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
     
-    Control* LayoutRef::resolve(const Theme& theme) const {
+    SharedPointer<Control> LayoutRef::resolve(const Theme& theme) const {
         size_t index = theme.Layouts.indexOfKey(key);
         if (index == theme.Layouts.Size) {
             Logger::log(LogType::WARNING, std::format(_T("Layout '{}' not found in the current theme.\n"), key.Value).c_str());
-            return nullptr;
+            return SharedPointer<Control>(nullptr);
         }
         return theme.Layouts.getValue(index)->get();
     }

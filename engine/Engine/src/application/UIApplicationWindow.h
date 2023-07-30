@@ -8,7 +8,9 @@
 namespace Ghurund {
 	class UIApplicationWindow:public ApplicationWindow {
 	private:
-		Ghurund::UI::UILayer* uiLayer;
+		Ghurund::UI::UILayer* uiLayer = nullptr;
+		Ghurund::UI::Theme* theme = nullptr;
+		Ghurund::UI::Control* content = nullptr;
 
 	public:
 		UIApplicationWindow(Core::Application& app, Renderer& renderer):ApplicationWindow(app, renderer) {}
@@ -24,16 +26,23 @@ namespace Ghurund {
 			Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 			uiLayer = ghnew Ghurund::UI::UILayer(graphics2d, *this);
 			Layers.add(uiLayer);
+
+			uiLayer->Root.Theme = theme;
+			uiLayer->Root.Child = content;
 		}
 
 		inline void setTheme(Ghurund::UI::Theme* theme) {
-			uiLayer->Root.Theme = theme;
+			this->theme = theme;
+			if (uiLayer)
+				uiLayer->Root.Theme = theme;
 		}
 
 		__declspec(property(put = setTheme)) Ghurund::UI::Theme* Theme;
 
 		inline void setContent(Ghurund::UI::Control* content) {
-			uiLayer->Root.Child = content;
+			this->content = content;
+			if (uiLayer)
+				uiLayer->Root.Child = content;
 		}
 
 		__declspec(property(put = setContent)) Ghurund::UI::Control* Content;

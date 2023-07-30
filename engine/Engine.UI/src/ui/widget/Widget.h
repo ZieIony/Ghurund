@@ -39,13 +39,7 @@ namespace Ghurund::UI {
 
 		virtual Control* find(const Ghurund::Core::Type& type) override;
 
-		void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override {
-			Control::load(loader, resourceManager, xml);
-			if (style == nullptr)
-				Style = std::move(std::make_unique<StyleRef>(StyleKey(Type.Name)));
-			if (layout == nullptr)
-				Layout = std::make_unique<LayoutRef>(LayoutKey(Type.Name));
-		}
+		void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
 
 	};
 }

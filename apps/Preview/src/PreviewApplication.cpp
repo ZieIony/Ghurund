@@ -12,7 +12,6 @@ namespace Preview {
         auto& uiFeature = Features.get<UIFeature>();
 
         drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager);
-        layoutLoader = &uiFeature.LayoutLoader;
         lightTheme = ghnew LightTheme(ResourceManager, *drawableFactory);
         darkTheme = ghnew DarkTheme(ResourceManager, *drawableFactory);
         ThemeType = ThemeType::LIGHT;

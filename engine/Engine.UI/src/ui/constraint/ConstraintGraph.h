@@ -53,8 +53,6 @@ namespace Ghurund::UI {
 
         inline void evaluate() {
             for (Constraint* c : constraints)
-                c->reset();
-            for (Constraint* c : constraints)
                 c->evaluate();
         }
     };

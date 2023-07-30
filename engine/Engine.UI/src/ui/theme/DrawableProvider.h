@@ -5,5 +5,5 @@
 namespace Ghurund::UI {
 	class Drawable;
 
-	class DrawableProvider:public Ghurund::Core::Provider<Drawable*> {};
+	class DrawableProvider:public Ghurund::Core::Provider<SharedPointer<Drawable>> {};
 }

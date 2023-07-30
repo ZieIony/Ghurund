@@ -4,6 +4,8 @@
 
 #include "ui/UIFeature.h"
 #include "DemoWindow.h"
+#include <ui/theme/LightTheme.h>
+#include "ui/loading/DrawableFactory.h"
 
 namespace Demo {
     using namespace Ghurund;
@@ -13,6 +15,9 @@ namespace Demo {
     protected:
         Renderer renderer;
         ParameterManager parameterManager;
+        LightTheme* theme;
+        Ghurund::UI::DrawableFactory* drawableFactory;
+        DemoWindow* window;
 
     public:
         DemoApplication() {
@@ -25,11 +30,20 @@ namespace Demo {
         virtual void onInit() override {
             renderer.init(Features.get<Graphics>(), parameterManager);
 
-            auto window = ghnew DemoWindow(*this, renderer);
+            drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager);
+            theme = ghnew LightTheme(ResourceManager, *drawableFactory);
+
+            window = ghnew DemoWindow(*this, renderer);
             window->Size = { 800, 600 };
+            window->Theme = theme;
             Windows.add(window);
             window->Visible = true;
             window->bringToFront();
+        }
+
+        virtual void onUninit() override {
+            delete drawableFactory;
+            delete theme;
         }
     };
 }

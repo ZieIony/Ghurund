@@ -19,7 +19,6 @@ namespace Preview {
         Ghurund::UI::DrawableFactory* drawableFactory;
         LightTheme* lightTheme = nullptr;
         DarkTheme* darkTheme = nullptr;
-        LayoutLoader* layoutLoader = nullptr;
         Theme* currentTheme = nullptr;
 
     public:

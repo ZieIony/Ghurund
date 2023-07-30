@@ -3,7 +3,7 @@
 #include "ControlContainer.h"
 
 namespace Ghurund::UI {
-    class ClickableControl:public ControlContainer {
+    class ClickableControl:public Control {
     private:
         bool hovered = false;
         MousePressed buttons;

@@ -16,8 +16,8 @@ namespace Ghurund::UI {
 			const FilePath& filePath
 		): resourceManager(resourceManager), filePath(filePath) {}
 
-		virtual Control* get() override {
-			return resourceManager.load<Control>(filePath, nullptr, LoadOption::DONT_CACHE);
+		virtual SharedPointer<Control> get() override {
+			return SharedPointer<Control>(resourceManager.load<Control>(filePath, nullptr, LoadOption::DONT_CACHE));
 		}
 	};
 }

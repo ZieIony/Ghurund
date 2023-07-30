@@ -11,14 +11,14 @@ namespace Ghurund::UI {
 
     class Constraint:public Pointer {
     protected:
-        float value = 0.0f, initial = 0.0f;
+        float value = 0.0f;
         bool constant = false, skipDependencies = false;
         Set<Constraint*> dependencies;
 
     public:
         Constraint() {}
 
-        Constraint(float initial, bool constant, bool skipDependencies):value(initial), initial(initial), constant(constant), skipDependencies(skipDependencies) {}
+        Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
 
         virtual ~Constraint()// = 0 
         {}
@@ -33,15 +33,15 @@ namespace Ghurund::UI {
 
         virtual void evaluate() {}
 
-        inline void reset() {
-            value = initial;
-        }
-
         Set<Constraint*>& getDependencies() {
             return dependencies;
         }
 
         __declspec(property(get = getDependencies)) Set<Constraint*>& Dependencies;
+
+        inline void setValue(float value) {
+            this->value = value;
+        }
 
         inline float getValue() const {
             return value;
@@ -49,6 +49,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getValue)) float Value;
 
+        // for example wrap constraint can skip fill dependencies to not introduce cycles
         inline bool canSkipDependencies() const {
             return skipDependencies;
         }
@@ -63,7 +64,7 @@ namespace Ghurund::UI {
     public:
         OffsetConstraint() {}
       
-        OffsetConstraint(float initial, bool constant, bool skipDependencies):Constraint(initial, constant, skipDependencies) {}
+        OffsetConstraint(bool constant, bool skipDependencies):Constraint(constant, skipDependencies) {}
 
         inline float getOffset() const {
             return offset;
@@ -74,6 +75,10 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOffset, put = setOffset)) float Offset;
+
+        virtual void resolve(Control& control, ConstraintGraph& graph) override {
+            value = offset;
+        }
     };
 
     class RatioConstraint:public OffsetConstraint {
@@ -83,7 +88,7 @@ namespace Ghurund::UI {
     public:
         RatioConstraint() {}
 
-        RatioConstraint(float initial, bool constant, bool skipDependencies):OffsetConstraint(initial, constant, skipDependencies) {}
+        RatioConstraint(bool constant, bool skipDependencies):OffsetConstraint(constant, skipDependencies) {}
 
         inline float getRatio() const {
             return ratio;
@@ -101,12 +106,11 @@ namespace Ghurund::UI {
     class MinMaxConstraint:public RatioConstraint {
     protected:
         float min = std::numeric_limits<float>::lowest(), max = std::numeric_limits<float>::max();
-        float baseInitial = 0.0f;
 
     public:
         MinMaxConstraint() {}
 
-        MinMaxConstraint(float initial, bool constant, bool skipDependencies):RatioConstraint(initial, constant, skipDependencies), baseInitial(initial) {}
+        MinMaxConstraint(bool constant, bool skipDependencies):RatioConstraint(constant, skipDependencies) {}
 
         inline float getMin() const {
             return min;
@@ -116,7 +120,7 @@ namespace Ghurund::UI {
             if (min > max)
                 throw InvalidParamException();
             this->min = min;
-            initial = std::max(baseInitial, min);
+            value = std::max(value, min);
         }
 
         __declspec(property(get = getMin, put = setMin)) float Min;
@@ -129,7 +133,7 @@ namespace Ghurund::UI {
             if (max < min)
                 throw InvalidParamException();
             this->max = max;
-            initial = std::min(baseInitial, min);
+            value = std::min(value, min);
         }
 
         __declspec(property(get = getMax, put = setMax)) float Max;

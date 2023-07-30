@@ -321,14 +321,6 @@ namespace Ghurund::UI {
 			onMeasure();
 		}
 
-		inline void measureWidth() {
-			measuredSize.Width = width->Value;
-		}
-
-		inline void measureHeight() {
-			measuredSize.Height = height->Value;
-		}
-
 		void layout(float x, float y, float width, float height);
 
 		virtual void onUpdate(const uint64_t time) {}

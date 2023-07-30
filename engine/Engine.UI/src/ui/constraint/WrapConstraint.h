@@ -10,7 +10,7 @@ namespace Ghurund::UI {
         Control* control = nullptr;
 
     public:
-        WrapWidthConstraint():MinMaxConstraint(0.0f, false, true) {}
+        WrapWidthConstraint():MinMaxConstraint(false, true) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
@@ -22,7 +22,7 @@ namespace Ghurund::UI {
         Control* control = nullptr;
 
     public:
-        WrapHeightConstraint():MinMaxConstraint(0.0f, false, true) {}
+        WrapHeightConstraint():MinMaxConstraint(false, true) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 

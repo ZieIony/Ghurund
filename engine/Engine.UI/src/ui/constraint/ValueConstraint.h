@@ -6,7 +6,17 @@ namespace Ghurund::UI {
 
     class ValueConstraint:public Constraint {
     public:
-        ValueConstraint(float value):Constraint(value, true, true) {}
+        ValueConstraint():Constraint(true, true) {}
+
+        ValueConstraint(float value = 0.0f):Constraint(true, true) {
+            this->value = value;
+        }
+
+        inline void setValue(float value) {
+            this->value = value;
+        }
+
+        __declspec(property(get = getValue, put = setValue)) float Value;
     };
 
 }

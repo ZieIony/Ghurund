@@ -109,6 +109,8 @@
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
+    <ClInclude Include="src\ui\constraint\NextConstraint.h" />
+    <ClInclude Include="src\ui\constraint\PreviousConstraint.h" />
     <ClInclude Include="src\ui\control\ControlContainer.h" />
     <ClInclude Include="src\ui\control\DrawableViewStyle.h" />
     <ClInclude Include="src\ui\control\ImageScaleMode.h" />
@@ -269,6 +271,8 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Color.cpp" />
+    <ClCompile Include="src\ui\constraint\NextConstraint.cpp" />
+    <ClCompile Include="src\ui\constraint\PreviousConstraint.cpp" />
     <ClCompile Include="src\ui\control\ControlContainer.cpp" />
     <ClCompile Include="src\ui\control\DrawableViewStyle.cpp" />
     <ClCompile Include="src\ui\control\ImageScaleMode.cpp" />

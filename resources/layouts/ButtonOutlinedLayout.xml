@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ClickableControl name="clickable" preferredSize="fill, fill">
-		<Clip shape="roundRect, 2"
-				name="clip"
-				preferredSize="fill, fill">
-			<StackLayout>
-				<ColorView style="theme://style/ColorView_background"
-							name="background"/>
-				<StateIndicator name="state" preferredSize="fill, fill"
-								style="theme://style/StateIndicator_onBackground"/>
-				<PaddingContainer padding="8, 4"
-									preferredSize="fill, fill"
-									name="padding">
-						<ControlContainer preferredSize="fill, fill"
-										  name="content"/>
-				</PaddingContainer>
-				<Border name="border"
-						preferredSize="fill, fill"
-						style="theme://style/Border_onBackground"
-						shape="roundRect, 2"/>
-			</StackLayout>
-		</Clip>
-	</ClickableControl>
-</layout>
+<Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlGroup>
+		<ControlGroup.Width path="wrap" offset="8"/>
+		<ControlGroup.Height path="wrap" offset="4"/>
+		<ClickableControl width="Parent.Width" height="Parent.Height" name="clickable"/>
+		<ColorView style="theme://style/ColorView_background"
+			   width="Parent.Width" height="Parent.Height"/>
+		<StateIndicator name="state"
+						width="Parent.Width" height="Parent.Height"
+						style="theme://style/StateIndicator_onBackground"/>
+		<ControlContainer name="container">
+			<ControlContainer.Left path="Parent.Left" offset="8"/>
+			<ControlContainer.Top path="Parent.Top" offset="4"/>
+		</ControlContainer>
+		<Border width="Parent.Width" height="Parent.Height"
+					style="theme://style/Border_onBackground"
+					shape="roundRect, 2"/>
+	</ControlGroup>
+</Clip>

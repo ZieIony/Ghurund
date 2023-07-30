@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ClickableControl name="clickable" preferredSize="fill, fill">
-		<StackLayout>
-			<ControlContainer preferredSize="fill, fill"
-								name="container"/>
-			<StateIndicator name="state" preferredSize="fill, fill"
-							style="theme://style/StateIndicator_onAccent"/>
-		</StackLayout>
-	</ClickableControl>
-</layout>
+<Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlGroup>
+		<ControlGroup.Width path="wrap" offset="8"/>
+		<ControlGroup.Height path="wrap" offset="4"/>
+		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
+		<ControlContainer name="container">
+			<ControlContainer.Left path="Parent.Left" offset="8"/>
+			<ControlContainer.Top path="Parent.Top" offset="4"/>
+		</ControlContainer>
+		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
+						style="theme://style/StateIndicator_onAccent"/>
+	</ControlGroup>
+</Clip>

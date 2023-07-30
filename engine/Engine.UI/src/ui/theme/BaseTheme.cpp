@@ -4,7 +4,7 @@
 #include "FileDrawableProvider.h"
 
 namespace Ghurund::UI {
-	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager, DrawableFactory& drawableFactory):Theme(), resourceManager(resourceManager) {
+	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::DrawableFactory& drawableFactory):Theme(), resourceManager(resourceManager) {
 		Layouts.set(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\ButtonDefaultLayout.xml")));
 		Layouts.set(LayoutKey(CheckBox::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\CheckBoxLayout.xml")));
 		Layouts.set(LayoutKey(RadioButton::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\RadioButtonLayout.xml")));

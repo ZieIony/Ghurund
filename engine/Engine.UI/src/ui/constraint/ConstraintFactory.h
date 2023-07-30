@@ -18,6 +18,22 @@ namespace Ghurund::UI {
             float max = std::numeric_limits<float>::max()
         ) const;
 
+        Constraint* parsePreviousConstraint(
+            const AString& str,
+            float ratio = 1.0f,
+            float offset = 0.0f,
+            float min = 0.0f,
+            float max = std::numeric_limits<float>::max()
+        ) const;
+
+        Constraint* parseNextConstraint(
+            const AString& str,
+            float ratio = 1.0f,
+            float offset = 0.0f,
+            float min = 0.0f,
+            float max = std::numeric_limits<float>::max()
+        ) const;
+
         Constraint* parseSiblingConstraint(
             const AString& str,
             float ratio = 1.0f,

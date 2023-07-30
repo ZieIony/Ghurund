@@ -47,4 +47,12 @@ namespace Ghurund::UI {
 			return this;
 		return nullptr;
 	}
+
+	void Widget::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
+		Control::load(loader, resourceManager, xml);
+		if (style == nullptr)
+			Style = std::move(std::make_unique<StyleRef>(StyleKey(Type.Name)));
+		if (layout == nullptr)
+			Layout = std::make_unique<LayoutRef>(LayoutKey(Type.Name));
+	}
 }

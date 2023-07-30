@@ -105,16 +105,8 @@ namespace Ghurund::UI {
 	}
 
 	void Control::onMeasure() {
-		measureWidth();
-		measureHeight();
-		/*[[likely]]
-		if (preferredSize.width.Type != PreferredSize::Type::RATIO) {
-			measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
-			measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
-		} else {
-			measuredSize.Height = resolveHeight(0, parentWidth, parentHeight);
-			measuredSize.Width = resolveWidth(0, parentWidth, parentHeight);
-		}*/
+		measuredSize.Width = width->Value;
+		measuredSize.Height = height->Value;
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {

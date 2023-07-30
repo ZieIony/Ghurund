@@ -6,18 +6,11 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
-    class ParentLeftConstraint:public ValueConstraint {
-    public:
-        ParentLeftConstraint(float offset = 0.0f):ValueConstraint(offset) {}
+    class ParentLeftConstraint:public OffsetConstraint {
     };
 
-    class ParentRightConstraint:public Constraint {
-    private:
-        float offset;
-
+    class ParentRightConstraint:public OffsetConstraint {
     public:
-        ParentRightConstraint(float offset = 0.0f):offset(offset) {}
-
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {
@@ -25,18 +18,11 @@ namespace Ghurund::UI {
         }
     };
 
-    class ParentTopConstraint:public ValueConstraint {
-    public:
-        ParentTopConstraint(float offset = 0.0f):ValueConstraint(offset) {}
+    class ParentTopConstraint:public OffsetConstraint {
     };
 
-    class ParentBottomConstraint:public Constraint {
-    private:
-        float offset;
-
+    class ParentBottomConstraint:public OffsetConstraint {
     public:
-        ParentBottomConstraint(float offset = 0.0f):offset(offset) {}
-
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override {

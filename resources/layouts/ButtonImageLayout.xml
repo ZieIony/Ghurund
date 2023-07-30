@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ClickableControl xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd"
-				  width="wrap" height="wrap" name="clickable" >
-	<Clip shape="roundRect, 2" name="clip"
-		  width="wrap" height="wrap">
-		<ControlGroup>
-			<ControlContainer width="wrap" height="wrap"
-							  name="container"/>
-			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-							style="theme://style/StateIndicator_onAccent"/>
-		</ControlGroup>
-	</Clip>
-</ClickableControl>
+<Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlGroup>
+		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
+		<ControlContainer name="container"/>
+		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
+						style="theme://style/StateIndicator_onAccent"/>
+	</ControlGroup>
+</Clip>

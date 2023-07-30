@@ -25,7 +25,7 @@ namespace Ghurund::UI {
 
 		inline void resolve(const Theme& theme) {
 			if (attr)
-				setPointer(value, attr->resolve(theme));
+				setPointer(value, attr->resolve(theme).get());
 		}
 
 		inline void set(std::unique_ptr<AttrType> attr) {

@@ -60,6 +60,6 @@ namespace Ghurund::UI {
 		StateIndicatorOnAccentStyle stateIndicatorOnAccentStyle;
 
 	public:
-		BaseTheme(Ghurund::Core::ResourceManager& resourceManager, DrawableFactory& drawableFactory);
+		BaseTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::DrawableFactory& drawableFactory);
 	};
 }

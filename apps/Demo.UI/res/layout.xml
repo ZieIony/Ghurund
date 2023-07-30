@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ControlGroup xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+<ControlGroup xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" width="Parent.Width" height="Parent.Height">
 	<ColorView width="Parent.Width" height="Parent.Height"
 			   style="theme://style/ColorView_background"/>
-	<ControlGroup name="container"
-				  width="Parent.Width" height="Parent.Height">
-	</ControlGroup>
+	<Button layout="lib://Ghurund\layouts\ButtonAccentLayout.xml">
+		<DrawableView drawable="resources/button.png"/>
+	</Button>
+	<Button>
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="resources/button.png"/>
+	</Button>
+	<Button layout="lib://Ghurund\layouts\ButtonFlatLayout.xml">
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="resources/button.png"/>
+	</Button>
+	<Button layout="lib://Ghurund\layouts\ButtonIconLayout.xml">
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="resources/icons/category 18.png"/>
+	</Button>
+	<Button layout="lib://Ghurund\layouts\ButtonIconOnAccentLayout.xml">
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="resources/icons/category 18.png"/>
+	</Button>
+	<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="images/buttons.png"/>
+	</Button>
+	<Button layout="lib://Ghurund\layouts\ButtonOutlinedLayout.xml">
+		<Button.Top path="Previous.Bottom" offset="8"/>
+		<DrawableView drawable="resources/button.png"/>
+	</Button>
 </ControlGroup>

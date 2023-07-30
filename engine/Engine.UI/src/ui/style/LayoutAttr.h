@@ -16,12 +16,12 @@ namespace Ghurund::UI {
 
 		inline static const Ghurund::Core::Type& TYPE = LayoutAttr::GET_TYPE();
 
-		virtual Control* resolve(const Theme& theme) const = 0;
+		virtual SharedPointer<Control> resolve(const Theme& theme) const = 0;
 	};
 
 	class LayoutValue: public LayoutAttr {
 	private:
-		Control* control = nullptr;
+		SharedPointer<Control> control;
 
 	public:
 		LayoutValue(Control* control):control(control) {
@@ -29,26 +29,16 @@ namespace Ghurund::UI {
 				control->addReference();
 		}
 
-		LayoutValue(const LayoutValue& other):control(other.control) {
-			if (control)
-				control->addReference();
-		}
+		LayoutValue(const LayoutValue& other):control(other.control) {}
 
 		LayoutValue(LayoutValue&& other) noexcept:control(std::move(other.control)) {}
 
-		~LayoutValue() {
-			if (control)
-				control->release();
-		}
-
-		virtual Control* resolve(const Theme& theme) const override {
+		virtual SharedPointer<Control> resolve(const Theme& theme) const override {
 			return control;
 		}
 
 		LayoutValue& operator=(const LayoutValue& other) {
 			control = other.control;
-			if (control)
-				control->addReference();
 			return *this;
 		}
 
@@ -60,7 +50,7 @@ namespace Ghurund::UI {
 		}
 
 		virtual LayoutValue* clone() const override {
-			return ghnew LayoutValue(control);
+			return ghnew LayoutValue(control.get());
 		}
 	};
 
@@ -71,7 +61,7 @@ namespace Ghurund::UI {
 	public:
 		LayoutRef(LayoutKey key):key(key) {}
 
-		virtual Control* resolve(const Theme& theme) const override;
+		virtual SharedPointer<Control> resolve(const Theme& theme) const override;
 
 		virtual LayoutRef* clone() const override {
 			return ghnew LayoutRef(key);
