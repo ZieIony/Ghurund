@@ -11,6 +11,6 @@ namespace Ghurund::UI::Direct2D {
     public:
         DrawableFactory(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
-        virtual Drawable* makeDrawable(const FilePath& path) override;
+        virtual Drawable* makeDrawable(const ResourcePath& path) override;
     };
 }

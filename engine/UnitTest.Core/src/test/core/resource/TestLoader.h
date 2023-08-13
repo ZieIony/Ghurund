@@ -1,21 +1,28 @@
 #pragma once
 
 #include "core/resource/Loader.h"
-#include "Font.h"
+#include "TestResource.h"
 #include "core/Exceptions.h"
 
-namespace Ghurund::UI {
+namespace UnitTest {
     using namespace Ghurund::Core;
 
-    class FontLoader:public Loader {
+    class TestLoader:public Loader {
     public:
-        virtual Font* load(
+        size_t loadCalls = 0;
+
+        virtual Resource* load(
             Ghurund::Core::ResourceManager& manager,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat* format = nullptr,
             LoadOption options = LoadOption::DEFAULT
-        ) override;
+        ) override {
+            loadCalls++;
+            TestResource* testResource = ghnew TestResource();
+            testResource->text = stream.readASCII();
+            return testResource;
+        }
 
         virtual void save(
             const Ghurund::Core::ResourceManager& manager,

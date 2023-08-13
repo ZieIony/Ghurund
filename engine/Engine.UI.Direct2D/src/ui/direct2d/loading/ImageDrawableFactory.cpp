@@ -13,24 +13,18 @@
 #include <ranges>
 
 namespace Ghurund::UI::Direct2D {
-    Drawable* DrawableFactory::makeDrawable(const FilePath& path) {
-        auto formatSupported = [&path](const ResourceFormat& format) {
-            return format.Extension == path.Extension && format.CanLoad;
-        };
+    Drawable* DrawableFactory::makeDrawable(const ResourcePath& path) {
         try {
-            if (std::ranges::count_if(Bitmap::FORMATS, formatSupported) == 1) {
-                SharedPointer<Bitmap> bitmap(resourceManager.load<Bitmap>(path));
-                return ghnew BitmapDrawable(bitmap.get());
-            } else if (std::ranges::count_if(SvgDocument::FORMATS, formatSupported) == 1) {
-                SharedPointer<SvgDocument> svg(resourceManager.load<SvgDocument>(path));
+            SharedPointer<Bitmap> bitmap(resourceManager.load<Bitmap>(path, DirectoryPath()));
+            return ghnew BitmapDrawable(bitmap.get());
+        } catch (...) {
+            try {
+                SharedPointer<SvgDocument> svg(resourceManager.load<SvgDocument>(path, DirectoryPath()));
                 return ghnew SvgDrawable(svg.get());
-            } else {
-                auto text = std::format(_T("File format of '{}' is not supported.\n"), path);
+            } catch (...) {
+                auto text = std::format(_T("Failed to load '{}'.\n"), path);
                 Logger::log(LogType::ERR0R, text.c_str());
             }
-        } catch (...) {
-            auto text = std::format(_T("Failed to load '{}'.\n"), path);
-            Logger::log(LogType::ERR0R, text.c_str());
         }
         return nullptr;
     }

@@ -13,19 +13,18 @@
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    Status Script::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    void Script::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*EntryPoint = stream.readASCII();
         SourceCode = stream.readASCII();
         return build(context.ScriptEngine);*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Script::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void Script::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         if (entryPoint.Length == 0 || source.Length == 0)
-            return Status::INV_STATE;
+            throw InvalidStateException();
         stream.writeASCII(entryPoint.Data);
         stream.writeASCII(source.Data);
-        return Status::OK;
     }
 
     const Ghurund::Core::Type& Script::GET_TYPE() {

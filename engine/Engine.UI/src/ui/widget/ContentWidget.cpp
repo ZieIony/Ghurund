@@ -7,12 +7,12 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
-    void ContentWidget::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, xml);
+    void ContentWidget::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, workingDir, xml);
         auto childElement = xml.FirstChildElement();
         while (childElement) {
             if (!AString(childElement->Name()).contains(".")) {
-                SharedPointer<Control> control(loader.loadControl(*childElement));
+                SharedPointer<Control> control(loader.loadControl(workingDir, *childElement));
                 if (control != nullptr) {
                     Content = control.get();
                 } else {

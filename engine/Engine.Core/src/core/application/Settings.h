@@ -49,9 +49,9 @@ namespace Ghurund::Core {
             values.set(name, value);
         }
 
-        Status load(const FilePath& path);
+        void load(const FilePath& path);
 
-        Status save(const FilePath& path) const;
+        void save(const FilePath& path) const;
     };
 
 }

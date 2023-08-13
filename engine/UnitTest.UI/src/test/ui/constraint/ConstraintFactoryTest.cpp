@@ -130,7 +130,7 @@ public:
             auto layoutLoader = makeShared<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
             resourceManager.Loaders.set<Control>(layoutLoader.get());
 
-            SharedPointer<Control> control(resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")), nullptr, LoadOption::DONT_CACHE));
+            SharedPointer<Control> control(resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 
             Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&control->Left));
             Assert::AreEqual(5.0f, control->Left.Value);

@@ -33,6 +33,7 @@ namespace Ghurund::UI::Direct2D {
     Font* FontLoader::load(
         Ghurund::Core::ResourceManager& manager,
         MemoryInputStream& stream,
+        const DirectoryPath& workingDir,
         const ResourceFormat* format,
         LoadOption options
     ) {

@@ -72,7 +72,7 @@ namespace Ghurund::Core {
 template <typename T>
 struct std::formatter<Ghurund::Core::BaseSize<T>, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
-    auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) {
+    auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) const {
         return format_to(ctx.out(), "[{}, {}]", obj.Width, obj.Height);
     }
 };
@@ -80,7 +80,7 @@ struct std::formatter<Ghurund::Core::BaseSize<T>, char>:std::formatter<const cha
 template <typename T>
 struct std::formatter<Ghurund::Core::BaseSize<T>, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
     template <typename FormatContext>
-    auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) {
+    auto format(const Ghurund::Core::BaseSize<T>& obj, FormatContext& ctx) const {
         return format_to(ctx.out(), L"[{}, {}]", obj.Width, obj.Height);
     }
 };

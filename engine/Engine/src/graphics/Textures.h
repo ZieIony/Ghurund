@@ -8,9 +8,8 @@ namespace Ghurund {
     private:
         Textures() = delete;
 
-        static Texture* make(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const wchar_t* fileName) {
-            auto path = std::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName);
-            return makeFromImage(graphics, commandList, manager, FilePath(path.c_str()));
+        static Texture* make(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const WString& fileName) {
+            return makeFromImage(graphics, commandList, manager, ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName));
         }
 
     public:
@@ -30,8 +29,8 @@ namespace Ghurund {
             return make(graphics, commandList, manager, L"/textures/checker.png");
         }
 
-        static Texture* makeFromImage(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const FilePath& imagePath) {
-            Ghurund::Core::Image* image = manager.load<Ghurund::Core::Image>(imagePath);
+        static Texture* makeFromImage(Graphics& graphics, CommandList& commandList, ResourceManager& manager, const ResourcePath& imagePath) {
+            Ghurund::Core::Image* image = manager.load<Ghurund::Core::Image>(imagePath, DirectoryPath());
             if (image == nullptr)
                 return nullptr;
             Texture* texture = ghnew Texture();

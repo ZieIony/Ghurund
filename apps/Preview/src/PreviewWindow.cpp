@@ -8,7 +8,7 @@ namespace Preview {
 
 		Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 
-		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), nullptr, LoadOption::DONT_CACHE));
+		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		Theme = &themeApp.CurrentTheme;
 		Content = previewLayout.get();
 
@@ -50,7 +50,7 @@ namespace Preview {
 			File file(path);
 			if (!file.Exists)
 				return;
-			if (file.read() == Status::OK) {
+			/*if (file.read() == Status::OK) {
 				if (path.Extension == L"xml") {
 					loadLayout(file);
 				} else {
@@ -58,7 +58,7 @@ namespace Preview {
 				}
 			} else {
 				Application.FunctionQueue.post(loadCallback);
-			}
+			}*/
 			};
 
 		Application.FunctionQueue.post(loadCallback);

@@ -64,5 +64,173 @@ public:
             Assert::AreEqual(L"test_text_with_test_words_to_test_string_replace", replacedText4.Data);
         }
     }
+
+    TEST_METHOD(String_findChar) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::AreEqual(0ull, str.find(_T("tes"), 0));
+            Assert::AreEqual(1ull, str.find(_T("est"), 0));
+            Assert::AreEqual(3ull, str.find(_T("t"), 2));
+            Assert::AreEqual(11ull, str.find(_T("float"), 0));
+            AString astr = "test string";
+            Assert::AreEqual(0ull, astr.find("tes", 0));
+            Assert::AreEqual(1ull, astr.find("est", 0));
+            Assert::AreEqual(3ull, astr.find("t", 2));
+            Assert::AreEqual(11ull, astr.find("float", 0));
+            WString wstr = L"test string";
+            Assert::AreEqual(0ull, wstr.find(L"tes", 0));
+            Assert::AreEqual(1ull, wstr.find(L"est", 0));
+            Assert::AreEqual(3ull, wstr.find(L"t", 2));
+            Assert::AreEqual(11ull, wstr.find(L"float", 0));
+        }
+    }
+
+    TEST_METHOD(String_findString) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::AreEqual(0ull, str.find(String(_T("tes")), 0));
+            Assert::AreEqual(1ull, str.find(String(_T("est")), 0));
+            Assert::AreEqual(3ull, str.find(String(_T("t")), 2));
+            Assert::AreEqual(11ull, str.find(String(_T("float")), 0));
+            AString astr = "test string";
+            Assert::AreEqual(0ull, astr.find(AString("tes"), 0));
+            Assert::AreEqual(1ull, astr.find(AString("est"), 0));
+            Assert::AreEqual(3ull, astr.find(AString("t"), 2));
+            Assert::AreEqual(11ull, astr.find(AString("float"), 0));
+            WString wstr = L"test string";
+            Assert::AreEqual(0ull, wstr.find(WString(L"tes"), 0));
+            Assert::AreEqual(1ull, wstr.find(WString(L"est"), 0));
+            Assert::AreEqual(3ull, wstr.find(WString(L"t"), 2));
+            Assert::AreEqual(11ull, wstr.find(WString(L"float"), 0));
+        }
+    }
+
+    TEST_METHOD(String_findLastChar) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::AreEqual(0ull, str.findLast(_T("tes")));
+            Assert::AreEqual(6ull, str.findLast(_T("t")));
+            Assert::AreEqual(11ull, str.findLast(_T("float")));
+            AString astr = "test string";
+            Assert::AreEqual(0ull, astr.findLast("tes"));
+            Assert::AreEqual(6ull, astr.findLast("t"));
+            Assert::AreEqual(11ull, astr.findLast("float"));
+            WString wstr = L"test string";
+            Assert::AreEqual(0ull, wstr.findLast(L"tes"));
+            Assert::AreEqual(6ull, wstr.findLast(L"t"));
+            Assert::AreEqual(11ull, wstr.findLast(L"float"));
+        }
+    }
+
+    TEST_METHOD(String_findLastString) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::AreEqual(0ull, str.findLast(String(_T("tes"))));
+            Assert::AreEqual(6ull, str.findLast(String(_T("t"))));
+            Assert::AreEqual(11ull, str.findLast(String(_T("float"))));
+            AString astr = "test string";
+            Assert::AreEqual(0ull, astr.findLast(AString("tes")));
+            Assert::AreEqual(6ull, astr.findLast(AString("t")));
+            Assert::AreEqual(11ull, astr.findLast(AString("float")));
+            WString wstr = L"test string";
+            Assert::AreEqual(0ull, wstr.findLast(WString(L"tes")));
+            Assert::AreEqual(6ull, wstr.findLast(WString(L"t")));
+            Assert::AreEqual(11ull, wstr.findLast(WString(L"float")));
+        }
+    }
+
+    TEST_METHOD(String_startsWithChar) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.startsWith(_T("tes")));
+            Assert::IsFalse(str.startsWith(_T("est")));
+            AString astr = "test string";
+            Assert::IsTrue(astr.startsWith("tes"));
+            Assert::IsFalse(astr.endsWith("est"));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.startsWith(L"tes"));
+            Assert::IsFalse(wstr.endsWith(L"est"));
+        }
+    }
+
+    TEST_METHOD(String_startsWithString) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.startsWith(String(_T("tes"))));
+            Assert::IsFalse(str.startsWith(String(_T("est"))));
+            AString astr = "test string";
+            Assert::IsTrue(astr.startsWith(AString("tes")));
+            Assert::IsFalse(astr.endsWith(AString("est")));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.startsWith(WString(L"tes")));
+            Assert::IsFalse(wstr.endsWith(WString(L"est")));
+        }
+    }
+
+    TEST_METHOD(String_containsChar) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.contains(_T("est")));
+            Assert::IsFalse(str.contains(_T("set")));
+            AString astr = "test string";
+            Assert::IsTrue(astr.contains("est"));
+            Assert::IsFalse(astr.contains("set"));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.contains(L"est"));
+            Assert::IsFalse(wstr.contains(L"set"));
+        }
+    }
+
+    TEST_METHOD(String_containsString) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.contains(String(_T("est"))));
+            Assert::IsFalse(str.contains(String(_T("set"))));
+            AString astr = "test string";
+            Assert::IsTrue(astr.contains(AString("est")));
+            Assert::IsFalse(astr.contains(AString("set")));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.contains(WString(L"est")));
+            Assert::IsFalse(wstr.contains(WString(L"set")));
+        }
+    }
+
+    TEST_METHOD(String_endsWithChar) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.endsWith(_T("ing")));
+            Assert::IsFalse(str.endsWith(_T("est")));
+            AString astr = "test string";
+            Assert::IsTrue(astr.endsWith("ing"));
+            Assert::IsFalse(astr.endsWith("est"));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.endsWith(L"ing"));
+            Assert::IsFalse(wstr.endsWith(L"est"));
+        }
+    }
+
+    TEST_METHOD(String_endsWithString) {
+        MemoryGuard guard;
+        {
+            String str = _T("test string");
+            Assert::IsTrue(str.endsWith(String(_T("ing"))));
+            Assert::IsFalse(str.endsWith(String(_T("est"))));
+            AString astr = "test string";
+            Assert::IsTrue(astr.endsWith(AString("ing")));
+            Assert::IsFalse(astr.endsWith(AString("est")));
+            WString wstr = L"test string";
+            Assert::IsTrue(wstr.endsWith(WString(L"ing")));
+            Assert::IsFalse(wstr.endsWith(WString(L"est")));
+        }
+    }
     };
 }

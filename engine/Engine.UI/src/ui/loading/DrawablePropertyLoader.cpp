@@ -6,7 +6,7 @@
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
-	void DrawablePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const AString& text) const {
+	void DrawablePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
 		s.replace(L'\\', L'/');
 		std::unique_ptr<DrawableAttr> attr;
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
 			DrawableKey imageKey = s.substring(lengthOf(THEME_DRAWABLE));
 			attr.reset(ghnew DrawableRef(imageKey));
 		} else {
-			FilePath path = convertText<char, wchar_t>(s);
+			ResourcePath path = FilePath(convertText<char, wchar_t>(s));
 			Drawable* drawable = drawableFactory.makeDrawable(path);
 			attr.reset(ghnew DrawableValue(drawable));
 			drawable->release();

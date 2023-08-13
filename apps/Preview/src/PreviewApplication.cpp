@@ -1,4 +1,5 @@
 #include "PreviewApplication.h"
+#include <core/io/DirectoryLibrary.h>
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
@@ -16,8 +17,8 @@ namespace Preview {
         darkTheme = ghnew DarkTheme(ResourceManager, *drawableFactory);
         ThemeType = ThemeType::LIGHT;
 
-        ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
-        ResourceManager.Libraries.add(L"icons", DirectoryPath(L"./icons"));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
         renderer.init(Features.get<Graphics>(), parameterManager);
 

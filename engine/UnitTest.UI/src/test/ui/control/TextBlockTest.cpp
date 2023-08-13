@@ -36,8 +36,8 @@ public:
         context = ghnew UIContext(*window);
         fontLoader = ghnew FontLoader();
         resourceManager.Loaders.set<Font>(fontLoader);
-        FilePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf").AbsolutePath;
-        Ghurund::Core::SharedPointer<Font> latoMediumFont(resourceManager.load<Font>(path));
+        ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
+        Ghurund::Core::SharedPointer<Font> latoMediumFont(resourceManager.load<Font>(path, DirectoryPath()));
         textFormat = ghnew TextFormat(latoMediumFont.get(), 10);
     }
 

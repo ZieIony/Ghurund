@@ -8,7 +8,7 @@
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
-	void LayoutPropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const AString& text) const {
+	void LayoutPropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
 		s.replace(L'\\', L'/');
 		std::unique_ptr<LayoutAttr> attr;
@@ -16,8 +16,8 @@ namespace Ghurund::UI {
 			LayoutKey layoutKey = s.substring(lengthOf(THEME_LAYOUT));
 			attr.reset(ghnew LayoutRef(layoutKey));
 		} else {
-			FilePath path = convertText<char, wchar_t>(s);
-			Control* control = resourceManager.load<Control>(path, nullptr, LoadOption::DONT_CACHE);
+			ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
+			Control* control = resourceManager.load<Control>(path, workingDir, nullptr, LoadOption::DONT_CACHE);
 			attr.reset(ghnew LayoutValue(control));
 			control->release();
 		}
@@ -26,8 +26,8 @@ namespace Ghurund::UI {
 		property.setRaw(&obj, &attr);
 	}
 
-	void LayoutPropertyLoader::loadChildren(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) const {
-		Control* control = layoutLoader.loadControl(xml);
+	void LayoutPropertyLoader::loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
+		Control* control = layoutLoader.loadControl(workingDir, xml);
 		std::unique_ptr<LayoutAttr> attr;
 		if (control) {
 			attr.reset(ghnew LayoutValue(control));

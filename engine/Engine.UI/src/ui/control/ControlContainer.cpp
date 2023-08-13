@@ -35,8 +35,8 @@ namespace Ghurund::UI {
 		return nullptr;
 	}
 
-	void ControlContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-		__super::load(loader, resourceManager, xml);
+	void ControlContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		__super::load(loader, resourceManager, workingDir, xml);
 		auto childElement = xml.FirstChildElement();
 		bool childFound = false;
 		while (childElement) {
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
 					Logger::log(LogType::WARNING, _T("ControlContainer can host only one direct child.\n"));
 					return;
 				}
-				Control* control = loader.loadControl(*childElement);
+				Control* control = loader.loadControl(workingDir, *childElement);
 				if (control) {
 					Child = control;
 				} else {

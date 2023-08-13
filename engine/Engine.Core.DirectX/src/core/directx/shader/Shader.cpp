@@ -376,11 +376,7 @@ namespace Ghurund::Core::DirectX {
     }*/
 
     Status Shader::loadShd(MemoryInputStream& stream) {
-        Status result;
-
-        result = readHeader(stream);
-        if (result != Status::OK)
-            return result;
+        readHeader(stream);
 
         if (stream.readBoolean()) {
             for (size_t i = 0; i < 6; i++) {
@@ -421,7 +417,7 @@ namespace Ghurund::Core::DirectX {
         return Status::NOT_IMPLEMENTED;
     }
 
-    Status Shader::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    void Shader::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*this->graphics = &context.Graphics;
         Status result;
 
@@ -450,10 +446,10 @@ namespace Ghurund::Core::DirectX {
         initParameters(context.ParameterManager);
 
         return result;*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Shader::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void Shader::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.writeBoolean(compiled);
@@ -473,8 +469,6 @@ namespace Ghurund::Core::DirectX {
             stream.writeASCII(source.Data);
 
         stream.writeBoolean(supportsTransparency);
-
-        return Status::OK;
     }
 
 }

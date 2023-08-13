@@ -8,19 +8,19 @@ namespace Ghurund::UI {
 	class FileDrawableProvider:public DrawableProvider {
 	private:
 		DrawableFactory& drawableFactory;
-		FilePath filePath;
+		ResourcePath resourcePath;
 		SharedPointer<Drawable> cached;
 
 	public:
 		FileDrawableProvider(
 			DrawableFactory& drawableFactory,
-			const FilePath& filePath
-		): drawableFactory(drawableFactory), filePath(filePath) {}
+			const ResourcePath& resourcePath
+		): drawableFactory(drawableFactory), resourcePath(resourcePath) {}
 
 		virtual SharedPointer<Drawable> get() override {
 			if (cached == nullptr)
 				return SharedPointer<Drawable>((Drawable*)cached->clone());
-			cached = SharedPointer<Drawable>(drawableFactory.makeDrawable(filePath));
+			cached = SharedPointer<Drawable>(drawableFactory.makeDrawable(resourcePath));
 			return cached;
 		}
 	};

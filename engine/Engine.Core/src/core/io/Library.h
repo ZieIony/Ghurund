@@ -4,7 +4,11 @@
 #include "core/io/FilePath.h"
 #include <core/io/File.h>
 
+#include <memory>
+
 namespace Ghurund::Core {
+    class ResourcePath;
+
     class Library {
     private:
         WString name;
@@ -20,14 +24,18 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getName)) WString& Name;
 
-        virtual bool contains(const FilePath& path) = 0;
+        virtual bool contains(const WString& path) const = 0;
 
-        virtual File* getFile(const FilePath& path) = 0;
+        virtual ResourcePath getResourcePath(const WString& path) const = 0;
 
-        virtual File* getFile(const size_t index) = 0;
+        virtual ResourcePath getResourcePath(const size_t index) const = 0;
 
-        virtual size_t getFileCount() const = 0;
+        virtual std::shared_ptr<Buffer> get(const WString& path) = 0;
 
-        __declspec(property(get = getFileCount)) size_t FileCount;
+        virtual std::shared_ptr<Buffer> get(const size_t index) = 0;
+
+        virtual size_t getSize() const = 0;
+
+        __declspec(property(get = getSize)) size_t Size;
     };
 }

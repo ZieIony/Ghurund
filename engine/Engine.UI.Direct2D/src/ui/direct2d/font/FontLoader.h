@@ -24,6 +24,7 @@ namespace Ghurund::UI::Direct2D {
         virtual Font* load(
             Ghurund::Core::ResourceManager& manager,
             MemoryInputStream& stream,
+            const DirectoryPath& workingDir,
             const ResourceFormat* format = nullptr,
             LoadOption options = LoadOption::DEFAULT
         ) override;
@@ -31,6 +32,7 @@ namespace Ghurund::UI::Direct2D {
         virtual void save(
             const Ghurund::Core::ResourceManager& manager,
             MemoryOutputStream& stream,
+            const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat* format = nullptr,
             SaveOption options = SaveOption::DEFAULT

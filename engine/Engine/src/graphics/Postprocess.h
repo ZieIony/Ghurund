@@ -10,12 +10,12 @@ namespace Ghurund::Core::DirectX {
         Material* material = nullptr;
 
     protected:
-        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override {
-            return Status::NOT_IMPLEMENTED;
+        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override {
+            throw NotImplementedException();
         }
 
-        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
-            return Status::NOT_IMPLEMENTED;
+        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
+            throw NotImplementedException();
         }
 
     public:

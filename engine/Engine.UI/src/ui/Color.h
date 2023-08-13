@@ -2,6 +2,7 @@
 
 #include "core/reflection/Type.h"
 #include "core/string/String.h"
+#include "core/math/MathUtils.h"
 
 #include <stdint.h>
 
@@ -115,4 +116,9 @@ namespace Ghurund::UI {
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::Color>();
+
+    template<>
+    inline Ghurund::UI::Color lerp(Ghurund::UI::Color val1, Ghurund::UI::Color val2, float fact) {
+        return Ghurund::UI::Color(lerpColors(val1, val2, fact));
+    }
 }

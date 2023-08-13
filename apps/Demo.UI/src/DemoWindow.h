@@ -22,7 +22,12 @@ namespace Demo {
         virtual void init(WindowManager& windowManager) override {
             __super::init(windowManager);
 
-            SharedPointer<Control> previewLayout(Application.ResourceManager.load<Control>(FilePath(L"apps/Demo.UI/res/layout.xml"), nullptr, LoadOption::DONT_CACHE));
+            SharedPointer<Control> previewLayout(Application.ResourceManager.load<Control>(
+                FilePath(L"apps/Demo.UI/res/layout.xml"),
+                DirectoryPath(),
+                ResourceFormat::AUTO,
+                LoadOption::DONT_CACHE
+            ));
             Content = previewLayout.get();
         }
     };

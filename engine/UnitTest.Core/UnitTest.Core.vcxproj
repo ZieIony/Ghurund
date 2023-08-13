@@ -103,6 +103,9 @@
     <ClInclude Include="src\test\TestUtils.h" />
     <ClInclude Include="src\test\core\collection\TestAllocator.h" />
     <ClInclude Include="src\test\core\reflection\TestClass.h" />
+    <ClInclude Include="src\test\core\resource\TestLibrary.h" />
+    <ClInclude Include="src\test\core\resource\TestLoader.h" />
+    <ClInclude Include="src\test\core\resource\TestResource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp">

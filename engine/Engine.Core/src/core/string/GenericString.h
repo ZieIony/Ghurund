@@ -153,7 +153,7 @@ namespace Ghurund::Core {
             size_t next = 0;
             while (true) {
                 next = find(from, next);
-                if (next >= size)
+                if (next >= Length)
                     break;
                 if (toLength != fromLength) {
                     fit(size + toLength - fromLength);
@@ -294,7 +294,7 @@ namespace Ghurund::Core {
                 if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
                     return i;
             }
-            return size;
+            return Length;
         }
 
         size_t find(const GenericString<T>& str, size_t start = 0) const {
@@ -303,7 +303,7 @@ namespace Ghurund::Core {
                 if (memcmp(&v[i], str.begin(), strSize * sizeof(T)) == 0)
                     return i;
             }
-            return size;
+            return Length;
         }
 
         size_t findLast(const T* str) const {
@@ -315,7 +315,7 @@ namespace Ghurund::Core {
 
             if (memcmp(v, str, strSize * sizeof(T)) == 0)
                 return 0;
-            return size;
+            return Length;
         }
 
         size_t findLast(const GenericString<T>& str) const {
@@ -327,29 +327,20 @@ namespace Ghurund::Core {
 
             if (memcmp(v, str.begin(), strSize * sizeof(T)) == 0)
                 return 0;
-            return size;
+            return Length;
         }
 
         bool startsWith(const T* str) const {
-            size_t i = 0;
-            while (true) {
-                if (str[i] == (T)'\0')
-                    return true;
-                if (str[i] != v[i])
-                    return false;
-                i++;
-            }
+            size_t l = lengthOf(str);
+            if (l > Length)
+                return false;
+            return memcmp(v, str, l * sizeof(T)) == 0;
         }
 
-        bool startsWith(const GenericString<T>* str) const {
-            size_t i = 0;
-            while (true) {
-                if (str[i] == (T)'\0')
-                    return true;
-                if (str[i] != v[i])
-                    return false;
-                i++;
-            }
+        bool startsWith(const GenericString<T>& str) const {
+            if (str.Length > Length)
+                return false;
+            return memcmp(v, str.Data, str.Length * sizeof(T)) == 0;
         }
 
         bool contains(const T* str) const {
@@ -361,10 +352,10 @@ namespace Ghurund::Core {
             return false;
         }
 
-        bool contains(const GenericString<T>* str) const {
-            size_t strSize = lengthOf(str);
+        bool contains(const GenericString<T>& str) const {
+            size_t strSize = str.Length;
             for (size_t i = 0; i <= size - strSize; i++) {
-                if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
+                if (memcmp(&v[i], str.Data, strSize * sizeof(T)) == 0)
                     return true;
             }
             return false;
@@ -374,28 +365,13 @@ namespace Ghurund::Core {
             size_t l = lengthOf(str);
             if (l > Length)
                 return false;
-            size_t i = 0;
-            while (true) {
-                if (str[i] == (T)'\0')
-                    return true;
-                if (str[i] != v[Length - l + i])
-                    return false;
-                i++;
-            }
+            return memcmp(&v[Length - l], str, l * sizeof(T)) == 0;
         }
 
-        bool endsWith(const GenericString<T>* str) const {
-            size_t l = lengthOf(str);
-            if (l > Length)
+        bool endsWith(const GenericString<T>& str) const {
+            if (str.Length > Length)
                 return false;
-            size_t i = 0;
-            while (true) {
-                if (str[i] == (T)'\0')
-                    return true;
-                if (str[i] != v[Length - l + i])
-                    return false;
-                i++;
-            }
+            return memcmp(&v[Length - str.Length], str.Data, str.Length * sizeof(T)) == 0;
         }
 
         inline bool isEmpty() const {

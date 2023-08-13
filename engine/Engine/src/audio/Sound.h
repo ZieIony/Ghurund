@@ -40,7 +40,7 @@ namespace Ghurund::Audio {
         Status loadData(MemoryInputStream& stream, LoadOption options);
 
     protected:
-        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
+        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
 
         virtual unsigned int getVersion() const {
             return 0;

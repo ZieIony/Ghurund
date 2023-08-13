@@ -98,11 +98,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\application\UIApplicationWindow.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\Layer.h" />
     <ClInclude Include="src\application\LayerList.h" />
+    <ClInclude Include="src\application\UIApplicationWindow.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3d.h" />

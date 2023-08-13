@@ -3,13 +3,14 @@
 #include "Direct2DWindow.h"
 #include "core/math/Int.h"
 #include "core/application/Application.h"
+#include <core/io/DirectoryLibrary.h>
 
 namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {
     public:
         virtual void onInit() override {
-            ResourceManager.Libraries.add(L"test", DirectoryPath(L"./test"));
-            ResourceManager.Libraries.add(L"icons", DirectoryPath(L"./icons"));
+            ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+            ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
             auto window = ghnew Direct2DWindow(this->Timer);
             window->title = _T("Preview");

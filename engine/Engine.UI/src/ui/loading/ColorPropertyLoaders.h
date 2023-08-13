@@ -14,7 +14,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<const ColorAttr&>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             AString s = text;
             s = s.trim();
             s.replace('\\', '/');
@@ -37,7 +37,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             AString s = text;
             s = s.trim();
             s.replace('\\', '/');

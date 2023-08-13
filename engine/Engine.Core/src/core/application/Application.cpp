@@ -5,6 +5,7 @@
 #include "core/window/SystemWindow.h"
 #include "core/resource/ResourceManager.h"
 #include "core/image/ImageLoader.h"
+#include "core/io/DirectoryLibrary.h"
 
 #include <time.h>
 
@@ -13,7 +14,7 @@ namespace Ghurund::Core {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
 
-        resourceManager.Libraries.add(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources"));
+        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
@@ -26,7 +27,7 @@ namespace Ghurund::Core {
 
     void Application::uninit() {
         windows.clear();
-        resourceManager.clear();
+        resourceManager.clearCache();
 
         features.uninit();
 

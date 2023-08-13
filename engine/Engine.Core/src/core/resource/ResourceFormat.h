@@ -9,6 +9,8 @@ namespace Ghurund::Core {
         bool save, load;
 
     public:
+        static const inline ResourceFormat* AUTO = nullptr;
+
         ResourceFormat(const WString& extension, bool save, bool load) {
             this->extension = extension;
             this->save = save;

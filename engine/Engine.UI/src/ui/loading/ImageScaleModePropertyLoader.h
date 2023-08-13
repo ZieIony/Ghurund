@@ -11,7 +11,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             if (text == "crop") {
                 auto scaleMode = ImageScaleMode::CROP;
                 property.setRaw(&obj, &scaleMode);

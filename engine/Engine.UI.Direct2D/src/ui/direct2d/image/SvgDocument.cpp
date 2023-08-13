@@ -36,7 +36,7 @@ namespace Ghurund::UI::Direct2D {
         return formats;
     }
 
-    Status SvgDocument::loadInternal(
+    void SvgDocument::loadInternal(
         const Ghurund::Core::DirectoryPath& workingDir,
         Ghurund::Core::MemoryInputStream& stream,
         Ghurund::Core::LoadOption options
@@ -53,15 +53,14 @@ namespace Ghurund::UI::Direct2D {
         if (width > 0 && height > 0)
             svgDocument->SetViewportSize({ width, height });
         root->Release();
-        return Status::OK;
     }
 
-    Status SvgDocument::saveInternal(
+    void SvgDocument::saveInternal(
         const Ghurund::Core::DirectoryPath& workingDir,
         Ghurund::Core::MemoryOutputStream& stream,
         Ghurund::Core::SaveOption options
     ) const {
-        return Status::NOT_SUPPORTED;
+        throw NotSupportedException();
     }
 
     void SvgDocument::finalize() {

@@ -20,7 +20,7 @@ namespace Ghurund::Audio {
     using namespace Ghurund::Core;
     using Microsoft::WRL::ComPtr;
 
-	Status Sound::loadInternal(const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
+	void Sound::loadInternal(const DirectoryPath &workingDir, MemoryInputStream & stream, LoadOption options) {
         /*Status result = loadData(context, stream, options);
         if(result!=Status::OK)
             return result;
@@ -35,7 +35,7 @@ namespace Ghurund::Audio {
         audioBuffer.Flags = XAUDIO2_END_OF_STREAM;
         audioBuffer.LoopCount = XAUDIO2_NO_LOOP_REGION;*/
 
-        return Status::OK;
+        throw NotImplementedException();
     }
 
     Status Sound::setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex) {

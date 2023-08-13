@@ -1,60 +1,58 @@
 #pragma once
 
 #include "Common.h"
-#include "core/io/FileUtils.h"
 #include "FilePath.h"
 #include "core/string/String.h"
+#include "core/Buffer.h"
 
 namespace Ghurund::Core {
-    class File {
-    private:
-        FilePath path;
-        size_t size = 0;
-        void* data = nullptr;
+	class File {
+	private:
+		FilePath path;
 
-    public:
-        File(const FilePath& path):path(path.AbsolutePath) {}
+	public:
+		File(const FilePath& path):path(path.AbsolutePath) {}
 
-        ~File() {
-            delete[] data;
-        }
+		File(const File& other):path(path) {}
 
-        const size_t getSize() const { return size; }
+		File(File&& other) noexcept:path(std::move(other.path)) {}
 
-        __declspec(property(get = getSize)) size_t Size;
+		inline File& operator=(const File& other) {
+			if (this == &other)
+				return *this;
+			path = other.path;
+			return *this;
+		}
 
-        const FilePath& getPath() const { return path; }
+		inline File& operator=(File&& other) noexcept {
+			if (this == &other)
+				return *this;
+			path = std::move(other.path);
+			return *this;
+		}
 
-        void setPath(const FilePath& val) {
-            this->path = val.AbsolutePath;
-        }
+		const size_t getSize() const;
 
-        __declspec(property(get = getPath, put = setPath)) FilePath& Path;
+		__declspec(property(get = getSize)) size_t Size;
 
-        const void* getData()const {
-            return data;
-        }
+		const FilePath& getPath() const { return path; }
 
-        __declspec(property(get = getData)) const void* Data;
+		void setPath(const FilePath& val) {
+			this->path = val.AbsolutePath;
+		}
 
-        void setData(const void* data, size_t size) {
-            if (this->data != nullptr)
-                delete[] this->data;
-            this->size = size;
-            this->data = ghnew uint8_t[size];
-            memcpy(this->data, data, size);
-        }
+		__declspec(property(get = getPath, put = setPath)) FilePath& Path;
 
-        Status read() {
-            return readFile(path.toString().Data, data, size);
-        }
+		void read(Buffer& buffer) const;
 
-        Status write() {
-            return writeFile(path.toString().Data, data, size);
-        }
+		void read(void*& data, size_t& size) const;
 
-        bool exists() const;
+		void write(const void* data, size_t size) const;
 
-        __declspec(property(get = exists)) bool Exists;
-    };
+		void write(const Buffer& buffer) const;
+
+		bool exists() const;
+
+		__declspec(property(get = exists)) bool Exists;
+	};
 }

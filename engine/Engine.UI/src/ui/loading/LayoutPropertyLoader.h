@@ -24,8 +24,8 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::LayoutAttr>>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override;
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;
 
-        virtual void loadChildren(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) const override;
+        virtual void loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const override;
     };
 }

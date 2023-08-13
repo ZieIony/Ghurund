@@ -10,6 +10,9 @@ namespace Ghurund::Core {
 
     class NotImplementedException:public std::exception {};
 
+    // TODO: this is questionable - it would be better if resources didn't have save(..) methods
+    class NotSupportedException:public std::exception {};
+
     class InvalidDataException:public std::exception {
     public:
         InvalidDataException(const char* message = nullptr):std::exception(message) {}
@@ -28,5 +31,10 @@ namespace Ghurund::Core {
     class InvalidParamException:public std::exception {
     public:
         InvalidParamException(const char* message = nullptr):std::exception(message) {}
+    };
+
+    class IOException:public std::exception {
+    public:
+        IOException(const char* message = nullptr):std::exception(message) {}
     };
 }

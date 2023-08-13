@@ -24,13 +24,13 @@ namespace Ghurund::UI::GDI {
         }
 
     protected:
-        virtual Status loadInternal(
+        virtual void loadInternal(
             const Ghurund::Core::DirectoryPath& workingDir,
             Ghurund::Core::MemoryInputStream& stream,
             Ghurund::Core::LoadOption options
         );
 
-        virtual Status saveInternal(
+        virtual void saveInternal(
             const Ghurund::Core::DirectoryPath& workingDir,
             Ghurund::Core::MemoryOutputStream& stream,
             Ghurund::Core::SaveOption options

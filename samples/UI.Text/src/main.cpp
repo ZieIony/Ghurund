@@ -13,10 +13,11 @@ namespace Samples {
             Font* f = ghnew Font();
             FilePath filePath(_T("resources/fonts/lato_regular.ttf"));
             File file(filePath);
-            file.read();
-            f->init(file.Data, file.Size);
+            Buffer buffer;
+            file.read(buffer);
+            f->init(buffer.Data, buffer.Size);
 
-            ResourceManager.save(*f->Atlas, FilePath(_T("output.png")));
+            ResourceManager.save(*f->Atlas, FilePath(_T("output.png")), DirectoryPath());
 
             f->release();
         }

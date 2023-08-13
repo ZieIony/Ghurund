@@ -31,7 +31,7 @@ public:
             auto path2 = FilePath(path);
             Assert::AreEqual(path, path2);
 
-            path2 = WString(L"dir\\file.jpg");
+            path2 = FilePath(L"dir\\file.jpg");
             Assert::AreEqual(L"dir\\file.jpg", path2.toString().Data);
             Assert::AreNotEqual(path, path2);
         }

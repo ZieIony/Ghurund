@@ -1,7 +1,6 @@
 #pragma once
 
-#include "DirectoryLibrary.h"
-#include "FileLibrary.h"
+#include "Library.h"
 #include "core/collection/Map.h"
 
 namespace Ghurund::Core {
@@ -14,12 +13,8 @@ namespace Ghurund::Core {
             libs.deleteItems();
         }
 
-        void add(const WString& name, const DirectoryPath& path) {
-            libs.add(ghnew DirectoryLibrary(name, path));
-        }
-
-        void add(const WString& name, const FilePath& path) {
-            libs.add(ghnew FileLibrary(name, path.AbsolutePath));
+        void add(std::unique_ptr<Library> library) {
+            libs.add(library.release());
         }
 
         size_t getSize() const {
@@ -44,7 +39,9 @@ namespace Ghurund::Core {
         }
 
         void remove(size_t i) {
+            Library* lib = libs[i];
             libs.removeAt(i);
+            delete lib;
         }
 
         size_t findFile(const FilePath& path) const {

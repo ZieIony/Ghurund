@@ -12,7 +12,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<bool>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             bool b;
             if (text == "true") {
                 b = true;
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<uint32_t>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             uint32_t i = parse<uint32_t>(text);
             property.setRaw(&obj, &i);
         }
@@ -43,7 +43,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<float>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             float f = parse<float>(text);
             property.setRaw(&obj, &f);
         }

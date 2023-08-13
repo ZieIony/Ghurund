@@ -196,10 +196,10 @@ namespace Ghurund::UI {
             c->resolveConstraints(graph);
     }
 
-    void ControlGroup::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, xml);
+    void ControlGroup::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, workingDir, xml);
         Children.clear();
-        Children.addAll(loader.loadControls(xml));
+        Children.addAll(loader.loadControls(workingDir, xml));
     }
     
 #ifdef _DEBUG

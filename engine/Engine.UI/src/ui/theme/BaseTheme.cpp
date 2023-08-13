@@ -5,13 +5,19 @@
 
 namespace Ghurund::UI {
 	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::DrawableFactory& drawableFactory):Theme(), resourceManager(resourceManager) {
-		Layouts.set(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\ButtonDefaultLayout.xml")));
-		Layouts.set(LayoutKey(CheckBox::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\CheckBoxLayout.xml")));
-		Layouts.set(LayoutKey(RadioButton::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\RadioButtonLayout.xml")));
-		Layouts.set(LayoutKey(ExpandableContainer::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, FilePath(L"lib://Ghurund\\layouts\\ExpandableContainer.xml")));
+		auto buttonLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ButtonDefaultLayout.xml");
+		Layouts.set(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
+		auto checkBoxLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/CheckBoxLayout.xml");
+		Layouts.set(LayoutKey(CheckBox::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, checkBoxLayoutPath));
+		auto radioLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/RadioButtonLayout.xml");
+		Layouts.set(LayoutKey(RadioButton::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, radioLayoutPath));
+		auto expandableContainerLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ExpandableContainer.xml");
+		Layouts.set(LayoutKey(ExpandableContainer::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, expandableContainerLayoutPath));
 
-		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_medium.ttf")));
-		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(Ghurund::Core::FilePath(L"lib://Ghurund/fonts\\lato_light.ttf")));
+		auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.ttf");
+		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+		auto latoLightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_light.ttf");
+		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
 
 		/*auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
 		buttonFont->init(dwriteFactory);
@@ -29,13 +35,20 @@ namespace Ghurund::UI {
 		textSecondaryFont->init(dwriteFactory);
 		TextFormats.set(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);*/
 
-		Drawables.set(Theme::DRAWABLE_CHECKBOX_CHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox checked 18.png")));
-		Drawables.set(Theme::DRAWABLE_CHECKBOX_UNCHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\checkbox unchecked 18.png")));
-		Drawables.set(Theme::DRAWABLE_RADIOBUTTON_CHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\radiobutton checked 18.png")));
-		Drawables.set(Theme::DRAWABLE_RADIOBUTTON_UNCHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\radiobutton unchecked 18.png")));
-		Drawables.set(Theme::DRAWABLE_ARROWUP, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow up 18.png")));
-		Drawables.set(Theme::DRAWABLE_ARROWDOWN, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow down 18.png")));
-		Drawables.set(Theme::DRAWABLE_ARROWRIGHT, std::make_shared<FileDrawableProvider>(drawableFactory, Ghurund::Core::FilePath(L"lib://Ghurund/icons\\arrow right 18.png")));
+		auto checkboxCheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\checkbox checked 18.png");
+		Drawables.set(Theme::DRAWABLE_CHECKBOX_CHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, checkboxCheckedPath));
+		auto checkBoxUncheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\checkbox unchecked 18.png");
+		Drawables.set(Theme::DRAWABLE_CHECKBOX_UNCHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, checkBoxUncheckedPath));
+		auto radioCheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\radiobutton checked 18.png");
+		Drawables.set(Theme::DRAWABLE_RADIOBUTTON_CHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, radioCheckedPath));
+		auto radioUncheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\radiobutton unchecked 18.png");
+		Drawables.set(Theme::DRAWABLE_RADIOBUTTON_UNCHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, radioUncheckedPath));
+		auto arrowUpPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\arrow up 18.png");
+		Drawables.set(Theme::DRAWABLE_ARROWUP, std::make_shared<FileDrawableProvider>(drawableFactory, arrowUpPath));
+		auto arrowDownPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\arrow down 18.png");
+		Drawables.set(Theme::DRAWABLE_ARROWDOWN, std::make_shared<FileDrawableProvider>(drawableFactory, arrowDownPath));
+		auto arrowRightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\arrow right 18.png");
+		Drawables.set(Theme::DRAWABLE_ARROWRIGHT, std::make_shared<FileDrawableProvider>(drawableFactory, arrowRightPath));
 
 		Styles.set(STYLE_CHECKBOX, &checkBoxStyle);
 		Styles.set(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);

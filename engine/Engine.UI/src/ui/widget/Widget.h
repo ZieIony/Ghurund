@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 
 		virtual Control* find(const Ghurund::Core::Type& type) override;
 
-		void load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) override;
+		void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
 	};
 }

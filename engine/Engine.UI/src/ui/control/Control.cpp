@@ -544,8 +544,8 @@ namespace Ghurund::UI {
 			});
 	}
 
-	void Control::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-		loader.loadProperties(*this, xml);
+	void Control::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		loader.loadProperties(*this, workingDir, xml);
 		loadConstraints(loader, xml);
 	}
 

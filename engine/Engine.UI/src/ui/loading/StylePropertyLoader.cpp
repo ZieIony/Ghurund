@@ -2,7 +2,7 @@
 #include "StylePropertyLoader.h"
 
 namespace Ghurund::UI {
-	void StylePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const AString& text) const {
+	void StylePropertyLoader::loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
 		AString s = text;
 		s.replace('\\', '/');
 		uint32_t value = 0;

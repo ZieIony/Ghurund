@@ -299,7 +299,7 @@ namespace Ghurund::Core {
 template <>
 struct std::formatter<Ghurund::Core::Type, char>:std::formatter<const char*, char> {
     template <typename FormatContext>
-    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) {
+    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) const {
         return format_to(ctx.out(), "{}::{}", type.Namespace, type.Name);
     }
 };
@@ -307,7 +307,7 @@ struct std::formatter<Ghurund::Core::Type, char>:std::formatter<const char*, cha
 template <>
 struct std::formatter<Ghurund::Core::Type, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
     template <typename FormatContext>
-    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) {
+    auto format(const Ghurund::Core::Type& type, FormatContext& ctx) const {
         return format_to(ctx.out(), L"{}::{}", type.Namespace, type.Name);
     }
 };

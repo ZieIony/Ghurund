@@ -17,15 +17,15 @@ namespace Ghurund::UI {
 
         virtual const Type& getType() const = 0;
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const {
             throw PropertyTypeNotSupportedException();
         }
 
-        virtual void loadElement(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) const {
+        virtual void loadElement(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
             throw PropertyTypeNotSupportedException();
         }
 
-        virtual void loadChildren(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) const {
+        virtual void loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
             throw PropertyTypeNotSupportedException();
         }
     };

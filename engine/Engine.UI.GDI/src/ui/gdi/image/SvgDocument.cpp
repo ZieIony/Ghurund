@@ -26,20 +26,20 @@ namespace Ghurund::UI::GDI {
         return formats;
     }
 
-    Status SvgDocument::loadInternal(
+    void SvgDocument::loadInternal(
         const Ghurund::Core::DirectoryPath& workingDir,
         Ghurund::Core::MemoryInputStream& stream,
         Ghurund::Core::LoadOption options
     ) {
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status SvgDocument::saveInternal(
+    void SvgDocument::saveInternal(
         const Ghurund::Core::DirectoryPath& workingDir,
         Ghurund::Core::MemoryOutputStream& stream,
         Ghurund::Core::SaveOption options
     ) const {
-        return Status::NOT_SUPPORTED;
+        throw NotSupportedException();
     }
 
     void SvgDocument::finalize() {}

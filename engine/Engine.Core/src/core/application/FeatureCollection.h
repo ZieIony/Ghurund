@@ -31,13 +31,13 @@ namespace Ghurund::Core {
 			}
 		}
 
-		template<Derived<Feature> Type>
-		inline Type& get() {
+		template<Derived<Feature> T>
+		inline T& get() {
 			size_t index = features.find([](const SharedPointer<Feature>& f) {
-				return f->Type == Type::GET_TYPE();
+				return f->Type == T::GET_TYPE();
 				});
 			if (index == features.Size)
-				throw FeatureNotAvailableException(std::format("feature '{}' is not available", Type::GET_TYPE().Name).c_str());
+				throw FeatureNotAvailableException(std::format("feature '{}' is not available", T::GET_TYPE().Name).c_str());
 			SharedPointer<Feature> feature = features[index];
 			if (!feature->Initialized) {
 				size_t firstNotInitialized = features.find([](const SharedPointer<Feature>& f) {
@@ -47,7 +47,7 @@ namespace Ghurund::Core {
 				features.removeAt(index);
 				features.insert(firstNotInitialized, feature);
 			}
-			return *(Type*)feature.get();
+			return *(T*)feature.get();
 		}
 
 		inline void remove(Feature& feature) {

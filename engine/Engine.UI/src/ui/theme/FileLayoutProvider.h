@@ -8,16 +8,16 @@ namespace Ghurund::UI {
 	class FileLayoutProvider:public LayoutProvider {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
-		FilePath filePath;
+		ResourcePath path;
 
 	public:
 		FileLayoutProvider(
 			Ghurund::Core::ResourceManager& resourceManager,
-			const FilePath& filePath
-		): resourceManager(resourceManager), filePath(filePath) {}
+			const ResourcePath& path
+		): resourceManager(resourceManager), path(path) {}
 
 		virtual SharedPointer<Control> get() override {
-			return SharedPointer<Control>(resourceManager.load<Control>(filePath, nullptr, LoadOption::DONT_CACHE));
+			return SharedPointer<Control>(resourceManager.load<Control>(path, DirectoryPath(), nullptr, LoadOption::DONT_CACHE));
 		}
 	};
 }

@@ -10,6 +10,7 @@ namespace Ghurund::UI {
     Font* FontLoader::load(
         Ghurund::Core::ResourceManager& manager,
         MemoryInputStream& stream,
+        const DirectoryPath& workingDir,
         const ResourceFormat* format,
         LoadOption options
     ) {

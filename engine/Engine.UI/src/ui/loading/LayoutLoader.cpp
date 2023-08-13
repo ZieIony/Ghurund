@@ -42,7 +42,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
     }
 
-    Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format, LoadOption options) {
+    Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
 
@@ -60,22 +60,22 @@ namespace Ghurund::UI {
         if (!constructor)
             throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
         Control* control = (Control*)constructor->invokeRaw();
-        control->load(*this, resourceManager, *child);
+        control->load(*this, resourceManager, workingDir, *child);
         return control;
     }
 
-    void LayoutLoader::loadProperties(Object& obj, const tinyxml2::XMLElement& xml) {
+    void LayoutLoader::loadProperties(Object& obj, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         const Core::Type* type = &obj.Type;
         while (*type != Pointer::TYPE) {
             for (auto& property : type->Properties) {
                 if (property.get().CanWrite)
-                    loadProperty(obj, property, xml);
+                    loadProperty(obj, property, workingDir, xml);
             }
             type = type->Supertype;
         }
     }
 
-    void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml) {
+    void LayoutLoader::loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         AString propertyName = property.Name;
         AString propertyUpper = propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
         AString propertyLower = propertyName.substring(0, 1).toLowerCase() + propertyName.substring(1);
@@ -99,27 +99,27 @@ namespace Ghurund::UI {
         }
 
         if (propertyAttr) {
-            loader->loadAttr(obj, property, propertyAttr->Value());
+            loader->loadAttr(obj, property, workingDir, propertyAttr->Value());
         } else if (propertyElement) {
             if (!propertyElement->FirstAttribute() &&
                 !propertyElement->NoChildren() &&
                 !propertyElement->FirstChildElement() &&
                 propertyElement->FirstChild()) {
-                loader->loadAttr(obj, property, propertyElement->GetText());
+                loader->loadAttr(obj, property, workingDir, propertyElement->GetText());
             } else if (!propertyElement->FirstAttribute() && !propertyElement->NoChildren()) {
-                loader->loadChildren(obj, property, *propertyElement->FirstChildElement());
+                loader->loadChildren(obj, property, workingDir, *propertyElement->FirstChildElement());
             } else {
-                loader->loadElement(obj, property, *propertyElement);
+                loader->loadElement(obj, property, workingDir, *propertyElement);
             }
         }
     }
 
-    PointerList<Control*> LayoutLoader::loadControls(const tinyxml2::XMLElement& xml) {
+    PointerList<Control*> LayoutLoader::loadControls(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         PointerList<Control*> list;
         const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
         while (childElement) {
             if (!AString(childElement->Name()).contains(".")) {
-                Control* control = loadControl(*childElement);
+                Control* control = loadControl(workingDir, *childElement);
                 if (control) {
                     list.add(control);
                     control->release();
@@ -132,7 +132,7 @@ namespace Ghurund::UI {
         return list;
     }
 
-    Control* LayoutLoader::loadControl(const tinyxml2::XMLElement& xml) {
+    Control* LayoutLoader::loadControl(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         const char* name = xml.Value();
         if (strcmp(name, "include") == 0) {
             auto layoutAttr = xml.FindAttribute("layout");
@@ -140,7 +140,7 @@ namespace Ghurund::UI {
                 Control* control = nullptr;
                 AString s = layoutAttr->Value();
                 try {
-                    SharedPointer<Control> control(resourceManager.load<Control>(convertText<char, wchar_t>(s), &Control::FORMATS[0], LoadOption::DONT_CACHE));
+                    SharedPointer<Control> control(resourceManager.load<Control>(FilePath(convertText<char, wchar_t>(s)), workingDir, &Control::FORMATS[0], LoadOption::DONT_CACHE));
                     control->addReference();
                 } catch (...) {
                     auto text = std::format(_T("Could not load layout '{}'.\n"), s);
@@ -162,7 +162,7 @@ namespace Ghurund::UI {
                     if (!constructor)
                         throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
                     Control* control = (Control*)constructor->invokeRaw();
-                    control->load(*this, resourceManager, xml);
+                    control->load(*this, resourceManager, workingDir, xml);
                     return control;
                 } else {
                     // it's a known class, but not a control

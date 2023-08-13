@@ -3,16 +3,13 @@
 #include "core/directx/shader/Shader.h"
 #include "core/string/TextUtils.h"
 
-#include <format>
-
 namespace Ghurund {
     class Shaders {
     private:
         Shaders() = delete;
 
-        static Shader* load(ResourceManager& manager, const wchar_t* fileName) {
-            auto path = std::format(L"{}{}{}", ResourceManager::LIB_PROTOCOL, ResourceManager::ENGINE_LIB_NAME, fileName);
-            return manager.load<Shader>(FilePath(path.c_str()));
+        static Shader* load(ResourceManager& manager, const WString& fileName) {
+            return manager.load<Shader>(ResourcePath(ResourceManager::ENGINE_LIB_NAME, fileName), DirectoryPath());
         }
 
     public:

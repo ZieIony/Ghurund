@@ -46,11 +46,11 @@ namespace Preview {
 		void postLoadCallback(const FilePath& path);
 
 		void loadLayout(const File& file) {
-			SharedPointer<ControlGroup> layout(Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE));
+			/*SharedPointer<ControlGroup> layout(Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE));
 			previewLayout->Container->Children.clear();
 			for (Control* control : layout->Children)
 				previewLayout->Container->Children.add(control);
-			previewLayout->Container->invalidate();
+			previewLayout->Container->invalidate();*/
 		}
 
 		void loadDrawable(const File& file) {

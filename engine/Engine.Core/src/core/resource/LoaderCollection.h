@@ -19,13 +19,17 @@ namespace Ghurund::Core {
             loaders.set(&(const Ghurund::Core::Type&)T::GET_TYPE(), SharedPointer(loader));
         }
 
-        template<typename T>
-        inline Loader* get() const {
+        inline Loader* get(const Type& t) const {
             for (auto [type, loader] : loaders) {
-                if (T::GET_TYPE().isOrExtends(*type))
+                if (t.isOrExtends(*type))
                     return loader.get();
             }
             return nullptr;
+        }
+
+        template<typename T>
+        inline Loader* get() const {
+            return get(T::GET_TYPE());
         }
 
         template<typename T>

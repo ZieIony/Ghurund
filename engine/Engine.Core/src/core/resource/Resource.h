@@ -5,14 +5,11 @@
 #include "Status.h"
 #include "core/Pointer.h"
 #include "core/io/DirectoryPath.h"
-#include "core/io/FilePath.h"
+#include "core/resource/ResourcePath.h"
 
 #include <stdint.h>
 
 namespace Ghurund::Core {
-    Status filterStatus(Status result, LoadOption option);
-    Status filterStatus(Status result, SaveOption option);
-
     struct DataSize {
         uint64_t graphical, system;
     };
@@ -25,27 +22,27 @@ namespace Ghurund::Core {
     class Resource: public Pointer {
     private:
         bool valid = false;
-        FilePath* path = nullptr;
-
-        Status saveInternal(File& file, SaveOption options) const;
+        ResourcePath* path = nullptr;
 
     protected:
         DataSize dataSize = {};
 
-        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            return Status::NOT_IMPLEMENTED;
+        ~Resource();
+
+        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+            throw NotImplementedException();
         };
 
-        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            return Status::NOT_IMPLEMENTED;
+        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+            throw NotImplementedException();
         };
 
         virtual unsigned int getVersion() const {
             return 0;
         }
 
-        Status writeHeader(MemoryOutputStream& stream) const;
-        Status readHeader(MemoryInputStream& stream);
+        void writeHeader(MemoryOutputStream& stream) const;
+        void readHeader(MemoryInputStream& stream);
 
         static const Array<ResourceFormat>& GET_FORMATS();
 
@@ -54,26 +51,17 @@ namespace Ghurund::Core {
         }
 
     public:
-        ~Resource();
+        void load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
-        Status load(size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(const FilePath& path, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(File& file, size_t* bytesRead = nullptr, LoadOption options = LoadOption::DEFAULT);
-        Status load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
-
-        Status save(SaveOption options = SaveOption::DEFAULT) const;
-        Status save(const FilePath& path, SaveOption options = SaveOption::DEFAULT);
-
-        // this method doesn't write the file contents to disk, remember to call File::write()
-        Status save(File& file, SaveOption options = SaveOption::DEFAULT);
-        Status save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
+        void save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
         virtual void reload() {
             valid = true;
             invalidate();
             addReference();
-            load();
-            release();
+            //load();
+            throw NotImplementedException();
+            //release();
         }
 
         virtual void invalidate() {
@@ -90,13 +78,13 @@ namespace Ghurund::Core {
 
         __declspec(property(get = isValid, put = setValid)) bool Valid;
 
-        const FilePath* getPath() const {
+        const ResourcePath* getPath() const {
             return path;
         }
 
-        void setPath(const FilePath* path);
+        void setPath(const ResourcePath* path);
 
-        __declspec(property(get = getPath, put = setPath)) FilePath* Path;
+        __declspec(property(get = getPath, put = setPath)) ResourcePath* Path;
         /*
         const DataSize& getSize() const {
             return dataSize;

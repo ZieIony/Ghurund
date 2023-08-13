@@ -23,8 +23,8 @@ namespace Ghurund::UI {
         }
     }
 
-    void ConstraintLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, xml);
+    void ConstraintLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, workingDir, xml);
         const tinyxml2::XMLElement* child = xml.FirstChildElement();
         while (child != nullptr) {
             if (strcmp(child->Name(), "Guide") == 0)

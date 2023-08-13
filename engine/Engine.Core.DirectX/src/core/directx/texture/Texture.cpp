@@ -6,18 +6,18 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core::DirectX {
-	Status Texture::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+	void Texture::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         /*Status result;
         image = (Ghurund::Image*)context.ResourceManager.load(context, workingDir, stream, &result, options);
         if (filterStatus(result, options) != Status::OK)
             return result;
         return init(context, *image);*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Texture::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void Texture::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         //return context.ResourceManager.save(*image, context, workingDir, stream, options);
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
     const Ghurund::Core::Type& Texture::GET_TYPE() {

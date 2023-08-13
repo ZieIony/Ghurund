@@ -99,7 +99,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -120,6 +119,7 @@
     <ClInclude Include="src\core\Observable.h" />
     <ClInclude Include="src\core\ObservableHandler.h" />
     <ClInclude Include="src\core\Pointer.h" />
+    <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StackTrace.h" />
     <ClInclude Include="src\core\StateMachine.h" />
@@ -184,7 +184,6 @@
     <ClInclude Include="src\core\io\File.h" />
     <ClInclude Include="src\core\io\FileLibrary.h" />
     <ClInclude Include="src\core\io\FilePath.h" />
-    <ClInclude Include="src\core\io\FileUtils.h" />
     <ClInclude Include="src\core\io\Library.h" />
     <ClInclude Include="src\core\io\LibraryList.h" />
     <ClInclude Include="src\core\io\MemoryStream.h" />
@@ -223,10 +222,12 @@
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
+    <ClInclude Include="src\core\resource\RESOURCEFORMAT.H" />
     <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
-    <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
+    <ClInclude Include="src\core\resource\ResourcePath.h" />
+    <ClInclude Include="src\core\resource\Resources.h" />
     <ClInclude Include="src\core\resource\TextLoader.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
     <ClInclude Include="src\core\string\FixedString.h" />
@@ -272,7 +273,6 @@
     <ClCompile Include="src\core\io\DirectoryPath.cpp" />
     <ClCompile Include="src\core\io\File.cpp" />
     <ClCompile Include="src\core\io\FilePath.cpp" />
-    <ClCompile Include="src\core\io\FileUtils.cpp" />
     <ClCompile Include="src\core\io\watcher\DirectoryWatch.cpp" />
     <ClCompile Include="src\core\io\watcher\FileChange.cpp" />
     <ClCompile Include="src\core\io\watcher\FileWatcher.cpp" />
@@ -284,6 +284,8 @@
     <ClCompile Include="src\core\resource\Loader.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
+    <ClCompile Include="src\core\resource\ResourcePath.cpp" />
+    <ClCompile Include="src\core\resource\Resources.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\Task.cpp" />

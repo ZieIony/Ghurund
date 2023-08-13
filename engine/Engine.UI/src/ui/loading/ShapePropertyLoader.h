@@ -15,7 +15,7 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<std::unique_ptr<Shape>&>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override {
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {
             std::unique_ptr<Shape> shape = shapeFactory.makeShape(text);
             property.setRaw(&obj, &shape);
         }

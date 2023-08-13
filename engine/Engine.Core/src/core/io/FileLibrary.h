@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Library.h"
+#include "core/Exceptions.h"
 
 namespace Ghurund::Core {
     /*
@@ -19,19 +20,27 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getPath)) FilePath& Path;
 
-        virtual bool contains(const FilePath& path) {
+        virtual bool contains(const WString& path) const override {
             return false;
         }
 
-        virtual File* getFile(const FilePath& name) override {
+        virtual ResourcePath getResourcePath(const WString& path) const override {
+            return ResourcePath(Name, path);
+        }
+
+        virtual ResourcePath getResourcePath(const size_t index) const override {
+            throw NotImplementedException();
+        }
+
+        virtual std::shared_ptr<Buffer> get(const WString& name) override {
             return nullptr;
         }
 
-        virtual File* getFile(const size_t index) override {
+        virtual std::shared_ptr<Buffer> get(const size_t index) override {
             return nullptr;
         }
 
-        virtual size_t getFileCount() const override {
+        virtual size_t getSize() const override {
             return 0;
         }
     };

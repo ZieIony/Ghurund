@@ -4,7 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
-	Status Mesh::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
+	void Mesh::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption option) {
         /*if (Path) {
             if (Path->toString().endsWith(ResourceFormat::OBJ.getExtension())) {
                 return loadObj(context, stream);
@@ -25,10 +25,10 @@ namespace Ghurund {
         }
 
         return result;*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Mesh::loadObj(MemoryInputStream& stream) {
+    void Mesh::loadObj(MemoryInputStream& stream) {
         List<XMFLOAT3> objVerts;
         List<XMFLOAT3> objNorms;
         List<XMFLOAT2> objTexCoords;
@@ -84,13 +84,11 @@ namespace Ghurund {
         generateTangents();
 
         //return init(context.Graphics, context.CommandList);
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Mesh::loadMesh(MemoryInputStream& stream) {
-        Status result = readHeader(stream);
-        if (result != Status::OK)
-            return result;
+    void Mesh::loadMesh(MemoryInputStream& stream) {
+        readHeader(stream);
 
         vertexSize = sizeof(Vertex);
         vertexCount = stream.read<vindex_t>();
@@ -106,10 +104,10 @@ namespace Ghurund {
         boundingBox = ::DirectX::BoundingBox(center, extents);
 
         //return init(context.Graphics, context.CommandList);
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status Mesh::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void Mesh::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         writeHeader(stream);
 
         stream.write<vindex_t>(vertexCount);
@@ -120,8 +118,6 @@ namespace Ghurund {
 
         stream.write<XMFLOAT3>(boundingBox.Center);
         stream.write<XMFLOAT3>(boundingBox.Extents);
-
-        return Status::OK;
     }
 
     const Ghurund::Core::Type& Mesh::GET_TYPE() {

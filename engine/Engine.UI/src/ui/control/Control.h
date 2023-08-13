@@ -398,7 +398,7 @@ namespace Ghurund::UI {
 
 		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-		virtual void load(Ghurund::UI::LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml);
+		virtual void load(Ghurund::UI::LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
 		static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
 

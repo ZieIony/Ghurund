@@ -25,7 +25,7 @@ namespace Ghurund::Core {
         }
 
     public:
-        FilePath(const WString& path):Path(path),
+        explicit FilePath(const WString& path):Path(path),
             fileName(PathFindFileNameW(this->path.Data)),
             extension(getExtensionWithoutDot(this->path.Data)) {}
 
@@ -77,5 +77,11 @@ namespace Ghurund::Core {
         FilePath getAbsolutePath() const;
 
         __declspec(property(get = getAbsolutePath)) FilePath AbsolutePath;
+
+        inline bool isAbsolute() const {
+            return !PathIsRelative(path.Data);
+        }
+
+        __declspec(property(get = isAbsolute)) bool IsAbsolute;
     };
 }

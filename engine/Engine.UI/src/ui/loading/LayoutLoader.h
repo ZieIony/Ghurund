@@ -63,6 +63,7 @@ namespace Ghurund::UI {
 		virtual Control* load(
 			Ghurund::Core::ResourceManager& manager,
 			Ghurund::Core::MemoryInputStream& stream,
+			const DirectoryPath& workingDir,
 			const Ghurund::Core::ResourceFormat* format = nullptr,
 			Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
 		) override;
@@ -70,6 +71,7 @@ namespace Ghurund::UI {
         virtual void save(
             const Ghurund::Core::ResourceManager& manager,
             Ghurund::Core::MemoryOutputStream& stream,
+			const DirectoryPath& workingDir,
             Ghurund::Core::Resource& resource,
             const Ghurund::Core::ResourceFormat* format = nullptr,
             Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
@@ -77,13 +79,13 @@ namespace Ghurund::UI {
             throw NotImplementedException();
         }
 
-		void loadProperties(Object& obj, const tinyxml2::XMLElement& xml);
+		void loadProperties(Object& obj, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		void loadProperty(Object& obj, const BaseProperty& property, const tinyxml2::XMLElement& xml);
+		void loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		PointerList<Control*> loadControls(const tinyxml2::XMLElement& xml);
+		PointerList<Control*> loadControls(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		Control* loadControl(const tinyxml2::XMLElement& xml);
+		Control* loadControl(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
 		Constraint* loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation);
 

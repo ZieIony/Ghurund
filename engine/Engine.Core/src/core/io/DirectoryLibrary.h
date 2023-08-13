@@ -2,6 +2,7 @@
 
 #include "DirectoryPath.h"
 #include "Library.h"
+#include "core/resource/ResourcePath.h"
 
 namespace Ghurund::Core {
     /*
@@ -20,20 +21,34 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getPath)) DirectoryPath& Path;
 
-        virtual bool contains(const FilePath& path) {
-            return File(this->path / path).Exists;
+        virtual bool contains(const WString& path) const override {
+            return File(this->path / FilePath(path)).Exists;
         }
 
-        virtual File* getFile(const FilePath& path) {
-            return ghnew File(this->path / path);
+        virtual ResourcePath getResourcePath(const WString& path) const override {
+            return ResourcePath(this->path / FilePath(path));
         }
 
-        virtual File* getFile(const size_t index) {
-            return nullptr;
+        virtual ResourcePath getResourcePath(const size_t index) const override {
+            return ResourcePath(path.Files[index]);
         }
 
-        virtual size_t getFileCount() const {
-            return 0;
+        virtual std::shared_ptr<Buffer> get(const WString& path) override {
+            File file(this->path / FilePath(path));
+            auto buffer = std::make_shared<Buffer>();
+            file.read(*buffer.get());
+            return buffer;
+        }
+
+        virtual std::shared_ptr<Buffer> get(const size_t index) override {
+            File file(path.Files[index]);
+            auto buffer = std::make_shared<Buffer>();
+            file.read(*buffer.get());
+            return buffer;
+        }
+
+        virtual size_t getSize() const override {
+            return path.Files.Size;
         }
     };
 }

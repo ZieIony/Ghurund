@@ -18,6 +18,6 @@ namespace Ghurund::UI {
             return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
         }
 
-        virtual void loadAttr(Object& obj, const BaseProperty& property, const AString& text) const override;
+        virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override;
     };
 }

@@ -176,6 +176,24 @@ namespace Ghurund::Core {
             return size;
         }
 
+        template<typename Predicate>
+        inline size_t findKey(const Predicate& predicate) const {
+            for (size_t i = 0; i < size; i++) {
+                if (predicate(v[i].key))
+                    return i;
+            }
+            return size;
+        }
+
+        template<typename Predicate>
+        inline size_t findValue(const Predicate& predicate) const {
+            for (size_t i = 0; i < size; i++) {
+                if (predicate(v[i].key))
+                    return i;
+            }
+            return size;
+        }
+
         inline bool containsKey(const Key& item) const {
             for (size_t i = 0; i < size; i++)
                 if (v[i].key == item)

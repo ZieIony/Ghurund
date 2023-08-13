@@ -6,7 +6,7 @@
 namespace UnitTest {
     class DrawableFactory: public Ghurund::UI::DrawableFactory {
     public:
-        virtual Ghurund::UI::Drawable* makeDrawable(const Ghurund::Core::FilePath& path) override {
+        virtual Ghurund::UI::Drawable* makeDrawable(const Ghurund::Core::ResourcePath& path) override {
             return nullptr;
         }
     };

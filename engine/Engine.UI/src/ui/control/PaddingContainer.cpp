@@ -34,8 +34,8 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void PaddingContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-		__super::load(loader, resourceManager, xml);
+	void PaddingContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		__super::load(loader, resourceManager, workingDir, xml);
 		auto paddingAttr = xml.FindAttribute("padding");
 		if (paddingAttr) {
 			std::string str = paddingAttr->Value();

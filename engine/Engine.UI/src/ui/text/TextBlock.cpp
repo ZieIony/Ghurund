@@ -70,8 +70,8 @@ namespace Ghurund::UI {
             textLayout->Size = { Size.Width, Size.Height };
     }
 
-    void TextBlock::load(LayoutLoader& loader, ResourceManager& resourceManager, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, xml);
+    void TextBlock::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::load(loader, resourceManager, workingDir, xml);
         auto textFormatAttr = xml.FindAttribute("textFormat");
         if (textFormatAttr) {
             Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());
