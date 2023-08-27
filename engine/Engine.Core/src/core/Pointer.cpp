@@ -13,6 +13,7 @@ namespace Ghurund::Core {
 #ifdef _DEBUG
     List<Pointer*> Pointer::pointers;
     CriticalSection Pointer::criticalSection;
+    bool Pointer::pointersListResizeLocked = false;
 
     void Pointer::checkReferenceCount() const {
         if (referenceCount == 0) {
@@ -61,12 +62,18 @@ namespace Ghurund::Core {
 
     Pointer::Pointer() {
 #ifdef _DEBUG
-        criticalSection.enter();
-        pointers.add(this);
-        criticalSection.leave();
+        {
+            SectionLock lock(criticalSection);
+            if (pointers.Size == pointers.Capacity) {
+                if (pointersListResizeLocked)
+                    throw InvalidStateException("cannot resize pointers list");
+                pointers.resize(pointers.Capacity * 1.6);
+            }
+            pointers.add(this);
+        }
         StackTrace stacktrace(GetCurrentProcess());
         // skip self and the app entry point
-        for (uint16_t i = 1; i < stacktrace.Size - 6; i++)
+        for (uint16_t i = 1; i < std::min(4ui16, stacktrace.Size); i++)
             this->stacktrace.add(stacktrace[i]);
 #endif
     }
@@ -77,14 +84,14 @@ namespace Ghurund::Core {
 
 #ifdef _DEBUG
     void Pointer::dumpPointers() {
-        criticalSection.enter();
+        SectionLock lock(criticalSection);
         if (pointers.Empty) {
             Logger::log(LogType::INFO, _T("no allocated pointers\n"));
         } else {
             Logger::log(LogType::INFO, std::format(_T("allocated pointers ({}):\n"), pointers.Size).c_str());
             for (Pointer* p : pointers) {
                 const auto& info = typeid(*p);
-                auto text = std::format(_T("[{:#x}] {} ({}) refCount={}\n"), (address_t)p, p->toString(), AString(info.name()), p->ReferenceCount);
+                auto text = std::format(_T("\n[{:#x}] {} ({}) refCount={}\n"), (address_t)p, p->toString(), AString(info.name()), p->ReferenceCount);
                 Logger::print(LogType::INFO, text.c_str());
                 for (StackTrace::Entry& e : p->stacktrace) {
                     if (e.fileName.Empty || !e.address || e.name.Empty)
@@ -95,7 +102,6 @@ namespace Ghurund::Core {
                 Logger::print(LogType::INFO, _T("\n"));
             }
         }
-        criticalSection.leave();
     }
 #endif
 }

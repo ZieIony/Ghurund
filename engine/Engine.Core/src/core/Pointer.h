@@ -27,6 +27,7 @@ namespace Ghurund::Core {
 #ifdef _DEBUG
         static List<Pointer*> pointers;
         static CriticalSection criticalSection;
+        static bool pointersListResizeLocked;
 
         List<StackTrace::Entry> stacktrace;
 
@@ -71,20 +72,21 @@ namespace Ghurund::Core {
         virtual String toString() const override;
 
 #ifdef _DEBUG
+        static void setPointersListResizeLocked(bool locked) {
+            SectionLock lock(criticalSection);
+            pointersListResizeLocked = locked;
+        }
+
         static size_t numberOfAllocatedPointers() {
-            size_t s;
-            criticalSection.enter();
-            s = pointers.Size;
-            criticalSection.leave();
-            return s;
+            SectionLock lock(criticalSection);
+            return pointers.Size;
         }
 
         static void dumpPointers();
 
         static void reservePointers(size_t size) {
-            criticalSection.enter();
+            SectionLock lock(criticalSection);
             pointers.resize(size);
-            criticalSection.leave();
         }
 #endif
     };

@@ -6,18 +6,25 @@
 namespace Ghurund::Core {
     void WorkerThread::run() {
         running.test_and_set();
+        runningChanged(true);
         while (true) {
             waitable.wait();
             busy.test_and_set();
+            busyChanged(true);
             while (true) {
-                if (!running.test())
+                if (finishing.test()) {
+                    running.clear();
+                    runningChanged(false);
                     return;
-                section.enter();
-                if (queue.Empty)
-                    break;
-                SharedPointer<Task> task = queue.front();
-                queue.remove();
-                section.leave();
+                }
+                SharedPointer<Task> task;
+                {
+                    SectionLock lock(section);
+                    if (queue.Empty)
+                        break;
+                    task = queue.front();
+                    queue.remove();
+                }
 #ifdef _DEBUG
                 auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->Name, Name);
                 Logger::print(LogType::INFO, text.c_str());
@@ -29,6 +36,7 @@ namespace Ghurund::Core {
 #endif
             }
             busy.clear();
+            busyChanged(false);
         }
     }
 }

@@ -263,17 +263,21 @@ namespace Ghurund::Core {
 
     template<IsSharedPtr T>
     const Type& getType() {
-        const Type& baseType = getType<typename T::element_type>();
-        auto name = std::format("shared_ptr<{}>", baseType.Name);
-        static const Type type = TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+        static const Type type = [] {
+            const Type& baseType = getType<typename T::element_type>();
+            auto name = std::format("shared_ptr<{}>", baseType.Name);
+            return TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+        }();
         return type;
     }
 
     template<IsUniquePtr T>
     const Type& getType() {
-        const Type& baseType = getType<typename T::element_type>();
-        auto name = std::format("unique_ptr<{}>", baseType.Name);
-        static const Type type = TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+        static const Type type = [] {
+            const Type& baseType = getType<typename T::element_type>();
+            auto name = std::format("unique_ptr<{}>", baseType.Name);
+            return TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+        }();
         return type;
     }
 

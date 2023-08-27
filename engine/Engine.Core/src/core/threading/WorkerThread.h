@@ -9,54 +9,54 @@
 #include "core/string/String.h"
 
 namespace Ghurund::Core {
-    class WorkerThread:public Thread {
-    private:
-        Queue<SharedPointer<Task>> queue;
-        mutable CriticalSection section;
-        Waitable waitable;
-        std::atomic_flag busy;
-        std::atomic_flag running;
+	class WorkerThread:public Thread {
+	private:
+		Queue<SharedPointer<Task>> queue;
+		mutable CriticalSection section;
+		Waitable waitable;
+		std::atomic_flag busy, running, finishing;
 
-    public:
-        virtual ~WorkerThread() {
-            if (running.test())
-                finish();
-        }
+	public:
+		Event<WorkerThread, bool> runningChanged = *this;
+		Event<WorkerThread, bool> busyChanged = *this;
 
-        virtual void finish() override {
-            running.clear();
-            waitable.notify();
-            __super::finish();
-        }
+		virtual ~WorkerThread() {
+			if (running.test() && !finishing.test())
+				finish();
+		}
 
-        inline void post(SharedPointer<Task> task) {
-            section.enter();
-            queue.add(task);
-            waitable.notify();
-            section.leave();
-        }
+		virtual void finish() override {
+			finishing.test_and_set();
+			waitable.notify();
+			__super::finish();
+		}
 
-        inline Queue<SharedPointer<Task>> getTasks() const {
-            section.enter();
-            Queue<SharedPointer<Task>> copy = queue;
-            section.leave();
-            return queue;
-        }
+		inline void post(SharedPointer<Task> task) {
+			SectionLock lock(section);
+			queue.add(task);
+			waitable.notify();
+		}
 
-        __declspec(property(get = getTasks)) Queue<SharedPointer<Task>> Tasks;
+		inline Queue<SharedPointer<Task>> getTasks() const {
+			SectionLock lock(section);
+			Queue<SharedPointer<Task>> copy = queue;
+			return queue;
+		}
 
-        virtual void run() override;
+		__declspec(property(get = getTasks)) Queue<SharedPointer<Task>> Tasks;
 
-        inline bool isRunning() const {
-            return running.test();
-        }
+		virtual void run() override;
 
-        __declspec(property(get = isRunning)) bool Running;
+		inline bool isRunning() const {
+			return running.test();
+		}
 
-        inline bool isBusy() const {
-            return busy.test();
-        }
+		__declspec(property(get = isRunning)) bool Running;
 
-        __declspec(property(get = isBusy)) bool Busy;
-    };
+		inline bool isBusy() const {
+			return busy.test();
+		}
+
+		__declspec(property(get = isBusy)) bool Busy;
+	};
 }

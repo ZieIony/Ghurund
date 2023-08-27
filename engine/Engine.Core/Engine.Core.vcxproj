@@ -222,7 +222,7 @@
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
-    <ClInclude Include="src\core\resource\RESOURCEFORMAT.H" />
+    <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />

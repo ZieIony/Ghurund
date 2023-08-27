@@ -381,7 +381,7 @@ namespace Ghurund::Core::DirectX {
         if (stream.readBoolean()) {
             for (size_t i = 0; i < 6; i++) {
                 if (stream.readBoolean()) {
-                    char* entryPoint = stream.readASCII();
+                    AString entryPoint = stream.readASCII();
                     const CompilationTarget& target = CompilationTarget::fromValue(stream.readInt());
                     unsigned int length = stream.readUInt();
                     Buffer byteCode = Buffer(stream.readBytes(length), length);

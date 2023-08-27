@@ -1,6 +1,7 @@
 #include "ghuipch.h"
 #include "TextBlock.h"
 
+#include "core/reflection/UniqueProperty.h"
 #include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
@@ -49,7 +50,7 @@ namespace Ghurund::UI {
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
         static auto PROPERTY_TEXT_GET = Property<TextBlock, const TextDocument&>("Text", &getText);
-        static auto PROPERTY_TEXT_SET = Property<TextBlock, std::unique_ptr<TextDocument>&>("Text", (void(TextBlock::*)(std::unique_ptr<TextDocument>&)) &setText);
+        static auto PROPERTY_TEXT_SET = UniqueProperty<TextBlock, std::unique_ptr<TextDocument>>("Text", (void(TextBlock::*)(std::unique_ptr<TextDocument>)) &setText);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
             .withProperty(PROPERTY_TEXT_GET)

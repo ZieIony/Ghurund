@@ -35,20 +35,12 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setColor)) const ColorAttr& Color;
 
-        inline Ghurund::UI::Shape* getShape() {
-            return shape;
-        }
-
-        inline void setShape(Ghurund::UI::Shape* shape) {
+        inline void setShape(std::unique_ptr<Ghurund::UI::Shape> shape) {
             delete this->shape;
-            if (shape) {
-                this->shape = (Ghurund::UI::Shape*)shape->clone();
-            } else {
-                this->shape = nullptr;
-            }
+            this->shape = shape.release();
         }
 
-        __declspec(property(get = getShape, put = setShape)) Ghurund::UI::Shape* Shape;
+        __declspec(property(put = setShape)) std::unique_ptr<Ghurund::UI::Shape> Shape;
 
         inline float getRadius() const {
             return radius;

@@ -14,6 +14,8 @@
 #include <ui/constraint/ParentConstraint.h>
 #include "ui/control/DrawableView.h"
 #include <ui/text/TextDocument.h>
+#include <ui/style/LayoutAttr.h>
+#include <ui/control/ColorView.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -114,12 +116,16 @@ public:
         Ghurund::Core::getType<const ColorAttr&>();
         Ghurund::Core::getType<std::unique_ptr<ColorAttr>>();
         Ghurund::Core::getType<Ghurund::UI::ImageScaleMode>();
-        Ghurund::Core::getType<std::unique_ptr<Shape>&>();
-        Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>&>();
-        Ghurund::Core::getType<std::unique_ptr<TextDocument>&>();
+        Ghurund::Core::getType<Shape>();
+        Ghurund::Core::getType<ColorView>();
+        Ghurund::Core::getType<std::unique_ptr<Shape>>();
+        Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
+        Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
         Ghurund::Core::getType<std::unique_ptr<StyleAttr>>();
+        Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
-        Pointer::reservePointers(300);
+        Pointer::reservePointers(1500);
+        Pointer::setPointersListResizeLocked(true);
         MemoryGuard memoryGuard;
         {
             ResourceManager resourceManager;
@@ -144,7 +150,10 @@ public:
             graph.evaluate();
 
             Assert::AreEqual(34.0f, control->Width.Value);
+            size_t pointers = Pointer::numberOfAllocatedPointers();
         }
+        Pointer::setPointersListResizeLocked(false);
+        Pointer::dumpPointers();
     }
     };
 }

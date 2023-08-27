@@ -34,12 +34,12 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setColor)) const ColorAttr& Color;
 
-        inline void setShape(std::unique_ptr<Ghurund::UI::Shape>& shape) {
+        inline void setShape(std::unique_ptr<Ghurund::UI::Shape> shape) {
             delete this->shape;
             this->shape = shape.release();
         }
 
-        __declspec(property(put = setShape)) Ghurund::UI::Shape* Shape;
+        __declspec(property(put = setShape)) std::unique_ptr<Ghurund::UI::Shape> Shape;
 
         inline void setThickness(float thickness) {
             this->thickness = thickness;

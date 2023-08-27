@@ -24,7 +24,7 @@ namespace Ghurund::Core {
 		if (cacheIndex == resourceCache.Size) {
 			buffer = path.resolveResource(workingDir, libraries);
 			resourceCache.set(path, buffer);
-		}else{
+		} else {
 			buffer = resourceCache.get(path);
 		}
 		return loadInternal(loader, workingDir, *buffer.get(), format, options);
@@ -121,11 +121,11 @@ namespace Ghurund::Core {
 	}
 
 	ResourceManager::ResourceManager() {
-		//loadingThread.start();
+		loadingThread.start();
 	}
 
 	ResourceManager::~ResourceManager() {
-		//loadingThread.finish();
+		loadingThread.finish();
 	}
 
 	void ResourceManager::reload() {

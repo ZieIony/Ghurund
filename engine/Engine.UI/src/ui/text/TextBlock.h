@@ -41,7 +41,7 @@ namespace Ghurund::UI {
 			textLayout->TextDocument = std::move(std::make_unique<TextDocument>(text));
 		}
 
-		inline void setText(std::unique_ptr<TextDocument>& textDocument) {
+		inline void setText(std::unique_ptr<TextDocument> textDocument) {
 			textLayout->TextDocument = std::move(textDocument);
 		}
 

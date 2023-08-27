@@ -1,13 +1,14 @@
 #include "ghuipch.h"
 #include "Border.h"
 
+#include "core/reflection/UniqueProperty.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
 #include "ui/Canvas.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Border::GET_TYPE() {
-        static auto PROPERTY_SHAPE = Property<Border, std::unique_ptr<Ghurund::UI::Shape>&>("Shape", &setShape);
+        static auto PROPERTY_SHAPE = UniqueProperty<Border, std::unique_ptr<Ghurund::UI::Shape>>("Shape", &setShape);
 
         static const auto CONSTRUCTOR = Constructor<Border>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))

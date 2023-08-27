@@ -43,6 +43,23 @@ namespace Ghurund::Core {
 #endif
 		Loader* getLoader(const Ghurund::Core::Type& type) const;
 
+		[[nodiscard]]
+		Resource* load(
+			Loader& loader,
+			const File& file,
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			LoadOption options = LoadOption::DEFAULT
+		);
+
+		[[nodiscard]]
+		Resource* load(
+			Loader& loader,
+			const ResourcePath& path,
+			const DirectoryPath& workingDir,
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			LoadOption options = LoadOption::DEFAULT
+		);
+
 		Resource* loadInternal(
 			Loader& loader,
 			const DirectoryPath& workingDir,
@@ -106,21 +123,36 @@ namespace Ghurund::Core {
 		[[nodiscard]]
 		T* load(const File& file, const ResourceFormat* format = ResourceFormat::AUTO, LoadOption options = LoadOption::DEFAULT) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			return (T*)load(loader, file, format, options);
+			return (T*)load(*loader, file, format, options);
 		}
 
-		Resource* load(
-			Loader& loader,
+		template<class T>
+		void loadAsync(
 			const File& file,
 			const ResourceFormat* format = ResourceFormat::AUTO,
+			std::function<void(T*)> onLoaded = nullptr,
+			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
-		);
+		) {
+			SharedPointer<Task> task = makeShared<Task>(file.Path, [this, file, format, onLoaded, onError, options] {
+				try {
+					T* resource = load<T>(file, format, options);
+					if (onLoaded)
+						onLoaded((T*)resource);
+				} catch (std::exception& e) {
+					if (onError)
+						onError(e);
+					throw e;
+				}
+				});
+			loadingThread.post(task.get());
+		}
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		T* load(
 			const ResourcePath& path,
-			const DirectoryPath& workingDir,
+			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat* format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
@@ -128,72 +160,84 @@ namespace Ghurund::Core {
 			return (T*)load(*loader, path, workingDir, format, options);
 		}
 
-		Resource* load(
-			Loader& loader,
-			const ResourcePath& path,
-			const DirectoryPath& workingDir,
-			const ResourceFormat* format = ResourceFormat::AUTO,
-			LoadOption options = LoadOption::DEFAULT
-		);
-
-		/*template<class T>
+		template<class T>
 		void loadAsync(
-			const FilePath& path,
-			const ResourceFormat* format = nullptr,
-			std::function<void(T*, Status)> onLoaded = nullptr,
+			const ResourcePath& path,
+			const DirectoryPath& workingDir = DirectoryPath(),
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			std::function<void(T*)> onLoaded = nullptr,
+			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Task* task = ghnew Task(path, [this, path, format, onLoaded, options] {
-				Status loadResult;
-				T* resource = load(path, format, &loadResult, options);
-				if (onLoaded != nullptr)
-					onLoaded((T*)resource, loadResult);
-				return loadResult;
+			SharedPointer<Task> task = makeShared<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
+				try {
+					T* resource = load<T>(path, workingDir, format, options);
+					if (onLoaded)
+						onLoaded((T*)resource);
+				} catch (std::exception& e) {
+					if (onError)
+						onError(e);
+					throw e;
+				}
 				});
-			loadingThread.post(task);
-			task->release();
-		}*/
+			loadingThread.post(task.get());
+		}
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
 		T* load(
 			const Buffer& buffer,
-			const DirectoryPath& workingDir,
+			const DirectoryPath& workingDir = DirectoryPath(),
 			const ResourceFormat* format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			return loadInternal(*loader, workingDir, buffer, format, options);
+			return (T*)loadInternal(*loader, workingDir, buffer, format, options);
 		}
 
 		/*template<class T>
-		[[nodiscard]]
-		T* loadAsync(
-			const File& file,
-			const ResourceFormat* format = nullptr,
-			std::function<void(T*, Status)> onLoaded = nullptr,
+		void loadAsync(
+			const Buffer& buffer,	// TODO: copy buffer?
+			const DirectoryPath& workingDir,
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			std::function<void(T*)> onLoaded = nullptr,
+			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			Task* task = ghnew Task(file.Path, [this, file, format, onLoaded, options] {
-				Status loadResult;
-				T* resource = load(resource, file, format, &loadResult, options);
-				if (onLoaded != nullptr)
-					onLoaded(resource, loadResult);
-				return loadResult;
+			SharedPointer<Task> task = makeShared<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
+				try {
+					T* resource = load(file, format, options);
+					if (onLoaded)
+						onLoaded((T*)resource);
+				} catch (std::exception& e) {
+					if (onError)
+						onError(e);
+					throw e;
+				}
 				});
-			loadingThread.post(task);
-			task->release();
+			loadingThread.post(task.get());
 		}*/
 
 		template<Derived<Resource> T>
-		void save(T& resource, const DirectoryPath& workingDir, const ResourceFormat* format = ResourceFormat::AUTO, SaveOption options = SaveOption::DEFAULT) const {
+		void save(
+			T& resource,
+			const DirectoryPath& workingDir = DirectoryPath(),
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			SaveOption options = SaveOption::DEFAULT
+		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			Buffer buffer;
 			saveInternal(resource, *loader, buffer, format, options);
 		}
 
 		template<Derived<Resource> T>
-		void save(T& resource, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat* format = ResourceFormat::AUTO, SaveOption options = SaveOption::DEFAULT) const {
+		void save(
+			T& resource,
+			const ResourcePath& path,
+			const DirectoryPath& workingDir = DirectoryPath(),
+			const ResourceFormat* format = ResourceFormat::AUTO,
+			SaveOption options = SaveOption::DEFAULT
+		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			Buffer buffer;
 			resource.Path = &path;

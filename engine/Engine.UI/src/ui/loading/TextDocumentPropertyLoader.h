@@ -8,7 +8,7 @@ namespace Ghurund::UI {
     class TextDocumentPropertyLoader :public PropertyLoader {
     public:
         virtual const Type& getType() const override {
-            return Ghurund::Core::getType<std::unique_ptr<TextDocument>&>();
+            return Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
         }
 
         virtual void loadAttr(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const AString& text) const override {

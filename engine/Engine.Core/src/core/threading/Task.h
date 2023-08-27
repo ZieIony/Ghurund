@@ -40,8 +40,12 @@ namespace Ghurund::Core {
         inline void run() {
             executionStatus = ExecutionStatus::IN_PROGRESS;
             statusChanged(executionStatus);
-            Status result = function();
-            executionStatus = result == Status::OK ? ExecutionStatus::SUCCEEDED : ExecutionStatus::FAILED;
+            try {
+                function();
+                executionStatus = ExecutionStatus::SUCCEEDED;
+            } catch (...) {
+                executionStatus = ExecutionStatus::FAILED;
+            }
             statusChanged(executionStatus);
         }
 

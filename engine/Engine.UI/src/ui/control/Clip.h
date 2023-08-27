@@ -25,12 +25,12 @@ namespace Ghurund::UI {
             delete shape;
         }
 
-        inline void setShape(std::unique_ptr<Ghurund::UI::Shape>& shape) {
+        inline void setShape(std::unique_ptr<Ghurund::UI::Shape> shape) {
             delete this->shape;
             this->shape = shape.release();
         }
 
-        __declspec(property(put = setShape)) Ghurund::UI::Shape* Shape;
+        __declspec(property(put = setShape)) std::unique_ptr<Ghurund::UI::Shape> Shape;
 
         virtual void onLayout(float x, float y, float width, float height) override {
             __super::onLayout(x, y, width, height);
