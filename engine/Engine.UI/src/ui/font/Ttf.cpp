@@ -41,7 +41,7 @@ namespace Ghurund::Core {
             throw FontFormatNotSupportedException();
     }
 
-    String TtfFile::readFontName() {
+    String TtfFile::readFontFamilyName() {
         TT_TABLE_DIRECTORY tblDir;
         const uint8_t* pointer = (const uint8_t*)data + sizeof(TT_OFFSET_TABLE);
         bool found = findTable((TT_TABLE_DIRECTORY*)pointer, ttOffsetTable.uNumOfTables, "name", tblDir);

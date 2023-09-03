@@ -54,7 +54,7 @@ namespace Ghurund::UI {
                 /*Type type = Type::byName();
                 steps.add(std::make_shared<TypeStrategy>(type));
                 textView = textView.substring(index);*/
-            } else if (textView.begin() != text.begin()) {
+            } else if (&textView[0] != &text[0]) {
                 throw InvalidDataException(std::format("'{}' is not a valid control path (expected '{}' or a control name at position {})", text, PARENT_STEP, textView.Data - text.Data).c_str());
             }
             if (textView[0] == '[') {
@@ -71,7 +71,7 @@ namespace Ghurund::UI {
                 int childIndex = Ghurund::Core::parse<int>(AString(textView.substring(1).Data, index - 1));
                 steps.add(std::make_shared<IndexStrategy>(childIndex));
                 textView = textView.substring(index + 1);
-            } else if (textView.begin() == text.begin()) {
+            } else if (&textView[0] == &text[0]) {
                 throw InvalidDataException(std::format("'{}' is not a valid control path (expected '{}', '{{', '[' or a control name at position 0)", text, PARENT_STEP).c_str());
             }
             if (textView[0] == '.') {

@@ -233,7 +233,7 @@ namespace Ghurund::Core {
     public:
         void init(const void* data, size_t size);
 
-        String readFontName();
+        String readFontFamilyName();
 
         uint16_t readFontWeight();
         

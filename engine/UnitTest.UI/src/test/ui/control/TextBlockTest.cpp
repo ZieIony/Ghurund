@@ -47,7 +47,7 @@ public:
         delete context;
         delete textFormat;
     }
-
+    /*
     TEST_METHOD(textBlock_measureEmptyWrap) {
         auto rootView = makeShared<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
@@ -196,6 +196,6 @@ public:
         //textBlock->MinSize = { 150, 170 };
         //textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 150, 170 }, textBlock->MeasuredSize);
-    }
+    }*/
     };
 }

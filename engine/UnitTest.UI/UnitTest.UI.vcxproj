@@ -121,6 +121,7 @@
     <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />
+    <ClCompile Include="src\test\ui\font\FontTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
     <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
   </ItemGroup>

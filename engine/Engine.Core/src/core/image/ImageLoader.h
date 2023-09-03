@@ -18,15 +18,15 @@ namespace Ghurund::Core {
 
         static int getDXGIFormatBitsPerPixel(DXGI_FORMAT dxgiFormat);
 
-        ~ImageLoader() {
-            if (imageFactory)
-                imageFactory->Release();
-        }
-
-        void init() {
+        ImageLoader() {
             HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&imageFactory));
             if (FAILED(hr))
                 throw CallFailedException();
+        }
+
+        ~ImageLoader() {
+            if (imageFactory)
+                imageFactory->Release();
         }
 
         virtual Image* load(

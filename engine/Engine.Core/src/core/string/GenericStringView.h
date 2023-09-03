@@ -37,20 +37,36 @@ namespace Ghurund::Core {
             str.size = 0;
         }
 
-        inline const T* begin() {
-            return v;
+        inline ArrayIterator<T> begin() {
+            return ArrayIterator<T>(v);
         }
 
-        inline const T* begin() const {
-            return v;
+        inline ArrayIterator<const T> begin() const {
+            return ArrayIterator<const T>(v);
         }
 
-        inline const T* end() {
-            return v + size;
+        inline ArrayIterator<T> end() {
+            return ArrayIterator<T>(v + Length);
         }
 
-        inline const T* end() const {
-            return v + size;
+        inline ArrayIterator<const T> end() const {
+            return ArrayIterator<const T>(v + Length);
+        }
+
+        inline ReverseArrayIterator<T> rbegin() {
+            return ReverseArrayIterator<T>(v + Length - 1);
+        }
+
+        inline ReverseArrayIterator<const T> rbegin() const {
+            return ReverseArrayIterator<const T>(v + Length - 1);
+        }
+
+        inline ReverseArrayIterator<T> rend() {
+            return ReverseArrayIterator<T>(v - 1);
+        }
+
+        inline ReverseArrayIterator<const T> rend() const {
+            return ReverseArrayIterator<const T>(v - 1);
         }
 
         inline T get(size_t i)const {

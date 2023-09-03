@@ -2,6 +2,7 @@
 
 #include "ui/font/Font.h"
 #include "core/math/Size.h"
+#include "core/math/Point.h"
 #include "core/math/Rect.h"
 #include "core/resource/Resource.h"
 #include "core/reflection/Type.h"
@@ -12,10 +13,13 @@ namespace Ghurund::UI {
 
     class Font:public Ghurund::Core::Resource {
     private:
-        static inline const tchar* DEFAULT_CHARACTER_SET = _T("BaAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789/*-+[]{};':\",./<>?!@#$%^&*()`~Û”??????????????");
+        static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~");
+        static inline const uint32_t PADDING = 0;
+        static inline const uint32_t BITMAP_SIZE = 128;
 
         struct Glyph {
-            FloatRect tightRect, fullRect;
+            IntSize shapeSize, bitmapSize;
+            IntPoint offset;
         };
 
         float size;
@@ -33,6 +37,14 @@ namespace Ghurund::UI {
         void initAtlas(const String& supportedCharacters);
 
         void initKerning(HFONT hf);
+
+        void getGlyphs(HFONT hf, const String& characters);
+
+        bool fitAllGlyphs(uint32_t width, uint32_t height);
+
+        IntSize getAtlasSize();
+
+        Buffer getGlyphOutlineData(HDC hdcBmp, tchar c, GLYPHMETRICS& glyphMetrics);
 
         void initMsdf(HFONT hf, const String& characters);
 
@@ -78,7 +90,7 @@ namespace Ghurund::UI {
 
         long getDescent() const {
             return tm.tmDescent;
-        }
+		}
 
         __declspec(property(get = getDescent)) long Descent;
 

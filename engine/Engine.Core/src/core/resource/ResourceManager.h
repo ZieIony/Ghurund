@@ -238,10 +238,18 @@ namespace Ghurund::Core {
 			const ResourceFormat* format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {
-			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
-			Buffer buffer;
 			resource.Path = &path;
-			saveInternal(resource, *loader, workingDir, buffer, format, options);
+			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
+			//Library* library = path.findLibrary(libraries);
+			//if (library) {
+				//auto buffer = path.resolveResource(workingDir, libraries);
+				//saveInternal(resource, *loader, workingDir, buffer, format, options);
+			//} else {
+				Buffer buffer;
+				saveInternal(resource, *loader, workingDir, buffer, format, options);
+				File file(FilePath(path.toString()));
+				file.write(buffer);
+			//}
 		}
 
 		inline void setHotReloadEnabled(bool enabled) {
