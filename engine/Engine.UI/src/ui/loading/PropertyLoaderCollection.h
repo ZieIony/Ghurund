@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 
         inline void add(std::unique_ptr<PropertyLoader> loader) {
             PropertyLoader* propertyLoader = loader.release();
-            loaders.set(&propertyLoader->getType(), propertyLoader);
+            loaders.put(&propertyLoader->getType(), propertyLoader);
         }
 
         inline PropertyLoader* get(const Type& t) {

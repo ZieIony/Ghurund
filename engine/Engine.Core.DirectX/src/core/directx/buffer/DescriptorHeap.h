@@ -84,21 +84,21 @@ namespace Ghurund::Core::DirectX {
 
     public:
         ~DescriptorAllocator() {
-            for (size_t i = 0; i < heapMap.Size; i++)
-                delete heapMap.getValue(i);
+            for (auto& [descriptor, heap] : heapMap)
+                delete heap;
         }
 
         DescriptorHandle allocate(Graphics& graphics, D3D12_DESCRIPTOR_HEAP_TYPE type) {
-            if (!heapMap.containsKey(type)) {
+            if (!heapMap.contains(type)) {
                 auto dh = ghnew DescriptorHeap(type, numDescriptorsPerHeap);
                 dh->init(graphics);
-                heapMap.set(type, dh);
+                heapMap.put(type, dh);
             }
             return heapMap.get(type)->allocate();
         }
 
         void set(ID3D12GraphicsCommandList* commandList) {
-            ID3D12DescriptorHeap* heaps = {heapMap.getValue(0)->get()};
+            ID3D12DescriptorHeap* heaps = { heapMap.begin()->value->get() };
             commandList->SetDescriptorHeaps(1, &heaps);
         }
     };

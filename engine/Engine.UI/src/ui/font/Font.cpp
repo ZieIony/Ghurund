@@ -184,13 +184,13 @@ namespace Ghurund::UI {
 			throw InvalidParamException();
 		}
 		for (auto& kerningPair : kerningPairs) {
-			size_t index = kerning.indexOfKey(kerningPair.wFirst);
-			if (index == kerning.Size) {
+			auto it = kerning.find(kerningPair.wFirst);
+			if (it == kerning.end()) {
 				Map<tchar, int> map;
-				map.set(kerningPair.wSecond, kerningPair.iKernAmount);
-				kerning.set(kerningPair.wFirst, map);
+				map.put(kerningPair.wSecond, kerningPair.iKernAmount);
+				kerning.put(kerningPair.wFirst, map);
 			} else {
-				kerning.getValue(index).set(kerningPair.wSecond, kerningPair.iKernAmount);
+				it->value.put(kerningPair.wSecond, kerningPair.iKernAmount);
 			}
 		}
 	}
@@ -228,24 +228,24 @@ namespace Ghurund::UI {
 					0
 				}
 			};
-			glyphs.set(c, glyph);
+			glyphs.put(c, glyph);
 		}
 	}
 
-	bool Font::fitAllGlyphs(uint32_t width, uint32_t height) {
+	bool Font::fitAllGlyphs(const List<Glyph*>& sortedGlyphs, uint32_t width, uint32_t height) {
 		uint32_t currentWidth = PADDING, currentHeight = PADDING, maxRowHeight = 0;
-		for (auto& pair : glyphs) {
-			if (currentHeight + pair.value.bitmapSize.Height + PADDING > height)
+		for (Glyph* glyph : sortedGlyphs) {
+			if (currentHeight + glyph->bitmapSize.Height + PADDING > height)
 				return false;
-			pair.value.offset.x = currentWidth;
-			pair.value.offset.y = currentHeight;
-			currentWidth += pair.value.bitmapSize.Width + PADDING;
-			maxRowHeight = std::max(maxRowHeight, pair.value.bitmapSize.Height);
+			glyph->offset.x = currentWidth;
+			glyph->offset.y = currentHeight;
+			currentWidth += glyph->bitmapSize.Width + PADDING;
+			maxRowHeight = std::max(maxRowHeight, glyph->bitmapSize.Height);
 			if (currentWidth > width) {
-				currentWidth = pair.value.bitmapSize.Width + PADDING * 2;
+				currentWidth = glyph->bitmapSize.Width + PADDING * 2;
 				currentHeight += maxRowHeight + PADDING;
-				pair.value.offset.x = 0;
-				pair.value.offset.y = currentHeight;
+				glyph->offset.x = 0;
+				glyph->offset.y = currentHeight;
 				maxRowHeight = 0;
 			}
 		}
@@ -253,13 +253,16 @@ namespace Ghurund::UI {
 	}
 
 	IntSize Font::getAtlasSize() {
-		std::sort(glyphs.begin(), glyphs.end(), [](KeyValuePair<tchar, Glyph>& first, KeyValuePair<tchar, Glyph>& second) {
-			return first.value.bitmapSize.Height > second.value.bitmapSize.Height;
+		List<Glyph*> sortedGlyphs;
+		for (auto& [c, glyph] : glyphs)
+			sortedGlyphs.add(&glyph);
+		std::sort(sortedGlyphs.begin(), sortedGlyphs.end(), [](Glyph* first, Glyph* second) {
+			return first->bitmapSize.Height > second->bitmapSize.Height;
 			});
-		uint32_t width = std::bit_ceil(PADDING * 2 + glyphs.getValue(0).bitmapSize.Width);
+		uint32_t width = std::bit_ceil(PADDING * 2 + glyphs.begin()->value.bitmapSize.Width);
 		uint32_t height = width;
 		while (true) {
-			if (fitAllGlyphs(width, height))
+			if (fitAllGlyphs(sortedGlyphs, width, height))
 				return { width, height };
 			if (width > height) {
 				height = width;
@@ -349,7 +352,7 @@ namespace Ghurund::UI {
 	FloatSize Font::measureText(const String& text) const {
 		float measuredWidth = 0;
 		for (size_t i = 0; i < text.Length; i++) {
-			if (!glyphs.containsKey(text.get(i)))
+			if (!glyphs.contains(text.get(i)))
 				continue;
 
 			const Glyph& glyph = glyphs.get(text.get(i));

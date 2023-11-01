@@ -13,12 +13,12 @@ namespace Ghurund::UI {
 	}
 
 	const Style* StyleRef::resolve(const Theme& theme) const {
-		size_t index = theme.Styles.indexOfKey(key);
-		if (index == theme.Styles.Size) {
+		auto it = theme.Styles.find(key);
+		if (it == theme.Styles.end()) {
 			Logger::log(LogType::WARNING, std::format(_T("Style '{}' not found in the current theme.\n"), key.Value).c_str());
 			return nullptr;
 		}
-		return theme.Styles.getValue(index);
+		return it->value;
 	}
 
 }

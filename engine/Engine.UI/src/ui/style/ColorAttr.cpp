@@ -27,12 +27,12 @@ namespace Ghurund::UI {
     }
 
     const Color* ColorRef::resolve(const Theme& theme) const {
-        size_t index = theme.Colors.indexOfKey(key);
-        if (index == theme.Colors.Size) {
+        auto iterator = theme.Colors.find(key);
+        if (iterator == theme.Colors.end()) {
             Logger::log(LogType::WARNING, std::format(_T("Color '{}' not found in the current theme.\n"), key.Value).c_str());
             return nullptr;
         }
-        return &theme.Colors.getValue(index);
+        return &iterator->value;
     }
 }
 

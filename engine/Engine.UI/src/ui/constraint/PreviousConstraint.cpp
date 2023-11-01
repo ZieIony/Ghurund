@@ -14,7 +14,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Left);
+			dependencies.put(&ref->Left);
 			graph.add(this);
 		}
 	}
@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Right);
+			dependencies.put(&ref->Right);
 			graph.add(this);
 		}
 	}
@@ -40,7 +40,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Top);
+			dependencies.put(&ref->Top);
 			graph.add(this);
 		}
 	}
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Bottom);
+			dependencies.put(&ref->Bottom);
 			graph.add(this);
 		}
 	}
@@ -66,7 +66,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Width);
+			dependencies.put(&ref->Width);
 			graph.add(this);
 		}
 	}
@@ -79,7 +79,7 @@ namespace Ghurund::UI {
 		if (index == children.Size || index == 0) {
 			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
 		} else {
-			dependencies.add(&ref->Height);
+			dependencies.put(&ref->Height);
 			graph.add(this);
 		}
 	}

@@ -12,13 +12,13 @@ namespace Ghurund::UI {
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
-                dependencies.add(&c->Right);
-                dependencies.add(&c->Width);
+                dependencies.put(&c->Right);
+                dependencies.put(&c->Width);
             }
         } else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
             for (Control* c : ((ControlGroup&)control).Children) {
-                dependencies.add(&c->Right);
-                dependencies.add(&c->Width);
+                dependencies.put(&c->Right);
+                dependencies.put(&c->Width);
             }
         }
         this->control = &control;
@@ -37,13 +37,13 @@ namespace Ghurund::UI {
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
-                dependencies.add(&c->Bottom);
-                dependencies.add(&c->Height);
+                dependencies.put(&c->Bottom);
+                dependencies.put(&c->Height);
             }
         } else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
             for (Control* c : ((ControlGroup&)control).Children) {
-                dependencies.add(&c->Bottom);
-                dependencies.add(&c->Height);
+                dependencies.put(&c->Bottom);
+                dependencies.put(&c->Height);
             }
         }
         this->control = &control;

@@ -13,10 +13,10 @@ namespace Ghurund::Core::DirectX {
 
 		HeapAllocator* uploadAllocator = ghnew HeapAllocator(graphics, 100_MB, nullptr,
 			D3D12_HEAP_TYPE_UPLOAD, D3D12_HEAP_FLAG_DENY_NON_RT_DS_TEXTURES | D3D12_HEAP_FLAG_DENY_RT_DS_TEXTURES);
-        allocators.set(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD, uploadAllocator);
+        allocators.put(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD, uploadAllocator);
 		HeapAllocator* defaultAllocator = ghnew HeapAllocator(graphics, 100_MB, nullptr,
 			D3D12_HEAP_TYPE_DEFAULT, D3D12_HEAP_FLAG_DENY_BUFFERS | D3D12_HEAP_FLAG_DENY_RT_DS_TEXTURES);
-        allocators.set(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT, defaultAllocator);
+        allocators.put(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT, defaultAllocator);
     }
 
     GPUResourcePointer* GPUResourceFactory::create(D3D12_HEAP_TYPE heapType, CD3DX12_RESOURCE_DESC resourceDesc, D3D12_RESOURCE_STATES initialState, ID3D12Resource** resource) {

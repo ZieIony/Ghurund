@@ -12,11 +12,11 @@ namespace Ghurund::Core {
             FILE_NOTIFY_INFORMATION& fni = *(FILE_NOTIFY_INFORMATION*)(buffer.Data + offset);
             WString fileName(fni.FileName, fni.FileNameLength / sizeof(wchar_t));
 
-            if (files.containsKey(fileName)) {
+            if (files.contains(fileName)) {
                 DWORD action = fni.Action;
                 const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
                 auto filePath = directory / FilePath(fileName);
-                files[fileName](filePath, change);
+                files.get(fileName)(filePath, change);
             }
 
             if (fni.NextEntryOffset == 0)

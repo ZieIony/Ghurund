@@ -13,6 +13,11 @@ namespace Ghurund::Core {
 		AllocatorType a;
 
 	public:
+		using iterator = ArrayIterator<Value>;
+		using const_iterator = ConstArrayIterator<Value>;
+		using reverse_iterator = ReverseArrayIterator<Value>;
+		using const_reverse_iterator = ConstReverseArrayIterator<Value>;
+
 		ArrayCollection(AllocatorType a = AllocatorType()):a(a) {
 			v = (Value*)a.allocate(sizeof(Value) * capacity);
 		}

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Feature.h"
-#include "core/Concepts.h"
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
+#include "core/concepts/Concepts.h"
 
 #include <ranges>
 #include <format>

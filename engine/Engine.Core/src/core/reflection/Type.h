@@ -7,7 +7,7 @@
 #include "core/collection/List.h"
 #include "core/string/String.h"
 #include "core/Object.h"
-#include "core/Concepts.h"
+#include "core/concepts/Concepts.h"
 #include "core/Exceptions.h"
 #include "BaseType.h"
 #include "ConstructorCollection.h"

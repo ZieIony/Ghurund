@@ -99,12 +99,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\concepts\Iterable.h" />
     <ClInclude Include="src\core\Finally.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
-    <ClInclude Include="src\core\Concepts.h" />
+    <ClInclude Include="src\core\concepts\Concepts.h" />
     <ClInclude Include="src\core\DataParsing.h" />
     <ClInclude Include="src\core\Enum.h" />
     <ClInclude Include="src\core\Event.h" />
@@ -154,7 +155,6 @@
     <ClInclude Include="src\core\collection\HashMap.h" />
     <ClInclude Include="src\core\collection\LinkedList.h" />
     <ClInclude Include="src\core\collection\List.h" />
-    <ClInclude Include="src\core\collection\Map.h" />
     <ClInclude Include="src\core\collection\ObservableList.h" />
     <ClInclude Include="src\core\collection\ObservablePointerList.h" />
     <ClInclude Include="src\core\collection\PointerArray.h" />
@@ -165,7 +165,7 @@
     <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
-    <ClInclude Include="src\core\collection\TreeMap.h" />
+    <ClInclude Include="src\core\collection\Map.h" />
     <ClInclude Include="src\core\collection\TypeMap.h" />
     <ClInclude Include="src\core\collection\iterator\ArrayIterator.h" />
     <ClInclude Include="src\core\collection\iterator\ListNodeIterator.h" />

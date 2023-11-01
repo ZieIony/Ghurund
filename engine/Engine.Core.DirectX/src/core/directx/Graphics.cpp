@@ -78,7 +78,7 @@ namespace Ghurund::Core::DirectX {
     }
 
     void Graphics::initDevice(GraphicsAdapter& adapter) {
-        if (FAILED(D3D12CreateDevice(adapter.get().Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&device)))) {
+        if (FAILED(D3D12CreateDevice(adapter.get().Get(), D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&device)))) {
             Logger::log(LogType::ERR0R, _T("D3D12CreateDevice failed\n"));
             throw CallFailedException();
         }

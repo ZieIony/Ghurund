@@ -26,8 +26,8 @@ namespace Ghurund::Core {
 
         void clearFiles() {
             while (!watches.Empty) {
-                auto& key = watches.getKey(0);
-                DirectoryWatch* watch = watches.getValue(0);
+                auto& key = watches.begin()->key;
+                DirectoryWatch* watch = watches.get(key);
                 watches.remove(key);
                 delete watch;
             }

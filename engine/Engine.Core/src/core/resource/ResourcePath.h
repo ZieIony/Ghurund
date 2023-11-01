@@ -41,8 +41,12 @@ namespace Ghurund::Core {
 
 		std::shared_ptr<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const;
 
-		inline bool operator==(const ResourcePath& other) const {
-			return type == other.type && path == other.path && libName == other.libName;
+		inline constexpr std::strong_ordering operator<=>(const ResourcePath& other) const noexcept {
+			if (type == other.type && path == other.path && libName == other.libName)
+				return std::strong_ordering::equal;
+			if (libName == other.libName)
+				return path <=> other.path;
+			return libName <=> other.libName;
 		}
 
 		String toString() const;

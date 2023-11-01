@@ -5,569 +5,588 @@
 #include "core/allocation/SimpleAllocator.h"
 #include "core/collection/iterator/TreeNodeIterator.h"
 #include "core/collection/iterator/ReverseTreeNodeIterator.h"
+#include "core/concepts/Iterable.h"
 
 namespace Ghurund::Core {
-    template<typename Value, typename AllocatorType = SimpleAllocator>
-    class Tree {
-    private:
-        enum class NodeColor:uint8_t {
-            RED, BLACK
-        };
+	template<typename TraitsType, typename AllocatorType = SimpleAllocator>
+	class Tree {
+	private:
+		TraitsType traits;
 
-        template<typename Value>
-        struct Node {
-            Value data;
-            NodeColor color = NodeColor::RED;
-            Node<Value>* left = nullptr;
-            Node<Value>* right = nullptr;
-            Node<Value>* parent = nullptr;
+		using key_t = typename TraitsType::key_t;
+		using value_t = typename TraitsType::value_t;
+		using data_t = typename TraitsType::data_t;
 
-            Node(const Value& data):data(data) {}
+		enum class NodeColor:uint8_t {
+			RED, BLACK
+		};
 
-            inline bool isOnLeft() { return this == parent->left; }
+		struct Node {
+			data_t data;
+			NodeColor color = NodeColor::RED;
+			Node* left = nullptr;
+			Node* right = nullptr;
+			Node* parent = nullptr;
 
-            inline Node* getNext() {
-                Node* node = this;
-                if (node->right) {
-                    node = node->right;
-                    while (node->left)
-                        node = node->left;
-                } else {
-                    while (node->parent && node->parent->right == node)
-                        node = node->parent;
-                    node = node->parent;
-                }
-                return node;
-            }
+			Node(const data_t& data):data(data) {}
 
-            inline Node* getPrevious() {
-                Node* node = this;
-                if (node->left) {
-                    node = node->left;
-                    while (node->right)
-                        node = node->right;
-                } else {
-                    while (node->parent && node->parent->left == node)
-                        node = node->parent;
-                    node = node->parent;
-                }
-                return node;
-            }
+			template<typename... Args>
+			Node(const key_t& key, Args&&... args) : data(key, std::forward<Args>(args)...) {}
 
-        };
+			inline bool isOnLeft() { return this == parent->left; }
 
-        Node<Value>* root = nullptr;
-        size_t size = 0;
-        AllocatorType a;
+			inline Node* getNext() {
+				Node* node = this;
+				if (node->right) {
+					node = node->right;
+					while (node->left)
+						node = node->left;
+				} else {
+					while (node->parent && node->parent->right == node)
+						node = node->parent;
+					node = node->parent;
+				}
+				return node;
+			}
 
-        void rotateLeft(Node<Value>* node) {
-            Node<Value>* right = node->right;
-            Node<Value>* parent = node->parent;
+			__declspec(property(get = getNext)) Node* Next;
 
-            node->right = right->left;
+			inline Node* getPrevious() {
+				Node* node = this;
+				if (node->left) {
+					node = node->left;
+					while (node->right)
+						node = node->right;
+				} else {
+					while (node->parent && node->parent->left == node)
+						node = node->parent;
+					node = node->parent;
+				}
+				return node;
+			}
 
-            if (node->right)
-                node->right->parent = node;
+			__declspec(property(get = getPrevious)) Node* Previous;
+		};
 
-            right->parent = parent;
+		Node* root = nullptr;
+		size_t size = 0;
+		AllocatorType a;
 
-            if (!parent) {
-                root = right;
-            } else if (node == parent->left) {
-                parent->left = right;
-            } else {
-                parent->right = right;
-            }
+		void rotateLeft(Node* node) {
+			Node* right = node->right;
+			Node* parent = node->parent;
 
-            right->left = node;
-            node->parent = right;
-        }
+			node->right = right->left;
 
-        void rotateRight(Node<Value>* node) {
-            Node<Value>* left = node->left;
-            Node<Value>* parent = node->parent;
+			if (node->right)
+				node->right->parent = node;
 
-            node->left = left->right;
+			right->parent = parent;
 
-            if (node->left)
-                node->left->parent = node;
+			if (!parent) {
+				root = right;
+			} else if (node == parent->left) {
+				parent->left = right;
+			} else {
+				parent->right = right;
+			}
 
-            left->parent = parent;
+			right->left = node;
+			node->parent = right;
+		}
 
-            if (!parent) {
-                root = left;
-            } else if (node == parent->left) {
-                parent->left = left;
-            } else {
-                parent->right = left;
-            }
+		void rotateRight(Node* node) {
+			Node* left = node->left;
+			Node* parent = node->parent;
 
-            left->right = node;
-            node->parent = left;
-        }
+			node->left = left->right;
 
-        Node<Value>* insertNode(const Value& item) {
-            if (!root) {
-                void* mem = a.allocate(sizeof(Node<Value>));
-                Node<Value>* node = new (mem)Node<Value>(item);
-                root = node;
-                return node;
-            }
+			if (node->left)
+				node->left->parent = node;
 
-            Node<Value>* parent = root;
-            Node<Value>* temp = root;
-            while (temp) {
-                parent = temp;
-                if (item == parent->data)
-                    return nullptr;
-                if (item < parent->data) {
-                    temp = parent->left;
-                } else {
-                    temp = parent->right;
-                }
-            }
+			left->parent = parent;
 
-            void* mem = a.allocate(sizeof(Node<Value>));
-            Node<Value>* node = new (mem)Node<Value>(item);
-            if (item < parent->data) {
-                parent->left = node;
-            } else {
-                parent->right = node;
-            }
-            node->parent = parent;
-            return node;
-        }
+			if (!parent) {
+				root = left;
+			} else if (node == parent->left) {
+				parent->left = left;
+			} else {
+				parent->right = left;
+			}
 
-        void fixInsert(Node<Value>* node) {
-            Node<Value>* parent = nullptr;
-            Node<Value>* grandparent = nullptr;
+			left->right = node;
+			node->parent = left;
+		}
 
-            while (node != root && node->parent->color == NodeColor::RED) {
-                parent = node->parent;
-                grandparent = parent->parent;
+		inline Node* insertNode(const data_t& data) {
+			if (!root) {
+				void* mem = a.allocate(sizeof(Node));
+				Node* node = new (mem)Node(data);
+				root = node;
+				root->color = NodeColor::BLACK;
+				size = 1;
+				return node;
+			}
 
-                if (parent == grandparent->left) {
-                    Node<Value>* uncle = grandparent->right;
+			Node* parent = root;
+			Node* temp = root;
+			while (temp) {
+				parent = temp;
+				auto ordering = traits.getKey(data) <=> traits.getKey(parent->data);
+				if (ordering == 0) {
+					parent->data = data;
+					return parent;
+				}
+				if (ordering < 0) {
+					temp = parent->left;
+				} else {
+					temp = parent->right;
+				}
+			}
 
-                    if (uncle && uncle->color == NodeColor::RED) {
-                        grandparent->color = NodeColor::RED;
-                        parent->color = NodeColor::BLACK;
-                        uncle->color = NodeColor::BLACK;
-                        node = grandparent;
-                    } else {
-                        if (node == parent->right) {
-                            node = parent;
-                            rotateLeft(node);
-                            parent = node->parent;
-                            grandparent = parent->parent;
-                        }
+			void* mem = a.allocate(sizeof(Node));
+			Node* node = new (mem)Node(data);
+			if (traits.getKey(data) < traits.getKey(parent->data)) {
+				parent->left = node;
+			} else {
+				parent->right = node;
+			}
+			node->parent = parent;
+			fixInsert(node);
+			size++;
+			return node;
+		}
 
-                        parent->color = NodeColor::BLACK;
-                        grandparent->color = NodeColor::RED;
-                        rotateRight(grandparent);
-                    }
-                } else {
-                    Node<Value>* uncle = grandparent->left;
+		void fixInsert(Node* node) {
+			Node* parent = nullptr;
+			Node* grandparent = nullptr;
 
-                    if (uncle && (uncle->color == NodeColor::RED)) {
-                        grandparent->color = NodeColor::RED;
-                        parent->color = NodeColor::BLACK;
-                        uncle->color = NodeColor::BLACK;
-                        node = grandparent;
-                    } else {
-                        if (node == parent->left) {
-                            node = parent;
-                            rotateRight(node);
-                            parent = node->parent;
-                            grandparent = parent->parent;
-                        }
+			while (node != root && node->parent->color == NodeColor::RED) {
+				parent = node->parent;
+				grandparent = parent->parent;
 
-                        parent->color = NodeColor::BLACK;
-                        grandparent->color = NodeColor::RED;
-                        rotateLeft(grandparent);
-                    }
-                }
-            }
+				if (parent == grandparent->left) {
+					Node* uncle = grandparent->right;
 
-            root->color = NodeColor::BLACK;
-        }
+					if (uncle && uncle->color == NodeColor::RED) {
+						grandparent->color = NodeColor::RED;
+						parent->color = NodeColor::BLACK;
+						uncle->color = NodeColor::BLACK;
+						node = grandparent;
+					} else {
+						if (node == parent->right) {
+							node = parent;
+							rotateLeft(node);
+							parent = node->parent;
+							grandparent = parent->parent;
+						}
 
-        Node<Value>* findNodeToReplace(Node<Value>* node) {
-            if (node->left && node->right) {
-                Node<Value>* temp = node->left;
-                while (temp->right)
-                    temp = temp->right;
-                return temp;
-            }
+						parent->color = NodeColor::BLACK;
+						grandparent->color = NodeColor::RED;
+						rotateRight(grandparent);
+					}
+				} else {
+					Node* uncle = grandparent->left;
 
-            if (!node->left && !node->right)
-                return nullptr;
+					if (uncle && (uncle->color == NodeColor::RED)) {
+						grandparent->color = NodeColor::RED;
+						parent->color = NodeColor::BLACK;
+						uncle->color = NodeColor::BLACK;
+						node = grandparent;
+					} else {
+						if (node == parent->left) {
+							node = parent;
+							rotateRight(node);
+							parent = node->parent;
+							grandparent = parent->parent;
+						}
 
-            if (node->left)
-                return node->left;
+						parent->color = NodeColor::BLACK;
+						grandparent->color = NodeColor::RED;
+						rotateLeft(grandparent);
+					}
+				}
+			}
 
-            return node->right;
-        }
+			root->color = NodeColor::BLACK;
+		}
 
-        void deleteNode(Node<Value>* node) {
-            Node<Value>* nodeToRemove = findNodeToReplace(node);
-            if (nodeToRemove) {
-                node->data = std::move(nodeToRemove->data);
-                node = nodeToRemove;
-            }
+		Node* findNodeToReplace(Node* node) {
+			if (node->left && node->right) {
+				Node* temp = node->left;
+				while (temp->right)
+					temp = temp->right;
+				return temp;
+			}
 
-            if (!node->left && !node->right) {
-                if (node == root) {
-                    root = nullptr;
-                } else {
-                    fixDelete(node);
+			if (!node->left && !node->right)
+				return nullptr;
 
-                    Node<Value>* parent = node->parent;
-                    if (node->isOnLeft()) {
-                        parent->left = nullptr;
-                    } else {
-                        parent->right = nullptr;
-                    }
-                }
-                node->~Node();
-                a.deallocate(node);
-            } else {
-                deleteNode(node);
-            }
-        }
+			if (node->left)
+				return node->left;
 
-        void fixDelete(Node<Value>* node) {
-            while (node != root && node->color == NodeColor::BLACK) {
-                Node<Value>* parent = node->parent;
-                Node<Value>* sibling;
-                if (node->isOnLeft()) {
-                    sibling = parent->right;
-                } else {
-                    sibling = parent->left;
-                }
+			return node->right;
+		}
 
-                if (!sibling)
-                    return;
+		void deleteNode(Node* node) {
+			Node* nodeToRemove = findNodeToReplace(node);
+			if (nodeToRemove) {
+				node->data = std::move(nodeToRemove->data);
+				node = nodeToRemove;
+			}
 
-                if (sibling->color == NodeColor::BLACK) {
-                    if ((!sibling->left || sibling->left->color == NodeColor::BLACK) && (!sibling->right || sibling->right->color == NodeColor::BLACK)) {
-                        sibling->color = NodeColor::RED;
-                        if (parent->color == NodeColor::BLACK) {
-                            node = node->parent;
-                        } else {
-                            parent->color = NodeColor::BLACK;
-                            return;
-                        }
-                    } else if (!sibling->isOnLeft() && sibling->left && sibling->left->color == NodeColor::RED && (!sibling->right || sibling->right->color == NodeColor::BLACK)) {
-                        sibling->left->color = NodeColor::BLACK;
-                        sibling->color = NodeColor::RED;
-                        rotateRight(sibling);
-                    } else if (sibling->isOnLeft() && sibling->right && sibling->right->color == NodeColor::RED && (!sibling->left || sibling->left->color == NodeColor::BLACK)) {
-                        sibling->right->color = NodeColor::BLACK;
-                        sibling->color = NodeColor::RED;
-                        rotateLeft(sibling);
-                    }
-                    if (!sibling->isOnLeft() && sibling->right && sibling->right->color == NodeColor::RED) {
-                        std::swap(sibling->color, parent->color);
-                        rotateLeft(parent);
-                        sibling->right->color = NodeColor::BLACK;
-                        return;
-                    } else if (sibling->isOnLeft() && sibling->left && sibling->left->color == NodeColor::RED) {
-                        std::swap(sibling->color, parent->color);
-                        rotateRight(parent);
-                        sibling->left->color = NodeColor::BLACK;
-                        return;
-                    }
-                } else if (sibling->color == NodeColor::RED) {
-                    sibling->color = NodeColor::BLACK;
-                    parent->color = NodeColor::RED;
-                    if (node->isOnLeft()) {
-                        rotateLeft(parent);
-                    } else {
-                        rotateRight(parent);
-                    }
-                }
-            }
-        }
+			if (!node->left && !node->right) {
+				if (node == root) {
+					root = nullptr;
+				} else {
+					fixDelete(node);
 
-        Node<Value>* findNode(const Value& item) {
-            Node<Value>* node = root;
+					Node* parent = node->parent;
+					if (node->isOnLeft()) {
+						parent->left = nullptr;
+					} else {
+						parent->right = nullptr;
+					}
+				}
+				node->~Node();
+				a.deallocate(node);
+			} else {
+				deleteNode(node);
+			}
+		}
 
-            while (node) {
-                if (item < node->data) {
-                    if (!node->left)
-                        break;
-                    node = node->left;
-                } else if (item == node->data) {
-                    return node;
-                } else {
-                    if (!node->right)
-                        break;
-                    node = node->right;
-                }
-            }
+		void fixDelete(Node* node) {
+			while (node != root && node->color == NodeColor::BLACK) {
+				Node* parent = node->parent;
+				Node* sibling;
+				if (node->isOnLeft()) {
+					sibling = parent->right;
+				} else {
+					sibling = parent->left;
+				}
 
-            return nullptr;
-        }
+				if (!sibling)
+					return;
 
-        void clear(Node<Value>* node) {
-            if (!node)
-                return;
+				if (sibling->color == NodeColor::BLACK) {
+					if ((!sibling->left || sibling->left->color == NodeColor::BLACK) && (!sibling->right || sibling->right->color == NodeColor::BLACK)) {
+						sibling->color = NodeColor::RED;
+						if (parent->color == NodeColor::BLACK) {
+							node = node->parent;
+						} else {
+							parent->color = NodeColor::BLACK;
+							return;
+						}
+					} else if (!sibling->isOnLeft() && sibling->left && sibling->left->color == NodeColor::RED && (!sibling->right || sibling->right->color == NodeColor::BLACK)) {
+						sibling->left->color = NodeColor::BLACK;
+						sibling->color = NodeColor::RED;
+						rotateRight(sibling);
+					} else if (sibling->isOnLeft() && sibling->right && sibling->right->color == NodeColor::RED && (!sibling->left || sibling->left->color == NodeColor::BLACK)) {
+						sibling->right->color = NodeColor::BLACK;
+						sibling->color = NodeColor::RED;
+						rotateLeft(sibling);
+					}
+					if (!sibling->isOnLeft() && sibling->right && sibling->right->color == NodeColor::RED) {
+						std::swap(sibling->color, parent->color);
+						rotateLeft(parent);
+						sibling->right->color = NodeColor::BLACK;
+						return;
+					} else if (sibling->isOnLeft() && sibling->left && sibling->left->color == NodeColor::RED) {
+						std::swap(sibling->color, parent->color);
+						rotateRight(parent);
+						sibling->left->color = NodeColor::BLACK;
+						return;
+					}
+				} else if (sibling->color == NodeColor::RED) {
+					sibling->color = NodeColor::BLACK;
+					parent->color = NodeColor::RED;
+					if (node->isOnLeft()) {
+						rotateLeft(parent);
+					} else {
+						rotateRight(parent);
+					}
+				}
+			}
+		}
 
-            clear(node->left);
-            clear(node->right);
+		inline Node* findNode(const key_t& key) const {
+			Node* node = root;
 
-            node->~Node();
-            a.deallocate(node);
-        }
+			while (node) {
+				auto ordering = key <=> traits.getKey(node->data);
+				if (ordering < 0) {
+					if (!node->left)
+						break;
+					node = node->left;
+				} else if (ordering == 0) {
+					return node;
+				} else {
+					if (!node->right)
+						break;
+					node = node->right;
+				}
+			}
 
-        void deleteItems(Node<Value>* node) {
-            if (!node)
-                return;
+			return nullptr;
+		}
 
-            clear(node->left);
-            clear(node->right);
+		inline void clear(Node* node) {
+			if (!node)
+				return;
 
-            delete node->data;
-            node->~Node();
-            a.deallocate(node);
-        }
+			clear(node->left);
+			clear(node->right);
+
+			node->~Node();
+			a.deallocate(node);
+		}
 
 #ifdef _DEBUG
-        bool verifyRedBlack(Node<Value>* node) {
-            if (!node)
-                return true;
+		bool verifyRedBlack(Node* node) {
+			if (!node)
+				return true;
 
-            if (node->color == NodeColor::RED) {
-                return (!node->left || node->left->color == NodeColor::BLACK)
-                    && (!node->right || node->right->color == NodeColor::BLACK)
-                    && (node->parent->color == NodeColor::BLACK);
-            }
+			if (node->color == NodeColor::RED) {
+				return (!node->left || node->left->color == NodeColor::BLACK)
+					&& (!node->right || node->right->color == NodeColor::BLACK)
+					&& (node->parent->color == NodeColor::BLACK);
+			}
 
-            return verifyRedBlack(node->left) && verifyRedBlack(node->right);
-        }
+			return verifyRedBlack(node->left) && verifyRedBlack(node->right);
+		}
 
-        uint32_t getBlackCount(Node<Value>* node, bool& correct) {
-            if (!node || !correct)
-                return 0;
+		uint32_t getBlackCount(Node* node, bool& correct) {
+			if (!node || !correct)
+				return 0;
 
-            uint32_t blackCount = getBlackCount(node->left, correct);
-            if (blackCount != getBlackCount(node->right, correct))
-                correct = false;
+			uint32_t blackCount = getBlackCount(node->left, correct);
+			if (blackCount != getBlackCount(node->right, correct))
+				correct = false;
 
-            if (node->color == NodeColor::BLACK)
-                blackCount++;
-            return blackCount;
-        }
+			if (node->color == NodeColor::BLACK)
+				blackCount++;
+			return blackCount;
+		}
 #endif
 
-    public:
-        using iterator_t = TreeNodeIterator<Value, Node<Value>>;
-        using constIterator_t = ConstTreeNodeIterator<Value, Node<Value>>;
-        using reverseIterator_t = ReverseTreeNodeIterator<Value, Node<Value>>;
-        using constReverseIterator_t = ConstReverseTreeNodeIterator<Value, Node<Value>>;
+	public:
+		using iterator = TreeNodeIterator<data_t, Node>;
+		using const_iterator = ConstTreeNodeIterator<data_t, Node>;
+		using reverse_iterator = ReverseTreeNodeIterator<data_t, Node>;
+		using const_reverse_iterator = ConstReverseTreeNodeIterator<data_t, Node>;
 
-        Tree(AllocatorType a = AllocatorType()) {}
+		Tree(AllocatorType a = AllocatorType()):a(a) {}
 
-        Tree(const Tree& other) {
-            for (const Value& item : other)
-                add(item);
-        }
+		Tree(const Tree& other) {
+			for (auto& item : other)
+				put(item);
+		}
 
-        Tree(const std::initializer_list<Value>& list) {
-            for (const Value& item : list)
-                add(item);
-        }
+		Tree(const std::initializer_list<data_t>& list) {
+			for (auto& item : list)
+				put(item);
+		}
 
-        Tree(Tree&& other) {
-            if (a != other.a)
-                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
-            root = other.root;
-            other.root = nullptr;
-            size = other.size;
-            other.size = 0;
-        }
+		template<Iterable<data_t> CollectionType>
+		Tree(const CollectionType& collection) {
+			putAll(collection);
+		}
 
-        ~Tree() {
-            clear();
-        }
+		Tree(Tree&& other) {
+			if (a != other.a)
+				throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+			root = other.root;
+			other.root = nullptr;
+			size = other.size;
+			other.size = 0;
+		}
 
-        inline size_t getSize() const {
-            return size;
-        }
+		~Tree() {
+			clear();
+		}
 
-        __declspec(property(get = getSize)) size_t Size;
+		inline size_t getSize() const {
+			return size;
+		}
 
-        inline bool isEmpty()const {
-            return size == 0;
-        }
+		__declspec(property(get = getSize)) size_t Size;
 
-        __declspec(property(get = isEmpty)) bool Empty;
+		inline bool isEmpty()const {
+			return size == 0;
+		}
 
-        inline void add(const Value& item) {
-            Node<Value>* node = insertNode(item);
-            if (node) {
-                fixInsert(node);
-                size++;
-            }
-        }
+		__declspec(property(get = isEmpty)) bool Empty;
 
-        template<typename Collection>
-        inline void addAll(const Collection& list) {
-            for (Value& item : list)
-                add(item);
-        }
+		inline value_t& get(const key_t& key) const {
+			Node* node = findNode(key);
+			return node->data.value;
+		}
 
-        inline void addAll(const std::initializer_list<Value>& list) {
-            for (const Value& item : list)
-                add(item);
-        }
+		inline value_t& operator[](const key_t& key) {
+			Node* node = findNode(key);
+			if (!node)
+				node = insertNode(traits.makeData(key));
+			return node->data.value;
+		}
 
-        inline void remove(const Value& item) {
-            Node<Value>* node = findNode(item);
-            if (!node)
-                return;
+		inline value_t& operator[](const key_t& key) const {
+			Node* node = findNode(key);
+			return node->data.value;
+		}
 
-            deleteNode(node);
-            size--;
-        }
+		inline void put(const data_t& data) {
+			insertNode(data);
+		}
 
-        template<typename Collection>
-        inline void removeAll(const Collection& list) {
-            for (Value& item : list)
-                remove(item);
-        }
+		template<typename... Args>
+		inline void put(const key_t& key, Args&&... args) {
+			insertNode(traits.makeData(key, std::forward<Args>(args)...));
+		}
 
-        inline void removeAll(const std::initializer_list<Value>& list) {
-            for (const Value& item : list)
-                remove(item);
-        }
+		template<Iterable<data_t> CollectionType>
+		inline void putAll(const CollectionType& collection) {
+			for (auto& item : collection)
+				insertNode(item);
+		}
 
-        inline iterator_t begin() {
-            Node<Value>* node = root;
-            if (node) {
-                while (node->left)
-                    node = node->left;
-            }
-            return iterator_t(node);
-        }
+		inline void putAll(const std::initializer_list<data_t>& list) {
+			for (auto& item : list)
+				insertNode(item);
+		}
 
-        inline constIterator_t begin() const {
-            Node<Value>* node = root;
-            if (node) {
-                while (node->left)
-                    node = node->left;
-            }
-            return constIterator_t(node);
-        }
+		inline void remove(const key_t& key) {
+			Node* node = findNode(key);
+			if (!node)
+				return;
 
-        inline iterator_t end() {
-            return iterator_t();
-        }
+			deleteNode(node);
+			size--;
+		}
 
-        inline constIterator_t end() const {
-            return constIterator_t();
-        }
+		inline iterator find(const key_t& key) {
+			return iterator(findNode(key));
+		}
 
-        inline reverseIterator_t rbegin() {
-            Node<Value>* node = root;
-            if (node) {
-                while (node->right)
-                    node = node->right;
-            }
-            return reverseIterator_t(node);
-        }
+		inline const_iterator find(const key_t& key) const {
+			return const_iterator(findNode(key));
+		}
 
-        inline constReverseIterator_t rbegin() const {
-            Node<Value>* node = root;
-            if (node) {
-                while (node->right)
-                    node = node->right;
-            }
-            return constReverseIterator_t(node);
-        }
+		inline iterator begin() {
+			Node* node = root;
+			if (node) {
+				while (node->left)
+					node = node->left;
+			}
+			return iterator(node);
+		}
 
-        inline reverseIterator_t rend() {
-            return reverseIterator_t();
-        }
+		inline const_iterator begin() const {
+			Node* node = root;
+			if (node) {
+				while (node->left)
+					node = node->left;
+			}
+			return const_iterator(node);
+		}
 
-        inline constReverseIterator_t rend() const {
-            return constReverseIterator_t();
-        }
+		inline iterator end() {
+			return iterator();
+		}
 
-        inline bool operator==(const Tree<Value, AllocatorType>& other) const {
-            if (this == &other)
-                return true;
-            if (size != other.size)
-                return false;
-            for (constIterator_t iter = begin(), iter2 = other.begin(); iter != end(), iter2 != other.end(); ++iter, ++iter2) {
-                if (*iter != *iter2)
-                    return false;
-            }
-            return true;
-        }
+		inline const_iterator end() const {
+			return const_iterator();
+		}
 
-        inline bool operator!=(const Tree<Value, AllocatorType>& other) const {
-            return !(*this == other);
-        }
+		inline reverse_iterator rbegin() {
+			Node* node = root;
+			if (node) {
+				while (node->right)
+					node = node->right;
+			}
+			return reverse_iterator(node);
+		}
 
-        inline bool contains(const Value& item) const {
-            Node<Value>* node = root;
+		inline const_reverse_iterator rbegin() const {
+			Node* node = root;
+			if (node) {
+				while (node->right)
+					node = node->right;
+			}
+			return const_reverse_iterator(node);
+		}
 
-            while (node) {
-                if (node->data == item)
-                    return true;
-                if (item < node->data) {
-                    node = node->left;
-                } else {
-                    node = node->right;
-                }
-            }
+		inline reverse_iterator rend() {
+			return reverse_iterator();
+		}
 
-            return false;
-        }
+		inline const_reverse_iterator rend() const {
+			return const_reverse_iterator();
+		}
 
-        inline void clear() {
-            clear(root);
-            root = nullptr;
-            size = 0;
-        }
+		inline bool operator==(const Tree<TraitsType, AllocatorType>& other) const {
+			if (this == &other)
+				return true;
+			if (size != other.size)
+				return false;
+			return std::equal(begin(), end(), other.begin());
+		}
 
-        Tree& operator=(const Tree& other) {
-            if (this == &other)
-                return *this;
-            clear();
-            for (const Value& item : other)
-                add(item);
-            return *this;
-        }
+		inline bool operator!=(const Tree<TraitsType, AllocatorType>& other) const {
+			return !(*this == other);
+		}
 
-        Tree& operator=(Tree&& other) {
-            if (this == &other)
-                return *this;
-            if (a != other.a)
-                throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
-            clear();
-            root = other.root;
-            other.root = nullptr;
-            size = other.size;
-            other.size = 0;
-            return *this;
-        }
+		inline bool contains(const key_t& key) const {
+			Node* node = root;
 
-        inline void deleteItems() {
-            deleteItems(root);
-            root = nullptr;
-            size = 0;
-        }
+			while (node) {
+				auto ordering = key <=> traits.getKey(node->data);
+				if (ordering == 0)
+					return true;
+				if (ordering < 0) {
+					node = node->left;
+				} else {
+					node = node->right;
+				}
+			}
+
+			return false;
+		}
+
+		inline void clear() {
+			clear(root);
+			root = nullptr;
+			size = 0;
+		}
+
+		Tree& operator=(const Tree& other) {
+			if (this == &other)
+				return *this;
+			clear();
+			for (const auto& item : other)
+				put(data_t(item));
+			return *this;
+		}
+
+		Tree& operator=(Tree&& other) {
+			if (this == &other)
+				return *this;
+			if (a != other.a)
+				throw IncompatibleAllocatorsException("cannot move items between two allocators - copy instead");
+			clear();
+			root = other.root;
+			other.root = nullptr;
+			size = other.size;
+			other.size = 0;
+			return *this;
+		}
 
 #ifdef _DEBUG
-        inline bool verify() {
-            bool correct = true;
-            getBlackCount(root, correct);
-            return correct && (!root || root->color == NodeColor::BLACK)
-                && verifyRedBlack(root);
-        }
+		inline bool verify() {
+			bool correct = true;
+			getBlackCount(root, correct);
+			return correct && (!root || root->color == NodeColor::BLACK)
+				&& verifyRedBlack(root);
+		}
 #endif
-    };
+	};
 }

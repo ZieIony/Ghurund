@@ -11,12 +11,12 @@ namespace Ghurund::UI {
     }
 
     SharedPointer<Drawable> DrawableRef::resolve(const Theme& theme) const {
-        size_t index = theme.Drawables.indexOfKey(key);
-        if (index == theme.Drawables.Size) {
+        auto iterator = theme.Drawables.find(key);
+        if (iterator == theme.Drawables.end()) {
             Logger::log(LogType::WARNING, std::format(_T("Drawable '{}' not found in the current theme.\n"), key.Value).c_str());
             return SharedPointer<Drawable>(nullptr);
         }
-        return theme.Drawables.getValue(index)->get();
+        return iterator->value->get();
     }
 
 }

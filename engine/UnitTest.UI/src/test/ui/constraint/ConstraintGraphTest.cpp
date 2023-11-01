@@ -38,7 +38,7 @@ public:
         MemoryGuard guard;
         {
             auto c0 = makeShared<ValueConstraint>(0.0f), c1 = makeShared<ValueConstraint>(0.0f);
-            c0->Dependencies.add(c1.get());
+            c0->Dependencies.put(c1.get());
             ConstraintGraph graph;
             graph.addAll({ c0.get(), c1.get() });
             graph.sort();
@@ -63,12 +63,12 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<Constraint> c0 = makeShared<Constraint>(), c1 = makeShared<Constraint>(), c2 = makeShared<Constraint>(), c3 = makeShared<Constraint>();
-            c3->Dependencies.add(c3.get());
-            c2->Dependencies.add(c3.get());
-            c2->Dependencies.add(c0.get());
-            c1->Dependencies.add(c2.get());
-            c0->Dependencies.add(c1.get());
-            c0->Dependencies.add(c2.get());
+            c3->Dependencies.put(c3.get());
+            c2->Dependencies.put(c3.get());
+            c2->Dependencies.put(c0.get());
+            c1->Dependencies.put(c2.get());
+            c0->Dependencies.put(c1.get());
+            c0->Dependencies.put(c2.get());
             ConstraintGraph graph;
             graph.addAll({ c0.get(), c1.get(), c2.get(), c3.get() });
             Assert::ExpectException<InvalidDataException>([&] {
@@ -81,10 +81,10 @@ public:
         MemoryGuard guard;
         {
             SharedPointer<Constraint> c0 = makeShared<Constraint>(), c1 = makeShared<Constraint>(), c2 = makeShared<Constraint>(), c3 = makeShared<Constraint>();
-            c2->Dependencies.add(c3.get());
-            c1->Dependencies.add(c2.get());
-            c0->Dependencies.add(c1.get());
-            c0->Dependencies.add(c2.get());
+            c2->Dependencies.put(c3.get());
+            c1->Dependencies.put(c2.get());
+            c0->Dependencies.put(c1.get());
+            c0->Dependencies.put(c2.get());
             ConstraintGraph graph;
             graph.addAll({ c0.get(), c1.get(), c2.get(), c3.get() });
             graph.sort();
@@ -101,9 +101,9 @@ public:
             auto wrap = makeShared<WrapWidthConstraint>();
             auto fill = makeShared<Constraint>();
             auto value = makeShared<ValueConstraint>(0.0f);
-            wrap->Dependencies.add(fill.get());
-            wrap->Dependencies.add(value.get());
-            fill->Dependencies.add(wrap.get());
+            wrap->Dependencies.put(fill.get());
+            wrap->Dependencies.put(value.get());
+            fill->Dependencies.put(wrap.get());
             ConstraintGraph graph;
             graph.addAll({ wrap.get(), fill.get(), value.get() });
             graph.sort();

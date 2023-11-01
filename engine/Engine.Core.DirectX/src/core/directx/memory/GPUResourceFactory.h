@@ -27,16 +27,16 @@ namespace Ghurund::Core::DirectX {
         GPUResourceFactory(Graphics &graphics);
 
         ~GPUResourceFactory() {
-            delete allocators.getValue(0);
-            delete allocators.getValue(1);
+            for (auto& [heapType, allocator] : allocators)
+                delete allocator;
         }
 
         GPUResourcePointer *create(D3D12_HEAP_TYPE heapType, CD3DX12_RESOURCE_DESC resourceDesc, D3D12_RESOURCE_STATES initialState, ID3D12Resource **resource);
 
         uint64_t getSize() {
             uint64_t size = 0;
-            for (size_t i = 0; i < allocators.Size; i++)
-                size += allocators.getValue(i)->Size;
+            for (auto& [heapType, allocator] : allocators)
+                size += allocator->Size;
             return size;
         }
 
@@ -44,8 +44,8 @@ namespace Ghurund::Core::DirectX {
 
         uint64_t getAllocated() {
             uint64_t allocated = 0;
-            for (size_t i = 0; i < allocators.Size; i++)
-                allocated += allocators.getValue(i)->Allocated;
+            for (auto& [heapType, allocator] : allocators)
+                allocated += allocator->Allocated;
             return allocated;
         }
 

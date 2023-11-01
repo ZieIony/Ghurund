@@ -52,7 +52,7 @@ namespace Ghurund {
         for (Frame& frame : swapChain.Frames) {
             RenderTarget2D* target = ghnew RenderTarget2D();
             target->init(graphics, *frame.RenderTarget.Texture);
-            renderTargets.set(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
+            renderTargets.put(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
         }
     }
     

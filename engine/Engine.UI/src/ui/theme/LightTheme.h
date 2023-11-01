@@ -16,10 +16,10 @@ namespace Ghurund::UI {
         LightTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::DrawableFactory& drawableFactory, const Color& accent = 0xff0078D7)
             :BaseTheme(resourceManager, drawableFactory), color_accent(accent)
         {
-            Colors.set(COLOR_BACKGR0UND, color_background);
-            Colors.set(COLOR_ACCENT, color_accent);
-            Colors.set(COLOR_FOREGROUND_ONBACKGROUND, color_foreground_onBackground);
-            Colors.set(COLOR_FOREGROUND_ONACCENT, color_foreground_onAccent);
+            Colors.put(COLOR_BACKGR0UND, color_background);
+            Colors.put(COLOR_ACCENT, color_accent);
+            Colors.put(COLOR_FOREGROUND_ONBACKGROUND, color_foreground_onBackground);
+            Colors.put(COLOR_FOREGROUND_ONACCENT, color_foreground_onAccent);
             updateColors();
         }
 

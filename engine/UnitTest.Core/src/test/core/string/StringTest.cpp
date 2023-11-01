@@ -3,7 +3,7 @@
 #include "test/TestUtils.h"
 #include "test/MemoryGuard.h"
 
-#include "core/collection/Tree.h"
+#include "core/collection/Set.h"
 #include "core/string/String.h"
 
 #include <vector>
@@ -35,7 +35,7 @@ public:
 	TEST_METHOD(String_order) {
 		MemoryGuard guard;
 		{
-			Tree<WString> names = { L"Pawe³", L"Piotr", L"Leokadia", L"Magda", L"Zuzia", L"Marcel", L"Burek", L"test" };
+			Set<WString> names = { L"Pawe³", L"Piotr", L"Leokadia", L"Magda", L"Zuzia", L"Marcel", L"Burek", L"test" };
 			std::vector<WString> sortedNames = { L"Burek", L"Leokadia", L"Magda", L"Marcel", L"Pawe³", L"Piotr", L"test", L"Zuzia" };
 
 			Assert::IsTrue(collectionsEqual(names, sortedNames));

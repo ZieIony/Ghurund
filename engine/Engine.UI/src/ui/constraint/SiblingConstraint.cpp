@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Left);
+			dependencies.put(&ref->Left);
 			graph.add(this);
 		} else {
 			auto text = std::format(
@@ -24,7 +24,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Height);
+			dependencies.put(&ref->Height);
 			graph.add(this);
 		} else {
 			auto text = std::format(
@@ -39,7 +39,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Width);
+			dependencies.put(&ref->Width);
 			graph.add(this);
 		} else {
 			auto text = std::format(
@@ -54,7 +54,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Bottom);
+			dependencies.put(&ref->Bottom);
 			graph.add(this);
 		} else {
 			auto text = std::format(
@@ -69,7 +69,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Top);
+			dependencies.put(&ref->Top);
 			graph.add(this);
 		} else {
 			auto text = std::format(
@@ -84,7 +84,7 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
 		if (ref) {
-			dependencies.add(&ref->Right);
+			dependencies.put(&ref->Right);
 			graph.add(this);
 		} else {
 			auto text = std::format(

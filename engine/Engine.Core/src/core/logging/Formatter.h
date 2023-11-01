@@ -7,7 +7,7 @@
 #include "core/string/StringView.h"
 #include "core/string/TextConversionUtils.h"
 #include "core/resource/ResourcePath.h"
-#include "core/Concepts.h"
+#include "core/concepts/Concepts.h"
 
 #include <format>
 

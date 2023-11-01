@@ -2,7 +2,7 @@
 #include "ConstraintGraph.h"
 
 namespace Ghurund::UI {
-    void ConstraintGraph::sort(List<Constraint*>& sorted, Tree<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current) {
+    void ConstraintGraph::sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current) {
         if (visited.contains(current))
             return;
         stack.push(current);
@@ -14,11 +14,11 @@ namespace Ghurund::UI {
             stack.pop();
         }
         stack.clear();
-        visited.add(current);
+        visited.put(current);
         sorted.add(current);
     }
     
-    void ConstraintGraph::sort(List<Constraint*>& sorted, Tree<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep) {
+    void ConstraintGraph::sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep) {
         for (Constraint* dep : current->Dependencies) {
             if (visited.contains(dep)) {
                 continue;
@@ -34,18 +34,18 @@ namespace Ghurund::UI {
                 return;
             }
         }
-        visited.add(current);
+        visited.put(current);
         sorted.add(current);
     }
     
     void ConstraintGraph::sort() {
         List<Constraint*> sorted(constraints.Size);
-        Tree<Constraint*> visited;
+        Set<Constraint*> visited;
         Stack<Constraint*> stack;
         for (Constraint* dep : constraints) {
             if (dep->Dependencies.Empty) {
                 sorted.add(dep);
-                visited.add(dep);
+                visited.put(dep);
             } else {
                 sort(sorted, visited, stack, dep);
             }

@@ -62,9 +62,9 @@ namespace Ghurund::Core {
         }
 
         template<typename T>
-        inline bool containsKey() const {
+        inline bool contains() const {
             size_t id = CollectionSequence<T>::value();
-            return items.containsKey(id);
+            return items.contains(id);
         }
 
         inline bool containsValue(const Value& item) const {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "LinkedList.h"
-#include "core/Concepts.h"
+#include "core/concepts/Iterable.h"
 
 namespace Ghurund::Core {
     template<typename Value, typename AllocatorType = SimpleAllocator>
@@ -14,11 +14,8 @@ namespace Ghurund::Core {
 
         Queue(const Queue& other): list(other.list) {}
 
-        template<typename CollectionType>
+        template<Iterable CollectionType>
         Queue(const CollectionType& other) : list(other) {}
-
-        template<std::forward_iterator IteratorType>
-        Queue(IteratorType& begin, IteratorType& end, AllocatorType a = AllocatorType()) : list(begin, end, a) {}
 
         Queue(Queue<Value, AllocatorType>&& other) noexcept:list(std::move(other.list)) {}
 
@@ -100,7 +97,7 @@ namespace Ghurund::Core {
             return list.begin();
         }
 
-        inline LinkedList<Value, AllocatorType>::constIterator_t begin() const {
+        inline LinkedList<Value, AllocatorType>::const_iterator begin() const {
             return list.begin();
         }
 
@@ -108,23 +105,23 @@ namespace Ghurund::Core {
             return list.end();
         }
 
-        inline LinkedList<Value, AllocatorType>::constIterator_t end() const {
+        inline LinkedList<Value, AllocatorType>::const_iterator end() const {
             return list.end();
         }
 
-        inline LinkedList<Value, AllocatorType>::reverseIterator_t rbegin() {
+        inline LinkedList<Value, AllocatorType>::reverse_iterator rbegin() {
             return list.rbegin();
         }
 
-        inline LinkedList<Value, AllocatorType>::constReverseIterator_t rbegin() const {
+        inline LinkedList<Value, AllocatorType>::const_reverse_iterator rbegin() const {
             return list.rbegin();
         }
 
-        inline LinkedList<Value, AllocatorType>::reverseIterator_t rend() {
+        inline LinkedList<Value, AllocatorType>::reverse_iterator rend() {
             return list.rend();
         }
 
-        inline LinkedList<Value, AllocatorType>::constReverseIterator_t rend() const {
+        inline LinkedList<Value, AllocatorType>::const_reverse_iterator rend() const {
             return list.rend();
         }
 

@@ -11,12 +11,12 @@ namespace Ghurund::UI {
 	}
 
     const TextFormat* TextFormatRef::resolve(const Theme& theme) const {
-		size_t index = theme.TextFormats.indexOfKey(key);
-		if (index == theme.TextFormats.Size) {
+		auto it = theme.TextFormats.find(key);
+		if (it == theme.TextFormats.end()) {
 			Logger::log(LogType::WARNING, std::format(_T("TextFormat '{}' not found in the current theme.\n"), key.Value).c_str());
 			return nullptr;
 		}
-		return theme.TextFormats.getValue(index).get();
+		return it->value.get();
     }
 
 }

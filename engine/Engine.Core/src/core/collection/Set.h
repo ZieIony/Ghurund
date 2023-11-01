@@ -1,75 +1,57 @@
 #pragma once
 
-#include "List.h"
-
-#include <cassert>
+#include "Tree.h"
 
 namespace Ghurund::Core {
-    /**
-    * Doesn't guarantee order, cannot have duplicates
-    */
-    template<typename Value, typename AllocatorType = SimpleAllocator>
-    class Set:public ArrayCollection<Value, AllocatorType> {
-    private:
-        typedef ArrayCollection<Value, AllocatorType> A;
+	template<typename Key>
+	struct SetTraits {
+		using key_t = Key;
+		using value_t = Key;
+		using data_t = Key;
 
-    public:
-        using ArrayCollection<Value, AllocatorType>::ArrayCollection;
+		inline const Key& getKey(const data_t& data) const {
+			return data;
+		}
 
-        Set(const ArrayCollection<Value, AllocatorType>& collection) {
-            addAll(collection);
-        }
+		inline data_t makeData(const Key& key) const {
+			return key;
+		}
+	};
 
-        Set(const Set& t1):ArrayCollection<Value, AllocatorType>(t1) {}
+	/**
+	 * Keeps order, cannot have duplicates
+	 */
+	template<typename Key, typename AllocatorType = SimpleAllocator, typename Traits = SetTraits<Key>>
+	class Set:public Tree<Traits, AllocatorType> {
+	private:
+		using super_t = Tree<Traits, AllocatorType>;
 
-        Set(Set&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}
+	public:
+		explicit Set(const AllocatorType& a = AllocatorType()):super_t(a) {}
 
-        Set(const std::initializer_list<Value>& list) {
-            addAll(list);
-        }
+		Set(const Set& other):super_t(other) {}
 
-        inline Set<Value, AllocatorType>& operator=(const Set<Value, AllocatorType>& other) {
-            __super::operator=(other);
-            return *this;
-        }
+		template<Iterable<Key> CollectionType>
+		Set(const CollectionType& collection):super_t(collection) {}
 
-        inline Set<Value, AllocatorType>& operator=(Set<Value, AllocatorType>&& other) {
-            __super::operator=(std::move(other));
-            return *this;
-        }
+		Set(const std::initializer_list<Key>& list):super_t() {
+			__super::putAll(list);
+		}
 
-        inline void add(const Value& item) {
-            if (A::contains(item))
-                return;
-            if (A::size == A::capacity)
-                A::resize((size_t)(A::capacity * 1.6));
-            new(A::v + A::size) Value(item);
-            A::size++;
-        }
+		Set(Set&& other):super_t(std::move(other)) {}
 
-        inline void addAll(const ArrayCollection<Value>& list) {
-            for (const Value& item : list)
-                add(item);
-        }
+		inline void put(const Key& key) {
+			__super::put(key);
+		}
 
-        inline void addAll(const std::initializer_list<Value>& list) {
-            for (const Value& item : list)
-                add(item);
-        }
+		Set& operator=(const Set& other) {
+			__super::operator=(other);
+			return *this;
+		}
 
-        inline void remove(const Value& item) {
-            size_t i = 0;
-            for (; i < A::size; i++) {
-                if (A::v[i] == item)
-                    break;
-            }
-            _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
-            A::v[i] = std::move(A::v[A::size - 1]);
-            A::v[A::size - 1].~Value();
-            A::size--;
-        }
-
-        using A::operator==;
-        using A::operator!=;
-    };
+		Set& operator=(Set&& other) noexcept {
+			__super::operator=(std::move(other));
+			return *this;
+		}
+	};
 }

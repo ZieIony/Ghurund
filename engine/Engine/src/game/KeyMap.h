@@ -12,11 +12,11 @@ namespace Ghurund {
 
     public:
         inline void map(const GameAction& action, int key) {
-            keyMap.set(action.Value, key);
+            keyMap.put(action.Value, key);
         }
 
         inline bool isMapped(const GameAction& action) const {
-            return keyMap.containsKey(action.Value);
+            return keyMap.contains(action.Value);
         }
 
         inline int get(const GameAction& action) const {

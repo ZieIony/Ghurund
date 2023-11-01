@@ -42,11 +42,11 @@ namespace Ghurund::Core {
         __declspec(property(get = getValues)) Map<AString, AString>& Values;
 
         inline AString get(const AString& name) const {
-            return values[name];
+            return values.get(name);
         }
 
-        inline void set(const AString& name, const AString& value) {
-            values.set(name, value);
+        inline void put(const AString& name, const AString& value) {
+            values.put(name, value);
         }
 
         void load(const FilePath& path);

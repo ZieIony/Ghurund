@@ -25,7 +25,7 @@ public:
                 auto c = ghnew Constraint();
                 if (i > 10) {
                     for (size_t j = 1; j <= 3; j++)
-                        c->Dependencies.add(constraints[i - j * 3]);
+                        c->Dependencies.put(constraints[i - j * 3]);
                 }
                 constraints.add(c);
             }

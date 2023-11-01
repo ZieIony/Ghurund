@@ -21,6 +21,26 @@ namespace Ghurund::UI {
 
     class Theme {
     private:
+        struct ColorMapTraits {
+            using key_t = ColorKey;
+            using value_t = Color;
+            using data_t = KeyValuePair<key_t, value_t>;
+
+            Color defaultValue = Color(0);
+
+            inline const key_t& getKey(const data_t& data) const {
+                return data.key;
+            }
+
+            inline data_t makeData(const key_t& key) const {
+                return { key, defaultValue };
+            }
+
+            inline data_t makeData(const key_t& key, const value_t& value) const {
+                return { key, value };
+            }
+        };
+
         static const inline float emphasis_high = 0.87f;
         static const inline float emphasis_medium = 0.6f;
         static const inline float emphasis_disabled = 0.38f;
@@ -33,7 +53,7 @@ namespace Ghurund::UI {
 
         Ghurund::Core::Map<StyleKey, Style*> styles;
         Ghurund::Core::Map<TextFormatKey, Ghurund::Core::SharedPointer<TextFormat>> textFormats;
-        Ghurund::Core::Map<ColorKey, Color> colors;
+        Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits> colors;
         Ghurund::Core::Map<DrawableKey, std::shared_ptr<DrawableProvider>> drawables;
         Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>> layouts;
 
@@ -122,15 +142,15 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getTextFormats)) Map<TextFormatKey, SharedPointer<TextFormat>>& TextFormats;
 
-        inline Ghurund::Core::Map<ColorKey, Color>& getColors() {
+        inline Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& getColors() {
             return colors;
         }
 
-        inline const Ghurund::Core::Map<ColorKey, Color>& getColors() const {
+        inline const Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& getColors() const {
             return colors;
         }
 
-        __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color>& Colors;
+        __declspec(property(get = getColors)) Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& Colors;
 
         inline Map<DrawableKey, std::shared_ptr<DrawableProvider>>& getDrawables() {
             return drawables;

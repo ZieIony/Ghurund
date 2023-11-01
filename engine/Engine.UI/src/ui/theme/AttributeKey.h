@@ -15,8 +15,8 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getValue)) const Ghurund::Core::AString& Value;
 
-        bool operator==(const AttributeKey& other) const {
-            return str == other.str;
+        inline constexpr std::strong_ordering operator<=>(const AttributeKey& other) const noexcept {
+            return str <=> other.str;
         }
     };
 }

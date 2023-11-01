@@ -22,11 +22,11 @@ namespace Ghurund::Core {
 
         virtual HWND makeWindow(WindowStyle style) override {
             WindowClass* windowClass;
-            if (classes.containsKey(style)) {
+            if (classes.contains(style)) {
                 windowClass = classes.get(style);
             } else {
                 windowClass = ghnew WindowClass(style);
-                classes.set(style, windowClass);
+                classes.put(style, windowClass);
             }
             return windowClass->create();
         }

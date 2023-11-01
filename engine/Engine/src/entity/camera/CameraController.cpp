@@ -16,9 +16,9 @@ namespace Ghurund {
 	using namespace ::DirectX;
 
 	CameraController::CameraController(CameraEntity& cameraEntity, SystemWindow* window) :cameraEntity(cameraEntity) {
-		modeMap.set(MouseButton::LEFT, Mode::ORBIT);
-		modeMap.set(MouseButton::MIDDLE, Mode::PAN);
-		modeMap.set(MouseButton::RIGHT, Mode::ROTATE);
+		modeMap.put(MouseButton::LEFT, Mode::ORBIT);
+		modeMap.put(MouseButton::MIDDLE, Mode::PAN);
+		modeMap.put(MouseButton::RIGHT, Mode::ROTATE);
 
 		keyMap.map(GameAction::RUN, VK_SHIFT);
 		keyMap.map(GameAction::GO_FORWARD, 'W');

@@ -4,7 +4,7 @@
 #include "ItemSource.h"
 #include "AdapterChildrenProvider.h"
 
-#include "core/Concepts.h"
+#include "core/concepts/Concepts.h"
 #include "ui/control/ChildrenProvider.h"
 
 namespace Ghurund::UI {

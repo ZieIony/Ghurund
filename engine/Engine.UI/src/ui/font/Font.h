@@ -40,7 +40,7 @@ namespace Ghurund::UI {
 
         void getGlyphs(HFONT hf, const String& characters);
 
-        bool fitAllGlyphs(uint32_t width, uint32_t height);
+        bool fitAllGlyphs(const List<Glyph*>& sortedGlyphs, uint32_t width, uint32_t height);
 
         IntSize getAtlasSize();
 

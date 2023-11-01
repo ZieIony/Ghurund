@@ -2,7 +2,7 @@
 
 #include "Pointer.h"
 #include "Common.h"
-#include "Concepts.h"
+#include "core/concepts/Concepts.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {

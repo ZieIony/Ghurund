@@ -7,13 +7,13 @@
 namespace Ghurund::UI {
     void SelfWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        dependencies.add(&control.Width);
+        dependencies.put(&control.Width);
         graph.add(this);
     }
 
     void SelfHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
-        dependencies.add(&control.Height);
+        dependencies.put(&control.Height);
         graph.add(this);
     }
 

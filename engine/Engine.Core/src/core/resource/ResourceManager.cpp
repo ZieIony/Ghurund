@@ -19,13 +19,13 @@ namespace Ghurund::Core {
 	}
 
 	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat* format, LoadOption options) {
-		size_t cacheIndex = resourceCache.indexOfKey(path);
+		auto iterator = resourceCache.find(path);
 		std::shared_ptr<Buffer> buffer;
-		if (cacheIndex == resourceCache.Size) {
+		if (iterator == resourceCache.end()) {
 			buffer = path.resolveResource(workingDir, libraries);
-			resourceCache.set(path, buffer);
+			resourceCache.put(path, buffer);
 		} else {
-			buffer = resourceCache.get(path);
+			buffer = iterator->value;
 		}
 		return loadInternal(loader, workingDir, *buffer.get(), format, options);
 	}

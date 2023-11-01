@@ -28,9 +28,9 @@ namespace Ghurund::Core {
 
     public:
         using iterator_t = ListNodeIterator<Value, Node<Value>>;
-        using constIterator_t = ConstListNodeIterator<Value, Node<Value>>;
-        using reverseIterator_t = ReverseListNodeIterator<Value, Node<Value>>;
-        using constReverseIterator_t = ConstReverseListNodeIterator<Value, Node<Value>>;
+        using const_iterator = ConstListNodeIterator<Value, Node<Value>>;
+        using reverse_iterator = ReverseListNodeIterator<Value, Node<Value>>;
+        using const_reverse_iterator = ConstReverseListNodeIterator<Value, Node<Value>>;
 
         LinkedList(AllocatorType a = AllocatorType()):a(a) {}
 
@@ -288,32 +288,32 @@ namespace Ghurund::Core {
             return iterator_t(first);
         }
 
-        inline constIterator_t begin() const {
-            return constIterator_t(first);
+        inline const_iterator begin() const {
+            return const_iterator(first);
         }
 
         inline iterator_t end() {
             return iterator_t();
         }
 
-        inline constIterator_t end() const {
-            return constIterator_t();
+        inline const_iterator end() const {
+            return const_iterator();
         }
 
-        inline reverseIterator_t rbegin() {
-            return reverseIterator_t(last);
+        inline reverse_iterator rbegin() {
+            return reverse_iterator(last);
         }
 
-        inline constReverseIterator_t rbegin() const {
-            return constReverseIterator_t(last);
+        inline const_reverse_iterator rbegin() const {
+            return const_reverse_iterator(last);
         }
 
-        inline reverseIterator_t rend() {
-            return reverseIterator_t();
+        inline reverse_iterator rend() {
+            return reverse_iterator();
         }
 
-        inline constReverseIterator_t rend() const {
-            return constReverseIterator_t();
+        inline const_reverse_iterator rend() const {
+            return const_reverse_iterator();
         }
 
         inline bool operator==(const LinkedList<Value, AllocatorType>& other) const {

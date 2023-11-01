@@ -34,7 +34,7 @@ namespace Ghurund::Core {
         ~DirectoryWatch();
 
         void addFile(const FilePath &path, std::function<void(const FilePath &path, const FileChange&)> fileChangedHandler) {
-            files.set(path.FileName.Data, fileChangedHandler);
+            files.put(path.FileName.Data, fileChangedHandler);
         }
 
         void removeFile(const FilePath &path) {

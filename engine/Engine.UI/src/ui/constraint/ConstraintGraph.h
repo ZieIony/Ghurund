@@ -4,7 +4,7 @@
 #include "core/Exceptions.h"
 #include "core/collection/List.h"
 #include "core/collection/Stack.h"
-#include "core/collection/Tree.h"
+#include "core/collection/Set.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -13,9 +13,9 @@ namespace Ghurund::UI {
     private:
         List<Constraint*> constraints;
 
-        void sort(List<Constraint*>& sorted, Tree<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current);
+        void sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current);
 
-        void sort(List<Constraint*>& sorted, Tree<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep);
+        void sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep);
 
     public:
         inline void add(Constraint* constraint) {

@@ -16,11 +16,11 @@ namespace Ghurund::Core {
         template<typename T>
         inline void set(Loader* loader) {
             loader->addReference();
-            loaders.set(&(const Ghurund::Core::Type&)T::GET_TYPE(), SharedPointer(loader));
+            loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), SharedPointer(loader));
         }
 
         inline Loader* get(const Type& t) const {
-            for (auto [type, loader] : loaders) {
+            for (auto& [type, loader] : loaders) {
                 if (t.isOrExtends(*type))
                     return loader.get();
             }

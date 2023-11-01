@@ -13,7 +13,7 @@ namespace Ghurund::Core {
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         while (child) {
             const char* name = child->Name();
-            values.set(name, child->Value());
+            values.put(name, child->Value());
             child = child->NextSiblingElement();
         }
     }
@@ -21,9 +21,9 @@ namespace Ghurund::Core {
     void Settings::save(const FilePath& path) const {
         File file(path);
         tinyxml2::XMLDocument doc;
-        for (size_t i = 0; i < values.Size; i++) {
-            auto element = doc.NewElement(values.getKey(i).Data);
-            element->SetText(values.getValue(i).Data);
+        for (auto& [key, value]:values) {
+            auto element = doc.NewElement(key.Data);
+            element->SetText(value.Data);
         }
         tinyxml2::XMLPrinter printer;
         doc.Print(&printer);
