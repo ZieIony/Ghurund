@@ -67,7 +67,7 @@ namespace Ghurund::Core {
             if (pointers.Size == pointers.Capacity) {
                 if (pointersListResizeLocked)
                     throw InvalidStateException("cannot resize pointers list");
-                pointers.resize(pointers.Capacity * 1.6);
+                pointers.resize((size_t)(pointers.Capacity * 1.6f));
             }
             pointers.add(this);
         }

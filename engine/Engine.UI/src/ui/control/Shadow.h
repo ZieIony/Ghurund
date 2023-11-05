@@ -20,6 +20,10 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
+        virtual void onStateChanged() override {
+            Radius = Enabled ? 2.0f : 0.0f;
+        }
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -55,12 +59,5 @@ namespace Ghurund::UI {
         virtual void onLayout(float x, float y, float width, float height) override;
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
-    };
-
-    class ShadowButtonStyle:public TypedStyle<Shadow> {
-    public:
-        virtual void onStateChanged(Shadow& control) const override {
-            control.Radius = control.Enabled ? 2.0f : 0.0f;
-        }
     };
 }

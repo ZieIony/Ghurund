@@ -7,14 +7,12 @@
 #include "ui/Color.h"
 #include "ui/drawable/Drawable.h"
 #include "ui/text/TextFormat.h"
-#include "ui/style/Style.h"
 #include "DrawableProvider.h"
 #include "LayoutProvider.h"
 
 namespace Ghurund::UI {
 
     typedef AttributeKey<Color> ColorKey;
-    typedef AttributeKey<Style> StyleKey;
     typedef AttributeKey<Drawable> DrawableKey;
     typedef AttributeKey<TextFormat> TextFormatKey;
     typedef AttributeKey<Control> LayoutKey;
@@ -51,7 +49,6 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        Ghurund::Core::Map<StyleKey, Style*> styles;
         Ghurund::Core::Map<TextFormatKey, Ghurund::Core::SharedPointer<TextFormat>> textFormats;
         Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits> colors;
         Ghurund::Core::Map<DrawableKey, std::shared_ptr<DrawableProvider>> drawables;
@@ -65,36 +62,6 @@ namespace Ghurund::UI {
         static inline const DrawableKey DRAWABLE_ARROWUP = DrawableKey("arrowUp");
         static inline const DrawableKey DRAWABLE_ARROWDOWN = DrawableKey("arrowDown");
         static inline const DrawableKey DRAWABLE_ARROWRIGHT = DrawableKey("arrowRight");
-
-        static inline const StyleKey STYLE_CHECKBOX = StyleKey("CheckBox");
-        static inline const StyleKey STYLE_CHECKBOX_EXPANDABLE = StyleKey("CheckBox_expandable");
-        static inline const StyleKey STYLE_RADIOBUTTON = StyleKey("RadioButton");
-        static inline const StyleKey STYLE_SEPARATOR_HORIZONTAL = StyleKey("Separator_horizontal");
-        static inline const StyleKey STYLE_SEPARATOR_VERTICAL = StyleKey("Separator_vertical");
-        static inline const StyleKey STYLE_PROGRESSBAR = StyleKey("ProgressBar");
-        static inline const StyleKey STYLE_TEXTBLOCK = StyleKey("TextBlock");
-        static inline const StyleKey STYLE_TEXTBLOCK_BUTTON = StyleKey("TextBlock_button");
-        static inline const StyleKey STYLE_TEXTBLOCK_PRIMARY = StyleKey("TextBlock_primary");
-        static inline const StyleKey STYLE_TEXTBLOCK_SECONDARY = StyleKey("TextBlock_secondary");
-        static inline const StyleKey STYLE_TEXTBLOCK_HEADER = StyleKey("TextBlock_header");
-        static inline const StyleKey STYLE_TEXTBLOCK_BUTTON_ONACCENT = StyleKey("TextBlock_button_onAccent");
-        static inline const StyleKey STYLE_TEXTBLOCK_PRIMARY_ONACCENT = StyleKey("TextBlock_primary_onAccent");
-        static inline const StyleKey STYLE_TEXTBLOCK_SECONDARY_ONACCENT = StyleKey("TextBlock_secondary_onAccent");
-        static inline const StyleKey STYLE_TEXTBLOCK_HEADER_ONACCENT = StyleKey("TextBlock_header_onAccent");
-        static inline const StyleKey STYLE_COLORVIEW_BACKGROUND = StyleKey("ColorView_background");
-        static inline const StyleKey STYLE_COLORVIEW_CONTROL = StyleKey("ColorView_control");
-        static inline const StyleKey STYLE_COLORVIEW_ACCENT = StyleKey("ColorView_accent");
-        static inline const StyleKey STYLE_DRAWABLEVIEW = StyleKey("DrawableView");
-        static inline const StyleKey STYLE_DRAWABLEVIEW_ONBACKGROUND = StyleKey("DrawableView_onBackground");
-        static inline const StyleKey STYLE_DRAWABLEVIEW_ONACCENT = StyleKey("DrawableView_onAccent");
-        static inline const StyleKey STYLE_DRAWABLEVIEW_ACCENT = StyleKey("DrawableView_accent");
-        static inline const StyleKey STYLE_BORDER_ONBACKGROUND = StyleKey("Border_onBackground");
-        static inline const StyleKey STYLE_BORDER_ACCENT = StyleKey("Border_accent");
-        static inline const StyleKey STYLE_SHADOW_BUTTON = StyleKey("Shadow_button");
-        static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONBACKGROUND = StyleKey("ClickResponseView_onBackground");
-        static inline const StyleKey STYLE_CLICKRESPONSEVIEW_ONACCENT = StyleKey("ClickResponseView_onAccent");
-        static inline const StyleKey STYLE_STATEINDICATOR_ONBACKGROUND = StyleKey("StateIndicator_onBackground");
-        static inline const StyleKey STYLE_STATEINDICATOR_ONACCENT = StyleKey("StateIndicator_onAccent");
 
         static inline const TextFormatKey TEXTFORMAT_BUTTON = TextFormatKey("button");
         static inline const TextFormatKey TEXTFORMAT_LIST_HEADER = TextFormatKey("listHeader");
@@ -121,16 +88,6 @@ namespace Ghurund::UI {
         virtual ~Theme() {}
 
         void updateColors();
-
-        inline Ghurund::Core::Map<StyleKey, Style*>& getStyles() {
-            return styles;
-        }
-
-        inline const Ghurund::Core::Map<StyleKey, Style*>& getStyles() const {
-            return styles;
-        }
-
-        __declspec(property(get = getStyles)) Ghurund::Core::Map<StyleKey, Style*>& Styles;
 
         inline Map<TextFormatKey, SharedPointer<TextFormat>>& getTextFormats() {
             return textFormats;

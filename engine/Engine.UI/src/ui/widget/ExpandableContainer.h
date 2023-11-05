@@ -21,10 +21,10 @@ namespace Ghurund::UI {
     public:
         inline void setExpanded(bool expanded) {
             this->expanded = expanded;
-            onStateChanged();
+            dispatchStateChanged();
         }
 
-        inline bool isExpanded() {
+        inline bool isExpanded() const {
             return expanded;
         }
 
@@ -55,7 +55,7 @@ namespace Ghurund::UI {
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
-    class ExpandableCheckBoxStyle:public Style {
+    /*class ExpandableCheckBoxStyle:public Style {
     public:
         virtual void onStateChanged(Control& control) const override {
             const Theme* theme = control.Theme;
@@ -66,8 +66,8 @@ namespace Ghurund::UI {
                 layout->Image->Image = makeShared<BitmapDrawable>(theme->Drawables[Theme::IMAGE_ARROWDOWN]);
             } else {
                 layout->Image->Image = makeShared<BitmapDrawable>(theme->Drawables[Theme::IMAGE_ARROWRIGHT]);
-            }*/
+            }* /
             __super::onStateChanged(control);
         }
-    };
+    };*/
 }

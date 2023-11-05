@@ -3,7 +3,6 @@
 #include "ui/control/Control.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/style/Style.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -17,6 +16,12 @@ namespace Ghurund::UI {
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
+
+        virtual void onThemeChanged() override;
+
+        virtual void onStateChanged() override;
+
+        virtual void onDraw(ICanvas& canvas) override;
 
     public:
         ProgressBar(
@@ -58,19 +63,10 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setProgressColor)) const ColorAttr& ProgressColor;
 
-        virtual void onThemeChanged() override;
-
-        virtual void onDraw(ICanvas& canvas) override;
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
-
-    class ProgressBarStyle:public TypedStyle<ProgressBar> {
-    public:
-        virtual void onStateChanged(ProgressBar& control) const override;
     };
 }

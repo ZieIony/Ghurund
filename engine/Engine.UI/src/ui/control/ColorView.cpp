@@ -32,16 +32,4 @@ namespace Ghurund::UI {
             canvas.fillRect(0, 0, Size.Width, Size.Height);
         }
     }
-
-    void ColorViewBackgroundStyle::apply(ColorView& control) const {
-        control.Color = ColorRef(Theme::COLOR_BACKGR0UND);
-    }
-
-    void ColorViewControlStyle::apply(ColorView& control) const {
-        control.Color = ColorRef(Theme::COLOR_CONTROL);
-    }
-
-    void ColorViewAccentStyle::apply(ColorView& control) const {
-        control.Color = ColorRef(Theme::COLOR_ACCENT);
-    }
 }

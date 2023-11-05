@@ -23,6 +23,10 @@ namespace Ghurund::UI {
         ValueAnimation<Color> animation;
         IndicatorState state = IndicatorState::NONE;
 
+        virtual void onThemeChanged() override;
+
+        virtual void onDraw(ICanvas& canvas) override;
+
     public:
         Color idleColor = 0;
         Color focusedColor = 0;
@@ -50,20 +54,22 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
-        virtual void onDraw(ICanvas& canvas);
-
         static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
     };
 
-    class StateIndicatorOnBackgroundStyle:public Style {
-    public:
-        virtual void onThemeChanged(Control& control) const override;
-    };
+    class StateIndicatorOnAccent:public StateIndicator {
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
-    class StateIndicatorOnAccentStyle:public Style {
+        virtual void onThemeChanged() override;
+
     public:
-        virtual void onThemeChanged(Control& control) const override;
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = StateIndicatorOnAccent::GET_TYPE();
     };
 }

@@ -34,7 +34,6 @@ public:
             auto button = makeShared<Button>();
 
             Assert::IsNull(button->Theme);
-            //Assert::IsNull(button->Style);
             //Assert::IsNull(button->Layout);
             //Assert::IsNull(button->Content);
         }

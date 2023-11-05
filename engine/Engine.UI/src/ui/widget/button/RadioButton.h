@@ -7,6 +7,8 @@ namespace Ghurund::UI {
     protected:
         virtual void onLayoutChanged() override;
 
+        virtual void onStateChanged() override;
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -15,10 +17,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-    };
-
-    class RadioButtonStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const;
     };
 }

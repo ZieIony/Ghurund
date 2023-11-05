@@ -33,19 +33,4 @@ namespace Ghurund::UI {
 
 		inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 	};
-
-	class ColorViewBackgroundStyle :public TypedStyle<ColorView> {
-
-		virtual void apply(ColorView& control) const;
-	};
-
-	class ColorViewControlStyle :public TypedStyle<ColorView> {
-
-		virtual void apply(ColorView& control) const;
-	};
-
-	class ColorViewAccentStyle :public TypedStyle<ColorView> {
-
-		virtual void apply(ColorView& control) const;
-	};
 }

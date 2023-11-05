@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ui/style/Style.h"
 #include "ui/control/PaddingContainer.h"
 #include "ui/control/ColorView.h"
 
@@ -11,6 +10,10 @@ namespace Ghurund::UI {
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
+
+        virtual void onThemeChanged() override;
+
+        virtual void onStateChanged() override;
 
     public:
         Separator();

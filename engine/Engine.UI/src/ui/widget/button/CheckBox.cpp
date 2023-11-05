@@ -20,14 +20,36 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void CheckBox::onStyleStateChanged(const Ghurund::UI::Style& style, const Ghurund::UI::Theme& theme) {
-		__super::onStyleStateChanged(style, theme);
+	void CheckBox::onStateChanged() {
 		if (drawable && clickable) {
-			CheckBoxStyle& checkBoxStyle = (CheckBoxStyle&)style;
-			checkBoxStyle.onStateChanged(theme, *drawable, checked, Enabled, clickable->Pressed, clickable->Hovered, Focused);
+			if (checked) {
+				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_CHECKED;
+			} else {
+				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_UNCHECKED;
+			}
+			if (!Enabled) {
+				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;
+			} else if (clickable->Pressed) {
+				if (checked) {
+					drawable->Tint = Theme::COLOR_ACCENT;
+				} else {
+					drawable->Tint = Theme::COLOR_PRIMARY_ONBACKGROUND;
+				}
+			} else if (clickable->Hovered || clickable->Focused) {
+				if (checked) {
+					drawable->Tint = Theme::COLOR_ACCENT;
+				} else {
+					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
+				}
+			} else {
+				if (checked) {
+					drawable->Tint = Theme::COLOR_ACCENT;
+				} else {
+					drawable->Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
+				}
+			}
 		}
 	}
-
 	const Ghurund::Core::Type& CheckBox::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<CheckBox>();
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBox>(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
@@ -35,41 +57,5 @@ namespace Ghurund::UI {
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
-	}
-
-	void CheckBoxStyle::onStateChanged(Control& control) const {
-		const Theme* theme = control.Theme;
-		if (!theme)
-			return;
-		CheckBox& checkBox = (CheckBox&)control;
-	}
-
-	void CheckBoxStyle::onStateChanged(const Theme& theme, DrawableView& drawableView, bool checked, bool enabled, bool pressed, bool hovered, bool focused) const {
-		if (checked) {
-			drawableView.Drawable = Theme::DRAWABLE_CHECKBOX_CHECKED;
-		} else {
-			drawableView.Drawable = Theme::DRAWABLE_CHECKBOX_UNCHECKED;
-		}
-		if (!enabled) {
-			drawableView.Tint = Theme::COLOR_DISABLED_ONBACKGROUND;
-		} else if (pressed) {
-			if (checked) {
-				drawableView.Tint = Theme::COLOR_ACCENT;
-			} else {
-				drawableView.Tint = Theme::COLOR_PRIMARY_ONBACKGROUND;
-			}
-		} else if (hovered || focused) {
-			if (checked) {
-				drawableView.Tint = Theme::COLOR_ACCENT;
-			} else {
-				drawableView.Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
-			}
-		} else {
-			if (checked) {
-				drawableView.Tint = Theme::COLOR_ACCENT;
-			} else {
-				drawableView.Tint = Theme::COLOR_SECONDARY_ONBACKGROUND;
-			}
-		}
 	}
 }

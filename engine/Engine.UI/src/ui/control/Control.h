@@ -10,7 +10,6 @@
 #include "ui/Cursor.h"
 #include "ui/UIContext.h"
 #include "ui/style/AttrProperty.h"
-#include "ui/style/StyleAttr.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ConstraintSet.h"
 #include "ui/constraint/ValueConstraint.h"
@@ -70,11 +69,6 @@ namespace Ghurund::UI {
 		bool needsLayout = true;
 
 		Theme* localTheme = nullptr;
-		NullableAttrProperty<StyleAttr, Style> style;
-
-		virtual void onStyleStateChanged(const Style& style, const Ghurund::UI::Theme& theme) {
-			style.onStateChanged(*this);
-		}
 
 		//List<Binding> bindings;
 
@@ -89,9 +83,9 @@ namespace Ghurund::UI {
 
 		virtual void onLoaded() {}
 
-		virtual void onStateChanged();
+		virtual void onStateChanged() {}
 
-		virtual void onThemeChanged();
+		virtual void onThemeChanged() {}
 
 		virtual void onContextChanged() {
 			contextChanged();
@@ -136,7 +130,7 @@ namespace Ghurund::UI {
 			if (!visible && Focused) {
 				clearFocus();
 			} else {
-				onStateChanged();
+				dispatchStateChanged();
 			}
 		}
 
@@ -307,13 +301,16 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getContext)) IUIContext* Context;
 
-		void setStyle(std::unique_ptr<StyleAttr> style);
+		virtual void dispatchStateChanged() {
+			stateChanged();
+			onStateChanged();
+		}
 
-		__declspec(property(put = setStyle)) std::unique_ptr<StyleAttr> Style;
-
-		virtual void dispatchStateChanged();
-
-		virtual void dispatchThemeChanged();
+		virtual void dispatchThemeChanged() {
+			themeChanged();
+			onThemeChanged();
+			dispatchStateChanged();
+		}
 
 		virtual void dispatchContextChanged();
 

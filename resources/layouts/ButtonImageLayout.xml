@@ -3,7 +3,6 @@
 	<ControlGroup>
 		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
 		<ControlContainer name="container"/>
-		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-						style="theme://style/StateIndicator_onAccent"/>
+		<StateIndicatorOnAccent name="state" width="Parent.Width" height="Parent.Height"/>
 	</ControlGroup>
 </Clip>

@@ -121,7 +121,6 @@ public:
         Ghurund::Core::getType<std::unique_ptr<Shape>>();
         Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();
         Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
-        Ghurund::Core::getType<std::unique_ptr<StyleAttr>>();
         Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
         Pointer::reservePointers(1500);

@@ -3,7 +3,6 @@
 #include "ToolbarAdapter.h"
 #include "ToolbarBinding.h"
 
-#include "ui/style/Style.h"
 #include "ui/adapter/AdapterChildrenProvider.h"
 #include "ui/adapter/RecyclerView.h"
 #include "ui/control/ColorView.h"

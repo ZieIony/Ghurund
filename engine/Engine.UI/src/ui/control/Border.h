@@ -17,6 +17,18 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
+        virtual void onThemeChanged() override;
+
+        virtual void onStateChanged() override;
+
+        virtual void onLayout(float x, float y, float width, float height) override {
+            __super::onLayout(x, y, width, height);
+            if (shape)
+                shape->Bounds = FloatRect{ thickness / 2, thickness / 2, width - thickness / 2, height - thickness / 2 };
+        }
+
+        virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -46,25 +58,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setThickness)) float Thickness;
-
-        virtual void onThemeChanged() override;
-    
-        virtual void onLayout(float x, float y, float width, float height) override {
-            __super::onLayout(x, y, width, height);
-            if (shape)
-                shape->Bounds = FloatRect{ thickness / 2, thickness / 2, width - thickness / 2, height - thickness / 2 };
-        }
-
-        virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
-    };
-
-    class BorderOnBackgroundStyle:public TypedStyle<Border> {
-    public:
-        void onStateChanged(Border& control) const;
-    };
-
-    class BorderAccentStyle:public TypedStyle<Border> {
-    public:
-        void onStateChanged(Border& control) const;
     };
 }

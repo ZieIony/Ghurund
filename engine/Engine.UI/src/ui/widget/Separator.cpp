@@ -1,5 +1,5 @@
 #include "ghuipch.h"
-#include "SeparatorStyle.h"
+#include "Separator.h"
 
 #include "ui/theme/Theme.h"
 
@@ -16,27 +16,17 @@ namespace Ghurund::UI {
         Child = colorView;
     }
 
-    void SeparatorStyle::onStateChanged(Control& control) const {
-        if (control.Enabled) {
-            ((Separator&)control).Color = ColorRef(Theme::COLOR_CONTROL);
+    void Separator::onStateChanged() {
+        if (Enabled) {
+            Color = ColorRef(Theme::COLOR_CONTROL);
         } else {
-            ((Separator&)control).Color = ColorRef(Theme::COLOR_BACKGR0UND);
+            Color = ColorRef(Theme::COLOR_BACKGR0UND);
         }
     }
 
-    void SeparatorStyle::onThemeChanged(Control& control) const {
-        ((Separator&)control).Thickness = 1;
-    }
-
-    void SeparatorHorizontalStyle::onThemeChanged(Control& control) const {
-        __super::onThemeChanged(control);
-        ((Separator&)control).Padding.Vertical = 4;
-        ((Separator&)control).Padding.Horizontal = 0;
-    }
-
-    void SeparatorVerticalStyle::onThemeChanged(Control& control) const {
-        __super::onThemeChanged(control);
-        ((Separator&)control).Padding.Vertical = 0;
-        ((Separator&)control).Padding.Horizontal = 4;
+    void Separator::onThemeChanged() {
+        Thickness = 1;
+        Padding.Vertical = 4;
+        Padding.Horizontal = 0;
     }
 }

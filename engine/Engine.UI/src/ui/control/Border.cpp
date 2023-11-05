@@ -25,6 +25,14 @@ namespace Ghurund::UI {
             color.resolve(*theme);
     }
 
+    void Border::onStateChanged() {
+        if (Enabled) {
+            Color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND);
+        } else {
+            Color = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
+        }
+    }
+
     void Border::onDraw(ICanvas& canvas) {
         const UI::Color* color = this->color.get();
         if (!color || thickness < 0.1f)
@@ -34,22 +42,6 @@ namespace Ghurund::UI {
             canvas.drawShape(*shape, thickness);
         } else {
             canvas.drawRect(Position.x + thickness / 2, Position.y + thickness / 2, Size.Width - thickness, Size.Height - thickness, thickness);
-        }
-    }
-    
-    void BorderOnBackgroundStyle::onStateChanged(Border& control) const {
-        if (control.Enabled) {
-            control.Color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND);
-        } else {
-            control.Color = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
-        }
-    }
-    
-    void BorderAccentStyle::onStateChanged(Border& control) const {
-        if (control.Enabled) {
-            control.Color = ColorRef(Theme::COLOR_ACCENT);
-        } else {
-            control.Color = ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND);
         }
     }
 }

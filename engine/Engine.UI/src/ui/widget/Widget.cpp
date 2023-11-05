@@ -5,7 +5,6 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/UniqueProperty.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/style/Style.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
@@ -39,8 +38,6 @@ namespace Ghurund::UI {
 
 	void Widget::onLoaded() {
 		__super::onLoaded();
-		if (style == nullptr)
-			Style = std::move(std::make_unique<StyleRef>(StyleKey(Type.Name)));
 		if (layout == nullptr)
 			Layout = std::make_unique<LayoutRef>(LayoutKey(Type.Name));
 	}

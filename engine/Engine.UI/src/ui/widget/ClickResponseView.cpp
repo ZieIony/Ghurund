@@ -20,6 +20,10 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void ClickResponseView::onStateChanged() {
+        Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONBACKGROUND);
+    }
+
     void ClickResponseView::onThemeChanged() {
         const UI::Theme* theme = Theme;
         if (theme)
@@ -45,13 +49,5 @@ namespace Ghurund::UI {
         }
         if (!finishedAnimating)
             repaint();
-    }
-    
-    void ClickResponseViewOnBackgroundStyle::onStateChanged(Control& control) const {
-        ((ClickResponseView&)control).Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONBACKGROUND);
-    }
-    
-    void ClickResponseViewOnAccentStyle::onStateChanged(Control& control) const {
-        ((ClickResponseView&)control).Color = ColorRef(Theme::COLOR_HIGHLIGHT_ONACCENT);
     }
 }

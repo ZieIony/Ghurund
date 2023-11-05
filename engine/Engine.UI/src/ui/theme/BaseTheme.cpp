@@ -49,35 +49,5 @@ namespace Ghurund::UI {
 		Drawables.put(Theme::DRAWABLE_ARROWDOWN, std::make_shared<FileDrawableProvider>(drawableFactory, arrowDownPath));
 		auto arrowRightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\arrow right 18.png");
 		Drawables.put(Theme::DRAWABLE_ARROWRIGHT, std::make_shared<FileDrawableProvider>(drawableFactory, arrowRightPath));
-
-		Styles.put(STYLE_CHECKBOX, &checkBoxStyle);
-		Styles.put(STYLE_CHECKBOX_EXPANDABLE, &expandableCheckBoxStyle);
-		Styles.put(STYLE_RADIOBUTTON, &radioButtonStyle);
-		Styles.put(STYLE_SEPARATOR_HORIZONTAL, &separatorHorizontalStyle);
-		Styles.put(STYLE_SEPARATOR_VERTICAL, &separatorVerticalStyle);
-		Styles.put(STYLE_PROGRESSBAR, &progressBarStyle);
-		Styles.put(STYLE_TEXTBLOCK, &textViewPrimaryStyle);
-		Styles.put(STYLE_TEXTBLOCK_BUTTON, &textViewButtonStyle);
-		Styles.put(STYLE_TEXTBLOCK_PRIMARY, &textViewPrimaryStyle);
-		Styles.put(STYLE_TEXTBLOCK_SECONDARY, &textViewSecondaryStyle);
-		Styles.put(STYLE_TEXTBLOCK_HEADER, &textViewHeaderStyle);
-		Styles.put(STYLE_TEXTBLOCK_BUTTON_ONACCENT, &textViewButtonOnAccentStyle);
-		Styles.put(STYLE_TEXTBLOCK_PRIMARY_ONACCENT, &textViewPrimaryOnAccentStyle);
-		Styles.put(STYLE_TEXTBLOCK_SECONDARY_ONACCENT, &textViewSecondaryOnAccentStyle);
-		Styles.put(STYLE_TEXTBLOCK_HEADER_ONACCENT, &textViewHeaderOnAccentStyle);
-		Styles.put(STYLE_COLORVIEW_BACKGROUND, &colorViewBackgroundStyle);
-		Styles.put(STYLE_COLORVIEW_CONTROL, &colorViewControlStyle);
-		Styles.put(STYLE_COLORVIEW_ACCENT, &colorViewAccentStyle);
-		Styles.put(STYLE_DRAWABLEVIEW, &drawableViewStyle);
-		Styles.put(STYLE_DRAWABLEVIEW_ONBACKGROUND, &drawableViewOnBackgroundStyle);
-		Styles.put(STYLE_DRAWABLEVIEW_ONACCENT, &drawableViewOnAccentStyle);
-		Styles.put(STYLE_DRAWABLEVIEW_ACCENT, &drawableViewAccentStyle);
-		Styles.put(STYLE_BORDER_ONBACKGROUND, &borderOnBackgroundStyle);
-		Styles.put(STYLE_BORDER_ACCENT, &borderAccentStyle);
-		Styles.put(STYLE_SHADOW_BUTTON, &shadowButtonStyle);
-		Styles.put(STYLE_CLICKRESPONSEVIEW_ONBACKGROUND, &clickResponseViewOnBackgroundStyle);
-		Styles.put(STYLE_CLICKRESPONSEVIEW_ONACCENT, &clickResponseViewOnAccentStyle);
-		Styles.put(STYLE_STATEINDICATOR_ONBACKGROUND, &stateIndicatorOnBackgroundStyle);
-		Styles.put(STYLE_STATEINDICATOR_ONACCENT, &stateIndicatorOnAccentStyle);
 	}
 }

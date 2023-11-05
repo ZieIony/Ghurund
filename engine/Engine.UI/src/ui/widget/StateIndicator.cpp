@@ -5,6 +5,22 @@
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
+    void StateIndicator::onThemeChanged() {
+        const Ghurund::UI::Theme* theme = Theme;
+        if (!theme)
+            return;
+        focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
+        pressedColor = ((focusedColor >> 24) * 2) << 24 | focusedColor & 0xffffff;
+        idleColor = focusedColor & 0xffffff;
+    }
+
+    void StateIndicator::onDraw(ICanvas& canvas) {
+        if (color.A > 0.0f) {
+            canvas.Color = color;
+            canvas.fillRect(0, 0, Size.Width, Size.Height);
+        }
+    }
+
     const Ghurund::Core::Type& StateIndicator::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<StateIndicator>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicator>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
@@ -35,30 +51,22 @@ namespace Ghurund::UI {
         this->state = state;
     }
 
-    void StateIndicator::onDraw(ICanvas& canvas) {
-        if (color.A > 0.0f) {
-            canvas.Color = color;
-            canvas.fillRect(0, 0, Size.Width, Size.Height);
-        }
-    }
-
-    void StateIndicatorOnBackgroundStyle::onThemeChanged(Control& control) const {
-        const Theme* theme = control.Theme;
+    void StateIndicatorOnAccent::onThemeChanged() {
+        const Ghurund::UI::Theme* theme = Theme;
         if (!theme)
             return;
-        StateIndicator& indicator = (StateIndicator&)control;
-        indicator.focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONBACKGROUND];
-        indicator.pressedColor = ((indicator.focusedColor >> 24) * 2) << 24 | indicator.focusedColor & 0xffffff;
-        indicator.idleColor = indicator.focusedColor & 0xffffff;
+        focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONACCENT];
+        pressedColor = ((focusedColor >> 24) * 2) << 24 | focusedColor & 0xffffff;
+        idleColor = focusedColor & 0xffffff;
     }
 
-    void StateIndicatorOnAccentStyle::onThemeChanged(Control& control) const {
-        const Theme* theme = control.Theme;
-        if (!theme)
-            return;
-        StateIndicator& indicator = (StateIndicator&)control;
-        indicator.focusedColor = theme->Colors[Theme::COLOR_HIGHLIGHT_ONACCENT];
-        indicator.pressedColor = ((indicator.focusedColor >> 24) * 2) << 24 | indicator.focusedColor & 0xffffff;
-        indicator.idleColor = indicator.focusedColor & 0xffffff;
+    const Ghurund::Core::Type& StateIndicatorOnAccent::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<StateIndicatorOnAccent>();
+        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicatorOnAccent>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicatorOnAccent))
+            .withConstructor(CONSTRUCTOR)
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
+
 }

@@ -4,7 +4,6 @@
 #include "ui/control/Control.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
-#include "ui/style/Style.h"
 #include "ui/style/TextFormatAttr.h"
 
 namespace Ghurund::UI {

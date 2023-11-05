@@ -14,7 +14,6 @@
 #include "ui/control/Space.h"
 
 #include <ranges>
-#include "StylePropertyLoader.h"
 #include "LayoutPropertyLoader.h"
 
 namespace Ghurund::UI {
@@ -38,7 +37,6 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
         propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(drawableFactory)));
         propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
-        propertyLoaders.add(std::unique_ptr<StylePropertyLoader>(ghnew StylePropertyLoader()));
         propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
     }
 

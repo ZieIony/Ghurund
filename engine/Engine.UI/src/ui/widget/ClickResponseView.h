@@ -28,6 +28,10 @@ namespace Ghurund::UI {
         AttrProperty<ColorAttr, Color> color;
         float alpha = 1.0f;
 
+        virtual void onThemeChanged() override;
+
+        virtual void onStateChanged() override;
+
     public:
         ClickResponseView(const ColorAttr& color = DEFAULT_COLOR):color(color) {}
 
@@ -37,20 +41,8 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setColor)) const ColorAttr& Color;
 
-        virtual void onThemeChanged() override;
-
         virtual void onUpdate(const uint64_t time) override;
 
         virtual void onDraw(ICanvas& canvas) override;
-    };
-
-    class ClickResponseViewOnBackgroundStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
-    };
-
-    class ClickResponseViewOnAccentStyle:public Style {
-    public:
-        virtual void onStateChanged(Control& control) const override;
     };
 }

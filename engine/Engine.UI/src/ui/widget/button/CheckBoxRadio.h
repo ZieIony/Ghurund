@@ -78,7 +78,7 @@ namespace Ghurund::UI {
 		inline void setChecked(bool checked) {
 			if (this->checked != checked) {
 				this->checked = checked;
-				onStateChanged();
+				dispatchStateChanged();
 				checkedChanged(checked);
 			}
 		}

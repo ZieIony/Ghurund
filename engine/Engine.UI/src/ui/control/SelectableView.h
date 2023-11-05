@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 
         inline void setSelected(bool selected) {
             this->selected = selected;
-            onStateChanged();
+            dispatchStateChanged();
         }
 
         __declspec(property(get = isSelected, put = setSelected)) bool Selected;

@@ -16,11 +16,11 @@ namespace Ghurund::UI {
         if (event.Key == VK_SPACE || event.Key == VK_RETURN) {
             if (event.Action == KeyAction::DOWN) {
                 buttons[MouseButton::VIRTUAL] = true;
-                onStateChanged();
+                dispatchStateChanged();
                 return pressed(MousePressedEventArgs({ (int32_t)(Size.Width / 2), (int32_t)(Size.Height / 2) }, MouseButton::VIRTUAL, event.TimeMs));
             } else if (event.Action == KeyAction::UP) {
                 buttons[MouseButton::VIRTUAL] = false;
-                onStateChanged();
+                dispatchStateChanged();
                 return clicked(MouseClickedEventArgs({ (int32_t)(Size.Width / 2), (int32_t)(Size.Height / 2) }, MouseButton::VIRTUAL, event.TimeMs, true));
             }
         }
@@ -32,10 +32,10 @@ namespace Ghurund::UI {
             event.Position.y >= 0 && event.Position.y < Size.Height;
         if (in && !hovered) {
             hovered = true;
-            onStateChanged();
+            dispatchStateChanged();
         } else if (!in && hovered) {
             hovered = false;
-            onStateChanged();
+            dispatchStateChanged();
         }
 
         return hovered;
@@ -46,12 +46,12 @@ namespace Ghurund::UI {
         if (event.Action == MouseAction::DOWN && !buttons[event.Button]) {
             buttons[event.Button] = true;
             Parent->CapturedChild = this;
-            onStateChanged();
+            dispatchStateChanged();
             return pressed(MousePressedEventArgs(event.Position, event.Button, event.TimeMs)) || result;
         } else if (event.Action == MouseAction::UP && buttons[event.Button]) {
             buttons[event.Button] = false;
             Parent->CapturedChild = nullptr;
-            onStateChanged();
+            dispatchStateChanged();
             return clicked(MouseClickedEventArgs(event.Position, event.Button, event.TimeMs, event.Inside)) || result;
         }
         return result;

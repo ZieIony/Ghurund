@@ -36,7 +36,6 @@ namespace Ghurund::UI {
 		static auto PROPERTY_CURSOR = Property<Control, const Ghurund::UI::Cursor*>("Cursor", (Ghurund::UI::Cursor * (Control::*)()) & getCursor, (void(Control::*)(const Ghurund::UI::Cursor*)) & setCursor);
 		static auto PROPERTY_THEME = Property<Control, Ghurund::UI::Theme*>("Theme", (Ghurund::UI::Theme * (Control::*)()) & getTheme, (void(Control::*)(Ghurund::UI::Theme*)) & setTheme);
 		static auto PROPERTY_CONTEXT = Property<Control, IUIContext*>("Context", &getContext);
-		static auto PROPERTY_STYLE = UniqueProperty<Control, std::unique_ptr<StyleAttr>>("Style", &setStyle);
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", &getPositionInWindow);
 		static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", &getPositionOnScreen);
 
@@ -57,7 +56,6 @@ namespace Ghurund::UI {
 			.withProperty(PROPERTY_CURSOR)
 			.withProperty(PROPERTY_THEME)
 			.withProperty(PROPERTY_CONTEXT)
-			.withProperty(PROPERTY_STYLE)
 			.withProperty(PROPERTY_POSITIONINWINDOW)
 			.withProperty(PROPERTY_POSITIONONSCREEN)
 			.withModifier(TypeModifier::ABSTRACT)
@@ -86,27 +84,6 @@ namespace Ghurund::UI {
 	void Control::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
 		loader.loadProperties(*this, workingDir, xml);
 		loadConstraints(loader, xml);
-	}
-
-	void Control::onStateChanged() {
-		stateChanged();
-		const Ghurund::UI::Theme* theme = Theme;
-		if (theme) {
-			auto s = style.get();
-			if (s)
-				onStyleStateChanged(*s, *theme);
-		}
-	}
-
-	void Control::onThemeChanged() {
-		themeChanged();
-		const Ghurund::UI::Theme* theme = Theme;
-		if (theme) {
-			style.resolve(*theme);
-			auto s = style.get();
-			if (s)
-				s->onThemeChanged(*this);
-		}
 	}
 
 	void Control::onMeasure() {
@@ -275,35 +252,10 @@ namespace Ghurund::UI {
 		return nullptr;
 	}
 
-	void Control::setStyle(std::unique_ptr<StyleAttr> style) {
-		if (style.get() != this->style) {
-			this->style.set(std::move(style));
-			const Ghurund::UI::Theme* theme = Theme;
-			if (theme) {
-				this->style.resolve(*theme);
-				auto s = this->style.get();
-				if (s) {
-					s->apply(*this);
-					s->onThemeChanged(*this);
-					onStyleStateChanged(*s, *theme);
-				}
-			}
-		}
-	}
-
 	IUIContext* Control::getContext() {
 		if (parent)
 			return parent->Context;
 		return nullptr;
-	}
-
-	void Control::dispatchStateChanged() {
-		onStateChanged();
-	}
-
-	void Control::dispatchThemeChanged() {
-		onThemeChanged();
-		onStateChanged();
 	}
 
 	void Control::dispatchContextChanged() {
