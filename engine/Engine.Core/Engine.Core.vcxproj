@@ -99,18 +99,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\concepts\Iterable.h" />
-    <ClInclude Include="src\core\Finally.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
-    <ClInclude Include="src\core\concepts\Concepts.h" />
     <ClInclude Include="src\core\DataParsing.h" />
     <ClInclude Include="src\core\Enum.h" />
     <ClInclude Include="src\core\Event.h" />
     <ClInclude Include="src\core\EventHandler.h" />
     <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\Finally.h" />
     <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
@@ -155,6 +153,7 @@
     <ClInclude Include="src\core\collection\HashMap.h" />
     <ClInclude Include="src\core\collection\LinkedList.h" />
     <ClInclude Include="src\core\collection\List.h" />
+    <ClInclude Include="src\core\collection\Map.h" />
     <ClInclude Include="src\core\collection\ObservableList.h" />
     <ClInclude Include="src\core\collection\ObservablePointerList.h" />
     <ClInclude Include="src\core\collection\PointerArray.h" />
@@ -165,7 +164,6 @@
     <ClInclude Include="src\core\collection\Set.h" />
     <ClInclude Include="src\core\collection\Stack.h" />
     <ClInclude Include="src\core\collection\Tree.h" />
-    <ClInclude Include="src\core\collection\Map.h" />
     <ClInclude Include="src\core\collection\TypeMap.h" />
     <ClInclude Include="src\core\collection\iterator\ArrayIterator.h" />
     <ClInclude Include="src\core\collection\iterator\ListNodeIterator.h" />
@@ -173,6 +171,8 @@
     <ClInclude Include="src\core\collection\iterator\ReverseListNodeIterator.h" />
     <ClInclude Include="src\core\collection\iterator\ReverseTreeNodeIterator.h" />
     <ClInclude Include="src\core\collection\iterator\TreeNodeIterator.h" />
+    <ClInclude Include="src\core\concepts\Concepts.h" />
+    <ClInclude Include="src\core\concepts\Iterable.h" />
     <ClInclude Include="src\core\image\Image.h" />
     <ClInclude Include="src\core\image\ImageLoader.h" />
     <ClInclude Include="src\core\input\EventConsumer.h" />
@@ -223,9 +223,9 @@
     <ClInclude Include="src\core\reflection\Visibility.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
-    <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
+    <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\resource\ResourcePath.h" />
     <ClInclude Include="src\core\resource\Resources.h" />

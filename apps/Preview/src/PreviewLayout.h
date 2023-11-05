@@ -4,20 +4,14 @@
 #include "ui/control/ControlGroup.h"
 #include "ui/theme/WindowsTheme.h"
 #include "ThemeApplication.h"
+#include "../generated/LayoutBinding.h"
 
 namespace Preview {
     using namespace Ghurund::UI;
 
     class PreviewLayout:public ControlContainer {
     private:
-        Ghurund::UI::ControlGroup* container = nullptr;
-        Ghurund::UI::Button* color1 = nullptr;
-        Ghurund::UI::Button* color2 = nullptr;
-        Ghurund::UI::Button* color3 = nullptr;
-        Ghurund::UI::Button* color4 = nullptr;
-        Ghurund::UI::Button* colorTheme = nullptr;
-        Ghurund::UI::CheckBox* enabledCheckBox = nullptr;
-        Ghurund::UI::CheckBox* themeCheckBox = nullptr;
+        Bindings::LayoutBinding binding;
 
     protected:
         virtual void onLoaded() override;
@@ -30,11 +24,11 @@ namespace Preview {
         Event<PreviewLayout, ThemeType> themeChanged = *this;
         Event<PreviewLayout, uint32_t> colorChanged = *this;
 
-        inline ControlGroup* getContainer() {
-            return container;
+        inline ControlContainer& getContainer() {
+            return binding.Container;
         }
 
-        __declspec(property(get = getContainer)) ControlGroup* Container;
+        __declspec(property(get = getContainer)) ControlContainer& Container;
 
         inline bool onColorClicked(const MouseClickedEventArgs& args, uint32_t color) {
             if (args.Button == MouseButton::LEFT) {

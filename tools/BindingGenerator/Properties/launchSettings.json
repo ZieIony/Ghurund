@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "BindingGenerator": {
+      "commandName": "Project",
+      "commandLineArgs": "-input='d:\\projekty\\ghurund\\apps\\preview\\res' -output='d:\\projekty\\ghurund\\apps\\preview\\generated'"
+    }
+  }
+}
