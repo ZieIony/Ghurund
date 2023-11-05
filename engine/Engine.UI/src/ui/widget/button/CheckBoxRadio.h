@@ -36,7 +36,11 @@ namespace Ghurund::UI {
 			Control* layoutControl = layout.get();
 			if (layoutControl) {
 				setPointer(clickable, (Ghurund::UI::SelectableView*)layoutControl->find("clickable"));
+				if (!clickable)
+					throw InvalidDataException("layout is missing 'clickable' SelectableView");
 				setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
+				if (!state)
+					throw InvalidDataException("layout is missing 'state' StateIndicator");
 				setPointer(drawable, (Ghurund::UI::DrawableView*)layoutControl->find("drawable"));
 			} else {
 				clickable = nullptr;

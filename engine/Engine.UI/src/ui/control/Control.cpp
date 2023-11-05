@@ -168,21 +168,20 @@ namespace Ghurund::UI {
 	}
 
 	void Control::clearFocus() {
-		if (!parent)
-			return;
-		Control* f = parent->Focus;	// TODO: why start with parent?
-		if (!f)
-			return;
-		while (f) {
-			Control* next = f->Focus;
-			f->Parent->Focus = nullptr;
-			f = next;
+		// clear focus of this control and its children
+		Control* c = Focus;
+		while (c) {
+			Control* f = c->Focus;
+			c->Parent->Focus = nullptr;
+			c = f;
 		}
+		// clear focus of this control's parent and its parents
 		if (parent) {
-			parent->Focus = nullptr;
 			ControlParent* p = parent;
-			while (p->Parent) {
+			while (true) {
 				p->Focus = nullptr;
+				if (!p->Parent)
+					break;
 				p = p->Parent;
 			}
 			p->dispatchStateChanged();
@@ -246,9 +245,9 @@ namespace Ghurund::UI {
 	void Control::setParent(ControlParent* parent) {
 		bool contextChanged = parent && Context != parent->Context;
 		bool themeChanged = parent && Theme != parent->Theme;
-		this->parent = parent;
 		if (Focused)
 			clearFocus();
+		this->parent = parent;
 		if (contextChanged)
 			dispatchContextChanged();
 		if (themeChanged)
@@ -311,10 +310,10 @@ namespace Ghurund::UI {
 			parent->repaint();
 	}
 
-	void Control::invalidate() {
+	void Control::requestLayout() {
 		needsLayout = true;
 		if (parent)
-			parent->invalidate();
+			parent->requestLayout();
 	}
 
 	void Control::layout(float x, float y, float width, float height) {
@@ -324,11 +323,11 @@ namespace Ghurund::UI {
 		}
 		if (needsLayout || size.Width != width || size.Height != height) {
 #ifdef _DEBUG
-			/*const char* name = Name ? Name->Data : "[unnamed]";
-			if (width < minSize.width || height < minSize.height)
-				Logger::log(LogType::INFO, "Control's ({}: {}) size is smaller than minSize\n", Type.Name, name);
-			if (width == 0 || height == 0)
-				Logger::log(LogType::INFO, "Control's ({}: {}) size is [0, 0]\n", Type.Name, name);*/
+			const char* name = Name ? Name->Data : "[unnamed]";
+			if (width == 0 || height == 0) {
+				auto message = std::format(_T("Control's ({}: {}) size is [0, 0]\n"), Type.Name, AString(name));
+				Logger::log(LogType::INFO, message.c_str());
+			}
 #endif
 			size.Width = width;
 			size.Height = height;

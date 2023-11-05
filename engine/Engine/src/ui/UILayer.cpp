@@ -39,7 +39,7 @@ namespace Ghurund {
         };
         window.sizeChanged += [&](const Window& window) {
             initTargets();
-            rootView->invalidate();
+            rootView->requestLayout();
             return true;
         };
         initTargets();

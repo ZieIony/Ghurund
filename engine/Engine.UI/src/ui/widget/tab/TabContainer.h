@@ -54,7 +54,7 @@ namespace Ghurund::UI {
             }
             TabItem* tab = tabs[position];
             //content.Value = SharedPointer<Control>(tab->content);
-            tab->content->invalidate();
+            tab->content->requestLayout();
         }
 
         inline size_t getSelectedPosition() const {

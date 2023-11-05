@@ -11,12 +11,12 @@ namespace Ghurund::UI {
         height.set(ghnew WindowHeightConstraint(context.Window));
     }
 
-    void RootView::invalidate() {
+    void RootView::requestLayout() {
         needsLayout = true;
     }
 
     bool RootView::dispatchKeyEvent(const KeyEventArgs& event) {
-        if (__super::dispatchKeyEvent(event))
+        if (Focus && findFocus()->dispatchKeyEvent(event))
             return true;
 
         if (event.Action != Ghurund::Core::KeyAction::DOWN)

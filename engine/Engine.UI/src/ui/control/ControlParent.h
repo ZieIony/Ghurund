@@ -32,7 +32,7 @@ namespace Ghurund::UI {
             setPointer(focusedChild, control);
         }
 
-        virtual Control* getFocus() override {
+        virtual Control* getFocus() const override {
             return focusedChild;
         }
 

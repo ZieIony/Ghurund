@@ -42,35 +42,6 @@ namespace Ghurund::UI {
 		if (!theme)
 			return;
 		CheckBox& checkBox = (CheckBox&)control;
-		/*if (checkBox->clickable->Selected) {
-			SharedPointer<ImageDrawable> drawable = (ImageDrawable*)theme->Drawables[Theme::DRAWABLE_CHECKBOX_CHECKED]->clone();
-			checkBox->drawable->Image = drawable;
-		} else {
-			SharedPointer<ImageDrawable> drawable = (ImageDrawable*)theme->Drawables[Theme::DRAWABLE_CHECKBOX_UNCHECKED]->clone();
-			checkBox->drawable->Image = drawable;
-		}
-		if (!control.Enabled) {
-			layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_DISABLED_ONBACKGROUND));
-		} else if (layout->Selectable->Pressed) {
-			if (layout->Selectable->Selected) {
-				//drawableView->Image->Tint = theme->getColorAccentDark();
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
-			} else {
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND));
-			}
-		} else if (layout->Selectable->Hovered || layout->Selectable->Focused) {
-			if (layout->Selectable->Selected) {
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
-			} else {
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND));
-			}
-		} else {
-			if (layout->Selectable->Selected) {
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_ACCENT));
-			} else {
-				layout->Image->Tint = std::unique_ptr<ColorAttr>(ghnew ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND));
-			}
-		}*/
 	}
 
 	void CheckBoxStyle::onStateChanged(const Theme& theme, DrawableView& drawableView, bool checked, bool enabled, bool pressed, bool hovered, bool focused) const {

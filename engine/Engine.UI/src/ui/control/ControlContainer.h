@@ -32,7 +32,9 @@ namespace Ghurund::UI {
             return child;
         }
 
-        inline void setChild(Control* child) {
+        virtual void setChild(Control* child) override {
+            if (this->child == child)
+                return;
             __super::setChild(child);
             onChildChanged();
             childChanged();

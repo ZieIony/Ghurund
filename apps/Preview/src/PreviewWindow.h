@@ -50,7 +50,7 @@ namespace Preview {
 			previewLayout->Container->Children.clear();
 			for (Control* control : layout->Children)
 				previewLayout->Container->Children.add(control);
-			previewLayout->Container->invalidate();*/
+			previewLayout->Container->requestLayout();*/
 		}
 
 		void loadDrawable(const File& file) {
@@ -61,7 +61,7 @@ namespace Preview {
 			auto drawableView = makeShared<DrawableView>();
 			drawableView->Image = ghnew BitmapDrawable(image);
 			binding->Container->Children = { drawableView };
-			binding->Container->invalidate();*/
+			binding->Container->requestLayout();*/
 		}
 
 		void watchFile(FilePath& filePath) {

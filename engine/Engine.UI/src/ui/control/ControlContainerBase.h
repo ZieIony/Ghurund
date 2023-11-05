@@ -24,7 +24,7 @@ namespace Ghurund::UI {
     protected:
         Control* child = nullptr;
 
-        inline void setChild(Control* child) {
+        virtual void setChild(Control* child) {
             if (this->child == child)
                 return;
             if (this->child)

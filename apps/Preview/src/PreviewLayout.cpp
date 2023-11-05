@@ -18,7 +18,6 @@ namespace Preview {
         if (themeCheckBox) {
             themeCheckBox->checkedChanged += [this](CheckBox& checkBox, bool checked) {
                 themeChanged(checked ? ThemeType::DARK : ThemeType::LIGHT);
-                repaint();
                 return true;
                 };
         }

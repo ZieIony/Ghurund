@@ -3,18 +3,17 @@
 	<ControlGroup width="wrap" height="wrap"
 				  alignment="center, center"
 				  orientation="horizontal">
-		<ClickableControl name="clickable" width="18" height="18">
-			<ControlGroup alignment="center, center" width="18" height="18">
-				<PaddingContainer padding="-4"  width="Parent.Width" height="Parent.Height">
-					<Clip shape="roundRect, 2">
-						<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-										style="theme://style/StateIndicator_onBackground"/>
-					</Clip>
-				</PaddingContainer>
-				<DrawableView name="drawable" width="18" height="18"
-						   drawable="theme://drawable/checkBox_checked"/>
-			</ControlGroup>
-		</ClickableControl>
+		<ClickableControl name="clickable" width="18" height="18"/>
+		<ControlGroup alignment="center, center" width="18" height="18">
+			<PaddingContainer padding="-4"  width="Parent.Width" height="Parent.Height">
+				<Clip shape="roundRect, 2">
+					<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
+									style="theme://style/StateIndicator_onBackground"/>
+				</Clip>
+			</PaddingContainer>
+			<DrawableView name="drawable" width="18" height="18"
+					   drawable="theme://drawable/checkBox_checked"/>
+		</ControlGroup>
 		<ControlContainer width="wrap" height="wrap"
 						  name="container">
 			<ControlContainer.Left path="'clickable'.Right" offset="4"/>

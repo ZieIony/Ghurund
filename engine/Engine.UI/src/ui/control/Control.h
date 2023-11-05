@@ -163,7 +163,7 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = isFocusable, put = setFocusable)) bool Focusable;
 
-		virtual Control* getFocus() {
+		virtual Control* getFocus() const {
 			return nullptr;
 		}
 
@@ -315,7 +315,7 @@ namespace Ghurund::UI {
 
 		virtual void repaint();
 
-		virtual void invalidate();
+		virtual void requestLayout();
 
 		inline void measure() {
 			onMeasure();

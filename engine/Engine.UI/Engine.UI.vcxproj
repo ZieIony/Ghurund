@@ -109,6 +109,8 @@
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Color.h" />
+    <ClInclude Include="src\ui\constraint\WindowConstraint.h" />
+    <ClInclude Include="src\ui\control\ClickableControl.h" />
     <ClInclude Include="src\ui\Cursor.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\Padding.h" />
@@ -140,7 +142,6 @@
     <ClInclude Include="src\ui\constraint\ValueConstraint.h" />
     <ClInclude Include="src\ui\constraint\WrapConstraint.h" />
     <ClInclude Include="src\ui\control\Border.h" />
-    <ClInclude Include="src\ui\control\CLICKABLECONTROL.H" />
     <ClInclude Include="src\ui\control\ChildrenProvider.h" />
     <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\ColorView.h" />

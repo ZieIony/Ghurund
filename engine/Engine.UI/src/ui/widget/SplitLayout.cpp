@@ -55,7 +55,7 @@ namespace Ghurund::UI {
                     } else {
                         //container2->PreferredSize.width = container2->Size.Width - (args.Position.x - pressMousePos.x);
                     }
-                    layout->invalidate();
+                    layout->requestLayout();
                 }
                 return true;
             };
@@ -76,7 +76,7 @@ namespace Ghurund::UI {
                     } else {
                         //container2->PreferredSize.height = container2->Size.Height - (args.Position.y - pressMousePos.y);
                     }
-                    layout->invalidate();
+                    layout->requestLayout();
                 }
                 return true;
             };

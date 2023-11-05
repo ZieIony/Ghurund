@@ -8,8 +8,8 @@
 namespace Ghurund::UI {
 	class InvalidControl:public Control {
 	protected:
-		Color backgroundColor = Color(1, 0, 0, 0.2f);
-		Color borderColor = Color(1, 0, 0, 1.0f);
+		Color backgroundColor = Color(0.2f, 1, 0, 0);
+		Color borderColor = Color(1.0f, 1, 0, 0);
 		std::unique_ptr<IStrokeStyle> strokeStyle;
 
 		virtual void onContextChanged() {

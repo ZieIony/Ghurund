@@ -201,7 +201,7 @@ namespace Ghurund::UI {
         Children.clear();
         Children.addAll(loader.loadControls(workingDir, xml));
     }
-    
+
 #ifdef _DEBUG
     void ControlGroup::validate() const {
         __super::validate();

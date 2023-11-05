@@ -32,7 +32,7 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = isHovered)) bool Hovered;
-        
+
         inline const MousePressed& isPressed() const {
             return buttons;
         }

@@ -13,15 +13,15 @@ namespace Preview {
 		Content = previewLayout.get();
 
 		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
-			Application.FunctionQueue.post([&]() {
+			Application.FunctionQueue.post([&, type]() {
 				themeApp.ThemeType = type;
-			previewLayout.Theme = &themeApp.CurrentTheme;
+				previewLayout.Theme = &themeApp.CurrentTheme;
 				});
 			return true;
 			};
 
 		previewLayout->colorChanged += [this](PreviewLayout& previewLayout, const uint32_t color) {
-			Application.FunctionQueue.post([&]() {
+			Application.FunctionQueue.post([&, color]() {
 				themeApp.PrimaryColor = color;
 				previewLayout.dispatchThemeChanged();
 				});
@@ -32,6 +32,7 @@ namespace Preview {
 			Logger::print(LogType::INFO, _T("\n"));
 			Logger::print(LogType::INFO, previewLayout->printTree().Data);
 			Logger::print(LogType::INFO, _T("\n"));
+			previewLayout->validate();
 			return true;
 			};
 

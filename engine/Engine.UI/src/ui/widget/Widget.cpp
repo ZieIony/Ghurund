@@ -27,6 +27,7 @@ namespace Ghurund::UI {
 			if (child != this->layout.get()) {
 				setChild(this->layout.get());
 				onLayoutChanged();
+				requestLayout();
 			}
 		}
 	}

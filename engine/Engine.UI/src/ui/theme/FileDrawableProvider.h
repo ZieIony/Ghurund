@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 		): drawableFactory(drawableFactory), resourcePath(resourcePath) {}
 
 		virtual SharedPointer<Drawable> get() override {
-			if (cached == nullptr)
+			if (cached != nullptr)
 				return SharedPointer<Drawable>((Drawable*)cached->clone());
 			cached = SharedPointer<Drawable>(drawableFactory.makeDrawable(resourcePath));
 			return cached;
