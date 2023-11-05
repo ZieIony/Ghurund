@@ -12,7 +12,6 @@ namespace UnitTest {
         size_t loadCalls = 0;
 
         virtual Resource* load(
-            Ghurund::Core::ResourceManager& manager,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat* format = nullptr,
@@ -25,7 +24,6 @@ namespace UnitTest {
         }
 
         virtual void save(
-            const Ghurund::Core::ResourceManager& manager,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,

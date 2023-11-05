@@ -14,6 +14,8 @@ namespace Ghurund::UI {
 		Ghurund::UI::TextFormatAttr* textFormat = nullptr;
 		Ghurund::UI::TextLayout* textLayout;
 
+		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
 		virtual void onMeasure() override;
 
 		virtual void onDraw(ICanvas& canvas) override;
@@ -57,25 +59,11 @@ namespace Ghurund::UI {
 			return textFormat;
 		}
 
-		inline void setTextFormat(Ghurund::UI::TextFormatAttr* textFormat) {
-			if (this->textFormat)
-				delete this->textFormat;
-			if (textFormat) {
-				this->textFormat = (Ghurund::UI::TextFormatAttr*)textFormat->clone();
-				auto theme = Theme;
-				if (theme)
-					textLayout->Format = textFormat->resolve(*theme);
-			} else {
-				this->textFormat = nullptr;
-				textLayout->Format = nullptr;
-			}
-		}
+		void setTextFormat(Ghurund::UI::TextFormatAttr* textFormat);
 
 		__declspec(property(get = getTextFormat, put = setTextFormat)) Ghurund::UI::TextFormatAttr* TextFormat;
 
 		void dispatchContextChanged();
-
-		virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
 		static const Ghurund::Core::Type& GET_TYPE();
 

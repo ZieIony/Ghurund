@@ -15,27 +15,8 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void PaddingContainer::onMeasure() {
-		measuredSize.Width = width->Value + padding.left + padding.right;
-		measuredSize.Height = height->Value + padding.top + padding.bottom;
-
-		if (child)
-			child->measure();
-	}
-
-	void PaddingContainer::onLayout(float x, float y, float width, float height) {
-		if (Child) {
-			Child->layout(
-				padding.left,
-				padding.top,
-				width - padding.left - padding.right,
-				height - padding.top - padding.bottom
-			);
-		}
-	}
-
-	void PaddingContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-		__super::load(loader, resourceManager, workingDir, xml);
+	void PaddingContainer::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		__super::loadInternal(loader, workingDir, xml);
 		auto paddingAttr = xml.FindAttribute("padding");
 		if (paddingAttr) {
 			std::string str = paddingAttr->Value();
@@ -54,6 +35,25 @@ namespace Ghurund::UI {
 					Padding.bottom = (float)atof(m[4].str().c_str());
 				}
 			}
+		}
+	}
+
+	void PaddingContainer::onMeasure() {
+		measuredSize.Width = width->Value + padding.left + padding.right;
+		measuredSize.Height = height->Value + padding.top + padding.bottom;
+
+		if (child)
+			child->measure();
+	}
+
+	void PaddingContainer::onLayout(float x, float y, float width, float height) {
+		if (Child) {
+			Child->layout(
+				padding.left,
+				padding.top,
+				width - padding.left - padding.right,
+				height - padding.top - padding.bottom
+			);
 		}
 	}
 }

@@ -10,6 +10,18 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
+    void TextBlock::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::loadInternal(loader, workingDir, xml);
+        auto textFormatAttr = xml.FindAttribute("textFormat");
+        if (textFormatAttr) {
+            Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());
+            if (format) {
+                TextFormat = format;
+                delete format;
+            }
+        }
+    }
+
     void TextBlock::onMeasure() {
         const float MAX_LAYOUT_SIZE = 32768.0f;
 
@@ -60,6 +72,20 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void TextBlock::setTextFormat(Ghurund::UI::TextFormatAttr* textFormat) {
+        if (this->textFormat)
+            delete this->textFormat;
+        if (textFormat) {
+            this->textFormat = (Ghurund::UI::TextFormatAttr*)textFormat->clone();
+            auto theme = Theme;
+            if (theme)
+                textLayout->Format = textFormat->resolve(*theme);
+        } else {
+            this->textFormat = nullptr;
+            textLayout->Format = nullptr;
+        }
+    }
+
     void TextBlock::dispatchContextChanged() {
         __super::dispatchContextChanged();
         auto theme = Theme;
@@ -69,17 +95,5 @@ namespace Ghurund::UI {
             textLayout->Format = TextFormat->resolve(*theme);
         if (Size.Width > 0 && Size.Height > 0)
             textLayout->Size = { Size.Width, Size.Height };
-    }
-
-    void TextBlock::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
-        auto textFormatAttr = xml.FindAttribute("textFormat");
-        if (textFormatAttr) {
-            Ghurund::UI::TextFormatRef* format = loader.loadTextFormat(textFormatAttr->Value());
-            if (format) {
-                TextFormat = format;
-                delete format;
-            }
-        }
     }
 }

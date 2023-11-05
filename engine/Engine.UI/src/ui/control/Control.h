@@ -85,6 +85,10 @@ namespace Ghurund::UI {
 		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
 		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
 
+		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+
+		virtual void onLoaded() {}
+
 		virtual void onStateChanged();
 
 		virtual void onThemeChanged();
@@ -398,7 +402,14 @@ namespace Ghurund::UI {
 
 		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-		virtual void load(Ghurund::UI::LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		inline void load(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+			try {
+				loadInternal(loader, workingDir, xml);
+				onLoaded();
+			} catch (std::exception e) {
+				throw e;
+			}
+		}
 
 		static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
 

@@ -21,6 +21,8 @@ namespace Ghurund::UI {
     protected:
         virtual void onChildChanged() {}
 
+        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
     public:
         Event<ControlContainer> childChanged = Event<ControlContainer>(*this);
         
@@ -47,7 +49,5 @@ namespace Ghurund::UI {
         virtual Control* find(const Ghurund::Core::AString& name) override;
 
         virtual Control* find(const Ghurund::Core::Type& type) override;
-
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
     };
 }

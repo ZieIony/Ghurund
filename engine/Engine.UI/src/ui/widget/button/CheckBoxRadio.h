@@ -53,7 +53,6 @@ namespace Ghurund::UI {
 			return GET_TYPE();
 		}
 
-	public:
 		~CheckBoxRadio() {
 			if (clickable)
 				clickable->release();
@@ -63,6 +62,7 @@ namespace Ghurund::UI {
 				drawable->release();
 		}
 
+	public:
 		static const Ghurund::Core::Type& GET_TYPE() {
 			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
 				.withModifiers(TypeModifier::ABSTRACT)

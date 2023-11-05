@@ -30,7 +30,6 @@ namespace Ghurund::Core {
         }
 
         virtual Image* load(
-            ResourceManager& manager,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat* format = nullptr,
@@ -38,7 +37,6 @@ namespace Ghurund::Core {
         ) override;
 
         virtual void save(
-            const ResourceManager& manager,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,

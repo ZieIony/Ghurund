@@ -42,7 +42,7 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
     }
 
-    Control* LayoutLoader::load(Ghurund::Core::ResourceManager& manager, MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
+    Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
         tinyxml2::XMLDocument doc;
         doc.Parse((const char*)stream.Data, stream.Size);
 
@@ -60,7 +60,7 @@ namespace Ghurund::UI {
         if (!constructor)
             throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
         Control* control = (Control*)constructor->invokeRaw();
-        control->load(*this, resourceManager, workingDir, *child);
+        control->load(*this, workingDir, *child);
         return control;
     }
 
@@ -162,7 +162,7 @@ namespace Ghurund::UI {
                     if (!constructor)
                         throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
                     Control* control = (Control*)constructor->invokeRaw();
-                    control->load(*this, resourceManager, workingDir, xml);
+                    control->load(*this, workingDir, xml);
                     return control;
                 } else {
                     // it's a known class, but not a control

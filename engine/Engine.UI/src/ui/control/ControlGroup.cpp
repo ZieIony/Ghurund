@@ -15,6 +15,12 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void ControlGroup::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::loadInternal(loader, workingDir, xml);
+        Children.clear();
+        Children.addAll(loader.loadControls(workingDir, xml));
+    }
+
     void ControlGroup::onMeasure() {
         for (Control* c : children) {
             if (!c->Visible)
@@ -194,12 +200,6 @@ namespace Ghurund::UI {
         __super::resolveConstraints(graph);
         for (Control* c : children)
             c->resolveConstraints(graph);
-    }
-
-    void ControlGroup::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
-        Children.clear();
-        Children.addAll(loader.loadControls(workingDir, xml));
     }
 
 #ifdef _DEBUG

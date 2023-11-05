@@ -8,6 +8,16 @@
 #include "ui/loading/LayoutLoader.h"
 
 namespace Ghurund::UI {
+    void ConstraintLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::loadInternal(loader, workingDir, xml);
+        const tinyxml2::XMLElement* child = xml.FirstChildElement();
+        while (child != nullptr) {
+            if (strcmp(child->Name(), "Guide") == 0)
+                guides.add(Guide::load(*child));
+            child = child->NextSiblingElement();
+        }
+    }
+
     void ConstraintLayout::onContextChanged() {
         __super::onContextChanged();
         if (Context) {
@@ -20,16 +30,6 @@ namespace Ghurund::UI {
         __super::onLayout(x, y, width, height);
         for (Control* control : Children) {
             control->layout(x, y, control->MeasuredSize.Width, control->MeasuredSize.Height);
-        }
-    }
-
-    void ConstraintLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
-        const tinyxml2::XMLElement* child = xml.FirstChildElement();
-        while (child != nullptr) {
-            if (strcmp(child->Name(), "Guide") == 0)
-                guides.add(Guide::load(*child));
-            child = child->NextSiblingElement();
         }
     }
 

@@ -61,7 +61,6 @@ namespace Ghurund::UI {
 		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
 		virtual Control* load(
-			Ghurund::Core::ResourceManager& manager,
 			Ghurund::Core::MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
 			const Ghurund::Core::ResourceFormat* format = nullptr,
@@ -69,7 +68,6 @@ namespace Ghurund::UI {
 		) override;
 
         virtual void save(
-            const Ghurund::Core::ResourceManager& manager,
             Ghurund::Core::MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
             Ghurund::Core::Resource& resource,

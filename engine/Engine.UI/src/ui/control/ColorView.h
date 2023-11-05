@@ -16,6 +16,10 @@ namespace Ghurund::UI {
 			return GET_TYPE();
 		}
 
+		virtual void onThemeChanged() override;
+
+		virtual void onDraw(ICanvas& canvas);
+
 	public:
 		ColorView(const ColorAttr& color = DEFAULT_COLOR) :color(color) {}
 
@@ -24,10 +28,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setColor)) const ColorAttr& Color;
-
-		virtual void onThemeChanged() override;
-
-		virtual void onDraw(ICanvas& canvas);
 
 		static const Ghurund::Core::Type& GET_TYPE();
 

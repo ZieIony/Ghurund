@@ -14,6 +14,8 @@ namespace Ghurund::UI {
         Control* previousReceiver = nullptr;
 
     protected:
+        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
         virtual void onMeasure() override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
@@ -85,8 +87,6 @@ namespace Ghurund::UI {
         virtual Control* find(const Ghurund::Core::Type& type) override;
 
         virtual void resolveConstraints(ConstraintGraph& graph) override;
-
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
 #ifdef _DEBUG
         virtual void validate() const override;

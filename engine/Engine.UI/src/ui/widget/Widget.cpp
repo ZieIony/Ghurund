@@ -37,20 +37,8 @@ namespace Ghurund::UI {
 		__super::onThemeChanged();
 	}
 
-	Control* Widget::find(const AString& name) {
-		if (this->Name && this->Name->operator==(name))
-			return this;
-		return nullptr;
-	}
-
-	Control* Widget::find(const Ghurund::Core::Type& type) {
-		if (Type == type)
-			return this;
-		return nullptr;
-	}
-
-	void Widget::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-		Control::load(loader, resourceManager, workingDir, xml);
+	void Widget::onLoaded() {
+		__super::onLoaded();
 		if (style == nullptr)
 			Style = std::move(std::make_unique<StyleRef>(StyleKey(Type.Name)));
 		if (layout == nullptr)

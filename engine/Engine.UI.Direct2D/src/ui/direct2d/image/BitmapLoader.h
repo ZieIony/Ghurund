@@ -12,21 +12,19 @@ namespace Ghurund::UI::Direct2D {
         BitmapLoader(Ghurund::Core::ImageLoader& imageLoader, ID2D1DeviceContext5& deviceContext):imageLoader(imageLoader), deviceContext(deviceContext) {}
 
         virtual Bitmap* load(
-            ResourceManager& manager,
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat* format = nullptr,
             LoadOption options = LoadOption::DEFAULT
         ) override {
             SharedPointer<Bitmap> bitmap(ghnew Bitmap());
-            SharedPointer<Image> image(imageLoader.load(manager, stream, workingDir, format, options));
+            SharedPointer<Image> image(imageLoader.load(stream, workingDir, format, options));
             bitmap->init(deviceContext, *image.get());
             bitmap->addReference();
             return bitmap.get();
         }
 
         virtual void save(
-            const ResourceManager& manager,
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
@@ -34,7 +32,7 @@ namespace Ghurund::UI::Direct2D {
             SaveOption options = SaveOption::DEFAULT
         ) const override {
             Bitmap& bitmap = (Bitmap&)resource;
-            imageLoader.save(manager, stream, workingDir, *bitmap.Image, format, options);
+            imageLoader.save(stream, workingDir, *bitmap.Image, format, options);
         }
     };
 }

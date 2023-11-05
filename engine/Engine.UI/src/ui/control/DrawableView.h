@@ -26,6 +26,8 @@ namespace Ghurund::UI{
         }
 
     protected:
+        virtual void onThemeChanged() override;
+
         virtual void onMeasure() override;
 
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
@@ -89,7 +91,5 @@ namespace Ghurund::UI{
         }
 
         __declspec(property(put = setGravity)) Alignment& Alignment;
-
-        virtual void onThemeChanged() override;
     };
 }

@@ -3,8 +3,8 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
-    void PreviewLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
+    void PreviewLayout::onLoaded() {
+        __super::onLoaded();
 
         container = (Ghurund::UI::ControlGroup*)find("container");
         color1 = (Ghurund::UI::Button*)find("color1");

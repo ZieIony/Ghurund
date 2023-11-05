@@ -83,6 +83,11 @@ namespace Ghurund::UI {
 		this->name = ghnew AString(name);
 	}
 
+	void Control::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		loader.loadProperties(*this, workingDir, xml);
+		loadConstraints(loader, xml);
+	}
+
 	void Control::onStateChanged() {
 		stateChanged();
 		const Ghurund::UI::Theme* theme = Theme;
@@ -541,11 +546,6 @@ namespace Ghurund::UI {
 			left,width,right,
 			top,height,bottom
 			});
-	}
-
-	void Control::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-		loader.loadProperties(*this, workingDir, xml);
-		loadConstraints(loader, xml);
 	}
 
 #ifdef _DEBUG

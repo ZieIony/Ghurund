@@ -15,6 +15,16 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
+        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
+        virtual void onMeasure() override {
+            measuredSize = layoutManager.measure();
+        }
+
+        virtual void onLayout(float x, float y, float width, float height) override {
+            layoutManager.layout(x, y, width, height);
+        }
+
     public:
         LinearLayout() {
             layoutManager.setGroup(*this, childrenProvider);
@@ -47,16 +57,6 @@ namespace Ghurund::UI {
         virtual bool focusLeft() override;
 
         virtual bool focusRight() override;
-
-        virtual void onMeasure() override {
-            measuredSize = layoutManager.measure();
-        }
-
-        virtual void onLayout(float x, float y, float width, float height) override {
-            layoutManager.layout(x, y, width, height);
-        }
-
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
         static const Ghurund::Core::Type& GET_TYPE();
 

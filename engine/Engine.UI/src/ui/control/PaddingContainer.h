@@ -13,6 +13,12 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
+        virtual void onMeasure() override;
+
+        virtual void onLayout(float x, float y, float width, float height) override;
+
+        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -40,11 +46,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getPadding, put = setPadding)) Padding& Padding;
-
-        virtual void onMeasure() override;
-
-        virtual void onLayout(float x, float y, float width, float height) override;
-
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
     };
 }

@@ -7,8 +7,8 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
-    void ContentWidget::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
+    void ContentWidget::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::loadInternal(loader, workingDir, xml);
         auto childElement = xml.FirstChildElement();
         while (childElement) {
             if (!AString(childElement->Name()).contains(".")) {

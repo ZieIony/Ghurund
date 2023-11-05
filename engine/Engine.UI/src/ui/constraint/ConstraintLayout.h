@@ -23,15 +23,15 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
-    public:
+        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+
         virtual void onContextChanged() override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
-
         virtual void onDraw(ICanvas& canvas) override;
 
+    public:
         inline List<Guide>& getGuides() {
             return guides;
         }

@@ -35,8 +35,8 @@ namespace Ghurund::UI {
 		return nullptr;
 	}
 
-	void ControlContainer::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-		__super::load(loader, resourceManager, workingDir, xml);
+	void ControlContainer::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		__super::loadInternal(loader, workingDir, xml);
 		auto childElement = xml.FirstChildElement();
 		bool childFound = false;
 		while (childElement) {

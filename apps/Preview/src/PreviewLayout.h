@@ -20,7 +20,7 @@ namespace Preview {
         Ghurund::UI::CheckBox* themeCheckBox = nullptr;
 
     protected:
-        virtual void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+        virtual void onLoaded() override;
 
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();

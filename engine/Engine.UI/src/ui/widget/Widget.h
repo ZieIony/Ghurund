@@ -17,6 +17,8 @@ namespace Ghurund::UI {
 
 		void updateLayout();
 
+		virtual void onLoaded() override;
+
 		virtual void onThemeChanged() override;
 
 		virtual void onLayoutChanged() {}
@@ -32,14 +34,5 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(put = setLayout)) LayoutAttr* Layout;
-
-		using Control::find;
-
-		virtual Control* find(const Ghurund::Core::AString& name) override;
-
-		virtual Control* find(const Ghurund::Core::Type& type) override;
-
-		void load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
-
 	};
 }

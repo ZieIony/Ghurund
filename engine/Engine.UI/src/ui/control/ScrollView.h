@@ -16,6 +16,10 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
+        virtual void onDraw(ICanvas& canvas) override;
+
+        virtual void onLayout(float x, float y, float width, float height) override;
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
@@ -51,10 +55,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
-
-        virtual void onDraw(ICanvas& canvas) override;
-
-        virtual void onLayout(float x, float y, float width, float height) override;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 

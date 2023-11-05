@@ -13,6 +13,16 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
+    void LinearLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        __super::loadInternal(loader, workingDir, xml);
+        auto orientationAttr = xml.FindAttribute("orientation");
+        if (orientationAttr)
+            Orientation = strcmp(orientationAttr->Value(), "horizontal") == 0 ? Orientation::HORIZONTAL : Orientation::VERTICAL;
+        Ghurund::UI::Alignment a;
+        if (loader.loadAlignment(xml, &a) == Status::OK)
+            Alignment = a;
+    }
+
     bool LinearLayout::focusUp() {
         if (__super::focusUp())
             return true;
@@ -93,15 +103,5 @@ namespace Ghurund::UI {
                 return true;
         }
         return false;
-    }
-    
-    void LinearLayout::load(LayoutLoader& loader, ResourceManager& resourceManager, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::load(loader, resourceManager, workingDir, xml);
-        auto orientationAttr = xml.FindAttribute("orientation");
-        if (orientationAttr)
-            Orientation = strcmp(orientationAttr->Value(), "horizontal") == 0 ? Orientation::HORIZONTAL : Orientation::VERTICAL;
-        Ghurund::UI::Alignment a;
-        if (loader.loadAlignment(xml, &a) == Status::OK)
-            Alignment = a;
     }
 }

@@ -40,7 +40,7 @@ namespace Ghurund::Core {
 		MemoryInputStream stream(buffer.Data, buffer.Size);
 		Resource* resource;
 		try {
-			resource = loader.load(*this, stream, workingDir, format, options);
+			resource = loader.load(stream, workingDir, format, options);
 		} catch (std::exception& exception) {
 			auto text = std::format(_T("failed to load resource\n"));
 			Logger::log(LogType::ERR0R, text.c_str());
@@ -75,7 +75,7 @@ namespace Ghurund::Core {
 	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, const DirectoryPath& workingDir, Buffer& buffer, const ResourceFormat* format, SaveOption options) const {
 		MemoryOutputStream stream;
 		try {
-			loader.save(*this, stream, workingDir, resource, format, options);
+			loader.save(stream, workingDir, resource, format, options);
 		} catch (std::exception& exception) {
 			Logger::log(LogType::ERR0R, std::format(_T("failed to save resource\n")).c_str());
 			throw exception;
