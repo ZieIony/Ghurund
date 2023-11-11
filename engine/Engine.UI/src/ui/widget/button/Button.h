@@ -22,7 +22,11 @@ namespace Ghurund::UI {
 				return true;
 			}
 			return false;
-			};
+		};
+
+		EventHandler<Control, MouseClickedEventArgs> clickHandler = [this](Control&, const MouseClickedEventArgs& args) {
+			return clicked(args);
+		};
 
 	protected:
 		virtual void onLayoutChanged() override;

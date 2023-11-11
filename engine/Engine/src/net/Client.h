@@ -4,8 +4,8 @@
 #include "ServerMessage.h"
 #include "ReliableUDP.h"
 #include "core/Event.h"
-#include "core/StateMachine.h"
 #include "core/collection/List.h"
+#include "core/state/StateMachine.h"
 
 #include <thread>
 

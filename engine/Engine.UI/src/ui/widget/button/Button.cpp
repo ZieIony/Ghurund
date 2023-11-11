@@ -4,8 +4,8 @@
 namespace Ghurund::UI {
     void Button::onLayoutChanged() {
         if (clickable) {
-            clickable->stateChanged.clear();
-            clickable->clicked.clear();
+            clickable->stateChanged -= stateHandler;
+            clickable->clicked -= clickHandler;
             clickable->release();
             clickable = nullptr;
         }
@@ -17,9 +17,7 @@ namespace Ghurund::UI {
             setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
             if (clickable) {
                 clickable->stateChanged += stateHandler;
-                clickable->clicked += [this](Control&, const MouseClickedEventArgs& args) {
-                    return clicked(args);
-                    };
+                clickable->clicked += clickHandler;
             }
         }
     }

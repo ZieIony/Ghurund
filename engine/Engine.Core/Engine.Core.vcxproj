@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\state\State.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
@@ -122,7 +123,7 @@
     <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StackTrace.h" />
-    <ClInclude Include="src\core\StateMachine.h" />
+    <ClInclude Include="src\core\state\StateMachine.h" />
     <ClInclude Include="src\core\SystemInfo.h" />
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Translations.h" />

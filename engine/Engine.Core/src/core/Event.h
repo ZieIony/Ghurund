@@ -61,7 +61,7 @@ namespace Ghurund::Core {
         }
     };
 
-    template<class SenderType, class Type>
+    template<class SenderType, typename Type>
     class Event<SenderType, Type> {
     private:
         List<EventHandler<SenderType, Type>> listeners;
