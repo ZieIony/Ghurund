@@ -17,27 +17,22 @@ namespace Ghurund::UI {
     void StateIndicator::setState(IndicatorState state) {
         if (this->state == state)
             return;
-        animation.ProgressChanged.clear();
-        prevColor = Color;
+        animator.finish();
+        animation.InitialValue = Color;
         if (state == IndicatorState::FOCUSED) {
             if (this->state > state) {
-                animation.ProgressChanged.add([this](Animation& animation) {
-                    Color = lerpColors(prevColor, focusedColor, animation.Progress);
-                    return true;
-                });
+                animation.TargetValue = focusedColor;
+                animator.start(animation, color);
             } else {
                 Color = focusedColor;
             }
         } else if (state == IndicatorState::PRESSED) {
             Color = pressedColor;
         } else {
-            animation.ProgressChanged.add([this](Animation& animation) {
-                Color = lerpColors(prevColor, idleColor, animation.Progress);
-                return true;
-            });
+            animation.TargetValue = idleColor;
+            animator.start(animation, color);
         }
         this->state = state;
-        animation.start();
     }
 
     void StateIndicator::onDraw(ICanvas& canvas) {

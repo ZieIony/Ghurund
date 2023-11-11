@@ -13,4 +13,9 @@ namespace Ghurund::Core {
     typedef GenericString<wchar_t> WString;
     typedef GenericString<char> AString;
     typedef GenericString<tchar> TString;
+
+    template<typename Type>
+    String toString(const Type& obj) {
+        return obj.toString();
+    }
 }

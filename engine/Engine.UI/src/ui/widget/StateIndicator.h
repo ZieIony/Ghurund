@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ui/Animation.h"
+#include "ui/animation/Animator.h"
+#include "ui/animation/Animation.h"
 #include "ui/control/ColorView.h"
 #include "ui/control/ClickableControl.h"
 
@@ -18,16 +19,16 @@ namespace Ghurund::UI {
             return GET_TYPE();
         }
 
-        Animation animation;
+        Animator animator;
+        ValueAnimation<Color> animation;
         IndicatorState state = IndicatorState::NONE;
-        Color prevColor = 0;
 
     public:
         Color idleColor = 0;
         Color focusedColor = 0;
         Color pressedColor = 0;
 
-        StateIndicator():color(0) {
+        StateIndicator() {
             animation.Duration = 150;
         }
 
@@ -36,7 +37,7 @@ namespace Ghurund::UI {
         __declspec(property(put = setState)) IndicatorState State;
 
         virtual void onUpdate(uint64_t time) override {
-            animation.update(time);
+            animator.update(time);
         }
 
         inline const Color& getColor() {

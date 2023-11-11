@@ -28,12 +28,12 @@ namespace Ghurund::UI {
 	}
 
 	msdfgen::Shape shapeFromPolygonData(uint8_t* data, DWORD size, GLYPHMETRICS& glyphMetrics, IntSize glyphSize, uint32_t padding) {
-		auto tx = [&](float x) {
-			float offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxX) / 2.0f;
+		auto tx = [&](double x) {
+			double offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxX) / 2.0f;
 			return (x - glyphMetrics.gmptGlyphOrigin.x + offset) / std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) * (glyphSize.Width - padding * 2) + padding;
 			};
-		auto ty = [&](float y) {
-			float offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxY) / 2.0f;
+		auto ty = [&](double y) {
+			double offset = (std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) - glyphMetrics.gmBlackBoxY) / 2.0f;
 			return (glyphMetrics.gmptGlyphOrigin.y - y - offset) / std::max(glyphMetrics.gmBlackBoxX, glyphMetrics.gmBlackBoxY) * (glyphSize.Height - padding * 2) + padding;
 			};
 
@@ -122,7 +122,7 @@ namespace Ghurund::UI {
 
 		float size = 12.0f;
 		float lfHeight = -size * GetDeviceCaps(hdcScreen, LOGPIXELSY) / 72.0f;
-		HFONT hf = CreateFont(lfHeight, 0, 0, 0, weight, italic ? TRUE : FALSE, 0, 0, 0, 0, 0, CLEARTYPE_QUALITY, 0, familyName.getData());
+		HFONT hf = CreateFont((int)lfHeight, 0, 0, 0, weight, italic ? TRUE : FALSE, 0, 0, 0, 0, 0, CLEARTYPE_QUALITY, 0, familyName.getData());
 
 		Finally f([&] {
 			ReleaseDC(NULL, hdcScreen);
@@ -143,7 +143,7 @@ namespace Ghurund::UI {
 		bool italic = file.readFontItalic();
 		DWORD numFonts = {};
 		uninit();
-		handle = AddFontMemResourceEx((void*)data, size, 0, &numFonts);
+		handle = AddFontMemResourceEx((void*)data, (DWORD)size, 0, &numFonts);
 		init(familyName, weight, italic, supportedCharacters);
 	}
 
@@ -178,7 +178,7 @@ namespace Ghurund::UI {
 			throw InvalidParamException();
 		}
 		Array<KERNINGPAIR> kerningPairs(result);
-		result = GetKerningPairs(hdcBmp, kerningPairs.Size, &kerningPairs[0]);
+		result = GetKerningPairs(hdcBmp, (DWORD)kerningPairs.Size, &kerningPairs[0]);
 		if (result == GDI_ERROR) {
 			auto errorCode = GetLastError();
 			throw InvalidParamException();
@@ -302,12 +302,12 @@ namespace Ghurund::UI {
 				throw InvalidParamException();
 			DWORD size = result;
 			Buffer glyphOutlineData(size);
-			result = GetGlyphOutline(hdcBmp, c, GGO_NATIVE, &glyphMetrics, glyphOutlineData.Size, glyphOutlineData.Data, &mat);
+			result = GetGlyphOutline(hdcBmp, c, GGO_NATIVE, &glyphMetrics, (DWORD)glyphOutlineData.Size, glyphOutlineData.Data, &mat);
 			if (result == GDI_ERROR)
 				throw InvalidParamException();
 
 			Glyph glyph = glyphs.get(c);
-			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, glyphOutlineData.Size, glyphMetrics, glyph.bitmapSize, maxDist + PADDING);
+			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, glyphMetrics, glyph.bitmapSize, maxDist + PADDING);
 
 			// whitespace characters don't have any shape data
 			if (shape.contours.size() > 0) {
@@ -316,8 +316,8 @@ namespace Ghurund::UI {
 				msdfgen::Bitmap<float, 4> msdf(glyph.bitmapSize.Width, glyph.bitmapSize.Height);
 				msdfgen::generateMTSDF(msdf, shape, maxDist, 1.0, msdfgen::Vector2(0.0, 0.0));
 
-				for (uint32_t y = 0; y < msdf.height(); y++) {
-					for (uint32_t x = 0; x < msdf.width(); x++) {
+				for (uint32_t y = 0; y < (uint32_t)msdf.height(); y++) {
+					for (uint32_t x = 0; x < (uint32_t)msdf.width(); x++) {
 						float* pixel = msdf(x, y);
 						byte r = pixelFloatToByte(pixel[0]);
 						byte g = pixelFloatToByte(pixel[1]);

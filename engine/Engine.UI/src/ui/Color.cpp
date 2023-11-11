@@ -1,6 +1,9 @@
 #include "ghuipch.h"
 #include "Color.h"
 
+#include "core/reflection/Type.h"
+#include "core/string/String.h"
+
 #include <regex>
 
 namespace Ghurund::UI {
@@ -30,5 +33,10 @@ namespace Ghurund::Core {
     const Type& getType<Ghurund::UI::Color>() {
         static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Color", sizeof(Ghurund::UI::Color));
         return TYPE;
+    }
+
+    template<>
+    String toString(const Ghurund::UI::Color& obj) {
+        return String(std::format(_T("{:#010x}"), obj.Value).c_str());
     }
 }

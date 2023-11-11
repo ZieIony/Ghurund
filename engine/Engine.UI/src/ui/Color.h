@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/reflection/Type.h"
-#include "core/string/String.h"
 #include "core/math/MathUtils.h"
 
 #include <stdint.h>
@@ -15,6 +13,10 @@ namespace Ghurund::UI {
 		float r, g, b, a;
 
 	public:
+		Color() {
+			Value = 0;
+		};
+
 		Color(uint32_t value) {
 			Value = value;
 		}
@@ -143,4 +145,7 @@ namespace Ghurund::Core {
 	inline Ghurund::UI::Color lerp(Ghurund::UI::Color val1, Ghurund::UI::Color val2, float fact) {
 		return Ghurund::UI::Color(lerpColors(val1, val2, fact));
 	}
+
+	template<>
+	String toString(const Ghurund::UI::Color& obj);
 }
