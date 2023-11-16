@@ -9,6 +9,15 @@ namespace Ghurund::UI {
         bool pressed[4] = { false, false, false, false };
 
     public:
+        MousePressed() {}
+
+        MousePressed(const MousePressed& other) {
+            pressed[0] = other.pressed[0];
+            pressed[1] = other.pressed[1];
+            pressed[2] = other.pressed[2];
+            pressed[3] = other.pressed[3];
+        }
+
         operator bool() const {
             return pressed[0] || pressed[1] || pressed[2] || pressed[3];
         }
@@ -19,6 +28,20 @@ namespace Ghurund::UI {
 
         const bool& operator[](MouseButton button) const {
             return pressed[(unsigned int)button];
+        }
+
+        bool operator==(const MousePressed& other) const {
+            return pressed[0] == other.pressed[0] &&
+                pressed[1] == other.pressed[1] &&
+                pressed[2] == other.pressed[2] &&
+                pressed[3] == other.pressed[3];
+        }
+
+        inline void clear() {
+            pressed[0] = false;
+            pressed[1] = false;
+            pressed[2] = false;
+            pressed[3] = false;
         }
     };
 

@@ -263,6 +263,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />

@@ -18,13 +18,13 @@ namespace Ghurund::UI {
 		Ghurund::UI::DrawableView* drawable = nullptr;
 
 		EventHandler<Control> stateHandler = [this](Control& control) {
-			if (clickable->Pressed) {
+			/*if (clickable->Pressed) {
 				state->State = IndicatorState::PRESSED;
 			} else if (clickable->Focused || clickable->Hovered) {
 				state->State = IndicatorState::FOCUSED;
 			} else {
 				state->State = IndicatorState::NONE;
-			}
+			}*/
 			return true;
 			};
 

@@ -507,10 +507,15 @@ namespace Ghurund::UI {
 	}
 
 	String Control::printTree() const {
+		String state = _T("");
+		if (Enabled)
+			state.add(_T('e'));
+		if (Focused)
+			state.add(_T('f'));
 		if (Name) {
-			return String(std::format(_T("{} '{}' {}\n"), Type.Name, *Name, Size).c_str());
+			return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, Size, state).c_str());
 		} else {
-			return String(std::format(_T("{} {}\n"), Type.Name, Size).c_str());
+			return String(std::format(_T("{} size: {}, state: {}\n"), Type.Name, Size, state).c_str());
 		}
 	}
 #endif

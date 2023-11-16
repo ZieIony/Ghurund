@@ -3,22 +3,15 @@
 
 namespace Ghurund::UI {
     void Button::onLayoutChanged() {
-        if (clickable) {
-            clickable->stateChanged -= stateHandler;
-            clickable->clicked -= clickHandler;
-            clickable->release();
-            clickable = nullptr;
-        }
+        if (state)
+            state->InteractionHandler = nullptr;
         safeRelease(state);
         __super::onLayoutChanged();
         Control* layoutControl = layout.get();
         if (layoutControl) {
-            setPointer(clickable, (Ghurund::UI::ClickableControl*)layoutControl->find("clickable"));
             setPointer(state, (Ghurund::UI::StateIndicator*)layoutControl->find("state"));
-            if (clickable) {
-                clickable->stateChanged += stateHandler;
-                clickable->clicked += clickHandler;
-            }
+            if (state)
+                state->InteractionHandler = &interactionHandler;
         }
     }
 
@@ -30,4 +23,4 @@ namespace Ghurund::UI {
 
         return TYPE;
     }
-}
+ }

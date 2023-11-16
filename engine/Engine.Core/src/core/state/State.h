@@ -1,29 +1,34 @@
 #pragma once
 
 #include "core/Event.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Core {
-	template<typename Type>
+	template<typename T>
 	class State {
 	private:
-		Type value;
+		T value;
 
 	public:
-		mutable Event<State, Type> event = *this;
+		mutable Event<State, T> event = *this;
 
-		State(Type initial):value(initial) {}
+		State(T initial):value(initial) {}
 
-		inline Type getValue() const {
+		inline operator const T& () const {
 			return value;
 		}
 
-		inline void setValue(const Type& value) {
-			if (this->value == value)
-				return;
-			this->value = value;
-			event(value);
+		inline const T& operator=(const T& value) {
+			if (this->value != value) {
+				this->value = value;
+				event(this->value);
+			}
+			return this->value;
 		}
-
-		__declspec(property(get = getValue, put = setValue)) Type Value;
 	};
+}
+
+namespace Ghurund::Core {
+	template<>
+	const Type& getType<State<bool>>();
 }

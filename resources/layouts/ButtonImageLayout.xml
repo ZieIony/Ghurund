@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<ControlGroup>
-		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
 		<ControlContainer name="container"/>
 		<StateIndicatorOnAccent name="state" width="Parent.Width" height="Parent.Height"/>
 	</ControlGroup>

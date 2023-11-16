@@ -299,7 +299,6 @@ namespace Ghurund::Core {
     };
 }
 
-
 template <>
 struct std::formatter<Ghurund::Core::Type, char>:std::formatter<const char*, char> {
     template <typename FormatContext>

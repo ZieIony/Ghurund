@@ -15,8 +15,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     protected:
-        friend class Control;
-
         Control* focusedChild = nullptr;
         Control* capturedChild = nullptr;
 

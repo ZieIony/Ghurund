@@ -30,25 +30,54 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    void StateIndicator::setState(IndicatorState state) {
-        if (this->state == state)
-            return;
-        animator.finish();
-        animation.InitialValue = Color;
-        if (state == IndicatorState::FOCUSED) {
-            if (this->state > state) {
-                animation.TargetValue = focusedColor;
-                animator.start(animation, color);
-            } else {
-                Color = focusedColor;
-            }
-        } else if (state == IndicatorState::PRESSED) {
+    StateIndicator::StateIndicator() {
+        animation.Duration = 150;
+        hoveredOrFocused.event += onStateChangedHandler;
+
+        IndicatorState resting = { false, false };
+        IndicatorState focused = { true, false };
+        IndicatorState pressed = { true, true };
+        stateMachine.addState(resting);
+        stateMachine.addState(focused);
+        stateMachine.addState(pressed);
+
+        stateMachine.addEdge(resting, focused, [this] {
+            animator.finish();
+            animation.InitialValue = Color;
+            animation.TargetValue = focusedColor;
+            animator.start(animation, color);
+        });
+        stateMachine.addEdge(focused, pressed, [this] {
+            animator.finish();
+            animation.InitialValue = Color;
             Color = pressedColor;
-        } else {
+        });
+        stateMachine.addEdge(pressed, focused, [this] {
+            animator.finish();
+            animation.InitialValue = Color;
+            animation.TargetValue = focusedColor;
+            animator.start(animation, color);
+        });
+        stateMachine.addEdge(focused, resting, [this] {
+            animator.finish();
+            animation.InitialValue = Color;
             animation.TargetValue = idleColor;
             animator.start(animation, color);
+        });
+    }
+
+    void StateIndicator::setInteractionHandler(const Ghurund::UI::InteractionHandler* interactionHandler) {
+        if (this->interactionHandler) {
+            this->interactionHandler->isFocused.event -= onHoveredFocusedHandler;
+            this->interactionHandler->isHovered.event -= onHoveredFocusedHandler;
+            this->interactionHandler->isPressed.event -= onStateChangedHandler;
         }
-        this->state = state;
+        this->interactionHandler = interactionHandler;
+        if (this->interactionHandler) {
+            this->interactionHandler->isFocused.event += onHoveredFocusedHandler;
+            this->interactionHandler->isHovered.event += onHoveredFocusedHandler;
+            this->interactionHandler->isPressed.event += onStateChangedHandler;
+        }
     }
 
     void StateIndicatorOnAccent::onThemeChanged() {

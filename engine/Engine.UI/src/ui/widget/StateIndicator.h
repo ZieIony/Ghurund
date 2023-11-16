@@ -1,75 +1,107 @@
 #pragma once
 
+#include "core/state/StateMachine.h"
 #include "ui/animation/Animator.h"
 #include "ui/animation/Animation.h"
 #include "ui/control/ColorView.h"
-#include "ui/control/ClickableControl.h"
+#include "ui/control/InteractionHandler.h"
 
 namespace Ghurund::UI {
-    enum class IndicatorState {
-        NONE, FOCUSED, PRESSED
-    };
+	class StateIndicator:public Control {
+	private:
+		struct IndicatorState {
+			bool focused = false, pressed = false;
 
-    class StateIndicator:public Control {
-    private:
-        Color color;
+			auto operator<=>(const IndicatorState& other) const = default;
+		};
 
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		friend struct std::formatter<IndicatorState, char>;
+		friend struct std::formatter<IndicatorState, wchar_t>;
 
-        Animator animator;
-        ValueAnimation<Color> animation;
-        IndicatorState state = IndicatorState::NONE;
+		Color color;
 
-        virtual void onThemeChanged() override;
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void onDraw(ICanvas& canvas) override;
+		Animator animator;
+		ValueAnimation<Color> animation;
+		State<bool> hoveredOrFocused = false;
+		const InteractionHandler* interactionHandler = nullptr;
+		StateMachine<IndicatorState> stateMachine = StateMachine<IndicatorState>({ false, false });
 
-    public:
-        Color idleColor = 0;
-        Color focusedColor = 0;
-        Color pressedColor = 0;
+		EventHandler<State<bool>, bool> onHoveredFocusedHandler = [this](State<bool>&, const bool&) {
+			hoveredOrFocused = interactionHandler->isHovered || interactionHandler->isFocused;
+			return true;
+		};
 
-        StateIndicator() {
-            animation.Duration = 150;
-        }
+		EventHandler<State<bool>, bool> onStateChangedHandler = [this](State<bool>&, const bool&) {
+			stateMachine.setState({ hoveredOrFocused, interactionHandler->isPressed });
+			return true;
+		};
 
-        void setState(IndicatorState state);
+		virtual void onThemeChanged() override;
 
-        __declspec(property(put = setState)) IndicatorState State;
+		virtual void onDraw(ICanvas& canvas) override;
 
-        virtual void onUpdate(uint64_t time) override {
-            animator.update(time);
-        }
+	public:
+		Color idleColor = 0;
+		Color focusedColor = 0;
+		Color pressedColor = 0;
 
-        inline const Color& getColor() {
-            return color;
-        }
+		StateIndicator();
 
-        inline void setColor(const Color& color) {
-            this->color = color;
-        }
+		void setInteractionHandler(const InteractionHandler* interactionHandler);
 
-        __declspec(property(get = getColor, put = setColor)) const Color& Color;
+		__declspec(property(put = setInteractionHandler)) const InteractionHandler& InteractionHandler;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+		virtual void onUpdate(uint64_t time) override {
+			animator.update(time);
+		}
 
-        inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
-    };
+		inline const Color& getColor() {
+			return color;
+		}
 
-    class StateIndicatorOnAccent:public StateIndicator {
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		inline void setColor(const Color& color) {
+			this->color = color;
+		}
 
-        virtual void onThemeChanged() override;
+		__declspec(property(get = getColor, put = setColor)) const Color& Color;
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = StateIndicatorOnAccent::GET_TYPE();
-    };
+		inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
+	};
+
+	class StateIndicatorOnAccent:public StateIndicator {
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+		virtual void onThemeChanged() override;
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = StateIndicatorOnAccent::GET_TYPE();
+	};
 }
+
+template <>
+struct std::formatter<Ghurund::UI::StateIndicator::IndicatorState, char>:std::formatter<const char*, char> {
+	template <typename FormatContext>
+	auto format(const Ghurund::UI::StateIndicator::IndicatorState& s, FormatContext& ctx) const {
+		return std::string("{") + (s.focused ? "true" : "false") + ", " + (s.pressed ? "true" : "false") + "}";
+	}
+};
+
+template <>
+struct std::formatter<Ghurund::UI::StateIndicator::IndicatorState, wchar_t>:std::formatter<const wchar_t*, wchar_t> {
+	template <typename FormatContext>
+	auto format(const Ghurund::UI::StateIndicator::IndicatorState& s, FormatContext& ctx) const {
+		return std::wstring(_T("{")) + (s.focused ? _T("true") : _T("false")) + _T(", ") + (s.pressed ? _T("true") : _T("false")) + _T("}");
+	}
+};
