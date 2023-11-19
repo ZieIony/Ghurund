@@ -18,7 +18,11 @@ namespace Ghurund::UI {
         Control* focusedChild = nullptr;
         Control* capturedChild = nullptr;
 
-    public:
+        ControlParent() {}
+
+        // focusedChild and capturedChild should be null in cloned instances
+        ControlParent(const ControlParent& other):Control(other) {}
+
         ~ControlParent() {
             if (focusedChild)
                 focusedChild->release();
@@ -26,6 +30,7 @@ namespace Ghurund::UI {
                 capturedChild->release();
         }
 
+    public:
         void setFocus(Control* control) {
             setPointer(focusedChild, control);
         }

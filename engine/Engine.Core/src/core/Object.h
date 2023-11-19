@@ -4,46 +4,50 @@
 #include "core/Lazy.h"
 
 namespace Ghurund::Core {
-    class Type;
+	class Type;
 
-    class Object {
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const {
-            return GET_TYPE();
-        }
+	class Object {
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const {
+			return GET_TYPE();
+		}
 
-    public:
-        virtual ~Object()
-        //    = 0   // TODO: a destructor cannot be abstract
-        {}   // gives a common destructor to all deriving classes
+		virtual bool equalsImpl(const Object& other) const;
 
-        static const Ghurund::Core::Type& GET_TYPE();
+	public:
+		virtual ~Object()
+			//    = 0   // TODO: a destructor cannot be abstract
+		{}   // gives a common destructor to all deriving classes
 
-        inline const Ghurund::Core::Type& getType() const {
-            return getTypeImpl();
-        }
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        __declspec(property(get = getType)) const Type& Type;
+		inline const Ghurund::Core::Type& getType() const {
+			return getTypeImpl();
+		}
 
-        /**
-         * @brief Constructs a deep copy of this object.
-         * @return Can be null if cloning is not supported.
-        */
-        virtual Object* clone() const {
-            return nullptr;
-        }
+		__declspec(property(get = getType)) const Type& Type;
 
-        virtual String toString() const;
-    };
+		inline bool operator==(const Object& other) const {
+			return equalsImpl(other);
+		}
 
-    /**
-     * @brief Clones an object and casts it back to its type.
-     * @tparam T
-     * @param obj An object to clone.
-     * @return A clone of the passed object. Can be null.
-    */
-    template<class T>
-    inline T* clone(T& obj) {
-        return (T*)obj.clone();
-    }
+		/**
+		 * @brief Constructs a deep copy of this object.
+		 * @return Cloned object.
+		*/
+		virtual Object* clone() const;
+
+		virtual String toString() const;
+	};
+
+	/**
+	 * @brief Clones an object and casts it back to its type.
+	 * @tparam T
+	 * @param obj An object to clone.
+	 * @return A clone of the passed object. Can be null.
+	*/
+	template<class T>
+	inline T* clone(T& obj) {
+		return (T*)obj.clone();
+	}
 }

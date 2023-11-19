@@ -9,11 +9,10 @@ namespace Ghurund::UI {
 		AttrType* attr;
 		const ValueType* value = nullptr;
 
-		AttrProperty(const AttrProperty& other) = delete;
-		AttrProperty(AttrProperty&& other) = delete;
-
 	public:
 		AttrProperty(const AttrType& attr) :attr((AttrType*)attr.clone()) {}
+
+		AttrProperty(const AttrProperty& other):attr((AttrType*)other.attr->clone()), value(other.value) {}
 
 		~AttrProperty() {
 			delete attr;
@@ -30,6 +29,11 @@ namespace Ghurund::UI {
 
 		inline const ValueType* get() const {
 			return value;
+		}
+
+		inline bool operator==(const AttrProperty& other) const {
+			return ((!attr && !other.attr) || (attr && other.attr && *attr == *other.attr)) &&
+				((!value && !other.value) || (value && other.value && *value == *other.value));
 		}
 	};
 
@@ -71,6 +75,11 @@ namespace Ghurund::UI {
 
 		inline const bool operator==(const AttrType* attr) const {
 			return this->attr == attr;
+		}
+
+		inline bool operator==(const NullableAttrProperty& other) const {
+			return ((!attr && !other.attr) || (attr && other.attr && *attr == *other.attr)) &&
+				((!value && !other.value) || (value && other.value && *value == *other.value));
 		}
 	};
 

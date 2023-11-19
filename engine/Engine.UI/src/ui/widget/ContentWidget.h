@@ -36,6 +36,13 @@ namespace Ghurund::UI {
 		}
 
 	public:
+		ContentWidget() {}
+
+		ContentWidget(const ContentWidget& other):Widget(other),
+			container((ControlContainer*)other.container->clone()) {
+			Content = (Control*)other.content->clone();
+		}
+
 		~ContentWidget() {
 			if (container)
 				container->release();

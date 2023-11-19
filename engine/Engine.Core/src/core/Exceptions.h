@@ -37,4 +37,6 @@ namespace Ghurund::Core {
     public:
         IOException(const char* message = nullptr):std::exception(message) {}
     };
+
+    class CloningNotSupportedException:public std::exception {};
 }

@@ -10,5 +10,8 @@ namespace Ghurund::Core {
             float m[3][2];
         };
 
+        virtual bool operator==(const Matrix3x2& other) const {
+            return memcmp(m, other.m, sizeof(float) * 6) == 0;
+        }
     };
 }

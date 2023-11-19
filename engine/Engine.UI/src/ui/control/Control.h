@@ -79,6 +79,26 @@ namespace Ghurund::UI {
 		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
 		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
 
+		Control() {}
+
+		Control(const Control& other):Resource(other),
+			cursor(other.cursor),
+			size(other.size),
+			visible(other.visible), enabled(other.enabled), focusable(other.focusable), roundToPixels(other.roundToPixels),
+			name(other.name ? ghnew AString(*other.name) : nullptr),
+			position(other.position), rotation(other.rotation), transformation(other.transformation),
+			measuredSize(other.measuredSize),
+			needsLayout(other.needsLayout),
+			localTheme(other.localTheme),
+			left((Constraint*)other.left->clone()),
+			width((Constraint*)other.width->clone()),
+			right((Constraint*)other.right->clone()),
+			top((Constraint*)other.top->clone()),
+			height((Constraint*)other.height->clone()),
+			bottom((Constraint*)other.bottom->clone()) {}
+
+		virtual ~Control() = 0;
+
 		virtual void loadInternal(Ghurund::UI::LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
 		virtual void onLoaded() {}
@@ -101,9 +121,7 @@ namespace Ghurund::UI {
 
 		Control* resolvePath(const Array<AString>& path);
 
-		virtual ~Control()
-			//    = 0   // TODO: a destructor cannot be abstract
-			;
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		Event<Control> sizeChanged = *this;

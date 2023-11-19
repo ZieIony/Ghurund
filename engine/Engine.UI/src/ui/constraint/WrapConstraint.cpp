@@ -6,6 +6,13 @@
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
+    bool WrapWidthConstraint::equalsImpl(const Object& other) const {
+        if (__super::equalsImpl(other))
+            return true;
+        const WrapWidthConstraint& c = (const WrapWidthConstraint&)other;
+        return control == c.control;
+    }
+
     void WrapWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         graph.add(this);
         dependencies.clear();
@@ -29,6 +36,13 @@ namespace Ghurund::UI {
         for (Constraint* c : dependencies)
             value = std::max(value, c->Value);
         value = minMax(min, value * ratio + offset, max);
+    }
+
+    bool WrapHeightConstraint::equalsImpl(const Object& other) const {
+        if (__super::equalsImpl(other))
+            return true;
+        const WrapHeightConstraint& c = (const WrapHeightConstraint&)other;
+        return control == c.control;
     }
 
     void WrapHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {

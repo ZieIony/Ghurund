@@ -119,6 +119,22 @@ namespace Ghurund::UI {
 		return result;
 	}
 
+	bool Control::equalsImpl(const Object& other) const {
+		if (__super::equalsImpl(other))
+			return true;
+		const Control& c = (const Control&)other;
+		return cursor == c.cursor &&
+			size == c.size &&
+			visible == c.visible && enabled == c.enabled && focusable == c.focusable && roundToPixels == c.roundToPixels &&
+			name == c.name &&
+			position == c.position, rotation == c.rotation && transformation == c.transformation &&
+			measuredSize == c.measuredSize &&
+			needsLayout == c.needsLayout &&
+			localTheme == c.localTheme &&
+			left == c.left && width == c.width && right == c.right &&
+			top == c.top && height == c.height && bottom == c.bottom;
+	}
+
 	bool Control::isEnabled() const {
 		return enabled && (!parent || parent->Enabled);
 	}

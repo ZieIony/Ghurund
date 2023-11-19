@@ -4,138 +4,78 @@
 #include "core/collection/Set.h"
 
 namespace Ghurund::UI {
-    class Control;
-    class ConstraintGraph;
+	class Control;
+	class ConstraintGraph;
 
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class Constraint:public Pointer {
-    protected:
-        float value = 0.0f;
-        bool constant = false, skipDependencies = false;
-        Set<Constraint*> dependencies;
+	class Constraint:public Pointer {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        Constraint() {}
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+#pragma endregion
 
-        Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
+	protected:
+		float value = 0.0f;
+		bool constant = false, skipDependencies = false;
+		Set<Constraint*> dependencies;
 
-        virtual ~Constraint()// = 0 
-        {}
+		virtual bool equalsImpl(const Object& other) const override;
 
-        inline bool isConstant() const {
-            return constant;
-        }
+		Constraint(const Constraint& other):
+			value(other.value),
+			constant(other.constant),
+			skipDependencies(other.skipDependencies),
+			dependencies(other.dependencies) {}
 
-        __declspec(property(get = isConstant)) bool Constant;
+	public:
+		Constraint() {}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) {}
+		Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
 
-        virtual void evaluate() {}
+		virtual ~Constraint()// = 0 
+		{}
 
-        Set<Constraint*>& getDependencies() {
-            return dependencies;
-        }
+		inline bool isConstant() const {
+			return constant;
+		}
 
-        __declspec(property(get = getDependencies)) Set<Constraint*>& Dependencies;
+		__declspec(property(get = isConstant)) bool Constant;
 
-        inline void setValue(float value) {
-            this->value = value;
-        }
+		virtual void resolve(Control& control, ConstraintGraph& graph) {}
 
-        inline float getValue() const {
-            return value;
-        }
+		virtual void evaluate() {}
 
-        __declspec(property(get = getValue)) float Value;
+		Set<Constraint*>& getDependencies() {
+			return dependencies;
+		}
 
-        // for example wrap constraint can skip fill dependencies to not introduce cycles
-        inline bool canSkipDependencies() const {
-            return skipDependencies;
-        }
+		__declspec(property(get = getDependencies)) Set<Constraint*>& Dependencies;
 
-        __declspec(property(get = canSkipDependencies)) bool CanSkipDependencies;
-    };
+		inline void setValue(float value) {
+			this->value = value;
+		}
 
-    class OffsetConstraint:public Constraint {
-    protected:
-        float offset = 0.0f;
+		inline float getValue() const {
+			return value;
+		}
 
-    public:
-        OffsetConstraint() {}
-      
-        OffsetConstraint(bool constant, bool skipDependencies):Constraint(constant, skipDependencies) {}
+		__declspec(property(get = getValue)) float Value;
 
-        inline float getOffset() const {
-            return offset;
-        }
+		// for example wrap constraint can skip fill dependencies to not introduce cycles
+		inline bool canSkipDependencies() const {
+			return skipDependencies;
+		}
 
-        inline void setOffset(float offset) {
-            this->offset = offset;
-        }
+		__declspec(property(get = canSkipDependencies)) bool CanSkipDependencies;
 
-        __declspec(property(get = getOffset, put = setOffset)) float Offset;
-
-        virtual void resolve(Control& control, ConstraintGraph& graph) override {
-            value = offset;
-        }
-    };
-
-    class RatioConstraint:public OffsetConstraint {
-    protected:
-        float ratio = 1.0f;
-
-    public:
-        RatioConstraint() {}
-
-        RatioConstraint(bool constant, bool skipDependencies):OffsetConstraint(constant, skipDependencies) {}
-
-        inline float getRatio() const {
-            return ratio;
-        }
-
-        inline void setRatio(float ratio) {
-            if (ratio <= 0.0f)
-                throw InvalidParamException();
-            this->ratio = ratio;
-        }
-
-        __declspec(property(get = getRatio, put = setRatio)) float Ratio;
-    };
-
-    class MinMaxConstraint:public RatioConstraint {
-    protected:
-        float min = std::numeric_limits<float>::lowest(), max = std::numeric_limits<float>::max();
-
-    public:
-        MinMaxConstraint() {}
-
-        MinMaxConstraint(bool constant, bool skipDependencies):RatioConstraint(constant, skipDependencies) {}
-
-        inline float getMin() const {
-            return min;
-        }
-
-        inline void setMin(float min) {
-            if (min > max)
-                throw InvalidParamException();
-            this->min = min;
-            value = std::max(value, min);
-        }
-
-        __declspec(property(get = getMin, put = setMin)) float Min;
-
-        inline float getMax() const {
-            return max;
-        }
-
-        inline void setMax(float max) {
-            if (max < min)
-                throw InvalidParamException();
-            this->max = max;
-            value = std::min(value, min);
-        }
-
-        __declspec(property(get = getMax, put = setMax)) float Max;
-    };
+		virtual Object* clone() const {
+			return ghnew Constraint(*this);
+		}
+	};
 }

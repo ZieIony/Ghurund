@@ -28,9 +28,15 @@ namespace Ghurund::UI {
 			Focusable = true;
 		}
 
+		Button(const Button& button):ContentWidget(button) {}
+
 		~Button() {
 			if (state)
 				state->release();
+		}
+
+		virtual Button* clone() const override {
+			return ghnew Button(*this);
 		}
 	};
 }

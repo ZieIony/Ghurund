@@ -1,197 +1,285 @@
 #pragma once
 
-#include "Constraint.h"
+#include "MinMaxConstraint.h"
 #include "ValueConstraint.h"
 #include "core/math/MathUtils.h"
 
 namespace Ghurund::UI {
-    class Control;
+	class Control;
 
-    class SelfWidthConstraint:public MinMaxConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	class SelfWidthConstraint:public MinMaxConstraint {
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
-    };
+		virtual void evaluate() override {
+			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
 
-    class SelfHeightConstraint:public MinMaxConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew SelfWidthConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
-    };
+	class SelfHeightConstraint:public MinMaxConstraint {
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-    class LeftWidthConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> left, width;
+		virtual void evaluate() override {
+			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
 
-    public:
-        LeftWidthConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width)
-            :left(left), width(width) {
-            dependencies.putAll({ this->left.get(), this->width.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew SelfHeightConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = left->Value + width->Value;
-        }
-    };
+	class LeftWidthConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> left, width;
 
-    class CenterLeftConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> left, width, right;
+		LeftWidthConstraint(const LeftWidthConstraint& other):Constraint(other), left(other.left), width(other.width) {}
 
-    public:
-        CenterLeftConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
-            :left(left), width(width), right(right) {
-                dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
-        }
+		virtual bool equalsImpl(const Object& other) const override;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	public:
+		LeftWidthConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width)
+			:left(left), width(width) {
+			dependencies.putAll({ this->left.get(), this->width.get() });
+		}
 
-        virtual void evaluate() override {
-            value = (right->Value + left->Value - width->Value) / 2;
-        }
-    };
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-    class LeftRightConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> left, right;
+		virtual void evaluate() override {
+			value = left->Value + width->Value;
+		}
 
-    public:
-        LeftRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& right)
-            :left(left), right(right) {
-            dependencies.putAll({ this->left.get(), this->right.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew LeftWidthConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = right->Value - left->Value;
-        }
-    };
+	class CenterLeftConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> left, width, right;
 
-    class CenterRightConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> left, width, right;
+		CenterLeftConstraint(const CenterLeftConstraint& other):Constraint(other), left(other.left), width(other.width), right(other.right) {}
 
-    public:
-        CenterRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
-            :left(left), width(width), right(right) {
-            dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
-        }
+		virtual bool equalsImpl(const Object& other) const override;
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	public:
+		CenterLeftConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+			:left(left), width(width), right(right) {
+			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
+		}
 
-        virtual void evaluate() override {
-            value = (right->Value + left->Value + width->Value) / 2;
-        }
-    };
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-    class WidthRightConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> width, right;
+		virtual void evaluate() override {
+			value = (right->Value + left->Value - width->Value) / 2;
+		}
 
-    public:
-        WidthRightConstraint(const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
-            :width(width), right(right) {
-            dependencies.putAll({ this->width.get(), this->right.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew CenterLeftConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = right->Value - width->Value;
-        }
-    };
+	class LeftRightConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> left, right;
 
-    class TopHeightConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> top, height;
+		LeftRightConstraint(const LeftRightConstraint& other):Constraint(other), left(other.left), right(other.right) {}
 
-    public:
-        TopHeightConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height)
-            :top(top), height(height) {
-            dependencies.putAll({ this->top.get(), this->height.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual bool equalsImpl(const Object& other) const override;
 
-        virtual void evaluate() override {
-            value = top->Value + height->Value;
-        }
-    };
+	public:
+		LeftRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& right)
+			:left(left), right(right) {
+			dependencies.putAll({ this->left.get(), this->right.get() });
+		}
 
-    class CenterTopConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> top, height, bottom;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-    public:
-        CenterTopConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
-            :top(top), height(height), bottom(bottom) {
-            dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
-        }
+		virtual void evaluate() override {
+			value = right->Value - left->Value;
+		}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew LeftRightConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = (bottom->Value + top->Value - height->Value) / 2;
-        }
-    };
+	class CenterRightConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> left, width, right;
 
-    class TopBottomConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> top, bottom;
+		CenterRightConstraint(const CenterRightConstraint& other):Constraint(other), left(other.left), width(other.width), right(other.right) {}
 
-    public:
-        TopBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& bottom)
-            :top(top), bottom(bottom) {
-            dependencies.putAll({ this->top.get(), this->bottom.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual bool equalsImpl(const Object& other) const override;
 
-        virtual void evaluate() override {
-            value = bottom->Value - top->Value;
-        }
-    };
+	public:
+		CenterRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+			:left(left), width(width), right(right) {
+			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
+		}
 
-    class CenterBottomConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> top, height, bottom;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-    public:
-        CenterBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
-            :top(top), height(height), bottom(bottom) {
-            dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
-        }
+		virtual void evaluate() override {
+			value = (right->Value + left->Value + width->Value) / 2;
+		}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual Object* clone() const {
+			return ghnew CenterRightConstraint(*this);
+		}
+	};
 
-        virtual void evaluate() override {
-            value = (bottom->Value + top->Value + height->Value) / 2;
-        }
-    };
+	class WidthRightConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> width, right;
 
-    class HeightBottomConstraint:public Constraint {
-    private:
-        SharedPointer<Constraint> height, bottom;
+		WidthRightConstraint(const WidthRightConstraint& other):Constraint(other), width(other.width), right(other.right) {}
 
-    public:
-        HeightBottomConstraint(const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
-            :height(height), bottom(bottom) {
-            dependencies.putAll({ this->height.get(), this->bottom.get() });
-        }
-        
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual bool equalsImpl(const Object& other) const override;
 
-        virtual void evaluate() override {
-            value = bottom->Value - height->Value;
-        }
-    };
+	public:
+		WidthRightConstraint(const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+			:width(width), right(right) {
+			dependencies.putAll({ this->width.get(), this->right.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = right->Value - width->Value;
+		}
+
+		virtual Object* clone() const {
+			return ghnew WidthRightConstraint(*this);
+		}
+	};
+
+	class TopHeightConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> top, height;
+
+		TopHeightConstraint(const TopHeightConstraint& other):Constraint(other), top(other.top), height(other.height) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
+
+	public:
+		TopHeightConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height)
+			:top(top), height(height) {
+			dependencies.putAll({ this->top.get(), this->height.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = top->Value + height->Value;
+		}
+
+		virtual Object* clone() const {
+			return ghnew TopHeightConstraint(*this);
+		}
+	};
+
+	class CenterTopConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> top, height, bottom;
+
+		CenterTopConstraint(const CenterTopConstraint& other):Constraint(other), top(other.top), height(other.height), bottom(other.bottom) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
+
+	public:
+		CenterTopConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+			:top(top), height(height), bottom(bottom) {
+			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = (bottom->Value + top->Value - height->Value) / 2;
+		}
+
+		virtual Object* clone() const {
+			return ghnew CenterTopConstraint(*this);
+		}
+	};
+
+	class TopBottomConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> top, bottom;
+
+		TopBottomConstraint(const TopBottomConstraint& other):Constraint(other), top(other.top), bottom(other.bottom) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
+
+	public:
+		TopBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& bottom)
+			:top(top), bottom(bottom) {
+			dependencies.putAll({ this->top.get(), this->bottom.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = bottom->Value - top->Value;
+		}
+
+		virtual Object* clone() const {
+			return ghnew TopBottomConstraint(*this);
+		}
+	};
+
+	class CenterBottomConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> top, height, bottom;
+
+		CenterBottomConstraint(const CenterBottomConstraint& other):Constraint(other), top(other.top), height(other.height), bottom(other.bottom) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
+
+	public:
+		CenterBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+			:top(top), height(height), bottom(bottom) {
+			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = (bottom->Value + top->Value + height->Value) / 2;
+		}
+
+		virtual Object* clone() const {
+			return ghnew CenterBottomConstraint(*this);
+		}
+	};
+
+	class HeightBottomConstraint:public Constraint {
+	private:
+		SharedPointer<Constraint> height, bottom;
+
+		HeightBottomConstraint(const HeightBottomConstraint& other):Constraint(other), height(other.height), bottom(other.bottom) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
+
+	public:
+		HeightBottomConstraint(const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+			:height(height), bottom(bottom) {
+			dependencies.putAll({ this->height.get(), this->bottom.get() });
+		}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			value = bottom->Value - height->Value;
+		}
+
+		virtual Object* clone() const {
+			return ghnew HeightBottomConstraint(*this);
+		}
+	};
 }

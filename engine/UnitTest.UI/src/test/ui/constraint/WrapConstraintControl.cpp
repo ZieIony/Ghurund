@@ -39,7 +39,7 @@ public:
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            auto container = makeShared<Control>();
+            auto container = makeShared<ColorView>();
             container->Constraints = {
                 .width = makeShared<WrapWidthConstraint>(),
                 .height = makeShared<WrapHeightConstraint>()
@@ -58,7 +58,7 @@ public:
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            auto container = makeShared<Control>();
+            auto container = makeShared<ColorView>();
             container->Constraints = {
                 .width = []() {
                     auto c = makeShared<WrapWidthConstraint>();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Constraint.h"
+#include "OffsetConstraint.h"
 #include "ValueConstraint.h"
 #include "ui/control/ControlParent.h"
 
@@ -12,6 +12,10 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousLeftConstraint(*this);
+		}
 	};
 
 	class PreviousRightConstraint:public OffsetConstraint {
@@ -20,6 +24,10 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = (*dependencies.begin())->Value + offset;
+		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousRightConstraint(*this);
 		}
 	};
 
@@ -31,6 +39,10 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty)
 				value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousTopConstraint(*this);
+		}
 	};
 
 	class PreviousBottomConstraint:public OffsetConstraint {
@@ -40,6 +52,10 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			if (!dependencies.Empty)
 				value = (*dependencies.begin())->Value + offset;
+		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousBottomConstraint(*this);
 		}
 	};
 
@@ -51,6 +67,10 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty)
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousWidthConstraint(*this);
+		}
 	};
 
 	class PreviousHeightConstraint:public MinMaxConstraint {
@@ -60,6 +80,10 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			if (!dependencies.Empty)
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
+
+		virtual Object* clone() const {
+			return ghnew PreviousHeightConstraint(*this);
 		}
 	};
 }

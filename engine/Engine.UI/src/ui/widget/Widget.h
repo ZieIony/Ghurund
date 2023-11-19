@@ -15,6 +15,10 @@ namespace Ghurund::UI {
 
 		PointerAttrProperty<LayoutAttr, Control> layout;
 
+		Widget() {}
+
+		Widget(const Widget& other):ControlContainerBase(other), layout(other.layout) {}
+
 		void updateLayout();
 
 		virtual void onLoaded() override;

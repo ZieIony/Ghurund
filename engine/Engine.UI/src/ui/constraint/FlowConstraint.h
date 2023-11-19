@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Constraint.h"
+#include "MinMaxConstraint.h"
 
 namespace Ghurund::UI {
 
@@ -11,6 +11,10 @@ namespace Ghurund::UI {
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override;
+
+        virtual Object* clone() const {
+            return ghnew FlowWidthConstraint(*this);
+        }
     };
 
     class FlowHeightConstraint:public MinMaxConstraint {
@@ -20,5 +24,9 @@ namespace Ghurund::UI {
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override;
+
+        virtual Object* clone() const {
+            return ghnew FlowHeightConstraint(*this);
+        }
     };
 }

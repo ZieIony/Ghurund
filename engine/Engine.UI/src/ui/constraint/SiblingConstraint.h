@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Constraint.h"
+#include "OffsetConstraint.h"
 #include "ValueConstraint.h"
 #include "ui/control/ControlParent.h"
 
@@ -8,6 +8,11 @@ namespace Ghurund::UI {
 	class SiblingLeftConstraint:public OffsetConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingLeftConstraint(const SiblingLeftConstraint& other):OffsetConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingLeftConstraint(const AString& name):name(name) {}
@@ -23,11 +28,20 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingLeftConstraint(*this);
+		}
 	};
 
 	class SiblingRightConstraint:public OffsetConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingRightConstraint(const SiblingRightConstraint& other):OffsetConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingRightConstraint(const AString& name):name(name) {}
@@ -43,11 +57,20 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingRightConstraint(*this);
+		}
 	};
 
 	class SiblingTopConstraint: public OffsetConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingTopConstraint(const SiblingTopConstraint& other):OffsetConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingTopConstraint(const AString& name): name(name) {}
@@ -64,11 +87,20 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty)
 				value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingTopConstraint(*this);
+		}
 	};
 
 	class SiblingBottomConstraint:public OffsetConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingBottomConstraint(const SiblingBottomConstraint& other):OffsetConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingBottomConstraint(const AString& name):name(name) {}
@@ -85,11 +117,20 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty)
 				value = (*dependencies.begin())->Value + offset;
 		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingBottomConstraint(*this);
+		}
 	};
 
 	class SiblingWidthConstraint:public MinMaxConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingWidthConstraint(const SiblingWidthConstraint& other):MinMaxConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingWidthConstraint(const AString& name):name(name) {}
@@ -106,11 +147,20 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty)
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingWidthConstraint(*this);
+		}
 	};
 
 	class SiblingHeightConstraint:public MinMaxConstraint {
 	private:
 		const AString name;
+
+	protected:
+		SiblingHeightConstraint(const SiblingHeightConstraint& other):MinMaxConstraint(other), name(other.name) {}
+
+		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
 		SiblingHeightConstraint(const AString& name): name(name) {}
@@ -126,6 +176,10 @@ namespace Ghurund::UI {
 		virtual void evaluate() override {
 			if (!dependencies.Empty)
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+		}
+
+		virtual Object* clone() const {
+			return ghnew SiblingHeightConstraint(*this);
 		}
 	};
 }

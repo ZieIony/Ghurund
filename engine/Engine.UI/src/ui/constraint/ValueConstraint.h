@@ -17,6 +17,10 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getValue, put = setValue)) float Value;
+
+        virtual Object* clone() const {
+            return ghnew ValueConstraint(*this);
+        }
     };
 
 }

@@ -10,96 +10,103 @@
 #include <stdint.h>
 
 namespace Ghurund::Core {
-    struct DataSize {
-        uint64_t graphical, system;
-    };
+	struct DataSize {
+		uint64_t graphical, system;
+	};
 
-    class ResourceManager;
-    class MemoryInputStream;
-    class MemoryOutputStream;
-    class File;
+	class ResourceManager;
+	class MemoryInputStream;
+	class MemoryOutputStream;
+	class File;
 
-    class Resource: public Pointer {
-    private:
-        bool valid = false;
-        ResourcePath* path = nullptr;
+	class Resource: public Pointer {
+	private:
+		bool valid = false;
+		ResourcePath* path = nullptr;
 
-    protected:
-        DataSize dataSize = {};
+	protected:
+		DataSize dataSize = {};
 
-        ~Resource();
+		Resource() {}
 
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-            throw NotImplementedException();
-        };
+		Resource(const Resource& other):
+			valid(valid),
+			path(other.path ? ghnew ResourcePath(*other.path) : nullptr),
+			dataSize(other.dataSize) {}
 
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-            throw NotImplementedException();
-        };
+		~Resource();
 
-        virtual unsigned int getVersion() const {
-            return 0;
-        }
+		virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+			throw NotImplementedException();
+		};
 
-        void writeHeader(MemoryOutputStream& stream) const;
-        void readHeader(MemoryInputStream& stream);
+		virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+			throw NotImplementedException();
+		};
 
-        static const Array<ResourceFormat>& GET_FORMATS();
+		virtual unsigned int getVersion() const {
+			return 0;
+		}
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+		void writeHeader(MemoryOutputStream& stream) const;
+		void readHeader(MemoryInputStream& stream);
 
-    public:
-        void load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
+		static const Array<ResourceFormat>& GET_FORMATS();
 
-        void save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void reload() {
-            valid = true;
-            invalidate();
-            addReference();
-            //load();
-            throw NotImplementedException();
-            //release();
-        }
+	public:
+		void load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
 
-        virtual void invalidate() {
-            valid = false;
-        }
+		void save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
-        void setValid(bool valid) {
-            this->valid = valid;
-        }
+		virtual void reload() {
+			valid = true;
+			invalidate();
+			addReference();
+			//load();
+			throw NotImplementedException();
+			//release();
+		}
 
-        virtual bool isValid() const {
-            return valid;
-        }
+		virtual void invalidate() {
+			valid = false;
+		}
 
-        __declspec(property(get = isValid, put = setValid)) bool Valid;
+		void setValid(bool valid) {
+			this->valid = valid;
+		}
 
-        const ResourcePath* getPath() const {
-            return path;
-        }
+		virtual bool isValid() const {
+			return valid;
+		}
 
-        void setPath(const ResourcePath* path);
+		__declspec(property(get = isValid, put = setValid)) bool Valid;
 
-        __declspec(property(get = getPath, put = setPath)) ResourcePath* Path;
-        /*
-        const DataSize& getSize() const {
-            return dataSize;
-        }
+		const ResourcePath* getPath() const {
+			return path;
+		}
 
-        __declspec(property(get = getSize)) const DataSize& Size;*/
+		void setPath(const ResourcePath* path);
 
-        static const Ghurund::Core::Type& GET_TYPE();
+		__declspec(property(get = getPath, put = setPath)) ResourcePath* Path;
+		/*
+		const DataSize& getSize() const {
+			return dataSize;
+		}
 
-        inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
+		__declspec(property(get = getSize)) const DataSize& Size;*/
 
-        virtual const Array<ResourceFormat>& getFormats() const {
-            return FORMATS;
-        }
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
-    };
+		inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
+
+		virtual const Array<ResourceFormat>& getFormats() const {
+			return FORMATS;
+		}
+
+		__declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+	};
 }
