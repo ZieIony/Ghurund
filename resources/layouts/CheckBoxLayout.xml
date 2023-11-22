@@ -7,8 +7,7 @@
 		<ControlGroup alignment="center, center" width="18" height="18">
 			<PaddingContainer padding="-4"  width="Parent.Width" height="Parent.Height">
 				<Clip shape="roundRect, 2">
-					<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-									style="theme://style/StateIndicator_onBackground"/>
+					<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
 				</Clip>
 			</PaddingContainer>
 			<DrawableView name="drawable" width="18" height="18"

@@ -185,7 +185,7 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getFocus)) Control* Focus;
 
-		inline Control* findFocus() {
+		inline Control* findFocus() const {
 			Control* focus = Focus;
 			if (focus) {
 				while (focus->Focus)
@@ -206,6 +206,9 @@ namespace Ghurund::UI {
 
 		virtual bool focusPrevious();
 
+		/**
+		* @brief Directional focus is useful when navigating with a gamepad.
+		*/
 		virtual bool focusUp();
 
 		virtual bool focusDown();
@@ -282,12 +285,16 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getMeasuredSize)) Ghurund::Core::FloatSize& MeasuredSize;
 
-		inline bool canReceiveEvent(const MouseEventArgs& event) {
+		inline bool canReceiveEvent(const KeyEventArgs& event) const {
+			return Visible && Enabled;
+		}
+
+		inline bool canReceiveEvent(const MouseEventArgs& event) const {
 			return Visible && Enabled && hitTest((float)event.Position.x, (float)event.Position.y);
 		}
 
 		// TODO: support matrix transformation
-		inline bool hitTest(float x, float y) {
+		inline bool hitTest(float x, float y) const {
 			return x >= position.x && x < position.x + size.Width && y >= position.y && y < position.y + size.Height;
 		}
 

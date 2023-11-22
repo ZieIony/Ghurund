@@ -163,7 +163,6 @@
     <ClInclude Include="src\ui\control\ScrollView.h" />
     <ClInclude Include="src\ui\control\SelectableView.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
-    <ClInclude Include="src\ui\control\Space.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
     <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
@@ -304,7 +303,6 @@
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
     <ClCompile Include="src\ui\control\SelectableView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
-    <ClCompile Include="src\ui\control\Space.cpp" />
     <ClCompile Include="src\ui\drawable\CursorDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
     <ClCompile Include="src\ui\drawable\InvalidImageDrawable.cpp" />

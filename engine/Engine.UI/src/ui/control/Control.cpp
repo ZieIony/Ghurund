@@ -526,8 +526,12 @@ namespace Ghurund::UI {
 		String state = _T("");
 		if (Enabled)
 			state.add(_T('e'));
-		if (Focused)
+		if (Focusable)
 			state.add(_T('f'));
+		if (Focused)
+			state.add(_T('F'));
+		if (Visible)
+			state.add(_T('v'));
 		if (Name) {
 			return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, Size, state).c_str());
 		} else {
