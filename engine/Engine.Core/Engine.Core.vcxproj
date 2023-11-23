@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\Color.h" />
+    <ClInclude Include="src\core\Colors.h" />
     <ClInclude Include="src\core\state\State.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
@@ -261,6 +263,7 @@
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\Pointer.cpp" />
     <ClCompile Include="src\core\state\State.cpp" />

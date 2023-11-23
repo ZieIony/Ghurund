@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ui/theme/Theme.h"
+#include "core/Color.h"
 
 #include <stdint.h>
 

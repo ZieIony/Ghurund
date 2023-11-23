@@ -1,11 +1,11 @@
 #pragma once
 
 #include "core/math/MathUtils.h"
+#include "core/reflection/Type.h"
 
 #include <stdint.h>
 
-namespace Ghurund::UI {
-	using namespace Ghurund::Core;
+namespace Ghurund::Core {
 
 	class Color {
 	private:
@@ -135,17 +135,15 @@ namespace Ghurund::UI {
 		uint32_t b = (uint32_t)((color & 0xff) * (1 - amount) + (color2 & 0xff) * amount);
 		return ((a & 0xff) << 24) | ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
 	}
-}
-
-namespace Ghurund::Core {
-	template<>
-	const Type& getType<Ghurund::UI::Color>();
 
 	template<>
-	inline Ghurund::UI::Color lerp(Ghurund::UI::Color val1, Ghurund::UI::Color val2, float fact) {
-		return Ghurund::UI::Color(lerpColors(val1, val2, fact));
+	const Type& getType<Color>();
+
+	template<>
+	inline Color lerp(Color val1, Color val2, float fact) {
+		return Color(lerpColors(val1, val2, fact));
 	}
 
 	template<>
-	String toString(const Ghurund::UI::Color& obj);
+	String toString(const Color& obj);
 }

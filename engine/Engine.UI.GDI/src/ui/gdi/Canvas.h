@@ -61,7 +61,7 @@ namespace Ghurund::UI::GDI {
             graphics->Clear(this->color);
         }
 
-        virtual void setColor(const Ghurund::UI::Color& color) {
+        virtual void setColor(const Ghurund::Core::Color& color) {
             this->color.SetValue(color);
         }
 
@@ -75,11 +75,11 @@ namespace Ghurund::UI::GDI {
 
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) override;
+        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) override;
 
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) override;
 
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) override;
+        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) override;
 
         virtual void drawImage(VectorImage& svgDocument) override;
 
@@ -100,7 +100,7 @@ namespace Ghurund::UI::GDI {
             graphics->Restore(state);
         }
 
-        virtual void clipShape(Shape& shape) override {
+        virtual void clipShape(Ghurund::UI::Shape& shape) override {
             //graphics->SetClip(shape.Path, Gdiplus::CombineModeIntersect);
             throw NotImplementedException();
         }

@@ -89,7 +89,7 @@ namespace Ghurund::UI::GDI {
         //deviceContext->DrawBitmap(bitmapImage, d, alpha);
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha) {
+    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
@@ -102,7 +102,7 @@ namespace Ghurund::UI::GDI {
         deviceContext->DrawBitmap(bitmapImage, d, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, s);*/
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha) {
+    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);

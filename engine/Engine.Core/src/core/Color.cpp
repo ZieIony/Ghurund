@@ -1,4 +1,4 @@
-#include "ghuipch.h"
+#include "ghcpch.h"
 #include "Color.h"
 
 #include "core/reflection/Type.h"
@@ -6,8 +6,8 @@
 
 #include <regex>
 
-namespace Ghurund::UI {
-    Color Ghurund::UI::Color::parse(const AString& color) {
+namespace Ghurund::Core {
+    Color Color::parse(const AString& color) {
         uint32_t value = 0;
         AString str = color.toLowerCase();
         std::regex regex(" *\\#((?:[a-f0-9]{2})?[a-f0-9]{6}) *");
@@ -26,17 +26,15 @@ namespace Ghurund::UI {
         }
         return Color(value);
     }
-}
 
-namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::Color>() {
-        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Color", sizeof(Ghurund::UI::Color));
+    const Type& getType<Color>() {
+        static Type TYPE = Type(NAMESPACE_NAME, "Color", sizeof(Color));
         return TYPE;
     }
 
     template<>
-    String toString(const Ghurund::UI::Color& obj) {
+    String toString(const Color& obj) {
         return String(std::format(_T("{:#010x}"), obj.Value).c_str());
     }
 }

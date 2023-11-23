@@ -3,8 +3,8 @@
 #include "AttributeKey.h"
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
+#include "core/Color.h"
 
-#include "ui/Color.h"
 #include "ui/drawable/Drawable.h"
 #include "ui/text/TextFormat.h"
 #include "DrawableProvider.h"

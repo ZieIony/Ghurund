@@ -1,8 +1,8 @@
 #pragma once
 
+#include "core/Color.h"
 #include "core/math/Size.h"
 #include "core/string/String.h"
-#include "ui/Color.h"
 #include "TextMetrics.h"
 #include "TextFormat.h"
 #include "TextDocument.h"

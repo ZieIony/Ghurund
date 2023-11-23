@@ -1,14 +1,15 @@
 #pragma once
 
+#include "core/Color.h"
+#include "core/IUnknownImpl.h"
+#include "core/math/Size.h"
+
+#include "ui/Canvas.h"
+#include "ui/text/TextFormat.h"
 #include "ui/text/TextLayout.h"
 #include "ui/text/TextMetrics.h"
-#include "ui/text/TextFormat.h"
-#include "core/math/Size.h"
-#include "ui/Canvas.h"
-#include "core/IUnknownImpl.h"
 
 #include <wrl.h>
-#include <ui/Color.h>
 #include <gdiplus.h>
 
 namespace Ghurund::UI::GDI {

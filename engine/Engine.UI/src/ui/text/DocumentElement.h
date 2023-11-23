@@ -1,8 +1,8 @@
 #pragma once
 
 #include "TextFormat.h"
+#include "core/Color.h"
 #include "core/SharedPointer.h"
-#include "ui/Color.h"
 #include "ui/drawable/Drawable.h"
 
 #include <tinyxml2.h>

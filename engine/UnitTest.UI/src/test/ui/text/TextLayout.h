@@ -1,11 +1,11 @@
 #pragma once
 
+#include "core/Color.h"
+#include "core/math/Size.h"
+#include "ui/Canvas.h"
 #include "ui/text/TextLayout.h"
 #include "ui/text/TextMetrics.h"
 #include "ui/text/TextFormat.h"
-#include "core/math/Size.h"
-#include "ui/Canvas.h"
-#include "ui/Color.h"
 
 namespace UnitTest {
     using namespace Microsoft::WRL;

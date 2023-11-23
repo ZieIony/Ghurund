@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
+#include "core/Color.h"
+#include "core/string/String.h"
 #include "ui/animation/Animator.h"
 #include "ui/animation/Animation.h"
-#include <ui/Color.h>
-#include "core/string/String.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

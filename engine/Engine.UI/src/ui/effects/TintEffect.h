@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DrawingEffect.h"
-#include "ui/Color.h"
+#include "core/Color.h"
 
 namespace Ghurund::UI {
     class TintEffect:public DrawingEffect {
@@ -9,7 +9,7 @@ namespace Ghurund::UI {
         Color color;
 
     public:
-        TintEffect(const Color& color = Ghurund::UI::Color(0.0f, 0.0f, 0.0f, 0.0f)):color(color) {}
+        TintEffect(const Color& color = 0):color(color) {}
 
         inline const Color& getColor() const {
             return color;

@@ -1,8 +1,8 @@
 #include "ghuipch.h"
 #include "CursorDrawable.h"
 
+#include "core/Color.h"
 #include "ui/control/Control.h"
-#include "ui/Color.h"
 
 namespace Ghurund::UI {
     void CursorDrawable::draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {

@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ui/text/TextLayout.h"
-#include "ui/text/TextMetrics.h"
-#include "ui/direct2d/text/TextFormat.h"
+#include "core/Color.h"
+#include "core/IUnknownImpl.h"
 #include "core/math/Size.h"
 #include "ui/Canvas.h"
-#include "core/IUnknownImpl.h"
+#include "ui/direct2d/text/TextFormat.h"
+#include "ui/text/TextLayout.h"
+#include "ui/text/TextMetrics.h"
 
 #include <d2d1.h>
 #include <wrl.h>
-#include <ui/Color.h>
 #include <d2d1_3.h>
 
 namespace Ghurund::UI::Direct2D {

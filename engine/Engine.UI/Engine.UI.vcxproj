@@ -106,7 +106,6 @@
     <ClInclude Include="src\ui\animation\Interpolator.h" />
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
-    <ClInclude Include="src\ui\Color.h" />
     <ClInclude Include="src\ui\constraint\MinMaxConstraint.h" />
     <ClInclude Include="src\ui\constraint\OffsetConstraint.h" />
     <ClInclude Include="src\ui\constraint\RatioConstraint.h" />
@@ -266,7 +265,6 @@
     </ClCompile>
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
-    <ClCompile Include="src\ui\Color.cpp" />
     <ClCompile Include="src\ui\constraint\Constraint.cpp" />
     <ClCompile Include="src\ui\constraint\WindowConstraint.cpp" />
     <ClCompile Include="src\ui\control\InteractionHandler.cpp" />

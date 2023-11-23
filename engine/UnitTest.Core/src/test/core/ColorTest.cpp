@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "CppUnitTest.h"
 
-#include "ui/Color.h"
+#include "core/Color.h"
 
 #include <format>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
-    using namespace Ghurund::UI;
+    using namespace Ghurund::Core;
 
     TEST_CLASS(ColorTest) {
 private:

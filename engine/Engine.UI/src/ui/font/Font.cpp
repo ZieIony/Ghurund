@@ -5,11 +5,11 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 
+#include "core/Color.h"
 #include "core/Finally.h"
 #include "core/image/Image.h"
 #include "core/image/ImageLoader.h"
 #include "core/math/Bezier.h"
-#include "ui/Color.h"
 #include "Ttf.h"
 
 #include <msdfgen.h>

@@ -1,9 +1,10 @@
 #pragma once
 
+#include "core/Color.h"
+
 #include "Control.h"
-#include "ui/Color.h"
 #include "ui/StrokeStyle.h"
-#include <ui/constraint/ParentConstraint.h>
+#include "ui/constraint/ParentConstraint.h"
 
 namespace Ghurund::UI {
 	class InvalidControl:public Control {

@@ -38,7 +38,7 @@ namespace Ghurund::Core {
 
 		Map(const Map& other):super_t(other) {}
 
-		template<Iterable<data_t> CollectionType>
+		template<Iterable<typename MapTraits<Key, Value>::data_t> CollectionType>
 		Map(const CollectionType& collection):super_t(collection) {}
 
 		Map(const std::initializer_list<typename MapTraits<Key, Value>::data_t>& list):super_t() {

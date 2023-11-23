@@ -1,10 +1,10 @@
 #pragma once
 
+#include "core/Color.h"
 #include "core/Pointer.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
-#include "ui/Color.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

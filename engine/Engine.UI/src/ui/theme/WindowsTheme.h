@@ -1,9 +1,11 @@
 #pragma once
 
-#include "ui/Color.h"
 #include "Status.h"
+#include "core/Color.h"
 
 namespace Ghurund::UI {
+    using namespace Ghurund::Core;
+
     class WindowsTheme {
     private:
         WindowsTheme() = delete;

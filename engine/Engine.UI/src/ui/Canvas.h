@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Color.h"
 #include "Shape.h"
 #include "StrokeStyle.h"
+#include "core/Color.h"
 #include "core/math/Rect.h"
 
 #include <dxgi1_6.h>
@@ -47,11 +47,11 @@ namespace Ghurund::UI {
 
         virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) = 0;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) = 0;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) = 0;
 
         virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) = 0;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& tint, float alpha = 1.0f) = 0;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) = 0;
 
         virtual void drawImage(VectorImage& vectorImage) = 0;
 
