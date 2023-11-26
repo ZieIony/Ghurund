@@ -3,9 +3,11 @@
 
 namespace Ghurund::UI {
     void Button::onLayoutChanged() {
-        if (state)
+        if (state) {
             state->InteractionHandler = nullptr;
-        safeRelease(state);
+            state->release();
+            state = nullptr;
+        }
         __super::onLayoutChanged();
         Control* layoutControl = layout.get();
         if (layoutControl) {

@@ -3,8 +3,7 @@
 	<ControlGroup width="wrap" height="wrap"
 				  alignment="center, center"
 				  orientation="horizontal">
-		<ClickableControl name="clickable" width="18" height="18"/>
-		<ControlGroup alignment="center, center" width="18" height="18">
+		<ControlGroup name="check" alignment="center, center" width="18" height="18">
 			<PaddingContainer padding="-4"  width="Parent.Width" height="Parent.Height">
 				<Clip shape="roundRect, 2">
 					<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
@@ -15,7 +14,7 @@
 		</ControlGroup>
 		<ControlContainer width="wrap" height="wrap"
 						  name="container">
-			<ControlContainer.Left path="'clickable'.Right" offset="4"/>
+			<ControlContainer.Left path="'check'.Right" offset="4"/>
 		</ControlContainer>
 	</ControlGroup>
 </ControlContainer>

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ClickableControl name="clickable" preferredSize="wrap, wrap">
-		<LinearLayout alignment="center, center"
-					  orientation="horizontal">
-			<StackLayout alignment="center, center" preferredSize="18, 18">
-				<PaddingContainer padding="-4"  preferredSize="fill, fill">
-					<Clip shape="roundRect, 13">
-						<StateIndicator name="state" preferredSize="fill, fill"
-										style="theme://style/StateIndicator_onBackground"/>
-					</Clip>
-				</PaddingContainer>
-				<DrawableView name="image"
-						   image="theme://image/radioButton_checked"/>
-			</StackLayout>
-			<Space preferredSize="4,4"/>
-			<ControlContainer preferredSize="fill, wrap"
-							  name="content"/>
-		</LinearLayout>
-	</ClickableControl>
-</layout>
+<ControlContainer xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ControlGroup width="wrap" height="wrap"
+				  alignment="center, center"
+				  orientation="horizontal">
+		<ControlGroup name="check" alignment="center, center" width="18" height="18">
+			<PaddingContainer padding="-4"  width="Parent.Width" height="Parent.Height">
+				<Clip shape="roundRect, 2">
+					<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
+				</Clip>
+			</PaddingContainer>
+			<DrawableView name="drawable" width="18" height="18"
+					   drawable="theme://drawable/radioButton_checked"/>
+		</ControlGroup>
+		<ControlContainer width="wrap" height="wrap"
+						  name="container">
+			<ControlContainer.Left path="'check'.Right" offset="4"/>
+		</ControlContainer>
+	</ControlGroup>
+</ControlContainer>

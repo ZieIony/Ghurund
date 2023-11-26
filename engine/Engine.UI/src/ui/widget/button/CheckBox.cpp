@@ -5,23 +5,8 @@
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI {
-	void CheckBox::onLayoutChanged() {
-		if (clickable) {
-			clickable->clicked.clear();
-			clickable->stateChanged.clear();
-		}
-		__super::onLayoutChanged();
-		if (clickable) {
-			clickable->clicked += [this](Control&, const MouseClickedEventArgs&) {
-				Checked = !checked;
-				return true;
-				};
-			clickable->stateChanged += stateHandler;
-		}
-	}
-
 	void CheckBox::onStateChanged() {
-		if (drawable && clickable) {
+		if (drawable) {
 			if (checked) {
 				drawable->Drawable = Theme::DRAWABLE_CHECKBOX_CHECKED;
 			} else {
@@ -29,13 +14,13 @@ namespace Ghurund::UI {
 			}
 			if (!Enabled) {
 				drawable->Tint = Theme::COLOR_DISABLED_ONBACKGROUND;
-			} else if (clickable->Pressed) {
+			} else if (interactionHandler.isPressed) {
 				if (checked) {
 					drawable->Tint = Theme::COLOR_ACCENT;
 				} else {
 					drawable->Tint = Theme::COLOR_PRIMARY_ONBACKGROUND;
 				}
-			} else if (clickable->Hovered || clickable->Focused) {
+			} else if (interactionHandler.isHovered || Focused) {
 				if (checked) {
 					drawable->Tint = Theme::COLOR_ACCENT;
 				} else {
@@ -50,6 +35,7 @@ namespace Ghurund::UI {
 			}
 		}
 	}
+
 	const Ghurund::Core::Type& CheckBox::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<CheckBox>();
 		static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBox>(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))

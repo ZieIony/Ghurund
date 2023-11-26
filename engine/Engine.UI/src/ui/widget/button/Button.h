@@ -26,6 +26,9 @@ namespace Ghurund::UI {
 
 		Button() {
 			Focusable = true;
+			interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs& args) {
+				return clicked(args);
+			};
 		}
 
 		Button(const Button& button):ContentWidget(button) {}
