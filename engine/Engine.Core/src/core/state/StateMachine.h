@@ -8,106 +8,90 @@
 #include <format>
 
 namespace Ghurund::Core {
+	enum class StateMachineEdgeMode {
+		REQUIRED, SAME_STATE_ALLOWED, ANY_STATE_ALLOWED
+	};
+
 	template<typename T>
 	class StateMachine {
 	private:
-		template<typename T>
 		struct S {
-			T state;
-			std::function<void()> onStateEnter;
+			std::function<void()> onStateEntered;
 			std::function<void()> onStateLeave;
 
-			S(T state) {
-				this->state = state;
-			}
+			S() {}
 
-			S(T state, std::function<void()> onStateEnter) {
-				this->state = state;
-				this->onStateEnter = onStateEnter;
-			}
-
-			S(T state, std::function<void()> onStateEnter, std::function<void()> onStateLeave) {
-				this->state = state;
-				this->onStateEnter = onStateEnter;
-				this->onStateLeave = onStateLeave;
-			}
-		};
-
-		template<typename T>
-		struct E {
-			T from;
-			T to;
-			std::function<void()> onStateChange;
-
-			E(T from, T to) {
-				this->from = from;
-				this->to = to;
-			}
-
-			E(T from, T to, std::function<void()> onStateChange) {
-				this->from = from;
-				this->to = to;
-				this->onStateChange = onStateChange;
-			}
+			S(std::function<void()> onStateEntered, std::function<void()> onStateLeave)
+				:onStateEntered(onStateEntered), onStateLeave(onStateLeave) {}
 		};
 
 		T initialState;
-		S<T> currentState;
-		List<S<T>> states;
-		List<E<T>> edges;
-
-		S<T>* findState(T& state) {
-			for (size_t i = 0; i < states.Size; i++) {
-				S<T>& s = states[i];
-				if (s.state == state)
-					return &s;
-			}
-			return nullptr;
-		}
+		T currentState;
+		Map<T, S> states;
+		Map<T, Map<T, std::function<void()>>> edges;
+		StateMachineEdgeMode mode;
 
 	public:
-		StateMachine(T initialState): initialState(initialState), currentState(initialState) {}
-
-		void addState(T state) {
-			states.add(S<T>(state));
+		StateMachine(const T& initialState, StateMachineEdgeMode mode = StateMachineEdgeMode::REQUIRED):
+			initialState(initialState), currentState(initialState), mode(mode) {
 		}
 
-		void addState(T state, std::function<void()> onStateEnter) {
-			states.add(S<T>(state, onStateEnter));
+		inline void addState(const T& state, std::function<void()> onStateEntered = nullptr, std::function<void()> onStateLeave = nullptr) {
+			states.put(state, S(onStateEntered, onStateLeave));
 		}
 
-		void addState(T state, std::function<void()> onStateEnter, std::function<void()> onStateLeave) {
-			states.add(S<T>(state, onStateEnter, onStateLeave));
-		}
-
-		void addEdge(T from, T to) {
-			edges.add(E<T>(from, to));
-		}
-
-		void addEdge(T from, T to, std::function<void()> onStateChange) {
-			edges.add(E<T>(from, to, onStateChange));
+		inline void addEdge(const T& from, const T& to, std::function<void()> onStateChanged = nullptr) {
+			const auto& f = edges.find(from);
+			if (f != edges.end()) {
+				f->value.put(to, onStateChanged);
+			} else {
+				Map<T, std::function<void()>> map;
+				map.put(to, onStateChanged);
+				edges.put(from, map);
+			}
 		}
 
 		inline T getState() const {
-			return currentState.state;
+			return currentState;
 		}
 
-		void setState(T state) {
-			for (size_t i = 0; i < edges.Size; i++) {
-				E<T>& e = edges[i];
-				if (e.from == currentState.state && e.to == state) {
-					if (currentState.onStateLeave != nullptr)
-						currentState.onStateLeave();
+		void setState(const T& state) {
+			S& cs = states[currentState];
+			const auto& from = edges.find(currentState);
+			if (from != edges.end()) {
+				const auto& to = from->value.find(state);
+				if (to != from->value.end()) {
+					const auto& ns = states.find(state);
+					if (ns != states.end()) {
+						if (cs.onStateLeave)
+							cs.onStateLeave();
+						currentState = state;
+						auto& onStateChanged = to->value;
+						if (onStateChanged)
+							onStateChanged();
+						if (ns->value.onStateEntered)
+							ns->value.onStateEntered();
+						return;
+					}
+				}
+			}
 
-					S<T>* found = findState(e.to);
-					if (!found)
-						break;
-					currentState = *found;
+			if (mode == StateMachineEdgeMode::SAME_STATE_ALLOWED && state == currentState) {
+				if (cs.onStateLeave)
+					cs.onStateLeave();
+				if (cs.onStateEntered)
+					cs.onStateEntered();
+				return;
+			}
 
-					if (e.onStateChange != nullptr)
-						e.onStateChange();
-					if (currentState.onStateEnter != nullptr)
-						currentState.onStateEnter();
+			if (mode == StateMachineEdgeMode::ANY_STATE_ALLOWED) {
+				auto ns = states.find(state);
+				if (ns != states.end()) {
+					if (cs.onStateLeave)
+						cs.onStateLeave();
+					currentState = state;
+					if (ns->value.onStateEntered)
+						ns->value.onStateEntered();
 					return;
 				}
 			}

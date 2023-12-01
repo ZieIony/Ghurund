@@ -12,10 +12,10 @@ namespace Ghurund::Core {
     template<class Type, class Type2>
     class EnumValues:public Noncopyable {
     private:
-        mutable Map<Type, std::reference_wrapper<const Type2>> values;
-        mutable Map<AString, std::reference_wrapper<const Type2>> valuesByName;
+        Map<Type, std::reference_wrapper<const Type2>> values;
+        Map<AString, std::reference_wrapper<const Type2>> valuesByName;
 
-        inline void add(const std::reference_wrapper<const Type2> value) const {
+        inline void add(const std::reference_wrapper<const Type2> value) {
             values.set(value->Value, value);
             valuesByName.set(value->Name, value);
         }

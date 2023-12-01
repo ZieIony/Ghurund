@@ -1,3 +1,4 @@
+#include <ui/control/ColorView.h>
 #include "ui/widget/ContentWidget.h"
 #include <ui/widget/button/Button.h>
 #include <ui/widget/button/CheckBox.h>

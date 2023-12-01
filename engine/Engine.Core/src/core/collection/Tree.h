@@ -417,6 +417,13 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = isEmpty)) bool Empty;
 
+		inline value_t& get(const key_t& key) {
+			Node* node = findNode(key);
+			if (!node)
+				node = insertNode(traits.makeData(key));
+			return node->data.value;
+		}
+
 		inline value_t& get(const key_t& key) const {
 			Node* node = findNode(key);
 			return node->data.value;
