@@ -11,15 +11,23 @@ namespace Preview {
     using namespace Ghurund::UI;
 
     class PreviewLayout:public ControlContainer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
+#pragma endregion
+
     private:
         Bindings::LayoutBinding binding;
 
     protected:
         virtual void onLoaded() override;
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         Event<PreviewLayout, ThemeType> themeChanged = *this;
@@ -37,15 +45,6 @@ namespace Preview {
                 return true;
             }
             return false;
-        }
-
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
-            static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))
-                .withConstructor(CONSTRUCTOR)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
         }
     };
 }

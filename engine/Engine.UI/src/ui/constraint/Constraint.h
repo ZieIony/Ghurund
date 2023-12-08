@@ -18,11 +18,13 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
 #pragma endregion
 
 	protected:
 		float value = 0.0f;
-		bool constant = false, skipDependencies = false;
+		bool constant = false, skipDependencies = false, evaluated = false;
 		Set<Constraint*> dependencies;
 
 		virtual bool equalsImpl(const Object& other) const override;
@@ -33,13 +35,12 @@ namespace Ghurund::UI {
 			skipDependencies(other.skipDependencies),
 			dependencies(other.dependencies) {}
 
+		virtual ~Constraint() = 0 {}
+
 	public:
 		Constraint() {}
 
 		Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
-
-		virtual ~Constraint()// = 0 
-		{}
 
 		inline bool isConstant() const {
 			return constant;
@@ -74,8 +75,12 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = canSkipDependencies)) bool CanSkipDependencies;
 
-		virtual Object* clone() const {
-			return ghnew Constraint(*this);
+		inline bool isEvaluated() const {
+			return evaluated;
 		}
+
+		__declspec(property(get = isEvaluated)) bool Evaluated;
+
+		virtual String toString() const override;
 	};
 }

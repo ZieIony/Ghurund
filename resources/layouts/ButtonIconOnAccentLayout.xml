@@ -3,12 +3,10 @@
 	<ControlGroup>
 		<ControlGroup.Width path="wrap" offset="8"/>
 		<ControlGroup.Height path="wrap" offset="4"/>
-		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
 		<ControlContainer name="container">
 			<ControlContainer.Left path="Parent.Left" offset="8"/>
 			<ControlContainer.Top path="Parent.Top" offset="4"/>
 		</ControlContainer>
-		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-						style="theme://style/StateIndicator_onAccent"/>
+		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
 	</ControlGroup>
 </Clip>

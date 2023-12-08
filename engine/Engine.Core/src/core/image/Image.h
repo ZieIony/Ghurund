@@ -11,70 +11,74 @@
 #include <wincodec.h>
 
 namespace Ghurund::Core {
-    template<>
-    const Type& getType<DXGI_FORMAT>();
+	template<>
+	const Type& getType<DXGI_FORMAT>();
 
-    class Image: public Resource {
+	class Image:public Resource {
 #pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Image::GET_TYPE();
 #pragma endregion
 
-    private:
-        DXGI_FORMAT format = {};
-        uint32_t width = 0, height = 0, pixelSize = 0, rowPitch = 0;
-        Buffer imageData;
+	private:
+		DXGI_FORMAT format = {};
+		uint32_t width = 0, height = 0, pixelSize = 0, rowPitch = 0;
+		Buffer imageData;
 
-    public:
-        void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format);
+	public:
+		void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format);
 
-        Buffer& getData() {
-            return imageData;
-        }
+		Buffer& getData() {
+			return imageData;
+		}
 
-        __declspec(property(get = getData)) Ghurund::Core::Buffer& Data;
+		__declspec(property(get = getData)) Ghurund::Core::Buffer& Data;
 
-        DXGI_FORMAT getFormat() {
-            return format;
-        }
+		DXGI_FORMAT getFormat() {
+			return format;
+		}
 
-        __declspec(property(get = getFormat)) DXGI_FORMAT Format;
+		__declspec(property(get = getFormat)) DXGI_FORMAT Format;
 
-        uint32_t getWidth() {
-            return width;
-        }
+		uint32_t getWidth() {
+			return width;
+		}
 
-        __declspec(property(get = getWidth)) uint32_t Width;
+		__declspec(property(get = getWidth)) uint32_t Width;
 
-        uint32_t getHeight() {
-            return height;
-        }
+		uint32_t getHeight() {
+			return height;
+		}
 
-        __declspec(property(get = getHeight)) uint32_t Height;
+		__declspec(property(get = getHeight)) uint32_t Height;
 
-        uint32_t getPixelSize() {
-            return pixelSize;
-        }
+		uint32_t getPixelSize() {
+			return pixelSize;
+		}
 
-        __declspec(property(get = getPixelSize)) uint32_t PixelSize;
+		__declspec(property(get = getPixelSize)) uint32_t PixelSize;
 
-        uint32_t getRowPitch() {
-            return rowPitch;
-        }
+		uint32_t getRowPitch() {
+			return rowPitch;
+		}
 
-        __declspec(property(get = getRowPitch)) uint32_t RowPitch;
+		__declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
-        static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
-        static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
-        static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
+		static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
+		static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
+		static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
 
-        inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+		inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
 
-        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-            return FORMATS;
-        }
-    };
+		virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
+			return FORMATS;
+		}
+	};
 }

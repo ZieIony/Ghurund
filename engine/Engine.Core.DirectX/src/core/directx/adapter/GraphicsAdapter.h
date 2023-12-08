@@ -8,6 +8,18 @@ namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;
 
     class GraphicsAdapter: public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = GraphicsAdapter::GET_TYPE();
+#pragma endregion
+
     private:
         ComPtr<IDXGIAdapter1> adapter;
         DXGI_ADAPTER_DESC1 desc;
@@ -26,11 +38,6 @@ namespace Ghurund::Core::DirectX {
             }
 
             return outputs.Size > 0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
-        }
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
         }
 
     public:
@@ -62,7 +69,5 @@ namespace Ghurund::Core::DirectX {
         List<AdapterOutput*>& getOutputs() {
             return outputs;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

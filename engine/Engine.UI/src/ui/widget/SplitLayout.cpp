@@ -18,20 +18,20 @@ namespace Ghurund::UI {
     SplitLayout::SplitLayout(Ghurund::UI::Orientation orientation) {
         splitter.set(ghnew Splitter(orientation));
         //splitter->PreferredSize.width = 4;
-        container1.set(ghnew ControlContainer());
-        container2.set(ghnew ControlContainer());
+        //container1.set(ghnew ControlContainer());
+        //container2.set(ghnew ControlContainer());
         LockedChild = LockedChild::NONE;
         //PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::FILL };
 
         layout.set(ghnew LinearLayout());
-        layout->Children = { container1.get(), splitter.get(), container2.get() };
-        Child = layout.get();
+        //layout->Children = { container1.get(), splitter.get(), container2.get() };
+        //Child = layout.get();
 
         Orientation = orientation;
     }
 
     void SplitLayout::setOrientation(Ghurund::UI::Orientation orientation) {
-        if (this->orientation == orientation)
+        /*if (this->orientation == orientation)
             return;
         this->orientation = orientation;
         splitter->Orientation = orientation;
@@ -80,7 +80,7 @@ namespace Ghurund::UI {
                 }
                 return true;
             };
-        }
+        }*/
     }
 
     void SplitLayout::setChild1(Control* control) {

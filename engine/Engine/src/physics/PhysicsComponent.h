@@ -45,11 +45,4 @@ namespace Ghurund::Physics {
 
 		__declspec(property(get = getShape, put = setShape)) PxShape* Shape;
 	};
-	/*
-	static const Ghurund::Core::Type& GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(PhysicsComponent))
-			.withSupertype(__super::GET_TYPE());
-
-		return GET_TYPE();
-	}*/
 }

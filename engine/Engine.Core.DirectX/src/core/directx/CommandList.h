@@ -17,6 +17,18 @@ namespace Ghurund::Core::DirectX {
     };
 
     class CommandList: public NamedObject<wchar_t>, public Pointer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = CommandList::GET_TYPE();
+#pragma endregion
+
     private:
         Fence fence;
         ComPtr<ID3D12CommandAllocator> commandAllocator;
@@ -29,11 +41,6 @@ namespace Ghurund::Core::DirectX {
 
         List<ID3D12Object*> resourceRefs;
         PointerList<Pointer*> pointerRefs;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         CommandList() {
@@ -74,8 +81,6 @@ namespace Ghurund::Core::DirectX {
         inline void barrier(const D3D12_RESOURCE_BARRIER& barrier) {
             commandList->ResourceBarrier(1, &barrier);
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
         void addResourceRef(ID3D12Object* resource) {
             resource->AddRef();

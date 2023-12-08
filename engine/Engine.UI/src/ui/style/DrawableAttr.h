@@ -6,6 +6,7 @@
 
 namespace Ghurund::UI {
 	class DrawableAttr: public Ghurund::Core::Object {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -15,11 +16,25 @@ namespace Ghurund::UI {
 		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = DrawableAttr::GET_TYPE();
+#pragma endregion
 
+	public:
 		virtual SharedPointer<Drawable> resolve(const Theme& theme) const = 0;
 	};
 
 	class DrawableValue: public DrawableAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = DrawableValue::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Drawable> drawable;
 
@@ -55,6 +70,18 @@ namespace Ghurund::UI {
 	};
 
 	class DrawableRef: public DrawableAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = DrawableRef::GET_TYPE();
+#pragma endregion
+
 	private:
 		DrawableKey key;
 

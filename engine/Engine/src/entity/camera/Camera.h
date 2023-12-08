@@ -15,6 +15,18 @@ namespace Ghurund {
     using namespace ::DirectX;
 
     class Camera: public Pointer, public ParameterProvider {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Camera::GET_TYPE();
+#pragma endregion
+
     private:
 		XMFLOAT3 target, dir, right, up;
         XMFLOAT4X4 view, proj, viewProj, viewProjInv, facing;
@@ -188,13 +200,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
   };
 }

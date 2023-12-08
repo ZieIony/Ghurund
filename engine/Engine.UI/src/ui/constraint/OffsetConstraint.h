@@ -17,6 +17,8 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = OffsetConstraint::GET_TYPE();
 #pragma endregion
 
 	protected:
@@ -25,6 +27,8 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 		OffsetConstraint(const OffsetConstraint& other):Constraint(other), offset(other.offset) {}
+
+		~OffsetConstraint() = 0 {}
 
 	public:
 		OffsetConstraint() {}
@@ -40,13 +44,5 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getOffset, put = setOffset)) float Offset;
-
-		virtual void resolve(Control& control, ConstraintGraph& graph) override {
-			value = offset;
-		}
-
-		virtual Object* clone() const {
-			return ghnew OffsetConstraint(*this);
-		}
 	};
 }

@@ -10,6 +10,20 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
+	const Ghurund::Core::Type& LayoutValue::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutValue>(NAMESPACE_NAME, GH_STRINGIFY(LayoutValue))
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
+	}
+
+	const Ghurund::Core::Type& LayoutRef::GET_TYPE() {
+		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutRef>(NAMESPACE_NAME, GH_STRINGIFY(LayoutRef))
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
+	}
+
 	SharedPointer<Control> LayoutRef::resolve(const Theme& theme) const {
 		auto iterator = theme.Layouts.find(key);
 		if (iterator == theme.Layouts.end()) {

@@ -15,6 +15,18 @@ namespace Ghurund {
     class ScriptEngine;
 
     class Script:public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Script::GET_TYPE();
+#pragma endregion
+
     private:
 		asIScriptModule* mod = nullptr;
         asIScriptContext* ctx = nullptr;
@@ -39,8 +51,6 @@ namespace Ghurund {
     protected:
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         Script():arguments(Array<void*>(0)) {
@@ -109,14 +119,6 @@ namespace Ghurund {
         void *getObjectResult() {
             return ctx->GetReturnObject();
         }
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

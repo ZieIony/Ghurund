@@ -38,7 +38,7 @@ namespace Ghurund::UI {
         __super::onLayoutChanged();
         topButton = (Button*)find("startButton");
         barButton = (Button*)find("barButton");
-        clickableTrack = (ClickableControl*)find("clickableTrack");
+        //clickableTrack = (ClickableControl*)find("clickableTrack");
         track = (ControlGroup*)find("track");
         bottomButton = (Button*)find("endButton");
         if (dragHelper)

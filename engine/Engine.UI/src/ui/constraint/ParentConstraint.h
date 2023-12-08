@@ -6,61 +6,171 @@
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
-    class ParentLeftConstraint:public OffsetConstraint {
-    };
+	class ParentLeftConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    class ParentRightConstraint:public OffsetConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
 
-        virtual Object* clone() const {
-            return ghnew ParentRightConstraint(*this);
-        }
-    };
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override {
+			evaluated = false;
+		}
 
-    class ParentTopConstraint:public OffsetConstraint {
-    };
+		virtual void evaluate() override {
+			value = offset;
+			evaluated = true;
+		}
+	};
 
-    class ParentBottomConstraint:public OffsetConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	class ParentRightConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void evaluate() override {
-            value = (*dependencies.begin())->Value + offset;
-        }
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual Object* clone() const {
-            return ghnew ParentBottomConstraint(*this);
-        }
-    };
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
 
-    class ParentWidthConstraint:public MinMaxConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
+		virtual void evaluate() override {
+			if (!dependencies.Empty) {
+				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
+		}
 
-        virtual Object* clone() const {
-            return ghnew ParentWidthConstraint(*this);
-        }
-    };
+		virtual Object* clone() const {
+			return ghnew ParentRightConstraint(*this);
+		}
+	};
 
-    class ParentHeightConstraint:public MinMaxConstraint {
-    public:
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	class ParentTopConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void evaluate() override {
-            value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-        }
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual Object* clone() const {
-            return ghnew ParentHeightConstraint(*this);
-        }
-    };
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override {
+			evaluated = false;
+		}
+
+		virtual void evaluate() override {
+			value = offset;
+			evaluated = true;
+		}
+	};
+
+	class ParentBottomConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			if (!dependencies.Empty) {
+				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
+		}
+
+		virtual Object* clone() const {
+			return ghnew ParentBottomConstraint(*this);
+		}
+	};
+
+	class ParentWidthConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			if (!dependencies.Empty) {
+				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			} else {
+				value = minMax(min, offset, max);
+			}
+			evaluated = true;
+		}
+
+		virtual Object* clone() const {
+			return ghnew ParentWidthConstraint(*this);
+		}
+	};
+
+	class ParentHeightConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+	public:
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override {
+			if (!dependencies.Empty) {
+				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			} else {
+				value = minMax(min, offset, max);
+			}
+			evaluated = true;
+		}
+
+		virtual Object* clone() const {
+			return ghnew ParentHeightConstraint(*this);
+		}
+	};
 }

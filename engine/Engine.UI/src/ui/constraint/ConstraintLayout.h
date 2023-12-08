@@ -6,6 +6,18 @@
 
 namespace Ghurund::UI {
     class ConstraintLayout:public ControlGroup {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ConstraintLayout::GET_TYPE();
+#pragma endregion
+
     private:
         std::unique_ptr<IStrokeStyle> strokeStyle;
         List<Guide> guides;
@@ -19,10 +31,6 @@ namespace Ghurund::UI {
         }
 
     protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
         virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
         virtual void onContextChanged() override;
@@ -39,9 +47,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getGuides)) List<Guide>& Guides;
 
         virtual void resolveConstraints(ConstraintGraph& graph) override;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = ConstraintLayout::GET_TYPE();
     };
 }

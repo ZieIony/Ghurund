@@ -8,6 +8,18 @@ namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Parameter: public Pointer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Parameter::GET_TYPE();
+#pragma endregion
+
     protected:
         const AString constantName;
         const ParameterType& type;
@@ -33,13 +45,5 @@ namespace Ghurund {
         }
 
         __declspec(property(get = isEmpty)) bool Empty;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

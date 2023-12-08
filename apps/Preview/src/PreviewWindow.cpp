@@ -16,17 +16,17 @@ namespace Preview {
 			Application.FunctionQueue.post([&, type]() {
 				themeApp.ThemeType = type;
 				previewLayout.Theme = &themeApp.CurrentTheme;
-				});
+			});
 			return true;
-			};
+		};
 
 		previewLayout->colorChanged += [this](PreviewLayout& previewLayout, const uint32_t color) {
 			Application.FunctionQueue.post([&, color]() {
 				themeApp.PrimaryColor = color;
 				previewLayout.dispatchThemeChanged();
-				});
+			});
 			return true;
-			};
+		};
 
 		sizeChanged += [&](Window& window) {
 			Logger::print(LogType::INFO, _T("\n"));
@@ -34,7 +34,7 @@ namespace Preview {
 			Logger::print(LogType::INFO, _T("\n"));
 			previewLayout->validate();
 			return true;
-			};
+		};
 
 		DragDropEnabled = true;
 		dropped += [this](Ghurund::Core::Window& window, const Array<FilePath*>& files) {
@@ -43,7 +43,7 @@ namespace Preview {
 			postLoadCallback(path);
 			watchFile(path);
 			return true;
-			};
+		};
 	}
 
 	void PreviewWindow::postLoadCallback(const FilePath& path) {
@@ -60,7 +60,7 @@ namespace Preview {
 			} else {
 				Application.FunctionQueue.post(loadCallback);
 			}*/
-			};
+		};
 
 		Application.FunctionQueue.post(loadCallback);
 	}

@@ -7,14 +7,17 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class Bitmap:public Ghurund::Core::Resource {
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
+#pragma region reflection
+    protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Bitmap::GET_TYPE();
+#pragma endregion
 
     public:
         virtual Ghurund::Core::IntSize getSize() const = 0;

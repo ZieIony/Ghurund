@@ -3,6 +3,15 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
+	const Ghurund::Core::Type& PreviewLayout::GET_TYPE() {
+		static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
+		static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
+
+		return TYPE;
+	}
+
 	void PreviewLayout::onLoaded() {
 		__super::onLoaded();
 

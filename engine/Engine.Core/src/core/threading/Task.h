@@ -15,17 +15,24 @@ namespace Ghurund::Core {
     };
 
     class Task:public Pointer, public NamedObject<wchar_t> {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Task::GET_TYPE();
+#pragma endregion
+
     private:
         std::function<Status()> function;
         List<SharedPointer<Task>> dependencies;
         void* tag = nullptr;
         ExecutionStatus executionStatus = ExecutionStatus::NOT_STARTED;
         Event<Task, ExecutionStatus> statusChanged = *this;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         Task(std::function<Status()> function):function(function) {}
@@ -34,8 +41,6 @@ namespace Ghurund::Core {
             this->Name = name;
             this->function = function;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
         inline void run() {
             executionStatus = ExecutionStatus::IN_PROGRESS;

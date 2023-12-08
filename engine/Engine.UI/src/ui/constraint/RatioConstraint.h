@@ -17,6 +17,8 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = RatioConstraint::GET_TYPE();
 #pragma endregion
 
 	protected:
@@ -25,6 +27,8 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 		RatioConstraint(const RatioConstraint& other):OffsetConstraint(other), ratio(other.ratio) {}
+
+		~RatioConstraint() = 0 {}
 
 	public:
 		RatioConstraint() {}
@@ -42,9 +46,5 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getRatio, put = setRatio)) float Ratio;
-
-		virtual Object* clone() const {
-			return ghnew RatioConstraint(*this);
-		}
 	};
 }

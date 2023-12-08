@@ -2,7 +2,6 @@
 
 #include "DragHelper.h"
 #include "Widget.h"
-#include "ui/control/ClickableControl.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/widget/button/Button.h"
 
@@ -13,7 +12,7 @@ namespace Ghurund::UI {
     private:
         Button* topButton;
         Button* barButton;
-        ClickableControl* clickableTrack;
+        //ClickableControl* clickableTrack;
         ControlGroup* track;
         Button* bottomButton;
 

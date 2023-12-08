@@ -6,8 +6,17 @@
 #include "ui/control/ControlGroup.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& FlowWidthConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<FlowWidthConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void FlowWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         graph.add(this);
+        evaluated = false;
+        dependencies.clear();
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
@@ -27,10 +36,20 @@ namespace Ghurund::UI {
         for (Constraint* c : dependencies)
             value = std::max(value, c->Value);
         value = minMax(min, value * ratio + offset, max);
+        evaluated = true;
+    }
+
+    const Ghurund::Core::Type& FlowHeightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<FlowHeightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     void FlowHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         graph.add(this);
+        evaluated = false;
+        dependencies.clear();
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
@@ -50,5 +69,6 @@ namespace Ghurund::UI {
         for (Constraint* c : dependencies)
             value = std::max(value, c->Value);
         value = minMax(min, value * ratio + offset, max);
+        evaluated = true;
     }
 }

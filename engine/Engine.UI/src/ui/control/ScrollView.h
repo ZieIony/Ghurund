@@ -6,22 +6,29 @@
 
 namespace Ghurund::UI {
     class ScrollView:public ControlContainer {
-    private:
-        FloatPoint scroll = { 0.0f, 0.0f };
-        FloatPoint maxScroll = { 0.0f, 0.0f };
-        Event<Control> onScrolled = { *this };
-
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ScrollView::GET_TYPE();
+#pragma endregion
+
+    private:
+        FloatPoint scroll = { 0.0f, 0.0f };
+        FloatPoint maxScroll = { 0.0f, 0.0f };
+
+    protected:
         virtual void onDraw(ICanvas& canvas) override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
+        Event<Control> onScrolled = *this;
 
         inline const FloatPoint& getScroll() const {
             return scroll;
@@ -49,12 +56,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
-
-        inline Event<Control>& getOnScrolled() {
-            return onScrolled;
-        }
-
-        __declspec(property(get = getOnScrolled)) Event<Control>& OnScrolled;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 

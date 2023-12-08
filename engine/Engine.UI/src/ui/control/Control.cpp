@@ -87,8 +87,8 @@ namespace Ghurund::UI {
 	}
 
 	void Control::onMeasure() {
-		measuredSize.Width = width->Value;
-		measuredSize.Height = height->Value;
+		measuredSize.Width = constraints.width->Value;
+		measuredSize.Height = constraints.height->Value;
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -131,8 +131,7 @@ namespace Ghurund::UI {
 			measuredSize == c.measuredSize &&
 			needsLayout == c.needsLayout &&
 			localTheme == c.localTheme &&
-			left == c.left && width == c.width && right == c.right &&
-			top == c.top && height == c.height && bottom == c.bottom;
+			constraints == c.constraints;
 	}
 
 	bool Control::isEnabled() const {
@@ -294,6 +293,9 @@ namespace Ghurund::UI {
 			position.x = x;
 			position.y = y;
 		}
+		if (width > 1000) {
+			int a = 5;
+		}
 		if (needsLayout || size.Width != width || size.Height != height) {
 #ifdef _DEBUG
 			const char* name = Name ? Name->Data : "[unnamed]";
@@ -327,84 +329,84 @@ namespace Ghurund::UI {
 
 	void Control::setConstraints(const ConstraintSet& constraints) {
 		if (constraints.left != nullptr && constraints.width != nullptr && constraints.right != nullptr) {
-			width = constraints.width.get();
-			left.set(ghnew CenterLeftConstraint(constraints.left.get(), width, constraints.right.get()));
-			right.set(ghnew CenterRightConstraint(constraints.left.get(), width, constraints.right.get()));
+			this->constraints.width = constraints.width.get();
+			this->constraints.left.set(ghnew CenterLeftConstraint(constraints.left.get(), this->constraints.width, constraints.right.get()));
+			this->constraints.right.set(ghnew CenterRightConstraint(constraints.left.get(), this->constraints.width, constraints.right.get()));
 		} else if (constraints.left != nullptr) {
-			left = constraints.left.get();
+			this->constraints.left = constraints.left.get();
 			if (constraints.width != nullptr) {
-				width = constraints.width.get();
-				right.set(ghnew LeftWidthConstraint(left, width));
+				this->constraints.width = constraints.width.get();
+				this->constraints.right.set(ghnew LeftWidthConstraint(this->constraints.left, this->constraints.width));
 			} else if (constraints.right != nullptr) {
-				right = constraints.right.get();
-				width.set(ghnew LeftRightConstraint(left, right));
+				this->constraints.right = constraints.right.get();
+				this->constraints.width.set(ghnew LeftRightConstraint(this->constraints.left, this->constraints.right));
 			} else {
-				width.set(ghnew WrapWidthConstraint());
-				right.set(ghnew LeftWidthConstraint(left, width));
+				this->constraints.width.set(ghnew WrapWidthConstraint());
+				this->constraints.right.set(ghnew LeftWidthConstraint(this->constraints.left, this->constraints.width));
 			}
 		} else if (constraints.width != nullptr) {
 			if (constraints.right != nullptr) {
-				width = constraints.width.get();
-				right = constraints.right.get();
-				left.set(ghnew WidthRightConstraint(width, right));
+				this->constraints.width = constraints.width.get();
+				this->constraints.right = constraints.right.get();
+				this->constraints.left.set(ghnew WidthRightConstraint(this->constraints.width, this->constraints.right));
 			} else {
-				left.set(ghnew ParentLeftConstraint());
-				width = constraints.width.get();
-				right.set(ghnew LeftWidthConstraint(left, width));
+				this->constraints.left.set(ghnew ParentLeftConstraint());
+				this->constraints.width = constraints.width.get();
+				this->constraints.right.set(ghnew LeftWidthConstraint(this->constraints.left, this->constraints.width));
 			}
 		} else if (constraints.right != nullptr) {
-			width.set(ghnew WrapWidthConstraint());
-			right = constraints.right.get();
-			left.set(ghnew WidthRightConstraint(width, right));
+			this->constraints.width.set(ghnew WrapWidthConstraint());
+			this->constraints.right = constraints.right.get();
+			this->constraints.left.set(ghnew WidthRightConstraint(this->constraints.width, this->constraints.right));
 		} else {
-			left.set(ghnew ParentLeftConstraint());
-			width.set(ghnew WrapWidthConstraint());
-			right.set(ghnew LeftWidthConstraint(left, width));
+			this->constraints.left.set(ghnew ParentLeftConstraint());
+			this->constraints.width.set(ghnew WrapWidthConstraint());
+			this->constraints.right.set(ghnew LeftWidthConstraint(this->constraints.left, this->constraints.width));
 		}
 		if (constraints.top != nullptr && constraints.height != nullptr && constraints.bottom != nullptr) {
-			height = constraints.height.get();
-			top.set(ghnew CenterTopConstraint(constraints.top.get(), height, constraints.bottom.get()));
-			bottom.set(ghnew CenterBottomConstraint(constraints.top.get(), height, constraints.bottom.get()));
+			this->constraints.height = constraints.height.get();
+			this->constraints.top.set(ghnew CenterTopConstraint(constraints.top.get(), this->constraints.height, constraints.bottom.get()));
+			this->constraints.bottom.set(ghnew CenterBottomConstraint(constraints.top.get(), this->constraints.height, constraints.bottom.get()));
 		} else if (constraints.top != nullptr) {
-			top = constraints.top.get();
+			this->constraints.top = constraints.top.get();
 			if (constraints.height != nullptr) {
-				height = constraints.height.get();
-				bottom.set(ghnew TopHeightConstraint(top, height));
+				this->constraints.height = constraints.height.get();
+				this->constraints.bottom.set(ghnew TopHeightConstraint(this->constraints.top, this->constraints.height));
 			} else if (constraints.bottom != nullptr) {
-				bottom = constraints.bottom.get();
-				height.set(ghnew TopBottomConstraint(top, bottom));
+				this->constraints.bottom = constraints.bottom.get();
+				this->constraints.height.set(ghnew TopBottomConstraint(this->constraints.top, this->constraints.bottom));
 			} else {
-				height.set(ghnew WrapHeightConstraint());
-				bottom.set(ghnew TopHeightConstraint(top, height));
+				this->constraints.height.set(ghnew WrapHeightConstraint());
+				this->constraints.bottom.set(ghnew TopHeightConstraint(this->constraints.top, this->constraints.height));
 			}
 		} else if (constraints.height != nullptr) {
 			if (constraints.bottom != nullptr) {
-				height = constraints.height.get();
-				bottom = constraints.bottom.get();
-				top.set(ghnew HeightBottomConstraint(height, bottom));
+				this->constraints.height = constraints.height.get();
+				this->constraints.bottom = constraints.bottom.get();
+				this->constraints.top.set(ghnew HeightBottomConstraint(this->constraints.height, this->constraints.bottom));
 			} else {
-				top.set(ghnew ParentTopConstraint());
-				height = constraints.height.get();
-				bottom.set(ghnew TopHeightConstraint(top, height));
+				this->constraints.top.set(ghnew ParentTopConstraint());
+				this->constraints.height = constraints.height.get();
+				this->constraints.bottom.set(ghnew TopHeightConstraint(this->constraints.top, this->constraints.height));
 			}
 		} else if (constraints.bottom != nullptr) {
-			height.set(ghnew WrapHeightConstraint());
-			bottom = constraints.bottom.get();
-			top.set(ghnew HeightBottomConstraint(height, bottom));
+			this->constraints.height.set(ghnew WrapHeightConstraint());
+			this->constraints.bottom = constraints.bottom.get();
+			this->constraints.top.set(ghnew HeightBottomConstraint(this->constraints.height, this->constraints.bottom));
 		} else {
-			top.set(ghnew ParentTopConstraint());
-			height.set(ghnew WrapHeightConstraint());
-			bottom.set(ghnew TopHeightConstraint(top, height));
+			this->constraints.top.set(ghnew ParentTopConstraint());
+			this->constraints.height.set(ghnew WrapHeightConstraint());
+			this->constraints.bottom.set(ghnew TopHeightConstraint(this->constraints.top, this->constraints.height));
 		}
 	}
 
 	void Control::resolveConstraints(ConstraintGraph& graph) {
-		width->resolve(*this, graph);
-		height->resolve(*this, graph);
-		left->resolve(*this, graph);
-		top->resolve(*this, graph);
-		right->resolve(*this, graph);
-		bottom->resolve(*this, graph);
+		this->constraints.width->resolve(*this, graph);
+		this->constraints.height->resolve(*this, graph);
+		this->constraints.left->resolve(*this, graph);
+		this->constraints.top->resolve(*this, graph);
+		this->constraints.right->resolve(*this, graph);
+		this->constraints.bottom->resolve(*this, graph);
 	}
 
 	FloatPoint Control::getPositionInWindow() {

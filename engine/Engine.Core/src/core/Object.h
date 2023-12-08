@@ -21,6 +21,8 @@ namespace Ghurund::Core {
 
 		static const Ghurund::Core::Type& GET_TYPE();
 
+		inline static const Ghurund::Core::Type& TYPE = Object::GET_TYPE();
+
 		inline const Ghurund::Core::Type& getType() const {
 			return getTypeImpl();
 		}

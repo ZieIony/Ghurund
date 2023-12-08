@@ -6,13 +6,8 @@
 
 namespace Ghurund::UI {
 	class Button:public ContentWidget {
-	private:
-		InteractionHandler interactionHandler = *this;
-		Ghurund::UI::StateIndicator* state = nullptr;
-
+#pragma region reflection
 	protected:
-		virtual void onLayoutChanged() override;
-
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
 		}
@@ -20,8 +15,17 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+		inline static const Ghurund::Core::Type& TYPE = Button::GET_TYPE();
+#pragma endregion
 
+	private:
+		InteractionHandler interactionHandler = *this;
+		Ghurund::UI::StateIndicator* state = nullptr;
+
+	protected:
+		virtual void onLayoutChanged() override;
+
+	public:
 		Event<Button, MouseClickedEventArgs> clicked = *this;
 
 		Button() {

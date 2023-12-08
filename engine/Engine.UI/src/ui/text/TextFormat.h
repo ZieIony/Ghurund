@@ -14,6 +14,18 @@ namespace Ghurund::UI {
     class Control;
 
     class TextFormat:public Pointer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = TextFormat::GET_TYPE();
+#pragma endregion
+
     private:
         Font* font = nullptr;
         float size;
@@ -77,13 +89,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getLocale)) const Ghurund::Core::WString& Locale;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

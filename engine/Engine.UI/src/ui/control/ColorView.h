@@ -5,7 +5,19 @@
 #include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
-	class ColorView :public Control {
+	class ColorView:public Control {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = ColorView::GET_TYPE();
+#pragma endregion
+
 	private:
 		inline static const auto DEFAULT_COLOR = ColorRef(Theme::COLOR_CONTROL);
 
@@ -13,10 +25,6 @@ namespace Ghurund::UI {
 
 	protected:
 		ColorView(const ColorView& other):Control(other), color(other.color) {}
-
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
 
 		virtual bool equalsImpl(const Object& other) const override {
 			if (__super::equalsImpl(other))
@@ -37,10 +45,6 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setColor)) const ColorAttr& Color;
-
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
 
 		virtual Object* clone() const {
 			return ghnew ColorView(*this);

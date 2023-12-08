@@ -7,7 +7,19 @@
 //#include "ui/image/Bitmap.h"
 
 namespace Ghurund::UI {
-    class Shadow: public Control {
+    class Shadow:public Control {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Shadow::GET_TYPE();
+#pragma endregion
+
     private:
         AttrProperty<ColorAttr, Color> color;
         Ghurund::UI::Shape* shape = nullptr;
@@ -16,19 +28,11 @@ namespace Ghurund::UI {
         //ID2D1SolidColorBrush* fillBrush = nullptr;
 
     protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
         virtual void onStateChanged() override {
             Radius = Enabled ? 2.0f : 0.0f;
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = Shadow::GET_TYPE();
-
         Shadow(const ColorAttr& color = ColorValue(Ghurund::UI::Color(0, 0, 0, 0.6f)));
 
         ~Shadow();

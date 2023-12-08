@@ -4,29 +4,57 @@
 
 namespace Ghurund::UI {
 
-    class FlowWidthConstraint:public MinMaxConstraint {
-    public:
-        FlowWidthConstraint():MinMaxConstraint(false, true) {}
+	class FlowWidthConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual void evaluate() override;
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
 
-        virtual Object* clone() const {
-            return ghnew FlowWidthConstraint(*this);
-        }
-    };
+		~FlowWidthConstraint() {}
 
-    class FlowHeightConstraint:public MinMaxConstraint {
-    public:
-        FlowHeightConstraint():MinMaxConstraint(false, true) {}
+	public:
+		FlowWidthConstraint():MinMaxConstraint(false, true) {}
 
-        virtual void resolve(Control& control, ConstraintGraph& graph) override;
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-        virtual void evaluate() override;
+		virtual void evaluate() override;
 
-        virtual Object* clone() const {
-            return ghnew FlowHeightConstraint(*this);
-        }
-    };
+		virtual Object* clone() const {
+			return ghnew FlowWidthConstraint(*this);
+		}
+	};
+
+	class FlowHeightConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+		~FlowHeightConstraint() {}
+
+	public:
+		FlowHeightConstraint():MinMaxConstraint(false, true) {}
+
+		virtual void resolve(Control& control, ConstraintGraph& graph) override;
+
+		virtual void evaluate() override;
+
+		virtual Object* clone() const {
+			return ghnew FlowHeightConstraint(*this);
+		}
+	};
 }

@@ -1,16 +1,26 @@
 #pragma once
 
-#include "ui/control/PaddingContainer.h"
+#include "ui/control/ControlContainer.h"
 #include "ui/control/ColorView.h"
 
 namespace Ghurund::UI {
-    class Separator:public PaddingContainer {
+    class Separator:public ControlContainer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Separator::GET_TYPE();
+#pragma endregion
+
     private:
         ColorView* colorView;
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
         virtual void onThemeChanged() override;
 
         virtual void onStateChanged() override;
@@ -37,11 +47,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getThickness, put = setThickness)) float Thickness;
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

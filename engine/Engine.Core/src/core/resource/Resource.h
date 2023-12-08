@@ -20,6 +20,18 @@ namespace Ghurund::Core {
 	class File;
 
 	class Resource: public Pointer {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Resource::GET_TYPE();
+#pragma endregion
+
 	private:
 		bool valid = false;
 		ResourcePath* path = nullptr;
@@ -52,10 +64,6 @@ namespace Ghurund::Core {
 		void readHeader(MemoryInputStream& stream);
 
 		static const Array<ResourceFormat>& GET_FORMATS();
-
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
 
 	public:
 		void load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
@@ -98,8 +106,6 @@ namespace Ghurund::Core {
 		}
 
 		__declspec(property(get = getSize)) const DataSize& Size;*/
-
-		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 

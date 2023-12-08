@@ -7,12 +7,9 @@
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlContainer::GET_TYPE() {
 
-		static auto PROPERTY_CHILD = Property<ControlContainer, Control*>("Child", (Control * (ControlContainer::*)()) & getChild, (void(ControlContainer::*)(Control*)) & setChild);
-
 		static const auto CONSTRUCTOR = Constructor<ControlContainer>();
 
 		static const Ghurund::Core::Type TYPE = TypeBuilder<ControlContainer>(Ghurund::UI::NAMESPACE_NAME, "ControlContainer")
-			.withProperty(PROPERTY_CHILD)
 			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 

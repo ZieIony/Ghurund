@@ -15,9 +15,8 @@ namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Core;
 
     class Bitmap:public Ghurund::UI::Bitmap {
+#pragma region reflection
     protected:
-        static const Array<ResourceFormat>& GET_FORMATS();
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
@@ -25,6 +24,13 @@ namespace Ghurund::UI::Direct2D {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = Bitmap::GET_TYPE();
+#pragma endregion
+
+    protected:
+        static const Array<ResourceFormat>& GET_FORMATS();
+
+    public:
         inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 
         virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {

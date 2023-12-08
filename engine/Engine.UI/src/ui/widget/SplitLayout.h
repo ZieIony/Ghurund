@@ -2,14 +2,14 @@
 
 #include "ui/Orientation.h"
 #include "ui/layout/LinearLayout.h"
-#include "ui/control/ClickableControl.h"
+#include "ui/control/ControlContainer.h"
 #include "ui/layout/LinearLayout.h"
 #include "core/SharedPointer.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class Splitter:public ClickableControl {
+    class Splitter:public Control {
     private:
         Orientation orientation;
 

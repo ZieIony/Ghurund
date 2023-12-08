@@ -17,12 +17,14 @@ namespace Ghurund {
     class UIFeature:public Feature {
 #pragma region reflection
     protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = UIFeature::GET_TYPE();
 #pragma endregion
 
     private:

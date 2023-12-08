@@ -8,6 +8,18 @@ namespace Ghurund {
     using namespace Ghurund::Core::DirectX;
 
     class Material:public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Material::GET_TYPE();
+#pragma endregion
+
     private:
         Shader* shader = nullptr;
         bool supportsTransparency = false;
@@ -15,8 +27,6 @@ namespace Ghurund {
         void finalize() {
             safeRelease(shader);
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
     protected:
         virtual bool isVersioned()const {
@@ -86,14 +96,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

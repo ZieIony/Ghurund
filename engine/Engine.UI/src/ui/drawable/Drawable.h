@@ -13,12 +13,8 @@ namespace Ghurund::UI {
     class ICanvas;
 
     class Drawable:public Pointer {
+#pragma region reflection
     protected:
-        Ghurund::Core::FloatSize size = { 0, 0 };
-        Ghurund::Core::FloatSize preferredSize = { 0, 0 };
-
-        Control* owner = nullptr;
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
@@ -26,6 +22,16 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = Drawable::GET_TYPE();
+#pragma endregion
+
+    protected:
+        Ghurund::Core::FloatSize size = { 0, 0 };
+        Ghurund::Core::FloatSize preferredSize = { 0, 0 };
+
+        Control* owner = nullptr;
+
+    public:
         ~Drawable()
         //    = 0   // TODO: a destructor cannot be abstract
         {}

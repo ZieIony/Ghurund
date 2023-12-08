@@ -5,16 +5,39 @@
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
+    const Ghurund::Core::Type& SelfWidthConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SelfWidthConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void SelfWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
+        evaluated = false;
         dependencies.put(&control.Width);
         graph.add(this);
     }
 
+    const Ghurund::Core::Type& SelfHeightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SelfHeightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
     void SelfHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
         dependencies.clear();
+        evaluated = false;
         dependencies.put(&control.Height);
         graph.add(this);
+    }
+
+    const Ghurund::Core::Type& CenterLeftConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CenterLeftConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool CenterLeftConstraint::equalsImpl(const Object& other) const {
@@ -25,10 +48,18 @@ namespace Ghurund::UI {
     }
 
     void CenterLeftConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         left->resolve(control, graph);
         width->resolve(control, graph);
         right->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& CenterRightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CenterRightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool CenterRightConstraint::equalsImpl(const Object& other) const {
@@ -39,10 +70,18 @@ namespace Ghurund::UI {
     }
 
     void CenterRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         left->resolve(control, graph);
         width->resolve(control, graph);
         right->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& CenterTopConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CenterTopConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool CenterTopConstraint::equalsImpl(const Object& other) const {
@@ -53,10 +92,18 @@ namespace Ghurund::UI {
     }
 
     void CenterTopConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         top->resolve(control, graph);
         height->resolve(control, graph);
         bottom->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& CenterBottomConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<CenterBottomConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool CenterBottomConstraint::equalsImpl(const Object& other) const {
@@ -67,10 +114,18 @@ namespace Ghurund::UI {
     }
 
     void CenterBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         top->resolve(control, graph);
         height->resolve(control, graph);
         bottom->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& LeftWidthConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<LeftWidthConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool LeftWidthConstraint::equalsImpl(const Object& other) const {
@@ -81,9 +136,17 @@ namespace Ghurund::UI {
     }
 
     void LeftWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         left->resolve(control, graph);
         width->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& LeftRightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<LeftRightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool LeftRightConstraint::equalsImpl(const Object& other) const {
@@ -94,9 +157,17 @@ namespace Ghurund::UI {
     }
 
     void LeftRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         left->resolve(control, graph);
         right->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& WidthRightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<WidthRightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool WidthRightConstraint::equalsImpl(const Object& other) const {
@@ -107,9 +178,17 @@ namespace Ghurund::UI {
     }
 
     void WidthRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         width->resolve(control, graph);
         right->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& TopHeightConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TopHeightConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool TopHeightConstraint::equalsImpl(const Object& other) const {
@@ -120,9 +199,17 @@ namespace Ghurund::UI {
     }
 
     void TopHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         top->resolve(control, graph);
         height->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& TopBottomConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TopBottomConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool TopBottomConstraint::equalsImpl(const Object& other) const {
@@ -133,9 +220,17 @@ namespace Ghurund::UI {
     }
 
     void TopBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         top->resolve(control, graph);
         bottom->resolve(control, graph);
+    }
+
+    const Ghurund::Core::Type& HeightBottomConstraint::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<HeightBottomConstraint>()
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
     }
 
     bool HeightBottomConstraint::equalsImpl(const Object& other) const {
@@ -146,6 +241,7 @@ namespace Ghurund::UI {
     }
 
     void HeightBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
+        evaluated = false;
         graph.add(this);
         height->resolve(control, graph);
         bottom->resolve(control, graph);

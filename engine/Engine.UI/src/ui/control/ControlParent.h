@@ -12,6 +12,8 @@ namespace Ghurund::UI {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ControlParent::GET_TYPE();
 #pragma endregion
 
     protected:

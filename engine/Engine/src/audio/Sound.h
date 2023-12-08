@@ -27,6 +27,18 @@ namespace Ghurund::Audio {
     };
 
     class Sound: public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Sound::GET_TYPE();
+#pragma endregion
+
     private:
         IXAudio2SourceVoice* sourceVoice;
         WAVEFORMATEX* waveFormat;
@@ -45,8 +57,6 @@ namespace Ghurund::Audio {
         virtual unsigned int getVersion() const {
             return 0;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ~Sound() {
@@ -97,14 +107,6 @@ namespace Ghurund::Audio {
         }
 
         __declspec(property(get = getLength)) float Length;
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

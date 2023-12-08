@@ -5,7 +5,6 @@
 #include "ui/control/ColorView.h"
 #include "ui/control/ControlGroup.h"
 #include "ui/control/ControlPath.h"
-#include "ui/control/PaddingContainer.h"
 
 #include <format>
 
@@ -35,7 +34,7 @@ public:
     }
 
     TEST_METHOD(resolveParentContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent");
@@ -63,7 +62,7 @@ public:
     }
 
     TEST_METHOD(resolveNameContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -81,7 +80,7 @@ public:
     }
 
     TEST_METHOD(resolveMissingNameContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlGroup>();
         ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
@@ -130,7 +129,7 @@ public:
     }
 
     TEST_METHOD(resolveIndexContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -142,7 +141,7 @@ public:
 
     // [0] is the only valid index for containers
     TEST_METHOD(resolveNegativeIndexContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -152,7 +151,7 @@ public:
     }
 
     TEST_METHOD(resolveIndexMissingContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -162,7 +161,7 @@ public:
     }
 
     TEST_METHOD(resolveNegativeIndexMissingContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -183,7 +182,7 @@ public:
     }
 
     TEST_METHOD(resolveParentNameContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Child = content.get();
@@ -204,7 +203,7 @@ public:
     }
 
     TEST_METHOD(resolveParentIndexContainer) {
-        auto layout = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
         auto content = makeShared<ColorView>();
         layout->Child = content.get();
         ControlPath path = ControlPath::parse("Parent[0]");
@@ -227,8 +226,8 @@ public:
     }
 
     TEST_METHOD(resolveNameIndexContainer) {
-        auto layout = makeShared<PaddingContainer>();
-        auto mid = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
+        auto mid = makeShared<ControlContainer>();
         mid->Name = "container";
         layout->Child = mid.get();
         auto content = makeShared<ColorView>();
@@ -240,8 +239,8 @@ public:
     }
 
     TEST_METHOD(resolveComplex1) {
-        auto layout = makeShared<PaddingContainer>();
-        auto container = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
+        auto container = makeShared<ControlContainer>();
         container->Name = "container";
         layout->Child = container.get();
         ControlPath path = ControlPath::parse("'container'.Parent[0]");
@@ -251,8 +250,8 @@ public:
     }
 
     TEST_METHOD(resolveComplex2) {
-        auto layout = makeShared<PaddingContainer>();
-        auto mid = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
+        auto mid = makeShared<ControlContainer>();
         mid->Name = "container";
         layout->Child = mid.get();
         auto content = makeShared<ColorView>();
@@ -265,8 +264,8 @@ public:
     }
 
     TEST_METHOD(resolveComplex3) {
-        auto layout = makeShared<PaddingContainer>();
-        auto mid = makeShared<PaddingContainer>();
+        auto layout = makeShared<ControlContainer>();
+        auto mid = makeShared<ControlContainer>();
         layout->Child = mid.get();
         auto content = makeShared<ColorView>();
         mid->Child = content.get();

@@ -8,6 +8,18 @@
 
 namespace Ghurund::UI {
 	class StateIndicator:public Control {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
+#pragma endregion
+
 	private:
 		struct IndicatorState {
 			bool focused = false, pressed = false;
@@ -21,10 +33,6 @@ namespace Ghurund::UI {
 		Color color;
 
 	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
 		Animator animator;
 		ValueAnimation<Color> animation;
 		State<bool> hoveredOrFocused = false;
@@ -69,24 +77,23 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getColor, put = setColor)) const Color& Color;
-
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = StateIndicator::GET_TYPE();
 	};
 
 	class StateIndicatorOnAccent:public StateIndicator {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
 		}
 
-		virtual void onThemeChanged() override;
-
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = StateIndicatorOnAccent::GET_TYPE();
+#pragma endregion
+
+	protected:
+		virtual void onThemeChanged() override;
 	};
 }
 

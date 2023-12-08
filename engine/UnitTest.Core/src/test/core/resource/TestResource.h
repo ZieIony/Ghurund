@@ -5,9 +5,13 @@
 
 namespace UnitTest {
 	class TestResource:public Ghurund::Core::Resource {
-	public:
-		Ghurund::Core::AString text;
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
+    public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = Ghurund::Core::Constructor<TestResource>();
 
@@ -18,10 +22,10 @@ namespace UnitTest {
             return TYPE;
         }
 
-        virtual const Ghurund::Core::Type& getType() const {
-            return GET_TYPE();
-        }
+        inline static const Ghurund::Core::Type& TYPE = TestResource::GET_TYPE();
+#pragma endregion
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+    public:
+		Ghurund::Core::AString text;
 	};
 }

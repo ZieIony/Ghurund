@@ -7,6 +7,18 @@
 
 namespace Ghurund::UI {
     class FlowLayout:public ControlGroup {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = FlowLayout::GET_TYPE();
+#pragma endregion
+
     private:
         Alignment alignment;
         Orientation orientation = Orientation::HORIZONTAL;
@@ -33,9 +45,6 @@ namespace Ghurund::UI {
                 }
             }
         }*/
-
-    protected:
-        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         inline bool getReverseLayout() const {
@@ -89,11 +98,5 @@ namespace Ghurund::UI {
         bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {
             return __super::dispatchMouseMotionEvent(event);
         }
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

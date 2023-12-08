@@ -24,6 +24,18 @@ namespace Ghurund::Core::DirectX {
 
     class Shader:public Resource//, public ParameterProvider
     {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Shader::GET_TYPE();
+#pragma endregion
+
     private:
         ShaderProgram* programs[6] = {};
         ID3D12RootSignature* rootSignature = nullptr;
@@ -63,10 +75,6 @@ namespace Ghurund::Core::DirectX {
 
         virtual unsigned int getVersion() const override {
             return 0;
-        }
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
         }
 
     public:
@@ -115,8 +123,6 @@ namespace Ghurund::Core::DirectX {
         }
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

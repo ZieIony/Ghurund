@@ -9,6 +9,18 @@ namespace Ghurund {
     using namespace Ghurund::Core;
 
     class ThumbnailRenderer:public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ThumbnailRenderer::GET_TYPE();
+#pragma endregion
+
     private:
 		Camera* camera = nullptr;
         Renderer* renderer = nullptr;
@@ -16,8 +28,6 @@ namespace Ghurund {
         RenderTarget* renderTarget = nullptr;
         DepthBuffer* depthBuffer = nullptr;
 
-    protected:
-        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ~ThumbnailRenderer() {
@@ -32,13 +42,5 @@ namespace Ghurund {
         Status render(DrawableComponent& entity, Ghurund::Core::Image*& image);
         Status render(Mesh& mesh, Ghurund::Core::Image*& image);
         Status render(Material& material, Ghurund::Core::Image*& image);
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

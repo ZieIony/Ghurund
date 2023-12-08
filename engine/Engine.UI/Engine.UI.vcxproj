@@ -144,7 +144,6 @@
     <ClInclude Include="src\ui\constraint\WrapConstraint.h" />
     <ClInclude Include="src\ui\control\Border.h" />
     <ClInclude Include="src\ui\control\ChildrenProvider.h" />
-    <ClInclude Include="src\ui\control\ClickableControl.h" />
     <ClInclude Include="src\ui\control\Clip.h" />
     <ClInclude Include="src\ui\control\ColorView.h" />
     <ClInclude Include="src\ui\control\Control.h" />
@@ -158,9 +157,7 @@
     <ClInclude Include="src\ui\control\ImageScaleMode.h" />
     <ClInclude Include="src\ui\control\InvalidControl.h" />
     <ClInclude Include="src\ui\control\MouseEvents.h" />
-    <ClInclude Include="src\ui\control\PaddingContainer.h" />
     <ClInclude Include="src\ui\control\ScrollView.h" />
-    <ClInclude Include="src\ui\control\SelectableView.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
@@ -221,7 +218,6 @@
     <ClInclude Include="src\ui\theme\LightTheme.h" />
     <ClInclude Include="src\ui\theme\Theme.h" />
     <ClInclude Include="src\ui\theme\WindowsTheme.h" />
-    <ClInclude Include="src\ui\widget\ClickResponseView.h" />
     <ClInclude Include="src\ui\widget\ContentWidget.h" />
     <ClInclude Include="src\ui\widget\DragHelper.h" />
     <ClInclude Include="src\ui\widget\ExpandableContainer.h" />
@@ -266,6 +262,7 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\constraint\Constraint.cpp" />
+    <ClCompile Include="src\ui\constraint\ValueConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\WindowConstraint.cpp" />
     <ClCompile Include="src\ui\control\InteractionHandler.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
@@ -285,7 +282,6 @@
     <ClCompile Include="src\ui\constraint\SiblingConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\WrapConstraint.cpp" />
     <ClCompile Include="src\ui\control\Border.cpp" />
-    <ClCompile Include="src\ui\control\ClickableControl.cpp" />
     <ClCompile Include="src\ui\control\Clip.cpp" />
     <ClCompile Include="src\ui\control\ColorView.cpp" />
     <ClCompile Include="src\ui\control\Control.cpp" />
@@ -297,9 +293,7 @@
     <ClCompile Include="src\ui\control\DrawableView.cpp" />
     <ClCompile Include="src\ui\control\ImageScaleMode.cpp" />
     <ClCompile Include="src\ui\control\InvalidControl.cpp" />
-    <ClCompile Include="src\ui\control\PaddingContainer.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
-    <ClCompile Include="src\ui\control\SelectableView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
     <ClCompile Include="src\ui\drawable\CursorDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
@@ -332,7 +326,6 @@
     <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
     <ClCompile Include="src\ui\theme\Theme.cpp" />
     <ClCompile Include="src\ui\theme\WindowsTheme.cpp" />
-    <ClCompile Include="src\ui\widget\ClickResponseView.cpp" />
     <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />

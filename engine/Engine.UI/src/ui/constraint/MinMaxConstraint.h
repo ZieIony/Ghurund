@@ -17,6 +17,8 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = MinMaxConstraint::GET_TYPE();
 #pragma endregion
 
 	protected:
@@ -25,6 +27,8 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 		MinMaxConstraint(const MinMaxConstraint& other):RatioConstraint(other), min(other.min), max(other.max) {}
+
+		~MinMaxConstraint() = 0 {}
 
 	public:
 		MinMaxConstraint() {}
@@ -56,9 +60,5 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getMax, put = setMax)) float Max;
-
-		virtual Object* clone() const {
-			return ghnew MinMaxConstraint(*this);
-		}
 	};
 }

@@ -21,9 +21,9 @@ namespace Ghurund::Core {
         inline ReverseTreeNodeIterator& operator=(NodeType* node) { this.node = node; return *this; }
         inline ReverseTreeNodeIterator& operator=(const ReverseTreeNodeIterator& other) { node = other.node; return *this; }
 
-        inline Type& operator*() { return node; }
-        inline Type& operator*() const { return node; }
-        inline Type* operator->() const { return &node; }
+        inline Type& operator*() { return node->data; }
+        inline Type& operator*() const { return node->data; }
+        inline Type* operator->() const { return &node->data; }
 
         inline ReverseTreeNodeIterator& operator++() { node = node->getPrevious(); return *this; }
         inline ReverseTreeNodeIterator& operator--() { node = node->getNext(); return *this; }
@@ -58,8 +58,8 @@ namespace Ghurund::Core {
         inline ConstReverseTreeNodeIterator& operator=(NodeType* node) { this.node = node; return *this; }
         inline ConstReverseTreeNodeIterator& operator=(const ConstReverseTreeNodeIterator& other) { node = other.node; return *this; }
 
-        inline Type& operator*() const { return node; }
-        inline Type* operator->() const { return &node; }
+        inline Type& operator*() const { return node->data; }
+        inline Type* operator->() const { return &node->data; }
 
         inline ConstReverseTreeNodeIterator& operator++() { node = node->getPrevious(); return *this; }
         inline ConstReverseTreeNodeIterator& operator--() { node = node->getNext(); return *this; }

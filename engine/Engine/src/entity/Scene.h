@@ -12,6 +12,18 @@
 
 namespace Ghurund {
     class Scene:public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Scene::GET_TYPE();
+#pragma endregion
+
     private:
         entt::registry entityRegistry;
 
@@ -55,14 +67,6 @@ namespace Ghurund {
 
         inline void render(CommandList& commandList) {
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

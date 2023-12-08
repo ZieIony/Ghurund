@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ui/control/SelectableView.h"
 #include "ui/control/DrawableView.h"
 #include "ui/widget/ContentWidget.h"
 #include "ui/widget/StateIndicator.h"
@@ -10,6 +9,24 @@
 namespace Ghurund::UI {
 	template<typename CheckBoxRadioType>
 	class CheckBoxRadio:public ContentWidget {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
+				.withModifiers(TypeModifier::ABSTRACT)
+				.withSupertype(__super::GET_TYPE());
+
+			return TYPE;
+		}
+
+		inline static const Ghurund::Core::Type& TYPE = CheckBoxRadio::GET_TYPE();
+#pragma endregion
+
 	protected:
 		bool checked = false;
 		InteractionHandler interactionHandler = *this;
@@ -34,10 +51,6 @@ namespace Ghurund::UI {
 			}
 		}
 
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
 		~CheckBoxRadio() {
 			if (state)
 				state->release();
@@ -46,16 +59,6 @@ namespace Ghurund::UI {
 		}
 
 	public:
-		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
-				.withModifiers(TypeModifier::ABSTRACT)
-				.withSupertype(__super::GET_TYPE());
-
-			return TYPE;
-		}
-
-		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
-
 		Event<CheckBoxRadioType, bool> checkedChanged = Event<CheckBoxRadioType, bool>((CheckBoxRadioType&)*this);
 
 		inline void setChecked(bool checked) {

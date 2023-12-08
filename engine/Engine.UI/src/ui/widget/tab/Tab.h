@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ui/control/SelectableView.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
@@ -29,8 +28,6 @@ namespace Ghurund::UI {
 
     class Tab:public Widget {
     private:
-        SelectableView* selectableView;
- 
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<Tab>(NAMESPACE_NAME, GH_STRINGIFY(Tab))
                 .withSupertype(__super::GET_TYPE());
@@ -40,7 +37,7 @@ namespace Ghurund::UI {
 
         virtual void bind() override {
             __super::bind();
-            selectableView->stateChanged += [this](Control& control) { return stateChanged(); };
+            //selectableView->stateChanged += [this](Control& control) { return stateChanged(); };
         }
 
     public:
@@ -49,11 +46,11 @@ namespace Ghurund::UI {
         }
 
         inline void setSelected(bool selected) {
-            selectableView->Selected = selected;
+            //selectableView->Selected = selected;
         }
 
         inline bool isSelected() const {
-            return selectableView->Selected;
+            return false;// selectableView->Selected;
         }
 
         __declspec(property(get = isSelected, put = setSelected)) bool Selected;

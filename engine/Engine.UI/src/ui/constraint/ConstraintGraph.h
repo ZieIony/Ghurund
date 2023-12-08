@@ -13,9 +13,7 @@ namespace Ghurund::UI {
     private:
         List<Constraint*> constraints;
 
-        void sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current);
-
-        void sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep);
+        bool sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep);
 
     public:
         inline void add(Constraint* constraint) {
@@ -35,13 +33,18 @@ namespace Ghurund::UI {
             constraints.clear();
         }
 
-        inline const Constraint& get(size_t i) const {
-            return *constraints[i];
+#ifdef _DEBUG
+        inline bool validateOrder(const std::initializer_list<Constraint*>& constraints) const {
+            size_t index = 0;
+            for (Constraint* constraint : constraints) {
+                size_t newIndex = this->constraints.indexOf(constraint);
+                if (newIndex < index || newIndex == this->constraints.Size)
+                    return false;
+                index = newIndex;
+            }
+            return true;
         }
-
-        inline const Constraint& operator[](size_t i) const {
-            return *constraints[i];
-        }
+#endif
 
         inline size_t getSize() const {
             return constraints.Size;
@@ -55,5 +58,9 @@ namespace Ghurund::UI {
             for (Constraint* c : constraints)
                 c->evaluate();
         }
+
+#ifdef _DEBUG
+        String print() const;
+#endif
     };
 }

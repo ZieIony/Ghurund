@@ -9,6 +9,18 @@ namespace Ghurund::Core {
 
 namespace Ghurund::UI {
     class ControlGroup:public ControlParent {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
+#pragma endregion
+
     private:
         ControlList children;
         Control* previousReceiver = nullptr;
@@ -19,10 +31,6 @@ namespace Ghurund::UI {
         virtual void onMeasure() override;
 
         virtual void onLayout(float x, float y, float width, float height) override;
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         ControlGroup():children(*this) {}
@@ -93,9 +101,5 @@ namespace Ghurund::UI {
 
         virtual String printTree() const;
 #endif
-
-        static const Ghurund::Core::Type& GET_TYPE();
-   
-        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
     };
 }

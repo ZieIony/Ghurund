@@ -11,6 +11,21 @@ namespace Ghurund::Core {
 
     template<class T>
     class ObservableHandler:public Pointer {
+#pragma region reflection
+protected:
+    virtual const Ghurund::Core::Type& getTypeImpl() const override {
+        return GET_TYPE();
+    }
+
+public:
+    static const Ghurund::Core::Type& GET_TYPE() {
+            static Ghurund::Core::Type type = TypeBuilder<ObservableHandler<T>>(Ghurund::Core::NAMESPACE_NAME, "ObservableHandler").withTemplateParams<T>();
+            return type;
+        }
+
+    inline static const Ghurund::Core::Type& TYPE = ObservableHandler::GET_TYPE();
+#pragma endregion
+
     private:
         std::function<void(const T& args)> lambda;
         Observable<T>* owner = nullptr;
@@ -43,19 +58,6 @@ namespace Ghurund::Core {
         inline void invoke(const T& args) const {
             lambda(args);
         }
-
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static Ghurund::Core::Type type = TypeBuilder<ObservableHandler<T>>(Ghurund::Core::NAMESPACE_NAME, "ObservableHandler").withTemplateParams<T>();
-            return type;
-        }
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
 }

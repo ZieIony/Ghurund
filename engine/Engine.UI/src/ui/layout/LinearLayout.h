@@ -6,15 +6,23 @@
 
 namespace Ghurund::UI {
     class LinearLayout:public ControlGroup {
-    private:
-        LinearLayoutManager layoutManager;
-        ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
-
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = LinearLayout::GET_TYPE();
+#pragma endregion
+
+    private:
+        LinearLayoutManager layoutManager;
+        ListChildrenProvider childrenProvider = ListChildrenProvider(*this);
+
+    protected:
         virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
         virtual void onMeasure() override {
@@ -57,10 +65,6 @@ namespace Ghurund::UI {
         virtual bool focusLeft() override;
 
         virtual bool focusRight() override;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = LinearLayout::GET_TYPE();
     };
 
     class HorizontalLayout:public LinearLayout {};

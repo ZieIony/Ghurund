@@ -8,6 +8,18 @@
 
 namespace Ghurund::UI {
 	class TextBlock:public Control {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = TextBlock::GET_TYPE();
+#pragma endregion
+
 	protected:
 		AttrProperty<ColorAttr, Color> color;
 		Ghurund::UI::TextFormatAttr* textFormat = nullptr;
@@ -63,13 +75,5 @@ namespace Ghurund::UI {
 		__declspec(property(get = getTextFormat, put = setTextFormat)) Ghurund::UI::TextFormatAttr* TextFormat;
 
 		void dispatchContextChanged();
-
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 	};
 }

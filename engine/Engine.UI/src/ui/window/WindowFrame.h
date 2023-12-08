@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ui/control/PaddingContainer.h"
+#include "ui/control/ControlGroup.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
-    class WindowFrame:public PaddingContainer {
+    class WindowFrame:public ControlGroup {
     public:
-        WindowFrame(): PaddingContainer(4) {}
+        WindowFrame() {}
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
     };

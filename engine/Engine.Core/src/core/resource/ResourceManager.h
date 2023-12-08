@@ -26,6 +26,18 @@
 
 namespace Ghurund::Core {
 	class ResourceManager:public Noncopyable, public Object {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = ResourceManager::GET_TYPE();
+#pragma endregion
+
 	private:
 		FileWatcher watcher;
 		Resources resources;
@@ -84,11 +96,6 @@ namespace Ghurund::Core {
 			const ResourceFormat* format,
 			SaveOption options
 		) const;
-
-	protected:
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
 
 	public:
 		inline static const wchar_t* const ENGINE_LIB_NAME = L"Ghurund";
@@ -267,7 +274,5 @@ namespace Ghurund::Core {
 		}
 
 		__declspec(property(get = getLibraries)) LibraryList& Libraries;
-
-		static const Ghurund::Core::Type& GET_TYPE();
 	};
 }

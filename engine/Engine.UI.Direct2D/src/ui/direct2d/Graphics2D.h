@@ -22,12 +22,15 @@ namespace Ghurund::UI::Direct2D {
 
     class Graphics2D:public Feature {
 #pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        inline static const Ghurund::Core::Type& TYPE = Graphics2D::GET_TYPE();
 #pragma endregion
 
     private:

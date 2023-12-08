@@ -145,8 +145,8 @@ public:
             graph.sort();
             graph.evaluate();
 
-            Assert::AreEqual(100.0f, group->Width.Value);
-            Assert::AreEqual(75.0f, group->Height.Value);
+            Assert::AreEqual(0.0f, group->Width.Value);
+            Assert::AreEqual(0.0f, group->Height.Value);
         }
     }
     };

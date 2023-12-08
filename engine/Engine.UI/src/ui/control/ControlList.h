@@ -97,12 +97,12 @@ namespace Ghurund::UI {
             return children.get(i);
         }
 
-        inline size_t indexOf(Control* item) const {
-            return children.indexOf(item);
+        inline size_t indexOf(const Control* item) const {
+            return children.indexOf((Control*)item);
         }
 
-        inline bool contains(Control* item) const {
-            return children.contains(item);
+        inline bool contains(const Control* item) const {
+            return children.contains((Control*)item);
         }
 
         inline Control* operator[](size_t i)const {

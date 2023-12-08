@@ -10,6 +10,18 @@ namespace Ghurund {
     using namespace Ghurund::Core;
 
     class Layer:public Pointer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Layer::GET_TYPE();
+#pragma endregion
+
     private:
         IntSize size = { 0,0 };
         bool focused = false;
@@ -21,16 +33,6 @@ namespace Ghurund {
         virtual bool onFocusedChangedEvent() {
             return false;
         }
-
-#pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
-
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-#pragma endregion
 
     public:
         virtual ~Layer()

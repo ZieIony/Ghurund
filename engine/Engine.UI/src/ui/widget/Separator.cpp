@@ -26,7 +26,7 @@ namespace Ghurund::UI {
 
     void Separator::onThemeChanged() {
         Thickness = 1;
-        Padding.Vertical = 4;
-        Padding.Horizontal = 0;
+        //Padding.Vertical = 4;
+        //Padding.Horizontal = 0;
     }
 }

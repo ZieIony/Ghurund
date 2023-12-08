@@ -10,7 +10,19 @@
 #include "ImageScaleMode.h"
 
 namespace Ghurund::UI {
-	class DrawableView: public Control {
+	class DrawableView:public Control {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = DrawableView::GET_TYPE();
+#pragma endregion
+
 	private:
 		PointerAttrProperty<DrawableAttr, Drawable> drawable;
 		NullableAttrProperty<ColorAttr, Color> tint;
@@ -40,15 +52,7 @@ namespace Ghurund::UI {
 
 		virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
 	public:
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		inline static const Ghurund::Core::Type& TYPE = DrawableView::GET_TYPE();
-
 		DrawableView() {
 			gravity.horizontal = Alignment::Horizontal::CENTER;
 			gravity.vertical = Alignment::Vertical::CENTER;

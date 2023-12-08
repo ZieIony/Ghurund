@@ -7,6 +7,18 @@
 
 namespace Ghurund::UI {
     class TextField:public TextView {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = TextField::GET_TYPE();
+#pragma endregion
+
     private:
         Event<TextField> onTextChanged = Event<TextField>(*this);
 
@@ -36,8 +48,6 @@ namespace Ghurund::UI {
         }
 
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
         ~TextField() {}
 
     public:
@@ -56,11 +66,5 @@ namespace Ghurund::UI {
         void pasteFromClipboard();
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

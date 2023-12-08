@@ -19,10 +19,20 @@ namespace Ghurund {
     using namespace Ghurund::Core::DirectX;
 
     class ParameterManager: public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ParameterManager::GET_TYPE();
+#pragma endregion
+
     private:
 		PointerList<Parameter*> parameters;
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         ParameterManager();
@@ -43,13 +53,5 @@ namespace Ghurund {
 
             return nullptr;
         }
-
-		
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

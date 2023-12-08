@@ -5,7 +5,8 @@
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
-	class LayoutAttr: public Ghurund::Core::Object {
+	class LayoutAttr:public Ghurund::Core::Object {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -15,11 +16,25 @@ namespace Ghurund::UI {
 		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = LayoutAttr::GET_TYPE();
+#pragma endregion
 
+	public:
 		virtual SharedPointer<Control> resolve(const Theme& theme) const = 0;
 	};
 
-	class LayoutValue: public LayoutAttr {
+	class LayoutValue:public LayoutAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = LayoutValue::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Control> control;
 
@@ -54,7 +69,19 @@ namespace Ghurund::UI {
 		}
 	};
 
-	class LayoutRef: public LayoutAttr {
+	class LayoutRef:public LayoutAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = LayoutRef::GET_TYPE();
+#pragma endregion
+
 	private:
 		LayoutKey key;
 

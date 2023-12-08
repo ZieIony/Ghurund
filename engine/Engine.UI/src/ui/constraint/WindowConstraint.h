@@ -5,6 +5,18 @@
 
 namespace Ghurund::UI {
     class WindowWidthConstraint:public Constraint {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
     private:
         Window& window;
 
@@ -16,8 +28,13 @@ namespace Ghurund::UI {
     public:
         WindowWidthConstraint(Window& window):window(window) {}
 
+        virtual void resolve(Control& control, ConstraintGraph& graph) override {
+            evaluated = false;
+        }
+
         virtual void evaluate() override {
             value = (float)window.Size.Width;
+            evaluated = true;
         }
 
         virtual Object* clone() const {
@@ -26,6 +43,18 @@ namespace Ghurund::UI {
     };
 
     class WindowHeightConstraint:public Constraint {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
     private:
         Window& window;
 
@@ -37,8 +66,13 @@ namespace Ghurund::UI {
     public:
         WindowHeightConstraint(Window& window):window(window) {}
 
+        virtual void resolve(Control& control, ConstraintGraph& graph) override {
+            evaluated = false;
+        }
+
         virtual void evaluate() override {
             value = (float)window.Size.Height;
+            evaluated = true;
         }
 
         virtual Object* clone() const {

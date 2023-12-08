@@ -18,6 +18,18 @@ namespace Ghurund::Core::DirectX {
     class Graphics;
 
     class SwapChain:public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = SwapChain::GET_TYPE();
+#pragma endregion
+
     private:
         Graphics* graphics = nullptr;
         ComPtr<IDXGISwapChain3> swapChain;
@@ -26,11 +38,6 @@ namespace Ghurund::Core::DirectX {
         size_t currentFrame = 0;
         SystemWindow* window = nullptr;
         DXGI_FORMAT format;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         ~SwapChain() {
@@ -64,7 +71,5 @@ namespace Ghurund::Core::DirectX {
         Status present();
 
         Status resize(const IntSize& size);
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

@@ -5,15 +5,16 @@
 
 namespace Ghurund::UI {
     class DesktopLayout:public ControlGroup {
-    private:
+#pragma region reflection
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-    public:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = DesktopLayout::GET_TYPE();
+#pragma endregion
     };
 }

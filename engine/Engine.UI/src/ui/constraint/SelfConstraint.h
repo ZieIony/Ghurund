@@ -8,11 +8,24 @@ namespace Ghurund::UI {
 	class Control;
 
 	class SelfWidthConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -21,11 +34,24 @@ namespace Ghurund::UI {
 	};
 
 	class SelfHeightConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
 			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -34,6 +60,18 @@ namespace Ghurund::UI {
 	};
 
 	class LeftWidthConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> left, width;
 
@@ -51,6 +89,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = left->Value + width->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -59,6 +98,18 @@ namespace Ghurund::UI {
 	};
 
 	class CenterLeftConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> left, width, right;
 
@@ -76,6 +127,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = (right->Value + left->Value - width->Value) / 2;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -84,6 +136,18 @@ namespace Ghurund::UI {
 	};
 
 	class LeftRightConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> left, right;
 
@@ -101,6 +165,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = right->Value - left->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -109,6 +174,18 @@ namespace Ghurund::UI {
 	};
 
 	class CenterRightConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> left, width, right;
 
@@ -126,6 +203,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = (right->Value + left->Value + width->Value) / 2;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -134,6 +212,18 @@ namespace Ghurund::UI {
 	};
 
 	class WidthRightConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> width, right;
 
@@ -151,6 +241,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = right->Value - width->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -159,6 +250,18 @@ namespace Ghurund::UI {
 	};
 
 	class TopHeightConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> top, height;
 
@@ -176,6 +279,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = top->Value + height->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -184,6 +288,18 @@ namespace Ghurund::UI {
 	};
 
 	class CenterTopConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> top, height, bottom;
 
@@ -201,6 +317,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = (bottom->Value + top->Value - height->Value) / 2;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -209,6 +326,18 @@ namespace Ghurund::UI {
 	};
 
 	class TopBottomConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> top, bottom;
 
@@ -226,6 +355,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = bottom->Value - top->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -234,6 +364,18 @@ namespace Ghurund::UI {
 	};
 
 	class CenterBottomConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> top, height, bottom;
 
@@ -251,6 +393,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = (bottom->Value + top->Value + height->Value) / 2;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -259,6 +402,18 @@ namespace Ghurund::UI {
 	};
 
 	class HeightBottomConstraint:public Constraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		SharedPointer<Constraint> height, bottom;
 
@@ -276,6 +431,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override {
 			value = bottom->Value - height->Value;
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {

@@ -8,6 +8,18 @@ namespace Ghurund::Core {
     typedef LONGLONG ticks_t;
 
     class Timer:public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Timer::GET_TYPE();
+#pragma endregion
+
     private:
         LARGE_INTEGER frequency;
         LARGE_INTEGER startFrame;
@@ -16,11 +28,6 @@ namespace Ghurund::Core {
         ticks_t ticks = 0, frameTicks = 0;
         double time = 0.0f, frameTime = 0.0f;
         uint64_t timeMs, frameTimeMs;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         Timer();
@@ -76,7 +83,5 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(put = setPaused, get = isPaused)) bool Paused;
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

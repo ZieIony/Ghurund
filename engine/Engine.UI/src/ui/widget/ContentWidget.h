@@ -8,6 +8,18 @@ namespace Ghurund::UI {
 	using namespace Ghurund::Core;
 
 	class ContentWidget:public Widget {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = ContentWidget::GET_TYPE();
+#pragma endregion
+
 	private:
 		ControlContainer* container = nullptr;
 		Control* content = nullptr;
@@ -66,13 +78,5 @@ namespace Ghurund::UI {
 		virtual Control* find(const Ghurund::Core::AString& name) override;
 
 		virtual Control* find(const Ghurund::Core::Type& type) override;
-
-		static const Ghurund::Core::Type& GET_TYPE();
-
-		virtual const Ghurund::Core::Type& getTypeImpl() const override {
-			return GET_TYPE();
-		}
-
-		__declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 	};
 }

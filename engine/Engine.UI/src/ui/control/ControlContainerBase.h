@@ -8,6 +8,7 @@ namespace Ghurund::Core {
 
 namespace Ghurund::UI {
 	class ControlContainerBase: public ControlParent {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -17,6 +18,7 @@ namespace Ghurund::UI {
 		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = ControlContainerBase::GET_TYPE();
+#pragma endregion
 
 	private:
 		bool previousReceiver = false;
@@ -37,7 +39,20 @@ namespace Ghurund::UI {
 			}
 		}
 
-		virtual void setChild(Control* child) {
+		virtual void onChildChanged() {}
+
+	public:
+		Event<ControlContainerBase> childChanged = *this;
+
+		inline Control* getChild() {
+			return child;
+		}
+
+		inline const Control* getChild() const {
+			return child;
+		}
+
+		void setChild(Control* child) {
 			if (this->child == child)
 				return;
 			if (this->child)
@@ -45,9 +60,12 @@ namespace Ghurund::UI {
 			setPointer(this->child, child);
 			if (this->child)
 				this->child->Parent = this;
+			onChildChanged();
+			childChanged();
 		}
 
-	public:
+		__declspec(property(get = getChild, put = setChild)) Control* Child;
+
 		virtual bool focusNext() override;
 
 		virtual bool focusPrevious() override;

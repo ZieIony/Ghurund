@@ -28,6 +28,18 @@ namespace Ghurund::Core {
     class ResourceManager;
 
     class Loader:public Pointer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Loader::GET_TYPE();
+#pragma endregion
+
     private:
         Allocator* allocator;
 
@@ -40,15 +52,7 @@ namespace Ghurund::Core {
             return (T*)constructor.invoke();
         }
 
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
         Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
         virtual ~Loader() = 0 {}

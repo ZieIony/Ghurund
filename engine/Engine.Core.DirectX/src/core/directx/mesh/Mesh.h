@@ -27,6 +27,18 @@ namespace Ghurund {
     typedef uint32_t vindex_t;
 
     class Mesh:public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Mesh::GET_TYPE();
+#pragma endregion
+
     protected:
         void* vertices = nullptr;
         unsigned int vertexSize;
@@ -90,14 +102,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         static const Array<ResourceFormat>& getFormats() {
             static const Array<ResourceFormat> formats = {

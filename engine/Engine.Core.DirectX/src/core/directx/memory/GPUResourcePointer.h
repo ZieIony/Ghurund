@@ -14,15 +14,22 @@ namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;
 
     class GPUResourcePointer:public Pointer {
-    private:
-        HeapAllocator* allocator;
-        void* address;
-        ID3D12Resource *resource;
-
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = GPUResourcePointer::GET_TYPE();
+#pragma endregion
+
+    private:
+        HeapAllocator* allocator;
+        void* address;
+        ID3D12Resource *resource;
 
     public:
         GPUResourcePointer(HeapAllocator *allocator, void* address, ID3D12Resource *resource){
@@ -35,7 +42,5 @@ namespace Ghurund::Core::DirectX {
             resource->Release();
             allocator->deallocate(address);
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

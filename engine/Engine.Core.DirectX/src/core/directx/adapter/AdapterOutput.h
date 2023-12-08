@@ -9,6 +9,18 @@ namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;
 
     class AdapterOutput: public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = AdapterOutput::GET_TYPE();
+#pragma endregion
+
     private:
         DXGI_OUTPUT_DESC desc;
         WString name;
@@ -29,11 +41,6 @@ namespace Ghurund::Core::DirectX {
                 displayModes.add(ghnew DisplayMode(modes[i]));
 
             delete[] modes;
-        }
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
         }
 
     public:
@@ -57,7 +64,5 @@ namespace Ghurund::Core::DirectX {
         List<DisplayMode*>& getDisplayModes() {
             return displayModes;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

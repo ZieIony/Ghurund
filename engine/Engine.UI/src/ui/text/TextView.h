@@ -11,6 +11,18 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class TextView:public TextBlock {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = TextView::GET_TYPE();
+#pragma endregion
+
     private:
         Color textSelectionEffect = 0;
         Color imageSelectionEffect = 0;
@@ -45,8 +57,6 @@ namespace Ghurund::UI {
 
         virtual void onThemeChanged() override;
 
-        static const Ghurund::Core::Type& GET_TYPE();
-
         ~TextView() {
             if (cursorDrawable)
                 cursorDrawable->release();
@@ -70,13 +80,5 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

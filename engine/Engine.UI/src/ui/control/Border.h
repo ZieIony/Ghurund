@@ -6,17 +6,25 @@
 #include "ui/style/ColorAttr.h"
 
 namespace Ghurund::UI {
-    class Border: public Control {
+    class Border:public Control {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Border::GET_TYPE();
+#pragma endregion
+
     private:
         AttrProperty<ColorAttr, Color> color;
         float thickness = 1.0f;
         Ghurund::UI::Shape* shape = nullptr;
 
     protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
         virtual void onThemeChanged() override;
 
         virtual void onStateChanged() override;
@@ -30,10 +38,6 @@ namespace Ghurund::UI {
         virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = Border::GET_TYPE();
-
         Border(const ColorAttr& color = ColorRef(Theme::COLOR_SECONDARY_ONBACKGROUND)) :color(color) {}
 
         ~Border() {

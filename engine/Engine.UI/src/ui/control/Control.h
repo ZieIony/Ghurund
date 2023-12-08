@@ -34,7 +34,31 @@ namespace Ghurund::UI {
 
 	using namespace Ghurund::Core;
 
-	class Control: public Resource, public EventConsumer {
+	struct Constraints {
+		SharedPointer<Constraint> left = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
+		SharedPointer<Constraint> width = SharedPointer<Constraint>(ghnew WrapWidthConstraint());
+		SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint(left, width));
+		SharedPointer<Constraint> top = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
+		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
+		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
+
+		Constraints() {}
+
+		Constraints(const Constraints& other):
+			left((Constraint*)other.left->clone()),
+			width((Constraint*)other.width->clone()),
+			right((Constraint*)other.right->clone()),
+			top((Constraint*)other.top->clone()),
+			height((Constraint*)other.height->clone()),
+			bottom((Constraint*)other.bottom->clone()) {}
+
+		inline bool operator==(const Constraints& other) const {
+			return left == other.left && width == other.width && right == other.right &&
+				top == other.top && height == other.height && bottom == other.bottom;
+		}
+	};
+
+	class Control:public Resource, public EventConsumer {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -43,6 +67,8 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Control::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -72,12 +98,7 @@ namespace Ghurund::UI {
 
 		//List<Binding> bindings;
 
-		SharedPointer<Constraint> left = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-		SharedPointer<Constraint> width = SharedPointer<Constraint>(ghnew WrapWidthConstraint());
-		SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint(left, width));
-		SharedPointer<Constraint> top = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
-		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
+		Constraints constraints;
 
 		Control() {}
 
@@ -90,12 +111,7 @@ namespace Ghurund::UI {
 			measuredSize(other.measuredSize),
 			needsLayout(other.needsLayout),
 			localTheme(other.localTheme),
-			left((Constraint*)other.left->clone()),
-			width((Constraint*)other.width->clone()),
-			right((Constraint*)other.right->clone()),
-			top((Constraint*)other.top->clone()),
-			height((Constraint*)other.height->clone()),
-			bottom((Constraint*)other.bottom->clone()) {}
+			constraints(constraints) {}
 
 		virtual ~Control() = 0;
 
@@ -367,37 +383,37 @@ namespace Ghurund::UI {
 		}
 
 		inline Constraint& getLeft() {
-			return *left.get();
+			return *constraints.left.get();
 		}
 
 		__declspec(property(get = getLeft)) Constraint& Left;
 
 		inline Constraint& getRight() {
-			return *right.get();
+			return *constraints.right.get();
 		}
 
 		__declspec(property(get = getRight)) Constraint& Right;
 
 		inline Constraint& getWidth() {
-			return *width.get();
+			return *constraints.width.get();
 		}
 
 		__declspec(property(get = getWidth)) Constraint& Width;
 
 		inline Constraint& getTop() {
-			return *top.get();
+			return *constraints.top.get();
 		}
 
 		__declspec(property(get = getTop)) Constraint& Top;
 
 		inline Constraint& getBottom() {
-			return *bottom.get();
+			return *constraints.bottom.get();
 		}
 
 		__declspec(property(get = getBottom)) Constraint& Bottom;
 
 		inline Constraint& getHeight() {
-			return *height.get();
+			return *constraints.height.get();
 		}
 
 		__declspec(property(get = getHeight)) Constraint& Height;

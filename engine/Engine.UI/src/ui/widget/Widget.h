@@ -8,11 +8,19 @@ namespace Ghurund::UI {
 	using namespace Ghurund::Core;
 
 	class Widget:public ControlContainerBase {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
 		}
 
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Widget::GET_TYPE();
+#pragma endregion
+
+	protected:
 		PointerAttrProperty<LayoutAttr, Control> layout;
 
 		Widget() {}
@@ -28,10 +36,6 @@ namespace Ghurund::UI {
 		virtual void onLayoutChanged() {}
 
 	public:
-		inline static const Ghurund::Core::Type& TYPE = Widget::GET_TYPE();
-
-		static const Ghurund::Core::Type& GET_TYPE();
-
 		inline void setLayout(std::unique_ptr<LayoutAttr> layout) {
 			this->layout.set(std::move(layout));
 			updateLayout();

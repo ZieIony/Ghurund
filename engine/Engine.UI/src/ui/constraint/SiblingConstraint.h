@@ -6,6 +6,18 @@
 
 namespace Ghurund::UI {
 	class SiblingLeftConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -26,7 +38,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			value = (*dependencies.begin())->Value + offset;
+			if (!dependencies.Empty) {
+				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -35,6 +52,18 @@ namespace Ghurund::UI {
 	};
 
 	class SiblingRightConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -55,7 +84,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			value = (*dependencies.begin())->Value + offset;
+			if (!dependencies.Empty) {
+				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -64,6 +98,18 @@ namespace Ghurund::UI {
 	};
 
 	class SiblingTopConstraint: public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -84,8 +130,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty)
+			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -94,6 +144,18 @@ namespace Ghurund::UI {
 	};
 
 	class SiblingBottomConstraint:public OffsetConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -114,8 +176,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty)
+			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
+			} else {
+				value = offset;
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -124,6 +190,18 @@ namespace Ghurund::UI {
 	};
 
 	class SiblingWidthConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -144,8 +222,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty)
+			if (!dependencies.Empty) {
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			} else {
+				value = minMax(min, offset, max);
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {
@@ -154,6 +236,18 @@ namespace Ghurund::UI {
 	};
 
 	class SiblingHeightConstraint:public MinMaxConstraint {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
 	private:
 		const AString name;
 
@@ -174,8 +268,12 @@ namespace Ghurund::UI {
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
-			if (!dependencies.Empty)
+			if (!dependencies.Empty) {
 				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
+			} else {
+				value = minMax(min, offset, max);
+			}
+			evaluated = true;
 		}
 
 		virtual Object* clone() const {

@@ -62,6 +62,9 @@ namespace Ghurund {
         rootView->resolveConstraints(graph);
         graph.sort();
         rootView->measure();
+        /*Logger::print(LogType::INFO, _T("\n"));
+        Logger::print(LogType::INFO, graph.print().Data);
+        Logger::print(LogType::INFO, _T("\n"));*/
         graph.evaluate();
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }

@@ -7,6 +7,7 @@ namespace Ghurund::UI {
 	class TextFormat;
 
 	class TextFormatAttr : public Ghurund::Core::Object {
+#pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
 			return GET_TYPE();
@@ -16,11 +17,25 @@ namespace Ghurund::UI {
 		static const Ghurund::Core::Type& GET_TYPE();
 
 		inline static const Ghurund::Core::Type& TYPE = TextFormatAttr::GET_TYPE();
+#pragma endregion
 
+	public:
 		virtual const TextFormat* resolve(const Theme& theme) const = 0;
 	};
 
 	class TextFormatValue : public TextFormatAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = TextFormatValue::GET_TYPE();
+#pragma endregion
+
 	private:
 		TextFormat* textFormat;
 
@@ -37,6 +52,18 @@ namespace Ghurund::UI {
 	};
 
 	class TextFormatRef : public TextFormatAttr {
+#pragma region reflection
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
+
+		inline static const Ghurund::Core::Type& TYPE = TextFormatRef::GET_TYPE();
+#pragma endregion
+
 	private:
 		TextFormatKey key;
 

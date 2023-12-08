@@ -6,9 +6,8 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class Shape:public Object {
+#pragma region reflection
     protected:
-        FloatRect bounds;
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
@@ -17,7 +16,12 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = Shape::GET_TYPE();
+#pragma endregion
 
+    protected:
+        FloatRect bounds;
+
+    public:
         Shape():bounds({}) {}
 
         Shape(const FloatRect& bounds):bounds(bounds) {}

@@ -10,13 +10,14 @@ namespace Ghurund::Net {
     class Networking:public Feature, public Noncopyable {
 #pragma region reflection
     protected:
-        static const Ghurund::Core::Type& GET_TYPE();
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
     public:
-        
-        virtual const Ghurund::Core::Type& getTypeImpl() const override { return GET_TYPE(); }
+        static const Ghurund::Core::Type& GET_TYPE();
 
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
+        inline static const Ghurund::Core::Type& TYPE = Networking::GET_TYPE();
 #pragma endregion
 
     public:

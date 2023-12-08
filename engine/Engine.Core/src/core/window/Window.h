@@ -20,6 +20,18 @@ namespace Ghurund::Core {
     class Timer;
 
     class Window:public Object, public EventConsumer {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Window::GET_TYPE();
+#pragma endregion
+
     private:
         /*
         PointerArray<Parameter*> parameters;
@@ -55,10 +67,6 @@ namespace Ghurund::Core {
 
         virtual bool onClosedEvent() {
             return false;
-        }
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
         }
 
     public:
@@ -214,7 +222,5 @@ namespace Ghurund::Core {
         virtual Status paint() {
             return Status::OK;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
   };
 }

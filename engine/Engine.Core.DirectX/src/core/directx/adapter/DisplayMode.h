@@ -11,15 +11,22 @@ namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;
 
     class DisplayMode: public Object {
-    private:
-        unsigned int width, height;
-        float refreshRate;
-        DXGI_FORMAT format;
-
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = DisplayMode::GET_TYPE();
+#pragma endregion
+
+    private:
+        unsigned int width, height;
+        float refreshRate;
+        DXGI_FORMAT format;
 
     public:
         DisplayMode(DXGI_MODE_DESC mode) {
@@ -44,7 +51,5 @@ namespace Ghurund::Core::DirectX {
         DXGI_FORMAT getFormat() {
             return format;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }

@@ -7,8 +7,8 @@ namespace Ghurund::UI {
     RootView::RootView(IUIContext& context) {
         this->context = &context;
         Cursor = &Cursor::ARROW;
-        width.set(ghnew WindowWidthConstraint(context.Window));
-        height.set(ghnew WindowHeightConstraint(context.Window));
+        constraints.width.set(ghnew WindowWidthConstraint(context.Window));
+        constraints.height.set(ghnew WindowHeightConstraint(context.Window));
     }
 
     void RootView::requestLayout() {

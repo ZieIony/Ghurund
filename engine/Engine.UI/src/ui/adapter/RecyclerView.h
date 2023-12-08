@@ -7,13 +7,8 @@
 
 namespace Ghurund::UI {
     class RecyclerView:public ControlGroup {
-    private:
-        Event<Control> onScrolled = Event<Control>(*this);
-
+#pragma region reflection
     protected:
-        LayoutManager* layoutManager = nullptr;
-        ChildrenProvider* childrenProvider = nullptr;
-
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
         }
@@ -21,6 +16,17 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = RecyclerView::GET_TYPE();
+#pragma endregion
+
+    private:
+        Event<Control> onScrolled = Event<Control>(*this);
+
+    protected:
+        LayoutManager* layoutManager = nullptr;
+        ChildrenProvider* childrenProvider = nullptr;
+
+    public:
         ~RecyclerView() {
             delete childrenProvider;
             delete layoutManager;

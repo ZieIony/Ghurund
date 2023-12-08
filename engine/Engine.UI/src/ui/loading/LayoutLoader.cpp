@@ -11,6 +11,7 @@
 #include "core/logging/Formatter.h"
 #include "core/string/TextConversionUtils.h"
 #include "ui/control/Clip.h"
+#include "ui/control/ScrollView.h"
 
 #include <ranges>
 #include "LayoutPropertyLoader.h"

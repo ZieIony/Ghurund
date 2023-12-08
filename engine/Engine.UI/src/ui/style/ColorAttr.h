@@ -7,6 +7,7 @@
 
 namespace Ghurund::UI {
     class ColorAttr:public Object {
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -16,11 +17,25 @@ namespace Ghurund::UI {
         static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = ColorAttr::GET_TYPE();
+#pragma endregion
 
+    public:
         virtual const Color* resolve(const Theme& theme) const = 0;
     };
 
     class ColorValue:public ColorAttr {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ColorValue::GET_TYPE();
+#pragma endregion
+
     private:
         Color value;
 
@@ -34,14 +49,6 @@ namespace Ghurund::UI {
         virtual const Color* resolve(const Theme& theme) const override {
             return &value;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         ColorValue& operator=(const ColorValue& other) {
             value = other.value;
@@ -61,6 +68,18 @@ namespace Ghurund::UI {
     };
 
     class ColorRef:public ColorAttr {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = ColorRef::GET_TYPE();
+#pragma endregion
+
     private:
         ColorKey key;
 
@@ -72,14 +91,6 @@ namespace Ghurund::UI {
         ColorRef(ColorRef&& other) noexcept :key(std::move(other.key)) {}
 
         virtual const Color* resolve(const Theme& theme) const override;
-
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
 
         ColorRef& operator=(const ColorRef& other) {
             key = other.key;

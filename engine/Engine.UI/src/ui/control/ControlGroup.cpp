@@ -217,7 +217,6 @@ namespace Ghurund::UI {
 		size_t len = 4;
 		for (Control* child : children) {
 			auto childStr = child->printTree().split(_T("\n"));
-			str.add(_T("\n"));
 			for (size_t j = 0; j < len; j++)
 				str.add(_T(" "));
 			str.add(_T("\\-"));
@@ -229,6 +228,7 @@ namespace Ghurund::UI {
 				str.add(child != children[children.Size - 1] ? _T("| ") : _T("  "));
 				str.add(childStr[i]);
 			}
+			str.add(_T("\n"));
 		}
 		return str;
 	}

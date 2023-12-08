@@ -20,7 +20,7 @@ namespace Ghurund::Net {
 
         void calculateCrc(size_t messageSize);
 
-        bool operator==(const Message& other) const {
+        inline bool operator==(const Message& other) const {
             return crc == other.crc && type == other.type && id == other.id && messageType == other.messageType;
         }
 

@@ -12,6 +12,18 @@ namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class Font:public Ghurund::Core::Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Font::GET_TYPE();
+#pragma endregion
+
     private:
         static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~");
         static inline const uint32_t PADDING = 0;
@@ -49,16 +61,6 @@ namespace Ghurund::UI {
         void initMsdf(HFONT hf, const String& characters);
 
         HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
-
-#pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-#pragma endregion
 
     public:
         const Ghurund::Core::String& getFamilyName() const {

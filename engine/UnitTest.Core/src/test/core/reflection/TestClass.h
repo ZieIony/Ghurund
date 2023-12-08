@@ -10,6 +10,37 @@ namespace UnitTest {
     using namespace Ghurund::Core;
 
     class TestClass:public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = Constructor<TestClass>();
+            static const auto CONSTRUCTOR2 = Constructor<TestClass, uint32_t>();
+
+            static const auto valProp = Property<TestClass, uint32_t>("val", &getVal);
+            static const auto textProp = Property<TestClass, const char*>("text", &getText, &setText);
+            static const auto writeProp = Property<TestClass, float>("progress", &setProgress);
+            static const auto observableProp = Property<TestClass, Observable<Ghurund::Core::AString>&>("name", [](TestClass& obj)->Observable<AString>& {return obj.name; });
+
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TestClass>("UnitTest::Utils", GH_STRINGIFY(TestClass))
+                .withConstructor(CONSTRUCTOR)
+                .withConstructor(CONSTRUCTOR2)
+                .withSupertype(__super::GET_TYPE())
+                .withProperty(valProp)
+                .withProperty(textProp)
+                .withProperty(writeProp)
+                .withProperty(observableProp);
+
+            return TYPE;
+        }
+
+        inline static const Ghurund::Core::Type& TYPE = TestClass::GET_TYPE();
+#pragma endregion
+
     public:
         uint32_t val = 5;
         char* text = nullptr;
@@ -41,32 +72,5 @@ namespace UnitTest {
         inline void setProgress(const float p) {
             this->progress = p;
         }
-
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = Constructor<TestClass>();
-            static const auto CONSTRUCTOR2 = Constructor<TestClass, uint32_t>();
-
-            static const auto valProp = Property<TestClass, uint32_t>("val", &getVal);
-            static const auto textProp = Property<TestClass, const char*>("text", &getText, &setText);
-            static const auto writeProp = Property<TestClass, float>("progress", &setProgress);
-            static const auto observableProp = Property<TestClass, Observable<Ghurund::Core::AString>&>("name", [](TestClass& obj)->Observable<AString>& {return obj.name; });
-
-            static const Ghurund::Core::Type TYPE = TypeBuilder<TestClass>("UnitTest::Utils", GH_STRINGIFY(TestClass))
-                .withConstructor(CONSTRUCTOR)
-                .withConstructor(CONSTRUCTOR2)
-                .withSupertype(__super::GET_TYPE())
-                .withProperty(valProp)
-                .withProperty(textProp)
-                .withProperty(writeProp)
-                .withProperty(observableProp);
-
-            return TYPE;
-        }
-
-        virtual const Ghurund::Core::Type& getType() const {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

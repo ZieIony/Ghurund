@@ -6,9 +6,7 @@
 
 namespace Ghurund::UI::Direct2D {
     class BitmapDrawable:public Drawable {
-    private:
-        Bitmap* image;
-
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -17,6 +15,13 @@ namespace Ghurund::UI::Direct2D {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
+        inline static const Ghurund::Core::Type& TYPE = BitmapDrawable::GET_TYPE();
+#pragma endregion
+
+    private:
+        Bitmap* image;
+
+    public:
         BitmapDrawable(Bitmap* image);
 
         ~BitmapDrawable();

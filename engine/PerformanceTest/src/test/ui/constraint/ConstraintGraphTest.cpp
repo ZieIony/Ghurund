@@ -22,7 +22,7 @@ public:
         List<Constraint*> constraints;
         for (size_t k = 0; k < 100; k++) {
             for (size_t i = 0; i < 20; i++) {
-                auto c = ghnew Constraint();
+                auto c = ghnew ValueConstraint();
                 if (i > 10) {
                     for (size_t j = 1; j <= 3; j++)
                         c->Dependencies.put(constraints[i - j * 3]);

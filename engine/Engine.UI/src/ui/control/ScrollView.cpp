@@ -44,13 +44,13 @@ namespace Ghurund::UI {
                 Scroll = { Scroll.x + Size.Width, Scroll.y };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
-                    OnScrolled();
+                    onScrolled();
                 }
             } else {
                 Scroll = { Scroll.x , Scroll.y + Size.Height };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
-                    OnScrolled();
+                    onScrolled();
                 }
             }
             return true;
@@ -60,13 +60,13 @@ namespace Ghurund::UI {
                 Scroll = { Scroll.x - Size.Width, Scroll.y };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
-                    OnScrolled();
+                    onScrolled();
                 }
             } else {
                 Scroll = { Scroll.x, Scroll.y - Size.Height };
                 if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                     repaint();
-                    OnScrolled();
+                    onScrolled();
                 }
             }
             return true;
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
             Scroll = { 0.0f,0.0f };
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                 repaint();
-                OnScrolled();
+                onScrolled();
             }
             return true;
         } else if (event.Action == Ghurund::Core::KeyAction::DOWN && event.Key == VK_END) {
@@ -83,7 +83,7 @@ namespace Ghurund::UI {
             Scroll = MaxScroll;
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                 repaint();
-                OnScrolled();
+                onScrolled();
             }
             return true;
         }
@@ -100,7 +100,7 @@ namespace Ghurund::UI {
             }
             if (prevScroll.x != scroll.x || prevScroll.y != scroll.y) {
                 repaint();
-                OnScrolled();
+                onScrolled();
             }
         }
         return mouseWheelEvent(event);

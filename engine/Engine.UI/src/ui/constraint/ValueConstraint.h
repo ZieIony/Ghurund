@@ -5,15 +5,32 @@
 namespace Ghurund::UI {
 
     class ValueConstraint:public Constraint {
-    public:
-        ValueConstraint():Constraint(true, true) {}
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
-        ValueConstraint(float value = 0.0f):Constraint(true, true) {
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+#pragma endregion
+
+    protected:
+        ~ValueConstraint() {}
+
+    public:
+        ValueConstraint():Constraint(true, false) {}
+
+        ValueConstraint(float value):Constraint(true, false) {
             this->value = value;
+            evaluated = true;
         }
 
         inline void setValue(float value) {
             this->value = value;
+            evaluated = true;
         }
 
         __declspec(property(get = getValue, put = setValue)) float Value;

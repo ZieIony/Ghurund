@@ -7,6 +7,18 @@
 
 namespace Ghurund::Core::DirectX {
     class Texture:public Resource {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Texture::GET_TYPE();
+#pragma endregion
+
     private:
 		ComPtr<ID3D12Resource> textureResource;
         ComPtr<ID3D12Resource> textureUploadHeap;
@@ -16,10 +28,6 @@ namespace Ghurund::Core::DirectX {
     protected:
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         DescriptorHandle descHandle;
@@ -59,8 +67,6 @@ namespace Ghurund::Core::DirectX {
 
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
-
-        static const Ghurund::Core::Type& GET_TYPE();
 
         static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", true, false);
         static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", true, false);

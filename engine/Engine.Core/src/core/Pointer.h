@@ -11,6 +11,7 @@
 namespace Ghurund::Core {
 
     class Pointer: public Object {
+#pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
             return GET_TYPE();
@@ -19,7 +20,8 @@ namespace Ghurund::Core {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = Pointer::GET_TYPE();
+#pragma endregion
 
     private:
         mutable unsigned int referenceCount = 1;

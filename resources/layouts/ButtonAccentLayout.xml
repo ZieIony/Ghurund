@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ControlGroup alignment="center, center" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
-	<Shadow width="Parent.Width" height="Parent.Height"
-				style="theme://style/Shadow_button"
-				shape="roundRect, 2"/>
+<ControlGroup width="wrap" height="wrap" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<Shadow width="Parent.Width" height="Parent.Height" shape="roundRect, 2"/>
 	<Clip shape="roundRect, 2">
 		<ControlGroup>
 			<ControlGroup.Width path="wrap" offset="8"/>
 			<ControlGroup.Height path="wrap" offset="4"/>
 			<ColorView width="Parent.Width" height="Parent.Height"
 					   style="theme://style/ColorView_accent"/>
-			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-							style="theme://style/StateIndicator_onAccent"/>
+			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
 			<ControlContainer name="container">
 				<ControlContainer.Left path="Parent.Left" offset="8"/>
 				<ControlContainer.Top path="Parent.Top" offset="4"/>

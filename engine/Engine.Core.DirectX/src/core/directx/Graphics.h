@@ -24,6 +24,8 @@ namespace Ghurund::Core::DirectX {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = Graphics::GET_TYPE();
 #pragma endregion
 
     private:

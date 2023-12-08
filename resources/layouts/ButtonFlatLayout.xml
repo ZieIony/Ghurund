@@ -3,10 +3,8 @@
 	<ControlGroup>
 		<ControlGroup.Width path="wrap" offset="8"/>
 		<ControlGroup.Height path="wrap" offset="4"/>
-		<ClickableControl name="clickable" width="Parent.Width" height="Parent.Height"/>
-		<ColorView style="theme://style/ColorView_background" width="Parent.Width" height="Parent.Height"/>
-		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
-						style="theme://style/StateIndicator_onBackground"/>
+		<ColorView width="Parent.Width" height="Parent.Height"/>
+		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
 		<ControlContainer name="container">
 			<ControlContainer.Left path="Parent.Left" offset="8"/>
 			<ControlContainer.Top path="Parent.Top" offset="4"/>

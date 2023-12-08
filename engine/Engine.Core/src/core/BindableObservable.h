@@ -5,10 +5,13 @@
 namespace Ghurund::Core {
     template<typename T>
     class BindableObservable:public Observable<T> {
-    private:
-        SharedPointer<ObservableHandler<T>> chainHandler;
-
+#pragma region reflection
     protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const auto CONSTRUCTOR = Constructor<BindableObservable<T>>();
             static const auto CONSTRUCTOR2 = Constructor<BindableObservable<T>, const T&>();
@@ -21,6 +24,12 @@ namespace Ghurund::Core {
 
             return TYPE;
         }
+
+        inline static const Ghurund::Core::Type& TYPE = BindableObservable::GET_TYPE();
+#pragma endregion
+
+    private:
+        SharedPointer<ObservableHandler<T>> chainHandler;
 
     public:
         BindableObservable():Observable<T>(T()) {}
@@ -49,13 +58,5 @@ namespace Ghurund::Core {
             if (chainHandler != nullptr && chainHandler->Owner)
                 chainHandler->Owner->remove(*chainHandler.get());
         }
-
-        inline static const Ghurund::Core::Type& TYPE = GET_TYPE();
-
-        virtual const Ghurund::Core::Type& getType() const {
-            return TYPE;
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

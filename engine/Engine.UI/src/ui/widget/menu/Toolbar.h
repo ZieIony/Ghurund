@@ -12,15 +12,25 @@
 
 namespace Ghurund::UI {
     class Toolbar: public Widget<ToolbarBinding> {
-    private:
-        List<MenuItem*> items;
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
 
+    public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder(NAMESPACE_NAME, GH_STRINGIFY(Toolbar))
                 .withSupertype(__super::GET_TYPE());
 
-            return GET_TYPE();
+            return TYPE;
         }
+
+        inline static const Ghurund::Core::Type& TYPE = Toolbar::GET_TYPE();
+#pragma endregion
+
+    private:
+        List<MenuItem*> items;
 
         virtual void onLayoutChanged() override {
             /*auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*Layout->Recycler);
@@ -49,13 +59,5 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
-
-        
-
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-        __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 }

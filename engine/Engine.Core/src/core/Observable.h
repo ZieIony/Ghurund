@@ -14,14 +14,36 @@
 namespace Ghurund::Core {
     template<class T>
     class Observable:public Object {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const auto CONSTRUCTOR = Constructor<Observable<T>>();
+            static const auto CONSTRUCTOR2 = Constructor<Observable<T>, const T&>();
+            static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
+            static const auto ADD_METHOD = Method<Observable<T>, void, SharedPointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(SharedPointer<ObservableHandler<T>>)) & add);
+
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
+                .withConstructor(CONSTRUCTOR)
+                .withConstructor(CONSTRUCTOR2)
+                .withSupertype(__super::GET_TYPE())
+                .withProperty(VALUE_PROPERTY)
+                .withMethod(ADD_METHOD)
+                .withTemplateParams<T>();
+
+            return TYPE;
+        }
+
+        inline static const Ghurund::Core::Type& TYPE = Observable::GET_TYPE();
+#pragma endregion
+
     private:
         List<SharedPointer<ObservableHandler<T>>> listeners;
         T value;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const {
-            return GET_TYPE();
-        }
 
     public:
         Observable():value(T()) {}
@@ -101,23 +123,6 @@ namespace Ghurund::Core {
         inline const T& operator=(const T& value) {
             Value = value;
             return this->value;
-        }
-
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = Constructor<Observable<T>>();
-            static const auto CONSTRUCTOR2 = Constructor<Observable<T>, const T&>();
-            static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
-            static const auto ADD_METHOD = Method<Observable<T>, void, SharedPointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(SharedPointer<ObservableHandler<T>>)) & add);
-
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
-                .withConstructor(CONSTRUCTOR)
-                .withConstructor(CONSTRUCTOR2)
-                .withSupertype(__super::GET_TYPE())
-                .withProperty(VALUE_PROPERTY)
-                .withMethod(ADD_METHOD)
-                .withTemplateParams<T>();
-
-            return TYPE;
         }
     };
 }

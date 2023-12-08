@@ -9,7 +9,19 @@
 namespace Ghurund::Core {
     class WindowClass;
 
-    class SystemWindow: public Window {
+    class SystemWindow:public Window {
+#pragma region reflection
+    protected:
+        virtual const Ghurund::Core::Type& getTypeImpl() const override {
+            return GET_TYPE();
+        }
+
+    public:
+        static const Ghurund::Core::Type& GET_TYPE();
+
+        inline static const Ghurund::Core::Type& TYPE = SystemWindow::GET_TYPE();
+#pragma endregion
+
     private:
         HWND handle = {};
         Ghurund::Core::Input input;
@@ -17,11 +29,6 @@ namespace Ghurund::Core {
         WindowData* windowData = nullptr;
 
         DragDropManager* dragDropManager = nullptr;
-
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
 
     public:
         Event<Ghurund::Core::Window> draggedOver = *this;
@@ -78,7 +85,5 @@ namespace Ghurund::Core {
         }
 
         virtual void update(const uint64_t time) override;
-
-        static const Ghurund::Core::Type& GET_TYPE();
     };
 }
