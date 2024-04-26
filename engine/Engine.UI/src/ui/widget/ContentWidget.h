@@ -22,11 +22,13 @@ namespace Ghurund::UI {
 
 	private:
 		ControlContainer* container = nullptr;
+		ConstraintSet contentConstraints = ConstraintSet({});
 		Control* content = nullptr;
 
 		inline void updateContent() {
 			if (container) {
 				container->Child = content;
+				container->setConstraints(contentConstraints);
 			} else if (content) {
 				content->Parent = nullptr;
 			}

@@ -27,12 +27,11 @@ namespace Ghurund::UI {
 	}
 
 	void LayoutPropertyLoader::loadChildren(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) const {
-		Control* control = layoutLoader.loadControl(workingDir, xml);
 		std::unique_ptr<LayoutAttr> attr;
-		if (control) {
-			attr.reset(ghnew LayoutValue(control));
-			control->release();
-		} else {
+		try {
+			ControlWithConstraints control = layoutLoader.loadControl((ControlParent&)obj, workingDir, xml);
+			attr.reset(ghnew LayoutValue(control.control.get()));
+		} catch (...) {
 			attr.reset(ghnew LayoutValue(makeShared<InvalidControl>().get()));
 		}
 		property.setRaw(&obj, &attr);

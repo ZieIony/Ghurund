@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextLeftConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -25,12 +25,12 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
 			} else {
-				value = offset;
+				value = 0;
 			}
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextLeftConstraint* clone() const {
 			return ghnew NextLeftConstraint(*this);
 		}
 	};
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextRightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -55,12 +55,12 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
 			} else {
-				value = offset;
+				value = 0;
 			}
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextRightConstraint* clone() const {
 			return ghnew NextRightConstraint(*this);
 		}
 	};
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextTopConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -85,12 +85,12 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
 			} else {
-				value = offset;
+				value = 0;
 			}
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextTopConstraint* clone() const {
 			return ghnew NextTopConstraint(*this);
 		}
 	};
@@ -105,7 +105,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextBottomConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -115,12 +115,12 @@ namespace Ghurund::UI {
 			if (!dependencies.Empty) {
 				value = (*dependencies.begin())->Value + offset;
 			} else {
-				value = offset;
+				value = 0;
 			}
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextBottomConstraint* clone() const {
 			return ghnew NextBottomConstraint(*this);
 		}
 	};
@@ -135,7 +135,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextWidthConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -150,7 +150,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextWidthConstraint* clone() const {
 			return ghnew NextWidthConstraint(*this);
 		}
 	};
@@ -165,7 +165,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = NextHeightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -180,7 +180,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual NextHeightConstraint* clone() const {
 			return ghnew NextHeightConstraint(*this);
 		}
 	};

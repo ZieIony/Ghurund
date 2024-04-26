@@ -1,22 +1,16 @@
 #pragma once
 
-#include "PropertyLoaderCollection.h"
-#include "core/Buffer.h"
 #include "core/Exceptions.h"
-#include "core/collection/Stack.h"
-#include "core/collection/PointerList.h"
-#include "core/io/FilePath.h"
-#include "core/reflection/Type.h"
 #include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"
-#include "core/string/StringView.h"
+#include "PropertyLoaderCollection.h"
 #include "ui/Alignment.h"
-#include "ui/control/Control.h"
-#include "ui/loading/ShapeFactory.h"
-#include "ui/loading/DrawableFactory.h"
-#include "ui/loading/TextFormatFactory.h"
 #include "ui/constraint/ConstraintFactory.h"
-#include "ui/style/ColorAttr.h"
+#include "ui/control/Control.h"
+#include "ui/layout/ControlWithConstraints.h"
+#include "ui/loading/DrawableFactory.h"
+#include "ui/loading/ShapeFactory.h"
+#include "ui/loading/TextFormatFactory.h"
 #include "ui/style/TextFormatAttr.h"
 #include "ui/text/DocumentElement.h"
 
@@ -37,6 +31,7 @@ namespace Ghurund::UI {
 		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
+		Map<AString, const BaseConstructor*> types;
 
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
@@ -60,6 +55,15 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
 
+		template<Derived<Control> T>
+		inline void registerType() {
+			const Core::Type& type = T::TYPE;
+			const BaseConstructor* constructor = type.Constructors.findBySignature<>();
+			if (!constructor)
+				throw InvalidParamException("the type doesn't have a zero-parameter constructor");
+			types.put(type.Namespace + "::" + type.Name, constructor);
+		}
+
 		virtual Control* load(
 			Ghurund::Core::MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
@@ -81,9 +85,9 @@ namespace Ghurund::UI {
 
 		void loadProperty(Object& obj, const BaseProperty& property, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		PointerList<Control*> loadControls(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		List<ControlWithConstraints> loadControls(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
-		Control* loadControl(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
+		ControlWithConstraints loadControl(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
 		Constraint* loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation);
 

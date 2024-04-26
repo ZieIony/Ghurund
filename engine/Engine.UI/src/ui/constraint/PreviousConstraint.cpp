@@ -16,14 +16,21 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Left;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+
+	void PreviousLeftConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = (*dependencies.begin())->Value + offset;
 		} else {
-			dependencies.put(&ref->Left);
-			graph.add(this);
+			value = 0;
 		}
+		evaluated = true;
 	}
 
 	const Ghurund::Core::Type& PreviousRightConstraint::GET_TYPE() {
@@ -37,14 +44,21 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Right;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+
+	void PreviousRightConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = (*dependencies.begin())->Value + offset;
 		} else {
-			dependencies.put(&ref->Right);
-			graph.add(this);
+			value = 0;
 		}
+		evaluated = true;
 	}
 
 	const Ghurund::Core::Type& PreviousTopConstraint::GET_TYPE() {
@@ -58,14 +72,21 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Top;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+
+	void PreviousTopConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = (*dependencies.begin())->Value + offset;
 		} else {
-			dependencies.put(&ref->Top);
-			graph.add(this);
+			value = 0;
 		}
+		evaluated = true;
 	}
 
 	const Ghurund::Core::Type& PreviousBottomConstraint::GET_TYPE() {
@@ -79,14 +100,21 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Bottom;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+
+	void PreviousBottomConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = (*dependencies.begin())->Value + offset;
 		} else {
-			dependencies.put(&ref->Bottom);
-			graph.add(this);
+			value = 0;
 		}
+		evaluated = true;
 	}
 
 	const Ghurund::Core::Type& PreviousWidthConstraint::GET_TYPE() {
@@ -100,14 +128,21 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Width;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+
+	void PreviousWidthConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
-			dependencies.put(&ref->Width);
-			graph.add(this);
+			value = minMax(min, offset, max);
 		}
+		evaluated = true;
 	}
 
 	const Ghurund::Core::Type& PreviousHeightConstraint::GET_TYPE() {
@@ -121,13 +156,20 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Previous' not found.\n"));
+		size_t index = children.find(&control);
+		if (index == children.Size || index == 0)
+			return;
+		Constraint& constraint = children[index - 1].Constraints.Height;
+		dependencies.put(&constraint);
+		graph.add(this);
+	}
+	
+	void PreviousHeightConstraint::evaluate() {
+		if (!dependencies.Empty) {
+			value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
 		} else {
-			dependencies.put(&ref->Height);
-			graph.add(this);
+			value = minMax(min, offset, max);
 		}
+		evaluated = true;
 	}
 }

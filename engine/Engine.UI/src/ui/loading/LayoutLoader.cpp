@@ -10,10 +10,17 @@
 #include "TextDocumentPropertyLoader.h"
 #include "core/logging/Formatter.h"
 #include "core/string/TextConversionUtils.h"
+
+// control types to register
+#include "ui/adapter/AdapterLayout.h"
+#include "ui/constraint/ConstraintLayout.h"
 #include "ui/control/Clip.h"
 #include "ui/control/ScrollView.h"
+#include "ui/layout/VerticalLayout.h"
+#include "ui/layout/HorizontalLayout.h"
+#include "ui/widget/button/Button.h"
+#include "ui/widget/button/IconButton.h"
 
-#include <ranges>
 #include "LayoutPropertyLoader.h"
 
 namespace Ghurund::UI {
@@ -33,16 +40,21 @@ namespace Ghurund::UI {
         propertyLoaders.add(std::make_unique<WStringPropertyLoader>());
         propertyLoaders.add(std::make_unique<ColorPropertyLoader>());
         propertyLoaders.add(std::make_unique<NullableColorPropertyLoader>());
-        propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
-        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
-        propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(drawableFactory)));
-        propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
-        propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
-    }
+		propertyLoaders.add(std::make_unique<ImageScaleModePropertyLoader>());
+		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew ShapePropertyLoader(shapeFactory)));
+		propertyLoaders.add(std::unique_ptr<PropertyLoader>(ghnew DrawablePropertyLoader(drawableFactory)));
+		propertyLoaders.add(std::make_unique<TextDocumentPropertyLoader>());
+		propertyLoaders.add(std::unique_ptr<LayoutPropertyLoader>(ghnew LayoutPropertyLoader(resourceManager, *this)));
 
-    Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
-        tinyxml2::XMLDocument doc;
-        doc.Parse((const char*)stream.Data, stream.Size);
+		for (const Core::Type& type : Type::TYPES) {
+			const BaseConstructor* constructor = type.Constructors.findBySignature<>();
+			types.put(type.Namespace + "::" + type.Name, constructor);
+		}
+	}
+
+	Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
+		tinyxml2::XMLDocument doc;
+		doc.Parse((const char*)stream.Data, stream.Size);
 
         tinyxml2::XMLElement* child = doc.FirstChildElement();
         if (!child) {
@@ -53,8 +65,8 @@ namespace Ghurund::UI {
         auto namespaceAttr = child->FindAttribute("namespace");
         if (namespaceAttr)
             namespaceName = namespaceAttr->Value();
-        const Core::Type& type = Type::byName(namespaceName, child->Value());
-        const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
+		AString type = namespaceName + "::" + child->Value();
+        const BaseConstructor* constructor = types.get(type);
         if (!constructor)
             throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
         Control* control = (Control*)constructor->invokeRaw();
@@ -112,66 +124,63 @@ namespace Ghurund::UI {
         }
     }
 
-    PointerList<Control*> LayoutLoader::loadControls(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        PointerList<Control*> list;
+    List<ControlWithConstraints> LayoutLoader::loadControls(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+        List<ControlWithConstraints> list;
         const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
         while (childElement) {
-            if (!AString(childElement->Name()).contains(".")) {
-                Control* control = loadControl(workingDir, *childElement);
-                if (control) {
-                    list.add(control);
-                    control->release();
-                } else {
-                    Logger::log(LogType::WARNING, std::format(_T("Failed to load control {}.\n"), AString(childElement->Name())).c_str());
-                }
-            }
+            if (!AString(childElement->Name()).contains("."))
+                list.add(loadControl(parent, workingDir, *childElement));
             childElement = childElement->NextSiblingElement();
         }
         return list;
     }
 
-    Control* LayoutLoader::loadControl(const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+    ControlWithConstraints LayoutLoader::loadControl(ControlParent& parent, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
         const char* name = xml.Value();
         if (strcmp(name, "include") == 0) {
             auto layoutAttr = xml.FindAttribute("layout");
             if (layoutAttr) {
-                Control* control = nullptr;
                 AString s = layoutAttr->Value();
                 try {
                     SharedPointer<Control> control(resourceManager.load<Control>(FilePath(convertText<char, wchar_t>(s)), workingDir, &Control::FORMATS[0], LoadOption::DONT_CACHE));
-                    control->addReference();
+                    PartialConstraintSet loadedConstraints;
+                    loadedConstraints.load(control->Type, *this, xml);
+                    PartialConstraintSet constraints = parent.makeDefaultConstraints();
+                    constraints.merge(loadedConstraints);
+                    return ControlWithConstraints(control, constraints);
                 } catch (...) {
                     auto text = std::format(_T("Could not load layout '{}'.\n"), s);
                     Logger::log(LogType::ERR0R, text.c_str());
                 }
-                return control;
             }
             Logger::log(LogType::ERR0R, _T("Missing 'layout' attribute.\n"));
-            return nullptr;
+            throw InvalidDataException("Missing 'layout' attribute.\n");
         } else {
             AString namespaceName = Ghurund::UI::NAMESPACE_NAME;
-            auto namespaceAttr = xml.FindAttribute("namespace");
-            if (namespaceAttr)
-                namespaceName = namespaceAttr->Value();
-            try {
-                const Core::Type& type = Type::byName(namespaceName, xml.Value());
-                if (type.isOrExtends(Control::GET_TYPE())) {
-                    const BaseConstructor* constructor = type.getConstructors().findBySignature<>();
-                    if (!constructor)
-                        throw InvalidDataException(std::format("No zero-argument constructor found for '{}'.\n", type).c_str());
-                    Control* control = (Control*)constructor->invokeRaw();
-                    control->load(*this, workingDir, xml);
-                    return control;
+			auto namespaceAttr = xml.FindAttribute("namespace");
+			if (namespaceAttr)
+				namespaceName = namespaceAttr->Value();
+			try {
+                AString type = namespaceName + "::" + xml.Value();
+				const BaseConstructor* constructor = types[type];
+				if (constructor) {
+					SharedPointer<Control> control((Control*)constructor->invokeRaw());
+					control->load(*this, workingDir, xml);
+					PartialConstraintSet loadedConstraints;
+					loadedConstraints.load(control->Type, *this, xml);
+                    PartialConstraintSet constraints = parent.makeDefaultConstraints();
+                    constraints.merge(loadedConstraints);
+                    return ControlWithConstraints(control, constraints);
                 } else {
-                    // it's a known class, but not a control
-                    return nullptr;
+                    Logger::log(LogType::ERR0R, std::format(_T("{} is not a known control. Did you forget to register this type?\n"), type).c_str());
+                    throw InvalidDataException(std::format("{} is not a known control. Did you forget to register this type?\n", type).c_str());
                 }
             } catch (TypeNotFoundException exception) {
             }
         }
         auto text = std::format(_T("Control type {} not registered in LayoutLoader.\n"), AString(name));
         Logger::log(LogType::WARNING, text.c_str());
-        return nullptr;
+        throw InvalidDataException(std::format("Control type {} not registered in LayoutLoader.\n", AString(name)).c_str());
     }
 
     Constraint* LayoutLoader::loadConstraint(const tinyxml2::XMLElement& xml, Orientation orientation) {

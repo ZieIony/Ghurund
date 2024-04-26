@@ -1,42 +1,106 @@
 #pragma once
 
-#include "Constraint.h"
-#include "ValueConstraint.h"
+#include "ui/constraint/ConstraintSetInitializer.h"
+
+namespace tinyxml2 {
+	class XMLElement;
+}
 
 namespace Ghurund::UI {
-    class ConstraintInitializer {
-    private:
-        SharedPointer<Constraint> constraint;
+	class LayoutLoader;
+	class ICanvas;
 
-        ConstraintInitializer(const ConstraintInitializer& other) = delete;
+	// doesn't require all constraints to be set
+	class PartialConstraintSet {
+	public:
+		SharedPointer<Constraint> left, width, right;
+		SharedPointer<Constraint> top, height, bottom;
 
-        ConstraintInitializer(ConstraintInitializer& other) = delete;
+		PartialConstraintSet() {}
 
-    public:
-        ConstraintInitializer():constraint(nullptr) {}
+		PartialConstraintSet(const ConstraintSetInitializer& initializer)
+			:left(initializer.left.get()), width(initializer.width.get()), right(initializer.right.get()),
+			top(initializer.top.get()), height(initializer.height.get()), bottom(initializer.bottom.get()) {}
 
-        ConstraintInitializer(float value):constraint(ghnew ValueConstraint(value)) {}
+		void load(const Type& controlType, LayoutLoader& loader, const tinyxml2::XMLElement& xml);
 
-        template<class ConstraintType>
-        ConstraintInitializer(SharedPointer<ConstraintType> constraint) {
-            if (constraint != nullptr) {
-                constraint->addReference();
-                this->constraint.set(constraint.get());
-            }
-        }
+		void merge(const PartialConstraintSet& other);
 
-        ConstraintInitializer(ConstraintInitializer&& other):constraint(std::move(other.constraint)) {}
+		inline bool operator==(const PartialConstraintSet& other) const {
+			return left == other.left && width == other.width && right == other.right &&
+				top == other.top && height == other.height && bottom == other.bottom;
+		}
+	};
 
-        SharedPointer<Constraint> get() const {
-            return constraint;
-        }
+	class ConstraintSet {
+	private:
+		SharedPointer<Constraint> left, width, right;
+		SharedPointer<Constraint> top, height, bottom;
 
-        bool operator ==(nullptr_t) const {
-            return constraint == nullptr;
-        }
-    };
+	public:
+		ConstraintSet(const PartialConstraintSet& set);
 
-    struct ConstraintSet {
-        ConstraintInitializer left,width,right,top,height,bottom;
-    };
+		ConstraintSet(
+			Constraint* left, Constraint* width, Constraint* right,
+			Constraint* top, Constraint* height, Constraint* bottom
+		):left(left), width(width), right(right), top(top), height(height), bottom(bottom) {
+			left->addReference();
+			width->addReference();
+			right->addReference();
+			top->addReference();
+			height->addReference();
+			bottom->addReference();
+		}
+
+		inline Constraint& getLeft() {
+			return *left.get();
+		}
+
+		__declspec(property(get = getLeft)) Constraint& Left;
+
+		inline Constraint& getRight() {
+			return *right.get();
+		}
+
+		__declspec(property(get = getRight)) Constraint& Right;
+
+		inline Constraint& getWidth() {
+			return *width.get();
+		}
+
+		__declspec(property(get = getWidth)) Constraint& Width;
+
+		inline Constraint& getTop() {
+			return *top.get();
+		}
+
+		__declspec(property(get = getTop)) Constraint& Top;
+
+		inline Constraint& getBottom() {
+			return *bottom.get();
+		}
+
+		__declspec(property(get = getBottom)) Constraint& Bottom;
+
+		inline Constraint& getHeight() {
+			return *height.get();
+		}
+
+		__declspec(property(get = getHeight)) Constraint& Height;
+
+		void resolve(Control& control, ConstraintGraph& graph);
+
+		inline bool operator==(const ConstraintSet& other) const {
+			return left == other.left && width == other.width && right == other.right &&
+				top == other.top && height == other.height && bottom == other.bottom;
+		}
+
+#ifdef _DEBUG
+		void draw(ICanvas& canvas);
+#endif
+	};
+
+	inline ConstraintSet makeConstraints(const ConstraintSetInitializer& initializer) {
+		return ConstraintSet(initializer);
+	}
 }

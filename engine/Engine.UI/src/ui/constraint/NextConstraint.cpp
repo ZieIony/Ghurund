@@ -16,14 +16,12 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index + 1];
-		if (index == children.Size || index == children.Size - 1) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Left);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Left;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 
 	const Ghurund::Core::Type& NextRightConstraint::GET_TYPE() {
@@ -37,14 +35,12 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index + 1];
-		if (index == children.Size || index == children.Size - 1) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Right);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Right;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 
 	const Ghurund::Core::Type& NextTopConstraint::GET_TYPE() {
@@ -58,14 +54,12 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index + 1];
-		if (index == children.Size || index == children.Size - 1) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Top);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Top;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 
 	const Ghurund::Core::Type& NextBottomConstraint::GET_TYPE() {
@@ -79,14 +73,12 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index + 1];
-		if (index == children.Size || index == children.Size - 1) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Bottom);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Bottom;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 
 	const Ghurund::Core::Type& NextWidthConstraint::GET_TYPE() {
@@ -100,14 +92,12 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index + 1];
-		if (index == children.Size || index == children.Size - 1) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Width);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Width;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 
 	const Ghurund::Core::Type& NextHeightConstraint::GET_TYPE() {
@@ -121,13 +111,11 @@ namespace Ghurund::UI {
 		dependencies.clear();
 		evaluated = false;
 		auto& children = ((ControlGroup*)control.Parent)->Children;
-		size_t index = children.indexOf(&control);
-		Control* ref = children[index - 1];
-		if (index == children.Size || index == 0) {
-			Logger::log(LogType::WARNING, _T("Constraint reference 'Next' not found.\n"));
-		} else {
-			dependencies.put(&ref->Height);
-			graph.add(this);
-		}
+		size_t index = children.find(&control);
+		if (index == children.Size || index == children.Size - 1)
+			return;
+		Constraint& constraint = children[index + 1].Constraints.Height;
+		dependencies.put(&constraint);
+		graph.add(this);
 	}
 }

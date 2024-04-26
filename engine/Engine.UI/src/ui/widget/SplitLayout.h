@@ -1,9 +1,7 @@
 #pragma once
 
 #include "ui/Orientation.h"
-#include "ui/layout/LinearLayout.h"
 #include "ui/control/ControlContainer.h"
-#include "ui/layout/LinearLayout.h"
 #include "core/SharedPointer.h"
 
 namespace Ghurund::UI {
@@ -35,7 +33,7 @@ namespace Ghurund::UI {
     private:
         SharedPointer<Splitter> splitter;
         SharedPointer<ControlContainer> container1, container2;
-        SharedPointer<LinearLayout> layout;
+        //SharedPointer<LinearLayout> layout;
         LockedChild lockedChild = LockedChild::NONE;
         Orientation orientation;
         IntPoint pressMousePos = { 0,0 };

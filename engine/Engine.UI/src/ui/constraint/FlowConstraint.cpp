@@ -20,16 +20,18 @@ namespace Ghurund::UI {
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
-                dependencies.put(&c->Right);
-                dependencies.put(&c->Width);
+                ConstraintSet& constraints = c->Parent->getConstraints(*c);
+                dependencies.put(&constraints.Right);
+                dependencies.put(&constraints.Width);
             }
         } else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
-            for (Control* c : ((ControlGroup&)control).Children) {
-                dependencies.put(&c->Right);
-                dependencies.put(&c->Width);
+            for (ControlWithConstraints& c : ((ControlGroup&)control).Children) {
+                dependencies.put(&c.Constraints.Right);
+                dependencies.put(&c.Constraints.Width);
             }
         }
-        dependencies.put(&control.Height);
+        ConstraintSet& constraints = control.Parent->getConstraints(control);
+        dependencies.put(&constraints.Height);
     }
 
     void FlowWidthConstraint::evaluate() {
@@ -53,16 +55,18 @@ namespace Ghurund::UI {
         if (control.Type.isOrExtends(ControlContainer::TYPE)) {
             Control* c = ((ControlContainer&)control).Child;
             if (c) {
-                dependencies.put(&c->Bottom);
-                dependencies.put(&c->Height);
+                ConstraintSet& constraints = c->Parent->getConstraints(*c);
+                dependencies.put(&constraints.Bottom);
+                dependencies.put(&constraints.Height);
             }
         } else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
-            for (Control* c : ((ControlGroup&)control).Children) {
-                dependencies.put(&c->Bottom);
-                dependencies.put(&c->Height);
+            for (ControlWithConstraints& c : ((ControlGroup&)control).Children) {
+                dependencies.put(&c.Constraints.Bottom);
+                dependencies.put(&c.Constraints.Height);
             }
         }
-        dependencies.put(&control.Width);
+        ConstraintSet& constraints = control.Parent->getConstraints(control);
+        dependencies.put(&constraints.Width);
     }
 
     void FlowHeightConstraint::evaluate() {

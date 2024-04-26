@@ -90,6 +90,13 @@ namespace Ghurund::Core {
             SectionLock lock(criticalSection);
             pointers.resize(size);
         }
+
+        static void clearPointers() {
+            SectionLock lock(criticalSection);
+            for (Pointer* p : pointers)
+                delete p;
+            pointers.clear();
+        }
 #endif
     };
 

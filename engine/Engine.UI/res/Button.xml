@@ -6,7 +6,7 @@
 			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"
 							style="theme://style\stateIndicator_onBackground"/>
 			<ControlContainer width="wrap" height="wrap"
-							  name="content"/>
+							  name="container"/>
 		</ControlGroup>
 	</Clip>
 </ClickableControl>

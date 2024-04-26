@@ -34,30 +34,6 @@ namespace Ghurund::UI {
 
 	using namespace Ghurund::Core;
 
-	struct Constraints {
-		SharedPointer<Constraint> left = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-		SharedPointer<Constraint> width = SharedPointer<Constraint>(ghnew WrapWidthConstraint());
-		SharedPointer<Constraint> right = SharedPointer<Constraint>(ghnew LeftWidthConstraint(left, width));
-		SharedPointer<Constraint> top = SharedPointer<Constraint>(ghnew ValueConstraint(0.0f));
-		SharedPointer<Constraint> height = SharedPointer<Constraint>(ghnew FlowHeightConstraint());
-		SharedPointer<Constraint> bottom = SharedPointer<Constraint>(ghnew TopHeightConstraint(top, height));
-
-		Constraints() {}
-
-		Constraints(const Constraints& other):
-			left((Constraint*)other.left->clone()),
-			width((Constraint*)other.width->clone()),
-			right((Constraint*)other.right->clone()),
-			top((Constraint*)other.top->clone()),
-			height((Constraint*)other.height->clone()),
-			bottom((Constraint*)other.bottom->clone()) {}
-
-		inline bool operator==(const Constraints& other) const {
-			return left == other.left && width == other.width && right == other.right &&
-				top == other.top && height == other.height && bottom == other.bottom;
-		}
-	};
-
 	class Control:public Resource, public EventConsumer {
 #pragma region reflection
 	protected:
@@ -84,21 +60,19 @@ namespace Ghurund::UI {
 
 		Ghurund::Core::AString* name = nullptr;
 
-		void loadConstraints(LayoutLoader& loader, const tinyxml2::XMLElement& xml);
-
 	protected:
+		Ghurund::Core::FloatSize contentSize = { 0, 0 };
+		Ghurund::Core::FloatSize minSize = { 0, 0 };
+		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 		FloatPoint position = { 0,0 }, scale = { 1,1 };
 		float rotation = 0;
 		Ghurund::Core::Matrix3x2 transformation = {};
 
-		Ghurund::Core::FloatSize measuredSize;  // what the view wants
 		bool needsLayout = true;
 
 		Theme* localTheme = nullptr;
 
 		//List<Binding> bindings;
-
-		Constraints constraints;
 
 		Control() {}
 
@@ -108,10 +82,8 @@ namespace Ghurund::UI {
 			visible(other.visible), enabled(other.enabled), focusable(other.focusable), roundToPixels(other.roundToPixels),
 			name(other.name ? ghnew AString(*other.name) : nullptr),
 			position(other.position), rotation(other.rotation), transformation(other.transformation),
-			measuredSize(other.measuredSize),
 			needsLayout(other.needsLayout),
-			localTheme(other.localTheme),
-			constraints(constraints) {}
+			localTheme(other.localTheme) {}
 
 		virtual ~Control() = 0;
 
@@ -126,8 +98,6 @@ namespace Ghurund::UI {
 		virtual void onContextChanged() {
 			contextChanged();
 		}
-
-		virtual void onMeasure();
 
 		virtual void onLayout(float x, float y, float width, float height) {}
 
@@ -289,17 +259,29 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
+		inline const Ghurund::Core::FloatSize& getContentSize() const {
+			return contentSize;
+		}
+
+		__declspec(property(get = getContentSize)) Ghurund::Core::FloatSize& ContentSize;
+
+		inline const Ghurund::Core::FloatSize& getMinSize() const {
+			return minSize;
+		}
+
+		__declspec(property(get = getMinSize)) Ghurund::Core::FloatSize& MinSize;
+
+		inline const Ghurund::Core::FloatSize& getMaxSize() const {
+			return maxSize;
+		}
+
+		__declspec(property(get = getMaxSize)) Ghurund::Core::FloatSize& MaxSize;
+
 		inline const Ghurund::Core::FloatSize& getSize() const {
 			return size;
 		}
 
 		__declspec(property(get = getSize)) Ghurund::Core::FloatSize& Size;
-
-		inline const Ghurund::Core::FloatSize& getMeasuredSize() const {
-			return measuredSize;
-		}
-
-		__declspec(property(get = getMeasuredSize)) Ghurund::Core::FloatSize& MeasuredSize;
 
 		inline bool canReceiveEvent(const KeyEventArgs& event) const {
 			return Visible && Enabled;
@@ -359,10 +341,6 @@ namespace Ghurund::UI {
 
 		virtual void requestLayout();
 
-		inline void measure() {
-			onMeasure();
-		}
-
 		void layout(float x, float y, float width, float height);
 
 		virtual void onUpdate(const uint64_t time) {}
@@ -382,47 +360,7 @@ namespace Ghurund::UI {
 			return (Type == type) ? this : nullptr;
 		}
 
-		inline Constraint& getLeft() {
-			return *constraints.left.get();
-		}
-
-		__declspec(property(get = getLeft)) Constraint& Left;
-
-		inline Constraint& getRight() {
-			return *constraints.right.get();
-		}
-
-		__declspec(property(get = getRight)) Constraint& Right;
-
-		inline Constraint& getWidth() {
-			return *constraints.width.get();
-		}
-
-		__declspec(property(get = getWidth)) Constraint& Width;
-
-		inline Constraint& getTop() {
-			return *constraints.top.get();
-		}
-
-		__declspec(property(get = getTop)) Constraint& Top;
-
-		inline Constraint& getBottom() {
-			return *constraints.bottom.get();
-		}
-
-		__declspec(property(get = getBottom)) Constraint& Bottom;
-
-		inline Constraint& getHeight() {
-			return *constraints.height.get();
-		}
-
-		__declspec(property(get = getHeight)) Constraint& Height;
-
-		void setConstraints(const ConstraintSet& constraints);
-
-		__declspec(property(put = setConstraints)) const ConstraintSet& Constraints;
-
-		virtual void resolveConstraints(ConstraintGraph& graph);
+		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {}
 
 		virtual void bind() {
 			/*for (Binding& b : bindings) {

@@ -14,7 +14,7 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = ValueConstraint::GET_TYPE();
 #pragma endregion
 
     protected:
@@ -35,7 +35,11 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getValue, put = setValue)) float Value;
 
-        virtual Object* clone() const {
+        virtual float getPreferredMax() const {
+            return value;
+        }
+
+        virtual ValueConstraint* clone() const {
             return ghnew ValueConstraint(*this);
         }
     };

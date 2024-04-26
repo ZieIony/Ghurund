@@ -16,7 +16,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentLeftConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -28,6 +28,14 @@ namespace Ghurund::UI {
 			value = offset;
 			evaluated = true;
 		}
+
+		virtual ParentLeftConstraint* clone() const {
+			return ghnew ParentLeftConstraint(*this);
+		}
+
+#ifdef _DEBUG
+		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
+#endif
 	};
 
 	class ParentRightConstraint:public OffsetConstraint {
@@ -40,7 +48,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentRightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -55,9 +63,13 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual ParentRightConstraint* clone() const {
 			return ghnew ParentRightConstraint(*this);
 		}
+
+#ifdef _DEBUG
+		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
+#endif
 	};
 
 	class ParentTopConstraint:public OffsetConstraint {
@@ -70,7 +82,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentTopConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -82,6 +94,14 @@ namespace Ghurund::UI {
 			value = offset;
 			evaluated = true;
 		}
+
+		virtual ParentTopConstraint* clone() const {
+			return ghnew ParentTopConstraint(*this);
+		}
+
+#ifdef _DEBUG
+		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
+#endif
 	};
 
 	class ParentBottomConstraint:public OffsetConstraint {
@@ -94,7 +114,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentBottomConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -109,9 +129,13 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual ParentBottomConstraint* clone() const {
 			return ghnew ParentBottomConstraint(*this);
 		}
+
+#ifdef _DEBUG
+		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const;
+#endif
 	};
 
 	class ParentWidthConstraint:public MinMaxConstraint {
@@ -124,7 +148,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentWidthConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -139,7 +163,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual ParentWidthConstraint* clone() const {
 			return ghnew ParentWidthConstraint(*this);
 		}
 	};
@@ -154,7 +178,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ParentHeightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
@@ -169,7 +193,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual ParentHeightConstraint* clone() const {
 			return ghnew ParentHeightConstraint(*this);
 		}
 	};

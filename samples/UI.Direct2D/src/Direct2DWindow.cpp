@@ -75,7 +75,6 @@ namespace Samples {
     void Direct2DWindow::update(const uint64_t time) {
         __super::update(time);
         rootView->onUpdate(time);
-        rootView->measure();
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }
 

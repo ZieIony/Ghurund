@@ -12,7 +12,7 @@ namespace Ghurund::UI {
     public:
         StringPropertyRow() {
             textField = ghnew TextField();
-            textField->PreferredSize = { PreferredSize::Width::FILL, PreferredSize::Height::WRAP };
+            textField->ContentSize = { ContentSize::Width::FILL, ContentSize::Height::WRAP };
             textField->OnTextChanged.add([this](TextField& textField) {
                 return OnValueChanged();
             });

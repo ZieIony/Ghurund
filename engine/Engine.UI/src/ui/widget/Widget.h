@@ -42,5 +42,12 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(put = setLayout)) LayoutAttr* Layout;
+
+		virtual PartialConstraintSet makeDefaultConstraints() const override {
+			return ConstraintSetInitializer{
+				.width = makeShared<WrapWidthConstraint>(),
+				.height = makeShared<WrapHeightConstraint>()
+			};
+		}
 	};
 }

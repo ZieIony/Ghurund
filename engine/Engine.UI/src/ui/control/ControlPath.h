@@ -35,8 +35,11 @@ namespace Ghurund::UI {
 					((ControlContainer&)control).Child;
 					return ((ControlContainer&)control).Child;
 				}
-				if (control.Type.isOrExtends(ControlGroup::TYPE))
-					return ((ControlGroup&)control).Children.find(name);
+				if (control.Type.isOrExtends(ControlGroup::TYPE)) {
+					size_t index = ((ControlGroup&)control).Children.find(name);
+					if (index != ((ControlGroup&)control).Children.Size)
+						return ((ControlGroup&)control).Children[index].control.get();
+				}
 				return nullptr;
 			}
 		};

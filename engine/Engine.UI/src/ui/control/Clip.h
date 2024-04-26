@@ -39,5 +39,12 @@ namespace Ghurund::UI {
         }
 
         virtual void onDraw(ICanvas& canvas) override;
+
+        virtual PartialConstraintSet makeDefaultConstraints() const override {
+            return ConstraintSetInitializer{
+                .width = makeShared<WrapWidthConstraint>(),
+                .height = makeShared<WrapHeightConstraint>()
+            };
+        }
     };
 }

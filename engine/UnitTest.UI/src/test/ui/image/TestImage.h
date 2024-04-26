@@ -25,7 +25,7 @@ namespace UnitTest {
 
     public:
         inline void setPreferredSize(const FloatSize& size) {
-            preferredSize = size;
+            contentSize = size;
         }
 
         virtual void onDraw(ICanvas& canvas) override {}

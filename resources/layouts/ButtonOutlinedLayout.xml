@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ControlGroup>
-		<ControlGroup.Width path="wrap" offset="8"/>
-		<ControlGroup.Height path="wrap" offset="4"/>
+	<ConstraintLayout>
+		<ConstraintLayout.Width path="wrap" offset="16" min="64"/>
+		<ConstraintLayout.Height path="wrap" offset="8" min="24"/>
 		<ColorView width="Parent.Width" height="Parent.Height"/>
 		<StateIndicator name="state"
 						width="Parent.Width" height="Parent.Height"/>
 		<ControlContainer name="container">
 			<ControlContainer.Left path="Parent.Left" offset="8"/>
 			<ControlContainer.Top path="Parent.Top" offset="4"/>
+			<ControlContainer.Right path="Parent.Right" offset="-8"/>
+			<ControlContainer.Bottom path="Parent.Bottom" offset="-4"/>
 		</ControlContainer>
 		<Border width="Parent.Width" height="Parent.Height"
 					shape="roundRect, 2"/>
-	</ControlGroup>
+	</ConstraintLayout>
 </Clip>

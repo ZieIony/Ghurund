@@ -12,6 +12,7 @@
 #include "ui/constraint/ParentConstraint.h"
 
 #include <format>
+#include <ui/constraint/ConstraintLayout.h>
 
 using namespace UnitTest::Utils;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -23,16 +24,11 @@ namespace UnitTest {
 	TEST_CLASS(ConstraintGraphTest) {
 public:
 	TEST_CLASS_INITIALIZE(classInitialize) {
-		Pointer::reservePointers(500);
-		Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
-		TestLogOutput::initReportHook();
+		TestUtils::testClassInitialize();
 	}
 
 	TEST_METHOD_CLEANUP(methodCleanup) {
-		if (Pointer::numberOfAllocatedPointers() > 0) {
-			Pointer::dumpPointers();
-			Assert::Fail();
-		}
+		TestUtils::testMethodCleanup();
 	}
 
 	TEST_METHOD(simple) {
@@ -132,17 +128,23 @@ public:
 		MemoryGuard guard;
 		{
 			auto colorView = makeShared<ColorView>();
-			colorView->Constraints = {
+
+			auto controlGroup = makeShared<ConstraintLayout>();
+			controlGroup->Children.add(colorView.get(), makeConstraints({
 				.left = 0.0f,
 				.width = 50.0f,
 				.right = 100.0f
-			};
+			}));
+			ConstraintSet& constraints = controlGroup->Children.get(1).Constraints;
+		
 			ConstraintGraph graph;
-			colorView->resolveConstraints(graph);
+			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
+			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();
-			Assert::AreEqual(25.0f, colorView->Left.Value);
-			Assert::AreEqual(75.0f, colorView->Right.Value);
+			Assert::AreEqual(25.0f, constraints.Left.Value);
+			Assert::AreEqual(75.0f, constraints.Right.Value);
 		}
 	}
 	};

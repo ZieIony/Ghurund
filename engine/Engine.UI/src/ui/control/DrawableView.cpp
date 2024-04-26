@@ -2,9 +2,6 @@
 #include "DrawableView.h"
 
 #include "ui/Canvas.h"
-#include "ui/loading/LayoutLoader.h"
-#include "ui/theme/Theme.h"
-#include "ui/drawable/InvalidImageDrawable.h"
 #include "core/reflection/UniqueProperty.h"
 
 namespace Ghurund::UI {
@@ -16,6 +13,7 @@ namespace Ghurund::UI {
         static const auto CONSTRUCTOR = Constructor<DrawableView>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableView>(NAMESPACE_NAME, GH_STRINGIFY(DrawableView))
             .withProperty(PROPERTY_DRAWABLE)
+            .withProperty(PROPERTY_TINT)
             .withProperty(PROPERTY_SCALEMODE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
@@ -25,16 +23,6 @@ namespace Ghurund::UI {
 
     void DrawableView::onThemeChanged() {
         updateProperties();
-    }
-
-    void DrawableView::onMeasure() {
-        const Ghurund::UI::Drawable* d = drawable.get();
-        if (d) {
-            measuredSize.Width = d->PreferredSize.Width;
-            measuredSize.Height = d->PreferredSize.Height;
-        } else {
-            measuredSize = { 0, 0 };
-        }
     }
 
     void DrawableView::onDraw(ICanvas& canvas) {

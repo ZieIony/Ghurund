@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
-	<ControlGroup>
-		<ControlGroup.Width path="wrap" offset="8"/>
-		<ControlGroup.Height path="wrap" offset="4"/>
-		<ControlContainer name="container">
-			<ControlContainer.Left path="Parent.Left" offset="8"/>
-			<ControlContainer.Top path="Parent.Top" offset="4"/>
-		</ControlContainer>
-		<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
-	</ControlGroup>
+<Clip shape="roundRect, 8" width="24" height="24" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ConstraintLayout width="24" height="24">
+		<ColorView width="24" height="24"
+					   style="theme://style/ColorView_accent"/>
+		<DrawableView left="Parent.Left" top="Parent.Top"
+						  right="Parent.Right" bottom="Parent.Bottom"
+						  width="16" height="16" name="drawableView"/>
+		<StateIndicator name="state" width="24" height="24"/>
+	</ConstraintLayout>
 </Clip>

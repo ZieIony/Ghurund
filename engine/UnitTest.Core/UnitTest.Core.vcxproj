@@ -136,6 +136,7 @@
     <ClCompile Include="src\test\core\string\StringTest.cpp" />
     <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
+    <ClCompile Include="src\test\TestUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

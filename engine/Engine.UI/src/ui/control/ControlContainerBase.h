@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ControlParent.h"
+#include "ui/constraint/ParentConstraint.h"
 
 namespace Ghurund::Core {
 	class ResourceManager;
@@ -25,6 +26,7 @@ namespace Ghurund::UI {
 
 	protected:
 		Control* child = nullptr;
+		ConstraintSet constraints = ConstraintSet({});
 
 		ControlContainerBase() {}
 
@@ -58,13 +60,29 @@ namespace Ghurund::UI {
 			if (this->child)
 				this->child->Parent = nullptr;
 			setPointer(this->child, child);
-			if (this->child)
+			if (this->child) {
+				setConstraints(makeDefaultConstraints());
 				this->child->Parent = this;
+			}
 			onChildChanged();
 			childChanged();
 		}
 
 		__declspec(property(get = getChild, put = setChild)) Control* Child;
+
+		virtual ConstraintSet& getConstraints(Control& control) override {
+			if (&control != child)
+				throw InvalidParamException("control is not the child of this container");
+			return constraints;
+		}
+
+		void setConstraints(const ConstraintSet& set) {
+			constraints = set;
+		}
+
+		void setConstraints(const ConstraintSetInitializer& set) {
+			constraints = ConstraintSet(set);
+		}
 
 		virtual bool focusNext() override;
 
@@ -84,8 +102,6 @@ namespace Ghurund::UI {
 
 		virtual void dispatchContextChanged() override;
 
-		virtual void onMeasure() override;
-
 		virtual void onLayout(float x, float y, float width, float height) override {
 			if (child)
 				child->layout(0, 0, width, height);
@@ -96,10 +112,7 @@ namespace Ghurund::UI {
 				child->onUpdate(time);
 		}
 
-		virtual void onDraw(ICanvas& canvas) override {
-			if (child)
-				child->draw(canvas);
-		}
+		virtual void onDraw(ICanvas& canvas) override;
 
 		virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
@@ -109,7 +122,7 @@ namespace Ghurund::UI {
 
 		virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
-		virtual void resolveConstraints(ConstraintGraph& graph) override;
+		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override;
 
 #ifdef _DEBUG
 		virtual void validate() const override;

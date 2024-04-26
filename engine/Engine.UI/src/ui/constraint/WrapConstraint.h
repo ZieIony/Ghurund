@@ -15,7 +15,7 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = WrapWidthConstraint::GET_TYPE();
 #pragma endregion
 
     private:
@@ -33,7 +33,7 @@ namespace Ghurund::UI {
 
         virtual void evaluate() override;
 
-        virtual Object* clone() const {
+        virtual WrapWidthConstraint* clone() const {
             return ghnew WrapWidthConstraint(*this);
         }
     };
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = WrapHeightConstraint::GET_TYPE();
 #pragma endregion
 
     private:
@@ -66,7 +66,7 @@ namespace Ghurund::UI {
 
         virtual void evaluate() override;
 
-        virtual Object* clone() const {
+        virtual WrapHeightConstraint* clone() const {
             return ghnew WrapHeightConstraint(*this);
         }
     };

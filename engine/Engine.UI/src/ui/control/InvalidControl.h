@@ -35,7 +35,7 @@ namespace Ghurund::UI {
 
 	public:
 		InvalidControl() {
-			setConstraints({
+			/*setConstraints({
 				.width = []() {
 					auto constraint = makeShared<ParentWidthConstraint>();
 					constraint->Min = 18;
@@ -46,7 +46,7 @@ namespace Ghurund::UI {
 					constraint->Min = 18;
 					return constraint;
 				}()
-				});
+				});*/
 		}
 
 		virtual void onDraw(ICanvas& canvas) override;

@@ -16,6 +16,8 @@ namespace Ghurund::UI {
         bool sort(List<Constraint*>& sorted, Set<Constraint*>& visited, Stack<Constraint*>& stack, Constraint* current, bool hadSoftDep);
 
     public:
+        ConstraintGraph() {}    // to get rid of false positive IntelliSense error
+
         inline void add(Constraint* constraint) {
             if (!constraint->Constant)
                 constraints.add(constraint);

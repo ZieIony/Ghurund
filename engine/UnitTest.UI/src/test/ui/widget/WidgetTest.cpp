@@ -11,21 +11,14 @@ using namespace UnitTest::Utils;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
-    using namespace Ghurund::UI;
-
     TEST_CLASS(WidgetTest) {
 public:
     TEST_CLASS_INITIALIZE(classInitialize) {
-        Pointer::reservePointers(500);
-        Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
-        TestLogOutput::initReportHook();
+        TestUtils::testClassInitialize();
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        if (Pointer::numberOfAllocatedPointers() > 0) {
-            Pointer::dumpPointers();
-            Assert::Fail();
-        }
+        TestUtils::testMethodCleanup();
     }
 
     TEST_METHOD(emptyWidget) {

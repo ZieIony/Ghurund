@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Control.h"
+#include "ui/constraint/ConstraintSet.h"
 
 namespace Ghurund::UI {
     class ControlParent:public Control {
@@ -50,6 +51,10 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(put = setCapturedChild)) Control* CapturedChild;
+
+        virtual ConstraintSet& getConstraints(Control& child) = 0;
+
+        virtual PartialConstraintSet makeDefaultConstraints() const = 0;
 
 #ifdef _DEBUG
         virtual void validate() const override {

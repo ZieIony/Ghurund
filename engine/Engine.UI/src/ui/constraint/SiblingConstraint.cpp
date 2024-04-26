@@ -22,9 +22,11 @@ namespace Ghurund::UI {
 	void SiblingLeftConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Left);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto left = &control.Parent->getConstraints(*children[index].control.get()).Left;
+			dependencies.put(left);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);
@@ -49,9 +51,11 @@ namespace Ghurund::UI {
 	void SiblingHeightConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Height);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto height = &control.Parent->getConstraints(*children[index].control.get()).Height;
+			dependencies.put(height);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);
@@ -76,9 +80,11 @@ namespace Ghurund::UI {
 	void SiblingWidthConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Width);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto width = &control.Parent->getConstraints(*children[index].control.get()).Width;
+			dependencies.put(width);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);
@@ -103,9 +109,11 @@ namespace Ghurund::UI {
 	void SiblingBottomConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Bottom);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto bottom = &control.Parent->getConstraints(*children[index].control.get()).Bottom;
+			dependencies.put(bottom);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);
@@ -130,9 +138,11 @@ namespace Ghurund::UI {
 	void SiblingTopConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Top);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto top = &control.Parent->getConstraints(*children[index].control.get()).Top;
+			dependencies.put(top);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);
@@ -157,9 +167,11 @@ namespace Ghurund::UI {
 	void SiblingRightConstraint::resolve(Control& control, ConstraintGraph& graph) {
 		dependencies.clear();
 		evaluated = false;
-		Control* ref = ((ControlGroup*)control.Parent)->Children.find(name);
-		if (ref) {
-			dependencies.put(&ref->Right);
+		auto& children = ((ControlGroup*)control.Parent)->Children;
+		size_t index = children.find(name);
+		if (index != children.Size) {
+			auto right = &control.Parent->getConstraints(*children[index].control.get()).Right;
+			dependencies.put(right);
 			graph.add(this);
 		} else {
 			auto text = std::format(_T("Constraint reference '{}' not found.\n"), name);

@@ -1,36 +1,35 @@
 #pragma once
 
-#include "ItemAdapter.h"
-#include "core/collection/PointerList.h"
+#include "core/collection/List.h"
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {
-    template<class ControlType>
     class ControlPool {
     private:
-        PointerList<ControlType*> pool;
+        Map<size_t, List<Control*>> pool;
 
     public:
         ~ControlPool() {
-            for(ControlType* c:pool)
-                c->release();
+            for (auto& pair : pool) {
+                for (Control* c : pair.value)
+                    c->release();
+            }
         }
 
-        inline bool isEmpty() const {
-            return pool.Empty;
+        inline bool isEmpty(size_t type) const {
+			return !pool.contains(type) || pool[type].Empty;
         }
 
-        __declspec(property(get = isEmpty)) bool Empty;
-
-        ControlType* getControl() {
-            ControlType* control = pool[pool.Size - 1];
-            control->addReference();
-            pool.removeAt(pool.Size - 1);
+        Control* getControl(size_t type) {
+            auto& list = pool[type];
+            Control* control = list[list.Size - 1];
+            list.removeAt(list.Size - 1);
             return control;
         }
 
-        void recycle(ControlType* c) {
-            pool.add(c);
+        void recycle(Control* c, size_t type) {
+            pool[type].add(c);
+            c->addReference();
         }
     };
 }

@@ -1,13 +1,14 @@
 #pragma once
 
-#include "ui/RootView.h"
+#include "core/directx/buffer/RenderTarget.h"
 #include "ui/direct2d/Canvas.h"
 #include "ui/direct2d/Graphics2d.h"
 #include "ui/direct2d/UIContext.h"
-#include "core/directx/buffer/RenderTarget.h"
+#include "ui/RootView.h"
 
-#include "application/Layer.h"
 #include "application/ApplicationWindow.h"
+#include "application/Layer.h"
+#include "ui/constraint/ConstraintGraph.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::UI::Direct2D;
@@ -30,6 +31,7 @@ namespace Ghurund::UI {
         Graphics2D& graphics;
         Ghurund::UI::Direct2D::Canvas* canvas;
         RootView* rootView;
+        SharedPointer<Constraint> rootViewWidth, rootViewHeight;
         Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
         IUIContext* context;
         ApplicationWindow& window;
@@ -62,6 +64,12 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getRoot)) RootView& Root;
+
+        inline IUIContext& getContext() {
+            return *context;
+        }
+
+        __declspec(property(get = getContext)) IUIContext& Context;
 
         virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
             return rootView->dispatchKeyEvent(args);

@@ -1,31 +1,32 @@
 #pragma once
 
-#include "ControlPool.h"
+#include "SizeConstraints.h"
 
 #include "ui/control/Control.h"
-#include "ui/widget/Widget.h"
+#include <ui/constraint/ParentConstraint.h>
 
 namespace Ghurund::UI {
-    template<class T, class ControlType>
     class ItemAdapter {
-    private:
-        ControlPool<ControlType> pool;
-
     public:
-        virtual ~ItemAdapter() {}
+        virtual ~ItemAdapter() = 0 {}
+
+        virtual size_t getSize() const = 0;
+
+        __declspec(property(get = getSize)) size_t Size;
    
-        virtual ControlType* makeControl() const = 0;
-
-        virtual void bind(ControlType& control, T& item, size_t position) const {}
-
-        inline ControlType* getControl() {
-            if (pool.Empty)
-                return makeControl();
-            return pool.getControl();
+        virtual size_t getType(size_t position) const {
+            return 0;
         }
 
-        inline void recycleControl(ControlType* control) {
-            pool.recycle(control);
+        virtual Control* makeControl(size_t type) const = 0;
+
+        virtual SizeConstraints makeSizeConstraints(size_t position) const {
+            return SizeConstraints(
+				SharedPointer<Constraint>(ghnew ParentWidthConstraint()),
+                SharedPointer<Constraint>(ghnew WrapHeightConstraint())
+			);
         }
+
+        virtual void bind(Control& control, size_t position) const = 0;
     };
 }

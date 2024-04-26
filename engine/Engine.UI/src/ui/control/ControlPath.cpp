@@ -9,9 +9,9 @@ namespace Ghurund::UI {
         if (control.Type.isOrExtends(ControlGroup::TYPE)) {
             ControlGroup& group = (ControlGroup&)control;
             if (index >= 0 && index < group.Children.Size)
-                return group.Children[index];
+                return group.Children[index].control.get();
             if (index < 0 && -index <= group.Children.Size)
-                return group.Children[group.Children.Size + index];
+                return group.Children[group.Children.Size + index].control.get();
         }
         return nullptr;
     }

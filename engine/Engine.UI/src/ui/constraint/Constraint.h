@@ -6,6 +6,7 @@
 namespace Ghurund::UI {
 	class Control;
 	class ConstraintGraph;
+	class ICanvas;
 
 	using namespace Ghurund::Core;
 
@@ -23,6 +24,10 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	protected:
+#ifdef _DEBUG
+		bool firstEvaluation = true;
+#endif
+
 		float value = 0.0f;
 		bool constant = false, skipDependencies = false, evaluated = false;
 		Set<Constraint*> dependencies;
@@ -68,6 +73,12 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getValue)) float Value;
 
+		virtual float getPreferredMax() const {
+			return std::numeric_limits<float>::max();
+		}
+
+		__declspec(property(get = getPreferredMax)) float PreferredMax;
+
 		// for example wrap constraint can skip fill dependencies to not introduce cycles
 		inline bool canSkipDependencies() const {
 			return skipDependencies;
@@ -82,5 +93,14 @@ namespace Ghurund::UI {
 		__declspec(property(get = isEvaluated)) bool Evaluated;
 
 		virtual String toString() const override;
+
+#ifdef _DEBUG
+		virtual void draw(ICanvas& canvas, float x, float y, float width, float height) const {
+			if (skipDependencies)
+				return;
+			for (Constraint* constraint : dependencies)
+				constraint->draw(canvas, x, y, width, height);
+		}
+#endif
 	};
 }

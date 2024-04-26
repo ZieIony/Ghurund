@@ -15,22 +15,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousLeftConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousLeftConstraint* clone() const {
 			return ghnew PreviousLeftConstraint(*this);
 		}
 	};
@@ -45,22 +38,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousRightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousRightConstraint* clone() const {
 			return ghnew PreviousRightConstraint(*this);
 		}
 	};
@@ -75,22 +61,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousTopConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousTopConstraint* clone() const {
 			return ghnew PreviousTopConstraint(*this);
 		}
 	};
@@ -105,22 +84,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousBottomConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousBottomConstraint* clone() const {
 			return ghnew PreviousBottomConstraint(*this);
 		}
 	};
@@ -135,22 +107,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousWidthConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-			} else {
-				value = minMax(min, offset, max);
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousWidthConstraint* clone() const {
 			return ghnew PreviousWidthConstraint(*this);
 		}
 	};
@@ -165,22 +130,15 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = PreviousHeightConstraint::GET_TYPE();
 #pragma endregion
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-			} else {
-				value = minMax(min, offset, max);
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual PreviousHeightConstraint* clone() const {
 			return ghnew PreviousHeightConstraint(*this);
 		}
 	};

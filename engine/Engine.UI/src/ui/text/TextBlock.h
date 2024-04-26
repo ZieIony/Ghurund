@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 
 		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
-		virtual void onMeasure() override;
+		//virtual void onMeasure() override;
 
 		virtual void onDraw(ICanvas& canvas) override;
 

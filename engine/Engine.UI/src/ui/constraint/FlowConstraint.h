@@ -14,7 +14,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = FlowWidthConstraint::GET_TYPE();
 #pragma endregion
 
 		~FlowWidthConstraint() {}
@@ -26,7 +26,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual FlowWidthConstraint* clone() const {
 			return ghnew FlowWidthConstraint(*this);
 		}
 	};
@@ -41,7 +41,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = FlowHeightConstraint::GET_TYPE();
 #pragma endregion
 
 		~FlowHeightConstraint() {}
@@ -53,7 +53,7 @@ namespace Ghurund::UI {
 
 		virtual void evaluate() override;
 
-		virtual Object* clone() const {
+		virtual FlowHeightConstraint* clone() const {
 			return ghnew FlowHeightConstraint(*this);
 		}
 	};

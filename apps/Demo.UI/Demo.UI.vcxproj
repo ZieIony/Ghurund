@@ -94,6 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ColorListAdapter.h" />
     <ClInclude Include="src\DemoApplication.h" />
     <ClInclude Include="src\DemoWindow.h" />
   </ItemGroup>

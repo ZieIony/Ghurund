@@ -2,9 +2,8 @@
 
 #include "TabItemAdapter.h"
 #include "core/SharedPointer.h"
-#include "ui/adapter/AdapterChildrenProvider.h"
-#include "ui/adapter/RecyclerView.h"
-#include "ui/layout/HorizontalLayoutManager.h"
+#include "ui/adapter/AdapterLayout.h"
+//#include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/ContentWidget.h"
 
 namespace Ghurund::UI {
@@ -13,17 +12,14 @@ namespace Ghurund::UI {
         size_t selectedPosition = 0;
         Tab* selectedTab = nullptr;
         List<TabItem*> tabs;
-        Ghurund::UI::RecyclerView* tabLayout = nullptr;
-        AdapterChildrenProvider<TabItem*, Tab>* provider;
-
-        typedef SingleAdapterChildrenProvider<TabItem*, Tab, TabItemAdapter> TabChildrenProvider;
+        Ghurund::UI::AdapterLayout* tabLayout = nullptr;
 
     protected:
         virtual void bind() override {
             __super::bind();
-            tabLayout = (Ghurund::UI::RecyclerView*)find("tabs");
-            provider = ghnew TabChildrenProvider();
-            tabLayout->ChildrenProvider = std::unique_ptr<ChildrenProvider>(provider);
+            tabLayout = (Ghurund::UI::AdapterLayout*)find("tabs");
+            //provider = ghnew TabChildrenProvider();
+            //tabLayout->ControlProvider = std::unique_ptr<ControlProvider>(provider);
         }
 
     public:
@@ -33,23 +29,19 @@ namespace Ghurund::UI {
 
         ~TabContainer();
 
-        inline List<TabItem*>& getTabs() {
-            return provider->ItemSource.Items;
-        }
-
         inline void setTabs(const List<TabItem*>& tabs) {
             this->tabs.clear();
             this->tabs.addAll(tabs);
         }
 
-        __declspec(property(get = getTabs, put = setTabs)) List<TabItem*>& Tabs;
+        __declspec(property(put = setTabs)) List<TabItem*>& Tabs;
 
         inline void setSelectedPosition(size_t position) {
             if (selectedTab)
                 selectedTab->Selected = false;
             this->selectedPosition = position;
             if (tabLayout->Children.Size > position) {
-                setPointer(selectedTab, (Tab*)tabLayout->Children[position]);
+                setPointer(selectedTab, (Tab*)tabLayout->Children[position].control.get());
                 selectedTab->Selected = true;
             }
             TabItem* tab = tabs[position];

@@ -13,7 +13,7 @@ namespace Ghurund::UI {
     private:
         Ghurund::Core::Window* window;
         SharedPointer<ColorView> backgroundView;
-        SharedPointer<RecyclerView> recyclerView;
+        SharedPointer<AdapterLayout> recyclerView;
         List<MenuItem*> items;
 
     public:
@@ -21,7 +21,7 @@ namespace Ghurund::UI {
             //window = ghnew Ghurund::Core::Window(parent.Timer);
             //window->RootView->Child = this;
 
-            recyclerView = ghnew RecyclerView();
+            recyclerView = ghnew AdapterLayout();
             recyclerView->LayoutManager = std::unique_ptr<LayoutManager>(ghnew VerticalLayoutManager());
             /*auto provider = ghnew AdapterChildrenProvider<MenuItem*, Control>(*recyclerView);
             provider->Adapters.add(ghnew ButtonPopupMenuAdapter());
@@ -29,10 +29,10 @@ namespace Ghurund::UI {
             provider->Items = ghnew ListItemSource<MenuItem*>(items);
             recyclerView->childrenProvider = provider;*/
             Children = { recyclerView };
-            recyclerView->PreferredSize.width = PreferredSize::Width::WRAP;
-            recyclerView->PreferredSize.height = PreferredSize::Height::WRAP;
-            preferredSize.width = PreferredSize::Width::WRAP;
-            preferredSize.height = PreferredSize::Height::WRAP;
+            recyclerView->ContentSize.width = ContentSize::Width::WRAP;
+            recyclerView->ContentSize.height = ContentSize::Height::WRAP;
+            contentSize.width = ContentSize::Width::WRAP;
+            contentSize.height = ContentSize::Height::WRAP;
         }
 
         ~PopupMenu() {

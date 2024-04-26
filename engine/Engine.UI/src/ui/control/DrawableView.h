@@ -34,6 +34,11 @@ namespace Ghurund::UI {
 			if (theme) {
 				tint.resolve(*theme);
 				drawable.resolve(*theme);
+				if (drawable.get()) {
+					contentSize = drawable.get()->PreferredSize;
+				} else {
+					contentSize = { 0, 0 };
+				}
 			}
 		}
 
@@ -47,8 +52,6 @@ namespace Ghurund::UI {
 				Alpha = 0.38f;
 			}*/
 		}
-
-		virtual void onMeasure() override;
 
 		virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 
@@ -73,6 +76,11 @@ namespace Ghurund::UI {
 			updateProperties();
 		}
 
+		inline void setDrawable(const PointerAttrProperty<DrawableAttr, Drawable>& drawable) {
+			this->drawable = drawable;
+			updateProperties();
+		}
+
 		__declspec(property(put = setDrawable)) std::unique_ptr<DrawableAttr>& Drawable;
 
 		inline void setTint(std::unique_ptr<ColorAttr> tint) {
@@ -87,6 +95,11 @@ namespace Ghurund::UI {
 
 		inline void setTint(Color tint) {
 			this->tint.set(std::make_unique<ColorValue>(tint));
+			updateProperties();
+		}
+
+		inline void setTint(const NullableAttrProperty<ColorAttr, Color>& tint) {
+			this->tint = tint;
 			updateProperties();
 		}
 

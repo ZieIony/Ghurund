@@ -1,82 +1,30 @@
 #pragma once
 
-#include "ui/control/ChildrenProvider.h"
-#include "ui/control/ControlGroup.h"
+#include "ui/constraint/ConstraintSet.h"
+#include <core/math/Point.h>
 
 namespace Ghurund::UI {
-    class LayoutManager {
-    protected:
-        FloatPoint scroll = { 0,0 };
-        FloatPoint maxScroll = { 0.0f, 0.0f };
-        ControlGroup* group = nullptr;
-        ChildrenProvider* provider = nullptr;
+	class LayoutManager {
+	protected:
+		FloatPoint scroll = { 0, 0 };
 
-        float measureMaxWidth();
+	public:
+		virtual ~LayoutManager() = 0 {}
 
-        float measureMaxHeight();
+		virtual PartialConstraintSet makeDefaultConstraints() const = 0;
 
-    public:
-        virtual ~LayoutManager() //= 0
-        {}
+		virtual bool onLayout(float x, float y, float width, float height) {
+			return false;
+		}
 
-        void setGroup(ControlGroup& group, ChildrenProvider& provider) {
-            this->group = &group;
-            this->provider = &provider;
-            scroll = { 0, 0 };
-            maxScroll = { 0, 0 };
-        }
+		inline const FloatPoint& getScroll() const {
+			return scroll;
+		}
 
-        inline const FloatPoint& getScroll() const {
-            return scroll;
-        }
+		__declspec(property(get = getScroll)) const FloatPoint& Scroll;
 
-        inline void setScroll(const FloatPoint& scroll) {
-            this->scroll = scroll;
-        }
-
-        __declspec(property(get = getScroll, put = setScroll)) const FloatPoint& Scroll;
-
-        virtual void scrollBy(float dx, float dy) {}
-
-        inline const FloatPoint& getMaxScroll() const {
-            return maxScroll;
-        }
-
-        __declspec(property(get = getMaxScroll)) const FloatPoint& MaxScroll;
-
-        virtual bool focusNext() {
-            return group->focusNext();
-        }
-
-        virtual bool focusPrevious() {
-            return group->focusPrevious();
-        }
-
-        virtual bool focusUp() {
-            return group->focusUp();
-        }
-
-        virtual bool focusDown() {
-            return group->focusDown();
-        }
-
-        virtual bool focusLeft() {
-            return group->focusLeft();
-        }
-
-        virtual bool focusRight() {
-            return group->focusRight();
-        }
-
-        virtual const Ghurund::Core::FloatSize measure() {
-            for (Control* c : group->Children) {
-                if (!c->Visible)
-                    continue;
-                c->measure();
-            }
-            return { 0,0 };
-        }
-
-        virtual void layout(float x, float y, float width, float height) = 0;
-    };
+		virtual bool onScroll(float dx, float dy) {
+			return false;
+		}
+	};
 }

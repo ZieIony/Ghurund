@@ -9,6 +9,7 @@
 #include "ui/direct2d/UIContext.h"
 #include "ui/direct2d/Graphics2d.h"
 #include "ui/RootView.h"
+#include <ui/constraint/WindowConstraint.h>
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -27,11 +28,9 @@ namespace Ghurund {
         context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window);
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
         canvas->init(graphics.DeviceContext);
-        this->rootView = ghnew Ghurund::UI::RootView(*context);
-        rootView->Constraints = {
-            .width = makeShared<Ghurund::UI::WindowWidthConstraint>(window),
-            .height = makeShared<Ghurund::UI::WindowHeightConstraint>(window)
-        };
+        rootView = ghnew Ghurund::UI::RootView(*context);
+        rootViewWidth.set(ghnew WindowWidthConstraint(window));
+        rootViewHeight.set(ghnew WindowHeightConstraint(window));
         SwapChain& swapChain = window.SwapChain;
         window.sizeChanging += [&](const Window& window, const IntSize& size) {
             renderTargets.clear();
@@ -59,14 +58,12 @@ namespace Ghurund {
     void UI::UILayer::update(const uint64_t time) {
         rootView->onUpdate(time);
         graph.clear();
-        rootView->resolveConstraints(graph);
+        graph.add(rootViewWidth.get());
+        graph.add(rootViewHeight.get());
+        rootView->resolveConstraints(graph, *rootViewWidth.get(), *rootViewHeight.get());
         graph.sort();
-        rootView->measure();
-        /*Logger::print(LogType::INFO, _T("\n"));
-        Logger::print(LogType::INFO, graph.print().Data);
-        Logger::print(LogType::INFO, _T("\n"));*/
         graph.evaluate();
-        rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
+        rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);
     }
 
     Status UILayer::draw(RenderTarget& renderTarget) {

@@ -12,16 +12,19 @@
 	<Type Name="Ghurund::UI::VerticalLayout">
 		<DisplayString>{{name={name->v,s} children={children.size}}}</DisplayString>
 	</Type>
-	<Type Name="Ghurund::UI::ChildrenList">
-		<DisplayString>{{size={children.size}}}</DisplayString>
+	<Type Name="Ghurund::UI::ControlCollection">
+		<DisplayString>{{size={controls.size}}}</DisplayString>
 		<Expand>
 			<ArrayItems>
-				<Size>children.size</Size>
-				<ValuePointer>children.v</ValuePointer>
+				<Size>controls.size</Size>
+				<ValuePointer>controls.v</ValuePointer>
 			</ArrayItems>
 		</Expand>
 	</Type>
 	<Type Name="Ghurund::UI::PreferredSize">
 		<DisplayString>{{width={width.value} height={height.value}}</DisplayString>
+	</Type>
+	<Type Name="Ghurund::UI::Constraint">
+		<DisplayString>{{value={value} dependencies={dependencies.size}}}</DisplayString>
 	</Type>
 </AutoVisualizer>

@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "ui/constraint/ConstraintGraph.h"
+#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlContainerBase::GET_TYPE() {
@@ -72,11 +73,13 @@ namespace Ghurund::UI {
 			child->dispatchContextChanged();
 	}
 
-	void ControlContainerBase::onMeasure() {
-		__super::onMeasure();
-
+	void ControlContainerBase::onDraw(ICanvas& canvas) {
 		if (child)
-			child->measure();
+			child->draw(canvas);
+#ifdef _DEBUG
+		if (UIDebugTools::drawConstraints)
+			constraints.draw(canvas);
+#endif
 	}
 
 	bool ControlContainerBase::dispatchKeyEvent(const KeyEventArgs& event) {
@@ -114,10 +117,18 @@ namespace Ghurund::UI {
 		return __super::dispatchMouseWheelEvent(event);
 	}
 
-	void ControlContainerBase::resolveConstraints(ConstraintGraph& graph) {
-		__super::resolveConstraints(graph);
-		if (child && child->Visible)
-			child->resolveConstraints(graph);
+	void ControlContainerBase::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+		if (child && child->Visible) {
+			if (constraints.Width.Constant && constraints.Height.Constant) {
+				ConstraintGraph localGraph;
+				child->resolveConstraints(localGraph, constraints.Width, constraints.Height);
+				localGraph.sort();
+				localGraph.evaluate();
+			} else {
+				child->resolveConstraints(graph, constraints.Width, constraints.Height);
+			}
+			constraints.resolve(*child, graph);
+		}
 	}
 
 #ifdef _DEBUG

@@ -1,53 +1,49 @@
 #include "ghuipch.h"
 #include "ConstraintLayout.h"
 
-#include "Constraint.h"
+#include <tinyxml2.h>
+
 #include "Guide.h"
-#include "core/collection/Set.h"
-#include "ui/constraint/ConstraintGraph.h"
-#include "ui/loading/LayoutLoader.h"
+#include "ui/Canvas.h"
+#include "ConstraintGraph.h"
+#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
-    void ConstraintLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
-        __super::loadInternal(loader, workingDir, xml);
-        const tinyxml2::XMLElement* child = xml.FirstChildElement();
-        while (child != nullptr) {
-            if (strcmp(child->Name(), "Guide") == 0)
-                guides.add(Guide::load(*child));
-            child = child->NextSiblingElement();
-        }
-    }
+	const Ghurund::Core::Type& ConstraintLayout::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<ConstraintLayout>();
+		static Ghurund::Core::Type TYPE = TypeBuilder<ConstraintLayout>()
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
 
-    void ConstraintLayout::onContextChanged() {
-        __super::onContextChanged();
-        if (Context) {
-            Array<float> dashes = { 3.0f, 4.0f };
-            strokeStyle.reset(Context->makeStrokeStyle(dashes));
-        }
-    }
+		return TYPE;
+	}
 
-    void ConstraintLayout::onLayout(float x, float y, float width, float height) {
-        __super::onLayout(x, y, width, height);
-        for (Control* control : Children) {
-            control->layout(x, y, control->MeasuredSize.Width, control->MeasuredSize.Height);
-        }
-    }
+	void ConstraintLayout::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
+		__super::loadInternal(loader, workingDir, xml);
+		/*const tinyxml2::XMLElement* child = xml.FirstChildElement();
+		while (child != nullptr) {
+			if (strcmp(child->Name(), "Guide") == 0)
+				guides.add(Guide::load(*child));
+			child = child->NextSiblingElement();
+		}*/
+	}
 
     void ConstraintLayout::onDraw(ICanvas& canvas) {
         __super::onDraw(canvas);
-        Color color = Color(0x7f0000ff);
-        for (Guide& guide : guides) {
+#ifdef _DEBUG
+        /*for (Guide& guide : guides) {
             float position = guide.Value;
-            canvas.Color = color;
+            canvas.Color = UIDebugTools::colorConstraints2;
             if (guide.side == Side::TOP || guide.side == Side::BOTTOM) {
-                canvas.drawLine(0, position, Size.Width, position, 1.0f, strokeStyle.get());
+                canvas.drawLine(0, position, Size.Width, position, 1.0f, UIDebugTools::getStrokeStyle3());
             } else {
-                canvas.drawLine(position, 0, position, Size.Height, 1.0f, strokeStyle.get());
+                canvas.drawLine(position, 0, position, Size.Height, 1.0f, UIDebugTools::getStrokeStyle3());
             }
-        }
+        }*/
+#endif
     }
 
-    void ConstraintLayout::resolveConstraints(ConstraintGraph& graph) {
+    /*void ConstraintLayout::resolveConstraints(ConstraintGraph& graph) {
         __super::resolveConstraints(graph);
         for (Guide& guide : guides)
             guide.resolve(*this);
@@ -57,14 +53,5 @@ namespace Ghurund::UI {
             if (guide.sizeConstraint)
                 graph.add(guide.sizeConstraint);
         }
-    }
-
-    const Ghurund::Core::Type& ConstraintLayout::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<ConstraintLayout>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ConstraintLayout>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(ConstraintLayout))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
-
-        return TYPE;
-    }
+    }*/
 }

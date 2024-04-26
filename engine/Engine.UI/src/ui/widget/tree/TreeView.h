@@ -3,12 +3,10 @@
 #include "TreeItem.h"
 #include "TreeRow.h"
 
-#include "ui/adapter/RecyclerView.h"
-#include "ui/adapter/AdapterChildrenProvider.h"
-#include "ui/layout/VerticalLayoutManager.h"
+#include "ui/adapter/AdapterLayout.h"
 
 namespace Ghurund::UI {
-    class TreeRowAdapter:public ItemAdapter<TreeItem*, TreeRow> {
+    class TreeRowAdapter:public ItemAdapter {
     public:
         TreeRowAdapter() {}
 
@@ -19,20 +17,18 @@ namespace Ghurund::UI {
 
     class TreeView:public ControlContainer {
     private:
-        RecyclerView* recycler;
-        TreeRowAdapter adapter;
-
-        typedef SingleAdapterChildrenProvider<TreeItem*, TreeRow, TreeRowAdapter> TreeChildrenProvider;
+        AdapterLayout* recycler;
+        TreeRowAdapter* adapter;
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE();
 
     public:
         TreeView() {
-            recycler = ghnew RecyclerView();
-            recycler->LayoutManager = std::unique_ptr< VerticalLayoutManager>(ghnew VerticalLayoutManager());
-            auto provider = ghnew TreeChildrenProvider();
-            recycler->ChildrenProvider = std::unique_ptr<TreeChildrenProvider>(provider);
+            //recycler = ghnew AdapterLayout();
+            //recycler->LayoutManager = std::unique_ptr< VerticalLayoutManager>(ghnew VerticalLayoutManager());
+            //auto provider = ghnew TreeChildrenProvider();
+            //recycler->ControlProvider = std::unique_ptr<TreeChildrenProvider>(provider);
             Child = recycler;
         }
 

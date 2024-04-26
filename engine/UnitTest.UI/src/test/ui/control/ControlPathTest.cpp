@@ -7,6 +7,7 @@
 #include "ui/control/ControlPath.h"
 
 #include <format>
+#include <ui/constraint/ConstraintLayout.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -24,7 +25,7 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(resolveParentGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent");
@@ -51,7 +52,7 @@ public:
     }
 
     TEST_METHOD(resolveNameGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Children.add(content.get());
@@ -73,21 +74,21 @@ public:
     }
 
     TEST_METHOD(resolveMissingNameGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveMissingNameContainer) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         ControlPath path = ControlPath::parse("'color'");
         Control* result = path.resolve(*layout.get());
         Assert::IsNull(result);
     }
 
     TEST_METHOD(resolveIndexGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         auto content2 = makeShared<ColorView>();
         layout->Children = { content.get(), content2.get() };
@@ -98,7 +99,7 @@ public:
     }
 
     TEST_METHOD(resolveNegativeIndexGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         auto content2 = makeShared<ColorView>();
         layout->Children = { content.get(), content2.get() };
@@ -109,7 +110,7 @@ public:
     }
 
     TEST_METHOD(resolveIndexMissingGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         auto content2 = makeShared<ColorView>();
         layout->Children = { content.get(), content2.get() };
@@ -119,7 +120,7 @@ public:
     }
 
     TEST_METHOD(resolveNegativeIndexMissingGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         auto content2 = makeShared<ColorView>();
         layout->Children = { content.get(), content2.get() };
@@ -171,7 +172,7 @@ public:
     }
 
     TEST_METHOD(resolveParentNameGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         content->Name = "color";
         layout->Children.add(content.get());
@@ -193,7 +194,7 @@ public:
     }
 
     TEST_METHOD(resolveParentIndexGroup) {
-        auto layout = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
         auto content = makeShared<ColorView>();
         layout->Children.add(content.get());
         ControlPath path = ControlPath::parse("Parent[0]");
@@ -213,8 +214,8 @@ public:
     }
 
     TEST_METHOD(resolveNameIndexGroup) {
-        auto layout = makeShared<ControlGroup>();
-        auto mid = makeShared<ControlGroup>();
+        auto layout = makeShared<ConstraintLayout>();
+        auto mid = makeShared<ConstraintLayout>();
         mid->Name = "container";
         layout->Children = { mid.get() };
         auto content = makeShared<ColorView>();

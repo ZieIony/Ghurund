@@ -19,12 +19,12 @@ namespace Ghurund::UI {
     public:
         ButtonPopupMenuRow() {
             icon = ghnew DrawableView();
-            icon->PreferredSize.width = 16;
+            icon->ContentSize.width = 16;
             text = ghnew TextBlock();
             padding = ghnew PaddingContainer(4);
             row = ghnew HorizontalLayout();
-            row->PreferredSize.width = PreferredSize::Width::WRAP;
-            row->PreferredSize.height = PreferredSize::Height::WRAP;
+            row->ContentSize.width = ContentSize::Width::WRAP;
+            row->ContentSize.height = ContentSize::Height::WRAP;
             row->Children = {icon, text};
             padding->Child = row;
             Child = padding;
@@ -60,7 +60,7 @@ namespace Ghurund::UI {
         virtual Control* makeControl() const {
             Separator* separator = ghnew Separator();
             //SeparatorHorizontalStyle()
-            separator->PreferredSize.width = PreferredSize::Width::FILL;
+            separator->ContentSize.width = ContentSize::Width::FILL;
             return separator;
         }
     };

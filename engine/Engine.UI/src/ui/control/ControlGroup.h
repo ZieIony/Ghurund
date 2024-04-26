@@ -1,105 +1,125 @@
 #pragma once
 
-#include "ControlList.h"
 #include "ControlParent.h"
+#include "ListControlProvider.h"
+#include "ControlCollection.h"
+#include "ui/layout/LayoutManager.h"
 
 namespace Ghurund::Core {
-    class ResourceManager;
+	class ResourceManager;
 }
 
 namespace Ghurund::UI {
-    class ControlGroup:public ControlParent {
+	class LayoutManager;
+
+	class ControlGroup:public ControlParent {
 #pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = ControlGroup::GET_TYPE();
 #pragma endregion
 
-    private:
-        ControlList children;
-        Control* previousReceiver = nullptr;
+	private:
+		ControlCollection children;
+		Control* previousReceiver = nullptr;
 
-    protected:
-        virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
+	protected:
+		LayoutManager* layoutManager = nullptr;
 
-        virtual void onMeasure() override;
+		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
-        virtual void onLayout(float x, float y, float width, float height) override;
+		virtual void onLayout(float x, float y, float width, float height) override;
 
-    public:
-        ControlGroup():children(*this) {}
+	public:
+		ControlGroup();
 
-        ~ControlGroup() {
-            if (previousReceiver)
-                previousReceiver->release();
-        }
+		~ControlGroup();
 
-        inline ControlList& getChildren() {
-            return children;
-        }
+		inline ControlCollection& getChildren() {
+			return children;
+		}
 
-        inline const ControlList& getChildren() const {
-            return children;
-        }
+		inline const ControlCollection& getChildren() const {
+			return children;
+		}
 
-        inline void setChildren(const std::initializer_list<Control*>& controls) {
-            children.clear();
-            children.addAll(controls);
-        }
+		inline void setChildren(const std::initializer_list<Control*>& controls) {
+			children.clear();
+			children.addAll(controls);
+		}
 
-        __declspec(property(get = getChildren, put = setChildren)) ControlList& Children;
+		__declspec(property(get = getChildren, put = setChildren)) ControlCollection& Children;
 
-        virtual bool focusNext() override;
+		inline LayoutManager* getLayoutManager() {
+			return layoutManager;
+		}
 
-        virtual bool focusPrevious() override;
+		inline void setLayoutManager(std::unique_ptr<LayoutManager> layoutManager) {
+			delete this->layoutManager;
+			this->layoutManager = layoutManager.release();
+			//if (this->LayoutManager && childrenProvider)
+			  //  this->layoutManager->setGroup(*this, *childrenProvider);
+		}
 
-        virtual bool focusUp() override;
+		__declspec(property(get = getLayoutManager, put = setLayoutManager)) LayoutManager* LayoutManager;
 
-        virtual bool focusDown() override;
+		virtual bool focusNext() override;
 
-        virtual bool focusLeft() override;
+		virtual bool focusPrevious() override;
 
-        virtual bool focusRight() override;
+		virtual bool focusUp() override;
 
-        virtual void dispatchStateChanged() override;
+		virtual bool focusDown() override;
 
-        virtual void dispatchThemeChanged() override;
+		virtual bool focusLeft() override;
 
-        virtual void dispatchContextChanged() override;
+		virtual bool focusRight() override;
 
-        virtual void onUpdate(const uint64_t time) override {
-            for (Control* c : children)
-                c->onUpdate(time);
-        }
+		virtual void dispatchStateChanged() override;
 
-        virtual void onDraw(ICanvas& canvas) override;
+		virtual void dispatchThemeChanged() override;
 
-        virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
+		virtual void dispatchContextChanged() override;
 
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
+		virtual void onUpdate(const uint64_t time) override;
 
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+		virtual void onDraw(ICanvas& canvas) override;
 
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
+		virtual bool dispatchKeyEvent(const KeyEventArgs& event) override;
 
-        using Control::find;
+		virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
-        virtual Control* find(const Ghurund::Core::AString& name) override;
+		virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
 
-        virtual Control* find(const Ghurund::Core::Type& type) override;
+		virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& event) override;
 
-        virtual void resolveConstraints(ConstraintGraph& graph) override;
+		using Control::find;
+
+		virtual Control* find(const Ghurund::Core::AString& name) override;
+
+		virtual Control* find(const Ghurund::Core::Type& type) override;
+
+		virtual ConstraintSet& getConstraints(Control& child) override {
+			size_t index = children.find(&child);
+			if (index == children.Size)
+				throw InvalidParamException("control is not the child of this container");
+			return children[index].Constraints;
+		}
+
+		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override;
+
+		virtual PartialConstraintSet makeDefaultConstraints() const override;
 
 #ifdef _DEBUG
-        virtual void validate() const override;
+		virtual void validate() const override;
 
-        virtual String printTree() const;
+		virtual String printTree() const;
 #endif
-    };
+	};
 }

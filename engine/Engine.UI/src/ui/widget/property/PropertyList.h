@@ -11,13 +11,13 @@
 namespace Ghurund::UI {
     class PropertyList:public ControlContainer {
     private:
-        RecyclerView* recycler;
+        AdapterLayout* recycler;
         List<ObjectProperty*> items;
         Object* item = nullptr;
 
     public:
         PropertyList() {
-            recycler = ghnew RecyclerView();
+            recycler = ghnew AdapterLayout();
             recycler->LayoutManager = ghnew VerticalLayoutManager();
             auto provider = ghnew AdapterChildrenProvider<ObjectProperty*, PropertyRow>(*recycler);
             provider->Adapters = {

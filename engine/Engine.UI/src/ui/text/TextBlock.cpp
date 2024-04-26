@@ -22,7 +22,7 @@ namespace Ghurund::UI {
         }
     }
 
-    void TextBlock::onMeasure() {
+    /*void TextBlock::onMeasure() {
         const float MAX_LAYOUT_SIZE = 32768.0f;
 
         if (!Context || !textLayout->Format) {
@@ -31,7 +31,7 @@ namespace Ghurund::UI {
             return;
         }
 
-        /*if (preferredSize.width == PreferredSize::Width::WRAP) {
+        /*if (contentSize.width == ContentSize::Width::WRAP) {
             textLayout->Size = { MAX_LAYOUT_SIZE, MAX_LAYOUT_SIZE };
             if (textLayout->refresh() != Status::OK) {
                 Logger::log(LogType::WARNING, _T("TextBlock ({}) was not measured, because its textLayout is invalid\n"), Text);
@@ -49,8 +49,8 @@ namespace Ghurund::UI {
             }
             TextMetrics textMetrics = textLayout->TextMetrics;
             measuredSize.Height = resolveHeight(std::ceil(textMetrics.height), parentWidth, parentHeight);
-        }*/
-    }
+        }* /
+    }*/
 
     void TextBlock::onDraw(ICanvas& canvas) {
         const UI::Color* c = color.get();

@@ -301,6 +301,7 @@ namespace Ghurund::Core {
 			GenericString str(Size + other.Length);
 			memcpy(str.v, v, Length * sizeof(T));
 			memcpy(str.v + Length, other.v, other.Size * sizeof(T));
+			str.size = Size + other.Length;
 			return str;
 		}
 

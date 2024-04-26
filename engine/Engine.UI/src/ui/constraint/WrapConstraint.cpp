@@ -4,6 +4,8 @@
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ControlGroup.h"
+#include "ui/Canvas.h"
+#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& WrapWidthConstraint::GET_TYPE() {
@@ -27,20 +29,26 @@ namespace Ghurund::UI {
 		if (control.Type.isOrExtends(ControlContainerBase::TYPE)) {
 			Control* c = ((ControlContainerBase&)control).Child;
 			if (c) {
-				dependencies.put(&c->Left);
-				dependencies.put(&c->Right);
+				ConstraintSet& constraints = c->Parent->getConstraints(*c);
+				dependencies.put(&constraints.Left);
+				dependencies.put(&constraints.Width);
+				dependencies.put(&constraints.Right);
 			}
 		} else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
-			for (Control* c : ((ControlGroup&)control).Children) {
-				dependencies.put(&c->Left);
-				dependencies.put(&c->Right);
+			for (ControlWithConstraints& c : ((ControlGroup&)control).Children) {
+				dependencies.put(&c.Constraints.Left);
+				dependencies.put(&c.Constraints.Width);
+				dependencies.put(&c.Constraints.Right);
 			}
 		}
 		this->control = &control;
 	}
 
 	void WrapWidthConstraint::evaluate() {
-		value = control->MeasuredSize.Width;
+#ifdef _DEBUG
+		bool prevZero = value == 0;
+#endif
+		value = control->ContentSize.Width;
 		if (dependencies.Size > 0) {
 			float left = std::numeric_limits<float>::max();
 			float right = std::numeric_limits<float>::lowest();
@@ -53,6 +61,14 @@ namespace Ghurund::UI {
 			value = std::max(value, right - left);
 		}
 		value = minMax(min, value * ratio + offset, max);
+#ifdef _DEBUG
+		if (value == 0 && (!prevZero || firstEvaluation)) {
+			AString name = control->Name ? *control->Name : "[unnamed]";
+			auto message = std::format(_T("Control's ({}: {}) wrap width evaluates to 0\n"), control->Type.Name, name);
+			Logger::log(LogType::INFO, message.c_str());
+		}
+#endif
+		firstEvaluation = false;
 		evaluated = true;
 	}
 
@@ -77,20 +93,26 @@ namespace Ghurund::UI {
 		if (control.Type.isOrExtends(ControlContainerBase::TYPE)) {
 			Control* c = ((ControlContainerBase&)control).Child;
 			if (c) {
-				dependencies.put(&c->Top);
-				dependencies.put(&c->Bottom);
+				ConstraintSet& constraints = c->Parent->getConstraints(*c);
+				dependencies.put(&constraints.Top);
+				dependencies.put(&constraints.Height);
+				dependencies.put(&constraints.Bottom);
 			}
 		} else if (control.Type.isOrExtends(ControlGroup::TYPE)) {
-			for (Control* c : ((ControlGroup&)control).Children) {
-				dependencies.put(&c->Top);
-				dependencies.put(&c->Bottom);
+			for (ControlWithConstraints& c : ((ControlGroup&)control).Children) {
+				dependencies.put(&c.Constraints.Top);
+				dependencies.put(&c.Constraints.Height);
+				dependencies.put(&c.Constraints.Bottom);
 			}
 		}
 		this->control = &control;
 	}
 
 	void WrapHeightConstraint::evaluate() {
-		value = control->MeasuredSize.Height;
+#ifdef _DEBUG
+		bool prevZero = value == 0;
+#endif
+		value = control->ContentSize.Height;
 		if (dependencies.Size > 0) {
 			float top = std::numeric_limits<float>::max();
 			float bottom = std::numeric_limits<float>::lowest();
@@ -103,6 +125,14 @@ namespace Ghurund::UI {
 			value = std::max(value, bottom - top);
 		}
 		value = minMax(min, value * ratio + offset, max);
+#ifdef _DEBUG
+		if (value == 0 && (!prevZero || firstEvaluation)) {
+			AString name = control->Name ? *control->Name : "[unnamed]";
+			auto message = std::format(_T("Control's ({}: {}) wrap height evaluates to 0\n"), control->Type.Name, name);
+			Logger::log(LogType::INFO, message.c_str());
+		}
+#endif
+		firstEvaluation = false;
 		evaluated = true;
 	}
 }

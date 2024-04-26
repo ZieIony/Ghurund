@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingLeftConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -46,7 +46,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingLeftConstraint* clone() const {
 			return ghnew SiblingLeftConstraint(*this);
 		}
 	};
@@ -61,7 +61,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingRightConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -92,7 +92,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingRightConstraint* clone() const {
 			return ghnew SiblingRightConstraint(*this);
 		}
 	};
@@ -107,7 +107,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingTopConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -138,7 +138,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingTopConstraint* clone() const {
 			return ghnew SiblingTopConstraint(*this);
 		}
 	};
@@ -153,7 +153,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingBottomConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -184,7 +184,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingBottomConstraint* clone() const {
 			return ghnew SiblingBottomConstraint(*this);
 		}
 	};
@@ -199,7 +199,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingWidthConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -230,7 +230,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingWidthConstraint* clone() const {
 			return ghnew SiblingWidthConstraint(*this);
 		}
 	};
@@ -245,7 +245,7 @@ namespace Ghurund::UI {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Constraint::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = SiblingHeightConstraint::GET_TYPE();
 #pragma endregion
 
 	private:
@@ -276,7 +276,7 @@ namespace Ghurund::UI {
 			evaluated = true;
 		}
 
-		virtual Object* clone() const {
+		virtual SiblingHeightConstraint* clone() const {
 			return ghnew SiblingHeightConstraint(*this);
 		}
 	};

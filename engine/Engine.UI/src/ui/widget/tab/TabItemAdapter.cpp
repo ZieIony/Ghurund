@@ -8,7 +8,7 @@ namespace Ghurund::UI {
         return nullptr;// ghnew Tab(ghnew TextTabLayout(theme));
     }
 
-    void TabItemAdapter::bind(Tab& tabView, TabItem* const& tab, size_t position) const {
+    void TabItemAdapter::bind(Control& tabView, size_t position) const {
         //tabView.Layout->SelectableView->Selected = tabLayout.SelectedPosition == position;
         //tabView.selectableView->clicked += [this, position](Control& sender, const MouseClickedEventArgs& args) {
             //tabLayout.SelectedPosition = position;

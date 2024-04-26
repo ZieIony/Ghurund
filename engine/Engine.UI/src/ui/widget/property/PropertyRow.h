@@ -17,11 +17,11 @@ namespace Ghurund::UI {
 
     public:
         PropertyRow() {
-            PreferredSize.height = PreferredSize::Height::WRAP;
+            ContentSize.height = ContentSize::Height::WRAP;
             textView = ghnew TextBlock();
-            textView->PreferredSize.width = PreferredSize::Width::FILL;
+            textView->ContentSize.width = ContentSize::Width::FILL;
             container = ghnew ControlContainer();
-            container->PreferredSize.width = PreferredSize::Width::FILL;
+            container->ContentSize.width = ContentSize::Width::FILL;
             auto separator = makeShared<Separator>();
             //separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_VERTICAL];
             Children = { textView, separator, container };

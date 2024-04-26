@@ -42,6 +42,17 @@ namespace Ghurund::UI {
 			return value;
 		}
 
+		inline void operator=(const PointerAttrProperty& other) {
+			delete this->attr;
+			if (other.attr) {
+				attr = (AttrType*)other.attr->clone();
+			} else {
+				attr = nullptr;
+			}
+			if (value)
+				value->release();
+		}
+
 		inline const bool operator==(const AttrType* attr) const {
 			return this->attr == attr;
 		}

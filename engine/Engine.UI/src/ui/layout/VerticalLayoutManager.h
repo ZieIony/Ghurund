@@ -1,25 +1,44 @@
 #pragma once
 
+#include "ui/control/ControlGroup.h"
 #include "LayoutManager.h"
+#include <ui/adapter/AdapterLayout.h>
 
 namespace Ghurund::UI {
-    class VerticalLayoutManager:public LayoutManager {
-    private:
-        unsigned int indexTop = 0, indexBottom = 0;
-        float firstTop = 0, firstBottom = 0;
-        float lastTop = 0, lastBottom = 0;
+	class VerticalLayoutManager:public LayoutManager {
+	private:
+		float spacing = 0.0f;
 
-        void addTop();
-        void addBottom();
-        void removeTop();
-        void removeBottom();
+	public:
+		inline float getSpacing() const {
+			return spacing;
+		}
 
-    public:
-        virtual void scrollBy(float dx, float dy) override;
+		inline void setSpacing(float spacing) {
+			this->spacing = spacing;
+		}
 
-        virtual const FloatSize measure() override;
+		__declspec(property(get = getSpacing, put = setSpacing)) float Spacing;
 
-        virtual void layout(float x, float y, float width, float height) override;
-    };
+		virtual PartialConstraintSet makeDefaultConstraints() const override;
+	};
 
+	class VerticalAdapterLayoutManager:public VerticalLayoutManager {
+	private:
+		size_t topPosition = 0, bottomPosition = 0;
+
+		void addChild(size_t adapterPosition, size_t groupPosition);
+
+		void addTop();
+		void removeTop();
+		void addBottom(float height);
+		void removeBottom(float height);
+
+	public:
+		AdapterLayout* adapterLayout;
+
+		virtual bool onLayout(float x, float y, float width, float height) override;
+
+		virtual bool onScroll(float dx, float dy);
+	};
 }

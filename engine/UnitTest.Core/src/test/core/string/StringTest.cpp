@@ -272,6 +272,17 @@ public:
 			Assert::AreEqual(a, b);
 		}
 	}
+
+	TEST_METHOD(String_plusOperator) {
+		MemoryGuard guard;
+		{
+			String str = _T("test");
+			String str2 = _T("abc");
+			String result = str + L"::" + str2;
+			String expected = _T("test::abc");
+			Assert::AreEqual(expected, result);
+		}
+	}
 	};
 }
 

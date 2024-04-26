@@ -23,6 +23,8 @@ namespace Ghurund::UI {
 		Ghurund::UI::StateIndicator* state = nullptr;
 
 	protected:
+		Button(const Button& button):ContentWidget(button) {}
+		
 		virtual void onLayoutChanged() override;
 
 	public:
@@ -34,8 +36,6 @@ namespace Ghurund::UI {
 				return clicked(args);
 			};
 		}
-
-		Button(const Button& button):ContentWidget(button) {}
 
 		~Button() {
 			if (state)

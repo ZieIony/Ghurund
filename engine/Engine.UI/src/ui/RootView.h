@@ -2,7 +2,6 @@
 
 #include "control/ControlContainer.h"
 #include "core/window/Window.h"
-#include "ui/constraint/WindowConstraint.h"
 
 namespace Ghurund::UI {
     class RootView: public ControlContainer {
@@ -59,5 +58,7 @@ namespace Ghurund::UI {
         virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& event) override;
 
         virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& event) override;
+
+        virtual PartialConstraintSet makeDefaultConstraints() const override;
     };
 }

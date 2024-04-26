@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ControlGroup xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd" width="Parent.Width" height="Parent.Height">
-	<ColorView width="Parent.Width" height="Parent.Height"
+<ConstraintLayout xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
+	<ColorView width="Parent.Width" height="Parent.Height" name="background"
 			   style="theme://style/ColorView_background"/>
-	<Button layout="lib://Ghurund\layouts\ButtonAccentLayout.xml">
-		<DrawableView drawable="resources/button.png"/>
-	</Button>
-	<Button>
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="resources/button.png"/>
-	</Button>
-	<Button layout="lib://Ghurund\layouts\ButtonFlatLayout.xml">
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="resources/button.png"/>
-	</Button>
-	<Button layout="lib://Ghurund\layouts\ButtonIconLayout.xml">
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="resources/icons/category 18.png"/>
-	</Button>
-	<Button layout="lib://Ghurund\layouts\ButtonIconOnAccentLayout.xml">
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="resources/icons/category 18.png"/>
-	</Button>
-	<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="images/buttons.png"/>
-	</Button>
-	<Button layout="lib://Ghurund\layouts\ButtonOutlinedLayout.xml">
-		<Button.Top path="Previous.Bottom" offset="8"/>
-		<DrawableView drawable="resources/button.png"/>
-	</Button>
-</ControlGroup>
+	<VerticalLayout width="Parent.Width" height="Parent.Height" spacing="8">
+		<!--<MenuBar name="menuBar" width="Parent.Width" height="wrap"/>
+		<Toolbar name="toolbar" width="Parent.Width" height="wrap"/>-->
+		<Button layout="lib://Ghurund\layouts\ButtonAccentLayout.xml">
+			<DrawableView drawable="resources/button.png" width="wrap" height="wrap"/>
+		</Button>
+		<Button>
+			<DrawableView drawable="resources/button.png"/>
+		</Button>
+		<Button layout="lib://Ghurund\layouts\ButtonFlatLayout.xml">
+			<DrawableView drawable="resources/button.png"/>
+		</Button>
+		<IconButton layout="lib://Ghurund\layouts\ButtonIconLayout.xml" drawable="resources/icons/category 18.png"/>
+		<IconButton layout="lib://Ghurund\layouts\ButtonIconOnAccentLayout.xml" drawable="resources/icons/category 18.png"/>
+		<Button layout="lib://Ghurund\layouts\ButtonImageLayout.xml">
+			<DrawableView drawable="images/buttons.png"/>
+		</Button>
+		<Button layout="lib://Ghurund\layouts\ButtonOutlinedLayout.xml">
+			<DrawableView drawable="resources/button.png"/>
+		</Button>
+		<HorizontalLayout width="Parent.Width" height="wrap">
+			<ColorView color="#ffff0000" height="40"/>
+			<ColorView color="#ff00ff00" height="40"/>
+			<ColorView color="#ff0000ff" height="40"/>
+		</HorizontalLayout>
+		<HorizontalLayout width="Parent.Width" height="wrap">
+			<AdapterLayout width="500" height="300" name="adapterLayout"/>
+			<AdapterLayout width="500" height="wrap" name="adapterLayout2"/>
+		</HorizontalLayout>
+	</VerticalLayout>
+</ConstraintLayout>

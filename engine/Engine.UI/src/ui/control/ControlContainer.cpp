@@ -42,13 +42,13 @@ namespace Ghurund::UI {
 					Logger::log(LogType::WARNING, _T("ControlContainer can host only one direct child.\n"));
 					return;
 				}
-				Control* control = loader.loadControl(workingDir, *childElement);
-				if (control) {
-					Child = control;
-				} else {
-					Child = ghnew InvalidControl();
+				try {
+					ControlWithConstraints control = loader.loadControl(*this, workingDir, *childElement);
+					Child = control.control.get();	// this sets constraints too
+					setConstraints(control.Constraints);
+				}catch(...){
+					Child = ghnew InvalidControl();	// this sets constraints too
 				}
-				Child->release();
 				childFound = true;
 			}
 			childElement = childElement->NextSiblingElement();

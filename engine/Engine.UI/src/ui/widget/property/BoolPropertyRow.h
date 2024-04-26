@@ -11,7 +11,7 @@ namespace Ghurund::UI {
     public:
         BoolPropertyRow() {
             SharedPointer<HorizontalLayout> horizontalLayout = ghnew HorizontalLayout();
-            horizontalLayout->PreferredSize.height = PreferredSize::Height::WRAP;
+            horizontalLayout->ContentSize.height = ContentSize::Height::WRAP;
             checkBox = ghnew CheckBox();
             checkBox->CheckedChanged.add([this](CheckBox& checkBox) {
                 return OnValueChanged();

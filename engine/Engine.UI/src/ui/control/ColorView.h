@@ -38,15 +38,15 @@ namespace Ghurund::UI {
 		virtual void onDraw(ICanvas& canvas);
 
 	public:
-		ColorView(const ColorAttr& color = DEFAULT_COLOR) :color(color) {}
+		ColorView(const ColorAttr& color = DEFAULT_COLOR):color(color) {}
 
-        inline void setColor(const ColorAttr& color) {
-            this->color.set(color);
-        }
+		inline void setColor(const ColorAttr& color) {
+			this->color.set(color);
+		}
 
-        __declspec(property(put = setColor)) const ColorAttr& Color;
+		__declspec(property(put = setColor)) const ColorAttr& Color;
 
-		virtual Object* clone() const {
+		virtual ColorView* clone() const {
 			return ghnew ColorView(*this);
 		}
 	};

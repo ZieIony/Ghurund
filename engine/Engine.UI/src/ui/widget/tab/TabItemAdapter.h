@@ -7,16 +7,16 @@ namespace Ghurund::UI {
     class TabContainer;
     class Theme;
 
-    class TabItemAdapter:public ItemAdapter<TabItem*, Tab> {
+    class TabItemAdapter:public ItemAdapter {
     public:
         virtual Tab* makeControl() const;
 
-        virtual void bind(Tab& control, TabItem* const& item, size_t position) const;
+        virtual void bind(Control& control, size_t position) const;
 
     };
 
     class TextTabItemAdapter:public TabItemAdapter {
     public:
-        virtual void bind(Tab& control, TabItem* const& item, size_t position) const;
+        virtual void bind(Control& control, size_t position) const;
     };
 }

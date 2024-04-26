@@ -1,15 +1,18 @@
 #include "ghuipch.h"
 #include "ControlGroup.h"
 
+#include "ListControlProvider.h"
 #include "ui/Alignment.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/loading/LayoutLoader.h"
+#include "ui/layout/LayoutManager.h"
+#include "ui/UIDebugTools.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlGroup::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<ControlGroup>();
+		//static const auto CONSTRUCTOR = Constructor<ControlGroup>();
 		static Ghurund::Core::Type TYPE = TypeBuilder<ControlGroup>(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
-			.withConstructor(CONSTRUCTOR)
+			//.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
@@ -18,28 +21,46 @@ namespace Ghurund::UI {
 	void ControlGroup::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
 		__super::loadInternal(loader, workingDir, xml);
 		Children.clear();
-		Children.addAll(loader.loadControls(workingDir, xml));
-	}
-
-	void ControlGroup::onMeasure() {
-		for (Control* c : children) {
-			if (!c->Visible)
-				continue;
-			c->measure();
+		const tinyxml2::XMLElement* childElement = xml.FirstChildElement();
+		while (childElement) {
+			if (!AString(childElement->Name()).contains(".")) {
+				try {
+					ControlWithConstraints control = loader.loadControl(*this, workingDir, *childElement);
+					children.add(control.control.get(), control.Constraints);
+				} catch (...) {
+					Logger::log(LogType::WARNING, std::format(_T("Failed to load control {}.\n"), AString(childElement->Name())).c_str());
+				}
+			}
+			childElement = childElement->NextSiblingElement();
 		}
 	}
 
 	void ControlGroup::onLayout(float x, float y, float width, float height) {
-		for (Control* c : children) {
-			if (!c->Visible)
+		for (ControlWithConstraints& c : children) {
+			Control* control = c.control.get();
+			if (!control->Visible)
 				continue;
-			c->layout(
-				c->Left.Value,
-				c->Top.Value,
-				c->Width.Value,
-				c->Height.Value
+			ConstraintSet& constraintSet = c.Constraints;
+			control->layout(
+				constraintSet.Left.Value,
+				constraintSet.Top.Value,
+				constraintSet.Width.Value,
+				constraintSet.Height.Value
 			);
 		}
+	}
+
+	ControlGroup::ControlGroup():children(*this) {
+		children.collectionChanged += [&](ControlCollection&) {
+			needsLayout = true;
+			return true;
+		};
+	}
+
+	ControlGroup::~ControlGroup() {
+		if (previousReceiver)
+			previousReceiver->release();
+		delete layoutManager;
 	}
 
 	bool ControlGroup::focusNext() {
@@ -47,9 +68,9 @@ namespace Ghurund::UI {
 			return true;
 		size_t i = 0;
 		if (focusedChild)
-			i = Children.indexOf(focusedChild);
+			i = Children.find(focusedChild);
 		for (i; i < Children.Size; i++) {
-			if (Children[i]->focusNext())
+			if (Children[i].control->focusNext())
 				return true;
 		}
 		return false;
@@ -60,9 +81,9 @@ namespace Ghurund::UI {
 			return true;
 		size_t i = Children.Size - 1;
 		if (focusedChild)
-			i = Children.indexOf(focusedChild);
+			i = Children.find(focusedChild);
 		for (i; i != -1; i--) {
-			if (Children[i]->focusPrevious())
+			if (Children[i].control->focusPrevious())
 				return true;
 		}
 		return false;
@@ -94,27 +115,36 @@ namespace Ghurund::UI {
 
 	void ControlGroup::dispatchStateChanged() {
 		__super::dispatchStateChanged();
-		for (Control* child : Children)
-			child->dispatchStateChanged();
+		for (ControlWithConstraints& c : children)
+			c.control->dispatchStateChanged();
 	}
 
 	void ControlGroup::dispatchThemeChanged() {
 		__super::dispatchThemeChanged();
-		for (Control* child : Children)
-			child->dispatchThemeChanged();
+		for (ControlWithConstraints& c : children)
+			c.control->dispatchThemeChanged();
 	}
 
 	void ControlGroup::dispatchContextChanged() {
 		__super::dispatchContextChanged();
-		for (Control* child : Children)
-			child->dispatchContextChanged();
+		for (ControlWithConstraints& c : children)
+			c.control->dispatchContextChanged();
+	}
+
+	void ControlGroup::onUpdate(const uint64_t time) {
+		for (ControlWithConstraints& c : children)
+			c.control->onUpdate(time);
 	}
 
 	void ControlGroup::onDraw(ICanvas& canvas) {
-		for (Control* c : children) {
-			if (!c->Visible)
+		for (ControlWithConstraints& c : children) {
+			if (!c.control->Visible)
 				continue;
-			c->draw(canvas);
+			c.control->draw(canvas);
+#ifdef _DEBUG
+			if(UIDebugTools::drawConstraints)
+				c.Constraints.draw(canvas);
+#endif
 		}
 	}
 
@@ -122,8 +152,8 @@ namespace Ghurund::UI {
 		if (focusedChild)
 			return focusedChild->dispatchKeyEvent(event);
 		for (size_t i = 0; i < children.Size; i++) {
-			Control* c = children.get(children.Size - i - 1);
-			if (c->canReceiveEvent(event) && c->dispatchKeyEvent(event))
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchKeyEvent(event))
 				return true;
 		}
 		return __super::dispatchKeyEvent(event);
@@ -136,8 +166,8 @@ namespace Ghurund::UI {
 		}
 
 		for (size_t i = 0; i < children.Size; i++) {
-			Control* c = children.get(children.Size - i - 1);
-			if (c->canReceiveEvent(event) && c->dispatchMouseButtonEvent(event.translate(-c->Position.x, -c->Position.y, true)))
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseButtonEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
 				return true;
 		}
 		return __super::dispatchMouseButtonEvent(event);
@@ -155,10 +185,10 @@ namespace Ghurund::UI {
 		}
 
 		for (size_t i = 0; i < children.Size; i++) {
-			Control* c = children.get(children.Size - i - 1);
-			if (c->canReceiveEvent(event)) {
-				setPointer(previousReceiver, c);
-				if (c->dispatchMouseMotionEvent(event.translate(-c->Position.x, -c->Position.y, true)))
+			ControlWithConstraints& c = children.get(children.Size - i - 1);
+			if (c.control->canReceiveEvent(event)) {
+				setPointer(previousReceiver, c.control.get());
+				if (c.control->dispatchMouseMotionEvent(event.translate(-c.control->Position.x, -c.control->Position.y, true)))
 					return true;
 			}
 		}
@@ -167,8 +197,8 @@ namespace Ghurund::UI {
 
 	bool ControlGroup::dispatchMouseWheelEvent(const MouseWheelEventArgs& event) {
 		for (size_t i = 0; i < children.Size; i++) {
-			Control* c = children.get(children.Size - i - 1);
-			if (c->canReceiveEvent(event) && c->dispatchMouseWheelEvent(event.translate(-c->Position.x, -c->Position.y)))
+			ControlWithConstraints& c = children[children.Size - i - 1];
+			if (c.control->canReceiveEvent(event) && c.control->dispatchMouseWheelEvent(event.translate(-c.control->Position.x, -c.control->Position.y)))
 				return true;
 		}
 		return __super::dispatchMouseWheelEvent(event);
@@ -177,8 +207,8 @@ namespace Ghurund::UI {
 	Control* ControlGroup::find(const AString& name) {
 		if (this->Name && this->Name->operator==(name))
 			return this;
-		for (Control* child : children) {
-			Control* result = child->find(name);
+		for (ControlWithConstraints& child : children) {
+			Control* result = child.control->find(name);
 			if (result)
 				return result;
 		}
@@ -188,35 +218,56 @@ namespace Ghurund::UI {
 	Control* ControlGroup::find(const Ghurund::Core::Type& type) {
 		if (Type == type)
 			return this;
-		for (Control* child : children) {
-			Control* result = child->find(type);
+		for (ControlWithConstraints& child : children) {
+			Control* result = child.control->find(type);
 			if (result)
 				return result;
 		}
 		return nullptr;
 	}
 
-	void ControlGroup::resolveConstraints(ConstraintGraph& graph) {
-		__super::resolveConstraints(graph);
-		for (Control* c : children) {
-			if (!c->Visible)
+	void ControlGroup::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+		for (ControlWithConstraints& c : children) {
+			Control& control = *c.control.get();
+			if (!control.Visible)
 				continue;
-			c->resolveConstraints(graph);
+			ConstraintSet& constraintSet = c.Constraints;
+			if (constraintSet.Width.Constant && constraintSet.Height.Constant) {
+				ConstraintGraph localGraph;
+				control.resolveConstraints(localGraph, constraintSet.Width, constraintSet.Height);
+				localGraph.sort();
+				localGraph.evaluate();
+			} else {
+				control.resolveConstraints(graph, constraintSet.Width, constraintSet.Height);
+			}
+			constraintSet.resolve(control, graph);
+		}
+	}
+
+	PartialConstraintSet ControlGroup::makeDefaultConstraints() const {
+		if (layoutManager) {
+			return layoutManager->makeDefaultConstraints();
+		} else {
+			return ConstraintSetInitializer{
+				.width = makeShared<WrapWidthConstraint>(),
+				.height = makeShared<WrapHeightConstraint>()
+			};
 		}
 	}
 
 #ifdef _DEBUG
 	void ControlGroup::validate() const {
 		__super::validate();
-		for (Control* child : children)
-			child->validate();
+		for (ControlWithConstraints& c : children)
+			c.control->validate();
 	}
 
 	String ControlGroup::printTree() const {
 		String str = __super::printTree();
 		size_t len = 4;
-		for (Control* child : children) {
-			auto childStr = child->printTree().split(_T("\n"));
+		for (auto it = children.begin(); it != children.end(); ++it) {
+			ControlWithConstraints& c = *it;
+			auto childStr = c.control->printTree().split(_T("\n"));
 			for (size_t j = 0; j < len; j++)
 				str.add(_T(" "));
 			str.add(_T("\\-"));
@@ -225,7 +276,7 @@ namespace Ghurund::UI {
 				str.add(_T("\n"));
 				for (size_t j = 0; j < len; j++)
 					str.add(_T(" "));
-				str.add(child != children[children.Size - 1] ? _T("| ") : _T("  "));
+				str.add(it != children.end() ? _T("| ") : _T("  "));
 				str.add(childStr[i]);
 			}
 			str.add(_T("\n"));

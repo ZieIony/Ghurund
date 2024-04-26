@@ -221,8 +221,18 @@ namespace Ghurund::Core {
 
         __declspec(property(get = isVolatile)) bool IsVolatile;
 
-        bool operator==(const Type& other) const {
-            return _namespace == other._namespace && __super::operator==(other) && pointer == other.pointer && ref == other.ref && _const == other._const;
+        inline std::strong_ordering operator<=>(const Type& other) const noexcept {
+            if (auto cmp = _namespace <=> other._namespace; cmp != 0)
+                return cmp;
+            if (auto cmp = Name <=> other.Name; cmp != 0)
+                return cmp;
+            if (auto cmp = pointer <=> other.pointer; cmp != 0)
+                return cmp;
+            if (auto cmp = ref <=> other.ref; cmp != 0)
+                return cmp;
+            if (auto cmp = _const <=> other._const; cmp != 0)
+                return cmp;
+            return std::strong_ordering::equivalent;
         }
 
         inline static const List<std::reference_wrapper<const Type>>& TYPES = getTypes();

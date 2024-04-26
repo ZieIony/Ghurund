@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "CppUnitTest.h"
+#include "test/TestUtils.h"
 
 #include "core/image/ImageLoader.h"
 #include "core/io/DirectoryLibrary.h"
 #include "ui/font/Font.h"
 #include "ui/font/FontLoader.h"
-
-#include "test/TestLogOutput.h"
 
 #include <format>
 
@@ -19,16 +18,11 @@ namespace UnitTest {
     TEST_CLASS(FontTest) {
 public:
     TEST_CLASS_INITIALIZE(classInitialize) {
-        Pointer::reservePointers(500);
-        Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
-        TestLogOutput::initReportHook();
+        TestUtils::testClassInitialize();
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        if (Pointer::numberOfAllocatedPointers() > 0) {
-            Pointer::dumpPointers();
-            Assert::Fail();
-        }
+        TestUtils::testMethodCleanup();
     }
 
     TEST_METHOD(Font_init) {

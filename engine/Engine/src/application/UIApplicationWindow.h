@@ -46,5 +46,11 @@ namespace Ghurund {
 		}
 
 		__declspec(property(put = setContent)) Ghurund::UI::Control* Content;
+
+		inline Ghurund::UI::UILayer & getUILayer() {
+			return *uiLayer;
+		}
+
+		__declspec(property(get = getUILayer)) Ghurund::UI::UILayer& UILayer;
 	};
 }

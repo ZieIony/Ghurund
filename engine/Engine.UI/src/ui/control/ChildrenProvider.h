@@ -1,34 +1,25 @@
 #pragma once
 
-#include "ControlGroup.h"
+#include "ui/control/Control.h"
+#include "ui/layout/ControlWithConstraints.h"
 
 namespace Ghurund::UI {
-    class ChildrenProvider {
+    class ControlProvider {
     public:
-        virtual ~ChildrenProvider() = 0 {}
+        virtual ~ControlProvider() = 0 {}
         
+        virtual ArrayIterator<Control*> begin() = 0;
+
+        virtual ConstArrayIterator<Control*> begin() const = 0;
+
+        virtual ArrayIterator<Control*> end() = 0;
+
+        virtual ConstArrayIterator<Control*> end() const = 0;
+
         virtual size_t getChildCount() const = 0;
         
         virtual Control* getChild(size_t index) = 0;
         
-        virtual void releaseChild(Control* control, size_t index) = 0;
-    };
-
-    class ListChildrenProvider:public ChildrenProvider {
-    private:
-        ControlGroup& owner;
-
-    public:
-        ListChildrenProvider(ControlGroup& owner):owner(owner) {}
-
-        virtual size_t getChildCount() const override {
-            return owner.Children.Size;
-        }
-
-        virtual Control* getChild(size_t index) {
-            return owner.Children[index];
-        }
-
         virtual void releaseChild(Control* control, size_t index) {}
     };
 }

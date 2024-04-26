@@ -16,6 +16,7 @@
 #include <ui/text/TextDocument.h>
 #include <ui/style/LayoutAttr.h>
 #include <ui/control/ColorView.h>
+#include <ui/control/ControlGroup.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -27,15 +28,11 @@ namespace UnitTest {
     TEST_CLASS(ConstraintFactoryTest) {
 public:
     TEST_CLASS_INITIALIZE(classInitialize) {
-        Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
-        TestLogOutput::initReportHook();
+        TestUtils::testClassInitialize();
     }
 
     TEST_METHOD_CLEANUP(methodCleanup) {
-        if (Pointer::numberOfAllocatedPointers() > 0) {
-            Pointer::dumpPointers();
-            Assert::Fail();
-        }
+        TestUtils::testMethodCleanup();
     }
 
     TEST_METHOD(parseParent) {
@@ -135,20 +132,24 @@ public:
             auto layoutLoader = makeShared<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
             resourceManager.Loaders.set<Control>(layoutLoader.get());
 
-            SharedPointer<Control> control(resourceManager.load<Control>(FilePath(_T("ConstraintFactoryTest.xml")), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+            SharedPointer<ControlGroup> controlGroup(resourceManager.load<ControlGroup>(FilePath(_T("ConstraintFactoryTest.xml")), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+            Control* control = controlGroup->find<ColorView>();
 
-            Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&control->Left));
-            Assert::AreEqual(5.0f, control->Left.Value);
+            ConstraintSet& constraints = controlGroup->getConstraints(*control);
+            Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&constraints.Left));
+            Assert::AreEqual(5.0f, constraints.Left.Value);
 
-            Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&control->Top));
-            Assert::AreEqual(3.0f, control->Top.Value);
+            Assert::IsNotNull(dynamic_cast<ValueConstraint*>(&constraints.Top));
+            Assert::AreEqual(3.0f, constraints.Top.Value);
 
             ConstraintGraph graph;
-            control->resolveConstraints(graph);
+            SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100.0f);
+            SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100.0f);
+            controlGroup->resolveConstraints(graph, *width.get(), *height.get());
             graph.sort();
             graph.evaluate();
 
-            Assert::AreEqual(34.0f, control->Width.Value);
+            Assert::AreEqual(34.0f, constraints.Width.Value);
             size_t pointers = Pointer::numberOfAllocatedPointers();
         }
         Pointer::setPointersListResizeLocked(false);
