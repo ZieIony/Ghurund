@@ -2,6 +2,7 @@
 
 #include "ParameterManager.h"
 
+#include "ParameterId.h"
 #include "parameter/ValueParameter.h"
 #include "parameter/TextureParameter.h"
 #include "core/SharedPointer.h"

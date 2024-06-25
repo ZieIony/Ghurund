@@ -6,7 +6,7 @@
 #include "NextConstraint.h"
 #include "SiblingConstraint.h"
 #include "SelfConstraint.h"
-#include "WrapConstraint.h"
+#include "ContentConstraint.h"
 #include "FlowConstraint.h"
 #include "core/math/Float.h"
 
@@ -182,11 +182,11 @@ namespace Ghurund::UI {
 	}
 
 	Constraint* ConstraintFactory::parseValueConstraint(const AString& str, Orientation orientation) const {
-		if (str == "wrap") {
+		if (str == "content") {
 			if (orientation == Orientation::HORIZONTAL) {
-				return ghnew WrapWidthConstraint();
+				return ghnew ContentWidthConstraint();
 			} else {
-				return ghnew WrapHeightConstraint();
+				return ghnew ContentHeightConstraint();
 			}
 		} else if (str == "flow") {
 			if (orientation == Orientation::HORIZONTAL) {
@@ -195,8 +195,12 @@ namespace Ghurund::UI {
 				return ghnew FlowHeightConstraint();
 			}
 		} else {
-			float value = Ghurund::Core::parse<float>(str);
-			return ghnew ValueConstraint(value);
+			try {
+				float value = Ghurund::Core::parse<float>(str);
+				return ghnew ValueConstraint(value);
+			} catch (InvalidFormatException e) {
+				throw InvalidFormatException("Value constraint has to be one of: 'content', 'flow' or a float value");
+			}
 		}
 	}
 
@@ -242,16 +246,16 @@ namespace Ghurund::UI {
 				c->Min = minValue;
 				c->Max = maxValue;
 				return c;
-			} else if (*path == "wrap") {
+			} else if (*path == "content") {
 				if (orientation == Orientation::HORIZONTAL) {
-					auto c = ghnew WrapWidthConstraint();
+					auto c = ghnew ContentWidthConstraint();
 					c->Ratio = ratioValue;
 					c->Offset = offsetValue;
 					c->Min = minValue;
 					c->Max = maxValue;
 					return c;
 				} else {
-					auto c = ghnew WrapHeightConstraint();
+					auto c = ghnew ContentHeightConstraint();
 					c->Ratio = ratioValue;
 					c->Offset = offsetValue;
 					c->Min = minValue;
@@ -275,7 +279,7 @@ namespace Ghurund::UI {
 					return c;
 				}
 			} else {
-				throw InvalidFormatException("Constraint path has to be one of: 'Parent.[constraint]', ''[sibling name]'.[constraint]', 'Width', 'Height', 'wrap', 'flow'");
+				throw InvalidFormatException("Constraint path has to be one of: 'Parent.[constraint]', ''[sibling name]'.[constraint]', 'Width', 'Height', 'content', 'flow'");
 			}
 		} else {
 			return parseValueConstraint(*offset, orientation);

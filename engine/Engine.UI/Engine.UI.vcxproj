@@ -109,6 +109,8 @@
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\constraint\AnimatedConstraint.h" />
+    <ClInclude Include="src\ui\constraint\ContentConstraint.h" />
+    <ClInclude Include="src\ui\constraint\ContentSize.h" />
     <ClInclude Include="src\ui\constraint\MinMaxConstraint.h" />
     <ClInclude Include="src\ui\constraint\OffsetConstraint.h" />
     <ClInclude Include="src\ui\constraint\RatioConstraint.h" />
@@ -233,6 +235,7 @@
     <ClInclude Include="src\ui\widget\StateIndicator.h" />
     <ClInclude Include="src\ui\widget\menu\MenuBarItemAdapter.h" />
     <ClInclude Include="src\ui\widget\scrollbar\VerticalScrollBar.h" />
+    <ClInclude Include="src\ui\widget\toolbar\ToolbarItem.h" />
     <ClInclude Include="src\ui\widget\Widget.h" />
     <ClInclude Include="src\ui\widget\button\Button.h" />
     <ClInclude Include="src\ui\widget\button\CheckBox.h" />
@@ -271,6 +274,7 @@
     <ClCompile Include="src\ui\constraint\AnimatedConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\Constraint.cpp" />
     <ClCompile Include="src\ui\constraint\ConstraintSet.cpp" />
+    <ClCompile Include="src\ui\constraint\ContentConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\spring\SpringSizeConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\ValueConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\WindowConstraint.cpp" />
@@ -340,6 +344,7 @@
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />
     <ClCompile Include="src\ui\widget\button\IconButton.cpp" />
     <ClCompile Include="src\ui\widget\menu\MenuBar.cpp" />
+    <ClCompile Include="src\ui\widget\menu\MenuItem.cpp" />
     <ClCompile Include="src\ui\widget\toolbar\Toolbar.cpp" />
     <ClCompile Include="src\ui\widget\ProgressBar.cpp" />
     <ClCompile Include="src\ui\widget\Separator.cpp" />

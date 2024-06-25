@@ -2,12 +2,9 @@
 
 #include "Loader.h"
 #include "ResourceFormat.h"
-#include "Status.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 #include "core/io/DirectoryPath.h"
 #include "core/resource/ResourcePath.h"
-
-#include <stdint.h>
 
 namespace Ghurund::Core {
 	struct DataSize {
@@ -19,7 +16,7 @@ namespace Ghurund::Core {
 	class MemoryOutputStream;
 	class File;
 
-	class Resource: public Pointer {
+	class Resource: public RefCountedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {

@@ -15,9 +15,9 @@ namespace Demo {
     protected:
         Renderer renderer;
         ParameterManager parameterManager;
-        LightTheme* theme;
-        Ghurund::UI::DrawableFactory* drawableFactory;
-        DemoWindow* window;
+        LightTheme* theme = nullptr;
+        Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
+        DemoWindow* window = nullptr;
 
     public:
         DemoApplication() {
@@ -44,6 +44,10 @@ namespace Demo {
         virtual void onUninit() override {
             delete drawableFactory;
             delete theme;
+        }
+
+        Ghurund::UI::DrawableFactory& getDrawableFactory() {
+            return *drawableFactory;
         }
     };
 }

@@ -1,21 +1,14 @@
 #include "ghuipch.h"
-#include "ControlParent.h"
-#include "ControlGroup.h"
 
+#include "ControlParent.h"
 #include "core/input/Mouse.h"
 #include "core/reflection/Property.h"
-#include "core/reflection/UniqueProperty.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
-#include "core/resource/ResourceManager.h"
 #include "ui/Canvas.h"
 #include "ui/Cursor.h"
-#include "ui/constraint/ConstraintGraph.h"
-#include "ui/constraint/ParentConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
-
-#include <regex>
 
 namespace Ghurund::UI {
 
@@ -81,6 +74,7 @@ namespace Ghurund::UI {
 
 	void Control::loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) {
 		loader.loadProperties(*this, workingDir, xml);
+		//loader.loadBindings()
 	}
 
 	bool Control::onMouseButtonEvent(const MouseButtonEventArgs& event) {
@@ -317,6 +311,12 @@ namespace Ghurund::UI {
 		canvas.restore();
 	}
 
+	void Control::bind() {
+		for (Binding& b : bindings) {
+			b.execute();
+		}
+	}
+
 	FloatPoint Control::getPositionInWindow() {
 		Control* control = this;
 		while (control) {
@@ -364,10 +364,16 @@ namespace Ghurund::UI {
 			state.add(_T('F'));
 		if (Visible)
 			state.add(_T('v'));
+		auto& constraints = Parent->getConstraints(*this);
+		auto s = std::format(
+			_T("[{}: {}, {}: {}]"),
+			constraints.Width.Type.Name, constraints.Width.Value,
+			constraints.Height.Type.Name, constraints.Height.Value
+		);
 		if (Name) {
-			return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, Size, state).c_str());
+			return String(std::format(_T("{} '{}' size: {}, state: {}\n"), Type.Name, *Name, s, state).c_str());
 		} else {
-			return String(std::format(_T("{} size: {}, state: {}\n"), Type.Name, Size, state).c_str());
+			return String(std::format(_T("{} size: {}, state: {}\n"), Type.Name, s, state).c_str());
 		}
 	}
 #endif

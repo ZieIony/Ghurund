@@ -353,7 +353,7 @@ namespace Ghurund::UI::Direct2D {
         layout->GetStrikethrough(position, &hasStrikethrough);
         //strikethrough = hasStrikethrough;
 
-        // TODO: this method returns a new Pointer object
+        // TODO: this method returns a new RefCountedObject object
         return ghnew Ghurund::UI::Direct2D::TextFormat(layout, size, fontWeight, fontStyle == DWRITE_FONT_STYLE_ITALIC, &(*(localeName.begin())));
     }
 

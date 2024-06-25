@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Status.h"
-#include "core/NamedObject.h"
+#include "core/string/String.h"
 
 #include <d3d12.h>
 #include <dxgi1_4.h>
@@ -11,19 +11,14 @@ namespace Ghurund::Core::DirectX {
     using namespace Microsoft::WRL;
     using namespace Ghurund::Core;
 
-    class Fence: public NamedObject<wchar_t> {
+    class Fence {
     private:
         HANDLE fenceEvent = INVALID_HANDLE_VALUE;
         ComPtr<ID3D12Fence> fence;
         UINT64 fenceValue = 0;
+        WString name;
 
     public:
-        Fence() {
-#ifdef _DEBUG
-            Name = L"unnamed Fence";
-#endif
-        }
-
         ~Fence() {
             if (fenceEvent != INVALID_HANDLE_VALUE)
                 CloseHandle(fenceEvent);
@@ -35,10 +30,16 @@ namespace Ghurund::Core::DirectX {
 
         Status wait(ID3D12CommandQueue* commandQueue);
 
-        virtual void setName(const WString& name) override {
-            NamedObject::setName(name);
+        inline void setName(const WString& name) {
+            this->name = name;
             fence->SetName(name.Data);
         }
+
+        inline WString getName() const {
+            return name;
+        }
+
+        __declspec(property(get = getName, put = setName)) WString Name;
 
         UINT64 getValue() {
             return fenceValue;

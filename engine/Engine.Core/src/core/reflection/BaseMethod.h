@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/NamedObject.h"
 #include "core/Tuple.h"
 #include "core/collection/Array.h"
 
@@ -9,9 +8,10 @@
 namespace Ghurund::Core {
     class Type;
 
-    class BaseMethod:public NamedObject<char> {
+    class BaseMethod {
     private:
         const Type& returnType;
+        const AString name;
 
     protected:
         const Array<std::reference_wrapper<const Type>> parameters;
@@ -20,13 +20,19 @@ namespace Ghurund::Core {
 
     public:
         BaseMethod(const AString& name, const Type& returnType, const Array<std::reference_wrapper<const Type>> parameters)
-            :NamedObject<char>(name), returnType(returnType), parameters(parameters) {}
+            :name(name), returnType(returnType), parameters(parameters) {}
 
         template<typename... ArgsT>
         void invokeRaw(void* obj, ArgsT&... args, std::function<void(void*)> callback = nullptr) const {
             auto tuple = Tuple(args...);
             invokeRawInternal(obj, (void*)&tuple, callback);
         }
+
+        inline AString getName() const {
+            return name;
+        }
+
+        __declspec(property(get = getName)) AString Name;
 
         inline const Type& getReturnType() const {
             return returnType;

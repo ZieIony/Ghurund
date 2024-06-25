@@ -16,6 +16,8 @@ namespace Ghurund::Core {
 
         List(const ArrayCollection<Value, AllocatorType>& t1):ArrayCollection<Value, AllocatorType>(t1) {}
 
+		List(const std::initializer_list<Value>& list):ArrayCollection<Value, AllocatorType>(list) {}
+
         List(const List& t1):ArrayCollection<Value, AllocatorType>(t1) {}
 
         List(List&& t1):ArrayCollection<Value, AllocatorType>(std::move(t1)) {}

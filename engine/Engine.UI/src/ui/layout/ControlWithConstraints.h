@@ -1,6 +1,8 @@
 #pragma once
 
+#include "core/SharedPointer.h"
 #include "ui/control/Control.h"
+#include "ui/constraint/ConstraintSet.h"
 
 namespace Ghurund::UI {
 	struct ControlWithConstraints {

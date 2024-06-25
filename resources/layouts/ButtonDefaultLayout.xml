@@ -5,8 +5,8 @@
 			shape="roundRect, 2"/>
 	<Clip shape="roundRect, 2">
 		<ConstraintLayout>
-			<ConstraintLayout.Width path="wrap" offset="8"/>
-			<ConstraintLayout.Height path="wrap" offset="4"/>
+			<ConstraintLayout.Width path="content" offset="8"/>
+			<ConstraintLayout.Height path="content" offset="4"/>
 			<ColorView width="Parent.Width" height="Parent.Height"/>
 			<StateIndicator name="state" width="Parent.Width" height="Parent.Height"/>
 			<ControlContainer name="container">

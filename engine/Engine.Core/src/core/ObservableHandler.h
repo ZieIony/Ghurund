@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
 
 #include <functional>
@@ -10,7 +10,7 @@ namespace Ghurund::Core {
     class Observable;
 
     template<class T>
-    class ObservableHandler:public Pointer {
+    class ObservableHandler:public RefCountedObject {
 #pragma region reflection
 protected:
     virtual const Ghurund::Core::Type& getTypeImpl() const override {

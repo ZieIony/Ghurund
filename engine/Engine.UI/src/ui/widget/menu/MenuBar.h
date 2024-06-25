@@ -1,11 +1,11 @@
 #pragma once
 
-#include "MenuBarItemAdapter.h"
 #include "ui/adapter/AdapterLayout.h"
-#include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
+    class MenuBarItemAdapter;
+
     class MenuBar: public Widget {
 #pragma region reflection
     protected:
@@ -21,42 +21,22 @@ namespace Ghurund::UI {
 
     private:
         AdapterLayout* adapterLayout = nullptr;
-        MenuBarItemAdapter* itemAdapter;
-        List<MenuItem*> items;
+        MenuBarItemAdapter* itemAdapter = nullptr;
+
+        void updateProperties();
 
     protected:
-        void onLayoutChanged() {
-            __super::onLayoutChanged();
-            Control* layoutControl = layout.get();
-            if (layoutControl) {
-                setPointer(adapterLayout, (Ghurund::UI::AdapterLayout*)layoutControl->find("adapterLayout"));
-                if (adapterLayout) {
-                    //adapterLayout->ItemAdapter = std::make_unique<MenuBarItemAdapter>();
-                    //adapterLayout->LayoutManager = std::make_unique<HorizontalLayoutManager>();
-                }
-            }
-        }
-
-        void update() {
-            auto adapter = itemAdapter;
-            adapterLayout->ItemAdapter = std::unique_ptr<MenuBarItemAdapter>(adapter);
-            //itemAdapter->Items = items;
-        }
+        void onLayoutChanged();
 
     public:
-        ~MenuBar() {
-            items.deleteItems();
+        inline MenuBarItemAdapter& getItemAdapter() {
+            return *itemAdapter;
         }
 
-        inline List<MenuItem*>& getItems() {
-            return items;
+        inline void setItemAdapter(MenuBarItemAdapter& itemAdapter) {
+            this->itemAdapter = &itemAdapter;
         }
 
-        inline void setItems(const List<MenuItem*>& items) {
-            this->items.clear();
-            this->items.addAll(items);
-        }
-
-        __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
+        __declspec(property(get = getItemAdapter, put = setItemAdapter)) MenuBarItemAdapter& ItemAdapter;
     };
 }

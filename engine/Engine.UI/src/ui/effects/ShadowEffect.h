@@ -1,8 +1,8 @@
 #pragma once
 
 #include "DrawingEffect.h"
-#include <ui/style/ColorAttr.h>
-#include <ui/Shape.h>
+#include "ui/Shape.h"
+#include "core/Color.h"
 
 namespace Ghurund::UI {
     class ShadowEffect:public DrawingEffect {
@@ -12,7 +12,7 @@ namespace Ghurund::UI {
         float radius = 2.0f;
 
     public:
-        ShadowEffect(const Color& color = Ghurund::UI::Color(0, 0, 0, 0.6f)):color(color) {}
+        ShadowEffect(const Color& color = Ghurund::Core::Color(0, 0, 0, 0.6f)):color(color) {}
 
         ~ShadowEffect() {
             delete shape;

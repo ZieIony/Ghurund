@@ -19,9 +19,10 @@ namespace Ghurund::Core::DirectX {
         auto textureDesc = texture->GetDesc();
         this->width = textureDesc.Width;
         this->height = textureDesc.Height;
+
 #ifdef _DEBUG
         rtvHeap->SetName(L"rtvHeap");
-        texture->SetName(L"renderTarget");
+        Name = L"unnamed RenderTarget";
 #endif
 
         return Status::OK;

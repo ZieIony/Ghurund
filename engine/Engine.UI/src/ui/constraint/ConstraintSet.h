@@ -64,6 +64,10 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getRight)) Constraint& Right;
 
+		inline const Constraint& getWidth() const {
+			return *width.get();
+		}
+
 		inline Constraint& getWidth() {
 			return *width.get();
 		}
@@ -81,6 +85,10 @@ namespace Ghurund::UI {
 		}
 
 		__declspec(property(get = getBottom)) Constraint& Bottom;
+
+		inline const Constraint& getHeight() const {
+			return *height.get();
+		}
 
 		inline Constraint& getHeight() {
 			return *height.get();

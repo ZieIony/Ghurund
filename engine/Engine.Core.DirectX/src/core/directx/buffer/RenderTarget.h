@@ -1,6 +1,5 @@
 #pragma once
 
-#include "core/NamedObject.h"
 #include "core/window/Window.h"
 #include "core/directx/CommandList.h"
 #include "core/image/Image.h"
@@ -13,7 +12,7 @@
 namespace Ghurund::Core::DirectX {
     class Graphics2D;
 
-    class RenderTarget: public NamedObject<wchar_t> {
+    class RenderTarget {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
         ID3D12Resource* texture = nullptr;
@@ -21,16 +20,11 @@ namespace Ghurund::Core::DirectX {
         D3D12_RESOURCE_STATES state = D3D12_RESOURCE_STATE_COMMON;
         DXGI_FORMAT format = {};
         uint32_t width = 0, height = 0;
+        WString name;
 
         Status captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
 
     public:
-        RenderTarget() {
-#ifdef _DEBUG
-            Name = L"unnamed RenderTarget";
-#endif
-        }
-
         ~RenderTarget() {
             uninit();
         }
@@ -93,10 +87,16 @@ namespace Ghurund::Core::DirectX {
             }
         }
 
-        virtual void setName(const WString& name) override {
-            NamedObject::setName(name);
+        inline void setName(const WString& name) {
+            this->name = name;
             texture->SetName(name.Data);
         }
+
+        inline WString getName() const {
+            return name;
+        }
+
+        __declspec(property(get = getName, put = setName)) WString Name;
 
         Status capture(Graphics& graphics, Ghurund::Core::Image*& image);
     };

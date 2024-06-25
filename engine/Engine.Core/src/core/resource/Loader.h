@@ -1,8 +1,7 @@
 #pragma once
 
 #include "ResourceFormat.h"
-#include "Status.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 #include "core/allocation/Allocator.h"
 #include "core/io/MemoryStream.h"
 #include "core/reflection/Constructor.h"
@@ -27,7 +26,7 @@ namespace Ghurund::Core {
     class Resource;
     class ResourceManager;
 
-    class Loader:public Pointer {
+    class Loader:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

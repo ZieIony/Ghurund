@@ -14,7 +14,7 @@
 namespace Ghurund {
     using namespace ::DirectX;
 
-    class Camera: public Pointer, public ParameterProvider {
+    class Camera: public RefCountedObject, public ParameterProvider {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

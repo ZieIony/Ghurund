@@ -52,7 +52,13 @@ namespace Ghurund::UI {
 
         __declspec(property(put = setCapturedChild)) Control* CapturedChild;
 
+        virtual const ConstraintSet& getConstraints(const Control& child) const = 0;
+
         virtual ConstraintSet& getConstraints(Control& child) = 0;
+
+        virtual void setConstraints(const Control& child, const ConstraintSet& constraints) = 0;
+
+        virtual void setConstraints(const Control& child, const ConstraintSetInitializer& constraints) = 0;
 
         virtual PartialConstraintSet makeDefaultConstraints() const = 0;
 

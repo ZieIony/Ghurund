@@ -1,21 +1,12 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
 #include "test/MemoryGuard.h"
-#include "test/TestLogOutput.h"
+#include "test/TestUtils.h"
 
-#include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/ShapeFactory.h"
-#include "test/ui/ImageDrawableFactory.h"
-#include "test/ui/TextFormatFactory.h"
-#include "ui/loading/LayoutLoader.h"
-#include "ui/constraint/ConstraintGraph.h"
-#include <ui/constraint/SiblingConstraint.h>
-#include <ui/constraint/ParentConstraint.h>
 #include "ui/control/ColorView.h"
-#include <ui/control/ControlGroup.h>
-#include "ui/layout/LayoutManager.h"
 #include <ui/constraint/ConstraintLayout.h>
+#include <ui/control/ControlGroup.h>
+#include <ui/constraint/SelfConstraint.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -35,7 +26,7 @@ public:
 	}
 
 	TEST_METHOD(passConstraintSet) {
-		Pointer::reservePointers(300);
+		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeShared<ColorView>();
@@ -69,18 +60,18 @@ public:
 			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
 
 			Assert::IsNotNull(dynamic_cast<CenterLeftConstraint*>(&constraints.Left));
-			Assert::AreEqual(3ul, left->ReferenceCount);
+			Assert::AreEqual(3ui32, left->ReferenceCount);
 			Assert::IsTrue(width.get() == &constraints.Width);
-			Assert::AreEqual(4ul, width->ReferenceCount);
+			Assert::AreEqual(4ui32, width->ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<CenterRightConstraint*>(&constraints.Right));
-			Assert::AreEqual(3ul, right->ReferenceCount);
+			Assert::AreEqual(3ui32, right->ReferenceCount);
 
 			Assert::IsNotNull(&constraints.Top);
-			Assert::AreEqual(2ul, constraints.Top.ReferenceCount);
+			Assert::AreEqual(2ui32, constraints.Top.ReferenceCount);
 			Assert::IsNotNull(&constraints.Height);
-			Assert::AreEqual(2ul, constraints.Height.ReferenceCount);
+			Assert::AreEqual(2ui32, constraints.Height.ReferenceCount);
 			Assert::IsNotNull(&constraints.Bottom);
-			Assert::AreEqual(1ul, constraints.Bottom.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Bottom.ReferenceCount);
 		}
 	}
 
@@ -101,23 +92,23 @@ public:
 			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
 
 			Assert::IsNotNull(&constraints.Left);
-			Assert::AreEqual(2ul, constraints.Left.ReferenceCount);
+			Assert::AreEqual(2ui32, constraints.Left.ReferenceCount);
 			Assert::IsNotNull(&constraints.Width);
-			Assert::AreEqual(2ul, constraints.Width.ReferenceCount);
+			Assert::AreEqual(2ui32, constraints.Width.ReferenceCount);
 			Assert::IsNotNull(&constraints.Right);
-			Assert::AreEqual(1ul, constraints.Right.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Right.ReferenceCount);
 
 			Assert::IsNotNull(dynamic_cast<CenterTopConstraint*>(&constraints.Top));
-			Assert::AreEqual(3ul, top->ReferenceCount);
+			Assert::AreEqual(3ui32, top->ReferenceCount);
 			Assert::IsTrue(height.get() == &constraints.Height);
-			Assert::AreEqual(4ul, height->ReferenceCount);
+			Assert::AreEqual(4ui32, height->ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<CenterBottomConstraint*>(&constraints.Bottom));
-			Assert::AreEqual(3ul, bottom->ReferenceCount);
+			Assert::AreEqual(3ui32, bottom->ReferenceCount);
 		}
 	}
 
 	TEST_METHOD(setLeftWidthTopHeight) {
-		Pointer::reservePointers(300);
+		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeShared<ColorView>();
@@ -136,23 +127,23 @@ public:
 			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
 
 			Assert::IsTrue(left.get() == &constraints.Left);
-			Assert::AreEqual(3ul, constraints.Left.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Left.ReferenceCount);
 			Assert::IsTrue(width.get() == &constraints.Width);
-			Assert::AreEqual(3ul, constraints.Width.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Width.ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<LeftWidthConstraint*>(&constraints.Right));
-			Assert::AreEqual(1ul, constraints.Right.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Right.ReferenceCount);
 
 			Assert::IsTrue(top.get() == &constraints.Top);
-			Assert::AreEqual(3ul, top->ReferenceCount);
+			Assert::AreEqual(3ui32, top->ReferenceCount);
 			Assert::IsTrue(height.get() == &constraints.Height);
-			Assert::AreEqual(3ul, height->ReferenceCount);
+			Assert::AreEqual(3ui32, height->ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<TopHeightConstraint*>(&constraints.Bottom));
-			Assert::AreEqual(1ul, constraints.Bottom.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Bottom.ReferenceCount);
 		}
 	}
 
 	TEST_METHOD(setLeftRightTopBottom) {
-		Pointer::reservePointers(300);
+		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeShared<ColorView>();
@@ -171,23 +162,23 @@ public:
 			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
 
 			Assert::IsTrue(left.get() == &constraints.Left);
-			Assert::AreEqual(3ul, constraints.Left.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Left.ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<LeftRightConstraint*>(&constraints.Width));
-			Assert::AreEqual(1ul, constraints.Width.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Width.ReferenceCount);
 			Assert::IsTrue(right.get() == &constraints.Right);
-			Assert::AreEqual(3ul, constraints.Right.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Right.ReferenceCount);
 
 			Assert::IsTrue(top.get() == &constraints.Top);
-			Assert::AreEqual(3ul, top->ReferenceCount);
+			Assert::AreEqual(3ui32, top->ReferenceCount);
 			Assert::IsNotNull(dynamic_cast<TopBottomConstraint*>(&constraints.Height));
-			Assert::AreEqual(1ul, constraints.Height.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Height.ReferenceCount);
 			Assert::IsTrue(bottom.get() == &constraints.Bottom);
-			Assert::AreEqual(3ul, bottom->ReferenceCount);
+			Assert::AreEqual(3ui32, bottom->ReferenceCount);
 		}
 	}
 
 	TEST_METHOD(setWidthRightHeightBottom) {
-		Pointer::reservePointers(300);
+		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeShared<ColorView>();
@@ -206,18 +197,18 @@ public:
 			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
 
 			Assert::IsNotNull(dynamic_cast<WidthRightConstraint*>(&constraints.Left));
-			Assert::AreEqual(1ul, constraints.Left.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Left.ReferenceCount);
 			Assert::IsTrue(width.get() == &constraints.Width);
-			Assert::AreEqual(3ul, constraints.Width.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Width.ReferenceCount);
 			Assert::IsTrue(right.get() == &constraints.Right);
-			Assert::AreEqual(3ul, constraints.Right.ReferenceCount);
+			Assert::AreEqual(3ui32, constraints.Right.ReferenceCount);
 
 			Assert::IsNotNull(dynamic_cast<HeightBottomConstraint*>(&constraints.Top));
-			Assert::AreEqual(1ul, constraints.Top.ReferenceCount);
+			Assert::AreEqual(1ui32, constraints.Top.ReferenceCount);
 			Assert::IsTrue(height.get() == &constraints.Height);
-			Assert::AreEqual(3ul, height->ReferenceCount);
+			Assert::AreEqual(3ui32, height->ReferenceCount);
 			Assert::IsTrue(bottom.get() == &constraints.Bottom);
-			Assert::AreEqual(3ul, bottom->ReferenceCount);
+			Assert::AreEqual(3ui32, bottom->ReferenceCount);
 		}
 	}
 	};

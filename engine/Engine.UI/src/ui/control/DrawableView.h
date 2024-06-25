@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Control.h"
+#include "ImageScaleMode.h"
 #include "ui/Alignment.h"
+#include "ui/constraint/ValueConstraint.h"
 #include "ui/drawable/Drawable.h"
 #include "ui/style/PointerAttrProperty.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
 #include "ui/style/DrawableAttr.h"
-#include "ImageScaleMode.h"
 
 namespace Ghurund::UI {
 	class DrawableView:public Control {
@@ -35,23 +36,21 @@ namespace Ghurund::UI {
 				tint.resolve(*theme);
 				drawable.resolve(*theme);
 				if (drawable.get()) {
-					contentSize = drawable.get()->PreferredSize;
+					contentSize = Ghurund::UI::ContentSize(
+						makeShared<ValueConstraint>(drawable.get()->PreferredSize.Width).get(),
+						makeShared<ValueConstraint>(drawable.get()->PreferredSize.Height).get()
+					);
 				} else {
-					contentSize = { 0, 0 };
+					contentSize = Ghurund::UI::ContentSize(
+						makeShared<ValueConstraint>().get(),
+						makeShared<ValueConstraint>().get()
+					);
 				}
 			}
 		}
 
 	protected:
 		virtual void onThemeChanged() override;
-
-		virtual void onStateChanged() override {
-			/*if (Enabled) {
-				drawable->Alpha = 1.0f;
-			} else {
-				Alpha = 0.38f;
-			}*/
-		}
 
 		virtual void onDraw(Ghurund::UI::ICanvas& canvas) override;
 

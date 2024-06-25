@@ -1,10 +1,8 @@
 #pragma once
 
 #include "core/Color.h"
-#include "core/Pointer.h"
-#include "core/reflection/TypeBuilder.h"
-#include "core/reflection/StandardTypes.h"
-#include "core/reflection/Property.h"
+#include "core/RefCountedObject.h"
+#include "core/math/Size.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -12,7 +10,7 @@ namespace Ghurund::UI {
     class Control;
     class ICanvas;
 
-    class Drawable:public Pointer {
+    class Drawable:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

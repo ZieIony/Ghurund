@@ -19,6 +19,32 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
+	void ControlContainerBase::setChild(Control* child) {
+		if (this->child == child)
+			return;
+		if (this->child)
+			this->child->Parent = nullptr;
+		setPointer(this->child, child);
+		if (this->child) {
+			setConstraints(*child, makeDefaultConstraints());
+			this->child->Parent = this;
+		}
+		onChildChanged();
+		childChanged();
+	}
+
+	const ConstraintSet& ControlContainerBase::getConstraints(const Control& control) const {
+		if (&control != child)
+			throw InvalidParamException("control is not the child of this container");
+		return constraints;
+	}
+
+	ConstraintSet& ControlContainerBase::getConstraints(Control& control) {
+		if (&control != child)
+			throw InvalidParamException("control is not the child of this container");
+		return constraints;
+	}
+
 	bool ControlContainerBase::focusNext() {
 		if (__super::focusNext())
 			return true;
@@ -73,6 +99,17 @@ namespace Ghurund::UI {
 			child->dispatchContextChanged();
 	}
 
+	void ControlContainerBase::onLayout(float x, float y, float width, float height) {
+		if (child && child->Visible) {
+			child->layout(
+				constraints.Left.Value,
+				constraints.Top.Value,
+				constraints.Width.Value,
+				constraints.Height.Value
+			);
+		}
+	}
+
 	void ControlContainerBase::onDraw(ICanvas& canvas) {
 		if (child)
 			child->draw(canvas);
@@ -118,6 +155,7 @@ namespace Ghurund::UI {
 	}
 
 	void ControlContainerBase::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+		__super::resolveConstraints(graph, width, height);
 		if (child && child->Visible) {
 			if (constraints.Width.Constant && constraints.Height.Constant) {
 				ConstraintGraph localGraph;

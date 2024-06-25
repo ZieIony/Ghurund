@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ToolbarItemAdapter.h"
 #include "ui/adapter/AdapterLayout.h"
 #include "ui/widget/Widget.h"
 
 namespace Ghurund::UI {
+    class ToolbarItemAdapter;
+
     class Toolbar: public Widget {
 #pragma region reflection
     protected:
@@ -20,26 +21,22 @@ namespace Ghurund::UI {
 
     private:
         AdapterLayout* adapterLayout = nullptr;
-        ToolbarItemAdapter* itemAdapter;
-        List<MenuItem*> items;
+        ToolbarItemAdapter* itemAdapter = nullptr;
+
+        void updateProperties();
 
     protected:
         void onLayoutChanged();
 
     public:
-        ~Toolbar() {
-            items.deleteItems();
+        inline ToolbarItemAdapter& getItemAdapter() {
+            return *itemAdapter;
         }
 
-        inline List<MenuItem*>& getItems() {
-            return items;
+        inline void setItemAdapter(ToolbarItemAdapter& itemAdapter) {
+            this->itemAdapter = &itemAdapter;
         }
 
-        inline void setItems(const List<MenuItem*>& items) {
-            this->items.clear();
-            this->items.addAll(items);
-        }
-
-        __declspec(property(get = getItems, put = setItems)) List<MenuItem*>& Items;
+        __declspec(property(get = getItemAdapter, put = setItemAdapter)) ToolbarItemAdapter& ItemAdapter;
     };
 }

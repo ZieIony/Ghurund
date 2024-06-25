@@ -47,6 +47,10 @@ namespace Ghurund::Core::DirectX {
         if (FAILED(graphics.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, commandAllocator.Get(), nullptr, IID_PPV_ARGS(&commandList))))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateCommandList() failed\n"));
 
+#ifdef _DEBUG
+        Name = L"unnamed CommandList";
+#endif
+
         if (FAILED(commandList->Close()))
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("commandList->Close() failed\n"));
 

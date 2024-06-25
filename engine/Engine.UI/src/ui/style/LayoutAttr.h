@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/Object.h"
+#include "core/SharedPointer.h"
 #include "ui/theme/Theme.h"
 #include "ui/control/Control.h"
 

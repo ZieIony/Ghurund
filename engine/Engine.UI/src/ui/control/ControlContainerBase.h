@@ -54,33 +54,19 @@ namespace Ghurund::UI {
 			return child;
 		}
 
-		void setChild(Control* child) {
-			if (this->child == child)
-				return;
-			if (this->child)
-				this->child->Parent = nullptr;
-			setPointer(this->child, child);
-			if (this->child) {
-				setConstraints(makeDefaultConstraints());
-				this->child->Parent = this;
-			}
-			onChildChanged();
-			childChanged();
-		}
+		void setChild(Control* child);
 
 		__declspec(property(get = getChild, put = setChild)) Control* Child;
 
-		virtual ConstraintSet& getConstraints(Control& control) override {
-			if (&control != child)
-				throw InvalidParamException("control is not the child of this container");
-			return constraints;
-		}
+		virtual const ConstraintSet& getConstraints(const Control& control) const override;
 
-		void setConstraints(const ConstraintSet& set) {
+		virtual ConstraintSet& getConstraints(Control& control) override;
+
+		virtual void setConstraints(const Control& child, const ConstraintSet& set) override {
 			constraints = set;
 		}
 
-		void setConstraints(const ConstraintSetInitializer& set) {
+		virtual void setConstraints(const Control& child, const ConstraintSetInitializer& set) override {
 			constraints = ConstraintSet(set);
 		}
 
@@ -102,10 +88,7 @@ namespace Ghurund::UI {
 
 		virtual void dispatchContextChanged() override;
 
-		virtual void onLayout(float x, float y, float width, float height) override {
-			if (child)
-				child->layout(0, 0, width, height);
-		}
+		virtual void onLayout(float x, float y, float width, float height) override;
 
 		virtual void onUpdate(const uint64_t time) override {
 			if (child)

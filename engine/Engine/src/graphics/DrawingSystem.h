@@ -3,6 +3,7 @@
 #include "DrawableComponent.h"
 #include "core/directx/Graphics.h"
 #include "parameter/ValueParameter.h"
+#include "parameter/ParameterId.h"
 
 #include "entity/camera/Camera.h"
 

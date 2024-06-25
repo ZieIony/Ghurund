@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/Pointer.h"
-
 #include "Script.h"
 
 namespace Ghurund {

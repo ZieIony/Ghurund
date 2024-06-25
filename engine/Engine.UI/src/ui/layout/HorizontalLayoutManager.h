@@ -27,39 +27,18 @@ namespace Ghurund::UI {
 	private:
 		size_t leftPosition = 0, rightPosition = 0;
 
+		void addChild(size_t adapterPosition, size_t groupPosition);
+
+		void addLeft();
+		void removeLeft();
+		void addRight(float height);
+		void removeRight(float height);
+
 	public:
 		AdapterLayout* adapterLayout;
 
-		virtual bool onLayout(float x, float y, float width, float height) override {
-			ControlCollection& children = adapterLayout->Children;
-			if (children.Size == 0) {
-				leftPosition = 0;
-				rightPosition = 0;
-				adapterLayout->addChild(leftPosition, 0);
-			}
-			while (leftPosition > 0 && children[0].Constraints.Left.Value > 0) {
-				leftPosition--;
-				adapterLayout->addChild(leftPosition, 0);
-			}
-			while (children[0].Constraints.Right.Value <= 0) {
-				adapterLayout->removeChild(0, leftPosition);
-				leftPosition++;
-			}
-			while (rightPosition < adapterLayout->ItemAdapter->Size - 1 && children[children.Size - 1].Constraints.Right.Value < width) {
-				rightPosition++;
-				adapterLayout->addChild(rightPosition, children.Size);
-			}
-			while (children[children.Size - 1].Constraints.Left.Value >= width) {
-				adapterLayout->removeChild(children.Size - 1, rightPosition);
-				rightPosition--;
-			}
-			return true;
-		}
+		virtual bool onLayout(float x, float y, float width, float height) override;
 
-		virtual bool onScroll(float dx, float dy) {
-			scroll.x += dx;
-			scroll.y += dy;
-			return true;
-		}
+		virtual bool onScroll(float dx, float dy);
 	};
 }

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 
 //#include <entt.hpp>
 
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    class Entity:public Pointer {
+    class Entity:public RefCountedObject {
     public:
         /*class ComponentCollection {
         private:

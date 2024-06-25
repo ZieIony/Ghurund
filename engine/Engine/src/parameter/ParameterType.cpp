@@ -1,7 +1,7 @@
 #include "ghpch.h"
 #include "ParameterType.h"
 
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 
 #include <DirectXMath.h>
 
@@ -15,5 +15,5 @@ namespace Ghurund {
     const ParameterType ParameterType::FLOAT3 = ParameterType(ParameterTypeEnum::FLOAT3, "float3", sizeof(XMFLOAT3));
     const ParameterType ParameterType::MATRIX = ParameterType(ParameterTypeEnum::MATRIX, "matrix", sizeof(XMFLOAT4X4));
     const ParameterType ParameterType::COLOR = ParameterType(ParameterTypeEnum::COLOR, "color", sizeof(XMFLOAT4));
-    const ParameterType ParameterType::TEXTURE = ParameterType(ParameterTypeEnum::TEXTURE, "texture", sizeof(Pointer*));
+    const ParameterType ParameterType::TEXTURE = ParameterType(ParameterTypeEnum::TEXTURE, "texture", sizeof(RefCountedObject*));
 }

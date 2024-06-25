@@ -9,7 +9,7 @@
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    class Layer:public Pointer {
+    class Layer:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ControlContainerBase.h"
+#include "ui/constraint/ContentConstraint.h"
 
 namespace Ghurund::Core {
 	class ResourceManager;
@@ -32,8 +33,8 @@ namespace Ghurund::UI {
 
 		virtual PartialConstraintSet makeDefaultConstraints() const override {
 			return ConstraintSetInitializer{
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeShared<ContentWidthConstraint>(),
+				.height = makeShared<ContentHeightConstraint>()
 			};
 		}
 	};

@@ -99,6 +99,7 @@
     <ClInclude Include="src\DemoWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\DemoWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

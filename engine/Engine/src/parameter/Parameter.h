@@ -1,13 +1,13 @@
 #pragma once
 
-#include "ParameterId.h"
-#include "core/Pointer.h"
+#include "ParameterType.h"
+#include "core/RefCountedObject.h"
 #include "core/string/String.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    class Parameter: public Pointer {
+    class Parameter: public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

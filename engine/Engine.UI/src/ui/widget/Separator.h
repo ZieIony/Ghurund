@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ui/constraint/ContentConstraint.h"
 #include "ui/control/ControlContainer.h"
 #include "ui/control/ColorView.h"
 
@@ -51,7 +52,7 @@ namespace Ghurund::UI {
 		virtual PartialConstraintSet makeDefaultConstraints() const override {
 			return ConstraintSetInitializer{
 				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.height = makeShared<ContentHeightConstraint>()
 			};
 		}
 	};

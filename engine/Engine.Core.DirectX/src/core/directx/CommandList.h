@@ -2,7 +2,6 @@
 
 #include "Fence.h"
 #include "Graphics.h"
-#include "core/NamedObject.h"
 #include "core/collection/PointerList.h"
 #include "core/logging/Formatter.h"
 
@@ -16,7 +15,7 @@ namespace Ghurund::Core::DirectX {
         FINISHED    // can be only reset
     };
 
-    class CommandList: public NamedObject<wchar_t>, public Pointer {
+    class CommandList: public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -40,15 +39,10 @@ namespace Ghurund::Core::DirectX {
         ID3D12RootSignature* rootSignature = nullptr;
 
         List<ID3D12Object*> resourceRefs;
-        PointerList<Pointer*> pointerRefs;
+        PointerList<RefCountedObject*> pointerRefs;
+        WString name;
 
     public:
-        CommandList() {
-#ifdef _DEBUG
-            Name = L"unnamed CommandList";
-#endif
-        }
-
         ~CommandList();
 
         Status init(Graphics& graphics, ID3D12CommandQueue* queue);
@@ -69,10 +63,16 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getState)) CommandListState State;
 
-        virtual void setName(const WString& name) override {
-            NamedObject::setName(name);
+        inline void setName(const WString& name) {
+            this->name = name;
             commandList->SetName(name.Data);
         }
+
+        inline WString getName() const {
+            return name;
+        }
+
+        __declspec(property(get = getName, put = setName)) WString Name;
 
         bool setPipelineState(ID3D12PipelineState* pipelineState);
 
@@ -87,7 +87,7 @@ namespace Ghurund::Core::DirectX {
             resourceRefs.add(resource);
         }
 
-        void addPointerRef(Pointer* resource) {
+        void addPointerRef(RefCountedObject* resource) {
             pointerRefs.add(resource);
         }
 

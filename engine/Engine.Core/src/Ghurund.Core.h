@@ -28,7 +28,7 @@ namespace Ghurund::Core {
         }
 
 #ifdef _DEBUG
-        Pointer::dumpPointers();
+        RefCountedObject::dumpPointers();
 #endif
 
         Logger::uninit();

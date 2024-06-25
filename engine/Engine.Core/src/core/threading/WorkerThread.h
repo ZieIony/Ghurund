@@ -3,15 +3,15 @@
 #include "ConcurrentTaskQueue.h"
 #include "Thread.h"
 #include "Task.h"
-#include "core/Pointer.h"
 #include "Waitable.h"
+#include "core/RefCountedObject.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
 
 namespace Ghurund::Core {
 	class WorkerThread:public Thread {
 	private:
-		Queue<SharedPointer<Task>> queue;
+		Queue<SharedPointer2<Task>> queue;
 		mutable CriticalSection section;
 		Waitable waitable;
 		std::atomic_flag busy, running, finishing;
@@ -31,19 +31,19 @@ namespace Ghurund::Core {
 			__super::finish();
 		}
 
-		inline void post(SharedPointer<Task> task) {
+		inline void post(SharedPointer2<Task> task) {
 			SectionLock lock(section);
 			queue.add(task);
 			waitable.notify();
 		}
 
-		inline Queue<SharedPointer<Task>> getTasks() const {
+		inline Queue<SharedPointer2<Task>> getTasks() const {
 			SectionLock lock(section);
-			Queue<SharedPointer<Task>> copy = queue;
+			Queue<SharedPointer2<Task>> copy = queue;
 			return queue;
 		}
 
-		__declspec(property(get = getTasks)) Queue<SharedPointer<Task>> Tasks;
+		__declspec(property(get = getTasks)) Queue<SharedPointer2<Task>> Tasks;
 
 		virtual void run() override;
 

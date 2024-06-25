@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Array.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 
 namespace Ghurund::Core {
     template<class Value>
     class PointerArray:public Array<Value> {
     public:
         PointerArray(size_t size):Array<Value>(size) {
-            memset(Array<Value>::v, 0, sizeof(Pointer*) * size);
+            memset(Array<Value>::v, 0, sizeof(RefCountedObject*) * size);
         }
 
         ~PointerArray() {

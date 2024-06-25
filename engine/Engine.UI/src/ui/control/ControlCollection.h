@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ControlParent.h"
+#include "core/SharedPointer.h"
 
 namespace Ghurund::UI {
 	class ControlCollection {

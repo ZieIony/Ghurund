@@ -2,6 +2,7 @@
 #include "DrawableView.h"
 
 #include "ui/Canvas.h"
+#include "core/reflection/Property.h"
 #include "core/reflection/UniqueProperty.h"
 
 namespace Ghurund::UI {

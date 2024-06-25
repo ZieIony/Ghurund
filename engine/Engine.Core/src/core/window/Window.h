@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Status.h"
-#include "core/NamedObject.h"
 #include "core/Object.h"
 #include "core/reflection/Type.h"
 #include "core/input/EventConsumer.h"

@@ -17,7 +17,7 @@ namespace Ghurund::Core {
                     runningChanged(false);
                     return;
                 }
-                SharedPointer<Task> task;
+                SharedPointer2<Task> task;
                 {
                     SectionLock lock(section);
                     if (queue.Empty)
@@ -26,12 +26,12 @@ namespace Ghurund::Core {
                     queue.remove();
                 }
 #ifdef _DEBUG
-                auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+                auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->name, name);
                 Logger::print(LogType::INFO, text.c_str());
 #endif
                 task->run();
 #ifdef _DEBUG
-                auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+                auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->name, name);
                 Logger::print(LogType::INFO, text2.c_str());
 #endif
             }

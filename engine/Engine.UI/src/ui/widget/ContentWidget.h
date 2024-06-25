@@ -28,7 +28,7 @@ namespace Ghurund::UI {
 		inline void updateContent() {
 			if (container) {
 				container->Child = content;
-				container->setConstraints(contentConstraints);
+				container->setConstraints(*content, contentConstraints);
 			} else if (content) {
 				content->Parent = nullptr;
 			}

@@ -7,7 +7,7 @@
 #include <queue>
 
 namespace Ghurund::Core {
-    class Thread:public NamedObject<char> {
+    class Thread {
     private:
         HANDLE handle = INVALID_HANDLE_VALUE;
         DWORD threadId = 0;
@@ -22,6 +22,8 @@ namespace Ghurund::Core {
         virtual void run() = 0;
 
     public:
+        AString name;
+
         virtual ~Thread() {
             if (handle != INVALID_HANDLE_VALUE)
                 finish();

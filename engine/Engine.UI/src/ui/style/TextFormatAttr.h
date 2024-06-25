@@ -6,7 +6,7 @@
 namespace Ghurund::UI {
 	class TextFormat;
 
-	class TextFormatAttr : public Ghurund::Core::Object {
+	class TextFormatAttr: public Ghurund::Core::Object {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -20,10 +20,10 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		virtual const TextFormat* resolve(const Theme& theme) const = 0;
+		virtual const Ghurund::UI::TextFormat* resolve(const Theme& theme) const = 0;
 	};
 
-	class TextFormatValue : public TextFormatAttr {
+	class TextFormatValue: public TextFormatAttr {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -37,12 +37,12 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		TextFormat* textFormat;
+		Ghurund::UI::TextFormat* textFormat;
 
 	public:
-		TextFormatValue(TextFormat* TextFormat) :textFormat(TextFormat) {}
+		TextFormatValue(Ghurund::UI::TextFormat* TextFormat):textFormat(TextFormat) {}
 
-		virtual const TextFormat* resolve(const Theme& theme) const override {
+		virtual const Ghurund::UI::TextFormat* resolve(const Theme& theme) const override {
 			return textFormat;
 		}
 
@@ -51,7 +51,7 @@ namespace Ghurund::UI {
 		}
 	};
 
-	class TextFormatRef : public TextFormatAttr {
+	class TextFormatRef: public TextFormatAttr {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -68,9 +68,9 @@ namespace Ghurund::UI {
 		TextFormatKey key;
 
 	public:
-		TextFormatRef(TextFormatKey key) :key(key) {}
+		TextFormatRef(TextFormatKey key):key(key) {}
 
-		virtual const TextFormat* resolve(const Theme& theme) const override;
+		virtual const Ghurund::UI::TextFormat* resolve(const Theme& theme) const override;
 
 		virtual TextFormatRef* clone() const override {
 			return ghnew TextFormatRef(key);

@@ -1,25 +1,34 @@
 #include "ghuipch.h"
 #include "Toolbar.h"
 
+#include "ToolbarItemAdapter.h"
 #include "core/reflection/TypeBuilder.h"
 #include "ui/layout/HorizontalLayoutManager.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Toolbar::GET_TYPE() {
+        static const auto CONSTRUCTOR = Constructor<Toolbar>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Toolbar>(NAMESPACE_NAME, GH_STRINGIFY(Toolbar))
+            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
     
+    void Toolbar::updateProperties() {
+        if (adapterLayout) {
+            adapterLayout->ItemAdapter = *itemAdapter;
+        }
+    }
+
     void Toolbar::onLayoutChanged() {
         __super::onLayoutChanged();
         Control* layoutControl = layout.get();
         if (layoutControl) {
             setPointer(adapterLayout, (Ghurund::UI::AdapterLayout*)layoutControl->find("adapterLayout"));
+            updateProperties();
             if (adapterLayout) {
-                //adapterLayout->ItemAdapter = std::make_unique<ToolbarItemAdapter>();
-                //adapterLayout->LayoutManager = std::make_unique<HorizontalLayoutManager>();
+                adapterLayout->LayoutManager = std::make_unique<HorizontalLayoutManager>();
             }
         }
     }

@@ -2,7 +2,9 @@
 #include "ConstraintSet.h"
 
 #include "ui/Canvas.h"
+#include "ui/constraint/ContentConstraint.h"
 #include "ui/constraint/ParentConstraint.h"
+#include "ui/constraint/SelfConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 
 #include <tinyxml2.h>
@@ -130,7 +132,7 @@ namespace Ghurund::UI {
 				right = set.right;
 				width.set(ghnew LeftRightConstraint(left, right));
 			} else {
-				width.set(ghnew WrapWidthConstraint());
+				width.set(ghnew ContentWidthConstraint());
 				right.set(ghnew LeftWidthConstraint(left, width));
 			}
 		} else if (set.width != nullptr) {
@@ -144,12 +146,12 @@ namespace Ghurund::UI {
 				right.set(ghnew LeftWidthConstraint(left, width));
 			}
 		} else if (set.right != nullptr) {
-			width.set(ghnew WrapWidthConstraint());
+			width.set(ghnew ContentWidthConstraint());
 			right = set.right;
 			left.set(ghnew WidthRightConstraint(width, right));
 		} else {
 			left.set(ghnew ParentLeftConstraint());
-			width.set(ghnew WrapWidthConstraint());
+			width.set(ghnew ContentWidthConstraint());
 			right.set(ghnew LeftWidthConstraint(left, width));
 		}
 		if (set.top != nullptr && set.height != nullptr && set.bottom != nullptr) {
@@ -165,7 +167,7 @@ namespace Ghurund::UI {
 				bottom = set.bottom;
 				height.set(ghnew TopBottomConstraint(top, bottom));
 			} else {
-				height.set(ghnew WrapHeightConstraint());
+				height.set(ghnew ContentHeightConstraint());
 				bottom.set(ghnew TopHeightConstraint(top, height));
 			}
 		} else if (set.height != nullptr) {
@@ -179,12 +181,12 @@ namespace Ghurund::UI {
 				bottom.set(ghnew TopHeightConstraint(top, height));
 			}
 		} else if (set.bottom != nullptr) {
-			height.set(ghnew WrapHeightConstraint());
+			height.set(ghnew ContentHeightConstraint());
 			bottom = set.bottom;
 			top.set(ghnew HeightBottomConstraint(height, bottom));
 		} else {
 			top.set(ghnew ParentTopConstraint());
-			height.set(ghnew WrapHeightConstraint());
+			height.set(ghnew ContentHeightConstraint());
 			bottom.set(ghnew TopHeightConstraint(top, height));
 		}
 	}

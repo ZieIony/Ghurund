@@ -19,8 +19,9 @@ namespace Ghurund::Core {
             :std::exception(std::format("Type {}::{} could not be located.\n", _namespace.Data, name.Data).c_str()) {}
     };
 
-    class Type:public NamedObject<char> {
+    class Type {
     private:
+        const AString name;
         const TypeModifier modifiers;
         const Type* baseType;
         const AString _namespace;
@@ -41,8 +42,8 @@ namespace Ghurund::Core {
         Type(Type&& other) = delete;
 
     public:
-        Type(const char* name, size_t size):
-            NamedObject<char>(name),
+        Type(const AString& name, size_t size):
+            name(name),
             baseType(this),
             modifiers((TypeModifier)0),
             size(size),
@@ -53,8 +54,8 @@ namespace Ghurund::Core {
             getTypes().add(*this);
         }
 
-        Type(const char* _namespace, const char* name, size_t size):
-            NamedObject<char>(name),
+        Type(const AString& _namespace, const AString& name, size_t size):
+            name(name),
             _namespace(_namespace),
             baseType(this),
             modifiers((TypeModifier)0),
@@ -73,7 +74,7 @@ namespace Ghurund::Core {
             bool ref,
             bool _volatile
         ):
-            NamedObject<char>(baseType.Name),
+            name(baseType.name),
             constructors(baseType.Constructors),
             modifiers(baseType.Modifiers),
             baseType(&baseType),
@@ -101,7 +102,7 @@ namespace Ghurund::Core {
             const Array<std::reference_wrapper<const BaseMethod>>& methods,
             const Array<std::reference_wrapper<const Type>> templateParams
         ):
-            NamedObject<char>(name),
+            name(name),
             constructors(constructors),
             modifiers(modifiers),
             baseType(this),
@@ -154,6 +155,12 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getNamespace)) const AString& Namespace;
+
+        const AString& getName() const {
+            return name;
+        }
+
+        __declspec(property(get = getName)) const AString& Name;
 
         const size_t getSize() const {
             return size;
@@ -224,7 +231,7 @@ namespace Ghurund::Core {
         inline std::strong_ordering operator<=>(const Type& other) const noexcept {
             if (auto cmp = _namespace <=> other._namespace; cmp != 0)
                 return cmp;
-            if (auto cmp = Name <=> other.Name; cmp != 0)
+            if (auto cmp = name <=> other.name; cmp != 0)
                 return cmp;
             if (auto cmp = pointer <=> other.pointer; cmp != 0)
                 return cmp;

@@ -1,16 +1,12 @@
 #pragma once
 
-#include "core/collection/Map.h"
 #include "core/allocation/AllocationStrategy.h"
-#include "core/Pointer.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
 #include <dxgi1_4.h>
 #include <DirectXMath.h>
 #pragma warning(pop)
-
-#include <wrl.h>
 
 namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;

@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Status.h"
-#include "core/Pointer.h"
-#include "core/reflection/TypeBuilder.h"
+#include "core/RefCountedObject.h"
 
 namespace Ghurund::Core {
     using namespace Ghurund::Core;
 
-    class Feature:public Pointer {
+    class Feature:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

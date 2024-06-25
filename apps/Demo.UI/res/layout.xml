@@ -3,10 +3,10 @@
 	<ColorView width="Parent.Width" height="Parent.Height" name="background"
 			   style="theme://style/ColorView_background"/>
 	<VerticalLayout width="Parent.Width" height="Parent.Height" spacing="8">
-		<!--<MenuBar name="menuBar" width="Parent.Width" height="wrap"/>
-		<Toolbar name="toolbar" width="Parent.Width" height="wrap"/>-->
+		<MenuBar name="menuBar" width="Parent.Width" height="content"/>
+		<Toolbar name="toolbar" width="Parent.Width" height="content"/>
 		<Button layout="lib://Ghurund\layouts\ButtonAccentLayout.xml">
-			<DrawableView drawable="resources/button.png" width="wrap" height="wrap"/>
+			<DrawableView drawable="resources/button.png" width="content" height="content"/>
 		</Button>
 		<Button>
 			<DrawableView drawable="resources/button.png"/>
@@ -22,14 +22,14 @@
 		<Button layout="lib://Ghurund\layouts\ButtonOutlinedLayout.xml">
 			<DrawableView drawable="resources/button.png"/>
 		</Button>
-		<HorizontalLayout width="Parent.Width" height="wrap">
+		<HorizontalLayout width="Parent.Width" height="content">
 			<ColorView color="#ffff0000" height="40"/>
 			<ColorView color="#ff00ff00" height="40"/>
 			<ColorView color="#ff0000ff" height="40"/>
 		</HorizontalLayout>
-		<HorizontalLayout width="Parent.Width" height="wrap">
+		<HorizontalLayout width="Parent.Width" height="content">
 			<AdapterLayout width="500" height="300" name="adapterLayout"/>
-			<AdapterLayout width="500" height="wrap" name="adapterLayout2"/>
+			<AdapterLayout width="500" height="content" name="adapterLayout2"/>
 		</HorizontalLayout>
 	</VerticalLayout>
 </ConstraintLayout>

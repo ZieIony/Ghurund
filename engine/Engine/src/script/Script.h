@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Status.h"
 #include "core/resource/Resource.h"
 #include "core/string/String.h"
 

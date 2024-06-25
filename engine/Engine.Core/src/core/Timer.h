@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "Object.h"
 
 #include <Windows.h>
 

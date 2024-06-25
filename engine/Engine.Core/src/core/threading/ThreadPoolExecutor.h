@@ -2,7 +2,7 @@
 
 #include "Task.h"
 #include "WorkerThread.h"
-#include "core/SharedPointer.h"
+#include "core/SharedPointer2.h"
 #include "core/SystemInfo.h"
 #include "core/collection/List.h"
 #include "core/collection/Map.h"
@@ -14,7 +14,7 @@ namespace Ghurund::Core {
     class ThreadPoolExecutor {
     private:
         struct TaskExecution {
-            SharedPointer<Task> task;
+            SharedPointer2<Task> task;
             size_t dependencies;
         };
 
@@ -29,9 +29,9 @@ namespace Ghurund::Core {
             PoolThread(ThreadPoolExecutor& executor):executor(executor) {}
 
             void* tag = nullptr;
-            SharedPointer<Task> task;
+            SharedPointer2<Task> task;
 
-            void execute(SharedPointer<Task> task) {
+            void execute(SharedPointer2<Task> task) {
                 this->task = task;
                 tag = task->Tag;
                 waitable.notify();
@@ -40,14 +40,14 @@ namespace Ghurund::Core {
             virtual void run() override;
         };
 
-        LinkedList<LinkedList<SharedPointer<Task>>> tasks;
+        LinkedList<LinkedList<SharedPointer2<Task>>> tasks;
         LinkedList<PoolThread*> busyThreads, waitingThreads, threads;
         CriticalSection section;
 
         // returns max depth
-        size_t flattenTaskGraph(SharedPointer<Task>& task, List<TaskExecution>& taskList);
+        size_t flattenTaskGraph(SharedPointer2<Task>& task, List<TaskExecution>& taskList);
 
-        void onTaskFinished(PoolThread& thread, SharedPointer<Task>& justFinished);
+        void onTaskFinished(PoolThread& thread, SharedPointer2<Task>& justFinished);
 
         inline bool isTagUsed(void* tag) {
             for (PoolThread* t : busyThreads) {
@@ -57,7 +57,7 @@ namespace Ghurund::Core {
             return false;
         }
 
-        SharedPointer<Task> findNextTask();
+        SharedPointer2<Task> findNextTask();
 
         bool queueNextTask();
 
@@ -68,7 +68,7 @@ namespace Ghurund::Core {
 
         ~ThreadPoolExecutor();
 
-        void post(SharedPointer<Task> task);
+        void post(SharedPointer2<Task> task);
 
         inline uint8_t getPoolSize() const {
             return (uint8_t)threads.Size;

@@ -1,6 +1,8 @@
 #include "ghcpch.h"
 #include "Feature.h"
 
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund::Core {
     const Ghurund::Core::Type& Feature::GET_TYPE() {
 

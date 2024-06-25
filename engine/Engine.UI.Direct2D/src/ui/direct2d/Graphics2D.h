@@ -1,12 +1,10 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 #include "core/application/Feature.h"
-#include "ui/direct2d/font/FontCollectionLoader.h"
 #include "RenderTarget2D.h"
 #include "core/directx/Graphics.h"
 
-#include <dxgi1_6.h>
 #include <d2d1_3.h>
 #include <dwrite_3.h>
 #include <d3d11on12.h>

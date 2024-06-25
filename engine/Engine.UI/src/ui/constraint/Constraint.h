@@ -10,7 +10,7 @@ namespace Ghurund::UI {
 
 	using namespace Ghurund::Core;
 
-	class Constraint:public Pointer {
+	class Constraint:public RefCountedObject {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -29,7 +29,7 @@ namespace Ghurund::UI {
 #endif
 
 		float value = 0.0f;
-		bool constant = false, skipDependencies = false, evaluated = false;
+		bool constant = false, skipDependencies = false, resolved = false, evaluated = false;
 		Set<Constraint*> dependencies;
 
 		virtual bool equalsImpl(const Object& other) const override;

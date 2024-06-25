@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ui/drawable/ImageDrawable.h"
+#include "ui/drawable/Drawable.h"
 
 namespace UnitTest {
     using namespace Ghurund::UI;
 
-    class TestImage:public ImageDrawable {
+    class TestImage:public Drawable {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -14,7 +14,7 @@ namespace UnitTest {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<ImageDrawable>(Ghurund::UI::NAMESPACE_NAME, "ImageDrawable")
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TestImage>(Ghurund::UI::NAMESPACE_NAME, "TestImage")
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
@@ -25,9 +25,9 @@ namespace UnitTest {
 
     public:
         inline void setPreferredSize(const FloatSize& size) {
-            contentSize = size;
+            preferredSize = size;
         }
 
-        virtual void onDraw(ICanvas& canvas) override {}
+        virtual void draw(ICanvas& canvas, const Ghurund::Core::FloatSize& size, const Ghurund::UI::Color& tint) const {}
     };
 }

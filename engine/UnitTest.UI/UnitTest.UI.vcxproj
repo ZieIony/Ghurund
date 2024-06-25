@@ -99,8 +99,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\test\ui\ImageDrawableFactory.h" />
+    <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
     <ClInclude Include="src\test\ui\ShapeFactory.h" />
+    <ClInclude Include="src\test\ui\TestControlContainer.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
     <ClInclude Include="src\test\ui\UIContext.h" />
     <ClInclude Include="src\test\ui\image\Bitmap.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ConstraintGraphTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ConstraintSetTest.cpp" />
+    <ClCompile Include="src\test\ui\constraint\ParentSizeConstraintTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
     <ClCompile Include="src\test\ui\control\ControlCloningTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />

@@ -4,7 +4,6 @@
 #include "ControlPool.h"
 
 #include "ui/control/ControlGroup.h"
-#include "ui/layout/LayoutManager.h"
 
 namespace Ghurund::UI {
 	class AdapterLayout:public ControlGroup {
@@ -32,30 +31,22 @@ namespace Ghurund::UI {
 	public:
 		Event<Control> onScrolled = Event<Control>(*this);
 
-		~AdapterLayout() {
-			delete itemAdapter;
+		inline ItemAdapter& getItemAdapter() {
+			return *itemAdapter;
 		}
 
-		inline ItemAdapter* getItemAdapter() {
-			return itemAdapter;
+		inline void setItemAdapter(ItemAdapter& itemAdapter) {
+			if (this->itemAdapter != &itemAdapter) {
+				//this->itemAdapter->removeAllChildren();
+				this->itemAdapter = &itemAdapter;
+			}
 		}
 
-		inline void setItemAdapter(std::unique_ptr<ItemAdapter> itemAdapter) {
-			delete this->itemAdapter;
-			this->itemAdapter = itemAdapter.release();
-		}
+		__declspec(property(get = getItemAdapter, put = setItemAdapter)) ItemAdapter& ItemAdapter;
 
-		__declspec(property(get = getItemAdapter, put = setItemAdapter)) ItemAdapter* ItemAdapter;
+		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override;
 
-		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override {
-			if (layoutManager)
-				layoutManager->onLayout(0, 0, width.PreferredMax, height.PreferredMax);
-		}
-
-		virtual void onLayout(float x, float y, float width, float height) override {
-			if (layoutManager)
-				layoutManager->onLayout(x, y, width, height);
-		}
+		virtual void onLayout(float x, float y, float width, float height) override;
 
 		void addChild(size_t adapterPosition, size_t groupPosition);
 

@@ -1,10 +1,9 @@
 #include "ghuipch.h"
 #include "ColorView.h"
 
-#include "ui/loading/LayoutLoader.h"
-#include "ui/theme/Theme.h"
 #include "ui/Canvas.h"
-#include <ui/Binding.h>
+#include "ui/theme/Theme.h"
+#include "core/reflection/Property.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ColorView::GET_TYPE() {

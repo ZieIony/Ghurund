@@ -10,7 +10,7 @@
 
 namespace Ghurund::Core {
 
-    class Pointer: public Object {
+    class RefCountedObject: public Object {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -20,14 +20,14 @@ namespace Ghurund::Core {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Pointer::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = RefCountedObject::GET_TYPE();
 #pragma endregion
 
     private:
-        mutable unsigned int referenceCount = 1;
+        mutable uint32_t referenceCount = 1;
 
 #ifdef _DEBUG
-        static List<Pointer*> pointers;
+        static List<RefCountedObject*> pointers;
         static CriticalSection criticalSection;
         static bool pointersListResizeLocked;
 
@@ -37,14 +37,14 @@ namespace Ghurund::Core {
 #endif
 
     protected:
-        Pointer(const Pointer& pointer) = delete;
+        RefCountedObject(const RefCountedObject& pointer) = delete;
 
-        virtual ~Pointer()
+        virtual ~RefCountedObject()
         //    = 0  // TODO: a destructor cannot be abstract
         ;
 
     public:
-        Pointer();
+        RefCountedObject();
 
         /**
          * @brief Increases reference count by 1.
@@ -65,11 +65,11 @@ namespace Ghurund::Core {
                 delete this;
         }
 
-        unsigned long getReferenceCount() const {
+        uint32_t getReferenceCount() const {
             return referenceCount;
         }
 
-        __declspec(property(get = getReferenceCount)) unsigned long ReferenceCount;
+        __declspec(property(get = getReferenceCount)) uint32_t ReferenceCount;
 
         virtual String toString() const override;
 
@@ -93,7 +93,7 @@ namespace Ghurund::Core {
 
         static void clearPointers() {
             SectionLock lock(criticalSection);
-            for (Pointer* p : pointers)
+            for (RefCountedObject* p : pointers)
                 delete p;
             pointers.clear();
         }
@@ -101,11 +101,11 @@ namespace Ghurund::Core {
     };
 
     /**
-     * @brief Safely sets a Pointer object to a new value. The previous Pointer has its reference counter decreased by one,
-     * and the new Pointer has its reference counter increased by one.
+     * @brief Safely sets a RefCountedObject object to a new value. The previous RefCountedObject has its reference counter decreased by one,
+     * and the new RefCountedObject has its reference counter increased by one.
      * @tparam Type
-     * @param pointer A reference to a Pointer address to assign another Pointer to. The address can be null.
-     * @param pointer2 A Pointer address to assign to 'pointer'. Can be null.
+     * @param pointer A reference to a RefCountedObject address to assign another RefCountedObject to. The address can be null.
+     * @param pointer2 A RefCountedObject address to assign to 'pointer'. Can be null.
     */
     template<class Type>
     void setPointer(Type*& pointer, Type* pointer2) {
@@ -117,7 +117,7 @@ namespace Ghurund::Core {
     }
 
     /**
-     * @brief Safely releases and clears a Pointer object.
+     * @brief Safely releases and clears a RefCountedObject object.
      * @tparam Type
      * @param pointer
     */

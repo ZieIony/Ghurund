@@ -6,7 +6,6 @@
 
 #include "ui/constraint/ConstraintFactory.h"
 #include "test/ui/ShapeFactory.h"
-#include "test/ui/ImageDrawableFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -40,8 +39,8 @@ public:
 
 			auto controlGroup = makeShared<ConstraintLayout>();
 			ConstraintSet constraints = ConstraintSet(ConstraintSetInitializer{
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeShared<ContentWidthConstraint>(),
+				.height = makeShared<ContentHeightConstraint>()
 			});
 			controlGroup->Children.add(container.get(), constraints);
 
@@ -99,7 +98,7 @@ public:
 			auto child = makeShared<ColorView>();
 			auto group = makeShared<ControlContainer>();
 			group->Child = child.get();
-			group->setConstraints({
+			group->setConstraints(*child.get(), {
 				.width = 100.0f,
 				.height = 75.0f
 				});
@@ -131,7 +130,7 @@ public:
 
 			auto group = makeShared<ControlContainer>();
 			group->Child = child.get();
-			group->setConstraints({
+			group->setConstraints(*child.get(), {
 				.width = []() {
 					auto c = makeShared<ParentWidthConstraint>();
 					c->Min = 100.0f;

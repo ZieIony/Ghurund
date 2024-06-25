@@ -10,7 +10,7 @@
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    class Light: public Pointer, public ParameterProvider {
+    class Light: public RefCountedObject, public ParameterProvider {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

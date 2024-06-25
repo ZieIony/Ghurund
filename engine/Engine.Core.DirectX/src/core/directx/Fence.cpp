@@ -12,6 +12,10 @@ namespace Ghurund::Core::DirectX {
         }
         fenceValue++;
 
+#ifdef _DEBUG
+        Name = L"unnamed Fence";
+#endif
+
         fenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
         if(fenceEvent == nullptr) {
             if(FAILED(HRESULT_FROM_WIN32(GetLastError()))) {

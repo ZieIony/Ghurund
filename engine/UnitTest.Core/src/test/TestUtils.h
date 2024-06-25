@@ -5,7 +5,7 @@
 #include "core/math/Size.h"
 #include "core/string/TextConversionUtils.h"
 #include "TestLogOutput.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 
 #include <format>
 #include <initializer_list>
@@ -33,15 +33,15 @@ namespace UnitTest::Utils {
 
     struct TestUtils {
         static void testClassInitialize() {
-            Pointer::reservePointers(500);
+            RefCountedObject::reservePointers(500);
             Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
             TestLogOutput::initReportHook();
         }
 
         static void testMethodCleanup() {
-            if (Pointer::numberOfAllocatedPointers() > 0) {
-                Pointer::dumpPointers();
-                Pointer::clearPointers();
+            if (RefCountedObject::numberOfAllocatedPointers() > 0) {
+                RefCountedObject::dumpPointers();
+                RefCountedObject::clearPointers();
                 Assert::Fail();
             }
         }

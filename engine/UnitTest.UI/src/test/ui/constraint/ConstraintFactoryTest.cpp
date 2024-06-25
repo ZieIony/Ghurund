@@ -6,7 +6,7 @@
 
 #include "ui/constraint/ConstraintFactory.h"
 #include "test/ui/ShapeFactory.h"
-#include "test/ui/ImageDrawableFactory.h"
+#include "test/ui/TestDrawableFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -120,13 +120,13 @@ public:
         Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
         Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
-        Pointer::reservePointers(1500);
-        Pointer::setPointersListResizeLocked(true);
+        RefCountedObject::reservePointers(1500);
+        RefCountedObject::setPointersListResizeLocked(true);
         MemoryGuard memoryGuard;
         {
             ResourceManager resourceManager;
             ShapeFactory shapeFactory;
-            DrawableFactory drawableFactory;
+            TestDrawableFactory drawableFactory;
             TextFormatFactory textFormatFactory;
             ConstraintFactory constraintFactory;
             auto layoutLoader = makeShared<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
@@ -150,10 +150,10 @@ public:
             graph.evaluate();
 
             Assert::AreEqual(34.0f, constraints.Width.Value);
-            size_t pointers = Pointer::numberOfAllocatedPointers();
+            size_t pointers = RefCountedObject::numberOfAllocatedPointers();
         }
-        Pointer::setPointersListResizeLocked(false);
-        Pointer::dumpPointers();
+        RefCountedObject::setPointersListResizeLocked(false);
+        RefCountedObject::dumpPointers();
     }
     };
 }

@@ -4,7 +4,7 @@
 #include "ui/loading/DrawableFactory.h"
 
 namespace UnitTest {
-    class DrawableFactory: public Ghurund::UI::DrawableFactory {
+    class TestDrawableFactory: public Ghurund::UI::DrawableFactory {
     public:
         virtual Ghurund::UI::Drawable* makeDrawable(const Ghurund::Core::ResourcePath& path) override {
             return nullptr;

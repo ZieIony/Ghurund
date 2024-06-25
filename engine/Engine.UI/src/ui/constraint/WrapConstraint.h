@@ -18,13 +18,8 @@ namespace Ghurund::UI {
         inline static const Ghurund::Core::Type& TYPE = WrapWidthConstraint::GET_TYPE();
 #pragma endregion
 
-    private:
-        const Control* control = nullptr;
-
     protected:
-        WrapWidthConstraint(const WrapWidthConstraint& other):MinMaxConstraint(other), control(other.control) {}
-
-        virtual bool equalsImpl(const Object& other) const override;
+        WrapWidthConstraint(const WrapWidthConstraint& other):MinMaxConstraint(other) {}
 
     public:
         WrapWidthConstraint():MinMaxConstraint(false, true) {}
@@ -51,13 +46,8 @@ namespace Ghurund::UI {
         inline static const Ghurund::Core::Type& TYPE = WrapHeightConstraint::GET_TYPE();
 #pragma endregion
 
-    private:
-        const Control* control = nullptr;
-
     protected:
-        WrapHeightConstraint(const WrapHeightConstraint& other):MinMaxConstraint(other), control(other.control) {}
-  
-        virtual bool equalsImpl(const Object& other) const override;
+        WrapHeightConstraint(const WrapHeightConstraint& other):MinMaxConstraint(other) {}
 
     public:
         WrapHeightConstraint():MinMaxConstraint(false, true) {}

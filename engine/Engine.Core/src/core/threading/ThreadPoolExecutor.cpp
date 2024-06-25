@@ -6,11 +6,11 @@ namespace Ghurund::Core {
     void ThreadPoolExecutor::PoolThread::run() {
         while (true) {
             waitable.wait();
-            auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->Name, Name);
+            auto text = std::format(_T("executing task '{}' on thread '{}'\n"), task->name, name);
             Logger::print(LogType::INFO, text.c_str());
             task->run();
             tag = nullptr;
-            auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->Name, Name);
+            auto text2 = std::format(_T("finished task '{}' on thread '{}'\n"), task->name, name);
             Logger::print(LogType::INFO, text2.c_str());
             executor.section.enter();
             executor.onTaskFinished(*this, task);
@@ -20,25 +20,25 @@ namespace Ghurund::Core {
     }
 
     // returns max depth
-    size_t ThreadPoolExecutor::flattenTaskGraph(SharedPointer<Task>& task, List<TaskExecution>& taskList) {
+    size_t ThreadPoolExecutor::flattenTaskGraph(SharedPointer2<Task>& task, List<TaskExecution>& taskList) {
         size_t depth = 0;
-        for (SharedPointer<Task>& t : task->Dependencies)
+        for (SharedPointer2<Task>& t : task->Dependencies)
             depth = std::max(depth, flattenTaskGraph(t, taskList) + 1);
         taskList.add({ task, depth });
         return depth;
     }
 
-    void ThreadPoolExecutor::onTaskFinished(PoolThread& thread, SharedPointer<Task>& justFinished) {
+    void ThreadPoolExecutor::onTaskFinished(PoolThread& thread, SharedPointer2<Task>& justFinished) {
         busyThreads.remove(&thread);
         waitingThreads.add(&thread);
         for (size_t i = 0; i < tasks.Size; i++) {
-            LinkedList<SharedPointer<Task>>& taskList = tasks[i];
+            LinkedList<SharedPointer2<Task>>& taskList = tasks[i];
             for (size_t j = 0; j < taskList.Size;j++) {
                 if (taskList[j] == justFinished) {
                     if (justFinished->ExecutionStatus == ExecutionStatus::SUCCEEDED) {
                         taskList.removeAt(j);
                     } else {
-                        for (SharedPointer<Task>& t2 : taskList)
+                        for (SharedPointer2<Task>& t2 : taskList)
                             t2->skip();
                         tasks.removeAt(i);
                     }
@@ -48,9 +48,9 @@ namespace Ghurund::Core {
         }
     }
 
-    SharedPointer<Task> ThreadPoolExecutor::findNextTask() {
-        for (LinkedList<SharedPointer<Task>>& taskList : tasks) {
-            SharedPointer<Task>& t = taskList.front();
+    SharedPointer2<Task> ThreadPoolExecutor::findNextTask() {
+        for (LinkedList<SharedPointer2<Task>>& taskList : tasks) {
+            SharedPointer2<Task>& t = taskList.front();
             if (t->Tag && isTagUsed(t->Tag))
                 continue;
             if (taskList.Empty)
@@ -63,7 +63,7 @@ namespace Ghurund::Core {
     bool ThreadPoolExecutor::queueNextTask() {
         if (waitingThreads.Empty)
             return false;
-        SharedPointer<Task> task = findNextTask();
+        SharedPointer2<Task> task = findNextTask();
         if (&task == nullptr)
             return false;
         PoolThread* thread = waitingThreads[0];
@@ -78,7 +78,7 @@ namespace Ghurund::Core {
     ThreadPoolExecutor::ThreadPoolExecutor(uint8_t poolSize) {
         for (uint8_t i = 0; i < poolSize; i++) {
             auto thread = ghnew PoolThread(*this);
-            thread->Name = std::format("{}", i).c_str();
+            thread->name = std::format("{}", i).c_str();
             threads.add(thread);
             waitingThreads.add(thread);
             thread->start();
@@ -93,14 +93,14 @@ namespace Ghurund::Core {
             delete threads[i];
     }
 
-    void ThreadPoolExecutor::post(SharedPointer<Task> task) {
+    void ThreadPoolExecutor::post(SharedPointer2<Task> task) {
         List<TaskExecution> taskList;
         flattenTaskGraph(task, taskList);
         std::sort(taskList.begin(), taskList.end(), [](TaskExecution& a, TaskExecution& b)->bool {
             return a.dependencies < b.dependencies;
         });
         section.enter();
-        LinkedList<SharedPointer<Task>> taskLinkedList;
+        LinkedList<SharedPointer2<Task>> taskLinkedList;
         for(auto& t:taskList)
             taskLinkedList.add(t.task);
         tasks.add(taskLinkedList);

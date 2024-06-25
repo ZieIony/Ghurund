@@ -3,8 +3,7 @@
 #include "Status.h"
 #include "core/collection/Array.h"
 #include "core/Id.h"
-#include "core/NamedObject.h"
-#include "core/SharedPointer.h"
+#include "core/SharedPointer2.h"
 #include "core/Event.h"
 
 #include <functional>
@@ -14,31 +13,21 @@ namespace Ghurund::Core {
         NOT_STARTED, IN_PROGRESS, SUCCEEDED, SKIPPED, FAILED
     };
 
-    class Task:public Pointer, public NamedObject<wchar_t> {
-#pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = Task::GET_TYPE();
-#pragma endregion
-
+    class Task {
     private:
         std::function<Status()> function;
-        List<SharedPointer<Task>> dependencies;
+        List<SharedPointer2<Task>> dependencies;
         void* tag = nullptr;
         ExecutionStatus executionStatus = ExecutionStatus::NOT_STARTED;
         Event<Task, ExecutionStatus> statusChanged = *this;
 
     public:
+        WString name;
+     
         Task(std::function<Status()> function):function(function) {}
 
         Task(const WString& name, std::function<Status()> function):function(function) {
-            this->Name = name;
+            this->name = name;
             this->function = function;
         }
 
@@ -81,11 +70,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getExecutionStatus, put = setExecutionStatus)) ExecutionStatus ExecutionStatus;
 
-        inline List<SharedPointer<Task>>& getDependencies() {
+        inline List<SharedPointer2<Task>>& getDependencies() {
             return dependencies;
         }
 
-        __declspec(property(get = getDependencies)) List<SharedPointer<Task>>& Dependencies;
+        __declspec(property(get = getDependencies)) List<SharedPointer2<Task>>& Dependencies;
 
         inline void* getTag() {
             return tag;
@@ -106,14 +95,14 @@ namespace Ghurund::Core {
 
     class TaskGroup {
     private:
-        List<SharedPointer<Task>> tasks;
+        List<SharedPointer2<Task>> tasks;
         ExecutionStatus executionStatus = ExecutionStatus::NOT_STARTED;
         float progress = 0.0f;
 
     public:
         TaskGroup() {}
 
-        TaskGroup(SharedPointer<Task> task) {
+        TaskGroup(SharedPointer2<Task> task) {
             tasks.add(task);
         }
 
@@ -129,13 +118,13 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getProgress)) float Progress;
 
-        List<SharedPointer<Task>>& getTasks() {
+        List<SharedPointer2<Task>>& getTasks() {
             return tasks;
         }
 
-        __declspec(property(get = getTasks)) List<SharedPointer<Task>>& Tasks;
+        __declspec(property(get = getTasks)) List<SharedPointer2<Task>>& Tasks;
 
-        inline SharedPointer<Task> startTask() {
+        inline SharedPointer2<Task> startTask() {
 
         }
     };

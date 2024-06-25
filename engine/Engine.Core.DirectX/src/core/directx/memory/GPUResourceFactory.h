@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/Map.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 #include "HeapAllocator.h"
 #include "GPUResourcePointer.h"
 
@@ -11,8 +11,6 @@
 #include <DirectXMath.h>
 #include "d3dx12.h"
 #pragma warning(pop)
-
-#include <wrl.h>
 
 namespace Ghurund::Core::DirectX {
     class Graphics;

@@ -2,9 +2,10 @@
 
 #include "ui/adapter/ListItemAdapter.h"
 #include "ui/widget/menu/MenuItem.h"
+#include "core/SharedPointer2.h"
 
 namespace Ghurund::UI {
-	class ToolbarItemAdapter:public ListItemAdapter<MenuItem*> {
+	class ToolbarItemAdapter:public ListItemAdapter<SharedPointer2<MenuItem>> {
     private:
         ResourceManager& resourceManager;
 

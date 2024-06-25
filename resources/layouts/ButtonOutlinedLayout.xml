@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Clip shape="roundRect, 2" xmlns="https://github.com/Zielony/Ghurund/Engine/UISchema.xsd">
 	<ConstraintLayout>
-		<ConstraintLayout.Width path="wrap" offset="16" min="64"/>
-		<ConstraintLayout.Height path="wrap" offset="8" min="24"/>
+		<ConstraintLayout.Width path="content" offset="16" min="64"/>
+		<ConstraintLayout.Height path="content" offset="8" min="24"/>
 		<ColorView width="Parent.Width" height="Parent.Height"/>
 		<StateIndicator name="state"
 						width="Parent.Width" height="Parent.Height"/>

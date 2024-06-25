@@ -2,6 +2,7 @@
 
 #include "ControlContainer.h"
 #include "ui/Shape.h"
+#include "ui/constraint/ContentConstraint.h"
 
 namespace Ghurund::UI {
     class Clip:public ControlContainer {
@@ -42,8 +43,8 @@ namespace Ghurund::UI {
 
         virtual PartialConstraintSet makeDefaultConstraints() const override {
             return ConstraintSetInitializer{
-                .width = makeShared<WrapWidthConstraint>(),
-                .height = makeShared<WrapHeightConstraint>()
+                .width = makeShared<ContentWidthConstraint>(),
+                .height = makeShared<ContentHeightConstraint>()
             };
         }
     };

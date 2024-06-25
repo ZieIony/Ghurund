@@ -1,7 +1,8 @@
 #include "ghuipch.h"
 #include "Drawable.h"
 
-#include "ui/control/Control.h"
+#include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Drawable::GET_TYPE() {

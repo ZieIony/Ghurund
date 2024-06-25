@@ -1,8 +1,7 @@
 #pragma once
 
 #include "HeapAllocator.h"
-#include "core/collection/Map.h"
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -13,7 +12,7 @@
 namespace Ghurund::Core::DirectX {
     using namespace Ghurund::Core;
 
-    class GPUResourcePointer:public Pointer {
+    class GPUResourcePointer:public RefCountedObject {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

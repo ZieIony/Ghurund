@@ -2,8 +2,8 @@
 #include "ControlGroup.h"
 
 #include "ListControlProvider.h"
-#include "ui/Alignment.h"
 #include "ui/constraint/ConstraintGraph.h"
+#include "ui/constraint/ContentConstraint.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/layout/LayoutManager.h"
 #include "ui/UIDebugTools.h"
@@ -227,6 +227,7 @@ namespace Ghurund::UI {
 	}
 
 	void ControlGroup::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+		__super::resolveConstraints(graph, width, height);
 		for (ControlWithConstraints& c : children) {
 			Control& control = *c.control.get();
 			if (!control.Visible)
@@ -249,8 +250,8 @@ namespace Ghurund::UI {
 			return layoutManager->makeDefaultConstraints();
 		} else {
 			return ConstraintSetInitializer{
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeShared<ContentWidthConstraint>(),
+				.height = makeShared<ContentHeightConstraint>()
 			};
 		}
 	}

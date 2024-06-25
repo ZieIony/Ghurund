@@ -1,12 +1,9 @@
 #pragma once
 
-#include "core/Pointer.h"
+#include "core/RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
-#include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
 #include "core/Observable.h"
-
-#include <stdint.h>
 
 namespace UnitTest::Utils {
     using namespace Ghurund::Core;
@@ -16,7 +13,7 @@ namespace UnitTest::Utils {
         const char* text = "text";
     };
 
-    class PointerTestClass:public Pointer {};
+    class PointerTestClass:public RefCountedObject {};
 
     class ObjectTestClass:public Object {
 #pragma region reflection

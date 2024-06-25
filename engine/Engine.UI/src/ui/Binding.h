@@ -1,9 +1,9 @@
 #pragma once
-#include "core/Exceptions.h"
-#include "core/string/String.h"
-#include "core/Observable.h"
 
-#include <regex>
+#include "core/collection/Array.h"
+#include "core/collection/List.h"
+#include "core/reflection/BaseProperty.h"
+#include "core/string/String.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

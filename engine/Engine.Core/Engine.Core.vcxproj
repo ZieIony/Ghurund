@@ -101,6 +101,8 @@
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\Color.h" />
     <ClInclude Include="src\core\Colors.h" />
+    <ClInclude Include="src\core\PointerWrapper.h" />
+    <ClInclude Include="src\core\SharedPointer2.h" />
     <ClInclude Include="src\core\state\State.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\Status.h" />
@@ -116,12 +118,11 @@
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
     <ClInclude Include="src\core\Lazy.h" />
-    <ClInclude Include="src\core\NamedObject.h" />
     <ClInclude Include="src\core\Noncopyable.h" />
     <ClInclude Include="src\core\Object.h" />
     <ClInclude Include="src\core\Observable.h" />
     <ClInclude Include="src\core\ObservableHandler.h" />
-    <ClInclude Include="src\core\Pointer.h" />
+    <ClInclude Include="src\core\RefCountedObject.h" />
     <ClInclude Include="src\core\Provider.h" />
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StackTrace.h" />
@@ -265,7 +266,7 @@
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
-    <ClCompile Include="src\core\Pointer.cpp" />
+    <ClCompile Include="src\core\RefCountedObject.cpp" />
     <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
@@ -294,7 +295,6 @@
     <ClCompile Include="src\core\resource\Resources.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
-    <ClCompile Include="src\core\threading\Task.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />

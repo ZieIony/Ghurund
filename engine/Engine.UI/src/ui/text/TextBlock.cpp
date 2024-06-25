@@ -1,11 +1,10 @@
 #include "ghuipch.h"
 #include "TextBlock.h"
 
+#include "core/reflection/Property.h"
 #include "core/reflection/UniqueProperty.h"
 #include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/theme/Theme.h"
-#include "ui/text/TextMetrics.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

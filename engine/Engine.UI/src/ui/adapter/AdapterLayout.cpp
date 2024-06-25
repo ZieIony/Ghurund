@@ -4,6 +4,7 @@
 #include "core/reflection/TypeBuilder.h"
 #include "ui/Canvas.h"
 #include "ui/constraint/ConstraintGraph.h"
+#include "ui/layout/LayoutManager.h"
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& AdapterLayout::GET_TYPE() {
@@ -36,6 +37,16 @@ namespace Ghurund::UI {
         canvas.restore();
     }
     
+    void AdapterLayout::resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+        if (layoutManager)
+            layoutManager->onLayout(0, 0, width.PreferredMax, height.PreferredMax);
+    }
+
+    void AdapterLayout::onLayout(float x, float y, float width, float height) {
+        if (layoutManager)
+            layoutManager->onLayout(x, y, width, height);
+    }
+
     void AdapterLayout::addChild(size_t adapterPosition, size_t groupPosition) {
         size_t type = itemAdapter->getType(adapterPosition);
         Control* control = [&]() {

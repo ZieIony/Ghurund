@@ -13,6 +13,7 @@
 
 #include <format>
 #include <ui/constraint/ConstraintLayout.h>
+#include <ui/constraint/SelfConstraint.h>
 
 using namespace UnitTest::Utils;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

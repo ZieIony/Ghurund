@@ -1,6 +1,9 @@
 #include "ghuipch.h"
 #include "HorizontalLayout.h"
 
+#include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
+
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& HorizontalLayout::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<HorizontalLayout>();

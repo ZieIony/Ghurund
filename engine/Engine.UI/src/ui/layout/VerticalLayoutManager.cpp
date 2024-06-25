@@ -1,19 +1,22 @@
 #include "ghuipch.h"
 #include "VerticalLayoutManager.h"
 
-#include <ui/constraint/PreviousConstraint.h>
+#include "ui/constraint/ContentConstraint.h"
+#include "ui/constraint/PreviousConstraint.h"
+#include "ui/constraint/ConstraintGraph.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::UI {
 
 	PartialConstraintSet VerticalLayoutManager::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
-			.width = makeShared<WrapWidthConstraint>(),
+			.width = makeShared<ContentWidthConstraint>(),
 			.top = [&]() {
 				auto constraint = makeShared<PreviousBottomConstraint>();
 				constraint->Offset = spacing;
 				return constraint;
 			}(),
-			.height = makeShared<WrapHeightConstraint>()
+			.height = makeShared<ContentHeightConstraint>()
 		};
 	}
 
@@ -24,6 +27,8 @@ namespace Ghurund::UI {
 			adapterLayout->addChild(topPosition, 0);
 			auto& child = children[0];
 			((ValueConstraint&)child.Constraints.Top).Value = children[1].Constraints.Top.Value - child.Constraints.Height.Value - Spacing;
+			ConstraintGraph graph;
+			((ValueConstraint&)child.Constraints.Bottom).resolve(*child.control.get(), graph);
 			((ValueConstraint&)child.Constraints.Bottom).evaluate();
 			child.control->layout(
 				0,
@@ -44,7 +49,7 @@ namespace Ghurund::UI {
 
 	void VerticalAdapterLayoutManager::addBottom(float height) {
 		ControlCollection& children = adapterLayout->Children;
-		while (bottomPosition < adapterLayout->ItemAdapter->Size - 1 && children[children.Size - 1].Constraints.Bottom.Value < height - scroll.y) {
+		while (bottomPosition < adapterLayout->ItemAdapter.Size - 1 && children[children.Size - 1].Constraints.Bottom.Value < height - scroll.y) {
 			bottomPosition++;
 			adapterLayout->addChild(bottomPosition, children.Size);
 			auto& child = children[children.Size - 1];
@@ -97,13 +102,13 @@ namespace Ghurund::UI {
 			if (topPosition == 0 && child.Constraints.Top.Value < scroll.y)
 				scroll.y = -child.Constraints.Top.Value;
 		} else {
-			if (bottomPosition == adapterLayout->ItemAdapter->Size - 1 && children[children.Size - 1].Constraints.Bottom.Value == height - scroll.y)
+			if (bottomPosition == adapterLayout->ItemAdapter.Size - 1 && children[children.Size - 1].Constraints.Bottom.Value == height - scroll.y)
 				return false;
 			scroll.y += dy;
 			addBottom(height);
 			removeTop();
 			auto& child = children[children.Size - 1];
-			if (bottomPosition == adapterLayout->ItemAdapter->Size - 1 && child.Constraints.Bottom.Value > height - scroll.y)
+			if (bottomPosition == adapterLayout->ItemAdapter.Size - 1 && child.Constraints.Bottom.Value > height - scroll.y)
 				scroll.y = height - child.Constraints.Top.Value;
 		}
 		return true;

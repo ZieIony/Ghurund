@@ -1,21 +1,16 @@
 #pragma once
 
-#include "Status.h"
-#include "MouseEvents.h"
-#include "core/resource/Resource.h"
 #include "core/Event.h"
+#include "core/input/EventConsumer.h"
 #include "core/math/Matrix3x2.h"
 #include "core/math/Size.h"
-#include "core/input/EventConsumer.h"
+#include "core/resource/Resource.h"
+#include "ui/Binding.h"
 #include "ui/Cursor.h"
 #include "ui/UIContext.h"
-#include "ui/style/AttrProperty.h"
 #include "ui/constraint/Constraint.h"
-#include "ui/constraint/ConstraintSet.h"
-#include "ui/constraint/ValueConstraint.h"
+#include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
-#include "ui/constraint/FlowConstraint.h"
-#include "ui/constraint/SelfConstraint.h"
 
 namespace tinyxml2 {
 	class XMLElement;
@@ -61,7 +56,7 @@ namespace Ghurund::UI {
 		Ghurund::Core::AString* name = nullptr;
 
 	protected:
-		Ghurund::Core::FloatSize contentSize = { 0, 0 };
+		ContentSize contentSize = Ghurund::UI::ContentSize(makeShared<WrapWidthConstraint>().get(), makeShared<WrapHeightConstraint>().get());
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
 		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 		FloatPoint position = { 0,0 }, scale = { 1,1 };
@@ -72,7 +67,7 @@ namespace Ghurund::UI {
 
 		Theme* localTheme = nullptr;
 
-		//List<Binding> bindings;
+		List<Binding> bindings;
 
 		Control() {}
 
@@ -259,11 +254,11 @@ namespace Ghurund::UI {
 
 		__declspec(property(get = getTransformation)) const Ghurund::Core::Matrix3x2& Transformation;
 
-		inline const Ghurund::Core::FloatSize& getContentSize() const {
+		inline ContentSize& getContentSize() {
 			return contentSize;
 		}
 
-		__declspec(property(get = getContentSize)) Ghurund::Core::FloatSize& ContentSize;
+		__declspec(property(get = getContentSize)) ContentSize& ContentSize;
 
 		inline const Ghurund::Core::FloatSize& getMinSize() const {
 			return minSize;
@@ -360,13 +355,12 @@ namespace Ghurund::UI {
 			return (Type == type) ? this : nullptr;
 		}
 
-		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {}
-
-		virtual void bind() {
-			/*for (Binding& b : bindings) {
-				Control* result = resolvePath(b.Path);
-			}*/
+		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) {
+			contentSize.Width.resolve(*this, graph);
+			contentSize.Height.resolve(*this, graph);
 		}
+
+		virtual void bind();
 
 		virtual FloatPoint getPositionInWindow();
 

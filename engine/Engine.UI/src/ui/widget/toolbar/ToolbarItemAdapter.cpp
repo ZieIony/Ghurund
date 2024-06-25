@@ -4,6 +4,7 @@
 #include <ui/widget/button/Button.h>
 #include "core/resource/ResourceManager.h"
 #include <ui/control/DrawableView.h>
+#include <core/PointerWrapper.h>
 
 namespace Ghurund::UI {
     Control* ToolbarItemAdapter::makeControl(size_t type) const {
@@ -21,11 +22,11 @@ namespace Ghurund::UI {
     void ToolbarItemAdapter::bind(Control& control, size_t position) const {
         Button& button = (Button&)control;
         DrawableView* drawableView = (DrawableView*)control.find("drawableView");
-        ButtonMenuItem* menuItem = (ButtonMenuItem*)Items[position];
+        auto& menuItem = (SharedPointer2<ButtonMenuItem>&)Items[position];
         button.Name = convertText<wchar_t, char>(menuItem->Text);
         drawableView->Drawable = menuItem->Image;
         button.clicked.clear();
-        button.clicked.add([menuItem](Control& sender, const MouseClickedEventArgs& args) {
+        button.clicked.add([&](Control& sender, const MouseClickedEventArgs& args) {
             menuItem->ClickEventHandler(sender);
             return true;
         });

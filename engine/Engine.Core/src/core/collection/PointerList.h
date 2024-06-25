@@ -1,7 +1,6 @@
 #pragma once
 
 #include "List.h"
-#include "core/Pointer.h"
 
 namespace Ghurund::Core {
     template<class Value> class PointerList:public List<Value> {

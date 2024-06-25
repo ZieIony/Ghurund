@@ -17,7 +17,11 @@ namespace Ghurund::UI {
 			return items;
 		}
 
-		__declspec(property(get = getItems)) const List<T>& Items;
+		inline void setItems(const List<T>& items) {
+			this->items = items;
+		}
+
+		__declspec(property(get = getItems, put = setItems)) const List<T>& Items;
 
 		virtual size_t getSize() const override {
 			return items.Size;

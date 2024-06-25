@@ -8,19 +8,19 @@
 namespace Ghurund::Core {
     class ConcurrentTaskQueue {
     private:
-        Queue<SharedPointer<Task>> queue;
+        Queue<SharedPointer2<Task>> queue;
         CriticalSection criticalSection;
 
     public:
-        inline void add(SharedPointer<Task> task) {
+        inline void add(SharedPointer2<Task> task) {
             criticalSection.enter();
             queue.add(task);
             criticalSection.leave();
         }
 
-        inline SharedPointer<Task> remove() {
+        inline SharedPointer2<Task> remove() {
             criticalSection.enter();
-            SharedPointer<Task> task;
+            SharedPointer2<Task> task;
             if (!queue.Empty) {
                 task = queue.front();
                 queue.remove();

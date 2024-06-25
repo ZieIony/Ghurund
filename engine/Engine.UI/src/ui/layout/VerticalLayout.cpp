@@ -1,7 +1,8 @@
 #include "ghuipch.h"
 #include "VerticalLayout.h"
 
-#include <ui/constraint/PreviousConstraint.h>
+#include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& VerticalLayout::GET_TYPE() {

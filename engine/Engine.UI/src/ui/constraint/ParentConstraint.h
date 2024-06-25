@@ -54,14 +54,7 @@ namespace Ghurund::UI {
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
 		virtual ParentRightConstraint* clone() const {
 			return ghnew ParentRightConstraint(*this);
@@ -120,14 +113,7 @@ namespace Ghurund::UI {
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = (*dependencies.begin())->Value + offset;
-			} else {
-				value = offset;
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
 		virtual ParentBottomConstraint* clone() const {
 			return ghnew ParentBottomConstraint(*this);
@@ -151,17 +137,13 @@ namespace Ghurund::UI {
 		inline static const Ghurund::Core::Type& TYPE = ParentWidthConstraint::GET_TYPE();
 #pragma endregion
 
+	private:
+		SharedPointer<Constraint> parentWidth, contentWidth;
+
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-			} else {
-				value = minMax(min, offset, max);
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
 		virtual ParentWidthConstraint* clone() const {
 			return ghnew ParentWidthConstraint(*this);
@@ -181,17 +163,13 @@ namespace Ghurund::UI {
 		inline static const Ghurund::Core::Type& TYPE = ParentHeightConstraint::GET_TYPE();
 #pragma endregion
 
+	private:
+		SharedPointer<Constraint> parentHeight, contentHeight;
+
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
-		virtual void evaluate() override {
-			if (!dependencies.Empty) {
-				value = minMax(min, (*dependencies.begin())->Value * ratio + offset, max);
-			} else {
-				value = minMax(min, offset, max);
-			}
-			evaluated = true;
-		}
+		virtual void evaluate() override;
 
 		virtual ParentHeightConstraint* clone() const {
 			return ghnew ParentHeightConstraint(*this);

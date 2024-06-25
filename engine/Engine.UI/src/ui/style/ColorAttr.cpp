@@ -5,7 +5,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ColorAttr::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorAttr))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>(NAMESPACE_NAME, GH_STRINGIFY(ColorAttr))
             .withModifiers(TypeModifier::ABSTRACT)
             .withSupertype(__super::GET_TYPE());
 
@@ -13,14 +13,14 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& ColorValue::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorValue))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>(NAMESPACE_NAME, GH_STRINGIFY(ColorValue))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
     const Ghurund::Core::Type& ColorRef::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Pointer>(NAMESPACE_NAME, GH_STRINGIFY(ColorRef))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>(NAMESPACE_NAME, GH_STRINGIFY(ColorRef))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
