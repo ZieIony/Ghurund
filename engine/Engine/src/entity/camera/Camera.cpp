@@ -2,10 +2,8 @@
 
 #include "Camera.h"
 
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
-#include "core/collection/PointerArray.h"
-#include "parameter/ParameterId.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 #include "core/reflection/TypeBuilder.h"
 
 #include <DirectXMath.h>
@@ -29,7 +27,7 @@ namespace Ghurund {
         XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
     }
 
-    Camera::Camera():parameters(PointerArray<Parameter*>(11)) {
+    Camera::Camera() {
         screenSize = { 640, 480 };
         fov = XM_PI / 4;
         zNear = 0.1f;
@@ -43,26 +41,38 @@ namespace Ghurund {
 
         float rotation = 0.0f;
         //setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+
+        parameters.put(parameterDirection = ghnew ValueParameter(CAMERA_DIRECTION, ParameterType::FLOAT3));
+        parameters.put(parameterPosition = ghnew ValueParameter(CAMERA_POSITION, ParameterType::FLOAT3));
+        parameters.put(parameterTarget = ghnew ValueParameter(CAMERA_TARGET, ParameterType::FLOAT3));
+        parameters.put(parameterUp = ghnew ValueParameter(CAMERA_UP, ParameterType::FLOAT3));
+        parameters.put(parameterRight = ghnew ValueParameter(CAMERA_RIGHT, ParameterType::FLOAT3));
+
+        parameters.put(parameterFov = ghnew ValueParameter(FOV, ParameterType::FLOAT));
+        parameters.put(parameterZNear = ghnew ValueParameter(ZNEAR, ParameterType::FLOAT));
+        parameters.put(parameterZFar = ghnew ValueParameter(ZFAR, ParameterType::FLOAT));
+
+        parameters.put(parameterView = ghnew ValueParameter(VIEW, ParameterType::MATRIX));
+        parameters.put(parameterProjection = ghnew ValueParameter(PROJECTION, ParameterType::MATRIX));
+        parameters.put(parameterViewProjection = ghnew ValueParameter(VIEW_PROJECTION, ParameterType::MATRIX));
+        parameters.put(parameterViewProjectionInv = ghnew ValueParameter(VIEW_PROJECTION_INV, ParameterType::MATRIX));
     }
 
-    void Camera::initParameters(ParameterManager& parameterManager) {
-        if (parameterDirection != nullptr)
-            return;
+    Camera::~Camera(){
+        parameterDirection->release();
+        parameterPosition->release();
+        parameterTarget->release();
+        parameterUp->release();
+        parameterRight->release();
 
-        int i = 0;
-        parameters.set(i++, parameterDirection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_DIRECTION.Value]);
-        parameters.set(i++, parameterPosition = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_POSITION.Value]);
-        parameters.set(i++, parameterUp = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_UP.Value]);
-        parameters.set(i++, parameterRight = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::CAMERA_RIGHT.Value]);
+        parameterFov->release();
+        parameterZNear->release();
+        parameterZFar->release();
 
-        parameters.set(i++, parameterFov = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::FOV.Value]);
-        parameters.set(i++, parameterZNear = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZNEAR.Value]);
-        parameters.set(i++, parameterZFar = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::ZFAR.Value]);
-
-        parameters.set(i++, parameterView = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW.Value]);
-        parameters.set(i++, parameterProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::PROJECTION.Value]);
-        parameters.set(i++, parameterViewProjection = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION.Value]);
-        parameters.set(i++, parameterViewProjectionInv = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::VIEW_PROJECTION_INV.Value]);
+        parameterView->release();
+        parameterProjection->release();
+        parameterViewProjection->release();
+        parameterViewProjectionInv->release();
     }
 
     void Camera::updateParameters() {
@@ -174,7 +184,7 @@ namespace Ghurund {
         XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
     }
 
-    Status Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
         //__super::loadInternal(context, workingDir, stream, options);
 
         memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
@@ -190,11 +200,9 @@ namespace Ghurund {
         zFar = stream.readFloat();
         memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
         pers = stream.readBoolean();
-
-        return Status::OK;
     }
 
-    Status Camera::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void Camera::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
         //__super::saveInternal(context, workingDir, stream, options);
 
         stream.writeBytes(&target, sizeof(target));
@@ -210,8 +218,6 @@ namespace Ghurund {
         stream.writeFloat(zFar);
         stream.writeBytes(&up, sizeof(up));
         stream.writeBoolean(pers);
-
-        return Status::OK;
     }
 
     const Ghurund::Core::Type& Camera::GET_TYPE() {

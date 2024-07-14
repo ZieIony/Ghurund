@@ -82,5 +82,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
-    typedef SharedPointer<VerticalScrollBar> VerticalScrollBarPtr;
+    typedef IntrusivePointer<VerticalScrollBar> VerticalScrollBarPtr;
 }

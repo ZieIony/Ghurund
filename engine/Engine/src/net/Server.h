@@ -7,7 +7,7 @@
 #include "core/Buffer.h"
 #include "core/Event.h"
 #include "core/collection/List.h"
-#include "core/collection/Map.h"
+#include "core/Exceptions.h"
 
 namespace Ghurund::Net {
     struct ClientDisconnection {
@@ -21,28 +21,28 @@ namespace Ghurund::Net {
 
         bool hosting = false;
 
-        Event<Server, Connection> onConnected = *this;
-        Event<Server, ClientDisconnection> onDisconnected = *this;
-        Event<Server, Connection> onNewClientConnection = *this;
+        virtual size_t getMessageSize(void* data, size_t size) override;
 
-        virtual Status getMessageSize(void* data, size_t size, size_t& messageSize) override;
-
-        virtual Status onUpdateMessage(Connection& connection, Message& message) override {
-            return Status::INV_PACKET;
+        virtual void onUpdateMessage(SharedPointer<Connection>& connection, Message& message) override {
+            throw NotImplementedException();
         }
 
-        virtual Status onReliableMessage(Connection& connection, Message& message) override;
+        virtual void onReliableMessage(SharedPointer<Connection>& connection, Message& message) override;
 
-        virtual Connection* onNewConnection(const tchar* address, uint16_t port);
+        virtual SharedPointer<Connection> onNewConnection(const String& address, uint16_t port);
 
         virtual void onConnectionLost(Connection& connection) override {
             onDisconnected(ClientDisconnection{ connection, DisconnectionReason::TIMEOUT });
         }
 
     public:
+        Event<Server, Connection> onConnected = *this;
+        Event<Server, ClientDisconnection> onDisconnected = *this;
+        Event<Server, Connection> onNewClientConnection = *this;
+
         ~Server();
 
-        Status host(uint16_t port = 0);
+        void host(uint16_t port = 0);
 
         void shutdown();
 
@@ -52,28 +52,10 @@ namespace Ghurund::Net {
 
         __declspec(property(get = isHosting)) bool Hosting;
 
-        inline Event<Server, Connection>& getOnConnected() {
-            return onConnected;
-        }
-
-        __declspec(property(get = getOnConnected)) Event<Server, Connection>& OnConnected;
-
-        inline Event<Server, ClientDisconnection>& getOnDisconnected() {
-            return onDisconnected;
-        }
-
-        __declspec(property(get = getOnDisconnected)) Event<Server, ClientDisconnection>& OnDisconnected;
-
-        inline Event<Server, Connection>& getOnNewClientConnection() {
-            return onNewClientConnection;
-        }
-
-        __declspec(property(get = getOnNewClientConnection)) Event<Server, Connection>& OnNewClientConnection;
-
-        inline List<Connection*>& getConnections() {
+        inline List<SharedPointer<Connection>>& getConnections() {
             return connections;
         }
 
-        __declspec(property(get = getConnections)) List<Connection*>& Connections;
+        __declspec(property(get = getConnections)) List<SharedPointer<Connection>>& Connections;
     };
 }

@@ -51,9 +51,9 @@ namespace Ghurund::UI::GDI {
 
         virtual bool isValid();
 
-        Status init(Image& image);
+        void init(Image& image);
 
-        Status init(Ghurund::Core::IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
+        void init(Ghurund::Core::IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
         inline Image* getImage() {
             return image;

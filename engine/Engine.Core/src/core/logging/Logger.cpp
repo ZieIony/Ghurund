@@ -3,10 +3,8 @@
 
 #include "Common.h"
 #include "Formatter.h"
+#include "core/StackTrace.h"
 
-#include <io.h>
-#include <fcntl.h>
-#include <process.h>
 #include <dbghelp.h>
 
 namespace Ghurund::Core {

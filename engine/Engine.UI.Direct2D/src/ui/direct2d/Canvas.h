@@ -27,7 +27,7 @@ namespace Ghurund::UI::Direct2D {
         ComPtr<ID2D1Effect> floodEffect;
 
     public:
-        Status init(ID2D1DeviceContext5& deviceContext);
+        void init(ID2D1DeviceContext5& deviceContext);
 
         void uninit();
 
@@ -63,13 +63,9 @@ namespace Ghurund::UI::Direct2D {
 
         virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) override;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, float alpha = 1.0f) override;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::UI::Color& color, float alpha = 1.0f) override;
-
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) override;
-
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::UI::Color& color, float alpha = 1.0f) override;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const Ghurund::UI::Color& color, float alpha = 1.0f) override;
 
         virtual void drawImage(VectorImage& svgDocument) override;
 
@@ -81,6 +77,8 @@ namespace Ghurund::UI::Direct2D {
         }
 
         virtual void translate(float x, float y) override;
+
+        virtual void scale(float sx, float sy) override;
 
         virtual void save() override;
 

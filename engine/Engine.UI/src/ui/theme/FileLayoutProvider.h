@@ -16,8 +16,8 @@ namespace Ghurund::UI {
 			const ResourcePath& path
 		): resourceManager(resourceManager), path(path) {}
 
-		virtual SharedPointer<Control> get() override {
-			return SharedPointer<Control>(resourceManager.load<Control>(path, DirectoryPath(), nullptr, LoadOption::DONT_CACHE));
+		virtual IntrusivePointer<Control> get() override {
+			return IntrusivePointer<Control>(resourceManager.load<Control>(path, DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		}
 	};
 }

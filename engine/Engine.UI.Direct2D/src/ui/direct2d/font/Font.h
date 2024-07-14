@@ -31,7 +31,7 @@ namespace Ghurund::UI::Direct2D {
         IDWriteFontCollection* collection = nullptr;
 
     public:
-        Status init(IDWriteFontCollection* collection) {
+        void init(IDWriteFontCollection* collection) {
             this->collection = collection;
 
             IDWriteFontFamily* fontFamily;
@@ -40,7 +40,7 @@ namespace Ghurund::UI::Direct2D {
             IDWriteLocalizedStrings* localizedStrings = nullptr;
             UINT32 fontCount = fontFamily->GetFontCount();
             if (FAILED(fontFamily->GetFamilyNames(&localizedStrings)))
-                return Status::CALL_FAIL;
+                throw CallFailedException();
             uint32_t strLength;
             localizedStrings[0].GetStringLength(0, &strLength);
             wchar_t* str = ghnew wchar_t[strLength + 1];
@@ -49,7 +49,6 @@ namespace Ghurund::UI::Direct2D {
             delete[] str;
 
             Valid = true;
-            return Status::OK;
         }
 
         IDWriteFontCollection* getCollection() {

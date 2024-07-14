@@ -37,13 +37,13 @@ namespace Ghurund::UI {
 				drawable.resolve(*theme);
 				if (drawable.get()) {
 					contentSize = Ghurund::UI::ContentSize(
-						makeShared<ValueConstraint>(drawable.get()->PreferredSize.Width).get(),
-						makeShared<ValueConstraint>(drawable.get()->PreferredSize.Height).get()
+						makeIntrusive<ValueConstraint>(drawable.get()->PreferredSize.Width).get(),
+						makeIntrusive<ValueConstraint>(drawable.get()->PreferredSize.Height).get()
 					);
 				} else {
 					contentSize = Ghurund::UI::ContentSize(
-						makeShared<ValueConstraint>().get(),
-						makeShared<ValueConstraint>().get()
+						makeIntrusive<ValueConstraint>().get(),
+						makeIntrusive<ValueConstraint>().get()
 					);
 				}
 			}

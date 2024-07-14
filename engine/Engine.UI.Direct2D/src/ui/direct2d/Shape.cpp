@@ -1,4 +1,4 @@
-#include "ghuidxpch.h"
+#include "ghuid2dpch.h"
 #include "Shape.h"
 
 #include <d2d1.h>

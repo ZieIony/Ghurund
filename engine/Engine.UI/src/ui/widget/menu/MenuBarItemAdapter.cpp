@@ -22,7 +22,7 @@ namespace Ghurund::UI {
     void MenuBarItemAdapter::bind(Control& control, size_t position) const {
         Button& button = (Button&)control;
         DrawableView* drawableView = (DrawableView*)control.find("drawableView");
-        auto& menuItem = (SharedPointer2<ButtonMenuItem>&)Items[position];
+        auto& menuItem = (SharedPointer<ButtonMenuItem>&)Items[position];
         button.Name = convertText<wchar_t, char>(menuItem->Text);
         drawableView->Drawable = menuItem->Image;
         button.clicked.clear();

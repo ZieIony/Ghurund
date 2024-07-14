@@ -18,7 +18,7 @@ namespace Ghurund::Core {
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
-        auto imageLoader = makeShared<ImageLoader>();
+        auto imageLoader = makeIntrusive<ImageLoader>();
         resourceManager.Loaders.set<Image>(imageLoader.get());
 
         features.init();
@@ -61,28 +61,29 @@ namespace Ghurund::Core {
         uint64_t time = timer.TimeMs;
         const uint32_t DT_MS = 10;
 
-        while (windows.Size != 0) {
-            handleMessages();
-            FunctionQueue.invoke();
-            resourceManager.reload();
+        try {
+            while (windows.Size != 0) {
+                handleMessages();
+                FunctionQueue.invoke();
+                resourceManager.reload();
 
-            timer.tick();
-            while (time + DT_MS < timer.TimeMs) {
-                time += DT_MS;
-                // TODO: per window
-                //scriptEngine->update(time);
+                timer.tick();
+                while (time + DT_MS < timer.TimeMs) {
+                    time += DT_MS;
+                    // TODO: per window
+                    //scriptEngine->update(time);
 
-                for (auto window : windows)
-                    window->update(time);
+                    for (auto window : windows)
+                        window->update(time);
+                }
+
+                for (auto window : windows) {
+                    if (window->Size.Width == 0 || window->Size.Height == 0)
+                        continue;
+                    window->paint();
+                }
             }
-
-            for (auto window : windows) {
-                if (window->Size.Width == 0 || window->Size.Height == 0)
-                    continue;
-                if (window->paint() != Status::OK)
-                    break;
-            }
-        }
+        } catch (...) {}
 
         running = false;
         onUninit();

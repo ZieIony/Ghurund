@@ -4,7 +4,7 @@
 
 #include "core/Observable.h"
 #include "core/BindableObservable.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/string/String.h"
 #include "core/string/TextConversionUtils.h"
 
@@ -92,7 +92,7 @@ public:
             String username = _T("username");
             Observable<String> observable = String(_T("empty"));
             uint32_t called = 0;
-            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
+            IntrusivePointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
             }));
@@ -115,7 +115,7 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
+            IntrusivePointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 calledFromHandler++;
                 Assert::AreEqual(value, observable.Value);
             }));
@@ -140,7 +140,7 @@ public:
                 called++;
                 Assert::AreEqual(value, observable.Value);
             });
-            SharedPointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
+            IntrusivePointer<ObservableHandler<String>> handler(ghnew ObservableHandler<String>([&](const String& value) {
                 called++;
                 Assert::AreEqual(value, observable.Value);
             }));

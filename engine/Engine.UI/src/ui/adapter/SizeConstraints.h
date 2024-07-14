@@ -5,11 +5,11 @@
 namespace Ghurund::UI {
     class SizeConstraints {
     public:
-        SharedPointer<Constraint> width, height;
+        IntrusivePointer<Constraint> width, height;
 
         SizeConstraints() {}
 
-        SizeConstraints(const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& height)
+        SizeConstraints(const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& height)
             :width(width), height(height) {}
     };
 }

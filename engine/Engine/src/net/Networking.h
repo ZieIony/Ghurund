@@ -27,21 +27,15 @@ namespace Ghurund::Net {
             WSACleanup();
         };
 
-        Server* host(uint16_t port = 0) {
-            Server* server = ghnew Server();
-            if (server->host(port) != Status::OK) {
-                delete server;
-                return nullptr;
-            }
+        SharedPointer<Server> host(uint16_t port = 0) {
+            auto server = makeShared<Server>();
+            server->host(port);
             return server;
         }
 
-        Client* connect(const tchar* address, uint16_t port) {
-            Client* client = ghnew Client();
-            if (client->connect(address, port) != Status::OK) {
-                delete client;
-                return nullptr;
-            }
+        SharedPointer<Client> connect(const tchar* address, uint16_t port) {
+            auto client = makeShared<Client>();
+            client->connect(address, port);
             return client;
         }
     };

@@ -1,14 +1,14 @@
 #pragma once
 
 #include "Common.h"
-#include "Status.h"
+#include "Connection.h"
 #include "Message.h"
 #include "Socket.h"
-#include "Connection.h"
+#include "core/Buffer.h"
+#include "core/Exceptions.h"
 #include "core/Noncopyable.h"
+#include "core/SharedPointer.h"
 #include "core/collection/List.h"
-
-#include <CRC.h>
 
 namespace Ghurund::Net {
     class ReliableUDP:public Noncopyable {
@@ -17,49 +17,49 @@ namespace Ghurund::Net {
         static constexpr uint32_t BUFFER_SIZE = 65535;
         Buffer buffer = Buffer(BUFFER_SIZE);
 
-        void confirmMessage(Connection& connection, Message& message);
+        void confirmMessage(SharedPointer<Connection>& connection, Message& message);
         void answerRefresh(Connection& connection);
-        bool isReceivedDuplicate(Connection& connection, uint8_t* messageData);
+        bool isReceivedDuplicate(SharedPointer<Connection>& connection, uint8_t* messageData);
 
-        void processUpdateMessage(Connection& connection, uint8_t* messageData);
-        Status processReliableMessage(Connection& connection, uint8_t* messageData, size_t messageSize);
-        void processConfirmMessage(Connection& connection, uint8_t* messageData, uint64_t time);
+        void processUpdateMessage(SharedPointer<Connection>& connection, uint8_t* messageData);
+        void processReliableMessage(SharedPointer<Connection>& connection, uint8_t* messageData, size_t messageSize);
+        void processConfirmMessage(SharedPointer<Connection>& connection, uint8_t* messageData, uint64_t time);
         void processRefreshMessage(Connection& connection, uint64_t time);
-        Status processMessages(Connection& connection, size_t size, uint64_t time);
-        Status processMessage(Connection& connection, uint8_t* messageData, size_t messageSize, uint64_t time);
+        void processMessages(SharedPointer<Connection>& connection, size_t size, uint64_t time);
+        void processMessage(SharedPointer<Connection>& connection, uint8_t* messageData, size_t messageSize, uint64_t time);
 
-        Status send(Connection& connection, Message* message, size_t messageSize);
+        void send(Connection& connection, Message* message, size_t messageSize);
 
-        void retryMessages(Connection* connection, uint64_t time);
+        void retryMessages(SharedPointer<Connection>& connection, uint64_t time);
 
     protected:
         Socket socket;
-        List<Connection*> connections;
+        List<SharedPointer<Connection>> connections;
 
-        virtual Status getMessageSize(void* data, size_t size, size_t& messageSize) {
-            return Status::INV_PACKET;
+        virtual size_t getMessageSize(void* data, size_t size) {
+            throw NotImplementedException();
         }
 
-        virtual Status onUpdateMessage(Connection& connection, Message& message) {
-            return Status::INV_PACKET;
+        virtual void onUpdateMessage(SharedPointer<Connection>& connection, Message& message) {
+            throw NotImplementedException();
         }
 
-        virtual Status onReliableMessage(Connection& connection, Message& message) {
-            return Status::INV_PACKET;
+        virtual void onReliableMessage(SharedPointer<Connection>& connection, Message& message) {
+            throw NotImplementedException();
         }
 
-        virtual Connection* onNewConnection(const tchar* address, uint16_t port) {
-            return nullptr;
+        virtual SharedPointer<Connection> onNewConnection(const tchar* address, uint16_t port) {
+            return makeShared<Connection>();
         }
 
         virtual void onConnectionLost(Connection& connection) {}
 
     public:
-        Status update(uint64_t time);
+        void update(uint64_t time);
 
         template<typename MessageType>
-        Status send(Connection& connection, MessageType* message) {
-            return send(connection, message, sizeof(MessageType));
+        void send(Connection& connection, MessageType* message) {
+            send(connection, message, sizeof(MessageType));
         }
     };
 }

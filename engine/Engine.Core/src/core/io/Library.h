@@ -1,10 +1,8 @@
 #pragma once
 
+#include "core/Buffer.h"
+#include "core/SharedPointer.h"
 #include "core/string/String.h"
-#include "core/io/FilePath.h"
-#include <core/io/File.h>
-
-#include <memory>
 
 namespace Ghurund::Core {
     class ResourcePath;
@@ -30,9 +28,9 @@ namespace Ghurund::Core {
 
         virtual ResourcePath getResourcePath(const size_t index) const = 0;
 
-        virtual std::shared_ptr<Buffer> get(const WString& path) = 0;
+        virtual SharedPointer<Buffer> get(const WString& path) = 0;
 
-        virtual std::shared_ptr<Buffer> get(const size_t index) = 0;
+        virtual SharedPointer<Buffer> get(const size_t index) = 0;
 
         virtual size_t getSize() const = 0;
 

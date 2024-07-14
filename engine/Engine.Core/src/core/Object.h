@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/string/String.h"
-#include "core/Lazy.h"
 
 namespace Ghurund::Core {
 	class Type;

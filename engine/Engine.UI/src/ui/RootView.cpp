@@ -82,8 +82,8 @@ namespace Ghurund::UI {
 
 	PartialConstraintSet RootView::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
-			.width = makeShared<WindowWidthConstraint>(context->Window),
-			.height = makeShared<WindowHeightConstraint>(context->Window)
+			.width = makeIntrusive<WindowWidthConstraint>(context->Window),
+			.height = makeIntrusive<WindowHeightConstraint>(context->Window)
 		};
 	}
 

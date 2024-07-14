@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/math/Size.h"
+#include "core/reflection/Type.h"
 #include "ui/image/VectorImage.h"
 
 #include <d2d1svg.h>

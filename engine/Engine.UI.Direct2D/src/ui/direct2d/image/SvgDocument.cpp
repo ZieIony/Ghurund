@@ -1,9 +1,11 @@
-#include "ghuidxpch.h"
+#include "ghuid2dpch.h"
 #include "SvgDocument.h"
 
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 
 #include <Shlwapi.h>
 #include <wrl.h>

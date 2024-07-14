@@ -32,9 +32,9 @@ namespace UnitTest {
 
         __declspec(property(get = getClusterMetrics)) Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> ClusterMetrics;
 
-        Status insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
+        void insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
 
-        Status removeTextAt(uint32_t position, uint32_t lengthToRemove);
+        void removeTextAt(uint32_t position, uint32_t lengthToRemove);
 
         HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit) {
             return {};
@@ -48,9 +48,8 @@ namespace UnitTest {
             return {};
         }
 
-        Status refresh() {
+        void refresh() {
             //size = { text.Length * 10.0f, format->Size };
-            return Status::OK;
         }
 
         void draw(ICanvas& canvas) {}

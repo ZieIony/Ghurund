@@ -6,6 +6,7 @@
 #include "test/MemoryGuard.h"
 
 #include "core/resource/ResourceManager.h"
+#include "core/string/TextConversionUtils.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -16,11 +17,11 @@ namespace UnitTest {
 	TEST_CLASS(ResourceManagerTest) {
 private:
 	ResourceManager resourceManager;
-	SharedPointer<TestLoader> testLoader;
+	IntrusivePointer<TestLoader> testLoader;
 
 public:
 	ResourceManagerTest() {
-		testLoader = makeShared<TestLoader>();
+		testLoader = makeIntrusive<TestLoader>();
 		resourceManager.Loaders.set<TestResource>(testLoader.get());
 		resourceManager.Libraries.add(std::make_unique<TestLibrary>());
 	}
@@ -34,7 +35,7 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			SharedPointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -52,8 +53,8 @@ public:
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
-			SharedPointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
-			SharedPointer<TestResource> resource2(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
+			IntrusivePointer<TestResource> resource2(resourceManager.load<TestResource>(ResourcePath(L"test", L"testpath"), DirectoryPath()));
 			Assert::IsTrue(resource.get() == resource2.get());
 			Assert::AreEqual(getCalls + 1, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -73,7 +74,7 @@ public:
 
 			File file(FilePath(L"../../resources/test/testresource.txt"));
 
-			SharedPointer<TestResource> resource(resourceManager.load<TestResource>(file));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(file));
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);
@@ -93,7 +94,7 @@ public:
 
 			Buffer buffer((const void*)"test", 5);
 
-			SharedPointer<TestResource> resource(resourceManager.load<TestResource>(buffer, DirectoryPath()));
+			IntrusivePointer<TestResource> resource(resourceManager.load<TestResource>(buffer, DirectoryPath()));
 			Assert::AreEqual(resource->text, AString("test"));
 			Assert::AreEqual(getCalls, library.getCalls);
 			Assert::AreEqual(loadCalls + 1, testLoader->loadCalls);

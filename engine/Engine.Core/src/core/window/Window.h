@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Status.h"
 #include "core/Object.h"
 #include "core/reflection/Type.h"
 #include "core/input/EventConsumer.h"
@@ -9,7 +8,6 @@
 #include "core/math/Size.h"
 #include "core/Observable.h"
 #include "core/window/WindowStyle.h"
-#include "core/reflection/StandardTypes.h"
 
 namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
@@ -218,8 +216,6 @@ namespace Ghurund::Core {
 
         virtual void update(const uint64_t time) {}
 
-        virtual Status paint() {
-            return Status::OK;
-        }
+        virtual void paint() {}
   };
 }

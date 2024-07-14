@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/collection/Set.h"
 
 namespace Ghurund::UI {

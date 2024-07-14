@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TabItemAdapter.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "ui/adapter/AdapterLayout.h"
 //#include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/ContentWidget.h"
@@ -45,7 +45,7 @@ namespace Ghurund::UI {
                 selectedTab->Selected = true;
             }
             TabItem* tab = tabs[position];
-            //content.Value = SharedPointer<Control>(tab->content);
+            //content.Value = IntrusivePointer<Control>(tab->content);
             tab->content->requestLayout();
         }
 

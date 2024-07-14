@@ -7,7 +7,7 @@ namespace Ghurund::UI {
     template<class StringType>
     class StringPropertyRow: public PropertyRow {
     private:
-        SharedPointer<TextField> textField;
+        IntrusivePointer<TextField> textField;
 
     public:
         StringPropertyRow() {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ghcpch.h>
+#include "Ghurund.Core.DirectX.h"
 
 #include <DirectXMath.h>
 

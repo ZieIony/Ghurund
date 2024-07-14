@@ -1,6 +1,11 @@
 #include "ghcpch.h"
 #include "ThreadPoolExecutor.h"
 
+#include "core/SystemInfo.h"
+#include "core/logging/Logger.h"
+
+#include <format>
+
 namespace Ghurund::Core {
 
     void ThreadPoolExecutor::PoolThread::run() {
@@ -20,25 +25,25 @@ namespace Ghurund::Core {
     }
 
     // returns max depth
-    size_t ThreadPoolExecutor::flattenTaskGraph(SharedPointer2<Task>& task, List<TaskExecution>& taskList) {
+    size_t ThreadPoolExecutor::flattenTaskGraph(SharedPointer<Task>& task, List<TaskExecution>& taskList) {
         size_t depth = 0;
-        for (SharedPointer2<Task>& t : task->Dependencies)
+        for (SharedPointer<Task>& t : task->Dependencies)
             depth = std::max(depth, flattenTaskGraph(t, taskList) + 1);
         taskList.add({ task, depth });
         return depth;
     }
 
-    void ThreadPoolExecutor::onTaskFinished(PoolThread& thread, SharedPointer2<Task>& justFinished) {
+    void ThreadPoolExecutor::onTaskFinished(PoolThread& thread, SharedPointer<Task>& justFinished) {
         busyThreads.remove(&thread);
         waitingThreads.add(&thread);
         for (size_t i = 0; i < tasks.Size; i++) {
-            LinkedList<SharedPointer2<Task>>& taskList = tasks[i];
+            LinkedList<SharedPointer<Task>>& taskList = tasks[i];
             for (size_t j = 0; j < taskList.Size;j++) {
                 if (taskList[j] == justFinished) {
                     if (justFinished->ExecutionStatus == ExecutionStatus::SUCCEEDED) {
                         taskList.removeAt(j);
                     } else {
-                        for (SharedPointer2<Task>& t2 : taskList)
+                        for (SharedPointer<Task>& t2 : taskList)
                             t2->skip();
                         tasks.removeAt(i);
                     }
@@ -48,9 +53,9 @@ namespace Ghurund::Core {
         }
     }
 
-    SharedPointer2<Task> ThreadPoolExecutor::findNextTask() {
-        for (LinkedList<SharedPointer2<Task>>& taskList : tasks) {
-            SharedPointer2<Task>& t = taskList.front();
+    SharedPointer<Task> ThreadPoolExecutor::findNextTask() {
+        for (LinkedList<SharedPointer<Task>>& taskList : tasks) {
+            SharedPointer<Task>& t = taskList.front();
             if (t->Tag && isTagUsed(t->Tag))
                 continue;
             if (taskList.Empty)
@@ -63,7 +68,7 @@ namespace Ghurund::Core {
     bool ThreadPoolExecutor::queueNextTask() {
         if (waitingThreads.Empty)
             return false;
-        SharedPointer2<Task> task = findNextTask();
+        SharedPointer<Task> task = findNextTask();
         if (&task == nullptr)
             return false;
         PoolThread* thread = waitingThreads[0];
@@ -93,14 +98,14 @@ namespace Ghurund::Core {
             delete threads[i];
     }
 
-    void ThreadPoolExecutor::post(SharedPointer2<Task> task) {
+    void ThreadPoolExecutor::post(SharedPointer<Task> task) {
         List<TaskExecution> taskList;
         flattenTaskGraph(task, taskList);
         std::sort(taskList.begin(), taskList.end(), [](TaskExecution& a, TaskExecution& b)->bool {
             return a.dependencies < b.dependencies;
         });
         section.enter();
-        LinkedList<SharedPointer2<Task>> taskLinkedList;
+        LinkedList<SharedPointer<Task>> taskLinkedList;
         for(auto& t:taskList)
             taskLinkedList.add(t.task);
         tasks.add(taskLinkedList);

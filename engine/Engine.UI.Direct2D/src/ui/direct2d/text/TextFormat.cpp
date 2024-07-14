@@ -1,8 +1,8 @@
-#include "ghuidxpch.h"
+#include "ghuid2dpch.h"
 #include "TextFormat.h"
 
+#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
-#include "ui/direct2d/font/FontCollectionLoader.h"
 
 #include <commdlg.h>
 #include <dwrite.h>
@@ -20,7 +20,7 @@ namespace Ghurund::UI::Direct2D {
             format->Release();
     }
 
-    Status TextFormat::init(IDWriteFactory5& dwriteFactory) {
+    void TextFormat::init(IDWriteFactory5& dwriteFactory) {
         if (FAILED(dwriteFactory.CreateTextFormat(
             Font->FamilyName.Data,
             ((Ghurund::UI::Direct2D::Font*)Font)->Collection,
@@ -29,15 +29,19 @@ namespace Ghurund::UI::Direct2D {
             DWRITE_FONT_STRETCH_NORMAL,
             Size * 96.0f / 72.0f,
             Locale.Data,
-            &format)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateTextFormat failed\n"));
+            &format))) {
+            Logger::log(LogType::ERR0R, _T("CreateTextFormat failed\n"));
+            throw CallFailedException();
+        }
 
-        if (FAILED(format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("SetTextAlignment failed\n"));
+        if (FAILED(format->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING))) {
+            Logger::log(LogType::ERR0R, _T("SetTextAlignment failed\n"));
+            throw CallFailedException();
+        }
 
-        if (FAILED(format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("SetParagraphAlignment failed\n"));
-
-        return Status::OK;
+        if (FAILED(format->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR))) {
+            Logger::log(LogType::ERR0R, _T("SetParagraphAlignment failed\n"));
+            throw CallFailedException();
+        }
     }
 }

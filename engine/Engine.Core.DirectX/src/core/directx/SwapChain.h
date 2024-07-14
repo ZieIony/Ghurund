@@ -52,7 +52,7 @@ namespace Ghurund::Core::DirectX {
 
         void init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
 
-        Status initBuffers();
+        void initBuffers();
 
         void uninitBuffers();
 
@@ -68,8 +68,8 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getCurrentFrame)) Frame& CurrentFrame;
 
-        Status present();
+        void present();
 
-        Status resize(const IntSize& size);
+        void resize(const IntSize& size);
     };
 }

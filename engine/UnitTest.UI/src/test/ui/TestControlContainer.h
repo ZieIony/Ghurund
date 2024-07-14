@@ -9,8 +9,8 @@ namespace UnitTest {
 
 	class TestControlContainer:public ControlContainer {
 	private:
-		SharedPointer<ValueConstraint> widthConstraint = makeShared<ValueConstraint>(1000.0f);
-		SharedPointer<ValueConstraint> heightConstraint = makeShared<ValueConstraint>(800.0f);
+		IntrusivePointer<ValueConstraint> widthConstraint = makeIntrusive<ValueConstraint>(1000.0f);
+		IntrusivePointer<ValueConstraint> heightConstraint = makeIntrusive<ValueConstraint>(800.0f);
 
 	public:
 		void resolveConstraints() {

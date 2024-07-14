@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ghurund.UI.h"
+#include "Common.h"
 #include "ui/gdi/Gdi.h"
 
 #pragma comment(lib, "Kernel32.lib")
@@ -12,3 +12,7 @@
 #else
 #pragma comment(lib, "Ghurund.UI.GDI_32.lib")
 #endif
+
+namespace Ghurund::UI::GDI {
+    inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::UI::GDI);
+}

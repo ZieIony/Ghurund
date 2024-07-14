@@ -39,8 +39,8 @@ namespace Ghurund {
 
         void init(uint32_t width, uint32_t height);
 
-        Status render(DrawableComponent& entity, Ghurund::Core::Image*& image);
-        Status render(Mesh& mesh, Ghurund::Core::Image*& image);
-        Status render(Material& material, Ghurund::Core::Image*& image);
+        void render(DrawableComponent& entity, Ghurund::Core::Image*& image);
+        void render(Mesh& mesh, Ghurund::Core::Image*& image);
+        void render(Material& material, Ghurund::Core::Image*& image);
     };
 }

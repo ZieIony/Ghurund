@@ -10,13 +10,13 @@ namespace Ghurund::UI {
 
 	PartialConstraintSet VerticalLayoutManager::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
-			.width = makeShared<ContentWidthConstraint>(),
+			.width = makeIntrusive<ContentWidthConstraint>(),
 			.top = [&]() {
-				auto constraint = makeShared<PreviousBottomConstraint>();
+				auto constraint = makeIntrusive<PreviousBottomConstraint>();
 				constraint->Offset = spacing;
 				return constraint;
 			}(),
-			.height = makeShared<ContentHeightConstraint>()
+			.height = makeIntrusive<ContentHeightConstraint>()
 		};
 	}
 

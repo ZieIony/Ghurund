@@ -2,13 +2,10 @@
 
 #include "Common.h"
 #include "Formatter.h"
-#include "Status.h"
 #include "LogType.h"
 #include "LogOutput.h"
 #include "core/Noncopyable.h"
-#include "core/StackTrace.h"
 #include "core/threading/CriticalSection.h"
-#include "core/Object.h"
 
 namespace Ghurund::Core {
     class Logger:public Noncopyable {
@@ -29,11 +26,6 @@ namespace Ghurund::Core {
         }
 
         static void log(const LogType& type, const tchar* text);
-
-        static inline Status log(const LogType& type, const Status status, const tchar* text) {
-            log(type, text);
-            return status;
-        }
 
         static inline void print(const LogType& type, const tchar* text) {
             if (((int)type.Value) < (int)filterLevel)

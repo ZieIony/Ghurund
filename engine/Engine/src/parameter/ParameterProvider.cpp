@@ -3,15 +3,11 @@
 #include "ParameterProvider.h"
 
 #include "TextureParameter.h"
-#include "ValueParameter.h"
-#include "core/SharedPointer.h"
-#include "core/resource/ResourceManager.h"
-#include "core/directx/texture/Texture.h"
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 
 namespace Ghurund {
-    Status ParameterProvider::loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+    void ParameterProvider::loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
       /*  size_t paramCount = stream.readUInt();
         for (size_t i = 0; i < paramCount; i++) {
             char* name = stream.readASCII();
@@ -24,7 +20,7 @@ namespace Ghurund {
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {
                 if (stream.readBoolean()) {
                     Status result;
-                    SharedPointer<Texture> resource = (Texture*)context.ResourceManager.load(context, workingDir, stream, &result, options);
+                    IntrusivePointer<Texture> resource = (Texture*)context.ResourceManager.load(context, workingDir, stream, &result, options);
                     if (filterStatus(result, options) != Status::OK)
                         return result;
                     ((TextureParameter*)p)->setValue(resource);
@@ -36,10 +32,10 @@ namespace Ghurund {
         }
 
         return Status::OK;*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status ParameterProvider::saveParameters(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+    void ParameterProvider::saveParameters(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
        /* List<Parameter*> paramsToSave;
         for (Parameter* p : Parameters) {
             if (p->Empty)
@@ -63,6 +59,6 @@ namespace Ghurund {
         }
 
         return Status::OK;*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 }

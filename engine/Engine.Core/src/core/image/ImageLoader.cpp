@@ -1,6 +1,8 @@
 #include "ghcpch.h"
 #include "ImageLoader.h"
 
+#include "core/logging/Logger.h"
+
 #include <wrl.h>
 
 namespace Ghurund::Core {
@@ -149,7 +151,7 @@ namespace Ghurund::Core {
     Image* ImageLoader::load(
         Ghurund::Core::MemoryInputStream& stream,
         const DirectoryPath& workingDir,
-        const Ghurund::Core::ResourceFormat* format,
+        const Ghurund::Core::ResourceFormat& format,
         Ghurund::Core::LoadOption options
     ) {
         IWICBitmapDecoder* wicDecoder = nullptr;
@@ -229,7 +231,7 @@ namespace Ghurund::Core {
         Ghurund::Core::MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Ghurund::Core::Resource& resource,
-        const Ghurund::Core::ResourceFormat* format,
+        const Ghurund::Core::ResourceFormat& format,
         Ghurund::Core::SaveOption options
     ) const {
         if (resource.Type != Image::GET_TYPE()) {
@@ -239,7 +241,7 @@ namespace Ghurund::Core {
 
         Image& image = (Image&)resource;
 
-        GUID guidContainerFormat = (!format || *format == Image::FORMAT_PNG) ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
+        GUID guidContainerFormat = (format == ResourceFormat::AUTO || format == Image::FORMAT_PNG) ? GUID_ContainerFormatPng : GUID_ContainerFormatJpeg;
 
         UINT64 dstRowPitch = image.Data.Size / image.Height;// (fpRowPitch + 255) & ~0xFF;
 

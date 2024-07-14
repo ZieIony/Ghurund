@@ -56,7 +56,7 @@ namespace Ghurund::UI {
 		Ghurund::Core::AString* name = nullptr;
 
 	protected:
-		ContentSize contentSize = Ghurund::UI::ContentSize(makeShared<WrapWidthConstraint>().get(), makeShared<WrapHeightConstraint>().get());
+		ContentSize contentSize = Ghurund::UI::ContentSize(makeIntrusive<WrapWidthConstraint>().get(), makeIntrusive<WrapHeightConstraint>().get());
 		Ghurund::Core::FloatSize minSize = { 0, 0 };
 		Ghurund::Core::FloatSize maxSize = { std::numeric_limits<float>::max(), std::numeric_limits<float>::max() };
 		FloatPoint position = { 0,0 }, scale = { 1,1 };

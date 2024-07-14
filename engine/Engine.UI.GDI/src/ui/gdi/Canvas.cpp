@@ -4,7 +4,7 @@
 #include "ui/gdi/Shape.h"
 
 namespace Ghurund::UI::GDI {
-    Status Canvas::init(HWND hwnd) {
+    void Canvas::init(HWND hwnd) {
         this->hwnd = hwnd;
         BufferedPaintInit();
         pen = new Gdiplus::Pen(Gdiplus::Color());
@@ -18,8 +18,6 @@ namespace Ghurund::UI::GDI {
             1.0f, 1.0f, 1.0f, 0.0f, 1.0f
         };
         matrix = new Gdiplus::Matrix();
-
-        return Status::OK;
     }
 
     void Canvas::uninit() {
@@ -90,19 +88,6 @@ namespace Ghurund::UI::GDI {
     }
     
     void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
-        /*tintEffect->SetInput(0, bitmapImage);
-        D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
-        tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
-        deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);*/
-    }
-    
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha) {
-        /*D2D1_RECT_F s = {src.left, src.top, src.right, src.bottom};
-        D2D1_RECT_F d = { dst.left, dst.top, dst.right, dst.bottom };
-        deviceContext->DrawBitmap(bitmapImage, d, alpha, D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC, s);*/
-    }
-    
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);

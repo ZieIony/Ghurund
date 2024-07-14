@@ -5,7 +5,7 @@
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/Property.h"
 
-#include <gdiplus.h>
+#include "ui/gdi/Gdi.h"
 
 namespace Ghurund::Core {
     template<>
@@ -53,17 +53,15 @@ namespace Ghurund::UI::GDI {
         return bitmapImage && image && image->Valid && __super::Valid;
     }
 
-    Status Bitmap::init(Ghurund::Core::Image& image) {
+    void Bitmap::init(Ghurund::Core::Image& image) {
         setPointer(this->image, &image);
 
         bitmapImage = new Gdiplus::Bitmap(image.Width, image.Height, image.RowPitch, PixelFormat32bppARGB, image.Data.Data);
 
         Valid = true;
-
-        return Status::OK;
     }
 
-    Status Bitmap::init(Ghurund::Core::IntSize size, DXGI_FORMAT format) {
+    void Bitmap::init(Ghurund::Core::IntSize size, DXGI_FORMAT format) {
         if (image) {
             image->release();
             image = nullptr;
@@ -72,8 +70,6 @@ namespace Ghurund::UI::GDI {
         bitmapImage = new Gdiplus::Bitmap(size.Width, size.Height, PixelFormat32bppARGB);
 
         Valid = true;
-
-        return Status::OK;
     }
 
     Ghurund::Core::IntSize Bitmap::getSize() const {

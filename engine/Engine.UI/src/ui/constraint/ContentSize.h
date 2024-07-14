@@ -5,7 +5,7 @@
 namespace Ghurund::UI {
 	class ContentSize {
 	private:
-		SharedPointer<Constraint> width, height;
+		IntrusivePointer<Constraint> width, height;
 
 	public:
 		ContentSize(

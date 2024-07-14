@@ -40,10 +40,10 @@ public:
 	TEST_METHOD(wrapEmpty) {
 		MemoryGuard guard;
 		{
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Constraints = {
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 			};
 
 			ConstraintGraph graph;
@@ -59,17 +59,17 @@ public:
 	TEST_METHOD(wrapEmptyMinRatioOffset) {
 		MemoryGuard guard;
 		{
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Constraints = {
 				.width = []() {
-					auto c = makeShared<WrapWidthConstraint>();
+					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
 				.height = []() {
-					auto c = makeShared<WrapHeightConstraint>();
+					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
@@ -90,23 +90,23 @@ public:
 	TEST_METHOD(wrapChildren) {
 		MemoryGuard guard;
 		{
-			auto child1 = makeShared<ColorView>();
+			auto child1 = makeIntrusive<ColorView>();
 			child1->Constraints = {
 				.width = 100.0f,
 				.height = 75.0f
 			};
 
-			auto child2 = makeShared<ColorView>();
+			auto child2 = makeIntrusive<ColorView>();
 			child2->Constraints = {
 				.width = 150.0f,
 				.height = 50.0f
 			};
 
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Children.addAll({ child1.get(), child2.get() });
 			group->Constraints = {
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 			};
 
 			ConstraintGraph graph;
@@ -122,22 +122,22 @@ public:
 	TEST_METHOD(wrapChildrenValueFill) {
 		MemoryGuard guard;
 		{
-			auto child1 = makeShared<ColorView>();
+			auto child1 = makeIntrusive<ColorView>();
 			child1->Constraints = {
 				.width = 100.0f,
 				.height = 75.0f
 			};
-			auto child2 = makeShared<ColorView>();
+			auto child2 = makeIntrusive<ColorView>();
 			child2->Constraints = {
-				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<ParentHeightConstraint>()
+				.width = makeIntrusive<ParentWidthConstraint>(),
+				.height = makeIntrusive<ParentHeightConstraint>()
 			};
 
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Children.addAll({ child1.get(), child2.get() });
 			group->Constraints = {
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 			};
 
 			ConstraintGraph graph;
@@ -155,37 +155,37 @@ public:
 	TEST_METHOD(wrapChildrenComplexOffset) {
 		MemoryGuard guard;
 		{
-			auto child1 = makeShared<ColorView>();
+			auto child1 = makeIntrusive<ColorView>();
 			child1->Constraints = {
-				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<ParentHeightConstraint>()
+				.width = makeIntrusive<ParentWidthConstraint>(),
+				.height = makeIntrusive<ParentHeightConstraint>()
 			};
-			auto child2 = makeShared<ColorView>();
+			auto child2 = makeIntrusive<ColorView>();
 			child2->Constraints = {
 				.left = [] {
-						auto constraint = makeShared<ParentLeftConstraint>();
+						auto constraint = makeIntrusive<ParentLeftConstraint>();
 						constraint->Offset = 8;
 						return constraint;
 					}(),
 				.width = 150.0f,
 				.top = [] {
-						auto constraint = makeShared<ParentTopConstraint>();
+						auto constraint = makeIntrusive<ParentTopConstraint>();
 						constraint->Offset = 4;
 						return constraint;
 					}(),
 				.height = 50.0f
 			};
 
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Children.addAll({ child1.get(), child2.get() });
 			group->Constraints = {
 				.width = [] {
-						auto constraint = makeShared<WrapWidthConstraint>();
+						auto constraint = makeIntrusive<WrapWidthConstraint>();
 						constraint->Offset = 8;
 						return constraint;
 					}(),
 				.height = [] {
-						auto constraint = makeShared<WrapHeightConstraint>();
+						auto constraint = makeIntrusive<WrapHeightConstraint>();
 						constraint->Offset = 4;
 						return constraint;
 					}()
@@ -216,34 +216,34 @@ public:
 	TEST_METHOD(wrapChildrenFillMinRatioOffset) {
 		MemoryGuard guard;
 		{
-			auto child1 = makeShared<ColorView>();
+			auto child1 = makeIntrusive<ColorView>();
 			child1->Constraints = {
 				.width = []() {
-					auto c = makeShared<WrapWidthConstraint>();
+					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
 				.height = []() {
-					auto c = makeShared<WrapHeightConstraint>();
+					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}()
 			};
-			auto child2 = makeShared<ColorView>();
+			auto child2 = makeIntrusive<ColorView>();
 			child2->Constraints = {
 				.width = []() {
-					auto c = makeShared<WrapWidthConstraint>();
+					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 150;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
 				.height = []() {
-					auto c = makeShared<WrapHeightConstraint>();
+					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 50;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
@@ -251,11 +251,11 @@ public:
 				}()
 			};
 
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			group->Children.addAll({ child1.get(), child2.get() });
 			group->Constraints = {
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 			};
 
 			ConstraintGraph graph;

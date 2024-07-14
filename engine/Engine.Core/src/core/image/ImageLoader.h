@@ -32,7 +32,7 @@ namespace Ghurund::Core {
         virtual Image* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override;
 
@@ -40,7 +40,7 @@ namespace Ghurund::Core {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
         ) const override;
     };

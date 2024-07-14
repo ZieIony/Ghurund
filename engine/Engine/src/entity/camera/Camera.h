@@ -1,15 +1,12 @@
 #pragma once
 
-#include "core/io/MemoryStream.h"
-#include "core/resource/Resource.h"
+#include "core/IntrusivePointer.h"
+#include "core/resource/ResourceFormat.h"
+#include "entity/TransformComponent.h"
 #include "parameter/ParameterProvider.h"
 #include "parameter/ValueParameter.h"
-#include "core/directx/Graphics.h"
 
 #include <DirectXMath.h>
-
-#include "entity/Entity.h"
-#include "entity/TransformComponent.h"
 
 namespace Ghurund {
     using namespace ::DirectX;
@@ -34,29 +31,36 @@ namespace Ghurund {
         float fov, zNear, zFar, dist;
         bool pers;
 
-        ValueParameter* parameterDirection = nullptr, *parameterPosition;
-        ValueParameter* parameterUp, * parameterRight;
-        ValueParameter* parameterFov;
-        ValueParameter* parameterZNear, * parameterZFar;
-        ValueParameter* parameterView, * parameterProjection, * parameterViewProjection, * parameterViewProjectionInv;
-
-        PointerArray<Parameter*> parameters;
+        ValueParameter* parameterDirection = nullptr, * parameterPosition = nullptr, * parameterTarget = nullptr;
+        ValueParameter* parameterUp = nullptr, * parameterRight = nullptr;
+        ValueParameter* parameterFov = nullptr;
+        ValueParameter* parameterZNear = nullptr, * parameterZFar = nullptr;
+        ValueParameter* parameterView = nullptr, * parameterProjection = nullptr;
+        ValueParameter* parameterViewProjection = nullptr, * parameterViewProjectionInv = nullptr;
 
     protected:
-        virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
+        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
+        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
     public:
+        inline static const AString CAMERA_DIRECTION = "cameraDirection";
+        inline static const AString CAMERA_POSITION = "cameraPosition";
+        inline static const AString CAMERA_TARGET = "cameraTarget";
+        inline static const AString CAMERA_UP = "cameraUp";
+        inline static const AString CAMERA_RIGHT = "cameraRight";
+        inline static const AString FOV = "fov";
+        inline static const AString ZNEAR = "zNear";
+        inline static const AString ZFAR = "zFar";
+        inline static const AString VIEW = "view";
+        inline static const AString PROJECTION = "projection";
+        inline static const AString VIEW_PROJECTION = "viewProjection";
+        inline static const AString VIEW_PROJECTION_INV = "viewProjectionInv";
 
         Camera();
 
-        virtual void initParameters(ParameterManager& parameterManager);
+        ~Camera();
 
         virtual void updateParameters();
-
-        virtual const PointerArray<Parameter*>& getParameters() const override {
-            return parameters;
-        }
 
         void rebuild(TransformComponent& transformComponent);
 

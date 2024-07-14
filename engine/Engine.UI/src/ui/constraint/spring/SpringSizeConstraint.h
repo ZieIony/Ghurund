@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 
 	private:
 		float weight = 1.0f, totalWeight = 0.0f;
-		SharedPointer<Constraint> parentWidth;
+		IntrusivePointer<Constraint> parentWidth;
 
 	public:
 		inline float getWeight() const {

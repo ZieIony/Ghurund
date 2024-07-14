@@ -18,13 +18,13 @@ namespace Ghurund::Net {
         Event<Client> onConnected = *this;
         Event<Client, DisconnectionReason> onDisconnected = *this;
 
-        virtual Status getMessageSize(void* data, size_t size, size_t& messageSize) override;
+        virtual size_t getMessageSize(void* data, size_t size) override;
 
-        virtual Status onUpdateMessage(Connection& connection, Message& message) override {
-            return Status::INV_PACKET;
+        virtual void onUpdateMessage(SharedPointer<Connection>& connection, Message& message) override {
+            throw NotImplementedException();
         }
 
-        virtual Status onReliableMessage(Connection& connection, Message& message) override;
+        virtual void onReliableMessage(SharedPointer<Connection>& connection, Message& message) override;
 
         virtual void onConnectionLost(Connection& connection) override {
             connected = false;
@@ -34,7 +34,7 @@ namespace Ghurund::Net {
     public:
         ~Client();
 
-        Status connect(const tchar* address, uint16_t port);
+        void connect(const tchar* address, uint16_t port);
 
         void disconnect();
 
@@ -63,8 +63,8 @@ namespace Ghurund::Net {
         __declspec(property(get = getOnDisconnected)) Event<Client, DisconnectionReason>& OnDisconnected;
 
         template<typename MessageType>
-        Status send(MessageType* message) {
-            return __super::send(*connections[0], message);
+        void send(MessageType* message) {
+            __super::send(*connections[0].get(), message);
         }
     };
 }

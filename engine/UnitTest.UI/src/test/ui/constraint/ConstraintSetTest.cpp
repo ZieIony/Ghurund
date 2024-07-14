@@ -29,12 +29,12 @@ public:
 		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto left = makeShared<ValueConstraint>(0.0f);
-			auto width = makeShared<ValueConstraint>(0.0f);
-			auto right = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto left = makeIntrusive<ValueConstraint>(0.0f);
+			auto width = makeIntrusive<ValueConstraint>(0.0f);
+			auto right = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), ConstraintSet(ConstraintSetInitializer{
 				.left = left,
 				.width = width,
@@ -46,12 +46,12 @@ public:
 	TEST_METHOD(setAllWidth) {
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto left = makeShared<ValueConstraint>(0.0f);
-			auto width = makeShared<ValueConstraint>(0.0f);
-			auto right = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto left = makeIntrusive<ValueConstraint>(0.0f);
+			auto width = makeIntrusive<ValueConstraint>(0.0f);
+			auto right = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), ConstraintSet(ConstraintSetInitializer{
 				.left = left,
 				.width = width,
@@ -78,12 +78,12 @@ public:
 	TEST_METHOD(setAllHeight) {
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto top = makeShared<ValueConstraint>(0.0f);
-			auto height = makeShared<ValueConstraint>(0.0f);
-			auto bottom = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto top = makeIntrusive<ValueConstraint>(0.0f);
+			auto height = makeIntrusive<ValueConstraint>(0.0f);
+			auto bottom = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), makeConstraints({
 				.top = top,
 				.height = height,
@@ -111,13 +111,13 @@ public:
 		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto left = makeShared<ValueConstraint>(0.0f);
-			auto width = makeShared<ValueConstraint>(0.0f);
-			auto top = makeShared<ValueConstraint>(0.0f);
-			auto height = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto left = makeIntrusive<ValueConstraint>(0.0f);
+			auto width = makeIntrusive<ValueConstraint>(0.0f);
+			auto top = makeIntrusive<ValueConstraint>(0.0f);
+			auto height = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), makeConstraints({
 				.left = left,
 				.width = width,
@@ -146,13 +146,13 @@ public:
 		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto left = makeShared<ValueConstraint>(0.0f);
-			auto right = makeShared<ValueConstraint>(0.0f);
-			auto top = makeShared<ValueConstraint>(0.0f);
-			auto bottom = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto left = makeIntrusive<ValueConstraint>(0.0f);
+			auto right = makeIntrusive<ValueConstraint>(0.0f);
+			auto top = makeIntrusive<ValueConstraint>(0.0f);
+			auto bottom = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), makeConstraints({
 				.left = left,
 				.right = right,
@@ -181,13 +181,13 @@ public:
 		RefCountedObject::reservePointers(300);
 		MemoryGuard memoryGuard;
 		{
-			auto control = makeShared<ColorView>();
-			auto width = makeShared<ValueConstraint>(0.0f);
-			auto right = makeShared<ValueConstraint>(0.0f);
-			auto height = makeShared<ValueConstraint>(0.0f);
-			auto bottom = makeShared<ValueConstraint>(0.0f);
+			auto control = makeIntrusive<ColorView>();
+			auto width = makeIntrusive<ValueConstraint>(0.0f);
+			auto right = makeIntrusive<ValueConstraint>(0.0f);
+			auto height = makeIntrusive<ValueConstraint>(0.0f);
+			auto bottom = makeIntrusive<ValueConstraint>(0.0f);
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(control.get(), makeConstraints({
 				.width = width,
 				.right = right,

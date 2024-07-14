@@ -10,12 +10,12 @@ namespace Ghurund::UI {
 	PartialConstraintSet HorizontalLayoutManager::makeDefaultConstraints() const {
 		return ConstraintSetInitializer{
 			.left = [&]() {
-			auto constraint = makeShared<PreviousRightConstraint>();
+			auto constraint = makeIntrusive<PreviousRightConstraint>();
 			constraint->Offset = spacing;
 			return constraint;
 		}(),
-			.width = makeShared<ContentWidthConstraint>(),
-			.height = makeShared<ContentHeightConstraint>()
+			.width = makeIntrusive<ContentWidthConstraint>(),
+			.height = makeIntrusive<ContentHeightConstraint>()
 		};
 	}
 

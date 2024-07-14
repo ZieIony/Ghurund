@@ -60,7 +60,7 @@ namespace Ghurund::UI {
         SizeConstraints sizeConstraints = itemAdapter->makeSizeConstraints(adapterPosition);
         ConstraintSet constraints = makeConstraints({
             .width = sizeConstraints.width,
-            .top = makeShared<ValueConstraint>(),
+            .top = makeIntrusive<ValueConstraint>(),
             .height = sizeConstraints.height
             });
         Children.insert(groupPosition, control, constraints);

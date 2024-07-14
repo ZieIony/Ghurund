@@ -17,8 +17,8 @@ namespace Ghurund::UI::GDI {
             const ResourceFormat* format = nullptr,
             LoadOption options = LoadOption::DEFAULT
         ) override {
-            SharedPointer<Bitmap> bitmap(ghnew Bitmap());
-            SharedPointer<Image> image(imageLoader.load(manager, stream, workingDir, format, options));
+            IntrusivePointer<Bitmap> bitmap(ghnew Bitmap());
+            IntrusivePointer<Image> image(imageLoader.load(manager, stream, workingDir, format, options));
             bitmap->init(*image.get());
             bitmap->addReference();
             return bitmap.get();

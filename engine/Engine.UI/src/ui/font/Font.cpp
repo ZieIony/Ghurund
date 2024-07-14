@@ -5,9 +5,8 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 
-#include "core/Color.h"
 #include "core/Finally.h"
-#include "core/image/Image.h"
+#include "core/IntrusivePointer.h"
 #include "core/image/ImageLoader.h"
 #include "core/math/Bezier.h"
 #include "Ttf.h"
@@ -117,7 +116,7 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	void Font::initAtlas(const String& supportedCharacters) {
+	void Font::initAtlas(const String& supportedCharacters, const IBitmapFactory& bitmapFactory) {
 		HDC hdcScreen = GetDC(NULL);
 
 		float size = 12.0f;
@@ -129,22 +128,22 @@ namespace Ghurund::UI {
 			DeleteObject(hf);
 			});
 
-		GetTextMetrics(hdcScreen,&tm);
+		GetTextMetrics(hdcScreen, &tm);
 		initKerning(hf);
 
-		initMsdf(hf, supportedCharacters);
+		initMsdf(hf, supportedCharacters, bitmapFactory);
 	}
 
-	void Font::init(const void* data, size_t size, const String& supportedCharacters) {
+	void Font::init(const IBitmapFactory& bitmapFactory, const void* data, size_t size, const String& supportedCharacters) {
 		TtfFile file = {};
 		file.init(data, size);
-		String familyName = file.readFontFamilyName();
+		String familyName = file.familyName;
 		uint16_t weight = file.readFontWeight();
 		bool italic = file.readFontItalic();
 		DWORD numFonts = {};
 		uninit();
 		handle = AddFontMemResourceEx((void*)data, (DWORD)size, 0, &numFonts);
-		init(familyName, weight, italic, supportedCharacters);
+		init(bitmapFactory, familyName, weight, italic, supportedCharacters);
 	}
 
 	void Font::uninit() {
@@ -195,7 +194,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void Font::getGlyphs(HFONT hf, const String& characters) {
+	void Font::initGlyphs(HFONT hf, const String& characters) {
 		HDC hdcScreen = GetDC(NULL);
 		HDC hdcBmp = CreateCompatibleDC(hdcScreen);
 		HGDIOBJ prevFont = SelectObject(hdcBmp, hf);
@@ -215,17 +214,20 @@ namespace Ghurund::UI {
 			if (result == GDI_ERROR)
 				throw InvalidParamException();
 
-			float scale = BITMAP_SIZE / (float)(Ascent + Descent);
+			float scale = (BITMAP_SIZE - 2 * PADDING - 2 * MAX_DIST) / (float)Height;
 			Glyph glyph = {
-				{
+				.shapeSize = {
 					glyphMetrics.gmBlackBoxX,
 					glyphMetrics.gmBlackBoxY
-				},{
+				},
+				.bitmapSize = {
 					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxX * scale),
 					(uint32_t)std::ceilf(glyphMetrics.gmBlackBoxY * scale)
-				},{
-					0,
-					0
+				},
+				.originY = glyphMetrics.gmptGlyphOrigin.y,
+				.offset{
+					glyphMetrics.gmptGlyphOrigin.x,
+					glyphMetrics.gmptGlyphOrigin.y
 				}
 			};
 			glyphs.put(c, glyph);
@@ -272,7 +274,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	void Font::initMsdf(HFONT hf, const String& characters) {
+	void Font::initMsdf(HFONT hf, const String& characters, const IBitmapFactory& bitmapFactory) {
 		HDC hdcScreen = GetDC(NULL);
 		HDC hdcBmp = CreateCompatibleDC(hdcScreen);
 		HGDIOBJ prevFont = SelectObject(hdcBmp, hf);
@@ -283,16 +285,15 @@ namespace Ghurund::UI {
 			ReleaseDC(NULL, hdcScreen);
 			});
 
-		getGlyphs(hf, characters);
+		initGlyphs(hf, characters);
 		IntSize atlasSize = getAtlasSize();
 		uint32_t pixelSize = ImageLoader::getDXGIFormatBitsPerPixel(DXGI_FORMAT_R8G8B8A8_UNORM) / 8;
 		uint32_t rowPitch = pixelSize * atlasSize.Width;
 		Buffer atlasData(rowPitch * atlasSize.Height);
 		if (atlas)
 			atlas->release();
-		atlas = ghnew Image();
+		IntrusivePointer<Image> atlasImage = makeIntrusive<Image>();
 
-		uint32_t maxDist = 8;
 		for (tchar c : characters) {
 
 			GLYPHMETRICS glyphMetrics = {};
@@ -307,14 +308,14 @@ namespace Ghurund::UI {
 				throw InvalidParamException();
 
 			Glyph glyph = glyphs.get(c);
-			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, glyphMetrics, glyph.bitmapSize, maxDist + PADDING);
+			msdfgen::Shape shape = shapeFromPolygonData(glyphOutlineData.Data, (DWORD)glyphOutlineData.Size, glyphMetrics, glyph.bitmapSize, MAX_DIST + PADDING);
 
 			// whitespace characters don't have any shape data
 			if (shape.contours.size() > 0) {
 				shape.normalize();
 				msdfgen::edgeColoringByDistance(shape, 3);
 				msdfgen::Bitmap<float, 4> msdf(glyph.bitmapSize.Width, glyph.bitmapSize.Height);
-				msdfgen::generateMTSDF(msdf, shape, maxDist, 1.0, msdfgen::Vector2(0.0, 0.0));
+				msdfgen::generateMTSDF(msdf, shape, MAX_DIST, 1.0, msdfgen::Vector2(0.0, 0.0));
 
 				for (uint32_t y = 0; y < (uint32_t)msdf.height(); y++) {
 					for (uint32_t x = 0; x < (uint32_t)msdf.width(); x++) {
@@ -333,7 +334,8 @@ namespace Ghurund::UI {
 			}
 		}
 
-		atlas->init(atlasData, atlasSize.Width, atlasSize.Height, DXGI_FORMAT_R8G8B8A8_UNORM);
+		atlasImage->init(atlasData, atlasSize.Width, atlasSize.Height, DXGI_FORMAT_R8G8B8A8_UNORM);
+		atlas = bitmapFactory.makeBitmap(*atlasImage.get());
 	}
 
 	HBITMAP Font::makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels) {
@@ -351,12 +353,19 @@ namespace Ghurund::UI {
 
 	FloatSize Font::measureText(const String& text) const {
 		float measuredWidth = 0;
+		wchar_t prevC = 0;
 		for (size_t i = 0; i < text.Length; i++) {
-			if (!glyphs.contains(text.get(i)))
-				continue;
+			wchar_t c = text.get(i);
 
-			const Glyph& glyph = glyphs.get(text.get(i));
-			measuredWidth += glyph.shapeSize.Width;
+			if (glyphs.contains(c)) {
+				const Glyph& glyph = glyphs.get(text.get(i));
+				measuredWidth += glyph.shapeSize.Width;
+			}
+
+			int k = getKerning(prevC, c);
+			measuredWidth += k;
+
+			prevC = c;
 		}
 
 		return { measuredWidth, (float)(Ascent + Descent) };

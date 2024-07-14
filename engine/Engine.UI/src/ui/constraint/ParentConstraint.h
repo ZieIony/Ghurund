@@ -138,7 +138,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> parentWidth, contentWidth;
+		IntrusivePointer<Constraint> parentWidth, contentWidth;
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
@@ -164,7 +164,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> parentHeight, contentHeight;
+		IntrusivePointer<Constraint> parentHeight, contentHeight;
 
 	public:
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;

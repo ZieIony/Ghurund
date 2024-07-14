@@ -1,15 +1,12 @@
 #pragma once
 
+#include "Gdi.h"
+#include "StrokeStyle.h"
 #include "ui/Canvas.h"
 #include "core/math/Rect.h"
 #include "core/collection/Stack.h"
-#include "StrokeStyle.h"
 #include "core/Exceptions.h"
 
-#undef GDIPVER
-#define GDIPVER     0x0110
-
-#include <gdiplus.h>
 #include <uxtheme.h>
 
 #pragma comment (lib, "UxTheme.lib")
@@ -39,7 +36,7 @@ namespace Ghurund::UI::GDI {
             uninit();
         }
 
-        Status init(HWND hwnd);
+        void init(HWND hwnd);
 
         void uninit();
 
@@ -76,10 +73,6 @@ namespace Ghurund::UI::GDI {
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) override;
 
         virtual void drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) override;
-
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) override;
-
-        virtual void drawImage(Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) override;
 
         virtual void drawImage(VectorImage& svgDocument) override;
 

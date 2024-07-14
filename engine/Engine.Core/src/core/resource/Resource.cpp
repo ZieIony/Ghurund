@@ -1,29 +1,13 @@
 #include "ghcpch.h"
 #include "Resource.h"
 
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 #include "core/logging/Formatter.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
-	LoadOption operator |(LoadOption lhs, LoadOption rhs) {
-		return (LoadOption)((std::underlying_type<LoadOption>::type)lhs | (std::underlying_type<LoadOption>::type)rhs);
-	}
-
-	bool operator &(LoadOption lhs, LoadOption rhs) {
-		return (std::underlying_type<LoadOption>::type)lhs & (std::underlying_type<LoadOption>::type)rhs;
-	}
-
-	SaveOption operator |(SaveOption lhs, SaveOption rhs) {
-		return (SaveOption)((std::underlying_type<SaveOption>::type)lhs | (std::underlying_type<SaveOption>::type)rhs);
-	}
-
-	bool operator &(SaveOption lhs, SaveOption rhs) {
-		return (std::underlying_type<SaveOption>::type)lhs & (std::underlying_type<SaveOption>::type)rhs;
-	}
-
 	void Resource::writeHeader(MemoryOutputStream& stream) const {
 		unsigned int hash = hashCode(Type.Name.Data);
 		stream.writeUInt(hash);

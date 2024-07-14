@@ -19,7 +19,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		virtual SharedPointer<Drawable> resolve(const Theme& theme) const = 0;
+		virtual IntrusivePointer<Drawable> resolve(const Theme& theme) const = 0;
 	};
 
 	class DrawableValue: public DrawableAttr {
@@ -36,7 +36,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Drawable> drawable;
+		IntrusivePointer<Drawable> drawable;
 
 	public:
 		DrawableValue(Drawable* drawable):drawable(drawable) {
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
 
 		DrawableValue(DrawableValue&& other) noexcept:drawable(std::move(other.drawable)) {}
 
-		virtual SharedPointer<Drawable> resolve(const Theme& theme) const override {
+		virtual IntrusivePointer<Drawable> resolve(const Theme& theme) const override {
 			return drawable;
 		}
 
@@ -88,7 +88,7 @@ namespace Ghurund::UI {
 	public:
 		DrawableRef(DrawableKey key):key(key) {}
 
-		virtual SharedPointer<Drawable> resolve(const Theme& theme) const override;
+		virtual IntrusivePointer<Drawable> resolve(const Theme& theme) const override;
 
 		virtual DrawableRef* clone() const override {
 			return ghnew DrawableRef(key);

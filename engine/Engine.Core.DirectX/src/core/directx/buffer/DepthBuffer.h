@@ -14,7 +14,7 @@ namespace Ghurund::Core::DirectX {
         D3D12_CPU_DESCRIPTOR_HANDLE handle;
 
     public:
-        Status init(Graphics& graphics, unsigned int width, unsigned int height);
+        void init(Graphics& graphics, unsigned int width, unsigned int height);
 
         void clear(CommandList &commandList) {
             commandList.get()->ClearDepthStencilView(handle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);

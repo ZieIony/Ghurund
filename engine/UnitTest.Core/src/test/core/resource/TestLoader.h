@@ -14,7 +14,7 @@ namespace UnitTest {
         virtual Resource* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override {
             loadCalls++;
@@ -27,7 +27,7 @@ namespace UnitTest {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
         ) const override {
             throw NotImplementedException();

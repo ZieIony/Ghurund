@@ -67,7 +67,7 @@ namespace Ghurund::UI {
 		virtual Control* load(
 			Ghurund::Core::MemoryInputStream& stream,
 			const DirectoryPath& workingDir,
-			const Ghurund::Core::ResourceFormat* format = nullptr,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
 		) override;
 
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
             Ghurund::Core::MemoryOutputStream& stream,
 			const DirectoryPath& workingDir,
             Ghurund::Core::Resource& resource,
-            const Ghurund::Core::ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
         ) const override {
             throw NotImplementedException();
@@ -95,7 +95,7 @@ namespace Ghurund::UI {
 
 		TextFormatRef* loadTextFormat(const char* str);
 
-        Status loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
+        void loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment);
 
         DocumentElement* loadDocumentElement(const tinyxml2::XMLElement& xml) {
             return nullptr;

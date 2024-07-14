@@ -6,7 +6,7 @@
 #include "graphics/Renderer.h"
 #include "core/application/Application.h"
 
-#include "application/LayerList.h"
+#include "core/application/LayerList.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -89,6 +89,6 @@ namespace Ghurund {
 
         virtual void update(const uint64_t time) override;
 
-        virtual Status paint() override;
+        virtual void paint() override;
     };
 }

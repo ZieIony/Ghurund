@@ -1,10 +1,11 @@
 #include "ghpch.h"
 #include "Script.h"
 
-#include "core/io/File.h"
-#include "core/io/MemoryStream.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/logging/Logger.h"
+#include "ScriptExecutionException.h"
 
 #include <angelscript.h>
 
@@ -36,32 +37,33 @@ namespace Ghurund {
         return TYPE;
     }
 
-    Status Script::build(ScriptEngine& engine) {
+    void Script::build(ScriptEngine& engine) {
         mod = engine.makeModule();
 
         auto r = mod->AddScriptSection("main", source.Data, source.Length);
         assert(r >= 0);
 
-        if (mod->Build() < 0)
-            return Logger::log(LogType::ERR0R, Status::COMPILATION_ERROR, _T("Compilation failed.\n"));
+        if (mod->Build() < 0) {
+            Logger::log(LogType::ERR0R, _T("Compilation failed.\n"));
+            throw InvalidDataException();
+        }
 
         func = mod->GetFunctionByDecl(entryPoint.Data);
         if (func == 0) {
             // The function couldn't be found. Instruct the script writer
             // to include the expected function in the script.
             auto text = std::format(_T("The script must have the function '%hs'. Please add it and try again.\n"), entryPoint);
-            return Logger::log(LogType::ERR0R, Status::ENTRY_POINT_NOT_FOUND, text.c_str());
+            Logger::log(LogType::ERR0R, text.c_str());
+            throw InvalidDataException();
         }
 
         // Create our context, prepare it, and then execute
         ctx = engine.createContext();
 
         built = true;
-
-        return Status::OK;
     }
 
-    Status Script::execute() {
+    void Script::execute() {
         ctx->Prepare(func);
         for (size_t i = 0; i < arguments.Size; i++)
             ctx->SetArgAddress((asUINT)i, arguments[i]);
@@ -70,10 +72,8 @@ namespace Ghurund {
             if (r == asEXECUTION_EXCEPTION) {
                 auto text = std::format(_T("An exception '%s' occurred. Please correct the code and try again.\n"), AString(ctx->GetExceptionString()));
                 Logger::log(LogType::ERR0R, text.c_str());
-                return Status::SCRIPT_EXCEPTION;
+                throw ScriptExecutionException();
             }
         }
-
-        return Status::OK;
     }
 }

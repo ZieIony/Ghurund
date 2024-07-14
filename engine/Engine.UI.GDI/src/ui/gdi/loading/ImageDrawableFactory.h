@@ -24,10 +24,10 @@ namespace Ghurund::UI::GDI {
             };
             try {
                 if (std::ranges::count_if(Bitmap::FORMATS, formatSupported) == 1) {
-                    SharedPointer<Image> bitmap = resourceManager.load<Image>(path);
+                    IntrusivePointer<Image> bitmap = resourceManager.load<Image>(path);
                     return ghnew BitmapDrawable(dynamic_cast<Bitmap*>(&bitmap));
                 } else if (std::ranges::count_if(SvgDocument::FORMATS, formatSupported) == 1) {
-                    SharedPointer<Image> svg = resourceManager.load<Image>(path);
+                    IntrusivePointer<Image> svg = resourceManager.load<Image>(path);
                     return ghnew SvgDrawable(dynamic_cast<SvgDocument*>(&svg));
                 } else {
                     Logger::log(LogType::ERR0R, _T("File format of '{}' is not supported.\n"), path);

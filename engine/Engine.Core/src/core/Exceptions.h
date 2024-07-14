@@ -39,4 +39,6 @@ namespace Ghurund::Core {
     };
 
     class CloningNotSupportedException:public std::exception {};
+
+    class FormatNotSupportedException:public std::exception {};
 }

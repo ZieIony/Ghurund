@@ -22,16 +22,16 @@ namespace Ghurund::Core::DirectX {
         uint32_t width = 0, height = 0;
         WString name;
 
-        Status captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
+        void captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& pStaging);
 
     public:
         ~RenderTarget() {
             uninit();
         }
 
-        Status init(Graphics& graphics, ID3D12Resource* texture);
+        void init(Graphics& graphics, ID3D12Resource* texture);
 
-        Status init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format);
+        void init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format);
 
         void uninit();
 
@@ -98,6 +98,6 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getName, put = setName)) WString Name;
 
-        Status capture(Graphics& graphics, Ghurund::Core::Image*& image);
+        void capture(Graphics& graphics, Ghurund::Core::Image*& image);
     };
 }

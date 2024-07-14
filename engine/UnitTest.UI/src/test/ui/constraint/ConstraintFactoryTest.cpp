@@ -5,7 +5,7 @@
 #include "test/TestLogOutput.h"
 
 #include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/ShapeFactory.h"
+#include "test/ui/TestShapeFactory.h"
 #include "test/ui/TestDrawableFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
@@ -40,27 +40,27 @@ public:
         {
             ConstraintFactory factory;
             {
-                SharedPointer<Constraint> parentLeft(dynamic_cast<ParentLeftConstraint*>(factory.parseConstraint("Parent.Left", Orientation::HORIZONTAL)));
+                IntrusivePointer<Constraint> parentLeft(dynamic_cast<ParentLeftConstraint*>(factory.parseConstraint("Parent.Left", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentLeft);
             }
             {
-                SharedPointer<Constraint> parentRight(dynamic_cast<ParentRightConstraint*>(factory.parseConstraint("Parent.Right", Orientation::HORIZONTAL)));
+                IntrusivePointer<Constraint> parentRight(dynamic_cast<ParentRightConstraint*>(factory.parseConstraint("Parent.Right", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentRight);
             }
             {
-                SharedPointer<Constraint> parentTop(dynamic_cast<ParentTopConstraint*>(factory.parseConstraint("Parent.Top", Orientation::VERTICAL)));
+                IntrusivePointer<Constraint> parentTop(dynamic_cast<ParentTopConstraint*>(factory.parseConstraint("Parent.Top", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentTop);
             }
             {
-                SharedPointer<Constraint> parentBottom(dynamic_cast<ParentBottomConstraint*>(factory.parseConstraint("Parent.Bottom", Orientation::VERTICAL)));
+                IntrusivePointer<Constraint> parentBottom(dynamic_cast<ParentBottomConstraint*>(factory.parseConstraint("Parent.Bottom", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentBottom);
             }
             {
-                SharedPointer<Constraint> parentWidth(dynamic_cast<ParentWidthConstraint*>(factory.parseConstraint("Parent.Width", Orientation::HORIZONTAL)));
+                IntrusivePointer<Constraint> parentWidth(dynamic_cast<ParentWidthConstraint*>(factory.parseConstraint("Parent.Width", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&parentWidth);
             }
             {
-                SharedPointer<Constraint> parentHeight(dynamic_cast<ParentHeightConstraint*>(factory.parseConstraint("Parent.Height", Orientation::VERTICAL)));
+                IntrusivePointer<Constraint> parentHeight(dynamic_cast<ParentHeightConstraint*>(factory.parseConstraint("Parent.Height", Orientation::VERTICAL)));
                 Assert::IsNotNull(&parentHeight);
             }
         }
@@ -71,32 +71,32 @@ public:
         {
             ConstraintFactory factory;
             {
-                SharedPointer<SiblingLeftConstraint> siblingLeft(dynamic_cast<SiblingLeftConstraint*>(factory.parseConstraint("'color'.Left", Orientation::HORIZONTAL)));
+                IntrusivePointer<SiblingLeftConstraint> siblingLeft(dynamic_cast<SiblingLeftConstraint*>(factory.parseConstraint("'color'.Left", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingLeft);
                 Assert::AreEqual(AString("color"), siblingLeft->Name);
             }
             {
-                SharedPointer<SiblingRightConstraint> siblingRight(dynamic_cast<SiblingRightConstraint*>(factory.parseConstraint("'color'.Right", Orientation::HORIZONTAL)));
+                IntrusivePointer<SiblingRightConstraint> siblingRight(dynamic_cast<SiblingRightConstraint*>(factory.parseConstraint("'color'.Right", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingRight);
                 Assert::AreEqual(AString("color"), siblingRight->Name);
             }
             {
-                SharedPointer<SiblingTopConstraint> siblingTop(dynamic_cast<SiblingTopConstraint*>(factory.parseConstraint("'color'.Top", Orientation::VERTICAL)));
+                IntrusivePointer<SiblingTopConstraint> siblingTop(dynamic_cast<SiblingTopConstraint*>(factory.parseConstraint("'color'.Top", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingTop);
                 Assert::AreEqual(AString("color"), siblingTop->Name);
             }
             {
-                SharedPointer<SiblingBottomConstraint> siblingBottom(dynamic_cast<SiblingBottomConstraint*>(factory.parseConstraint("'color'.Bottom", Orientation::VERTICAL)));
+                IntrusivePointer<SiblingBottomConstraint> siblingBottom(dynamic_cast<SiblingBottomConstraint*>(factory.parseConstraint("'color'.Bottom", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingBottom);
                 Assert::AreEqual(AString("color"), siblingBottom->Name);
             }
             {
-                SharedPointer<SiblingWidthConstraint> siblingWidth(dynamic_cast<SiblingWidthConstraint*>(factory.parseConstraint("'color'.Width", Orientation::HORIZONTAL)));
+                IntrusivePointer<SiblingWidthConstraint> siblingWidth(dynamic_cast<SiblingWidthConstraint*>(factory.parseConstraint("'color'.Width", Orientation::HORIZONTAL)));
                 Assert::IsNotNull(&siblingWidth);
                 Assert::AreEqual(AString("color"), siblingWidth->Name);
             }
             {
-                SharedPointer<SiblingHeightConstraint> siblingHeight(dynamic_cast<SiblingHeightConstraint*>(factory.parseConstraint("'color'.Height", Orientation::VERTICAL)));
+                IntrusivePointer<SiblingHeightConstraint> siblingHeight(dynamic_cast<SiblingHeightConstraint*>(factory.parseConstraint("'color'.Height", Orientation::VERTICAL)));
                 Assert::IsNotNull(&siblingHeight);
                 Assert::AreEqual(AString("color"), siblingHeight->Name);
             }
@@ -125,14 +125,14 @@ public:
         MemoryGuard memoryGuard;
         {
             ResourceManager resourceManager;
-            ShapeFactory shapeFactory;
+            TestShapeFactory shapeFactory;
             TestDrawableFactory drawableFactory;
             TextFormatFactory textFormatFactory;
             ConstraintFactory constraintFactory;
-            auto layoutLoader = makeShared<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
+            auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
             resourceManager.Loaders.set<Control>(layoutLoader.get());
 
-            SharedPointer<ControlGroup> controlGroup(resourceManager.load<ControlGroup>(FilePath(_T("ConstraintFactoryTest.xml")), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+            IntrusivePointer<ControlGroup> controlGroup(resourceManager.load<ControlGroup>(FilePath(_T("ConstraintFactoryTest.xml")), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
             Control* control = controlGroup->find<ColorView>();
 
             ConstraintSet& constraints = controlGroup->getConstraints(*control);
@@ -143,8 +143,8 @@ public:
             Assert::AreEqual(3.0f, constraints.Top.Value);
 
             ConstraintGraph graph;
-            SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100.0f);
-            SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100.0f);
+            IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100.0f);
+            IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100.0f);
             controlGroup->resolveConstraints(graph, *width.get(), *height.get());
             graph.sort();
             graph.evaluate();

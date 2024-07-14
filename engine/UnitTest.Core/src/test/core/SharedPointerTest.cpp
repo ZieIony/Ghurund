@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "test/MemoryGuard.h"
 
-#include "core/SharedPointer2.h"
+#include "core/SharedPointer.h"
 #include "core/reflection/StandardTypes.h"
 
 #include <format>
@@ -19,7 +19,7 @@ public:
     TEST_METHOD(SharedPointer_empty) {
         MemoryGuard guard;
         {
-            SharedPointer2<bool> ptr;
+            SharedPointer<bool> ptr;
             Assert::IsNull(ptr.get());
             Assert::AreEqual((uint32_t)1, ptr.ReferenceCount);
         }
@@ -29,7 +29,7 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
+            SharedPointer<bool> ptr(b);
             Assert::AreEqual(b, ptr.get());
             Assert::AreEqual((uint32_t)1, ptr.ReferenceCount);
         }
@@ -39,8 +39,8 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
-            SharedPointer2<bool> ptr2 = ptr;
+            SharedPointer<bool> ptr(b);
+            SharedPointer<bool> ptr2 = ptr;
             Assert::AreEqual(b, ptr.get());
             Assert::AreEqual(b, ptr2.get());
             Assert::AreEqual((uint32_t)2, ptr.ReferenceCount);
@@ -52,9 +52,9 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
+            SharedPointer<bool> ptr(b);
             {
-                SharedPointer2<bool> ptr2 = ptr;
+                SharedPointer<bool> ptr2 = ptr;
             }
             Assert::AreEqual(b, ptr.get());
             Assert::AreEqual((uint32_t)1, ptr.ReferenceCount);
@@ -65,9 +65,9 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr2;
+            SharedPointer<bool> ptr2;
             {
-                SharedPointer2<bool> ptr(b);
+                SharedPointer<bool> ptr(b);
                 ptr2 = ptr;
             }
             Assert::AreEqual(b, ptr2.get());
@@ -79,7 +79,7 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
+            SharedPointer<bool> ptr(b);
             bool* b2 = ghnew bool(false);
             ptr.set(b2);
             Assert::AreEqual(b2, ptr.get());
@@ -91,8 +91,8 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
-            SharedPointer2<bool> ptr2 = ptr;
+            SharedPointer<bool> ptr(b);
+            SharedPointer<bool> ptr2 = ptr;
             Assert::IsTrue(ptr == ptr2);
         }
     }
@@ -102,8 +102,8 @@ public:
         {
             bool* b = ghnew bool(false);
             bool* b2 = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
-            SharedPointer2<bool> ptr2(b2);
+            SharedPointer<bool> ptr(b);
+            SharedPointer<bool> ptr2(b2);
             Assert::IsFalse(ptr == ptr2);
             Assert::IsTrue(ptr != ptr2);
         }
@@ -113,8 +113,8 @@ public:
         MemoryGuard guard;
         {
             bool* b = ghnew bool(false);
-            SharedPointer2<bool> ptr(b);
-            SharedPointer2<bool> ptr2;
+            SharedPointer<bool> ptr(b);
+            SharedPointer<bool> ptr2;
             Assert::IsTrue(ptr != nullptr);
             Assert::IsTrue(ptr2 == nullptr);
         }

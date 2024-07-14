@@ -2,7 +2,6 @@
 #include "TextBlock.h"
 
 #include "core/reflection/Property.h"
-#include "core/reflection/UniqueProperty.h"
 #include "ui/Canvas.h"
 #include "ui/loading/LayoutLoader.h"
 
@@ -18,6 +17,9 @@ namespace Ghurund::UI {
                 TextFormat = format;
                 delete format;
             }
+		} else {
+            Ghurund::UI::TextFormatRef format = Theme::TEXTFORMAT_TEXT_SECONDARY;
+            TextFormat = &format;
         }
     }
 
@@ -52,20 +54,16 @@ namespace Ghurund::UI {
     }*/
 
     void TextBlock::onDraw(ICanvas& canvas) {
-        const UI::Color* c = color.get();
-        if (c) {
-            textLayout->Color = *c;
-            canvas.drawText(*textLayout, 0, 0);
-        }
+        textLayout.Size = Size;
+		textLayout.draw(canvas);
     }
 
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
-        static auto PROPERTY_TEXT_GET = Property<TextBlock, const TextDocument&>("Text", &getText);
-        static auto PROPERTY_TEXT_SET = UniqueProperty<TextBlock, std::unique_ptr<TextDocument>>("Text", (void(TextBlock::*)(std::unique_ptr<TextDocument>)) &setText);
+        static auto PROPERTY_TEXT = Property<TextBlock, const TextDocument&>("Text", &getText, (void(TextBlock::*)(const TextDocument&)) &setText);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-            .withProperty(PROPERTY_TEXT_GET)
-            .withProperty(PROPERTY_TEXT_SET)
+            .withZeroArgsConstructor()
+            .withProperty(PROPERTY_TEXT)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -77,11 +75,14 @@ namespace Ghurund::UI {
         if (textFormat) {
             this->textFormat = (Ghurund::UI::TextFormatAttr*)textFormat->clone();
             auto theme = Theme;
-            if (theme)
-                textLayout->Format = textFormat->resolve(*theme);
+            if (theme) {
+                textLayout.Format = textFormat->resolve(*theme);
+            } else {
+                textLayout.Format = nullptr;
+			}
         } else {
             this->textFormat = nullptr;
-            textLayout->Format = nullptr;
+            textLayout.Format = nullptr;
         }
     }
 
@@ -90,9 +91,13 @@ namespace Ghurund::UI {
         auto theme = Theme;
         if (!theme)
             return;
-        if (!TextFormat)
-            textLayout->Format = TextFormat->resolve(*theme);
+        if (TextFormat)
+            textLayout.Format = TextFormat->resolve(*theme);
         if (Size.Width > 0 && Size.Height > 0)
-            textLayout->Size = { Size.Width, Size.Height };
-    }
+            textLayout.Size = { Size.Width, Size.Height };
+        color.resolve(*theme);
+        const UI::Color* c = color.get();
+        if (c)
+            textLayout.Color = *c;
+	}
 }

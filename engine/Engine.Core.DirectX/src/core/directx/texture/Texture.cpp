@@ -2,7 +2,9 @@
 #include "Texture.h"
 
 #include "core/io/File.h"
-#include "core/io/MemoryStream.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
+#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core::DirectX {
@@ -29,7 +31,7 @@ namespace Ghurund::Core::DirectX {
         return TYPE;
     }
 
-    Status Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image &image) {
+    void Texture::init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image &image) {
         if(commandList.State==CommandListState::FINISHED)
             commandList.reset();
 
@@ -58,7 +60,8 @@ namespace Ghurund::Core::DirectX {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&textureResource)))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             const UINT64 uploadBufferSize = GetRequiredIntermediateSize(textureResource.Get(), 0, 1);
@@ -72,7 +75,8 @@ namespace Ghurund::Core::DirectX {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&textureUploadHeap))))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("graphics->getDevice()->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             D3D12_SUBRESOURCE_DATA textureData = {};
@@ -97,7 +101,5 @@ namespace Ghurund::Core::DirectX {
         commandList.wait();
 
         Valid = true;
-
-        return Status::OK;
     }
 }

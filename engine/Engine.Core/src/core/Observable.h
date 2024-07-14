@@ -2,7 +2,7 @@
 
 #include "ObservableHandler.h"
 #include "core/Object.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/collection/List.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Method.h"
@@ -25,7 +25,7 @@ namespace Ghurund::Core {
             static const auto CONSTRUCTOR = Constructor<Observable<T>>();
             static const auto CONSTRUCTOR2 = Constructor<Observable<T>, const T&>();
             static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
-            static const auto ADD_METHOD = Method<Observable<T>, void, SharedPointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(SharedPointer<ObservableHandler<T>>)) & add);
+            static const auto ADD_METHOD = Method<Observable<T>, void, IntrusivePointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(IntrusivePointer<ObservableHandler<T>>)) & add);
 
             static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
                 .withConstructor(CONSTRUCTOR)
@@ -42,7 +42,7 @@ namespace Ghurund::Core {
 #pragma endregion
 
     private:
-        List<SharedPointer<ObservableHandler<T>>> listeners;
+        List<IntrusivePointer<ObservableHandler<T>>> listeners;
         T value;
 
     public:
@@ -60,23 +60,23 @@ namespace Ghurund::Core {
         }
 
         inline void add(std::function<void(const T& args)> lambda) {
-            listeners.add(makeShared<ObservableHandler<T>>(lambda));
+            listeners.add(makeIntrusive<ObservableHandler<T>>(lambda));
             lambda(value);
         }
 
         inline Observable<T>& operator+=(const std::function<void(const T& args)>& lambda) {
-            listeners.add(makeShared<ObservableHandler<T>>(lambda));
+            listeners.add(makeIntrusive<ObservableHandler<T>>(lambda));
             lambda(value);
             return *this;
         }
 
-        inline void add(SharedPointer<ObservableHandler<T>> handler) {
+        inline void add(IntrusivePointer<ObservableHandler<T>> handler) {
             listeners.add(handler);
             handler->Owner = this;
             handler->invoke(value);
         }
 
-        inline Observable<T>& operator+=(SharedPointer<ObservableHandler<T>> handler) {
+        inline Observable<T>& operator+=(IntrusivePointer<ObservableHandler<T>> handler) {
             listeners.add(handler);
             handler->Owner = this;
             handler(value);
@@ -85,13 +85,13 @@ namespace Ghurund::Core {
 
         inline void remove(ObservableHandler<T>& listener) {
             listener.addReference();
-            listeners.remove(SharedPointer(&listener));
+            listeners.remove(IntrusivePointer(&listener));
             listener.Owner = nullptr;
         }
 
         inline Observable<T>& operator-=(ObservableHandler<T>& listener) {
             listener.addReference();
-            listeners.remove(SharedPointer(&listener));
+            listeners.remove(IntrusivePointer(&listener));
             listener.Owner = nullptr;
             return *this;
         }

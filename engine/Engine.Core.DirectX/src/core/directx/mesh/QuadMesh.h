@@ -6,7 +6,7 @@
 namespace Ghurund {
     class QuadMesh: public Mesh {
     public:
-        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0) {
+        void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0) {
             ScreenVertex quadVertices[] = {
                 {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f}},
                 {{-1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},
@@ -29,7 +29,7 @@ namespace Ghurund {
 
             indexCount = 6;
 
-            return Mesh::init(graphics, commandList);
+            Mesh::init(graphics, commandList);
         }
     };
 }

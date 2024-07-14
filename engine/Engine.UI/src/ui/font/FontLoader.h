@@ -2,17 +2,20 @@
 
 #include "core/resource/Loader.h"
 #include "Font.h"
-#include "core/Exceptions.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
     class FontLoader:public Loader {
+    private:
+        IBitmapFactory& bitmapFactory;
+
     public:
+        FontLoader(IBitmapFactory& bitmapFactory):bitmapFactory(bitmapFactory) {}
         virtual Font* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override;
 
@@ -20,10 +23,8 @@ namespace Ghurund::UI {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
-        ) const override {
-            throw NotImplementedException();
-        }
+        ) const override;
     };
 }

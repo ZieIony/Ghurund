@@ -39,7 +39,9 @@ namespace Ghurund::Core {
 			}
 		}
 
-		std::shared_ptr<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const;
+		SharedPointer<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const;
+
+		bool exists(const DirectoryPath& workingDir, LibraryList& libraries) const;
 
 		inline constexpr std::strong_ordering operator<=>(const ResourcePath& other) const noexcept {
 			if (type == other.type && path == other.path && libName == other.libName)

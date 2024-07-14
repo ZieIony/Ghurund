@@ -14,7 +14,7 @@ namespace Demo {
 
 	class DemoWindow:public UIApplicationWindow {
 	private:
-		SharedPointer<Control> demoLayout;
+		IntrusivePointer<Control> demoLayout;
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;
 		ToolbarItemAdapter* toolbarItemAdapter = nullptr;
 		MenuBarItemAdapter* menuBarItemAdapter = nullptr;

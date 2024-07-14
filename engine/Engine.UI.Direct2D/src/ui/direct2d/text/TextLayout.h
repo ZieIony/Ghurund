@@ -69,14 +69,14 @@ namespace Ghurund::UI::Direct2D {
 
         HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit);
 
-        Status refresh();
+        void refresh();
 
         inline IDWriteTextLayout* get() {
             return layout;
         }
 
-        Status insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
+        void insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
 
-        Status removeTextAt(uint32_t position, uint32_t lengthToRemove);
+        void removeTextAt(uint32_t position, uint32_t lengthToRemove);
     };
 }

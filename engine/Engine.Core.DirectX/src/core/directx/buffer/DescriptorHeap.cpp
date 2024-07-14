@@ -6,16 +6,16 @@
 
 namespace Ghurund::Core::DirectX {
 
-	Status DescriptorHeap::init(Graphics &graphics){
-		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap))))
-			return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("CreateDescriptorHeap(...) failed\n"));
+	void DescriptorHeap::init(Graphics &graphics){
+		if (FAILED(graphics.Device->CreateDescriptorHeap(&heapDescriptor, IID_PPV_ARGS(&heap)))) {
+			return Logger::log(LogType::ERR0R, _T("CreateDescriptorHeap(...) failed\n"));
+			throw CallFailedException();
+		}
 
 		descriptorSize = graphics.Device->GetDescriptorHandleIncrementSize(heapDescriptor.Type);
 		numFreeDescriptors = heapDescriptor.NumDescriptors;
         cpuDescriptorHandleForHeapStart = heap->GetCPUDescriptorHandleForHeapStart();
         gpuDescriptorHandleForHeapStart = heap->GetGPUDescriptorHandleForHeapStart();
-
-		return Status::OK;
 	}
 
 	DescriptorHandle DescriptorHeap::allocate(){

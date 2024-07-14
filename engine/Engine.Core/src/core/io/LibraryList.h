@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Library.h"
-#include "core/collection/Map.h"
+
+#include <memory>
 
 namespace Ghurund::Core {
     class LibraryList {

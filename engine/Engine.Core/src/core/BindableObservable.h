@@ -29,7 +29,7 @@ namespace Ghurund::Core {
 #pragma endregion
 
     private:
-        SharedPointer<ObservableHandler<T>> chainHandler;
+        IntrusivePointer<ObservableHandler<T>> chainHandler;
 
     public:
         BindableObservable():Observable<T>(T()) {}

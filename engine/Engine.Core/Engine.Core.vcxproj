@@ -99,15 +99,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
-    <ClInclude Include="src\core\Color.h" />
-    <ClInclude Include="src\core\Colors.h" />
-    <ClInclude Include="src\core\PointerWrapper.h" />
-    <ClInclude Include="src\core\SharedPointer2.h" />
-    <ClInclude Include="src\core\state\State.h" />
+    <ClInclude Include="src\core\application\DrawingContext.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
-    <ClInclude Include="src\Status.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
+    <ClInclude Include="src\core\Color.h" />
+    <ClInclude Include="src\core\Colors.h" />
     <ClInclude Include="src\core\DataParsing.h" />
     <ClInclude Include="src\core\Enum.h" />
     <ClInclude Include="src\core\Event.h" />
@@ -117,16 +114,17 @@
     <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
+    <ClInclude Include="src\core\IntrusivePointer.h" />
     <ClInclude Include="src\core\Lazy.h" />
     <ClInclude Include="src\core\Noncopyable.h" />
     <ClInclude Include="src\core\Object.h" />
     <ClInclude Include="src\core\Observable.h" />
     <ClInclude Include="src\core\ObservableHandler.h" />
-    <ClInclude Include="src\core\RefCountedObject.h" />
+    <ClInclude Include="src\core\PointerWrapper.h" />
     <ClInclude Include="src\core\Provider.h" />
+    <ClInclude Include="src\core\RefCountedObject.h" />
     <ClInclude Include="src\core\SharedPointer.h" />
     <ClInclude Include="src\core\StackTrace.h" />
-    <ClInclude Include="src\core\state\StateMachine.h" />
     <ClInclude Include="src\core\SystemInfo.h" />
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\core\Translations.h" />
@@ -144,6 +142,8 @@
     <ClInclude Include="src\core\application\CommandLine.h" />
     <ClInclude Include="src\core\application\Feature.h" />
     <ClInclude Include="src\core\application\FeatureCollection.h" />
+    <ClInclude Include="src\core\application\Layer.h" />
+    <ClInclude Include="src\core\application\LayerList.h" />
     <ClInclude Include="src\core\application\Settings.h" />
     <ClInclude Include="src\core\application\WindowCloseAction.h" />
     <ClInclude Include="src\core\application\WindowList.h" />
@@ -191,7 +191,8 @@
     <ClInclude Include="src\core\io\FilePath.h" />
     <ClInclude Include="src\core\io\Library.h" />
     <ClInclude Include="src\core\io\LibraryList.h" />
-    <ClInclude Include="src\core\io\MemoryStream.h" />
+    <ClInclude Include="src\core\io\MemoryInputStream.h" />
+    <ClInclude Include="src\core\io\MemoryOutputStream.h" />
     <ClInclude Include="src\core\io\Path.h" />
     <ClInclude Include="src\core\io\watcher\DirectoryWatch.h" />
     <ClInclude Include="src\core\io\watcher\FileChange.h" />
@@ -225,16 +226,20 @@
     <ClInclude Include="src\core\reflection\TypeModifier.h" />
     <ClInclude Include="src\core\reflection\UniqueProperty.h" />
     <ClInclude Include="src\core\reflection\Visibility.h" />
+    <ClInclude Include="src\core\resource\LoadOption.h" />
     <ClInclude Include="src\core\resource\Loader.h" />
     <ClInclude Include="src\core\resource\LoaderCollection.h" />
     <ClInclude Include="src\core\resource\ReloadTask.h" />
     <ClInclude Include="src\core\resource\Resource.h" />
+    <ClInclude Include="src\core\resource\ResourceCollection.h" />
     <ClInclude Include="src\core\resource\ResourceFormat.h" />
     <ClInclude Include="src\core\resource\ResourceManager.h" />
     <ClInclude Include="src\core\resource\ResourcePath.h" />
-    <ClInclude Include="src\core\resource\Resources.h" />
+    <ClInclude Include="src\core\resource\SaveOption.h" />
     <ClInclude Include="src\core\resource\TextLoader.h" />
     <ClInclude Include="src\core\resource\TextResource.h" />
+    <ClInclude Include="src\core\state\State.h" />
+    <ClInclude Include="src\core\state\StateMachine.h" />
     <ClInclude Include="src\core\string\FixedString.h" />
     <ClInclude Include="src\core\string\GenericString.h" />
     <ClInclude Include="src\core\string\GenericStringView.h" />
@@ -267,12 +272,13 @@
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\RefCountedObject.cpp" />
-    <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
     <ClCompile Include="src\core\application\Feature.cpp" />
+    <ClCompile Include="src\core\application\Layer.cpp" />
+    <ClCompile Include="src\core\application\LayerList.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />
     <ClCompile Include="src\core\image\Image.cpp" />
     <ClCompile Include="src\core\image\ImageLoader.cpp" />
@@ -288,11 +294,15 @@
     <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
     <ClCompile Include="src\core\reflection\TypeMember.cpp" />
     <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
+    <ClCompile Include="src\core\resource\LoadOption.cpp" />
     <ClCompile Include="src\core\resource\Loader.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
+    <ClCompile Include="src\core\resource\ResourceCollection.cpp" />
+    <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\resource\ResourcePath.cpp" />
-    <ClCompile Include="src\core\resource\Resources.cpp" />
+    <ClCompile Include="src\core\resource\SaveOption.cpp" />
+    <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
@@ -305,9 +315,6 @@
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="Engine.Core.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

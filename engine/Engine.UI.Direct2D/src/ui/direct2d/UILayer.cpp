@@ -1,0 +1,82 @@
+#include "ghuid2dpch.h"
+#include "UILayer.h"
+
+#include "core/resource/ResourceManager.h"
+#include "core/directx/SwapChain.h"
+#include "core/directx/Frame.h"
+#include "ui/constraint/ValueConstraint.h"
+#include "ui/direct2d/RenderTarget2D.h"
+#include "ui/direct2d/UIContext.h"
+#include "ui/direct2d/Graphics2d.h"
+#include "ui/direct2d/DrawingContext.h"
+#include "ui/RootView.h"
+#include <ui/constraint/WindowConstraint.h>
+#include "D2DDrawingContext.h"
+
+namespace Ghurund::UI::Direct2D {
+    using namespace Ghurund::Core;
+    using namespace Ghurund::Core::DirectX;
+
+    const Ghurund::Core::Type& D2DUILayer::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<D2DUILayer>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(D2DUILayer))
+            .withSupertype(__super::GET_TYPE());
+
+        return TYPE;
+    }
+
+    void D2DUILayer::init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain) {
+        this->graphics = &graphics;
+        this->swapChain = &swapChain;
+        context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window);
+        __super::init(*context);
+        canvas = ghnew Ghurund::UI::Direct2D::Canvas();
+        canvas->init(graphics.DeviceContext);
+        window.sizeChanging += [&](const Window& window, const IntSize& size) {
+            renderTargets.clear();
+            return true;
+        };
+        window.sizeChanged += [&](const Window& window) {
+            initTargets();
+            rootView->requestLayout();
+            return true;
+        };
+        initTargets();
+    }
+
+    void D2DUILayer::initTargets() {
+        if (!swapChain->Initialized)
+            return;
+        for (Frame& frame : swapChain->Frames) {
+            RenderTarget2D* target = ghnew RenderTarget2D();
+            target->init(*graphics, *frame.RenderTarget.Texture);
+            renderTargets.put(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
+        }
+    }
+
+    void D2DUILayer::uninit() {
+        if (!swapChain)
+            return;
+        renderTargets.clear();
+        swapChain = nullptr;
+        graphics = nullptr;
+        delete canvas;
+        canvas = nullptr;
+        delete context;
+        context = nullptr;
+    }
+    
+    void D2DUILayer::draw(IDrawingContext& drawingContext) {
+        D2DDrawingContext& d2dContext = (D2DDrawingContext&)drawingContext;
+        RenderTarget2D* target2d = renderTargets.get(&d2dContext.renderTarget).get();
+		try {
+			graphics->beginPaint(*target2d);
+            __super::draw(*canvas);
+		} catch (...) {}
+		try {
+			graphics->endPaint(*target2d);
+		} catch (CallFailedException) {
+			canvas->uninit();
+			canvas->init(graphics->DeviceContext);
+		}
+	}
+}

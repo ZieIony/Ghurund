@@ -2,7 +2,7 @@
 #include "ScriptEngine.h"
 
 #include "core/Exceptions.h"
-#include "core/application/Application.h"
+#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 #include <angelscript.h>

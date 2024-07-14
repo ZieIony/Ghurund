@@ -1,30 +1,18 @@
 #pragma once
 
+#include "LoadOption.h"
+#include "SaveOption.h"
 #include "ResourceFormat.h"
 #include "core/RefCountedObject.h"
 #include "core/allocation/Allocator.h"
-#include "core/io/MemoryStream.h"
+#include "core/io/MemoryInputStream.h"
+#include "core/io/MemoryOutputStream.h"
 #include "core/reflection/Constructor.h"
 
 namespace Ghurund::Core {
-    enum class LoadOption {
-        DEFAULT = 0, DONT_WATCH = 1, DONT_CACHE = 2
-    };
-
-    LoadOption operator |(LoadOption lhs, LoadOption rhs);
-
-    bool operator &(LoadOption lhs, LoadOption rhs);
-
-    enum class SaveOption {
-        DEFAULT = 0, OVERWRITE = 1, SKIP_IF_EXISTS = 2
-    };
-
-    SaveOption operator |(SaveOption lhs, SaveOption rhs);
-
-    bool operator &(SaveOption lhs, SaveOption rhs);
-
     class Resource;
     class ResourceManager;
+    class DirectoryPath;
 
     class Loader:public RefCountedObject {
 #pragma region reflection
@@ -59,7 +47,7 @@ namespace Ghurund::Core {
         virtual Resource* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) = 0;
 
@@ -67,7 +55,7 @@ namespace Ghurund::Core {
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
         ) const = 0;
     };

@@ -1,8 +1,8 @@
-#include "ghuidxpch.h"
+#include "ghuid2dpch.h"
 #include "Graphics2D.h"
 
 #include "core/Exceptions.h"
-
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI::Direct2D {
 
@@ -115,10 +115,10 @@ namespace Ghurund::UI::Direct2D {
         d3d11DeviceContext.Reset();
     }
 
-    Status Graphics2D::beginPaint(RenderTarget2D& target) {
+    void Graphics2D::beginPaint(RenderTarget2D& target) {
 #ifdef _DEBUG
         if (state != UIState::IDLE)
-            Logger::log(LogType::WARNING, Status::INV_STATE, _T("UI is not in IDLE state\n"));
+            Logger::log(LogType::WARNING, _T("UI is not in IDLE state\n"));
 #endif
         deviceContext->SetTarget(target.Target2D);
 
@@ -128,13 +128,12 @@ namespace Ghurund::UI::Direct2D {
         deviceContext->Clear();
 
         state = UIState::RECORDING;
-        return Status::OK;
     }
 
-    Status Graphics2D::endPaint(RenderTarget2D& target) {
+    void Graphics2D::endPaint(RenderTarget2D& target) {
 #ifdef _DEBUG
         if (state != UIState::RECORDING)
-            Logger::log(LogType::WARNING, Status::INV_STATE, _T("UI is not in RECORDING state\n"));
+            Logger::log(LogType::WARNING, _T("UI is not in RECORDING state\n"));
 #endif
 
         HRESULT endDrawResult = deviceContext->EndDraw();
@@ -149,8 +148,8 @@ namespace Ghurund::UI::Direct2D {
 
         if (FAILED(endDrawResult)) {
             auto text = std::format(_T("ID2D1DeviceContext2::EndDraw() failed with code {}\n"), endDrawResult);
-            return Logger::log(LogType::WARNING, Status::CALL_FAIL, text.c_str());
+            Logger::log(LogType::ERR0R, text.c_str());
+            throw CallFailedException();
         }
-        return Status::OK;
     }
 }

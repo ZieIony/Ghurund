@@ -1,4 +1,4 @@
-#include "Ghurund.Engine.h"
+#include "Ghurund.Core.h"
 
 #include "PreviewApplication.h"
 

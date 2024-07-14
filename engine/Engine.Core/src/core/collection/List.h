@@ -124,6 +124,22 @@ namespace Ghurund::Core {
             A::size--;
         }
 
+		/**
+		from is inclusive, to is exclusive
+		to remove all use removeRange(0, Size);
+		 */
+		inline void removeRange(size_t from, size_t to) {
+			_ASSERT_EXPR(from < A::size, "Index out of bounds.\n");
+			_ASSERT_EXPR(to < A::size, "Index out of bounds.\n");
+            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            size_t i = from;
+            for (size_t j = to; j < A::size; i++, j++)
+				A::v[i] = std::move(A::v[j]);
+			for (; i < A::size; i++)
+				A::v[i].~Value();
+			A::size -= to - from;
+		}
+
         inline void remove(const Value& item) {
             size_t i = indexOf(item);
             _ASSERT_EXPR(i < A::size, "Index out of bounds.\n");
@@ -156,6 +172,16 @@ namespace Ghurund::Core {
                     iterator++;
                 }
             }
+        }
+
+        inline List sublist(size_t from, size_t to) {
+            _ASSERT_EXPR(from < A::size, "Index out of bounds.\n");
+            _ASSERT_EXPR(to < A::size, "Index out of bounds.\n");
+            _ASSERT_EXPR(to > from, "Incorrect range.\n");
+            List list;
+            for (size_t i = from; i < to; i++)
+                list.add(A::v[i]);
+            return list;
         }
 
         using A::operator==;

@@ -44,14 +44,24 @@ namespace Ghurund::Core::DirectX {
             if (DXGI_ERROR_NOT_FOUND == factory->EnumAdapters1(adapterIndex, &adapter))
                 break;
 
-            adapters.add(ghnew GraphicsAdapter(adapter));
+            auto graphicsAdapter = ghnew GraphicsAdapter(adapter);
+            if (graphicsAdapter->Outputs.Empty) {
+                delete graphicsAdapter;
+            } else {
+                adapters.add(graphicsAdapter);
+            }
             adapterIndex++;
         }
 
         if (FAILED(factory->EnumWarpAdapter(IID_PPV_ARGS(&adapter))))
             Logger::log(LogType::WARNING, _T("factory->EnumWarpAdapter() failed\n"));
 
-        adapters.add(ghnew GraphicsAdapter(adapter));
+        auto graphicsAdapter = ghnew GraphicsAdapter(adapter);
+        if (graphicsAdapter->Outputs.Empty) {
+            delete graphicsAdapter;
+        } else {
+            adapters.add(graphicsAdapter);
+        }
 
         if (adapters.Empty)
             throw DirectX12NotSupportedException();

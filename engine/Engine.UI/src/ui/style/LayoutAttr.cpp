@@ -24,11 +24,11 @@ namespace Ghurund::UI {
 		return TYPE;
 	}
 
-	SharedPointer<Control> LayoutRef::resolve(const Theme& theme) const {
+	IntrusivePointer<Control> LayoutRef::resolve(const Theme& theme) const {
 		auto iterator = theme.Layouts.find(key);
 		if (iterator == theme.Layouts.end()) {
 			Logger::log(LogType::WARNING, std::format(_T("Layout '{}' not found in the current theme.\n"), key.Value).c_str());
-			return SharedPointer<Control>(nullptr);
+			return IntrusivePointer<Control>(nullptr);
 		}
 		return iterator->value->get();
 	}

@@ -51,7 +51,7 @@ namespace Ghurund::UI {
         ~TextField() {}
 
     public:
-        TextField(std::unique_ptr<TextLayout> textLayout):TextView(std::move(textLayout)) {
+        TextField() {
             Focusable = true;
         }
 

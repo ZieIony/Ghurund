@@ -1,6 +1,7 @@
 #include "ghcdxpch.h"
 #include "Mesh.h"
 
+#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {
@@ -140,7 +141,7 @@ namespace Ghurund {
         indexUploadHeap.ReleaseAndGetAddressOf();
     }
 
-    Status Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
+    void Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         if (commandList.State == CommandListState::FINISHED)
             commandList.reset();
 
@@ -156,7 +157,8 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&vertexBuffer)))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -167,7 +169,8 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&vertexUploadHeap)))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             D3D12_SUBRESOURCE_DATA vertexData = {};
@@ -202,7 +205,8 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_COPY_DEST,
                 nullptr,
                 IID_PPV_ARGS(&indexBuffer)))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             auto uploadHeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
@@ -213,7 +217,8 @@ namespace Ghurund {
                 D3D12_RESOURCE_STATE_GENERIC_READ,
                 nullptr,
                 IID_PPV_ARGS(&indexUploadHeap)))) {
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateCommittedResource() failed\n"));
+                Logger::log(LogType::ERR0R, _T("device->CreateCommittedResource() failed\n"));
+                throw CallFailedException();
             }
 
             D3D12_SUBRESOURCE_DATA indexData = {};
@@ -239,8 +244,6 @@ namespace Ghurund {
         commandList.wait();
 
         Valid = true;
-
-        return Status::OK;
     }
 
     void Mesh::draw(CommandList& commandList) {

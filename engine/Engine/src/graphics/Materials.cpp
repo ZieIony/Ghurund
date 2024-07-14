@@ -18,7 +18,7 @@ namespace Ghurund {
 
     Material* Materials::makeBasic(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader(Shaders::loadBasic(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadBasic(manager));
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -33,7 +33,7 @@ namespace Ghurund {
 
     Material* Materials::makeBasicLight(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture, Texture* specularTexture, Texture* normalTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader(Shaders::loadBasicLight(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadBasicLight(manager));
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -56,7 +56,7 @@ namespace Ghurund {
 
     Material* Materials::makeToon(ResourceManager& manager, ParameterManager& parameterManager, Texture* diffuseTexture) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader(Shaders::loadToon(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadToon(manager));
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
             /*if (diffuseTexture) {
@@ -71,10 +71,10 @@ namespace Ghurund {
 
     Material* Materials::makeChecker(ResourceManager& manager, Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager) {
         Material* material = nullptr;
-        SharedPointer<Shader> shader(Shaders::loadBasic(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadBasic(manager));
         if (shader!=nullptr) {
             material = ghnew Material(shader.get());
-            //SharedPointer<Texture> texture = Textures::makeChecker(graphics, commandList, manager);
+            //IntrusivePointer<Texture> texture = Textures::makeChecker(graphics, commandList, manager);
             //TextureParameter* diffuse = (TextureParameter*)material->Shader->getParameter(ParameterId::DIFFUSE_TEXTURE.ConstantName);
             //diffuse->setValue(texture);
             material->initParameters(parameterManager);
@@ -84,42 +84,42 @@ namespace Ghurund {
     }
 
     Material* Materials::makeWireframe(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadWireframe(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadWireframe(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeOutline(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadOutline(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadOutline(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeNormals(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadNormals(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadNormals(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeInvalid(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadInvalid(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadInvalid(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeLightPass(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadLightPass(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadLightPass(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeUi(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadUi(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadUi(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeBasicSky(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadBasicSky(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadBasicSky(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 
     Material* Materials::makeAdvancedSky(ResourceManager& manager, ParameterManager& parameterManager) {
-        SharedPointer<Shader> shader(Shaders::loadAdvancedSky(manager));
+        IntrusivePointer<Shader> shader(Shaders::loadAdvancedSky(manager));
         return makeWithShader(shader.get(), parameterManager);
     }
 }

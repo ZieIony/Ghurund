@@ -1,14 +1,11 @@
 #pragma once
 
-#include "Constructor.h"
 #include "BaseProperty.h"
 #include "BaseMethod.h"
 #include "TypeModifier.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
-#include "core/Object.h"
 #include "core/concepts/Concepts.h"
-#include "core/Exceptions.h"
 #include "BaseType.h"
 #include "ConstructorCollection.h"
 

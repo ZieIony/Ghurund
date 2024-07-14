@@ -3,8 +3,6 @@
 #include "Path.h"
 #include "core/string/StringView.h"
 
-#include <Windows.h>
-#include <pathcch.h>
 #include <Shlwapi.h>
 
 #pragma comment(lib, "Shlwapi.lib")

@@ -1,73 +1,74 @@
 #pragma once
 
 #include "AdapterOutput.h"
-#include "Status.h"
 
 namespace Ghurund::Core::DirectX {
     using namespace Microsoft::WRL;
     using namespace Ghurund::Core;
 
-    class GraphicsAdapter: public Object {
-#pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+	class DirectX12NotSupportedException:public std::exception {};
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = GraphicsAdapter::GET_TYPE();
-#pragma endregion
-
+    class GraphicsAdapter {
     private:
         ComPtr<IDXGIAdapter1> adapter;
-        DXGI_ADAPTER_DESC1 desc;
+        size_t dedicatedVideoMemory, sharedSystemMemory;
         WString name;
-        List<AdapterOutput*> outputs;
+        List<SharedPointer<AdapterOutput>> outputs;
 
-        Status initOutputs() {
-            ComPtr<IDXGIOutput> output;
-            unsigned int outputIndex = 0;
-            while (true) {
-                if (DXGI_ERROR_NOT_FOUND == adapter->EnumOutputs(outputIndex, &output))
-                    break;
-
-                outputs.add(ghnew AdapterOutput(output));
-                outputIndex++;
-            }
-
-            return outputs.Size > 0 ? Status::OK : Status::DIRECTX12_NOT_SUPPORTED;
-        }
+        void initOutputs();
 
     public:
-        GraphicsAdapter(ComPtr<IDXGIAdapter1> adapter) {
-            this->adapter = adapter;
+        GraphicsAdapter(ComPtr<IDXGIAdapter1> adapter):adapter(adapter) {
+            DXGI_ADAPTER_DESC1 desc;
             adapter->GetDesc1(&desc);
 
             name = desc.Description;
+            dedicatedVideoMemory = desc.DedicatedVideoMemory;
+            sharedSystemMemory = desc.SharedSystemMemory;
 
             initOutputs();
         }
 
-        ~GraphicsAdapter() {
-            outputs.deleteItems();
-        }
+		GraphicsAdapter(const GraphicsAdapter& other):
+            adapter(other.adapter),
+            dedicatedVideoMemory(other.dedicatedVideoMemory),
+            sharedSystemMemory(other.sharedSystemMemory),
+            name(other.name),
+            outputs(other.outputs) {}
+
+        GraphicsAdapter(GraphicsAdapter&& other) noexcept:
+            adapter(std::move(other.adapter)),
+            dedicatedVideoMemory(std::move(other.dedicatedVideoMemory)),
+            sharedSystemMemory(std::move(other.sharedSystemMemory)),
+            name(std::move(other.name)),
+            outputs(std::move(other.outputs)) {}
 
         ComPtr<IDXGIAdapter1> get() {
             return adapter;
         }
 
-        WString& getName() {
+        const WString& getName() const {
             return name;
         }
 
-        size_t getDedicatedVideoMemory() {
-            return desc.DedicatedVideoMemory;
+        __declspec(property(get = getName)) const WString& Name;
+
+        size_t getDedicatedVideoMemory() const {
+            return dedicatedVideoMemory;
         }
 
-        List<AdapterOutput*>& getOutputs() {
+        __declspec(property(get = getDedicatedVideoMemory)) size_t DedicatedVideoMemory;
+
+        size_t getSharedSystemMemory() const {
+            return sharedSystemMemory;
+        }
+
+        __declspec(property(get = getSharedSystemMemory)) size_t SharedSystemMemory;
+
+        const List<SharedPointer<AdapterOutput>>& getOutputs() const {
             return outputs;
         }
+
+        __declspec(property(get = getOutputs)) const List<SharedPointer<AdapterOutput>> Outputs;
     };
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Windows.h>
+
 namespace Ghurund::Core {
     class CriticalSection {
     private:

@@ -1,82 +1,107 @@
 #pragma once
 
 #include "Common.h"
+#include "core/string/String.h"
+
 #include <cstdint>
 #include <Windows.h>
 #include <psapi.h>
 
 namespace Ghurund::Core {
-    class SystemInfo {
-    private:
-        SystemInfo() = delete;
+	class SystemInfo {
+	private:
+		SystemInfo() = delete;
 
-        template<typename Type>
-        static uint8_t countSetBits(Type n) {
-            unsigned int count = 0;
-            while (n) {
-                n &= (n - 1);
-                count++;
-            }
-            return count;
-        }
+		template<typename Type>
+		static uint8_t countSetBits(Type n) {
+			unsigned int count = 0;
+			while (n) {
+				n &= (n - 1);
+				count++;
+			}
+			return count;
+		}
 
-    public:
-        struct ProcessorInfo {
-            uint16_t cores, logicalProcessors;
-        };
+		static AString getProcessorArchitecture() {
+			SYSTEM_INFO siSysInfo;
+			GetSystemInfo(&siSysInfo);
+			switch (siSysInfo.wProcessorArchitecture) {
+			case PROCESSOR_ARCHITECTURE_AMD64:
+				return "x64";
+			case PROCESSOR_ARCHITECTURE_IA32_ON_WIN64:
+				return "WOW64";
+				break;
+			case PROCESSOR_ARCHITECTURE_IA64:
+				return "Intel Itanium Processor Family (IPF)";
+			case PROCESSOR_ARCHITECTURE_INTEL:
+				return "x86";
+				break;
+			default:
+				return "unknown";
+			}
+		}
 
-        struct MemoryInfo {
-            uint64_t total;
-            size_t file, paged, nonPaged, workingSet;
-        };
+	public:
+		struct ProcessorInfo {
+			uint16_t cores, logicalProcessors;
+			AString architecture;
+		};
 
-        static ProcessorInfo getProcessorInfo() {
-            ProcessorInfo info = { 0,0 };
-            SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = nullptr, * ptr = nullptr;
-            DWORD returnLength = 0;
-            DWORD byteOffset = 0;
+		struct MemoryInfo {
+			uint64_t totalKb;
+			size_t file, paged, nonPaged, workingSet;
+		};
 
-            DWORD rc = GetLogicalProcessorInformation(buffer, &returnLength);
-            buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*)ghnew uint8_t[returnLength];
-            rc = GetLogicalProcessorInformation(buffer, &returnLength);
+		static ProcessorInfo getProcessorInfo() {
+			ProcessorInfo info = {};
+			SYSTEM_LOGICAL_PROCESSOR_INFORMATION* buffer = nullptr, * ptr = nullptr;
+			DWORD returnLength = 0;
+			DWORD byteOffset = 0;
 
-            ptr = buffer;
+			DWORD rc = GetLogicalProcessorInformation(buffer, &returnLength);
+			buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION*)ghnew uint8_t[returnLength];
+			rc = GetLogicalProcessorInformation(buffer, &returnLength);
 
-            while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength) {
-                switch (ptr->Relationship) {
-                case RelationProcessorCore:
-                    info.cores++;
-                    info.logicalProcessors += countSetBits(ptr->ProcessorMask);
-                    break;
-                default:
-                    break;
-                }
-                byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
-                ptr++;
-            }
+			ptr = buffer;
 
-            delete[] buffer;
-            return info;
-        }
+			while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength) {
+				switch (ptr->Relationship) {
+				case RelationProcessorCore:
+					info.cores++;
+					info.logicalProcessors += countSetBits(ptr->ProcessorMask);
+					break;
+				default:
+					break;
+				}
+				byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
+				ptr++;
+			}
 
-        static MemoryInfo getMemoryInfo() {
-            MemoryInfo info = {};
+			delete[] buffer;
 
-            ULONGLONG total;
-            GetPhysicallyInstalledSystemMemory(&total);
-            info.total = total;
+			info.architecture = getProcessorArchitecture();
 
-            HANDLE hProcess = GetCurrentProcess();
-            PROCESS_MEMORY_COUNTERS pmc;
+			return info;
+		}
 
-            if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
-                info.file = pmc.PagefileUsage;
-                info.paged = pmc.QuotaPagedPoolUsage;
-                info.nonPaged = pmc.QuotaNonPagedPoolUsage;
-                info.workingSet = pmc.WorkingSetSize;
-            }
+		static MemoryInfo getMemoryInfo() {
+			MemoryInfo info = {};
 
-            return info;
-        }
-    };
+			ULONGLONG total;
+			GetPhysicallyInstalledSystemMemory(&total);
+			info.totalKb = total;
+
+			HANDLE hProcess = GetCurrentProcess();
+			PROCESS_MEMORY_COUNTERS pmc;
+
+			if (GetProcessMemoryInfo(hProcess, &pmc, sizeof(pmc))) {
+				info.file = pmc.PagefileUsage;
+				info.paged = pmc.QuotaPagedPoolUsage;
+				info.nonPaged = pmc.QuotaNonPagedPoolUsage;
+				info.workingSet = pmc.WorkingSetSize;
+			}
+
+			return info;
+		}
+	};
 }

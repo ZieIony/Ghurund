@@ -99,12 +99,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
-    <ClInclude Include="src\test\ui\ShapeFactory.h" />
+    <ClInclude Include="src\test\ui\TestBitmapFactory.h" />
     <ClInclude Include="src\test\ui\TestControlContainer.h" />
+    <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
+    <ClInclude Include="src\test\ui\TestShapeFactory.h" />
+    <ClInclude Include="src\test\ui\TestUIContext.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
-    <ClInclude Include="src\test\ui\UIContext.h" />
-    <ClInclude Include="src\test\ui\image\Bitmap.h" />
+    <ClInclude Include="src\test\ui\image\TestBitmap.h" />
     <ClInclude Include="src\test\ui\image\TestImage.h" />
     <ClInclude Include="src\test\ui\text\TextLayout.h" />
   </ItemGroup>
@@ -119,6 +120,12 @@
     <ClCompile Include="src\test\ui\constraint\ConstraintSetTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ParentSizeConstraintTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintControl.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\test\ui\control\ControlCloningTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />

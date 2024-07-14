@@ -2,7 +2,8 @@
 
 #pragma comment(lib, "Shlwapi.lib")
 
-#include "core/resource/ResourceManager.h"
+#include "core/reflection/Type.h"
+#include "core/resource/Resource.h"
 
 #pragma warning(push, 0)
 #include <dxgi1_4.h>

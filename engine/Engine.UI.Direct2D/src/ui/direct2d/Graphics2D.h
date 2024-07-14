@@ -85,9 +85,9 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getState)) UIState State;
 
-        Status beginPaint(RenderTarget2D& target);
+        void beginPaint(RenderTarget2D& target);
 
-        Status endPaint(RenderTarget2D& target);
+        void endPaint(RenderTarget2D& target);
 
         void flush() {
             d3d11DeviceContext->Flush();

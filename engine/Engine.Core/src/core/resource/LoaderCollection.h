@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/collection/Map.h"
 #include "core/reflection/Type.h"
 #include "core/resource/Loader.h"
@@ -10,13 +10,13 @@
 namespace Ghurund::Core {
     class LoaderCollection {
     private:
-        Map<const Type*, SharedPointer<Loader>> loaders;
+        Map<const Type*, IntrusivePointer<Loader>> loaders;
 
     public:
         template<typename T>
         inline void set(Loader* loader) {
             loader->addReference();
-            loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), SharedPointer(loader));
+            loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), IntrusivePointer(loader));
         }
 
         inline Loader* get(const Type& t) const {

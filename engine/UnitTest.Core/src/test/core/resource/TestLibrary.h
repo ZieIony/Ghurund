@@ -7,7 +7,7 @@ namespace UnitTest {
 
 	class TestLibrary:public Library {
 	private:
-		std::shared_ptr<Buffer> buffer = std::make_shared<Buffer>("test", 5);
+		SharedPointer<Buffer> buffer = SharedPointer<Buffer>(ghnew Buffer("test", 5));
 
 	public:
 		mutable size_t getCalls = 0, getResourcePathCalls = 0;
@@ -28,12 +28,12 @@ namespace UnitTest {
 			return FilePath(L"testpath");
 		}
 
-		virtual std::shared_ptr<Buffer> get(const WString& path)  override {
+		virtual SharedPointer<Buffer> get(const WString& path)  override {
 			getCalls++;
 			return buffer;
 		}
 
-		virtual std::shared_ptr<Buffer> get(const size_t index)  override {
+		virtual SharedPointer<Buffer> get(const size_t index)  override {
 			getCalls++;
 			return buffer;
 		}

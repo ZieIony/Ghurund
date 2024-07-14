@@ -64,6 +64,6 @@ namespace Samples {
 
         virtual void update(const uint64_t time) override;
 
-        virtual Status paint() override;
+        virtual void paint() override;
     };
 }

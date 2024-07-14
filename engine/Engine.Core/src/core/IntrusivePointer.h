@@ -1,0 +1,93 @@
+#pragma once
+
+#include "RefCountedObject.h"
+#include "Common.h"
+#include "core/reflection/TypeBuilder.h"
+
+namespace Ghurund::Core {
+	template<typename T>
+	class IntrusivePointer {
+	private:
+		T* pointer = nullptr;
+
+	public:
+		static const Ghurund::Core::Type& GET_TYPE() {
+			static const Type TYPE = TypeBuilder<IntrusivePointer<T>>(Ghurund::Core::NAMESPACE_NAME, "IntrusivePointer").withTemplateParams<T>();
+			return TYPE;
+		}
+
+		inline static const Type& TYPE = GET_TYPE();
+
+		constexpr IntrusivePointer():pointer(nullptr) {}
+
+		IntrusivePointer(const IntrusivePointer<T>& other) {
+			pointer = other.get();
+			if (pointer)
+				pointer->addReference();
+		}
+
+		IntrusivePointer(IntrusivePointer<T>&& other) noexcept {
+			pointer = other.pointer;
+			other.pointer = nullptr;
+		}
+
+		explicit IntrusivePointer(T* p) {
+			pointer = p;
+		}
+
+		~IntrusivePointer() {
+			if (pointer)
+				pointer->release();
+		}
+
+		inline T* get() const {
+			return pointer;
+		}
+
+		inline void set(T* p) {
+			if (pointer)
+				pointer->release();
+			pointer = p;
+		}
+
+		uint32_t getReferenceCount() const {
+			return pointer ? pointer->ReferenceCount : 0;
+		}
+
+		__declspec(property(get = getReferenceCount)) uint32_t ReferenceCount;
+
+		inline T* operator ->() {
+			return pointer;
+		}
+
+		inline const T* operator ->() const {
+			return pointer;
+		}
+
+		inline IntrusivePointer<T>& operator=(const IntrusivePointer<T>& other) {
+			setPointer(pointer, other.pointer);
+			return *this;
+		}
+
+		inline IntrusivePointer<T>& operator=(IntrusivePointer<T>&& other) noexcept {
+			if (pointer)
+				pointer->release();
+			pointer = other.pointer;
+			other.pointer = nullptr;
+			return *this;
+		}
+
+		inline bool operator==(const IntrusivePointer<T>& other) const {
+			return pointer == other.pointer;
+		}
+
+		inline bool operator==(const nullptr_t& other) const {
+			return pointer == nullptr;
+		}
+	};
+
+	template<typename T, typename... Args>
+	IntrusivePointer<T> makeIntrusive(Args&&... args) {
+		return IntrusivePointer(ghnew T(std::forward<Args>(args)...));
+	}
+}

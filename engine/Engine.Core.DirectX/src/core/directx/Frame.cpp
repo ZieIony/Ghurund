@@ -4,7 +4,7 @@
 #include "Graphics.h"
 
 namespace Ghurund::Core::DirectX {
-    Status Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, Ghurund::Core::DirectX::RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
+    void Frame::init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, Ghurund::Core::DirectX::RenderTarget* renderTarget, DepthBuffer* depthBuffer) {
         this->renderTarget = renderTarget;
         this->depthBuffer = depthBuffer;
         this->viewport = viewport;
@@ -12,12 +12,11 @@ namespace Ghurund::Core::DirectX {
 
         commandList->init(graphics, graphics.DirectQueue);
         commandList->Name = L"frame command list";
-
-        return Status::OK;
     }
 
-    Status Frame::start(::DirectX::XMFLOAT4* color) {
-        commandList->wait();
+    void Frame::start(::DirectX::XMFLOAT4* color) {
+		if (commandList->State == CommandListState::CLOSED)
+			commandList->wait();
         commandList->reset();
 
         commandList->get()->OMSetRenderTargets(1, &renderTarget->Handle, FALSE, &depthBuffer->Handle);
@@ -29,13 +28,11 @@ namespace Ghurund::Core::DirectX {
         if (color != nullptr)
             renderTarget->clear(*commandList, *color);
         depthBuffer->clear(*commandList);
-
-        return Status::OK;
     }
 
-    Status Frame::finish() {
+    void Frame::finish() {
         renderTarget->finish(*commandList);
-        return commandList->finish();
+        commandList->finish();
     }
 
     void Frame::flush() {

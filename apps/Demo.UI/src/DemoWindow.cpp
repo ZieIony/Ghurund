@@ -52,22 +52,22 @@ namespace Demo {
 			Color(0xff0000ff)
 			});
 
-		auto pasteIcon = SharedPointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/icons/paste 18.png"))));
-		auto buttonImage = SharedPointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/button.png"))));
+		auto pasteIcon = IntrusivePointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/icons/paste 18.png"))));
+		auto buttonImage = IntrusivePointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/button.png"))));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
 		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application.ResourceManager);
 		toolbarItemAdapter->Items = {
-			SharedPointer2<MenuItem>(ghnew ButtonMenuItem(pasteIcon.get(),{})),
-			SharedPointer2<MenuItem>(ghnew SeparatorMenuItem())
+			SharedPointer<MenuItem>(ghnew ButtonMenuItem(pasteIcon.get(),{})),
+			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
 		};
 		toolbar->ItemAdapter = *toolbarItemAdapter;
 
 		MenuBar* menuBar = (MenuBar*)demoLayout->find("menuBar");
 		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application.ResourceManager);
 		menuBarItemAdapter->Items = {
-			SharedPointer2<MenuItem>(ghnew ButtonMenuItem(buttonImage.get(),{})),
-			SharedPointer2<MenuItem>(ghnew SeparatorMenuItem())
+			SharedPointer<MenuItem>(ghnew ButtonMenuItem(buttonImage.get(),{})),
+			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
 		};
 		menuBar->ItemAdapter = *menuBarItemAdapter;
 

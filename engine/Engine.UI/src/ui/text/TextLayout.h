@@ -8,35 +8,47 @@
 #include "TextDocument.h"
 
 namespace Ghurund::UI {
+    struct CharacterInfo {
+        wchar_t c;
+        size_t index;
+        FloatPoint pos;
+        Glyph glyph;
+        Color color;
+        TextFormat* format;
+    };
+
     class TextLayout {
     protected:
         Ghurund::Core::FloatSize size;
         Color color;
-        Ghurund::UI::TextDocument* text;
+        Ghurund::UI::TextDocument text = Ghurund::UI::TextDocument(L"");
         TextFormat* format = nullptr;
+        List<List<CharacterInfo>> lines;
 
         bool valid = false;
 
+        void breakLine(List<CharacterInfo>& line);
+
     public:
+        TextLayout() {}
+
         TextLayout(const Ghurund::Core::WString& text, const Color& color, TextFormat* format)
-            :text(ghnew Ghurund::UI::TextDocument(text)), color(color) {
+            :text(Ghurund::UI::TextDocument(text)), color(color) {
             Format = format;
         }
 
         virtual ~TextLayout() {
             if (format)
                 format->release();
-            delete text;
         }
 
         inline const Ghurund::UI::TextDocument& getText() const {
-            return *text;
+            return text;
         }
 
-        inline void setText(std::unique_ptr<Ghurund::UI::TextDocument> text) {
-            if (this->text != text.get()) {
-                delete this->text;
-                this->text = text.release();
+        inline void setText(const Ghurund::UI::TextDocument& text) {
+            if (this->text != text) {
+                this->text = text;
                 valid = false;
             }
         }
@@ -51,7 +63,7 @@ namespace Ghurund::UI {
             setPointer(this->format, (Ghurund::UI::TextFormat*)textFormat);
         }
 
-        virtual Ghurund::UI::TextFormat* getFormat(uint32_t position) = 0;
+        virtual Ghurund::UI::TextFormat* getFormat(uint32_t position);
 
         __declspec(property(get = getFormat, put = setFormat)) TextFormat* Format;
 
@@ -59,11 +71,11 @@ namespace Ghurund::UI {
             this->color = color;
         }
 
-        inline const Ghurund::UI::Color& getColor() const {
+        inline const Ghurund::Core::Color& getColor() const {
             return color;
         }
 
-        virtual Ghurund::UI::Color getColor(uint32_t pos) = 0;
+        virtual Ghurund::Core::Color getColor(uint32_t pos);
 
         __declspec(property(get = getColor, put = setColor)) const Color& Color;
 
@@ -84,34 +96,38 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getSize, put = setSize)) const Ghurund::Core::FloatSize& Size;
 
-        virtual TextMetrics getMetrics() = 0;
+        virtual TextMetrics getMetrics();
 
         __declspec(property(get = getMetrics)) TextMetrics TextMetrics;
 
-        virtual Ghurund::Core::Array<Ghurund::UI::LineMetrics> getLineMetrics() = 0;
+        virtual Ghurund::Core::Array<Ghurund::UI::LineMetrics> getLineMetrics();
 
         __declspec(property(get = getLineMetrics)) Ghurund::Core::Array<Ghurund::UI::LineMetrics> LineMetrics;
 
-        virtual Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> getClusterMetrics() = 0;
+        virtual Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> getClusterMetrics();
 
         __declspec(property(get = getClusterMetrics)) Ghurund::Core::Array<Ghurund::UI::ClusterMetrics> ClusterMetrics;
 
-        virtual HitTestMetrics hitTestTextPosition(uint32_t textPosition, bool isTrailingHit, float* pointX, float* pointY) = 0;
+        virtual HitTestMetrics hitTestTextPosition(uint32_t textPosition, bool isTrailingHit, float* pointX, float* pointY);
 
-        virtual Ghurund::Core::Array<HitTestMetrics> hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY) = 0;
+        virtual Ghurund::Core::Array<HitTestMetrics> hitTestTextRange(uint32_t textPosition, uint32_t textLength, float originX, float originY);
 
-        virtual HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit) = 0;
+        virtual HitTestMetrics hitTestPoint(float pointX, float pointY, bool* isTrailingHit);
 
         inline void invalidate() {
             valid = false;
         }
 
-        virtual Status refresh() = 0;
+        virtual void refresh();
 
-        virtual Status insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) = 0;
+        virtual void insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert);
 
-        virtual Status removeTextAt(uint32_t position, uint32_t lengthToRemove) = 0;
+        virtual void removeTextAt(uint32_t position, uint32_t lengthToRemove);
 
-        virtual void draw(ICanvas& canvas) = 0;
+        virtual void draw(ICanvas& canvas);
+
+        uint32_t measureWidth();
+
+        uint32_t measureHeight();
     };
 }

@@ -24,7 +24,7 @@ public:
     TEST_METHOD(emptyWidget) {
         MemoryGuard guard;
         {
-            auto button = makeShared<Button>();
+            auto button = makeIntrusive<Button>();
 
             Assert::IsNull(button->Theme);
             //Assert::IsNull(button->Layout);

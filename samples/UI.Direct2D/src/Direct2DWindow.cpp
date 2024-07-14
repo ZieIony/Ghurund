@@ -78,11 +78,10 @@ namespace Samples {
         rootView->layout(0, 0, (float)Size.Width, (float)Size.Height);
     }
 
-    Status Direct2DWindow::paint() {
+    void Direct2DWindow::paint() {
         /*canvas->beginPaint();
         rootView->draw(*canvas);
         canvas->endPaint();*/
-        return Status::OK;
     }
 
 }

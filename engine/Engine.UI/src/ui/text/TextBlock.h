@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TextLayout.h"
+#include "TextLayoutConstraint.h"
 #include "ui/control/Control.h"
 #include "ui/style/AttrProperty.h"
 #include "ui/style/ColorAttr.h"
@@ -23,7 +24,7 @@ namespace Ghurund::UI {
 	protected:
 		AttrProperty<ColorAttr, Color> color;
 		Ghurund::UI::TextFormatAttr* textFormat = nullptr;
-		Ghurund::UI::TextLayout* textLayout;
+		Ghurund::UI::TextLayout textLayout;
 
 		virtual void loadInternal(LayoutLoader& loader, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml) override;
 
@@ -31,12 +32,13 @@ namespace Ghurund::UI {
 
 		virtual void onDraw(ICanvas& canvas) override;
 
-		~TextBlock() {
-			delete textLayout;
-		}
-
 	public:
-		TextBlock(std::unique_ptr<Ghurund::UI::TextLayout> textLayout):textLayout(textLayout.release()), color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {}
+		TextBlock():color(ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND)) {
+			contentSize = Ghurund::UI::ContentSize(
+				makeIntrusive<TextLayoutWidthConstraint>(textLayout).get(),
+				makeIntrusive<TextLayoutHeightConstraint>(textLayout).get()
+			);
+		}
 
 		/*TextBlock(
 			const Ghurund::Core::WString& text,
@@ -46,16 +48,21 @@ namespace Ghurund::UI {
 			TextColor = color;
 		}*/
 
+		~TextBlock() {
+			if (textFormat)
+				delete textFormat;
+		}
+
 		const TextDocument& getText() {
-			return textLayout->TextDocument;
+			return textLayout.TextDocument;
 		}
 
 		inline void setText(const Ghurund::Core::WString& text) {
-			textLayout->TextDocument = std::move(std::make_unique<TextDocument>(text));
+			textLayout.TextDocument = text;
 		}
 
-		inline void setText(std::unique_ptr<TextDocument> textDocument) {
-			textLayout->TextDocument = std::move(textDocument);
+		inline void setText(const TextDocument& textDocument) {
+			textLayout.TextDocument = textDocument;
 		}
 
 		__declspec(property(get = getText, put = setText)) const TextDocument& Text;

@@ -1,43 +1,36 @@
 #pragma once
 
-#include "RefCountedObject.h"
 #include "Common.h"
-#include "core/reflection/TypeBuilder.h"
+
+#include <type_traits>
 
 namespace Ghurund::Core {
 	template<typename T>
 	class SharedPointer {
 	private:
-		T* pointer = nullptr;
+		uint32_t* referenceCount;
+		T* pointer;
 
 	public:
-		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Type TYPE = TypeBuilder<SharedPointer<T>>(Ghurund::Core::NAMESPACE_NAME, "SharedPointer").withTemplateParams<T>();
-			return TYPE;
-		}
-
-		inline static const Type& TYPE = GET_TYPE();
-
-		constexpr SharedPointer():pointer(nullptr) {}
+		constexpr SharedPointer():pointer(nullptr), referenceCount(ghnew uint32_t(1)) {}
 
 		SharedPointer(const SharedPointer<T>& other) {
-			pointer = other.get();
-			if (pointer)
-				pointer->addReference();
-		}
-
-		SharedPointer(SharedPointer<T>&& other) noexcept {
 			pointer = other.pointer;
-			other.pointer = nullptr;
+			referenceCount = other.referenceCount;
+			(*referenceCount)++;
 		}
 
-		explicit SharedPointer(T* p) {
+		explicit SharedPointer(T* p):referenceCount(ghnew uint32_t(1)) {
 			pointer = p;
 		}
 
 		~SharedPointer() {
-			if (pointer)
-				pointer->release();
+			if (*referenceCount > 1) {
+				(*referenceCount)--;
+			} else {
+				delete referenceCount;
+				delete pointer;
+			}
 		}
 
 		inline T* get() const {
@@ -45,13 +38,17 @@ namespace Ghurund::Core {
 		}
 
 		inline void set(T* p) {
-			if (pointer)
-				pointer->release();
+			if (*referenceCount > 1) {
+				(*referenceCount)--;
+			} else {
+				delete pointer;
+			}
 			pointer = p;
+			*referenceCount = 1;
 		}
 
 		uint32_t getReferenceCount() const {
-			return pointer ? pointer->ReferenceCount : 0;
+			return *referenceCount;
 		}
 
 		__declspec(property(get = getReferenceCount)) uint32_t ReferenceCount;
@@ -65,20 +62,24 @@ namespace Ghurund::Core {
 		}
 
 		inline SharedPointer<T>& operator=(const SharedPointer<T>& other) {
-			setPointer(pointer, other.pointer);
-			return *this;
-		}
-
-		inline SharedPointer<T>& operator=(SharedPointer<T>&& other) noexcept {
-			if (pointer)
-				pointer->release();
+			if (*this == other)
+				return *this;
+			if (*referenceCount > 1) {
+				(*referenceCount)--;
+			} else {
+				delete referenceCount;
+				delete pointer;
+			}
 			pointer = other.pointer;
-			other.pointer = nullptr;
+			referenceCount = other.referenceCount;
+			if (pointer) {
+				(*referenceCount)++;
+			}
 			return *this;
 		}
 
 		inline bool operator==(const SharedPointer<T>& other) const {
-			return pointer == other.pointer;
+			return referenceCount == other.referenceCount;
 		}
 
 		inline bool operator==(const nullptr_t& other) const {
@@ -90,5 +91,4 @@ namespace Ghurund::Core {
 	SharedPointer<T> makeShared(Args&&... args) {
 		return SharedPointer(ghnew T(std::forward<Args>(args)...));
 	}
-
 }

@@ -3,8 +3,16 @@
 #include "FileLayoutProvider.h"
 #include "FileDrawableProvider.h"
 
+#include "ui/widget/button/Button.h"
+#include "ui/widget/button/CheckBox.h"
+#include "ui/widget/button/RadioButton.h"
+#include "ui/widget/ExpandableContainer.h"
+
 namespace Ghurund::UI {
-	BaseTheme::BaseTheme(Ghurund::Core::ResourceManager& resourceManager, Ghurund::UI::DrawableFactory& drawableFactory):Theme(), resourceManager(resourceManager) {
+	BaseTheme::BaseTheme(
+		Ghurund::Core::ResourceManager& resourceManager,
+		Ghurund::UI::DrawableFactory& drawableFactory
+	):Theme(), resourceManager(resourceManager) {
 		auto buttonLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ButtonDefaultLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, buttonLayoutPath));
 		auto checkBoxLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/CheckBoxLayout.xml");
@@ -14,26 +22,31 @@ namespace Ghurund::UI {
 		auto expandableContainerLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ExpandableContainer.xml");
 		Layouts.put(LayoutKey(ExpandableContainer::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, expandableContainerLayoutPath));
 
-		auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.ttf");
-		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+		Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont = [&]{
+			auto latoMediumPathAtlas = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.fontatlas");
+			if (latoMediumPathAtlas.exists(DirectoryPath(), resourceManager.Libraries)) {
+				return IntrusivePointer<Font>(resourceManager.load<Ghurund::UI::Font>(latoMediumPathAtlas, DirectoryPath()));
+			} else {
+				auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_medium.ttf");
+				Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+				//resourceManager.save(*latoMediumFont.get(), latoMediumPathAtlas, DirectoryPath(), Font::FORMAT_ATLAS);
+				return latoMediumFont;
+			}
+		}();
 		auto latoLightPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_light.ttf");
-		Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
+		Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoLightFont(resourceManager.load<Ghurund::UI::Font>(latoLightPath, DirectoryPath()));
 
-		/*auto buttonFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
-		buttonFont->init(dwriteFactory);
+		auto buttonFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 10.0f, FW_MEDIUM);    // TODO: should medium font use FW_MEDIUM or FW_REGULAR?
 		TextFormats.put(Theme::TEXTFORMAT_BUTTON, buttonFont);
 
-		auto listHeaderFont = Ghurund::Core::makeShared<TextFormat>(latoLightFont, 14.0f, FW_LIGHT);
-		listHeaderFont->init(dwriteFactory);
+		auto listHeaderFont = Ghurund::Core::makeIntrusive<TextFormat>(latoLightFont.get(), 14.0f, FW_LIGHT);
 		TextFormats.put(Theme::TEXTFORMAT_LIST_HEADER, listHeaderFont);
 
-		auto textPrimaryFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 11.0f, FW_REGULAR);
-		textPrimaryFont->init(dwriteFactory);
+		auto textPrimaryFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 11.0f, FW_REGULAR);
 		TextFormats.put(Theme::TEXTFORMAT_TEXT_PRIMARY, textPrimaryFont);
 
-		auto textSecondaryFont = Ghurund::Core::makeShared<TextFormat>(latoMediumFont, 10.0f, FW_REGULAR);
-		textSecondaryFont->init(dwriteFactory);
-		TextFormats.put(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);*/
+		auto textSecondaryFont = Ghurund::Core::makeIntrusive<TextFormat>(latoMediumFont.get(), 50.0f, FW_REGULAR);
+		TextFormats.put(Theme::TEXTFORMAT_TEXT_SECONDARY, textSecondaryFont);
 
 		auto checkboxCheckedPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/icons\\checkbox checked 18.png");
 		Drawables.put(Theme::DRAWABLE_CHECKBOX_CHECKED, std::make_shared<FileDrawableProvider>(drawableFactory, checkboxCheckedPath));

@@ -70,7 +70,7 @@ namespace Ghurund {
     public:
         ~Mesh();
 
-        virtual Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0);
+        virtual void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0);
 
         void draw(CommandList& commandList);
 

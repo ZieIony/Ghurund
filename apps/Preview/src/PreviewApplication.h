@@ -1,12 +1,8 @@
 ﻿#include "graphics/Renderer.h"
 #include "core/application/Application.h"
-#include "ui/direct2d/Graphics2D.h"
 
 #include "PreviewWindow.h"
-#include "ui/UIFeature.h"
 #include "ThemeApplication.h"
-
-#include <format>
 
 namespace Preview {
     using namespace Ghurund;

@@ -208,6 +208,23 @@ namespace Ghurund::Core {
 			size += len;	// null terminator already present
 		}
 
+		inline void insert(size_t pos, const GenericString<T>& str) {
+			if (str.Empty)
+				return;
+			size_t len = str.Length;
+			fit(size + len);
+			memcpy(v + pos + len, v + pos, (size - pos) * sizeof(T));
+			memcpy(v + pos, str.Data, len * sizeof(T));
+			size += len;	// null terminator already present
+		}
+
+		inline void insert(size_t pos, const GenericString<T>& str, size_t len) {
+			fit(size + len);
+			memcpy(v + pos + len, v + pos, (size - pos) * sizeof(T));
+			memcpy(v + pos, str.Data, len * sizeof(T));
+			size += len;	// null terminator already present
+		}
+
 		inline void remove(size_t pos, size_t length) {
 			memcpy(v + pos, v + pos + length, (size - pos - length) * sizeof(T));
 			size -= length;

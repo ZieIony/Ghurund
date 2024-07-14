@@ -5,7 +5,7 @@
 #include "FeatureCollection.h"
 
 #include "core/Noncopyable.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/Timer.h"
 #include "core/threading/FunctionQueue.h"
 #include "core/resource/ResourceManager.h"

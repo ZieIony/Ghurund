@@ -1,11 +1,9 @@
 #pragma once
 
-#include "Common.h"
-#include "core/allocation/Allocator.h"
 #include "core/collection/Array.h"
-#include "core/Tuple.h"
 #include "core/Exceptions.h"
-#include "core/logging/Formatter.h"
+
+#include <format>
 
 namespace Ghurund::Core {
     class Type;

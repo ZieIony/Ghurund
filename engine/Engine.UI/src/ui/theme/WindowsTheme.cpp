@@ -8,7 +8,7 @@
 #pragma comment(lib, "WindowsApp.lib")
 
 namespace Ghurund::UI {
-    Status WindowsTheme::init() {
+    void WindowsTheme::init() {
         namespace abi_vm = ABI::Windows::UI::ViewManagement;
         namespace wrl = Microsoft::WRL;
         namespace wf = Windows::Foundation;
@@ -16,11 +16,11 @@ namespace Ghurund::UI {
         wrl::ComPtr<abi_vm::IUISettings> settings;
         auto stringRef = wrl::Wrappers::HStringReference(RuntimeClass_Windows_UI_ViewManagement_UISettings);
         if (FAILED(wf::ActivateInstance(stringRef.Get(), &settings)))
-            return Status::CALL_FAIL;
+            throw CallFailedException();
 
         abi_vm::IUISettings3* uiSettings = nullptr;
         if (FAILED(settings->QueryInterface(__uuidof(uiSettings), reinterpret_cast<void**>(&uiSettings))))
-            return Status::CALL_FAIL;
+            throw CallFailedException();
 
         ABI::Windows::UI::Color color;
         uiSettings->GetColorValue(abi_vm::UIColorType_Accent, &color);
@@ -39,7 +39,5 @@ namespace Ghurund::UI {
         accentLight2 = Color(color.R, color.G, color.B, color.A);
         uiSettings->GetColorValue(abi_vm::UIColorType_AccentLight3, &color);
         accentLight3 = Color(color.R, color.G, color.B, color.A);
-
-        return Status::OK;
     }
 }

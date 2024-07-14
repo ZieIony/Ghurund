@@ -4,25 +4,19 @@
 #include "LoaderCollection.h"
 #include "ReloadTask.h"
 #include "Resource.h"
+#include "ResourceCollection.h"
 #include "ResourceFormat.h"
 #include "ResourcePath.h"
-#include "Resources.h"
 
 #include "core/Buffer.h"
-#include "core/Exceptions.h"
-#include "core/Noncopyable.h"
-#include "core/Object.h"
-#include "core/collection/HashMap.h"
-#include "core/logging/Logger.h"
-#include "core/logging/Formatter.h"
 #include "core/io/File.h"
 #include "core/io/LibraryList.h"
-#include "core/io/MemoryStream.h"
 #include "core/io/watcher/FileWatcher.h"
+#include "core/Noncopyable.h"
+#include "core/Object.h"
 #include "core/reflection/Type.h"
 #include "core/threading/WorkerThread.h"
 
-#include <format>
 
 namespace Ghurund::Core {
 	class ResourceManager:public Noncopyable, public Object {
@@ -40,8 +34,8 @@ namespace Ghurund::Core {
 
 	private:
 		FileWatcher watcher;
-		Resources resources;
-		mutable Map<ResourcePath, std::shared_ptr<Buffer>> resourceCache;
+		ResourceCollection resources;
+		mutable Map<ResourcePath, SharedPointer<Buffer>> resourceCache;
 		LibraryList libraries;
 		LoaderCollection loaders;
 
@@ -59,7 +53,7 @@ namespace Ghurund::Core {
 		Resource* load(
 			Loader& loader,
 			const File& file,
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		);
 
@@ -68,7 +62,7 @@ namespace Ghurund::Core {
 			Loader& loader,
 			const ResourcePath& path,
 			const DirectoryPath& workingDir,
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		);
 
@@ -76,7 +70,7 @@ namespace Ghurund::Core {
 			Loader& loader,
 			const DirectoryPath& workingDir,
 			const ResourcePath& path,
-			const ResourceFormat* format,
+			const ResourceFormat& format,
 			LoadOption options
 		);
 
@@ -84,7 +78,7 @@ namespace Ghurund::Core {
 			Loader& loader,
 			const DirectoryPath& workingDir,
 			const Buffer& buffer,
-			const ResourceFormat* format,
+			const ResourceFormat& format,
 			LoadOption options
 		);
 
@@ -93,7 +87,7 @@ namespace Ghurund::Core {
 			const Loader& loader,
 			const DirectoryPath& workingDir,
 			Buffer& buffer,
-			const ResourceFormat* format,
+			const ResourceFormat& format,
 			SaveOption options
 		) const;
 
@@ -128,7 +122,7 @@ namespace Ghurund::Core {
 
 		template<Derived<Resource> T>
 		[[nodiscard]]
-		T* load(const File& file, const ResourceFormat* format = ResourceFormat::AUTO, LoadOption options = LoadOption::DEFAULT) {
+		T* load(const File& file, const ResourceFormat& format = ResourceFormat::AUTO, LoadOption options = LoadOption::DEFAULT) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
 			return (T*)load(*loader, file, format, options);
 		}
@@ -136,12 +130,12 @@ namespace Ghurund::Core {
 		template<class T>
 		void loadAsync(
 			const File& file,
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			std::function<void(T*)> onLoaded = nullptr,
 			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			SharedPointer<Task> task = makeShared<Task>(file.Path, [this, file, format, onLoaded, onError, options] {
+			IntrusivePointer<Task> task = makeIntrusive<Task>(file.Path, [this, file, format, onLoaded, onError, options] {
 				try {
 					T* resource = load<T>(file, format, options);
 					if (onLoaded)
@@ -160,7 +154,7 @@ namespace Ghurund::Core {
 		T* load(
 			const ResourcePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
@@ -171,12 +165,12 @@ namespace Ghurund::Core {
 		void loadAsync(
 			const ResourcePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			std::function<void(T*)> onLoaded = nullptr,
 			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			SharedPointer<Task> task = makeShared<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
+			IntrusivePointer<Task> task = makeIntrusive<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
 				try {
 					T* resource = load<T>(path, workingDir, format, options);
 					if (onLoaded)
@@ -195,7 +189,7 @@ namespace Ghurund::Core {
 		T* load(
 			const Buffer& buffer,
 			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
 		) {
 			Loader* loader = getLoader(Ghurund::Core::getType<T>());
@@ -211,7 +205,7 @@ namespace Ghurund::Core {
 			std::function<void(std::exception)> onError = nullptr,
 			LoadOption options = LoadOption::DEFAULT
 		) {
-			SharedPointer<Task> task = makeShared<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
+			IntrusivePointer<Task> task = makeIntrusive<Task>(path, [this, path, workingDir, format, onLoaded, onError, options] {
 				try {
 					T* resource = load(file, format, options);
 					if (onLoaded)
@@ -229,7 +223,7 @@ namespace Ghurund::Core {
 		void save(
 			T& resource,
 			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {
 			const Loader* loader = getLoader(Ghurund::Core::getType<T>());
@@ -242,7 +236,7 @@ namespace Ghurund::Core {
 			T& resource,
 			const ResourcePath& path,
 			const DirectoryPath& workingDir = DirectoryPath(),
-			const ResourceFormat* format = ResourceFormat::AUTO,
+			const ResourceFormat& format = ResourceFormat::AUTO,
 			SaveOption options = SaveOption::DEFAULT
 		) const {
 			resource.Path = &path;

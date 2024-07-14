@@ -1,34 +1,33 @@
 #pragma once
 
-#include "Bitmap.h"
 #include "core/image/ImageLoader.h"
+#include "ui/direct2d/image/Bitmap.h"
+#include "ui/image/BitmapFactory.h"
 
 namespace Ghurund::UI::Direct2D {
     class BitmapLoader:public Loader {
+    private:
         Ghurund::Core::ImageLoader& imageLoader;
-        ID2D1DeviceContext5& deviceContext;
+        IBitmapFactory& bitmapFactory;
 
     public:
-        BitmapLoader(Ghurund::Core::ImageLoader& imageLoader, ID2D1DeviceContext5& deviceContext):imageLoader(imageLoader), deviceContext(deviceContext) {}
+        BitmapLoader(Ghurund::Core::ImageLoader& imageLoader, IBitmapFactory& bitmapFactory):imageLoader(imageLoader), bitmapFactory(bitmapFactory) {}
 
-        virtual Bitmap* load(
+        virtual Ghurund::UI::Bitmap* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override {
-            SharedPointer<Bitmap> bitmap(ghnew Bitmap());
-            SharedPointer<Image> image(imageLoader.load(stream, workingDir, format, options));
-            bitmap->init(deviceContext, *image.get());
-            bitmap->addReference();
-            return bitmap.get();
+            IntrusivePointer<Image> image(imageLoader.load(stream, workingDir, format, options));
+            return bitmapFactory.makeBitmap(*image.get());
         }
 
         virtual void save(
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat* format = nullptr,
+            const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
         ) const override {
             Bitmap& bitmap = (Bitmap&)resource;

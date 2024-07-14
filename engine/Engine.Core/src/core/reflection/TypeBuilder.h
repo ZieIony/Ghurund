@@ -44,6 +44,12 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
+		inline TypeBuilder& withZeroArgsConstructor() {
+			static const auto CONSTRUCTOR = Constructor<T>();
+			constructors.add(CONSTRUCTOR);
+			return *this;
+		}
+
 		inline TypeBuilder& withModifiers(TypeModifier modifiers) {
 			this->modifiers = modifiers;
 			return *this;

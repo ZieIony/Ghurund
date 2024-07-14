@@ -1,11 +1,8 @@
 #pragma once
 
-#include "Common.h"
 #include "core/collection/Map.h"
-#include "core/io/File.h"
+#include "core/io/FilePath.h"
 #include "core/string/String.h"
-
-#include <tinyxml2.h>
 
 namespace Ghurund::Core {
     class Settings {

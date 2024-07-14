@@ -2,7 +2,7 @@
 #include "graphics/Renderer.h"
 #include "ui/direct2d/Graphics2D.h"
 
-#include "ui/UIFeature.h"
+#include "ui/direct2d/UIFeature.h"
 #include "DemoWindow.h"
 #include <ui/theme/LightTheme.h>
 #include "ui/loading/DrawableFactory.h"
@@ -21,9 +21,9 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            auto graphics = makeShared<Graphics>();
-            auto graphics2d = makeShared<UI::Direct2D::Graphics2D>(*graphics.get());
-            auto uiFeature = makeShared<Ghurund::UIFeature>(*graphics2d.get(), ResourceManager);
+            auto graphics = makeIntrusive<Graphics>();
+            auto graphics2d = makeIntrusive<UI::Direct2D::Graphics2D>(*graphics.get());
+            auto uiFeature = makeIntrusive<Ghurund::UI::Direct2D::UIFeature>(*graphics2d.get(), ResourceManager);
             Features.addAll({ graphics.get(), graphics2d.get(), uiFeature.get() });
         }
 

@@ -17,7 +17,7 @@ namespace Ghurund::UI {
 					contentConstraints = control.Constraints;
 					Content = control.control.get();
 				} catch (...) {
-					Content = makeShared<InvalidControl>().get();
+					Content = makeIntrusive<InvalidControl>().get();
 				}
 				return;
 			}

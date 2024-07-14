@@ -2,7 +2,7 @@
 
 #include "ui/Orientation.h"
 #include "ui/control/ControlContainer.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -31,9 +31,9 @@ namespace Ghurund::UI {
 
     class SplitLayout:public ControlContainer {
     private:
-        SharedPointer<Splitter> splitter;
-        SharedPointer<ControlContainer> container1, container2;
-        //SharedPointer<LinearLayout> layout;
+        IntrusivePointer<Splitter> splitter;
+        IntrusivePointer<ControlContainer> container1, container2;
+        //IntrusivePointer<LinearLayout> layout;
         LockedChild lockedChild = LockedChild::NONE;
         Orientation orientation;
         IntPoint pressMousePos = { 0,0 };
@@ -74,5 +74,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getLockedChild, put = setLockedChild)) LockedChild LockedChild;
     };
 
-    typedef SharedPointer<SplitLayout> SplitLayoutPtr;
+    typedef IntrusivePointer<SplitLayout> SplitLayoutPtr;
 }

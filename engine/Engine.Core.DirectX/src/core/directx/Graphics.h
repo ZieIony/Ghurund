@@ -81,11 +81,11 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getFactory)) IDXGIFactory4* Factory;
 
-        List<GraphicsAdapter*>& getAdapters() {
+        const List<GraphicsAdapter*>& getAdapters() const {
             return adapters;
         }
 
-        __declspec(property(get = getAdapters)) List<GraphicsAdapter*>& Adapters;
+        __declspec(property(get = getAdapters)) const List<GraphicsAdapter*>& Adapters;
 
         DescriptorAllocator& getDescriptorAllocator() {
             return allocator;

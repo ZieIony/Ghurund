@@ -6,7 +6,6 @@
 #include "ui/theme/LightTheme.h"
 #include "ui/theme/DarkTheme.h"
 
-#include "ui/direct2d/font/FontLoader.h"
 #include "ui/direct2d/image/BitmapLoader.h"
 #include "core/image/ImageLoader.h"
 #include "ui/direct2d/UIContext.h"
@@ -15,7 +14,7 @@
 #include "PreviewLayout.h"
 #include "application/UIApplicationWindow.h"
 #include "ui/UILayer.h"
-#include "ui/UIFeature.h"
+#include "ui/direct2d/UIFeature.h"
 
 namespace Preview {
 	using namespace Ghurund;
@@ -25,7 +24,7 @@ namespace Preview {
 
 	class PreviewWindow :public Ghurund::UIApplicationWindow {
 	private:
-		SharedPointer<PreviewLayout> previewLayout;
+		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
@@ -46,7 +45,7 @@ namespace Preview {
 		void postLoadCallback(const FilePath& path);
 
 		void loadLayout(const File& file) {
-			/*SharedPointer<ControlGroup> layout(Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE));
+			/*IntrusivePointer<ControlGroup> layout(Application.ResourceManager.load<ControlGroup>(file, nullptr, LoadOption::DONT_CACHE));
 			previewLayout->Container->Children.clear();
 			for (Control* control : layout->Children)
 				previewLayout->Container->Children.add(control);
@@ -54,11 +53,11 @@ namespace Preview {
 		}
 
 		void loadDrawable(const File& file) {
-			/*auto image = makeShared<Bitmap>();
+			/*auto image = makeIntrusive<Bitmap>();
 			MemoryInputStream stream(data.Data, data.Size);
 			DirectoryPath baseDir(L".");
 			image->load(app->ResourceContext, baseDir, stream);
-			auto drawableView = makeShared<DrawableView>();
+			auto drawableView = makeIntrusive<DrawableView>();
 			drawableView->Image = ghnew BitmapDrawable(image);
 			binding->Container->Children = { drawableView };
 			binding->Container->requestLayout();*/

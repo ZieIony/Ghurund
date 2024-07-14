@@ -12,8 +12,8 @@
 namespace Ghurund::UI {
     class PropertyRow: public HorizontalLayout {
     private:
-        SharedPointer<TextBlock> textView;
-        SharedPointer<ControlContainer> container;
+        IntrusivePointer<TextBlock> textView;
+        IntrusivePointer<ControlContainer> container;
 
     public:
         PropertyRow() {
@@ -22,7 +22,7 @@ namespace Ghurund::UI {
             textView->ContentSize.width = ContentSize::Width::FILL;
             container = ghnew ControlContainer();
             container->ContentSize.width = ContentSize::Width::FILL;
-            auto separator = makeShared<Separator>();
+            auto separator = makeIntrusive<Separator>();
             //separator->Style = theme.Styles[Theme::STYLE_SEPARATOR_VERTICAL];
             Children = { textView, separator, container };
         }

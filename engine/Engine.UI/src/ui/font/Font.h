@@ -1,15 +1,21 @@
 #pragma once
 
-#include "ui/font/Font.h"
+#include "core/collection/Map.h"
 #include "core/math/Size.h"
 #include "core/math/Point.h"
-#include "core/math/Rect.h"
 #include "core/resource/Resource.h"
 #include "core/reflection/Type.h"
 #include "core/image/Image.h"
+#include "ui/image/BitmapFactory.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
+
+    struct Glyph {
+        IntSize shapeSize, bitmapSize;
+        int32_t originY;
+        IntPoint offset;
+    };
 
     class Font:public Ghurund::Core::Resource {
 #pragma region reflection
@@ -26,15 +32,10 @@ namespace Ghurund::UI {
 
     private:
         static inline const tchar* DEFAULT_CHARACTER_SET = _T("aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPrqQRsStTuUvVwWxXyYzZ 0123456789*-+[]{};':\",.\\/<>?!@#$%^&*()`~");
-        static inline const uint32_t PADDING = 0;
-        static inline const uint32_t BITMAP_SIZE = 128;
+        static inline const uint32_t PADDING = 8;
+        static inline const uint32_t MAX_DIST = 8;
+        static inline const uint32_t BITMAP_SIZE = 64;
 
-        struct Glyph {
-            IntSize shapeSize, bitmapSize;
-            IntPoint offset;
-        };
-
-        float size;
         String familyName;
         bool italic = false;
         uint32_t weight = 400;
@@ -44,23 +45,26 @@ namespace Ghurund::UI {
 
         Map<tchar, Glyph> glyphs;
         Map<tchar, Map<tchar, int>> kerning;
-        Ghurund::Core::Image* atlas = nullptr;
+        Ghurund::UI::Bitmap* atlas = nullptr;
 
-        void initAtlas(const String& supportedCharacters);
+        void initAtlas(const String& supportedCharacters, const IBitmapFactory& bitmapFactory);
 
         void initKerning(HFONT hf);
 
-        void getGlyphs(HFONT hf, const String& characters);
+        void initGlyphs(HFONT hf, const String& characters);
 
         bool fitAllGlyphs(const List<Glyph*>& sortedGlyphs, uint32_t width, uint32_t height);
 
         IntSize getAtlasSize();
 
-        Buffer getGlyphOutlineData(HDC hdcBmp, tchar c, GLYPHMETRICS& glyphMetrics);
-
-        void initMsdf(HFONT hf, const String& characters);
+        void initMsdf(HFONT hf, const String& characters, const IBitmapFactory& bitmapFactory);
 
         HBITMAP makeDIB(HDC context, BITMAPINFO& bmi, unsigned int width, unsigned int height, int32_t** pixels);
+
+    protected:
+        ~Font() {
+            uninit();
+        }
 
     public:
         const Ghurund::Core::String& getFamilyName() const {
@@ -69,50 +73,46 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getFamilyName)) const Ghurund::Core::String& FamilyName;
 
-        ~Font() {
-            uninit();
-        }
-
-        void init(const String& family, uint32_t weight = 400, bool italic = false, const String& supportedCharacters = DEFAULT_CHARACTER_SET) {
+        void init(const IBitmapFactory& bitmapFactory, const String& family, uint32_t weight = 400, bool italic = false, const String& supportedCharacters = DEFAULT_CHARACTER_SET) {
             this->familyName = family;
             this->weight = weight;
             this->italic = italic;
-            initAtlas(supportedCharacters);
+            initAtlas(supportedCharacters, bitmapFactory);
         }
 
-        void init(const void* data, size_t size, const String& supportedCharacters = DEFAULT_CHARACTER_SET);
+        void init(const IBitmapFactory& bitmapFactory, const void* data, size_t size, const String& supportedCharacters = DEFAULT_CHARACTER_SET);
 
         void uninit();
 
-        long getAscent() const {
+        uint32_t getAscent() const {
             return tm.tmAscent;
         }
 
-        __declspec(property(get = getAscent)) long Ascent;
+        __declspec(property(get = getAscent)) uint32_t Ascent;
 
-        long getDescent() const {
+        uint32_t getDescent() const {
             return tm.tmDescent;
 		}
 
-        __declspec(property(get = getDescent)) long Descent;
+        __declspec(property(get = getDescent)) uint32_t Descent;
 
-        long getInternalLeading() const {
+        uint32_t getInternalLeading() const {
             return tm.tmInternalLeading;
         }
 
-        __declspec(property(get = getInternalLeading)) long InternalLeading;
+        __declspec(property(get = getInternalLeading)) uint32_t InternalLeading;
 
-        long getExternalLeading() const {
+        uint32_t getExternalLeading() const {
             return tm.tmExternalLeading;
         }
 
-        __declspec(property(get = getExternalLeading)) long ExternalLeading;
+        __declspec(property(get = getExternalLeading)) uint32_t ExternalLeading;
 
-        long getHeight() const {
+        uint32_t getHeight() const {
             return tm.tmHeight;
         }
 
-        __declspec(property(get = getHeight)) long Height;
+        __declspec(property(get = getHeight)) uint32_t Height;
 
         uint32_t getWeight() const {
             return weight;
@@ -120,13 +120,29 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getWeight)) uint32_t Weight;
 
-        Image* getAtlas() const {
+        Ghurund::UI::Bitmap* getAtlas() const {
             return atlas;
         }
 
-        __declspec(property(get = getAtlas)) const Image* Atlas;
+        __declspec(property(get = getAtlas)) const Ghurund::UI::Bitmap* Atlas;
 
         FloatSize measureText(const String& text) const;
+
+        inline const Map<tchar, Glyph>& getGlyphs() const {
+            return glyphs;
+        }
+
+        __declspec(property(get = getGlyphs)) const Map<tchar, Glyph>& Glyphs;
+
+        inline int getKerning(tchar c1, tchar c2) const {
+            auto it = kerning.find(c1);
+            if (it != kerning.end()) {
+                auto it2 = it->value.find(c2);
+                if (it2 != it->value.end())
+                    return it2->value;
+            }
+            return 0;
+        }
 
         static const inline Ghurund::Core::ResourceFormat FORMAT_TTF = Ghurund::Core::ResourceFormat(L"ttf", true, false);
         static const inline Ghurund::Core::ResourceFormat FORMAT_OTF = Ghurund::Core::ResourceFormat(L"otf", true, false);

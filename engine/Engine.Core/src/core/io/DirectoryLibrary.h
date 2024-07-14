@@ -33,16 +33,16 @@ namespace Ghurund::Core {
             return ResourcePath(path.Files[index]);
         }
 
-        virtual std::shared_ptr<Buffer> get(const WString& path) override {
+        virtual SharedPointer<Buffer> get(const WString& path) override {
             File file(this->path / FilePath(path));
-            auto buffer = std::make_shared<Buffer>();
+            auto buffer = SharedPointer(ghnew Buffer());
             file.read(*buffer.get());
             return buffer;
         }
 
-        virtual std::shared_ptr<Buffer> get(const size_t index) override {
+        virtual SharedPointer<Buffer> get(const size_t index) override {
             File file(path.Files[index]);
-            auto buffer = std::make_shared<Buffer>();
+            auto buffer = SharedPointer(ghnew Buffer());
             file.read(*buffer.get());
             return buffer;
         }

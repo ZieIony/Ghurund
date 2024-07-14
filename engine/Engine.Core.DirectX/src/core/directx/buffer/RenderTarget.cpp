@@ -4,13 +4,15 @@
 #include "core/math/MathUtils.h"
 
 namespace Ghurund::Core::DirectX {
-    Status RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
+    void RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
         D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
         rtvHeapDesc.NumDescriptors = 1;
         rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
         rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-        if (FAILED(graphics.getDevice()->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("device->CreateDescriptorHeap() failed\n"));
+        if (FAILED(graphics.getDevice()->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&rtvHeap)))) {
+            return Logger::log(LogType::ERR0R, _T("device->CreateDescriptorHeap() failed\n"));
+            throw CallFailedException();
+        }
 
         handle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
         graphics.getDevice()->CreateRenderTargetView(texture, nullptr, handle);
@@ -24,11 +26,9 @@ namespace Ghurund::Core::DirectX {
         rtvHeap->SetName(L"rtvHeap");
         Name = L"unnamed RenderTarget";
 #endif
-
-        return Status::OK;
     }
 
-    Status RenderTarget::init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
+    void RenderTarget::init(Graphics& graphics, uint32_t width, uint32_t height, DXGI_FORMAT format) {
         this->format = format;
         this->width = width;
         this->height = height;
@@ -58,9 +58,12 @@ namespace Ghurund::Core::DirectX {
         resourceDesc.Format = format;
         clearVal.Format = format;
         ID3D12Resource* texture = nullptr;
-        if (FAILED(graphics.Device->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture))))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("init RenderTarget with internal texture failed\n"));
-        return init(graphics, texture);
+        if (FAILED(graphics.Device->CreateCommittedResource(&heapProperty, D3D12_HEAP_FLAG_NONE, &resourceDesc, state, &clearVal, IID_PPV_ARGS(&texture)))) {
+            return Logger::log(LogType::ERR0R, _T("init RenderTarget with internal texture failed\n"));
+            throw CallFailedException();
+        }
+        
+        init(graphics, texture);
     }
 
     void RenderTarget::uninit() {
@@ -78,28 +81,27 @@ namespace Ghurund::Core::DirectX {
         }
     }
 
-    Status RenderTarget::captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
+    void RenderTarget::captureTexture(Graphics& graphics, ID3D12CommandQueue* commandQueue, UINT64 srcPitch, const D3D12_RESOURCE_DESC& desc, ComPtr<ID3D12Resource>& stagingTexture) {
         ID3D12Device* device = graphics.Device;
 
         if (desc.Dimension != D3D12_RESOURCE_DIMENSION_TEXTURE2D) {
             Logger::log(LogType::ERR0R, _T("1D or volume textures are not supported\n"));
-            return Status::NOT_SUPPORTED;
+            throw NotSupportedException();
         }
 
         if (desc.DepthOrArraySize > 1 || desc.MipLevels > 1) {
             Logger::log(LogType::ERR0R, _T("2D arrays, cubemaps, or mipmaps are not supported\n"));
-            return Status::NOT_SUPPORTED;
+            throw NotSupportedException();
         }
 
         UINT numberOfPlanes = D3D12GetFormatPlaneCount(device, desc.Format);
         if (numberOfPlanes != 1) {
             Logger::log(LogType::ERR0R, _T("more than 1 plane is not supported\n"));
-            return Status::NOT_SUPPORTED;
+            throw NotSupportedException();
         }
 
         CommandList* commandList = ghnew CommandList();
-        if (commandList->init(graphics, commandQueue) != Status::OK)
-            return Status::CALL_FAIL;
+        commandList->init(graphics, commandQueue);
         commandList->reset();
 
         assert((srcPitch & 0xFF) == 0);
@@ -136,7 +138,7 @@ namespace Ghurund::Core::DirectX {
                 nullptr,
                 IID_PPV_ARGS(pTemp.GetAddressOf()));
             if (FAILED(hr))
-                return Status::CALL_FAIL;
+                throw CallFailedException();
 
             assert(pTemp);
 
@@ -145,10 +147,10 @@ namespace Ghurund::Core::DirectX {
             D3D12_FEATURE_DATA_FORMAT_SUPPORT formatInfo = { fmt, D3D12_FORMAT_SUPPORT1_NONE, D3D12_FORMAT_SUPPORT2_NONE };
             hr = device->CheckFeatureSupport(D3D12_FEATURE_FORMAT_SUPPORT, &formatInfo, sizeof(formatInfo));
             if (FAILED(hr))
-                return Status::CALL_FAIL;
+                throw CallFailedException();
 
             if (!(formatInfo.Support1 & D3D12_FORMAT_SUPPORT1_TEXTURE2D))
-                return Status::CALL_FAIL;
+                throw CallFailedException();
 
             for (UINT item = 0; item < desc.DepthOrArraySize; ++item) {
                 for (UINT level = 0; level < desc.MipLevels; ++level) {
@@ -168,7 +170,7 @@ namespace Ghurund::Core::DirectX {
             nullptr,
             IID_PPV_ARGS(stagingTexture.ReleaseAndGetAddressOf()));
         if (FAILED(hr))
-            return Status::CALL_FAIL;
+            throw CallFailedException();
 
         commandList->barrier(CD3DX12_RESOURCE_BARRIER::Transition(texture, state, D3D12_RESOURCE_STATE_COPY_SOURCE));
 
@@ -185,15 +187,12 @@ namespace Ghurund::Core::DirectX {
 
         commandList->barrier(CD3DX12_RESOURCE_BARRIER::Transition(texture, D3D12_RESOURCE_STATE_COPY_SOURCE, state));
 
-        if (commandList->finish() != Status::OK)
-            return Status::CALL_FAIL;
+        commandList->finish();
         commandList->wait();
         commandList->release();
-
-        return Status::OK;
     }
 
-    Status RenderTarget::capture(Graphics& graphics, Image*& image) {
+    void RenderTarget::capture(Graphics& graphics, Image*& image) {
         ID3D12Device* device = graphics.Device;
         ID3D12CommandQueue* commandQueue = graphics.DirectQueue;
 
@@ -208,9 +207,7 @@ namespace Ghurund::Core::DirectX {
         UINT64 dstRowPitch = (fpRowPitch + 255) & ~0xFF;
 
         ComPtr<ID3D12Resource> stagingTexture;
-        Status result = captureTexture(graphics, commandQueue, dstRowPitch, desc, stagingTexture);
-        if (result != Status::OK)
-            return result;
+        captureTexture(graphics, commandQueue, dstRowPitch, desc, stagingTexture);
 
         UINT64 imageSize = dstRowPitch * UINT64(desc.Height);
         void* mappedMemory = nullptr;
@@ -218,7 +215,7 @@ namespace Ghurund::Core::DirectX {
         D3D12_RANGE writeRange = { 0, 0 };
         HRESULT hr = stagingTexture->Map(0, &readRange, &mappedMemory);
         if (FAILED(hr))
-            return Status::CALL_FAIL;
+            throw CallFailedException();
 
         for (size_t x = 0; x < desc.Width; x++) {
             for (size_t y = 0; y < desc.Height; y++) {
@@ -236,7 +233,5 @@ namespace Ghurund::Core::DirectX {
         //image->init(*buffer, (uint32_t)desc.Width, (uint32_t)desc.Height, desc.Format);
         delete buffer;
         stagingTexture->Unmap(0, &writeRange);
-
-        return Status::OK;
     }
 }

@@ -9,7 +9,7 @@ namespace Ghurund::UI {
 	private:
 		DrawableFactory& drawableFactory;
 		ResourcePath resourcePath;
-		SharedPointer<Drawable> cached;
+		IntrusivePointer<Drawable> cached;
 
 	public:
 		FileDrawableProvider(
@@ -17,10 +17,10 @@ namespace Ghurund::UI {
 			const ResourcePath& resourcePath
 		): drawableFactory(drawableFactory), resourcePath(resourcePath) {}
 
-		virtual SharedPointer<Drawable> get() override {
+		virtual IntrusivePointer<Drawable> get() override {
 			if (cached != nullptr)
-				return SharedPointer<Drawable>((Drawable*)cached->clone());
-			cached = SharedPointer<Drawable>(drawableFactory.makeDrawable(resourcePath));
+				return IntrusivePointer<Drawable>((Drawable*)cached->clone());
+			cached = IntrusivePointer<Drawable>(drawableFactory.makeDrawable(resourcePath));
 			return cached;
 		}
 	};

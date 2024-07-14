@@ -51,8 +51,8 @@ namespace Ghurund::UI {
 
 		virtual PartialConstraintSet makeDefaultConstraints() const override {
 			return ConstraintSetInitializer{
-				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<ContentHeightConstraint>()
+				.width = makeIntrusive<ParentWidthConstraint>(),
+				.height = makeIntrusive<ContentHeightConstraint>()
 			};
 		}
 	};

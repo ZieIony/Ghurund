@@ -29,9 +29,9 @@ namespace UnitTest {
 public:
 
     TEST_METHOD(ColorView_clone) {
-        auto original = makeShared<ColorView>();
+        auto original = makeIntrusive<ColorView>();
         original->Color = ColorValue(0xffff0000);
-        SharedPointer<ColorView> clone((ColorView*)original->clone());
+        IntrusivePointer<ColorView> clone((ColorView*)original->clone());
         Assert::AreNotSame(*original.get(), *clone.get());
         Assert::AreEqual(*original.get(), *clone.get());
     }

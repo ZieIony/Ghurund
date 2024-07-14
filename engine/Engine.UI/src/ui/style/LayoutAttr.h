@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Object.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "ui/theme/Theme.h"
 #include "ui/control/Control.h"
 
@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		virtual SharedPointer<Control> resolve(const Theme& theme) const = 0;
+		virtual IntrusivePointer<Control> resolve(const Theme& theme) const = 0;
 	};
 
 	class LayoutValue:public LayoutAttr {
@@ -37,7 +37,7 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Control> control;
+		IntrusivePointer<Control> control;
 
 	public:
 		LayoutValue(Control* control):control(control) {
@@ -49,7 +49,7 @@ namespace Ghurund::UI {
 
 		LayoutValue(LayoutValue&& other) noexcept:control(std::move(other.control)) {}
 
-		virtual SharedPointer<Control> resolve(const Theme& theme) const override {
+		virtual IntrusivePointer<Control> resolve(const Theme& theme) const override {
 			return control;
 		}
 
@@ -89,7 +89,7 @@ namespace Ghurund::UI {
 	public:
 		LayoutRef(LayoutKey key):key(key) {}
 
-		virtual SharedPointer<Control> resolve(const Theme& theme) const override;
+		virtual IntrusivePointer<Control> resolve(const Theme& theme) const override;
 
 		virtual LayoutRef* clone() const override {
 			return ghnew LayoutRef(key);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseProperty.h"
+#include "Type.h"
 
 namespace Ghurund::Core {
     template<class OwnerT, class PropType>

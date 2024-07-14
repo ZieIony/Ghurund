@@ -2,6 +2,7 @@
 #include "ResourceManager.h"
 
 #include "core/Timer.h"
+#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
@@ -18,9 +19,9 @@ namespace Ghurund::Core {
 		return loader;
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat* format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const ResourcePath& path, const ResourceFormat& format, LoadOption options) {
 		auto iterator = resourceCache.find(path);
-		std::shared_ptr<Buffer> buffer;
+		SharedPointer<Buffer> buffer;
 		if (iterator == resourceCache.end()) {
 			buffer = path.resolveResource(workingDir, libraries);
 			resourceCache.put(path, buffer);
@@ -30,7 +31,7 @@ namespace Ghurund::Core {
 		return loadInternal(loader, workingDir, *buffer.get(), format, options);
 	}
 
-	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const Buffer& buffer, const ResourceFormat* format, LoadOption options) {
+	Resource* ResourceManager::loadInternal(Loader& loader, const DirectoryPath& workingDir, const Buffer& buffer, const ResourceFormat& format, LoadOption options) {
 		if (buffer.Size == 0) {
 			auto message = std::format(_T("the buffer is empty\n"));
 			Logger::log(LogType::ERR0R, message.c_str());
@@ -72,7 +73,7 @@ namespace Ghurund::Core {
 		return resource;
 	}
 
-	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, const DirectoryPath& workingDir, Buffer& buffer, const ResourceFormat* format, SaveOption options) const {
+	void ResourceManager::saveInternal(Resource& resource, const Loader& loader, const DirectoryPath& workingDir, Buffer& buffer, const ResourceFormat& format, SaveOption options) const {
 		MemoryOutputStream stream;
 		try {
 			loader.save(stream, workingDir, resource, format, options);
@@ -83,7 +84,7 @@ namespace Ghurund::Core {
 		buffer.setData(stream.Data, stream.BytesWritten);
 	}
 
-	Resource* ResourceManager::load(Loader& loader, const File& file, const ResourceFormat* format, LoadOption options) {
+	Resource* ResourceManager::load(Loader& loader, const File& file, const ResourceFormat& format, LoadOption options) {
 		Resource* resource = resources.get(file.Path);
 		if (!resource) {
 			resource = loadInternal(loader, file.Path.Directory, file.Path, format, options);
@@ -97,7 +98,7 @@ namespace Ghurund::Core {
 		return resource;
 	}
 
-	Resource* ResourceManager::load(Loader& loader, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
+	Resource* ResourceManager::load(Loader& loader, const ResourcePath& path, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
 		ResourcePath resolvedPath = path.getAbsolutePath(workingDir, libraries);
 		Resource* resource = resources.get(resolvedPath); // TODO: why it doesn't find fonts?
 		if (!resource) {

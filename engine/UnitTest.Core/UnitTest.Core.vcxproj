@@ -111,11 +111,11 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\test\TestUtils.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
     <ClCompile Include="src\test\core\SharedPointerTest.cpp" />
-    <ClCompile Include="src\test\core\state\StateMachineTest.cpp" />
     <ClCompile Include="src\test\core\TypeWrapperTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
     <ClCompile Include="src\test\core\collection\BagTest.cpp" />
@@ -134,10 +134,10 @@
     <ClCompile Include="src\test\core\reflection\ReflectionTest.cpp" />
     <ClCompile Include="src\test\core\reflection\TypeTest.cpp" />
     <ClCompile Include="src\test\core\resource\ResourceManagerTest.cpp" />
+    <ClCompile Include="src\test\core\state\StateMachineTest.cpp" />
     <ClCompile Include="src\test\core\string\StringTest.cpp" />
     <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
-    <ClCompile Include="src\test\TestUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

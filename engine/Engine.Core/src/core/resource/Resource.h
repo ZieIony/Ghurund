@@ -1,10 +1,12 @@
 #pragma once
 
-#include "Loader.h"
-#include "ResourceFormat.h"
+#include "core/Exceptions.h"
 #include "core/RefCountedObject.h"
 #include "core/io/DirectoryPath.h"
 #include "core/resource/ResourcePath.h"
+#include "LoadOption.h"
+#include "ResourceFormat.h"
+#include "SaveOption.h"
 
 namespace Ghurund::Core {
 	struct DataSize {

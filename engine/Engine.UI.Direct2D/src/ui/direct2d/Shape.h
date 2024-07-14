@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/reflection/Type.h"
 #include "ui/Shape.h"
 
 #include <d2d1_3.h>

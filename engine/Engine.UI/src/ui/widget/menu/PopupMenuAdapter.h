@@ -11,10 +11,10 @@
 namespace Ghurund::UI {
     class ButtonPopupMenuRow:public ClickableControl {
     private:
-        SharedPointer<DrawableView> icon;
-        SharedPointer<TextBlock> text;
-        SharedPointer<PaddingContainer> padding;
-        SharedPointer<HorizontalLayout> row;
+        IntrusivePointer<DrawableView> icon;
+        IntrusivePointer<TextBlock> text;
+        IntrusivePointer<PaddingContainer> padding;
+        IntrusivePointer<HorizontalLayout> row;
 
     public:
         ButtonPopupMenuRow() {

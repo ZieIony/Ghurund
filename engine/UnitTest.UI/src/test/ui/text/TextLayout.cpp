@@ -15,12 +15,10 @@ namespace UnitTest {
         return clusterMetrics;
     }
 
-    Status TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
-        return Status::OK;
+    void TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
     }
 
-    Status TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
-        return Status::OK;
+    void TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
     }
 
     Ghurund::UI::Color TextLayout::getColor(uint32_t pos) {

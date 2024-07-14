@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/directx/texture/Texture.h"
-#include "core/SharedPointer.h"
+#include "core/resource/ResourceManager.h"
 
 namespace Ghurund {
     class Textures {

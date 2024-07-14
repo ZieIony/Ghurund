@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Status.h"
 #include "core/Color.h"
 
 namespace Ghurund::UI {
@@ -19,7 +18,7 @@ namespace Ghurund::UI {
         static inline Color accentColor = 0;
 
     public:
-        static Status init();
+        static void init();
 
         static Color getAccentColor() { return accentColor; }
 

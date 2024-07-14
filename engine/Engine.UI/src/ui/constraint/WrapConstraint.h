@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MinMaxConstraint.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 
 namespace Ghurund::UI {
 

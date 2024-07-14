@@ -2,9 +2,9 @@
 #include "FilePath.h"
 
 #include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 
-#include <Shlwapi.h>
+#include <Windows.h>
+#include <pathcch.h>
 
 namespace Ghurund::Core {
     DirectoryPath FilePath::getDirectory() const {

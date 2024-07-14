@@ -335,6 +335,65 @@ public:
 		}
 	}
 
+	TEST_METHOD(List_removeRange) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			list.removeRange(2, 5);
+
+			Assert::AreEqual(list.Size, (size_t)3);
+			Assert::AreEqual(list.Capacity >= list.Size, true);
+			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(1u, list[0]);
+			Assert::AreEqual(2u, list[1]);
+			Assert::AreEqual(6u, list[2]);
+		}
+	}
+
+	TEST_METHOD(List_removeRange_beginning) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			list.removeRange(0, 2);
+
+			Assert::AreEqual(list.Size, (size_t)4);
+			Assert::AreEqual(list.Capacity >= list.Size, true);
+			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list[0], 3u);
+			Assert::AreEqual(list[1], 4u);
+			Assert::AreEqual(list[2], 5u);
+			Assert::AreEqual(list[3], 6u);
+		}
+	}
+
+	TEST_METHOD(List_removeRange_end) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			list.removeRange(4, 6);
+
+			Assert::AreEqual(list.Size, (size_t)4);
+			Assert::AreEqual(list.Capacity >= list.Size, true);
+			Assert::AreEqual(list.Empty, false);
+			Assert::AreEqual(list[0], 1u);
+			Assert::AreEqual(list[1], 2u);
+			Assert::AreEqual(list[2], 3u);
+			Assert::AreEqual(list[3], 4u);
+		}
+	}
+
+	TEST_METHOD(List_removeRange_all) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			list.removeRange(0, 6);
+
+			Assert::AreEqual(list.Size, (size_t)0);
+			Assert::AreEqual(list.Capacity >= list.Size, true);
+			Assert::AreEqual(list.Empty, true);
+		}
+	}
+
 	TEST_METHOD(List_removeAll_initializer) {
 		MemoryGuard guard;
 		{
@@ -351,6 +410,33 @@ public:
 				Assert::AreEqual(item, testList[i++]);
 		}
 	}
+
+	TEST_METHOD(List_sublist) {
+		MemoryGuard guard;
+		{
+			List<uint32_t> list = { 1, 2, 3, 4, 5, 6 };
+			List<uint32_t> list2 = list.sublist(2, 5);
+
+			Assert::AreEqual((size_t)6, list.Size);
+			Assert::AreEqual(true, list.Capacity >= list.Size);
+			Assert::AreEqual(false, list.Empty);
+
+			Assert::AreEqual((size_t)3, list2.Size);
+			Assert::AreEqual(true, list2.Capacity >= list2.Size);
+			Assert::AreEqual(false, list2.Empty);
+
+			List<uint32_t> testList = { 1, 2, 3, 4, 5, 6 };
+			size_t i = 0;
+			for (auto& item : list)
+				Assert::AreEqual(item, testList[i++]);
+
+			List<uint32_t> testList2 = { 3, 4, 5 };
+			size_t j = 0;
+			for (auto& item : list2)
+				Assert::AreEqual(item, testList2[j++]);
+		}
+	}
+
 	TEST_METHOD(List_iterator) {
 		MemoryGuard guard;
 		{

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Ghurund.Core.DirectX.h"
-#include "Ghurund.UI.Direct2D.h"
+#include "Common.h"
 
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "D3DCompiler.lib")

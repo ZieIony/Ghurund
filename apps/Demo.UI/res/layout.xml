@@ -5,6 +5,7 @@
 	<VerticalLayout width="Parent.Width" height="Parent.Height" spacing="8">
 		<MenuBar name="menuBar" width="Parent.Width" height="content"/>
 		<Toolbar name="toolbar" width="Parent.Width" height="content"/>
+		<TextBlock text="ListoKolekcjoMoja" width="content" height="content" textSize="50"/>
 		<Button layout="lib://Ghurund\layouts\ButtonAccentLayout.xml">
 			<DrawableView drawable="resources/button.png" width="content" height="content"/>
 		</Button>

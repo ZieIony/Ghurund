@@ -11,7 +11,7 @@
 namespace Ghurund::Core {
 	class WorkerThread:public Thread {
 	private:
-		Queue<SharedPointer2<Task>> queue;
+		Queue<SharedPointer<Task>> queue;
 		mutable CriticalSection section;
 		Waitable waitable;
 		std::atomic_flag busy, running, finishing;
@@ -31,19 +31,19 @@ namespace Ghurund::Core {
 			__super::finish();
 		}
 
-		inline void post(SharedPointer2<Task> task) {
+		inline void post(SharedPointer<Task> task) {
 			SectionLock lock(section);
 			queue.add(task);
 			waitable.notify();
 		}
 
-		inline Queue<SharedPointer2<Task>> getTasks() const {
+		inline Queue<SharedPointer<Task>> getTasks() const {
 			SectionLock lock(section);
-			Queue<SharedPointer2<Task>> copy = queue;
+			Queue<SharedPointer<Task>> copy = queue;
 			return queue;
 		}
 
-		__declspec(property(get = getTasks)) Queue<SharedPointer2<Task>> Tasks;
+		__declspec(property(get = getTasks)) Queue<SharedPointer<Task>> Tasks;
 
 		virtual void run() override;
 

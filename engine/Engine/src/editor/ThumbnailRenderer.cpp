@@ -41,7 +41,7 @@ namespace Ghurund {
         renderer->init(context);*/
     }
 
-    Status ThumbnailRenderer::render(DrawableComponent& entity, Ghurund::Core::Image*& image) {
+    void ThumbnailRenderer::render(DrawableComponent& entity, Ghurund::Core::Image*& image) {
         /*CameraUtils::lookAtEntity(*camera, entity);
 
 		CommandList& commandList = renderer->startFrame(*frame);
@@ -50,10 +50,10 @@ namespace Ghurund {
         frame->CommandList.wait();
 
         return renderTarget->capture(*resourceContext, image);*/
-        return Status::NOT_IMPLEMENTED;
+        throw NotImplementedException();
     }
 
-    Status ThumbnailRenderer::render(Mesh& mesh, Ghurund::Core::Image*& image) {
+    void ThumbnailRenderer::render(Mesh& mesh, Ghurund::Core::Image*& image) {
         /*Model* model = ghnew Model();
         model->Mesh = &mesh;
         model->Material = Materials::makeChecker(*resourceContext);
@@ -63,10 +63,10 @@ namespace Ghurund {
 
         model->release();
 		*/
-		return Status::OK;// result;
+		throw NotImplementedException();// result;
     }
 
-    Status ThumbnailRenderer::render(Material& material, Ghurund::Core::Image*& image) {
+    void ThumbnailRenderer::render(Material& material, Ghurund::Core::Image*& image) {
         /*Model* model = Models::makeSphere(*resourceContext, material);
 
         BoundingOrientedBox boundingBox;
@@ -78,6 +78,6 @@ namespace Ghurund {
 
         model->release();
 		*/
-		return Status::OK;// result;
+        throw NotImplementedException();// result;
     }
 }

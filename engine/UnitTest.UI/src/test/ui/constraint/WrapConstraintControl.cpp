@@ -5,8 +5,8 @@
 #include <test/TestLogOutput.h>
 
 #include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/ShapeFactory.h"
-#include "test/ui/ImageDrawableFactory.h"
+#include "test/ui/TestShapeFactory.h"
+#include "test/ui/TestDrawableFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -39,10 +39,10 @@ public:
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            auto container = makeShared<ColorView>();
+            auto container = makeIntrusive<ColorView>();
             container->Constraints = {
-                .width = makeShared<WrapWidthConstraint>(),
-                .height = makeShared<WrapHeightConstraint>()
+                .width = makeIntrusive<WrapWidthConstraint>(),
+                .height = makeIntrusive<WrapHeightConstraint>()
             };
 
             ConstraintGraph graph;
@@ -58,17 +58,17 @@ public:
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            auto container = makeShared<ColorView>();
+            auto container = makeIntrusive<ColorView>();
             container->Constraints = {
                 .width = []() {
-                    auto c = makeShared<WrapWidthConstraint>();
+                    auto c = makeIntrusive<WrapWidthConstraint>();
                     c->Min = 100;
                     c->Ratio = 0.5f;
                     c->Offset = 10.0f;
                     return c;
                 }(),
                 .height = []() {
-                    auto c = makeShared<WrapHeightConstraint>();
+                    auto c = makeIntrusive<WrapHeightConstraint>();
                     c->Min = 75;
                     c->Ratio = 0.5f;
                     c->Offset = 10.0f;

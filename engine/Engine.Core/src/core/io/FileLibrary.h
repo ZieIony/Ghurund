@@ -32,12 +32,12 @@ namespace Ghurund::Core {
             throw NotImplementedException();
         }
 
-        virtual std::shared_ptr<Buffer> get(const WString& name) override {
-            return nullptr;
+        virtual SharedPointer<Buffer> get(const WString& name) override {
+            return SharedPointer<Buffer>();
         }
 
-        virtual std::shared_ptr<Buffer> get(const size_t index) override {
-            return nullptr;
+        virtual SharedPointer<Buffer> get(const size_t index) override {
+            return SharedPointer<Buffer>();
         }
 
         virtual size_t getSize() const override {

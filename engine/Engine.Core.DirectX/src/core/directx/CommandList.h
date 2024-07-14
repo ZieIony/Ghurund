@@ -3,9 +3,6 @@
 #include "Fence.h"
 #include "Graphics.h"
 #include "core/collection/PointerList.h"
-#include "core/logging/Formatter.h"
-
-#include <format>
 
 namespace Ghurund::Core::DirectX {
     enum class CommandListState {
@@ -45,13 +42,13 @@ namespace Ghurund::Core::DirectX {
     public:
         ~CommandList();
 
-        Status init(Graphics& graphics, ID3D12CommandQueue* queue);
+        void init(Graphics& graphics, ID3D12CommandQueue* queue);
 
-        Status wait();
+        void wait();
 
-        Status reset();
+        void reset();
 
-        Status finish();
+        void finish();
 
         inline ID3D12GraphicsCommandList* get() {
             return commandList.Get();

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Status.h"
 #include "core/resource/Resource.h"
 #include "core/string/String.h"
 
@@ -62,7 +61,7 @@ namespace Ghurund {
             finalize();
         }
 
-        Status build(ScriptEngine& engine);
+        void build(ScriptEngine& engine);
 
         bool getIsBuilt() {
             return built;
@@ -107,7 +106,7 @@ namespace Ghurund {
 
         __declspec(property(put = setArguments)) const Array<void*>& Arguments;
 
-        Status execute();
+        void execute();
 
         int getIntResult() {
             return ctx->GetReturnWord();

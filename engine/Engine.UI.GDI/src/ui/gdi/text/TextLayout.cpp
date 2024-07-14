@@ -2,8 +2,7 @@
 #include "TextLayout.h"
 
 namespace Ghurund::UI::GDI {
-    Status TextLayout::refresh() {
-        return Status::OK;
+    void TextLayout::refresh() {
     }
 
     HitTestMetrics TextLayout::hitTestTextPosition(uint32_t textPosition, bool isTrailingHit, float* pointX, float* pointY) {
@@ -26,12 +25,10 @@ namespace Ghurund::UI::GDI {
         return {};
     }
 
-    Status TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
-        return Status::OK;
+    void TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
     }
 
-    Status TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
-        return Status::OK;
+    void TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
     }
 
     Ghurund::UI::Color TextLayout::getColor(uint32_t pos) {

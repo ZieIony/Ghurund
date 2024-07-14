@@ -35,7 +35,7 @@ namespace Ghurund::Core::DirectX {
             delete byteCode;
         }
 
-        Status compile(const char* code, char** outErrorMessages, const wchar_t* fileName = nullptr);
+        AString compile(const AString& code, const FilePath* filePath);
 
         void setEntryPoint(const AString& entryPoint) {
             this->entryPoint = entryPoint;

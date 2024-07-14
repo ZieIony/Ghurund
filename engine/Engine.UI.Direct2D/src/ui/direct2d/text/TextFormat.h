@@ -37,7 +37,7 @@ namespace Ghurund::UI::Direct2D {
 
         ~TextFormat();
 
-        Status init(IDWriteFactory5& dwriteFactory);
+        void init(IDWriteFactory5& dwriteFactory);
 
         inline IDWriteTextFormat* getFormat() {
             return format;

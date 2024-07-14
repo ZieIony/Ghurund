@@ -17,7 +17,7 @@ namespace Ghurund::Core {
                     runningChanged(false);
                     return;
                 }
-                SharedPointer2<Task> task;
+                SharedPointer<Task> task;
                 {
                     SectionLock lock(section);
                     if (queue.Empty)

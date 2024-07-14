@@ -53,7 +53,7 @@ namespace Ghurund::Core::DirectX {
             return image != nullptr && image->Valid && __super::Valid;
         }
 
-        Status init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
+        void init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);
 
         inline Ghurund::Core::Image* getImage() {
             return image;

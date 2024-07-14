@@ -14,6 +14,8 @@
 // control types to register
 #include "ui/adapter/AdapterLayout.h"
 #include "ui/constraint/ConstraintLayout.h"
+#include "ui/control/Shadow.h"
+#include "ui/control/Border.h"
 #include "ui/control/Clip.h"
 #include "ui/control/ScrollView.h"
 #include "ui/layout/VerticalLayout.h"
@@ -22,6 +24,9 @@
 #include "ui/widget/button/IconButton.h"
 #include "ui/widget/menu/MenuBar.h"
 #include "ui/widget/toolbar/Toolbar.h"
+#include "ui/text/TextBlock.h"
+#include "ui/text/TextView.h"
+#include "ui/text/TextField.h"
 
 #include "LayoutPropertyLoader.h"
 
@@ -54,7 +59,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat* format, LoadOption options) {
+	Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
 		tinyxml2::XMLDocument doc;
 		doc.Parse((const char*)stream.Data, stream.Size);
 
@@ -144,7 +149,7 @@ namespace Ghurund::UI {
             if (layoutAttr) {
                 AString s = layoutAttr->Value();
                 try {
-                    SharedPointer<Control> control(resourceManager.load<Control>(FilePath(convertText<char, wchar_t>(s)), workingDir, &Control::FORMATS[0], LoadOption::DONT_CACHE));
+                    IntrusivePointer<Control> control(resourceManager.load<Control>(FilePath(convertText<char, wchar_t>(s)), workingDir, Control::FORMAT_XML, LoadOption::DONT_CACHE));
                     PartialConstraintSet loadedConstraints;
                     loadedConstraints.load(control->Type, *this, xml);
                     PartialConstraintSet constraints = parent.makeDefaultConstraints();
@@ -165,7 +170,7 @@ namespace Ghurund::UI {
 			AString type = namespaceName + "::" + xml.Value();
 			const BaseConstructor* constructor = types[type];
 			if (constructor) {
-				SharedPointer<Control> control((Control*)constructor->invokeRaw());
+				IntrusivePointer<Control> control((Control*)constructor->invokeRaw());
 				control->load(*this, workingDir, xml);
 				PartialConstraintSet loadedConstraints;
 				loadedConstraints.load(control->Type, *this, xml);
@@ -222,11 +227,9 @@ namespace Ghurund::UI {
         return nullptr;
     }
 
-    Status LayoutLoader::loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment) {
+    void LayoutLoader::loadAlignment(const tinyxml2::XMLElement& xml, Alignment* alignment) {
         auto alignmentParam = xml.FindAttribute("alignment");
         if (alignmentParam)
             *alignment = Alignment::parse(alignmentParam->Value());
-
-        return Status::OK;
     }
 }

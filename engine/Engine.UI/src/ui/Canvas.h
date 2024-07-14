@@ -45,19 +45,17 @@ namespace Ghurund::UI {
 
         virtual void drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle = nullptr) = 0;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, float alpha = 1.0f) = 0;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, float alpha = 1.0f) = 0;
 
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) = 0;
-
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, float alpha = 1.0f) = 0;
-
-        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha = 1.0f) = 0;
+        virtual void drawImage(Ghurund::UI::Bitmap& bitmapImage, const FloatRect& src, const Ghurund::Core::Color& tint, float alpha = 1.0f) = 0;
 
         virtual void drawImage(VectorImage& vectorImage) = 0;
 
         virtual void drawText(TextLayout& layout, float x, float y) = 0;
 
         virtual void translate(float x, float y) = 0;
+
+        virtual void scale(float sx, float sy) = 0;
 
         virtual void save() = 0;
 

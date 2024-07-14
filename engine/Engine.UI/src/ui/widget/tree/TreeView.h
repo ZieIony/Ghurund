@@ -45,5 +45,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getType)) const Ghurund::Core::Type& Type;
     };
 
-    typedef SharedPointer<TreeView> TreeViewPtr;
+    typedef IntrusivePointer<TreeView> TreeViewPtr;
 }

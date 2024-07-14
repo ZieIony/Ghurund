@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Common.h"
-#include "Status.h"
-#include "core/Buffer.h"
+#include "core/string/String.h"
 
 #include <ws2tcpip.h>
 
@@ -13,7 +11,7 @@ namespace Ghurund::Net {
     private:
         ::SOCKET id = INVALID_SOCKET;
         unsigned short port = 0;
-        tchar* address = nullptr;
+        String address;
         sockaddr_in* addressStruct = nullptr;
         sockaddr_in6* addressStruct6 = nullptr;
 
@@ -22,10 +20,10 @@ namespace Ghurund::Net {
             close();
         }
 
-        Status init(::SOCKET id, const tchar* address, uint16_t port);
+        void init(::SOCKET id, const String& address, uint16_t port);
 
-        inline Status init(const tchar* address, uint16_t port = 0) {
-            return init(::socket(AF_INET, SOCK_DGRAM, 0), address, port);
+        inline void init(const String& address, uint16_t port = 0) {
+            init(::socket(AF_INET, SOCK_DGRAM, 0), address.Data, port);
         }
 
         inline ::SOCKET getId() const {
@@ -48,11 +46,11 @@ namespace Ghurund::Net {
 
         __declspec(property(get = getAddressStruct)) sockaddr* AddressStruct;
 
-        Status send(Socket& socket, const void* data, size_t size, unsigned int flags = 0)const;
+        void send(Socket& socket, const void* data, size_t size, unsigned int flags = 0)const;
 
-        Status receive(void* data, size_t capacity, size_t& size, sockaddr& socketAddr);
+        void receive(void* data, size_t capacity, size_t& size, sockaddr& socketAddr);
 
-        Status bind();
+        void bind();
 
         void close();
     };

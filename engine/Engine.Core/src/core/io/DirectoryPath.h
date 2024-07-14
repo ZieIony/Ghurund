@@ -3,6 +3,8 @@
 #include "FilePath.h"
 #include "core/collection/List.h"
 
+#include <pathcch.h>
+
 namespace Ghurund::Core {
 
 	class DirectoryPath:public Path {

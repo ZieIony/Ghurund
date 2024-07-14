@@ -35,7 +35,7 @@ public:
 	TEST_METHOD(simple) {
 		MemoryGuard guard;
 		{
-			auto c0 = makeShared<ValueConstraint>(0.0f), c1 = makeShared<ValueConstraint>(0.0f);
+			auto c0 = makeIntrusive<ValueConstraint>(0.0f), c1 = makeIntrusive<ValueConstraint>(0.0f);
 			c0->Dependencies.put(c1.get());
 			ConstraintGraph graph;
 			graph.addAll({ c0.get(), c1.get() });
@@ -47,7 +47,7 @@ public:
 	TEST_METHOD(noDependencies) {
 		MemoryGuard guard;
 		{
-			auto c0 = makeShared<ValueConstraint>(0.0f), c1 = makeShared<ValueConstraint>(0.0f);
+			auto c0 = makeIntrusive<ValueConstraint>(0.0f), c1 = makeIntrusive<ValueConstraint>(0.0f);
 			ConstraintGraph graph;
 			graph.addAll({ c0.get(), c1.get() });
 			graph.sort();
@@ -58,7 +58,7 @@ public:
 	TEST_METHOD(cycles) {
 		MemoryGuard guard;
 		{
-			SharedPointer<ValueConstraint> c0 = makeShared<ValueConstraint>(), c1 = makeShared<ValueConstraint>(), c2 = makeShared<ValueConstraint>(), c3 = makeShared<ValueConstraint>();
+			IntrusivePointer<ValueConstraint> c0 = makeIntrusive<ValueConstraint>(), c1 = makeIntrusive<ValueConstraint>(), c2 = makeIntrusive<ValueConstraint>(), c3 = makeIntrusive<ValueConstraint>();
 			c3->Dependencies.put(c3.get());
 			c2->Dependencies.put(c3.get());
 			c2->Dependencies.put(c0.get());
@@ -76,7 +76,7 @@ public:
 	TEST_METHOD(noCycles) {
 		MemoryGuard guard;
 		{
-			SharedPointer<ValueConstraint> c0 = makeShared<ValueConstraint>(), c1 = makeShared<ValueConstraint>(), c2 = makeShared<ValueConstraint>(), c3 = makeShared<ValueConstraint>();
+			IntrusivePointer<ValueConstraint> c0 = makeIntrusive<ValueConstraint>(), c1 = makeIntrusive<ValueConstraint>(), c2 = makeIntrusive<ValueConstraint>(), c3 = makeIntrusive<ValueConstraint>();
 			c2->Dependencies.put(c3.get());
 			c1->Dependencies.put(c2.get());
 			c0->Dependencies.put(c1.get());
@@ -91,9 +91,9 @@ public:
 	TEST_METHOD(wrapFill) {
 		MemoryGuard guard;
 		{
-			auto wrap = makeShared<WrapWidthConstraint>();
-			auto fill = makeShared<ParentWidthConstraint>();
-			auto value = makeShared<ValueConstraint>(0.0f);
+			auto wrap = makeIntrusive<WrapWidthConstraint>();
+			auto fill = makeIntrusive<ParentWidthConstraint>();
+			auto value = makeIntrusive<ValueConstraint>(0.0f);
 			wrap->Dependencies.put(fill.get());
 			wrap->Dependencies.put(value.get());
 			fill->Dependencies.put(wrap.get());
@@ -107,11 +107,11 @@ public:
 	TEST_METHOD(wrapRightFill) {
 		MemoryGuard guard;
 		{
-			auto wrap = makeShared<WrapWidthConstraint>();
-			SharedPointer<Constraint> fill(ghnew ParentWidthConstraint());
-			SharedPointer<Constraint> left(ghnew ValueConstraint(1.0f));
-			auto right = makeShared<LeftWidthConstraint>(left, fill);
-			auto value = makeShared<ValueConstraint>(0.0f);
+			auto wrap = makeIntrusive<WrapWidthConstraint>();
+			IntrusivePointer<Constraint> fill(ghnew ParentWidthConstraint());
+			IntrusivePointer<Constraint> left(ghnew ValueConstraint(1.0f));
+			auto right = makeIntrusive<LeftWidthConstraint>(left, fill);
+			auto value = makeIntrusive<ValueConstraint>(0.0f);
 			wrap->Dependencies.put(left.get());
 			wrap->Dependencies.put(right.get());
 			wrap->Dependencies.put(value.get());
@@ -128,9 +128,9 @@ public:
 	TEST_METHOD(wrapCenterHorizontal) {
 		MemoryGuard guard;
 		{
-			auto colorView = makeShared<ColorView>();
+			auto colorView = makeIntrusive<ColorView>();
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(colorView.get(), makeConstraints({
 				.left = 0.0f,
 				.width = 50.0f,
@@ -139,8 +139,8 @@ public:
 			ConstraintSet& constraints = controlGroup->Children.get(1).Constraints;
 		
 			ConstraintGraph graph;
-			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
-			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();

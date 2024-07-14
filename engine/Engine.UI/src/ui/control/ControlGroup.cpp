@@ -250,8 +250,8 @@ namespace Ghurund::UI {
 			return layoutManager->makeDefaultConstraints();
 		} else {
 			return ConstraintSetInitializer{
-				.width = makeShared<ContentWidthConstraint>(),
-				.height = makeShared<ContentHeightConstraint>()
+				.width = makeIntrusive<ContentWidthConstraint>(),
+				.height = makeIntrusive<ContentHeightConstraint>()
 			};
 		}
 	}

@@ -3,6 +3,7 @@
 
 #include "core/Exceptions.h"
 #include "core/logging/Logger.h"
+#include "core/SharedPointer.h"
 
 #include <format>
 
@@ -20,7 +21,7 @@ namespace Ghurund::Core {
 		}
 	}
 
-	std::shared_ptr<Buffer> ResourcePath::resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const {
+	SharedPointer<Buffer> ResourcePath::resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const {
 		if (type == Type::LIBRARY) {
 			auto buffer = libraries.get(libName)->get(path);
 			if (buffer == nullptr || buffer->Size == 0) {
@@ -41,9 +42,21 @@ namespace Ghurund::Core {
 				AString exMessage = convertText<tchar, char>(String(message.c_str()));
 				throw InvalidParamException(exMessage.Data);
 			}
-			auto buffer = std::make_shared<Buffer>();
+			auto buffer = SharedPointer(ghnew Buffer());
 			file.read(*buffer.get());
 			return buffer;
+		}
+	}
+
+	bool ResourcePath::exists(const DirectoryPath& workingDir, LibraryList& libraries) const {
+		if (type == Type::LIBRARY) {
+			return libraries.get(libName)->contains(path);
+		} else {
+			FilePath absolutePath = FilePath(path);
+			if (!absolutePath.IsAbsolute)
+				absolutePath = workingDir / FilePath(path);
+			File file(absolutePath);
+			return file.Exists;
 		}
 	}
 

@@ -5,7 +5,7 @@
 #include <test/TestLogOutput.h>
 
 #include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/ShapeFactory.h"
+#include "test/ui/TestShapeFactory.h"
 #include "test/ui/TextFormatFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/constraint/ConstraintGraph.h"
@@ -35,18 +35,18 @@ public:
 	TEST_METHOD(wrapEmpty) {
 		MemoryGuard guard;
 		{
-			auto container = makeShared<ControlContainer>();
+			auto container = makeIntrusive<ControlContainer>();
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			ConstraintSet constraints = ConstraintSet(ConstraintSetInitializer{
-				.width = makeShared<ContentWidthConstraint>(),
-				.height = makeShared<ContentHeightConstraint>()
+				.width = makeIntrusive<ContentWidthConstraint>(),
+				.height = makeIntrusive<ContentHeightConstraint>()
 			});
 			controlGroup->Children.add(container.get(), constraints);
 
 			ConstraintGraph graph;
-			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
-			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();
@@ -59,19 +59,19 @@ public:
 	TEST_METHOD(wrapEmptyMinRatioOffset) {
 		MemoryGuard guard;
 		{
-			auto container = makeShared<ControlContainer>();
+			auto container = makeIntrusive<ControlContainer>();
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			ConstraintSet constraints = ConstraintSet(ConstraintSetInitializer{
 				.width = []() {
-					auto c = makeShared<WrapWidthConstraint>();
+					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
 				.height = []() {
-					auto c = makeShared<WrapHeightConstraint>();
+					auto c = makeIntrusive<WrapHeightConstraint>();
 					c->Min = 75;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
@@ -81,8 +81,8 @@ public:
 			controlGroup->Children.add(container.get(), constraints);
 
 			ConstraintGraph graph;
-			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
-			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();
@@ -95,23 +95,23 @@ public:
 	TEST_METHOD(wrapChild) {
 		MemoryGuard guard;
 		{
-			auto child = makeShared<ColorView>();
-			auto group = makeShared<ControlContainer>();
+			auto child = makeIntrusive<ColorView>();
+			auto group = makeIntrusive<ControlContainer>();
 			group->Child = child.get();
 			group->setConstraints(*child.get(), {
 				.width = 100.0f,
 				.height = 75.0f
 				});
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(group.get(), makeConstraints({
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 				}));
 
 			ConstraintGraph graph;
-			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
-			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();
@@ -126,20 +126,20 @@ public:
 	TEST_METHOD(wrapChildFillMinRatioOffset) {
 		MemoryGuard guard;
 		{
-			auto child = makeShared<ColorView>();
+			auto child = makeIntrusive<ColorView>();
 
-			auto group = makeShared<ControlContainer>();
+			auto group = makeIntrusive<ControlContainer>();
 			group->Child = child.get();
 			group->setConstraints(*child.get(), {
 				.width = []() {
-					auto c = makeShared<ParentWidthConstraint>();
+					auto c = makeIntrusive<ParentWidthConstraint>();
 					c->Min = 100.0f;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
 					return c;
 				}(),
 				.height = []() {
-					auto c = makeShared<ParentHeightConstraint>();
+					auto c = makeIntrusive<ParentHeightConstraint>();
 					c->Min = 75.0f;
 					c->Ratio = 0.5f;
 					c->Offset = 10.0f;
@@ -148,15 +148,15 @@ public:
 				});
 
 
-			auto controlGroup = makeShared<ConstraintLayout>();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
 			controlGroup->Children.add(group.get(), makeConstraints({
-				.width = makeShared<WrapWidthConstraint>(),
-				.height = makeShared<WrapHeightConstraint>()
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
 				}));
 
 			ConstraintGraph graph;
-			SharedPointer<ValueConstraint> width = makeShared<ValueConstraint>(100);
-			SharedPointer<ValueConstraint> height = makeShared<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();

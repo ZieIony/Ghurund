@@ -1,20 +1,24 @@
 #include "ghpch.h"
-
 #include "Socket.h"
+
+#include "core/Exceptions.h"
+#include "core/Finally.h"
 #include "core/logging/Logger.h"
 
 namespace Ghurund::Net {
-    Status Socket::init(::SOCKET id, const tchar* address, uint16_t port) {
+    void Socket::init(::SOCKET id, const String& address, uint16_t port) {
         this->id = id;
-        if (id == INVALID_SOCKET)
-            return Logger::log(LogType::ERR0R, Status::INV_PARAM, _T("socket is invalid"));
+        if (id == INVALID_SOCKET) {
+            Logger::log(LogType::ERR0R, _T("socket is invalid"));
+            throw InvalidParamException();
+        }
 
         u_long enabled = 1;
         ioctlsocket(id, FIONBIO, &enabled);
         // Any calls to recvfrom made when there are no packets to consume, will return SOCKET_ERROR, and WSAGetLastError will return WSAEWOULDBLOCK
 
         this->port = port;
-        safeCopyStr(&this->address, address);
+        this->address = address;
 
         memset(&addressStruct, 0, sizeof addressStruct);
 
@@ -27,6 +31,9 @@ namespace Ghurund::Net {
         struct addrinfo* ptr = nullptr;
         struct addrinfo hints;
 #endif
+        Finally f = [&] {
+            FreeAddrInfo(result);
+        };
 
         memset(&hints, 0, sizeof(hints));
         hints.ai_family = AF_INET;
@@ -35,9 +42,11 @@ namespace Ghurund::Net {
 
         tchar portStr[10];
         _stprintf_s(portStr, 10, _T("%i"), port);
-        int dwRetval = GetAddrInfo(address, portStr, &hints, &result);
-        if (dwRetval != 0)
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Failed to get address info"));
+        int dwRetval = GetAddrInfo(address.Data, portStr, &hints, &result);
+        if (dwRetval != 0) {
+            Logger::log(LogType::ERR0R, _T("Failed to get address info"));
+            throw CallFailedException();
+        }
 
         for (ptr = result; ptr != nullptr; ptr = ptr->ai_next) {
             switch (ptr->ai_family) {
@@ -51,23 +60,20 @@ namespace Ghurund::Net {
                 break;
             }
         }
-
-        FreeAddrInfo(result);
-
-        return Status::OK;
     }
 
-    Status Socket::send(Socket& socket, const void* data, size_t size, unsigned int flags) const {
+    void Socket::send(Socket& socket, const void* data, size_t size, unsigned int flags) const {
         int result = 0;
         if (addressStruct6 != nullptr) {
             result = ::sendto(id, (const char*)data, (int)size, flags, socket.AddressStruct, sizeof(sockaddr_in6));
         } else {
             result = ::sendto(id, (const char*)data, (int)size, flags, socket.AddressStruct, sizeof(sockaddr_in));
         }
-        return result == SOCKET_ERROR ? Status::SOCKET : Status::OK;
+        if(result == SOCKET_ERROR)
+            throw CallFailedException();
     }
 
-    Status Socket::receive(void* data, size_t capacity, size_t& size, sockaddr& socketAddr) {
+    void Socket::receive(void* data, size_t capacity, size_t& size, sockaddr& socketAddr) {
         int bytes;
         memset(&socketAddr, 0, sizeof(socketAddr));
         int length = sizeof(socketAddr);
@@ -75,15 +81,14 @@ namespace Ghurund::Net {
             size = 0;
             int error = WSAGetLastError();
             if (error == WSAEWOULDBLOCK)
-                return Status::OK;
-            return Logger::log(LogType::ERR0R, Status::SOCKET, _T("there was an error while receiving data\n"));
+                return;
+            Logger::log(LogType::ERR0R, _T("there was an error while receiving data\n"));
+            throw CallFailedException();
         }
         size = bytes;
-
-        return Status::OK;
     }
 
-    Status Socket::bind() {
+    void Socket::bind() {
         int result;
         if (addressStruct6 != nullptr) {
             result = ::bind(id, (sockaddr*)addressStruct6, sizeof(sockaddr_in6));
@@ -96,10 +101,12 @@ namespace Ghurund::Net {
             getsockname(id, &addr, &nameLen);
             port = addr.sa_family;
         }
-        if (result == SOCKET_ERROR)
-            return Status::SOCKET;
-
-        return Status::OK;
+        if (result == SOCKET_ERROR) {
+            int error = WSAGetLastError();
+            auto text = std::format(_T("unable to bind to socket, error: {:d}\n"), error);
+            Logger::log(LogType::ERR0R, text.c_str());
+            throw CallFailedException();
+        }
     }
     
     void Socket::close() {
@@ -114,8 +121,7 @@ namespace Ghurund::Net {
         }
         closesocket(id);
         id = INVALID_SOCKET;
-        delete[] address;
-        address = nullptr;
+        address = _T("");
         delete addressStruct;
         addressStruct = nullptr;
         delete addressStruct6;

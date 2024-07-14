@@ -13,8 +13,8 @@ namespace Ghurund::UI {
 	// doesn't require all constraints to be set
 	class PartialConstraintSet {
 	public:
-		SharedPointer<Constraint> left, width, right;
-		SharedPointer<Constraint> top, height, bottom;
+		IntrusivePointer<Constraint> left, width, right;
+		IntrusivePointer<Constraint> top, height, bottom;
 
 		PartialConstraintSet() {}
 
@@ -34,8 +34,8 @@ namespace Ghurund::UI {
 
 	class ConstraintSet {
 	private:
-		SharedPointer<Constraint> left, width, right;
-		SharedPointer<Constraint> top, height, bottom;
+		IntrusivePointer<Constraint> left, width, right;
+		IntrusivePointer<Constraint> top, height, bottom;
 
 	public:
 		ConstraintSet(const PartialConstraintSet& set);

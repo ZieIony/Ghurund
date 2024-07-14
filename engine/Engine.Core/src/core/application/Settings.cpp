@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "Settings.h"
 
-#include "core/string/TextConversionUtils.h"
+#include <tinyxml2.h>
 
 namespace Ghurund::Core {
     void Settings::load(const FilePath& path) {

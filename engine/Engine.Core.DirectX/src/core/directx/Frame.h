@@ -32,10 +32,10 @@ namespace Ghurund::Core::DirectX {
             delete depthBuffer;
         }
 
-        Status init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
+        void init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
 
-        Status start(::DirectX::XMFLOAT4* color);
-        Status finish();
+        void start(::DirectX::XMFLOAT4* color);
+        void finish();
         void flush();
 
         RenderTarget& getRenderTarget() {

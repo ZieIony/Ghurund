@@ -1,9 +1,9 @@
-#include "ghuidxpch.h"
+#include "ghuid2dpch.h"
 #include "TextLayout.h"
 #include "ui/direct2d/text/TextFormat.h"
 
 namespace Ghurund::UI::Direct2D {
-    Status TextLayout::refresh() {
+    void TextLayout::refresh() {
         IDWriteTextLayout* newLayout = nullptr;
 
         IDWriteTextFormat* formatSource = nullptr;
@@ -12,7 +12,7 @@ namespace Ghurund::UI::Direct2D {
         } else if (format) {
             formatSource = ((Ghurund::UI::Direct2D::TextFormat*)format)->Format;
         } else {
-            return Status::INV_STATE;
+            throw InvalidStateException();
         }
 
         //if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.Width, size.Height, &newLayout)))
@@ -21,8 +21,6 @@ namespace Ghurund::UI::Direct2D {
         if (layout)
             layout->Release();
         layout = newLayout;
-
-        return Status::OK;
     }
 
     void TextLayout::copySinglePropertyRange(IDWriteTextLayout* oldLayout, uint32_t startPosForOld, IDWriteTextLayout* newLayout, uint32_t startPosForNew, uint32_t length, Ghurund::UI::Direct2D::TextFormat* textFormat) {
@@ -212,7 +210,7 @@ namespace Ghurund::UI::Direct2D {
         return clusterMetrics;
     }
 
-    Status TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
+    void TextLayout::insertTextAt(uint32_t position, const Ghurund::Core::WString& textToInsert) {
         if (layout)
             layout->AddRef();
         /*IDWriteTextLayout* oldLayout = layout;
@@ -252,11 +250,9 @@ namespace Ghurund::UI::Direct2D {
 
         if (oldLayout)
             oldLayout->Release();*/
-
-        return Status::OK;// result;
     }
 
-    Status TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
+    void TextLayout::removeTextAt(uint32_t position, uint32_t lengthToRemove) {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
@@ -286,8 +282,6 @@ namespace Ghurund::UI::Direct2D {
 
         if (oldLayout)
             oldLayout->Release();*/
-
-        return Status::OK;// result;
     }
 
     void TextLayout::copyGlobalProperties(IDWriteTextLayout* oldLayout, IDWriteTextLayout* newLayout) {

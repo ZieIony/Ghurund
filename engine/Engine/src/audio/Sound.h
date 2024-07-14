@@ -2,7 +2,6 @@
 
 #include "Common.h"
 #include <Windows.h>
-#include "Status.h"
 #include "core/collection/Array.h"
 #include "core/collection/List.h"
 #include "core/resource/Resource.h"
@@ -47,9 +46,9 @@ namespace Ghurund::Audio {
         XAUDIO2_BUFFER audioBuffer;
         PlaybackState state = PlaybackState::STOPPED;
 
-        Status setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
-        Status readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
-        Status loadData(MemoryInputStream& stream, LoadOption options);
+        void setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
+        void readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex);
+        void loadData(MemoryInputStream& stream, LoadOption options);
 
     protected:
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
@@ -63,29 +62,28 @@ namespace Ghurund::Audio {
             sourceVoice->DestroyVoice();
         }
 
-        Status play();
+        void play();
 
-        Status stop() {
+        void stop() {
             if (state == PlaybackState::STOPPED)
-                return Status::INV_STATE;
+                throw InvalidStateException();
 
             if (isPlaying())
                 sourceVoice->Stop();
-            if (state != PlaybackState::STOPPED) {
+            //if (state != PlaybackState::STOPPED) {
                 sourceVoice->FlushSourceBuffers();
                 state = PlaybackState::STOPPED;
-                return Status::OK;
-            }
-            return Status::CALL_FAIL;
+              //  return Status::OK;
+            //}
+            //return Status::CALL_FAIL;
         }
 
-        inline Status pause() {
+        inline void pause() {
             if (state != PlaybackState::PLAYING)
-                return Status::INV_STATE;
+                throw InvalidStateException();
 
             sourceVoice->Stop();
             state = PlaybackState::PAUSED;
-            return Status::OK;
         }
 
         inline bool isPlaying() const {

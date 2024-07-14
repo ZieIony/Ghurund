@@ -67,7 +67,7 @@ namespace Ghurund::Core::DirectX {
                 heap->Release();
         }
 
-        Status init(Graphics& graphics);
+        void init(Graphics& graphics);
 
         bool hasAvailableSpace() const { return numFreeDescriptors > 0; }
         DescriptorHandle allocate();

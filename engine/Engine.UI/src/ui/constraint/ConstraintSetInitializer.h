@@ -6,7 +6,7 @@
 namespace Ghurund::UI {
 	class ConstraintInitializer {
 	private:
-		SharedPointer<Constraint> constraint;
+		IntrusivePointer<Constraint> constraint;
 
 		ConstraintInitializer(const ConstraintInitializer& other) = delete;
 
@@ -18,7 +18,7 @@ namespace Ghurund::UI {
 		ConstraintInitializer(float value):constraint(ghnew ValueConstraint(value)) {}
 
 		template<class ConstraintType>
-		ConstraintInitializer(SharedPointer<ConstraintType> constraint) {
+		ConstraintInitializer(IntrusivePointer<ConstraintType> constraint) {
 			if (constraint != nullptr) {
 				constraint->addReference();
 				this->constraint.set(constraint.get());
@@ -28,7 +28,7 @@ namespace Ghurund::UI {
 		ConstraintInitializer(ConstraintInitializer&& other) noexcept
 			:constraint(std::move(other.constraint)) {}
 
-		SharedPointer<Constraint> get() const {
+		IntrusivePointer<Constraint> get() const {
 			return constraint;
 		}
 

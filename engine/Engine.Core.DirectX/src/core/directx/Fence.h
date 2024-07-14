@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Status.h"
 #include "core/string/String.h"
 
 #include <d3d12.h>
@@ -24,11 +23,11 @@ namespace Ghurund::Core::DirectX {
                 CloseHandle(fenceEvent);
         }
 
-        Status init(ID3D12Device* device);
+        void init(ID3D12Device* device);
 
-        Status signal(ID3D12CommandQueue* commandQueue);
+        void signal(ID3D12CommandQueue* commandQueue);
 
-        Status wait(ID3D12CommandQueue* commandQueue);
+        void wait(ID3D12CommandQueue* commandQueue);
 
         inline void setName(const WString& name) {
             this->name = name;

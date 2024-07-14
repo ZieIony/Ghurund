@@ -1,7 +1,7 @@
 project "Engine.UI.Direct2D"
 	kind "StaticLib"
-	pchheader "ghuidxpch.h"
-	pchsource "src/ghuidxpch.cpp"
+	pchheader "ghuid2dpch.h"
+	pchsource "src/ghuid2dpch.cpp"
 	staticruntime "on"
 
 	dependson {

@@ -2,7 +2,8 @@
 
 #include "TextFormat.h"
 #include "core/Color.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
+#include "core/string/TextConversionUtils.h"
 #include "ui/drawable/Drawable.h"
 
 #include <tinyxml2.h>
@@ -72,9 +73,9 @@ namespace Ghurund::UI {
     };
 
     struct BoldSpan:public DocumentElementGroup {
-        SharedPointer<TextFormat> textFormat;
+        IntrusivePointer<TextFormat> textFormat;
 
-        BoldSpan(Font* font, float size, bool italic, WString& locale):textFormat(makeShared<TextFormat>(font, size, FW_BOLD, italic, locale)) {}
+        BoldSpan(Font* font, float size, bool italic, WString& locale):textFormat(makeIntrusive<TextFormat>(font, size, FW_BOLD, italic, locale)) {}
 
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
             __super::draw(canvas, *textFormat.get(), color);
@@ -82,9 +83,9 @@ namespace Ghurund::UI {
     };
 
     struct ItalicSpan:public DocumentElementGroup {
-        SharedPointer<TextFormat> textFormat;
+        IntrusivePointer<TextFormat> textFormat;
 
-        ItalicSpan(Font* font, float size, uint32_t weight, WString& locale):textFormat(makeShared<TextFormat>(font, size, weight, true, locale)) {}
+        ItalicSpan(Font* font, float size, uint32_t weight, WString& locale):textFormat(makeIntrusive<TextFormat>(font, size, weight, true, locale)) {}
 
         virtual void draw(ICanvas& canvas, const TextFormat& parentFormat, const Color& color) const override {
             __super::draw(canvas, *textFormat.get(), color);

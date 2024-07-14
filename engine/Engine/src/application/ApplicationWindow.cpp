@@ -5,14 +5,11 @@
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/window/SystemWindow.h"
-#include "core/input/Input.h"
 #include "core/application/Application.h"
-#include "Status.h"
+#include "core/application/LayerList.h"
+#include "ui/direct2d/D2DDrawingContext.h"
 
 #include <windowsx.h>
-
-#include "application/LayerList.h"
-#include "ui/UIFeature.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
@@ -77,20 +74,15 @@ namespace Ghurund {
         layers.update(time);
     }
 
-    Status ApplicationWindow::paint() {
+    void ApplicationWindow::paint() {
         Ghurund::Core::DirectX::Frame& frame = swapChain->CurrentFrame;
         Ghurund::Core::DirectX::CommandList& commandList = renderer.startFrame(frame);
         //levelManager.draw(commandList);
         frame.flush();
-
-        Status result = layers.draw(frame.RenderTarget);
-        if (result != Status::OK)
-            return result;
-
-        result = renderer.finishFrame(frame);
-        if (result != Status::OK)
-            return result;
-        return swapChain->present();
+        auto drawingContext = Ghurund::UI::Direct2D::D2DDrawingContext(frame.RenderTarget);
+        layers.draw(drawingContext);
+        renderer.finishFrame(frame);
+        swapChain->present();
     }
 
 }

@@ -1,12 +1,11 @@
 #pragma once
 
 #include "Mesh.h"
-#include "core/resource/ResourceManager.h"
 
 namespace Ghurund {
     class PlaneMesh: public Mesh {
     public:
-        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0) {
+        void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0) {
             Vertex triangleVertices[] = {
                 {{-1.0f, 0.0f, -1.0f}, {0,1,0}, {0,0}},
                 {{1.0f,  0.0f,  1.0f}, {0,1,0}, {1,1}},
@@ -31,7 +30,7 @@ namespace Ghurund {
 
 			//geometry = ghnew PxPlaneGeometry();
 
-            return Mesh::init(graphics, commandList);
+            Mesh::init(graphics, commandList);
         }
     };
 }

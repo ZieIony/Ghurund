@@ -10,7 +10,8 @@
 #include "ui/font/FontLoader.h"
 #include "ui/RootView.h"
 #include "test/ui/text/TextLayout.h"
-#include "test/ui/UIContext.h"
+#include "test/ui/TestUIContext.h"
+#include "test/ui/TestBitmapFactory.h"
 
 #include <format>
 
@@ -26,18 +27,19 @@ private:
     ResourceManager resourceManager;
     Timer timer;
     Window* window;
-    UIContext* context;
+    IUIContext* context;
     TextFormat* textFormat;
     FontLoader* fontLoader;
+    TestBitmapFactory bitmapFactory;
 
 public:
     TextBlockTest() {
         window = ghnew SystemWindow(timer);
-        context = ghnew UIContext(*window);
-        fontLoader = ghnew FontLoader();
+        context = ghnew TestUIContext(*window);
+        fontLoader = ghnew FontLoader(bitmapFactory);
         resourceManager.Loaders.set<Font>(fontLoader);
         ResourcePath path = Ghurund::Core::FilePath(L"../../resources/fonts\\lato_medium.ttf");
-        Ghurund::Core::SharedPointer<Font> latoMediumFont(resourceManager.load<Font>(path, DirectoryPath()));
+        Ghurund::Core::IntrusivePointer<Font> latoMediumFont(resourceManager.load<Font>(path, DirectoryPath()));
         textFormat = ghnew TextFormat(latoMediumFont.get(), 10);
     }
 
@@ -49,9 +51,9 @@ public:
     }
     /*
     TEST_METHOD(textBlock_measureEmptyWrap) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::WRAP, ContentSize::Height::WRAP };
@@ -68,9 +70,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextWrap) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::WRAP, ContentSize::Height::WRAP };
@@ -87,9 +89,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyFill) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::FILL, ContentSize::Height::FILL };
@@ -106,9 +108,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextFill) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::FILL, ContentSize::Height::FILL };
@@ -125,9 +127,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyPixels) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PIXELS, 50), ContentSize::Height(ContentSize::Type::PIXELS, 70) };
@@ -143,9 +145,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextPixels) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PIXELS, 50), ContentSize::Height(ContentSize::Type::PIXELS, 70) };
@@ -162,9 +164,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureEmptyPercent) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PERCENT, 50.0f), ContentSize::Height(ContentSize::Type::PERCENT, 70.0f) };
@@ -180,9 +182,9 @@ public:
     }
 
     TEST_METHOD(textBlock_measureTextPercent) {
-        auto rootView = makeShared<RootView>(*context);
+        auto rootView = makeIntrusive<RootView>(*context);
         TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
-        auto textBlock = makeShared<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
+        auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PERCENT, 50.0f), ContentSize::Height(ContentSize::Type::PERCENT, 70.0f) };

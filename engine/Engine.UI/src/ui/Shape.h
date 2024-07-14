@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Object.h"
 #include "core/math/Rect.h"
 
 namespace Ghurund::UI {

@@ -1,3 +1,5 @@
 #pragma once
 
-#include "Ghurund.Core.h"
+#include "Common.h"
+
+#pragma comment(lib, "dxgi.lib")

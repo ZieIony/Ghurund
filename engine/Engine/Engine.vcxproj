@@ -100,8 +100,6 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
-    <ClInclude Include="src\application\Layer.h" />
-    <ClInclude Include="src\application\LayerList.h" />
     <ClInclude Include="src\application\UIApplicationWindow.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
@@ -149,7 +147,7 @@
     <ClInclude Include="src\net\ServerMessage.h" />
     <ClInclude Include="src\net\Socket.h" />
     <ClInclude Include="src\parameter\Parameter.h" />
-    <ClInclude Include="src\parameter\ParameterId.h" />
+    <ClInclude Include="src\parameter\ParameterCollection.h" />
     <ClInclude Include="src\parameter\ParameterManager.h" />
     <ClInclude Include="src\parameter\ParameterProvider.h" />
     <ClInclude Include="src\parameter\ParameterType.h" />
@@ -162,6 +160,7 @@
     <ClInclude Include="src\script\Script.h" />
     <ClInclude Include="src\script\ScriptComponent.h" />
     <ClInclude Include="src\script\ScriptEngine.h" />
+    <ClInclude Include="src\script\ScriptExecutionException.h" />
     <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
@@ -174,13 +173,9 @@
     <ClInclude Include="src\script\bindings\SceneScriptBindings.h" />
     <ClInclude Include="src\script\bindings\ScriptBindings.h" />
     <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
-    <ClInclude Include="src\ui\UIFeature.h" />
-    <ClInclude Include="src\ui\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
-    <ClCompile Include="src\application\Layer.cpp" />
-    <ClCompile Include="src\application\LayerList.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
@@ -205,7 +200,6 @@
     <ClCompile Include="src\net\Server.cpp" />
     <ClCompile Include="src\net\Socket.cpp" />
     <ClCompile Include="src\parameter\Parameter.cpp" />
-    <ClCompile Include="src\parameter\ParameterId.cpp" />
     <ClCompile Include="src\parameter\ParameterManager.cpp" />
     <ClCompile Include="src\parameter\ParameterProvider.cpp" />
     <ClCompile Include="src\parameter\ParameterType.cpp" />
@@ -213,8 +207,6 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
-    <ClCompile Include="src\ui\UIFeature.cpp" />
-    <ClCompile Include="src\ui\UILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

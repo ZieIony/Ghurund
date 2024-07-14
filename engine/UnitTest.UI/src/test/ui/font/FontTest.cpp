@@ -8,6 +8,7 @@
 #include "ui/font/FontLoader.h"
 
 #include <format>
+#include <test/ui/TestBitmapFactory.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -27,17 +28,18 @@ public:
 
     TEST_METHOD(Font_init) {
         ResourceManager resourceManager;
-        SharedPointer<FontLoader> fontLoader;
-        SharedPointer<ImageLoader> imageLoader;
-        fontLoader.set(ghnew FontLoader());
+        TestBitmapFactory testBitmapFactory;
+        IntrusivePointer<FontLoader> fontLoader;
+        IntrusivePointer<ImageLoader> imageLoader;
+        fontLoader.set(ghnew FontLoader(testBitmapFactory));
         imageLoader.set(ghnew ImageLoader());
         resourceManager.Loaders.set<Font>(fontLoader.get());
         resourceManager.Loaders.set<Image>(imageLoader.get());
         resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"../../resources")));
 
         auto latoMediumPath = Ghurund::Core::ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/fonts\\lato_bold.ttf");
-        SharedPointer<Font> font = makeShared<Font>();
-        Ghurund::Core::SharedPointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
+        IntrusivePointer<Font> font = makeIntrusive<Font>();
+        Ghurund::Core::IntrusivePointer<Ghurund::UI::Font> latoMediumFont(resourceManager.load<Ghurund::UI::Font>(latoMediumPath, DirectoryPath()));
         //resourceManager.save(*latoMediumFont.get()->Atlas, FilePath(_T("../../test.bmp")));
     }
     };

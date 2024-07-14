@@ -15,7 +15,7 @@ namespace Demo {
 
 		virtual Control* makeControl(size_t type) const override {
 			ControlGroup* group = ghnew ControlGroup();
-			auto color = makeShared<ColorView>();
+			auto color = makeIntrusive<ColorView>();
 			group->Children.add(color.get(), makeConstraints({
 				.width = 100,
 				.height = 50

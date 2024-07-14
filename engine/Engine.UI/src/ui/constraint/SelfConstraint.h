@@ -73,14 +73,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> left, width;
+		IntrusivePointer<Constraint> left, width;
 
 		LeftWidthConstraint(const LeftWidthConstraint& other):Constraint(other), left(other.left), width(other.width) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		LeftWidthConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width)
+		LeftWidthConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width)
 			:left(left), width(width) {
 			dependencies.putAll({ this->left.get(), this->width.get() });
 		}
@@ -111,14 +111,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> left, width, right;
+		IntrusivePointer<Constraint> left, width, right;
 
 		CenterLeftConstraint(const CenterLeftConstraint& other):Constraint(other), left(other.left), width(other.width), right(other.right) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterLeftConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+		CenterLeftConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
 			:left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
@@ -153,14 +153,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> left, right;
+		IntrusivePointer<Constraint> left, right;
 
 		LeftRightConstraint(const LeftRightConstraint& other):Constraint(other), left(other.left), right(other.right) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		LeftRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& right)
+		LeftRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& right)
 			:left(left), right(right) {
 			dependencies.putAll({ this->left.get(), this->right.get() });
 		}
@@ -191,14 +191,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> left, width, right;
+		IntrusivePointer<Constraint> left, width, right;
 
 		CenterRightConstraint(const CenterRightConstraint& other):Constraint(other), left(other.left), width(other.width), right(other.right) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterRightConstraint(const SharedPointer<Constraint>& left, const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+		CenterRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
 			:left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
@@ -233,14 +233,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> width, right;
+		IntrusivePointer<Constraint> width, right;
 
 		WidthRightConstraint(const WidthRightConstraint& other):Constraint(other), width(other.width), right(other.right) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		WidthRightConstraint(const SharedPointer<Constraint>& width, const SharedPointer<Constraint>& right)
+		WidthRightConstraint(const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
 			:width(width), right(right) {
 			dependencies.putAll({ this->width.get(), this->right.get() });
 		}
@@ -271,14 +271,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> top, height;
+		IntrusivePointer<Constraint> top, height;
 
 		TopHeightConstraint(const TopHeightConstraint& other):Constraint(other), top(other.top), height(other.height) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		TopHeightConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height)
+		TopHeightConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height)
 			:top(top), height(height) {
 			dependencies.putAll({ this->top.get(), this->height.get() });
 		}
@@ -309,14 +309,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> top, height, bottom;
+		IntrusivePointer<Constraint> top, height, bottom;
 
 		CenterTopConstraint(const CenterTopConstraint& other):Constraint(other), top(other.top), height(other.height), bottom(other.bottom) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterTopConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+		CenterTopConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
 			:top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
@@ -351,14 +351,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> top, bottom;
+		IntrusivePointer<Constraint> top, bottom;
 
 		TopBottomConstraint(const TopBottomConstraint& other):Constraint(other), top(other.top), bottom(other.bottom) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		TopBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& bottom)
+		TopBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& bottom)
 			:top(top), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->bottom.get() });
 		}
@@ -389,14 +389,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> top, height, bottom;
+		IntrusivePointer<Constraint> top, height, bottom;
 
 		CenterBottomConstraint(const CenterBottomConstraint& other):Constraint(other), top(other.top), height(other.height), bottom(other.bottom) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterBottomConstraint(const SharedPointer<Constraint>& top, const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+		CenterBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
 			:top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
@@ -431,14 +431,14 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> height, bottom;
+		IntrusivePointer<Constraint> height, bottom;
 
 		HeightBottomConstraint(const HeightBottomConstraint& other):Constraint(other), height(other.height), bottom(other.bottom) {}
 
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		HeightBottomConstraint(const SharedPointer<Constraint>& height, const SharedPointer<Constraint>& bottom)
+		HeightBottomConstraint(const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
 			:height(height), bottom(bottom) {
 			dependencies.putAll({ this->height.get(), this->bottom.get() });
 		}

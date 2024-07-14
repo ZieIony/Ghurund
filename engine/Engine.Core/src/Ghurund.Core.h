@@ -2,7 +2,7 @@
 
 #include "core/application/Application.h"
 
-#include "core/logging/Formatter.h"
+#include "core/logging/Logger.h"
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Kernel32.lib")

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "ui/control/Control.h"
 #include "ui/constraint/ConstraintSet.h"
 
@@ -10,13 +10,13 @@ namespace Ghurund::UI {
 		ConstraintSet constraints;
 
 	public:
-		SharedPointer<Control> control;
+		IntrusivePointer<Control> control;
 
-		ControlWithConstraints(Control* control, const ConstraintSet& constraints):control(SharedPointer(control)), constraints(constraints) {
+		ControlWithConstraints(Control* control, const ConstraintSet& constraints):control(IntrusivePointer(control)), constraints(constraints) {
 			control->addReference();
 		}
 
-		ControlWithConstraints(SharedPointer<Control>& control, const ConstraintSet& constraints):control(control), constraints(constraints) {}
+		ControlWithConstraints(IntrusivePointer<Control>& control, const ConstraintSet& constraints):control(control), constraints(constraints) {}
 
 		inline bool operator==(const ControlWithConstraints& other) const {
 			return control == other.control && constraints == other.constraints;

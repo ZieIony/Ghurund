@@ -1,10 +1,9 @@
 #include "ghpch.h"
-
 #include "Sound.h"
 
-#include "Ghurund.Engine.h"
 #include "Common.h"
-#include "Status.h"
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
 
 #include <wrl\client.h>
 
@@ -13,8 +12,6 @@
 #include <mfapi.h>
 #include <mfidl.h>
 #include <mfreadwrite.h>
-
-#include "core/logging/Logger.h"
 
 namespace Ghurund::Audio {
     using namespace Ghurund::Core;
@@ -38,25 +35,31 @@ namespace Ghurund::Audio {
         throw NotImplementedException();
     }
 
-    Status Sound::setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex) {
+    void Sound::setupDecompression(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex) {
         ComPtr<IMFMediaType> partialType = nullptr;
-        if(FAILED(MFCreateMediaType(partialType.GetAddressOf())))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to create media type\n"));
+        if (FAILED(MFCreateMediaType(partialType.GetAddressOf()))) {
+            Logger::log(LogType::ERR0R, _T("Unable to create media type\n"));
+            throw CallFailedException();
+        }
 
-        if(FAILED(partialType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Audio)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set media type to audio\n"));
+        if (FAILED(partialType->SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Audio))) {
+            Logger::log(LogType::ERR0R, _T("Unable to set media type to audio\n"));
+            throw CallFailedException();
+        }
 
         // request uncompressed data
-        if(FAILED(partialType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM)))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set guid of media type to uncompressed\n"));
+        if (FAILED(partialType->SetGUID(MF_MT_SUBTYPE, MFAudioFormat_PCM))) {
+            Logger::log(LogType::ERR0R, _T("Unable to set guid of media type to uncompressed\n"));
+            throw CallFailedException();
+        }
 
-        if(FAILED(sourceReader->SetCurrentMediaType(streamIndex, nullptr, partialType.Get())))
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to set current media type\n"));
-
-        return Status::OK;
+        if (FAILED(sourceReader->SetCurrentMediaType(streamIndex, nullptr, partialType.Get()))) {
+            Logger::log(LogType::ERR0R, _T("Unable to set current media type\n"));
+            throw CallFailedException();
+        }
     }
 
-    Status Sound::readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex) {
+    void Sound::readSamples(ComPtr<IMFSourceReader> sourceReader, DWORD streamIndex) {
         ComPtr<IMFSample> sample = nullptr;
         ComPtr<IMFMediaBuffer> buffer = nullptr;
         BYTE* localAudioData = NULL;
@@ -64,8 +67,10 @@ namespace Ghurund::Audio {
 
         while(true) {
             DWORD flags = 0;
-            if(FAILED(sourceReader->ReadSample(streamIndex, 0, nullptr, &flags, nullptr, sample.GetAddressOf())))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to read audio sample\n"));
+            if (FAILED(sourceReader->ReadSample(streamIndex, 0, nullptr, &flags, nullptr, sample.GetAddressOf()))) {
+                Logger::log(LogType::ERR0R, _T("Unable to read audio sample\n"));
+                throw CallFailedException();
+            }
 
             // check whether the data is still valid
             if(flags & MF_SOURCE_READERF_CURRENTMEDIATYPECHANGED)
@@ -79,12 +84,16 @@ namespace Ghurund::Audio {
                 continue;
 
             // convert data to contiguous buffer
-            if(FAILED(sample->ConvertToContiguousBuffer(buffer.GetAddressOf())))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to convert audio sample to contiguous buffer\n"));
+            if (FAILED(sample->ConvertToContiguousBuffer(buffer.GetAddressOf()))) {
+                Logger::log(LogType::ERR0R, _T("Unable to convert audio sample to contiguous buffer\n"));
+                throw CallFailedException();
+            }
 
             // lock buffer and copy data to local memory
-            if(FAILED(buffer->Lock(&localAudioData, nullptr, &localAudioDataLength)))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Critical error: Unable to lock the audio buffer\n"));
+            if (FAILED(buffer->Lock(&localAudioData, nullptr, &localAudioDataLength))) {
+                Logger::log(LogType::ERR0R, _T("Critical error: Unable to lock the audio buffer\n"));
+                throw CallFailedException();
+            }
 
             for(size_t i = 0; i < localAudioDataLength; i++)
                 audioData.add(localAudioData[i]);
@@ -93,14 +102,12 @@ namespace Ghurund::Audio {
 
             if(FAILED(buffer->Unlock())) {
                 Logger::log(LogType::ERR0R, _T("Critical error while unlocking the audio buffer\n"));
-                return Status::CALL_FAIL;
+                throw CallFailedException();
             }
         }
-
-        return Status::OK;
     }
 
-    Status Sound::loadData(MemoryInputStream & stream, LoadOption options) {
+    void Sound::loadData(MemoryInputStream & stream, LoadOption options) {
         /*Audio &audio = context.Audio;
 
         ComPtr<IStream> memStream = SHCreateMemStream((const BYTE *)stream.Data, (UINT)stream.Size);
@@ -144,7 +151,6 @@ namespace Ghurund::Audio {
             return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to select audio stream\n"));
 
         return readSamples(sourceReader, streamIndex);*/
-        return Status::OK;
     }
 
     const Ghurund::Core::Type& Sound::GET_TYPE() {
@@ -156,18 +162,22 @@ namespace Ghurund::Audio {
         return TYPE;
     }
 
-	Status Sound::play() {
+	void Sound::play() {
 		if (state == PlaybackState::PLAYING)
-			return Status::INV_STATE;
+			throw InvalidStateException();
 
 		if (state == PlaybackState::STOPPED) {
-			if (FAILED(sourceVoice->SubmitSourceBuffer(&audioBuffer)))
-				return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to submit source buffer\n"));
+            if (FAILED(sourceVoice->SubmitSourceBuffer(&audioBuffer))) {
+                Logger::log(LogType::ERR0R, _T("Unable to submit source buffer\n"));
+                throw CallFailedException();
+            }
 		}
 
-		if (FAILED(sourceVoice->Start()))
-			return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("Unable to start playback\n"));
+        if (FAILED(sourceVoice->Start())) {
+            Logger::log(LogType::ERR0R, _T("Unable to start playback\n"));
+            throw CallFailedException();
+        }
+
         state = PlaybackState::PLAYING;
-		return Status::OK;
 	}
 }

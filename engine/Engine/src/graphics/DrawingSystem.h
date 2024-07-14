@@ -3,7 +3,6 @@
 #include "DrawableComponent.h"
 #include "core/directx/Graphics.h"
 #include "parameter/ValueParameter.h"
-#include "parameter/ParameterId.h"
 
 #include "entity/camera/Camera.h"
 
@@ -21,7 +20,18 @@ namespace Ghurund {
         Graphics* graphics = nullptr;
 
     public:
+        inline static const AString WORLD = "world";
+        inline static const AString WORLD_IT = "worldIT";
+
+        DrawingSystem() {
+            parameterWorld = ghnew ValueParameter(WORLD, ParameterType::MATRIX);
+            parameterWorldIT = ghnew ValueParameter(WORLD_IT, ParameterType::MATRIX);
+        }
+
         ~DrawingSystem() {
+            parameterWorld->release();
+            parameterWorldIT->release();
+
             if (camera)
                 camera->release();
             if (material)
@@ -86,10 +96,6 @@ namespace Ghurund {
         }
 
         void initParameters(ParameterManager& parameterManager) {
-            parameterWorld = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::WORLD.Value];
-            parameterWorldIT = (ValueParameter*)parameterManager.Parameters[(size_t)ParameterId::WORLD_IT.Value];
-            if (camera)
-                camera->initParameters(parameterManager);
             if (material)
                 material->initParameters(parameterManager);
             if (invalidMaterial)
@@ -106,8 +112,12 @@ namespace Ghurund {
             parameterWorldIT->setValue(&worldIT);
         }
 
-        void draw(CommandList& commandList) {
+        void updateParameters(ParameterManager& parameterManager) {
             camera->updateParameters();
+            parameterManager.Parameters.putAll(camera->Parameters);
+        }
+
+        void draw(CommandList& commandList) {
             cull();
 
             /*TransformComponent* t = ghnew TransformComponent();

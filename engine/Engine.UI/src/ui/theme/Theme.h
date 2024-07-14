@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AttributeKey.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/collection/Map.h"
 #include "core/Color.h"
 
@@ -49,7 +49,7 @@ namespace Ghurund::UI {
         //static const inline float state_activated = 0.4f;
         //static const inline float state_disabled = 0.08f;
 
-        Ghurund::Core::Map<TextFormatKey, Ghurund::Core::SharedPointer<Ghurund::UI::TextFormat>> textFormats;
+        Ghurund::Core::Map<TextFormatKey, Ghurund::Core::IntrusivePointer<Ghurund::UI::TextFormat>> textFormats;
         Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits> colors;
         Ghurund::Core::Map<DrawableKey, std::shared_ptr<DrawableProvider>> drawables;
         Ghurund::Core::Map<LayoutKey, std::shared_ptr<LayoutProvider>> layouts;
@@ -89,15 +89,15 @@ namespace Ghurund::UI {
 
         void updateColors();
 
-        inline Map<TextFormatKey, SharedPointer<Ghurund::UI::TextFormat>>& getTextFormats() {
+        inline Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& getTextFormats() {
             return textFormats;
         }
 
-        inline const Map<TextFormatKey, SharedPointer<Ghurund::UI::TextFormat>>& getTextFormats() const {
+        inline const Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& getTextFormats() const {
             return textFormats;
         }
 
-        __declspec(property(get = getTextFormats)) Map<TextFormatKey, SharedPointer<Ghurund::UI::TextFormat>>& TextFormats;
+        __declspec(property(get = getTextFormats)) Map<TextFormatKey, IntrusivePointer<Ghurund::UI::TextFormat>>& TextFormats;
 
         inline Ghurund::Core::Map<ColorKey, Color, SimpleAllocator, ColorMapTraits>& getColors() {
             return colors;

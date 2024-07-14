@@ -22,8 +22,8 @@ namespace Ghurund::UI {
 
         virtual SizeConstraints makeSizeConstraints(size_t position) const {
             return SizeConstraints(
-				SharedPointer<Constraint>(ghnew ParentWidthConstraint()),
-                SharedPointer<Constraint>(ghnew WrapHeightConstraint())
+				IntrusivePointer<Constraint>(ghnew ParentWidthConstraint()),
+                IntrusivePointer<Constraint>(ghnew WrapHeightConstraint())
 			);
         }
 

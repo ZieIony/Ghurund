@@ -1,6 +1,9 @@
 #pragma once
 
 #include "DisplayMode.h"
+#include "core/SharedPointer.h"
+#include "core/collection/List.h"
+#include "core/string/String.h"
 
 #include <wrl.h>
 
@@ -8,61 +11,39 @@ namespace Ghurund::Core::DirectX {
     using namespace Microsoft::WRL;
     using namespace Ghurund::Core;
 
-    class AdapterOutput: public Object {
-#pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
-
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
-
-        inline static const Ghurund::Core::Type& TYPE = AdapterOutput::GET_TYPE();
-#pragma endregion
-
+    class AdapterOutput{
     private:
         DXGI_OUTPUT_DESC desc;
         WString name;
         ComPtr<IDXGIOutput> output;
-        List<DisplayMode*> displayModes;
+        List<SharedPointer<DisplayMode>> displayModes;
 
-        void initModes() {
-            unsigned int num = 0;
-            DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-            unsigned int flags = DXGI_ENUM_MODES_SCALING;
-
-            output->GetDisplayModeList(format, flags, &num, 0);
-
-            DXGI_MODE_DESC* modes = ghnew DXGI_MODE_DESC[num];
-            output->GetDisplayModeList(format, flags, &num, modes);
-
-            for (unsigned int i = 0; i < num; i++)
-                displayModes.add(ghnew DisplayMode(modes[i]));
-
-            delete[] modes;
-        }
+        void initModes();
 
     public:
-        AdapterOutput(ComPtr<IDXGIOutput> output) {
-            this->output = output;
-            output->GetDesc(&desc);
+        AdapterOutput(ComPtr<IDXGIOutput> output);
 
-            name = desc.DeviceName;
+        AdapterOutput(const AdapterOutput& other):
+            desc(other.desc), name(other.name), output(other.output), displayModes(other.displayModes) {}
 
-            initModes();
+        AdapterOutput(AdapterOutput&& other) noexcept:
+            desc(std::move(other.desc)), name(std::move(other.name)), output(std::move(other.output)), displayModes(std::move(other.displayModes)) {
+            other.desc = {};
+            other.name = {};
+            other.output = nullptr;
+            other.displayModes.clear();
         }
 
-        ~AdapterOutput() {
-            displayModes.deleteItems();
-        }
-
-        WString& getName() {
+        const WString& getName() const {
             return name;
         }
 
-        List<DisplayMode*>& getDisplayModes() {
+        __declspec(property(get = getName)) const WString& Name;
+
+        const List<SharedPointer<DisplayMode>>& getDisplayModes() const {
             return displayModes;
         }
+
+        __declspec(property(get = getDisplayModes)) const List<SharedPointer<DisplayMode>>& DisplayModes;
     };
 }

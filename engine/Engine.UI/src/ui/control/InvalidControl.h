@@ -37,12 +37,12 @@ namespace Ghurund::UI {
 		InvalidControl() {
 			/*setConstraints({
 				.width = []() {
-					auto constraint = makeShared<ParentWidthConstraint>();
+					auto constraint = makeIntrusive<ParentWidthConstraint>();
 					constraint->Min = 18;
 					return constraint;
 				}(),
 				.height = []() {
-					auto constraint = makeShared<ParentWidthConstraint>();
+					auto constraint = makeIntrusive<ParentWidthConstraint>();
 					constraint->Min = 18;
 					return constraint;
 				}()

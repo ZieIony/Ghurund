@@ -92,9 +92,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\directx\shader\CompilationErrorException.h" />
     <ClInclude Include="src\Ghurund.Core.DirectX.h" />
     <ClInclude Include="src\core\directx\CommandList.h" />
     <ClInclude Include="src\core\directx\DirectXTypes.h" />
+    <ClInclude Include="src\core\directx\DrawPacket.h" />
     <ClInclude Include="src\core\directx\Exceptions.h" />
     <ClInclude Include="src\core\directx\Fence.h" />
     <ClInclude Include="src\core\directx\Frame.h" />
@@ -134,6 +136,8 @@
     <ClInclude Include="src\ghcdxpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\directx\adapter\DisplayMode.cpp" />
+    <ClCompile Include="src\core\directx\adapter\GraphicsAdapter.cpp" />
     <ClCompile Include="src\core\directx\CommandList.cpp" />
     <ClCompile Include="src\core\directx\DirectXTypes.cpp" />
     <ClCompile Include="src\core\directx\Fence.cpp" />
@@ -142,8 +146,6 @@
     <ClCompile Include="src\core\directx\MathTypes.cpp" />
     <ClCompile Include="src\core\directx\SwapChain.cpp" />
     <ClCompile Include="src\core\directx\adapter\AdapterOutput.cpp" />
-    <ClCompile Include="src\core\directx\adapter\DisplayMode.cpp" />
-    <ClCompile Include="src\core\directx\adapter\GraphicsAdapter.cpp" />
     <ClCompile Include="src\core\directx\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\core\directx\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\core\directx\buffer\GPUBuffer.cpp" />

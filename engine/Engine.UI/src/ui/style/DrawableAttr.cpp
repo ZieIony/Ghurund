@@ -24,11 +24,11 @@ namespace Ghurund::UI {
         return TYPE;
     }
 
-    SharedPointer<Drawable> DrawableRef::resolve(const Theme& theme) const {
+    IntrusivePointer<Drawable> DrawableRef::resolve(const Theme& theme) const {
         auto iterator = theme.Drawables.find(key);
         if (iterator == theme.Drawables.end()) {
             Logger::log(LogType::WARNING, std::format(_T("Drawable '{}' not found in the current theme.\n"), key.Value).c_str());
-            return SharedPointer<Drawable>(nullptr);
+            return IntrusivePointer<Drawable>(nullptr);
         }
         return iterator->value->get();
     }

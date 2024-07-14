@@ -63,7 +63,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        TextView(std::unique_ptr<TextLayout> textLayout);
+        TextView();
 
         inline void setCursorDrawable(CursorDrawable* drawable) {
             setPointer(cursorDrawable, drawable);

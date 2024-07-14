@@ -44,9 +44,9 @@ namespace Ghurund::Core::DirectX {
         }
     }
 
-    Status SwapChain::initBuffers() {
+    void SwapChain::initBuffers() {
         if (frames || window->Size.Width == 0 || window->Size.Height == 0)
-            return Status::INV_STATE;
+            throw InvalidStateException();
 
         D3D12_VIEWPORT viewport = D3D12_VIEWPORT{ 0.0f, 0.0f, (float)window->Size.Width, (float)window->Size.Height,0,1 };
         D3D12_RECT scissorRect = D3D12_RECT{ 0, 0, (LONG)window->Size.Width, (LONG)window->Size.Height };
@@ -64,8 +64,6 @@ namespace Ghurund::Core::DirectX {
             frames->get(i).init(*graphics, viewport, scissorRect, renderTarget, depthBuffer);
             renderTargetBuffer->Release();
         }
-
-        return Status::OK;
     }
 
     void SwapChain::uninitBuffers() {
@@ -77,28 +75,28 @@ namespace Ghurund::Core::DirectX {
         currentFrame = 0;
     }
 
-    Status SwapChain::present() {
+    void SwapChain::present() {
         currentFrame++;
         currentFrame %= frameCount;
 
         HRESULT hr = swapChain->Present(1, 0);
         if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET) {
-            return Logger::log(LogType::ERR0R, Status::DEVICE_LOST, _T("swapChain->Present() failed\n"));
+            Logger::log(LogType::ERR0R, _T("swapChain->Present() failed - device lost\n"));
+            throw InvalidStateException();
         } else if (FAILED(hr)) {
-            return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->Present() failed\n"));
+            Logger::log(LogType::ERR0R, _T("swapChain->Present() failed\n"));
+            throw CallFailedException();
         }
-
-        return Status::OK;
     }
 
-    Status SwapChain::resize(const IntSize& size) {
+    void SwapChain::resize(const IntSize& size) {
         if (size.Width > 0 && size.Height > 0) {
             HRESULT hr = swapChain->ResizeBuffers(frameCount, size.Width, size.Height, format, 0);
-            if (FAILED(hr))
-                return Logger::log(LogType::ERR0R, Status::CALL_FAIL, _T("swapChain->ResizeBuffers() failed\n"));
+            if (FAILED(hr)) {
+                Logger::log(LogType::ERR0R, _T("swapChain->ResizeBuffers() failed\n"));
+                throw CallFailedException();
+            }
         }
-
-        return Status::OK;
     }
 
 }

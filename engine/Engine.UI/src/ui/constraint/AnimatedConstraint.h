@@ -17,12 +17,12 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	private:
-		SharedPointer<Constraint> from, to;
+		IntrusivePointer<Constraint> from, to;
 
 		~AnimatedConstraint() {}
 
 	public:
-		AnimatedConstraint(const SharedPointer<Constraint>& from, const SharedPointer<Constraint>& to)
+		AnimatedConstraint(const IntrusivePointer<Constraint>& from, const IntrusivePointer<Constraint>& to)
 			:from(from), to(to) {
 			dependencies.putAll({ this->from.get(), this->to.get() });
 		}

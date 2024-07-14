@@ -4,8 +4,7 @@ project "SystemInfo"
 
 	dependson {
 		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.Direct2D",
+		"Engine.Core.DirectX",
 		"Engine"
 	}
 
@@ -19,8 +18,7 @@ project "SystemInfo"
 		"src",
 		"generated/bindings",
 		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.Direct2D"],
+		includeDir["Engine.Core.DirectX"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
@@ -33,8 +31,7 @@ project "SystemInfo"
 
 	links {
 		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.Direct2D",
+		"Engine.Core.DirectX",
 		"Engine"
 	}
 	

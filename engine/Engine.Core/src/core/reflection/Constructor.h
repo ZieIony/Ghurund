@@ -6,7 +6,6 @@
 #include "core/collection/Array.h"
 #include "core/Tuple.h"
 #include "core/Exceptions.h"
-#include "core/logging/Formatter.h"
 
 namespace Ghurund::Core {
     class Type;

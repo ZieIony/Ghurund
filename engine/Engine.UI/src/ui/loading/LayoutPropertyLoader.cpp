@@ -17,12 +17,12 @@ namespace Ghurund::UI {
 			attr.reset(ghnew LayoutRef(layoutKey));
 		} else {
 			ResourcePath path = ResourcePath::parse(convertText<char, wchar_t>(s));
-			Control* control = resourceManager.load<Control>(path, workingDir, nullptr, LoadOption::DONT_CACHE);
+			Control* control = resourceManager.load<Control>(path, workingDir, ResourceFormat::AUTO, LoadOption::DONT_CACHE);
 			attr.reset(ghnew LayoutValue(control));
 			control->release();
 		}
 		if (!attr)
-			attr.reset(ghnew LayoutValue(makeShared<InvalidControl>().get()));
+			attr.reset(ghnew LayoutValue(makeIntrusive<InvalidControl>().get()));
 		property.setRaw(&obj, &attr);
 	}
 
@@ -32,7 +32,7 @@ namespace Ghurund::UI {
 			ControlWithConstraints control = layoutLoader.loadControl((ControlParent&)obj, workingDir, xml);
 			attr.reset(ghnew LayoutValue(control.control.get()));
 		} catch (...) {
-			attr.reset(ghnew LayoutValue(makeShared<InvalidControl>().get()));
+			attr.reset(ghnew LayoutValue(makeIntrusive<InvalidControl>().get()));
 		}
 		property.setRaw(&obj, &attr);
 	}

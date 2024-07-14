@@ -8,6 +8,6 @@ namespace Ghurund {
 
     class ConeMesh: public Mesh {
     public:
-        Status init(Graphics& graphics, CommandList& commandList, unsigned int detail = 2);
+        void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 2);
     };
 }

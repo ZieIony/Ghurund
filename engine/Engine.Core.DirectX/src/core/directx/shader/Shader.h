@@ -57,15 +57,15 @@ namespace Ghurund::Core::DirectX {
         AString source;
         bool compiled = false;
 
-        Status makeRootSignature();
+        void makeRootSignature();
 
         D3D12_INPUT_LAYOUT_DESC getInputLayout();
 
         //void initConstants(ParameterManager& parameterManager);
         //void initConstants(ParameterManager& parameterManager, ShaderProgram& program);
 
-        Status loadShd(MemoryInputStream& stream);
-        Status loadHlsl(MemoryInputStream& stream);
+        void loadShd(MemoryInputStream& stream);
+        void loadHlsl(MemoryInputStream& stream);
 
         void finalize();
 
@@ -88,9 +88,9 @@ namespace Ghurund::Core::DirectX {
             return pipelineState != nullptr && rootSignature != nullptr && compiled && __super::isValid();
         }
 
-        Status compile(char** output = nullptr);
+        AString compile();
 
-        Status build(char** output = nullptr);
+        AString build();
 
         /*virtual void initParameters(ParameterManager& parameterManager) override;
 
@@ -114,7 +114,7 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getSourceCode, put = setSourceCode)) const AString& SourceCode;
 
-        Status makePipelineState(bool supportsTransparency);
+        void makePipelineState(bool supportsTransparency);
 
         bool set(Graphics& graphics, CommandList& commandList);
 

@@ -4,7 +4,7 @@
 
 #include "core/directx/Graphics.h"
 #include "core/resource/ResourceManager.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund {

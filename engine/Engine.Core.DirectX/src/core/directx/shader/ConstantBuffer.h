@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/PointerArray.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 //#include "core/directx/shader/parameter/Parameter.h"
 #include "core/directx/buffer/DynamicBuffer.h"
 #include "core/directx/shader/ConstantBufferField.h"

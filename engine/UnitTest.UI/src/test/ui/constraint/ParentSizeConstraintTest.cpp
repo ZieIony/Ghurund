@@ -37,17 +37,17 @@ public:
 	TEST_METHOD(parentSizeValue) {
 		MemoryGuard guard;
 		{
-			auto root = makeShared<TestControlContainer>();
-			auto group = makeShared<ControlGroup>();
+			auto root = makeIntrusive<TestControlContainer>();
+			auto group = makeIntrusive<ControlGroup>();
 			root->Child = group.get();
 			root->setConstraints(*group.get(), {
 				.width = 100.0f,
 				.height = 80.0f
 				});
-			auto child = makeShared<ControlGroup>();
+			auto child = makeIntrusive<ControlGroup>();
 			group->Children.add(child.get(), makeConstraints({
-				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<ParentHeightConstraint>()
+				.width = makeIntrusive<ParentWidthConstraint>(),
+				.height = makeIntrusive<ParentHeightConstraint>()
 				}));
 
 			root->resolveConstraints();
@@ -60,22 +60,22 @@ public:
 	TEST_METHOD(parentSizeContent) {
 		MemoryGuard guard;
 		{
-			auto root = makeShared<TestControlContainer>();
+			auto root = makeIntrusive<TestControlContainer>();
 			Theme theme;
 			root->Theme = &theme;
-			auto group = makeShared<ControlGroup>();
+			auto group = makeIntrusive<ControlGroup>();
 			root->Child = group.get();
 			root->setConstraints(*group.get(), {
-				.width = makeShared<ContentWidthConstraint>(),
-				.height = makeShared<ContentHeightConstraint>()
+				.width = makeIntrusive<ContentWidthConstraint>(),
+				.height = makeIntrusive<ContentHeightConstraint>()
 				});
-			auto child = makeShared<DrawableView>();
-			auto drawable = makeShared<TestImage>();
+			auto child = makeIntrusive<DrawableView>();
+			auto drawable = makeIntrusive<TestImage>();
 			drawable->setPreferredSize({ 50.0f, 40.0f });
 			child->Drawable = drawable.get();
 			group->Children.add(child.get(), makeConstraints({
-				.width = makeShared<ParentWidthConstraint>(),
-				.height = makeShared<ParentHeightConstraint>()
+				.width = makeIntrusive<ParentWidthConstraint>(),
+				.height = makeIntrusive<ParentHeightConstraint>()
 				}));
 
 			root->resolveConstraints();

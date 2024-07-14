@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         uint32_t absolutePosition = caretPosition + caretPositionOffset;
         deleteSelection();
         WString textToInsert(L"\r\n");
-        textLayout->insertTextAt(absolutePosition, textToInsert);
+        textLayout.insertTextAt(absolutePosition, textToInsert);
         setSelection(SetSelectionMode::AbsoluteLeading, (uint32_t)(absolutePosition + textToInsert.Size), false, false);
         repaint();
     }
@@ -52,9 +52,9 @@ namespace Ghurund::UI {
             float caretX, caretY;
 
             // Get the size of the following cluster.
-            hitTestMetrics = textLayout->hitTestTextPosition(absolutePosition, false, &caretX, &caretY);
+            hitTestMetrics = textLayout.hitTestTextPosition(absolutePosition, false, &caretX, &caretY);
 
-            textLayout->removeTextAt(hitTestMetrics.textPosition, hitTestMetrics.length);
+            textLayout.removeTextAt(hitTestMetrics.textPosition, hitTestMetrics.length);
 
             setSelection(SetSelectionMode::AbsoluteLeading, hitTestMetrics.textPosition, false);
             repaint();
@@ -117,7 +117,7 @@ namespace Ghurund::UI {
                 textToInsert.set(0, wchar_t(0xD800 + (charCode >> 10) - (0x10000 >> 10)));
                 textToInsert.add(wchar_t(0xDC00 + (charCode & 0x3FF)));
             }
-            textLayout->insertTextAt(caretPosition + caretPositionOffset, textToInsert);
+            textLayout.insertTextAt(caretPosition + caretPositionOffset, textToInsert);
             setSelection(SetSelectionMode::Right, (uint32_t)textToInsert.Size, false, false);
 
             repaint();
@@ -129,7 +129,7 @@ namespace Ghurund::UI {
         if (selectionRange.length <= 0)
             return;
 
-        textLayout->removeTextAt(selectionRange.start, selectionRange.length);
+        textLayout.removeTextAt(selectionRange.start, selectionRange.length);
 
         setSelection(SetSelectionMode::AbsoluteLeading, selectionRange.start, false);
         repaint();
@@ -143,7 +143,7 @@ namespace Ghurund::UI {
 
         WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
         if (data) {
-            textLayout->insertTextAt(caretPosition + caretPositionOffset, *data);
+            textLayout.insertTextAt(caretPosition + caretPositionOffset, *data);
             setSelection(SetSelectionMode::RightChar, (uint32_t)data->Length, true);
             repaint();
         }
@@ -151,6 +151,7 @@ namespace Ghurund::UI {
 
     const Ghurund::Core::Type& TextField::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<TextField>(NAMESPACE_NAME, GH_STRINGIFY(TextField))
+            .withZeroArgsConstructor()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

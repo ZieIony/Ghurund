@@ -2,13 +2,13 @@
 
 #include "ApplicationWindow.h"
 #include "ui/RootView.h"
-#include "ui/UILayer.h"
+#include "ui/direct2d/UILayer.h"
 #include "ui/theme/Theme.h"
 
 namespace Ghurund {
 	class UIApplicationWindow:public ApplicationWindow {
 	private:
-		Ghurund::UI::UILayer* uiLayer = nullptr;
+		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
 		Ghurund::UI::Theme* theme = nullptr;
 		Ghurund::UI::Control* content = nullptr;
 
@@ -24,7 +24,8 @@ namespace Ghurund {
 			__super::init(windowManager);
 
 			Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
-			uiLayer = ghnew Ghurund::UI::UILayer(graphics2d, *this);
+			uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
+			uiLayer->init(graphics2d, *this, SwapChain);
 			Layers.add(uiLayer);
 
 			uiLayer->Root.Theme = theme;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ControlParent.h"
-#include "core/SharedPointer.h"
+#include "core/IntrusivePointer.h"
 
 namespace Ghurund::UI {
 	class ControlCollection {
@@ -75,7 +75,7 @@ namespace Ghurund::UI {
 
 		inline void clear() {
 			while(!controls.Empty){
-				SharedPointer<Control> control = controls[0].control;
+				IntrusivePointer<Control> control = controls[0].control;
 				controls.removeAt(0);
 				control->clearFocus();
 				control->Parent = nullptr;

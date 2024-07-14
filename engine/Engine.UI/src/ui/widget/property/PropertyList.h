@@ -57,5 +57,5 @@ namespace Ghurund::UI {
         __declspec(property(get = getItem, put = setItem)) Object* Item;
     };
 
-    typedef SharedPointer<PropertyList> PropertyListPtr;
+    typedef IntrusivePointer<PropertyList> PropertyListPtr;
 }
