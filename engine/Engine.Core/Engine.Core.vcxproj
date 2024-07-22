@@ -100,6 +100,8 @@
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
     <ClInclude Include="src\core\application\DrawingContext.h" />
+    <ClInclude Include="src\core\feature\FeatureFactory.h" />
+    <ClInclude Include="src\core\Factory.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -140,8 +142,8 @@
     <ClInclude Include="src\core\allocation\SimpleBufferStrategy.h" />
     <ClInclude Include="src\core\application\Application.h" />
     <ClInclude Include="src\core\application\CommandLine.h" />
-    <ClInclude Include="src\core\application\Feature.h" />
-    <ClInclude Include="src\core\application\FeatureCollection.h" />
+    <ClInclude Include="src\core\feature\Feature.h" />
+    <ClInclude Include="src\core\feature\FeatureProvider.h" />
     <ClInclude Include="src\core\application\Layer.h" />
     <ClInclude Include="src\core\application\LayerList.h" />
     <ClInclude Include="src\core\application\Settings.h" />
@@ -276,7 +278,7 @@
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />
     <ClCompile Include="src\core\application\Application.cpp" />
-    <ClCompile Include="src\core\application\Feature.cpp" />
+    <ClCompile Include="src\core\feature\Feature.cpp" />
     <ClCompile Include="src\core\application\Layer.cpp" />
     <ClCompile Include="src\core\application\LayerList.cpp" />
     <ClCompile Include="src\core\application\Settings.cpp" />

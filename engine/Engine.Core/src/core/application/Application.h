@@ -2,8 +2,8 @@
 
 #include "Settings.h"
 #include "WindowList.h"
-#include "FeatureCollection.h"
 
+#include "core/feature/FeatureProvider.h"
 #include "core/Noncopyable.h"
 #include "core/IntrusivePointer.h"
 #include "core/Timer.h"
@@ -23,7 +23,7 @@ namespace Ghurund::Core {
         ResourceManager resourceManager;
         Timer timer;
 
-        FeatureCollection features;
+        FeatureProvider features = *this;
 
         void init();
         void handleMessages();
@@ -79,11 +79,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getTimer)) Timer& Timer;
 
-        inline FeatureCollection& getFeatures() {
+        inline FeatureProvider& getFeatures() {
             return features;
         }
 
-        __declspec(property(get = getFeatures)) FeatureCollection& Features;
+        __declspec(property(get = getFeatures)) FeatureProvider& Features;
     };
 }
 

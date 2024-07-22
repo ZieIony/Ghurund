@@ -6,7 +6,7 @@
 #include "core/directx/adapter/GraphicsAdapter.h"
 #include "core/directx/buffer/DescriptorHeap.h"
 #include "core/directx/memory/GPUResourceFactory.h"
-#include "core/application/Feature.h"
+#include "core/feature/Feature.h"
 
 namespace Ghurund::Core::DirectX {
     using namespace DirectX;

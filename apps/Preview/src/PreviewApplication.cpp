@@ -1,12 +1,14 @@
 #include "PreviewApplication.h"
-#include <core/io/DirectoryLibrary.h>
+
+#include "core/io/DirectoryLibrary.h"
+#include "ui/direct2d/Graphics2DFactory.h"
+#include <ui/direct2d/UIFeatureFactory.h>
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
-        auto graphics = makeIntrusive<Graphics>();
-        auto graphics2d = makeIntrusive<UI::Direct2D::Graphics2D>(*graphics.get());
-        auto uiFeature = makeIntrusive<Ghurund::UI::Direct2D::UIFeature>(*graphics2d.get(), ResourceManager);
-        Features.addAll({ graphics.get(), graphics2d.get(), uiFeature.get() });
+        Features.add<Graphics>();
+        Features.add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
+        Features.add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
     }
     
     void PreviewApplication::onInit() {

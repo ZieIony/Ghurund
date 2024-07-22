@@ -98,6 +98,7 @@
     <ClInclude Include="src\ui\direct2d\D2DDrawingContext.h" />
     <ClInclude Include="src\ui\direct2d\DrawingContext.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2D.h" />
+    <ClInclude Include="src\ui\direct2d\Graphics2DFactory.h" />
     <ClInclude Include="src\ui\direct2d\RenderTarget2D.h" />
     <ClInclude Include="src\ui\direct2d\Shape.h" />
     <ClInclude Include="src\ui\direct2d\StrokeStyle.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="src\ui\direct2d\text\TextLayout.h" />
     <ClInclude Include="src\ui\direct2d\text\TextMesh.h" />
     <ClInclude Include="src\ui\direct2d\UIFeature.h" />
+    <ClInclude Include="src\ui\direct2d\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\direct2d\UILayer.h" />
   </ItemGroup>
   <ItemGroup>

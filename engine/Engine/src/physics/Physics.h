@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/application/Feature.h"
+#include "core/feature/Feature.h"
 
 #pragma warning(push, 0)
 #include <PxFoundation.h>

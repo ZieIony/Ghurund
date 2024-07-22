@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\directx\GraphicsFactory.h" />
     <ClInclude Include="src\core\directx\shader\CompilationErrorException.h" />
     <ClInclude Include="src\Ghurund.Core.DirectX.h" />
     <ClInclude Include="src\core\directx\CommandList.h" />

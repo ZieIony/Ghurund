@@ -6,10 +6,13 @@
 #include "DemoWindow.h"
 #include <ui/theme/LightTheme.h>
 #include "ui/loading/DrawableFactory.h"
+#include "ui/direct2d/Graphics2DFactory.h"
+#include <ui/direct2d/UIFeatureFactory.h>
 
 namespace Demo {
     using namespace Ghurund;
     using namespace Ghurund::Core;
+    using namespace Ghurund::UI::Direct2D;
 
     class DemoApplication:public Application {
     protected:
@@ -21,10 +24,9 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            auto graphics = makeIntrusive<Graphics>();
-            auto graphics2d = makeIntrusive<UI::Direct2D::Graphics2D>(*graphics.get());
-            auto uiFeature = makeIntrusive<Ghurund::UI::Direct2D::UIFeature>(*graphics2d.get(), ResourceManager);
-            Features.addAll({ graphics.get(), graphics2d.get(), uiFeature.get() });
+            Features.add<Graphics>();
+            Features.add<Direct2D::Graphics2D, Graphics2DFactory>();
+            Features.add<UIFeature, UIFeatureFactory>();
         }
 
         virtual void onInit() override {

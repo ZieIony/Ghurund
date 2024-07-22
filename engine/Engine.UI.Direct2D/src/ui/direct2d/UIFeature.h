@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/directx/Graphics.h"
-#include "core/application/Feature.h"
+#include "core/feature/Feature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/direct2d/Graphics2D.h"

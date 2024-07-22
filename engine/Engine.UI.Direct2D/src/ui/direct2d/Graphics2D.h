@@ -1,9 +1,8 @@
 #pragma once
 
-#include "core/RefCountedObject.h"
-#include "core/application/Feature.h"
 #include "RenderTarget2D.h"
 #include "core/directx/Graphics.h"
+#include "core/feature/Feature.h"
 
 #include <d2d1_3.h>
 #include <dwrite_3.h>
