@@ -33,15 +33,6 @@ namespace Ghurund::UI::Direct2D {
         return TYPE;
     }
 
-    const Array<ResourceFormat>& Bitmap::GET_FORMATS() {
-        static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat> formats = {
-                Ghurund::Core::ResourceFormat(L"jpg", true, true),
-                Ghurund::Core::ResourceFormat(L"jpeg", true, true),
-                Ghurund::Core::ResourceFormat(L"png", true, true)
-        };
-        return formats;
-    }
-
     void Bitmap::finalize() {
         if (bitmapImage)
             bitmapImage->Release();

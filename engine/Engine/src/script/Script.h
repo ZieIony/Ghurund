@@ -48,10 +48,6 @@ namespace Ghurund {
             built = false;
         }
 
-    protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
-
     public:
         Script():arguments(Array<void*>(0)) {
             EntryPoint = "void main()";
@@ -120,13 +116,16 @@ namespace Ghurund {
             return ctx->GetReturnObject();
         }
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"script", true, true)
-            };
-            return formats;
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Script::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_SCRIPT = ResourceFormat(L"script", true, true);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SCRIPT };
+#pragma endregion
     };
 }

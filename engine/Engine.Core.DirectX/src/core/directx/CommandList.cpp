@@ -26,6 +26,12 @@ namespace Ghurund::Core::DirectX {
 		fence.signal(commandQueue);
 		fence.wait(commandQueue);
 
+		for (size_t i = 0; i < resourceRefs.Size; i++)
+			resourceRefs[i]->Release();
+		resourceRefs.clear();
+		for (size_t i = 0; i < pointerRefs.Size; i++)
+			pointerRefs[i]->release();
+		pointerRefs.clear();
 		if (pipelineState != nullptr)
 			pipelineState->Release();
 		if (rootSignature != nullptr)
@@ -71,6 +77,8 @@ namespace Ghurund::Core::DirectX {
 		for (size_t i = 0; i < resourceRefs.Size; i++)
 			resourceRefs[i]->Release();
 		resourceRefs.clear();
+		for (size_t i = 0; i < pointerRefs.Size; i++)
+			pointerRefs[i]->release();
 		pointerRefs.clear();
 		state = CommandListState::FINISHED;
 	}

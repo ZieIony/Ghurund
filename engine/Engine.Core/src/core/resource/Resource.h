@@ -106,10 +106,16 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getSize)) const DataSize& Size;*/
 
-		inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
-
-		virtual const Array<ResourceFormat>& getFormats() const {
+	protected:
+		virtual const Array<ResourceFormat>& getFormatsImpl() const {
 			return FORMATS;
+		}
+
+	public:
+		inline static const Array<ResourceFormat>& FORMATS = {};
+
+		inline const Array<ResourceFormat>& getFormats() const {
+			return getFormatsImpl();
 		}
 
 		__declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;

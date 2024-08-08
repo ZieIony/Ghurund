@@ -2,7 +2,6 @@
 #include "Shader.h"
 
 #include "core/IntrusivePointer.h"
-#include "core/collection/PointerArray.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
 #include "core/logging/Logger.h"

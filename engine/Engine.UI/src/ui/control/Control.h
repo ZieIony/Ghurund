@@ -381,13 +381,17 @@ namespace Ghurund::UI {
 			}
 		}
 
+#pragma region formats
+	protected:
+		virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+			return Control::FORMATS;
+		}
+
+	public:
 		static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
 
-		inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_XML };
-
-		virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-			return FORMATS;
-		}
+		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
+#pragma endregion
 
 #ifdef _DEBUG
 		virtual void validate() const;

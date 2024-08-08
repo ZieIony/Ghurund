@@ -7,7 +7,7 @@
 #include "core/allocation/Allocator.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
-#include "core/reflection/Constructor.h"
+#include "core/reflection/Type.h"
 
 namespace Ghurund::Core {
     class Resource;

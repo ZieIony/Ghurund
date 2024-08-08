@@ -12,7 +12,7 @@
 #include <mfapi.h>
 #include <x3daudio.h>
 
-namespace Ghurund::Audio {
+namespace Ghurund {
     using namespace ::DirectX;
     using namespace Ghurund::Core;
 
@@ -24,7 +24,7 @@ namespace Ghurund::Audio {
 
         static const auto CONSTRUCTOR = Constructor<Audio>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>("Ghurund::Audio", "Audio")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Audio))
             .withProperty(PROPERTY_POSITION)
             .withProperty(PROPERTY_VELOCITY)
             .withProperty(PROPERTY_DIRECTION)

@@ -2,7 +2,6 @@
 
 #include "core/feature/Feature.h"
 #include "core/Timer.h"
-#include "core/collection/PointerList.h"
 
 #include <atomic>
 

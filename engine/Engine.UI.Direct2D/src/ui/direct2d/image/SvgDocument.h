@@ -27,16 +27,6 @@ namespace Ghurund::UI::Direct2D {
         inline static const Ghurund::Core::Type& TYPE = SvgDocument::GET_TYPE();
 #pragma endregion
 
-    protected:
-        static const Array<ResourceFormat>& GET_FORMATS();
-
-    public:
-        inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
-
-        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-            return FORMATS;
-        }
-
     private:
         ID2D1SvgDocument* svgDocument = nullptr;
 
@@ -79,5 +69,17 @@ namespace Ghurund::UI::Direct2D {
         Ghurund::Core::FloatSize getSize();
 
         __declspec(property(get = getSize)) Ghurund::Core::FloatSize Size;
+
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return SvgDocument::FORMATS;
+        }
+
+    public:
+        static const inline Ghurund::Core::ResourceFormat FORMAT_SVG = Ghurund::Core::ResourceFormat(L"svg", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SVG };
+#pragma endregion
     };
 }

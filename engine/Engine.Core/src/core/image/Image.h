@@ -72,14 +72,18 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = getRowPitch)) uint32_t RowPitch;
 
+#pragma region formats
+	protected:
+		virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+			return Image::FORMATS;
+		}
+
+	public:
 		static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
 		static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
 		static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
 
 		inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
-
-		virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-			return FORMATS;
-		}
+#pragma endregion
 	};
 }

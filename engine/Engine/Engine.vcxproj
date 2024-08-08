@@ -98,7 +98,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\graphics\mesh\MeshLoader.h" />
+    <ClInclude Include="src\audio\SoundLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\application\ApplicationWindow.h" />
     <ClInclude Include="src\application\UIApplicationWindow.h" />
@@ -163,6 +163,7 @@
     <ClInclude Include="src\script\ScriptEngine.h" />
     <ClInclude Include="src\script\ScriptExecutionException.h" />
     <ClInclude Include="src\script\Scripts.h" />
+    <ClInclude Include="src\script\ScriptLoader.h" />
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="src\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
+    <ClCompile Include="src\audio\SoundLoader.cpp" />
     <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\entity\Scene.cpp" />
     <ClCompile Include="src\entity\camera\Camera.cpp" />
@@ -191,7 +193,6 @@
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\Material.cpp" />
     <ClCompile Include="src\graphics\Materials.cpp" />
-    <ClCompile Include="src\graphics\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\graphics\Renderer.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
@@ -209,6 +210,7 @@
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
     <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
+    <ClCompile Include="src\script\ScriptLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">

@@ -103,14 +103,18 @@ namespace Ghurund {
 
         __declspec(property(get = getBoundingBox)) BoundingBox& BoundingBox;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"mesh", true, true),
-                ResourceFormat(L"obj", true, false)
-            };
-            return formats;
+
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Mesh::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", true, true);
+        static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };
+#pragma endregion
     };
 }

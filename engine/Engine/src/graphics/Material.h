@@ -97,13 +97,16 @@ namespace Ghurund {
 
         __declspec(property(get = getSupportsTransparency, put = setSupportsTransparency)) bool SupportsTransparency;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"material", true, true)
-            };
-            return formats;
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Material::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_MATERIAL = ResourceFormat(L"material", true, true);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MATERIAL };
+#pragma endregion
     };
 }

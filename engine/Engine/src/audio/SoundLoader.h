@@ -1,20 +1,19 @@
 #pragma once
 
-#include "Mesh.h"
+#include "Sound.h"
 #include "core/resource/Loader.h"
 
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    class MeshLoader:public Loader {
+    class SoundLoader:public Loader {
     private:
-        Graphics& graphics;
-        CommandList& commandList;
+        Audio& audio;
 
     public:
-        MeshLoader(Graphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
+        SoundLoader(Audio& audio):audio(audio) {}
 
-        virtual Mesh* load(
+        virtual Sound* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,

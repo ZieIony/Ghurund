@@ -144,14 +144,18 @@ namespace Ghurund::UI {
             return 0;
         }
 
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Font::FORMATS;
+        }
+
+    public:
         static const inline Ghurund::Core::ResourceFormat FORMAT_TTF = Ghurund::Core::ResourceFormat(L"ttf", true, false);
         static const inline Ghurund::Core::ResourceFormat FORMAT_OTF = Ghurund::Core::ResourceFormat(L"otf", true, false);
         static const inline Ghurund::Core::ResourceFormat FORMAT_ATLAS = Ghurund::Core::ResourceFormat(L"fontatlas", true, false);
 
         inline static const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& FORMATS = { FORMAT_TTF, FORMAT_OTF, FORMAT_ATLAS };
-
-        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-            return FORMATS;
-        }
+#pragma endregion
     };
 }

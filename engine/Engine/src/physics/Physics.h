@@ -25,7 +25,7 @@ namespace Ghurund {
     class Application;
 }
 
-namespace Ghurund::Physics {
+namespace Ghurund {
     using namespace physx;
 
     class Physics:public Ghurund::Core::Feature {

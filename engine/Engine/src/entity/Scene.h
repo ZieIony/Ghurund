@@ -27,7 +27,7 @@ namespace Ghurund {
     private:
         entt::registry entityRegistry;
 
-        PointerList<Entity*> entities;
+        List<IntrusivePointer<Entity>> entities;
         DrawingSystem drawingSystem;
 
     protected:
@@ -53,11 +53,11 @@ namespace Ghurund {
 
         __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
 
-        inline PointerList<Entity*>& getEntities() {
+        inline List<IntrusivePointer<Entity>>& getEntities() {
             return entities;
         }
 
-        __declspec(property(get = getEntities)) PointerList<Entity*>& Entities;
+        __declspec(property(get = getEntities)) List<IntrusivePointer<Entity>>& Entities;
 
         inline DrawingSystem& getGraphicsSystem() {
             return drawingSystem;
@@ -68,13 +68,16 @@ namespace Ghurund {
         inline void render(CommandList& commandList) {
         }
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"scene", true, true)
-            };
-            return formats;
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Scene::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_SCENE = ResourceFormat(L"scene", true, true);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SCENE };
+#pragma endregion
     };
 }

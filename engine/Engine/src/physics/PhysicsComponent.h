@@ -10,7 +10,7 @@
 #include "entity/TransformComponent.h"
 #include "Physics.h"
 
-namespace Ghurund::Physics {
+namespace Ghurund {
 	using namespace physx;
 	using namespace Ghurund::Core;
 
@@ -21,15 +21,6 @@ namespace Ghurund::Physics {
 
 		void finalize() {
 			safeRelease2(shape);
-		}
-
-	protected:
-		virtual Status loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-			return Status::OK;
-		}
-
-		virtual Status saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-			return Status::OK;
 		}
 
 	public:

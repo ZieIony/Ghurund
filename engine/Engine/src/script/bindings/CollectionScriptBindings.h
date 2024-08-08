@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core/collection/Array.h"
-#include "core/collection/PointerList.h"
 
 #include "ScriptBindings.h"
 

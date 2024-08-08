@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/resource/Resource.h"
-
 #pragma warning(push, 0)
 #include <PxPhysicsAPI.h>
 #include <PxScene.h>
@@ -10,7 +8,7 @@
 
 #include "Physics.h"
 
-namespace Ghurund::Physics {
+namespace Ghurund {
 	using namespace physx;
 
 	class PhysicsSystem {

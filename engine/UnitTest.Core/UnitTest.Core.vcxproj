@@ -116,7 +116,6 @@
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
     <ClCompile Include="src\test\core\SharedPointerTest.cpp" />
-    <ClCompile Include="src\test\core\TypeWrapperTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
     <ClCompile Include="src\test\core\collection\BagTest.cpp" />
     <ClCompile Include="src\test\core\collection\LinkedListTest.cpp" />

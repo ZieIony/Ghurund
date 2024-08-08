@@ -4,7 +4,6 @@
 #include <ui/widget/button/Button.h>
 #include "core/resource/ResourceManager.h"
 #include <ui/control/DrawableView.h>
-#include <core/PointerWrapper.h>
 
 namespace Ghurund::UI {
     Control* ToolbarItemAdapter::makeControl(size_t type) const {

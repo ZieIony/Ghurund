@@ -14,20 +14,6 @@
 namespace Ghurund {
     using namespace Ghurund::Core;
 
-    void Script::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        /*EntryPoint = stream.readASCII();
-        SourceCode = stream.readASCII();
-        return build(context.ScriptEngine);*/
-        throw NotImplementedException();
-    }
-
-    void Script::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        if (entryPoint.Length == 0 || source.Length == 0)
-            throw InvalidStateException();
-        stream.writeASCII(entryPoint.Data);
-        stream.writeASCII(source.Data);
-    }
-
     const Ghurund::Core::Type& Script::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<Script>();
         static const Ghurund::Core::Type TYPE = TypeBuilder<Script>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Script))

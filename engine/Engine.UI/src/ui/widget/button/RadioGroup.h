@@ -5,7 +5,7 @@
 namespace Ghurund::UI {
     class RadioGroup {
     private:
-        PointerList<RadioButton*> buttons;
+        List<IntrusivePointer<RadioButton>> buttons;
         std::function<bool(RadioButton&)> checkedHandler = [this](RadioButton& sender) {
             for (auto b : buttons) {
                 if (b != &sender)

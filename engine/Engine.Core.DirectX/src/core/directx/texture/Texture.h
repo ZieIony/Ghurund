@@ -68,14 +68,18 @@ namespace Ghurund::Core::DirectX {
             commandList.get()->SetGraphicsRootDescriptorTable(index, descHandle.getGpuHandle());
         }
 
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Texture::FORMATS;
+        }
+
+    public:
         static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", true, false);
         static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", true, false);
         static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", true, false);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
-
-        virtual const Array<ResourceFormat>& getFormats() const override {
-            return FORMATS;
-        }
+#pragma endregion
     };
 }

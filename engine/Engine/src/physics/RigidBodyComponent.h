@@ -6,7 +6,7 @@
 
 #include "Physics.h"
 
-namespace Ghurund::Physics {
+namespace Ghurund {
 	using namespace physx;
 
 	class RigidBodyComponent {

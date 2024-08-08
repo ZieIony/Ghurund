@@ -17,7 +17,7 @@
 
 #include "Audio.h"
 
-namespace Ghurund::Audio {
+namespace Ghurund {
     using namespace Ghurund::Core;
     using Microsoft::WRL::ComPtr;
 
@@ -106,13 +106,16 @@ namespace Ghurund::Audio {
 
         __declspec(property(get = getLength)) float Length;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"wav", true, false)
-            };
-            return formats;
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Sound::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_WAV = ResourceFormat(L"wav", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_WAV };
+#pragma endregion
     };
 }

@@ -7,7 +7,7 @@
 
 #include <PxPhysicsAPI.h>
 
-namespace Ghurund::Physics {
+namespace Ghurund {
     using namespace Ghurund::Core;
     using namespace physx;
 
@@ -15,7 +15,7 @@ namespace Ghurund::Physics {
 
         static const auto CONSTRUCTOR = Constructor<Physics>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>("Ghurund::Physics", "Physics")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Physics))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

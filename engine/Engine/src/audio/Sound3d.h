@@ -10,7 +10,7 @@
 
 #include "Sound.h"
 
-namespace Ghurund::Audio {
+namespace Ghurund {
     using namespace ::DirectX;
  
     class Sound3D:public Sound {

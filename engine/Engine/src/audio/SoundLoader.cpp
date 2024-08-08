@@ -1,0 +1,26 @@
+#include "ghpch.h"
+#include "SoundLoader.h"
+
+namespace Ghurund {
+    Sound* SoundLoader::load(
+        MemoryInputStream& stream,
+        const DirectoryPath& workingDir,
+        const ResourceFormat& format,
+        LoadOption options
+    ) {
+        Sound* sound = makeResource<Sound>();
+        sound->load(workingDir, stream, options);
+        return sound;
+    }
+
+    void SoundLoader::save(
+        MemoryOutputStream& stream,
+        const DirectoryPath& workingDir,
+        Resource& resource,
+        const ResourceFormat& format,
+        SaveOption options
+    ) const {
+        Sound& sound = (Sound&)resource;
+        //sound.save(DirectoryPath(_T(".")), stream, options);
+    }
+}

@@ -124,14 +124,17 @@ namespace Ghurund::Core::DirectX {
 
         __declspec(property(get = getSupportsTransparency)) bool SupportsTransparency;
 
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"shader", true, true),
-                ResourceFormat(L"hlsl", true, false)
-            };
-            return formats;
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Shader::FORMATS;
         }
 
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
+    public:
+        static const inline ResourceFormat FORMAT_SHADER = ResourceFormat(L"shader", true, true);
+        static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", true, false);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_HLSL };
+#pragma endregion
     };
 }

@@ -195,14 +195,5 @@ namespace Ghurund {
         void orbit(TransformComponent& transformComponent, float yaw, float pitch, float roll = 0.0f);
         void pan(TransformComponent& transformComponent, float x, float y);
         void zoom(TransformComponent& transformComponent, float z);
-
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = {
-                ResourceFormat(L"entity", true, true)
-            };
-            return formats;
-        }
-
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
   };
 }

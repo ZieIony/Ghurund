@@ -27,16 +27,6 @@ namespace Ghurund::UI::Direct2D {
         inline static const Ghurund::Core::Type& TYPE = Bitmap::GET_TYPE();
 #pragma endregion
 
-    protected:
-        static const Array<ResourceFormat>& GET_FORMATS();
-
-    public:
-        inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
-
-        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
-            return FORMATS;
-        }
-
     private:
         Image* image = nullptr;
         ID2D1Bitmap1* bitmapImage = nullptr;
@@ -74,5 +64,19 @@ namespace Ghurund::UI::Direct2D {
         __declspec(property(get = getData)) ID2D1Bitmap1* Data;
 
         virtual Ghurund::Core::IntSize getSize() const override;
+
+#pragma region formats
+    protected:
+        virtual const Array<ResourceFormat>& getFormatsImpl() const override {
+            return Bitmap::FORMATS;
+        }
+
+    public:
+        static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
+        static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
+
+        inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
+#pragma endregion
     };
 }

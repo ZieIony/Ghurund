@@ -2,7 +2,6 @@
 
 #include "parameter/Parameter.h"
 #include "parameter/ParameterProvider.h"
-#include "core/collection/PointerArray.h"
 #include "core/resource/ResourceFormat.h"
 
 #include "entity/Entity.h"
@@ -35,13 +34,5 @@ namespace Ghurund {
 
             throw NotImplementedException();
         }
-
-    public:
-        static const Array<ResourceFormat>& getFormats() {
-            static const Array<ResourceFormat> formats = { ResourceFormat(L"light", true, true) };
-            return formats;
-        }
-
-        __declspec(property(get = getFormats)) Array<ResourceFormat>& Formats;
     };
 }

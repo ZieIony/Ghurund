@@ -44,11 +44,6 @@ namespace Ghurund::Core {
 		return TYPE;
 	}
 
-	const Array<ResourceFormat>& Resource::GET_FORMATS() {
-		static const Array<ResourceFormat> formats = {};
-		return formats;
-	}
-
 	Resource::~Resource() {
 		delete path;
 	}

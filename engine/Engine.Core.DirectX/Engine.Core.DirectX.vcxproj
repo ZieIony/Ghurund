@@ -93,6 +93,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\core\directx\GraphicsFactory.h" />
+    <ClInclude Include="src\core\directx\mesh\MeshLoader.h" />
     <ClInclude Include="src\core\directx\shader\CompilationErrorException.h" />
     <ClInclude Include="src\Ghurund.Core.DirectX.h" />
     <ClInclude Include="src\core\directx\CommandList.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="src\core\directx\Frame.cpp" />
     <ClCompile Include="src\core\directx\Graphics.cpp" />
     <ClCompile Include="src\core\directx\MathTypes.cpp" />
+    <ClCompile Include="src\core\directx\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\core\directx\SwapChain.cpp" />
     <ClCompile Include="src\core\directx\adapter\AdapterOutput.cpp" />
     <ClCompile Include="src\core\directx\buffer\DepthBuffer.cpp" />

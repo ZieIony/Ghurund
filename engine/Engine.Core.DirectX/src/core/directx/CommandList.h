@@ -2,7 +2,6 @@
 
 #include "Fence.h"
 #include "Graphics.h"
-#include "core/collection/PointerList.h"
 
 namespace Ghurund::Core::DirectX {
     enum class CommandListState {
@@ -36,7 +35,7 @@ namespace Ghurund::Core::DirectX {
         ID3D12RootSignature* rootSignature = nullptr;
 
         List<ID3D12Object*> resourceRefs;
-        PointerList<RefCountedObject*> pointerRefs;
+        List<RefCountedObject*> pointerRefs;
         WString name;
 
     public:
@@ -85,6 +84,7 @@ namespace Ghurund::Core::DirectX {
         }
 
         void addPointerRef(RefCountedObject* resource) {
+            resource->addReference();
             pointerRefs.add(resource);
         }
 

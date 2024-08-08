@@ -22,8 +22,7 @@ namespace Ghurund {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& ScriptEngine::GET_TYPE() {
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>(Ghurund::NAMESPACE_NAME, "ScriptEngine")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

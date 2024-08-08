@@ -13,7 +13,7 @@
 #include <mfidl.h>
 #include <mfreadwrite.h>
 
-namespace Ghurund::Audio {
+namespace Ghurund {
     using namespace Ghurund::Core;
     using Microsoft::WRL::ComPtr;
 

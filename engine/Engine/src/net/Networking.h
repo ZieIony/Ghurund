@@ -2,7 +2,7 @@
 
 #include "Server.h"
 #include "Client.h"
-#include "core/application/Feature.h"
+#include "core/feature/Feature.h"
 
 namespace Ghurund::Net {
     using namespace Ghurund::Core;
