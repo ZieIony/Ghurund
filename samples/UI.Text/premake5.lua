@@ -1,12 +1,12 @@
-project "UI.Text"
+project "Samples.UI.Text"
 	kind "WindowedApp"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.GDI",
-		"Engine.UI.Direct2D",
+		"Core",
+		"UI",
+		"UI.GDI",
+		"UI.Direct2D",
 		"Engine"
 	}
 
@@ -19,10 +19,10 @@ project "UI.Text"
 	includedirs {
 		"src",
 		"generated/bindings",
-		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.GDI"],
-		includeDir["Engine.UI.Direct2D"],
+		includeDir["Core"],
+		includeDir["UI"],
+		includeDir["UI.GDI"],
+		includeDir["UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
 		includeDir["msdfgen"],
@@ -35,10 +35,10 @@ project "UI.Text"
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.GDI",
-		"Engine.UI.Direct2D",
+		"Core",
+		"UI",
+		"UI.GDI",
+		"UI.Direct2D",
 		"Engine"
 	}
 	

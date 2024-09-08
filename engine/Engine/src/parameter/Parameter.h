@@ -4,7 +4,7 @@
 #include "core/RefCountedObject.h"
 #include "core/string/String.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class Parameter: public RefCountedObject {

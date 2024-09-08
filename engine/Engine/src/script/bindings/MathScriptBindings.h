@@ -1,7 +1,5 @@
 #pragma once
 
-#include "core/directx/Graphics.h"
-
 #include <DirectXMath.h>
 #include <angelscript.h>
 

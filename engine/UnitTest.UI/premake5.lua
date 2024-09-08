@@ -5,8 +5,8 @@ project "UnitTest.UI"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.UI",
+		"Core",
+		"UI",
 		"UnitTest.Core"
 	}
 
@@ -18,15 +18,15 @@ project "UnitTest.UI"
 	includedirs {
 		"src",
 		includeDir["UnitTest.Core"],
-		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
+		includeDir["Core"],
+		includeDir["UI"],
 		includeDir["tinyxml2"],
 		includeDir["DirectX"]
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.UI"
+		"Core",
+		"UI"
 	}
 		
 	filter "configurations:Debug"

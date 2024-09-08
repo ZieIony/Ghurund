@@ -1,14 +1,12 @@
 project "Engine"
 	kind "StaticLib"
-	pchheader "ghpch.h"
-	pchsource "src/ghpch.cpp"
+	pchheader "ghepch.h"
+	pchsource "src/ghepch.cpp"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.Core.DirectX",
-		"Engine.UI",
-		"Engine.UI.Direct2D"
+		"Core",
+		"UI"
 	}
 
 	files {
@@ -19,10 +17,8 @@ project "Engine"
 
 	includedirs {
 		"src",
-		includeDir["Engine.Core"],
-		includeDir["Engine.Core.DirectX"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.Direct2D"],
+		includeDir["Core"],
+		includeDir["UI"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
@@ -33,10 +29,8 @@ project "Engine"
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.Core.DirectX",
-		"Engine.UI",
-		"Engine.UI.Direct2D"
+		"Core",
+		"UI"
 	}
 	
 	filter "configurations:Debug"

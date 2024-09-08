@@ -12,7 +12,7 @@
 #include "StringFactory.h"
 #include "ScriptComponent.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class ScriptEngine: public Feature {

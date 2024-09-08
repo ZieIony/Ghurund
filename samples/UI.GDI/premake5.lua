@@ -1,11 +1,11 @@
-project "UI.GDI"
+project "Samples.UI.GDI"
 	kind "WindowedApp"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.GDI"
+		"Core",
+		"UI",
+		"UI.GDI"
 	}
 
 	files {
@@ -17,9 +17,9 @@ project "UI.GDI"
 	includedirs {
 		"src",
 		"generated/bindings",
-		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.GDI"],
+		includeDir["Core"],
+		includeDir["UI"],
+		includeDir["UI.GDI"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
 		includeDir["CRC"],
@@ -29,9 +29,9 @@ project "UI.GDI"
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.GDI"
+		"Core",
+		"UI",
+		"UI.GDI"
 	}
 	
 	filter "configurations:Debug"

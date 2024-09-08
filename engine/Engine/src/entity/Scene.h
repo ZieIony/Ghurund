@@ -10,7 +10,7 @@
 #include "physics/Physics.h"
 #include "physics/PhysicsSystem.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class Scene:public Resource {
 #pragma region reflection
     protected:
@@ -38,8 +38,7 @@ namespace Ghurund {
 
         Scene() {}
 
-        inline void init(Graphics& graphics, ParameterManager& parameterManager) {
-            drawingSystem.init(graphics);
+        inline void init(ParameterManager& parameterManager) {
             drawingSystem.initParameters(parameterManager);
         }
 
@@ -64,9 +63,6 @@ namespace Ghurund {
         }
 
         __declspec(property(get = getGraphicsSystem)) DrawingSystem& DrawingSystem;
-
-        inline void render(CommandList& commandList) {
-        }
 
 #pragma region formats
     protected:

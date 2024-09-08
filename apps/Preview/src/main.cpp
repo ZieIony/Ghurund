@@ -1,4 +1,6 @@
 #include "Ghurund.Core.h"
+#include "Ghurund.Engine.h"
+#include "Ghurund.Engine.DirectX.h"
 
 #include "PreviewApplication.h"
 

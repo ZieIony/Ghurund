@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "Script.h"
 
 #include "core/io/MemoryInputStream.h"
@@ -11,12 +11,12 @@
 
 #include "ScriptEngine.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& Script::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<Script>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Script>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Script))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Script>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Script))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

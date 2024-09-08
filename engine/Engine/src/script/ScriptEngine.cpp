@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "ScriptEngine.h"
 
 #include "core/Exceptions.h"
@@ -18,11 +18,11 @@
 #include "bindings\ScriptBindings.h"
 #include "bindings\TimerScriptBindings.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& ScriptEngine::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScriptEngine>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(ScriptEngine))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

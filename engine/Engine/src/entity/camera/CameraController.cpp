@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "CameraController.h"
 
 #include "core/window/SystemWindow.h"
@@ -10,7 +10,7 @@
 #include "CameraComponent.h"
 #include "entity/TransformComponent.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace std;
 	using namespace Ghurund::Core;
 	using namespace ::DirectX;

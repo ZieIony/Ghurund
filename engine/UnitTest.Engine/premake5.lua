@@ -1,0 +1,27 @@
+project "UnitTest.Engine"
+	kind "SharedLib"
+	pchheader "pch.h"
+	pchsource "src/pch.cpp"
+	staticruntime "on"
+
+	dependson {
+		"Engine",
+		"Core"
+	}
+
+	files {
+		"src/**.h",
+		"src/**.cpp"
+	}
+
+	includedirs {
+		"src",
+		includeDir["Engine"],
+		includeDir["Core"],
+		includeDir["CRC"]
+	}
+
+	links {
+		"Engine",
+		"Core"
+	}

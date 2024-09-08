@@ -2,7 +2,7 @@
 
 #include "Parameter.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 
     class ValueParameter:public Parameter {
     private:

@@ -2,24 +2,24 @@
 
 #include "Script.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class ScriptComponent {
     private:
-        Ghurund::Script* script = nullptr;
+        Ghurund::Engine::Script* script = nullptr;
 
     public:
-        ScriptComponent(Ghurund::Script* script) {
+        ScriptComponent(Ghurund::Engine::Script* script) {
             Script = script;
         }
 
-        Ghurund::Script* getScript() {
+        Ghurund::Engine::Script* getScript() {
             return script;
         }
 
-        void setScript(Ghurund::Script* script) {
+        void setScript(Ghurund::Engine::Script* script) {
             setPointer(this->script, script);
         }
 
-        __declspec(property(get = getScript, put = setScript)) Ghurund::Script* Script;
+        __declspec(property(get = getScript, put = setScript)) Ghurund::Engine::Script* Script;
     };
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "application/UIApplicationWindow.h"
+#include "ui/direct2d/application/UIApplicationWindow.h"
 #include "ui/widget/menu/MenuBarItemAdapter.h"
 #include "ui/widget/toolbar/ToolbarItemAdapter.h"
 #include <ColorListAdapter.h>
@@ -12,7 +12,7 @@ namespace Demo {
 
 	class DemoApplication;
 
-	class DemoWindow:public UIApplicationWindow {
+	class DemoWindow:public Ghurund::UI::Direct2D::UIApplicationWindow {
 	private:
 		IntrusivePointer<Control> demoLayout;
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;
@@ -21,7 +21,7 @@ namespace Demo {
 		DemoApplication& app;
 
 	public:
-		DemoWindow(DemoApplication& app, Renderer& renderer);
+		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::Renderer& renderer);
 
 		~DemoWindow() {
 			delete adapter1;

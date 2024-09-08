@@ -1,11 +1,11 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "ParameterType.h"
 
 #include "core/RefCountedObject.h"
 
 #include <DirectXMath.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace ::DirectX;
 
     const ParameterType ParameterType::INT = ParameterType(ParameterTypeEnum::INT, "int", sizeof(int));

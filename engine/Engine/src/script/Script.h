@@ -9,7 +9,7 @@ namespace Ghurund::Core {
     class ResourceManager;
 }
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class ScriptEngine;

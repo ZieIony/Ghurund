@@ -3,7 +3,7 @@
 #include "Script.h"
 #include "core/resource/Loader.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	class ScriptLoader:public Loader {

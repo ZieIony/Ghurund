@@ -7,7 +7,7 @@
 #include "entity/camera/Camera.h"
 #include "ScriptBindings.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 
     class CameraScriptBindings:ScriptBindings<Camera> {
     public:

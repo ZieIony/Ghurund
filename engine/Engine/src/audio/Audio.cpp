@@ -1,11 +1,11 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "Audio.h"
 
 #include "core/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
-#include "core/directx/MathTypes.h"
+#include "core/reflection/StandardTypes.h"
 #include "core/logging/Logger.h"
 
 #include <xaudio2.h>
@@ -24,7 +24,7 @@ namespace Ghurund {
 
         static const auto CONSTRUCTOR = Constructor<Audio>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Audio))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Audio))
             .withProperty(PROPERTY_POSITION)
             .withProperty(PROPERTY_VELOCITY)
             .withProperty(PROPERTY_DIRECTION)

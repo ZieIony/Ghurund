@@ -7,7 +7,7 @@
 
 #include "CameraEntity.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class CameraController: public EventConsumer {
     public:
         enum class Mode {

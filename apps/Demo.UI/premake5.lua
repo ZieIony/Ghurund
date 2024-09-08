@@ -3,10 +3,10 @@ project "Demo.UI"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.Core.DirectX",
-		"Engine.UI",
-		"Engine.UI.Direct2D",
+		"Core",
+		"Engine.DirectX",
+		"UI",
+		"UI.Direct2D",
 		"Engine"
 	}
 
@@ -19,10 +19,10 @@ project "Demo.UI"
 	includedirs {
 		"src",
 		"generated/bindings",
-		includeDir["Engine.Core"],
-		includeDir["Engine.Core.DirectX"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.Direct2D"],
+		includeDir["Core"],
+		includeDir["Engine.DirectX"],
+		includeDir["UI"],
+		includeDir["UI.Direct2D"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
@@ -34,10 +34,10 @@ project "Demo.UI"
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.Core.DirectX",
-		"Engine.UI",
-		"Engine.UI.Direct2D",
+		"Core",
+		"Engine.DirectX",
+		"UI",
+		"UI.Direct2D",
 		"Engine"
 	}
 	

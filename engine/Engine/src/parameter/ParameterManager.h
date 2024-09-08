@@ -4,19 +4,11 @@
 #include "core/string/String.h"
 #include "core/Object.h"
 #include "ParameterCollection.h"
+#include "graphics/ITextureProvider.h"
+#include "TextureParameter.h"
 
-namespace Ghurund::Core {
-	class ResourceManager;
-}
-
-namespace Ghurund::Core::DirectX {
-	class Graphics;
-	class CommandList;
-}
-
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
-	using namespace Ghurund::Core::DirectX;
 
 	class ParameterManager: public Object {
 #pragma region reflection
@@ -34,10 +26,18 @@ namespace Ghurund {
 	private:
 		ParameterCollection parameters;
 
+		inline static const AString DIFFUSE_TEXTURE = "diffuseTexture";
+		inline static const AString SPECULAR_TEXTURE = "specularTexture";
+		inline static const AString NORMAL_TEXTURE = "normalTexture";
+
+		IntrusivePointer<TextureParameter> parameterDiffuse = makeIntrusive<TextureParameter>(DIFFUSE_TEXTURE);
+		IntrusivePointer<TextureParameter> parameterSpecular = makeIntrusive<TextureParameter>(SPECULAR_TEXTURE);
+		IntrusivePointer<TextureParameter> parameterNormal = makeIntrusive<TextureParameter>(NORMAL_TEXTURE);
+		
 	public:
 		ParameterManager();
 
-		void initDefaultTextures(ResourceManager& manager, Graphics& graphics, CommandList& commandList);
+		void initDefaultTextures(ITextureProvider& textureProvider);
 
 		ParameterCollection& getParameters() {
 			return parameters;

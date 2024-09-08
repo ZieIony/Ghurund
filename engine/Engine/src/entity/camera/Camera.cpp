@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "Camera.h"
 
@@ -8,224 +8,227 @@
 
 #include <DirectXMath.h>
 
-namespace Ghurund {
-    using namespace ::DirectX;
+namespace Ghurund::Engine {
+	using namespace ::DirectX;
 
-    void Camera::rebuild(TransformComponent& transformComponent) {
-        XMMATRIX view2, proj2, viewProj2;
-        XMFLOAT3 pos = transformComponent.Position;
-        view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
-        XMStoreFloat4x4(&view, view2);
-        if (pers) {
-            proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
-        } else {
-            proj2 = XMMatrixOrthographicLH((float)screenSize.x, (float)screenSize.y, zNear, zFar);
-        }
-        XMStoreFloat4x4(&proj, proj2);
-        viewProj2 = view2 * proj2;
-        XMStoreFloat4x4(&viewProj, viewProj2);
-        XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
-    }
+	void Camera::rebuild() {
+		XMMATRIX view2, proj2, viewProj2;
+		view2 = XMMatrixLookAtLH(XMLoadFloat3(&pos), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		XMStoreFloat4x4(&view, view2);
+		if (pers) {
+			proj2 = XMMatrixPerspectiveFovLH(fov, getAspect(), zNear, zFar);
+		} else {
+			proj2 = XMMatrixOrthographicLH((float)screenSize.Width, (float)screenSize.Height, zNear, zFar);
+		}
+		XMStoreFloat4x4(&proj, proj2);
+		viewProj2 = view2 * proj2;
+		XMStoreFloat4x4(&viewProj, viewProj2);
+		XMStoreFloat4x4(&viewProjInv, XMMatrixInverse(nullptr, viewProj2));
+	}
 
-    Camera::Camera() {
-        screenSize = { 640, 480 };
-        fov = XM_PI / 4;
-        zNear = 0.1f;
-        zFar = 10000.0f;
-        pers = true;
-        up = XMFLOAT3(0, 1, 0);
-        target = XMFLOAT3(0, 0, 1);
-        dir = XMFLOAT3(0, 0, 1);
-        right = XMFLOAT3(1, 0, 0);
-        //rebuild();
+	Camera::Camera():
+		screenSize({ 640, 480 }),
+		fov(XM_PI / 4),
+		zNear(0.1f),
+		zFar(10000.0f),
+		pers(true),
+		pos(XMFLOAT3(0, 0, 0)),
+		up(XMFLOAT3(0, 1, 0)),
+		target(XMFLOAT3(0, 0, 1)),
+		dir(XMFLOAT3(0, 0, 1)),
+		right(XMFLOAT3(1, 0, 0)),
+		dist(1.0f) {
+		//rebuild();
 
-        float rotation = 0.0f;
-        //setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
+		float rotation = 0.0f;
+		//setPositionTargetUp(XMFLOAT3(sin(rotation) * 600, 200, cos(rotation) * 600), XMFLOAT3(0, 50, 0), XMFLOAT3(0, 1, 0));
 
-        parameters.put(parameterDirection = ghnew ValueParameter(CAMERA_DIRECTION, ParameterType::FLOAT3));
-        parameters.put(parameterPosition = ghnew ValueParameter(CAMERA_POSITION, ParameterType::FLOAT3));
-        parameters.put(parameterTarget = ghnew ValueParameter(CAMERA_TARGET, ParameterType::FLOAT3));
-        parameters.put(parameterUp = ghnew ValueParameter(CAMERA_UP, ParameterType::FLOAT3));
-        parameters.put(parameterRight = ghnew ValueParameter(CAMERA_RIGHT, ParameterType::FLOAT3));
+		parameters.put(parameterDirection = ghnew ValueParameter(CAMERA_DIRECTION, ParameterType::FLOAT3));
+		parameters.put(parameterPosition = ghnew ValueParameter(CAMERA_POSITION, ParameterType::FLOAT3));
+		parameters.put(parameterTarget = ghnew ValueParameter(CAMERA_TARGET, ParameterType::FLOAT3));
+		parameters.put(parameterUp = ghnew ValueParameter(CAMERA_UP, ParameterType::FLOAT3));
+		parameters.put(parameterRight = ghnew ValueParameter(CAMERA_RIGHT, ParameterType::FLOAT3));
 
-        parameters.put(parameterFov = ghnew ValueParameter(FOV, ParameterType::FLOAT));
-        parameters.put(parameterZNear = ghnew ValueParameter(ZNEAR, ParameterType::FLOAT));
-        parameters.put(parameterZFar = ghnew ValueParameter(ZFAR, ParameterType::FLOAT));
+		parameters.put(parameterFov = ghnew ValueParameter(FOV, ParameterType::FLOAT));
+		parameters.put(parameterZNear = ghnew ValueParameter(ZNEAR, ParameterType::FLOAT));
+		parameters.put(parameterZFar = ghnew ValueParameter(ZFAR, ParameterType::FLOAT));
 
-        parameters.put(parameterView = ghnew ValueParameter(VIEW, ParameterType::MATRIX));
-        parameters.put(parameterProjection = ghnew ValueParameter(PROJECTION, ParameterType::MATRIX));
-        parameters.put(parameterViewProjection = ghnew ValueParameter(VIEW_PROJECTION, ParameterType::MATRIX));
-        parameters.put(parameterViewProjectionInv = ghnew ValueParameter(VIEW_PROJECTION_INV, ParameterType::MATRIX));
-    }
+		parameters.put(parameterView = ghnew ValueParameter(VIEW, ParameterType::MATRIX));
+		parameters.put(parameterProjection = ghnew ValueParameter(PROJECTION, ParameterType::MATRIX));
+		parameters.put(parameterViewProjection = ghnew ValueParameter(VIEW_PROJECTION, ParameterType::MATRIX));
+		parameters.put(parameterViewProjectionInv = ghnew ValueParameter(VIEW_PROJECTION_INV, ParameterType::MATRIX));
+	}
 
-    Camera::~Camera(){
-        parameterDirection->release();
-        parameterPosition->release();
-        parameterTarget->release();
-        parameterUp->release();
-        parameterRight->release();
+	Camera::~Camera() {
+		parameterDirection->release();
+		parameterPosition->release();
+		parameterTarget->release();
+		parameterUp->release();
+		parameterRight->release();
 
-        parameterFov->release();
-        parameterZNear->release();
-        parameterZFar->release();
+		parameterFov->release();
+		parameterZNear->release();
+		parameterZFar->release();
 
-        parameterView->release();
-        parameterProjection->release();
-        parameterViewProjection->release();
-        parameterViewProjectionInv->release();
-    }
+		parameterView->release();
+		parameterProjection->release();
+		parameterViewProjection->release();
+		parameterViewProjectionInv->release();
+	}
 
-    void Camera::updateParameters() {
-        //rebuild();
-        parameterDirection->setValue(&dir);
-        //parameterPosition->setValue(&transformComponent->Position);
-        parameterUp->setValue(&up);
-        parameterRight->setValue(&right);
-        parameterFov->setValue(&fov);
-        parameterZNear->setValue(&zNear);
-        parameterZFar->setValue(&zFar);
-        parameterView->setValue(&view);
-        parameterProjection->setValue(&proj);
-        parameterViewProjection->setValue(&viewProj);
-        parameterViewProjectionInv->setValue(&viewProjInv);
-    }
+	void Camera::updateParameters() {
+		//rebuild();
+		parameterDirection->setValue(&dir);
+		parameterPosition->setValue(&pos);
+		parameterUp->setValue(&up);
+		parameterRight->setValue(&right);
+		parameterFov->setValue(&fov);
+		parameterZNear->setValue(&zNear);
+		parameterZFar->setValue(&zFar);
+		parameterView->setValue(&view);
+		parameterProjection->setValue(&proj);
+		parameterViewProjection->setValue(&viewProj);
+		parameterViewProjectionInv->setValue(&viewProjInv);
+	}
 
-    void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
-        XMFLOAT3 v = { (float)mousePos.x, (float)mousePos.y, 0 };
-        XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&v),
-            0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
-            XMLoadFloat4x4(&proj),
-            XMLoadFloat4x4(&view),
-            XMMatrixIdentity());
+	void Camera::calcMouseRay(const XMINT2& mousePos, XMFLOAT3& rayPos, XMFLOAT3& rayDir)const {
+		XMFLOAT3 v = { (float)mousePos.x, (float)mousePos.y, 0 };
+		XMVECTOR rayPos2 = XMVector3Unproject(XMLoadFloat3(&v),
+			0, 0, (float)screenSize.Width, (float)screenSize.Height, 0, 1,
+			XMLoadFloat4x4(&proj),
+			XMLoadFloat4x4(&view),
+			XMMatrixIdentity());
 
-        XMFLOAT3 v2 = { (float)mousePos.x, (float)mousePos.y, 1 };
-        XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&v2),
-            0, 0, (float)screenSize.x, (float)screenSize.y, 0, 1,
-            XMLoadFloat4x4(&proj),
-            XMLoadFloat4x4(&view),
-            XMMatrixIdentity());
+		XMFLOAT3 v2 = { (float)mousePos.x, (float)mousePos.y, 1 };
+		XMVECTOR rayTarget2 = XMVector3Unproject(XMLoadFloat3(&v2),
+			0, 0, (float)screenSize.Width, (float)screenSize.Height, 0, 1,
+			XMLoadFloat4x4(&proj),
+			XMLoadFloat4x4(&view),
+			XMMatrixIdentity());
 
-        XMStoreFloat3(&rayPos, rayPos2);
-        XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
-    }
+		XMStoreFloat3(&rayPos, rayPos2);
+		XMStoreFloat3(&rayDir, XMVector3Normalize(rayTarget2 - rayPos2));
+	}
 
-    void Camera::setPositionTargetUp(TransformComponent& transformComponent, const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
-        transformComponent.Position = pos;
-        this->target = target;
+	void Camera::setPositionTargetUp(const XMFLOAT3& pos, const XMFLOAT3& target, const XMFLOAT3& up) {
+		this->pos = pos;
+		this->target = target;
 
-        XMVECTOR dv = XMLoadFloat3(&target) - XMLoadFloat3(&pos);
+		XMVECTOR dv = XMLoadFloat3(&target) - XMLoadFloat3(&pos);
 
-        XMStoreFloat(&dist, XMVector3Length(dv));
-        XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&dir, XMVector3Normalize(dv));
-        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
-        XMStoreFloat3(&right, rv);
-        XMStoreFloat3(&this->up, XMVector3Normalize(uv));
-    }
+		XMStoreFloat(&dist, XMVector3Length(dv));
+		XMVECTOR uv = XMLoadFloat3(&up);
+		XMStoreFloat3(&dir, XMVector3Normalize(dv));
+		XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
+		XMStoreFloat3(&right, rv);
+		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
+	}
 
-    void Camera::setPositionDirectionDistanceUp(TransformComponent& transformComponent, const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
-        transformComponent.Position = pos;
-        XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
-        XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
+	void Camera::setPositionDirectionDistanceUp(const XMFLOAT3& pos, const XMFLOAT3& dir, float dist, const XMFLOAT3& up) {
+		this->pos = pos;
+		XMVECTOR dv = XMVector3Normalize(XMLoadFloat3(&dir));
+		XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv * dist);
 
-        this->dist = dist;
-        XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&this->dir, dv);
-        XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
-        XMStoreFloat3(&right, rv);
-        XMStoreFloat3(&this->up, XMVector3Normalize(uv));
-    }
+		this->dist = dist;
+		XMVECTOR uv = XMLoadFloat3(&up);
+		XMStoreFloat3(&this->dir, dv);
+		XMVECTOR rv = XMVector3Normalize(XMVector3Cross(uv, dv));
+		XMStoreFloat3(&right, rv);
+		XMStoreFloat3(&this->up, XMVector3Normalize(uv));
+	}
 
-    void Camera::setRotation(TransformComponent& transformComponent, float yaw, float pitch, float roll) {
-        XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-        XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
-        dv = XMVector3TransformNormal(dv, rotation);
-        XMStoreFloat3(&target, XMLoadFloat3(&transformComponent.Position) + dv);
-        setPositionTargetUp(transformComponent, transformComponent.Position, target, up);
-    }
+	void Camera::setRotation(float yaw, float pitch, float roll) {
+		XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+		XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
+		dv = XMVector3TransformNormal(dv, rotation);
+		XMStoreFloat3(&target, XMLoadFloat3(&pos) + dv);
+		setPositionTargetUp(pos, target, up);
+	}
 
-    void Camera::setOrbit(TransformComponent& transformComponent, float yaw, float pitch, float roll) {
-        XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
-        XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
-        dv = XMVector3TransformNormal(dv, rotation);
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, XMLoadFloat3(&target) - dv);
-        setPositionTargetUp(transformComponent, pos, target, up);
-    }
+	void Camera::setOrbit(float yaw, float pitch, float roll) {
+		XMMATRIX rotation = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+		XMVECTOR dv = XMVectorSet(0, 0, dist == 0 ? -1 : -dist, 0);
+		dv = XMVector3TransformNormal(dv, rotation);
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, XMLoadFloat3(&target) - dv);
+		setPositionTargetUp(pos, target, up);
+	}
 
-    void Camera::rotate(TransformComponent& transformComponent, float yaw, float pitch, float roll) {
-        XMFLOAT3 rotation = getRotation();
+	void Camera::rotate(float yaw, float pitch, float roll) {
+		XMFLOAT3 rotation = getRotation();
 
-        setRotation(transformComponent, rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
-    }
+		setRotation(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
+	}
 
-    void Camera::orbit(TransformComponent& transformComponent, float yaw, float pitch, float roll) {
-        XMFLOAT3 rotation = getRotation();
+	void Camera::orbit(float yaw, float pitch, float roll) {
+		XMFLOAT3 rotation = getRotation();
 
-        setOrbit(transformComponent, rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
-    }
+		setOrbit(rotation.x + yaw, rotation.y + pitch, rotation.z + roll);
+	}
 
-    void Camera::pan(TransformComponent& transformComponent, float x, float y) {
-        XMVECTOR rv = XMLoadFloat3(&right);
-        XMVECTOR uv = XMLoadFloat3(&up);
-        XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, XMLoadFloat3(&transformComponent.Position) + rv * x + uv * y);
-        transformComponent.Position = pos;
-    }
+	void Camera::pan(float x, float y) {
+		XMVECTOR rv = XMLoadFloat3(&right);
+		XMVECTOR uv = XMLoadFloat3(&up);
+		XMStoreFloat3(&target, XMLoadFloat3(&target) + rv * x + uv * y);
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, XMLoadFloat3(&pos) + rv * x + uv * y);
+		this->pos = pos;
+	}
 
-    void Camera::zoom(TransformComponent& transformComponent, float z) {
-        XMVECTOR dv = XMLoadFloat3(&dir);
-        XMVECTOR pv = XMLoadFloat3(&transformComponent.Position);
-        XMVECTOR pv2 = pv + dv * z;
-        XMFLOAT3 pos;
-        XMStoreFloat3(&pos, pv2);
-        transformComponent.Position = pos;
-        XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
-    }
+	void Camera::zoom(float z) {
+		XMVECTOR dv = XMLoadFloat3(&dir);
+		XMVECTOR pv = XMLoadFloat3(&pos);
+		XMVECTOR pv2 = pv + dv * z;
+		XMFLOAT3 pos;
+		XMStoreFloat3(&pos, pv2);
+		this->pos = pos;
+		XMStoreFloat(&dist, XMVector3Length(XMLoadFloat3(&target) - pv2));
+	}
 
-    void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        //__super::loadInternal(context, workingDir, stream, options);
+	void Camera::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+		//__super::loadInternal(context, workingDir, stream, options);
 
-        memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
-        memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
-        memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
-        memcpy(&view, stream.readBytes(sizeof(view)), sizeof(view));
-        memcpy(&proj, stream.readBytes(sizeof(proj)), sizeof(proj));
-        memcpy(&viewProj, stream.readBytes(sizeof(viewProj)), sizeof(viewProj));
-        memcpy(&facing, stream.readBytes(sizeof(facing)), sizeof(facing));
-        memcpy(&screenSize, stream.readBytes(sizeof(screenSize)), sizeof(screenSize));
-        fov = stream.readFloat();
-        zNear = stream.readFloat();
-        zFar = stream.readFloat();
-        memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
-        pers = stream.readBoolean();
-    }
+		memcpy(&pos, stream.readBytes(sizeof(pos)), sizeof(pos));
+		memcpy(&target, stream.readBytes(sizeof(target)), sizeof(target));
+		memcpy(&right, stream.readBytes(sizeof(right)), sizeof(right));
+		memcpy(&dir, stream.readBytes(sizeof(dir)), sizeof(dir));
+		memcpy(&view, stream.readBytes(sizeof(view)), sizeof(view));
+		memcpy(&proj, stream.readBytes(sizeof(proj)), sizeof(proj));
+		memcpy(&viewProj, stream.readBytes(sizeof(viewProj)), sizeof(viewProj));
+		//memcpy(&facing, stream.readBytes(sizeof(facing)), sizeof(facing));
+		memcpy(&screenSize, stream.readBytes(sizeof(screenSize)), sizeof(screenSize));
+		fov = stream.readFloat();
+		zNear = stream.readFloat();
+		zFar = stream.readFloat();
+		memcpy(&up, stream.readBytes(sizeof(up)), sizeof(up));
+		pers = stream.readBoolean();
+	}
 
-    void Camera::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-        //__super::saveInternal(context, workingDir, stream, options);
+	void Camera::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+		//__super::saveInternal(context, workingDir, stream, options);
 
-        stream.writeBytes(&target, sizeof(target));
-        stream.writeBytes(&right, sizeof(right));
-        stream.writeBytes(&dir, sizeof(dir));
-        stream.writeBytes(&view, sizeof(view));
-        stream.writeBytes(&proj, sizeof(proj));
-        stream.writeBytes(&viewProj, sizeof(viewProj));
-        stream.writeBytes(&facing, sizeof(facing));
-        stream.writeBytes(&screenSize, sizeof(screenSize));
-        stream.writeFloat(fov);
-        stream.writeFloat(zNear);
-        stream.writeFloat(zFar);
-        stream.writeBytes(&up, sizeof(up));
-        stream.writeBoolean(pers);
-    }
+		stream.writeBytes(&pos, sizeof(pos));
+		stream.writeBytes(&target, sizeof(target));
+		stream.writeBytes(&right, sizeof(right));
+		stream.writeBytes(&dir, sizeof(dir));
+		stream.writeBytes(&view, sizeof(view));
+		stream.writeBytes(&proj, sizeof(proj));
+		stream.writeBytes(&viewProj, sizeof(viewProj));
+		//stream.writeBytes(&facing, sizeof(facing));
+		stream.writeBytes(&screenSize, sizeof(screenSize));
+		stream.writeFloat(fov);
+		stream.writeFloat(zNear);
+		stream.writeFloat(zFar);
+		stream.writeBytes(&up, sizeof(up));
+		stream.writeBoolean(pers);
+	}
 
-    const Ghurund::Core::Type& Camera::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Camera>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Camera))
-            .withConstructor(CONSTRUCTOR)
-            .withSupertype(__super::GET_TYPE());
+	const Ghurund::Core::Type& Camera::GET_TYPE() {
+		static const auto CONSTRUCTOR = Constructor<Camera>();
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Camera))
+			.withConstructor(CONSTRUCTOR)
+			.withSupertype(__super::GET_TYPE());
 
-        return TYPE;
-    }
+		return TYPE;
+	}
 }

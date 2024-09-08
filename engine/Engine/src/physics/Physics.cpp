@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "Physics.h"
 
 #include "core/Exceptions.h"
@@ -15,7 +15,7 @@ namespace Ghurund {
 
         static const auto CONSTRUCTOR = Constructor<Physics>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Physics))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Physics))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

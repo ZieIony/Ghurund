@@ -12,7 +12,7 @@
 #include <ui/control/ControlGroup.h>
 
 #include "PreviewLayout.h"
-#include "application/UIApplicationWindow.h"
+#include "ui/direct2d/application/UIApplicationWindow.h"
 #include "ui/UILayer.h"
 #include "ui/direct2d/UIFeature.h"
 
@@ -22,7 +22,7 @@ namespace Preview {
 	using namespace Ghurund::UI;
 	using namespace Ghurund::UI::Direct2D;
 
-	class PreviewWindow :public Ghurund::UIApplicationWindow {
+	class PreviewWindow :public Ghurund::UI::Direct2D::UIApplicationWindow {
 	private:
 		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;

@@ -1,4 +1,4 @@
-project "UI.Direct2D"
+project "Samples.UI.Direct2D"
 	kind "WindowedApp"
 	staticruntime "on"
 
@@ -17,16 +17,16 @@ project "UI.Direct2D"
 	includedirs {
 		"src",
 		"generated/bindings",
-		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
-		includeDir["Engine.UI.Direct2D"],
+		includeDir["Core"],
+		includeDir["UI"],
+		includeDir["UI.Direct2D"],
 		includeDir["tinyxml2"],
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.Direct2D"
+		"Core",
+		"UI",
+		"UI.Direct2D"
 	}
 	
 	filter "configurations:Debug"

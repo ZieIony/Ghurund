@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "DrawableComponents.h"
 
@@ -7,7 +7,7 @@
 #include "core/directx/mesh/CubeMesh.h"
 #include "core/directx/mesh/SphereMesh.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     DrawableComponent* DrawableComponents::makeCube(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
         auto mesh = makeIntrusive<CubeMesh>();
         mesh->init(graphics, commandList);

@@ -4,7 +4,7 @@
 
 //#include <entt.hpp>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class Entity:public RefCountedObject {

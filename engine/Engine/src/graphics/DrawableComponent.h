@@ -1,8 +1,6 @@
 #pragma once
 
 #include "parameter/ParameterProvider.h"
-#include "core/directx/mesh/Mesh.h"
-#include "graphics/Material.h"
 #include "graphics/RenderingStatistics.h"
 
 #include <DirectXCollision.h>
@@ -10,7 +8,7 @@
 #include "entity/Entity.h"
 #include "entity/TransformComponent.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	class DrawableComponent//:public ParameterProvider
 	{
 	private:
@@ -20,13 +18,13 @@ namespace Ghurund {
 		bool selectable = true, visible = true, cullingEnabled = true;
 
 		void finalize() {
-			safeRelease(mesh);
-			safeRelease(material);
+			/*safeRelease(mesh);
+			safeRelease(material);*/
 		}
 
 	protected:
-		Mesh* mesh = nullptr;
-		Material* material = nullptr;
+		/*Mesh* mesh = nullptr;
+		Material* material = nullptr;*/
 		List<Entity*> entities;
 
 	public:
@@ -38,7 +36,7 @@ namespace Ghurund {
 			finalize();
 		}
 
-		Mesh* getMesh() const {
+		/*Mesh* getMesh() const {
 			return mesh;
 		}
 
@@ -56,7 +54,7 @@ namespace Ghurund {
 			setPointer(this->material, material);
 		}
 
-		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;
+		__declspec(property(get = getMaterial, put = setMaterial)) Material* Material;*/
 
 		/*virtual void initParameters(ParameterManager& parameterManager) override {
 			material->initParameters(parameterManager);
@@ -70,7 +68,7 @@ namespace Ghurund {
 			return material->Parameters;
 		}*/
 
-		virtual bool isValid() const {
+		/*virtual bool isValid() const {
 			return material != nullptr && material->Valid && mesh != nullptr && mesh->Valid;
 		}
 
@@ -101,7 +99,7 @@ namespace Ghurund {
 			return &mesh->BoundingBox;
 		}
 
-		__declspec(property(get = getBoundingBox)) BoundingBox* BoundingBox;
+		__declspec(property(get = getBoundingBox)) BoundingBox* BoundingBox;*/
 
 		inline void setSelectable(bool selectable) {
 			this->selectable = selectable;

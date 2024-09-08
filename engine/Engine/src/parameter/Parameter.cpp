@@ -1,12 +1,12 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "Parameter.h"
 
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     const Ghurund::Core::Type& Parameter::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Parameter>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Parameter))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Parameter>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Parameter))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

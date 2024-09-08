@@ -1,11 +1,11 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "Scene.h"
 
 #include "core/resource/Resource.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
@@ -34,7 +34,7 @@ namespace Ghurund {
 	
 	const Ghurund::Core::Type& Scene::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<Scene>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Scene))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Scene))
 			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 

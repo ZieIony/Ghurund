@@ -13,7 +13,7 @@ namespace Ghurund::Core {
 	enum class SaveOption;
 }
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
 	class ParameterProvider {

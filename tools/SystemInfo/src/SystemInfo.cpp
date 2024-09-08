@@ -1,11 +1,11 @@
 #include "core/SystemInfo.h"
 #include "core/IntrusivePointer.h"
 #include "core/logging/Logger.h"
-#include "core/directx/Graphics.h"
+#include "engine/directx/Graphics.h"
 #include "Ghurund.Engine.h"
 
 using namespace Ghurund::Core;
-using namespace Ghurund::Core::DirectX;
+using namespace Ghurund::Engine::DirectX;
 
 const uint32_t KB = 1024;
 const uint32_t MB = 1024 * 1024;

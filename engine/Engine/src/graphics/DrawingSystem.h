@@ -1,23 +1,21 @@
 #pragma once
 
 #include "DrawableComponent.h"
-#include "core/directx/Graphics.h"
 #include "parameter/ValueParameter.h"
+#include "entity/TransformComponent.h"
 
 #include "entity/camera/Camera.h"
+#include "IMaterial.h"
 
-namespace Ghurund {
-    using namespace Ghurund::Core::DirectX;
-
+namespace Ghurund::Engine {
     class DrawingSystem {
     private:
         Camera* camera = nullptr;
-        Material* material = nullptr;
-        Material* invalidMaterial = nullptr;
+        IMaterial* material = nullptr;
+        IMaterial* invalidMaterial = nullptr;
         ValueParameter* parameterWorld = nullptr;
         ValueParameter* parameterWorldIT = nullptr;
         RenderingStatistics stats;
-        Graphics* graphics = nullptr;
 
     public:
         inline static const AString WORLD = "world";
@@ -40,10 +38,6 @@ namespace Ghurund {
                 invalidMaterial->release();
         }
 
-        inline void init(Graphics& graphics) {
-            this->graphics = &graphics;
-        }
-
         inline void setCamera(Camera* camera) {
             setPointer(this->camera, camera);
         }
@@ -54,17 +48,17 @@ namespace Ghurund {
 
         __declspec(property(put = setCamera, get = getCamera)) Camera* Camera;
 
-        inline void setOverrideMaterial(Material* material) {
+        inline void setOverrideMaterial(IMaterial* material) {
             setPointer(this->material, material);
         }
 
-        __declspec(property(put = setOverrideMaterial)) Material* OverrideMaterial;
+        __declspec(property(put = setOverrideMaterial)) IMaterial* OverrideMaterial;
 
-        void setInvalidMaterial(Ghurund::Material* invalidMaterial) {
+        void setInvalidMaterial(IMaterial* invalidMaterial) {
             setPointer(this->invalidMaterial, invalidMaterial);
         }
 
-        __declspec(property(put = setInvalidMaterial)) Ghurund::Material* InvalidMaterial;
+        __declspec(property(put = setInvalidMaterial)) IMaterial* InvalidMaterial;
 
         void cull() {
             XMMATRIX view = XMLoadFloat4x4(&camera->View);
@@ -96,11 +90,11 @@ namespace Ghurund {
         }
 
         void initParameters(ParameterManager& parameterManager) {
-            if (material)
+            /*if (material)
                 material->initParameters(parameterManager);
             if (invalidMaterial)
                 invalidMaterial->initParameters(parameterManager);
-            /*for (DrawableComponent* c : Components)
+            for (DrawableComponent* c : Components)
                 c->initParameters(parameterManager);*/
         }
 
@@ -117,10 +111,10 @@ namespace Ghurund {
             parameterManager.Parameters.putAll(camera->Parameters);
         }
 
-        void draw(CommandList& commandList) {
+        /*void draw(CommandList& commandList) {
             cull();
 
-            /*TransformComponent* t = ghnew TransformComponent();
+            TransformComponent* t = ghnew TransformComponent();
             t->update();
             if (material || invalidMaterial) {
                 for (auto c : Components) {
@@ -171,8 +165,8 @@ namespace Ghurund {
                     c->draw(*graphics, commandList, stats);
                 }
             }
-            t->release();*/
-        }
+            t->release();
+        }*/
 
     };
 

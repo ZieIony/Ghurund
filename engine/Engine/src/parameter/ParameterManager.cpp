@@ -1,16 +1,15 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "ParameterManager.h"
 
-#include "parameter/ValueParameter.h"
-#include "parameter/TextureParameter.h"
 #include "core/IntrusivePointer.h"
-#include "graphics/Textures.h"
 
-namespace Ghurund {
+#include <DirectXMath.h>
+
+namespace Ghurund::Engine {
     const Ghurund::Core::Type& ParameterManager::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<ParameterManager>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ParameterManager>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ParameterManager>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
             .withConstructor(CONSTRUCTOR);
 
         return TYPE;
@@ -54,17 +53,14 @@ namespace Ghurund {
         parameters.add(normalTextureParameter);*/
     }
 
-    void ParameterManager::initDefaultTextures(ResourceManager& manager, Graphics& graphics, CommandList& commandList) {
-        /*IntrusivePointer<Texture> diffuseTexture(Textures::makeDefaultDiffuse(graphics, commandList, manager));
-        TextureParameter* diffuseTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::DIFFUSE_TEXTURE.Value];
-        diffuseTextureParameter->Value = diffuseTexture.get();
+    void ParameterManager::initDefaultTextures(ITextureProvider& textureProvider) {
+        IntrusivePointer<ITexture> diffuseTexture(textureProvider.makeDefaultDiffuse());
+        parameterDiffuse->Value = diffuseTexture.get();
 
-        IntrusivePointer<Texture> specularTexture(Textures::makeDefaultSpecular(graphics, commandList, manager));
-        TextureParameter* specularTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::SPECULAR_TEXTURE.Value];
-        specularTextureParameter->Value = specularTexture.get();
+        IntrusivePointer<ITexture> specularTexture(textureProvider.makeDefaultSpecular());
+        parameterSpecular->Value = specularTexture.get();
 
-        IntrusivePointer<Texture> normalTexture(Textures::makeDefaultNormal(graphics, commandList, manager));
-        TextureParameter* normalTextureParameter = (TextureParameter*)parameters[(size_t)ParameterId::NORMAL_TEXTURE.Value];
-        normalTextureParameter->Value = normalTexture.get();*/
+        IntrusivePointer<ITexture> normalTexture(textureProvider.makeDefaultNormal());
+        parameterNormal->Value = normalTexture.get();
     }
 }

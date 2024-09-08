@@ -2,7 +2,7 @@
 
 #include "core/Enum.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     enum class ParameterTypeEnum {

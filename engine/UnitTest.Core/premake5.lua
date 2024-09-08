@@ -5,7 +5,7 @@ project "UnitTest.Core"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core"
+		"Core"
 	}
 
 	files {
@@ -15,9 +15,9 @@ project "UnitTest.Core"
 
 	includedirs {
 		"src",
-		includeDir["Engine.Core"]
+		includeDir["Core"]
 	}
 
 	links {
-		"Engine.Core"
+		"Core"
 	}

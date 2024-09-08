@@ -5,7 +5,7 @@
 #include "CameraComponent.h"
 #include "entity/Entity.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class CameraEntity:public Entity {
     public:
         /*CameraEntity(entt::registry& registry) :Entity(registry) {

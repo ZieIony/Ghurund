@@ -5,7 +5,7 @@
 #include "entity/light/Light.h"
 #include "ScriptBindings.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 
     class LightScriptBindings:ScriptBindings<Light> {
     public:

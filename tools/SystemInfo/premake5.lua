@@ -3,8 +3,8 @@ project "SystemInfo"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.Core.DirectX",
+		"Core",
+		"Engine.DirectX",
 		"Engine"
 	}
 
@@ -17,8 +17,8 @@ project "SystemInfo"
 	includedirs {
 		"src",
 		"generated/bindings",
-		includeDir["Engine.Core"],
-		includeDir["Engine.Core.DirectX"],
+		includeDir["Core"],
+		includeDir["Engine.DirectX"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
@@ -30,8 +30,8 @@ project "SystemInfo"
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.Core.DirectX",
+		"Core",
+		"Engine.DirectX",
 		"Engine"
 	}
 	

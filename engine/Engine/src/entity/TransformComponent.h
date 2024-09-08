@@ -2,7 +2,7 @@
 
 #include <DirectXMath.h>
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	using namespace ::DirectX;
 
 	class TransformComponent {

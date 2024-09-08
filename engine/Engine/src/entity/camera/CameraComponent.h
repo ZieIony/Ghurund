@@ -2,7 +2,7 @@
 
 #include "Camera.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     struct CameraComponent {
         Camera* camera;
     };

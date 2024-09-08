@@ -1,24 +1,21 @@
 #pragma once
 
 #include "Parameter.h"
-#include "core/resource/Resource.h"
-#include "core/directx/texture/Texture.h"
+#include "graphics/ITexture.h"
 
-namespace Ghurund {
-    using namespace Ghurund::Core::DirectX;
-
+namespace Ghurund::Engine {
     class TextureParameter:public Parameter {
     private:
-        Texture* value;
-        Texture* defaultValue = nullptr;
+        ITexture* value;
+        ITexture* defaultValue = nullptr;
 
     public:
-        TextureParameter(const char* constantName):Parameter(constantName, ParameterType::TEXTURE) {
+        TextureParameter(const AString& constantName):Parameter(constantName, ParameterType::TEXTURE) {
             value = nullptr;
             empty = true;
         }
 
-        TextureParameter(const char* constantName, Texture* value):Parameter(constantName, ParameterType::TEXTURE) {
+        TextureParameter(const AString& constantName, ITexture* value):Parameter(constantName, ParameterType::TEXTURE) {
             this->value = value;
             value->addReference();
             empty = false;
@@ -31,11 +28,11 @@ namespace Ghurund {
                 defaultValue->release();
         }
 
-        inline Texture* getValue() {
+        inline ITexture* getValue() {
             return value;
         }
 
-        void setValue(Texture* value) {
+        void setValue(ITexture* value) {
             setPointer(this->value, value);
             empty = false;
         }
@@ -45,18 +42,18 @@ namespace Ghurund {
             empty = true;
         }
 
-        __declspec(property(get = getValue, put = setValue)) Texture* Value;
+        __declspec(property(get = getValue, put = setValue)) ITexture* Value;
 
-        inline Texture* getDefaultValue() const {
+        inline ITexture* getDefaultValue() const {
             return defaultValue;
         }
 
-        void setDefaultValue(Texture* value) {
+        void setDefaultValue(ITexture* value) {
             setPointer(defaultValue, value);
             if (!this->value)
                 setPointer(this->value, defaultValue);
         }
 
-        __declspec(property(get = getDefaultValue, put = setDefaultValue)) Texture* DefaultValue;
+        __declspec(property(get = getDefaultValue, put = setDefaultValue)) ITexture* DefaultValue;
     };
 }

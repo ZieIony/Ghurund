@@ -5,7 +5,7 @@
 #include "entity/Scene.h"
 #include "ScriptBindings.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 
     class SceneScriptBindings:ScriptBindings<Scene> {
     public:

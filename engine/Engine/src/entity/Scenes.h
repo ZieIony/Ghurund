@@ -4,7 +4,7 @@
 
 #include "Scene.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class Scenes {
     private:
         Scenes() = delete;

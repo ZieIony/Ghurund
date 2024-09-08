@@ -3,7 +3,7 @@
 #include "entity/Entity.h"
 #include "ScriptBindings.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 
     class EntityScriptBindings:ScriptBindings<Entity> {
     public:

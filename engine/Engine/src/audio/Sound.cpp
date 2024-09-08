@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "Sound.h"
 
 #include "Common.h"
@@ -155,7 +155,7 @@ namespace Ghurund {
 
     const Ghurund::Core::Type& Sound::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<Sound>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Sound))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Sound))
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

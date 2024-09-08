@@ -5,7 +5,7 @@
 #include "LightComponent.h"
 #include "entity/Entity.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     class LightEntity:public Entity {
     public:
         /*LightEntity(entt::registry& registry) :Entity(registry) {

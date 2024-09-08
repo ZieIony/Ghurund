@@ -2,7 +2,7 @@
 
 #include "Light.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     struct LightComponent {
         Light* light;
     };

@@ -5,7 +5,7 @@
 #include "core/string/String.h"
 #include "core/IntrusivePointer.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
 	class ParameterCollection {
 	private:
 		Map<AString, IntrusivePointer<Parameter>> parameters;

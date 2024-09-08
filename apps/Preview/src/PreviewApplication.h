@@ -1,16 +1,16 @@
-﻿#include "graphics/Renderer.h"
+﻿#include "engine/directx/Renderer.h"
 #include "core/application/Application.h"
 
 #include "PreviewWindow.h"
 #include "ThemeApplication.h"
 
 namespace Preview {
-    using namespace Ghurund;
+    using namespace Ghurund::Engine;
 
-    class PreviewApplication:public Ghurund::Application, public ThemeApplication {
+    class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
     protected:
-        Ghurund::Renderer renderer;
-        Ghurund::ParameterManager parameterManager;
+        Ghurund::Engine::DirectX::Renderer renderer;
+        Ghurund::Engine::ParameterManager parameterManager;
 
         Ghurund::UI::DrawableFactory* drawableFactory;
         LightTheme* lightTheme = nullptr;

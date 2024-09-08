@@ -1,5 +1,5 @@
 ﻿#include "core/application/Application.h"
-#include "graphics/Renderer.h"
+#include "engine/directx/Renderer.h"
 #include "ui/direct2d/Graphics2D.h"
 
 #include "ui/direct2d/UIFeature.h"
@@ -8,9 +8,10 @@
 #include "ui/loading/DrawableFactory.h"
 #include "ui/direct2d/Graphics2DFactory.h"
 #include <ui/direct2d/UIFeatureFactory.h>
+#include <parameter/ParameterManager.h>
 
 namespace Demo {
-    using namespace Ghurund;
+    using namespace Ghurund::Engine;
     using namespace Ghurund::Core;
     using namespace Ghurund::UI::Direct2D;
 

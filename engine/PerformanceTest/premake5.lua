@@ -5,8 +5,8 @@ project "PerformanceTest"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.UI"
+		"Core",
+		"UI"
 	}
 
 	files {
@@ -16,14 +16,14 @@ project "PerformanceTest"
 
 	includedirs {
 		"src",
-		includeDir["Engine.Core"],
-		includeDir["Engine.UI"],
+		includeDir["Core"],
+		includeDir["UI"],
 		includeDir["tinyxml2"]
 	}
 
 	links {
-		"Engine.Core",
-		"Engine.UI"
+		"Core",
+		"UI"
 	}
 
 	filter "configurations:Release"

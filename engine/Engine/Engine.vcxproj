@@ -54,10 +54,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,10 +75,10 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>ghpch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>ghepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Engine.Core\src;..\Engine.Core.DirectX\src;..\Engine.UI\src;..\Engine.UI.Direct2D\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;..\..\libs\entt\single_include\entt;..\..\libs\CRCpp\inc;..\..\libs\angelscript_2.36.0\sdk\angelscript\include;..\..\libs\PhysX\physx\include;..\..\libs\PhysX\pxshared\include;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -98,17 +98,14 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\audio\SoundLoader.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
-    <ClInclude Include="src\application\ApplicationWindow.h" />
-    <ClInclude Include="src\application\UIApplicationWindow.h" />
     <ClInclude Include="src\audio\Audio.h" />
     <ClInclude Include="src\audio\Sound.h" />
     <ClInclude Include="src\audio\Sound3d.h" />
+    <ClInclude Include="src\audio\SoundLoader.h" />
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
-    <ClInclude Include="src\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\entity\Entity.h" />
     <ClInclude Include="src\entity\Scene.h" />
     <ClInclude Include="src\entity\Scenes.h" />
@@ -125,18 +122,14 @@
     <ClInclude Include="src\game\sky\AdvancedSky.h" />
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
-    <ClInclude Include="src\ghpch.h" />
-    <ClInclude Include="src\graphics\DrawableComponent.h" />
-    <ClInclude Include="src\graphics\DrawableComponents.h" />
+    <ClInclude Include="src\ghepch.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
+    <ClInclude Include="src\graphics\IMaterial.h" />
+    <ClInclude Include="src\graphics\IMaterialProvider.h" />
+    <ClInclude Include="src\graphics\ITexture.h" />
+    <ClInclude Include="src\graphics\ITextureProvider.h" />
     <ClInclude Include="src\graphics\LightSystem.h" />
-    <ClInclude Include="src\graphics\Material.h" />
-    <ClInclude Include="src\graphics\Materials.h" />
-    <ClInclude Include="src\graphics\Postprocess.h" />
-    <ClInclude Include="src\graphics\Renderer.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
-    <ClInclude Include="src\graphics\Shaders.h" />
-    <ClInclude Include="src\graphics\Textures.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
@@ -162,8 +155,8 @@
     <ClInclude Include="src\script\ScriptComponent.h" />
     <ClInclude Include="src\script\ScriptEngine.h" />
     <ClInclude Include="src\script\ScriptExecutionException.h" />
-    <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\ScriptLoader.h" />
+    <ClInclude Include="src\script\Scripts.h" />
     <ClInclude Include="src\script\StringFactory.h" />
     <ClInclude Include="src\script\angelscript\scriptmath.h" />
     <ClInclude Include="src\script\bindings\CameraScriptBindings.h" />
@@ -177,23 +170,18 @@
     <ClInclude Include="src\script\bindings\TimerScriptBindings.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\application\ApplicationWindow.cpp" />
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\audio\SoundLoader.cpp" />
-    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\entity\Scene.cpp" />
     <ClCompile Include="src\entity\camera\Camera.cpp" />
     <ClCompile Include="src\entity\camera\CameraController.cpp" />
     <ClCompile Include="src\entity\light\Light.cpp" />
     <ClCompile Include="src\game\GameAction.cpp" />
-    <ClCompile Include="src\ghpch.cpp">
+    <ClCompile Include="src\ghepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="src\graphics\DrawableComponents.cpp" />
-    <ClCompile Include="src\graphics\Material.cpp" />
-    <ClCompile Include="src\graphics\Materials.cpp" />
-    <ClCompile Include="src\graphics\Renderer.cpp" />
+    <ClCompile Include="src\graphics\IMaterial.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
@@ -209,21 +197,15 @@
     <ClCompile Include="src\physics\Physics.cpp" />
     <ClCompile Include="src\script\Script.cpp" />
     <ClCompile Include="src\script\ScriptEngine.cpp" />
-    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
     <ClCompile Include="src\script\ScriptLoader.cpp" />
+    <ClCompile Include="src\script\angelscript\scriptmath.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine.Core\Engine.Core.vcxproj">
-      <Project>{92F48861-FEA9-0157-879E-FB2DF352F85A}</Project>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{2EB4837C-1AEB-840D-C3D7-6A10AFED000F}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Engine.Core.DirectX\Engine.Core.DirectX.vcxproj">
-      <Project>{7374B757-DFD5-9465-6843-DB17D4A3CB24}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine.UI\Engine.UI.vcxproj">
-      <Project>{E74C8BD1-53B7-3F48-9CF5-F0ED089F1D9D}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine.UI.Direct2D\Engine.UI.Direct2D.vcxproj">
-      <Project>{26864DDA-126A-0E30-7BCA-088367CDF8B1}</Project>
+    <ProjectReference Include="..\UI\UI.vcxproj">
+      <Project>{83755900-6F01-880B-D8AF-880BC45A880B}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

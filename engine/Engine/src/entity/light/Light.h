@@ -6,7 +6,7 @@
 
 #include "entity/Entity.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     class Light: public RefCountedObject, public ParameterProvider {

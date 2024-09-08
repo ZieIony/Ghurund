@@ -1,7 +1,7 @@
-#include "ghpch.h"
+#include "ghepch.h"
 #include "ScriptLoader.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     Script* ScriptLoader::load(
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,

@@ -1,4 +1,4 @@
-#include "ghpch.h"
+#include "ghepch.h"
 
 #include "ParameterProvider.h"
 
@@ -6,7 +6,7 @@
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine {
     void ParameterProvider::loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
       /*  size_t paramCount = stream.readUInt();
         for (size_t i = 0; i < paramCount; i++) {
