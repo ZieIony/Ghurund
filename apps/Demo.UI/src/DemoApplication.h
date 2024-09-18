@@ -1,19 +1,18 @@
 ﻿#include "core/application/Application.h"
-#include "engine/directx/Renderer.h"
-#include "ui/direct2d/Graphics2D.h"
 
-#include "ui/direct2d/UIFeature.h"
 #include "DemoWindow.h"
-#include <ui/theme/LightTheme.h>
+#include "engine/directx/Renderer.h"
+#include "parameter/ParameterManager.h"
+#include "ui/directx/UIFeature.h"
+#include "ui/theme/LightTheme.h"
 #include "ui/loading/DrawableFactory.h"
-#include "ui/direct2d/Graphics2DFactory.h"
-#include <ui/direct2d/UIFeatureFactory.h>
-#include <parameter/ParameterManager.h>
+#include "ui/directx/UIFeatureFactory.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;
+    using namespace Ghurund::Engine::DirectX;
     using namespace Ghurund::Core;
-    using namespace Ghurund::UI::Direct2D;
+    using namespace Ghurund::UI::DirectX;
 
     class DemoApplication:public Application {
     protected:
@@ -26,14 +25,13 @@ namespace Demo {
     public:
         DemoApplication() {
             Features.add<Graphics>();
-            Features.add<Direct2D::Graphics2D, Graphics2DFactory>();
             Features.add<UIFeature, UIFeatureFactory>();
         }
 
         virtual void onInit() override {
             renderer.init(Features.get<Graphics>(), parameterManager);
 
-            drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager);
+            drawableFactory = ghnew Ghurund::UI::DirectX::DrawableFactory(ResourceManager);
             theme = ghnew LightTheme(ResourceManager, *drawableFactory);
 
             window = ghnew DemoWindow(*this, renderer);

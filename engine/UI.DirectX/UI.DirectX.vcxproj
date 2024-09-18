@@ -95,11 +95,31 @@
     <ClInclude Include="src\Ghurund.UI.DirectX.h" />
     <ClInclude Include="src\ghuidxpch.h" />
     <ClInclude Include="src\ui\directx\DxCanvas.h" />
+    <ClInclude Include="src\ui\directx\Shape.h" />
+    <ClInclude Include="src\ui\directx\UIContext.h" />
+    <ClInclude Include="src\ui\directx\UIFeature.h" />
+    <ClInclude Include="src\ui\directx\UIFeatureFactory.h" />
+    <ClInclude Include="src\ui\directx\UILayer.h" />
+    <ClInclude Include="src\ui\directx\application\UIApplicationWindow.h" />
+    <ClInclude Include="src\ui\directx\drawable\BitmapDrawable.h" />
+    <ClInclude Include="src\ui\directx\image\Bitmap.h" />
+    <ClInclude Include="src\ui\directx\image\BitmapFactory.h" />
+    <ClInclude Include="src\ui\directx\image\BitmapLoader.h" />
+    <ClInclude Include="src\ui\directx\loading\ImageDrawableFactory.h" />
+    <ClInclude Include="src\ui\directx\loading\ShapeFactory.h" />
+    <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ghuidxpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\ui\directx\Shape.cpp" />
+    <ClCompile Include="src\ui\directx\UIContext.cpp" />
+    <ClCompile Include="src\ui\directx\UIFeature.cpp" />
+    <ClCompile Include="src\ui\directx\UILayer.cpp" />
+    <ClCompile Include="src\ui\directx\drawable\BitmapDrawable.cpp" />
+    <ClCompile Include="src\ui\directx\image\Bitmap.cpp" />
+    <ClCompile Include="src\ui\directx\loading\ImageDrawableFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

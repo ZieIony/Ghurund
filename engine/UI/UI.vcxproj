@@ -281,7 +281,6 @@
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
-    <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\adapter\AdapterLayout.cpp" />
     <ClCompile Include="src\ui\constraint\AnimatedConstraint.cpp" />
     <ClCompile Include="src\ui\constraint\Constraint.cpp" />

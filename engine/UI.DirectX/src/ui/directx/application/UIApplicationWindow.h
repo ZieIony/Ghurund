@@ -2,13 +2,13 @@
 
 #include "engine/directx/application/DirectXWindow.h"
 #include "ui/RootView.h"
-#include "ui/direct2d/UILayer.h"
+#include "ui/directx/UILayer.h"
 #include "ui/theme/Theme.h"
 
-namespace Ghurund::UI::Direct2D {
+namespace Ghurund::UI::DirectX {
 	class UIApplicationWindow:public DirectXWindow {
 	private:
-		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
+		DXUILayer* uiLayer = nullptr;
 		Ghurund::UI::Theme* theme = nullptr;
 		Ghurund::UI::Control* content = nullptr;
 
@@ -23,9 +23,8 @@ namespace Ghurund::UI::Direct2D {
 		virtual void init(WindowManager& windowManager) override {
 			__super::init(windowManager);
 
-			Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
-			uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
-			uiLayer->init(graphics2d, *this, SwapChain);
+			uiLayer = ghnew DXUILayer();
+			uiLayer->init(*this, SwapChain);
 			//Layers.add(uiLayer);
 
 			uiLayer->Root.Theme = theme;
@@ -48,10 +47,10 @@ namespace Ghurund::UI::Direct2D {
 
 		__declspec(property(put = setContent)) Ghurund::UI::Control* Content;
 
-		inline Ghurund::UI::Direct2D::D2DUILayer& getUILayer() {
+		inline DXUILayer& getUILayer() {
 			return *uiLayer;
 		}
 
-		__declspec(property(get = getUILayer)) Ghurund::UI::Direct2D::D2DUILayer& UILayer;
+		__declspec(property(get = getUILayer)) DXUILayer& UILayer;
 	};
 }

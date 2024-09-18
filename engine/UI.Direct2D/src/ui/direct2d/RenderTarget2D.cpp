@@ -3,6 +3,9 @@
 
 #include "Graphics2D.h"
 
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund::UI::Direct2D {
     void RenderTarget2D::init(Graphics2D& graphics2d, ID3D12Resource& texture) {
         D3D11_RESOURCE_FLAGS d3d11Flags = { D3D11_BIND_RENDER_TARGET };
@@ -24,5 +27,13 @@ namespace Ghurund::UI::Direct2D {
             Logger::log(LogType::ERR0R, _T("CreateBitmapFromDxgiSurface failed\n"));
             throw CallFailedException();
         }
+    }
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Direct2D::RenderTarget2D>() {
+        static Type TYPE = TypeBuilder<Ghurund::UI::Direct2D::RenderTarget2D>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(RenderTarget2D));
+        return TYPE;
     }
 }

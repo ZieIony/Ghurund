@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
 
     const Ghurund::Core::Type& DirectXWindow::GET_TYPE() {
         static auto PROPERTY_SWAPCHAIN = Property<DirectXWindow, Ghurund::Engine::DirectX::SwapChain&>("SwapChain", &getSwapChain);
-        static auto PROPERTY_LAYERS = Property<DirectXWindow, LayerList&>("Layers", &getLayers);
+        static auto PROPERTY_LAYERS = Property<DirectXWindow, LayerList<RenderTarget>&>("Layers", &getLayers);
         static auto PROPERTY_APPLICATION = Property<DirectXWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<DirectXWindow>("Ghurund", "DirectXWindow")
@@ -79,9 +79,18 @@ namespace Ghurund::Engine::DirectX {
         //levelManager.draw(commandList);
         frame.flush();
         //auto drawingContext = Ghurund::UI::Direct2D::D2DDrawingContext(frame.RenderTarget);
-        //layers.draw(drawingContext);
+        layers.draw(frame.RenderTarget);
         renderer.finishFrame(frame);
         swapChain->present();
     }
 
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<LayerList<Ghurund::Engine::DirectX::RenderTarget>>() {
+        static Type TYPE = TypeBuilder<LayerList<Ghurund::Engine::DirectX::RenderTarget>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(LayerList<RenderTarget>))
+            .withTemplateParam(getType<Ghurund::Engine::DirectX::RenderTarget>());
+        return TYPE;
+    }
 }

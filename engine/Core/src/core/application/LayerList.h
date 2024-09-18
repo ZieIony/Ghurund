@@ -7,32 +7,31 @@
 #include "core/math/Size.h"
 
 
-namespace Ghurund {
-    using namespace Ghurund::Core;
-
+namespace Ghurund::Core {
+    template<class T>
     class LayerList {
     private:
-        List<IntrusivePointer<Layer>> layers;
+        List<IntrusivePointer<Layer<T>>> layers;
         IntSize size = {};
-        IntrusivePointer<Layer> focusedLayer, prevFocusedLayer;
+        IntrusivePointer<Layer<T>> focusedLayer, prevFocusedLayer;
 
     public:
         ~LayerList() {
             clear();
         }
 
-        inline void add(Layer* layer) {
+        inline void add(Layer<T>* layer) {
             layer->addReference();
             layer->Size = size;
             layers.add(IntrusivePointer(layer));
         }
 
-        inline void remove(Layer* layer) {
+        inline void remove(Layer<T>* layer) {
             if (focusedLayer.get() == layer) {
                 focusedLayer->Focused = false;
                 focusedLayer.set(nullptr);
             }
-            size_t index = layers.find([&](const IntrusivePointer<Layer>& item) { return item.get() == layer; });
+            size_t index = layers.find([&](const IntrusivePointer<Layer<T>>& item) { return item.get() == layer; });
             if (index != layers.Size)
                 layers.removeAt(index);
         }
@@ -52,7 +51,7 @@ namespace Ghurund {
 
         virtual void setSize(uint32_t w, uint32_t h) {
             size = { w, h };
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (IntrusivePointer<Layer<T>>& layer : layers)
                 layer->Size = size;
         }
 
@@ -81,7 +80,7 @@ namespace Ghurund {
         inline bool dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (IntrusivePointer<Layer>& layer : layers) {
+            for (IntrusivePointer<Layer<T>>& layer : layers) {
                 consumed |= layer->dispatchMouseButtonEvent(args);
                 if (consumed) {
                     if (!layer->Focused) {
@@ -99,7 +98,7 @@ namespace Ghurund {
         inline bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (IntrusivePointer<Layer<T>>& layer : layers)
                 consumed |= layer->dispatchMouseMotionEvent(args);
             return consumed;
         }
@@ -107,24 +106,19 @@ namespace Ghurund {
         inline bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
             bool consumed = false;
             // TODO: inverse layers for events
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (IntrusivePointer<Layer<T>>& layer : layers)
                 consumed |= layer->dispatchMouseWheelEvent(args);
             return consumed;
         }
 
         inline void update(const uint64_t time) {
-            for (IntrusivePointer<Layer>& layer : layers)
+            for (IntrusivePointer<Layer<T>>& layer : layers)
                 layer->update(time);
         }
 
-        inline void draw(IDrawingContext& drawingContext) {
+        inline void draw(T& context) {
             for (auto& layer : layers)
-                layer->draw(drawingContext);
+                layer->draw(context);
         }
     };
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<LayerList>();
 }

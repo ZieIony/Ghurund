@@ -3,17 +3,16 @@
 #include "core/application/Layer.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/directx/buffer/RenderTarget.h"
-#include "ui/constraint/ConstraintGraph.h"
-#include "ui/direct2d/Canvas.h"
-#include "ui/direct2d/Graphics2d.h"
-#include "ui/direct2d/UIContext.h"
+#include "ui/directx/DxCanvas.h"
+#include "ui/directx/UIContext.h"
 #include "ui/RootView.h"
 #include "ui/UILayer.h"
+#include "DxCanvas.h"
 
-namespace Ghurund::UI::Direct2D {
+namespace Ghurund::UI::DirectX {
     using namespace ::Ghurund::Engine::DirectX;
 
-    class D2DUILayer:public Ghurund::UI::UILayer<RenderTarget2D> {
+    class DXUILayer:public Ghurund::UI::UILayer<RenderTarget> {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -23,30 +22,20 @@ namespace Ghurund::UI::Direct2D {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = D2DUILayer::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DXUILayer::GET_TYPE();
 #pragma endregion
 
     private:
         SwapChain* swapChain = nullptr;
-        Graphics2D* graphics = nullptr;
-        Ghurund::UI::Direct2D::Canvas* canvas;
-        Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
+        DxCanvas* canvas;
         IUIContext* context;
 
-    protected:
-        virtual bool onSizeChanged() override {
-            graphics->flush();
-            return true;
-        }
-
     public:
-        ~D2DUILayer() {
+        ~DXUILayer() {
             uninit();
         }
 
-        void init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain);
-
-        void initTargets();
+        void init(Window& window, SwapChain& swapChain);
 
         void uninit();
 
@@ -78,6 +67,6 @@ namespace Ghurund::UI::Direct2D {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void draw(RenderTarget2D& context) override;
+        virtual void draw(RenderTarget& context) override;
     };
 }

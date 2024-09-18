@@ -95,8 +95,6 @@
     <ClInclude Include="src\Ghurund.UI.Direct2D.h" />
     <ClInclude Include="src\ghuid2dpch.h" />
     <ClInclude Include="src\ui\direct2d\Canvas.h" />
-    <ClInclude Include="src\ui\direct2d\D2DDrawingContext.h" />
-    <ClInclude Include="src\ui\direct2d\DrawingContext.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2D.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2DFactory.h" />
     <ClInclude Include="src\ui\direct2d\RenderTarget2D.h" />

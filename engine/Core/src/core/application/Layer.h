@@ -1,13 +1,14 @@
 #pragma once
 
-#include "DrawingContext.h"
 #include "core/RefCountedObject.h"
 #include "core/input/Keyboard.h"
 #include "core/input/Mouse.h"
 #include "core/math/Size.h"
+#include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
 
+    template<class T>
     class Layer:public RefCountedObject {
 #pragma region reflection
     protected:
@@ -16,7 +17,14 @@ namespace Ghurund::Core {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Layer>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Layer))
+                .withTemplateParam(Ghurund::Core::getType<T>())
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
+
 
         inline static const Ghurund::Core::Type& TYPE = Layer::GET_TYPE();
 #pragma endregion
@@ -81,6 +89,6 @@ namespace Ghurund::Core {
 
         virtual void update(const uint64_t time) {}
 
-        virtual void draw(IDrawingContext& context) {}
+        virtual void draw(T& context) {}
     };
 }

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "core/logging/Logger.h"
-
-#include <dxgi1_6.h>
 #include <d2d1_3.h>
 #include <d3d11on12.h>
 #include <wrl.h>
@@ -39,4 +36,9 @@ namespace Ghurund::UI::Direct2D {
         }
     };
 
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::UI::Direct2D::RenderTarget2D>();
 }

@@ -14,6 +14,7 @@ includeDir = {}
 includeDir["Core"] = "%{wks.location}/engine/Core/src"
 includeDir["UI"] = "%{wks.location}/engine/UI/src"
 includeDir["UI.Direct2D"] = "%{wks.location}/engine/UI.Direct2D/src"
+includeDir["UI.DirectX"] = "%{wks.location}/engine/UI.DirectX/src"
 includeDir["UI.GDI"] = "%{wks.location}/engine/UI.GDI/src"
 includeDir["Engine"] = "%{wks.location}/engine/Engine/src"
 includeDir["Engine.DirectX"] = "%{wks.location}/engine/Engine.DirectX/src"

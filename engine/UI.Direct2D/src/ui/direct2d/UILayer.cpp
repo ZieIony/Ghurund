@@ -8,10 +8,8 @@
 #include "ui/direct2d/RenderTarget2D.h"
 #include "ui/direct2d/UIContext.h"
 #include "ui/direct2d/Graphics2d.h"
-#include "ui/direct2d/DrawingContext.h"
 #include "ui/RootView.h"
 #include <ui/constraint/WindowConstraint.h>
-#include "D2DDrawingContext.h"
 
 namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Core;
@@ -65,15 +63,13 @@ namespace Ghurund::UI::Direct2D {
         context = nullptr;
     }
     
-    void D2DUILayer::draw(IDrawingContext& drawingContext) {
-        D2DDrawingContext& d2dContext = (D2DDrawingContext&)drawingContext;
-        RenderTarget2D* target2d = renderTargets.get(&d2dContext.renderTarget).get();
+    void D2DUILayer::draw(RenderTarget2D& context) {
 		try {
-			graphics->beginPaint(*target2d);
+			graphics->beginPaint(context);
             __super::draw(*canvas);
 		} catch (...) {}
 		try {
-			graphics->endPaint(*target2d);
+			graphics->endPaint(context);
 		} catch (CallFailedException) {
 			canvas->uninit();
 			canvas->init(graphics->DeviceContext);

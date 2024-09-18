@@ -17,7 +17,7 @@ namespace Ghurund::Core {
                 Array<AString> keyVal = commands[i].split("=");
                 if (keyVal.Size != 2)
                     continue;
-                parameters.set(keyVal[0], keyVal[1]);
+                parameters.put(keyVal[0], keyVal[1]);
             }
         }
 
@@ -32,7 +32,7 @@ namespace Ghurund::Core {
         }
 
         inline void set(const AString& name, const AString& value) {
-            parameters.set(name, value);
+            parameters.put(name, value);
         }
     };
 }

@@ -26,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         SwapChain* swapChain = nullptr;
-        LayerList layers;
+        LayerList<RenderTarget> layers;
         Application& app;
         Renderer& renderer;
 
@@ -66,11 +66,11 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getSwapChain)) Ghurund::Engine::DirectX::SwapChain& SwapChain;
 
-        inline LayerList& getLayers() {
+        inline LayerList<RenderTarget>& getLayers() {
             return layers;
         }
 
-        __declspec(property(get = getLayers)) LayerList& Layers;
+        __declspec(property(get = getLayers)) LayerList<RenderTarget>& Layers;
 
         inline Application& getApplication() {
             return app;
@@ -90,4 +90,9 @@ namespace Ghurund::Engine::DirectX {
 
         virtual void paint() override;
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<LayerList<Ghurund::Engine::DirectX::RenderTarget>>();
 }

@@ -3,6 +3,10 @@
 
 #include "core/math/MathUtils.h"
 
+#include "core/Exceptions.h"
+#include "core/logging/Logger.h"
+#include "core/reflection/TypeBuilder.h"
+
 namespace Ghurund::Engine::DirectX {
     void RenderTarget::init(Graphics& graphics, ID3D12Resource* texture) {
         D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
@@ -233,5 +237,13 @@ namespace Ghurund::Engine::DirectX {
         //image->init(*buffer, (uint32_t)desc.Width, (uint32_t)desc.Height, desc.Format);
         delete buffer;
         stagingTexture->Unmap(0, &writeRange);
+    }
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::Engine::DirectX::RenderTarget>() {
+        static Type TYPE = TypeBuilder<Ghurund::Engine::DirectX::RenderTarget>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(RenderTarget));
+        return TYPE;
     }
 }

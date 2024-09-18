@@ -4,12 +4,13 @@
 #include "ui/RootView.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/UIContext.h"
-#include "core/window/Window.h"
+#include "ui/constraint/WindowConstraint.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    class UILayer:public Layer {
+    template<class T>
+    class UILayer:public Layer<T> {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -17,7 +18,13 @@ namespace Ghurund::UI {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE();
+        static const Ghurund::Core::Type& GET_TYPE() {
+            static const Ghurund::Core::Type TYPE = TypeBuilder<UILayer>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(UILayer))
+                .withTemplateParam(getType<T>())
+                .withSupertype(__super::GET_TYPE());
+
+            return TYPE;
+        }
 
         inline static const Ghurund::Core::Type& TYPE = UILayer::GET_TYPE();
 #pragma endregion
@@ -34,7 +41,7 @@ namespace Ghurund::UI {
         }
 
         virtual bool onFocusedChanged() override {
-            rootView->Focused = Focused;
+            rootView->Focused = Layer<T>::Focused;
             return true;
         }
 
@@ -43,7 +50,12 @@ namespace Ghurund::UI {
             rootView->release();
         }
 
-        void init(IUIContext& context);
+        void init(IUIContext& context) {
+            this->context = &context;
+            rootView = ghnew Ghurund::UI::RootView(*this->context);
+            rootViewWidth.set(ghnew WindowWidthConstraint(this->context->Window));
+            rootViewHeight.set(ghnew WindowHeightConstraint(this->context->Window));
+        }
 
         inline RootView& getRoot() {
             return *rootView;
@@ -73,8 +85,23 @@ namespace Ghurund::UI {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void update(const uint64_t time) override;
+        virtual void update(const uint64_t time) override {
+            rootView->onUpdate(time);
+            graph.clear();
+            graph.add(rootViewWidth.get());
+            graph.add(rootViewHeight.get());
+            rootView->resolveConstraints(graph, *rootViewWidth.get(), *rootViewHeight.get());
+            graph.sort();
+            graph.evaluate();
+            rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);
+        }
 
-        void draw(ICanvas& canvas);
+        void draw(ICanvas& canvas) {
+            try {
+                canvas.beginPaint();
+                rootView->draw(canvas);
+                canvas.endPaint();
+            } catch (...) {}
+        }
     };
 }

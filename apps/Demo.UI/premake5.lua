@@ -6,7 +6,7 @@ project "Demo.UI"
 		"Core",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
+		"UI.DirectX",
 		"Engine"
 	}
 
@@ -22,7 +22,7 @@ project "Demo.UI"
 		includeDir["Core"],
 		includeDir["Engine.DirectX"],
 		includeDir["UI"],
-		includeDir["UI.Direct2D"],
+		includeDir["UI.DirectX"],
 		includeDir["Engine"],
 		includeDir["tinyxml2"],
 		includeDir["entt"],
@@ -37,7 +37,7 @@ project "Demo.UI"
 		"Core",
 		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D",
+		"UI.DirectX",
 		"Engine"
 	}
 	

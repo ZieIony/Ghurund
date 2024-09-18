@@ -3,15 +3,10 @@
 #include "core/window/Window.h"
 #include "engine/directx/CommandList.h"
 #include "core/image/Image.h"
-#include "core/logging/Logger.h"
 
 #include <d3d12.h>
-#include <dxgi1_4.h>
-#include <wrl.h>
 
 namespace Ghurund::Engine::DirectX {
-    class Graphics2D;
-
     class RenderTarget {
     private:
         ID3D12DescriptorHeap* rtvHeap = nullptr;
@@ -100,4 +95,9 @@ namespace Ghurund::Engine::DirectX {
 
         void capture(Graphics& graphics, Ghurund::Core::Image*& image);
     };
+}
+
+namespace Ghurund::Core {
+    template<>
+    const Type& getType<Ghurund::Engine::DirectX::RenderTarget>();
 }
