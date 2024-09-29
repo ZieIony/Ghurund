@@ -101,11 +101,9 @@
     <ClInclude Include="src\ui\directx\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\directx\UILayer.h" />
     <ClInclude Include="src\ui\directx\application\UIApplicationWindow.h" />
-    <ClInclude Include="src\ui\directx\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\directx\image\Bitmap.h" />
     <ClInclude Include="src\ui\directx\image\BitmapFactory.h" />
     <ClInclude Include="src\ui\directx\image\BitmapLoader.h" />
-    <ClInclude Include="src\ui\directx\loading\ImageDrawableFactory.h" />
     <ClInclude Include="src\ui\directx\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\directx\loading\TextFormatFactory.h" />
   </ItemGroup>
@@ -117,9 +115,7 @@
     <ClCompile Include="src\ui\directx\UIContext.cpp" />
     <ClCompile Include="src\ui\directx\UIFeature.cpp" />
     <ClCompile Include="src\ui\directx\UILayer.cpp" />
-    <ClCompile Include="src\ui\directx\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\directx\image\Bitmap.cpp" />
-    <ClCompile Include="src\ui\directx\loading\ImageDrawableFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

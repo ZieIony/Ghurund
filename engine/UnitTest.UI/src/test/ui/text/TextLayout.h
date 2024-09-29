@@ -8,7 +8,6 @@
 #include "ui/text/TextFormat.h"
 
 namespace UnitTest {
-    using namespace Microsoft::WRL;
     using namespace Ghurund::UI;
 
     class TextLayout:public Ghurund::UI::TextLayout {

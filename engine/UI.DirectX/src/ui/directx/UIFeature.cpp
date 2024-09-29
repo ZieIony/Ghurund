@@ -2,7 +2,6 @@
 #include "UIFeature.h"
 
 #include "core/reflection/TypeBuilder.h"
-#include "core/reflection/Property.h"
 #include "engine/directx/Graphics.h"
 #include <ui/control/Control.h>
 #include <core/image/Image.h>
@@ -24,7 +23,7 @@ namespace Ghurund::UI::DirectX {
 
     void UIFeature::onInit() {
         shapeFactory = ghnew Ghurund::UI::DirectX::ShapeFactory();
-        drawableFactory = ghnew Ghurund::UI::DirectX::DrawableFactory(resourceManager);
+        drawableFactory = ghnew Ghurund::UI::DrawableFactory(resourceManager);
         textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
         bitmapFactory = ghnew BitmapFactory();

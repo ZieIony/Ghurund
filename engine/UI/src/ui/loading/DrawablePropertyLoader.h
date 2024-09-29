@@ -9,10 +9,10 @@ namespace Ghurund::UI {
     private:
         static inline const char* THEME_DRAWABLE = "theme://drawable/";
 
-        DrawableFactory& drawableFactory;
+        IDrawableFactory& drawableFactory;
 
     public:
-        DrawablePropertyLoader(DrawableFactory& drawableFactory):drawableFactory(drawableFactory) {}
+        DrawablePropertyLoader(IDrawableFactory& drawableFactory):drawableFactory(drawableFactory) {}
 
         virtual const Type& getType() const override {
             return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::DrawableAttr>>();

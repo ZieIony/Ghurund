@@ -42,6 +42,8 @@ namespace Ghurund::Core {
 
         virtual void init(WindowManager& windowManager);
 
+        virtual void uninit();
+
         virtual HWND getHandle() const override {
             return handle;
         }

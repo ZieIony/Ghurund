@@ -4,9 +4,9 @@
 #include "core/feature/Feature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
+#include "ui/loading/DrawableFactory.h"
 #include "ui/direct2d/Graphics2D.h"
 #include "ui/direct2d/loading/ShapeFactory.h"
-#include "ui/direct2d/loading/ImageDrawableFactory.h"
 #include "ui/direct2d/loading/TextFormatFactory.h"
 
 namespace Ghurund::UI::Direct2D {
@@ -29,7 +29,7 @@ namespace Ghurund::UI::Direct2D {
         ResourceManager& resourceManager;
         Ghurund::UI::Direct2D::Graphics2D& graphics2d;
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
-        Ghurund::UI::Direct2D::DrawableFactory* drawableFactory = nullptr;
+        Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         Ghurund::UI::IBitmapFactory* bitmapFactory = nullptr;

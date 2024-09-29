@@ -63,13 +63,14 @@ namespace Ghurund::UI::Direct2D {
         context = nullptr;
     }
     
-    void D2DUILayer::draw(RenderTarget2D& context) {
+    void D2DUILayer::draw(DirectXDrawingContext& context) {
+        RenderTarget2D& renderTarget2d = *renderTargets.get(&context.RenderTarget).get();
 		try {
-			graphics->beginPaint(context);
+			graphics->beginPaint(renderTarget2d);
             __super::draw(*canvas);
 		} catch (...) {}
 		try {
-			graphics->endPaint(context);
+			graphics->endPaint(renderTarget2d);
 		} catch (CallFailedException) {
 			canvas->uninit();
 			canvas->init(graphics->DeviceContext);

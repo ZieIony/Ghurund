@@ -31,7 +31,7 @@ namespace Demo {
         virtual void onInit() override {
             renderer.init(Features.get<Graphics>(), parameterManager);
 
-            drawableFactory = ghnew Ghurund::UI::DirectX::DrawableFactory(ResourceManager);
+            drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
             theme = ghnew LightTheme(ResourceManager, *drawableFactory);
 
             window = ghnew DemoWindow(*this, renderer);

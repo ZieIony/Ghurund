@@ -1,12 +1,11 @@
 #pragma once
 
-#include "core/window/SystemWindow.h"
-#include "core/input/Input.h"
-#include "engine/directx/SwapChain.h"
-#include "engine/directx/Renderer.h"
 #include "core/application/Application.h"
-
 #include "core/application/LayerList.h"
+#include "core/window/SystemWindow.h"
+#include "engine/directx/DirectXDrawingContext.h"
+#include "engine/directx/Renderer.h"
+#include "engine/directx/SwapChain.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
@@ -26,7 +25,7 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         SwapChain* swapChain = nullptr;
-        LayerList<RenderTarget> layers;
+        LayerList<DirectXDrawingContext> layers;
         Application& app;
         Renderer& renderer;
 
@@ -66,17 +65,17 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = getSwapChain)) Ghurund::Engine::DirectX::SwapChain& SwapChain;
 
-        inline LayerList<RenderTarget>& getLayers() {
+        inline LayerList<DirectXDrawingContext>& getLayers() {
             return layers;
         }
 
-        __declspec(property(get = getLayers)) LayerList<RenderTarget>& Layers;
+        __declspec(property(get = getLayers)) LayerList<DirectXDrawingContext>& Layers;
 
         inline Application& getApplication() {
             return app;
         }
 
-        __declspec(property(get = getApplication)) Ghurund::Application& Application;
+        __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
 
         virtual bool onKeyEvent(const KeyEventArgs& args) override;
 
@@ -94,5 +93,5 @@ namespace Ghurund::Engine::DirectX {
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<LayerList<Ghurund::Engine::DirectX::RenderTarget>>();
+    const Type& getType<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>();
 }

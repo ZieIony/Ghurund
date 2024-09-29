@@ -16,8 +16,10 @@ includeDir["UI"] = "%{wks.location}/engine/UI/src"
 includeDir["UI.Direct2D"] = "%{wks.location}/engine/UI.Direct2D/src"
 includeDir["UI.DirectX"] = "%{wks.location}/engine/UI.DirectX/src"
 includeDir["UI.GDI"] = "%{wks.location}/engine/UI.GDI/src"
+includeDir["UI.OpenGL"] = "%{wks.location}/engine/UI.OpenGL/src"
 includeDir["Engine"] = "%{wks.location}/engine/Engine/src"
 includeDir["Engine.DirectX"] = "%{wks.location}/engine/Engine.DirectX/src"
+includeDir["Engine.OpenGL"] = "%{wks.location}/engine/Engine.OpenGL/src"
 includeDir["UnitTest.Core"] = "%{wks.location}/engine/UnitTest.Core/src"
 includeDir["tinyxml2"] = "%{libsDir}/tinyxml2"
 includeDir["entt"] = "%{libsDir}/entt/single_include/entt"
@@ -27,6 +29,8 @@ includeDir["PhysX"] = "%{libsDir}/PhysX/physx/include"
 includeDir["PhysX.Shared"] = "%{libsDir}/PhysX/pxshared/include"
 includeDir["CRC"] = "%{libsDir}/CRCpp/inc"
 includeDir["DirectX"] = "%{libsDir}"
+includeDir["GLEW"] = "%{libsDir}/glew-2.1.0/include"
+includeDir["GLFW"] = "%{libsDir}/glfw-3.3.6/include"
 
 libraryDir = {}
 libraryDir["tinyxml2_Debug"] = "%{libsDir}/tinyxml2/vs/x64/Debug"
@@ -36,6 +40,8 @@ libraryDir["msdfgen_Debug"] = "%{libsDir}/msdfgen/x64/Debug Library"
 libraryDir["msdfgen_Release"] = "%{libsDir}/msdfgen/x64/Release Library"
 libraryDir["PhysX_Debug"] = "%{libsDir}/PhysX/physx/bin/win.x86_64.vc141.mt/debug"
 libraryDir["PhysX_Release"] = "%{libsDir}/PhysX/physx/bin/win.x86_64.vc141.mt/release"
+libraryDir["GLEW"] = "%{libsDir}/glew-2.1.0/lib/Release/x64"
+libraryDir["GLFW"] = "%{libsDir}/glfw-3.3.6/lib-vc2022"
 
 library = {}
 library["tinyxml2_Debug"] = "%{libraryDir.tinyxml2_Debug}/tinyxml2d64.lib"
@@ -55,6 +61,9 @@ library["PhysXExtensions_Debug"] = "%{libraryDir.PhysX_Debug}/PhysXExtensions_st
 library["PhysXExtensions_Release"] = "%{libraryDir.PhysX_Release}/PhysXExtensions_static_64.lib"
 library["PhysXPvdSDK_Debug"] = "%{libraryDir.PhysX_Debug}/PhysXPvdSDK_static_64.lib"
 library["PhysXPvdSDK_Release"] = "%{libraryDir.PhysX_Release}/PhysXPvdSDK_static_64.lib"
+
+library["GLEW"] = "%{libraryDir.GLEW}/glew32.lib"
+library["GLFW"] = "%{libraryDir.GLFW}/glfw3_mt.lib"
 
 libdirs = libraryDir
 

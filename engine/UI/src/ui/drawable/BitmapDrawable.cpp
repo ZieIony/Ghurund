@@ -1,14 +1,14 @@
-#include "ghuidxpch.h"
+#include "ghuipch.h"
 #include "BitmapDrawable.h"
 
 #include "core/math/Rect.h"
 #include "ui/Canvas.h"
-#include "ui/directx/image/Bitmap.h"
+#include "ui/image/Bitmap.h"
 #include "core/reflection/TypeBuilder.h"
 
-namespace Ghurund::UI::DirectX {
+namespace Ghurund::UI {
     const Ghurund::Core::Type& BitmapDrawable::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<BitmapDrawable>(Ghurund::UI::NAMESPACE_NAME, "BitmapDrawable")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<BitmapDrawable>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(BitmapDrawable))
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

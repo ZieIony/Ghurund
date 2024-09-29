@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 	private:
 		Ghurund::Core::ResourceManager& resourceManager;
 		ShapeFactory& shapeFactory;
-		DrawableFactory& drawableFactory;
+		IDrawableFactory& drawableFactory;
 		TextFormatFactory& textFormatFactory;
 		ConstraintFactory& constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
@@ -42,7 +42,7 @@ namespace Ghurund::UI {
 		LayoutLoader(
 			Ghurund::Core::ResourceManager& resourceManager,
 			ShapeFactory& shapeFactory,
-			DrawableFactory& drawableFactory,
+			IDrawableFactory& drawableFactory,
 			TextFormatFactory& textFormatFactory,
 			ConstraintFactory& constraintFactory
 		);

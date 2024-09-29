@@ -37,7 +37,7 @@ namespace Ghurund::Core {
 
         windowClass = {
             .cbSize = sizeof(WNDCLASSEX),
-            .style = style,
+            .style = style, // OpenGL: .style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
             .lpfnWndProc = windowProc,
             .cbClsExtra = 0L,
             .cbWndExtra = 0L,

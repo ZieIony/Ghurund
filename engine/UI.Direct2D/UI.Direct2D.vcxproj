@@ -95,6 +95,7 @@
     <ClInclude Include="src\Ghurund.UI.Direct2D.h" />
     <ClInclude Include="src\ghuid2dpch.h" />
     <ClInclude Include="src\ui\direct2d\Canvas.h" />
+    <ClInclude Include="src\ui\direct2d\Direct2DDrawingContext.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2D.h" />
     <ClInclude Include="src\ui\direct2d\Graphics2DFactory.h" />
     <ClInclude Include="src\ui\direct2d\RenderTarget2D.h" />
@@ -105,7 +106,6 @@
     <ClInclude Include="src\ui\direct2d\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\direct2d\UILayer.h" />
     <ClInclude Include="src\ui\direct2d\application\UIApplicationWindow.h" />
-    <ClInclude Include="src\ui\direct2d\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\direct2d\drawable\SvgDrawable.h" />
     <ClInclude Include="src\ui\direct2d\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\direct2d\effects\TintEffect.h" />
@@ -114,7 +114,6 @@
     <ClInclude Include="src\ui\direct2d\image\BitmapFactory.h" />
     <ClInclude Include="src\ui\direct2d\image\BitmapLoader.h" />
     <ClInclude Include="src\ui\direct2d\image\SvgDocument.h" />
-    <ClInclude Include="src\ui\direct2d\loading\ImageDrawableFactory.h" />
     <ClInclude Include="src\ui\direct2d\loading\ShapeFactory.h" />
     <ClInclude Include="src\ui\direct2d\loading\TextFormatFactory.h" />
     <ClInclude Include="src\ui\direct2d\text\TextFormat.h" />
@@ -126,18 +125,17 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\ui\direct2d\Canvas.cpp" />
+    <ClCompile Include="src\ui\direct2d\Direct2DDrawingContext.cpp" />
     <ClCompile Include="src\ui\direct2d\Graphics2D.cpp" />
     <ClCompile Include="src\ui\direct2d\RenderTarget2D.cpp" />
     <ClCompile Include="src\ui\direct2d\Shape.cpp" />
     <ClCompile Include="src\ui\direct2d\UIContext.cpp" />
     <ClCompile Include="src\ui\direct2d\UIFeature.cpp" />
     <ClCompile Include="src\ui\direct2d\UILayer.cpp" />
-    <ClCompile Include="src\ui\direct2d\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\direct2d\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\direct2d\font\Font.cpp" />
     <ClCompile Include="src\ui\direct2d\image\Bitmap.cpp" />
     <ClCompile Include="src\ui\direct2d\image\SvgDocument.cpp" />
-    <ClCompile Include="src\ui\direct2d\loading\ImageDrawableFactory.cpp" />
     <ClCompile Include="src\ui\direct2d\text\TextFormat.cpp" />
     <ClCompile Include="src\ui\direct2d\text\TextLayout.cpp" />
   </ItemGroup>

@@ -2,9 +2,10 @@
 
 #include "ui/Canvas.h"
 #include "ui/drawable/Drawable.h"
-#include "ui/directx/image/Bitmap.h"
 
-namespace Ghurund::UI::DirectX {
+namespace Ghurund::UI {
+    class Bitmap;
+
     class BitmapDrawable:public Drawable {
 #pragma region reflection
     protected:

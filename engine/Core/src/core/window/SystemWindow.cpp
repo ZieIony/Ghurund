@@ -19,19 +19,13 @@ namespace Ghurund::Core {
     }
 
     SystemWindow::~SystemWindow() {
-        if (!windowData)
-            return;
-
-        visible = false;
-        DragDropEnabled = false;
-
-        delete windowData;
-        SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)nullptr);
-
-        DestroyWindow(handle);
+        uninit();
     }
 
     void SystemWindow::init(WindowManager& windowManager) {
+        if (windowData)
+            return;
+
         handle = windowManager.makeWindow(Style);
         windowData = ghnew WindowData(this);
         SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)windowData);
@@ -57,6 +51,19 @@ namespace Ghurund::Core {
             SetWindowPos(handle, 0, position.x, position.y, 0, 0, SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE);
             dispatchPositionChangedEvent();
         };
+    }
+
+    void SystemWindow::uninit() {
+        if (!windowData)
+            return;
+
+        visible = false;
+        DragDropEnabled = false;
+
+        delete windowData;
+        SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)nullptr);
+
+        DestroyWindow(handle);
     }
 
     void SystemWindow::setDragDropEnabled(bool enabled) {

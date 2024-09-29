@@ -4,8 +4,8 @@
 #include "core/feature/Feature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
+#include "ui/loading/DrawableFactory.h"
 #include "ui/directx/loading/ShapeFactory.h"
-#include "ui/directx/loading/ImageDrawableFactory.h"
 #include "ui/directx/loading/TextFormatFactory.h"
 
 namespace Ghurund::UI::DirectX {
@@ -27,7 +27,7 @@ namespace Ghurund::UI::DirectX {
     private:
         ResourceManager& resourceManager;
         Ghurund::UI::DirectX::ShapeFactory* shapeFactory = nullptr;
-        Ghurund::UI::DirectX::DrawableFactory* drawableFactory = nullptr;
+        Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         Ghurund::UI::IBitmapFactory* bitmapFactory = nullptr;

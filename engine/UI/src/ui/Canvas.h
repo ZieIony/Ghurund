@@ -5,15 +5,12 @@
 #include "core/Color.h"
 #include "core/math/Rect.h"
 
-#include <dxgi1_6.h>
-#include <wrl.h>
-#include <ui/image/Bitmap.h>
-#include <ui/image/VectorImage.h>
-#include <ui/text/TextLayout.h>
-
 namespace Ghurund::UI {
-    using Microsoft::WRL::ComPtr;
     using namespace Ghurund::Core;
+
+    class Bitmap;
+    class VectorImage;
+    class TextLayout;
 
     class ICanvas {
     public:

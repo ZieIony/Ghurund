@@ -3,6 +3,7 @@
 #include "core/application/Layer.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/directx/buffer/RenderTarget.h"
+#include "engine/directx/DirectXDrawingContext.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/direct2d/Canvas.h"
 #include "ui/direct2d/Graphics2d.h"
@@ -13,7 +14,7 @@
 namespace Ghurund::UI::Direct2D {
     using namespace ::Ghurund::Engine::DirectX;
 
-    class D2DUILayer:public Ghurund::UI::UILayer<RenderTarget2D> {
+    class D2DUILayer:public Ghurund::UI::UILayer<DirectXDrawingContext> {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -78,6 +79,6 @@ namespace Ghurund::UI::Direct2D {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void draw(RenderTarget2D& context) override;
+        virtual void draw(DirectXDrawingContext& context) override;
     };
 }

@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\engine\directx\DirectXDrawingContext.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
@@ -146,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\directx\CommandList.cpp" />
+    <ClCompile Include="src\engine\directx\DirectXDrawingContext.cpp" />
     <ClCompile Include="src\engine\directx\DirectXTypes.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
