@@ -4,9 +4,7 @@
 
 namespace Preview {
 	const Ghurund::Core::Type& PreviewLayout::GET_TYPE() {
-		static const Ghurund::Core::Constructor CONSTRUCTOR = Constructor<PreviewLayout>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>("Preview", GH_STRINGIFY(PreviewLayout))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<PreviewLayout>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

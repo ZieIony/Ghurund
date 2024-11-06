@@ -28,6 +28,7 @@ namespace Preview {
 			return true;
 		};
 
+#ifdef _DEBUG
 		sizeChanged += [&](Window& window) {
 			Logger::print(LogType::INFO, _T("\n"));
 			Logger::print(LogType::INFO, previewLayout->printTree().Data);
@@ -35,7 +36,7 @@ namespace Preview {
 			previewLayout->validate();
 			return true;
 		};
-
+#endif
 		DragDropEnabled = true;
 		dropped += [this](Ghurund::Core::Window& window, const Array<FilePath*>& files) {
 			fileWatcher.clearFiles();

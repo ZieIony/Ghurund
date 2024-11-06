@@ -7,11 +7,9 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ColorView::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<ColorView>();
         static auto PROPERTY_COLOR = Property<ColorView, const ColorAttr&>("Color", &setColor);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ColorView>(NAMESPACE_NAME, GH_STRINGIFY(ColorView))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ColorView>()
             .withProperty(PROPERTY_COLOR)
             .withSupertype(__super::GET_TYPE());
 

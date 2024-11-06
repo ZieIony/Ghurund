@@ -318,7 +318,7 @@ namespace Ghurund::UI {
         if (selectionRange.length <= 0 || !Context)
             return;
 
-        //Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.start, selectionRange.length));
+        //Clipboard::putUnicodeText(Context->Window.Handle, Text.substring(selectionRange.start, selectionRange.start + selectionRange.length));
     }
 
     void TextView::onThemeChanged() {
@@ -397,8 +397,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& TextView::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<TextView>(NAMESPACE_NAME, GH_STRINGIFY(TextView))
-            .withZeroArgsConstructor()
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextView>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

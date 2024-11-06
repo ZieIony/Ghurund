@@ -6,9 +6,7 @@
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& RadioButton::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<RadioButton>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<RadioButton>(NAMESPACE_NAME, GH_STRINGIFY(RadioButton))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<RadioButton>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

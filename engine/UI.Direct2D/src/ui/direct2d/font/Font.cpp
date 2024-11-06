@@ -18,11 +18,8 @@ namespace Ghurund::UI::Direct2D
     const Ghurund::Core::Type& Font::GET_TYPE() {
         static auto PROPERTY_COLLECTION = Property<Font, IDWriteFontCollection*>("Collection", &getCollection);
 
-        static const auto CONSTRUCTOR = Constructor<Font>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Font>(Ghurund::UI::Direct2D::NAMESPACE_NAME, "Font")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Font>()
             .withProperty(PROPERTY_COLLECTION)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

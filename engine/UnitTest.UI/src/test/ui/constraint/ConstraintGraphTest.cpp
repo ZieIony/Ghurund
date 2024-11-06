@@ -40,7 +40,9 @@ public:
 			ConstraintGraph graph;
 			graph.addAll({ c0.get(), c1.get() });
 			graph.sort();
+#if defined _DEBUG || defined GH_TEST
 			Assert::IsTrue(graph.validateOrder({ c1.get(), c0.get() }), L"incorrect constraint order");
+#endif
 		}
 	}
 
@@ -51,7 +53,9 @@ public:
 			ConstraintGraph graph;
 			graph.addAll({ c0.get(), c1.get() });
 			graph.sort();
+#if defined _DEBUG || defined GH_TEST
 			Assert::IsTrue(graph.validateOrder({ c0.get(), c1.get() }), L"incorrect constraint order");
+#endif
 		}
 	}
 
@@ -84,7 +88,9 @@ public:
 			ConstraintGraph graph;
 			graph.addAll({ c0.get(), c1.get(), c2.get(), c3.get() });
 			graph.sort();
+#if defined _DEBUG || defined GH_TEST
 			Assert::IsTrue(graph.validateOrder({ c3.get(), c2.get(), c1.get(), c0.get() }), L"incorrect constraint order");
+#endif
 		}
 	}
 
@@ -100,7 +106,9 @@ public:
 			ConstraintGraph graph;
 			graph.addAll({ wrap.get(), fill.get(), value.get() });
 			graph.sort();
+#if defined _DEBUG || defined GH_TEST
 			Assert::IsTrue(graph.validateOrder({ value.get(), wrap.get(), fill.get() }), L"incorrect constraint order");
+#endif
 		}
 	}
 
@@ -119,9 +127,11 @@ public:
 			ConstraintGraph graph;
 			graph.addAll({ wrap.get(), left.get(), fill.get(), right.get(), value.get() });
 			graph.sort();
+#if defined _DEBUG || defined GH_TEST
 			Ghurund::Core::Logger::print(LogType::INFO, graph.print().Data);
 			Assert::IsTrue(graph.validateOrder({ left.get(), wrap.get(), fill.get(), right.get() }), L"invalid constraint order");
 			Assert::IsTrue(graph.validateOrder({ value.get(), wrap.get(), fill.get(), right.get() }), L"invalid constraint order");
+#endif
 		}
 	}
 

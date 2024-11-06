@@ -8,11 +8,7 @@
 namespace Ghurund::Net {
 
     const Ghurund::Core::Type& Networking::GET_TYPE() {
-
-        static const auto CONSTRUCTOR = Constructor<Networking>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Networking>("Ghurund::Net", "Networking")
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Networking>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

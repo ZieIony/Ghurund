@@ -37,9 +37,7 @@ namespace Ghurund::UI {
 	}
 
 	const Ghurund::Core::Type& CheckBox::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<CheckBox>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBox>(NAMESPACE_NAME, GH_STRINGIFY(CheckBox))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBox>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

@@ -30,7 +30,7 @@ namespace Ghurund::Core {
         const Array<std::reference_wrapper<const Type>> templateParams;
         const bool _const, pointer, ref, _volatile;
 
-        static List<std::reference_wrapper<const Type>>& getTypes() {
+        static List<std::reference_wrapper<const Type>>& GET_TYPES() {
             static List<std::reference_wrapper<const Type>> types;
             return types;
         }
@@ -48,7 +48,7 @@ namespace Ghurund::Core {
             pointer(false),
             ref(false),
             _volatile(false) {
-            getTypes().add(*this);
+            GET_TYPES().add(*this);
         }
 
         Type(const AString& _namespace, const AString& name, size_t size):
@@ -61,7 +61,7 @@ namespace Ghurund::Core {
             pointer(false),
             ref(false),
             _volatile(false) {
-            getTypes().add(*this);
+            GET_TYPES().add(*this);
         }
 
         Type(
@@ -85,7 +85,7 @@ namespace Ghurund::Core {
             properties(properties),
             methods(methods),
             templateParams(templateParams) {
-            getTypes().add(*this);
+            GET_TYPES().add(*this);
         }
 
         Type(
@@ -113,7 +113,7 @@ namespace Ghurund::Core {
             properties(properties),
             methods(methods),
             templateParams(templateParams) {
-            getTypes().add(*this);
+            GET_TYPES().add(*this);
         }
 
         static const Type& byName(const AString& typeNameWithNamespace) {
@@ -128,7 +128,7 @@ namespace Ghurund::Core {
         }
 
         static const Type& byName(const AString& _namespace, const AString& typeName) {
-            for (const Type& type : TYPES) {
+            for (const Type& type : GET_TYPES()) {
                 if (type.Namespace == _namespace && type.Name == typeName)
                     return type;
             }
@@ -239,7 +239,7 @@ namespace Ghurund::Core {
             return std::strong_ordering::equivalent;
         }
 
-        inline static const List<std::reference_wrapper<const Type>>& TYPES = getTypes();
+        inline static const List<std::reference_wrapper<const Type>>& TYPES = GET_TYPES();
 
         bool isOrExtends(const Type& type) const {
             Type* st = (Type*)this;
@@ -279,8 +279,7 @@ namespace Ghurund::Core {
     const Type& getType() {
         static const Type type = [] {
             const Type& baseType = getType<typename T::element_type>();
-            auto name = std::format("shared_ptr<{}>", baseType.Name);
-            return TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+            return TypeBuilder<T>().withTemplateParam(baseType);
         }();
         return type;
     }
@@ -289,8 +288,7 @@ namespace Ghurund::Core {
     const Type& getType() {
         static const Type type = [] {
             const Type& baseType = getType<typename T::element_type>();
-            auto name = std::format("unique_ptr<{}>", baseType.Name);
-            return TypeBuilder<T>("std", name.c_str()).withTemplateParam(baseType);
+            return TypeBuilder<T>().withTemplateParam(baseType);
         }();
         return type;
     }

@@ -9,7 +9,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& AdapterLayout::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<AdapterLayout>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<AdapterLayout>(NAMESPACE_NAME, GH_STRINGIFY(AdapterLayout))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<AdapterLayout>()
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

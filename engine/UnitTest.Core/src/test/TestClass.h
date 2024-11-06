@@ -3,6 +3,7 @@
 #include "core/RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
+#include "core/reflection/StandardTypes.h"
 #include "core/Observable.h"
 
 namespace UnitTest::Utils {
@@ -32,7 +33,7 @@ namespace UnitTest::Utils {
             static const auto writeProp = Property<ObjectTestClass, float>("progress", &setProgress);
             static const auto observableProp = Property<ObjectTestClass, Observable<Ghurund::Core::AString>&>("name", [](ObjectTestClass& obj)->Observable<AString>& {return obj.name; });
 
-            static const Ghurund::Core::Type TYPE = TypeBuilder<ObjectTestClass>("UnitTest::Utils", GH_STRINGIFY(ObjectTestClass))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<ObjectTestClass>()
                 .withConstructor(CONSTRUCTOR)
                 .withConstructor(CONSTRUCTOR2)
                 .withSupertype(__super::GET_TYPE())

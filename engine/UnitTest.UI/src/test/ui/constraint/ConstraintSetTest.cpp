@@ -26,7 +26,9 @@ public:
 	}
 
 	TEST_METHOD(passConstraintSet) {
+#ifdef _DEBUG
 		RefCountedObject::reservePointers(300);
+#endif
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeIntrusive<ColorView>();
@@ -108,7 +110,9 @@ public:
 	}
 
 	TEST_METHOD(setLeftWidthTopHeight) {
+#ifdef _DEBUG
 		RefCountedObject::reservePointers(300);
+#endif
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeIntrusive<ColorView>();
@@ -143,7 +147,9 @@ public:
 	}
 
 	TEST_METHOD(setLeftRightTopBottom) {
+#ifdef _DEBUG
 		RefCountedObject::reservePointers(300);
+#endif
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeIntrusive<ColorView>();
@@ -178,7 +184,9 @@ public:
 	}
 
 	TEST_METHOD(setWidthRightHeightBottom) {
+#ifdef _DEBUG
 		RefCountedObject::reservePointers(300);
+#endif
 		MemoryGuard memoryGuard;
 		{
 			auto control = makeIntrusive<ColorView>();

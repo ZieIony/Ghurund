@@ -18,7 +18,7 @@ namespace Ghurund::Core {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Layer>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Layer))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Layer>()
                 .withTemplateParam(Ghurund::Core::getType<T>())
                 .withSupertype(__super::GET_TYPE());
 

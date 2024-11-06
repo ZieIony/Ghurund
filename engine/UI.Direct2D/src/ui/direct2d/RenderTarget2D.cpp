@@ -33,7 +33,7 @@ namespace Ghurund::UI::Direct2D {
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::UI::Direct2D::RenderTarget2D>() {
-        static Type TYPE = TypeBuilder<Ghurund::UI::Direct2D::RenderTarget2D>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(RenderTarget2D));
+        static Type TYPE = TypeBuilder<Ghurund::UI::Direct2D::RenderTarget2D>();
         return TYPE;
     }
 }

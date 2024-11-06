@@ -22,14 +22,11 @@ namespace Ghurund {
         static auto PROPERTY_DIRECTION = Ghurund::Core::Property<Audio, XMFLOAT3>("Direction", (XMFLOAT3(Audio::*)()) & getDirection, (void(Audio::*)(XMFLOAT3)) & setDirection);
         static auto PROPERTY_UP = Ghurund::Core::Property<Audio, XMFLOAT3>("Up", (XMFLOAT3(Audio::*)()) & getUp, (void(Audio::*)(XMFLOAT3)) & setUp);
 
-        static const auto CONSTRUCTOR = Constructor<Audio>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Audio))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Audio>()
             .withProperty(PROPERTY_POSITION)
             .withProperty(PROPERTY_VELOCITY)
             .withProperty(PROPERTY_DIRECTION)
             .withProperty(PROPERTY_UP)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

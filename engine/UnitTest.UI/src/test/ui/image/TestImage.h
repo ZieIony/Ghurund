@@ -14,7 +14,7 @@ namespace UnitTest {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<TestImage>(Ghurund::UI::NAMESPACE_NAME, "TestImage")
+            static const Ghurund::Core::Type TYPE = TypeBuilder<TestImage>()
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;

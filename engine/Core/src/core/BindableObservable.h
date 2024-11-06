@@ -16,7 +16,7 @@ namespace Ghurund::Core {
             static const auto CONSTRUCTOR = Constructor<BindableObservable<T>>();
             static const auto CONSTRUCTOR2 = Constructor<BindableObservable<T>, const T&>();
 
-            static const Ghurund::Core::Type TYPE = TypeBuilder<BindableObservable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(BindableObservable))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<BindableObservable<T>>()
                 .withConstructor(CONSTRUCTOR)
                 .withConstructor(CONSTRUCTOR2)
                 .withSupertype(__super::GET_TYPE())

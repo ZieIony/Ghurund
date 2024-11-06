@@ -324,6 +324,8 @@ namespace Ghurund::Core {
 
 		size_t find(const T* str, size_t start = 0) const {
 			size_t strSize = lengthOf(str);
+			if (strSize + start > size)
+				return Length;
 			for (size_t i = start; i <= size - strSize; i++) {
 				if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
 					return i;
@@ -333,6 +335,8 @@ namespace Ghurund::Core {
 
 		size_t find(const GenericString<T>& str, size_t start = 0) const {
 			size_t strSize = str.Length;
+			if (strSize + start > size)
+				return Length;
 			for (size_t i = start; i <= size - strSize; i++) {
 				if (memcmp(&v[i], str.v, strSize * sizeof(T)) == 0)
 					return i;
@@ -340,9 +344,9 @@ namespace Ghurund::Core {
 			return Length;
 		}
 
-		size_t findLast(const T* str) const {
+		size_t findLast(const T* str, size_t start = std::numeric_limits<size_t>::max()) const {
 			size_t strSize = lengthOf(str);
-			for (size_t i = size - strSize; i > 0; i--) {
+			for (size_t i = std::min(size - strSize, start); i > 0; i--) {
 				if (memcmp(&v[i], str, strSize * sizeof(T)) == 0)
 					return i;
 			}
@@ -352,9 +356,9 @@ namespace Ghurund::Core {
 			return Length;
 		}
 
-		size_t findLast(const GenericString<T>& str) const {
+		size_t findLast(const GenericString<T>& str, size_t start = std::numeric_limits<size_t>::max()) const {
 			size_t strSize = str.Length;
-			for (size_t i = size - strSize; i > 0; i--) {
+			for (size_t i = std::min(size - strSize, start); i > 0; i--) {
 				if (memcmp(&v[i], str.v, strSize * sizeof(T)) == 0)
 					return i;
 			}
@@ -429,8 +433,8 @@ namespace Ghurund::Core {
 			return GenericString<T>(v + start);
 		}
 
-		inline GenericString<T> substring(size_t start, size_t length) const {
-			return GenericString<T>(v + start, length);
+		inline GenericString<T> substring(size_t start, size_t end) const {
+			return GenericString<T>(v + start, end - start);
 		}
 
 		Array<GenericString<T>> split(const T* d) const {

@@ -7,7 +7,7 @@
 namespace Ghurund::Core {
 	template<>
 	const Type& getType<State<bool>>() {
-		static const Type TYPE = TypeBuilder<State<bool>>(NAMESPACE_NAME, GH_STRINGIFY(State<bool>)).withTemplateParam(getType<bool>());
+		static const Type TYPE = TypeBuilder<State<bool>>();
 		return TYPE;
 	}
 }

@@ -3,7 +3,7 @@
 #include "CheckBoxRadio.h"
 
 namespace Ghurund::UI {
-    class RadioButton:public CheckBoxRadio<RadioButton> {
+    class RadioButton:public CheckBoxRadio {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -20,11 +20,23 @@ namespace Ghurund::UI {
         virtual void onStateChanged() override;
 
     public:
+        Event<RadioButton, bool> checkedChanged = *this;
+
         RadioButton() {
             interactionHandler.clicked += [this](InteractionHandler&, const MouseClickedEventArgs&) {
                 Checked = checked;
                 return true;
             };
         }
+
+        inline void setChecked(bool checked) {
+            if (this->checked != checked) {
+                this->checked = checked;
+                dispatchStateChanged();
+                checkedChanged(checked);
+            }
+        }
+
+        __declspec(property(put = setChecked)) bool Checked;
     };
 }

@@ -8,9 +8,8 @@
 
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& ParameterManager::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<ParameterManager>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ParameterManager>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(ParameterManager))
-            .withConstructor(CONSTRUCTOR);
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ParameterManager>()
+            .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }

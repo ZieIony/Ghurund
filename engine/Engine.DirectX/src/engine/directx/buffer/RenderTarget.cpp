@@ -243,7 +243,7 @@ namespace Ghurund::Engine::DirectX {
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::Engine::DirectX::RenderTarget>() {
-        static Type TYPE = TypeBuilder<Ghurund::Engine::DirectX::RenderTarget>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(RenderTarget));
+        static Type TYPE = TypeBuilder<Ghurund::Engine::DirectX::RenderTarget>();
         return TYPE;
     }
 }

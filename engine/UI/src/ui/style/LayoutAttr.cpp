@@ -3,22 +3,21 @@
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& LayoutAttr::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutAttr>(NAMESPACE_NAME, GH_STRINGIFY(LayoutAttr))
-			.withModifier(TypeModifier::ABSTRACT)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutAttr>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
 	}
 
 	const Ghurund::Core::Type& LayoutValue::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutValue>(NAMESPACE_NAME, GH_STRINGIFY(LayoutValue))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutValue>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
 	}
 
 	const Ghurund::Core::Type& LayoutRef::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutRef>(NAMESPACE_NAME, GH_STRINGIFY(LayoutRef))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<LayoutRef>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

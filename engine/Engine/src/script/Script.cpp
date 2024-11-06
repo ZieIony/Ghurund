@@ -15,9 +15,7 @@ namespace Ghurund::Engine {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& Script::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Script>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Script>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Script))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Script>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

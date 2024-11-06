@@ -5,7 +5,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& Separator::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Separator>(NAMESPACE_NAME, GH_STRINGIFY(Separator))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Separator>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

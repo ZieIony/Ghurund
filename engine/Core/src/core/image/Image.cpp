@@ -36,7 +36,7 @@ namespace Ghurund::Core {
 
         static const auto CONSTRUCTOR = Constructor<Image>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Image>(Ghurund::Core::NAMESPACE_NAME, "Image")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Image>()
             .withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_FORMAT)
             .withProperty(PROPERTY_WIDTH)

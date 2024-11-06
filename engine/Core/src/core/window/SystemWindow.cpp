@@ -12,7 +12,7 @@
 
 namespace Ghurund::Core {
     const Ghurund::Core::Type& SystemWindow::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<SystemWindow>(NAMESPACE_NAME, GH_STRINGIFY(SystemWindow))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SystemWindow>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

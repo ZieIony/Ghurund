@@ -11,12 +11,10 @@ namespace Ghurund::UI {
         static auto PROPERTY_TINT = UniqueProperty<DrawableView, std::unique_ptr<ColorAttr>>("Tint", (void(DrawableView::*)(std::unique_ptr<Ghurund::UI::ColorAttr>)) &setTint);
         static auto PROPERTY_SCALEMODE = Property<DrawableView, ImageScaleMode>("ScaleMode", &setScaleMode);
 
-        static const auto CONSTRUCTOR = Constructor<DrawableView>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableView>(NAMESPACE_NAME, GH_STRINGIFY(DrawableView))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableView>()
             .withProperty(PROPERTY_DRAWABLE)
             .withProperty(PROPERTY_TINT)
             .withProperty(PROPERTY_SCALEMODE)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

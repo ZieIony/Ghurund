@@ -123,7 +123,9 @@ public:
 			Set<uint32_t, TestAllocator> testSet(allocator1);
 			TestAllocator allocator2;
 			Set<uint32_t, TestAllocator> set(allocator2);
-			auto func = [&] { set = std::move(testSet); };
+			auto func = [&] {
+				set = std::move(testSet);
+			};
 			Assert::ExpectException<IncompatibleAllocatorsException>(func);
 		}
 	}

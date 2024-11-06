@@ -18,7 +18,7 @@ namespace Ghurund::Engine::OpenGL {
         static auto PROPERTY_LAYERS = Property<OpenGLWindow, LayerList<OpenGLDrawingContext>&>("Layers", &getLayers);
         static auto PROPERTY_APPLICATION = Property<OpenGLWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<OpenGLWindow>("Ghurund", "OpenGLWindow")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<OpenGLWindow>()
             .withProperty(PROPERTY_LAYERS)
             .withProperty(PROPERTY_APPLICATION)
             .withSupertype(__super::GET_TYPE());
@@ -127,8 +127,7 @@ namespace Ghurund::Engine::OpenGL {
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>() {
-        static Type TYPE = TypeBuilder<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>(Ghurund::Engine::OpenGL::NAMESPACE_NAME, GH_STRINGIFY(LayerList<OpenGLDrawingContext>))
-            .withTemplateParam<Ghurund::Engine::OpenGL::OpenGLDrawingContext>();
+        static Type TYPE = TypeBuilder<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>();
         return TYPE;
     }
 }

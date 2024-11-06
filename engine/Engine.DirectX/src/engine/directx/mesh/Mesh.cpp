@@ -122,9 +122,7 @@ namespace Ghurund {
     }
 
     const Ghurund::Core::Type& Mesh::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Mesh>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Mesh>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(Mesh))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Mesh>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

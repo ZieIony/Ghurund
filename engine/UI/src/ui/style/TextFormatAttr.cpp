@@ -3,22 +3,21 @@
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& TextFormatAttr::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatAttr>(NAMESPACE_NAME, GH_STRINGIFY(TextFormatAttr))
-			.withModifier(TypeModifier::ABSTRACT)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatAttr>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
 	}
 
 	const Ghurund::Core::Type& TextFormatValue::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatValue>(NAMESPACE_NAME, GH_STRINGIFY(TextFormatValue))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatValue>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;
 	}
 
 	const Ghurund::Core::Type& TextFormatRef::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatRef>(NAMESPACE_NAME, GH_STRINGIFY(TextFormatRef))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormatRef>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

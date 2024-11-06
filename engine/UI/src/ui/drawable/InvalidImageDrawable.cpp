@@ -7,7 +7,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& InvalidImageDrawable::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<InvalidImageDrawable>(Ghurund::UI::NAMESPACE_NAME, "InvalidImageDrawable")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<InvalidImageDrawable>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

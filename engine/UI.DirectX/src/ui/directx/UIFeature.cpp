@@ -15,7 +15,7 @@ namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::UI::DirectX::NAMESPACE_NAME, GH_STRINGIFY(UIFeature))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

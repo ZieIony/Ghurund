@@ -9,7 +9,7 @@
 
 namespace Ghurund::UI::Direct2D {
     const Ghurund::Core::Type& TextFormat::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormat>(NAMESPACE_NAME, GH_STRINGIFY(TextFormat))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextFormat>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

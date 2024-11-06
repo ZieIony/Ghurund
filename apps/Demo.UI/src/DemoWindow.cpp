@@ -30,6 +30,7 @@ namespace Demo {
 		));
 		Content = demoLayout.get();
 
+#ifdef _DEBUG
 		sizeChanged += [&](Window& window) {
 			Logger::print(LogType::INFO, _T("\n"));
 			Logger::print(LogType::INFO, demoLayout->printTree().Data);
@@ -37,6 +38,7 @@ namespace Demo {
 			demoLayout->validate();
 			return true;
 		};
+#endif
 
 		auto colors = List<Color>({
 			Color(0xffff0000),

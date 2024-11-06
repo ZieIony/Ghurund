@@ -7,9 +7,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& MenuBar::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<MenuBar>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<MenuBar>(NAMESPACE_NAME, GH_STRINGIFY(MenuBar))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<MenuBar>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

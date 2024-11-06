@@ -13,7 +13,7 @@ namespace Ghurund::Core {
 			WString pathSimplified = str;
 			pathSimplified.replace('\\', '/');
 			size_t indexOfPath = pathSimplified.find(L"/", LIB_PROTOCOL.Length);
-			WString libName = pathSimplified.substring(LIB_PROTOCOL.Length, indexOfPath - LIB_PROTOCOL.Length);
+			WString libName = pathSimplified.substring(LIB_PROTOCOL.Length, indexOfPath);
 			WString path = pathSimplified.substring(indexOfPath + 1);
 			return ResourcePath(libName, path);
 		} else {

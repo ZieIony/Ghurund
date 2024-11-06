@@ -17,7 +17,7 @@ namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(UIFeature))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

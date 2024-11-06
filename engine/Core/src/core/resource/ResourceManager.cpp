@@ -114,7 +114,7 @@ namespace Ghurund::Core {
 
 	const Ghurund::Core::Type& ResourceManager::GET_TYPE() {
 		static const auto CONSTRUCTOR = Constructor<ResourceManager>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>(NAMESPACE_NAME, GH_STRINGIFY(ResourceManager))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<ResourceManager>()
 			.withConstructor(CONSTRUCTOR)
 			.withSupertype(__super::GET_TYPE());
 

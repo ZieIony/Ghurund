@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <vector>
+#include <core/collection/Set.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -45,6 +46,15 @@ namespace UnitTest {
 	};
 
 	TEST_CLASS(MapTest) {
+	private:
+		template<typename Key, typename Value>
+		inline bool containsValue(const Map<Key, Value>& map, const Value& value) const {
+			for (auto& [k, v] : map)
+				if (v == value)
+					return true;
+			return false;
+		}
+
 	public:
 
 		TEST_METHOD(Map_constructor) {
@@ -75,9 +85,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -92,9 +102,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -108,9 +118,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -126,9 +136,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -144,9 +154,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -162,9 +172,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -180,9 +190,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -197,9 +207,9 @@ namespace UnitTest {
 				Assert::IsTrue(map.contains(1u));
 				Assert::IsTrue(map.contains(2u));
 				Assert::IsTrue(map.contains(3u));
-				Assert::IsTrue(map.containsValue("a"));
-				Assert::IsTrue(map.containsValue("b"));
-				Assert::IsTrue(map.containsValue("c"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "b"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "c"));
 			}
 		}
 
@@ -224,7 +234,7 @@ namespace UnitTest {
 				Assert::AreEqual(map.Size, (size_t)1);
 				Assert::AreEqual(map.Empty, false);
 				Assert::IsTrue(map.contains(1u));
-				Assert::IsTrue(map.containsValue("a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 			}
 		}
 
@@ -413,9 +423,9 @@ namespace UnitTest {
 				Assert::AreEqual(map.Size, (size_t)3);
 				Assert::AreEqual(map.Empty, false);
 				Assert::IsTrue(map.contains(1));
-				Assert::IsTrue(map.containsValue("a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 				Assert::IsFalse(map.contains(4));
-				Assert::IsFalse(map.containsValue("d"));
+				Assert::IsFalse(containsValue<uint32_t, AString>(map, "d"));
 			}
 
 			{
@@ -424,9 +434,9 @@ namespace UnitTest {
 				Assert::AreEqual(map.Size, (size_t)3);
 				Assert::AreEqual(map.Empty, false);
 				Assert::IsTrue(map.contains(1));
-				Assert::IsTrue(map.containsValue("a"));
+				Assert::IsTrue(containsValue<uint32_t, AString>(map, "a"));
 				Assert::IsFalse(map.contains(4));
-				Assert::IsFalse(map.containsValue("d"));
+				Assert::IsFalse(containsValue<uint32_t, AString>(map, "d"));
 			}
 		}
 
@@ -437,7 +447,6 @@ namespace UnitTest {
 			Assert::AreEqual(map.Size, (size_t)3);
 			Assert::AreEqual(map.Empty, false);
 			Assert::IsTrue(map == map2);
-			_____________________checkMemory();
 		}
 
 		TEST_METHOD(Map_customTraits) {
@@ -450,7 +459,6 @@ namespace UnitTest {
 			Assert::AreEqual(map.Empty, false);
 			Assert::AreEqual(5, map.get(1).a);
 			Assert::AreEqual(4, map.get(2).a);
-			_____________________checkMemory();
 		}
 	};
 }

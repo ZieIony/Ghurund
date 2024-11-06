@@ -7,7 +7,7 @@
 namespace Ghurund::UI {
     const Ghurund::Core::Type& ScrollView::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<ScrollView>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ScrollView>(NAMESPACE_NAME, GH_STRINGIFY(ScrollView))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ScrollView>()
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 

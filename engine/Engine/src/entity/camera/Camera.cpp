@@ -224,9 +224,7 @@ namespace Ghurund::Engine {
 	}
 
 	const Ghurund::Core::Type& Camera::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<Camera>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Camera))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Camera>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

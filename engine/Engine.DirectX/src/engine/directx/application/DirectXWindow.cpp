@@ -18,7 +18,7 @@ namespace Ghurund::Engine::DirectX {
         static auto PROPERTY_LAYERS = Property<DirectXWindow, LayerList<DirectXDrawingContext>&>("Layers", &getLayers);
         static auto PROPERTY_APPLICATION = Property<DirectXWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DirectXWindow>("Ghurund", "DirectXWindow")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DirectXWindow>()
             .withProperty(PROPERTY_SWAPCHAIN)
             .withProperty(PROPERTY_LAYERS)
             .withProperty(PROPERTY_APPLICATION)
@@ -89,8 +89,7 @@ namespace Ghurund::Engine::DirectX {
 namespace Ghurund::Core {
     template<>
     const Type& getType<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>() {
-        static Type TYPE = TypeBuilder<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(LayerList<DirectXDrawingContext>))
-            .withTemplateParam<Ghurund::Engine::DirectX::DirectXDrawingContext>();
+        static Type TYPE = TypeBuilder<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>();
         return TYPE;
     }
 }

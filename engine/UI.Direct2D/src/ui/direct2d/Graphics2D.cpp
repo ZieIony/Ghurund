@@ -7,7 +7,7 @@
 namespace Ghurund::UI::Direct2D {
 
     const Ghurund::Core::Type& Graphics2D::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics2D>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(Graphics2D))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics2D>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

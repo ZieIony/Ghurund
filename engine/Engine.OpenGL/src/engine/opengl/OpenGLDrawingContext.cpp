@@ -4,7 +4,7 @@
 namespace Ghurund::Core {
     template<>
     const Type& getType<Ghurund::Engine::OpenGL::OpenGLDrawingContext>() {
-        static Type TYPE = TypeBuilder<Ghurund::Engine::OpenGL::OpenGLDrawingContext>(Ghurund::Engine::OpenGL::NAMESPACE_NAME, GH_STRINGIFY(OpenGLDrawingContext));
+        static const Type TYPE = TypeBuilder<Ghurund::Engine::OpenGL::OpenGLDrawingContext>();
         return TYPE;
     }
 }

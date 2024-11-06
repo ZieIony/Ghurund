@@ -53,8 +53,7 @@ namespace Ghurund::Core {
     }
 
     const Ghurund::Core::Type& RefCountedObject::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>(NAMESPACE_NAME, GH_STRINGIFY(RefCountedObject))
-            .withModifiers(TypeModifier::ABSTRACT)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<RefCountedObject>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

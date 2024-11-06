@@ -23,9 +23,7 @@ namespace Ghurund::Engine::DirectX {
     }
 
     const Ghurund::Core::Type& Texture::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Texture>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Texture>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(Texture))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Texture>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

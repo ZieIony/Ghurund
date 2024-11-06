@@ -31,7 +31,7 @@ namespace Ghurund::UI {
 		static auto PROPERTY_POSITIONINWINDOW = Property<Control, FloatPoint>("PositionInWindow", &getPositionInWindow);
 		static auto PROPERTY_POSITIONONSCREEN = Property<Control, FloatPoint>("PositionOnScreen", &getPositionOnScreen);
 
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Control>(Ghurund::UI::NAMESPACE_NAME, "Control")
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Control>()
 			.withProperty(PROPERTY_NAME)
 			.withProperty(PROPERTY_VISIBLE)
 			.withProperty(PROPERTY_ENABLED)
@@ -49,7 +49,6 @@ namespace Ghurund::UI {
 			.withProperty(PROPERTY_CONTEXT)
 			.withProperty(PROPERTY_POSITIONINWINDOW)
 			.withProperty(PROPERTY_POSITIONONSCREEN)
-			.withModifier(TypeModifier::ABSTRACT)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

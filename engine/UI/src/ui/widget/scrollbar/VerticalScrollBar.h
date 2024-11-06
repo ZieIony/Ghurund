@@ -32,9 +32,7 @@ namespace Ghurund::UI {
 
     protected:
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = Constructor<VerticalScrollBar>();
-            static const Ghurund::Core::Type TYPE = TypeBuilder<VerticalScrollBar>(NAMESPACE_NAME, GH_STRINGIFY(VerticalScrollBar))
-                .withConstructor(CONSTRUCTOR)
+            static const Ghurund::Core::Type TYPE = TypeBuilder<VerticalScrollBar>()
                 .withSupertype(__super::GET_TYPE());
 
             return GET_TYPE();

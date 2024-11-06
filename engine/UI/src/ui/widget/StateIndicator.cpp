@@ -22,9 +22,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& StateIndicator::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<StateIndicator>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicator>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicator))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicator>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -90,9 +88,7 @@ namespace Ghurund::UI {
     }
 
     const Ghurund::Core::Type& StateIndicatorOnAccent::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<StateIndicatorOnAccent>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicatorOnAccent>(NAMESPACE_NAME, GH_STRINGIFY(StateIndicatorOnAccent))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<StateIndicatorOnAccent>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

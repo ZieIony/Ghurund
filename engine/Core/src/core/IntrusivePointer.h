@@ -12,7 +12,9 @@ namespace Ghurund::Core {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Type TYPE = TypeBuilder<IntrusivePointer<T>>(Ghurund::Core::NAMESPACE_NAME, "IntrusivePointer").withTemplateParams<T>();
+			Ghurund::Core::getType<T>();
+			static const Type TYPE = TypeBuilder<IntrusivePointer<T>>()
+				.withTemplateParam<T>();
 			return TYPE;
 		}
 

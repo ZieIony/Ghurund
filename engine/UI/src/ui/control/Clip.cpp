@@ -9,11 +9,8 @@ namespace Ghurund::UI {
     const Ghurund::Core::Type& Clip::GET_TYPE() {
         static auto PROPERTY_SHAPE = UniqueProperty<Clip, std::unique_ptr<Ghurund::UI::Shape>>("Shape", &setShape);
 
-        static const auto CONSTRUCTOR = Constructor<Clip>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Clip>("Ghurund::UI", "Clip")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Clip>()
             .withProperty(PROPERTY_SHAPE)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

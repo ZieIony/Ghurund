@@ -10,7 +10,7 @@ namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Engine::DirectX;
 
     const Ghurund::Core::Type& DXUILayer::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DXUILayer>(Ghurund::UI::DirectX::NAMESPACE_NAME, GH_STRINGIFY(DXUILayer))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DXUILayer>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

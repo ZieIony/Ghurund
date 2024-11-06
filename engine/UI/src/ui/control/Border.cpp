@@ -11,7 +11,7 @@ namespace Ghurund::UI {
         static auto PROPERTY_SHAPE = UniqueProperty<Border, std::unique_ptr<Ghurund::UI::Shape>>("Shape", &setShape);
 
         static const auto CONSTRUCTOR = Constructor<Border>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Border>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Border))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Border>()
             .withProperty(PROPERTY_SHAPE)
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());

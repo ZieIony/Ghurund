@@ -9,9 +9,8 @@ namespace Ghurund::UI {
 
         static auto PROPERTY_FOCUS = Property<ControlParent, Control*>("Focus", &getFocus, &setFocus);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ControlParent>(Ghurund::UI::NAMESPACE_NAME, "ControlParent")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ControlParent>()
             .withProperty(PROPERTY_FOCUS)
-            .withModifier(TypeModifier::ABSTRACT)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

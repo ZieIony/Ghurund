@@ -10,9 +10,7 @@
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ControlGroup::GET_TYPE() {
-		//static const auto CONSTRUCTOR = Constructor<ControlGroup>();
-		static Ghurund::Core::Type TYPE = TypeBuilder<ControlGroup>(NAMESPACE_NAME, GH_STRINGIFY(ControlGroup))
-			//.withConstructor(CONSTRUCTOR)
+		static Ghurund::Core::Type TYPE = TypeBuilder<ControlGroup>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

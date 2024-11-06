@@ -9,9 +9,7 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& SwapChain::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<SwapChain>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<SwapChain>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(SwapChain))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SwapChain>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

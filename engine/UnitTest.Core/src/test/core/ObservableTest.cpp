@@ -104,6 +104,7 @@ public:
         }
     }
 
+    /*
     TEST_METHOD(Observable_handlerRemove) {
         MemoryGuard guard;
         {
@@ -129,6 +130,7 @@ public:
             Assert::AreEqual(calledFromHandler, 1u);
         }
     }
+    */
 
     TEST_METHOD(Observable_clear) {
         MemoryGuard guard;

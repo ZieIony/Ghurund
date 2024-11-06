@@ -4,6 +4,7 @@
 #include "ResourcePath.h"
 #include "core/IntrusivePointer.h"
 #include "core/collection/Map.h"
+#include "core/threading/CriticalSection.h"
 
 namespace Ghurund::Core {
 	class ResourceCollection {

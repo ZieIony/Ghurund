@@ -35,7 +35,7 @@ namespace Ghurund::UI {
             constraints.clear();
         }
 
-#ifdef _DEBUG
+#if defined _DEBUG || defined GH_TEST
         inline bool validateOrder(const std::initializer_list<Constraint*>& constraints) const {
             size_t index = 0;
             for (Constraint* constraint : constraints) {

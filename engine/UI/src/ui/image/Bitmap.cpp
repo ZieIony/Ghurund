@@ -9,7 +9,7 @@ namespace Ghurund::UI {
     const Ghurund::Core::Type& Bitmap::GET_TYPE() {
         static auto PROPERTY_SIZE = Property<Bitmap, IntSize>("Size", &getSize);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>(Ghurund::UI::NAMESPACE_NAME, "Bitmap")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>()
             .withProperty(PROPERTY_SIZE)
             .withSupertype(__super::GET_TYPE());
 

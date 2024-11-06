@@ -37,8 +37,7 @@ namespace Ghurund::Core {
 	}
 
 	const Ghurund::Core::Type& Resource::GET_TYPE() {
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Resource>(NAMESPACE_NAME, GH_STRINGIFY(Resource))
-			.withModifiers(TypeModifier::ABSTRACT)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Resource>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

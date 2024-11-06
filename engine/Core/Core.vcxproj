@@ -262,6 +262,7 @@
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\Object.cpp" />
     <ClCompile Include="src\core\RefCountedObject.cpp" />
+    <ClCompile Include="src\core\reflection\TypeBuilder.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />

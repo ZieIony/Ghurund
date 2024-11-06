@@ -6,9 +6,7 @@
 
 namespace Ghurund::Engine::DirectX {
 	const Ghurund::Core::Type& CommandList::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<CommandList>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<CommandList>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(CommandList))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<CommandList>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

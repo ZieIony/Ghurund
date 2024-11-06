@@ -61,8 +61,7 @@ namespace Ghurund::UI {
     const Ghurund::Core::Type& TextBlock::GET_TYPE() {
         static auto PROPERTY_TEXT = Property<TextBlock, const TextDocument&>("Text", &getText, (void(TextBlock::*)(const TextDocument&)) &setText);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>(NAMESPACE_NAME, GH_STRINGIFY(TextBlock))
-            .withZeroArgsConstructor()
+        static const Ghurund::Core::Type TYPE = TypeBuilder<TextBlock>()
             .withProperty(PROPERTY_TEXT)
             .withSupertype(__super::GET_TYPE());
 

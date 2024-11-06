@@ -5,7 +5,7 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& GPUResourcePointer::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<GPUResourcePointer>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(GPUResourcePointer))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<GPUResourcePointer>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

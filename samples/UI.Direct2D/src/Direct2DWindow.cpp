@@ -9,7 +9,7 @@
 namespace Samples {
     const Ghurund::Core::Type& Direct2DWindow::GET_TYPE() {
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Direct2DWindow>("Ghurund", "Direct2DWindow")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Direct2DWindow>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

@@ -9,9 +9,7 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& Material::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Material>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Material>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(Material))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Material>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

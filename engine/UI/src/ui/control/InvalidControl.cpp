@@ -6,9 +6,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& InvalidControl::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<InvalidControl>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<InvalidControl>(NAMESPACE_NAME, GH_STRINGIFY(InvalidControl))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<InvalidControl>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

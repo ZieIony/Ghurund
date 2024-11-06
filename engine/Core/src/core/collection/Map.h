@@ -60,14 +60,5 @@ namespace Ghurund::Core {
 			__super::operator=(std::move(other));
 			return *this;
 		}
-
-#ifdef _DEBUG
-		inline bool containsValue(const Value& value) const {
-			for (auto& [k, v] : *this)
-				if (v == value)
-					return true;
-			return false;
-		}
-#endif
 	};
 }

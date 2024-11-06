@@ -120,8 +120,10 @@ public:
         Ghurund::Core::getType<std::unique_ptr<TextDocument>>();
         Ghurund::Core::getType<std::unique_ptr<LayoutAttr>>();
 
+#ifdef _DEBUG
         RefCountedObject::reservePointers(1500);
         RefCountedObject::setPointersListResizeLocked(true);
+#endif
         MemoryGuard memoryGuard;
         {
             ResourceManager resourceManager;
@@ -150,10 +152,10 @@ public:
             graph.evaluate();
 
             Assert::AreEqual(34.0f, constraints.Width.Value);
-            size_t pointers = RefCountedObject::numberOfAllocatedPointers();
         }
+#ifdef _DEBUG
         RefCountedObject::setPointersListResizeLocked(false);
-        RefCountedObject::dumpPointers();
+#endif
     }
     };
 }

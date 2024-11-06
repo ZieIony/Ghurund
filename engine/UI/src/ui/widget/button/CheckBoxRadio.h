@@ -7,7 +7,6 @@
 #include <tinyxml2.h>
 
 namespace Ghurund::UI {
-	template<typename CheckBoxRadioType>
 	class CheckBoxRadio:public ContentWidget {
 #pragma region reflection
 	protected:
@@ -17,8 +16,7 @@ namespace Ghurund::UI {
 
 	public:
 		static const Ghurund::Core::Type& GET_TYPE() {
-			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(CheckBoxRadio))
-				.withModifiers(TypeModifier::ABSTRACT)
+			static const Ghurund::Core::Type TYPE = TypeBuilder<CheckBoxRadio>()
 				.withSupertype(__super::GET_TYPE());
 
 			return TYPE;
@@ -57,18 +55,5 @@ namespace Ghurund::UI {
 			if (drawable)
 				drawable->release();
 		}
-
-	public:
-		Event<CheckBoxRadioType, bool> checkedChanged = Event<CheckBoxRadioType, bool>((CheckBoxRadioType&)*this);
-
-		inline void setChecked(bool checked) {
-			if (this->checked != checked) {
-				this->checked = checked;
-				dispatchStateChanged();
-				checkedChanged(checked);
-			}
-		}
-
-		__declspec(property(put = setChecked)) bool Checked;
 	};
 }

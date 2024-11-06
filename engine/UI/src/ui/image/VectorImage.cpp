@@ -9,7 +9,7 @@ namespace Ghurund::UI {
     const Ghurund::Core::Type& VectorImage::GET_TYPE() {
         static auto PROPERTY_SIZE = Property<VectorImage, FloatSize>("Size", &getSize);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<VectorImage>(Ghurund::UI::NAMESPACE_NAME, "VectorImage")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<VectorImage>()
             .withProperty(PROPERTY_SIZE)
             .withSupertype(__super::GET_TYPE());
 

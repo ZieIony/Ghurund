@@ -3,22 +3,21 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& DrawableAttr::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableAttr>(NAMESPACE_NAME, GH_STRINGIFY(DrawableAttr))
-            .withModifier(TypeModifier::ABSTRACT)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableAttr>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
     const Ghurund::Core::Type& DrawableValue::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableValue>(NAMESPACE_NAME, GH_STRINGIFY(DrawableValue))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableValue>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
     const Ghurund::Core::Type& DrawableRef::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableRef>(NAMESPACE_NAME, GH_STRINGIFY(DrawableRef))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DrawableRef>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

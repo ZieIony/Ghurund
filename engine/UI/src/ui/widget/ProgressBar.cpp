@@ -6,9 +6,7 @@
 
 namespace Ghurund::UI {
 	const Ghurund::Core::Type& ProgressBar::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<ProgressBar>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<ProgressBar>(NAMESPACE_NAME, GH_STRINGIFY(ProgressBar))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<ProgressBar>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

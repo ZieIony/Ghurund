@@ -19,7 +19,8 @@ protected:
 
 public:
     static const Ghurund::Core::Type& GET_TYPE() {
-            static Ghurund::Core::Type type = TypeBuilder<ObservableHandler<T>>(Ghurund::Core::NAMESPACE_NAME, "ObservableHandler").withTemplateParams<T>();
+            static Ghurund::Core::Type type = TypeBuilder<ObservableHandler<T>>()
+                .withTemplateParam<T>();
             return type;
         }
 

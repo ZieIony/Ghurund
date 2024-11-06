@@ -12,11 +12,7 @@ namespace Ghurund {
     using namespace physx;
 
     const Ghurund::Core::Type& Physics::GET_TYPE() {
-
-        static const auto CONSTRUCTOR = Constructor<Physics>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Physics))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Physics>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

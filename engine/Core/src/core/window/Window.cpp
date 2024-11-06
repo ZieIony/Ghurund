@@ -11,8 +11,7 @@ namespace Ghurund::Core {
     }*/
     
     const Ghurund::Core::Type& Window::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Window>(NAMESPACE_NAME, GH_STRINGIFY(Window))
-            .withModifiers(TypeModifier::ABSTRACT)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Window>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

@@ -10,12 +10,9 @@ namespace Ghurund::Engine::DirectX {
         static auto PROPERTY_CLEARCOLOR = Property<Renderer, const XMFLOAT4*>("ClearColor", &getClearColor, &setClearColor);
         static auto PROPERTY_STATISTICS = Property<Renderer, RenderingStatistics&>("Statistics", &getStatistics);
 
-        static const auto CONSTRUCTOR = Constructor<Renderer>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Renderer>("Ghurund", "Renderer")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Renderer>()
             .withProperty(PROPERTY_CLEARCOLOR)
             .withProperty(PROPERTY_STATISTICS)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

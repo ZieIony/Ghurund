@@ -145,7 +145,7 @@ namespace Ghurund::UI {
 		if (str.Length < index + 2 || str.get(index + 1) != '.')
 			throw InvalidFormatException(std::format("'{}' is not a valid constraint path ('.' and a constraint name expected)", str).c_str());
 		const AString constraintStr = str.substring(index + 2);
-		const AString siblingNameStr = str.substring(1, index - 1);
+		const AString siblingNameStr = str.substring(1, index);
 		if (constraintStr == "Left") {
 			auto c = ghnew SiblingLeftConstraint(siblingNameStr);
 			c->Offset = offset;

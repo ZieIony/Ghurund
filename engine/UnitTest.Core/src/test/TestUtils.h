@@ -33,17 +33,21 @@ namespace UnitTest::Utils {
 
     struct TestUtils {
         static void testClassInitialize() {
+#ifdef _DEBUG
             RefCountedObject::reservePointers(500);
+#endif
             Ghurund::Core::Logger::init(std::make_unique<TestLogOutput>());
             TestLogOutput::initReportHook();
         }
 
         static void testMethodCleanup() {
+#ifdef _DEBUG
             if (RefCountedObject::numberOfAllocatedPointers() > 0) {
                 RefCountedObject::dumpPointers();
                 RefCountedObject::clearPointers();
                 Assert::Fail();
             }
+#endif
         }
     };
 

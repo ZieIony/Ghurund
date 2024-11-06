@@ -52,7 +52,9 @@ namespace Ghurund::UI {
 			value = std::max(value, right - left);
 		}
 		value = minMax(min, value * ratio + offset, max);
+#ifdef _DEBUG
 		firstEvaluation = false;
+#endif
 		evaluated = true;
 	}
 
@@ -100,7 +102,9 @@ namespace Ghurund::UI {
 			value = std::max(value, bottom - top);
 		}
 		value = minMax(min, value * ratio + offset, max);
+#ifdef _DEBUG
 		firstEvaluation = false;
+#endif
 		evaluated = true;
 	}
 }

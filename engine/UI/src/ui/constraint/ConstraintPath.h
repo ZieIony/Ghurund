@@ -19,7 +19,7 @@ namespace Ghurund::UI {
             if (index = text.Size) {
                 return ConstraintPath(ControlPath::parse(text), "");
             } else {
-                return ConstraintPath(ControlPath::parse(text.substring(0, index)), text.substring(index, text.Size - index));
+                return ConstraintPath(ControlPath::parse(text.substring(0, index)), text.substring(index, text.Size));
             }
         }
 

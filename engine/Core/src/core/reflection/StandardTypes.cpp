@@ -12,91 +12,101 @@ namespace Ghurund::Core {
 
     template<>
     const Type& getType<uint32_t>() {
-        static Type TYPE = Type("uint32_t", sizeof(uint32_t));
+        static Type TYPE = TypeBuilder<uint32_t>();
         return TYPE;
     }
 
     template<>
     const Type& getType<float>() {
-        static Type TYPE = Type("float", sizeof(float));
+        static Type TYPE = TypeBuilder<float>();
         return TYPE;
     }
 
     template<>
     const Type& getType<bool>() {
-        static Type TYPE = Type("bool", sizeof(bool));
+        static Type TYPE = TypeBuilder<bool>();
         return TYPE;
     }
 
     template<>
     const Type& getType<char>() {
-        static Type TYPE = Type("char", sizeof(char));
+        static Type TYPE = TypeBuilder<char>();
+        return TYPE;
+    }
+
+    template<>
+    const Type& getType<wchar_t>() {
+        static Type TYPE = TypeBuilder<wchar_t>();
         return TYPE;
     }
 
     template<>
     const Type& getType<AString>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "AString", sizeof(AString));
+        static Type TYPE = TypeBuilder<AString>()
+            .withTemplateParam<char>();
         return TYPE;
     }
 
     template<>
     const Type& getType<WString>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "WString", sizeof(WString));
+        static Type TYPE = TypeBuilder<WString>()
+            .withTemplateParam<wchar_t>();
         return TYPE;
     }
 
     template<>
     const Type& getType<IntSize>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "IntSize", sizeof(IntSize));
+        static Type TYPE = TypeBuilder<IntSize>()
+            .withTemplateParam<uint32_t>();
         return TYPE;
     }
 
     template<>
     const Type& getType<FloatSize>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "FloatSize", sizeof(FloatSize));
+        static Type TYPE = TypeBuilder<FloatSize>()
+            .withTemplateParam<float>();
         return TYPE;
     }
 
     template<>
     const Type& getType<IntPoint>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "IntPoint", sizeof(IntPoint));
+        static Type TYPE = TypeBuilder<IntPoint>();
         return TYPE;
     }
 
     template<>
     const Type& getType<FloatPoint>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "FloatPoint", sizeof(FloatPoint));
+        static Type TYPE = TypeBuilder<FloatPoint>();
         return TYPE;
     }
 
     template<>
     const Type& getType<Matrix3x2>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "Matrix3x2", sizeof(Matrix3x2));
+        static Type TYPE = TypeBuilder<Matrix3x2>();
         return TYPE;
     }
 
     template<>
     const Type& getType<Buffer>() {
-        static Type TYPE = Type(NAMESPACE_NAME, "Buffer", sizeof(Buffer));
+        static Type TYPE = TypeBuilder<Buffer>();
         return TYPE;
     }
 
     template<>
     const Type& getType<DirectX::XMFLOAT2>() {
-        static Type TYPE = Type("DirectX", "XMFLOAT2", sizeof(DirectX::XMFLOAT2));
+        static Type TYPE = TypeBuilder<DirectX::XMFLOAT2>();
         return TYPE;
     }
 
     template<>
     const Type& getType<DirectX::XMFLOAT3>() {
-        static Type TYPE = Type("DirectX", "XMFLOAT3", sizeof(DirectX::XMFLOAT3));
+        static Type TYPE = TypeBuilder<DirectX::XMFLOAT3>();
         return TYPE;
     }
 
     template<>
     const Type& getType<DirectX::XMFLOAT4>() {
-        static Type TYPE = Type("DirectX", "XMFLOAT4", sizeof(DirectX::XMFLOAT4));
+        static Type TYPE = TypeBuilder<DirectX::XMFLOAT4>();
         return TYPE;
     }
 }

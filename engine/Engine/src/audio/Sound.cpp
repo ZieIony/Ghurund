@@ -154,9 +154,7 @@ namespace Ghurund {
     }
 
     const Ghurund::Core::Type& Sound::GET_TYPE() {
-        static const auto CONSTRUCTOR = Constructor<Sound>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>(Ghurund::Engine::NAMESPACE_NAME, GH_STRINGIFY(Sound))
-            .withConstructor(CONSTRUCTOR)
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Sound>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

@@ -27,7 +27,7 @@ namespace Ghurund::Core {
             static const auto VALUE_PROPERTY = Property<Observable<T>, const T&>("Value", &getValue, &setValue);
             static const auto ADD_METHOD = Method<Observable<T>, void, IntrusivePointer<ObservableHandler<T>>>("add", (void (Observable<T>::*)(IntrusivePointer<ObservableHandler<T>>)) & add);
 
-            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>(Ghurund::Core::NAMESPACE_NAME, GH_STRINGIFY(Observable))
+            static const Ghurund::Core::Type TYPE = TypeBuilder<Observable<T>>()
                 .withConstructor(CONSTRUCTOR)
                 .withConstructor(CONSTRUCTOR2)
                 .withSupertype(__super::GET_TYPE())

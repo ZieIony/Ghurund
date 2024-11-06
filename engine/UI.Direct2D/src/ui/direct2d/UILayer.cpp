@@ -16,7 +16,7 @@ namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Engine::DirectX;
 
     const Ghurund::Core::Type& D2DUILayer::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<D2DUILayer>(Ghurund::UI::Direct2D::NAMESPACE_NAME, GH_STRINGIFY(D2DUILayer))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<D2DUILayer>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

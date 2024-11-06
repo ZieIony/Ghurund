@@ -9,9 +9,8 @@ namespace Ghurund::UI {
 
 	const Ghurund::Core::Type& Widget::GET_TYPE() {
 		static auto PROPERTY_IMAGE = UniqueProperty<Widget, std::unique_ptr<Ghurund::UI::LayoutAttr>>("Layout", &setLayout);
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Widget>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(Widget))
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Widget>()
 			.withProperty(PROPERTY_IMAGE)
-			.withModifiers(TypeModifier::ABSTRACT)
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

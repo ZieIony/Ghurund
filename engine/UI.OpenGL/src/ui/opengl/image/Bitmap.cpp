@@ -21,13 +21,10 @@ namespace Ghurund::UI::OpenGL {
         static auto PROPERTY_DATA = Property<Bitmap, Gdiplus::Bitmap*>("Data", &getData);
         static auto PROPERTY_SIZE = Property<Bitmap, IntSize>("Size", &getSize);
 
-        static const auto CONSTRUCTOR = Constructor<Bitmap>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>(Ghurund::UI::NAMESPACE_NAME, "Bitmap")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>()
             .withProperty(PROPERTY_IMAGE)
             .withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_SIZE)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

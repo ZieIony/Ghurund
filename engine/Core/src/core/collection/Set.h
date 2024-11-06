@@ -49,7 +49,7 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
-		Set& operator=(Set&& other) noexcept {
+		Set& operator=(Set&& other) {
 			__super::operator=(std::move(other));
 			return *this;
 		}

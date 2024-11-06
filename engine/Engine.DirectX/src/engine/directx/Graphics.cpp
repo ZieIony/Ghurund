@@ -20,9 +20,7 @@ namespace Ghurund::Engine::DirectX {
         static auto PROPERTY_DESCRIPTORALLOCATOR = Property<Graphics, Ghurund::Engine::DirectX::DescriptorAllocator&>("DescriptorAllocator", &getDescriptorAllocator);
         static auto PROPERTY_RESOURCEFACTORY = Property<Graphics, GPUResourceFactory&>("ResourceFactory", &getResourceFactory);
 
-        static const auto CONSTRUCTOR = Constructor<Graphics>();
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics>("Ghurund", "Graphics")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Graphics>()
             .withProperty(PROPERTY_DEVICE)
             .withProperty(PROPERTY_DIRECTQUEUE)
             .withProperty(PROPERTY_COMPUTEQUEUE)
@@ -30,7 +28,6 @@ namespace Ghurund::Engine::DirectX {
             .withProperty(PROPERTY_FACTORY)
             .withProperty(PROPERTY_DESCRIPTORALLOCATOR)
             .withProperty(PROPERTY_RESOURCEFACTORY)
-            .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

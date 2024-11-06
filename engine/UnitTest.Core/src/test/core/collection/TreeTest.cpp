@@ -240,23 +240,41 @@ namespace UnitTest {
 			{
 				Tree<SetTraits<uint32_t>> tree = { 1, 2, 3, 5, 20, 4, 7, 14, 22, 6 };
 				tree.remove(2);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(20);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(7);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(22);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(1);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(3);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(5);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(14);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(6);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(4);
 
 				Assert::AreEqual(tree.Size, (size_t)0);
@@ -264,28 +282,48 @@ namespace UnitTest {
 				Assert::IsFalse(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
 				Assert::IsFalse(tree.contains(3u));
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 			}
 			{
 				Tree<SetTraits<uint32_t>> tree = { 4, 7, 14, 22, 6 ,1, 2, 3, 5, 20, 12, 13, 53, 42, 76, 8, 9, 0 };
 				tree.remove(2);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(20);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(7);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(22);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(1);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(3);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(5);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(14);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(6);
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 				tree.remove(4);
 
 				Assert::AreEqual(tree.Size, (size_t)8);
@@ -293,7 +331,9 @@ namespace UnitTest {
 				Assert::IsTrue(tree.contains(12u));
 				Assert::IsTrue(tree.contains(76u));
 				Assert::IsTrue(tree.contains(9u));
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 			}
 			{
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = { {1, {}}, {2, {}} };
@@ -303,7 +343,9 @@ namespace UnitTest {
 				Assert::AreEqual(tree.Empty, false);
 				Assert::IsTrue(tree.contains(1u));
 				Assert::IsFalse(tree.contains(2u));
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 			}
 			{
 				Tree<MapTraits<uint32_t, TreeTestValue>> tree = { {1, {}} };
@@ -312,7 +354,9 @@ namespace UnitTest {
 				Assert::AreEqual(tree.Size, (size_t)0);
 				Assert::AreEqual(tree.Empty, true);
 				Assert::IsFalse(tree.contains(1u));
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 			}
 		}
 
@@ -328,7 +372,9 @@ namespace UnitTest {
 				Assert::IsTrue(tree.contains(2u));
 				Assert::IsTrue(tree.contains(3u));
 				Assert::IsFalse(tree.contains(4u));
+#ifdef _DEBUG
 				Assert::IsTrue(tree.verify());
+#endif
 			}
 		}
 

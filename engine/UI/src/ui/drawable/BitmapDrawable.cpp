@@ -8,7 +8,7 @@
 
 namespace Ghurund::UI {
     const Ghurund::Core::Type& BitmapDrawable::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<BitmapDrawable>(Ghurund::UI::NAMESPACE_NAME, GH_STRINGIFY(BitmapDrawable))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<BitmapDrawable>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;

@@ -159,9 +159,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	const Ghurund::Core::Type& Shader::GET_TYPE() {
-		static const auto CONSTRUCTOR = Constructor<Shader>();
-		static const Ghurund::Core::Type TYPE = TypeBuilder<Shader>(Ghurund::Engine::DirectX::NAMESPACE_NAME, GH_STRINGIFY(Shader))
-			.withConstructor(CONSTRUCTOR)
+		static const Ghurund::Core::Type TYPE = TypeBuilder<Shader>()
 			.withSupertype(__super::GET_TYPE());
 
 		return TYPE;

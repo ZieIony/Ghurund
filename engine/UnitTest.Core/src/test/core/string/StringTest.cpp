@@ -94,16 +94,19 @@ public:
 			Assert::AreEqual(1ull, str.find(String(_T("est")), 0));
 			Assert::AreEqual(3ull, str.find(String(_T("t")), 2));
 			Assert::AreEqual(11ull, str.find(String(_T("float")), 0));
+			Assert::AreEqual(11ull, str.find(String(_T("test string2")), 0));
 			AString astr = "test string";
 			Assert::AreEqual(0ull, astr.find(AString("tes"), 0));
 			Assert::AreEqual(1ull, astr.find(AString("est"), 0));
 			Assert::AreEqual(3ull, astr.find(AString("t"), 2));
 			Assert::AreEqual(11ull, astr.find(AString("float"), 0));
+			Assert::AreEqual(11ull, astr.find(AString("test string2"), 0));
 			WString wstr = L"test string";
 			Assert::AreEqual(0ull, wstr.find(WString(L"tes"), 0));
 			Assert::AreEqual(1ull, wstr.find(WString(L"est"), 0));
 			Assert::AreEqual(3ull, wstr.find(WString(L"t"), 2));
 			Assert::AreEqual(11ull, wstr.find(WString(L"float"), 0));
+			Assert::AreEqual(11ull, wstr.find(WString(L"test string2"), 0));
 		}
 	}
 
@@ -280,6 +283,26 @@ public:
 			String str2 = _T("abc");
 			String result = str + L"::" + str2;
 			String expected = _T("test::abc");
+			Assert::AreEqual(expected, result);
+		}
+	}
+
+	TEST_METHOD(String_substringStart) {
+		MemoryGuard guard;
+		{
+			String str = _T("test text");
+			String result = str.substring(3);
+			String expected = _T("t text");
+			Assert::AreEqual(expected, result);
+		}
+	}
+
+	TEST_METHOD(String_substringStartEnd) {
+		MemoryGuard guard;
+		{
+			String str = _T("test text");
+			String result = str.substring(3, 6);
+			String expected = _T("t t");
 			Assert::AreEqual(expected, result);
 		}
 	}

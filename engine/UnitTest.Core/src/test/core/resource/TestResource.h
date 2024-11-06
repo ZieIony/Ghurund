@@ -13,10 +13,7 @@ namespace UnitTest {
 
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
-            static const auto CONSTRUCTOR = Ghurund::Core::Constructor<TestResource>();
-
-            static const Ghurund::Core::Type TYPE = Ghurund::Core::TypeBuilder<TestResource>("UnitTest", GH_STRINGIFY(TestResource))
-                .withConstructor(CONSTRUCTOR)
+            static const Ghurund::Core::Type TYPE = Ghurund::Core::TypeBuilder<TestResource>()
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
