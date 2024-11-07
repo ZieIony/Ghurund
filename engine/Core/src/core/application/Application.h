@@ -35,7 +35,9 @@ namespace Ghurund::Core {
         virtual void onUninit() {};
 
     public:
-        virtual ~Application() {}
+        virtual ~Application() {
+            uninit();
+        }
 
         inline bool isRunning() {
             return running;

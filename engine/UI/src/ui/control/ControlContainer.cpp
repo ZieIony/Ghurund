@@ -43,7 +43,7 @@ namespace Ghurund::UI {
 					ControlWithConstraints control = loader.loadControl(*this, workingDir, *childElement);
 					Child = control.control.get();	// this sets constraints too
 					setConstraints(*control.control.get(), control.Constraints);
-				}catch(...){
+				} catch (...) {
 					Child = ghnew InvalidControl();	// this sets constraints too
 				}
 				childFound = true;

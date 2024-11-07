@@ -4,6 +4,9 @@
 #include "core/application/Application.h"
 #include "core/logging/Logger.h"
 
+#include <Windows.h>
+#include <format>
+
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "Kernel32.lib")
 #pragma comment(lib, "Pathcch.lib")
@@ -22,10 +25,15 @@ namespace Ghurund::Core {
         Logger::log(LogType::INFO, text.c_str());
 #endif
 
-        {
-            Type application = {};
-            application.run(settings);
-        }
+		try {
+			Type application = {};
+			application.run(settings);
+		} catch (const std::exception& e) {
+			auto message = std::format("Un uncaught {} has been thrown: \"{}\". Check logs for more info.", typeid(e).name(), e.what());
+			MessageBoxA(nullptr, message.c_str(), "Error", MB_OK);
+		} catch (...) {
+			MessageBoxA(nullptr, "Unknown error. Check logs for more info.", "Error", MB_OK);
+		}
 
 #ifdef _DEBUG
         RefCountedObject::dumpPointers();

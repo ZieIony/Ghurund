@@ -12,10 +12,10 @@ namespace Preview {
         Ghurund::Engine::DirectX::Renderer renderer;
         Ghurund::Engine::ParameterManager parameterManager;
 
-        Ghurund::UI::DrawableFactory* drawableFactory;
-        LightTheme* lightTheme = nullptr;
-        DarkTheme* darkTheme = nullptr;
-        Theme* currentTheme = nullptr;
+        SharedPointer<Ghurund::UI::DrawableFactory> drawableFactory;
+        SharedPointer<Theme> lightTheme;
+        SharedPointer<Theme> darkTheme;
+        SharedPointer<Theme> currentTheme;
 
     public:
         PreviewApplication();
@@ -29,7 +29,7 @@ namespace Preview {
         virtual void setPrimaryColor(uint32_t color) override;
 
         virtual Theme& getCurrentTheme() override {
-            return *currentTheme;
+            return *currentTheme.get();
         }
     };
 }

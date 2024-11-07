@@ -14,9 +14,9 @@ namespace Preview {
     void PreviewApplication::onInit() {
         auto& uiFeature = Features.get<UIFeature>();
 
-        drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager);
-        lightTheme = ghnew LightTheme(ResourceManager, *drawableFactory);
-        darkTheme = ghnew DarkTheme(ResourceManager, *drawableFactory);
+        drawableFactory.set(ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager));
+        lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory.get()));
+        darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory.get()));
         ThemeType = ThemeType::LIGHT;
 
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
@@ -34,9 +34,9 @@ namespace Preview {
     
     void PreviewApplication::onUninit() {
         renderer.uninit();
-        delete darkTheme;
-        delete lightTheme;
-        delete drawableFactory;
+        darkTheme.set(nullptr);
+        lightTheme.set(nullptr);
+        drawableFactory.set(nullptr);
     }
     
     void PreviewApplication::setThemeType(Preview::ThemeType theme) {

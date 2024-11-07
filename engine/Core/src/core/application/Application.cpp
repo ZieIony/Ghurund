@@ -7,8 +7,6 @@
 #include "core/image/ImageLoader.h"
 #include "core/io/DirectoryLibrary.h"
 
-#include <time.h>
-
 namespace Ghurund::Core {
     void Application::init() {
         CoInitialize(nullptr);
@@ -22,9 +20,12 @@ namespace Ghurund::Core {
         resourceManager.Loaders.set<Image>(imageLoader.get());
 
         features.init();
+        onInit();
     }
 
     void Application::uninit() {
+        onUninit();
+
         windows.clear();
         resourceManager.clearCache();
 
@@ -41,52 +42,36 @@ namespace Ghurund::Core {
         if (settings)
             this->settings = *settings;
 
-        try {
-            init();
-        } catch (...) {
-            uninit();
-            return;
-        }
-
-        try {
-            onInit();
-        } catch (...) {
-            onUninit();
-            uninit();
-            return;
-        }
+        init();
         running = true;
 
         timer.tick();
         uint64_t time = timer.TimeMs;
         const uint32_t DT_MS = 10;
 
-        try {
-            while (windows.Size != 0) {
-                handleMessages();
-                FunctionQueue.invoke();
-                resourceManager.reload();
+        while (windows.Size != 0) {
+            handleMessages();
+            FunctionQueue.invoke();
+            resourceManager.reload();
 
-                timer.tick();
-                while (time + DT_MS < timer.TimeMs) {
-                    time += DT_MS;
-                    // TODO: per window
-                    //scriptEngine->update(time);
+            timer.tick();
+            while (time + DT_MS < timer.TimeMs) {
+                time += DT_MS;
+                // TODO: per window
+                //scriptEngine->update(time);
 
-                    for (auto window : windows)
-                        window->update(time);
-                }
-
-                for (auto window : windows) {
-                    if (window->Size.Width == 0 || window->Size.Height == 0)
-                        continue;
-                    window->paint();
-                }
+                for (auto window : windows)
+                    window->update(time);
             }
-        } catch (...) {}
+
+            for (auto window : windows) {
+                if (window->Size.Width == 0 || window->Size.Height == 0)
+                    continue;
+                window->paint();
+            }
+        }
 
         running = false;
-        onUninit();
         uninit();
     }
 
