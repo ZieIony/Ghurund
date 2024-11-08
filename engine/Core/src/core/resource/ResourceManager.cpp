@@ -23,9 +23,11 @@ namespace Ghurund::Core {
 		auto iterator = resourceCache.find(path);
 		SharedPointer<Buffer> buffer;
 		if (iterator == resourceCache.end()) {
+			Logger::log(LogType::INFO, std::format(_T("loading {} from resource\n"), path).c_str());
 			buffer = path.resolveResource(workingDir, libraries);
 			resourceCache.put(path, buffer);
 		} else {
+			Logger::log(LogType::INFO, std::format(_T("loading {} from cache\n"), path).c_str());
 			buffer = iterator->value;
 		}
 		return loadInternal(loader, workingDir, *buffer.get(), format, options);
