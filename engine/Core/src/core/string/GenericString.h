@@ -445,11 +445,11 @@ namespace Ghurund::Core {
 				size_t nextIndex = find(d, index);
 				if (nextIndex == index) {
 				} else if (nextIndex == size) {
-					GenericString<T> str = substring(index, size - index - 1);
+					GenericString<T> str = substring(index);
 					list.add(str);
 					break;
 				} else {
-					GenericString<T> str = substring(index, nextIndex - index);
+					GenericString<T> str = substring(index, nextIndex);
 					list.add(str);
 				}
 				index = nextIndex + strSize;
@@ -465,11 +465,11 @@ namespace Ghurund::Core {
 				size_t nextIndex = find(d, index);
 				if (nextIndex == index) {
 				} else if (nextIndex == size) {
-					GenericString<T> str = substring(index, size - index - 1);
+					GenericString<T> str = substring(index);
 					list.add(str);
 					break;
 				} else {
-					GenericString<T> str = substring(index, nextIndex - index);
+					GenericString<T> str = substring(index, nextIndex);
 					list.add(str);
 				}
 				index = nextIndex + strSize;
