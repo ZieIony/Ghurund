@@ -20,8 +20,8 @@ namespace Ghurund::UI::Direct2D {
 				uiLayer->release();
 		}
 
-		virtual void init(WindowManager& windowManager) override {
-			__super::init(windowManager);
+		virtual void init() override {
+			__super::init();
 
 			Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 			uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();

@@ -30,22 +30,7 @@ namespace Ghurund::Engine::DirectX {
         Renderer& renderer;
 
     protected:
-        virtual bool onSizeChangingEvent(const IntSize& size) override {
-            __super::onSizeChangingEvent(size);
-            if (swapChain)
-                swapChain->uninitBuffers();
-            return true;
-        }
-
-        virtual bool onSizeChangedEvent() override {
-            layers.Size = Size;
-            if (swapChain) {
-                swapChain->resize(Size);
-                swapChain->initBuffers();
-            }
-            __super::onSizeChangedEvent();
-            return true;
-        }
+        virtual bool onSizeChangedEvent() override;
 
         virtual bool onFocusedChangedEvent() override;
 
@@ -57,7 +42,7 @@ namespace Ghurund::Engine::DirectX {
             swapChain = nullptr;
         }
 
-        virtual void init(WindowManager& windowManager) override;
+        virtual void init() override;
 
         inline SwapChain& getSwapChain() {
             return *swapChain;

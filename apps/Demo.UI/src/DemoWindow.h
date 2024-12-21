@@ -31,6 +31,6 @@ namespace Demo {
 			UIDebugTools::uninit();
 		}
 
-		virtual void init(WindowManager& windowManager) override;
+		virtual void init() override;
 	};
 }

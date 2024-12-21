@@ -16,8 +16,8 @@ namespace Demo {
 		};
 	}
 	
-	void DemoWindow::init(WindowManager& windowManager) {
-		__super::init(windowManager);
+	void DemoWindow::init() {
+		__super::init();
 
 		UIDebugTools::init(UILayer.Context);
 		UIDebugTools::drawConstraints = true;

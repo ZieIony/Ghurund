@@ -3,8 +3,18 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
-	void PreviewWindow::init(WindowManager& windowManager) {
-		__super::init(windowManager);
+	PreviewWindow::PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp):UIApplicationWindow(app, renderer), themeApp(themeApp) {
+		Style = WindowStyle{
+			.hasMinimizeButton = true,
+			.hasMaximizeButton = false,
+			.hasTitle = true,
+			.borderStyle = WindowBorderStyle::RESIZE,
+			.showOnTaskbar = true,
+		};
+	}
+
+	void PreviewWindow::init() {
+		__super::init();
 
 		Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 

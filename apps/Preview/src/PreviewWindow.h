@@ -30,17 +30,9 @@ namespace Preview {
 		ThemeApplication& themeApp;
 
 	public:
-		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp) :UIApplicationWindow(app, renderer), themeApp(themeApp) {
-			Style = WindowStyle{
-			   .hasMinimizeButton = true,
-			   .hasMaximizeButton = true,
-			   .hasTitle = true,
-			   .borderStyle = WindowBorderStyle::RESIZE,
-			   .showOnTaskbar = true
-			};
-		}
+		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp);
 
-		virtual void init(WindowManager& windowManager) override;
+		virtual void init() override;
 
 		void postLoadCallback(const FilePath& path);
 

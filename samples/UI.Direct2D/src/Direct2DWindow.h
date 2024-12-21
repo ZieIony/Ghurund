@@ -31,16 +31,6 @@ namespace Samples {
         ResourceManager* resourceManager = nullptr;
 
     protected:
-        virtual bool onSizeChangingEvent(const IntSize& size) override {
-            __super::onSizeChangingEvent(size);
-            return true;
-        }
-
-        virtual bool onSizeChangedEvent() override {
-            __super::onSizeChangedEvent();
-            return true;
-        }
-
         virtual bool onFocusedChangedEvent() override;
 
     public:
@@ -50,7 +40,7 @@ namespace Samples {
             uninit();
         }
 
-        virtual void init(WindowManager& windowManager);
+        virtual void init();
 
         void uninit();
 

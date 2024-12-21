@@ -30,6 +30,11 @@ namespace Ghurund::Core {
 #pragma endregion
 
     private:
+        IntSize size = {};
+        IntPoint position = {};
+        bool focused = false, visible = false;
+        String title = {};
+
         /*
         PointerArray<Parameter*> parameters;
         ValueParameter* parameterViewportSize = nullptr;
@@ -50,15 +55,15 @@ namespace Ghurund::Core {
             return false;
         }
 
-        virtual bool onSizeChangingEvent(const IntSize& size) {
-            return false;
-        }
-
         virtual bool onSizeChangedEvent() {
             return false;
         }
 
         virtual bool onFocusedChangedEvent() {
+            return false;
+        }
+
+        virtual bool onVisibleChangedEvent() {
             return false;
         }
 
@@ -68,15 +73,10 @@ namespace Ghurund::Core {
 
     public:
         Event<Window> positionChanged = *this;
-        Event<Window, IntSize> sizeChanging = *this;
         Event<Window> sizeChanged = *this;
+        Event<Window> visibleChanged = *this;
         Event<Window> focusedChanged = *this;
         Event<Window> closed = *this;
-
-        Observable<WString> title;
-        Observable<bool> visible;
-        Observable<IntSize> size;
-        Observable<IntPoint> position;
 
         Window(Window* parent = nullptr) {
             this->parent = parent;
@@ -128,26 +128,36 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getTimer)) Timer& Timer;
 
+        virtual void setTitle(const String& title) {
+            this->title = title;
+        }
+
+        const String& getTitle() const {
+            return title;
+        }
+
+        __declspec(property(get = getTitle, put = setTitle)) const String& Title;
+
         virtual void setVisible(bool visible) {
             this->visible = visible;
         }
 
         inline bool isVisible() {
-            return visible.Value;
+            return visible;
         }
 
         __declspec(property(put = setVisible, get = isVisible)) bool Visible;
 
         inline const IntPoint& getPosition() const {
-            return position.Value;
+            return position;
         }
 
-        inline void setPosition(const IntPoint& position) {
-            setPosition(position.x, position.y);
+        virtual void setPosition(const IntPoint& position) {
+            this->position = position;
         }
 
-        virtual void setPosition(int x, int y) {
-            position = { x,y };
+        inline void setPosition(int32_t x, int32_t y) {
+            setPosition({ x, y });
         }
 
         __declspec(property(get = getPosition, put = setPosition)) IntPoint& Position;
@@ -159,24 +169,18 @@ namespace Ghurund::Core {
         }
 
         inline const IntSize& getSize() const {
-            return size.Value;
+            return size;
         }
 
-        inline void setSize(const IntSize& size) {
-            setSize(size.Width, size.Height);
+        virtual void setSize(const IntSize& size) {
+            this->size = size;
         }
 
-        virtual void setSize(uint32_t w, uint32_t h) {
-            size = { w, h };
+        inline void setSize(uint32_t w, uint32_t h) {
+            setSize({ w, h });
         }
 
         __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
-
-        inline bool dispatchSizeChangingEvent(const IntSize& size) {
-            bool result = onSizeChangingEvent(size);
-            bool result2 = sizeChanging(size);
-            return result || result2;
-        }
 
         inline bool dispatchSizeChangedEvent() {
             bool result = onSizeChangedEvent();

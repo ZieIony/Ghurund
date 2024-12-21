@@ -44,7 +44,7 @@ namespace Ghurund::Engine::OpenGL {
     public:
         OpenGLWindow(Application& app, Renderer& renderer);
 
-        virtual void init(WindowManager& windowManager) override;
+        virtual void init() override;
 
         void uninit();
 

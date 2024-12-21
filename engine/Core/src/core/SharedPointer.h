@@ -78,8 +78,14 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
+		inline auto operator<=>(const SharedPointer<T>& other) const {
+			if (pointer == other.pointer)
+				return referenceCount <=> other.referenceCount;
+			return pointer <=> other.pointer;
+		}
+
 		inline bool operator==(const SharedPointer<T>& other) const {
-			return referenceCount == other.referenceCount;
+			return pointer == other.pointer && referenceCount == other.referenceCount;
 		}
 
 		inline bool operator==(const nullptr_t& other) const {

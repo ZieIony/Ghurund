@@ -37,8 +37,8 @@ namespace Ghurund::Engine::OpenGL {
 
     OpenGLWindow::OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
 
-    void OpenGLWindow::init(WindowManager& windowManager) {
-        __super::init(windowManager);
+    void OpenGLWindow::init() {
+        __super::init();
 
         PIXELFORMATDESCRIPTOR pfd = { sizeof(pfd), 1 };
         if (!dc) {

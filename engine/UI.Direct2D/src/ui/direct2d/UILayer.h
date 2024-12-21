@@ -49,13 +49,15 @@ namespace Ghurund::UI::Direct2D {
 
         void initTargets();
 
+        void uninitTargets();
+
         void uninit();
 
-        inline RootView& getRoot() {
+        inline RootView& getRootView() {
             return *rootView;
         }
 
-        __declspec(property(get = getRoot)) RootView& Root;
+        __declspec(property(get = getRoot)) RootView& RootView;
 
         inline IUIContext& getContext() {
             return *context;

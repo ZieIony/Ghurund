@@ -2,14 +2,12 @@
 
 #include "WindowCloseAction.h"
 #include "core/collection/List.h"
-#include "core/window/WindowManager.h"
 #include "core/window/SystemWindow.h"
 
 namespace Ghurund::Core {
     class WindowList {
     private:
         List<SystemWindow*> windows;
-        WindowManager& windowManager;
 
         EventHandler<Window> destroyHandler = [this](Window& window) {
             remove((SystemWindow*)&window);
@@ -18,19 +16,16 @@ namespace Ghurund::Core {
         };
 
         EventHandler<Window> hideHandler = [](Window& window) {
-            window.visible = false;
+            window.Visible = false;
             return true;
         };
 
     public:
-        WindowList(WindowManager& windowManager):windowManager(windowManager) {}
-
         ~WindowList() {
             clear();
         }
 
         inline void add(SystemWindow* window, WindowCloseAction action = WindowCloseAction::DESTROY) {
-            window->init(windowManager);
             windows.add(window);
             if (action == WindowCloseAction::DESTROY) {
                 window->closed += destroyHandler;

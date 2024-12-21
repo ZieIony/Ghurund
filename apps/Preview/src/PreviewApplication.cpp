@@ -25,10 +25,12 @@ namespace Preview {
         renderer.init(Features.get<Graphics>(), parameterManager);
 
         auto window = ghnew PreviewWindow(*this, renderer, *this);
-        window->title = _T("Preview");
+        window->Title = _T("Preview");
         window->Size = { 800, 600 };
+        window->init();
+        window->Position = { (int32_t)window->DecorationMetrics.Left, (int32_t)window->DecorationMetrics.Top };
         Windows.add(window);
-        window->visible = true;
+        window->Visible = true;
         window->bringToFront();
     }
     

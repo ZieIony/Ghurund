@@ -22,8 +22,8 @@ namespace Samples {
 
     Direct2DWindow::Direct2DWindow(Ghurund::Core::Timer& timer):SystemWindow(timer) {}
 
-    void Direct2DWindow::init(WindowManager& windowManager) {
-        __super::init(windowManager);
+    void Direct2DWindow::init() {
+        __super::init();
         /*canvas = ghnew Canvas();
         canvas->init(Handle);
         resourceManager = ghnew ResourceManager();

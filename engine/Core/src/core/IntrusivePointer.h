@@ -79,6 +79,10 @@ namespace Ghurund::Core {
 			return *this;
 		}
 
+		inline auto operator<=>(const IntrusivePointer<T>& other) const {
+			return pointer <=> other.pointer;
+		}
+
 		inline bool operator==(const IntrusivePointer<T>& other) const {
 			return pointer == other.pointer;
 		}

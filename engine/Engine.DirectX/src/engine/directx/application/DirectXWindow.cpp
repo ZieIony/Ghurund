@@ -27,6 +27,18 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
+    bool DirectXWindow::onSizeChangedEvent() {
+        if (swapChain)
+            swapChain->uninitBuffers();
+        __super::onSizeChangedEvent();
+        layers.Size = Size;
+		if (swapChain && Size.Width > 0 && Size.Height > 0) {
+            swapChain->resize(Size);
+            swapChain->initBuffers();
+        }
+        return true;
+    }
+
     bool DirectXWindow::onFocusedChangedEvent() {
         if (Focused) {
             layers.restoreFocus();
@@ -38,8 +50,8 @@ namespace Ghurund::Engine::DirectX {
 
     DirectXWindow::DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
 
-    void DirectXWindow::init(WindowManager& windowManager) {
-        __super::init(windowManager);
+    void DirectXWindow::init() {
+        __super::init();
         swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
         Ghurund::Engine::DirectX::Graphics& graphics = app.Features.get<Ghurund::Engine::DirectX::Graphics>();
         swapChain->init(graphics, *this);

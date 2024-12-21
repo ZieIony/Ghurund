@@ -149,8 +149,8 @@ public:
 			ConstraintSet& constraints = controlGroup->Children.get(1).Constraints;
 		
 			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
+			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100.0f);
+			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100.0f);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();

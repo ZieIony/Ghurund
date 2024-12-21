@@ -59,8 +59,8 @@ namespace Ghurund::Core {
 			std::smatch m;
 			std::string s = text.Data;
 			if (std::regex_match(s, m, regex)) {
-				T width = parse<T>(m[1].str());
-				T height = parse<T>(m[2].str());
+				T width = Ghurund::Core::parse<T>(m[1].str());
+				T height = Ghurund::Core::parse<T>(m[2].str());
 				return { width, height };
 			} else {
 				throw std::invalid_argument("invalid alignment string");

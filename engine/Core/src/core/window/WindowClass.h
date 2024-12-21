@@ -1,32 +1,41 @@
 #pragma once
 
-#include "core/Object.h"
 #include "core/string/String.h"
 #include "core/window/WindowStyle.h"
 #include "core/window/WindowProc.h"
 
 namespace Ghurund::Core {
-    class WindowClass {
-    private:
-        String className;
-        WNDCLASSEX windowClass;
-        DWORD exStyle, dwStyle;
+	class WindowClass {
+	private:
+		WindowStyle windowStyle;
+		WNDPROC windowProc;
+		String className = {};
+		WNDCLASSEX windowClass = {};
+		DWORD exStyle = {}, dwStyle = {};
 
-        WindowClass(const WindowClass& other) = delete;
+		WindowClass(const WindowClass& other) = delete;
 
-    public:
-        WindowClass(WindowStyle style, WNDPROC windowProc = &windowProc, const tchar* className = nullptr);
+	public:
+		WindowClass(WindowStyle style, WNDPROC windowProc = &Ghurund::Core::windowProc)
+			:windowStyle(style), windowProc(windowProc) {
+		}
 
-        ~WindowClass(){
-            UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
-        }
+		void init();
 
-        HWND create() const;
+		inline void registerClass() {
+			RegisterClassEx(&windowClass);
+		}
 
-        inline DWORD getStyle() const {
-            return dwStyle;
-        }
+		inline void unregisterClass() {
+			UnregisterClass(windowClass.lpszClassName, windowClass.hInstance);
+		}
 
-        __declspec(property(get = getStyle)) DWORD Style;
-    };
+		HWND createWindow() const;
+
+		inline auto operator<=>(const WindowClass& other) const {
+			if (windowProc == other.windowProc)
+				return windowStyle <=> other.windowStyle;
+			return (address_t)windowProc <=> (address_t)other.windowProc;
+		}
+	};
 }

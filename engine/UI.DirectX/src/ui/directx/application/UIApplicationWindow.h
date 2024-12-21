@@ -20,8 +20,8 @@ namespace Ghurund::UI::DirectX {
 				uiLayer->release();
 		}
 
-		virtual void init(WindowManager& windowManager) override {
-			__super::init(windowManager);
+		virtual void init() override {
+			__super::init();
 
 			uiLayer = ghnew DXUILayer();
 			uiLayer->init(*this, SwapChain);

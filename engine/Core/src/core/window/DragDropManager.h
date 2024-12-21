@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/IUnknownImpl.h"
-#include "core/collection/List.h"
+#include "core/collection/Array.h"
 #include "core/io/FilePath.h"
 
 namespace Ghurund::Core {
@@ -14,11 +14,9 @@ namespace Ghurund::Core {
         Array<FilePath*>* getFiles(IDataObject * pDataObj);
 
     public:
-        DragDropManager(SystemWindow& window):window(window) {
-            AddRef();
-        }
+        DragDropManager(SystemWindow& window):window(window) {}
 
-        virtual HRESULT STDMETHODCALLTYPE DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override;
+		virtual HRESULT STDMETHODCALLTYPE DragEnter(IDataObject* pDataObj, DWORD grfKeyState, POINTL pt, DWORD* pdwEffect) override;
 
         virtual HRESULT STDMETHODCALLTYPE DragLeave() override;
 

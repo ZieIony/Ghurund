@@ -29,12 +29,11 @@ namespace Ghurund::UI::Direct2D {
         __super::init(*context);
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
         canvas->init(graphics.DeviceContext);
-        window.sizeChanging += [&](const Window& window, const IntSize& size) {
+        /*window.sizeChanging += [&](const Window& window, const IntSize& size) {
             renderTargets.clear();
             return true;
-        };
+        };*/
         window.sizeChanged += [&](const Window& window) {
-            initTargets();
             rootView->requestLayout();
             return true;
         };
@@ -49,6 +48,10 @@ namespace Ghurund::UI::Direct2D {
             target->init(*graphics, *frame.RenderTarget.Texture);
             renderTargets.put(&frame.RenderTarget, std::shared_ptr<RenderTarget2D>(target));
         }
+    }
+
+    void D2DUILayer::uninitTargets() {
+        renderTargets.clear();
     }
 
     void D2DUILayer::uninit() {

@@ -2,13 +2,16 @@
 
 #include "DragDropManager.h"
 #include "Window.h"
+#include "WindowClass.h"
+#include "WindowDecorationMetrics.h"
+#include "core/SharedPointer.h"
+#include "core/collection/Map.h"
 #include "core/input/Input.h"
-#include "core/window/WindowManager.h"
-#include "WindowProc.h"
+
+#include <wrl/client.h>
+#include <memory>
 
 namespace Ghurund::Core {
-    class WindowClass;
-
     class SystemWindow:public Window {
 #pragma region reflection
     protected:
@@ -21,14 +24,25 @@ namespace Ghurund::Core {
 
         inline static const Ghurund::Core::Type& TYPE = SystemWindow::GET_TYPE();
 #pragma endregion
-
     private:
+        static inline Map<SharedPointer<WindowClass>, uint32_t> windowClassUses;
+
         HWND handle = {};
         Ghurund::Core::Input input;
         Ghurund::Core::Timer& timer;
-        WindowData* windowData = nullptr;
+        bool mouseTracked = false;
 
-        DragDropManager* dragDropManager = nullptr;
+        Microsoft::WRL::ComPtr<DragDropManager> dragDropManager;
+        SharedPointer<WindowDecorationMetrics> decorationMetrics;
+
+        HWND makeWindow();
+
+        void destroyWindow();
+
+        void applyVisible();
+        void applyPosition();
+        void applySize();
+        void applyTitle();
 
     public:
         Event<Ghurund::Core::Window> draggedOver = *this;
@@ -40,7 +54,7 @@ namespace Ghurund::Core {
 
         ~SystemWindow();
 
-        virtual void init(WindowManager& windowManager);
+        virtual void init();
 
         virtual void uninit();
 
@@ -61,6 +75,20 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getTimer)) Ghurund::Core::Timer& Timer;
+
+        inline const WindowDecorationMetrics& getDecorationMetrics() const {
+            return *decorationMetrics.get();
+        }
+
+        __declspec(property(get = getDecorationMetrics)) WindowDecorationMetrics& DecorationMetrics;
+
+        virtual void setVisible(bool visible) override;
+
+        virtual void setTitle(const String& title) override;
+
+        virtual void setPosition(const IntPoint& position) override;
+
+        virtual void setSize(const IntSize& size) override;
 
         virtual bool isFocused() const override {
             return handle == GetFocus();
@@ -87,5 +115,9 @@ namespace Ghurund::Core {
         }
 
         virtual void update(const uint64_t time) override;
+
+        void dispatchMouseEvent(UINT msg, WPARAM wParam);
+
+        bool dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam);
     };
 }
