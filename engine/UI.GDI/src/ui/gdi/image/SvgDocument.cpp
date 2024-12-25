@@ -14,7 +14,7 @@ namespace Ghurund::UI::GDI {
 
         static auto PROPERTY_SIZE = Property<SvgDocument, FloatSize>("Size", &getSize);
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<SvgDocument>(Ghurund::UI::NAMESPACE_NAME, "SvgDocument")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<SvgDocument>()
             .withProperty(PROPERTY_SIZE)
             .withSupertype(__super::GET_TYPE());
 

@@ -53,33 +53,11 @@ namespace Ghurund::UI::Direct2D {
 
         void uninit();
 
-        inline RootView& getRootView() {
-            return *rootView;
-        }
-
-        __declspec(property(get = getRoot)) RootView& RootView;
-
         inline IUIContext& getContext() {
             return *context;
         }
 
         __declspec(property(get = getContext)) IUIContext& Context;
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
-            return rootView->dispatchKeyEvent(args);
-        }
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
-            return rootView->dispatchMouseButtonEvent(args);
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
-            return rootView->dispatchMouseMotionEvent(args);
-        }
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
-            return rootView->dispatchMouseWheelEvent(args);
-        }
 
         virtual void draw(DirectXDrawingContext& context) override;
     };

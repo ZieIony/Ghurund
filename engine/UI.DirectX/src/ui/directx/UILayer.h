@@ -39,33 +39,11 @@ namespace Ghurund::UI::DirectX {
 
         void uninit();
 
-        inline RootView& getRoot() {
-            return *rootView;
-        }
-
-        __declspec(property(get = getRoot)) RootView& Root;
-
         inline IUIContext& getContext() {
             return *context;
         }
 
         __declspec(property(get = getContext)) IUIContext& Context;
-
-        virtual bool dispatchKeyEvent(const KeyEventArgs& args) {
-            return rootView->dispatchKeyEvent(args);
-        }
-
-        virtual bool dispatchMouseButtonEvent(const MouseButtonEventArgs& args) {
-            return rootView->dispatchMouseButtonEvent(args);
-        }
-
-        virtual bool dispatchMouseMotionEvent(const MouseMotionEventArgs& args) {
-            return rootView->dispatchMouseMotionEvent(args);
-        }
-
-        virtual bool dispatchMouseWheelEvent(const MouseWheelEventArgs& args) {
-            return rootView->dispatchMouseWheelEvent(args);
-        }
 
         virtual void draw(RenderTarget& context) override;
     };

@@ -1,11 +1,8 @@
 #pragma once
 
+#include "Gdi.h"
+#include "core/reflection/Type.h"
 #include "ui/Shape.h"
-
-#undef GDIPVER
-#define GDIPVER     0x0110
-
-#include <gdiplus.h>
 
 namespace Ghurund::UI::GDI {
     using namespace Ghurund::Core;

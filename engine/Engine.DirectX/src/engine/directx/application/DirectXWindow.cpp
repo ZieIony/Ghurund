@@ -15,12 +15,10 @@ namespace Ghurund::Engine::DirectX {
 
     const Ghurund::Core::Type& DirectXWindow::GET_TYPE() {
         static auto PROPERTY_SWAPCHAIN = Property<DirectXWindow, Ghurund::Engine::DirectX::SwapChain&>("SwapChain", &getSwapChain);
-        static auto PROPERTY_LAYERS = Property<DirectXWindow, LayerList<DirectXDrawingContext>&>("Layers", &getLayers);
         static auto PROPERTY_APPLICATION = Property<DirectXWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<DirectXWindow>()
             .withProperty(PROPERTY_SWAPCHAIN)
-            .withProperty(PROPERTY_LAYERS)
             .withProperty(PROPERTY_APPLICATION)
             .withSupertype(__super::GET_TYPE());
 
@@ -30,59 +28,22 @@ namespace Ghurund::Engine::DirectX {
     bool DirectXWindow::onSizeChangedEvent() {
         if (swapChain)
             swapChain->uninitBuffers();
-        __super::onSizeChangedEvent();
-        layers.Size = Size;
+        bool result = __super::onSizeChangedEvent();
 		if (swapChain && Size.Width > 0 && Size.Height > 0) {
             swapChain->resize(Size);
             swapChain->initBuffers();
         }
-        return true;
+        return result;
     }
 
-    bool DirectXWindow::onFocusedChangedEvent() {
-        if (Focused) {
-            layers.restoreFocus();
-        } else {
-            layers.clearFocus();
-        }
-        return true;
-    }
-
-    DirectXWindow::DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
+    DirectXWindow::DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app), renderer(renderer) {}
 
     void DirectXWindow::init() {
         __super::init();
         swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
-        Ghurund::Engine::DirectX::Graphics& graphics = app.Features.get<Ghurund::Engine::DirectX::Graphics>();
+        Ghurund::Engine::DirectX::Graphics& graphics = Application.Features.get<Ghurund::Engine::DirectX::Graphics>();
         swapChain->init(graphics, *this);
         swapChain->initBuffers();
-    }
-
-    bool DirectXWindow::onKeyEvent(const KeyEventArgs& args) {
-        return layers.dispatchKeyEvent(args);
-    }
-
-    bool DirectXWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
-        bool consumed = layers.dispatchMouseButtonEvent(args);
-        if (consumed && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
-            SetCapture(Handle);
-        } else {
-            ReleaseCapture();
-        }
-        return consumed;
-    }
-
-    bool DirectXWindow::onMouseMotionEvent(const MouseMotionEventArgs& args) {
-        return layers.dispatchMouseMotionEvent(args);
-    }
-
-    bool DirectXWindow::onMouseWheelEvent(const Ghurund::Core::MouseWheelEventArgs& args) {
-        return layers.dispatchMouseWheelEvent(args);
-    }
-
-    void DirectXWindow::update(const uint64_t time) {
-        __super::update(time);
-        layers.update(time);
     }
 
     void DirectXWindow::paint() {
@@ -91,7 +52,7 @@ namespace Ghurund::Engine::DirectX {
         //levelManager.draw(commandList);
         frame.flush();
         auto drawingContext = DirectXDrawingContext(frame.RenderTarget);
-        layers.draw(drawingContext);
+        Layers.draw(drawingContext);
         renderer.finishFrame(frame);
         swapChain->present();
     }

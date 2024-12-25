@@ -23,7 +23,7 @@ namespace Ghurund::UI::GDI {
 
         static const auto CONSTRUCTOR = Constructor<Bitmap>();
 
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>(Ghurund::UI::NAMESPACE_NAME, "Bitmap")
+        static const Ghurund::Core::Type TYPE = TypeBuilder<Bitmap>()
             .withProperty(PROPERTY_IMAGE)
             .withProperty(PROPERTY_DATA)
             .withProperty(PROPERTY_SIZE)

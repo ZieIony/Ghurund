@@ -1,8 +1,8 @@
 #pragma once
 
 #include "core/application/Application.h"
+#include "core/application/ApplicationWindow.h"
 #include "core/application/LayerList.h"
-#include "core/window/SystemWindow.h"
 #include "engine/directx/DirectXDrawingContext.h"
 #include "engine/directx/Renderer.h"
 #include "engine/directx/SwapChain.h"
@@ -10,7 +10,7 @@
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class DirectXWindow: public Ghurund::Core::SystemWindow {
+    class DirectXWindow: public Ghurund::Core::ApplicationWindow<Ghurund::Engine::DirectX::DirectXDrawingContext>{
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,17 +25,13 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         SwapChain* swapChain = nullptr;
-        LayerList<DirectXDrawingContext> layers;
-        Application& app;
         Renderer& renderer;
 
     protected:
         virtual bool onSizeChangedEvent() override;
 
-        virtual bool onFocusedChangedEvent() override;
-
     public:
-        DirectXWindow(Application& app, Renderer& renderer);
+        DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer);
 
         ~DirectXWindow() {
             delete swapChain;
@@ -49,28 +45,6 @@ namespace Ghurund::Engine::DirectX {
         }
 
         __declspec(property(get = getSwapChain)) Ghurund::Engine::DirectX::SwapChain& SwapChain;
-
-        inline LayerList<DirectXDrawingContext>& getLayers() {
-            return layers;
-        }
-
-        __declspec(property(get = getLayers)) LayerList<DirectXDrawingContext>& Layers;
-
-        inline Application& getApplication() {
-            return app;
-        }
-
-        __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
-
-        virtual bool onKeyEvent(const KeyEventArgs& args) override;
-
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
-
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override;
-
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override;
-
-        virtual void update(const uint64_t time) override;
 
         virtual void paint() override;
     };

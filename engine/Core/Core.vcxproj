@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\application\ApplicationWindow.h" />
     <ClInclude Include="src\core\window\WindowDecorationMetrics.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />

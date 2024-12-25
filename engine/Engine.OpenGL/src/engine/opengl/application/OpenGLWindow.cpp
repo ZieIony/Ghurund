@@ -6,36 +6,22 @@
 #include "core/application/LayerList.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/TypeBuilder.h"
-#include "core/window/SystemWindow.h"
 #include "engine/opengl/OpenGLDrawingContext.h"
-
-#include <windowsx.h>
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& OpenGLWindow::GET_TYPE() {
-        static auto PROPERTY_LAYERS = Property<OpenGLWindow, LayerList<OpenGLDrawingContext>&>("Layers", &getLayers);
         static auto PROPERTY_APPLICATION = Property<OpenGLWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<OpenGLWindow>()
-            .withProperty(PROPERTY_LAYERS)
             .withProperty(PROPERTY_APPLICATION)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    bool OpenGLWindow::onFocusedChangedEvent() {
-        if (Focused) {
-            layers.restoreFocus();
-        } else {
-            layers.clearFocus();
-        }
-        return true;
-    }
-
-    OpenGLWindow::OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer):SystemWindow(app.Timer), app(app), renderer(renderer) {}
+    OpenGLWindow::OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app), renderer(renderer) {}
 
     void OpenGLWindow::init() {
         __super::init();
@@ -79,37 +65,10 @@ namespace Ghurund::Engine::OpenGL {
         __super::uninit();
     }
 
-    bool OpenGLWindow::onKeyEvent(const KeyEventArgs& args) {
-        return layers.dispatchKeyEvent(args);
-    }
-
-    bool OpenGLWindow::onMouseButtonEvent(const MouseButtonEventArgs& args) {
-        bool consumed = layers.dispatchMouseButtonEvent(args);
-        if (consumed && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
-            SetCapture(Handle);
-        } else {
-            ReleaseCapture();
-        }
-        return consumed;
-    }
-
-    bool OpenGLWindow::onMouseMotionEvent(const MouseMotionEventArgs& args) {
-        return layers.dispatchMouseMotionEvent(args);
-    }
-
-    bool OpenGLWindow::onMouseWheelEvent(const Ghurund::Core::MouseWheelEventArgs& args) {
-        return layers.dispatchMouseWheelEvent(args);
-    }
-
-    void OpenGLWindow::update(const uint64_t time) {
-        __super::update(time);
-        layers.update(time);
-    }
-
     void OpenGLWindow::paint() {
         wglMakeCurrent(dc, renderContext);
         OpenGLDrawingContext context;
-        layers.draw(context);
+        Layers.draw(context);
 
         glClearColor(1, 1, 1, 0);
         glClear(GL_COLOR_BUFFER_BIT);

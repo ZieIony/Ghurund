@@ -19,7 +19,7 @@ namespace Ghurund::UI::GDI {
 
         inline static const Array<ResourceFormat>& FORMATS = GET_FORMATS();
 
-        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormats() const override {
+        virtual const Ghurund::Core::Array<Ghurund::Core::ResourceFormat>& getFormatsImpl() const override {
             return FORMATS;
         }
 

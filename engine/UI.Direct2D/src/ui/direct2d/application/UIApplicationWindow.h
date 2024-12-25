@@ -26,7 +26,7 @@ namespace Ghurund::UI::Direct2D {
 			Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
 			uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
 			uiLayer->init(graphics2d, *this, SwapChain);
-			//Layers.add(uiLayer);
+			Layers.add(uiLayer);
 
 			uiLayer->Root.Theme = theme;
 			uiLayer->Root.Child = content;

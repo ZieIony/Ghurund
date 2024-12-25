@@ -3,7 +3,7 @@
 #undef GDIPVER
 #define GDIPVER     0x0110
 
-#include <objidl.h>
+#include <Windows.h>
 #include <gdiplus.h>
 
 #pragma comment (lib, "Gdiplus.lib")

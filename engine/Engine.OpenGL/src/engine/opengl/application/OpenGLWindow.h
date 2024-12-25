@@ -1,17 +1,14 @@
 #pragma once
 
+#include "core/application/ApplicationWindow.h"
 #include "core/window/SystemWindow.h"
-#include "core/input/Input.h"
-#include "engine/opengl/Renderer.h"
 #include "engine/opengl/OpenGLDrawingContext.h"
-#include "core/application/Application.h"
-
-#include "core/application/LayerList.h"
+#include "engine/opengl/Renderer.h"
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
 
-    class OpenGLWindow: public Ghurund::Core::SystemWindow {
+    class OpenGLWindow: public Ghurund::Core::ApplicationWindow<OpenGLDrawingContext> {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,50 +22,22 @@ namespace Ghurund::Engine::OpenGL {
 #pragma endregion
 
     private:
-        LayerList<OpenGLDrawingContext> layers;
-        Application& app;
         Renderer& renderer;
         HDC dc;
         HGLRC renderContext;
 
     protected:
         virtual bool onSizeChangedEvent() override {
-            layers.Size = Size;
             glViewport(0, 0, Size.Width, Size.Height);
-            __super::onSizeChangedEvent();
-            return true;
+            return __super::onSizeChangedEvent();
         }
 
-        virtual bool onFocusedChangedEvent() override;
-
     public:
-        OpenGLWindow(Application& app, Renderer& renderer);
+        OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer);
 
         virtual void init() override;
 
         void uninit();
-
-        inline LayerList<OpenGLDrawingContext>& getLayers() {
-            return layers;
-        }
-
-        __declspec(property(get = getLayers)) LayerList<OpenGLDrawingContext>& Layers;
-
-        inline Application& getApplication() {
-            return app;
-        }
-
-        __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
-
-        virtual bool onKeyEvent(const KeyEventArgs& args) override;
-
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
-
-        virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override;
-
-        virtual bool onMouseWheelEvent(const MouseWheelEventArgs& args) override;
-
-        virtual void update(const uint64_t time) override;
 
         virtual void paint() override;
     };

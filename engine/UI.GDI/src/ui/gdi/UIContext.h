@@ -1,11 +1,10 @@
 #pragma once
 
+#include "Gdi.h"
 #include "ui/UIContext.h"
 #include "ui/gdi/StrokeStyle.h"
 #include "ui/gdi/effects/ShadowEffect.h"
 #include "ui/gdi/effects/TintEffect.h"
-
-#include <gdiplus.h>
 
 namespace Ghurund::Core {
     class Window;
