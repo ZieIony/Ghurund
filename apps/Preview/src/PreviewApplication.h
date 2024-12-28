@@ -3,6 +3,7 @@
 
 #include "PreviewWindow.h"
 #include "ThemeApplication.h"
+#include "ui/loading/DrawableFactory.h"
 
 namespace Preview {
     using namespace Ghurund::Engine;
@@ -12,7 +13,6 @@ namespace Preview {
         Ghurund::Engine::DirectX::Renderer renderer;
         Ghurund::Engine::ParameterManager parameterManager;
 
-        SharedPointer<Ghurund::UI::DrawableFactory> drawableFactory;
         SharedPointer<Theme> lightTheme;
         SharedPointer<Theme> darkTheme;
         SharedPointer<Theme> currentTheme;

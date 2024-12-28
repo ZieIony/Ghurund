@@ -2,7 +2,9 @@
 
 #include "core/io/DirectoryLibrary.h"
 #include "ui/direct2d/Graphics2DFactory.h"
-#include <ui/direct2d/UIFeatureFactory.h>
+#include "ui/direct2d/UIFeatureFactory.h"
+#include "ui/theme/LightTheme.h"
+#include "ui/theme/DarkTheme.h"
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
@@ -13,10 +15,10 @@ namespace Preview {
     
     void PreviewApplication::onInit() {
         auto& uiFeature = Features.get<UIFeature>();
+        auto& drawableFactory = uiFeature.DrawableFactory;
 
-        drawableFactory.set(ghnew Ghurund::UI::Direct2D::DrawableFactory(ResourceManager));
-        lightTheme.set(ghnew LightTheme(ResourceManager, *drawableFactory.get()));
-        darkTheme.set(ghnew DarkTheme(ResourceManager, *drawableFactory.get()));
+        lightTheme.set(ghnew LightTheme(ResourceManager, drawableFactory));
+        darkTheme.set(ghnew DarkTheme(ResourceManager, drawableFactory));
         ThemeType = ThemeType::LIGHT;
 
         ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
@@ -38,7 +40,6 @@ namespace Preview {
         renderer.uninit();
         darkTheme.set(nullptr);
         lightTheme.set(nullptr);
-        drawableFactory.set(nullptr);
     }
     
     void PreviewApplication::setThemeType(Preview::ThemeType theme) {

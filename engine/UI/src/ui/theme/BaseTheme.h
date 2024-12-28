@@ -3,7 +3,7 @@
 #include "Theme.h"
 
 #include "core/resource/ResourceManager.h"
-#include "ui/loading/DrawableFactory.h"
+#include "ui/loading/IDrawableFactory.h"
 #include "ui/image/BitmapFactory.h"
 
 namespace Ghurund::UI {
@@ -14,7 +14,7 @@ namespace Ghurund::UI {
 	public:
 		BaseTheme(
 			Ghurund::Core::ResourceManager& resourceManager,
-			Ghurund::UI::DrawableFactory& drawableFactory
+			Ghurund::UI::IDrawableFactory& drawableFactory
 		);
 	};
 }

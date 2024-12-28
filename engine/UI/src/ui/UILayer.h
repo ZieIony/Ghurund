@@ -47,14 +47,23 @@ namespace Ghurund::UI {
 
     public:
         ~UILayer() {
-            rootView->release();
+            uninit();
         }
 
         void init(IUIContext& context) {
+            if (rootView)
+                return;
             this->context = &context;
             rootView = ghnew Ghurund::UI::RootView(*this->context);
             rootViewWidth.set(ghnew WindowWidthConstraint(this->context->Window));
             rootViewHeight.set(ghnew WindowHeightConstraint(this->context->Window));
+        }
+
+        void uninit() {
+            if (!rootView)
+                return;
+            rootView->release();
+            rootView = nullptr;
         }
 
         inline RootView& getRoot() {
@@ -62,6 +71,26 @@ namespace Ghurund::UI {
         }
 
         __declspec(property(get = getRoot)) RootView& Root;
+
+        inline Ghurund::UI::Theme* getTheme() const {
+            return rootView->Theme;
+        }
+
+        inline void setTheme(Ghurund::UI::Theme* theme) {
+            rootView->Theme = theme;
+        }
+
+        __declspec(property(get = getTheme, put = setTheme)) const Ghurund::UI::Theme* Theme;
+
+        inline Ghurund::UI::Control* getContent() {
+            return rootView->Child;
+        }
+
+        inline void setContent(Ghurund::UI::Control* content) {
+            rootView->Child = content;
+        }
+
+        __declspec(property(get = getContent, put = setContent)) Ghurund::UI::Control* Content;
 
         inline IUIContext& getContext() {
             return *context;

@@ -1,34 +1,32 @@
-#include "ghuid2dpch.h"
-#include "UIFeature.h"
+#include "ghuidxpch.h"
+#include "DxUIFeature.h"
 
-#include "ui/direct2d/Graphics2D.h"
 #include "core/reflection/TypeBuilder.h"
-#include "core/reflection/Property.h"
 #include "engine/directx/Graphics.h"
 #include <ui/control/Control.h>
 #include <core/image/Image.h>
 #include "ui/font/FontLoader.h"
 #include "core/image/ImageLoader.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/direct2d/image/BitmapLoader.h"
-#include "ui/direct2d/image/BitmapFactory.h"
+#include "ui/directx/image/BitmapLoader.h"
+#include "ui/directx/image/BitmapFactory.h"
 
-namespace Ghurund::UI::Direct2D {
+namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
 
-    const Ghurund::Core::Type& UIFeature::GET_TYPE() {
+    const Ghurund::Core::Type& DxUIFeature::GET_TYPE() {
         static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void UIFeature::onInit() {
-        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d.D2DFactory);
-        drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(resourceManager);
-        textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
+    void DxUIFeature::onInit() {
+        shapeFactory = ghnew Ghurund::UI::DirectX::ShapeFactory();
+        drawableFactory = ghnew Ghurund::UI::DrawableFactory(resourceManager);
+        textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
-        bitmapFactory = ghnew BitmapFactory(graphics2d.DeviceContext);
+        bitmapFactory = ghnew Ghurund::UI::DirectX::BitmapFactory();
 
         auto fontLoader = makeIntrusive<FontLoader>(*bitmapFactory);
 
@@ -40,7 +38,7 @@ namespace Ghurund::UI::Direct2D {
         resourceManager.Loaders.set<Control>(layoutLoader.get());
     }
     
-    void UIFeature::onUninit() {
+    void DxUIFeature::onUninit() {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
         resourceManager.Loaders.remove<Image>();

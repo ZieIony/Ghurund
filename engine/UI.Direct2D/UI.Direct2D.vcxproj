@@ -102,7 +102,7 @@
     <ClInclude Include="src\ui\direct2d\Shape.h" />
     <ClInclude Include="src\ui\direct2d\StrokeStyle.h" />
     <ClInclude Include="src\ui\direct2d\UIContext.h" />
-    <ClInclude Include="src\ui\direct2d\UIFeature.h" />
+    <ClInclude Include="src\ui\direct2d\D2DUIFeature.h" />
     <ClInclude Include="src\ui\direct2d\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\direct2d\UILayer.h" />
     <ClInclude Include="src\ui\direct2d\application\UIApplicationWindow.h" />
@@ -130,7 +130,7 @@
     <ClCompile Include="src\ui\direct2d\RenderTarget2D.cpp" />
     <ClCompile Include="src\ui\direct2d\Shape.cpp" />
     <ClCompile Include="src\ui\direct2d\UIContext.cpp" />
-    <ClCompile Include="src\ui\direct2d\UIFeature.cpp" />
+    <ClCompile Include="src\ui\direct2d\D2DUIFeature.cpp" />
     <ClCompile Include="src\ui\direct2d\UILayer.cpp" />
     <ClCompile Include="src\ui\direct2d\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\direct2d\font\Font.cpp" />

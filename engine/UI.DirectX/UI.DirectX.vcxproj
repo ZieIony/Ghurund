@@ -97,7 +97,7 @@
     <ClInclude Include="src\ui\directx\DxCanvas.h" />
     <ClInclude Include="src\ui\directx\Shape.h" />
     <ClInclude Include="src\ui\directx\UIContext.h" />
-    <ClInclude Include="src\ui\directx\UIFeature.h" />
+    <ClInclude Include="src\ui\directx\DxUIFeature.h" />
     <ClInclude Include="src\ui\directx\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\directx\UILayer.h" />
     <ClInclude Include="src\ui\directx\application\UIApplicationWindow.h" />
@@ -113,7 +113,7 @@
     </ClCompile>
     <ClCompile Include="src\ui\directx\Shape.cpp" />
     <ClCompile Include="src\ui\directx\UIContext.cpp" />
-    <ClCompile Include="src\ui\directx\UIFeature.cpp" />
+    <ClCompile Include="src\ui\directx\DxUIFeature.cpp" />
     <ClCompile Include="src\ui\directx\UILayer.cpp" />
     <ClCompile Include="src\ui\directx\image\Bitmap.cpp" />
   </ItemGroup>

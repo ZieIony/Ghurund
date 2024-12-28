@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/Graphics.h"
-#include "core/feature/Feature.h"
+#include "ui/UIFeature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/DrawableFactory.h"
@@ -12,7 +12,7 @@
 namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Core;
 
-    class UIFeature:public Feature {
+    class D2DUIFeature:public UIFeature {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -22,7 +22,7 @@ namespace Ghurund::UI::Direct2D {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = UIFeature::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = D2DUIFeature::GET_TYPE();
 #pragma endregion
 
     private:
@@ -33,19 +33,37 @@ namespace Ghurund::UI::Direct2D {
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         Ghurund::UI::IBitmapFactory* bitmapFactory = nullptr;
-        IntrusivePointer<LayoutLoader> layoutLoader;
+        IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        UIFeature(Ghurund::UI::Direct2D::Graphics2D& graphics2d, ResourceManager& resourceManager):graphics2d(graphics2d), resourceManager(resourceManager) {}
+        D2DUIFeature(Ghurund::UI::Direct2D::Graphics2D& graphics2d, ResourceManager& resourceManager):graphics2d(graphics2d), resourceManager(resourceManager) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        inline LayoutLoader& getLayoutLoader() {
-            return *layoutLoader.get();
+        virtual Ghurund::UI::ShapeFactory& getShapeFactory() override {
+            return *shapeFactory;
         }
 
-        __declspec(property(get = getLayoutLoader)) LayoutLoader& LayoutLoader;
+        virtual Ghurund::UI::IDrawableFactory& getDrawableFactory() override {
+            return *drawableFactory;
+        }
+
+        virtual Ghurund::UI::TextFormatFactory& getTextFormatFactory() override {
+            return *textFormatFactory;
+        }
+
+        virtual Ghurund::UI::ConstraintFactory& getConstraintFactory() override {
+            return *constraintFactory;
+        }
+
+        virtual IBitmapFactory& getBitmapFactory() override {
+            return *bitmapFactory;
+        }
+
+        virtual Ghurund::UI::LayoutLoader& getLayoutLoader() {
+            return *layoutLoader.get();
+        }
     };
 }

@@ -11,7 +11,7 @@
 namespace Ghurund::UI {
 	BaseTheme::BaseTheme(
 		Ghurund::Core::ResourceManager& resourceManager,
-		Ghurund::UI::DrawableFactory& drawableFactory
+		Ghurund::UI::IDrawableFactory& drawableFactory
 	):Theme(), resourceManager(resourceManager) {
 		auto buttonLayoutPath = ResourcePath(ResourceManager::ENGINE_LIB_NAME, L"/layouts/ButtonDefaultLayout.xml");
 		Layouts.put(LayoutKey(Button::GET_TYPE().Name), std::make_shared<FileLayoutProvider>(resourceManager, buttonLayoutPath));

@@ -1,20 +1,7 @@
 #include "core/application/Application.h"
-#include "core/window/WindowClass.h"
-#include "ui/Canvas.h"
-#include "ui/RootView.h"
-#include "ui/loading/LayoutLoader.h"
-#include "ui/theme/LightTheme.h"
-#include "ui/theme/DarkTheme.h"
-
-#include "ui/direct2d/image/BitmapLoader.h"
-#include "core/image/ImageLoader.h"
-#include "ui/direct2d/UIContext.h"
-#include <ui/control/ControlGroup.h>
 
 #include "PreviewLayout.h"
 #include "ui/direct2d/application/UIApplicationWindow.h"
-#include "ui/UILayer.h"
-#include "ui/direct2d/UIFeature.h"
 
 namespace Preview {
 	using namespace Ghurund;

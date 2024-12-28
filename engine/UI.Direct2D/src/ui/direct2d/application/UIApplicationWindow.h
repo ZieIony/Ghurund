@@ -9,16 +9,9 @@ namespace Ghurund::UI::Direct2D {
 	class UIApplicationWindow:public DirectXWindow {
 	private:
 		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
-		Ghurund::UI::Theme* theme = nullptr;
-		Ghurund::UI::Control* content = nullptr;
 
 	public:
 		UIApplicationWindow(Core::Application& app, Renderer& renderer):DirectXWindow(app, renderer) {}
-
-		~UIApplicationWindow() {
-			if (uiLayer)
-				uiLayer->release();
-		}
 
 		virtual void init() override {
 			__super::init();
@@ -27,23 +20,26 @@ namespace Ghurund::UI::Direct2D {
 			uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
 			uiLayer->init(graphics2d, *this, SwapChain);
 			Layers.add(uiLayer);
+		}
 
-			uiLayer->Root.Theme = theme;
-			uiLayer->Root.Child = content;
+		virtual void uninit() override {
+			if (uiLayer)
+				uiLayer->release();
+			__super::uninit();
 		}
 
 		inline void setTheme(Ghurund::UI::Theme* theme) {
-			this->theme = theme;
-			if (uiLayer)
-				uiLayer->Root.Theme = theme;
+			uiLayer->Root.Theme = theme;
 		}
 
 		__declspec(property(put = setTheme)) Ghurund::UI::Theme* Theme;
 
+		inline Control* getContent() {
+			return uiLayer->Content;
+		}
+
 		inline void setContent(Ghurund::UI::Control* content) {
-			this->content = content;
-			if (uiLayer)
-				uiLayer->Root.Child = content;
+			uiLayer->Content = content;
 		}
 
 		__declspec(property(put = setContent)) Ghurund::UI::Control* Content;

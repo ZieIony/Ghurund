@@ -23,6 +23,8 @@ namespace Ghurund::UI::Direct2D {
     }
 
     void D2DUILayer::init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain) {
+        if (this->swapChain)
+            return;
         this->graphics = &graphics;
         this->swapChain = &swapChain;
         context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window);
@@ -55,6 +57,7 @@ namespace Ghurund::UI::Direct2D {
     }
 
     void D2DUILayer::uninit() {
+        __super::uninit();
         if (!swapChain)
             return;
         renderTargets.clear();

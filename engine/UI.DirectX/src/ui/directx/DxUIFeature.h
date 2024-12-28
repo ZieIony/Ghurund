@@ -1,7 +1,7 @@
 #pragma once
 
 #include "engine/directx/Graphics.h"
-#include "core/feature/Feature.h"
+#include "ui/UIFeature.h"
 #include "ui/constraint/ConstraintFactory.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/loading/DrawableFactory.h"
@@ -11,7 +11,7 @@
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
 
-    class UIFeature:public Feature {
+    class DxUIFeature:public UIFeature {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -31,19 +31,37 @@ namespace Ghurund::UI::DirectX {
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
         Ghurund::UI::ConstraintFactory* constraintFactory = nullptr;
         Ghurund::UI::IBitmapFactory* bitmapFactory = nullptr;
-        IntrusivePointer<LayoutLoader> layoutLoader;
+        IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        UIFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DxUIFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        inline LayoutLoader& getLayoutLoader() {
-            return *layoutLoader.get();
+        virtual Ghurund::UI::ShapeFactory& getShapeFactory() override {
+            return *shapeFactory;
         }
 
-        __declspec(property(get = getLayoutLoader)) LayoutLoader& LayoutLoader;
+        virtual Ghurund::UI::IDrawableFactory& getDrawableFactory() override {
+            return *drawableFactory;
+        }
+
+        virtual Ghurund::UI::TextFormatFactory& getTextFormatFactory() override {
+            return *textFormatFactory;
+        }
+
+        virtual Ghurund::UI::ConstraintFactory& getConstraintFactory() override {
+            return *constraintFactory;
+        }
+
+        virtual IBitmapFactory& getBitmapFactory() override {
+            return *bitmapFactory;
+        }
+
+        virtual Ghurund::UI::LayoutLoader& getLayoutLoader() {
+            return *layoutLoader.get();
+        }
     };
 }

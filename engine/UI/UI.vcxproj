@@ -116,6 +116,7 @@
     <ClInclude Include="src\ui\StrokeStyle.h" />
     <ClInclude Include="src\ui\UIContext.h" />
     <ClInclude Include="src\ui\UIDebugTools.h" />
+    <ClInclude Include="src\ui\UIFeature.h" />
     <ClInclude Include="src\ui\UILayer.h" />
     <ClInclude Include="src\ui\adapter\AdapterLayout.h" />
     <ClInclude Include="src\ui\adapter\ControlPool.h" />

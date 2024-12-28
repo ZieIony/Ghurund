@@ -1,32 +1,34 @@
-#include "ghuidxpch.h"
-#include "UIFeature.h"
+#include "ghuid2dpch.h"
+#include "D2DUIFeature.h"
 
+#include "ui/direct2d/Graphics2D.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/reflection/Property.h"
 #include "engine/directx/Graphics.h"
 #include <ui/control/Control.h>
 #include <core/image/Image.h>
 #include "ui/font/FontLoader.h"
 #include "core/image/ImageLoader.h"
 #include "ui/loading/LayoutLoader.h"
-#include "ui/directx/image/BitmapLoader.h"
-#include "ui/directx/image/BitmapFactory.h"
+#include "ui/direct2d/image/BitmapLoader.h"
+#include "ui/direct2d/image/BitmapFactory.h"
 
-namespace Ghurund::UI::DirectX {
+namespace Ghurund::UI::Direct2D {
     using namespace Ghurund::Core;
 
-    const Ghurund::Core::Type& UIFeature::GET_TYPE() {
-        static const Ghurund::Core::Type TYPE = TypeBuilder<UIFeature>()
+    const Ghurund::Core::Type& D2DUIFeature::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<D2DUIFeature>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void UIFeature::onInit() {
-        shapeFactory = ghnew Ghurund::UI::DirectX::ShapeFactory();
-        drawableFactory = ghnew Ghurund::UI::DrawableFactory(resourceManager);
-        textFormatFactory = ghnew Ghurund::UI::DirectX::TextFormatFactory();
+    void D2DUIFeature::onInit() {
+        shapeFactory = ghnew Ghurund::UI::Direct2D::ShapeFactory(graphics2d.D2DFactory);
+        drawableFactory = ghnew Ghurund::UI::Direct2D::DrawableFactory(resourceManager);
+        textFormatFactory = ghnew Ghurund::UI::Direct2D::TextFormatFactory();
         constraintFactory = ghnew Ghurund::UI::ConstraintFactory();
-        bitmapFactory = ghnew BitmapFactory();
+        bitmapFactory = ghnew Ghurund::UI::Direct2D::BitmapFactory(graphics2d.DeviceContext);
 
         auto fontLoader = makeIntrusive<FontLoader>(*bitmapFactory);
 
@@ -38,7 +40,7 @@ namespace Ghurund::UI::DirectX {
         resourceManager.Loaders.set<Control>(layoutLoader.get());
     }
     
-    void UIFeature::onUninit() {
+    void D2DUIFeature::onUninit() {
         resourceManager.Loaders.remove<Control>();
         resourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
         resourceManager.Loaders.remove<Image>();

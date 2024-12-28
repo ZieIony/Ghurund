@@ -16,8 +16,6 @@ namespace Preview {
 	void PreviewWindow::init() {
 		__super::init();
 
-		Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
-
 		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		Theme = &themeApp.CurrentTheme;
 		Content = previewLayout.get();

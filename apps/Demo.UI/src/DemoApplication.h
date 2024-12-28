@@ -3,7 +3,7 @@
 #include "DemoWindow.h"
 #include "engine/directx/Renderer.h"
 #include "parameter/ParameterManager.h"
-#include "ui/directx/UIFeature.h"
+#include "ui/directx/DxUIFeature.h"
 #include "ui/theme/LightTheme.h"
 #include "ui/loading/DrawableFactory.h"
 #include "ui/directx/UIFeatureFactory.h"
