@@ -172,10 +172,10 @@ namespace Ghurund::UI {
 			if (constructor) {
 				IntrusivePointer<Control> control((Control*)constructor->invokeRaw());
 				control->load(*this, workingDir, xml);
-				PartialConstraintSet loadedConstraints;
-				loadedConstraints.load(control->Type, *this, xml);
-				PartialConstraintSet constraints = parent.makeDefaultConstraints();
-				constraints.merge(loadedConstraints);
+                PartialConstraintSet loadedConstraints;
+                loadedConstraints.load(control->Type, *this, xml);
+                PartialConstraintSet constraints = parent.makeDefaultConstraints();
+                constraints.merge(loadedConstraints);
 				return ControlWithConstraints(control, constraints);
 			} else {
 				Logger::log(LogType::ERR0R, std::format(_T("{} is not a known control or it doesn't declare a zero argument constructor.\n"), type).c_str());

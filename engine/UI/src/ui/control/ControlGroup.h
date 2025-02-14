@@ -127,10 +127,6 @@ namespace Ghurund::UI {
 			children[index].Constraints = set;
 		}
 
-		virtual void setConstraints(const Control& child, const ConstraintSetInitializer& set) override {
-			setConstraints(child, ConstraintSet(set));
-		}
-
 		virtual void resolveConstraints(ConstraintGraph& graph, const Constraint& width, const Constraint& height) override;
 
 		virtual PartialConstraintSet makeDefaultConstraints() const override;

@@ -1,18 +1,11 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "test/TestUtils.h"
+#include "test/ui/UITestUtils.h"
 #include "test/MemoryGuard.h"
 #include <test/TestLogOutput.h>
 
-#include "ui/constraint/ConstraintFactory.h"
-#include "test/ui/TestShapeFactory.h"
-#include "test/ui/TestDrawableFactory.h"
-#include "test/ui/TextFormatFactory.h"
-#include "ui/loading/LayoutLoader.h"
-#include "ui/constraint/ConstraintGraph.h"
-#include "ui/constraint/SiblingConstraint.h"
-#include "ui/constraint/ParentConstraint.h"
 #include <ui/control/ColorView.h>
+#include <ui/control/ControlGroup.h>
 
 using namespace Ghurund::UI;
 using namespace UnitTest::Utils;
@@ -39,27 +32,27 @@ public:
     TEST_METHOD(wrapEmpty) {
         MemoryGuard guard;
         {
-            auto container = makeIntrusive<ColorView>();
-            container->Constraints = {
+            auto container = makeIntrusive<ControlGroup>();
+            auto colorView = makeIntrusive<ColorView>();
+
+            container->Children.add(colorView.get(), makeConstraints({
                 .width = makeIntrusive<WrapWidthConstraint>(),
                 .height = makeIntrusive<WrapHeightConstraint>()
-            };
+            }));
 
-            ConstraintGraph graph;
-            container->resolveConstraints(graph);
-            graph.sort();
-            graph.evaluate();
+            layoutControl(container, 100.0f, 100.0f);
 
-            Assert::AreEqual(0.0f, container->Width.Value);
-            Assert::AreEqual(0.0f, container->Height.Value);
+            Assert::AreEqual(0.0f, colorView->Size.Width);
+            Assert::AreEqual(0.0f, colorView->Size.Height);
         }
     }
 
     TEST_METHOD(wrapEmptyMinRatioOffset) {
         MemoryGuard guard;
         {
-            auto container = makeIntrusive<ColorView>();
-            container->Constraints = {
+            auto container = makeIntrusive<ControlGroup>();
+            auto colorView = makeIntrusive<ColorView>();
+            container->Children.add(colorView.get(), makeConstraints({
                 .width = []() {
                     auto c = makeIntrusive<WrapWidthConstraint>();
                     c->Min = 100;
@@ -74,15 +67,12 @@ public:
                     c->Offset = 10.0f;
                     return c;
                 }()
-            };
+            }));
 
-            ConstraintGraph graph;
-            container->resolveConstraints(graph);
-            graph.sort();
-            graph.evaluate();
+            layoutControl(container, 100, 100);
 
-            Assert::AreEqual(100.0f, container->Width.Value);
-            Assert::AreEqual(75.0f, container->Height.Value);
+            Assert::AreEqual(100.0f, colorView->Size.Width);
+            Assert::AreEqual(75.0f, colorView->Size.Height);
         }
     }
     };

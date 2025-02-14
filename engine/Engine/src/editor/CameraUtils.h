@@ -4,13 +4,15 @@
 
 #include "entity/camera/Camera.h"
 
-namespace Ghurund {
+namespace Ghurund::Editor {
+    using namespace Ghurund::Engine;
+
     class CameraUtils {
 	private:
 		CameraUtils() = delete;
 
     public:
-        static void lookAtEntity(Camera& camera, DrawableComponent& entity) {
+        static void lookAtEntity(Camera& camera, Ghurund::Engine::DrawableComponent& entity) {
             /*XMFLOAT3 pos;
             XMStoreFloat3(&pos, XMLoadFloat3(&entity.BoundingBox->Center) + XMLoadFloat3(&entity.BoundingBox->Extents) * 2);
             pos.z *= -1;

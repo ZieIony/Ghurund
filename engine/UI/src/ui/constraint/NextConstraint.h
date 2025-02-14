@@ -1,7 +1,6 @@
 #pragma once
 
 #include "OffsetConstraint.h"
-#include "ValueConstraint.h"
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {
@@ -19,6 +18,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextLeftConstraint():OffsetConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -49,6 +50,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextRightConstraint():OffsetConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -79,6 +82,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextTopConstraint():OffsetConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -109,6 +114,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextBottomConstraint():OffsetConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -139,6 +146,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextWidthConstraint():MinMaxConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -169,6 +178,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		NextHeightConstraint():MinMaxConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {

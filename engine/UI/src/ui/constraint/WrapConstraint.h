@@ -1,10 +1,8 @@
 #pragma once
 
 #include "MinMaxConstraint.h"
-#include "core/IntrusivePointer.h"
 
 namespace Ghurund::UI {
-
     class WrapWidthConstraint:public MinMaxConstraint {
 #pragma region reflection
     protected:

@@ -56,18 +56,18 @@ namespace Ghurund::UI {
 
 		void setChild(Control* child);
 
+		void setChild(Control* child, const ConstraintSet& set);
+
 		__declspec(property(get = getChild, put = setChild)) Control* Child;
 
 		virtual const ConstraintSet& getConstraints(const Control& control) const override;
 
 		virtual ConstraintSet& getConstraints(Control& control) override;
 
-		virtual void setConstraints(const Control& child, const ConstraintSet& set) override {
+		virtual void setConstraints(const Control& control, const ConstraintSet& set) override {
+			if (&control != child)
+				throw InvalidParamException("control is not the child of this container");
 			constraints = set;
-		}
-
-		virtual void setConstraints(const Control& child, const ConstraintSetInitializer& set) override {
-			constraints = ConstraintSet(set);
 		}
 
 		virtual bool focusNext() override;

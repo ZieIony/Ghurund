@@ -1,11 +1,11 @@
 #pragma once
 
-#include "graphics/Renderer.h"
+//#include "graphics/Renderer.h"
 #include "core/image/Image.h"
 
 #include "entity/camera/Camera.h"
 
-namespace Ghurund {
+namespace Ghurund::Editor {
     using namespace Ghurund::Core;
 
     class ThumbnailRenderer:public Object {
@@ -22,25 +22,25 @@ namespace Ghurund {
 #pragma endregion
 
     private:
-		Camera* camera = nullptr;
+		/*Camera* camera = nullptr;
         Renderer* renderer = nullptr;
         Frame* frame = nullptr;
         RenderTarget* renderTarget = nullptr;
-        DepthBuffer* depthBuffer = nullptr;
+        DepthBuffer* depthBuffer = nullptr;*/
 
 
     public:
         ~ThumbnailRenderer() {
-            if (camera)
+            /*if (camera)
                 camera->release();
             delete renderer;
-            delete frame;
+            delete frame;*/
         }
 
         void init(uint32_t width, uint32_t height);
 
-        void render(DrawableComponent& entity, Ghurund::Core::Image*& image);
+        /*void render(DrawableComponent& entity, Ghurund::Core::Image*& image);
         void render(Mesh& mesh, Ghurund::Core::Image*& image);
-        void render(Material& material, Ghurund::Core::Image*& image);
+        void render(Material& material, Ghurund::Core::Image*& image);*/
     };
 }

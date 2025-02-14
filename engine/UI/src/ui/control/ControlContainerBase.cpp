@@ -19,13 +19,17 @@ namespace Ghurund::UI {
 	}
 
 	void ControlContainerBase::setChild(Control* child) {
+		setChild(child, makeDefaultConstraints());
+	}
+
+	void ControlContainerBase::setChild(Control* child, const ConstraintSet& set) {
 		if (this->child == child)
 			return;
 		if (this->child)
 			this->child->Parent = nullptr;
 		setPointer(this->child, child);
 		if (this->child) {
-			setConstraints(*child, makeDefaultConstraints());
+			setConstraints(*this->child, set);
 			this->child->Parent = this;
 		}
 		onChildChanged();

@@ -43,8 +43,6 @@ namespace Ghurund::UI {
 		virtual ~Constraint() = 0 {}
 
 	public:
-		Constraint() {}
-
 		Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
 
 		inline bool isConstant() const {

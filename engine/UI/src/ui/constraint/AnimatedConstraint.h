@@ -23,7 +23,7 @@ namespace Ghurund::UI {
 
 	public:
 		AnimatedConstraint(const IntrusivePointer<Constraint>& from, const IntrusivePointer<Constraint>& to)
-			:from(from), to(to) {
+			:Constraint(false, false), from(from), to(to) {
 			dependencies.putAll({ this->from.get(), this->to.get() });
 		}
 

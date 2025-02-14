@@ -26,7 +26,7 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        TextLayoutWidthConstraint(TextLayout& textLayout):textLayout(textLayout) {}
+        TextLayoutWidthConstraint(TextLayout& textLayout):Constraint(false, false), textLayout(textLayout) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;
@@ -64,7 +64,7 @@ namespace Ghurund::UI {
         virtual bool equalsImpl(const Object& other) const override;
 
     public:
-        TextLayoutHeightConstraint(TextLayout& textLayout):textLayout(textLayout) {}
+        TextLayoutHeightConstraint(TextLayout& textLayout):Constraint(false, false), textLayout(textLayout) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override {
             evaluated = false;

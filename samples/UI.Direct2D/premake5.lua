@@ -3,9 +3,11 @@ project "Samples.UI.Direct2D"
 	staticruntime "on"
 
 	dependson {
-		"Engine.Core",
-		"Engine.UI",
-		"Engine.UI.Direct2D"
+		"Core",
+		"Engine.DirectX",
+		"UI",
+		"UI.Direct2D",
+		"Engine"
 	}
 
 	files {
@@ -18,15 +20,20 @@ project "Samples.UI.Direct2D"
 		"src",
 		"generated/bindings",
 		includeDir["Core"],
+		includeDir["Engine"],
+		includeDir["Engine.DirectX"],
 		includeDir["UI"],
 		includeDir["UI.Direct2D"],
 		includeDir["tinyxml2"],
+		includeDir["DirectX"]
 	}
 
 	links {
 		"Core",
+		"Engine.DirectX",
 		"UI",
-		"UI.Direct2D"
+		"UI.Direct2D",
+		"Engine"
 	}
 	
 	filter "configurations:Debug"

@@ -2,13 +2,13 @@
 
 #include "DrawableComponents.h"
 
-#include "graphics/Materials.h"
+/*#include "graphics/Materials.h"
 #include "core/IntrusivePointer.h"
 #include "core/directx/mesh/CubeMesh.h"
-#include "core/directx/mesh/SphereMesh.h"
+#include "core/directx/mesh/SphereMesh.h"*/
 
 namespace Ghurund::Engine {
-    DrawableComponent* DrawableComponents::makeCube(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
+    /*DrawableComponent* DrawableComponents::makeCube(Graphics& graphics, CommandList& commandList, ParameterManager& parameterManager, Material& material) {
         auto mesh = makeIntrusive<CubeMesh>();
         mesh->init(graphics, commandList);
         DrawableComponent* model = ghnew DrawableComponent();
@@ -61,5 +61,5 @@ namespace Ghurund::Engine {
         //model->initParameters(parameterManager);
 
         return model;
-    }
+    }*/
 }

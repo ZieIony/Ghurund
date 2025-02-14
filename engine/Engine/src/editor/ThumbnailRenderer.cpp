@@ -4,10 +4,10 @@
 
 #include "CameraUtils.h"
 
-namespace Ghurund {
+namespace Ghurund::Editor {
     const Ghurund::Core::Type& ThumbnailRenderer::GET_TYPE() {
         static const auto CONSTRUCTOR = Constructor<ThumbnailRenderer>();
-        static const Ghurund::Core::Type TYPE = TypeBuilder<ThumbnailRenderer>(Ghurund::NAMESPACE_NAME, GH_STRINGIFY(ThumbnailRenderer))
+        static const Ghurund::Core::Type TYPE = TypeBuilder<ThumbnailRenderer>()
             .withConstructor(CONSTRUCTOR)
             .withSupertype(__super::GET_TYPE());
 
@@ -41,20 +41,20 @@ namespace Ghurund {
         renderer->init(context);*/
     }
 
-    void ThumbnailRenderer::render(DrawableComponent& entity, Ghurund::Core::Image*& image) {
-        /*CameraUtils::lookAtEntity(*camera, entity);
+    /*void ThumbnailRenderer::render(Ghurund::Engine::DrawableComponent& entity, Ghurund::Core::Image*& image) {
+        / *CameraUtils::lookAtEntity(*camera, entity);
 
 		CommandList& commandList = renderer->startFrame(*frame);
 		//renderer->draw(entity, commandList);
 		renderer->finishFrame(*frame);
         frame->CommandList.wait();
 
-        return renderTarget->capture(*resourceContext, image);*/
+        return renderTarget->capture(*resourceContext, image);* /
         throw NotImplementedException();
     }
 
     void ThumbnailRenderer::render(Mesh& mesh, Ghurund::Core::Image*& image) {
-        /*Model* model = ghnew Model();
+        / *Model* model = ghnew Model();
         model->Mesh = &mesh;
         model->Material = Materials::makeChecker(*resourceContext);
         model->Valid = true;
@@ -62,12 +62,12 @@ namespace Ghurund {
         Status result = render(*model, image);
 
         model->release();
-		*/
+		* /
 		throw NotImplementedException();// result;
     }
 
     void ThumbnailRenderer::render(Material& material, Ghurund::Core::Image*& image) {
-        /*Model* model = Models::makeSphere(*resourceContext, material);
+        / *Model* model = Models::makeSphere(*resourceContext, material);
 
         BoundingOrientedBox boundingBox;
         XMFLOAT4X4 localTransformation = model->getTransformation();
@@ -77,7 +77,7 @@ namespace Ghurund {
         Status result = render(*model, image);
 
         model->release();
-		*/
+		* /
         throw NotImplementedException();// result;
-    }
+    }*/
 }

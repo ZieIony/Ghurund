@@ -92,9 +92,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\engine\directx\DirectXDrawingContext.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
+    <ClInclude Include="src\engine\directx\DirectXDrawingContext.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
     <ClInclude Include="src\engine\directx\DrawPacket.h" />
     <ClInclude Include="src\engine\directx\Exceptions.h" />

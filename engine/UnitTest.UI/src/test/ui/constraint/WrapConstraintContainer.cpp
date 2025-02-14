@@ -2,7 +2,8 @@
 #include "CppUnitTest.h"
 #include "test/TestUtils.h"
 #include "test/MemoryGuard.h"
-#include <test/TestLogOutput.h>
+#include "test/TestLogOutput.h"
+#include "test/ui/UITestUtils.h"
 
 #include "ui/constraint/ConstraintFactory.h"
 #include "test/ui/TestShapeFactory.h"
@@ -21,6 +22,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest {
 	using namespace Ghurund::UI;
+	using namespace UnitTest::Utils;
 
 	TEST_CLASS(WrapConstraintContainerTest) {
 public:
@@ -38,21 +40,16 @@ public:
 			auto container = makeIntrusive<ControlContainer>();
 
 			auto controlGroup = makeIntrusive<ConstraintLayout>();
-			ConstraintSet constraints = ConstraintSet(ConstraintSetInitializer{
+			ConstraintSet constraints = makeConstraints({
 				.width = makeIntrusive<ContentWidthConstraint>(),
 				.height = makeIntrusive<ContentHeightConstraint>()
 			});
 			controlGroup->Children.add(container.get(), constraints);
 
-			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100.0f);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100.0f);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
-			graph.sort();
-			graph.evaluate();
+			layoutControl(controlGroup, 100.0f, 100.0f);
 
-			Assert::AreEqual(0.0f, constraints.Width.Value);
-			Assert::AreEqual(0.0f, constraints.Height.Value);
+			Assert::AreEqual(0.0f, container->Size.Width);
+			Assert::AreEqual(0.0f, container->Size.Height);
 		}
 	}
 
@@ -62,7 +59,7 @@ public:
 			auto container = makeIntrusive<ControlContainer>();
 
 			auto controlGroup = makeIntrusive<ConstraintLayout>();
-			ConstraintSet constraints = ConstraintSet(ConstraintSetInitializer{
+			ConstraintSet constraints = makeConstraints({
 				.width = []() {
 					auto c = makeIntrusive<WrapWidthConstraint>();
 					c->Min = 100;
@@ -80,15 +77,10 @@ public:
 			});
 			controlGroup->Children.add(container.get(), constraints);
 
-			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
-			graph.sort();
-			graph.evaluate();
+			layoutControl(controlGroup, 100.0f, 100.0f);
 
-			Assert::AreEqual(100.0f, constraints.Width.Value);
-			Assert::AreEqual(75.0f, constraints.Height.Value);
+			Assert::AreEqual(100.0f, container->Size.Width);
+			Assert::AreEqual(75.0f, container->Size.Height);
 		}
 	}
 
@@ -98,28 +90,22 @@ public:
 			auto child = makeIntrusive<ColorView>();
 			auto group = makeIntrusive<ControlContainer>();
 			group->Child = child.get();
-			group->setConstraints(*child.get(), {
+			group->setConstraints(*child.get(), makeConstraints({
 				.width = 100.0f,
 				.height = 75.0f
-				});
-
-			auto controlGroup = makeIntrusive<ConstraintLayout>();
-			controlGroup->Children.add(group.get(), makeConstraints({
-				.width = makeIntrusive<WrapWidthConstraint>(),
-				.height = makeIntrusive<WrapHeightConstraint>()
 				}));
 
-			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
-			graph.sort();
-			graph.evaluate();
+			auto controlGroup = makeIntrusive<ConstraintLayout>();
+			ConstraintSet constraints = makeConstraints({
+				.width = makeIntrusive<WrapWidthConstraint>(),
+				.height = makeIntrusive<WrapHeightConstraint>()
+				});
+			controlGroup->Children.add(group.get(), constraints);
 
-			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
+			layoutControl(controlGroup, 100.0f, 100.0f);
 
-			Assert::AreEqual(100.0f, constraints.Width.Value);
-			Assert::AreEqual(75.0f, constraints.Height.Value);
+			Assert::AreEqual(100.0f, group->Size.Width);
+			Assert::AreEqual(75.0f, group->Size.Height);
 		}
 	}
 
@@ -129,8 +115,7 @@ public:
 			auto child = makeIntrusive<ColorView>();
 
 			auto group = makeIntrusive<ControlContainer>();
-			group->Child = child.get();
-			group->setConstraints(*child.get(), {
+			group->setChild(child.get(), makeConstraints({
 				.width = []() {
 					auto c = makeIntrusive<ParentWidthConstraint>();
 					c->Min = 100.0f;
@@ -145,7 +130,7 @@ public:
 					c->Offset = 10.0f;
 					return c;
 				}()
-				});
+				}));
 
 
 			auto controlGroup = makeIntrusive<ConstraintLayout>();
@@ -154,17 +139,10 @@ public:
 				.height = makeIntrusive<WrapHeightConstraint>()
 				}));
 
-			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100);
-			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
-			graph.sort();
-			graph.evaluate();
+			layoutControl(controlGroup, 100.0f, 100.0f);
 
-			ConstraintSet& constraints = controlGroup->Children[controlGroup->Children.Size - 1].Constraints;
-
-			Assert::AreEqual(0.0f, constraints.Width.Value);
-			Assert::AreEqual(0.0f, constraints.Height.Value);
+			Assert::AreEqual(0.0f, group->Size.Width);
+			Assert::AreEqual(0.0f, group->Size.Height);
 		}
 	}
 	};

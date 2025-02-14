@@ -31,8 +31,6 @@ namespace Ghurund::UI {
 		~OffsetConstraint() = 0 {}
 
 	public:
-		OffsetConstraint() {}
-
 		OffsetConstraint(bool constant, bool skipDependencies):Constraint(constant, skipDependencies) {}
 
 		inline float getOffset() const {

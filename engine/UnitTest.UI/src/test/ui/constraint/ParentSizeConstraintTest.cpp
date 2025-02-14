@@ -43,11 +43,10 @@ public:
 		{
 			auto root = makeIntrusive<TestControlContainer>();
 			auto group = makeIntrusive<ControlGroup>();
-			root->Child = group.get();
-			root->setConstraints(*group.get(), {
+			root->setChild(group.get(), makeConstraints({
 				.width = 100.0f,
 				.height = 80.0f
-				});
+				}));
 			auto child = makeIntrusive<ControlGroup>();
 			group->Children.add(child.get(), makeConstraints({
 				.width = makeIntrusive<ParentWidthConstraint>(),
@@ -69,10 +68,10 @@ public:
 			root->Theme = &theme;
 			auto group = makeIntrusive<ControlGroup>();
 			root->Child = group.get();
-			root->setConstraints(*group.get(), {
+			root->setConstraints(*group.get(), makeConstraints({
 				.width = makeIntrusive<ContentWidthConstraint>(),
 				.height = makeIntrusive<ContentHeightConstraint>()
-				});
+				}));
 			auto child = makeIntrusive<DrawableView>();
 			auto drawable = makeIntrusive<TestImage>();
 			drawable->setPreferredSize({ 50.0f, 40.0f });

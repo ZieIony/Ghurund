@@ -146,11 +146,11 @@ public:
 				.width = 50.0f,
 				.right = 100.0f
 			}));
-			ConstraintSet& constraints = controlGroup->Children.get(1).Constraints;
+			ConstraintSet& constraints = controlGroup->Children[0].Constraints;
 		
 			ConstraintGraph graph;
-			IntrusivePointer<ValueConstraint> width = makeIntrusive<ValueConstraint>(100.0f);
-			IntrusivePointer<ValueConstraint> height = makeIntrusive<ValueConstraint>(100.0f);
+			auto width = makeIntrusive<ValueConstraint>(100.0f);
+			auto height = makeIntrusive<ValueConstraint>(100.0f);
 			controlGroup->resolveConstraints(graph, *width.get(), *height.get());
 			graph.sort();
 			graph.evaluate();

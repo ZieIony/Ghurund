@@ -108,8 +108,6 @@
     <ClInclude Include="src\ui\Binding.h" />
     <ClInclude Include="src\ui\Canvas.h" />
     <ClInclude Include="src\ui\Cursor.h" />
-    <ClInclude Include="src\ui\drawable\BitmapDrawable.h" />
-    <ClInclude Include="src\ui\loading\DrawableFactory.h" />
     <ClInclude Include="src\ui\Orientation.h" />
     <ClInclude Include="src\ui\RootView.h" />
     <ClInclude Include="src\ui\Shape.h" />
@@ -174,6 +172,7 @@
     <ClInclude Include="src\ui\control\MouseEvents.h" />
     <ClInclude Include="src\ui\control\ScrollView.h" />
     <ClInclude Include="src\ui\control\Shadow.h" />
+    <ClInclude Include="src\ui\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\drawable\CursorDrawable.h" />
     <ClInclude Include="src\ui\drawable\Drawable.h" />
     <ClInclude Include="src\ui\drawable\InvalidImageDrawable.h" />
@@ -193,8 +192,9 @@
     <ClInclude Include="src\ui\layout\VerticalLayout.h" />
     <ClInclude Include="src\ui\layout\VerticalLayoutManager.h" />
     <ClInclude Include="src\ui\loading\ColorPropertyLoaders.h" />
-    <ClInclude Include="src\ui\loading\IDrawableFactory.h" />
+    <ClInclude Include="src\ui\loading\DrawableFactory.h" />
     <ClInclude Include="src\ui\loading\DrawablePropertyLoader.h" />
+    <ClInclude Include="src\ui\loading\IDrawableFactory.h" />
     <ClInclude Include="src\ui\loading\ImageScaleModePropertyLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutLoader.h" />
     <ClInclude Include="src\ui\loading\LayoutPropertyLoader.h" />
@@ -281,8 +281,6 @@
     <ClCompile Include="src\ui\Alignment.cpp" />
     <ClCompile Include="src\ui\Binding.cpp" />
     <ClCompile Include="src\ui\Cursor.cpp" />
-    <ClCompile Include="src\ui\drawable\BitmapDrawable.cpp" />
-    <ClCompile Include="src\ui\loading\DrawableFactory.cpp" />
     <ClCompile Include="src\ui\RootView.cpp" />
     <ClCompile Include="src\ui\Shape.cpp" />
     <ClCompile Include="src\ui\UIContext.cpp" />
@@ -321,6 +319,7 @@
     <ClCompile Include="src\ui\control\InvalidControl.cpp" />
     <ClCompile Include="src\ui\control\ScrollView.cpp" />
     <ClCompile Include="src\ui\control\Shadow.cpp" />
+    <ClCompile Include="src\ui\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\CursorDrawable.cpp" />
     <ClCompile Include="src\ui\drawable\Drawable.cpp" />
     <ClCompile Include="src\ui\drawable\InvalidImageDrawable.cpp" />
@@ -334,6 +333,7 @@
     <ClCompile Include="src\ui\layout\LayoutManager.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayout.cpp" />
     <ClCompile Include="src\ui\layout\VerticalLayoutManager.cpp" />
+    <ClCompile Include="src\ui\loading\DrawableFactory.cpp" />
     <ClCompile Include="src\ui\loading\DrawablePropertyLoader.cpp" />
     <ClCompile Include="src\ui\loading\LayoutLoader.cpp" />
     <ClCompile Include="src\ui\loading\LayoutPropertyLoader.cpp" />

@@ -106,6 +106,7 @@
     <ClInclude Include="src\editor\CameraUtils.h" />
     <ClInclude Include="src\editor\EditorComponent.h" />
     <ClInclude Include="src\editor\ObservableObject.h" />
+    <ClInclude Include="src\editor\ThumbnailRenderer.h" />
     <ClInclude Include="src\entity\Entity.h" />
     <ClInclude Include="src\entity\Scene.h" />
     <ClInclude Include="src\entity\Scenes.h" />
@@ -123,6 +124,8 @@
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
     <ClInclude Include="src\ghepch.h" />
+    <ClInclude Include="src\graphics\DrawableComponent.h" />
+    <ClInclude Include="src\graphics\DrawableComponents.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
     <ClInclude Include="src\graphics\IMaterial.h" />
     <ClInclude Include="src\graphics\IMaterialProvider.h" />
@@ -173,6 +176,7 @@
     <ClCompile Include="src\audio\Audio.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\audio\SoundLoader.cpp" />
+    <ClCompile Include="src\editor\ThumbnailRenderer.cpp" />
     <ClCompile Include="src\entity\Scene.cpp" />
     <ClCompile Include="src\entity\camera\Camera.cpp" />
     <ClCompile Include="src\entity\camera\CameraController.cpp" />
@@ -181,6 +185,7 @@
     <ClCompile Include="src\ghepch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\IMaterial.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\net\Client.cpp" />

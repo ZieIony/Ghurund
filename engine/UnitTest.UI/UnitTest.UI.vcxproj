@@ -108,6 +108,7 @@
     <ClInclude Include="src\test\ui\image\TestBitmap.h" />
     <ClInclude Include="src\test\ui\image\TestImage.h" />
     <ClInclude Include="src\test\ui\text\TextLayout.h" />
+    <ClInclude Include="src\test\ui\UITestUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp">
@@ -120,6 +121,8 @@
     <ClCompile Include="src\test\ui\constraint\ConstraintSetTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ParentSizeConstraintTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\WrapConstraintContainer.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintControl.cpp" />
+    <ClCompile Include="src\test\ui\constraint\WrapConstraintGroupTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlCloningTest.cpp" />
     <ClCompile Include="src\test\ui\control\ControlPathTest.cpp" />
     <ClCompile Include="src\test\ui\control\TextBlockTest.cpp" />

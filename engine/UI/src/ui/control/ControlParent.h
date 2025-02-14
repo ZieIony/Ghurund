@@ -58,8 +58,6 @@ namespace Ghurund::UI {
 
         virtual void setConstraints(const Control& child, const ConstraintSet& constraints) = 0;
 
-        virtual void setConstraints(const Control& child, const ConstraintSetInitializer& constraints) = 0;
-
         virtual PartialConstraintSet makeDefaultConstraints() const = 0;
 
 #ifdef _DEBUG

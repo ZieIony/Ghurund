@@ -49,7 +49,7 @@ namespace Ghurund::UI {
         Guide& guide;
 
     public:
-        GuideConstraint(Guide& guide):guide(guide) {}
+        GuideConstraint(Guide& guide):Constraint(false, false), guide(guide) {}
 
         virtual void evaluate() override {
             value = guide.Value;

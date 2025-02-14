@@ -21,6 +21,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		SelfWidthConstraint():MinMaxConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -47,6 +49,8 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
+		SelfHeightConstraint():MinMaxConstraint(false, false) {}
+
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -81,7 +85,7 @@ namespace Ghurund::UI {
 
 	public:
 		LeftWidthConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width)
-			:left(left), width(width) {
+			:Constraint(false, false), left(left), width(width) {
 			dependencies.putAll({ this->left.get(), this->width.get() });
 		}
 
@@ -119,7 +123,7 @@ namespace Ghurund::UI {
 
 	public:
 		CenterLeftConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:left(left), width(width), right(right) {
+			:Constraint(false, false), left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
 
@@ -161,7 +165,7 @@ namespace Ghurund::UI {
 
 	public:
 		LeftRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& right)
-			:left(left), right(right) {
+			:Constraint(false, false), left(left), right(right) {
 			dependencies.putAll({ this->left.get(), this->right.get() });
 		}
 
@@ -199,7 +203,7 @@ namespace Ghurund::UI {
 
 	public:
 		CenterRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:left(left), width(width), right(right) {
+			:Constraint(false, false), left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
 
@@ -241,7 +245,7 @@ namespace Ghurund::UI {
 
 	public:
 		WidthRightConstraint(const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:width(width), right(right) {
+			:Constraint(false, false), width(width), right(right) {
 			dependencies.putAll({ this->width.get(), this->right.get() });
 		}
 
@@ -279,7 +283,7 @@ namespace Ghurund::UI {
 
 	public:
 		TopHeightConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height)
-			:top(top), height(height) {
+			:Constraint(false, false), top(top), height(height) {
 			dependencies.putAll({ this->top.get(), this->height.get() });
 		}
 
@@ -317,7 +321,7 @@ namespace Ghurund::UI {
 
 	public:
 		CenterTopConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:top(top), height(height), bottom(bottom) {
+			:Constraint(false, false), top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
 
@@ -359,7 +363,7 @@ namespace Ghurund::UI {
 
 	public:
 		TopBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& bottom)
-			:top(top), bottom(bottom) {
+			:Constraint(false, false), top(top), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->bottom.get() });
 		}
 
@@ -397,7 +401,7 @@ namespace Ghurund::UI {
 
 	public:
 		CenterBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:top(top), height(height), bottom(bottom) {
+			:Constraint(false, false), top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
 
@@ -439,7 +443,7 @@ namespace Ghurund::UI {
 
 	public:
 		HeightBottomConstraint(const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:height(height), bottom(bottom) {
+			:Constraint(false, false), height(height), bottom(bottom) {
 			dependencies.putAll({ this->height.get(), this->bottom.get() });
 		}
 
