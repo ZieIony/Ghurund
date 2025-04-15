@@ -16,7 +16,7 @@ namespace Samples {
             ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
             ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-            auto window = ghnew UIApplicationWindow(*this, renderer);
+            auto window = ghnew DirectXUIWindow(*this, renderer);
             window->Title = _T("Preview");
             window->Size = { 800, 600 };
             Windows.add(window);

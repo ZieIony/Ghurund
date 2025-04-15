@@ -35,10 +35,6 @@ namespace Ghurund::UI::Direct2D {
             renderTargets.clear();
             return true;
         };*/
-        window.sizeChanged += [&](const Window& window) {
-            rootView->requestLayout();
-            return true;
-        };
         initTargets();
     }
 

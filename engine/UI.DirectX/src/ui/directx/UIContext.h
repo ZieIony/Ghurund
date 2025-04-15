@@ -10,9 +10,9 @@ namespace Ghurund::Core {
 namespace Ghurund::UI::DirectX {
     using namespace Ghurund::Core;
 
-    class UIContext:public IUIContext {
+    class UiContext:public IUIContext {
     public:
-        UIContext(
+        UiContext(
             Ghurund::Core::Window& window
         ):IUIContext(window) {}
 
@@ -32,5 +32,5 @@ namespace Ghurund::UI::DirectX {
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::DirectX::UIContext>();
+    const Type& getType<Ghurund::UI::DirectX::UiContext>();
 }

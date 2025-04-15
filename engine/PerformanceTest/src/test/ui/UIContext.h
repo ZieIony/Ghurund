@@ -8,9 +8,9 @@ namespace Ghurund::Core {
 }
 
 namespace UnitTest {
-    class UIContext:public Ghurund::UI::IUIContext {
+    class UiContext:public Ghurund::UI::IUIContext {
     public:
-        UIContext(
+        UiContext(
             Ghurund::Core::Window& window,
             Ghurund::Core::ResourceManager& manager
         ):IUIContext(window, manager) {}

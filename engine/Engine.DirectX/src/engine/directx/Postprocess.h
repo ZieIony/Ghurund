@@ -1,6 +1,8 @@
 #pragma once
 
 #include "engine/directx/buffer/RenderTarget.h"
+#include "Material.h"
+#include "texture/Texture.h"
 
 namespace Ghurund::Engine::DirectX {
     class Postprocess: public Resource {

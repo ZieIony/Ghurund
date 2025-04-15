@@ -12,6 +12,7 @@ namespace Preview {
     protected:
         Ghurund::Engine::DirectX::Renderer renderer;
         Ghurund::Engine::ParameterManager parameterManager;
+        PreviewWindow window = PreviewWindow(*this, renderer, *this);
 
         SharedPointer<Theme> lightTheme;
         SharedPointer<Theme> darkTheme;

@@ -7,7 +7,7 @@
 namespace Ghurund::UI::OpenGL {
     using namespace Ghurund::Core;
 
-    class OGLCanvas:public ICanvas {
+    class OglCanvas:public ICanvas {
     public:
         virtual bool isAntialiasingEnabled() override {
             return false;
@@ -17,9 +17,23 @@ namespace Ghurund::UI::OpenGL {
             throw NotImplementedException();
         }
 
-        virtual void clear(int32_t color) override {
+        virtual void beginPaint() override {
             throw NotImplementedException();
         }
+
+        virtual void endPaint() override {
+            throw NotImplementedException();
+        }
+
+        /*virtual void clear(int32_t color) override {
+            throw NotImplementedException();
+        }*/
+
+        virtual void setColor(const Ghurund::UI::Color& color) override {
+            throw NotImplementedException();
+        }
+
+        __declspec(property(put = setColor)) Ghurund::UI::Color Color;
 
         virtual void drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle = nullptr) override {
             throw NotImplementedException();

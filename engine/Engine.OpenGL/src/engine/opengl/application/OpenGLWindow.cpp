@@ -8,6 +8,8 @@
 #include "core/reflection/TypeBuilder.h"
 #include "engine/opengl/OpenGLDrawingContext.h"
 
+#include <GL/glew.h>
+
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
 
@@ -21,60 +23,34 @@ namespace Ghurund::Engine::OpenGL {
         return TYPE;
     }
 
+    bool OpenGLWindow::onSizeChangedEvent() {
+        glViewport(0, 0, Size.Width, Size.Height);
+        return __super::onSizeChangedEvent();
+    }
+
     OpenGLWindow::OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app), renderer(renderer) {}
 
     void OpenGLWindow::init() {
         __super::init();
 
-        PIXELFORMATDESCRIPTOR pfd = { sizeof(pfd), 1 };
-        if (!dc) {
-            dc = GetDC(Handle);
-
-            pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_SUPPORT_COMPOSITION | PFD_DOUBLEBUFFER;
-            pfd.iPixelType = PFD_TYPE_RGBA;
-            pfd.cColorBits = 32;
-            pfd.cAlphaBits = 8;
-            pfd.iLayerType = PFD_MAIN_PLANE;
-            auto format_index = ::ChoosePixelFormat(dc, &pfd);
-            if (!format_index)
-                throw CallFailedException();
-
-            if (!::SetPixelFormat(dc, format_index, &pfd))
-                throw CallFailedException();
-        }
-
-        auto active_format_index = ::GetPixelFormat(dc);
-        if (!active_format_index)
-            throw CallFailedException();
-
-        if (!::DescribePixelFormat(dc, active_format_index, sizeof(pfd), &pfd))
-            throw CallFailedException();
-
-        if ((pfd.dwFlags & PFD_SUPPORT_OPENGL) != PFD_SUPPORT_OPENGL)
-            throw CallFailedException();
-
-        renderContext = wglCreateContext(dc);
-        if (!renderContext)
-            throw CallFailedException();
+        renderingContext.init(Handle);
     }
 
     void OpenGLWindow::uninit() {
-        wglMakeCurrent(dc, nullptr);
-        wglDeleteContext(renderContext);
-        ReleaseDC(Handle, dc);
+        renderingContext.uninit();
         __super::uninit();
     }
 
     void OpenGLWindow::paint() {
-        wglMakeCurrent(dc, renderContext);
+        renderingContext.startFrame();
+        Color clearColor = { 0xff1f1f1f };
+        renderer.clear(&clearColor);
         OpenGLDrawingContext context;
         Layers.draw(context);
 
-        glClearColor(1, 1, 1, 0);
-        glClear(GL_COLOR_BUFFER_BIT);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         //glFlush();
-        SwapBuffers(dc);
+        renderingContext.finishFrame();
 
         PAINTSTRUCT ps;
         BeginPaint(Handle, &ps);

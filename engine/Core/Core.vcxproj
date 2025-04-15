@@ -139,7 +139,7 @@
     <ClInclude Include="src\core\application\LayerList.h" />
     <ClInclude Include="src\core\application\Settings.h" />
     <ClInclude Include="src\core\application\WindowCloseAction.h" />
-    <ClInclude Include="src\core\application\WindowList.h" />
+    <ClInclude Include="src\core\application\WindowCollection.h" />
     <ClInclude Include="src\core\collection\Array.h" />
     <ClInclude Include="src\core\collection\ArrayCollection.h" />
     <ClInclude Include="src\core\collection\AverageValue.h" />

@@ -15,9 +15,9 @@ namespace Ghurund::Core {
 namespace Ghurund::UI::OpenGL {
     using namespace Ghurund::Core;
 
-    class UIContext:public IUIContext {
+    class OglUiContext:public IUIContext {
     public:
-        UIContext(
+        OglUiContext(
             Ghurund::Core::Window& window
         ):IUIContext(window) {}
 
@@ -39,5 +39,5 @@ namespace Ghurund::UI::OpenGL {
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::OpenGL::UIContext>();
+    const Type& getType<Ghurund::UI::OpenGL::OglUiContext>();
 }

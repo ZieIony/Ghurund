@@ -105,7 +105,7 @@
     <ClInclude Include="src\ui\direct2d\UIContext.h" />
     <ClInclude Include="src\ui\direct2d\UIFeatureFactory.h" />
     <ClInclude Include="src\ui\direct2d\UILayer.h" />
-    <ClInclude Include="src\ui\direct2d\application\UIApplicationWindow.h" />
+    <ClInclude Include="src\ui\direct2d\application\Direct2DUIWindow.h" />
     <ClInclude Include="src\ui\direct2d\drawable\SvgDrawable.h" />
     <ClInclude Include="src\ui\direct2d\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\direct2d\effects\TintEffect.h" />

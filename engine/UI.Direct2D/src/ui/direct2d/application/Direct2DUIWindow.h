@@ -6,12 +6,12 @@
 #include "ui/theme/Theme.h"
 
 namespace Ghurund::UI::Direct2D {
-	class UIApplicationWindow:public DirectXWindow {
+	class Direct2DUIWindow:public DirectXWindow {
 	private:
 		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
 
 	public:
-		UIApplicationWindow(Core::Application& app, Renderer& renderer):DirectXWindow(app, renderer) {}
+		Direct2DUIWindow(Core::Application& app, Renderer& renderer):DirectXWindow(app, renderer) {}
 
 		virtual void init() override {
 			__super::init();

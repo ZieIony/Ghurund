@@ -6,6 +6,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 #pragma comment(lib, "D3D11.lib")
+#pragma comment(lib, "dxguid.lib")
 
 namespace Ghurund::Engine::DirectX {
     inline static const char* NAMESPACE_NAME = GH_STRINGIFY(Ghurund::Engine::DirectX);

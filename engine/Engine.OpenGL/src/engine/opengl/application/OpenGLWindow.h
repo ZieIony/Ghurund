@@ -4,6 +4,7 @@
 #include "core/window/SystemWindow.h"
 #include "engine/opengl/OpenGLDrawingContext.h"
 #include "engine/opengl/Renderer.h"
+#include <engine/opengl/RenderingContext.h>
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
@@ -22,15 +23,11 @@ namespace Ghurund::Engine::OpenGL {
 #pragma endregion
 
     private:
+        RenderingContext renderingContext;
         Renderer& renderer;
-        HDC dc;
-        HGLRC renderContext;
 
     protected:
-        virtual bool onSizeChangedEvent() override {
-            glViewport(0, 0, Size.Width, Size.Height);
-            return __super::onSizeChangedEvent();
-        }
+        virtual bool onSizeChangedEvent() override;
 
     public:
         OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer);

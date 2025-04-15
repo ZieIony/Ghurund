@@ -26,6 +26,7 @@ namespace Ghurund::Core {
 #pragma endregion
     private:
         static inline Map<SharedPointer<WindowClass>, uint32_t> windowClassUses;
+        SharedPointer<WindowClass> windowClass;
 
         HWND handle = {};
         Ghurund::Core::Input input;

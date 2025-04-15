@@ -1,5 +1,5 @@
 #include "ghuidxpch.h"
-#include "UILayer.h"
+#include "DXUILayer.h"
 
 #include "engine/directx/SwapChain.h"
 #include "ui/directx/UIContext.h"
@@ -16,16 +16,13 @@ namespace Ghurund::UI::DirectX {
         return TYPE;
     }
 
-    void DXUILayer::init(Window& window, SwapChain& swapChain) {
+    void DXUILayer::init(Window& window, SwapChain& swapChain, CommandList& commandList) {
         this->swapChain = &swapChain;
-        context = ghnew UIContext(window);
+        this->commandList = &commandList;
+        context = ghnew UiContext(window);
         __super::init(*context);
         canvas = ghnew DxCanvas();
         canvas->init(window.Size);
-        window.sizeChanged += [&](const Window& window) {
-            rootView->requestLayout();
-            return true;
-        };
     }
 
     void DXUILayer::uninit() {
@@ -38,7 +35,8 @@ namespace Ghurund::UI::DirectX {
         context = nullptr;
     }
     
-    void DXUILayer::draw(RenderTarget& context) {
+    /*void DXUILayer::draw(RenderTarget& context) {
+        canvas->setContext(*commandList, context);
         __super::draw(*canvas);
-	}
+	}*/
 }

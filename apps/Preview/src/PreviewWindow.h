@@ -1,25 +1,35 @@
 #include "core/application/Application.h"
 
 #include "PreviewLayout.h"
-#include "ui/direct2d/application/UIApplicationWindow.h"
+#include "engine/directx/application/DirectXWindow.h"
+#include <engine/directx/Renderer.h>
+#include <ui/direct2d/UILayer.h>
 
 namespace Preview {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 	using namespace Ghurund::UI;
-	using namespace Ghurund::UI::Direct2D;
+	using namespace Ghurund::Engine::DirectX;
 
-	class PreviewWindow :public Ghurund::UI::Direct2D::UIApplicationWindow {
+	class PreviewWindow :public Ghurund::Engine::DirectX::DirectXWindow {
 	private:
 		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
 		ThemeApplication& themeApp;
+		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
 
 	public:
 		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp);
 
 		virtual void init() override;
+
+		virtual void uninit() override {
+			if (uiLayer) {
+				uiLayer->release();
+				uiLayer = nullptr;
+			}
+		}
 
 		void postLoadCallback(const FilePath& path);
 

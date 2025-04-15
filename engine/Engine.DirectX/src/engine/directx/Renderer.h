@@ -1,14 +1,14 @@
 #pragma once
 
 #include "engine/directx/Graphics.h"
-#include "MaterialProvider.h"
-#include "Postprocess.h"
 #include "engine/directx/SwapChain.h"
+#include "Postprocess.h"
 
 #include "core/Object.h"
-#include "core/resource/ResourceManager.h"
 #include "graphics/RenderingStatistics.h"
 #include "Material.h"
+#include <parameter/ParameterManager.h>
+#include <core/Color.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace ::DirectX;
@@ -37,14 +37,11 @@ namespace Ghurund::Engine::DirectX {
         ParameterManager* parameterManager = nullptr;
         RenderingStatistics stats;
 
-        XMFLOAT4* clearColor = nullptr;
-
     public:
         ~Renderer() {
             if (lightPassMaterial != nullptr)
                 lightPassMaterial->release();
             uninit();
-            delete clearColor;
         }
 
         void init(Graphics& graphics, ParameterManager& parameterManager);
@@ -52,7 +49,7 @@ namespace Ghurund::Engine::DirectX {
         void uninit();
 
 		CommandList& startFrame(Frame& frame) {
-			frame.start(clearColor);
+			frame.start();
 
 			CommandList& commandList = frame.CommandList;
 			graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
@@ -61,21 +58,14 @@ namespace Ghurund::Engine::DirectX {
 			return commandList;
 		}
 
+        void clear(Frame& frame, const Color* clearColor) {
+            frame.clear(clearColor);
+        }
+
 		void finishFrame(Frame& frame) {
 			stats.finishFrame();
 			frame.finish();
 		}
-
-        const XMFLOAT4* getClearColor() const {
-            return clearColor;
-        }
-
-        void setClearColor(const XMFLOAT4* color) {
-            delete clearColor;
-            clearColor = ghnew XMFLOAT4(*color);
-        }
-
-        __declspec(property(get = getClearColor, put = setClearColor)) const XMFLOAT4* ClearColor;
 
         RenderingStatistics& getStatistics() {
             return stats;

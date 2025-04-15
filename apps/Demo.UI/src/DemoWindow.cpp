@@ -1,12 +1,14 @@
 #include "DemoWindow.h"
 
 #include "DemoApplication.h"
+#include "core/logging/Logger.h"
 #include "ui/widget/menu/MenuBar.h"
 #include "ui/widget/toolbar/Toolbar.h"
 #include "ui/layout/VerticalLayoutManager.h"
+#include "core/logging/Logger.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer):UIApplicationWindow(app, renderer), app(app) {
+	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer):DirectXWindow(app, renderer), app(app) {
 		Style = WindowStyle{
 			.hasMinimizeButton = true,
 			.hasMaximizeButton = true,
@@ -19,7 +21,7 @@ namespace Demo {
 	void DemoWindow::init() {
 		__super::init();
 
-		UIDebugTools::init(UILayer.Context);
+		//UIDebugTools::init(UILayer.Context);
 		UIDebugTools::drawConstraints = true;
 
 		demoLayout.set(Application.ResourceManager.load<Control>(
@@ -28,7 +30,7 @@ namespace Demo {
 			ResourceFormat::AUTO,
 			LoadOption::DONT_CACHE
 		));
-		Content = demoLayout.get();
+		//Content = demoLayout.get();
 
 #ifdef _DEBUG
 		sizeChanged += [&](Window& window) {

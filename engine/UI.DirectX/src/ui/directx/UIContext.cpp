@@ -3,8 +3,8 @@
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::DirectX::UIContext>() {
-        static Type TYPE = Type(Ghurund::UI::DirectX::NAMESPACE_NAME, GH_STRINGIFY(UIContext), sizeof(Ghurund::UI::DirectX::UIContext));
+    const Type& getType<Ghurund::UI::DirectX::UiContext>() {
+        static Type TYPE = Type(Ghurund::UI::DirectX::NAMESPACE_NAME, GH_STRINGIFY(UiContext), sizeof(Ghurund::UI::DirectX::UiContext));
         return TYPE;
     }
 }

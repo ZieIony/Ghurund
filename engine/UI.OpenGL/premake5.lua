@@ -6,7 +6,8 @@ project "UI.OpenGL"
 
 	dependson {
 		"Core",
-		"UI"
+		"UI",
+		"Engine.OpenGL"
 	}
 
 	files {
@@ -18,5 +19,6 @@ project "UI.OpenGL"
 		"src",
 		includeDir["Core"],
 		includeDir["UI"],
+		includeDir["Engine.OpenGL"],
 		includeDir["tinyxml2"]
 	}

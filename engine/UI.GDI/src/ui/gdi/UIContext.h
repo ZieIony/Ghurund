@@ -13,9 +13,9 @@ namespace Ghurund::Core {
 namespace Ghurund::UI::GDI {
     using namespace Ghurund::Core;
 
-    class UIContext:public IUIContext {
+    class UiContext:public IUIContext {
     public:
-        UIContext(
+        UiContext(
             Ghurund::Core::Window& window
         ):IUIContext(window) {}
 
@@ -37,5 +37,5 @@ namespace Ghurund::UI::GDI {
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::GDI::UIContext>();
+    const Type& getType<Ghurund::UI::GDI::UiContext>();
 }

@@ -20,7 +20,7 @@ namespace Demo {
         ParameterManager parameterManager;
         LightTheme* theme = nullptr;
         Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
-        DemoWindow* window = nullptr;
+        DemoWindow window = DemoWindow(*this, renderer);
 
     public:
         DemoApplication() {
@@ -34,15 +34,25 @@ namespace Demo {
             drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
             theme = ghnew LightTheme(ResourceManager, *drawableFactory);
 
-            window = ghnew DemoWindow(*this, renderer);
-            window->Size = { 800, 600 };
-            window->Theme = theme;
+            window.init();
+            window.closed += [this](Window& window) {
+                window.Visible = false;
+                quit();
+                return true;
+            };
+
             Windows.add(window);
-            window->Visible = true;
-            window->bringToFront();
+            window.Title = _T("Demo UI");
+            window.Size = { 800, 600 };
+            window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
+            window.Visible = true;
+            window.bringToFront();
         }
 
         virtual void onUninit() override {
+            Windows.remove(window);
+            window.uninit();
+
             delete drawableFactory;
             delete theme;
         }

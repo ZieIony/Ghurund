@@ -2,6 +2,7 @@
 
 #include "CppUnitTest.h"
 
+#include "core/math/Point.h"
 #include "core/math/Size.h"
 #include "core/string/TextConversionUtils.h"
 #include "TestLogOutput.h"
@@ -13,6 +14,16 @@
 namespace Microsoft::VisualStudio::CppUnitTestFramework {
 	template<>
 	static std::wstring ToString<Ghurund::Core::FloatSize>(const Ghurund::Core::FloatSize& t) {
+		return std::format(L"{}", t);
+	}
+
+	template<>
+	static std::wstring ToString<Ghurund::Core::IntSize>(const Ghurund::Core::IntSize& t) {
+		return std::format(L"{}", t);
+	}
+
+	template<>
+	static std::wstring ToString<Ghurund::Core::IntPoint>(const Ghurund::Core::IntPoint& t) {
 		return std::format(L"{}", t);
 	}
 

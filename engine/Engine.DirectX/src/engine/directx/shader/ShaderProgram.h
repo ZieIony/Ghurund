@@ -5,6 +5,8 @@
 #include "core/Buffer.h"
 
 namespace Ghurund::Engine::DirectX {
+    using namespace Ghurund::Core;
+
     class ShaderProgram {
     private:
         Buffer* byteCode = nullptr;

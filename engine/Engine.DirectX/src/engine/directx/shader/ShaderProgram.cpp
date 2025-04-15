@@ -2,8 +2,11 @@
 #include "ShaderProgram.h"
 
 #include "CompilerInclude.h"
-#include "CompilationErrorException.h"
 #include "core/logging/Logger.h"
+
+#pragma warning(push, 0)
+#include <d3dcompiler.h>
+#pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
 	AString ShaderProgram::compile(const AString& code, const FilePath* filePath) {

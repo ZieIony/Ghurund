@@ -3,7 +3,7 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
-	PreviewWindow::PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp):UIApplicationWindow(app, renderer), themeApp(themeApp) {
+	PreviewWindow::PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp):DirectXWindow(app, renderer), themeApp(themeApp) {
 		Style = WindowStyle{
 			.hasMinimizeButton = true,
 			.hasMaximizeButton = false,
@@ -17,8 +17,13 @@ namespace Preview {
 		__super::init();
 
 		previewLayout.set(Application.ResourceManager.load<PreviewLayout>(FilePath(L"apps/Preview/res/layout.xml"), DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
-		Theme = &themeApp.CurrentTheme;
-		Content = previewLayout.get();
+
+		Ghurund::UI::Direct2D::Graphics2D& graphics2d = Application.Features.get<Ghurund::UI::Direct2D::Graphics2D>();
+		uiLayer = ghnew Ghurund::UI::Direct2D::D2DUILayer();
+		uiLayer->init(graphics2d, *this, SwapChain);
+		uiLayer->Theme = &themeApp.CurrentTheme;
+		uiLayer->Content = previewLayout.get();
+		Layers.add(uiLayer);
 
 		previewLayout->themeChanged += [this](PreviewLayout& previewLayout, const ThemeType type) {
 			Application.FunctionQueue.post([&, type]() {

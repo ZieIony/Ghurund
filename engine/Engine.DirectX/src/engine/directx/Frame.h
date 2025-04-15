@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/Color.h"
 #include "CommandList.h"
 #include "Fence.h"
 #include "Graphics.h"
@@ -34,7 +35,8 @@ namespace Ghurund::Engine::DirectX {
 
         void init(Graphics& graphics, D3D12_VIEWPORT& viewport, D3D12_RECT& scissorRect, RenderTarget* renderTarget, DepthBuffer* depthBuffer);
 
-        void start(::DirectX::XMFLOAT4* color);
+        void start();
+        void clear(const Color* color);
         void finish();
         void flush();
 

@@ -14,7 +14,7 @@ namespace Ghurund::Engine::DirectX {
         commandList->Name = L"frame command list";
     }
 
-    void Frame::start(::DirectX::XMFLOAT4* color) {
+    void Frame::start() {
 		if (commandList->State == CommandListState::CLOSED)
 			commandList->wait();
         commandList->reset();
@@ -24,9 +24,11 @@ namespace Ghurund::Engine::DirectX {
 
         commandList->get()->RSSetViewports(1, &viewport);
         commandList->get()->RSSetScissorRects(1, &scissorRect);
+    }
 
+    void Frame::clear(const Color* color) {
         if (color != nullptr)
-            renderTarget->clear(*commandList, *color);
+            renderTarget->clear(*commandList, { color->R, color->G, color->B, color->A });
         depthBuffer->clear(*commandList);
     }
 

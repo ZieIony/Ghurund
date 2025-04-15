@@ -36,5 +36,9 @@ namespace Ghurund::Core {
         inline void remove() {
             loaders.remove(&T::GET_TYPE());
         }
+
+        inline void clear() {
+            loaders.clear();
+        }
     };
 }

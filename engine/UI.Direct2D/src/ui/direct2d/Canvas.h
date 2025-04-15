@@ -46,10 +46,6 @@ namespace Ghurund::UI::Direct2D {
 
         virtual void endPaint() override;
 
-        virtual void clear(int32_t color) override {
-            deviceContext->Clear(D2D1::ColorF(color));
-        }
-
         virtual void setColor(const Ghurund::UI::Color& color) {
             fillBrush->SetColor(D2D1::ColorF(color));
             fillBrush->SetOpacity(color.A);

@@ -1,10 +1,10 @@
 #include "ghuigdipch.h"
-#include "Canvas.h"
+#include "GdiCanvas.h"
 
 #include "ui/gdi/Shape.h"
 
 namespace Ghurund::UI::GDI {
-    void Canvas::init(HWND hwnd) {
+    void GdiCanvas::init(HWND hwnd) {
         this->hwnd = hwnd;
         BufferedPaintInit();
         pen = new Gdiplus::Pen(Gdiplus::Color());
@@ -20,7 +20,7 @@ namespace Ghurund::UI::GDI {
         matrix = new Gdiplus::Matrix();
     }
 
-    void Canvas::uninit() {
+    void GdiCanvas::uninit() {
         BufferedPaintUnInit();
         delete matrix;
         delete colorMatrixEffect;
@@ -28,7 +28,7 @@ namespace Ghurund::UI::GDI {
         delete brush;
     }
 
-    void Canvas::beginPaint() {
+    void GdiCanvas::beginPaint() {
         if (bitmap) {
             graphics = Gdiplus::Graphics::FromImage(bitmap);
         } else {
@@ -43,7 +43,7 @@ namespace Ghurund::UI::GDI {
         graphics->SetTextRenderingHint(Gdiplus::TextRenderingHint::TextRenderingHintAntiAlias);
     }
 
-    void Canvas::endPaint() {
+    void GdiCanvas::endPaint() {
         if (!bitmap) {
             EndBufferedPaint(hbuff, TRUE);
             ReleaseDC(hwnd, hdc);
@@ -53,7 +53,7 @@ namespace Ghurund::UI::GDI {
         graphics = nullptr;
     }
 
-    void Canvas::drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle) {
+    void GdiCanvas::drawRect(float x, float y, float width, float height, float thickness, IStrokeStyle* strokeStyle) {
         if (strokeStyle)
             pen->SetDashStyle(((StrokeStyle*)strokeStyle)->get());
         pen->SetWidth(thickness);
@@ -61,18 +61,18 @@ namespace Ghurund::UI::GDI {
         graphics->DrawRectangle(pen, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
     }
 
-    void Canvas::fillRect(float x, float y, float width, float height) {
+    void GdiCanvas::fillRect(float x, float y, float width, float height) {
         brush->SetColor(this->color);
         graphics->FillRectangle(brush, Gdiplus::RectF(x - 0.5f, y - 0.5f, width, height));
     }
 
-    void Canvas::drawShape(Ghurund::UI::Shape& shape, float thickness) {
+    void GdiCanvas::drawShape(Ghurund::UI::Shape& shape, float thickness) {
         pen->SetWidth(thickness);
         pen->SetColor(this->color);
         graphics->DrawPath(pen, ((Ghurund::UI::GDI::Shape&)shape).Path);
     }
 
-    void Canvas::drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle) {
+    void GdiCanvas::drawLine(float x1, float y1, float x2, float y2, float thickness, IStrokeStyle* strokeStyle) {
         if (strokeStyle)
             pen->SetDashStyle(((StrokeStyle*)strokeStyle)->get());
         pen->SetWidth(thickness);
@@ -82,23 +82,23 @@ namespace Ghurund::UI::GDI {
         graphics->DrawPath(pen, &path);
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, float alpha) {
+    void GdiCanvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, float alpha) {
         //D2D1_RECT_F d = { dst.left, dst.top, dst.right, dst.bottom };
         //deviceContext->DrawBitmap(bitmapImage, d, alpha);
     }
     
-    void Canvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
+    void GdiCanvas::drawImage(Bitmap& bitmapImage, const FloatRect& dst, const Ghurund::Core::Color& tint, float alpha) {
         /*tintEffect->SetInput(0, bitmapImage);
         D2D1_MATRIX_5X4_F matrix = D2D1::Matrix5x4F(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, tint.A * alpha, tint.R, tint.G, tint.B, 0);
         tintEffect->SetValue(D2D1_COLORMATRIX_PROP_COLOR_MATRIX, matrix);
         deviceContext->DrawImage(tintEffect.Get(), D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC);*/
     }
     
-    void Canvas::drawImage(VectorImage& svgDocument) {
+    void GdiCanvas::drawImage(VectorImage& svgDocument) {
         //deviceContext->DrawSvgDocument(&svgDocument);
     }
     
-    /*void Canvas::drawShadow(ID2D1Bitmap1* bitmapImage, float radius, const Color& color) {
+    /*void GdiCanvas::drawShadow(ID2D1Bitmap1* bitmapImage, float radius, const Color& color) {
         /*shadowEffect->SetInput(0, bitmapImage);
         shadowEffect->SetValue(D2D1_SHADOW_PROP_COLOR, D2D_VECTOR_4F(color.R, color.G, color.B, color.A));
         shadowEffect->SetValue(D2D1_SHADOW_PROP_BLUR_STANDARD_DEVIATION, radius);

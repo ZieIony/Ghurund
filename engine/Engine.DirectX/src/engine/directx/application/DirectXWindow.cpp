@@ -43,12 +43,13 @@ namespace Ghurund::Engine::DirectX {
         swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
         Ghurund::Engine::DirectX::Graphics& graphics = Application.Features.get<Ghurund::Engine::DirectX::Graphics>();
         swapChain->init(graphics, *this);
-        swapChain->initBuffers();
     }
 
     void DirectXWindow::paint() {
         Ghurund::Engine::DirectX::Frame& frame = swapChain->CurrentFrame;
         Ghurund::Engine::DirectX::CommandList& commandList = renderer.startFrame(frame);
+        Color clearColor = { 0xff1f1f1f };
+        renderer.clear(frame, &clearColor);
         //levelManager.draw(commandList);
         frame.flush();
         auto drawingContext = DirectXDrawingContext(frame.RenderTarget);

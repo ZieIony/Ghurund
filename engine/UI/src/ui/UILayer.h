@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Canvas.h"
 #include "core/application/Layer.h"
-#include "ui/RootView.h"
 #include "ui/constraint/ConstraintGraph.h"
-#include "ui/UIContext.h"
 #include "ui/constraint/WindowConstraint.h"
+#include "ui/RootView.h"
+#include "ui/UIContext.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
@@ -57,6 +58,11 @@ namespace Ghurund::UI {
             rootView = ghnew Ghurund::UI::RootView(*this->context);
             rootViewWidth.set(ghnew WindowWidthConstraint(this->context->Window));
             rootViewHeight.set(ghnew WindowHeightConstraint(this->context->Window));
+
+            this->context->Window.sizeChanged += [&](const Window& window) {
+                rootView->requestLayout();
+                return true;
+            };
         }
 
         void uninit() {

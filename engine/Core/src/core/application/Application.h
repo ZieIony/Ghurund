@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Settings.h"
-#include "WindowList.h"
+#include "WindowCollection.h"
 
 #include "core/feature/FeatureProvider.h"
 #include "core/Noncopyable.h"
@@ -12,7 +12,7 @@
 namespace Ghurund::Core {
     class Application:public Noncopyable {
     private:
-        WindowList windows;
+        WindowCollection windows;
         FunctionQueue functionQueue;
         bool running = false;
 
@@ -55,11 +55,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSettings)) const Settings& Settings;
 
-        inline WindowList& getWindows() {
+        inline WindowCollection& getWindows() {
             return windows;
         }
 
-        __declspec(property(get = getWindows)) WindowList& Windows;
+        __declspec(property(get = getWindows)) WindowCollection& Windows;
 
         FunctionQueue& getFunctionQueue() {
             return functionQueue;

@@ -105,10 +105,10 @@
     <ClInclude Include="src\test\ui\TestShapeFactory.h" />
     <ClInclude Include="src\test\ui\TestUIContext.h" />
     <ClInclude Include="src\test\ui\TextFormatFactory.h" />
+    <ClInclude Include="src\test\ui\UITestUtils.h" />
     <ClInclude Include="src\test\ui\image\TestBitmap.h" />
     <ClInclude Include="src\test\ui\image\TestImage.h" />
     <ClInclude Include="src\test\ui\text\TextLayout.h" />
-    <ClInclude Include="src\test\ui\UITestUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\pch.cpp">

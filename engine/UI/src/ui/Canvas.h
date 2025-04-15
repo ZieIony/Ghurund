@@ -28,8 +28,6 @@ namespace Ghurund::UI {
 
         virtual void endPaint() = 0;
 
-        virtual void clear(int32_t color) = 0;
-
         virtual void setColor(const Ghurund::UI::Color& color) = 0;
 
         __declspec(property(put = setColor)) Ghurund::UI::Color Color;

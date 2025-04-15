@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ui/directx/application/UIApplicationWindow.h"
 #include "ui/widget/menu/MenuBarItemAdapter.h"
 #include "ui/widget/toolbar/ToolbarItemAdapter.h"
 #include <ColorListAdapter.h>
 #include <ui/UIDebugTools.h>
+#include "engine/directx/application/DirectXWindow.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -12,7 +12,7 @@ namespace Demo {
 
 	class DemoApplication;
 
-	class DemoWindow:public Ghurund::UI::DirectX::UIApplicationWindow {
+	class DemoWindow:public Ghurund::Engine::DirectX::DirectXWindow {
 	private:
 		IntrusivePointer<Control> demoLayout;
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;

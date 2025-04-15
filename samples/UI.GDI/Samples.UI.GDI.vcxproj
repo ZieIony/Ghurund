@@ -94,10 +94,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\GdiWindow.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\GdiWindow.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

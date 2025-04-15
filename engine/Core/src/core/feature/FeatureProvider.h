@@ -6,6 +6,7 @@
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
 #include "core/concepts/Concepts.h"
+#include "core/logging/Formatter.h"
 
 namespace Ghurund::Core {
 	class FeatureNotAvailableException:public std::exception {

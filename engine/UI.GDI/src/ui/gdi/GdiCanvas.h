@@ -14,7 +14,7 @@
 namespace Ghurund::UI::GDI {
     using namespace Ghurund::Core;
 
-    class Canvas:public ICanvas {
+    class GdiCanvas:public ICanvas {
     private:
         HDC hdc = {};
         PAINTSTRUCT ps = {};
@@ -32,7 +32,7 @@ namespace Ghurund::UI::GDI {
         Gdiplus::Matrix* matrix;
 
     public:
-        ~Canvas() {
+        ~GdiCanvas() {
             uninit();
         }
 
@@ -82,6 +82,10 @@ namespace Ghurund::UI::GDI {
 
         virtual void translate(float x, float y) override {
             graphics->TranslateTransform(x, y);
+        }
+
+        virtual void scale(float sx, float sy) override {
+            graphics->ScaleTransform(sx, sy);
         }
 
         virtual void save() override {

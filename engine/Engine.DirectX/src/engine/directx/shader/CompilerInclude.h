@@ -3,7 +3,7 @@
 #include "core/string/String.h"
 
 #pragma warning(push, 0)
-#include <d3dcompiler.h>
+#include <d3dcommon.h>
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {

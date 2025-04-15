@@ -100,8 +100,10 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.Engine.OpenGL.h" />
     <ClInclude Include="src\engine\opengl\FragmentShaderProgram.h" />
+    <ClInclude Include="src\engine\opengl\Mesh.h" />
     <ClInclude Include="src\engine\opengl\OpenGLDrawingContext.h" />
     <ClInclude Include="src\engine\opengl\Renderer.h" />
+    <ClInclude Include="src\engine\opengl\RenderingContext.h" />
     <ClInclude Include="src\engine\opengl\Shader.h" />
     <ClInclude Include="src\engine\opengl\VertexShaderProgram.h" />
     <ClInclude Include="src\engine\opengl\application\OpenGLWindow.h" />
@@ -109,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\opengl\OpenGLDrawingContext.cpp" />
+    <ClCompile Include="src\engine\opengl\Renderer.cpp" />
     <ClCompile Include="src\engine\opengl\application\OpenGLWindow.cpp" />
     <ClCompile Include="src\gheoglpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

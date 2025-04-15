@@ -27,6 +27,7 @@ namespace Ghurund::Core {
         onUninit();
 
         windows.clear();
+        resourceManager.Loaders.clear();
         resourceManager.clearCache();
 
         features.uninit();
@@ -78,12 +79,8 @@ namespace Ghurund::Core {
     void Application::handleMessages() {
         MSG msg = {};
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
-            if (msg.message == WM_QUIT) {
-                for (auto w : windows)
-                    delete w;
-                windows.clear();
+            if (msg.message == WM_QUIT)
                 break;
-            }
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);

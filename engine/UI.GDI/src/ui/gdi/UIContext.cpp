@@ -1,10 +1,12 @@
 #include "ghuigdipch.h"
-#include "UIContext.h"
+#include "UiContext.h"
+
+#include <core/reflection/TypeBuilder.h>
 
 namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::GDI::UIContext>() {
-        static Type TYPE = Type(Ghurund::UI::GDI::NAMESPACE_NAME, GH_STRINGIFY(UIContext), sizeof(Ghurund::UI::GDI::UIContext));
+    const Type& getType<Ghurund::UI::GDI::UiContext>() {
+        static Type TYPE = TypeBuilder<Ghurund::UI::GDI::UiContext>();
         return TYPE;
     }
 }

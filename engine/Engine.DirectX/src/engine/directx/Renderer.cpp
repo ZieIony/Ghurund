@@ -7,11 +7,9 @@
 
 namespace Ghurund::Engine::DirectX {
     const Ghurund::Core::Type& Renderer::GET_TYPE() {
-        static auto PROPERTY_CLEARCOLOR = Property<Renderer, const XMFLOAT4*>("ClearColor", &getClearColor, &setClearColor);
         static auto PROPERTY_STATISTICS = Property<Renderer, RenderingStatistics&>("Statistics", &getStatistics);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<Renderer>()
-            .withProperty(PROPERTY_CLEARCOLOR)
             .withProperty(PROPERTY_STATISTICS)
             .withSupertype(__super::GET_TYPE());
 
@@ -37,5 +35,4 @@ namespace Ghurund::Engine::DirectX {
             postprocessRenderTarget[i] = nullptr;
         }*/
     }
-
 }

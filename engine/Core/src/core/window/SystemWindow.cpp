@@ -17,7 +17,7 @@ namespace Ghurund::Core {
 	}
 
 	HWND SystemWindow::makeWindow() {
-		auto windowClass = makeShared<WindowClass>(Style, windowProc);
+		windowClass = makeShared<WindowClass>(Style, windowProc);
 		windowClass->init();
 		auto it = windowClassUses.find(windowClass);
 		if (it == windowClassUses.end()) {
@@ -30,16 +30,10 @@ namespace Ghurund::Core {
 	}
 
 	void SystemWindow::destroyWindow() {
-		auto windowClass = makeShared<WindowClass>(Style, windowProc);
-		auto it = windowClassUses.find(windowClass);
-		if (it == windowClassUses.end()) {
-			windowClassUses[windowClass]--;
-			if (windowClassUses[windowClass] == 0) {
-				windowClassUses.remove(windowClass);
-				windowClass->unregisterClass();
-			}
-		} else {
-			throw InvalidStateException("this window class is not registered");
+		windowClassUses[windowClass]--;
+		if (windowClassUses[windowClass] == 0) {
+			windowClassUses.remove(windowClass);
+			windowClass->unregisterClass();
 		}
 		DestroyWindow(Handle);
 	}
@@ -227,9 +221,10 @@ namespace Ghurund::Core {
 		} else if (msg == WM_CLOSE) {
 			dispatchClosedEvent();
 			return true;
-		}
-		//} else if (msg == WM_PAINT) {
+		} else if (msg == WM_PAINT || msg == WM_ERASEBKGND) {
 		  //  window.OnPaint();   // TODO: do it in the message loop
+			return true;
+		}
 		return false;
 	}
 }

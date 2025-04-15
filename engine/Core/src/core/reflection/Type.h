@@ -278,7 +278,7 @@ namespace Ghurund::Core {
     template<IsSharedPtr T>
     const Type& getType() {
         static const Type type = [] {
-            const Type& baseType = getType<typename T::element_type>();
+            const Type& baseType = Ghurund::Core::getType<typename T::element_type>();
             return TypeBuilder<T>().withTemplateParam(baseType);
         }();
         return type;
@@ -287,7 +287,7 @@ namespace Ghurund::Core {
     template<IsUniquePtr T>
     const Type& getType() {
         static const Type type = [] {
-            const Type& baseType = getType<typename T::element_type>();
+            const Type& baseType = Ghurund::Core::getType<typename T::element_type>();
             return TypeBuilder<T>().withTemplateParam(baseType);
         }();
         return type;
@@ -295,19 +295,19 @@ namespace Ghurund::Core {
 
     template<Qualified T>
     const Type& getType() {
-        const Type& baseType = getType<typename BaseType<T>::type>();
+        const Type& baseType = Ghurund::Core::getType<typename BaseType<T>::type>();
         static const Type type = Type(baseType, std::is_const_v<T>, std::is_pointer_v<T>, std::is_reference_v<T>, std::is_volatile_v<T>);
         return type;
     }
 
     template<typename T>
     const Type& getType(const T& obj) {
-        return getType<T>();
+        return Ghurund::Core::getType<T>();
     }
 
     template <typename T>
     concept Typed = requires(T obj) {
-        { getType(obj) } -> std::same_as<Type>;
+        { Ghurund::Core::getType(obj) } -> std::same_as<Type>;
     };
 }
 

@@ -57,7 +57,7 @@
       <PrecompiledHeaderFile>ghuioglpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\Engine.OpenGL\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,7 +75,7 @@
       <PrecompiledHeaderFile>ghuioglpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;..\Core\src;..\UI\src;..\Engine.OpenGL\src;..\..\libs\tinyxml2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -94,10 +94,11 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.UI.OGL.h" />
     <ClInclude Include="src\ghuioglpch.h" />
-    <ClInclude Include="src\ui\opengl\OGLCanvas.h" />
+    <ClInclude Include="src\ui\opengl\OglCanvas.h" />
+    <ClInclude Include="src\ui\opengl\OglUiContext.h" />
+    <ClInclude Include="src\ui\opengl\OglUiLayer.h" />
     <ClInclude Include="src\ui\opengl\Shape.h" />
     <ClInclude Include="src\ui\opengl\StrokeStyle.h" />
-    <ClInclude Include="src\ui\opengl\UIContext.h" />
     <ClInclude Include="src\ui\opengl\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\opengl\effects\TintEffect.h" />
     <ClInclude Include="src\ui\opengl\font\Font.h" />
@@ -110,8 +111,9 @@
     <ClCompile Include="src\ghuioglpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\ui\opengl\OglUiContext.cpp" />
+    <ClCompile Include="src\ui\opengl\OglUiLayer.cpp" />
     <ClCompile Include="src\ui\opengl\Shape.cpp" />
-    <ClCompile Include="src\ui\opengl\UIContext.cpp" />
     <ClCompile Include="src\ui\opengl\font\Font.cpp" />
     <ClCompile Include="src\ui\opengl\image\Bitmap.cpp" />
   </ItemGroup>

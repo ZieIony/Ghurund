@@ -1,18 +1,14 @@
 #pragma once
 
 #include "core/application/Layer.h"
-#include "engine/directx/SwapChain.h"
-#include "engine/directx/buffer/RenderTarget.h"
-#include "ui/directx/DxCanvas.h"
-#include "ui/directx/UIContext.h"
+#include "UIContext.h"
 #include "ui/RootView.h"
 #include "ui/UILayer.h"
-#include "DxCanvas.h"
+#include "GdiCanvas.h"
+#include "GdiDrawingContext.h"
 
-namespace Ghurund::UI::DirectX {
-    using namespace ::Ghurund::Engine::DirectX;
-
-    class DXUILayer:public Ghurund::UI::UILayer<RenderTarget> {
+namespace Ghurund::UI::GDI {
+    class GdiUiLayer:public Ghurund::UI::UILayer<GdiDrawingContext> {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -22,20 +18,19 @@ namespace Ghurund::UI::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = DXUILayer::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = GdiUiLayer::GET_TYPE();
 #pragma endregion
 
     private:
-        SwapChain* swapChain = nullptr;
-        DxCanvas* canvas;
+        GdiCanvas* canvas;
         IUIContext* context;
 
     public:
-        ~DXUILayer() {
+        ~GdiUiLayer() {
             uninit();
         }
 
-        void init(Window& window, SwapChain& swapChain);
+        void init(Window& window);
 
         void uninit();
 
@@ -44,7 +39,5 @@ namespace Ghurund::UI::DirectX {
         }
 
         __declspec(property(get = getContext)) IUIContext& Context;
-
-        virtual void draw(RenderTarget& context) override;
     };
 }
