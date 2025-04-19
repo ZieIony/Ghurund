@@ -32,6 +32,14 @@ namespace Ghurund::Engine::DirectX {
             //fullScreenQuad = Models::makeQuad(resourceContext, *this->material);
         }
 
+        virtual void invalidate() override {
+            __super::invalidate();
+        }
+
+        virtual bool isValid() const override {
+            return __super::isValid();
+        }
+
         void process(Texture* texture, RenderTarget* renderTarget) {}
     };
 }

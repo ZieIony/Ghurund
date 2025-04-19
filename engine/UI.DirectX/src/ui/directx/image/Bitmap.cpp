@@ -29,7 +29,6 @@ namespace Ghurund::UI::DirectX {
 
     void Bitmap::init(Ghurund::Core::Image& image) {
         setPointer(this->image, &image);
-        Valid = true;
     }
 
     void Bitmap::init(Ghurund::Core::IntSize size, DXGI_FORMAT format) {
@@ -37,8 +36,6 @@ namespace Ghurund::UI::DirectX {
             image->release();
             image = nullptr;
         }
-
-        Valid = true;
     }
 
     Ghurund::Core::IntSize Bitmap::getSize() const {

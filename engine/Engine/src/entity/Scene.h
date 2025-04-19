@@ -35,11 +35,18 @@ namespace Ghurund::Engine {
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
 
     public:
-
         Scene() {}
 
         inline void init(ParameterManager& parameterManager) {
             drawingSystem.initParameters(parameterManager);
+        }
+
+        virtual void invalidate() override {
+            __super::invalidate();
+        }
+
+        virtual bool isValid() const override {
+            return __super::isValid();
         }
 
         inline void setCamera(Camera* camera) {

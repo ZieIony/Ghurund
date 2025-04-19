@@ -98,6 +98,6 @@ namespace Ghurund::Engine::DirectX {
         commandList.finish();
         commandList.wait();
 
-        Valid = true;
+        uploaded = true;
     }
 }

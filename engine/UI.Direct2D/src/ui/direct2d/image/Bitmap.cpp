@@ -51,8 +51,6 @@ namespace Ghurund::UI::Direct2D {
 
         if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ image.Width, image.Height }, image.Data.Data, image.RowPitch, bitmapProperties, &bitmapImage)))
             throw CallFailedException();
-
-        Valid = true;
     }
 
     void Bitmap::init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format) {
@@ -68,8 +66,6 @@ namespace Ghurund::UI::Direct2D {
 
         if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ size.Width, size.Height }, nullptr, 0, bitmapProperties, &bitmapImage)))
             throw CallFailedException();
-
-        Valid = true;
     }
 
     Ghurund::Core::IntSize Bitmap::getSize() const {

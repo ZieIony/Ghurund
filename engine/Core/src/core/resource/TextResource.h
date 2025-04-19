@@ -8,6 +8,10 @@ namespace Ghurund::Core {
         AString text;
 
     public:
+        virtual bool isValid() const override {
+            return true;
+        }
+
         inline AString& getText() {
             return text;
         }

@@ -26,6 +26,8 @@ namespace Ghurund::Engine::DirectX {
 
         Ghurund::Core::Image* image = nullptr;
 
+        bool uploaded = false;
+
     protected:
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options)const;
@@ -38,8 +40,9 @@ namespace Ghurund::Engine::DirectX {
         }
 
         void finalize() {
-            textureResource.ReleaseAndGetAddressOf();
-            textureUploadHeap.ReleaseAndGetAddressOf();
+            uploaded = false;
+            textureResource.Reset();
+            textureUploadHeap.Reset();
             if (image != nullptr)
                 image->release();
         }
@@ -51,7 +54,7 @@ namespace Ghurund::Engine::DirectX {
         }
 
         virtual bool isValid() {
-            return image != nullptr && image->Valid && __super::Valid;
+            return image != nullptr && image->Valid && __super::Valid&&uploaded;
         }
 
         void init(Graphics& graphics, CommandList& commandList, Ghurund::Core::Image& image);

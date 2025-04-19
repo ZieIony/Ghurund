@@ -45,8 +45,6 @@ namespace Ghurund::UI::OpenGL {
         setPointer(this->image, &image);
 
         bitmapImage = new Gdiplus::Bitmap(image.Width, image.Height, image.RowPitch, PixelFormat32bppARGB, image.Data.Data);
-
-        Valid = true;
     }
 
     void Bitmap::init(Ghurund::Core::IntSize size, DXGI_FORMAT format) {
@@ -56,8 +54,6 @@ namespace Ghurund::UI::OpenGL {
         }
 
         bitmapImage = new Gdiplus::Bitmap(size.Width, size.Height, PixelFormat32bppARGB);
-
-        Valid = true;
     }
 
     Ghurund::Core::IntSize Bitmap::getSize() const {

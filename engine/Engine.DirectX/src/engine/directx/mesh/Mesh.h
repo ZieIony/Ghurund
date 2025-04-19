@@ -46,6 +46,8 @@ namespace Ghurund {
         vindex_t* indices = nullptr;
         vindex_t indexCount;
 
+        bool uploaded = false;
+
         ComPtr<ID3D12Resource> vertexBuffer;
         D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
         ComPtr<ID3D12Resource> indexBuffer;
@@ -71,6 +73,22 @@ namespace Ghurund {
         ~Mesh();
 
         virtual void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0);
+
+        virtual void invalidate() override {
+            uploaded = false;
+            delete[] vertices;
+            delete[] indices;
+            vertexBuffer.Reset();
+            indexBuffer.Reset();
+            vertexUploadHeap.Reset();
+            indexUploadHeap.Reset();
+
+            __super::invalidate();
+        }
+
+        virtual bool isValid() const override {
+			return __super::isValid() && vertexBuffer.Get() && indexBuffer.Get() && uploaded;
+        }
 
         void draw(CommandList& commandList);
 

@@ -14,8 +14,6 @@ namespace Ghurund::Core {
         this->format = format;
         this->pixelSize = ImageLoader::getDXGIFormatBitsPerPixel(format) / 8;
         rowPitch = ((uint32_t)(data.Size / height));
-
-        Valid = true;
     }
 
     template<>

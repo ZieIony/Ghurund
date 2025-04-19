@@ -50,9 +50,8 @@ namespace Ghurund::Core {
 	void Resource::load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
 		try {
 			loadInternal(workingDir, stream, options);
-			valid = true;
 		} catch (std::exception e) {
-			valid = false;
+			invalidate();
 			throw e;
 		}
 	}

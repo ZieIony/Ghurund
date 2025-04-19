@@ -47,8 +47,6 @@ namespace Ghurund::UI::Direct2D {
             localizedStrings[0].GetString(0, str, strLength + 1);
             //familyName = str;
             delete[] str;
-
-            Valid = true;
         }
 
         IDWriteFontCollection* getCollection() {

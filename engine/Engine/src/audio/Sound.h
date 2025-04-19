@@ -62,6 +62,17 @@ namespace Ghurund {
             sourceVoice->DestroyVoice();
         }
 
+        virtual void invalidate() override {
+            sourceVoice->DestroyVoice();
+            sourceVoice = nullptr;
+
+            __super::invalidate();
+        }
+
+        virtual bool isValid() const override {
+			return __super::isValid() && sourceVoice;
+        }
+
         void play();
 
         void stop() {

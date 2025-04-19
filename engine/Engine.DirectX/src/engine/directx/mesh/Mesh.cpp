@@ -129,14 +129,8 @@ namespace Ghurund {
     }
 
     Mesh::~Mesh() {
-        Valid = false;
-
         delete[] vertices;
         delete[] indices;
-        vertexBuffer.ReleaseAndGetAddressOf();
-        indexBuffer.ReleaseAndGetAddressOf();
-        vertexUploadHeap.ReleaseAndGetAddressOf();
-        indexUploadHeap.ReleaseAndGetAddressOf();
     }
 
     void Mesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
@@ -241,7 +235,7 @@ namespace Ghurund {
         commandList.finish();
         commandList.wait();
 
-        Valid = true;
+        uploaded = true;
     }
 
     void Mesh::draw(CommandList& commandList) {

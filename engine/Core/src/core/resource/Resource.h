@@ -32,7 +32,6 @@ namespace Ghurund::Core {
 #pragma endregion
 
 	private:
-		bool valid = false;
 		ResourcePath* path = nullptr;
 
 	protected:
@@ -41,7 +40,6 @@ namespace Ghurund::Core {
 		Resource() {}
 
 		Resource(const Resource& other):
-			valid(valid),
 			path(other.path ? ghnew ResourcePath(*other.path) : nullptr),
 			dataSize(other.dataSize) {}
 
@@ -70,7 +68,6 @@ namespace Ghurund::Core {
 		void save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
 
 		virtual void reload() {
-			valid = true;
 			invalidate();
 			addReference();
 			//load();
@@ -78,19 +75,13 @@ namespace Ghurund::Core {
 			//release();
 		}
 
-		virtual void invalidate() {
-			valid = false;
-		}
-
-		void setValid(bool valid) {
-			this->valid = valid;
-		}
+		virtual void invalidate() {}
 
 		virtual bool isValid() const {
-			return valid;
+			return true;
 		}
 
-		__declspec(property(get = isValid, put = setValid)) bool Valid;
+		__declspec(property(get = isValid)) bool Valid;
 
 		const ResourcePath* getPath() const {
 			return path;

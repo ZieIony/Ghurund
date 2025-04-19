@@ -36,6 +36,16 @@ namespace Ghurund::Core {
 	public:
 		void init(const Buffer& data, uint32_t width, uint32_t height, DXGI_FORMAT format);
 
+		virtual void invalidate() override {
+			format = {};
+			width = 0, height = 0, pixelSize = 0, rowPitch = 0;
+			imageData.resize(0);
+		}
+
+		virtual bool isValid() const override {
+			return __super::isValid() && imageData.Size != 0;
+		}
+
 		Buffer& getData() {
 			return imageData;
 		}
