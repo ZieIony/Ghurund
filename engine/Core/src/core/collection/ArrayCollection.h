@@ -80,6 +80,12 @@ namespace Ghurund::Core {
 			__super::clear();
 		}
 
+		inline const Value* getData() const {
+			return v;
+		}
+
+		__declspec(property(get = getData)) const Value* Data;
+
 		inline ArrayIterator<Value> begin() {
 			return ArrayIterator<Value>(v);
 		}

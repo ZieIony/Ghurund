@@ -103,6 +103,8 @@
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\test\graphics\mesh\MeshLoaderTest.cpp" />
+    <ClCompile Include="src\test\graphics\mesh\MeshTest.cpp" />
     <ClCompile Include="src\test\net\MessageTest.cpp" />
   </ItemGroup>
   <ItemGroup>

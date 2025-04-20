@@ -5,7 +5,7 @@ namespace Ghurund {
     void ConeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         detail = std::max<unsigned int>(detail, 3);
 
-        List<Vertex> triangleVertices;
+        List<Vertex3D> triangleVertices;
         triangleVertices.add({{0.0f,  0.0f, 0.0f},{0,0}});
         triangleVertices.add({{0.0f,  1.0f, 0.0f},{0,1.0f}});
 
@@ -24,9 +24,9 @@ namespace Ghurund {
             triangleIndices2.add((i + 1) % detail + 2);
         }
 
-        vertexSize = sizeof(Vertex);
+        vertexSize = sizeof(Vertex3D);
         vertexCount = (vindex_t)triangleVertices.Size;
-        vertices = ghnew Vertex[vertexCount];
+        vertices = ghnew Vertex3D[vertexCount];
         memcpy(vertices, &(*(triangleVertices.begin())), vertexCount * vertexSize);
 
         indexCount = (vindex_t)(triangleIndices.Size + triangleIndices2.Size);

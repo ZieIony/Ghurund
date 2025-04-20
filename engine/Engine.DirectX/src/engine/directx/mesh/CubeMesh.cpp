@@ -3,7 +3,7 @@
 
 namespace Ghurund {
     void CubeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
-        Vertex triangleVertices[] = {
+        Vertex3D triangleVertices[] = {
             {{-1.0f,  1.0f, -1.0f},{0,0,-1},{0,0}},
         {{1.0f, -1.0f, -1.0f},{0,0,-1},{1,1}},
         {{-1.0f, -1.0f, -1.0f},{0,0,-1},{0,1}},
@@ -40,9 +40,9 @@ namespace Ghurund {
         {{-1.0f, -1.0f,  1.0f},{0,-1,0},{1,0}},
         };
 
-        vertexSize = sizeof(Vertex);
+        vertexSize = sizeof(Vertex3D);
         vertexCount = sizeof(triangleVertices) / vertexSize;
-        vertices = ghnew Vertex[vertexCount];
+        vertices = ghnew Vertex3D[vertexCount];
         memcpy(vertices, triangleVertices, vertexCount * vertexSize);
 
         indices = ghnew unsigned int[36]{

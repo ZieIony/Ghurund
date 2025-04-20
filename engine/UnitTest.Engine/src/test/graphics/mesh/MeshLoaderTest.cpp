@@ -1,0 +1,101 @@
+#include "pch.h"
+#include "CppUnitTest.h"
+
+#include "graphics/mesh/Mesh.h"
+#include <graphics/mesh/MeshLoader.h>
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace UnitTest {
+    using namespace Ghurund::Engine;
+    using namespace std;
+
+    TEST_CLASS(MeshLoaderTest) {
+private:
+    AString data = R"(
+v 1.000000 -1.000000 -1.000000
+v 1.000000 -1.000000 1.000000
+v -1.000000 -1.000000 1.000000
+v -1.000000 -1.000000 -1.000000
+v 1.000000 1.000000 -0.999999
+v 0.999999 1.000000 1.000001
+v -1.000000 1.000000 1.000000
+v -1.000000 1.000000 -1.000000
+vt 1.000000 0.333333
+vt 1.000000 0.666667
+vt 0.666667 0.666667
+vt 0.666667 0.333333
+vt 0.666667 0.000000
+vt 0.000000 0.333333
+vt 0.000000 0.000000
+vt 0.333333 0.000000
+vt 0.333333 1.000000
+vt 0.000000 1.000000
+vt 0.000000 0.666667
+vt 0.333333 0.333333
+vt 0.333333 0.666667
+vt 1.000000 0.000000
+vn 0.000000 -1.000000 0.000000
+vn 0.000000 1.000000 0.000000
+vn 1.000000 0.000000 0.000000
+vn -0.000000 0.000000 1.000000
+vn -1.000000 -0.000000 -0.000000
+vn 0.000000 0.000000 -1.000000
+usemtl Material
+s off
+f 2/1/1 3/2/1 4/3/1
+f 8/1/2 7/4/2 6/5/2
+f 5/6/3 6/7/3 2/8/3
+f 6/8/4 7/5/4 3/4/4
+f 3/9/5 7/10/5 8/11/5
+f 1/12/6 4/13/6 8/11/6
+f 1/4/1 2/1/1 4/3/1
+f 5/14/2 8/1/2 6/5/2
+f 1/12/3 5/6/3 2/8/3
+f 2/12/4 6/8/4 3/4/4
+f 4/13/5 3/9/5 8/11/5
+f 5/6/6 1/12/6 8/11/6
+)";
+
+    public:
+
+        TEST_METHOD(MeshLoader_loadUnknownFormat) {
+            IntrusivePointer<MeshLoader> loader(ghnew MeshLoader());
+            MemoryInputStream stream(data.Data, data.Size);
+
+            Assert::ExpectException<InvalidFormatException>([&]() {
+                IntrusivePointer<Mesh> mesh(loader->load(stream, DirectoryPath()));
+            });
+        }
+
+        TEST_METHOD(MeshLoader_loadObj) {
+            IntrusivePointer<MeshLoader> loader(ghnew MeshLoader());
+            MemoryInputStream stream(data.Data, data.Size);
+            IntrusivePointer<Mesh> mesh(loader->load(stream, DirectoryPath()));
+
+            Assert::AreEqual(24u, mesh->VertexCount);
+            Assert::AreEqual(36u, mesh->IndexCount);
+            Assert::AreEqual((uint32_t)sizeof(uint32_t), mesh->IndexSize);
+            Assert::AreEqual(3ull, mesh->VertexStreams.Size);
+        }
+
+        TEST_METHOD(MeshLoader_saveLoadNative) {
+            IntrusivePointer<MeshLoader> loader(ghnew MeshLoader());
+
+            List<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
+            List<uint32_t> indices = { 0,1,2 };
+            VertexStream posStream = VertexStream{ Buffer(&vertices[0], sizeof(XMFLOAT3)*vertices.Size), sizeof(XMFLOAT3), VertexRole::POSITION };
+			IntrusivePointer<Mesh> outMesh(ghnew Mesh({ posStream }, vertices.Size, Buffer(&indices[0], sizeof(uint32_t) * indices.Size), indices.Size));
+            MemoryOutputStream outStream;
+            loader->save(outStream, DirectoryPath(), *outMesh.get());
+
+            MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
+            IntrusivePointer<Mesh> inMesh(loader->load(inStream, DirectoryPath()));
+
+            Assert::AreEqual(outMesh->VertexCount, inMesh->VertexCount);
+            Assert::AreEqual(outMesh->IndexCount, inMesh->IndexCount);
+            Assert::AreEqual(outMesh->IndexSize, inMesh->IndexSize);
+            Assert::AreEqual(outMesh->VertexStreams.Size, inMesh->VertexStreams.Size);
+        }
+    };
+}

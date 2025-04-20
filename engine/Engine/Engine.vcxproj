@@ -124,6 +124,7 @@
     <ClInclude Include="src\game\sky\BasicSky.h" />
     <ClInclude Include="src\game\sky\Sky.h" />
     <ClInclude Include="src\ghepch.h" />
+    <ClInclude Include="src\graphics\Drawable.h" />
     <ClInclude Include="src\graphics\DrawableComponent.h" />
     <ClInclude Include="src\graphics\DrawableComponents.h" />
     <ClInclude Include="src\graphics\DrawingSystem.h" />
@@ -132,6 +133,9 @@
     <ClInclude Include="src\graphics\ITexture.h" />
     <ClInclude Include="src\graphics\ITextureProvider.h" />
     <ClInclude Include="src\graphics\LightSystem.h" />
+    <ClInclude Include="src\graphics\mesh\Mesh.h" />
+    <ClInclude Include="src\graphics\mesh\MeshLoader.h" />
+    <ClInclude Include="src\graphics\mesh\VertexStream.h" />
     <ClInclude Include="src\graphics\RenderingStatistics.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
@@ -187,6 +191,8 @@
     </ClCompile>
     <ClCompile Include="src\graphics\DrawableComponents.cpp" />
     <ClCompile Include="src\graphics\IMaterial.cpp" />
+    <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
+    <ClCompile Include="src\graphics\mesh\MeshLoader.cpp" />
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />

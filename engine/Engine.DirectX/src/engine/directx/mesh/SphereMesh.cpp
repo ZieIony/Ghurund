@@ -5,7 +5,7 @@ namespace Ghurund {
     void SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
-        Vertex triangleVertices[] = {
+        Vertex3D triangleVertices[] = {
             {{-1.0, t, 0.0},{0,0}},
             {{1.0, t, 0.0},{0,0}},
             {{-1.0, -t, 0.0},{0,0}},
@@ -20,9 +20,9 @@ namespace Ghurund {
             {{-t, 0.0, 1.0},{0,0}}
         };
 
-        vertexSize = sizeof(Vertex);
+        vertexSize = sizeof(Vertex3D);
         vertexCount = sizeof(triangleVertices) / vertexSize;
-        vertices = ghnew Vertex[vertexCount];
+        vertices = ghnew Vertex3D[vertexCount];
         memcpy(vertices, triangleVertices, vertexCount * vertexSize);
 
         indices = ghnew unsigned int[60]{
@@ -52,9 +52,9 @@ namespace Ghurund {
         spherify();
 
         for (size_t i = 0; i < vertexCount; i++) {
-            XMFLOAT3 v = ((Vertex*)vertices)[i].position;
-            ((Vertex*)vertices)[i].texCoord.x = atan2f(v.x, v.z) / (2 * XM_PI) + 0.5f;
-            ((Vertex*)vertices)[i].texCoord.y = v.y * 0.5f + 0.5f;
+            XMFLOAT3 v = ((Vertex3D*)vertices)[i].position;
+            ((Vertex3D*)vertices)[i].texCoord.x = atan2f(v.x, v.z) / (2 * XM_PI) + 0.5f;
+            ((Vertex3D*)vertices)[i].texCoord.y = v.y * 0.5f + 0.5f;
         }
 
         for (size_t i = 0; i < detail; i++) {

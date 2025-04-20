@@ -7,21 +7,21 @@ namespace Ghurund::UI {
 	class TextMesh :public Ghurund::Mesh {
     public:
         Status init(Graphics& graphics, CommandList& commandList, Font& font, const String& text) {
-            Vertex quadVertices[] = {
+            Vertex3D quadVertices[] = {
                 {{-1.0f, 0.0f, -1.0f}, {0,1,0}, {0,0}},
                 {{1.0f,  0.0f,  1.0f}, {0,1,0}, {1,1}},
                 {{1.0f,  0.0f, -1.0f}, {0,1,0}, {0,1}},
                 {{-1.0f, 0.0f,  1.0f}, {0,1,0}, {1,0}},
             };
 
-            vertexSize = sizeof(Vertex);
+            vertexSize = sizeof(Vertex3D);
             
 
             for (size_t i = 0; i < text.Length; i++) {
 
             }
             vertexCount = sizeof(quadVertices) / vertexSize * text.Length;  // not exactly the right length, but close enough
-            vertices = ghnew Vertex[vertexCount];
+            vertices = ghnew Vertex3D[vertexCount];
             memcpy(vertices, quadVertices, vertexCount * vertexSize);
 
             indices = ghnew unsigned int[6] {
