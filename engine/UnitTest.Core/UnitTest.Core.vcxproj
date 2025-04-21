@@ -56,7 +56,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>utcpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -75,7 +75,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>utcpch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\Core\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -96,7 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\test\MemoryGuard.h" />
     <ClInclude Include="src\test\TestClass.h" />
     <ClInclude Include="src\test\TestLogOutput.h" />
@@ -106,11 +105,9 @@
     <ClInclude Include="src\test\core\resource\TestLibrary.h" />
     <ClInclude Include="src\test\core\resource\TestLoader.h" />
     <ClInclude Include="src\test\core\resource\TestResource.h" />
+    <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\test\TestUtils.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
@@ -139,6 +136,9 @@
     <ClCompile Include="src\test\core\threading\ThreadPoolExecutorTest.cpp" />
     <ClCompile Include="src\test\core\threading\WorkerThreadTest.cpp" />
     <ClCompile Include="src\test\core\window\SystemWindowTest.cpp" />
+    <ClCompile Include="src\utcpch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

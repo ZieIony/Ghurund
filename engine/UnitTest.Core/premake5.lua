@@ -1,7 +1,7 @@
 project "UnitTest.Core"
 	kind "SharedLib"
-	pchheader "pch.h"
-	pchsource "src/pch.cpp"
+	pchheader "utcpch.h"
+	pchsource "src/utcpch.cpp"
 	staticruntime "on"
 
 	dependson {

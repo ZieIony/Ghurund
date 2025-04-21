@@ -56,7 +56,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -76,7 +76,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Win64|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>utuipch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;..\UnitTest.Core\src;..\Core\src;..\UI\src;..\..\libs\tinyxml2;..\..\libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -98,7 +98,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\test\ui\TestBitmapFactory.h" />
     <ClInclude Include="src\test\ui\TestControlContainer.h" />
     <ClInclude Include="src\test\ui\TestDrawableFactory.h" />
@@ -109,11 +108,9 @@
     <ClInclude Include="src\test\ui\image\TestBitmap.h" />
     <ClInclude Include="src\test\ui\image\TestImage.h" />
     <ClInclude Include="src\test\ui\text\TextLayout.h" />
+    <ClInclude Include="src\utuipch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\test\ui\AlignmentTest.cpp" />
     <ClCompile Include="src\test\ui\animation\AnimationTest.cpp" />
     <ClCompile Include="src\test\ui\constraint\ConstraintFactoryTest.cpp" />
@@ -129,6 +126,9 @@
     <ClCompile Include="src\test\ui\font\FontTest.cpp" />
     <ClCompile Include="src\test\ui\text\TextLayout.cpp" />
     <ClCompile Include="src\test\ui\widget\WidgetTest.cpp" />
+    <ClCompile Include="src\utuipch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.vcxproj">

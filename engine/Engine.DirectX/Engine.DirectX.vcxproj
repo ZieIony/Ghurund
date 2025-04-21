@@ -122,7 +122,13 @@
     <ClInclude Include="src\engine\directx\memory\GPUResourceFactory.h" />
     <ClInclude Include="src\engine\directx\memory\GPUResourcePointer.h" />
     <ClInclude Include="src\engine\directx\memory\HeapAllocator.h" />
+    <ClInclude Include="src\engine\directx\mesh\ConeMesh.h" />
+    <ClInclude Include="src\engine\directx\mesh\CubeMesh.h" />
     <ClInclude Include="src\engine\directx\mesh\DxMesh.h" />
+    <ClInclude Include="src\engine\directx\mesh\MeshLoader.h" />
+    <ClInclude Include="src\engine\directx\mesh\PlaneMesh.h" />
+    <ClInclude Include="src\engine\directx\mesh\QuadMesh.h" />
+    <ClInclude Include="src\engine\directx\mesh\SphereMesh.h" />
     <ClInclude Include="src\engine\directx\shader\CompilationErrorException.h" />
     <ClInclude Include="src\engine\directx\shader\CompilationTarget.h" />
     <ClInclude Include="src\engine\directx\shader\CompilerInclude.h" />
@@ -161,7 +167,11 @@
     <ClCompile Include="src\engine\directx\memory\GPUResourceFactory.cpp" />
     <ClCompile Include="src\engine\directx\memory\GPUResourcePointer.cpp" />
     <ClCompile Include="src\engine\directx\memory\HeapAllocator.cpp" />
+    <ClCompile Include="src\engine\directx\mesh\ConeMesh.cpp" />
+    <ClCompile Include="src\engine\directx\mesh\CubeMesh.cpp" />
     <ClCompile Include="src\engine\directx\mesh\DxMesh.cpp" />
+    <ClCompile Include="src\engine\directx\mesh\MeshLoader.cpp" />
+    <ClCompile Include="src\engine\directx\mesh\SphereMesh.cpp" />
     <ClCompile Include="src\engine\directx\shader\CompilationTarget.cpp" />
     <ClCompile Include="src\engine\directx\shader\CompilerInclude.cpp" />
     <ClCompile Include="src\engine\directx\shader\ConstantBuffer.cpp" />

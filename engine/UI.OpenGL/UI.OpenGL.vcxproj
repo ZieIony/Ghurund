@@ -94,7 +94,7 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.UI.OGL.h" />
     <ClInclude Include="src\ghuioglpch.h" />
-    <ClInclude Include="src\ui\opengl\OglCanvas.h" />
+    <ClInclude Include="src\ui\opengl\OGLCanvas.h" />
     <ClInclude Include="src\ui\opengl\OglUiContext.h" />
     <ClInclude Include="src\ui\opengl\OglUiLayer.h" />
     <ClInclude Include="src\ui\opengl\Shape.h" />

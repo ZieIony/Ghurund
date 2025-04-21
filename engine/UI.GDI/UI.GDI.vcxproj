@@ -100,13 +100,13 @@
   <ItemGroup>
     <ClInclude Include="src\Ghurund.UI.GDI.h" />
     <ClInclude Include="src\ghuigdipch.h" />
+    <ClInclude Include="src\ui\gdi\Gdi.h" />
     <ClInclude Include="src\ui\gdi\GdiCanvas.h" />
     <ClInclude Include="src\ui\gdi\GdiDrawingContext.h" />
-    <ClInclude Include="src\ui\gdi\Gdi.h" />
     <ClInclude Include="src\ui\gdi\GdiUILayer.h" />
     <ClInclude Include="src\ui\gdi\Shape.h" />
     <ClInclude Include="src\ui\gdi\StrokeStyle.h" />
-    <ClInclude Include="src\ui\gdi\UiContext.h" />
+    <ClInclude Include="src\ui\gdi\UIContext.h" />
     <ClInclude Include="src\ui\gdi\drawable\BitmapDrawable.h" />
     <ClInclude Include="src\ui\gdi\drawable\SvgDrawable.h" />
     <ClInclude Include="src\ui\gdi\effects\ShadowEffect.h" />
@@ -127,7 +127,7 @@
     <ClCompile Include="src\ui\gdi\GdiDrawingContext.cpp" />
     <ClCompile Include="src\ui\gdi\GdiUILayer.cpp" />
     <ClCompile Include="src\ui\gdi\Shape.cpp" />
-    <ClCompile Include="src\ui\gdi\UiContext.cpp" />
+    <ClCompile Include="src\ui\gdi\UIContext.cpp" />
     <ClCompile Include="src\ui\gdi\drawable\BitmapDrawable.cpp" />
     <ClCompile Include="src\ui\gdi\drawable\SvgDrawable.cpp" />
     <ClCompile Include="src\ui\gdi\image\Bitmap.cpp" />

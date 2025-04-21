@@ -2,7 +2,7 @@
 #include "SphereMesh.h"
 
 namespace Ghurund {
-    void SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
+    /*void SphereMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         float t = (1.0f + sqrtf(5.0f)) / 2.0f;
 
         Vertex3D triangleVertices[] = {
@@ -66,5 +66,5 @@ namespace Ghurund {
         generateNormals();
 
         Mesh::init(graphics, commandList);
-    }
+    }*/
 }

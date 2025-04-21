@@ -40,7 +40,7 @@ namespace Ghurund::Engine {
 				for (size_t i = 0; i < face.Size; i++) {
 					Array<AString> vert = face[i].split("/");
 					objVerts.add(ObjVert{
-						(uint32_t)(atoi(vert[0].Data) - 1),
+						(uint32_t)(atoi(vert[0].Data) - 1),	// in obj indices start from 1, not from 0
 						(uint32_t)(atoi(vert[1].Data) - 1),
 						(uint32_t)(atoi(vert[2].Data) - 1),
 						0

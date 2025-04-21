@@ -24,7 +24,7 @@ namespace Ghurund::Engine::DirectX {
     using namespace DirectX;
     using namespace Microsoft::WRL;
 
-    class DxMesh:public Mesh {
+    class DxMesh:public Resource {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -40,12 +40,13 @@ namespace Ghurund::Engine::DirectX {
     protected:
         bool uploaded = false;
 
-        Array<ComPtr<ID3D12Resource>> vertexBuffer;
-        Array<D3D12_VERTEX_BUFFER_VIEW> vertexBufferView;
+        List<ComPtr<ID3D12Resource>> vertexBuffers;
+        List<D3D12_VERTEX_BUFFER_VIEW> vertexBuffersView;
         ComPtr<ID3D12Resource> indexBuffer;
         D3D12_INDEX_BUFFER_VIEW indexBufferView;
+        uint32_t indexCount;
 
-        Array<ComPtr<ID3D12Resource>> vertexUploadHeap;
+        List<ComPtr<ID3D12Resource>> vertexUploadHeaps;
         ComPtr<ID3D12Resource> indexUploadHeap;
 
         virtual unsigned int getVersion()const {
@@ -53,18 +54,21 @@ namespace Ghurund::Engine::DirectX {
         }
 
     public:
-        virtual void init(Graphics& graphics, CommandList& commandList, unsigned int detail = 0);
+        virtual void init(const Mesh& mesh, Graphics& graphics, CommandList& commandList);
 
-        void initVertexBuffers(Graphics& graphics, CommandList& commandList);
+        void initVertexBuffers(const Array<VertexStream> vertexStreams, uint32_t vertexCount, Graphics& graphics, CommandList& commandList);
 
-        void initIndexBuffer(Graphics& graphics, CommandList& commandList);
+        void initIndexBuffer(const Buffer& indices, uint32_t indexCount, Graphics& graphics, CommandList& commandList);
 
         virtual void invalidate() override {
             uploaded = false;
-            for(auto& buffer:vertexBuffer)
-                buffer.Reset();
+            vertexBuffers.clear();
+            vertexBuffersView.clear();
+            vertexUploadHeaps.clear();
+            /*for(auto& buffer:vertexBuffers)
+                buffer.Reset();*/
             indexBuffer.Reset();
-            for(auto& heap:vertexUploadHeap)
+            for(auto& heap:vertexUploadHeaps)
                 heap.Reset();
             indexUploadHeap.Reset();
 
@@ -72,7 +76,7 @@ namespace Ghurund::Engine::DirectX {
         }
 
         virtual bool isValid() const override {
-			return __super::isValid() && vertexBuffer[0].Get() && indexBuffer.Get() && uploaded;
+			return __super::isValid() && vertexBuffers[0].Get() && indexBuffer.Get() && uploaded;
         }
 
         void draw(CommandList& commandList);

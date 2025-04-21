@@ -1,4 +1,4 @@
-#include "pch.h"
+#include "utcpch.h"
 #include "CppUnitTest.h"
 #include "test/TestUtils.h"
 #include "test/TestClass.h"

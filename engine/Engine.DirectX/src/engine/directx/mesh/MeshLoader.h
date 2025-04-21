@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Mesh.h"
+#include "DxMesh.h"
 #include "core/resource/Loader.h"
 
-namespace Ghurund {
+namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
     class MeshLoader:public Loader {
@@ -14,11 +14,11 @@ namespace Ghurund {
     public:
         MeshLoader(Graphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
 
-        virtual Mesh* load(
-            MemoryInputStream& stream,
+        virtual DxMesh* load(
+            Ghurund::Core::MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
-            LoadOption options = LoadOption::DEFAULT
+            Ghurund::Core::LoadOption options = LoadOption::DEFAULT
         ) override;
 
         virtual void save(

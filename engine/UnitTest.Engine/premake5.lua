@@ -1,12 +1,14 @@
 project "UnitTest.Engine"
 	kind "SharedLib"
-	pchheader "pch.h"
-	pchsource "src/pch.cpp"
+	pchheader "utepch.h"
+	pchsource "src/utepch.cpp"
 	staticruntime "on"
 
 	dependson {
 		"Engine",
-		"Core"
+		"Engine.DirectX",
+		"Core",
+		"UnitTest.Core"
 	}
 
 	files {
@@ -16,12 +18,16 @@ project "UnitTest.Engine"
 
 	includedirs {
 		"src",
+		includeDir["UnitTest.Core"],
 		includeDir["Engine"],
+		includeDir["Engine.DirectX"],
 		includeDir["Core"],
-		includeDir["CRC"]
+		includeDir["CRC"],
+		includeDir["DirectX"]
 	}
 
 	links {
 		"Engine",
+		"Engine.DirectX",
 		"Core"
 	}

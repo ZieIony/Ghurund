@@ -107,6 +107,7 @@
     <ClInclude Include="src\ui\direct2d\UILayer.h" />
     <ClInclude Include="src\ui\direct2d\application\Direct2DUIWindow.h" />
     <ClInclude Include="src\ui\direct2d\drawable\SvgDrawable.h" />
+    <ClInclude Include="src\ui\direct2d\effects\RippleEffect.h" />
     <ClInclude Include="src\ui\direct2d\effects\ShadowEffect.h" />
     <ClInclude Include="src\ui\direct2d\effects\TintEffect.h" />
     <ClInclude Include="src\ui\direct2d\font\Font.h" />

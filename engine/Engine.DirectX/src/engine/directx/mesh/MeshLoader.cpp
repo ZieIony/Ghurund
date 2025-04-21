@@ -2,7 +2,7 @@
 #include "MeshLoader.h"
 
 namespace Ghurund {
-    Mesh* MeshLoader::load(
+    /*Mesh* MeshLoader::load(
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
@@ -23,5 +23,5 @@ namespace Ghurund {
     ) const {
         Mesh& mesh = (Mesh&)resource;
         //mesh.save(DirectoryPath(_T(".")), stream, options);
-    }
+    }*/
 }

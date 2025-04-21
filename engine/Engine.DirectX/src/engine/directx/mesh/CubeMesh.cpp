@@ -2,7 +2,7 @@
 #include "CubeMesh.h"
 
 namespace Ghurund {
-    void CubeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
+    /*void CubeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         Vertex3D triangleVertices[] = {
             {{-1.0f,  1.0f, -1.0f},{0,0,-1},{0,0}},
         {{1.0f, -1.0f, -1.0f},{0,0,-1},{1,1}},
@@ -73,5 +73,5 @@ namespace Ghurund {
         indexCount = 36;
 
         Mesh::init(graphics, commandList);
-    }
+    }*/
 }

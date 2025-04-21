@@ -2,7 +2,7 @@
 #include "ConeMesh.h"
 
 namespace Ghurund {
-    void ConeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
+    /*void ConeMesh::init(Graphics& graphics, CommandList& commandList, unsigned int detail) {
         detail = std::max<unsigned int>(detail, 3);
 
         List<Vertex3D> triangleVertices;
@@ -37,5 +37,5 @@ namespace Ghurund {
         generateNormals();
 
         Mesh::init(graphics, commandList);
-    }
+    }*/
 }
