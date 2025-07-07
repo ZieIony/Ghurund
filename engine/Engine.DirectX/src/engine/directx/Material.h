@@ -29,14 +29,6 @@ namespace Ghurund::Engine::DirectX {
         }
 
     protected:
-        virtual bool isVersioned()const {
-            return true;
-        }
-
-        virtual unsigned int getVersion()const {
-            return 0;
-        }
-
         virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options);
         virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const;
 
@@ -91,7 +83,7 @@ namespace Ghurund::Engine::DirectX {
         void setSupportsTransparency(bool supportsTransparency) {
             if (this->supportsTransparency != supportsTransparency) {
                 this->supportsTransparency = supportsTransparency;
-                shader->makePipelineState(supportsTransparency);
+                //shader->makePipelineState(supportsTransparency);
             }
         }
 
@@ -107,6 +99,8 @@ namespace Ghurund::Engine::DirectX {
         static const inline ResourceFormat FORMAT_MATERIAL = ResourceFormat(L"material", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MATERIAL };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

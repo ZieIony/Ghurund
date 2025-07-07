@@ -137,6 +137,8 @@
     <ClInclude Include="src\graphics\mesh\Mesh.h" />
     <ClInclude Include="src\graphics\mesh\MeshLoader.h" />
     <ClInclude Include="src\graphics\mesh\VertexStream.h" />
+    <ClInclude Include="src\graphics\shader\IShader.h" />
+    <ClInclude Include="src\graphics\shader\ShaderCode.h" />
     <ClInclude Include="src\net\Client.h" />
     <ClInclude Include="src\net\ClientMessage.h" />
     <ClInclude Include="src\net\Connection.h" />
@@ -194,6 +196,8 @@
     <ClCompile Include="src\graphics\RenderingStatistics.cpp" />
     <ClCompile Include="src\graphics\mesh\Mesh.cpp" />
     <ClCompile Include="src\graphics\mesh\MeshLoader.cpp" />
+    <ClCompile Include="src\graphics\shader\IShader.cpp" />
+    <ClCompile Include="src\graphics\shader\ShaderCode.cpp" />
     <ClCompile Include="src\net\Client.cpp" />
     <ClCompile Include="src\net\Message.cpp" />
     <ClCompile Include="src\net\MessageType.cpp" />

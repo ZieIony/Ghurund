@@ -16,6 +16,6 @@ namespace Ghurund::UI {
         Last,               // very last position
         AbsoluteLeading,    // explicit position (for mouse click)
         AbsoluteTrailing,   // explicit position, trailing edge
-        All                 // select all text
+        All                 // select all typeName
     };
 }

@@ -4,38 +4,9 @@
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
 #include "core/logging/Formatter.h"
-#include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Core {
-	void Resource::writeHeader(MemoryOutputStream& stream) const {
-		unsigned int hash = hashCode(Type.Name.Data);
-		stream.writeUInt(hash);
-		stream.writeUInt(getVersion());
-	}
-
-	void Resource::readHeader(MemoryInputStream& stream) {
-		if (stream.Size < stream.BytesRead + sizeof(unsigned int) * 2) {
-			Logger::log(LogType::ERR0R, _T("EOF\n"));
-			throw InvalidDataException("EOF");
-		}
-		unsigned int hash = hashCode(Type.Name.Data);
-		uint32_t h = stream.readUInt();
-		if (h != hash) {
-			auto message = std::format(_T("Invalid resource type code (expected: {}, read: {})\n"), hash, h);
-			Logger::log(LogType::ERR0R, message.c_str());
-			AString exMessage = convertText<tchar, char>(String(message.c_str()));
-			throw InvalidDataException(exMessage.Data);
-		}
-		uint32_t v = stream.readUInt();
-		if (v != getVersion()) {
-			auto message = std::format(_T("Invalid version number (expected: {}, read: {})\n"), getVersion(), v);
-			Logger::log(LogType::ERR0R, message.c_str());
-			AString exMessage = convertText<tchar, char>(String(message.c_str()));
-			throw InvalidDataException(exMessage.Data);
-		}
-	}
-
 	const Ghurund::Core::Type& Resource::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Resource>()
 			.withSupertype(__super::GET_TYPE());
@@ -47,19 +18,6 @@ namespace Ghurund::Core {
 		delete path;
 	}
 
-	void Resource::load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-		try {
-			loadInternal(workingDir, stream, options);
-		} catch (std::exception e) {
-			invalidate();
-			throw e;
-		}
-	}
-
-	void Resource::save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-		saveInternal(workingDir, stream, options);
-    }
-    
     void Resource::setPath(const ResourcePath* path) {
         delete this->path;
         if (path) {

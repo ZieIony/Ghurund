@@ -9,7 +9,7 @@ namespace Ghurund {
         LoadOption options
     ) {
         Sound* sound = makeResource<Sound>();
-        sound->load(workingDir, stream, options);
+        //sound->load(workingDir, stream, options);
         return sound;
     }
 

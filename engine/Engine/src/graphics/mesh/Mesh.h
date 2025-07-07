@@ -31,18 +31,22 @@ namespace Ghurund::Engine {
 
 		BoundingBox boundingBox;
 
-		virtual unsigned int getVersion()const {
-			return 1;
-		}
-
 	public:
-		Mesh(Array<VertexStream> vertexStreams, uint32_t vertexCount, Buffer indices, uint32_t indexCount):
-			vertexStreams(vertexStreams), vertexCount(vertexCount), indices(indices), indexCount(indexCount) {
+		Mesh() {}
+
+		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, Buffer indices, uint32_t indexCount){
+			this->vertexStreams = vertexStreams;
+			this->vertexCount = vertexCount;
+			this->indices = indices;
+			this->indexCount = indexCount;
 		}
 
 		template<typename T>
-		Mesh(Array<VertexStream> vertexStreams, uint32_t vertexCount, const ArrayCollection<T>& indices):
-			vertexStreams(vertexStreams), vertexCount(vertexCount), indices(Buffer(indices.Data, sizeof(T)* indices.Size)), indexCount((uint32_t)(indices.Size)) {
+		void init(Array<VertexStream> vertexStreams, uint32_t vertexCount, const ArrayCollection<T>& indices) {
+			this->vertexStreams = vertexStreams;
+			this->vertexCount = vertexCount;
+			this->indices = Buffer(indices.Data, sizeof(T) * indices.Size);
+			this->indexCount = (uint32_t)(indices.Size);
 		}
 
 		/*void removeDuplicates();
@@ -104,6 +108,8 @@ namespace Ghurund::Engine {
 		static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };
+
+		static const inline uint32_t VERSION = 1;
 #pragma endregion
 	};
 }

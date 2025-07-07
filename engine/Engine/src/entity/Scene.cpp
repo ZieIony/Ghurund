@@ -8,9 +8,9 @@
 namespace Ghurund::Engine {
 	using namespace Ghurund::Core;
 
-	void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-        /*context.Allocators.set(DrawableComponent::TYPE, DrawingSystem.Allocator);
-		size_t size = stream.readUInt();
+	/*void Scene::loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
+        context.Allocators.set(DrawableComponent::TYPE, DrawingSystem.Allocator);
+		size_t size = stream.readUInt32();
 		for (size_t i = 0; i < size; i++) {
 			Status result;
 			Resource* resource = context.ResourceManager.load(context, workingDir, stream, &result, options);
@@ -18,19 +18,19 @@ namespace Ghurund::Engine {
 				return result;
 			entities.add((Entity*)resource);
 			resource->release();
-		}*/
+		}
 		throw NotImplementedException();
-	}
+	}*/
 
-	void Scene::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-		/*stream.writeUInt((uint32_t)entities.Size);
+	/*void Scene::saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
+		stream.writeUInt32((uint32_t)entities.Size);
 		for (size_t i = 0; i < entities.Size; i++) {
 			Status result = context.ResourceManager.save(*entities[i], context, workingDir, stream, options);
 			if (filterStatus(result, options) != Status::OK)
 				return result;
-		}*/
+		}
 		throw NotImplementedException();
-	}
+	}*/
 	
 	const Ghurund::Core::Type& Scene::GET_TYPE() {
 		static const Ghurund::Core::Type TYPE = TypeBuilder<Scene>()

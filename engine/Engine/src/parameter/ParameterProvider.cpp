@@ -8,7 +8,7 @@
 
 namespace Ghurund::Engine {
     void ParameterProvider::loadParameters(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-      /*  size_t paramCount = stream.readUInt();
+      /*  size_t paramCount = stream.readUInt32();
         for (size_t i = 0; i < paramCount; i++) {
             char* name = stream.readASCII();
             Parameter* p = getParameter(name);
@@ -42,7 +42,7 @@ namespace Ghurund::Engine {
                 continue;
             paramsToSave.add(p);
         }
-        stream.writeUInt((unsigned int)paramsToSave.Size);
+        stream.writeUInt32((unsigned int)paramsToSave.Size);
         for (Parameter* p : paramsToSave) {
             stream.writeASCII(p->ConstantName.Data);
             if (p->ValueType.Value == ParameterTypeEnum::TEXTURE) {

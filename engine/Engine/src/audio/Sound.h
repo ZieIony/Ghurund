@@ -51,11 +51,7 @@ namespace Ghurund {
         void loadData(MemoryInputStream& stream, LoadOption options);
 
     protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-
-        virtual unsigned int getVersion() const {
-            return 0;
-        }
+        //virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
 
     public:
         ~Sound() {
@@ -127,6 +123,8 @@ namespace Ghurund {
         static const inline ResourceFormat FORMAT_WAV = ResourceFormat(L"wav", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_WAV };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

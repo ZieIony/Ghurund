@@ -52,7 +52,7 @@ public:
     /*
     TEST_METHOD(textBlock_measureEmptyWrap) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
@@ -71,12 +71,12 @@ public:
 
     TEST_METHOD(textBlock_measureTextWrap) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::WRAP, ContentSize::Height::WRAP };
-        textBlock->Text = L"test text";
+        textBlock->Text = L"test typeName";
         //textBlock->MinSize = { 0, 0 };
         //textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 90, 10 }, textBlock->MeasuredSize);
@@ -90,7 +90,7 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyFill) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
@@ -109,12 +109,12 @@ public:
 
     TEST_METHOD(textBlock_measureTextFill) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width::FILL, ContentSize::Height::FILL };
-        textBlock->Text = L"test text";
+        textBlock->Text = L"test typeName";
         //textBlock->MinSize = { 0, 0 };
         //textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 100, 120 }, textBlock->MeasuredSize);
@@ -128,7 +128,7 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyPixels) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
@@ -146,12 +146,12 @@ public:
 
     TEST_METHOD(textBlock_measureTextPixels) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PIXELS, 50), ContentSize::Height(ContentSize::Type::PIXELS, 70) };
-        textBlock->Text = L"test text";
+        textBlock->Text = L"test typeName";
         //textBlock->MinSize = { 0, 0 };
         //textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 70 }, textBlock->MeasuredSize);
@@ -165,7 +165,7 @@ public:
 
     TEST_METHOD(textBlock_measureEmptyPercent) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
@@ -183,12 +183,12 @@ public:
 
     TEST_METHOD(textBlock_measureTextPercent) {
         auto rootView = makeIntrusive<RootView>(*context);
-        TextLayout* textLayout = ghnew TextLayout(L"text", Color(0.0f, 0.0f, 0.0f), textFormat);
+        TextLayout* textLayout = ghnew TextLayout(L"typeName", Color(0.0f, 0.0f, 0.0f), textFormat);
         auto textBlock = makeIntrusive<TextBlock>(std::unique_ptr<TextLayout>(textLayout));
         rootView->Child = textBlock.get();
 
         //textBlock->ContentSize = { ContentSize::Width(ContentSize::Type::PERCENT, 50.0f), ContentSize::Height(ContentSize::Type::PERCENT, 70.0f) };
-        textBlock->Text = L"test text";
+        textBlock->Text = L"test typeName";
         //textBlock->MinSize = { 0, 0 };
         //textBlock->measure(100, 120);
         Assert::AreEqual(FloatSize{ 50, 84 }, textBlock->MeasuredSize);

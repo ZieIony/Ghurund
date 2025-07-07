@@ -45,36 +45,7 @@ namespace Ghurund::Core {
 
 		~Resource();
 
-		virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) {
-			throw NotImplementedException();
-		};
-
-		virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const {
-			throw NotImplementedException();
-		};
-
-		virtual unsigned int getVersion() const {
-			return 0;
-		}
-
-		void writeHeader(MemoryOutputStream& stream) const;
-		void readHeader(MemoryInputStream& stream);
-
-		static const Array<ResourceFormat>& GET_FORMATS();
-
 	public:
-		void load(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options = LoadOption::DEFAULT);
-
-		void save(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options = SaveOption::DEFAULT) const;
-
-		virtual void reload() {
-			invalidate();
-			addReference();
-			//load();
-			throw NotImplementedException();
-			//release();
-		}
-
 		virtual void invalidate() {}
 
 		virtual bool isValid() const {

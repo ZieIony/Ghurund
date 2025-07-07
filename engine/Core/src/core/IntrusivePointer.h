@@ -46,6 +46,10 @@ namespace Ghurund::Core {
 			return pointer;
 		}
 
+		inline T& ref() const {
+			return *pointer;
+		}
+
 		inline void set(T* p) {
 			if (pointer)
 				pointer->release();

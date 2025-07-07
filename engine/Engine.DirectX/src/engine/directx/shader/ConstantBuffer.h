@@ -18,7 +18,13 @@ namespace Ghurund::Engine::DirectX {
         bool* reported;
 #endif
 
-        ConstantBuffer(Graphics& graphics, ID3D12ShaderReflectionConstantBuffer* constantBuffer, D3D12_SHADER_BUFFER_DESC& bufferDesc, unsigned int bindPoint, D3D12_SHADER_VISIBILITY visibility);
+        ConstantBuffer(
+            NotNull<Graphics> graphics,
+            ID3D12ShaderReflectionConstantBuffer* constantBuffer,
+            D3D12_SHADER_BUFFER_DESC& bufferDesc,
+            unsigned int bindPoint,
+            D3D12_SHADER_VISIBILITY visibility
+        );
 
         ~ConstantBuffer() {
             variables.deleteItems();

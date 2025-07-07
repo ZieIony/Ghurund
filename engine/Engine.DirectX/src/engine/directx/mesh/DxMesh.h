@@ -49,10 +49,6 @@ namespace Ghurund::Engine::DirectX {
         List<ComPtr<ID3D12Resource>> vertexUploadHeaps;
         ComPtr<ID3D12Resource> indexUploadHeap;
 
-        virtual unsigned int getVersion()const {
-            return 1;
-        }
-
     public:
         virtual void init(const Mesh& mesh, Graphics& graphics, CommandList& commandList);
 
@@ -92,6 +88,8 @@ namespace Ghurund::Engine::DirectX {
         static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };
+
+        static const inline uint32_t VERSION = 1;
 #pragma endregion
     };
 }

@@ -1,42 +1,28 @@
 #pragma once
 
+#include "core/Enum.h"
+
 namespace Ghurund::Engine::DirectX {
-	class CompilationTarget {
-	private:
-		uint32_t value;
-		const char* text;
+	using namespace Ghurund::Core;
 
-	public:
-		static const CompilationTarget& SHADER_5_0, & SHADER_4_1, & SHADER_4_0, & SHADER_4_0_LEVEL_9_3, & SHADER_4_0_LEVEL_9_1;
-
-		static const CompilationTarget& fromValue(uint32_t value) {
-			if (value == SHADER_5_0.value) {
-				return SHADER_5_0;
-			} else if (value == SHADER_4_1.value) {
-				return SHADER_4_1;
-			} else if (value == SHADER_4_0.value) {
-				return SHADER_4_0;
-			} else if (value == SHADER_4_0_LEVEL_9_3.value) {
-				return SHADER_4_0_LEVEL_9_3;
-			} else {
-				return SHADER_4_0_LEVEL_9_1;
-			}
-		}
-
-		CompilationTarget(uint32_t value, const char* text) {
-			this->value = value;
-			this->text = text;
-		}
-
-		uint32_t getValue() const {
-			return value;
-		}
-
-		operator uint32_t() const { return value; }
-
-		const char* toString() const {
-			return text;
-		}
+	enum class CompilationTargetEnum {
+		SHADER_5_0, SHADER_4_1, SHADER_4_0, SHADER_4_0_LEVEL_9_3, SHADER_4_0_LEVEL_9_1
 	};
 
+	class CompilationTarget:public Enum<CompilationTargetEnum, CompilationTarget> {
+	private:
+		const AString targetName;
+
+		CompilationTarget(CompilationTargetEnum value, const AString& name, const AString& targetName):
+			Enum(value, name), targetName(targetName) {}
+
+	public:
+		static const CompilationTarget SHADER_5_0, SHADER_4_1, SHADER_4_0, SHADER_4_0_LEVEL_9_3, SHADER_4_0_LEVEL_9_1;
+
+		const AString& getTargetName() const {
+			return targetName;
+		}
+
+		__declspec(property(get = getTargetName)) const AString& TargetName;
+	};
 }

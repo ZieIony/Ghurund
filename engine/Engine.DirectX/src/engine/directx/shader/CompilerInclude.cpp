@@ -11,8 +11,6 @@ namespace Ghurund::Engine::DirectX {
 		switch (IncludeType) {
 		case D3D_INCLUDE_LOCAL: // #include "FILE"
 		{
-			if (!shaderDir)
-				return E_FAIL;
 			fullPath = shaderDir;
 			const wchar_t* str = convertText<char, wchar_t>(pFileName);
 			fullPath.add(str);
@@ -21,8 +19,6 @@ namespace Ghurund::Engine::DirectX {
 		}
 		case D3D_INCLUDE_SYSTEM: // #include <FILE>
 		{
-			if (!systemDir)
-				return E_FAIL;
 			fullPath = systemDir;
 			const wchar_t* str = convertText<char, wchar_t>(pFileName);
 			fullPath.add(str);

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Noncopyable.h"
 #include "core/collection/Map.h"
 #include "core/string/String.h"
+#include "core/exception/Exceptions.h"
+#include "Noncopyable.h"
 
 namespace Ghurund::Core {
 
@@ -12,28 +13,21 @@ namespace Ghurund::Core {
     template<class Type, class Type2>
     class EnumValues:public Noncopyable {
     private:
-        Map<Type, std::reference_wrapper<const Type2>> values;
-        Map<AString, std::reference_wrapper<const Type2>> valuesByName;
+        mutable List<std::reference_wrapper<const Type2>> values;
 
-        inline void add(const std::reference_wrapper<const Type2> value) {
-            values.set(value->Value, value);
-            valuesByName.set(value->Name, value);
+        inline void add(const std::reference_wrapper<const Type2> value) const {
+            values.add(value);
         }
 
     public:
+        using iterator = List<std::reference_wrapper<const Type2>>::iterator;
+        using const_iterator = List<std::reference_wrapper<const Type2>>::const_iterator;
+
         friend class Enum<Type, Type2>;
         friend typename Type2;
 
-        inline const Type2& operator[](const Type& key) const {
-            return values.get(key);
-        }
-
         inline const Type2& operator[](const size_t index) const {
-            return values.getValue(index);
-        }
-
-        inline const Type2& operator[](const AString& name) const {
-            return valuesByName.get(name);
+            return values.get(index);
         }
 
         inline size_t getSize() const {
@@ -42,20 +36,20 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getSize)) size_t Size;
 
-        inline Type2* begin() {
+        inline iterator begin() {
             return values.begin();
         }
 
-        inline Type2* begin() const {
-            return values.begin();
+        inline const_iterator begin() const {
+            return ((const List<std::reference_wrapper<const Type2>>&)values).begin();
         }
 
-        inline Type2* end() {
+        inline iterator end() {
             return values.end();
         }
 
-        inline Type2* end() const {
-            return values.end();
+        inline const_iterator end() const {
+            return ((const List<std::reference_wrapper<const Type2>>&)values).end();
         }
     };
 
@@ -69,15 +63,27 @@ namespace Ghurund::Core {
         Enum(Enum&& other) = delete;
 
     protected:
-        Enum(EnumValueType value, const AString& name):name(name) {
-            this->value = value;
+        Enum(EnumValueType value, const AString& name):name(name), value(value) {
+            VALUES.add(std::reference_wrapper<EnumType>(*(EnumType*)this));
         }
 
     public:
         static inline const EnumValues<EnumValueType, EnumType> VALUES;
 
-        Enum() {
-            VALUES.add(*this);
+        static inline const EnumType& fromValue(EnumValueType value) {
+            for (auto& v : VALUES) {
+                if (v.get().Value == value)
+                    return v.get();
+            }
+            throw InvalidParamException();
+        }
+
+        static inline const EnumType& fromName(const AString& name) {
+            for (auto& v : VALUES) {
+                if (v.get().Name == name)
+                    return v.get();
+            }
+            throw InvalidParamException();
         }
 
         inline EnumValueType getValue() const {

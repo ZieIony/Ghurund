@@ -71,7 +71,6 @@ namespace Ghurund::Core {
         ConstArrayIterator(): v(nullptr) {}
         ConstArrayIterator(Type* other): v(other) {}
         ConstArrayIterator(const ConstArrayIterator& other): v(other.v) {}
-        ConstArrayIterator(const ArrayIterator<Type>& other): v(other.v) {}
 
         inline ConstArrayIterator& operator=(Type* v) { this.v = v; return *this; }
         inline ConstArrayIterator& operator=(const ConstArrayIterator& other) { v = other.v; return *this; }

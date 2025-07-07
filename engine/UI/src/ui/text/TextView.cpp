@@ -144,7 +144,7 @@ namespace Ghurund::UI {
             caretPosition = absolutePosition + advance;
             caretPositionOffset = 0;
             {
-                // Use hit-testing to limit text position.
+                // Use hit-testing to limit typeName position.
                 float caretX, caretY;
 
                 HitTestMetrics hitTestMetrics = textLayout.hitTestTextPosition(caretPosition, false, &caretX, &caretY);
@@ -177,18 +177,18 @@ namespace Ghurund::UI {
             // To move up or down, we need three hit-testing calls to determine:
             // 1. The x of where we currently are.
             // 2. The y of the new line.
-            // 3. New text position from the determined x and y.
+            // 3. New typeName position from the determined x and y.
             // This is because the characters are variable size.
 
             float caretX, caretY, dummyX;
 
-            // Get x of current text position
+            // Get x of current typeName position
             textLayout.hitTestTextPosition(caretPosition, caretPositionOffset > 0, &caretX, &caretY);
 
             // Get y of new position
             textLayout.hitTestTextPosition(linePosition, false, &dummyX, &caretY);
 
-            // Now get text position of new x,y.
+            // Now get typeName position of new x,y.
             bool isTrailingHit;
             HitTestMetrics hitTestMetrics = textLayout.hitTestPoint(caretX, caretY, &isTrailingHit);
 

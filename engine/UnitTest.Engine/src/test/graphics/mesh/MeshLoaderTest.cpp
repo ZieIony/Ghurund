@@ -85,7 +85,8 @@ f 5/6/6 1/12/6 8/11/6
             List<XMFLOAT3> vertices = { {1,0,0}, {1,1,0}, {0,1,0} };
             List<uint32_t> indices = { 0,1,2 };
             VertexStream posStream = VertexStream{ Buffer(&vertices[0], sizeof(XMFLOAT3)*vertices.Size), sizeof(XMFLOAT3), VertexRole::POSITION };
-			IntrusivePointer<Mesh> outMesh(ghnew Mesh({ posStream }, vertices.Size, Buffer(&indices[0], sizeof(uint32_t) * indices.Size), indices.Size));
+            auto outMesh = makeIntrusive<Mesh>();
+            outMesh->init({ posStream }, vertices.Size, Buffer(&indices[0], sizeof(uint32_t) * indices.Size), indices.Size);
             MemoryOutputStream outStream;
             loader->save(outStream, DirectoryPath(), *outMesh.get());
 

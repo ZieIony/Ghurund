@@ -10,15 +10,6 @@ namespace Ghurund::Engine::DirectX {
         //Model* fullScreenQuad = nullptr;
         Material* material = nullptr;
 
-    protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override {
-            throw NotImplementedException();
-        }
-
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override {
-            throw NotImplementedException();
-        }
-
     public:
         ~Postprocess() {
             //if (fullScreenQuad)

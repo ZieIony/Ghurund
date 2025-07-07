@@ -2,12 +2,10 @@
 #include "ShaderType.h"
 
 namespace Ghurund::Engine::DirectX {
-    const ShaderType &ShaderType::VS = ShaderType(1, "vs", "vertexMain", D3D12_SHADER_VISIBILITY_VERTEX);
-    const ShaderType &ShaderType::PS = ShaderType(2, "ps", "pixelMain", D3D12_SHADER_VISIBILITY_PIXEL);
-    const ShaderType &ShaderType::GS = ShaderType(4, "gs", "geometryMain", D3D12_SHADER_VISIBILITY_GEOMETRY);
-    const ShaderType &ShaderType::HS = ShaderType(8, "hs", "hullMain", D3D12_SHADER_VISIBILITY_HULL);
-    const ShaderType &ShaderType::DS = ShaderType(16, "ds", "domainMain", D3D12_SHADER_VISIBILITY_DOMAIN);
-    const ShaderType &ShaderType::CS = ShaderType(32, "cs", "computeMain", D3D12_SHADER_VISIBILITY_ALL);
-
-    const ShaderType ShaderType::values[] = {ShaderType::VS, ShaderType::PS, ShaderType::GS, ShaderType::HS, ShaderType::DS, ShaderType::CS};
+    const ShaderType ShaderType::VERTEX = ShaderType(ShaderTypeEnum::VERTEX, "VERTEX", "vs", "vertexMain", D3D12_SHADER_VISIBILITY_VERTEX);
+    const ShaderType ShaderType::PIXEL = ShaderType(ShaderTypeEnum::PIXEL, "PIXEL", "ps", "pixelMain", D3D12_SHADER_VISIBILITY_PIXEL);
+    const ShaderType ShaderType::GEOMETRY = ShaderType(ShaderTypeEnum::GEOMETRY, "GEOMETRY", "gs", "geometryMain", D3D12_SHADER_VISIBILITY_GEOMETRY);
+    const ShaderType ShaderType::HULL = ShaderType(ShaderTypeEnum::HULL, "HULL", "hs", "hullMain", D3D12_SHADER_VISIBILITY_HULL);
+    const ShaderType ShaderType::D0MAIN = ShaderType(ShaderTypeEnum::D0MAIN, "D0MAIN", "ds", "domainMain", D3D12_SHADER_VISIBILITY_DOMAIN);
+    const ShaderType ShaderType::COMPUTE = ShaderType(ShaderTypeEnum::COMPUTE, "COMPUTE", "cs", "computeMain", D3D12_SHADER_VISIBILITY_ALL);
 }

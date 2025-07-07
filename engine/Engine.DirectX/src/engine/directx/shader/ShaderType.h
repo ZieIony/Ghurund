@@ -1,63 +1,53 @@
 #pragma once
 
+#include "core/Enum.h"
+
 #pragma warning(push, 0)
 #include <d3d12.h>
 #pragma warning(pop)
 
 namespace Ghurund::Engine::DirectX {
-    using namespace Microsoft::WRL;
+	using namespace Ghurund::Core;
+	using namespace Microsoft::WRL;
 
-    class ShaderType {
-    private:
-        unsigned int value;
-        const char* text;
-        const char* entryPoint;
-        D3D12_SHADER_VISIBILITY visibility;
+	enum class ShaderTypeEnum {
+		VERTEX = 1, PIXEL = 2, GEOMETRY = 4, HULL = 8, D0MAIN = 16, COMPUTE = 32
+	};
 
-        ShaderType(unsigned int value, const char* text, const char* entryPoint, D3D12_SHADER_VISIBILITY visibility) {
-            this->value = value;
-            this->text = text;
-            this->entryPoint = entryPoint;
-            this->visibility = visibility;
-        }
+	class ShaderType:public Enum<ShaderTypeEnum, ShaderType> {
+	private:
+		const AString typeName;
+		const AString entryPoint;
+		D3D12_SHADER_VISIBILITY visibility;
 
-    public:
-        static const ShaderType& VS, & PS, & GS, & HS, & DS, & CS;
+		ShaderType(
+			ShaderTypeEnum value,
+			const AString& name,
+			const AString& typeName,
+			const AString& entryPoint,
+			D3D12_SHADER_VISIBILITY visibility
+		):Enum(value, name), typeName(typeName), entryPoint(entryPoint), visibility(visibility) {
+		}
 
-        static const ShaderType values[];
+	public:
+		static const ShaderType VERTEX, PIXEL, GEOMETRY, HULL, D0MAIN, COMPUTE;
 
-        static const ShaderType& fromValue(unsigned int value) {
-            if (value == VS.value) {
-                return VS;
-            } else if (value == PS.value) {
-                return PS;
-            } else if (value == GS.value) {
-                return GS;
-            } else if (value == HS.value) {
-                return HS;
-            } else if (value == DS.value) {
-                return DS;
-            } else {
-                return CS;
-            }
-        }
+		const AString& getTypeName() const {
+			return typeName;
+		}
 
-        unsigned int getValue() const {
-            return value;
-        }
+		__declspec(property(get = getTypeName)) const AString& TypeName;
 
-        operator unsigned int() const { return value; }
+		const AString& getEntryPoint() const {
+			return entryPoint;
+		}
 
-        const char* toString() const {
-            return text;
-        }
+		__declspec(property(get = getEntryPoint)) const AString& EntryPoint;
 
-        const char* getEntryPoint() const {
-            return entryPoint;
-        }
+		D3D12_SHADER_VISIBILITY getVisibility() const {
+			return visibility;
+		}
 
-        D3D12_SHADER_VISIBILITY getVisibility() const {
-            return visibility;
-        }
-    };
+		__declspec(property(get = getVisibility)) D3D12_SHADER_VISIBILITY Visibility;
+	};
 }

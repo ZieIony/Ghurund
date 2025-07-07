@@ -3,6 +3,7 @@
 
 #include "core/logging/Logger.h"
 
+#include <core/IntrusivePointer.h>
 #include <cstdlib>
 
 namespace Ghurund::Engine {
@@ -102,32 +103,42 @@ namespace Ghurund::Engine {
 		//IndexType indexType = indices.Size <= std::numeric_limits<uint16_t>::max() ? IndexType::INT16 : IndexType::INT32;
 		//Buffer indexBuffer(((uint32_t)indexType) * indices.Size);
 
-		return ghnew Mesh(
+		Mesh* mesh = makeResource<Mesh>();
+		mesh->init(
 			vertexStreams,
 			positions.Size,
 			Buffer(&indices[0], sizeof(uint32_t) * indices.Size),
 			indices.Size
 		);
+		return mesh;
 	}
 
 	Mesh* MeshLoader::loadMesh(MemoryInputStream& stream) {
-		/*readHeader(stream);
+		readHeader<Mesh>(stream);
 
-		vertexSize = sizeof(Vertex3D);
-		vertexCount = stream.read<vindex_t>();
-		vertices = ghnew Vertex3D[vertexCount];
-		memcpy(vertices, stream.readBytes(vertexCount * vertexSize), vertexCount * vertexSize);
+		IntrusivePointer<Mesh> mesh(makeResource<Mesh>());
 
-		indexCount = stream.read<vindex_t>();
-		indices = ghnew vindex_t[indexCount];
-		memcpy(indices, stream.readBytes(indexCount * sizeof(vindex_t)), indexCount * sizeof(vindex_t));
+		uint32_t vertexCount = stream.readUInt32();
+		uint32_t streamCount = stream.readUInt32();
+		Array<VertexStream> vertexStreams(streamCount);
+		for (auto& vertexStream : vertexStreams) {
+			uint32_t dataSize = stream.readUInt32();
+			const void* data = stream.readBytes(dataSize);
+			vertexStream.data.setData(data, dataSize);
+			vertexStream.vertexSize = stream.readUInt32();
+			vertexStream.role = (VertexRole)stream.read<uint16_t>();
+		}
 
-		XMFLOAT3 center = stream.read<XMFLOAT3>();
-		XMFLOAT3 extents = stream.read<XMFLOAT3>();
-		boundingBox = ::DirectX::BoundingBox(center, extents);*/
+		uint32_t indexCount = stream.readUInt32();
+		uint32_t indexSize = stream.readUInt32();
+		const void* data = stream.readBytes(indexCount * indexSize);
 
-		//return init(context.Graphics, context.CommandList);
-		throw NotImplementedException();
+		//XMFLOAT3 center = stream.read<XMFLOAT3>();
+		//XMFLOAT3 extents = stream.read<XMFLOAT3>();
+		//boundingBox = ::DirectX::BoundingBox(center, extents);
+
+		mesh->init(vertexStreams, vertexCount, Buffer(data, indexCount * indexSize), indexSize);
+		return mesh.get();
 	}
 
 	Resource* MeshLoader::loadInternal(
@@ -160,15 +171,23 @@ namespace Ghurund::Engine {
 			Logger::log(LogType::ERR0R, _T("resource needs to be of type Ghurund::Engine::Mesh\n"));
 			throw std::invalid_argument("resource needs to be of type Ghurund::Engine::Mesh\n");
 		}
-		/*writeHeader(stream);
+		writeHeader<Mesh>(stream);
 
-		stream.write<vindex_t>(vertexCount);
-		stream.writeBytes(vertices, vertexCount * vertexSize);
+		Mesh& mesh = (Mesh&)resource;
+		stream.writeUInt32(mesh.VertexCount);
+		stream.writeUInt32(mesh.VertexStreams.Size);
+		for (auto& vertexStream : mesh.VertexStreams) {
+			stream.writeUInt32(vertexStream.data.Size);
+			stream.writeBytes(vertexStream.data.Data, vertexStream.data.Size);
+			stream.writeUInt32(vertexStream.vertexSize);
+			stream.write<uint16_t>((uint16_t)(vertexStream.role));
+		}
 
-		stream.write<vindex_t>(indexCount);
-		stream.writeBytes(indices, indexCount * sizeof(vindex_t));
+		stream.write(mesh.IndexCount);
+		stream.write(mesh.IndexSize);
+		stream.writeBytes(mesh.Indices.Data, mesh.Indices.Size);
 
-		stream.write<XMFLOAT3>(boundingBox.Center);
-		stream.write<XMFLOAT3>(boundingBox.Extents);*/
+		//stream.write<XMFLOAT3>(boundingBox.Center);
+		//stream.write<XMFLOAT3>(boundingBox.Extents);
 	}
 }

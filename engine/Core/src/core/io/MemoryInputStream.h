@@ -52,7 +52,7 @@ namespace Ghurund::Core {
 			pointer += sizeof(int32_t);
 			return i;
 		}
-		inline uint32_t readUInt() {
+		inline uint32_t readUInt32() {
 			assertAvailable<uint32_t>();
 			uint32_t i = *(uint32_t*)(data + pointer);
 			pointer += sizeof(uint32_t);
@@ -112,12 +112,14 @@ namespace Ghurund::Core {
 				return WString(i, slen);
 			}
 		}
-		inline const void* readBytes(unsigned int length) {
+
+		inline const void* readBytes(uint32_t length) {
 			assertAvailable<int32_t>();
 			void* dataToReturn = (void*)(data + pointer);
 			pointer += length;
 			return dataToReturn;
 		}
+
 		template<typename T>
 		T& read() {
 			assertAvailable<T>();

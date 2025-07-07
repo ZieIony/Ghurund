@@ -15,7 +15,7 @@ namespace Ghurund::UI::Direct2D {
             throw InvalidStateException();
         }
 
-        //if (FAILED(dwriteFactory.CreateTextLayout(text.Data, (uint32_t)text.Length, formatSource, size.Width, size.Height, &newLayout)))
+        //if (FAILED(dwriteFactory.CreateTextLayout(typeName.Data, (uint32_t)typeName.Length, formatSource, size.Width, size.Height, &newLayout)))
         //    return Status::CALL_FAIL;
 
         if (layout)
@@ -214,10 +214,10 @@ namespace Ghurund::UI::Direct2D {
         if (layout)
             layout->AddRef();
         /*IDWriteTextLayout* oldLayout = layout;
-        uint32_t oldTextLength = (uint32_t)text.Length;
-        position = std::min(position, (uint32_t)text.Size);
+        uint32_t oldTextLength = (uint32_t)typeName.Length;
+        position = std::min(position, (uint32_t)typeName.Size);
 
-        text.insert(position, textToInsert.Data, textToInsert.Size);
+        typeName.insert(position, textToInsert.Data, textToInsert.Size);
 
         Status result = refresh();
 
@@ -226,18 +226,18 @@ namespace Ghurund::UI::Direct2D {
         if (result == Status::OK) {
             copyGlobalProperties(oldLayout, newLayout);
 
-            // For each property, get the position range and apply it to the old text.
+            // For each property, get the position range and apply it to the old typeName.
             if (position == 0) {
-                // Inserted text
+                // Inserted typeName
                 copySinglePropertyRange(oldLayout, 0, newLayout, 0, (uint32_t)textToInsert.Size);
 
-                // The rest of the text
+                // The rest of the typeName
                 copyRangedProperties(oldLayout, 0, oldTextLength, (uint32_t)textToInsert.Size, newLayout);
             } else {
                 // 1st block
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout);
 
-                // Inserted text
+                // Inserted typeName
                 copySinglePropertyRange(oldLayout, position - 1, newLayout, position, (uint32_t)textToInsert.Size, (Ghurund::UI::Direct2D::TextFormat*)format);
 
                 // Last block (if it exists)
@@ -245,7 +245,7 @@ namespace Ghurund::UI::Direct2D {
             }
 
             // Copy trailing end.
-            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
+            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)typeName.Length, UINT32_MAX);
         }
 
         if (oldLayout)
@@ -256,9 +256,9 @@ namespace Ghurund::UI::Direct2D {
         if (layout)
             layout->AddRef();
         IDWriteTextLayout* oldLayout = layout;
-        /*uint32_t oldTextLength = (uint32_t)text.Length;
+        /*uint32_t oldTextLength = (uint32_t)typeName.Length;
 
-        text.remove(position, lengthToRemove);
+        typeName.remove(position, lengthToRemove);
 
         Status result = refresh();
 
@@ -268,16 +268,16 @@ namespace Ghurund::UI::Direct2D {
             copyGlobalProperties(oldLayout, newLayout);
 
             if (position == 0) {
-                // The rest of the text
+                // The rest of the typeName
                 copyRangedProperties(oldLayout, lengthToRemove, oldTextLength, lengthToRemove, newLayout, true);
             } else {
                 // 1st block
                 copyRangedProperties(oldLayout, 0, position, 0, newLayout, true);
 
-                // Last block (if it exists, we increment past the deleted text)
+                // Last block (if it exists, we increment past the deleted typeName)
                 copyRangedProperties(oldLayout, position + lengthToRemove, oldTextLength, lengthToRemove, newLayout, true);
             }
-            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)text.Length, UINT32_MAX);
+            //copySinglePropertyRange(oldLayout, oldTextLength, newLayout, (uint32_t)typeName.Length, UINT32_MAX);
         }
 
         if (oldLayout)

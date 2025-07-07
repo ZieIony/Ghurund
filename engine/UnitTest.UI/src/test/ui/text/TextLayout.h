@@ -48,7 +48,7 @@ namespace UnitTest {
         }
 
         void refresh() {
-            //size = { text.Length * 10.0f, format->Size };
+            //size = { typeName.Length * 10.0f, format->Size };
         }
 
         void draw(ICanvas& canvas) {}

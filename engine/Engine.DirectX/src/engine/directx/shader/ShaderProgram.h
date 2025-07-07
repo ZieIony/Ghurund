@@ -1,74 +1,45 @@
 #pragma once
 
-#include "ShaderType.h"
-#include "CompilationTarget.h"
 #include "core/Buffer.h"
+#include "ShaderType.h"
+#include <core/string/String.h>
 
 namespace Ghurund::Engine::DirectX {
-    using namespace Ghurund::Core;
+	using namespace Ghurund::Core;
 
-    class ShaderProgram {
-    private:
-        Buffer* byteCode = nullptr;
-        AString entryPoint;
-        ShaderType type;
-        CompilationTarget target;
+	class ShaderProgram {
+	private:
+		const ShaderType& type;
+		Buffer byteCode;
+		AString entryPoint;
 
-        DXGI_FORMAT getFormat(BYTE mask, D3D_REGISTER_COMPONENT_TYPE componentType);
+	public:
+		ShaderProgram(const ShaderType& type, Buffer& byteCode, const AString& entryPoint):
+			type(type), byteCode(byteCode), entryPoint(entryPoint) {
+		}
 
-        const char* makeCompilationTarget() {
-            const char* targetText = target.toString();
-            const char* typeText = type.toString();
-            char* text = ghnew char[10];;
-            sprintf_s(text, 10, "%s_%s", typeText, targetText);
-            return text;
-        }
+		ShaderProgram(ShaderProgram&& other):
+			type(std::move(type)), byteCode(std::move(other.byteCode)), entryPoint(std::move(other.entryPoint)) {
+		}
 
-    public:
-        ShaderProgram(const ShaderType& type, const AString& entryPoint, const CompilationTarget& target = CompilationTarget::SHADER_5_0):
-            type(type), entryPoint(entryPoint), target(target) {}
+		const AString& getEntryPoint() const {
+			return entryPoint;
+		}
 
-        ShaderProgram(const ShaderType& type, Buffer& byteCode, const AString& entryPoint, CompilationTarget target = CompilationTarget::SHADER_5_0)
-            : type(type), entryPoint(entryPoint), target(target) {
-            this->byteCode = ghnew Buffer(byteCode);
-        }
+		__declspec(property(get = getEntryPoint)) const AString& EntryPoint;
 
-        ~ShaderProgram() {
-            delete byteCode;
-        }
 
-        AString compile(const AString& code, const FilePath* filePath);
+		const Buffer& getByteCode() const {
+			return byteCode;
+		}
 
-        void setEntryPoint(const AString& entryPoint) {
-            this->entryPoint = entryPoint;
-        }
+		__declspec(property(get = getByteCode)) const Buffer& ByteCode;
 
-        const AString& getEntryPoint()const {
-            return entryPoint;
-        }
+		const ShaderType& getType() const {
+			return type;
+		}
 
-        __declspec(property(get = getEntryPoint, put = setEntryPoint)) const AString& EntryPoint;
-
-        void setCompilationTarget(const CompilationTarget& target) {
-            this->target = target;
-        }
-
-        const CompilationTarget& getCompilationTarget()const {
-            return target;
-        }
-
-        Buffer* getByteCode() {
-            return byteCode;
-        }
-
-        __declspec(property(get = getByteCode)) Buffer* ByteCode;
-
-        D3D12_INPUT_LAYOUT_DESC getInputLayout();
-
-        ShaderType& getType() {
-            return type;
-        }
-
-    };
+		__declspec(property(get = getType)) ShaderType& Type;
+	};
 
 }

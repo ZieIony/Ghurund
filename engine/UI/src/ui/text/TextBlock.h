@@ -41,10 +41,10 @@ namespace Ghurund::UI {
 		}
 
 		/*TextBlock(
-			const Ghurund::Core::WString& text,
+			const Ghurund::Core::WString& typeName,
 			const ColorAttr& color = ColorRef(Theme::COLOR_PRIMARY_ONBACKGROUND),
 			TextFormat* textFormat = nullptr
-		):textLayout(text, 0xdd000000, textFormat) {
+		):textLayout(typeName, 0xdd000000, textFormat) {
 			TextColor = color;
 		}*/
 

@@ -1,44 +1,70 @@
 #pragma once
 
-#include "LoadOption.h"
-#include "SaveOption.h"
-#include "ResourceFormat.h"
-#include "core/RefCountedObject.h"
 #include "core/allocation/Allocator.h"
 #include "core/exception/FormatNotSupportedException.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
+#include "core/RefCountedObject.h"
 #include "core/reflection/Type.h"
+#include "LoadOption.h"
+#include "ResourceFormat.h"
+#include "SaveOption.h"
+#include <core/concepts/Concepts.h>
+#include <cstdint>
+#include "core/resource/Resource.h"
+#include "core/logging/Logger.h"
 
 namespace Ghurund::Core {
-    class Resource;
-    class ResourceManager;
-    class DirectoryPath;
+	class ResourceManager;
+	class DirectoryPath;
 
-    class Loader:public RefCountedObject {
+	class Loader:public RefCountedObject {
 #pragma region reflection
-    protected:
-        virtual const Ghurund::Core::Type& getTypeImpl() const override {
-            return GET_TYPE();
-        }
+	protected:
+		virtual const Ghurund::Core::Type& getTypeImpl() const override {
+			return GET_TYPE();
+		}
 
-    public:
-        static const Ghurund::Core::Type& GET_TYPE();
+	public:
+		static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Loader::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = Loader::GET_TYPE();
 #pragma endregion
 
-    private:
-        Allocator* allocator;
+	private:
+		Allocator* allocator;
 
-    protected:
-        template<class T>
-        T* makeResource() {
-            Constructor<T>& constructor = (Constructor<T>&)T::GET_TYPE().Constructors.get(0);
-            if (allocator)
-                return (T*)constructor.invokeWithAllocator(*allocator);
-            return (T*)constructor.invoke();
-        }
+	protected:
+		template<Derived<Resource> T>
+		T* makeResource() {
+			Constructor<T>& constructor = (Constructor<T>&)T::GET_TYPE().Constructors.get(0);
+			if (allocator)
+				return (T*)constructor.invokeWithAllocator(*allocator);
+			return (T*)constructor.invoke();
+		}
+
+		template<Derived<Resource> T>
+		T& castResource(Resource& resource) const {
+			if (resource.Type != T::TYPE) {
+				Logger::log(LogType::ERR0R, std::format(_T("resource needs to be of type {}\n"), T::TYPE.Name).c_str());
+				throw std::invalid_argument(std::format("resource needs to be of type {}", T::TYPE.Name).c_str());
+			}
+			return (T&)resource;
+		}
+
+		template<Derived<Resource> T>
+		void writeHeader(MemoryOutputStream& stream) const {
+			unsigned int hash = hashCode(Type.Name.Data);
+			stream.writeUInt32(hash);
+			stream.writeUInt32(T::VERSION);
+		}
+
+		template<Derived<Resource> T>
+		void readHeader(MemoryInputStream& stream) {
+			readHeader(stream, T::TYPE, T::VERSION);
+		}
+
+		void readHeader(MemoryInputStream& stream, const Ghurund::Core::Type& type, uint32_t version);
 
         virtual Resource* loadInternal(
             MemoryInputStream& stream,
@@ -62,7 +88,7 @@ namespace Ghurund::Core {
     public:
         Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
-        virtual ~Loader() = 0 {}
+		virtual ~Loader() = 0 {}
 
         inline Resource* load(
             MemoryInputStream& stream,

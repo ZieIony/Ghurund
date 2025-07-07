@@ -14,7 +14,7 @@ namespace Ghurund::Core {
 
             if (files.contains(fileName)) {
                 DWORD action = fni.Action;
-                const FileChange& change = FileChange::VALUES[(FileChangeEnum)action];
+                const FileChange& change = FileChange::fromValue((FileChangeEnum)action);
                 auto filePath = directory / FilePath(fileName);
                 files.get(fileName)(filePath, change);
             }

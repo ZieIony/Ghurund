@@ -2,14 +2,14 @@
 
 #include "CompilationTarget.h"
 #include "ConstantBuffer.h"
+#include "core/collection/List.h"
+#include "core/resource/Resource.h"
+#include "core/resource/ResourceManager.h"
 #include "Sampler.h"
 #include "ShaderProgram.h"
 #include "ShaderType.h"
 #include "TextureBufferConstant.h"
 #include "TextureConstant.h"
-#include "core/collection/List.h"
-#include "core/resource/Resource.h"
-#include "core/resource/ResourceManager.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>
@@ -18,9 +18,28 @@
 #pragma warning(pop)
 
 #include <wrl.h>
+#include <core/Buffer.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace Microsoft::WRL;
+
+    struct ShaderConstants {
+        List<ConstantBuffer*> constantBuffers;
+        List<TextureBufferConstant*> textureBuffers;
+        List<TextureConstant*> textures;
+        List<Sampler*> samplers;
+
+        ~ShaderConstants() {
+            clear();
+        }
+
+        void clear() {
+            constantBuffers.deleteItems();
+            textureBuffers.deleteItems();
+            textures.deleteItems();
+            samplers.deleteItems();
+        }
+    };
 
     class Shader:public Resource//, public ParameterProvider
     {
@@ -37,60 +56,35 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     private:
-        ShaderProgram* programs[6] = {};
         ID3D12RootSignature* rootSignature = nullptr;
         ID3D12PipelineState* pipelineState = nullptr;
+        ShaderConstants* constants = nullptr;
         bool supportsTransparency = false;
-
-        List<ConstantBuffer*> constantBuffers;
-        List<TextureBufferConstant*> textureBuffers;
-        List<TextureConstant*> textures;
-        List<Sampler*> samplers;
 
         //PointerArray<Parameter*>* parameters = nullptr;
 #ifdef _DEBUG
         bool* reported = nullptr;
 #endif
 
-        Graphics* graphics = nullptr;
-
-        AString source;
-        bool compiled = false;
-
-        void makeRootSignature();
-
-        D3D12_INPUT_LAYOUT_DESC getInputLayout();
-
         //void initConstants(ParameterManager& parameterManager);
         //void initConstants(ParameterManager& parameterManager, ShaderProgram& program);
 
-        void loadShd(MemoryInputStream& stream);
-        void loadHlsl(MemoryInputStream& stream);
-
         void finalize();
-
-    protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
-
-        virtual unsigned int getVersion() const override {
-            return 0;
-        }
 
     public:
         ~Shader();
 
-        virtual void reload() override;
-
         virtual void invalidate() override;
 
         virtual bool isValid() const {
-            return pipelineState != nullptr && rootSignature != nullptr && compiled && __super::isValid();
+            return pipelineState != nullptr && rootSignature != nullptr && __super::isValid();
         }
 
-        AString compile();
-
-        AString build();
+        void init(NotNull<ID3D12RootSignature> rootSignature, NotNull<ID3D12PipelineState> pipelineState, NotNull<ShaderConstants> constants) {
+            this->rootSignature = &rootSignature;
+            this->pipelineState = &pipelineState;
+            this->constants = &constants;
+        }
 
         /*virtual void initParameters(ParameterManager& parameterManager) override;
 
@@ -102,19 +96,6 @@ namespace Ghurund::Engine::DirectX {
         virtual const PointerArray<Parameter*>& getParameters() const override {
             return *parameters;
         }*/
-
-        void setSourceCode(const AString& source) {
-            this->source = source;
-            compiled = false;
-        }
-
-        const AString& getSourceCode() {
-            return source;
-        }
-
-        __declspec(property(get = getSourceCode, put = setSourceCode)) const AString& SourceCode;
-
-        void makePipelineState(bool supportsTransparency);
 
         bool set(Graphics& graphics, CommandList& commandList);
 
@@ -135,6 +116,8 @@ namespace Ghurund::Engine::DirectX {
         static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_HLSL };
+
+        static const inline uint32_t VERSION = 0;
 #pragma endregion
     };
 }

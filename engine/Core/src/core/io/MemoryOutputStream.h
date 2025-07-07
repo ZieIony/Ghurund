@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core/string/String.h"
+#include "core/string/StringView.h"
 
 namespace Ghurund::Core {
 	class MemoryOutputStream {
@@ -46,44 +47,69 @@ namespace Ghurund::Core {
 			*(int32_t*)(data + pointer) = i;
 			pointer += sizeof(int32_t);
 		}
-		inline void writeUInt(uint32_t i) {
+
+		inline void writeUInt32(uint32_t i) {
 			resize(sizeof(uint32_t));
 			*(uint32_t*)(data + pointer) = i;
 			pointer += sizeof(uint32_t);
 		}
+
 		inline void writeLong(int64_t i) {
 			resize(sizeof(int64_t));
 			*(int64_t*)(data + pointer) = i;
 			pointer += sizeof(int64_t);
 		}
+
 		inline void writeULong(uint64_t i) {
 			resize(sizeof(uint64_t));
 			*(uint64_t*)(data + pointer) = i;
 			pointer += sizeof(uint64_t);
 		}
+
 		inline void writeFloat(float i) {
 			resize(sizeof(float));
 			*(float*)(data + pointer) = i;
 			pointer += sizeof(float);
 		}
+
 		inline void writeDouble(double i) {
 			resize(sizeof(double));
 			*(double*)(data + pointer) = i;
 			pointer += sizeof(double);
 		}
+
 		inline void writeBoolean(bool i) {
 			resize(sizeof(bool));
 			*(bool*)(data + pointer) = i;
 			pointer += sizeof(bool);
 		}
+
 		inline void writeASCII(const char* str) {
 			size_t length = (strlen(str) + 1) * sizeof(char);
 			writeBytes(str, length);
 		}
+
+		inline void writeASCII(const AString& str) {
+			writeBytes(str.Data, str.Length);
+		}
+
+		inline void writeASCII(const AStringView& str) {
+			writeBytes(str.Data, str.Length);
+		}
+
 		inline void writeUnicode(const wchar_t* str) {
 			size_t length = (wcslen(str) + 1) * sizeof(wchar_t);
 			writeBytes(str, length);
 		}
+
+		inline void writeUnicode(const WString& str) {
+			writeBytes(str.Data, str.Length*sizeof(wchar_t));
+		}
+
+		inline void writeUnicode(const WStringView& str) {
+			writeBytes(str.Data, str.Length * sizeof(wchar_t));
+		}
+
 		inline void writeBytes(const void* bytes, size_t length) {
 			resize(length);
 			memcpy((uint8_t*)data + pointer, bytes, length);

@@ -30,10 +30,6 @@ namespace Ghurund::Engine {
         List<IntrusivePointer<Entity>> entities;
         DrawingSystem drawingSystem;
 
-    protected:
-        virtual void loadInternal(const DirectoryPath& workingDir, MemoryInputStream& stream, LoadOption options) override;
-        virtual void saveInternal(const DirectoryPath& workingDir, MemoryOutputStream& stream, SaveOption options) const override;
-
     public:
         Scene() {}
 

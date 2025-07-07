@@ -22,7 +22,8 @@ public:
             List<uint32_t> indices = { 0,1,2 };
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
 
-            IntrusivePointer<Mesh> mesh(ghnew Mesh({ posStream }, vertices.Size, Buffer(indices.Data, sizeof(uint32_t) * indices.Size), indices.Size));
+            auto mesh = makeIntrusive<Mesh>();
+            mesh->init({ posStream }, vertices.Size, Buffer(indices.Data, sizeof(uint32_t) * indices.Size), indices.Size);
 
             Assert::AreEqual(3u, mesh->VertexCount);
             Assert::AreEqual(3u, mesh->IndexCount);
@@ -38,7 +39,8 @@ public:
             List<uint16_t> indices = { 0,1,2 };
             VertexStream posStream = VertexStream(vertices, VertexRole::POSITION);
 
-            IntrusivePointer<Mesh> mesh(ghnew Mesh({ posStream }, vertices.Size, indices));
+            auto mesh = makeIntrusive<Mesh>();
+            mesh->init({ posStream }, vertices.Size, indices);
 
             Assert::AreEqual(3u, mesh->VertexCount);
             Assert::AreEqual(3u, mesh->IndexCount);

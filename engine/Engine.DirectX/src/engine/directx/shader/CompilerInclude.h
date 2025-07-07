@@ -10,17 +10,10 @@ namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
     class CompilerInclude:public ID3DInclude {
-        wchar_t *shaderDir, *systemDir;
+        DirectoryPath shaderDir, systemDir;
 
     public:
-        CompilerInclude(const wchar_t *shaderDir, const wchar_t *systemDir) {
-            this->shaderDir = copyStr(shaderDir);
-            this->systemDir = copyStr(systemDir);
-        }
-
-        ~CompilerInclude() {
-            delete[] shaderDir;
-            delete[] systemDir;
+        CompilerInclude(const DirectoryPath& shaderDir, const DirectoryPath& systemDir):shaderDir(shaderDir), systemDir(systemDir) {
         }
 
         virtual HRESULT __stdcall Open(THIS_ D3D_INCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT* pBytes) override;
