@@ -99,11 +99,12 @@ namespace Ghurund::Core {
 
 		~ResourceManager();
 
-		inline LoaderCollection& getLoaders() {
-			return loaders;
+		// not null
+		inline LoaderCollection* getLoaders() {
+			return &loaders;
 		}
 
-		__declspec(property(get = getLoaders)) LoaderCollection& Loaders;
+		__declspec(property(get = getLoaders)) LoaderCollection* Loaders;
 
 		inline void clearCache() {
 			resources.clear();
@@ -263,10 +264,10 @@ namespace Ghurund::Core {
 
 		__declspec(property(get = isHotReloadEnabled, put = setHotReloadEnabled)) bool HotReloadEnabled;
 
-		LibraryList& getLibraries() {
-			return libraries;
+		LibraryList* getLibraries() {
+			return &libraries;
 		}
 
-		__declspec(property(get = getLibraries)) LibraryList& Libraries;
+		__declspec(property(get = getLibraries)) LibraryList* Libraries;
 	};
 }

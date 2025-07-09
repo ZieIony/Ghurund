@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Windows.h>
-#include <core/Exceptions.h>
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;

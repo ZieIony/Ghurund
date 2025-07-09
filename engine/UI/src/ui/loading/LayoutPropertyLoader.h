@@ -14,11 +14,13 @@ namespace Ghurund::UI {
     private:
         static inline const char* THEME_LAYOUT = "theme://layout/";
 
-        ResourceManager& resourceManager;
-        LayoutLoader& layoutLoader;
+        // borrowed
+        ResourceManager* resourceManager;
+        // borrowed
+        LayoutLoader* layoutLoader;
 
     public:
-        LayoutPropertyLoader(ResourceManager& resourceManager, LayoutLoader& layoutLoader):resourceManager(resourceManager), layoutLoader(layoutLoader) {}
+        LayoutPropertyLoader(NotNull<ResourceManager> resourceManager, NotNull<LayoutLoader> layoutLoader):resourceManager(&resourceManager), layoutLoader(&layoutLoader) {}
 
         virtual const Type& getType() const override {
             return Ghurund::Core::getType<std::unique_ptr<Ghurund::UI::LayoutAttr>>();

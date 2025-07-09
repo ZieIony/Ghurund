@@ -27,28 +27,28 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        virtual Ghurund::UI::ShapeFactory& getShapeFactory() = 0;
+        virtual Ghurund::UI::ShapeFactory* getShapeFactory() = 0;
 
-        __declspec(property(get = getShapeFactory)) Ghurund::UI::ShapeFactory& ShapeFactory;
+        __declspec(property(get = getShapeFactory)) Ghurund::UI::ShapeFactory* ShapeFactory;
 
-        virtual Ghurund::UI::IDrawableFactory& getDrawableFactory() = 0;
+        virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() = 0;
 
-        __declspec(property(get = getDrawableFactory)) Ghurund::UI::IDrawableFactory& DrawableFactory;
+        __declspec(property(get = getDrawableFactory)) Ghurund::UI::IDrawableFactory* DrawableFactory;
 
-        virtual Ghurund::UI::TextFormatFactory& getTextFormatFactory() = 0;
+        virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() = 0;
 
-        __declspec(property(get = getTextFormatFactory)) Ghurund::UI::TextFormatFactory& TextFormatFactory;
+        __declspec(property(get = getTextFormatFactory)) Ghurund::UI::TextFormatFactory* TextFormatFactory;
 
-        virtual Ghurund::UI::ConstraintFactory& getConstraintFactory() = 0;
+        virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() = 0;
 
-        __declspec(property(get = getConstraintFactory)) Ghurund::UI::ConstraintFactory& ConstraintFactory;
+        __declspec(property(get = getConstraintFactory)) Ghurund::UI::ConstraintFactory* ConstraintFactory;
 
-        virtual IBitmapFactory& getBitmapFactory() = 0;
+        virtual IBitmapFactory* getBitmapFactory() = 0;
 
-        __declspec(property(get = getBitmapFactory)) IBitmapFactory& BitmapFactory;
+        __declspec(property(get = getBitmapFactory)) IBitmapFactory* BitmapFactory;
 
-        virtual LayoutLoader& getLayoutLoader() = 0;
+        virtual LayoutLoader* getLayoutLoader() = 0;
 
-        __declspec(property(get = getLayoutLoader)) LayoutLoader& LayoutLoader;
+        __declspec(property(get = getLayoutLoader)) LayoutLoader* LayoutLoader;
     };
 }

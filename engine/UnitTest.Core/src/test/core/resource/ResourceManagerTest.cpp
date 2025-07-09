@@ -22,8 +22,8 @@ private:
 public:
 	ResourceManagerTest() {
 		testLoader = makeIntrusive<TestLoader>();
-		resourceManager.Loaders.set<TestResource>(testLoader.get());
-		resourceManager.Libraries.add(std::make_unique<TestLibrary>());
+		resourceManager.Loaders->set<TestResource>(testLoader.get());
+		resourceManager.Libraries->add(std::make_unique<TestLibrary>());
 	}
 
 	TEST_METHOD(ResourceManager_loadFileFromLibrary) {
@@ -31,7 +31,7 @@ public:
 		{
 			resourceManager.clearCache();
 
-			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
+			TestLibrary& library = (TestLibrary&)resourceManager.Libraries->get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
@@ -49,7 +49,7 @@ public:
 		{
 			resourceManager.clearCache();
 
-			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
+			TestLibrary& library = (TestLibrary&)resourceManager.Libraries->get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
@@ -68,7 +68,7 @@ public:
 		{
 			resourceManager.clearCache();
 
-			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
+			TestLibrary& library = (TestLibrary&)resourceManager.Libraries->get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 
@@ -88,7 +88,7 @@ public:
 		{
 			resourceManager.clearCache();
 
-			TestLibrary& library = (TestLibrary&)resourceManager.Libraries.get(0);
+			TestLibrary& library = (TestLibrary&)resourceManager.Libraries->get(0);
 			size_t getCalls = library.getCalls;
 			size_t loadCalls = testLoader->loadCalls;
 

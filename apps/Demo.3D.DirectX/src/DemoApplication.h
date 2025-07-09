@@ -18,11 +18,11 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add<Graphics>();
+            Features->add<Graphics>();
         }
 
         virtual void onInit() override {
-            renderer.init(Features.get<Graphics>(), parameterManager);
+            renderer.init(Features->get<Graphics>(), parameterManager);
 
             window.init();
             window.closed += [this](Window& window) {
@@ -31,7 +31,7 @@ namespace Demo {
                 return true;
             };
 
-            Windows.add(window);
+            Windows->add(window);
             window.Title = _T("Demo 3D DirectX");
             window.Size = { 800, 600 };
             window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
@@ -40,7 +40,7 @@ namespace Demo {
         }
 
         virtual void onUninit() override {
-            Windows.remove(window);
+            Windows->remove(window);
             window.uninit();
         }
     };

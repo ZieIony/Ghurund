@@ -2,7 +2,7 @@
 
 #include "core/resource/Resource.h"
 #include "core/io/File.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/Buffer.h"
 
 #include "GL/glew.h"

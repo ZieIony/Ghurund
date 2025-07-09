@@ -5,7 +5,7 @@
 #include "core/allocation/Allocator.h"
 #include "core/collection/Array.h"
 #include "core/Tuple.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Core {
     class Type;

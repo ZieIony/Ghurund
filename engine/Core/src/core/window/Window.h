@@ -116,17 +116,19 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        virtual Ghurund::Core::Input& getInput() {
+        // not null
+        virtual Ghurund::Core::Input* getInput() {
             return parent->Input;
         }
 
-        __declspec(property(get = getInput)) Ghurund::Core::Input& Input;
+        __declspec(property(get = getInput)) Ghurund::Core::Input* Input;
 
-        virtual Timer& getTimer() const {
+        // not null
+        virtual Timer* getTimer() const {
             return parent->Timer;
         }
 
-        __declspec(property(get = getTimer)) Timer& Timer;
+        __declspec(property(get = getTimer)) Timer* Timer;
 
         virtual void setTitle(const String& title) {
             this->title = title;

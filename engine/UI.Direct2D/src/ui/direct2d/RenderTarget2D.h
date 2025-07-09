@@ -28,7 +28,7 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getTarget2D)) ID2D1Bitmap1* Target2D;
 
-        void init(Graphics2D& graphics2d, ID3D12Resource& texture);
+        void init(NotNull<Graphics2D> graphics2d, NotNull<ID3D12Resource> texture);
 
         void uninit() {
             d2dRenderTarget.Reset();

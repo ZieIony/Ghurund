@@ -24,12 +24,12 @@ namespace Demo {
 
     public:
         DemoApplication() {
-            Features.add<Graphics>();
-            Features.add<UIFeature, UIFeatureFactory>();
+            Features->add<Graphics>();
+            Features->add<UIFeature, UIFeatureFactory>();
         }
 
         virtual void onInit() override {
-            renderer.init(Features.get<Graphics>(), parameterManager);
+            renderer.init(Features->get<Graphics>(), parameterManager);
 
             drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
             theme = ghnew LightTheme(ResourceManager, *drawableFactory);
@@ -41,7 +41,7 @@ namespace Demo {
                 return true;
             };
 
-            Windows.add(window);
+            Windows->add(window);
             window.Title = _T("Demo UI");
             window.Size = { 800, 600 };
             window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
@@ -50,7 +50,7 @@ namespace Demo {
         }
 
         virtual void onUninit() override {
-            Windows.remove(window);
+            Windows->remove(window);
             window.uninit();
 
             delete drawableFactory;

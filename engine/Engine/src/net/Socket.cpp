@@ -1,7 +1,7 @@
 #include "ghepch.h"
 #include "Socket.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/Finally.h"
 #include "core/logging/Logger.h"
 

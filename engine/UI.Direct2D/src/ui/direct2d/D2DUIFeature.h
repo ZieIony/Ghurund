@@ -26,8 +26,10 @@ namespace Ghurund::UI::Direct2D {
 #pragma endregion
 
     private:
-        ResourceManager& resourceManager;
-        Ghurund::UI::Direct2D::Graphics2D& graphics2d;
+        // borrowed
+        ResourceManager* resourceManager;
+        // borrowed
+        Ghurund::UI::Direct2D::Graphics2D* graphics2d;
         Ghurund::UI::Direct2D::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::Direct2D::TextFormatFactory* textFormatFactory = nullptr;
@@ -36,34 +38,34 @@ namespace Ghurund::UI::Direct2D {
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        D2DUIFeature(Ghurund::UI::Direct2D::Graphics2D& graphics2d, ResourceManager& resourceManager):graphics2d(graphics2d), resourceManager(resourceManager) {}
+        D2DUIFeature(NotNull<Ghurund::UI::Direct2D::Graphics2D> graphics2d, NotNull<ResourceManager> resourceManager):graphics2d(&graphics2d), resourceManager(&resourceManager) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        virtual Ghurund::UI::ShapeFactory& getShapeFactory() override {
-            return *shapeFactory;
+        virtual Ghurund::UI::ShapeFactory* getShapeFactory() override {
+            return shapeFactory;
         }
 
-        virtual Ghurund::UI::IDrawableFactory& getDrawableFactory() override {
-            return *drawableFactory;
+        virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() override {
+            return drawableFactory;
         }
 
-        virtual Ghurund::UI::TextFormatFactory& getTextFormatFactory() override {
-            return *textFormatFactory;
+        virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() override {
+            return textFormatFactory;
         }
 
-        virtual Ghurund::UI::ConstraintFactory& getConstraintFactory() override {
-            return *constraintFactory;
+        virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {
+            return constraintFactory;
         }
 
-        virtual IBitmapFactory& getBitmapFactory() override {
-            return *bitmapFactory;
+        virtual IBitmapFactory* getBitmapFactory() override {
+            return bitmapFactory;
         }
 
-        virtual Ghurund::UI::LayoutLoader& getLayoutLoader() {
-            return *layoutLoader.get();
+        virtual Ghurund::UI::LayoutLoader* getLayoutLoader() {
+            return layoutLoader.get();
         }
     };
 }

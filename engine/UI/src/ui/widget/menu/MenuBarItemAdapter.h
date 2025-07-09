@@ -7,10 +7,11 @@
 namespace Ghurund::UI {
 	class MenuBarItemAdapter:public ListItemAdapter<SharedPointer<MenuItem>> {
     private:
-        ResourceManager& resourceManager;
+        // borrowed
+        ResourceManager* resourceManager;
 
     public:
-        MenuBarItemAdapter(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        MenuBarItemAdapter(NotNull<ResourceManager> resourceManager):resourceManager(&resourceManager) {}
 
         virtual Control* makeControl(size_t type) const;
 

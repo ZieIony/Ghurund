@@ -46,7 +46,7 @@ namespace Ghurund::Core {
 		}
 
 		template<Derived<Feature> T>
-		inline T& get() {
+		inline T* get() {
 			const Type& type = getType<T>();
 			IntrusivePointer<Feature> feature = [&] {
 				auto it = features.find(&type);
@@ -61,7 +61,7 @@ namespace Ghurund::Core {
 			}();
 
 			init(feature);
-			return (T&)*feature.get();
+			return (T*)feature.get();
 		}
 
 		template<Derived<Feature> T>

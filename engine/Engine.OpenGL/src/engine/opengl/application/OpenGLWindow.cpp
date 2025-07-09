@@ -14,10 +14,7 @@ namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
 
     const Ghurund::Core::Type& OpenGLWindow::GET_TYPE() {
-        static auto PROPERTY_APPLICATION = Property<OpenGLWindow, Ghurund::Core::Application&>("Application", &getApplication);
-
         static const Ghurund::Core::Type TYPE = TypeBuilder<OpenGLWindow>()
-            .withProperty(PROPERTY_APPLICATION)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -28,7 +25,7 @@ namespace Ghurund::Engine::OpenGL {
         return __super::onSizeChangedEvent();
     }
 
-    OpenGLWindow::OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app), renderer(renderer) {}
+    OpenGLWindow::OpenGLWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer):ApplicationWindow(app), renderer(&renderer) {}
 
     void OpenGLWindow::init() {
         __super::init();
@@ -44,7 +41,7 @@ namespace Ghurund::Engine::OpenGL {
     void OpenGLWindow::paint() {
         renderingContext.startFrame();
         Color clearColor = { 0xff1f1f1f };
-        renderer.clear(&clearColor);
+        renderer->clear(&clearColor);
         OpenGLDrawingContext context;
         Layers.draw(context);
 

@@ -49,41 +49,47 @@ namespace Ghurund::Core {
             PostQuitMessage(0);
         }
 
-        inline const Settings& getSettings() const {
-            return settings;
+        // not null
+        inline const Settings* getSettings() const {
+            return &settings;
         }
 
-        __declspec(property(get = getSettings)) const Settings& Settings;
+        __declspec(property(get = getSettings)) const Settings* Settings;
 
-        inline WindowCollection& getWindows() {
-            return windows;
+        // not null
+        inline WindowCollection* getWindows() {
+            return &windows;
         }
 
-        __declspec(property(get = getWindows)) WindowCollection& Windows;
+        __declspec(property(get = getWindows)) WindowCollection* Windows;
 
-        FunctionQueue& getFunctionQueue() {
-            return functionQueue;
+        // not null
+        FunctionQueue* getFunctionQueue() {
+            return &functionQueue;
         }
 
-        __declspec(property(get = getFunctionQueue)) FunctionQueue& FunctionQueue;
+        __declspec(property(get = getFunctionQueue)) FunctionQueue* FunctionQueue;
 
-        inline ResourceManager& getResourceManager() {
-            return resourceManager;
+        // not null
+        inline ResourceManager* getResourceManager() {
+            return &resourceManager;
         }
 
-        __declspec(property(get = getResourceManager)) ResourceManager& ResourceManager;
+        __declspec(property(get = getResourceManager)) ResourceManager* ResourceManager;
 
-        inline Timer& getTimer() {
-            return timer;
+        // not null
+        inline Timer* getTimer() {
+            return &timer;
         }
 
-        __declspec(property(get = getTimer)) Timer& Timer;
+        __declspec(property(get = getTimer)) Timer* Timer;
 
-        inline FeatureProvider& getFeatures() {
-            return features;
+        // not null
+        inline FeatureProvider* getFeatures() {
+            return &features;
         }
 
-        __declspec(property(get = getFeatures)) FeatureProvider& Features;
+        __declspec(property(get = getFeatures)) FeatureProvider* Features;
     };
 }
 

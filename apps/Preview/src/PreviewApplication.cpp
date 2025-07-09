@@ -8,35 +8,35 @@
 
 namespace Preview {
     PreviewApplication::PreviewApplication() {
-        Features.add<Graphics>();
-        Features.add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
-        Features.add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
+        Features->add<Graphics>();
+        Features->add<Ghurund::UI::Direct2D::Graphics2D, Ghurund::UI::Direct2D::Graphics2DFactory>();
+        Features->add<Ghurund::UI::Direct2D::UIFeature, Ghurund::UI::Direct2D::UIFeatureFactory>();
     }
     
     void PreviewApplication::onInit() {
-        auto& uiFeature = Features.get<UIFeature>();
-        auto& drawableFactory = uiFeature.DrawableFactory;
+        auto uiFeature = Features->get<UIFeature>();
+        auto drawableFactory = uiFeature->DrawableFactory;
 
         lightTheme.set(ghnew LightTheme(ResourceManager, drawableFactory));
         darkTheme.set(ghnew DarkTheme(ResourceManager, drawableFactory));
         ThemeType = ThemeType::LIGHT;
 
-        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
-        ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
+        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+        ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-        renderer.init(Features.get<Graphics>(), parameterManager);
+        renderer.init(Features->get<Graphics>(), parameterManager);
 
         window.Title = _T("Preview");
         window.Size = { 800, 600 };
         window.init();
         window.Position = { (int32_t)window.DecorationMetrics.Left, (int32_t)window.DecorationMetrics.Top };
-        Windows.add(window);
+        Windows->add(window);
         window.Visible = true;
         window.bringToFront();
     }
     
     void PreviewApplication::onUninit() {
-        Windows.remove(window);
+        Windows->remove(window);
         window.uninit();
         renderer.uninit();
         darkTheme.set(nullptr);

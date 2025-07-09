@@ -16,7 +16,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void Renderer::init(Graphics& graphics, ParameterManager& parameterManager) {
+    void Renderer::init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager) {
         this->graphics = &graphics;
         this->parameterManager = &parameterManager;
 

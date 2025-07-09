@@ -24,13 +24,14 @@ namespace Ghurund::Engine::OpenGL {
 
     private:
         RenderingContext renderingContext;
-        Renderer& renderer;
+        // borrowed
+        Renderer* renderer;
 
     protected:
         virtual bool onSizeChangedEvent() override;
 
     public:
-        OpenGLWindow(Ghurund::Core::Application& app, Renderer& renderer);
+        OpenGLWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer);
 
         virtual void init() override;
 

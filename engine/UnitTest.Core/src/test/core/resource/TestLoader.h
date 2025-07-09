@@ -2,7 +2,7 @@
 
 #include "core/resource/Loader.h"
 #include "TestResource.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace UnitTest {
     using namespace Ghurund::Core;

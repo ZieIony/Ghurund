@@ -15,7 +15,7 @@ namespace Ghurund::UI {
 			attr.reset(ghnew DrawableRef(imageKey));
 		} else {
 			ResourcePath path = FilePath(convertText<char, wchar_t>(s));
-			Drawable* drawable = drawableFactory.makeDrawable(path);
+			Drawable* drawable = drawableFactory->makeDrawable(path);
 			attr.reset(ghnew DrawableValue(drawable));
 			drawable->release();
 		}

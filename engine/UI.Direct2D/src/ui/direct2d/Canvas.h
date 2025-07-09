@@ -27,7 +27,7 @@ namespace Ghurund::UI::Direct2D {
         ComPtr<ID2D1Effect> floodEffect;
 
     public:
-        void init(ID2D1DeviceContext5& deviceContext);
+        void init(NotNull<ID2D1DeviceContext5> deviceContext);
 
         void uninit();
 

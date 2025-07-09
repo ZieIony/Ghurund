@@ -48,7 +48,7 @@ namespace Ghurund::UI {
         }
 
         virtual void repaint() {
-            context->Window.refresh();
+            context->Window->refresh();
         }
 
         virtual void requestLayout();

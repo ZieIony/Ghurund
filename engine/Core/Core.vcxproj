@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\exception\NullPointerException.h" />
+    <ClInclude Include="src\core\NotNull.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -108,7 +110,7 @@
     <ClInclude Include="src\core\Enum.h" />
     <ClInclude Include="src\core\Event.h" />
     <ClInclude Include="src\core\EventHandler.h" />
-    <ClInclude Include="src\core\Exceptions.h" />
+    <ClInclude Include="src\core\exception\Exceptions.h" />
     <ClInclude Include="src\core\Factory.h" />
     <ClInclude Include="src\core\Finally.h" />
     <ClInclude Include="src\core\Hashing.h" />

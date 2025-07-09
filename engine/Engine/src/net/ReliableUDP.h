@@ -5,7 +5,7 @@
 #include "Message.h"
 #include "Socket.h"
 #include "core/Buffer.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/Noncopyable.h"
 #include "core/SharedPointer.h"
 #include "core/collection/List.h"

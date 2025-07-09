@@ -1,8 +1,9 @@
 #pragma once
 
-#include "StrokeStyle.h"
+#include "core/NotNull.h"
 #include "core/collection/Array.h"
 #include "core/reflection/Type.h"
+#include "StrokeStyle.h"
 #include "ui/effects/ShadowEffect.h"
 #include "ui/effects/TintEffect.h"
 
@@ -14,18 +15,17 @@ namespace Ghurund::Core {
 namespace Ghurund::UI {
     class IUIContext {
     private:
-        Ghurund::Core::Window& window;
+        // borrowed
+        Ghurund::Core::Window* window;
 
     public:
-        IUIContext(
-            Ghurund::Core::Window& window
-        ):window(window) {}
+        IUIContext(NotNull<Ghurund::Core::Window> window):window(&window) {}
 
-        inline Ghurund::Core::Window& getWindow() {
+        inline Ghurund::Core::Window* getWindow() {
             return window;
         }
 
-        __declspec(property(get = getWindow)) Ghurund::Core::Window& Window;
+        __declspec(property(get = getWindow)) Ghurund::Core::Window* Window;
 
         virtual IStrokeStyle* makeStrokeStyle(Ghurund::Core::Array<float>& dashes) = 0;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/NotNull.h"
 #include "core/string/String.h"
 #include "core/io/File.h"
 #include "core/io/LibraryList.h"
@@ -41,7 +42,7 @@ namespace Ghurund::Core {
 
 		SharedPointer<Buffer> resolveResource(const DirectoryPath& workingDir, LibraryList& libraries) const;
 
-		bool exists(const DirectoryPath& workingDir, LibraryList& libraries) const;
+		bool exists(const DirectoryPath& workingDir, NotNull<LibraryList> libraries) const;
 
 		inline constexpr std::strong_ordering operator<=>(const ResourcePath& other) const noexcept {
 			if (type == other.type && path == other.path && libName == other.libName)

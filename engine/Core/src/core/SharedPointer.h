@@ -2,7 +2,7 @@
 
 #include "Common.h"
 #include "RefCountedObject.h"
-#include "Exceptions.h"
+#include "exception/Exceptions.h"
 
 namespace Ghurund::Core {
 	template<typename T>

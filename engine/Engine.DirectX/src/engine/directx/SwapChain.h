@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/NotNull.h"
 #include "core/collection/BufferedValue.h"
 #include "engine/directx/buffer/RenderTarget.h"
 #include "engine/directx/buffer/DepthBuffer.h"
@@ -32,11 +33,13 @@ namespace Ghurund::Engine::DirectX {
 #pragma endregion
 
     private:
+        // borrowed
         Graphics* graphics = nullptr;
         ComPtr<IDXGISwapChain3> swapChain;
         Array<Frame>* frames = nullptr;
         uint32_t frameCount;
         size_t currentFrame = 0;
+        // borrowed
         SystemWindow* window = nullptr;
         DXGI_FORMAT format;
 
@@ -51,7 +54,7 @@ namespace Ghurund::Engine::DirectX {
 
         __declspec(property(get = isInitialized)) bool Initialized;
 
-        void init(Graphics& graphics, SystemWindow& window, uint32_t frameCount = 3);
+        void init(NotNull<Graphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount = 3);
 
         void initBuffers();
 

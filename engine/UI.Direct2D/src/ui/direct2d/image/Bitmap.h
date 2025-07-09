@@ -47,9 +47,9 @@ namespace Ghurund::UI::Direct2D {
 
         virtual bool isValid();
 
-        void init(ID2D1DeviceContext5& deviceContext, Image& image);
+        void init(NotNull<ID2D1DeviceContext5> deviceContext, Image& image);
 
-        void init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
+        void init(NotNull<ID2D1DeviceContext5> deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format = DXGI_FORMAT_R8G8B8A8_UNORM);
 
         inline Image* getImage() {
             return image;

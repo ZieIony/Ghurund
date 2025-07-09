@@ -33,7 +33,9 @@ namespace Ghurund::Engine::DirectX {
         Postprocess* postprocess = nullptr;
         //RenderTarget* postprocessRenderTarget[FRAME_COUNT] = {};
 
+        // borrowed
         Graphics* graphics = nullptr;
+        // borrowed
         ParameterManager* parameterManager = nullptr;
         RenderingStatistics stats;
 
@@ -44,7 +46,7 @@ namespace Ghurund::Engine::DirectX {
             uninit();
         }
 
-        void init(Graphics& graphics, ParameterManager& parameterManager);
+        void init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager);
 
         void uninit();
 

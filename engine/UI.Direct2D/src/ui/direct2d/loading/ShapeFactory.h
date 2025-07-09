@@ -6,10 +6,10 @@
 namespace Ghurund::UI::Direct2D {
     class ShapeFactory:public Ghurund::UI::ShapeFactory {
     private:
-        ID2D1Factory6& d2dFactory;
+        ID2D1Factory6* d2dFactory;
 
     public:
-        ShapeFactory(ID2D1Factory6& d2dFactory):d2dFactory(d2dFactory) {}
+        ShapeFactory(NotNull<ID2D1Factory6> d2dFactory):d2dFactory(&d2dFactory) {}
 
         virtual std::unique_ptr<Ghurund::UI::Shape> makeShape(const AString& desc) override {
             if (desc == "rect") {

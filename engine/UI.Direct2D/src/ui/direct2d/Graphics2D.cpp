@@ -1,7 +1,7 @@
 #include "ghuid2dpch.h"
 #include "Graphics2D.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::UI::Direct2D {
@@ -25,7 +25,7 @@ namespace Ghurund::UI::Direct2D {
         d3d11DeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 
         ComPtr<ID3D12InfoQueue> infoQueue;
-        HRESULT hr = graphics.Device->QueryInterface(__uuidof(ID3D12InfoQueue), &infoQueue);
+        HRESULT hr = graphics->Device->QueryInterface(__uuidof(ID3D12InfoQueue), &infoQueue);
         if (SUCCEEDED(hr)) {
             // Suppress messages based on their severity level.
             D3D12_MESSAGE_SEVERITY severities[] = {
@@ -57,9 +57,9 @@ namespace Ghurund::UI::Direct2D {
         // Create an 11 device wrapped around the 12 device and share
         // 12's command queue.
         ComPtr<ID3D11Device> d3d11Device;
-        ID3D12CommandQueue* ppCommandQueues[] = { graphics.DirectQueue };
+        ID3D12CommandQueue* ppCommandQueues[] = { graphics->DirectQueue };
         if (FAILED(D3D11On12CreateDevice(
-            graphics.Device,
+            graphics->Device,
             d3d11DeviceFlags,
             nullptr,
             0,
@@ -115,14 +115,14 @@ namespace Ghurund::UI::Direct2D {
         d3d11DeviceContext.Reset();
     }
 
-    void Graphics2D::beginPaint(RenderTarget2D& target) {
+    void Graphics2D::beginPaint(NotNull<RenderTarget2D> target) {
 #ifdef _DEBUG
         if (state != UIState::IDLE)
             Logger::log(LogType::WARNING, _T("UI is not in IDLE state\n"));
 #endif
-        deviceContext->SetTarget(target.Target2D);
+        deviceContext->SetTarget(target->Target2D);
 
-        auto wrappedTarget = target.WrappedTarget;
+        auto wrappedTarget = target->WrappedTarget;
         d3d11On12Device->AcquireWrappedResources(&wrappedTarget, 1);
         deviceContext->BeginDraw();
         deviceContext->Clear();
@@ -130,7 +130,7 @@ namespace Ghurund::UI::Direct2D {
         state = UIState::RECORDING;
     }
 
-    void Graphics2D::endPaint(RenderTarget2D& target) {
+    void Graphics2D::endPaint(NotNull<RenderTarget2D> target) {
 #ifdef _DEBUG
         if (state != UIState::RECORDING)
             Logger::log(LogType::WARNING, _T("UI is not in RECORDING state\n"));
@@ -138,7 +138,7 @@ namespace Ghurund::UI::Direct2D {
 
         HRESULT endDrawResult = deviceContext->EndDraw();
 
-        auto wrappedTarget = target.WrappedTarget;
+        auto wrappedTarget = target->WrappedTarget;
         d3d11On12Device->ReleaseWrappedResources(&wrappedTarget, 1);
 
         d3d11DeviceContext->Flush();

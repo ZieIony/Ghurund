@@ -2,7 +2,7 @@
 
 #include "Networking.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Net {

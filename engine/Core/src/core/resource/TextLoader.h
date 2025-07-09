@@ -2,7 +2,7 @@
 
 #include "Loader.h"
 #include "TextResource.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Core {
     class TextLoader:public Loader {

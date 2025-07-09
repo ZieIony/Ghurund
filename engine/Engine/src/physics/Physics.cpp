@@ -1,7 +1,7 @@
 #include "ghepch.h"
 #include "Physics.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/logging/Logger.h"
 

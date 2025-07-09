@@ -1,15 +1,17 @@
 #pragma once
 
-#include "ui/loading/IDrawableFactory.h"
+#include "core/NotNull.h"
 #include "core/resource/ResourceManager.h"
+#include "ui/loading/IDrawableFactory.h"
 
 namespace Ghurund::UI {
     class DrawableFactory:public Ghurund::UI::IDrawableFactory {
     private:
-        ResourceManager& resourceManager;
+        // borrowed
+        ResourceManager* resourceManager;
 
     public:
-        DrawableFactory(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DrawableFactory(NotNull<ResourceManager> resourceManager):resourceManager(&resourceManager) {}
 
         virtual Drawable* makeDrawable(const ResourcePath& path) override;
     };

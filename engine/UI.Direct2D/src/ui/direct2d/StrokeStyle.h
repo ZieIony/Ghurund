@@ -18,10 +18,10 @@ namespace Ghurund::UI::Direct2D {
                 strokeStyle->Release();
         }
 
-        void init(ID2D1Factory6& d2dFactory, const Array<float>& dashes) {
+        void init(NotNull<ID2D1Factory6> d2dFactory, const Array<float>& dashes) {
             if (strokeStyle)
                 return;
-            HRESULT hr = d2dFactory.CreateStrokeStyle(
+            HRESULT hr = d2dFactory->CreateStrokeStyle(
                 D2D1::StrokeStyleProperties(
                     D2D1_CAP_STYLE_FLAT,
                     D2D1_CAP_STYLE_FLAT,

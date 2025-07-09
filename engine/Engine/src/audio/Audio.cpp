@@ -2,7 +2,7 @@
 
 #include "Audio.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"

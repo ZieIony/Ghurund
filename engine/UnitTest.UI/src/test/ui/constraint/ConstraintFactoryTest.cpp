@@ -126,7 +126,7 @@ public:
 		TextFormatFactory textFormatFactory;
 		ConstraintFactory constraintFactory;
 		auto layoutLoader = makeIntrusive<LayoutLoader>(resourceManager, shapeFactory, drawableFactory, textFormatFactory, constraintFactory);
-		resourceManager.Loaders.set<Control>(layoutLoader.get());
+		resourceManager.Loaders->set<Control>(layoutLoader.get());
 
 #ifdef _DEBUG
 		RefCountedObject::reservePointers(1500);

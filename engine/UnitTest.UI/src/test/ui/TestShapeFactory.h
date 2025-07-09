@@ -2,7 +2,7 @@
 
 #include "core/reflection/Type.h"
 #include "ui/loading/ShapeFactory.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace UnitTest {
     class TestShapeFactory:public Ghurund::UI::ShapeFactory {

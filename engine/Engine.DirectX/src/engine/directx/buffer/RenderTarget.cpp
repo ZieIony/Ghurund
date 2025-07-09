@@ -3,7 +3,7 @@
 
 #include "core/math/MathUtils.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
 

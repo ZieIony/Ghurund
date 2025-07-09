@@ -6,10 +6,11 @@
 namespace Ghurund::UI::Direct2D {
 	class BitmapFactory:public IBitmapFactory {
 	private:
-		ID2D1DeviceContext5& deviceContext;
+		// borrowed
+		ID2D1DeviceContext5* deviceContext;
 
 	public:
-		BitmapFactory(ID2D1DeviceContext5& deviceContext):deviceContext(deviceContext) {}
+		BitmapFactory(NotNull<ID2D1DeviceContext5> deviceContext):deviceContext(&deviceContext) {}
 	
 		virtual Ghurund::UI::Bitmap* makeBitmap(Image& image) const override {
 			IntrusivePointer<Bitmap> bitmap(ghnew Bitmap());

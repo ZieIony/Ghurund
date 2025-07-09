@@ -13,7 +13,7 @@ namespace Ghurund::UI::Direct2D {
         if (path)
             path->Release();
         auto rect = D2D_RECT_F{ bounds.left, bounds.top, bounds.right, bounds.bottom };
-        if (FAILED(d2dFactory.CreateRectangleGeometry(rect, (ID2D1RectangleGeometry**)&path)))
+        if (FAILED(d2dFactory->CreateRectangleGeometry(rect, (ID2D1RectangleGeometry**)&path)))
             throw CallFailedException();
 
         __super::setBounds(bounds);
@@ -23,7 +23,7 @@ namespace Ghurund::UI::Direct2D {
         if (path)
             path->Release();
         auto roundRect = D2D1::RoundedRect(D2D_RECT_F{ bounds.left, bounds.top, bounds.right, bounds.bottom }, cornerRadius, cornerRadius);
-        if (FAILED(d2dFactory.CreateRoundedRectangleGeometry(roundRect, (ID2D1RoundedRectangleGeometry**)&path)))
+        if (FAILED(d2dFactory->CreateRoundedRectangleGeometry(roundRect, (ID2D1RoundedRectangleGeometry**)&path)))
             throw CallFailedException();
 
         __super::setBounds(bounds);

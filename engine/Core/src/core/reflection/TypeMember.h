@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/Array.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 #include <format>
 

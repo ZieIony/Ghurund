@@ -332,7 +332,7 @@ namespace Ghurund::UI {
 		IUIContext* context = Context;
 		if (!context)
 			return pos;
-		Window& window = context->Window;
+		Window* window = context->Window;
 		POINT p = { (LONG)pos.x, (LONG)pos.y };
 		//ClientToScreen(window.Handle, &p);
 		return FloatPoint{ (float)p.x, (float)p.y };

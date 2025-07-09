@@ -25,7 +25,8 @@ namespace Ghurund::UI::DirectX {
 #pragma endregion
 
     private:
-        ResourceManager& resourceManager;
+        // borrowed
+        ResourceManager* resourceManager;
         Ghurund::UI::DirectX::ShapeFactory* shapeFactory = nullptr;
         Ghurund::UI::IDrawableFactory* drawableFactory = nullptr;
         Ghurund::UI::DirectX::TextFormatFactory* textFormatFactory = nullptr;
@@ -34,34 +35,34 @@ namespace Ghurund::UI::DirectX {
         IntrusivePointer<Ghurund::UI::LayoutLoader> layoutLoader;
 
     public:
-        DxUIFeature(ResourceManager& resourceManager):resourceManager(resourceManager) {}
+        DxUIFeature(NotNull<ResourceManager> resourceManager):resourceManager(&resourceManager) {}
 
         virtual void onInit() override;
 
         virtual void onUninit() override;
 
-        virtual Ghurund::UI::ShapeFactory& getShapeFactory() override {
-            return *shapeFactory;
+        virtual Ghurund::UI::ShapeFactory* getShapeFactory() override {
+            return shapeFactory;
         }
 
-        virtual Ghurund::UI::IDrawableFactory& getDrawableFactory() override {
-            return *drawableFactory;
+        virtual Ghurund::UI::IDrawableFactory* getDrawableFactory() override {
+            return drawableFactory;
         }
 
-        virtual Ghurund::UI::TextFormatFactory& getTextFormatFactory() override {
-            return *textFormatFactory;
+        virtual Ghurund::UI::TextFormatFactory* getTextFormatFactory() override {
+            return textFormatFactory;
         }
 
-        virtual Ghurund::UI::ConstraintFactory& getConstraintFactory() override {
-            return *constraintFactory;
+        virtual Ghurund::UI::ConstraintFactory* getConstraintFactory() override {
+            return constraintFactory;
         }
 
-        virtual IBitmapFactory& getBitmapFactory() override {
-            return *bitmapFactory;
+        virtual IBitmapFactory* getBitmapFactory() override {
+            return bitmapFactory;
         }
 
-        virtual Ghurund::UI::LayoutLoader& getLayoutLoader() {
-            return *layoutLoader.get();
+        virtual Ghurund::UI::LayoutLoader* getLayoutLoader() {
+            return layoutLoader.get();
         }
     };
 }

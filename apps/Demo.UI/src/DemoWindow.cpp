@@ -24,7 +24,7 @@ namespace Demo {
 		//UIDebugTools::init(UILayer.Context);
 		UIDebugTools::drawConstraints = true;
 
-		demoLayout.set(Application.ResourceManager.load<Control>(
+		demoLayout.set(Application->ResourceManager->load<Control>(
 			FilePath(L"apps/Demo.UI/res/layout.xml"),
 			DirectoryPath(),
 			ResourceFormat::AUTO,
@@ -60,7 +60,7 @@ namespace Demo {
 		auto buttonImage = IntrusivePointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/button.png"))));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
-		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application.ResourceManager);
+		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application->ResourceManager);
 		toolbarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(pasteIcon.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())
@@ -68,7 +68,7 @@ namespace Demo {
 		toolbar->ItemAdapter = *toolbarItemAdapter;
 
 		MenuBar* menuBar = (MenuBar*)demoLayout->find("menuBar");
-		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application.ResourceManager);
+		menuBarItemAdapter = ghnew MenuBarItemAdapter(Application->ResourceManager);
 		menuBarItemAdapter->Items = {
 			SharedPointer<MenuItem>(ghnew ButtonMenuItem(buttonImage.get(),{})),
 			SharedPointer<MenuItem>(ghnew SeparatorMenuItem())

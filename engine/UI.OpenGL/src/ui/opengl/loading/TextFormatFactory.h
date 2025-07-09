@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "ui/loading/TextFormatFactory.h"
 
 namespace Ghurund::UI::OpenGL {

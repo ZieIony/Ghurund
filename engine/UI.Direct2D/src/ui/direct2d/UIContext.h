@@ -18,23 +18,26 @@ namespace Ghurund::UI::Direct2D {
 
     class UIContext:public IUIContext {
     private:
-        ID2D1Factory6& d2dFactory;
-        IDWriteFactory& dwriteFactory;
-        ID2D1DeviceContext5& deviceContext;
+        // borrowed
+        ID2D1Factory6* d2dFactory;
+        // borrowed
+        IDWriteFactory* dwriteFactory;
+        // borrowed
+        ID2D1DeviceContext5* deviceContext;
 
     public:
         UIContext(
-            ID2D1Factory6& d2dFactory,
-            IDWriteFactory& dwriteFactory,
-            ID2D1DeviceContext5& deviceContext,
-            Ghurund::Core::Window& window
-        ):IUIContext(window), d2dFactory(d2dFactory), dwriteFactory(dwriteFactory), deviceContext(deviceContext) {}
+            NotNull<ID2D1Factory6> d2dFactory,
+            NotNull<IDWriteFactory> dwriteFactory,
+            NotNull<ID2D1DeviceContext5> deviceContext,
+            NotNull<Ghurund::Core::Window> window
+        ):IUIContext(window), d2dFactory(&d2dFactory), dwriteFactory(&dwriteFactory), deviceContext(&deviceContext) {}
 
-        inline ID2D1DeviceContext5& getDeviceContext() {
+        inline ID2D1DeviceContext5* getDeviceContext() {
             return deviceContext;
         }
 
-        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5& DeviceContext;
+        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5* DeviceContext;
 
         virtual StrokeStyle* makeStrokeStyle(Array<float>& dashes) override {
             Direct2D::StrokeStyle* strokeStyle = ghnew Direct2D::StrokeStyle();

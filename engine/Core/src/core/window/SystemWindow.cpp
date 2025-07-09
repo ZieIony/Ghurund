@@ -162,7 +162,7 @@ namespace Ghurund::Core {
 			POINT p;
 			GetCursorPos(&p);
 			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer.TimeMs, p });
+			input.addEvent({ msg, wParam, timer->TimeMs, p });
 
 			if (!mouseTracked) {
 				mouseTracked = true;
@@ -179,18 +179,18 @@ namespace Ghurund::Core {
 			POINT p;
 			GetCursorPos(&p);
 			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer.TimeMs, p });
+			input.addEvent({ msg, wParam, timer->TimeMs, p });
 		} else {
 			POINT p;
 			GetCursorPos(&p);
 			ScreenToClient(Handle, &p);
-			input.addEvent({ msg, wParam, timer.TimeMs, p });
+			input.addEvent({ msg, wParam, timer->TimeMs, p });
 		}
 	}
 
 	bool SystemWindow::dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam) {
 		if (msg >= WM_KEYFIRST && msg <= WM_KEYLAST) {
-			input.addEvent({ msg, wParam, timer.TimeMs });
+			input.addEvent({ msg, wParam, timer->TimeMs });
 			return true;
 		} else if (msg >= WM_MOUSEFIRST && msg <= WM_MOUSELAST) {
 			dispatchMouseEvent(msg, wParam);

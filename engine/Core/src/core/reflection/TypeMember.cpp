@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "TypeMember.h"
 #include "Type.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/logging/Formatter.h"
 
 namespace Ghurund::Core {

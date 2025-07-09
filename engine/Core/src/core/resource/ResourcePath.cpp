@@ -1,7 +1,7 @@
 #include "ghcpch.h"
 #include "ResourcePath.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/logging/Logger.h"
 #include "core/SharedPointer.h"
 
@@ -48,9 +48,9 @@ namespace Ghurund::Core {
 		}
 	}
 
-	bool ResourcePath::exists(const DirectoryPath& workingDir, LibraryList& libraries) const {
+	bool ResourcePath::exists(const DirectoryPath& workingDir, NotNull<LibraryList> libraries) const {
 		if (type == Type::LIBRARY) {
-			return libraries.get(libName)->contains(path);
+			return libraries->get(libName)->contains(path);
 		} else {
 			FilePath absolutePath = FilePath(path);
 			if (!absolutePath.IsAbsolute)

@@ -15,11 +15,9 @@ namespace Ghurund::Engine::DirectX {
 
     const Ghurund::Core::Type& DirectXWindow::GET_TYPE() {
         static auto PROPERTY_SWAPCHAIN = Property<DirectXWindow, Ghurund::Engine::DirectX::SwapChain&>("SwapChain", &getSwapChain);
-        static auto PROPERTY_APPLICATION = Property<DirectXWindow, Ghurund::Core::Application&>("Application", &getApplication);
 
         static const Ghurund::Core::Type TYPE = TypeBuilder<DirectXWindow>()
             .withProperty(PROPERTY_SWAPCHAIN)
-            .withProperty(PROPERTY_APPLICATION)
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
@@ -41,7 +39,7 @@ namespace Ghurund::Engine::DirectX {
     void DirectXWindow::init() {
         __super::init();
         swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
-        Ghurund::Engine::DirectX::Graphics& graphics = Application.Features.get<Ghurund::Engine::DirectX::Graphics>();
+        Ghurund::Engine::DirectX::Graphics* graphics = Application->Features->get<Ghurund::Engine::DirectX::Graphics>();
         swapChain->init(graphics, *this);
     }
 

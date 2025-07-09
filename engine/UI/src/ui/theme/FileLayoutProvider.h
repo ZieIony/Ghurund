@@ -7,17 +7,18 @@
 namespace Ghurund::UI {
 	class FileLayoutProvider:public LayoutProvider {
 	private:
-		Ghurund::Core::ResourceManager& resourceManager;
+		// borrowed
+		Ghurund::Core::ResourceManager* resourceManager;
 		ResourcePath path;
 
 	public:
 		FileLayoutProvider(
-			Ghurund::Core::ResourceManager& resourceManager,
+			NotNull<Ghurund::Core::ResourceManager> resourceManager,
 			const ResourcePath& path
-		): resourceManager(resourceManager), path(path) {}
+		): resourceManager(&resourceManager), path(path) {}
 
 		virtual IntrusivePointer<Control> get() override {
-			return IntrusivePointer<Control>(resourceManager.load<Control>(path, DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
+			return IntrusivePointer<Control>(resourceManager->load<Control>(path, DirectoryPath(), ResourceFormat::AUTO, LoadOption::DONT_CACHE));
 		}
 	};
 }

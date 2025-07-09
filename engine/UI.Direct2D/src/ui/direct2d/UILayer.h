@@ -28,7 +28,9 @@ namespace Ghurund::UI::Direct2D {
 #pragma endregion
 
     private:
+        // borrowed
         SwapChain* swapChain = nullptr;
+        // borrowed
         Graphics2D* graphics = nullptr;
         Ghurund::UI::Direct2D::Canvas* canvas;
         Map<RenderTarget*, std::shared_ptr<RenderTarget2D>> renderTargets;
@@ -45,7 +47,7 @@ namespace Ghurund::UI::Direct2D {
             uninit();
         }
 
-        void init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain);
+        void init(NotNull<Ghurund::UI::Direct2D::Graphics2D> graphics, NotNull<Window> window, NotNull<SwapChain> swapChain);
 
         void initTargets();
 

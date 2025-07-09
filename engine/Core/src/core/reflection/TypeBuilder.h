@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Type.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 #include <typeinfo>
 

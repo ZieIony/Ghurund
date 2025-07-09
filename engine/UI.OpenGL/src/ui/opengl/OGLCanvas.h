@@ -2,7 +2,7 @@
 
 #include "ui/Canvas.h"
 #include "core/math/Rect.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::UI::OpenGL {
     using namespace Ghurund::Core;

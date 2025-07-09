@@ -5,17 +5,17 @@
 #include <ui/direct2d/image/SvgDocument.h>
 
 namespace Ghurund::UI::Direct2D {
-    void Canvas::init(ID2D1DeviceContext5& deviceContext) {
+    void Canvas::init(NotNull<ID2D1DeviceContext5> deviceContext) {
         using namespace Ghurund::Core;
         this->deviceContext = &deviceContext;
 
-        deviceContext.SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
-        if (FAILED(deviceContext.CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &fillBrush))) {
+        deviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
+        if (FAILED(deviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &fillBrush))) {
             Logger::log(LogType::ERR0R, _T("CreateSolidColorBrush failed\n"));
             throw CallFailedException();
         }
 
-        if (FAILED(deviceContext.CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect))) {
+        if (FAILED(deviceContext->CreateEffect(CLSID_D2D1ColorMatrix, &tintEffect))) {
             Logger::log(LogType::ERR0R, _T("CreateEffect failed\n"));
             throw CallFailedException();
         }

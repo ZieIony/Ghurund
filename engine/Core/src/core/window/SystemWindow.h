@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "WindowClass.h"
 #include "WindowDecorationMetrics.h"
+#include "core/NotNull.h"
 #include "core/SharedPointer.h"
 #include "core/collection/Map.h"
 #include "core/input/Input.h"
@@ -30,7 +31,8 @@ namespace Ghurund::Core {
 
         HWND handle = {};
         Ghurund::Core::Input input;
-        Ghurund::Core::Timer& timer;
+        // borrowed
+        Ghurund::Core::Timer* timer;
         bool mouseTracked = false;
 
         Microsoft::WRL::ComPtr<DragDropManager> dragDropManager;
@@ -51,7 +53,7 @@ namespace Ghurund::Core {
         Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
         Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
 
-        SystemWindow(Ghurund::Core::Timer& timer):timer(timer) {}
+        SystemWindow(NotNull<Ghurund::Core::Timer> timer):timer(&timer) {}
 
         ~SystemWindow();
 
@@ -65,17 +67,17 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
-        virtual Ghurund::Core::Input& getInput() override {
-            return input;
+        virtual Ghurund::Core::Input* getInput() override {
+            return &input;
         }
 
-        __declspec(property(get = getInput)) Ghurund::Core::Input& Input;
+        __declspec(property(get = getInput)) Ghurund::Core::Input* Input;
 
-        virtual Ghurund::Core::Timer& getTimer() const override {
+        virtual Ghurund::Core::Timer* getTimer() const override {
             return timer;
         }
 
-        __declspec(property(get = getTimer)) Ghurund::Core::Timer& Timer;
+        __declspec(property(get = getTimer)) Ghurund::Core::Timer* Timer;
 
         inline const WindowDecorationMetrics& getDecorationMetrics() const {
             return *decorationMetrics.get();

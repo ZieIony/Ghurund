@@ -59,7 +59,7 @@ namespace Ghurund::UI {
             rootViewWidth.set(ghnew WindowWidthConstraint(this->context->Window));
             rootViewHeight.set(ghnew WindowHeightConstraint(this->context->Window));
 
-            this->context->Window.sizeChanged += [&](const Window& window) {
+            this->context->Window->sizeChanged += [&](const Window& window) {
                 rootView->requestLayout();
                 return true;
             };

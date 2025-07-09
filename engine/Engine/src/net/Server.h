@@ -7,7 +7,7 @@
 #include "core/Buffer.h"
 #include "core/Event.h"
 #include "core/collection/List.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Net {
     struct ClientDisconnection {

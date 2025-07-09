@@ -41,7 +41,7 @@ namespace Ghurund::UI::Direct2D {
         return bitmapImage && image && image->Valid && __super::Valid;
     }
 
-    void Bitmap::init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::Image& image) {
+    void Bitmap::init(NotNull<ID2D1DeviceContext5> deviceContext, Ghurund::Core::Image& image) {
         setPointer(this->image, &image);
 
         D2D1_BITMAP_PROPERTIES1 bitmapProperties = D2D1::BitmapProperties1(
@@ -49,11 +49,11 @@ namespace Ghurund::UI::Direct2D {
             D2D1::PixelFormat(image.Format, D2D1_ALPHA_MODE_PREMULTIPLIED)
         );
 
-        if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ image.Width, image.Height }, image.Data.Data, image.RowPitch, bitmapProperties, &bitmapImage)))
+        if (FAILED(deviceContext->CreateBitmap(D2D1_SIZE_U{ image.Width, image.Height }, image.Data.Data, image.RowPitch, bitmapProperties, &bitmapImage)))
             throw CallFailedException();
     }
 
-    void Bitmap::init(ID2D1DeviceContext5& deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format) {
+    void Bitmap::init(NotNull<ID2D1DeviceContext5> deviceContext, Ghurund::Core::IntSize size, DXGI_FORMAT format) {
         if (image) {
             image->release();
             image = nullptr;
@@ -64,7 +64,7 @@ namespace Ghurund::UI::Direct2D {
             D2D1::PixelFormat(format, D2D1_ALPHA_MODE_PREMULTIPLIED)
         );
 
-        if (FAILED(deviceContext.CreateBitmap(D2D1_SIZE_U{ size.Width, size.Height }, nullptr, 0, bitmapProperties, &bitmapImage)))
+        if (FAILED(deviceContext->CreateBitmap(D2D1_SIZE_U{ size.Width, size.Height }, nullptr, 0, bitmapProperties, &bitmapImage)))
             throw CallFailedException();
     }
 

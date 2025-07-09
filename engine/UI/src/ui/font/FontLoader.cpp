@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "FontLoader.h"
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::UI {
 

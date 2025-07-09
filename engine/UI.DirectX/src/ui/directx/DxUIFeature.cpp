@@ -30,19 +30,19 @@ namespace Ghurund::UI::DirectX {
 
         auto fontLoader = makeIntrusive<FontLoader>(*bitmapFactory);
 
-        resourceManager.Loaders.set<Ghurund::UI::Font>(fontLoader.get());
+        resourceManager->Loaders->set<Ghurund::UI::Font>(fontLoader.get());
 
-        auto bitmapLoader = makeIntrusive<BitmapLoader>(*(ImageLoader*)resourceManager.Loaders.get<Image>(), *bitmapFactory);
-        resourceManager.Loaders.set<Ghurund::UI::Bitmap>(bitmapLoader.get());
+        auto bitmapLoader = makeIntrusive<BitmapLoader>(*(ImageLoader*)resourceManager->Loaders->get<Image>(), *bitmapFactory);
+        resourceManager->Loaders->set<Ghurund::UI::Bitmap>(bitmapLoader.get());
         layoutLoader = makeIntrusive<Ghurund::UI::LayoutLoader>(resourceManager, *shapeFactory, *drawableFactory, *textFormatFactory, *constraintFactory);
-        resourceManager.Loaders.set<Control>(layoutLoader.get());
+        resourceManager->Loaders->set<Control>(layoutLoader.get());
     }
     
     void DxUIFeature::onUninit() {
-        resourceManager.Loaders.remove<Control>();
-        resourceManager.Loaders.remove<Ghurund::UI::Bitmap>();
-        resourceManager.Loaders.remove<Image>();
-        resourceManager.Loaders.remove<Ghurund::UI::Font>();
+        resourceManager->Loaders->remove<Control>();
+        resourceManager->Loaders->remove<Ghurund::UI::Bitmap>();
+        resourceManager->Loaders->remove<Image>();
+        resourceManager->Loaders->remove<Ghurund::UI::Font>();
         layoutLoader.set(nullptr);
         delete bitmapFactory;
         bitmapFactory = nullptr;

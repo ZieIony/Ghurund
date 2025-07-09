@@ -31,7 +31,8 @@ namespace Ghurund::UI::Direct2D {
 #pragma endregion
 
     private:
-        Ghurund::Engine::DirectX::Graphics& graphics;
+        // borrowed
+        Ghurund::Engine::DirectX::Graphics* graphics;
         ComPtr<ID2D1DeviceContext5> deviceContext;
         ComPtr<ID3D11DeviceContext> d3d11DeviceContext;
         ComPtr<ID3D11On12Device> d3d11On12Device;
@@ -46,37 +47,37 @@ namespace Ghurund::UI::Direct2D {
         virtual void onUninit() override;
 
     public:
-        Graphics2D(Ghurund::Engine::DirectX::Graphics& graphics) :graphics(graphics) {}
+		Graphics2D(NotNull<Ghurund::Engine::DirectX::Graphics> graphics):graphics(&graphics) {}
 
-        inline ID2D1Device5& getDevice() {
-            return *d2dDevice.Get();
+        inline ID2D1Device5* getDevice() {
+            return d2dDevice.Get();
         };
 
-        __declspec(property(get = getDevice)) ID2D1Device5& Device;
+        __declspec(property(get = getDevice)) ID2D1Device5* Device;
 
-        inline ID2D1DeviceContext5& getDeviceContext() {
-            return *deviceContext.Get();
+        inline ID2D1DeviceContext5* getDeviceContext() {
+            return deviceContext.Get();
         };
 
-        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5& DeviceContext;
+        __declspec(property(get = getDeviceContext)) ID2D1DeviceContext5* DeviceContext;
 
-        inline ID3D11On12Device& getDevice11() {
-            return *d3d11On12Device.Get();
+        inline ID3D11On12Device* getDevice11() {
+            return d3d11On12Device.Get();
         };
 
-        __declspec(property(get = getDevice11)) ID3D11On12Device& Device11;
+        __declspec(property(get = getDevice11)) ID3D11On12Device* Device11;
 
-        inline ID2D1Factory6& getD2dFactory() {
-            return *d2dFactory.Get();
+        inline ID2D1Factory6* getD2dFactory() {
+            return d2dFactory.Get();
         };
 
-        __declspec(property(get = getD2dFactory)) ID2D1Factory6& D2DFactory;
+        __declspec(property(get = getD2dFactory)) ID2D1Factory6* D2DFactory;
 
-        inline IDWriteFactory5& getDWriteFactory() {
-            return *dwriteFactory.Get();
+        inline IDWriteFactory5* getDWriteFactory() {
+            return dwriteFactory.Get();
         };
 
-        __declspec(property(get = getDWriteFactory)) IDWriteFactory5& DWriteFactory;
+        __declspec(property(get = getDWriteFactory)) IDWriteFactory5* DWriteFactory;
 
         inline UIState getState() const {
             return state;
@@ -84,9 +85,9 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getState)) UIState State;
 
-        void beginPaint(RenderTarget2D& target);
+        void beginPaint(NotNull<RenderTarget2D> target);
 
-        void endPaint(RenderTarget2D& target);
+        void endPaint(NotNull<RenderTarget2D> target);
 
         void flush() {
             d3d11DeviceContext->Flush();

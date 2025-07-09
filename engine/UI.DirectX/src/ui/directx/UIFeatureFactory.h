@@ -10,7 +10,7 @@ namespace Ghurund::UI::DirectX {
 		UIFeatureFactory(Application& app):FeatureFactory(app) {}
 
 		virtual std::unique_ptr<Feature> make() const override {
-			return std::unique_ptr<Feature>(ghnew DxUIFeature(app.ResourceManager));
+			return std::unique_ptr<Feature>(ghnew DxUIFeature(app->ResourceManager));
 		}
 	};
 }

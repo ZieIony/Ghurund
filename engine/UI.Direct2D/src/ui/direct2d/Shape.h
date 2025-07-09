@@ -26,10 +26,11 @@ namespace Ghurund::UI::Direct2D {
 
     class Rect:public Shape {
     private:
-        ID2D1Factory6& d2dFactory;
+        // borrowed
+        ID2D1Factory6* d2dFactory;
 
     public:
-        Rect(ID2D1Factory6& d2dFactory):d2dFactory(d2dFactory) {}
+        Rect(NotNull<ID2D1Factory6> d2dFactory):d2dFactory(&d2dFactory) {}
 
         virtual void setBounds(const FloatRect& bounds) override;
 
@@ -42,11 +43,12 @@ namespace Ghurund::UI::Direct2D {
 
     class RoundRect:public Shape {
     private:
-        ID2D1Factory6& d2dFactory;
+        // borrowed
+        ID2D1Factory6* d2dFactory;
         float cornerRadius;
 
     public:
-        RoundRect(ID2D1Factory6& d2dFactory, float cornerRadius = 2.0f):d2dFactory(d2dFactory), cornerRadius(cornerRadius) {}
+        RoundRect(NotNull<ID2D1Factory6> d2dFactory, float cornerRadius = 2.0f):d2dFactory(&d2dFactory), cornerRadius(cornerRadius) {}
 
         inline float getCornerRadius() const {
             return cornerRadius;

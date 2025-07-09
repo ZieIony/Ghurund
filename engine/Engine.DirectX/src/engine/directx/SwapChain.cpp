@@ -15,7 +15,7 @@ namespace Ghurund::Engine::DirectX {
         return TYPE;
     }
 
-    void SwapChain::init(Graphics& graphics, SystemWindow& window, uint32_t frameCount) {
+    void SwapChain::init(NotNull<Graphics> graphics, NotNull<SystemWindow> window, uint32_t frameCount) {
         this->graphics = &graphics;
         this->window = &window;
         this->frameCount = frameCount;
@@ -23,15 +23,15 @@ namespace Ghurund::Engine::DirectX {
 
         DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
         swapChainDesc.BufferCount = frameCount;
-        swapChainDesc.Width = window.Size.Width;
-        swapChainDesc.Height = window.Size.Height;
+        swapChainDesc.Width = window->Size.Width;
+        swapChainDesc.Height = window->Size.Height;
         swapChainDesc.Format = format;
         swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
         swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
         swapChainDesc.SampleDesc.Count = 1;
 
         ComPtr<IDXGISwapChain1> swapChain1;
-        if (FAILED(graphics.Factory->CreateSwapChainForHwnd(graphics.DirectQueue, window.Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
+        if (FAILED(graphics->Factory->CreateSwapChainForHwnd(graphics->DirectQueue, window->Handle, &swapChainDesc, nullptr, nullptr, &swapChain1))) {
             Logger::log(LogType::ERR0R, _T("factory->CreateSwapChainForHwnd() failed\n"));
             throw CallFailedException("factory->CreateSwapChainForHwnd() failed");
         }

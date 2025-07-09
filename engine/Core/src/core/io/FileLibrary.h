@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Library.h"
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 
 namespace Ghurund::Core {
     /*

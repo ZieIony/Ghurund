@@ -1,6 +1,7 @@
 #pragma once
 
-#include "core/Exceptions.h"
+#include "core/NotNull.h"
+#include "core/exception/Exceptions.h"
 #include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"
 #include "PropertyLoaderCollection.h"
@@ -25,11 +26,16 @@ namespace Ghurund::UI {
 
 	class LayoutLoader :public Ghurund::Core::Loader {
 	private:
-		Ghurund::Core::ResourceManager& resourceManager;
-		ShapeFactory& shapeFactory;
-		IDrawableFactory& drawableFactory;
-		TextFormatFactory& textFormatFactory;
-		ConstraintFactory& constraintFactory;
+		// borrowed
+		Ghurund::Core::ResourceManager* resourceManager;
+		// borrowed
+		ShapeFactory* shapeFactory;
+		// borrowed
+		IDrawableFactory* drawableFactory;
+		// borrowed
+		TextFormatFactory* textFormatFactory;
+		// borrowed
+		ConstraintFactory* constraintFactory;
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
 
@@ -40,20 +46,20 @@ namespace Ghurund::UI {
 		static inline const char* THEME_TEXTFORMAT = "theme://textFormat/";
 
 		LayoutLoader(
-			Ghurund::Core::ResourceManager& resourceManager,
-			ShapeFactory& shapeFactory,
-			IDrawableFactory& drawableFactory,
-			TextFormatFactory& textFormatFactory,
-			ConstraintFactory& constraintFactory
+			NotNull<Ghurund::Core::ResourceManager> resourceManager,
+			NotNull<ShapeFactory> shapeFactory,
+			NotNull<IDrawableFactory> drawableFactory,
+			NotNull<TextFormatFactory> textFormatFactory,
+			NotNull<ConstraintFactory> constraintFactory
 		);
 
 		virtual ~LayoutLoader() {}
 
-		inline Ghurund::Core::ResourceManager& getResourceManager() {
+		inline Ghurund::Core::ResourceManager* getResourceManager() {
 			return resourceManager;
 		}
 
-		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager& ResourceManager;
+		__declspec(property(get = getResourceManager)) Ghurund::Core::ResourceManager* ResourceManager;
 
 		template<Derived<Control> T>
 		inline void registerType() {

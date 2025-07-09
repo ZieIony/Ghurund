@@ -11,7 +11,7 @@ namespace Ghurund::UI::Direct2D {
 		Graphics2DFactory(Application& app):FeatureFactory(app) {}
 
 		virtual std::unique_ptr<Feature> make() const override {
-			auto& graphics = app.Features.get<Ghurund::Engine::DirectX::Graphics>();
+			auto graphics = app->Features->get<Ghurund::Engine::DirectX::Graphics>();
 			return std::unique_ptr<Feature>(ghnew Graphics2D(graphics));
 		}
 	};

@@ -64,7 +64,7 @@ namespace Ghurund::UI {
     void TextField::onKeyPress(UINT32 keyCode) {
         UINT32 absolutePosition = caretPosition + caretPositionOffset;
 
-        Input& input = Context->Window.Input;
+        Input* input = Context->Window->Input;
         if (keyCode == VK_RETURN) {
             onReturn();
         } else if (keyCode == VK_BACK) {
@@ -72,29 +72,29 @@ namespace Ghurund::UI {
         } else if (keyCode == VK_DELETE) {
             onDelete();
         } else if (keyCode == VK_LEFT) {
-            setSelection(input.isControlDown() ? SetSelectionMode::LeftWord : SetSelectionMode::Left, 1, input.isShiftDown());
+            setSelection(input->isControlDown() ? SetSelectionMode::LeftWord : SetSelectionMode::Left, 1, input->isShiftDown());
         } else if (keyCode == VK_RIGHT) {
-            setSelection(input.isControlDown() ? SetSelectionMode::RightWord : SetSelectionMode::Right, 1, input.isShiftDown());
+            setSelection(input->isControlDown() ? SetSelectionMode::RightWord : SetSelectionMode::Right, 1, input->isShiftDown());
         } else if (keyCode == VK_UP) {
-            setSelection(SetSelectionMode::Up, 1, input.isShiftDown());
+            setSelection(SetSelectionMode::Up, 1, input->isShiftDown());
         } else if (keyCode == VK_DOWN) {
-            setSelection(SetSelectionMode::Down, 1, input.isShiftDown());
+            setSelection(SetSelectionMode::Down, 1, input->isShiftDown());
         } else if (keyCode == VK_HOME) {
-            setSelection(input.isControlDown() ? SetSelectionMode::First : SetSelectionMode::Home, 0, input.isShiftDown());
+            setSelection(input->isControlDown() ? SetSelectionMode::First : SetSelectionMode::Home, 0, input->isShiftDown());
         } else if (keyCode == VK_END) {
-            setSelection(input.isControlDown() ? SetSelectionMode::Last : SetSelectionMode::End, 0, input.isShiftDown());
+            setSelection(input->isControlDown() ? SetSelectionMode::Last : SetSelectionMode::End, 0, input->isShiftDown());
         } else if (keyCode == VK_INSERT) {
-            if (input.isControlDown()) {
+            if (input->isControlDown()) {
                 copyToClipboard();
-            } else if (input.isShiftDown()) {
+            } else if (input->isShiftDown()) {
                 pasteFromClipboard();
             }
-        } else if (keyCode == 'V' && input.isControlDown()) {
+        } else if (keyCode == 'V' && input->isControlDown()) {
             pasteFromClipboard();
-        } else if (keyCode == 'X' && input.isControlDown()) {
+        } else if (keyCode == 'X' && input->isControlDown()) {
             copyToClipboard();
             deleteSelection();
-        } else if (keyCode == 'A' && input.isControlDown()) {
+        } else if (keyCode == 'A' && input->isControlDown()) {
             setSelection(SetSelectionMode::All, 0, true);
         }
     }
@@ -141,7 +141,7 @@ namespace Ghurund::UI {
 
         deleteSelection();
 
-        WString* data = Clipboard::getUnicodeText(Context->Window.Handle);
+        WString* data = Clipboard::getUnicodeText(Context->Window->Handle);
         if (data) {
             textLayout.insertTextAt(caretPosition + caretPositionOffset, *data);
             setSelection(SetSelectionMode::RightChar, (uint32_t)data->Length, true);

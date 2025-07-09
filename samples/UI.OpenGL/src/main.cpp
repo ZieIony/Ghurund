@@ -15,7 +15,7 @@ namespace Samples {
         Mesh mesh;
 
     public:
-        SampleWindow(Ghurund::Core::Application& app, Renderer& renderer):OpenGLWindow(app, renderer) {}
+        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer):OpenGLWindow(app, renderer) {}
         
         void init() {
             shader.init(FilePath(L"resources/shaders/OpenGL/rect.vert"), FilePath(L"resources/shaders/OpenGL/rect.frag"));
@@ -38,8 +38,8 @@ namespace Samples {
 
     public:
         virtual void onInit() override {
-            ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
-            ResourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
+            ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
+            ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
             window.init();
             window.closed += [this](Window& window) {
@@ -48,7 +48,7 @@ namespace Samples {
                 return true;
             };
 
-            Windows.add(window);
+            Windows->add(window);
             window.Title = _T("Sample UI OpenGL");
             window.Size = { 800, 600 };
             window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
@@ -57,10 +57,10 @@ namespace Samples {
         }
 
         virtual void onUninit() override {
-            Windows.remove(window);
+            Windows->remove(window);
             window.uninit();
 
-            ResourceManager.Libraries.clear();
+            ResourceManager->Libraries->clear();
         }
     };
 

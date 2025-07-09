@@ -12,12 +12,12 @@ namespace Ghurund::Core {
         CoInitialize(nullptr);
         OleInitialize(nullptr);
 
-        resourceManager.Libraries.add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
+        resourceManager.Libraries->add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 
         //parameterManager->initDefaultTextures(*resourceContext);
 
         auto imageLoader = makeIntrusive<ImageLoader>();
-        resourceManager.Loaders.set<Image>(imageLoader.get());
+        resourceManager.Loaders->set<Image>(imageLoader.get());
 
         features.init();
         onInit();
@@ -27,7 +27,7 @@ namespace Ghurund::Core {
         onUninit();
 
         windows.clear();
-        resourceManager.Loaders.clear();
+        resourceManager.Loaders->clear();
         resourceManager.clearCache();
 
         features.uninit();
@@ -52,7 +52,7 @@ namespace Ghurund::Core {
 
         while (windows.Size != 0) {
             handleMessages();
-            FunctionQueue.invoke();
+            functionQueue.invoke();
             resourceManager.reload();
 
             timer.tick();

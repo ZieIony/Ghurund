@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Exceptions.h"
+#include "core/exception/Exceptions.h"
 #include "core/string/String.h"
 
 namespace Ghurund::Core {

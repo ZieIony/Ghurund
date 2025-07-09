@@ -22,15 +22,15 @@ namespace Ghurund::UI::Direct2D {
         return TYPE;
     }
 
-    void D2DUILayer::init(Ghurund::UI::Direct2D::Graphics2D& graphics, Window& window, SwapChain& swapChain) {
+    void D2DUILayer::init(NotNull<Ghurund::UI::Direct2D::Graphics2D> graphics, NotNull<Window> window, NotNull<SwapChain> swapChain) {
         if (this->swapChain)
             return;
         this->graphics = &graphics;
         this->swapChain = &swapChain;
-        context = ghnew UIContext(graphics.D2DFactory, graphics.DWriteFactory, graphics.DeviceContext, window);
+        context = ghnew UIContext(graphics->D2DFactory, graphics->DWriteFactory, graphics->DeviceContext, window);
         __super::init(*context);
         canvas = ghnew Ghurund::UI::Direct2D::Canvas();
-        canvas->init(graphics.DeviceContext);
+        canvas->init(graphics->DeviceContext);
         /*window.sizeChanging += [&](const Window& window, const IntSize& size) {
             renderTargets.clear();
             return true;

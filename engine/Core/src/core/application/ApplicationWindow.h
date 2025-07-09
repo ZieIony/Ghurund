@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/NotNull.h"
 #include "core/application/Application.h"
 #include "core/application/LayerList.h"
 #include "core/window/SystemWindow.h"
@@ -18,7 +19,7 @@ namespace Ghurund::Core {
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static auto PROPERTY_LAYERS = Property<ApplicationWindow, LayerList<T>&>("Layers", &getLayers);
-            static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application&>("Application", &getApplication);
+            static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application*>("Application", &getApplication);
 
             static const Ghurund::Core::Type TYPE = TypeBuilder<ApplicationWindow>()
                 .withProperty(PROPERTY_LAYERS)
@@ -33,7 +34,8 @@ namespace Ghurund::Core {
 
     private:
         LayerList<T> layers;
-        Application& app;
+        // borrowed
+        Application* app;
 
     protected:
         virtual bool onSizeChangedEvent() override {
@@ -52,7 +54,7 @@ namespace Ghurund::Core {
         }
 
     public:
-        ApplicationWindow(Application& app):SystemWindow(app.Timer), app(app) {}
+        ApplicationWindow(NotNull<Application> app):SystemWindow(app->Timer), app(&app) {}
 
         inline LayerList<T>& getLayers() {
             return layers;
@@ -60,11 +62,11 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getLayers)) LayerList<T>& Layers;
 
-        inline Application& getApplication() {
+        inline Application* getApplication() {
             return app;
         }
 
-        __declspec(property(get = getApplication)) Ghurund::Core::Application& Application;
+        __declspec(property(get = getApplication)) Ghurund::Core::Application* Application;
 
         virtual bool onKeyEvent(const KeyEventArgs& args) override {
             return layers.dispatchKeyEvent(args);
