@@ -14,11 +14,11 @@ namespace Ghurund::Core {
             clear();
         }
 
-        inline void add(SystemWindow& window) {
+        inline void add(NotNull<SystemWindow> window) {
             windows.add(&window);
         }
 
-        inline void remove(SystemWindow& window) {
+        inline void remove(NotNull<SystemWindow> window) {
             windows.remove(&window);
         }
 

@@ -54,7 +54,13 @@ namespace Ghurund::Core {
         }
 
     public:
-        ApplicationWindow(NotNull<Application> app):SystemWindow(app->Timer), app(&app) {}
+        ApplicationWindow(NotNull<Application> app):SystemWindow(app->Timer), app(&app) {
+            app->Windows->add(this);
+        }
+
+        ~ApplicationWindow() {
+            app->Windows->remove(this);
+        }
 
         inline LayerList<T>& getLayers() {
             return layers;

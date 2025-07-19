@@ -24,8 +24,12 @@ namespace Ghurund::Core {
         FeatureProvider features = *this;
 
         void init();
-        void handleMessages();
         void uninit();
+
+        /*
+        * returns true if the app should stop handling messages and quit
+        */
+        bool handleMessages();
 
     protected:
         virtual void onInit() {};

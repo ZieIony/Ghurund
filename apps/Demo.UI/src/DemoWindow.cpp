@@ -8,7 +8,9 @@
 #include "core/logging/Logger.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer):DirectXWindow(app, renderer), app(app) {
+	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory)
+		:DirectXWindow(app, renderer), drawableFactory(drawableFactory)
+	{
 		Style = WindowStyle{
 			.hasMinimizeButton = true,
 			.hasMaximizeButton = true,
@@ -16,6 +18,7 @@ namespace Demo {
 			.borderStyle = WindowBorderStyle::RESIZE,
 			.showOnTaskbar = true
 		};
+		Title = _T("Demo UI");
 	}
 	
 	void DemoWindow::init() {
@@ -56,8 +59,8 @@ namespace Demo {
 			Color(0xff0000ff)
 			});
 
-		auto pasteIcon = IntrusivePointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/icons/paste 18.png"))));
-		auto buttonImage = IntrusivePointer<Drawable>(app.getDrawableFactory().makeDrawable(FilePath(_T("resources/button.png"))));
+		auto pasteIcon = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(FilePath(_T("resources/icons/paste 18.png"))));
+		auto buttonImage = IntrusivePointer<Drawable>(drawableFactory->makeDrawable(FilePath(_T("resources/button.png"))));
 
 		Toolbar* toolbar = (Toolbar*)demoLayout->find("toolbar");
 		toolbarItemAdapter = ghnew ToolbarItemAdapter(Application->ResourceManager);

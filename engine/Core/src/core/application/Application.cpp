@@ -51,7 +51,9 @@ namespace Ghurund::Core {
         const uint32_t DT_MS = 10;
 
         while (windows.Size != 0) {
-            handleMessages();
+            if (handleMessages())
+                break;
+
             functionQueue.invoke();
             resourceManager.reload();
 
@@ -66,7 +68,7 @@ namespace Ghurund::Core {
             }
 
             for (auto window : windows) {
-                if (window->Size.Width == 0 || window->Size.Height == 0)
+                if (window->Size.Width == 0 || window->Size.Height == 0 || !window->Visible)
                     continue;
                 window->paint();
             }
@@ -76,15 +78,16 @@ namespace Ghurund::Core {
         uninit();
     }
 
-    void Application::handleMessages() {
+    bool Application::handleMessages() {
         MSG msg = {};
         while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
             if (msg.message == WM_QUIT)
-                break;
+                return true;
 
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+        return false;
     }
 
     template<>

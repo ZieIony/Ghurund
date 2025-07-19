@@ -5,6 +5,7 @@
 #include <ColorListAdapter.h>
 #include <ui/UIDebugTools.h>
 #include "engine/directx/application/DirectXWindow.h"
+#include "ui/loading/DrawableFactory.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -18,10 +19,11 @@ namespace Demo {
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;
 		ToolbarItemAdapter* toolbarItemAdapter = nullptr;
 		MenuBarItemAdapter* menuBarItemAdapter = nullptr;
-		DemoApplication& app;
+		// borrowed
+		Ghurund::UI::DrawableFactory* drawableFactory;
 
 	public:
-		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::Renderer& renderer);
+		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::Renderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory);
 
 		~DemoWindow() {
 			delete adapter1;
