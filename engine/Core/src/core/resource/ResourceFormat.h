@@ -1,48 +1,30 @@
 #pragma once
 
 #include "core/string/String.h"
+#include "core/EnumOperators.h"
 
 namespace Ghurund::Core {
-    class ResourceFormat {
-    private:
-        WString extension;
-        bool save, load;
+	enum class ResourceFormatOptions {
+        CAN_SAVE = 1, CAN_LOAD = 2
+    };
 
+    class ResourceFormat {
     public:
         static const ResourceFormat AUTO;
 
-        ResourceFormat(const WString& extension, bool save, bool load) {
-            this->extension = extension;
-            this->save = save;
-            this->load = load;
-        }
+        const WString extension;
+        const bool canSave, canLoad;
 
-        ResourceFormat(const ResourceFormat& format) {
-            this->extension = format.extension;
-            this->save = format.save;
-            this->load = format.load;
-        }
+		ResourceFormat(const WString& extension, ResourceFormatOptions options = (ResourceFormatOptions)0):
+			extension(extension),
+            canSave((options& ResourceFormatOptions::CAN_SAVE) == ResourceFormatOptions::CAN_SAVE),
+            canLoad((options& ResourceFormatOptions::CAN_LOAD) == ResourceFormatOptions::CAN_LOAD) {
+		}
 
-        inline const WString& getExtension() const {
-            return extension;
-        }
-
-        __declspec(property(get = getExtension)) const WString& Extension;
-
-        inline bool canSave() const {
-            return save;
-        }
-
-        __declspec(property(get = canSave)) bool CanSave;
-
-        inline bool canLoad() const {
-            return load;
-        }
-
-        __declspec(property(get = canLoad)) bool CanLoad;
+        ResourceFormat(const ResourceFormat& format): extension(format.extension), canSave(format.canSave), canLoad(format.canLoad) {}
 
         inline bool operator==(const ResourceFormat& format) const {
-            return extension == format.extension && save == format.save && load == format.load;
+            return extension == format.extension && canSave == format.canSave && canLoad == format.canLoad;
         }
     };
 }

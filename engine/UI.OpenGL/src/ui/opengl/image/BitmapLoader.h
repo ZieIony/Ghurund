@@ -5,22 +5,36 @@
 
 namespace Ghurund::UI::OpenGL {
     class BitmapLoader:public Loader {
-        Ghurund::Core::ImageLoader& imageLoader;
+    private:
+        // borrowed
+        Ghurund::Core::ImageLoader* imageLoader;
+
+    protected:
+        virtual Resource* loadInternal(
+            MemoryInputStream& stream,
+            const DirectoryPath& workingDir,
+            const ResourceFormat& format,
+            LoadOption options
+        ) override {
+            SharedPointer<Bitmap> bitmap(ghnew Bitmap());
+            SharedPointer<Image> image((Image*)imageLoader->load(stream, workingDir, format, options));
+            bitmap->init(*image.get());
+            bitmap->addReference();
+            return bitmap.get();
+        }
+
+        virtual void saveInternal(
+            MemoryOutputStream& stream,
+            const DirectoryPath& workingDir,
+            Resource& resource,
+            const ResourceFormat& format,
+            SaveOption options
+        ) const override {
+            Bitmap& bitmap = (Bitmap&)resource;
+            imageLoader->save(stream, workingDir, *bitmap.Image, format, options);
+        }
 
     public:
-        BitmapLoader(Ghurund::Core::ImageLoader& imageLoader):imageLoader(imageLoader) {}
-
-        virtual Bitmap* load(ResourceManager& manager, MemoryInputStream& stream, const ResourceFormat* format = nullptr, LoadOption options = LoadOption::DEFAULT) override {
-            SharedPointer<Bitmap> bitmap = ghnew Bitmap();
-            SharedPointer<Image> image = imageLoader.load(manager, stream, format, options);
-            bitmap->init(*image);
-            bitmap->addReference();
-            return bitmap;
-        }
-
-        virtual void save(ResourceManager& manager, MemoryOutputStream& stream, Resource& resource, const ResourceFormat* format = nullptr, SaveOption options = SaveOption::DEFAULT) const override {
-            Bitmap& bitmap = (Bitmap&)resource;
-            imageLoader.save(manager, stream, *bitmap.Image, format, options);
-        }
+        BitmapLoader(NotNull<Ghurund::Core::ImageLoader> imageLoader):imageLoader(&imageLoader) {}
     };
 }

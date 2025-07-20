@@ -2,7 +2,7 @@
 #include "ScriptLoader.h"
 
 namespace Ghurund::Engine {
-    Script* ScriptLoader::load(
+    Resource* ScriptLoader::loadInternal(
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
@@ -15,7 +15,7 @@ namespace Ghurund::Engine {
         return script;
     }
 
-    void ScriptLoader::save(
+    void ScriptLoader::saveInternal(
         MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Resource& resource,

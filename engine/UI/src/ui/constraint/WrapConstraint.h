@@ -20,7 +20,7 @@ namespace Ghurund::UI {
         WrapWidthConstraint(const WrapWidthConstraint& other):MinMaxConstraint(other) {}
 
     public:
-        WrapWidthConstraint():MinMaxConstraint(false, true) {}
+        WrapWidthConstraint():MinMaxConstraint(ConstraintOptions::SKIPS_DEPENDENCIES) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
@@ -48,7 +48,7 @@ namespace Ghurund::UI {
         WrapHeightConstraint(const WrapHeightConstraint& other):MinMaxConstraint(other) {}
 
     public:
-        WrapHeightConstraint():MinMaxConstraint(false, true) {}
+        WrapHeightConstraint():MinMaxConstraint(ConstraintOptions::SKIPS_DEPENDENCIES) {}
 
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 

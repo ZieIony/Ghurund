@@ -148,7 +148,7 @@ namespace Ghurund::Core {
         return -1;
     }
 
-    Image* ImageLoader::load(
+    Resource* ImageLoader::loadInternal(
         Ghurund::Core::MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const Ghurund::Core::ResourceFormat& format,
@@ -227,7 +227,7 @@ namespace Ghurund::Core {
         return image;
     }
 
-    void ImageLoader::save(
+    void ImageLoader::saveInternal(
         Ghurund::Core::MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Ghurund::Core::Resource& resource,

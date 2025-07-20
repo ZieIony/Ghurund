@@ -123,7 +123,7 @@ namespace Ghurund::Engine {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_SCRIPT = ResourceFormat(L"script", true, true);
+        static const inline ResourceFormat FORMAT_SCRIPT = ResourceFormat(L"script", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SCRIPT };
 #pragma endregion

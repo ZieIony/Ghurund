@@ -11,22 +11,23 @@ namespace Ghurund::Engine::DirectX {
         Graphics& graphics;
         CommandList& commandList;
 
-    public:
-        MeshLoader(Graphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
-
-        virtual DxMesh* load(
-            Ghurund::Core::MemoryInputStream& stream,
+    protected:
+        virtual Resource* loadInternal(
+            MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            Ghurund::Core::LoadOption options = LoadOption::DEFAULT
+            const ResourceFormat& format,
+            LoadOption options
         ) override;
 
-        virtual void save(
+        virtual void saveInternal(
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            SaveOption options = SaveOption::DEFAULT
+            const ResourceFormat& format,
+            SaveOption options
         ) const override;
+
+    public:
+        MeshLoader(Graphics& graphics, CommandList& commandList):graphics(graphics), commandList(commandList) {}
     };
 }

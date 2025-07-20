@@ -78,7 +78,7 @@ namespace Ghurund::Engine {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_SCENE = ResourceFormat(L"scene", true, true);
+        static const inline ResourceFormat FORMAT_SCENE = ResourceFormat(L"scene", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SCENE };
 #pragma endregion

@@ -9,6 +9,22 @@ namespace Ghurund::Core {
     private:
         IWICImagingFactory* imageFactory = nullptr;
 
+    protected:
+        virtual Resource* loadInternal(
+            MemoryInputStream& stream,
+            const DirectoryPath& workingDir,
+            const ResourceFormat& format,
+            LoadOption options
+        ) override;
+
+        virtual void saveInternal(
+            MemoryOutputStream& stream,
+            const DirectoryPath& workingDir,
+            Resource& resource,
+            const ResourceFormat& format,
+            SaveOption options
+        ) const override;
+
     public:
         static DXGI_FORMAT getDXGIFormatFromWICFormat(WICPixelFormatGUID& wicFormatGUID);
 
@@ -28,20 +44,5 @@ namespace Ghurund::Core {
             if (imageFactory)
                 imageFactory->Release();
         }
-
-        virtual Image* load(
-            MemoryInputStream& stream,
-            const DirectoryPath& workingDir,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            LoadOption options = LoadOption::DEFAULT
-        ) override;
-
-        virtual void save(
-            MemoryOutputStream& stream,
-            const DirectoryPath& workingDir,
-            Resource& resource,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            SaveOption options = SaveOption::DEFAULT
-        ) const override;
     };
 }

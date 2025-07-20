@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Common.h" />
+    <ClInclude Include="src\core\EnumOperators.h" />
+    <ClInclude Include="src\core\exception\FormatNotSupportedException.h" />
     <ClInclude Include="src\core\exception\NullPointerException.h" />
     <ClInclude Include="src\core\NotNull.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
@@ -286,15 +288,12 @@
     <ClCompile Include="src\core\reflection\StandardTypes.cpp" />
     <ClCompile Include="src\core\reflection\TypeBuilder.cpp" />
     <ClCompile Include="src\core\reflection\TypeMember.cpp" />
-    <ClCompile Include="src\core\reflection\TypeModifier.cpp" />
-    <ClCompile Include="src\core\resource\LoadOption.cpp" />
     <ClCompile Include="src\core\resource\Loader.cpp" />
     <ClCompile Include="src\core\resource\Resource.cpp" />
     <ClCompile Include="src\core\resource\ResourceCollection.cpp" />
     <ClCompile Include="src\core\resource\ResourceFormat.cpp" />
     <ClCompile Include="src\core\resource\ResourceManager.cpp" />
     <ClCompile Include="src\core\resource\ResourcePath.cpp" />
-    <ClCompile Include="src\core\resource\SaveOption.cpp" />
     <ClCompile Include="src\core\state\State.cpp" />
     <ClCompile Include="src\core\string\GenericString.cpp" />
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />

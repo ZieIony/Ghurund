@@ -21,9 +21,9 @@ namespace Ghurund::UI {
         ~ValueConstraint() {}
 
     public:
-        ValueConstraint():Constraint(true, false) {}
+        ValueConstraint():Constraint(ConstraintOptions::IS_CONSTANT) {}
 
-        ValueConstraint(float value):Constraint(true, false) {
+        ValueConstraint(float value):Constraint(ConstraintOptions::IS_CONSTANT) {
             this->value = value;
             evaluated = true;
         }

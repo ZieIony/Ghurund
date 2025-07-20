@@ -130,7 +130,7 @@ namespace Ghurund::Engine {
 		throw NotImplementedException();
 	}
 
-	Mesh* MeshLoader::load(
+	Resource* MeshLoader::loadInternal(
 		Ghurund::Core::MemoryInputStream& stream,
 		const DirectoryPath& workingDir,
 		const Ghurund::Core::ResourceFormat& format,
@@ -149,7 +149,7 @@ namespace Ghurund::Engine {
 		}
 	}
 
-	void MeshLoader::save(
+	void MeshLoader::saveInternal(
 		Ghurund::Core::MemoryOutputStream& stream,
 		const DirectoryPath& workingDir,
 		Ghurund::Core::Resource& resource,

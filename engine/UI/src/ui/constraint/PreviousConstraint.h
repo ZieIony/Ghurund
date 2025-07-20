@@ -19,8 +19,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousLeftConstraint():OffsetConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;
@@ -44,8 +42,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousRightConstraint():OffsetConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;
@@ -69,8 +65,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousTopConstraint():OffsetConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;
@@ -94,8 +88,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousBottomConstraint():OffsetConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;
@@ -119,8 +111,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousWidthConstraint():MinMaxConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;
@@ -144,8 +134,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		PreviousHeightConstraint():MinMaxConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override;

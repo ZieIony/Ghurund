@@ -131,8 +131,8 @@ namespace Ghurund::Engine::DirectX {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_SHADER = ResourceFormat(L"shader", true, true);
-        static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", true, false);
+        static const inline ResourceFormat FORMAT_SHADER = ResourceFormat(L"shader", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_HLSL = ResourceFormat(L"hlsl", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SHADER, FORMAT_HLSL };
 #pragma endregion

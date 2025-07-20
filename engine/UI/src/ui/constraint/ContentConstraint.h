@@ -18,8 +18,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        ContentWidthConstraint():MinMaxConstraint(false, false) {}
-
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override;
@@ -43,8 +41,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
     public:
-        ContentHeightConstraint():MinMaxConstraint(false, false) {}
-
         virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
         virtual void evaluate() override;

@@ -37,12 +37,6 @@ namespace Ghurund::UI::Direct2D {
             Ghurund::Core::LoadOption options
         );
 
-        virtual void saveInternal(
-            const Ghurund::Core::DirectoryPath& workingDir,
-            Ghurund::Core::MemoryOutputStream& stream,
-            Ghurund::Core::SaveOption options
-        ) const;
-
     public:
         ~SvgDocument() {
             finalize();
@@ -77,7 +71,7 @@ namespace Ghurund::UI::Direct2D {
         }
 
     public:
-        static const inline Ghurund::Core::ResourceFormat FORMAT_SVG = Ghurund::Core::ResourceFormat(L"svg", true, false);
+        static const inline ResourceFormat FORMAT_SVG = ResourceFormat(L"svg", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_SVG };
 #pragma endregion

@@ -10,22 +10,23 @@ namespace Ghurund {
     private:
         Audio& audio;
 
-    public:
-        SoundLoader(Audio& audio):audio(audio) {}
-
-        virtual Sound* load(
+    protected:
+        virtual Resource* loadInternal(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            LoadOption options = LoadOption::DEFAULT
+            const ResourceFormat& format,
+            LoadOption options
         ) override;
 
-        virtual void save(
+        virtual void saveInternal(
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            SaveOption options = SaveOption::DEFAULT
+            const ResourceFormat& format,
+            SaveOption options
         ) const override;
+
+    public:
+        SoundLoader(Audio& audio):audio(audio) {}
     };
 }

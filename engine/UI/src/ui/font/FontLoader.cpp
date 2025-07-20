@@ -1,11 +1,9 @@
 #include "ghuipch.h"
 #include "FontLoader.h"
 
-#include "core/exception/Exceptions.h"
-
 namespace Ghurund::UI {
 
-    Font* FontLoader::load(
+    Resource* FontLoader::loadInternal(
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
@@ -16,12 +14,8 @@ namespace Ghurund::UI {
         return font;
     }
 
-    void FontLoader::save(MemoryOutputStream& stream, const DirectoryPath& workingDir, Resource& resource, const ResourceFormat& format, SaveOption options) const {
-        if (format == ResourceFormat::AUTO || format == Font::FORMAT_ATLAS) {
-			Font& font = (Font&)resource;
-            //if(font.load)
-        } else {
-            throw FormatNotSupportedException();
-        }
+    void FontLoader::saveInternal(MemoryOutputStream& stream, const DirectoryPath& workingDir, Resource& resource, const ResourceFormat& format, SaveOption options) const {
+		Font& font = (Font&)resource;
+        //if(font.load)
     }
 }

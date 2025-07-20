@@ -11,7 +11,7 @@ namespace UnitTest {
     public:
         size_t loadCalls = 0;
 
-        virtual Resource* load(
+        virtual Resource* loadInternal(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
@@ -21,16 +21,6 @@ namespace UnitTest {
             TestResource* testResource = ghnew TestResource();
             testResource->text = stream.readASCII();
             return testResource;
-        }
-
-        virtual void save(
-            MemoryOutputStream& stream,
-            const DirectoryPath& workingDir,
-            Resource& resource,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            SaveOption options = SaveOption::DEFAULT
-        ) const override {
-            throw NotImplementedException();
         }
     };
 }

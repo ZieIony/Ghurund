@@ -64,14 +64,14 @@ f 5/6/6 1/12/6 8/11/6
             MemoryInputStream stream(data.Data, data.Size);
 
             Assert::ExpectException<InvalidFormatException>([&]() {
-                IntrusivePointer<Mesh> mesh(loader->load(stream, DirectoryPath()));
+                IntrusivePointer<Mesh> mesh((Mesh*)loader->load(stream, DirectoryPath()));
             });
         }
 
         TEST_METHOD(MeshLoader_loadObj) {
             IntrusivePointer<MeshLoader> loader(ghnew MeshLoader());
             MemoryInputStream stream(data.Data, data.Size);
-            IntrusivePointer<Mesh> mesh(loader->load(stream, DirectoryPath()));
+            IntrusivePointer<Mesh> mesh((Mesh*)loader->load(stream, DirectoryPath()));
 
             Assert::AreEqual(24u, mesh->VertexCount);
             Assert::AreEqual(36u, mesh->IndexCount);
@@ -90,7 +90,7 @@ f 5/6/6 1/12/6 8/11/6
             loader->save(outStream, DirectoryPath(), *outMesh.get());
 
             MemoryInputStream inStream(outStream.Data, outStream.BytesWritten);
-            IntrusivePointer<Mesh> inMesh(loader->load(inStream, DirectoryPath()));
+            IntrusivePointer<Mesh> inMesh((Mesh*)loader->load(inStream, DirectoryPath()));
 
             Assert::AreEqual(outMesh->VertexCount, inMesh->VertexCount);
             Assert::AreEqual(outMesh->IndexCount, inMesh->IndexCount);

@@ -21,8 +21,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		SelfWidthConstraint():MinMaxConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -49,8 +47,6 @@ namespace Ghurund::UI {
 #pragma endregion
 
 	public:
-		SelfHeightConstraint():MinMaxConstraint(false, false) {}
-
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
 		virtual void evaluate() override {
@@ -84,8 +80,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		LeftWidthConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width)
-			:Constraint(false, false), left(left), width(width) {
+		LeftWidthConstraint(
+			const IntrusivePointer<Constraint>& left,
+			const IntrusivePointer<Constraint>& width
+		):left(left), width(width) {
 			dependencies.putAll({ this->left.get(), this->width.get() });
 		}
 
@@ -122,8 +120,11 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterLeftConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:Constraint(false, false), left(left), width(width), right(right) {
+		CenterLeftConstraint(
+			const IntrusivePointer<Constraint>& left,
+			const IntrusivePointer<Constraint>& width,
+			const IntrusivePointer<Constraint>& right
+		):left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
 
@@ -164,8 +165,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		LeftRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& right)
-			:Constraint(false, false), left(left), right(right) {
+		LeftRightConstraint(
+			const IntrusivePointer<Constraint>& left,
+			const IntrusivePointer<Constraint>& right
+		):left(left), right(right) {
 			dependencies.putAll({ this->left.get(), this->right.get() });
 		}
 
@@ -202,8 +205,11 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterRightConstraint(const IntrusivePointer<Constraint>& left, const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:Constraint(false, false), left(left), width(width), right(right) {
+		CenterRightConstraint(
+			const IntrusivePointer<Constraint>& left,
+			const IntrusivePointer<Constraint>& width,
+			const IntrusivePointer<Constraint>& right
+		):left(left), width(width), right(right) {
 			dependencies.putAll({ this->left.get(), this->width.get(), this->right.get() });
 		}
 
@@ -244,8 +250,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		WidthRightConstraint(const IntrusivePointer<Constraint>& width, const IntrusivePointer<Constraint>& right)
-			:Constraint(false, false), width(width), right(right) {
+		WidthRightConstraint(
+			const IntrusivePointer<Constraint>& width,
+			const IntrusivePointer<Constraint>& right
+		):width(width), right(right) {
 			dependencies.putAll({ this->width.get(), this->right.get() });
 		}
 
@@ -282,8 +290,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		TopHeightConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height)
-			:Constraint(false, false), top(top), height(height) {
+		TopHeightConstraint(
+			const IntrusivePointer<Constraint>& top,
+			const IntrusivePointer<Constraint>& height
+		):top(top), height(height) {
 			dependencies.putAll({ this->top.get(), this->height.get() });
 		}
 
@@ -320,8 +330,11 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterTopConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:Constraint(false, false), top(top), height(height), bottom(bottom) {
+		CenterTopConstraint(
+			const IntrusivePointer<Constraint>& top,
+			const IntrusivePointer<Constraint>& height,
+			const IntrusivePointer<Constraint>& bottom
+		):top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
 
@@ -362,8 +375,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		TopBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& bottom)
-			:Constraint(false, false), top(top), bottom(bottom) {
+		TopBottomConstraint(
+			const IntrusivePointer<Constraint>& top,
+			const IntrusivePointer<Constraint>& bottom
+		):top(top), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->bottom.get() });
 		}
 
@@ -400,8 +415,11 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		CenterBottomConstraint(const IntrusivePointer<Constraint>& top, const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:Constraint(false, false), top(top), height(height), bottom(bottom) {
+		CenterBottomConstraint(
+			const IntrusivePointer<Constraint>& top,
+			const IntrusivePointer<Constraint>& height,
+			const IntrusivePointer<Constraint>& bottom
+		):top(top), height(height), bottom(bottom) {
 			dependencies.putAll({ this->top.get(), this->height.get(), this->bottom.get() });
 		}
 
@@ -442,8 +460,10 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		HeightBottomConstraint(const IntrusivePointer<Constraint>& height, const IntrusivePointer<Constraint>& bottom)
-			:Constraint(false, false), height(height), bottom(bottom) {
+		HeightBottomConstraint(
+			const IntrusivePointer<Constraint>& height,
+			const IntrusivePointer<Constraint>& bottom
+		):height(height), bottom(bottom) {
 			dependencies.putAll({ this->height.get(), this->bottom.get() });
 		}
 

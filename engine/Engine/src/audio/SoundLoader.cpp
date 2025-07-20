@@ -2,7 +2,7 @@
 #include "SoundLoader.h"
 
 namespace Ghurund {
-    Sound* SoundLoader::load(
+    Resource* SoundLoader::loadInternal(
         MemoryInputStream& stream,
         const DirectoryPath& workingDir,
         const ResourceFormat& format,
@@ -13,7 +13,7 @@ namespace Ghurund {
         return sound;
     }
 
-    void SoundLoader::save(
+    void SoundLoader::saveInternal(
         MemoryOutputStream& stream,
         const DirectoryPath& workingDir,
         Resource& resource,

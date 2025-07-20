@@ -2,6 +2,7 @@
 
 #include "core/IntrusivePointer.h"
 #include "core/collection/Set.h"
+#include "core/EnumOperators.h"
 
 namespace Ghurund::UI {
 	class Control;
@@ -9,6 +10,10 @@ namespace Ghurund::UI {
 	class ICanvas;
 
 	using namespace Ghurund::Core;
+
+	enum class ConstraintOptions {
+		IS_CONSTANT = 1, SKIPS_DEPENDENCIES = 2
+	};
 
 	class Constraint:public RefCountedObject {
 #pragma region reflection
@@ -43,7 +48,10 @@ namespace Ghurund::UI {
 		virtual ~Constraint() = 0 {}
 
 	public:
-		Constraint(bool constant, bool skipDependencies):constant(constant), skipDependencies(skipDependencies) {}
+		Constraint(ConstraintOptions options = (ConstraintOptions)0):
+			constant((options& ConstraintOptions::IS_CONSTANT) == ConstraintOptions::IS_CONSTANT),
+			skipDependencies((options& ConstraintOptions::SKIPS_DEPENDENCIES) == ConstraintOptions::SKIPS_DEPENDENCIES) {
+		}
 
 		inline bool isConstant() const {
 			return constant;

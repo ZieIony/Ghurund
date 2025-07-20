@@ -5,6 +5,7 @@
 #include "ResourceFormat.h"
 #include "core/RefCountedObject.h"
 #include "core/allocation/Allocator.h"
+#include "core/exception/FormatNotSupportedException.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
 #include "core/reflection/Type.h"
@@ -39,24 +40,51 @@ namespace Ghurund::Core {
             return (T*)constructor.invoke();
         }
 
+        virtual Resource* loadInternal(
+            MemoryInputStream& stream,
+            const DirectoryPath& workingDir,
+            const ResourceFormat& format,
+            LoadOption options
+        ) {
+            throw NotSupportedException();
+        }
+
+        virtual void saveInternal(
+            MemoryOutputStream& stream,
+            const DirectoryPath& workingDir,
+            Resource& resource,
+            const ResourceFormat& format,
+            SaveOption options
+        ) const {
+            throw NotSupportedException();
+        }
+
     public:
         Loader(Allocator* allocator = nullptr):allocator(allocator) {}
 
         virtual ~Loader() = 0 {}
 
-        virtual Resource* load(
+        inline Resource* load(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
-        ) = 0;
+        ) {
+            if (!format.canLoad)
+                throw FormatNotSupportedException(format);
+            return loadInternal(stream, workingDir, format, options);
+        }
 
-        virtual void save(
+        inline void save(
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format = ResourceFormat::AUTO,
             SaveOption options = SaveOption::DEFAULT
-        ) const = 0;
+        ) const {
+            if (!format.canSave)
+                throw FormatNotSupportedException(format);
+            saveInternal(stream, workingDir, resource, format, options);
+        }
     };
 }

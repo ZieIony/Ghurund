@@ -104,7 +104,7 @@ namespace Ghurund::Engine::DirectX {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_MATERIAL = ResourceFormat(L"material", true, true);
+        static const inline ResourceFormat FORMAT_MATERIAL = ResourceFormat(L"material", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MATERIAL };
 #pragma endregion

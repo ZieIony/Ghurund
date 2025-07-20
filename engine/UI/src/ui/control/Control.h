@@ -388,7 +388,7 @@ namespace Ghurund::UI {
 		}
 
 	public:
-		static const inline Ghurund::Core::ResourceFormat FORMAT_XML = Ghurund::Core::ResourceFormat(L"xml", true, true);
+		static const inline ResourceFormat FORMAT_XML = ResourceFormat(L"xml", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_XML };
 #pragma endregion

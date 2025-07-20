@@ -7,23 +7,22 @@
 namespace Ghurund::UI::Direct2D {
     class BitmapLoader:public Loader {
     private:
-        Ghurund::Core::ImageLoader& imageLoader;
-        IBitmapFactory& bitmapFactory;
+        // borrowed
+        Ghurund::Core::ImageLoader* imageLoader;
+        IBitmapFactory* bitmapFactory;
 
-    public:
-        BitmapLoader(Ghurund::Core::ImageLoader& imageLoader, IBitmapFactory& bitmapFactory):imageLoader(imageLoader), bitmapFactory(bitmapFactory) {}
-
-        virtual Ghurund::UI::Bitmap* load(
+    protected:
+        virtual Resource* loadInternal(
             MemoryInputStream& stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
         ) override {
-            IntrusivePointer<Image> image(imageLoader.load(stream, workingDir, format, options));
-            return bitmapFactory.makeBitmap(*image.get());
+            IntrusivePointer<Image> image((Image*)imageLoader->load(stream, workingDir, format, options));
+            return bitmapFactory->makeBitmap(*image.get());
         }
 
-        virtual void save(
+        virtual void saveInternal(
             MemoryOutputStream& stream,
             const DirectoryPath& workingDir,
             Resource& resource,
@@ -31,7 +30,10 @@ namespace Ghurund::UI::Direct2D {
             SaveOption options = SaveOption::DEFAULT
         ) const override {
             Bitmap& bitmap = (Bitmap&)resource;
-            imageLoader.save(stream, workingDir, *bitmap.Image, format, options);
+            imageLoader->save(stream, workingDir, *bitmap.Image, format, options);
         }
+
+    public:
+        BitmapLoader(NotNull<Ghurund::Core::ImageLoader> imageLoader, NotNull<IBitmapFactory> bitmapFactory):imageLoader(&imageLoader), bitmapFactory(&bitmapFactory) {}
     };
 }

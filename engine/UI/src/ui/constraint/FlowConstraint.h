@@ -20,7 +20,7 @@ namespace Ghurund::UI {
 		~FlowWidthConstraint() {}
 
 	public:
-		FlowWidthConstraint():MinMaxConstraint(false, true) {}
+		FlowWidthConstraint():MinMaxConstraint(ConstraintOptions::SKIPS_DEPENDENCIES) {}
 
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 
@@ -47,7 +47,7 @@ namespace Ghurund::UI {
 		~FlowHeightConstraint() {}
 
 	public:
-		FlowHeightConstraint():MinMaxConstraint(false, true) {}
+		FlowHeightConstraint():MinMaxConstraint(ConstraintOptions::SKIPS_DEPENDENCIES) {}
 
 		virtual void resolve(Control& control, ConstraintGraph& graph) override;
 

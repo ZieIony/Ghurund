@@ -124,7 +124,7 @@ namespace Ghurund {
         }
 
     public:
-        static const inline ResourceFormat FORMAT_WAV = ResourceFormat(L"wav", true, false);
+        static const inline ResourceFormat FORMAT_WAV = ResourceFormat(L"wav", ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_WAV };
 #pragma endregion

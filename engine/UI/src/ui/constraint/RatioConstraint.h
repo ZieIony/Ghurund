@@ -31,7 +31,7 @@ namespace Ghurund::UI {
 		~RatioConstraint() = 0 {}
 
 	public:
-		RatioConstraint(bool constant, bool skipDependencies):OffsetConstraint(constant, skipDependencies) {}
+		RatioConstraint(ConstraintOptions options = (ConstraintOptions)0):OffsetConstraint(options) {}
 
 		inline float getRatio() const {
 			return ratio;

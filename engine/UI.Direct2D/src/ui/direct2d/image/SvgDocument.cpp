@@ -51,14 +51,6 @@ namespace Ghurund::UI::Direct2D {
         root->Release();
     }
 
-    void SvgDocument::saveInternal(
-        const Ghurund::Core::DirectoryPath& workingDir,
-        Ghurund::Core::MemoryOutputStream& stream,
-        Ghurund::Core::SaveOption options
-    ) const {
-        throw NotSupportedException();
-    }
-
     void SvgDocument::finalize() {
         if (svgDocument != nullptr)
             svgDocument->Release();

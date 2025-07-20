@@ -61,7 +61,7 @@ namespace Ghurund::UI {
 		}
 	}
 
-	Control* LayoutLoader::load(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
+	Resource* LayoutLoader::loadInternal(MemoryInputStream& stream, const DirectoryPath& workingDir, const ResourceFormat& format, LoadOption options) {
 		tinyxml2::XMLDocument doc;
 		doc.Parse((const char*)stream.Data, stream.Size);
 

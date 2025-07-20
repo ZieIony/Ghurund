@@ -100,8 +100,8 @@ namespace Ghurund::Engine {
 		}
 
 	public:
-		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", true, true);
-		static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", true, false);
+		static const inline ResourceFormat FORMAT_MESH = ResourceFormat(L"mesh", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+		static const inline ResourceFormat FORMAT_OBJ = ResourceFormat(L"obj", ResourceFormatOptions::CAN_LOAD);
 
 		inline static const Array<ResourceFormat>& FORMATS = { FORMAT_MESH, FORMAT_OBJ };
 #pragma endregion

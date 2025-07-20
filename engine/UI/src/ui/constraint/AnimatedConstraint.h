@@ -22,8 +22,10 @@ namespace Ghurund::UI {
 		~AnimatedConstraint() {}
 
 	public:
-		AnimatedConstraint(const IntrusivePointer<Constraint>& from, const IntrusivePointer<Constraint>& to)
-			:Constraint(false, false), from(from), to(to) {
+		AnimatedConstraint(
+			const IntrusivePointer<Constraint>& from,
+			const IntrusivePointer<Constraint>& to
+		):from(from), to(to) {
 			dependencies.putAll({ this->from.get(), this->to.get() });
 		}
 

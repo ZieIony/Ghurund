@@ -27,7 +27,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingLeftConstraint(const AString& name):OffsetConstraint(false, false), name(name) {}
+		SiblingLeftConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;
@@ -73,7 +73,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingRightConstraint(const AString& name):OffsetConstraint(false, false), name(name) {}
+		SiblingRightConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;
@@ -119,7 +119,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingTopConstraint(const AString& name):OffsetConstraint(false, false), name(name) {}
+		SiblingTopConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;
@@ -165,7 +165,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingBottomConstraint(const AString& name):OffsetConstraint(false, false), name(name) {}
+		SiblingBottomConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;
@@ -211,7 +211,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingWidthConstraint(const AString& name):MinMaxConstraint(false, false), name(name) {}
+		SiblingWidthConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;
@@ -257,7 +257,7 @@ namespace Ghurund::UI {
 		virtual bool equalsImpl(const Object& other) const override;
 
 	public:
-		SiblingHeightConstraint(const AString& name):MinMaxConstraint(false, false), name(name) {}
+		SiblingHeightConstraint(const AString& name):name(name) {}
 
 		inline const AString& getName() const {
 			return name;

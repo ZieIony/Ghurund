@@ -57,9 +57,9 @@ namespace Ghurund::UI::DirectX {
         }
 
     public:
-        static const inline Ghurund::Core::ResourceFormat FORMAT_JPG = Ghurund::Core::ResourceFormat(L"jpg", true, true);
-        static const inline Ghurund::Core::ResourceFormat FORMAT_JPEG = Ghurund::Core::ResourceFormat(L"jpeg", true, true);
-        static const inline Ghurund::Core::ResourceFormat FORMAT_PNG = Ghurund::Core::ResourceFormat(L"png", true, true);
+        static const inline ResourceFormat FORMAT_JPG = ResourceFormat(L"jpg", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_JPEG = ResourceFormat(L"jpeg", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
+        static const inline ResourceFormat FORMAT_PNG = ResourceFormat(L"png", ResourceFormatOptions::CAN_SAVE | ResourceFormatOptions::CAN_LOAD);
 
         inline static const Array<ResourceFormat>& FORMATS = { FORMAT_JPG, FORMAT_JPEG, FORMAT_PNG };
 #pragma endregion

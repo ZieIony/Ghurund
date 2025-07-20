@@ -1,6 +1,7 @@
 #include "ghcpch.h"
 #include "ResourceManager.h"
 
+#include "core/EnumOperators.h"
 #include "core/Timer.h"
 #include "core/logging/Logger.h"
 #include "core/reflection/TypeBuilder.h"
@@ -95,7 +96,7 @@ namespace Ghurund::Core {
 		}
 		ResourcePath filePath = file.Path;
 		resource->Path = &filePath;
-		if (!(options & LoadOption::DONT_CACHE))
+		if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
 			resources.add(file.Path, *resource);
 		return resource;
 	}
@@ -109,7 +110,7 @@ namespace Ghurund::Core {
 			resource->addReference();
 		}
 		resource->Path = &path;	// use the original path in case anything changes in libs
-		if (!(options & LoadOption::DONT_CACHE))
+		if ((options & LoadOption::DONT_CACHE) != LoadOption::DONT_CACHE)
 			resources.add(resolvedPath, *resource);
 		return resource;
 	}

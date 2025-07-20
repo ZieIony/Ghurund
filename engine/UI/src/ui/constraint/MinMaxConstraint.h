@@ -31,7 +31,7 @@ namespace Ghurund::UI {
 		~MinMaxConstraint() = 0 {}
 
 	public:
-		MinMaxConstraint(bool constant, bool skipDependencies):RatioConstraint(constant, skipDependencies) {}
+		MinMaxConstraint(ConstraintOptions options = (ConstraintOptions)0):RatioConstraint(options) {}
 
 		inline float getMin() const {
 			return min;

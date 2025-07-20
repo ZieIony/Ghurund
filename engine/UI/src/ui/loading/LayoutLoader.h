@@ -39,6 +39,14 @@ namespace Ghurund::UI {
 		PropertyLoaderCollection propertyLoaders;
 		Map<AString, const BaseConstructor*> types;
 
+	protected:
+		virtual Resource* loadInternal(
+			MemoryInputStream& stream,
+			const DirectoryPath& workingDir,
+			const ResourceFormat& format,
+			LoadOption options
+		) override;
+
 	public:
 		static inline const char* FILE_PROTOCOL = "file://";
 		static inline const char* THEME_COLOR = "theme://color/";
@@ -69,23 +77,6 @@ namespace Ghurund::UI {
 				throw InvalidParamException("the type doesn't have a zero-parameter constructor");
 			types.put(type.Namespace + "::" + type.Name, constructor);
 		}
-
-		virtual Control* load(
-			Ghurund::Core::MemoryInputStream& stream,
-			const DirectoryPath& workingDir,
-			const ResourceFormat& format = ResourceFormat::AUTO,
-			Ghurund::Core::LoadOption options = Ghurund::Core::LoadOption::DEFAULT
-		) override;
-
-        virtual void save(
-            Ghurund::Core::MemoryOutputStream& stream,
-			const DirectoryPath& workingDir,
-            Ghurund::Core::Resource& resource,
-            const ResourceFormat& format = ResourceFormat::AUTO,
-            Ghurund::Core::SaveOption options = Ghurund::Core::SaveOption::DEFAULT
-        ) const override {
-            throw NotImplementedException();
-        }
 
 		void loadProperties(Object& obj, const DirectoryPath& workingDir, const tinyxml2::XMLElement& xml);
 
