@@ -51,7 +51,7 @@ namespace Ghurund::Core {
 
 		[[nodiscard]]
 		Resource* load(
-			Loader& loader,
+			NotNull<Loader> loader,
 			const File& file,
 			const ResourceFormat& format = ResourceFormat::AUTO,
 			LoadOption options = LoadOption::DEFAULT
@@ -59,7 +59,7 @@ namespace Ghurund::Core {
 
 		[[nodiscard]]
 		Resource* load(
-			Loader& loader,
+			NotNull<Loader> loader,
 			const ResourcePath& path,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format = ResourceFormat::AUTO,
@@ -67,7 +67,7 @@ namespace Ghurund::Core {
 		);
 
 		Resource* loadInternal(
-			Loader& loader,
+			NotNull<Loader> loader,
 			const DirectoryPath& workingDir,
 			const ResourcePath& path,
 			const ResourceFormat& format,
@@ -75,7 +75,7 @@ namespace Ghurund::Core {
 		);
 
 		Resource* loadInternal(
-			Loader& loader,
+			NotNull<Loader> loader,
 			const DirectoryPath& workingDir,
 			const Buffer& buffer,
 			const ResourceFormat& format,

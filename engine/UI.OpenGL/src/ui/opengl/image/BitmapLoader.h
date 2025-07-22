@@ -11,7 +11,7 @@ namespace Ghurund::UI::OpenGL {
 
     protected:
         virtual Resource* loadInternal(
-            MemoryInputStream& stream,
+            NotNull<MemoryInputStream> stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
@@ -24,7 +24,7 @@ namespace Ghurund::UI::OpenGL {
         }
 
         virtual void saveInternal(
-            MemoryOutputStream& stream,
+            NotNull<MemoryOutputStream> stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format,

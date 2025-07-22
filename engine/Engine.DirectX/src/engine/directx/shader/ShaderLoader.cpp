@@ -3,7 +3,7 @@
 #include "CompilerInclude.h"
 
 namespace Ghurund::Engine::DirectX {
-	Shader* ShaderLoader::loadShd(MemoryInputStream& stream) {
+	Shader* ShaderLoader::loadShd(NotNull<MemoryInputStream> stream) {
 		//readHeader(stream);
 
 		/*if (stream.readBoolean()) {
@@ -33,9 +33,9 @@ namespace Ghurund::Engine::DirectX {
 		throw NotImplementedException();
 	}
 
-	Shader* ShaderLoader::loadHlsl(MemoryInputStream& stream) {
+	Shader* ShaderLoader::loadHlsl(NotNull<MemoryInputStream> stream) {
 		auto shader = IntrusivePointer<Shader>(makeResource<Shader>());
-		AString sourceCode((const char*)stream.Data, stream.Size);
+		AString sourceCode((const char*)stream->Data, stream->Size);
 
 		DirectoryPath workingDir;
 		CompilerInclude include(workingDir, DirectoryPath(L"./shaders/"));
@@ -58,7 +58,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	Resource* ShaderLoader::loadInternal(
-		MemoryInputStream& stream,
+		NotNull<MemoryInputStream> stream,
 		const DirectoryPath& workingDir,
 		const ResourceFormat& format,
 		LoadOption options
@@ -71,7 +71,7 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	void ShaderLoader::saveInternal(
-		MemoryOutputStream& stream,
+		NotNull<MemoryOutputStream> stream,
 		const DirectoryPath& workingDir,
 		Resource& resource,
 		const ResourceFormat& format,

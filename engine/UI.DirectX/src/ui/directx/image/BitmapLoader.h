@@ -13,7 +13,7 @@ namespace Ghurund::UI::DirectX {
 
     protected:
         virtual Resource* loadInternal(
-            MemoryInputStream& stream,
+            NotNull<MemoryInputStream> stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format = ResourceFormat::AUTO,
             LoadOption options = LoadOption::DEFAULT
@@ -23,7 +23,7 @@ namespace Ghurund::UI::DirectX {
         }
 
         virtual void saveInternal(
-            MemoryOutputStream& stream,
+            NotNull<MemoryOutputStream> stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format = ResourceFormat::AUTO,

@@ -11,21 +11,21 @@ namespace Ghurund::Engine::DirectX {
 	private:
         ShaderCompiler& compiler;
 
-		Shader* loadShd(MemoryInputStream& stream);
-		Shader* loadHlsl(MemoryInputStream& stream);
+		Shader* loadShd(NotNull<MemoryInputStream> stream);
+		Shader* loadHlsl(NotNull<MemoryInputStream> stream);
 
     public:
         ShaderLoader(ShaderCompiler& compiler):compiler(compiler) {}
 
         virtual Resource* loadInternal(
-            MemoryInputStream& stream,
+            NotNull<MemoryInputStream> stream,
             const DirectoryPath& workingDir,
             const ResourceFormat& format,
             LoadOption options
         ) override;
 
         virtual void saveInternal(
-            MemoryOutputStream& stream,
+            NotNull<MemoryOutputStream> stream,
             const DirectoryPath& workingDir,
             Resource& resource,
             const ResourceFormat& format,

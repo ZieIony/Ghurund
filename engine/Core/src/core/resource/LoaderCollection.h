@@ -5,8 +5,6 @@
 #include "core/reflection/Type.h"
 #include "core/resource/Loader.h"
 
-#include <memory>
-
 namespace Ghurund::Core {
     class LoaderCollection {
     private:
@@ -14,9 +12,9 @@ namespace Ghurund::Core {
 
     public:
         template<typename T>
-        inline void set(Loader* loader) {
+        inline void set(NotNull<Loader> loader) {
             loader->addReference();
-            loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), IntrusivePointer(loader));
+            loaders.put(&(const Ghurund::Core::Type&)T::GET_TYPE(), IntrusivePointer(&loader));
         }
 
         inline Loader* get(const Type& t) const {

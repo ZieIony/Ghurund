@@ -12,14 +12,14 @@ namespace Ghurund::Engine {
 
 	protected:
 		virtual Resource* loadInternal(
-			MemoryInputStream& stream,
+			NotNull<MemoryInputStream> stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			LoadOption options
 		) override;
 
 		virtual void saveInternal(
-			MemoryOutputStream& stream,
+			NotNull<MemoryOutputStream> stream,
 			const DirectoryPath& workingDir,
 			Resource& resource,
 			const ResourceFormat& format,

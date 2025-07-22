@@ -41,7 +41,7 @@ namespace Ghurund::UI {
 
 	protected:
 		virtual Resource* loadInternal(
-			MemoryInputStream& stream,
+			NotNull<MemoryInputStream> stream,
 			const DirectoryPath& workingDir,
 			const ResourceFormat& format,
 			LoadOption options
