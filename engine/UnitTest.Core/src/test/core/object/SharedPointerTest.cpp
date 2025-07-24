@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 #include "test/MemoryGuard.h"
 
-#include "core/SharedPointer.h"
+#include "core/object/SharedPointer.h"
 #include "core/reflection/StandardTypes.h"
 
 #include <format>

@@ -2,8 +2,8 @@
 
 #include "Feature.h"
 #include "FeatureFactory.h"
-#include "core/IntrusivePointer.h"
-#include "core/SharedPointer.h"
+#include "core/object/IntrusivePointer.h"
+#include "core/object/SharedPointer.h"
 #include "core/collection/Map.h"
 #include "core/concepts/Concepts.h"
 #include "core/logging/Formatter.h"
@@ -55,7 +55,7 @@ namespace Ghurund::Core {
 				auto it2 = factories.find(&type);
 				if (it2 == factories.end())
 					throw FeatureNotAvailableException(std::format("feature '{}' is not available", T::TYPE.Name).c_str());
-				auto feature = IntrusivePointer<Feature>(it2->value->make().release());
+				auto feature = IntrusivePointer<Feature>(&it2->value->make());
 				features.put(&type, feature);
 				return feature;
 			}();
@@ -74,7 +74,7 @@ namespace Ghurund::Core {
 		void init() {
 			for (auto& f : factories) {
 				if (!features.contains(f.key))
-					features.put(f.key, IntrusivePointer<Feature>(f.value->make().release()));
+					features.put(f.key, IntrusivePointer<Feature>(&f.value->make()));
 			}
 			for (auto& f : features)
 				init(f.value);

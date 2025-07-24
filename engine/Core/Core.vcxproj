@@ -102,7 +102,8 @@
     <ClInclude Include="src\core\EnumOperators.h" />
     <ClInclude Include="src\core\exception\FormatNotSupportedException.h" />
     <ClInclude Include="src\core\exception\NullPointerException.h" />
-    <ClInclude Include="src\core\NotNull.h" />
+    <ClInclude Include="src\core\object\NotNull.h" />
+    <ClInclude Include="src\core\object\OwnedNotNull.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -118,14 +119,14 @@
     <ClInclude Include="src\core\Hashing.h" />
     <ClInclude Include="src\core\IUnknownImpl.h" />
     <ClInclude Include="src\core\Id.h" />
-    <ClInclude Include="src\core\IntrusivePointer.h" />
-    <ClInclude Include="src\core\Noncopyable.h" />
-    <ClInclude Include="src\core\Object.h" />
+    <ClInclude Include="src\core\object\IntrusivePointer.h" />
+    <ClInclude Include="src\core\object\Noncopyable.h" />
+    <ClInclude Include="src\core\object\Object.h" />
     <ClInclude Include="src\core\Observable.h" />
     <ClInclude Include="src\core\ObservableHandler.h" />
     <ClInclude Include="src\core\Provider.h" />
-    <ClInclude Include="src\core\RefCountedObject.h" />
-    <ClInclude Include="src\core\SharedPointer.h" />
+    <ClInclude Include="src\core\object\RefCountedObject.h" />
+    <ClInclude Include="src\core\object\SharedPointer.h" />
     <ClInclude Include="src\core\StackTrace.h" />
     <ClInclude Include="src\core\SystemInfo.h" />
     <ClInclude Include="src\core\Timer.h" />
@@ -266,8 +267,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\core\Color.cpp" />
-    <ClCompile Include="src\core\Object.cpp" />
-    <ClCompile Include="src\core\RefCountedObject.cpp" />
+    <ClCompile Include="src\core\object\Object.cpp" />
+    <ClCompile Include="src\core\object\RefCountedObject.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\core\allocation\CircularBufferStrategy.cpp" />
     <ClCompile Include="src\core\allocation\SimpleBufferStrategy.cpp" />

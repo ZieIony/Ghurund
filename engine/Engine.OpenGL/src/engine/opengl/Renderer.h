@@ -5,7 +5,7 @@
 
 #include <core/window/SystemWindow.h>
 #include "graphics/RenderingStatistics.h"
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include <parameter/ParameterManager.h>
 #include <core/Color.h>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "core/reflection/Type.h"
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"

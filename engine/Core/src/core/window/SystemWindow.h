@@ -4,8 +4,8 @@
 #include "Window.h"
 #include "WindowClass.h"
 #include "WindowDecorationMetrics.h"
-#include "core/NotNull.h"
-#include "core/SharedPointer.h"
+#include "core/object/NotNull.h"
+#include "core/object/SharedPointer.h"
 #include "core/collection/Map.h"
 #include "core/input/Input.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"

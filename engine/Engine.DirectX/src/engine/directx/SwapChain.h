@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/collection/BufferedValue.h"
 #include "engine/directx/buffer/RenderTarget.h"
 #include "engine/directx/buffer/DepthBuffer.h"

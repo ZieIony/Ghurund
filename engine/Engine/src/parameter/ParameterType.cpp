@@ -1,7 +1,7 @@
 #include "ghepch.h"
 #include "ParameterType.h"
 
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 
 #include <DirectXMath.h>
 

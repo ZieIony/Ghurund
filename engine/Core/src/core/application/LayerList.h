@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/collection/List.h"
 #include "core/input/EventConsumer.h"
 #include "core/math/Size.h"

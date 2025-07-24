@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/collection/Array.h"
 #include "core/reflection/Type.h"
 #include "StrokeStyle.h"

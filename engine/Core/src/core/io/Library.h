@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Buffer.h"
-#include "core/SharedPointer.h"
+#include "core/object/SharedPointer.h"
 #include "core/string/String.h"
 
 namespace Ghurund::Core {

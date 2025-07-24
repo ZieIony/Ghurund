@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "ui/control/Control.h"
 #include "ui/constraint/ConstraintSet.h"
 

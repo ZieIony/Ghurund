@@ -1,7 +1,7 @@
 #pragma once
 
 #include "DisplayMode.h"
-#include "core/SharedPointer.h"
+#include "core/object/SharedPointer.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
 

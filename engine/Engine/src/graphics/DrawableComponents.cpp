@@ -3,7 +3,7 @@
 #include "DrawableComponents.h"
 
 /*#include "graphics/Materials.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/directx/mesh/CubeMesh.h"
 #include "core/directx/mesh/SphereMesh.h"*/
 

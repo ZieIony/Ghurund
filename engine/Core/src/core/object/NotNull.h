@@ -1,6 +1,6 @@
 #pragma once
 
-#include "exception/NullPointerException.h"
+#include "core/exception/NullPointerException.h"
 
 namespace Ghurund::Core {
 	template <typename T>

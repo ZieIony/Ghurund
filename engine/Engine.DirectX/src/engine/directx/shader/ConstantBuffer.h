@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 //#include "engine/directx/shader/parameter/Parameter.h"
 #include "engine/directx/buffer/DynamicBuffer.h"
 #include "engine/directx/shader/ConstantBufferField.h"

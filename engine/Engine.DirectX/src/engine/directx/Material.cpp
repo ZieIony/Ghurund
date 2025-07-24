@@ -4,7 +4,7 @@
 
 #include "engine/directx/Graphics.h"
 #include "core/resource/ResourceManager.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/reflection/TypeBuilder.h"
 
 namespace Ghurund::Engine::DirectX {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 
 namespace Ghurund::Core {
 	using namespace Ghurund::Core;

@@ -1,7 +1,7 @@
 #include "utcpch.h"
 #include "CppUnitTest.h"
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "core/threading/WorkerThread.h"
 #include "test/MemoryGuard.h"
 

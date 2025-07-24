@@ -6,7 +6,7 @@
 #include "core/math/Size.h"
 #include "core/string/TextConversionUtils.h"
 #include "TestLogOutput.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 
 #include <format>
 #include <initializer_list>

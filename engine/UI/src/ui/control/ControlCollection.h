@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ControlParent.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 
 namespace Ghurund::UI {
 	class ControlCollection {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "HeapAllocator.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>

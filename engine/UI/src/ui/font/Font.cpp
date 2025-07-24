@@ -6,7 +6,7 @@
 #include "core/reflection/StandardTypes.h"
 
 #include "core/Finally.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/image/ImageLoader.h"
 #include "core/math/Bezier.h"
 #include "Ttf.h"

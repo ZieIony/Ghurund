@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ObservableHandler.h"
-#include "core/Object.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/Object.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/collection/List.h"
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Method.h"

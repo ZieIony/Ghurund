@@ -6,8 +6,8 @@
 #include "Socket.h"
 #include "core/Buffer.h"
 #include "core/exception/Exceptions.h"
-#include "core/Noncopyable.h"
-#include "core/SharedPointer.h"
+#include "core/object/Noncopyable.h"
+#include "core/object/SharedPointer.h"
 #include "core/collection/List.h"
 
 namespace Ghurund::Net {

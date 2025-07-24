@@ -34,7 +34,6 @@ namespace Ghurund::Engine::DirectX {
 	}
 
 	Shader* ShaderLoader::loadHlsl(NotNull<MemoryInputStream> stream) {
-		auto shader = IntrusivePointer<Shader>(makeResource<Shader>());
 		AString sourceCode((const char*)stream->Data, stream->Size);
 
 		DirectoryPath workingDir;
@@ -47,14 +46,10 @@ namespace Ghurund::Engine::DirectX {
 			} catch (...) {}
 		}
 		auto array = Array<SharedPointer<ShaderProgram>>(programs);
-		auto constants = compiler.getConstants(array);
-		auto rootSignature = compiler.makeRootSignature(constants);
-		auto pipelineState = compiler.makePipelineState(programs, rootSignature, false);
-		shader->init(rootSignature, pipelineState, constants);
+		auto shader = compiler.build(programs);
 		//bool supportsTransparency = sourceCode.find("supportsTransparency") != sourceCode.Size;
 
-		shader->addReference();
-		return shader.get();
+		return &shader;
 	}
 
 	Resource* ShaderLoader::loadInternal(

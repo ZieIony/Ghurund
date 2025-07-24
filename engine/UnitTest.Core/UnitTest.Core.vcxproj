@@ -108,11 +108,12 @@
     <ClInclude Include="src\utcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\test\core\object\OwnedNotNullTest.cpp" />
     <ClCompile Include="src\test\TestUtils.cpp" />
     <ClCompile Include="src\test\core\ColorTest.cpp" />
     <ClCompile Include="src\test\core\DataParsingTest.cpp" />
     <ClCompile Include="src\test\core\ObservableTest.cpp" />
-    <ClCompile Include="src\test\core\SharedPointerTest.cpp" />
+    <ClCompile Include="src\test\core\object\SharedPointerTest.cpp" />
     <ClCompile Include="src\test\core\collection\ArrayIteratorTest.cpp" />
     <ClCompile Include="src\test\core\collection\BagTest.cpp" />
     <ClCompile Include="src\test\core\collection\LinkedListTest.cpp" />

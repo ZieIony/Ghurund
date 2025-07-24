@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "core/collection/List.h"
 #include "core/reflection/Type.h"
 #include "engine/directx/adapter/GraphicsAdapter.h"

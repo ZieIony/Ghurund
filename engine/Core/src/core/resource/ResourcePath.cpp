@@ -3,7 +3,7 @@
 
 #include "core/exception/Exceptions.h"
 #include "core/logging/Logger.h"
-#include "core/SharedPointer.h"
+#include "core/object/SharedPointer.h"
 
 #include <format>
 

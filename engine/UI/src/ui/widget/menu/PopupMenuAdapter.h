@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MenuItem.h"
-#include "core/SharedPointer.h"
+#include "core/object/SharedPointer.h"
 #include "ui/style/Theme.h"
 #include "ui/control/DrawableView.h"
 #include "ui/control/PaddingContainer.h"

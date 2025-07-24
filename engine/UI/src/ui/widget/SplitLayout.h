@@ -2,7 +2,7 @@
 
 #include "ui/Orientation.h"
 #include "ui/control/ControlContainer.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 
 namespace Ghurund::UI {
     using namespace Ghurund::Core;

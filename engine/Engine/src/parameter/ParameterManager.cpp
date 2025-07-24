@@ -2,7 +2,7 @@
 
 #include "ParameterManager.h"
 
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 
 #include <DirectXMath.h>
 

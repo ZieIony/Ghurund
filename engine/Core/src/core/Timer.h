@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Object.h"
+#include "core/object/Object.h"
 
 #include <Windows.h>
 

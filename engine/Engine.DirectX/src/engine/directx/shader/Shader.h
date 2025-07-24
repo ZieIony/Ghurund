@@ -3,6 +3,8 @@
 #include "CompilationTarget.h"
 #include "ConstantBuffer.h"
 #include "core/collection/List.h"
+#include <core/Buffer.h>
+#include <core/object/OwnedNotNull.h>
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
 #include "Sampler.h"
@@ -18,7 +20,6 @@
 #pragma warning(pop)
 
 #include <wrl.h>
-#include <core/Buffer.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace Microsoft::WRL;
@@ -80,7 +81,7 @@ namespace Ghurund::Engine::DirectX {
             return pipelineState != nullptr && rootSignature != nullptr && __super::isValid();
         }
 
-        void init(NotNull<ID3D12RootSignature> rootSignature, NotNull<ID3D12PipelineState> pipelineState, NotNull<ShaderConstants> constants) {
+        void init(OwnedNotNull<ID3D12RootSignature> rootSignature, OwnedNotNull<ID3D12PipelineState> pipelineState, OwnedNotNull<ShaderConstants> constants) {
             this->rootSignature = &rootSignature;
             this->pipelineState = &pipelineState;
             this->constants = &constants;

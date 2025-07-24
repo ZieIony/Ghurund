@@ -4,7 +4,7 @@
 #include "Thread.h"
 #include "Task.h"
 #include "Waitable.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/collection/List.h"
 #include "core/string/String.h"
 

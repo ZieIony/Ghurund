@@ -2,7 +2,7 @@
 
 #include "TextFormat.h"
 #include "core/Color.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/string/TextConversionUtils.h"
 #include "ui/drawable/Drawable.h"
 

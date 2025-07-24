@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/collection/Set.h"
 #include "core/EnumOperators.h"
 

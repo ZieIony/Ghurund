@@ -2,7 +2,7 @@
 
 #include "parameter/Parameter.h"
 #include "core/string/String.h"
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "ParameterCollection.h"
 #include "graphics/ITextureProvider.h"
 #include "TextureParameter.h"

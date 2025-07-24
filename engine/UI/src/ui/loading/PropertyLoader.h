@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "core/reflection/BaseProperty.h"
 
 #include <exception>

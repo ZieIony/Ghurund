@@ -91,7 +91,7 @@ namespace Ghurund::Engine::DirectX {
 		}
 	}
 
-	ID3D12PipelineState* ShaderCompiler::makePipelineState(
+	OwnedNotNull<ID3D12PipelineState> ShaderCompiler::makePipelineState(
 		const Array<SharedPointer<ShaderProgram>>& programs,
 		ID3D12RootSignature* rootSignature,
 		bool supportsTransparency
@@ -167,7 +167,7 @@ namespace Ghurund::Engine::DirectX {
 		return pipelineState;
 	}
 
-	ID3D12RootSignature* ShaderCompiler::makeRootSignature(NotNull<ShaderConstants> constants) {
+	OwnedNotNull<ID3D12RootSignature> ShaderCompiler::makeRootSignature(NotNull<ShaderConstants> constants) {
 		size_t paramCount = constants->constantBuffers.Size + constants->textureBuffers.Size + constants->textures.Size;
 		Array<CD3DX12_ROOT_PARAMETER1> rootParameters(paramCount);
 
@@ -216,14 +216,14 @@ namespace Ghurund::Engine::DirectX {
 		return rootSignature;
 	}
 
-	ShaderConstants* ShaderCompiler::getConstants(Array<SharedPointer<ShaderProgram>>& programs) {
+	OwnedNotNull<ShaderConstants> ShaderCompiler::makeConstants(const Array<SharedPointer<ShaderProgram>>& programs) {
 		ShaderConstants* constants = ghnew ShaderConstants();
 		for (auto& program:programs)
 				initConstants(*program.get(), constants);
 		return constants;
 	}
 
-	void ShaderCompiler::initConstants(ShaderProgram& program, ShaderConstants* constants) {
+	void ShaderCompiler::initConstants(const ShaderProgram& program, NotNull<ShaderConstants> constants) {
 		ID3D12ShaderReflection* reflector = nullptr;
 		D3DReflect(program.ByteCode.Data, program.ByteCode.Size, IID_ID3D12ShaderReflection, (void**)&reflector);
 		D3D12_SHADER_DESC desc;

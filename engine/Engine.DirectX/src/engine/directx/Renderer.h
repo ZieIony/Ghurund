@@ -4,7 +4,7 @@
 #include "engine/directx/SwapChain.h"
 #include "Postprocess.h"
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "graphics/RenderingStatistics.h"
 #include "Material.h"
 #include <parameter/ParameterManager.h>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "core/Object.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/Object.h"
+#include "core/object/IntrusivePointer.h"
 #include "ui/theme/Theme.h"
 #include "ui/control/Control.h"
 

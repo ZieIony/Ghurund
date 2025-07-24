@@ -4,7 +4,7 @@
 #include "WindowCollection.h"
 
 #include "core/feature/FeatureProvider.h"
-#include "core/Noncopyable.h"
+#include "core/object/Noncopyable.h"
 #include "core/Timer.h"
 #include "core/threading/FunctionQueue.h"
 #include "core/resource/ResourceManager.h"

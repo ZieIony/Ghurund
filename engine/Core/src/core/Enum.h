@@ -3,7 +3,7 @@
 #include "core/collection/Map.h"
 #include "core/string/String.h"
 #include "core/exception/Exceptions.h"
-#include "Noncopyable.h"
+#include "core/object/Noncopyable.h"
 
 namespace Ghurund::Core {
 

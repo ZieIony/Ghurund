@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Color.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/math/Size.h"
 
 namespace Ghurund::UI {

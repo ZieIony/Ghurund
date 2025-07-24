@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/application/Application.h"
 #include "core/application/LayerList.h"
 #include "core/window/SystemWindow.h"

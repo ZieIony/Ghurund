@@ -2,7 +2,7 @@
 
 #include "Theme.h"
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/resource/ResourceManager.h"
 #include "ui/loading/IDrawableFactory.h"
 #include "ui/image/BitmapFactory.h"

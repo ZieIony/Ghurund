@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/window/Window.h"
 #include "ui/constraint/ConstraintGraph.h"
 

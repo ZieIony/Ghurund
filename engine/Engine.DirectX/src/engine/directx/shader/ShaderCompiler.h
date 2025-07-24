@@ -34,7 +34,7 @@ namespace Ghurund::Engine::DirectX {
 			return text;
 		}
 
-		void initConstants(ShaderProgram& program, ShaderConstants* constants);
+		void initConstants(const ShaderProgram& program, NotNull<ShaderConstants> constants);
 
 	public:
 		ShaderCompiler(Graphics& graphics, ParameterManager& parameterManager, const CompilationTarget& target = CompilationTarget::SHADER_5_0):
@@ -43,11 +43,11 @@ namespace Ghurund::Engine::DirectX {
 
 		D3D12_INPUT_LAYOUT_DESC getInputLayout(const Buffer& byteCode);
 
-		ID3D12PipelineState* makePipelineState(const Array<SharedPointer<ShaderProgram>>& programs, ID3D12RootSignature* rootSignature, bool supportsTransparency);
+		OwnedNotNull<ID3D12PipelineState> makePipelineState(const Array<SharedPointer<ShaderProgram>>& programs, ID3D12RootSignature* rootSignature, bool supportsTransparency);
 
-		ID3D12RootSignature* makeRootSignature(NotNull<ShaderConstants> constants);
+		OwnedNotNull<ID3D12RootSignature> makeRootSignature(NotNull<ShaderConstants> constants);
 
-		ShaderConstants* getConstants(Array<SharedPointer<ShaderProgram>>& programs);
+		OwnedNotNull<ShaderConstants> makeConstants(const Array<SharedPointer<ShaderProgram>>& programs);
 
 		ShaderProgram* compile(const AString& sourceCode, const ShaderType& shaderType, NotNull<CompilerInclude> include , bool debug =
 #ifdef _DEBUG
@@ -57,12 +57,12 @@ namespace Ghurund::Engine::DirectX {
 #endif
 		);
 
-		Shader* build(Array<SharedPointer<ShaderProgram>>& programs) {
-			auto constants = getConstants(programs);
-			auto rootSignature = makeRootSignature(constants);
-			auto pipelineState = makePipelineState(programs, rootSignature, false);
+		OwnedNotNull<Shader> build(const Array<SharedPointer<ShaderProgram>>& programs) {
+			auto constants = makeConstants(programs);
+			auto rootSignature = makeRootSignature(&constants);
+			auto pipelineState = makePipelineState(programs, &rootSignature, false);
 			Shader* shader = ghnew Shader();
-			shader->init(rootSignature, pipelineState, constants);
+			shader->init(std::move(rootSignature), std::move(pipelineState), std::move(constants));
 			return shader;
 		}
 	};

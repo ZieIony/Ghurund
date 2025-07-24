@@ -3,7 +3,7 @@
 #include "core/math/Rect.h"
 
 #include "core/Color.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "entity/camera/Camera.h"
 #include "engine/directx/CommandList.h"
 #include "ui/Canvas.h"

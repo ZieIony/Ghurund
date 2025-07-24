@@ -4,7 +4,7 @@
 #include "Side.h"
 #include "core/exception/Exceptions.h"
 #include "core/string/String.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/DataParsing.h"
 #include "ui/control/ControlPath.h"
 

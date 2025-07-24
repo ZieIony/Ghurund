@@ -1,7 +1,7 @@
 #pragma once
 
 #include "AttributeKey.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/collection/Map.h"
 #include "core/Color.h"
 

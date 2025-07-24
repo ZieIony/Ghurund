@@ -2,6 +2,7 @@
 
 #include "Graphics.h"
 #include "core/feature/FeatureFactory.h"
+#include <core/feature/FeatureProvider.h>
 
 namespace Ghurund::Engine::DirectX {
 	class GraphicsFactory:public FeatureFactory {

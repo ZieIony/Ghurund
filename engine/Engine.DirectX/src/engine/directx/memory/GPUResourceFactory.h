@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/collection/Map.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "HeapAllocator.h"
 #include "GPUResourcePointer.h"
 

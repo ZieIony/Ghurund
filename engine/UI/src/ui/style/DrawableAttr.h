@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/Object.h"
+#include "core/object/Object.h"
 #include "ui/theme/Theme.h"
 #include "ui/drawable/Drawable.h"
 

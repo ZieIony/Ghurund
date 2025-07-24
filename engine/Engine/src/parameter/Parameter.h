@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ParameterType.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/string/String.h"
 
 namespace Ghurund::Engine {

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TabItemAdapter.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "ui/adapter/AdapterLayout.h"
 //#include "ui/layout/HorizontalLayoutManager.h"
 #include "ui/widget/ContentWidget.h"

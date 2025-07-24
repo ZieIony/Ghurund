@@ -3,7 +3,7 @@
 #include "Parameter.h"
 #include "core/collection/Map.h"
 #include "core/string/String.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 
 namespace Ghurund::Engine {
 	class ParameterCollection {

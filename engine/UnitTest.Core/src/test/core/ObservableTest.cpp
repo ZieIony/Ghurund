@@ -4,7 +4,7 @@
 
 #include "core/Observable.h"
 #include "core/BindableObservable.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/string/String.h"
 #include "core/string/TextConversionUtils.h"
 

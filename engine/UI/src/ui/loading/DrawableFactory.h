@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/resource/ResourceManager.h"
 #include "ui/loading/IDrawableFactory.h"
 

@@ -2,8 +2,8 @@
 #include "MeshLoader.h"
 
 #include "core/logging/Logger.h"
+#include "core/object/IntrusivePointer.h"
 
-#include <core/IntrusivePointer.h>
 #include <cstdlib>
 
 namespace Ghurund::Engine {

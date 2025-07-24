@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/Provider.h"
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "ui/control/Control.h"
 
 namespace Ghurund::UI {

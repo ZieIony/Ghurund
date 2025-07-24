@@ -4,7 +4,7 @@
 #include "Formatter.h"
 #include "LogType.h"
 #include "LogOutput.h"
-#include "core/Noncopyable.h"
+#include "core/object/Noncopyable.h"
 #include "core/threading/CriticalSection.h"
 
 namespace Ghurund::Core {

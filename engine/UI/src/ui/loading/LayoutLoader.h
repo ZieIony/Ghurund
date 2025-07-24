@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/NotNull.h"
+#include "core/object/NotNull.h"
 #include "core/exception/Exceptions.h"
 #include "core/resource/Loader.h"
 #include "core/resource/ResourceManager.h"

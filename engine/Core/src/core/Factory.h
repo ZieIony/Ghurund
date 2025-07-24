@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include "core/object/OwnedNotNull.h"
 
 namespace Ghurund::Core {
 	template<typename T>
@@ -8,6 +8,6 @@ namespace Ghurund::Core {
 	public:
 		virtual ~Factory() = 0 {}
 
-		virtual std::unique_ptr<T> make() const = 0;
+		virtual OwnedNotNull<T> make() const = 0;
 	};
 }

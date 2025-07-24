@@ -12,8 +12,8 @@
 #include "core/io/File.h"
 #include "core/io/LibraryList.h"
 #include "core/io/watcher/FileWatcher.h"
-#include "core/Noncopyable.h"
-#include "core/Object.h"
+#include "core/object/Noncopyable.h"
+#include "core/object/Object.h"
 #include "core/reflection/Type.h"
 #include "core/threading/WorkerThread.h"
 

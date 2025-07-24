@@ -1,7 +1,7 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
-#include <core/IntrusivePointer.h>
+#include "core/object/IntrusivePointer.h"
 
 #include <test/TestUtils.h>
 #include <engine/directx/shader/ShaderLoader.h>

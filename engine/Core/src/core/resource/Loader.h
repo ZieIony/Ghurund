@@ -4,7 +4,7 @@
 #include "core/exception/FormatNotSupportedException.h"
 #include "core/io/MemoryInputStream.h"
 #include "core/io/MemoryOutputStream.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/reflection/Type.h"
 #include "LoadOption.h"
 #include "ResourceFormat.h"

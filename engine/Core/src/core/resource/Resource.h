@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/exception/Exceptions.h"
-#include "core/RefCountedObject.h"
+#include "core/object/RefCountedObject.h"
 #include "core/io/DirectoryPath.h"
 #include "core/resource/ResourcePath.h"
 #include "LoadOption.h"

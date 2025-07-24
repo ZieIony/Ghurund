@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/IntrusivePointer.h"
+#include "core/object/IntrusivePointer.h"
 #include "core/math/Size.h"
 #include "core/resource/ResourceFormat.h"
 #include "parameter/ParameterProvider.h"
