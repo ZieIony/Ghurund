@@ -1,5 +1,5 @@
 #include "ghuid2dpch.h"
-#include "UILayer.h"
+#include "D2DUILayer.h"
 
 #include "core/resource/ResourceManager.h"
 #include "engine/directx/SwapChain.h"
@@ -65,7 +65,7 @@ namespace Ghurund::UI::Direct2D {
         context = nullptr;
     }
     
-    void D2DUILayer::draw(DirectXDrawingContext& context) {
+    /*void D2DUILayer::draw(DirectXDrawingContext& context) {
         RenderTarget2D& renderTarget2d = *renderTargets.get(&context.RenderTarget).get();
 		try {
 			graphics->beginPaint(renderTarget2d);
@@ -77,5 +77,5 @@ namespace Ghurund::UI::Direct2D {
 			canvas->uninit();
 			canvas->init(graphics->DeviceContext);
 		}
-	}
+	}*/
 }

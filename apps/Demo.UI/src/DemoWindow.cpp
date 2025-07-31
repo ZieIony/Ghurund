@@ -8,16 +8,10 @@
 #include "core/logging/Logger.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory)
-		:DirectXWindow(app, renderer), drawableFactory(drawableFactory)
+	DemoWindow::DemoWindow(DemoApplication& app, DxRenderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory)
+		:DirectXWindow(app, DEMO_WINDOW_STYLE, renderer), drawableFactory(drawableFactory)
 	{
-		Style = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = true,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true
-		};
+		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo UI");
 	}
 	

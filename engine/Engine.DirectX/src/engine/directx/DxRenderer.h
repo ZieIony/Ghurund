@@ -2,19 +2,17 @@
 
 #include "engine/directx/Graphics.h"
 #include "engine/directx/SwapChain.h"
-#include "Postprocess.h"
-
-#include "core/object/Object.h"
-#include "graphics/RenderingStatistics.h"
+#include "engine/graphics/Renderer.h"
 #include "Material.h"
-#include <parameter/ParameterManager.h>
+#include "Postprocess.h"
 #include <core/Color.h>
+#include <engine/parameter/ParameterManager.h>
 
 namespace Ghurund::Engine::DirectX {
     using namespace ::DirectX;
     using namespace Ghurund::Core;
 
-    class Renderer: public Object {
+    class DxRenderer: public Renderer {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -24,7 +22,7 @@ namespace Ghurund::Engine::DirectX {
     public:
         static const Ghurund::Core::Type& GET_TYPE();
 
-        inline static const Ghurund::Core::Type& TYPE = Renderer::GET_TYPE();
+        inline static const Ghurund::Core::Type& TYPE = DxRenderer::GET_TYPE();
 #pragma endregion
 
     private:
@@ -37,10 +35,9 @@ namespace Ghurund::Engine::DirectX {
         Graphics* graphics = nullptr;
         // borrowed
         ParameterManager* parameterManager = nullptr;
-        RenderingStatistics stats;
 
     public:
-        ~Renderer() {
+        ~DxRenderer() {
             if (lightPassMaterial != nullptr)
                 lightPassMaterial->release();
             uninit();
@@ -55,7 +52,7 @@ namespace Ghurund::Engine::DirectX {
 
 			CommandList& commandList = frame.CommandList;
 			graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
-			stats.startFrame();
+			Statistics.startFrame();
 
 			return commandList;
 		}
@@ -65,14 +62,8 @@ namespace Ghurund::Engine::DirectX {
         }
 
 		void finishFrame(Frame& frame) {
-			stats.finishFrame();
+            Statistics.finishFrame();
 			frame.finish();
 		}
-
-        RenderingStatistics& getStatistics() {
-            return stats;
-        }
-
-        __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
     };
 }

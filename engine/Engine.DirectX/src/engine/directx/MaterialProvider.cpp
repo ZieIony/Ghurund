@@ -1,8 +1,7 @@
 #include "ghedxpch.h"
-
 #include "MaterialProvider.h"
 
-#include "parameter/TextureParameter.h"
+#include "engine/parameter/TextureParameter.h"
 #include "ShaderProvider.h"
 
 namespace Ghurund::Engine::DirectX {

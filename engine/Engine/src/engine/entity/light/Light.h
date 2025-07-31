@@ -1,10 +1,9 @@
 #pragma once
 
-#include "parameter/Parameter.h"
-#include "parameter/ParameterProvider.h"
 #include "core/resource/ResourceFormat.h"
-
-#include "entity/Entity.h"
+#include "engine/entity/Entity.h"
+#include "engine/parameter/Parameter.h"
+#include "engine/parameter/ParameterProvider.h"
 
 namespace Ghurund::Engine {
     using namespace Ghurund::Core;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Parameter.h"
-#include "graphics/ITexture.h"
+#include "engine/graphics/ITexture.h"
 
 namespace Ghurund::Engine {
     class TextureParameter:public Parameter {

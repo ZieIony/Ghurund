@@ -1,8 +1,8 @@
 #pragma once
 
-#include "engine/directx/texture/Texture.h"
 #include "core/resource/ResourceManager.h"
-#include "graphics/ITextureProvider.h"
+#include "engine/directx/texture/Texture.h"
+#include "engine/graphics/ITextureProvider.h"
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Engine::DirectX;

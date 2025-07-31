@@ -14,7 +14,7 @@
 namespace Ghurund::UI::Direct2D {
     using namespace ::Ghurund::Engine::DirectX;
 
-    class D2DUILayer:public Ghurund::UI::UILayer<DirectXDrawingContext> {
+    class D2DUILayer:public Ghurund::UI::UILayer {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -61,6 +61,6 @@ namespace Ghurund::UI::Direct2D {
 
         __declspec(property(get = getContext)) IUIContext& Context;
 
-        virtual void draw(DirectXDrawingContext& context) override;
+        //virtual void draw(DirectXDrawingContext& context) override;
     };
 }

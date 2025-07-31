@@ -1,12 +1,11 @@
 ﻿#include "core/application/Application.h"
-
 #include "DemoWindow.h"
-#include "engine/directx/Renderer.h"
-#include "parameter/ParameterManager.h"
+#include "engine/directx/DxRenderer.h"
+#include "engine/parameter/ParameterManager.h"
 #include "ui/directx/DxUIFeature.h"
-#include "ui/theme/LightTheme.h"
-#include "ui/loading/DrawableFactory.h"
 #include "ui/directx/UIFeatureFactory.h"
+#include "ui/loading/DrawableFactory.h"
+#include "ui/theme/LightTheme.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;
@@ -16,7 +15,7 @@ namespace Demo {
 
     class DemoApplication:public Application {
     protected:
-        Renderer renderer;
+        DxRenderer renderer;
         ParameterManager parameterManager;
         LightTheme* theme = nullptr;
         Ghurund::UI::DrawableFactory* drawableFactory = nullptr;
@@ -36,20 +35,16 @@ namespace Demo {
 
             window = ghnew DemoWindow(*this, renderer, drawableFactory);
             window->init();
-            window->closed += [this](Window& window) {
-                window.Visible = false;
-                quit();
-                return true;
-            };
 
-            window->Position = { (int)window->DecorationMetrics.Left, (int)window->DecorationMetrics.Top };
             window->Size = { 800, 600 };
+            window->Position = { (int)window->DecorationMetrics.Left, (int)window->DecorationMetrics.Top };
             window->Visible = true;
             window->bringToFront();
         }
 
         virtual void onUninit() override {
             delete window;
+            window = nullptr;
 
             delete drawableFactory;
             delete theme;

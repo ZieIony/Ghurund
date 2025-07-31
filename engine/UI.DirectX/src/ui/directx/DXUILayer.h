@@ -12,7 +12,7 @@
 namespace Ghurund::UI::DirectX {
     using namespace ::Ghurund::Engine::DirectX;
 
-    class DXUILayer:public Ghurund::UI::UILayer<RenderTarget> {
+    class DXUILayer:public Ghurund::UI::UILayer {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {

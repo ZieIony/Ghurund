@@ -1,8 +1,7 @@
 #pragma once
 
-#include "graphics/DrawableComponent.h"
-
-#include "entity/camera/Camera.h"
+#include "engine/entity/camera/Camera.h"
+#include "engine/graphics/DrawableComponent.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::Engine;

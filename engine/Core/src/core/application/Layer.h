@@ -8,7 +8,6 @@
 
 namespace Ghurund::Core {
 
-    template<class T>
     class Layer:public RefCountedObject {
 #pragma region reflection
     protected:
@@ -19,7 +18,6 @@ namespace Ghurund::Core {
     public:
         static const Ghurund::Core::Type& GET_TYPE() {
             static const Ghurund::Core::Type TYPE = TypeBuilder<Layer>()
-                .withTemplateParam(Ghurund::Core::getType<T>())
                 .withSupertype(__super::GET_TYPE());
 
             return TYPE;
@@ -89,6 +87,6 @@ namespace Ghurund::Core {
 
         virtual void update(const uint64_t time) {}
 
-        virtual void draw(T& context) {}
+        virtual void draw() {}
     };
 }

@@ -25,21 +25,18 @@ namespace Ghurund::Engine::OpenGL {
         return __super::onSizeChangedEvent();
     }
 
-    OpenGLWindow::OpenGLWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer):ApplicationWindow(app), renderer(&renderer) {}
+    OpenGLWindow::OpenGLWindow(NotNull<Ghurund::Core::Application> app, WindowStyle style, NotNull<OGlRenderer> renderer):ApplicationWindow(app, style), renderer(&renderer) {}
 
     void OpenGLWindow::init() {
-        __super::init();
-
         renderingContext.init(Handle);
     }
 
     void OpenGLWindow::uninit() {
         renderingContext.uninit();
-        __super::uninit();
     }
 
     void OpenGLWindow::paint() {
-        renderingContext.startFrame();
+        /*renderingContext.startFrame();
         Color clearColor = { 0xff1f1f1f };
         renderer->clear(&clearColor);
         OpenGLDrawingContext context;
@@ -51,15 +48,7 @@ namespace Ghurund::Engine::OpenGL {
 
         PAINTSTRUCT ps;
         BeginPaint(Handle, &ps);
-        EndPaint(Handle, &ps);
+        EndPaint(Handle, &ps);*/
     }
 
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>() {
-        static Type TYPE = TypeBuilder<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>();
-        return TYPE;
-    }
 }

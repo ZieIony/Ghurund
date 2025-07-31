@@ -22,8 +22,16 @@ namespace Demo {
 		// borrowed
 		Ghurund::UI::DrawableFactory* drawableFactory;
 
+		static const inline WindowStyle DEMO_WINDOW_STYLE = WindowStyle{
+			.hasMinimizeButton = true,
+			.hasMaximizeButton = true,
+			.hasTitle = true,
+			.borderStyle = WindowBorderStyle::RESIZE,
+			.showOnTaskbar = true
+		};
+
 	public:
-		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::Renderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory);
+		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::DxRenderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory);
 
 		~DemoWindow() {
 			delete adapter1;

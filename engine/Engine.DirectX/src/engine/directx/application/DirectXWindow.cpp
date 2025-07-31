@@ -34,10 +34,9 @@ namespace Ghurund::Engine::DirectX {
         return result;
     }
 
-    DirectXWindow::DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer):ApplicationWindow(app), renderer(renderer) {}
+    DirectXWindow::DirectXWindow(Ghurund::Core::Application& app, WindowStyle style, DxRenderer& renderer):ApplicationWindow(app, style), renderer(renderer) {}
 
     void DirectXWindow::init() {
-        __super::init();
         swapChain = ghnew Ghurund::Engine::DirectX::SwapChain();
         Ghurund::Engine::DirectX::Graphics* graphics = Application->Features->get<Ghurund::Engine::DirectX::Graphics>();
         swapChain->init(graphics, *this);
@@ -51,17 +50,9 @@ namespace Ghurund::Engine::DirectX {
         //levelManager.draw(commandList);
         frame.flush();
         auto drawingContext = DirectXDrawingContext(frame.RenderTarget);
-        Layers.draw(drawingContext);
+        //Layers.draw(drawingContext);
         renderer.finishFrame(frame);
         swapChain->present();
     }
 
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>() {
-        static Type TYPE = TypeBuilder<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>();
-        return TYPE;
-    }
 }

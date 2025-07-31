@@ -7,7 +7,7 @@
 #include <core/io/DirectoryPath.h>
 #include <core/string/String.h>
 #include <engine/directx/Graphics.h>
-#include <parameter/ParameterManager.h>
+#include <engine/parameter/ParameterManager.h>
 
 namespace Ghurund::Engine::DirectX {
 	using namespace Ghurund::Core;

@@ -26,17 +26,15 @@ namespace Preview {
 
         renderer.init(Features->get<Graphics>(), parameterManager);
 
+        window.init();
         window.Title = _T("Preview");
         window.Size = { 800, 600 };
-        window.init();
         window.Position = { (int32_t)window.DecorationMetrics.Left, (int32_t)window.DecorationMetrics.Top };
-        Windows->add(window);
         window.Visible = true;
         window.bringToFront();
     }
     
     void PreviewApplication::onUninit() {
-        Windows->remove(window);
         window.uninit();
         renderer.uninit();
         darkTheme.set(nullptr);

@@ -266,6 +266,8 @@
     <ClInclude Include="src\ghcpch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\application\ApplicationWindow.cpp" />
+    <ClCompile Include="src\core\application\LayerList.cpp" />
     <ClCompile Include="src\core\Color.cpp" />
     <ClCompile Include="src\core\object\Object.cpp" />
     <ClCompile Include="src\core\object\RefCountedObject.cpp" />

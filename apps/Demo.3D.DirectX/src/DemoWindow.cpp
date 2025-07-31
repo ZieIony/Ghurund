@@ -3,18 +3,8 @@
 #include "DemoApplication.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer):DirectXWindow(app, renderer), app(app) {
-		Style = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = true,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true
-		};
-	}
-	
-	void DemoWindow::init() {
-		__super::init();
-
+	DemoWindow::DemoWindow(DemoApplication& app, DxRenderer& renderer):DirectXWindow(app, DEMO_WINDOW_STYLE, renderer), app(app) {
+		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
+		Title = _T("Demo 3D DirectX");
 	}
 }

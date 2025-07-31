@@ -3,16 +3,16 @@
 #include <Windows.h>
 #include <wingdi.h>
 
-#include <core/window/SystemWindow.h>
-#include "graphics/RenderingStatistics.h"
-#include "core/object/Object.h"
-#include <parameter/ParameterManager.h>
-#include <core/Color.h>
+#include "core/Color.h"
+#include "core/window/SystemWindow.h"
+#include "engine/graphics/Renderer.h"
+#include "engine/graphics/RenderingStatistics.h"
+#include "engine/parameter/ParameterManager.h"
 
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;
 
-	class Renderer: public Object {
+	class OGlRenderer: public Renderer {
 #pragma region reflection
 	protected:
 		virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -22,12 +22,11 @@ namespace Ghurund::Engine::OpenGL {
 	public:
 		static const Ghurund::Core::Type& GET_TYPE();
 
-		inline static const Ghurund::Core::Type& TYPE = Renderer::GET_TYPE();
+		inline static const Ghurund::Core::Type& TYPE = OGlRenderer::GET_TYPE();
 #pragma endregion
 
 	private:
 		ParameterManager* parameterManager = nullptr;
-		RenderingStatistics stats;
 
 	public:
 		void init(ParameterManager& parameterManager);
@@ -37,11 +36,5 @@ namespace Ghurund::Engine::OpenGL {
 
 		void draw() {
 		}
-
-		RenderingStatistics& getStatistics() {
-			return stats;
-		}
-
-		__declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
 	};
 }

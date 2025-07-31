@@ -3,14 +3,11 @@
 #include "ThemeApplication.h"
 
 namespace Preview {
-	PreviewWindow::PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp):DirectXWindow(app, renderer), themeApp(themeApp) {
-		Style = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = false,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true,
-		};
+	PreviewWindow::PreviewWindow(
+		Ghurund::Core::Application& app,
+		DxRenderer& renderer,
+		ThemeApplication& themeApp
+	):DirectXWindow(app, PREVIEW_WINDOW_STYLE, renderer), themeApp(themeApp) {
 	}
 
 	void PreviewWindow::init() {

@@ -3,13 +3,13 @@
 #include "core/application/ApplicationWindow.h"
 #include "core/window/SystemWindow.h"
 #include "engine/opengl/OpenGLDrawingContext.h"
-#include "engine/opengl/Renderer.h"
+#include "engine/opengl/OGlRenderer.h"
 #include <engine/opengl/RenderingContext.h>
 
 namespace Ghurund::Engine::OpenGL {
     using namespace Ghurund::Core;
 
-    class OpenGLWindow: public Ghurund::Core::ApplicationWindow<OpenGLDrawingContext> {
+    class OpenGLWindow: public Ghurund::Core::ApplicationWindow {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,23 +25,18 @@ namespace Ghurund::Engine::OpenGL {
     private:
         RenderingContext renderingContext;
         // borrowed
-        Renderer* renderer;
+        OGlRenderer* renderer;
 
     protected:
         virtual bool onSizeChangedEvent() override;
 
     public:
-        OpenGLWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer);
+        OpenGLWindow(NotNull<Ghurund::Core::Application> app, WindowStyle style, NotNull<OGlRenderer> renderer);
 
-        virtual void init() override;
+        void init();
 
         void uninit();
 
         virtual void paint() override;
     };
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<Ghurund::Core::LayerList<Ghurund::Engine::OpenGL::OpenGLDrawingContext>>();
 }

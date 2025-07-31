@@ -4,7 +4,7 @@
 #include "engine/directx/Fence.h"
 #include "engine/directx/CommandList.h"
 #include "core/image/Image.h"
-#include "graphics/ITexture.h"
+#include "engine/graphics/ITexture.h"
 
 namespace Ghurund::Engine::DirectX {
     class Texture:public ITexture {

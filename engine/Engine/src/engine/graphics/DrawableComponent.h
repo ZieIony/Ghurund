@@ -1,12 +1,11 @@
 #pragma once
 
-#include "parameter/ParameterProvider.h"
-#include "graphics/RenderingStatistics.h"
+#include "engine/entity/Entity.h"
+#include "engine/entity/TransformComponent.h"
+#include "engine/graphics/RenderingStatistics.h"
+#include "engine/parameter/ParameterProvider.h"
 
 #include <DirectXCollision.h>
-
-#include "entity/Entity.h"
-#include "entity/TransformComponent.h"
 
 namespace Ghurund::Engine {
 	class DrawableComponent//:public ParameterProvider

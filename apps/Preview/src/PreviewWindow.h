@@ -2,8 +2,8 @@
 
 #include "PreviewLayout.h"
 #include "engine/directx/application/DirectXWindow.h"
-#include <engine/directx/Renderer.h>
-#include <ui/direct2d/UILayer.h>
+#include <engine/directx/DxRenderer.h>
+#include <ui/direct2d/D2DUILayer.h>
 
 namespace Preview {
 	using namespace Ghurund;
@@ -13,6 +13,14 @@ namespace Preview {
 
 	class PreviewWindow :public Ghurund::Engine::DirectX::DirectXWindow {
 	private:
+		WindowStyle PREVIEW_WINDOW_STYLE = WindowStyle{
+			.hasMinimizeButton = true,
+			.hasMaximizeButton = false,
+			.hasTitle = true,
+			.borderStyle = WindowBorderStyle::RESIZE,
+			.showOnTaskbar = true,
+		};
+
 		IntrusivePointer<PreviewLayout> previewLayout;
 		FileWatcher fileWatcher;
 		std::function<void()> loadCallback;
@@ -20,11 +28,11 @@ namespace Preview {
 		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
 
 	public:
-		PreviewWindow(Ghurund::Core::Application& app, Renderer& renderer, ThemeApplication& themeApp);
+		PreviewWindow(Ghurund::Core::Application& app, DxRenderer& renderer, ThemeApplication& themeApp);
 
 		virtual void init() override;
 
-		virtual void uninit() override {
+		void uninit() {
 			if (uiLayer) {
 				uiLayer->release();
 				uiLayer = nullptr;

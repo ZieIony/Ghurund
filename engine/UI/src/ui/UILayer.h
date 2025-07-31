@@ -10,8 +10,7 @@
 namespace Ghurund::UI {
     using namespace Ghurund::Core;
 
-    template<class T>
-    class UILayer:public Layer<T> {
+    class UILayer:public Layer {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -19,13 +18,7 @@ namespace Ghurund::UI {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static const Ghurund::Core::Type TYPE = TypeBuilder<UILayer>()
-                .withTemplateParam<T>()
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = UILayer::GET_TYPE();
 #pragma endregion
@@ -42,7 +35,7 @@ namespace Ghurund::UI {
         }
 
         virtual bool onFocusedChanged() override {
-            rootView->Focused = Layer<T>::Focused;
+            rootView->Focused = Layer::Focused;
             return true;
         }
 
@@ -51,26 +44,9 @@ namespace Ghurund::UI {
             uninit();
         }
 
-        void init(IUIContext& context) {
-            if (rootView)
-                return;
-            this->context = &context;
-            rootView = ghnew Ghurund::UI::RootView(*this->context);
-            rootViewWidth.set(ghnew WindowWidthConstraint(this->context->Window));
-            rootViewHeight.set(ghnew WindowHeightConstraint(this->context->Window));
+        void init(IUIContext& context);
 
-            this->context->Window->sizeChanged += [&](const Window& window) {
-                rootView->requestLayout();
-                return true;
-            };
-        }
-
-        void uninit() {
-            if (!rootView)
-                return;
-            rootView->release();
-            rootView = nullptr;
-        }
+        void uninit();
 
         inline RootView& getRoot() {
             return *rootView;
@@ -78,7 +54,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getRoot)) RootView& Root;
 
-        inline Ghurund::UI::Theme* getTheme() const {
+        inline const Ghurund::UI::Theme* getTheme() const {
             return rootView->Theme;
         }
 
@@ -120,23 +96,8 @@ namespace Ghurund::UI {
             return rootView->dispatchMouseWheelEvent(args);
         }
 
-        virtual void update(const uint64_t time) override {
-            rootView->onUpdate(time);
-            graph.clear();
-            graph.add(rootViewWidth.get());
-            graph.add(rootViewHeight.get());
-            rootView->resolveConstraints(graph, *rootViewWidth.get(), *rootViewHeight.get());
-            graph.sort();
-            graph.evaluate();
-            rootView->layout(0, 0, rootViewWidth->Value, rootViewHeight->Value);
-        }
+        virtual void update(const uint64_t time) override;
 
-        void draw(ICanvas& canvas) {
-            try {
-                canvas.beginPaint();
-                rootView->draw(canvas);
-                canvas.endPaint();
-            } catch (...) {}
-        }
+        void draw(ICanvas& canvas);
     };
 }

@@ -38,14 +38,7 @@ namespace Ghurund::Core {
 		DestroyWindow(Handle);
 	}
 
-	SystemWindow::~SystemWindow() {
-		uninit();
-	}
-
-	void SystemWindow::init() {
-		if (GetWindowLongPtr(handle, GWLP_USERDATA))
-			return;
-
+	SystemWindow::SystemWindow(NotNull<Ghurund::Core::Timer> timer, WindowStyle style):timer(&timer), style(style) {
 		handle = makeWindow();
 		decorationMetrics.set(ghnew WindowDecorationMetrics(handle));
 		SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)this);
@@ -56,10 +49,7 @@ namespace Ghurund::Core {
 		applyVisible();
 	}
 
-	void SystemWindow::uninit() {
-		if (!GetWindowLongPtr(handle, GWLP_USERDATA))
-			return;
-
+	SystemWindow::~SystemWindow() {
 		Visible = false;
 		DragDropEnabled = false;
 

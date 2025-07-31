@@ -5,7 +5,7 @@
 #include "engine/directx/CommandList.h"
 #include "core/resource/Resource.h"
 #include "core/resource/ResourceManager.h"
-#include "graphics/mesh/Mesh.h"
+#include "engine/graphics/mesh/Mesh.h"
 
 #pragma warning(push, 0)
 #include <d3d12.h>

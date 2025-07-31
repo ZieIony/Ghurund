@@ -1,22 +1,19 @@
 #include "ghedxpch.h"
 
-#include "Renderer.h"
+#include "DxRenderer.h"
 
 #include "core/reflection/TypeBuilder.h"
 #include "core/reflection/Property.h"
 
 namespace Ghurund::Engine::DirectX {
-    const Ghurund::Core::Type& Renderer::GET_TYPE() {
-        static auto PROPERTY_STATISTICS = Property<Renderer, RenderingStatistics&>("Statistics", &getStatistics);
-
-        static const Ghurund::Core::Type TYPE = TypeBuilder<Renderer>()
-            .withProperty(PROPERTY_STATISTICS)
+    const Ghurund::Core::Type& DxRenderer::GET_TYPE() {
+        static const Ghurund::Core::Type TYPE = TypeBuilder<DxRenderer>()
             .withSupertype(__super::GET_TYPE());
 
         return TYPE;
     }
 
-    void Renderer::init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager) {
+    void DxRenderer::init(NotNull<Graphics> graphics, NotNull<ParameterManager> parameterManager) {
         this->graphics = &graphics;
         this->parameterManager = &parameterManager;
 
@@ -29,7 +26,7 @@ namespace Ghurund::Engine::DirectX {
         //fullScreenQuad = Models::makeQuad(resourceContext, *lightPassMaterial);
     }
 
-    void Renderer::uninit() {
+    void DxRenderer::uninit() {
         /*for(int i = 0; i<FRAME_COUNT; i++) {
             delete postprocessRenderTarget[i];
             postprocessRenderTarget[i] = nullptr;

@@ -3,8 +3,8 @@
 #include "core/object/IntrusivePointer.h"
 #include "core/math/Size.h"
 #include "core/resource/ResourceFormat.h"
-#include "parameter/ParameterProvider.h"
-#include "parameter/ValueParameter.h"
+#include "engine/parameter/ParameterProvider.h"
+#include "engine/parameter/ValueParameter.h"
 
 #include <DirectXMath.h>
 

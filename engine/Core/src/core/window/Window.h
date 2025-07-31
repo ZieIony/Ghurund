@@ -42,13 +42,6 @@ namespace Ghurund::Core {
         IntPoint prevMousePos = { -1, -1 };
 
         Window* parent;
-        WindowStyle style = {
-            .hasMinimizeButton = true,
-            .hasMaximizeButton = true,
-            .hasTitle = true,
-            .borderStyle = WindowBorderStyle::RESIZE,
-            .showOnTaskbar = true
-        };
 
     protected:
         virtual bool onPositionChangedEvent() {
@@ -99,16 +92,6 @@ namespace Ghurund::Core {
             return parameters;
         }
         */
-
-        inline WindowStyle getStyle() const {
-            return style;
-        }
-
-        inline void setStyle(WindowStyle style) {
-            this->style = style;
-        }
-
-        __declspec(property(get = getStyle, put = setStyle)) WindowStyle Style;
 
         virtual HWND getHandle() const {
             return parent->Handle;

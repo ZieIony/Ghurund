@@ -352,6 +352,7 @@
     <ClCompile Include="src\ui\theme\BaseTheme.cpp" />
     <ClCompile Include="src\ui\theme\Theme.cpp" />
     <ClCompile Include="src\ui\theme\WindowsTheme.cpp" />
+    <ClCompile Include="src\ui\UILayer.cpp" />
     <ClCompile Include="src\ui\widget\ContentWidget.cpp" />
     <ClCompile Include="src\ui\widget\DragHelper.cpp" />
     <ClCompile Include="src\ui\widget\ExpandableContainer.cpp" />

@@ -3,7 +3,7 @@
 //#include "graphics/Renderer.h"
 #include "core/image/Image.h"
 
-#include "entity/camera/Camera.h"
+#include "engine/entity/camera/Camera.h"
 
 namespace Ghurund::Editor {
     using namespace Ghurund::Core;

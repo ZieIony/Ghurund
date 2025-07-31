@@ -1,10 +1,9 @@
 #pragma once
 
 #include "DrawableComponent.h"
-#include "parameter/ValueParameter.h"
-#include "entity/TransformComponent.h"
-
-#include "entity/camera/Camera.h"
+#include "engine/entity/camera/Camera.h"
+#include "engine/entity/TransformComponent.h"
+#include "engine/parameter/ValueParameter.h"
 #include "IMaterial.h"
 
 namespace Ghurund::Engine {

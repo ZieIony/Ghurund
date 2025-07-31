@@ -111,7 +111,7 @@
     <ClInclude Include="src\engine\directx\MaterialProvider.h" />
     <ClInclude Include="src\engine\directx\MathTypes.h" />
     <ClInclude Include="src\engine\directx\Postprocess.h" />
-    <ClInclude Include="src\engine\directx\Renderer.h" />
+    <ClInclude Include="src\engine\directx\DxRenderer.h" />
     <ClInclude Include="src\engine\directx\ShaderProvider.h" />
     <ClInclude Include="src\engine\directx\SwapChain.h" />
     <ClInclude Include="src\engine\directx\TextureProvider.h" />
@@ -158,7 +158,7 @@
     <ClCompile Include="src\engine\directx\Material.cpp" />
     <ClCompile Include="src\engine\directx\MaterialProvider.cpp" />
     <ClCompile Include="src\engine\directx\MathTypes.cpp" />
-    <ClCompile Include="src\engine\directx\Renderer.cpp" />
+    <ClCompile Include="src\engine\directx\DxRenderer.cpp" />
     <ClCompile Include="src\engine\directx\shader\ShaderCompiler.cpp" />
     <ClCompile Include="src\engine\directx\shader\ShaderLoader.cpp" />
     <ClCompile Include="src\engine\directx\SwapChain.cpp" />

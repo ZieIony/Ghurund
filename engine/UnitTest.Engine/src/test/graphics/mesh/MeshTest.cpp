@@ -1,8 +1,8 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
-#include "graphics/mesh/Mesh.h"
-#include <graphics/mesh/MeshLoader.h>
+#include "engine/graphics/mesh/Mesh.h"
+#include <engine/graphics/mesh/MeshLoader.h>
 #include <test/MemoryGuard.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

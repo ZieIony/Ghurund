@@ -1,10 +1,10 @@
 #pragma once
 
 #include "engine/directx/texture/Texture.h"
+#include "engine/graphics/IMaterialProvider.h"
 #include "Material.h"
 #include "ShaderProvider.h"
 #include "TextureProvider.h"
-#include "graphics/IMaterialProvider.h"
 
 namespace Ghurund::Engine::DirectX {
 

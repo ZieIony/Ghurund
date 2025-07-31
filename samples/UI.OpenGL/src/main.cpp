@@ -2,7 +2,7 @@
 
 #include "engine/opengl/application/OpenGLWindow.h"
 #include <engine/opengl/Mesh.h>
-#include <engine/opengl/Renderer.h>
+#include <engine/opengl/OGlRenderer.h>
 #include <engine/opengl/Shader.h>
 #include <core/io/DirectoryLibrary.h>
 
@@ -11,11 +11,19 @@ namespace Samples {
 
     class SampleWindow:public OpenGLWindow {
     private:
+        WindowStyle DEMO_WINDOW_STYLE = WindowStyle{
+            .hasMinimizeButton = true,
+            .hasMaximizeButton = true,
+            .hasTitle = true,
+            .borderStyle = WindowBorderStyle::RESIZE,
+            .showOnTaskbar = true
+        };
+
         Shader shader;
         Mesh mesh;
 
     public:
-        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<Renderer> renderer):OpenGLWindow(app, renderer) {}
+        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OGlRenderer> renderer):OpenGLWindow(app, DEMO_WINDOW_STYLE, renderer) {}
         
         void init() {
             shader.init(FilePath(L"resources/shaders/OpenGL/rect.vert"), FilePath(L"resources/shaders/OpenGL/rect.frag"));
@@ -31,9 +39,10 @@ namespace Samples {
             mesh.draw();
         }
     };
+
     class SampleApplication:public Ghurund::Core::Application {
     private:
-        Renderer renderer;
+        OGlRenderer renderer;
         SampleWindow window = SampleWindow(*this, renderer);
 
     public:

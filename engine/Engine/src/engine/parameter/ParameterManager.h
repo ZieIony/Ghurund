@@ -1,10 +1,10 @@
 #pragma once
 
-#include "parameter/Parameter.h"
+#include "engine/parameter/Parameter.h"
 #include "core/string/String.h"
 #include "core/object/Object.h"
 #include "ParameterCollection.h"
-#include "graphics/ITextureProvider.h"
+#include "engine/graphics/ITextureProvider.h"
 #include "TextureParameter.h"
 
 namespace Ghurund::Engine {

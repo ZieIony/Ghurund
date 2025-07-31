@@ -5,10 +5,7 @@
 #include "core/application/LayerList.h"
 #include "core/window/SystemWindow.h"
 
-#include <windowsx.h>
-
 namespace Ghurund::Core {
-    template<typename T>
     class ApplicationWindow: public Ghurund::Core::SystemWindow {
 #pragma region reflection
     protected:
@@ -17,44 +14,29 @@ namespace Ghurund::Core {
         }
 
     public:
-        static const Ghurund::Core::Type& GET_TYPE() {
-            static auto PROPERTY_LAYERS = Property<ApplicationWindow, LayerList<T>&>("Layers", &getLayers);
-            static auto PROPERTY_APPLICATION = Property<ApplicationWindow, Ghurund::Core::Application*>("Application", &getApplication);
-
-            static const Ghurund::Core::Type TYPE = TypeBuilder<ApplicationWindow>()
-                .withProperty(PROPERTY_LAYERS)
-                .withProperty(PROPERTY_APPLICATION)
-                .withSupertype(__super::GET_TYPE());
-
-            return TYPE;
-        }
+        static const Ghurund::Core::Type& GET_TYPE();
 
         inline static const Ghurund::Core::Type& TYPE = ApplicationWindow::GET_TYPE();
 #pragma endregion
 
     private:
-        LayerList<T> layers;
+        LayerList layers;
         // borrowed
         Application* app;
 
     protected:
-        virtual bool onSizeChangedEvent() override {
-            __super::onSizeChangedEvent();
-            layers.Size = Size;
+        const EventHandler<Window> DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER = [this](Window& window) {
+            window.Visible = false;
+            app->quit();
             return true;
-        }
+        };
 
-        virtual bool onFocusedChangedEvent() override {
-            if (Focused) {
-                layers.restoreFocus();
-            } else {
-                layers.clearFocus();
-            }
-            return true;
-        }
+        virtual bool onSizeChangedEvent() override;
+
+        virtual bool onFocusedChangedEvent() override;
 
     public:
-        ApplicationWindow(NotNull<Application> app):SystemWindow(app->Timer), app(&app) {
+        ApplicationWindow(NotNull<Application> app, WindowStyle style):SystemWindow(app->Timer, style), app(&app) {
             app->Windows->add(this);
         }
 
@@ -62,11 +44,11 @@ namespace Ghurund::Core {
             app->Windows->remove(this);
         }
 
-        inline LayerList<T>& getLayers() {
+        inline LayerList& getLayers() {
             return layers;
         }
 
-        __declspec(property(get = getLayers)) LayerList<T>& Layers;
+        __declspec(property(get = getLayers)) LayerList& Layers;
 
         inline Application* getApplication() {
             return app;
@@ -78,15 +60,7 @@ namespace Ghurund::Core {
             return layers.dispatchKeyEvent(args);
         }
 
-        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override {
-            bool consumed = layers.dispatchMouseButtonEvent(args);
-            if (consumed && (IsLButtonDown() || IsMButtonDown() || IsRButtonDown())) {
-                SetCapture(Handle);
-            } else {
-                ReleaseCapture();
-            }
-            return consumed;
-        }
+        virtual bool onMouseButtonEvent(const MouseButtonEventArgs& args) override;
 
         virtual bool onMouseMotionEvent(const MouseMotionEventArgs& args) override {
             return layers.dispatchMouseMotionEvent(args);

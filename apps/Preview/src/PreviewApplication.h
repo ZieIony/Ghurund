@@ -1,4 +1,4 @@
-﻿#include "engine/directx/Renderer.h"
+﻿#include "engine/directx/DxRenderer.h"
 #include "core/application/Application.h"
 
 #include "PreviewWindow.h"
@@ -10,7 +10,7 @@ namespace Preview {
 
     class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
     protected:
-        Ghurund::Engine::DirectX::Renderer renderer;
+        Ghurund::Engine::DirectX::DxRenderer renderer;
         Ghurund::Engine::ParameterManager parameterManager;
         PreviewWindow window = PreviewWindow(*this, renderer, *this);
 

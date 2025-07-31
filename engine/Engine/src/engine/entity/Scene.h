@@ -1,14 +1,13 @@
 #pragma once
 
 #include "core/resource/Resource.h"
-#include "graphics/DrawingSystem.h"
+#include "engine/graphics/DrawingSystem.h"
+#include "engine/entity/camera/Camera.h"
+#include "engine/entity/Entity.h"
+#include "engine/physics/Physics.h"
+#include "engine/physics/PhysicsSystem.h"
 
 #include <entt.hpp>
-
-#include "entity/camera/Camera.h"
-#include "entity/Entity.h"
-#include "physics/Physics.h"
-#include "physics/PhysicsSystem.h"
 
 namespace Ghurund::Engine {
     class Scene:public Resource {

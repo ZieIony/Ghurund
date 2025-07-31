@@ -1,13 +1,10 @@
 #pragma once
 
-#include "engine/opengl/OpenGLDrawingContext.h"
 #include "ui/UILayer.h"
 #include "OglCanvas.h"
 
 namespace Ghurund::UI::OpenGL {
-    using namespace ::Ghurund::Engine::OpenGL;
-
-    class OglUiLayer:public Ghurund::UI::UILayer<OpenGLDrawingContext> {
+    class OglUiLayer:public Ghurund::UI::UILayer {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -43,7 +40,5 @@ namespace Ghurund::UI::OpenGL {
         }
 
         __declspec(property(get = getContext)) IUIContext& Context;
-
-        virtual void draw(OpenGLDrawingContext& context) override {}
     };
 }

@@ -1,9 +1,9 @@
 #include "utepch.h"
 #include "CppUnitTest.h"
 
-#include "net/Message.h"
-#include "net/ClientMessage.h"
-#include "net/ServerMessage.h"
+#include "engine/net/ClientMessage.h"
+#include "engine/net/Message.h"
+#include "engine/net/ServerMessage.h"
 
 #include <CRC.h>
 

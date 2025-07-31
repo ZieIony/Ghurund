@@ -2,15 +2,14 @@
 
 #include "core/application/Application.h"
 #include "core/application/ApplicationWindow.h"
-#include "core/application/LayerList.h"
 #include "engine/directx/DirectXDrawingContext.h"
-#include "engine/directx/Renderer.h"
+#include "engine/directx/DxRenderer.h"
 #include "engine/directx/SwapChain.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace Ghurund::Core;
 
-    class DirectXWindow: public Ghurund::Core::ApplicationWindow<Ghurund::Engine::DirectX::DirectXDrawingContext>{
+    class DirectXWindow: public Ghurund::Core::ApplicationWindow {
 #pragma region reflection
     protected:
         virtual const Ghurund::Core::Type& getTypeImpl() const override {
@@ -25,20 +24,20 @@ namespace Ghurund::Engine::DirectX {
 
     private:
         SwapChain* swapChain = nullptr;
-        Renderer& renderer;
+        DxRenderer& renderer;
 
     protected:
         virtual bool onSizeChangedEvent() override;
 
     public:
-        DirectXWindow(Ghurund::Core::Application& app, Renderer& renderer);
+        DirectXWindow(Ghurund::Core::Application& app, WindowStyle style, DxRenderer& renderer);
 
         ~DirectXWindow() {
             delete swapChain;
             swapChain = nullptr;
         }
 
-        virtual void init() override;
+        virtual void init();
 
         inline SwapChain& getSwapChain() {
             return *swapChain;
@@ -48,9 +47,4 @@ namespace Ghurund::Engine::DirectX {
 
         virtual void paint() override;
     };
-}
-
-namespace Ghurund::Core {
-    template<>
-    const Type& getType<LayerList<Ghurund::Engine::DirectX::DirectXDrawingContext>>();
 }

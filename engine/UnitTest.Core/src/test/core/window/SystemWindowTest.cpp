@@ -15,46 +15,15 @@ namespace UnitTest {
     TEST_CLASS(SystemWindowTest) {
 public:
 
-    TEST_METHOD(SystemWindow_initOnly) {
+    TEST_METHOD(SystemWindow_constructDestroy) {
         Timer timer;
         MemoryGuard guard;
         {
             SystemWindow window(timer);
-            window.init();
         }
     }
 
-    TEST_METHOD(SystemWindow_doubleInit) {
-        Timer timer;
-        MemoryGuard guard;
-        {
-            SystemWindow window(timer);
-            window.init();
-        }
-    }
-
-    TEST_METHOD(SystemWindow_initUninit) {
-        Timer timer;
-        MemoryGuard guard;
-        {
-            SystemWindow window(timer);
-            window.init();
-            window.uninit();
-        }
-    }
-
-    TEST_METHOD(SystemWindow_doubleUninit) {
-        Timer timer;
-        MemoryGuard guard;
-        {
-            SystemWindow window(timer);
-            window.init();
-            window.uninit();
-            window.uninit();
-        }
-    }
-
-    TEST_METHOD(SystemWindow_propertiesBeforeInit) {
+    TEST_METHOD(SystemWindow_properties) {
         Timer timer;
         MemoryGuard guard;
         {
@@ -62,40 +31,9 @@ public:
             window.Position = { 0, 0 };
             window.Size = { 100, 100 };
             window.Title = _T("test");
-            window.init();
             Assert::AreEqual(IntPoint{0,0}, window.Position);
             Assert::AreEqual(IntSize{100,100}, window.Size);
             Assert::AreEqual(String(_T("test")), window.Title);
-            window.uninit();
-        }
-    }
-
-    TEST_METHOD(SystemWindow_propertiesAfterInit) {
-        Timer timer;
-        MemoryGuard guard;
-        {
-            SystemWindow window(timer);
-            window.init();
-            window.Position = { 0, 0 };
-            window.Size = { 100, 100 };
-            window.Title = _T("test");
-            Assert::AreEqual(IntPoint{ 0,0 }, window.Position);
-            Assert::AreEqual(IntSize{ 100,100 }, window.Size);
-            Assert::AreEqual(String(_T("test")), window.Title);
-            window.uninit();
-        }
-    }
-
-    TEST_METHOD(SystemWindow_propertiesAfterUninit) {
-        Timer timer;
-        MemoryGuard guard;
-        {
-            SystemWindow window(timer);
-            window.init();
-            window.uninit();
-            window.Position = { 0, 0 };
-            window.Size = { 100, 100 };
-            window.Title = _T("test");
         }
     }
 

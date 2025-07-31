@@ -29,6 +29,8 @@ namespace Ghurund::Core {
         static inline Map<SharedPointer<WindowClass>, uint32_t> windowClassUses;
         SharedPointer<WindowClass> windowClass;
 
+        WindowStyle style;
+        
         HWND handle = {};
         Ghurund::Core::Input input;
         // borrowed
@@ -47,19 +49,30 @@ namespace Ghurund::Core {
         void applySize();
         void applyTitle();
 
+    protected:
+        static const inline WindowStyle DEFAULT_WINDOW_STYLE = {
+            .hasMinimizeButton = true,
+            .hasMaximizeButton = true,
+            .hasTitle = true,
+            .borderStyle = WindowBorderStyle::RESIZE,
+            .showOnTaskbar = true
+        };
+
     public:
         Event<Ghurund::Core::Window> draggedOver = *this;
         Event<Ghurund::Core::Window> dragLeft = *this;
         Event<Ghurund::Core::Window, Array<FilePath*>&> dragEntered = *this;
         Event<Ghurund::Core::Window, Array<FilePath*>&> dropped = *this;
 
-        SystemWindow(NotNull<Ghurund::Core::Timer> timer):timer(&timer) {}
+        SystemWindow(NotNull<Ghurund::Core::Timer> timer, WindowStyle style = DEFAULT_WINDOW_STYLE);
 
         ~SystemWindow();
 
-        virtual void init();
+        inline WindowStyle getStyle() const {
+            return style;
+        }
 
-        virtual void uninit();
+        __declspec(property(get = getStyle)) WindowStyle Style;
 
         virtual HWND getHandle() const override {
             return handle;
