@@ -1,20 +1,24 @@
 #include "DemoApplication.h"
 
-#include "DemoWindow.h"
-
 namespace Demo {
     void DemoApplication::uninitDemoApplication() {
         delete window;
         window = nullptr;
+
+        delete drawableFactory;
+        delete theme;
     }
-
+    
     void DemoApplication::onInit() {
-        __super::onInit();
-
         renderer.init(Features->get<Graphics>(), parameterManager);
 
-        window = ghnew DemoWindow(*this, renderer);
-		window->ClientSize = { 800, 600 };
+        drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
+        theme = ghnew LightTheme(ResourceManager, *drawableFactory);
+
+        window = ghnew DemoWindow(*this, renderer, drawableFactory);
+        window->init();
+
+        window->ClientSize = { 800, 600 };
         window->Position = { 0, 0 };
         window->Visible = true;
         window->bringToFront();
@@ -22,6 +26,5 @@ namespace Demo {
     
     void DemoApplication::onUninit() {
         uninitDemoApplication();
-        __super::onUninit();
     }
 }

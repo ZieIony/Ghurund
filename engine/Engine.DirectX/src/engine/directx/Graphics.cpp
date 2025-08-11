@@ -64,6 +64,13 @@ namespace Ghurund::Engine::DirectX {
             throw DirectX12NotSupportedException();
     }
 
+    void Graphics::uninitGraphics() {
+        uninitDevice();
+        adapters.deleteItems();
+        factory->Release();
+        factory = nullptr;
+    }
+
     void Graphics::onInit() {
         UINT dxgiFactoryFlags = 0;
 #if defined(_DEBUG)
@@ -150,10 +157,7 @@ namespace Ghurund::Engine::DirectX {
     }
 
     void Graphics::onUninit() {
-        uninitDevice();
-        adapters.deleteItems();
-        factory->Release();
-        factory = nullptr;
+        uninitGraphics();
     }
 
 }

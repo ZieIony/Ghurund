@@ -8,10 +8,17 @@
 #include "core/io/DirectoryLibrary.h"
 
 namespace Ghurund::Core {
-    void Application::init() {
-        CoInitialize(nullptr);
-        OleInitialize(nullptr);
+    void Application::uninitApplication() {
+        windows.clear();
 
+        resourceManager.Libraries->clear();
+        resourceManager.Loaders->clear();
+        resourceManager.clearCache();
+
+        features.uninit();
+    }
+
+    void Application::onInit() {
         resourceManager.Libraries->add(std::make_unique<DirectoryLibrary>(ResourceManager::ENGINE_LIB_NAME, DirectoryPath(L"./resources")));
 
         //parameterManager->initDefaultTextures(*resourceContext);
@@ -20,20 +27,10 @@ namespace Ghurund::Core {
         resourceManager.Loaders->set<Image>(imageLoader.get());
 
         features.init();
-        onInit();
     }
 
-    void Application::uninit() {
-        onUninit();
-
-        windows.clear();
-        resourceManager.Loaders->clear();
-        resourceManager.clearCache();
-
-        features.uninit();
-
-        OleUninitialize();
-        CoUninitialize();
+    void Application::onUninit() {
+        uninitApplication();
     }
 
     void Application::run(const Ghurund::Core::Settings* settings) {

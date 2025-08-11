@@ -3,7 +3,14 @@
 #include "DemoWindow.h"
 
 namespace Demo {
+    void DemoApplication::uninitDemoApplication() {
+        delete window;
+        window = nullptr;
+    }
+
     void DemoApplication::onInit() {
+        __super::onInit();
+
         renderer.init(parameterManager);
 
         window = ghnew DemoWindow(*this, renderer);
@@ -14,7 +21,7 @@ namespace Demo {
     }
     
     void DemoApplication::onUninit() {
-        delete window;
-        window = nullptr;
+        uninitDemoApplication();
+        __super::onUninit();
     }
 }

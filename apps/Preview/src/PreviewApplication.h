@@ -9,6 +9,14 @@ namespace Preview {
     using namespace Ghurund::Engine;
 
     class PreviewApplication:public Ghurund::Core::Application, public ThemeApplication {
+    private:
+        void uninitPreviewApplication() {
+            window.uninit();
+            renderer.uninit();
+            darkTheme.set(nullptr);
+            lightTheme.set(nullptr);
+        }
+
     protected:
         Ghurund::Engine::DirectX::DxRenderer renderer;
         Ghurund::Engine::ParameterManager parameterManager;
@@ -20,6 +28,11 @@ namespace Preview {
 
     public:
         PreviewApplication();
+
+        ~PreviewApplication() {
+            if (IsInitialized)
+                uninitPreviewApplication();
+        }
 
         virtual void onInit() override;
 

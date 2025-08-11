@@ -22,7 +22,7 @@ namespace Ghurund::Core {
 		List<IntrusivePointer<Feature>> initialized;
 
 		inline void init(IntrusivePointer<Feature>& feature) {
-			if (!feature->Initialized) {
+			if (!feature->IsInitialized) {
 				try {
 					feature->init();
 					initialized.add(feature);

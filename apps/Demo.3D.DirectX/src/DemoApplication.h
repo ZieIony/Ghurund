@@ -14,6 +14,9 @@ namespace Demo {
     class DemoWindow;
 
     class DemoApplication:public Application {
+    private:
+        void uninitDemoApplication();
+
     protected:
         DxRenderer renderer;
         ParameterManager parameterManager;
@@ -22,6 +25,11 @@ namespace Demo {
     public:
         DemoApplication() {
             Features->add<Graphics>();
+        }
+
+        ~DemoApplication() {
+            if(IsInitialized)
+                uninitDemoApplication();
         }
 
         virtual void onInit() override;

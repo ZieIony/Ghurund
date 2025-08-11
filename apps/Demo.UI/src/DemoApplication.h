@@ -14,6 +14,9 @@ namespace Demo {
     using namespace Ghurund::UI::DirectX;
 
     class DemoApplication:public Application {
+    private:
+        void uninitDemoApplication();
+
     protected:
         DxRenderer renderer;
         ParameterManager parameterManager;
@@ -27,27 +30,13 @@ namespace Demo {
             Features->add<UIFeature, UIFeatureFactory>();
         }
 
-        virtual void onInit() override {
-            renderer.init(Features->get<Graphics>(), parameterManager);
-
-            drawableFactory = ghnew Ghurund::UI::DrawableFactory(ResourceManager);
-            theme = ghnew LightTheme(ResourceManager, *drawableFactory);
-
-            window = ghnew DemoWindow(*this, renderer, drawableFactory);
-            window->init();
-
-            window->ClientSize = { 800, 600 };
-            window->Position = { 0, 0 };
-            window->Visible = true;
-            window->bringToFront();
+        ~DemoApplication() {
+            if (IsInitialized)
+                uninitDemoApplication();
         }
 
-        virtual void onUninit() override {
-            delete window;
-            window = nullptr;
+        virtual void onInit() override;
 
-            delete drawableFactory;
-            delete theme;
-        }
+        virtual void onUninit() override;
     };
 }

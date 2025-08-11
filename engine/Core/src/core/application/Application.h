@@ -4,100 +4,109 @@
 #include "WindowCollection.h"
 
 #include "core/feature/FeatureProvider.h"
+#include "core/object/Initializable.h"
 #include "core/object/Noncopyable.h"
 #include "core/Timer.h"
 #include "core/threading/FunctionQueue.h"
 #include "core/resource/ResourceManager.h"
 
 namespace Ghurund::Core {
-    class Application:public Noncopyable {
-    private:
-        WindowCollection windows;
-        FunctionQueue functionQueue;
-        bool running = false;
+	class Application:public Noncopyable, public Initializable {
+	private:
+		WindowCollection windows;
+		FunctionQueue functionQueue;
+		bool running = false;
 
-        Settings settings;
+		Settings settings;
 
-        ResourceManager resourceManager;
-        Timer timer;
+		ResourceManager resourceManager;
+		Timer timer;
 
-        FeatureProvider features = *this;
+		FeatureProvider features = *this;
 
-        void init();
-        void uninit();
+		/*
+		* returns true if the app should stop handling messages and quit
+		*/
+		bool handleMessages();
 
-        /*
-        * returns true if the app should stop handling messages and quit
-        */
-        bool handleMessages();
+		void uninitApplication();
 
-    protected:
-        virtual void onInit() {};
+	protected:
+		virtual void onInit();
 
-        virtual void onUninit() {};
+		virtual void onUninit();
 
-    public:
-        virtual ~Application() {
-            uninit();
-        }
+	public:
+		Application() {
+			CoInitialize(nullptr);
+			OleInitialize(nullptr);
+		}
 
-        inline bool isRunning() {
-            return running;
-        }
+		virtual ~Application() {
+			if (IsInitialized)
+				uninitApplication();
 
-        __declspec(property(get = isRunning)) bool Running;
+			OleUninitialize();
+			CoUninitialize();
+		}
 
-        void run(const Settings* val = nullptr);
+		inline bool isRunning() {
+			return running;
+		}
 
-        inline void quit() {
-            PostQuitMessage(0);
-        }
+		__declspec(property(get = isRunning)) bool Running;
 
-        // not null
-        inline const Settings* getSettings() const {
-            return &settings;
-        }
+		void run(const Settings* val = nullptr);
 
-        __declspec(property(get = getSettings)) const Settings* Settings;
+		inline void quit() {
+			PostQuitMessage(0);
+		}
 
-        // not null
-        inline WindowCollection* getWindows() {
-            return &windows;
-        }
+		// not null
+		inline const Settings* getSettings() const {
+			return &settings;
+		}
 
-        __declspec(property(get = getWindows)) WindowCollection* Windows;
+		__declspec(property(get = getSettings)) const Settings* Settings;
 
-        // not null
-        FunctionQueue* getFunctionQueue() {
-            return &functionQueue;
-        }
+		// not null
+		inline WindowCollection* getWindows() {
+			return &windows;
+		}
 
-        __declspec(property(get = getFunctionQueue)) FunctionQueue* FunctionQueue;
+		__declspec(property(get = getWindows)) WindowCollection* Windows;
 
-        // not null
-        inline ResourceManager* getResourceManager() {
-            return &resourceManager;
-        }
+		// not null
+		FunctionQueue* getFunctionQueue() {
+			return &functionQueue;
+		}
 
-        __declspec(property(get = getResourceManager)) ResourceManager* ResourceManager;
+		__declspec(property(get = getFunctionQueue)) FunctionQueue* FunctionQueue;
 
-        // not null
-        inline Timer* getTimer() {
-            return &timer;
-        }
+		// not null
+		inline ResourceManager* getResourceManager() {
+			return &resourceManager;
+		}
 
-        __declspec(property(get = getTimer)) Timer* Timer;
+		__declspec(property(get = getResourceManager)) ResourceManager* ResourceManager;
 
-        // not null
-        inline FeatureProvider* getFeatures() {
-            return &features;
-        }
+		// not null
+		inline Timer* getTimer() {
+			return &timer;
+		}
 
-        __declspec(property(get = getFeatures)) FeatureProvider* Features;
-    };
+		__declspec(property(get = getTimer)) Timer* Timer;
+
+		// not null
+		inline FeatureProvider* getFeatures() {
+			return &features;
+		}
+
+		__declspec(property(get = getFeatures)) FeatureProvider* Features;
+	};
 }
 
 namespace Ghurund::Core {
-    template<>
-    const Type& getType<Application>();
+	template<>
+	const Type& getType<Application>();
 }

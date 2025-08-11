@@ -101,7 +101,7 @@
     <ClInclude Include="src\Ghurund.Engine.OpenGL.h" />
     <ClInclude Include="src\engine\opengl\FragmentShaderProgram.h" />
     <ClInclude Include="src\engine\opengl\Mesh.h" />
-    <ClInclude Include="src\engine\opengl\OGlRenderer.h" />
+    <ClInclude Include="src\engine\opengl\OglRenderer.h" />
     <ClInclude Include="src\engine\opengl\OglRenderingContext.h" />
     <ClInclude Include="src\engine\opengl\Shader.h" />
     <ClInclude Include="src\engine\opengl\VertexShaderProgram.h" />

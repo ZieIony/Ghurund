@@ -12,6 +12,6 @@ namespace Demo {
 		Title = _T("Demo 3D DirectX");
 
 		Renderer = &renderer;
-		BackgroundColor = &Colors::LIGHT_GRAY;
+		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 	}
 }

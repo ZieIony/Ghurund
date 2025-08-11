@@ -32,7 +32,7 @@ namespace Ghurund::Core {
 		static const inline Color YELLOW = 0xffffff00;
 		static const inline Color LIGHT_YELLOW = 0xffffffe0;
 		static const inline Color LEMON_CHIFFON = 0xfffffacd;
-		static const inline Color LIGHT_GOLDENROD_yellow = 0xfffafad2;
+		static const inline Color LIGHT_GOLDENROD_YELLOW = 0xfffafad2;
 		static const inline Color PAPAYA_WHIP = 0xffffefd5;
 		static const inline Color MOCCASIN = 0xffffe4b5;
 		static const inline Color PEACH_PUFF = 0xffffdab9;

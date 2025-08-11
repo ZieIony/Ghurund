@@ -14,6 +14,8 @@ namespace Preview {
     }
     
     void PreviewApplication::onInit() {
+        __super::onInit();
+
         auto uiFeature = Features->get<UIFeature>();
         auto drawableFactory = uiFeature->DrawableFactory;
 
@@ -35,10 +37,8 @@ namespace Preview {
     }
     
     void PreviewApplication::onUninit() {
-        window.uninit();
-        renderer.uninit();
-        darkTheme.set(nullptr);
-        lightTheme.set(nullptr);
+        uninitPreviewApplication();
+        __super::uninit();
     }
     
     void PreviewApplication::setThemeType(Preview::ThemeType theme) {

@@ -40,9 +40,12 @@ namespace Ghurund::Engine::DirectX {
 
         void initAdapters();
 
+        void uninitGraphics();
+
     public:
         ~Graphics() {
-            uninit();
+            if(IsInitialized)
+                uninitGraphics();
         }
 
         virtual void onInit() override;

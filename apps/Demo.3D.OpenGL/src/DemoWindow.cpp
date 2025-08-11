@@ -11,6 +11,6 @@ namespace Demo {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo 3D OpenGL");
 		Renderer = &renderer;
-		BackgroundColor = &Colors::LIGHT_GRAY;
+		BackgroundColor = &Colors::LIGHT_CORAL;
 	}
 }
