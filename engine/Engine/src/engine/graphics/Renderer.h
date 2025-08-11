@@ -2,6 +2,9 @@
 
 #include "core/object/Object.h"
 #include "engine/graphics/RenderingStatistics.h"
+#include "RenderingContext.h"
+#include "core/window/SystemWindow.h"
+#include "core/object/NotNull.h"
 
 namespace Ghurund::Engine {
 	class Renderer: public Ghurund::Core::Object {
@@ -25,5 +28,7 @@ namespace Ghurund::Engine {
         }
 
         __declspec(property(get = getStatistics)) RenderingStatistics& Statistics;
+
+        virtual RenderingContext* makeRenderingContext(Ghurund::Core::NotNull<Ghurund::Core::SystemWindow> window) = 0;
 	};
 }

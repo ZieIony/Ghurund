@@ -3,7 +3,6 @@
 #include "core/application/Layer.h"
 #include "engine/directx/SwapChain.h"
 #include "engine/directx/buffer/RenderTarget.h"
-#include "engine/directx/DirectXDrawingContext.h"
 #include "ui/constraint/ConstraintGraph.h"
 #include "ui/direct2d/Canvas.h"
 #include "ui/direct2d/Graphics2d.h"

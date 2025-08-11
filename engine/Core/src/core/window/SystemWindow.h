@@ -58,6 +58,10 @@ namespace Ghurund::Core {
             .showOnTaskbar = true
         };
 
+        virtual bool onPositionChanged() override;
+
+        virtual bool onSizeChanged() override;
+
     public:
         Event<Ghurund::Core::Window> draggedOver = *this;
         Event<Ghurund::Core::Window> dragLeft = *this;
@@ -80,6 +84,26 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getHandle)) HWND Handle;
 
+        inline void setClientPosition(const IntPoint& pos) {
+            setPosition(pos.x - DecorationMetrics.Left, pos.y - DecorationMetrics.Top);
+        }
+
+        inline IntPoint getClientPosition() {
+            return { Position.x + (int32_t)DecorationMetrics.Left, Position.y + (int32_t)DecorationMetrics.Top };
+        }
+
+        __declspec(property(get = getClientPosition, put = setClientPosition)) IntPoint ClientPosition;
+
+        inline void setClientSize(const IntSize& size) {
+            setSize(size.Width + DecorationMetrics.Horizontal, size.Height + DecorationMetrics.Vertical);
+        }
+
+        inline IntSize getClientSize() {
+            return { Size.Width - DecorationMetrics.Horizontal, Size.Height - DecorationMetrics.Vertical };
+        }
+
+        __declspec(property(get = getClientSize, put = setClientSize)) IntSize ClientSize;
+
         virtual Ghurund::Core::Input* getInput() override {
             return &input;
         }
@@ -101,10 +125,6 @@ namespace Ghurund::Core {
         virtual void setVisible(bool visible) override;
 
         virtual void setTitle(const String& title) override;
-
-        virtual void setPosition(const IntPoint& position) override;
-
-        virtual void setSize(const IntSize& size) override;
 
         virtual bool isFocused() const override {
             return handle == GetFocus();

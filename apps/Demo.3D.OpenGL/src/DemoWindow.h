@@ -1,20 +1,17 @@
 #pragma once
 
-#include "engine/opengl/application/OpenGLWindow.h"
+#include "DemoApplication.h"
+#include "engine/application/GameWindow.h"
 
 namespace Demo {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 
-	class DemoApplication;
-
-	class DemoWindow:public Ghurund::Engine::OpenGL::OpenGLWindow {
+	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		DemoApplication& app;
 
 	public:
-		DemoWindow(DemoApplication& app, Ghurund::Engine::OpenGL::Renderer& renderer);
-
-		virtual void init() override;
+		DemoWindow(NotNull<DemoApplication> app, NotNull<Ghurund::Engine::OpenGL::OGlRenderer> renderer);
 	};
 }

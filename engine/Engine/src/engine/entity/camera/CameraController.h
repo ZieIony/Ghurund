@@ -1,11 +1,10 @@
+#include "CameraEntity.h"
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
-#include "game/KeyMap.h"
 #include "core/window/SystemWindow.h"
+#include "engine/game/KeyMap.h"
 
 #include <DirectXMath.h>
-
-#include "CameraEntity.h"
 
 namespace Ghurund::Engine {
     class CameraController: public EventConsumer {

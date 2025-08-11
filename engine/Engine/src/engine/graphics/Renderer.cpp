@@ -1,6 +1,8 @@
 #include "ghepch.h"
 #include "Renderer.h"
 
+#include "core/reflection/Property.h"
+
 namespace Ghurund::Engine {
     const Ghurund::Core::Type& Renderer::GET_TYPE() {
         static auto PROPERTY_STATISTICS = Ghurund::Core::Property<Renderer, RenderingStatistics&>("Statistics", &getStatistics);

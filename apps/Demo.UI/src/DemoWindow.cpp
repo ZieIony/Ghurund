@@ -8,16 +8,17 @@
 #include "core/logging/Logger.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, DxRenderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory)
-		:DirectXWindow(app, DEMO_WINDOW_STYLE, renderer), drawableFactory(drawableFactory)
-	{
+	DemoWindow::DemoWindow(
+		NotNull<DemoApplication> app,
+		NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
+		NotNull<Ghurund::UI::DrawableFactory> drawableFactory
+	):GameWindow(&app), drawableFactory(&drawableFactory) {
 		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
 		Title = _T("Demo UI");
+		Renderer = &renderer;
 	}
 	
 	void DemoWindow::init() {
-		__super::init();
-
 		//UIDebugTools::init(UILayer.Context);
 		UIDebugTools::drawConstraints = true;
 

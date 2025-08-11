@@ -1,6 +1,8 @@
 #include "ghcpch.h"
 #include "ApplicationWindow.h"
 
+#include "core/reflection/Property.h"
+
 #include <windowsx.h>
 
 namespace Ghurund::Core {
@@ -16,13 +18,13 @@ namespace Ghurund::Core {
 		return TYPE;
 	}
 
-	bool ApplicationWindow::onSizeChangedEvent() {
-		__super::onSizeChangedEvent();
+	bool ApplicationWindow::onSizeChanged() {
+		__super::onSizeChanged();
 		layers.Size = Size;
 		return true;
 	}
 
-	bool ApplicationWindow::onFocusedChangedEvent() {
+	bool ApplicationWindow::onFocusedChanged() {
 		if (Focused) {
 			layers.restoreFocus();
 		} else {

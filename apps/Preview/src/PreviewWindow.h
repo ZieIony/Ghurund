@@ -1,7 +1,7 @@
 #include "core/application/Application.h"
 
 #include "PreviewLayout.h"
-#include "engine/directx/application/DirectXWindow.h"
+#include "engine/application/GameWindow.h"
 #include <engine/directx/DxRenderer.h>
 #include <ui/direct2d/D2DUILayer.h>
 
@@ -11,7 +11,7 @@ namespace Preview {
 	using namespace Ghurund::UI;
 	using namespace Ghurund::Engine::DirectX;
 
-	class PreviewWindow :public Ghurund::Engine::DirectX::DirectXWindow {
+	class PreviewWindow :public Ghurund::Engine::GameWindow {
 	private:
 		WindowStyle PREVIEW_WINDOW_STYLE = WindowStyle{
 			.hasMinimizeButton = true,
@@ -28,9 +28,13 @@ namespace Preview {
 		Ghurund::UI::Direct2D::D2DUILayer* uiLayer = nullptr;
 
 	public:
-		PreviewWindow(Ghurund::Core::Application& app, DxRenderer& renderer, ThemeApplication& themeApp);
+		PreviewWindow(
+			NotNull<Ghurund::Core::Application> app,
+			NotNull<DxRenderer> renderer,
+			NotNull<ThemeApplication> themeApp
+		);
 
-		virtual void init() override;
+		void init();
 
 		void uninit() {
 			if (uiLayer) {

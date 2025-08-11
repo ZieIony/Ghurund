@@ -2,7 +2,7 @@
 
 #include <format>
 
-#include "entity/Scene.h"
+#include "engine/entity/Scene.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {

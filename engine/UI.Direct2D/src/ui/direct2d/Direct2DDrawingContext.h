@@ -1,6 +1,6 @@
 #pragma once
 
-#include "engine/directx/DirectXDrawingContext.h"
+/*#include "engine/directx/DirectXDrawingContext.h"
 #include "RenderTarget2D.h"
 
 namespace Ghurund::UI::Direct2D {
@@ -25,4 +25,4 @@ namespace Ghurund::UI::Direct2D {
 namespace Ghurund::Core {
 	template<>
 	const Type& getType<Ghurund::UI::Direct2D::Direct2DDrawingContext>();
-}
+}*/

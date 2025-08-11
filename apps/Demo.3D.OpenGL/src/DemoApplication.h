@@ -1,46 +1,30 @@
-﻿#include "core/application/Application.h"
+﻿#pragma once
 
-#include "DemoWindow.h"
-#include "engine/opengl/Renderer.h"
-#include "parameter/ParameterManager.h"
+#include "core/application/Application.h"
+
+#include "engine/opengl/OGlRenderer.h"
+#include "engine/parameter/ParameterManager.h"
 
 namespace Demo {
     using namespace Ghurund::Engine;
     using namespace Ghurund::Engine::OpenGL;
     using namespace Ghurund::Core;
 
+    class DemoWindow;
+
     class DemoApplication:public Application {
     protected:
-        Renderer renderer;
+        OGlRenderer renderer;
         ParameterManager parameterManager;
-        DemoWindow window = DemoWindow(*this, renderer);
+        DemoWindow* window = nullptr;
 
     public:
         DemoApplication() {
             //Features.add<Graphics>();
         }
 
-        virtual void onInit() override {
-            //renderer.init(Features.get<Graphics>(), parameterManager);
+        virtual void onInit() override;
 
-            window.init();
-            window.closed += [this](Window& window) {
-                window.Visible = false;
-                quit();
-                return true;
-            };
-
-            Windows.add(window);
-            window.Title = _T("Demo 3D OpenGL");
-            window.Size = { 800, 600 };
-            window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
-            window.Visible = true;
-            window.bringToFront();
-        }
-
-        virtual void onUninit() override {
-            Windows.remove(window);
-            window.uninit();
-        }
+        virtual void onUninit() override;
     };
 }

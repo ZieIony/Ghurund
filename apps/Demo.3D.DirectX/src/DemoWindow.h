@@ -1,26 +1,20 @@
 #pragma once
 
-#include "engine/directx/application/DirectXWindow.h"
+#include "engine/application/GameWindow.h"
+#include "DemoApplication.h"
 
 namespace Demo {
 	using namespace Ghurund;
 	using namespace Ghurund::Core;
 
-	class DemoApplication;
-
-	class DemoWindow:public Ghurund::Engine::DirectX::DirectXWindow {
+	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
-		static const inline WindowStyle DEMO_WINDOW_STYLE = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = true,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true
-		};
-
 		DemoApplication& app;
 
 	public:
-		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::DxRenderer& renderer);
+		DemoWindow(
+			NotNull<DemoApplication> app,
+			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer
+		);
 	};
 }

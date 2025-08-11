@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity/Entity.h"
+#include "engine/entity/Entity.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {

@@ -4,7 +4,7 @@
 #include <cassert>
 #include <format>
 
-#include "entity/camera/Camera.h"
+#include "engine/entity/camera/Camera.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {

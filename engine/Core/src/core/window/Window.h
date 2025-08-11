@@ -1,13 +1,12 @@
 #pragma once
 
-#include "core/object/Object.h"
-#include "core/reflection/Type.h"
+#include "core/Color.h"
 #include "core/input/EventConsumer.h"
 #include "core/input/Input.h"
 #include "core/math/Point.h"
 #include "core/math/Size.h"
-#include "core/Observable.h"
-#include "core/window/WindowStyle.h"
+#include "core/object/Object.h"
+#include "core/reflection/Type.h"
 
 namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
@@ -34,6 +33,7 @@ namespace Ghurund::Core {
         IntPoint position = {};
         bool focused = false, visible = false;
         String title = {};
+        std::unique_ptr<Color> backgroundColor;
 
         /*
         PointerArray<Parameter*> parameters;
@@ -44,23 +44,23 @@ namespace Ghurund::Core {
         Window* parent;
 
     protected:
-        virtual bool onPositionChangedEvent() {
+        virtual bool onPositionChanged() {
             return false;
         }
 
-        virtual bool onSizeChangedEvent() {
+        virtual bool onSizeChanged() {
             return false;
         }
 
-        virtual bool onFocusedChangedEvent() {
+        virtual bool onFocusedChanged() {
             return false;
         }
 
-        virtual bool onVisibleChangedEvent() {
+        virtual bool onVisibleChanged() {
             return false;
         }
 
-        virtual bool onClosedEvent() {
+        virtual bool onClosed() {
             return false;
         }
 
@@ -123,6 +123,20 @@ namespace Ghurund::Core {
 
         __declspec(property(get = getTitle, put = setTitle)) const String& Title;
 
+        inline const Color* getBackgroundColor() const {
+            return backgroundColor.get();
+        }
+
+        inline void setBackgroundColor(const Color* color) {
+            if (color) {
+                this->backgroundColor.reset(ghnew Color(*color));
+            } else {
+                this->backgroundColor.reset();
+            }
+        }
+
+        __declspec(property(get = getBackgroundColor, put = setBackgroundColor)) const Color* BackgroundColor;
+
         virtual void setVisible(bool visible) {
             this->visible = visible;
         }
@@ -138,7 +152,10 @@ namespace Ghurund::Core {
         }
 
         virtual void setPosition(const IntPoint& position) {
-            this->position = position;
+            if (this->position != position) {
+                this->position = position;
+                dispatchPositionChangedEvent();
+            }
         }
 
         inline void setPosition(int32_t x, int32_t y) {
@@ -148,7 +165,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getPosition, put = setPosition)) IntPoint& Position;
 
         inline bool dispatchPositionChangedEvent() {
-            bool result = onPositionChangedEvent();
+            bool result = onPositionChanged();
             bool result2 = positionChanged();
             return result || result2;
         }
@@ -157,8 +174,11 @@ namespace Ghurund::Core {
             return size;
         }
 
-        virtual void setSize(const IntSize& size) {
-            this->size = size;
+        inline void setSize(const IntSize& size) {
+            if (this->size != size) {
+                this->size = size;
+                dispatchSizeChangedEvent();
+            }
         }
 
         inline void setSize(uint32_t w, uint32_t h) {
@@ -168,7 +188,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getSize, put = setSize)) const IntSize& Size;
 
         inline bool dispatchSizeChangedEvent() {
-            bool result = onSizeChangedEvent();
+            bool result = onSizeChanged();
             bool result2 = sizeChanged();
             return result || result2;
         }
@@ -192,13 +212,13 @@ namespace Ghurund::Core {
         __declspec(property(get = getParent)) Window* Parent;
 
         inline bool dispatchFocusedChangedEvent() {
-            bool result = onFocusedChangedEvent();
+            bool result = onFocusedChanged();
             bool result2 = focusedChanged();
             return result || result2;
         }
 
         inline bool dispatchClosedEvent() {
-            bool result = onClosedEvent();
+            bool result = onClosed();
             bool result2 = closed();
             return result || result2;
         }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "graphics/DrawableComponent.h"
+#include "engine/graphics/DrawableComponent.h"
 
 #include "ScriptBindings.h"
 

@@ -1,11 +1,12 @@
 #pragma once
 
+#include "engine/application/GameWindow.h"
+#include "ui/loading/DrawableFactory.h"
 #include "ui/widget/menu/MenuBarItemAdapter.h"
 #include "ui/widget/toolbar/ToolbarItemAdapter.h"
 #include <ColorListAdapter.h>
+#include <engine/directx/DxRenderer.h>
 #include <ui/UIDebugTools.h>
-#include "engine/directx/application/DirectXWindow.h"
-#include "ui/loading/DrawableFactory.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -13,7 +14,7 @@ namespace Demo {
 
 	class DemoApplication;
 
-	class DemoWindow:public Ghurund::Engine::DirectX::DirectXWindow {
+	class DemoWindow:public Ghurund::Engine::GameWindow {
 	private:
 		IntrusivePointer<Control> demoLayout;
 		ColorListAdapter* adapter1 = nullptr, * adapter2 = nullptr;
@@ -22,16 +23,12 @@ namespace Demo {
 		// borrowed
 		Ghurund::UI::DrawableFactory* drawableFactory;
 
-		static const inline WindowStyle DEMO_WINDOW_STYLE = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = true,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true
-		};
-
 	public:
-		DemoWindow(DemoApplication& app, Ghurund::Engine::DirectX::DxRenderer& renderer, Ghurund::UI::DrawableFactory* drawableFactory);
+		DemoWindow(
+			NotNull<DemoApplication> app,
+			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer,
+			NotNull<Ghurund::UI::DrawableFactory> drawableFactory
+		);
 
 		~DemoWindow() {
 			delete adapter1;
@@ -41,6 +38,6 @@ namespace Demo {
 			UIDebugTools::uninit();
 		}
 
-		virtual void init() override;
+		void init();
 	};
 }

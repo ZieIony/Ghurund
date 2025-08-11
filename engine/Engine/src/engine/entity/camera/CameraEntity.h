@@ -3,7 +3,7 @@
 //#include <entt.hpp>
 
 #include "CameraComponent.h"
-#include "entity/Entity.h"
+#include "engine/entity/Entity.h"
 
 namespace Ghurund::Engine {
     class CameraEntity:public Entity {

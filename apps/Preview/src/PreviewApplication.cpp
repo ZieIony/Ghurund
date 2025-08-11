@@ -28,8 +28,8 @@ namespace Preview {
 
         window.init();
         window.Title = _T("Preview");
-        window.Size = { 800, 600 };
-        window.Position = { (int32_t)window.DecorationMetrics.Left, (int32_t)window.DecorationMetrics.Top };
+        window.ClientSize = { 800, 600 };
+        window.Position = { 0, 0 };
         window.Visible = true;
         window.bringToFront();
     }

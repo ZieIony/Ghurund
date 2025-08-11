@@ -2,7 +2,7 @@
 
 #include "core/reflection/Type.h"
 
-#include "entity/light/Light.h"
+#include "engine/entity/light/Light.h"
 #include "ScriptBindings.h"
 
 namespace Ghurund::Engine {

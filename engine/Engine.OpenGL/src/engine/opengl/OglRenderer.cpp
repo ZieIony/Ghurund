@@ -23,12 +23,4 @@ namespace Ghurund::Engine::OpenGL {
 
     void OGlRenderer::uninit() {
     }
-
-    void OGlRenderer::clear(const Color* color) {
-        if (color) {
-            glClearColor(color->R, color->G, color->B, color->A);
-            glClear(GL_COLOR_BUFFER_BIT);
-        }
-        glClear(GL_DEPTH_BUFFER_BIT);
-    }
 }

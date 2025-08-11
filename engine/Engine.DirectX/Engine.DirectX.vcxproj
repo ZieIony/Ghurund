@@ -99,7 +99,7 @@
     <ClInclude Include="src\engine\directx\shader\ShaderProgram.h" />
     <ClInclude Include="src\Ghurund.Engine.DirectX.h" />
     <ClInclude Include="src\engine\directx\CommandList.h" />
-    <ClInclude Include="src\engine\directx\DirectXDrawingContext.h" />
+    <ClInclude Include="src\engine\directx\DxRenderingContext.h" />
     <ClInclude Include="src\engine\directx\DirectXTypes.h" />
     <ClInclude Include="src\engine\directx\DrawPacket.h" />
     <ClInclude Include="src\engine\directx\Exceptions.h" />
@@ -118,7 +118,6 @@
     <ClInclude Include="src\engine\directx\adapter\AdapterOutput.h" />
     <ClInclude Include="src\engine\directx\adapter\DisplayMode.h" />
     <ClInclude Include="src\engine\directx\adapter\GraphicsAdapter.h" />
-    <ClInclude Include="src\engine\directx\application\DirectXWindow.h" />
     <ClInclude Include="src\engine\directx\buffer\DepthBuffer.h" />
     <ClInclude Include="src\engine\directx\buffer\DescriptorHeap.h" />
     <ClInclude Include="src\engine\directx\buffer\DynamicBuffer.h" />
@@ -150,7 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\engine\directx\CommandList.cpp" />
-    <ClCompile Include="src\engine\directx\DirectXDrawingContext.cpp" />
+    <ClCompile Include="src\engine\directx\DxRenderingContext.cpp" />
     <ClCompile Include="src\engine\directx\DirectXTypes.cpp" />
     <ClCompile Include="src\engine\directx\Fence.cpp" />
     <ClCompile Include="src\engine\directx\Frame.cpp" />
@@ -165,7 +164,6 @@
     <ClCompile Include="src\engine\directx\adapter\AdapterOutput.cpp" />
     <ClCompile Include="src\engine\directx\adapter\DisplayMode.cpp" />
     <ClCompile Include="src\engine\directx\adapter\GraphicsAdapter.cpp" />
-    <ClCompile Include="src\engine\directx\application\DirectXWindow.cpp" />
     <ClCompile Include="src\engine\directx\buffer\DepthBuffer.cpp" />
     <ClCompile Include="src\engine\directx\buffer\DescriptorHeap.cpp" />
     <ClCompile Include="src\engine\directx\buffer\GPUBuffer.cpp" />

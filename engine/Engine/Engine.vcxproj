@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\engine\application\GameWindow.h" />
+    <ClInclude Include="src\engine\graphics\RenderingContext.h" />
     <ClInclude Include="src\Ghurund.Engine.h" />
     <ClInclude Include="src\engine\audio\Audio.h" />
     <ClInclude Include="src\engine\audio\Sound.h" />

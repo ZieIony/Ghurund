@@ -8,6 +8,7 @@
 #include "engine/graphics/Renderer.h"
 #include "engine/graphics/RenderingStatistics.h"
 #include "engine/parameter/ParameterManager.h"
+#include "OglRenderingContext.h"
 
 namespace Ghurund::Engine::OpenGL {
 	using namespace Ghurund::Core;
@@ -30,11 +31,11 @@ namespace Ghurund::Engine::OpenGL {
 
 	public:
 		void init(ParameterManager& parameterManager);
+
 		void uninit();
 
-		void clear(const Color* color);
-
-		void draw() {
+		virtual OglRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
+			return ghnew OglRenderingContext(window);
 		}
 	};
 }

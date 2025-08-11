@@ -7,6 +7,7 @@
 #include "Postprocess.h"
 #include <core/Color.h>
 #include <engine/parameter/ParameterManager.h>
+#include "DxRenderingContext.h"
 
 namespace Ghurund::Engine::DirectX {
     using namespace ::DirectX;
@@ -47,23 +48,8 @@ namespace Ghurund::Engine::DirectX {
 
         void uninit();
 
-		CommandList& startFrame(Frame& frame) {
-			frame.start();
-
-			CommandList& commandList = frame.CommandList;
-			graphics->DescriptorAllocator.set(commandList.get());   // TODO: set allocator properly
-			Statistics.startFrame();
-
-			return commandList;
-		}
-
-        void clear(Frame& frame, const Color* clearColor) {
-            frame.clear(clearColor);
+        virtual DxRenderingContext* makeRenderingContext(NotNull<SystemWindow> window) override {
+            return ghnew DxRenderingContext(window, graphics);
         }
-
-		void finishFrame(Frame& frame) {
-            Statistics.finishFrame();
-			frame.finish();
-		}
     };
 }

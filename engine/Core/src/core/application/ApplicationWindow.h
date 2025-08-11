@@ -31,9 +31,9 @@ namespace Ghurund::Core {
             return true;
         };
 
-        virtual bool onSizeChangedEvent() override;
+        virtual bool onSizeChanged() override;
 
-        virtual bool onFocusedChangedEvent() override;
+        virtual bool onFocusedChanged() override;
 
     public:
         ApplicationWindow(NotNull<Application> app, WindowStyle style):SystemWindow(app->Timer, style), app(&app) {

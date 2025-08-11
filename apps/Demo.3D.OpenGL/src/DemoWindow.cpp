@@ -1,20 +1,16 @@
 #include "DemoWindow.h"
 
 #include "DemoApplication.h"
+#include "core/Colors.h"
 
 namespace Demo {
-	DemoWindow::DemoWindow(DemoApplication& app, Renderer& renderer):OpenGLWindow(app, renderer), app(app) {
-		Style = WindowStyle{
-			.hasMinimizeButton = true,
-			.hasMaximizeButton = true,
-			.hasTitle = true,
-			.borderStyle = WindowBorderStyle::RESIZE,
-			.showOnTaskbar = true
-		};
-	}
-	
-	void DemoWindow::init() {
-		__super::init();
-
+	DemoWindow::DemoWindow(
+		NotNull<DemoApplication> app,
+		NotNull<Ghurund::Engine::OpenGL::OGlRenderer> renderer
+	):Ghurund::Engine::GameWindow(&app), app(*app) {
+		closed += DEFAULT_QUIT_APP_WINDOW_CLOSED_HANDLER;
+		Title = _T("Demo 3D OpenGL");
+		Renderer = &renderer;
+		BackgroundColor = &Colors::LIGHT_GRAY;
 	}
 }

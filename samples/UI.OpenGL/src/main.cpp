@@ -1,6 +1,6 @@
 #include "Ghurund.Engine.OpenGL.h"
 
-#include "engine/opengl/application/OpenGLWindow.h"
+#include "engine/application/GameWindow.h"
 #include <engine/opengl/Mesh.h>
 #include <engine/opengl/OGlRenderer.h>
 #include <engine/opengl/Shader.h>
@@ -9,21 +9,15 @@
 namespace Samples {
     using namespace Ghurund::Engine::OpenGL;
 
-    class SampleWindow:public OpenGLWindow {
+    class SampleWindow:public Ghurund::Engine::GameWindow {
     private:
-        WindowStyle DEMO_WINDOW_STYLE = WindowStyle{
-            .hasMinimizeButton = true,
-            .hasMaximizeButton = true,
-            .hasTitle = true,
-            .borderStyle = WindowBorderStyle::RESIZE,
-            .showOnTaskbar = true
-        };
-
         Shader shader;
         Mesh mesh;
 
     public:
-        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OGlRenderer> renderer):OpenGLWindow(app, DEMO_WINDOW_STYLE, renderer) {}
+        SampleWindow(NotNull<Ghurund::Core::Application> app, NotNull<OGlRenderer> renderer):GameWindow(app) {
+            Renderer = &renderer;
+        }
         
         void init() {
             shader.init(FilePath(L"resources/shaders/OpenGL/rect.vert"), FilePath(L"resources/shaders/OpenGL/rect.frag"));
@@ -43,31 +37,31 @@ namespace Samples {
     class SampleApplication:public Ghurund::Core::Application {
     private:
         OGlRenderer renderer;
-        SampleWindow window = SampleWindow(*this, renderer);
+        SampleWindow* window = nullptr;
 
     public:
         virtual void onInit() override {
             ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"test", DirectoryPath(L"./test")));
             ResourceManager->Libraries->add(std::make_unique<DirectoryLibrary>(L"icons", DirectoryPath(L"./icons")));
 
-            window.init();
-            window.closed += [this](Window& window) {
+            window = ghnew SampleWindow(*this, renderer);
+            window->init();
+            window->closed += [this](Window& window) {
                 window.Visible = false;
                 quit();
                 return true;
             };
 
-            Windows->add(window);
-            window.Title = _T("Sample UI OpenGL");
-            window.Size = { 800, 600 };
-            window.Position = { (int)window.DecorationMetrics.Left, (int)window.DecorationMetrics.Top };
-            window.Visible = true;
-            window.bringToFront();
+            window->Title = _T("Sample UI OpenGL");
+            window->Size = { 800, 600 };
+            window->Position = { (int)window->DecorationMetrics.Left, (int)window->DecorationMetrics.Top };
+            window->Visible = true;
+            window->bringToFront();
         }
 
         virtual void onUninit() override {
-            Windows->remove(window);
-            window.uninit();
+            delete window;
+            window = nullptr;
 
             ResourceManager->Libraries->clear();
         }

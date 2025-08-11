@@ -89,12 +89,10 @@ namespace Ghurund::Core {
 		SetWindowText(handle, Title.Data);
 	}
 
-	void SystemWindow::setPosition(const IntPoint& position) {
-		if (Position == position)
-			return;
-
-		__super::setPosition(position);
+	bool SystemWindow::onPositionChanged() {
+		__super::onPositionChanged();
 		applyPosition();
+		return true;
 	}
 
 	void SystemWindow::applyPosition() {
@@ -103,18 +101,16 @@ namespace Ghurund::Core {
 
 		SetWindowPos(
 			handle, 0,
-			Position.x - decorationMetrics->Left, Position.y - decorationMetrics->Top,
+			Position.x, Position.y,
 			0, 0,
 			SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE
 		);
 	}
 
-	void SystemWindow::setSize(const IntSize& size) {
-		if (Size == size)
-			return;
-
-		__super::setSize(size);
+	bool SystemWindow::onSizeChanged() {
+		__super::onSizeChanged();
 		applySize();
+		return true;
 	}
 
 	void SystemWindow::applySize() {
@@ -124,7 +120,7 @@ namespace Ghurund::Core {
 		SetWindowPos(
 			handle, 0,
 			0, 0,
-			Size.Width + decorationMetrics->Horizontal, Size.Height + decorationMetrics->Vertical,
+			Size.Width, Size.Height,
 			SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOSENDCHANGING | SWP_NOZORDER | SWP_NOACTIVATE
 		);
 	}
@@ -190,15 +186,10 @@ namespace Ghurund::Core {
 
 			RECT rc;
 			GetWindowRect(handle, &rc);
-			if (windowPos->flags ^ SWP_NOMOVE && (rc.left != windowPos->x || rc.top != windowPos->y)) {
+			if (windowPos->flags ^ SWP_NOMOVE)
 				Position = { rc.left, rc.top };
-				dispatchPositionChangedEvent();
-			}
-			auto newSize = IntSize(rc.right - rc.left, rc.bottom - rc.top);
-			if (windowPos->flags ^ SWP_NOSIZE && (newSize.Width != windowPos->cx || newSize.Height != windowPos->cy)) {
-				Size = newSize;
-				dispatchSizeChangedEvent();
-			}
+			if (windowPos->flags ^ SWP_NOSIZE)
+				Size = IntSize(rc.right - rc.left, rc.bottom - rc.top);
 			return true;   // already handled
 		} else if (msg == WM_NCACTIVATE) {
 			if (GetWindowLong(Handle, GWL_EXSTYLE) & WS_EX_NOACTIVATE && wParam == FALSE) {
@@ -212,7 +203,10 @@ namespace Ghurund::Core {
 			dispatchClosedEvent();
 			return true;
 		} else if (msg == WM_PAINT || msg == WM_ERASEBKGND) {
-		  //  window.OnPaint();   // TODO: do it in the message loop
+			// paint in the message loop
+			PAINTSTRUCT ps;
+			BeginPaint(Handle, &ps);
+			EndPaint(Handle, &ps);
 			return true;
 		}
 		return false;

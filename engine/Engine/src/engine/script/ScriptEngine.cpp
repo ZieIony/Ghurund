@@ -6,7 +6,7 @@
 #include "core/reflection/TypeBuilder.h"
 
 #include <angelscript.h>
-#include <script/angelscript/scriptmath.h>
+#include <engine/script/angelscript/scriptmath.h>
 
 #include "bindings\CameraScriptBindings.h"
 #include "bindings\CollectionScriptBindings.h"

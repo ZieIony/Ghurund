@@ -36,8 +36,8 @@ namespace Demo {
             window = ghnew DemoWindow(*this, renderer, drawableFactory);
             window->init();
 
-            window->Size = { 800, 600 };
-            window->Position = { (int)window->DecorationMetrics.Left, (int)window->DecorationMetrics.Top };
+            window->ClientSize = { 800, 600 };
+            window->Position = { 0, 0 };
             window->Visible = true;
             window->bringToFront();
         }

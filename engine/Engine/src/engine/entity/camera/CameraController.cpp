@@ -8,7 +8,7 @@
 
 #include "Camera.h"
 #include "CameraComponent.h"
-#include "entity/TransformComponent.h"
+#include "engine/entity/TransformComponent.h"
 
 namespace Ghurund::Engine {
 	using namespace std;
