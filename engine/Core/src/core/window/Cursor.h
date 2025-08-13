@@ -5,9 +5,8 @@
 #include "core/reflection/Type.h"
 
 #include <Windows.h>
-#include <tchar.h>
 
-namespace Ghurund::UI {
+namespace Ghurund::Core {
     enum class CursorEnum {
         APPSTARTING,    // Standard arrowand small hourglass
         ARROW,  // Standard arrow
@@ -25,7 +24,7 @@ namespace Ghurund::UI {
         WAIT    // Wait
     };
 
-    class Cursor :public Ghurund::Core::Enum<CursorEnum, Cursor> {
+    class Cursor :public Enum<CursorEnum, Cursor> {
     private:
         HCURSOR handle;
 
@@ -50,9 +49,7 @@ namespace Ghurund::UI {
 
         __declspec(property(get = getHandle)) HCURSOR Handle;
     };
-}
 
-namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::Cursor>();
+    const Type& getType<Ghurund::Core::Cursor>();
 }

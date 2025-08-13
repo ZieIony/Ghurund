@@ -7,6 +7,7 @@
 #include "core/math/Size.h"
 #include "core/object/Object.h"
 #include "core/reflection/Type.h"
+#include "Cursor.h"
 
 namespace Ghurund::Core {
     struct WindowSizeChangedEventArgs {
@@ -34,6 +35,7 @@ namespace Ghurund::Core {
         bool focused = false, visible = false;
         String title = {};
         std::unique_ptr<Color> backgroundColor;
+        const Cursor* cursor = &Cursor::ARROW;
 
         /*
         PointerArray<Parameter*> parameters;
@@ -96,6 +98,16 @@ namespace Ghurund::Core {
         }
 
         __declspec(property(get = getHandle)) HWND Handle;
+
+        inline const Cursor& getCursor() const {
+            return *cursor;
+        }
+
+        inline void setCursor(const Cursor& cursor) {
+            this->cursor = &cursor;
+        }
+
+        __declspec(property(get = getCursor, put = setCursor)) const Cursor& Cursor;
 
         // not null
         virtual Ghurund::Core::Input* getInput() {

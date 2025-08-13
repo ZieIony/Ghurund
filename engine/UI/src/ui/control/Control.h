@@ -6,17 +6,17 @@
 #include "core/math/Size.h"
 #include "core/resource/Resource.h"
 #include "ui/Binding.h"
-#include "ui/Cursor.h"
-#include "ui/UIContext.h"
 #include "ui/constraint/Constraint.h"
 #include "ui/constraint/ContentSize.h"
 #include "ui/constraint/WrapConstraint.h"
+#include "ui/UIContext.h"
 
 namespace tinyxml2 {
 	class XMLElement;
 }
 
 namespace Ghurund::Core {
+	class Cursor;
 	class ResourceManager;
 }
 

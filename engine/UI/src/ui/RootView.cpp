@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "RootView.h"
 
-#include "ui/Cursor.h"
+#include "core/window/Cursor.h"
 #include "ui/constraint/WindowConstraint.h"
 
 namespace Ghurund::UI {

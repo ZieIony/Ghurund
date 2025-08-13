@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "SplitLayout.h"
 
-#include "ui/Cursor.h"
+#include "core/window/Cursor.h"
 
 namespace Ghurund::UI {
     void Splitter::setOrientation(Ghurund::UI::Orientation orientation) {

@@ -1,7 +1,7 @@
-#include "ghuipch.h"
+#include "ghcpch.h"
 #include "Cursor.h"
 
-namespace Ghurund::UI {
+namespace Ghurund::Core {
     const Cursor Cursor::APPSTARTING = Cursor(CursorEnum::APPSTARTING, "APPSTARTING", IDC_APPSTARTING);
     const Cursor Cursor::ARROW = Cursor(CursorEnum::ARROW, "ARROW", IDC_ARROW);
     const Cursor Cursor::CROSS = Cursor(CursorEnum::CROSS, "CROSS", IDC_CROSS);
@@ -16,12 +16,10 @@ namespace Ghurund::UI {
     const Cursor Cursor::SIZEWE = Cursor(CursorEnum::SIZEWE, "SIZEWE", IDC_SIZEWE);
     const Cursor Cursor::UPARROW = Cursor(CursorEnum::UPARROW, "UPARROW", IDC_UPARROW);
     const Cursor Cursor::WAIT = Cursor(CursorEnum::WAIT, "WAIT", IDC_WAIT);
-}
 
-namespace Ghurund::Core {
     template<>
-    const Type& getType<Ghurund::UI::Cursor>() {
-        static Type TYPE = Type(Ghurund::UI::NAMESPACE_NAME, "Cursor", sizeof(Ghurund::UI::Cursor));
+    const Type& getType<Cursor>() {
+        static Type TYPE = Type(Ghurund::Core::NAMESPACE_NAME, "Cursor", sizeof(Cursor));
         return TYPE;
     }
 }

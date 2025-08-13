@@ -208,6 +208,8 @@ namespace Ghurund::Core {
 			BeginPaint(Handle, &ps);
 			EndPaint(Handle, &ps);
 			return true;
+		} else if (msg == WM_SETCURSOR) {
+			Cursor.set();
 		}
 		return false;
 	}

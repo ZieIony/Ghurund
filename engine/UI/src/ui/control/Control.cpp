@@ -5,8 +5,8 @@
 #include "core/reflection/Property.h"
 #include "core/reflection/StandardTypes.h"
 #include "core/reflection/TypeBuilder.h"
+#include "core/window/Cursor.h"
 #include "ui/Canvas.h"
-#include "ui/Cursor.h"
 #include "ui/loading/LayoutLoader.h"
 #include "ui/theme/Theme.h"
 

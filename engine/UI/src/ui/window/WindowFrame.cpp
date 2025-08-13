@@ -1,7 +1,7 @@
 #include "ghuipch.h"
 #include "WindowFrame.h"
 
-#include "ui/Cursor.h"
+#include "core/window/Cursor.h"
 
 namespace Ghurund::UI {
     bool WindowFrame::dispatchMouseMotionEvent(const MouseMotionEventArgs& event) {

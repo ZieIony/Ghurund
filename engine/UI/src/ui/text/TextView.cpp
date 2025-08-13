@@ -2,7 +2,7 @@
 #include "TextView.h"
 
 #include "core/window/Clipboard.h"
-#include "ui/Cursor.h"
+#include "core/window/Cursor.h"
 #include "ui/control/ControlParent.h"
 
 namespace Ghurund::UI {

@@ -105,6 +105,7 @@
     <ClInclude Include="src\core\object\Initializable.h" />
     <ClInclude Include="src\core\object\NotNull.h" />
     <ClInclude Include="src\core\object\OwnedNotNull.h" />
+    <ClInclude Include="src\core\window\Cursor.h" />
     <ClInclude Include="src\Ghurund.Core.h" />
     <ClInclude Include="src\core\BindableObservable.h" />
     <ClInclude Include="src\core\Buffer.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="src\core\threading\FunctionQueue.cpp" />
     <ClCompile Include="src\core\threading\ThreadPoolExecutor.cpp" />
     <ClCompile Include="src\core\threading\WorkerThread.cpp" />
+    <ClCompile Include="src\core\window\Cursor.cpp" />
     <ClCompile Include="src\core\window\DragDropManager.cpp" />
     <ClCompile Include="src\core\window\SystemWindow.cpp" />
     <ClCompile Include="src\core\window\Window.cpp" />
