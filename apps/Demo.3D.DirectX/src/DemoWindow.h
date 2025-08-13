@@ -2,6 +2,7 @@
 
 #include "engine/application/GameWindow.h"
 #include "DemoApplication.h"
+#include "core/window/DisplayManager.h"
 
 namespace Demo {
 	using namespace Ghurund;
@@ -16,5 +17,7 @@ namespace Demo {
 			NotNull<DemoApplication> app,
 			NotNull<Ghurund::Engine::DirectX::DxRenderer> renderer
 		);
+
+		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 	};
 }

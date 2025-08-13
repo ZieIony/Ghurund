@@ -14,4 +14,23 @@ namespace Demo {
 		Renderer = &renderer;
 		BackgroundColor = &Colors::LIGHT_SKY_BLUE;
 	}
+	
+	bool DemoWindow::onKeyEvent(const KeyEventArgs& args) {
+		bool result = __super::onKeyEvent(args);
+		if (result)
+			return true;
+
+		if (args.Key == VK_SPACE) {
+			//auto devices = DisplayManager::enumDisplayDevices();
+			//auto modes = DisplayManager::enumDisplayModes(&devices[0].name);
+			auto currentMode = DisplayManager::getDisplayMode();
+			Ghurund::Core::DisplayMode copy = currentMode;
+			copy.width = 800;
+			copy.height = 600;
+			DisplayManager::changeDisplayMode(copy);
+		} else if (args.Key == VK_ESCAPE) {
+			DisplayManager::revertDisplayMode();
+		}
+		return true;
+	}
 }
