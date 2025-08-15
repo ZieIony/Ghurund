@@ -1,7 +1,5 @@
 #pragma once
 
-#include <compare>
-
 namespace Ghurund::Core {
     enum class WindowBorderStyle {
         RESIZE, THIN, NONE
@@ -16,5 +14,7 @@ namespace Ghurund::Core {
         bool hasShadow = false;
 
         auto operator<=>(const WindowStyle& other) const = default;
+
+        static const WindowStyle& FULLSCREEN;
     };
 }

@@ -38,7 +38,11 @@ namespace Ghurund::Core {
         bool mouseTracked = false;
 
         Microsoft::WRL::ComPtr<DragDropManager> dragDropManager;
-        SharedPointer<WindowDecorationMetrics> decorationMetrics;
+        WindowDecorationMetrics decorationMetrics;
+
+        void setStyleInternal(WindowStyle style);
+
+        void releaseWindowClass();
 
         HWND makeWindow();
 
@@ -76,7 +80,9 @@ namespace Ghurund::Core {
             return style;
         }
 
-        __declspec(property(get = getStyle)) WindowStyle Style;
+        void setStyle(WindowStyle style);
+
+        __declspec(property(get = getStyle, put = setStyle)) WindowStyle Style;
 
         virtual HWND getHandle() const override {
             return handle;
@@ -117,7 +123,7 @@ namespace Ghurund::Core {
         __declspec(property(get = getTimer)) Ghurund::Core::Timer* Timer;
 
         inline const WindowDecorationMetrics& getDecorationMetrics() const {
-            return *decorationMetrics.get();
+            return decorationMetrics;
         }
 
         __declspec(property(get = getDecorationMetrics)) WindowDecorationMetrics& DecorationMetrics;
@@ -155,5 +161,9 @@ namespace Ghurund::Core {
         void dispatchMouseEvent(UINT msg, WPARAM wParam);
 
         bool dispatchWindowEvent(UINT msg, WPARAM wParam, LPARAM lParam);
+
+        inline void close() {
+            CloseWindow(handle);
+        }
     };
 }

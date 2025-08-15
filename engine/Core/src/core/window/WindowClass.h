@@ -16,11 +16,7 @@ namespace Ghurund::Core {
 		WindowClass(const WindowClass& other) = delete;
 
 	public:
-		WindowClass(WindowStyle style, WNDPROC windowProc = &Ghurund::Core::windowProc)
-			:windowStyle(style), windowProc(windowProc) {
-		}
-
-		void init();
+		WindowClass(WindowStyle style, WNDPROC windowProc = &Ghurund::Core::windowProc);
 
 		inline void registerClass() {
 			RegisterClassEx(&windowClass);
@@ -31,6 +27,8 @@ namespace Ghurund::Core {
 		}
 
 		HWND createWindow() const;
+
+		void applyStyle(HWND handle) const;
 
 		inline auto operator<=>(const WindowClass& other) const {
 			if (windowProc == other.windowProc)

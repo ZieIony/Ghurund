@@ -13,5 +13,7 @@ namespace Demo {
 
 	public:
 		DemoWindow(NotNull<DemoApplication> app, NotNull<Ghurund::Engine::OpenGL::OGlRenderer> renderer);
+	
+		virtual bool onKeyEvent(const KeyEventArgs& args) override;
 	};
 }

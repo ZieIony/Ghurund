@@ -313,6 +313,7 @@
     <ClCompile Include="src\core\window\WindowClass.cpp" />
     <ClCompile Include="src\core\window\WindowDecorationMetrics.cpp" />
     <ClCompile Include="src\core\window\WindowProc.cpp" />
+    <ClCompile Include="src\core\window\WindowStyle.cpp" />
     <ClCompile Include="src\ghcpch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>

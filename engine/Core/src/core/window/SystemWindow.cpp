@@ -17,8 +17,7 @@ namespace Ghurund::Core {
 	}
 
 	HWND SystemWindow::makeWindow() {
-		windowClass = makeShared<WindowClass>(Style, windowProc);
-		windowClass->init();
+		windowClass = makeShared<WindowClass>(style, windowProc);
 		auto it = windowClassUses.find(windowClass);
 		if (it == windowClassUses.end()) {
 			windowClassUses.put(windowClass, 1);
@@ -40,7 +39,7 @@ namespace Ghurund::Core {
 
 	SystemWindow::SystemWindow(NotNull<Ghurund::Core::Timer> timer, WindowStyle style):timer(&timer), style(style) {
 		handle = makeWindow();
-		decorationMetrics.set(ghnew WindowDecorationMetrics(handle));
+		decorationMetrics.init(handle);
 		SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)this);
 
 		applySize();
@@ -53,10 +52,20 @@ namespace Ghurund::Core {
 		Visible = false;
 		DragDropEnabled = false;
 
-		decorationMetrics.set(nullptr);
 		SetWindowLongPtr(handle, GWLP_USERDATA, (LONG_PTR)nullptr);
 
 		destroyWindow();
+	}
+
+	void SystemWindow::setStyle(WindowStyle style) {
+		if (this->style != style) {
+			IntSize prevClientSize = ClientSize;
+			this->style = style;
+			WindowClass newClass(style);
+			newClass.applyStyle(handle);
+			decorationMetrics.init(handle);
+			ClientSize = prevClientSize;
+		}
 	}
 
 	void SystemWindow::setVisible(bool visible) {

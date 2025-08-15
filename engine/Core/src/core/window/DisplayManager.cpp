@@ -32,8 +32,7 @@ namespace Ghurund::Core {
 		EnumDisplaySettings(deviceNameStr, ENUM_CURRENT_SETTINGS, &devMode);
 		return {
 			devMode.dmBitsPerPel,
-			devMode.dmPelsWidth,
-			devMode.dmPelsHeight,
+			{ devMode.dmPelsWidth,devMode.dmPelsHeight },
 			devMode.dmDisplayFlags,
 			devMode.dmDisplayFrequency,
 			{ devMode.dmPosition.x, devMode.dmPosition.y }
@@ -52,8 +51,7 @@ namespace Ghurund::Core {
 				break;
 			modes.add({
 				devMode.dmBitsPerPel,
-				devMode.dmPelsWidth,
-				devMode.dmPelsHeight,
+				{ devMode.dmPelsWidth, devMode.dmPelsHeight },
 				devMode.dmDisplayFlags,
 				devMode.dmDisplayFrequency,
 				{ devMode.dmPosition.x, devMode.dmPosition.y }
@@ -68,8 +66,8 @@ namespace Ghurund::Core {
 		devMode.dmSize = sizeof(DEVMODE);
 		devMode.dmPosition = { mode.position.x, mode.position.y };
 		devMode.dmBitsPerPel = mode.bitsPerPx;
-		devMode.dmPelsWidth = mode.width;
-		devMode.dmPelsHeight = mode.height;
+		devMode.dmPelsWidth = mode.size.Width;
+		devMode.dmPelsHeight = mode.size.Height;
 		devMode.dmDisplayFlags = mode.flags;
 		devMode.dmDisplayFrequency = mode.displayFrequency;
 		devMode.dmFields =

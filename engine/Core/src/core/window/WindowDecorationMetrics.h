@@ -9,7 +9,7 @@ namespace Ghurund::Core {
 		uint32_t left, top, right, bottom;
 
 	public:
-		WindowDecorationMetrics(HWND handle);
+		void init(HWND handle);
 
 		inline uint32_t getLeft() const {
 			return left;

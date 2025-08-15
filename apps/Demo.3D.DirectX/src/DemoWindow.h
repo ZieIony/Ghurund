@@ -2,7 +2,6 @@
 
 #include "engine/application/GameWindow.h"
 #include "DemoApplication.h"
-#include "core/window/DisplayManager.h"
 
 namespace Demo {
 	using namespace Ghurund;

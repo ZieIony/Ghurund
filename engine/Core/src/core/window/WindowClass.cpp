@@ -4,7 +4,7 @@
 #include "SystemWindow.h"
 
 namespace Ghurund::Core {
-	void WindowClass::init() {
+	WindowClass::WindowClass(WindowStyle style, WNDPROC windowProc): windowStyle(style), windowProc(windowProc) {
 		exStyle = windowStyle.showOnTaskbar ? WS_EX_APPWINDOW : WS_EX_NOACTIVATE;
 		dwStyle =
 			(windowStyle.hasMinimizeButton ? WS_MINIMIZEBOX | WS_SYSMENU : 0) |
@@ -23,13 +23,13 @@ namespace Ghurund::Core {
 			*(address_t*)windowProc
 		).c_str();
 
-		UINT style = windowStyle.hasShadow ? CS_DROPSHADOW : 0;
+		UINT classStyle = windowStyle.hasShadow ? CS_DROPSHADOW : 0;
 
 		HINSTANCE hInst = GetModuleHandle(0);
 
 		windowClass = {
 			.cbSize = sizeof(WNDCLASSEX),
-			.style = style, // OpenGL: .style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
+			.style = classStyle, // OpenGL: .style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS;
 			.lpfnWndProc = windowProc,
 			.cbClsExtra = 0L,
 			.cbWndExtra = 0L,
@@ -47,4 +47,15 @@ namespace Ghurund::Core {
 		return CreateWindowEx(exStyle, windowClass.lpszClassName, nullptr, dwStyle, 0, 0, 0, 0, nullptr, nullptr, windowClass.hInstance, nullptr);
 	}
 
+	void WindowClass::applyStyle(HWND handle) const {
+		DWORD prevStyle = GetWindowLong(handle, GWL_STYLE);
+		SetWindowLong(handle, GWL_STYLE, (prevStyle & 0xff000000) | dwStyle);
+		SetWindowLong(handle, GWL_EXSTYLE, exStyle);
+		SetWindowPos(
+			handle,
+			NULL,
+			0, 0, 0, 0,
+			SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED
+		);
+	}
 }

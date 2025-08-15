@@ -2,6 +2,7 @@
 
 #include "DemoApplication.h"
 #include "core/Colors.h"
+#include "core/window/DisplayManager.h"
 
 namespace Demo {
 	DemoWindow::DemoWindow(
@@ -25,11 +26,20 @@ namespace Demo {
 			//auto modes = DisplayManager::enumDisplayModes(&devices[0].name);
 			auto currentMode = DisplayManager::getDisplayMode();
 			Ghurund::Core::DisplayMode copy = currentMode;
-			copy.width = 800;
-			copy.height = 600;
+			copy.size = { 800, 600 };
 			DisplayManager::changeDisplayMode(copy);
-		} else if (args.Key == VK_ESCAPE) {
+		} else if (args.Key == VK_BACK) {
 			DisplayManager::revertDisplayMode();
+		} else if (args.Key == VK_ESCAPE) {
+			close();
+		} else if (args.Key == 'f') {
+			Style = WindowStyle::FULLSCREEN;
+			auto currentMode = DisplayManager::getDisplayMode();
+			ClientSize = currentMode.size;
+			Position = { 0, 0 };
+		} else if (args.Key == 'w') {
+			Style = DEFAULT_WINDOW_STYLE;
+			ClientSize = { 800, 600 };
 		}
 		return true;
 	}

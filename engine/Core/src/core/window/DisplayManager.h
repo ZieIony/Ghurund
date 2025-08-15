@@ -6,8 +6,7 @@
 namespace Ghurund::Core {
 	struct DisplayMode {
 		uint32_t bitsPerPx;
-		uint32_t width;
-		uint32_t height;
+		IntSize size;
 		uint32_t flags;
 		uint32_t displayFrequency;
 		IntPoint position;
